@@ -18,6 +18,7 @@
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <cmath>
+
 # include <QAction>
 # include <QApplication>
 # include <QMenu>
@@ -74,7 +75,7 @@ ImageView::ImageView(QWidget* parent)
   setMouseTracking(true);
 
   // enable the mouse events
-  _mouseEventsEnabled = true; 
+  _mouseEventsEnabled = true;
 
   // Create the default status bar for displaying messages
   enableStatusBar(true);
@@ -91,7 +92,7 @@ ImageView::ImageView(QWidget* parent)
   _invertZoom = hGrp->GetBool("InvertZoom", true);
 
   // connect other slots
-  connect(_pGLImageBox, SIGNAL(drawGraphics()), this, SLOT(drawGraphics()));
+  connect(_pGLImageBox, &GLImageBox::drawGraphics, this, &ImageView::drawGraphics);
 }
 
 ImageView::~ImageView()
@@ -107,13 +108,13 @@ void ImageView::createActions()
   _pFitAct->setText(tr("&Fit image"));
   _pFitAct->setIcon(QPixmap(image_stretch));
   _pFitAct->setStatusTip(tr("Stretch the image to fit the view"));
-  connect(_pFitAct, SIGNAL(triggered()), this, SLOT(fitImage()));
+  connect(_pFitAct, &QAction::triggered, this, &ImageView::fitImage);
 
   _pOneToOneAct = new QAction(this);
   _pOneToOneAct->setText(tr("&1:1 scale"));
   _pOneToOneAct->setIcon(QPixmap(image_oneToOne));
   _pOneToOneAct->setStatusTip(tr("Display the image at a 1:1 scale"));
-  connect(_pOneToOneAct, SIGNAL(triggered()), this, SLOT(oneToOneImage()));
+  connect(_pOneToOneAct, &QAction::triggered, this, &ImageView::oneToOneImage);
 
   // Create the menus and add the actions
   _pContextMenu = new QMenu(this);
@@ -203,7 +204,7 @@ void ImageView::showOriginalColors()
 // Create a color map
 // (All red entries come first, then green, then blue, then alpha)
 // returns 0 for OK, -1 for memory allocation error
-// numRequestedEntries ... requested number of map entries (used if not greater than system maximum or 
+// numRequestedEntries ... requested number of map entries (used if not greater than system maximum or
 //                         if not greater than the maximum number of intensity values in the current image).
 //                         Pass zero to use the maximum possible. Always check the actual number of entries
 //                         created using getNumColorMapEntries() after a call to this method.
@@ -348,8 +349,13 @@ void ImageView::mousePressEvent(QMouseEvent* cEvent)
       // Mouse event coordinates are relative to top-left of image view (including toolbar!)
       // Get current cursor position relative to top-left of image box
       QPoint offset = _pGLImageBox->pos();
+#if QT_VERSION < QT_VERSION_CHECK(6,0,0)
       int box_x = cEvent->x() - offset.x();
       int box_y = cEvent->y() - offset.y();
+#else
+      int box_x = cEvent->position().x() - offset.x();
+      int box_y = cEvent->position().y() - offset.y();
+#endif
       _currX = box_x;
       _currY = box_y;
       switch(cEvent->buttons())
@@ -369,7 +375,11 @@ void ImageView::mousePressEvent(QMouseEvent* cEvent)
                 _currMode = selection;
               break;
           case Qt::RightButton:
+#if QT_VERSION < QT_VERSION_CHECK(6,0,0)
                _pContextMenu->exec(cEvent->globalPos());
+#else
+               _pContextMenu->exec(cEvent->globalPosition().toPoint());
+#endif
               break;
           default:
               _currMode = nothing;
@@ -384,8 +394,13 @@ void ImageView::mouseDoubleClickEvent(QMouseEvent* cEvent)
        // Mouse event coordinates are relative to top-left of image view (including toolbar!)
        // Get current cursor position relative to top-left of image box
        QPoint offset = _pGLImageBox->pos();
+#if QT_VERSION < QT_VERSION_CHECK(6,0,0)
        int box_x = cEvent->x() - offset.x();
        int box_y = cEvent->y() - offset.y();
+#else
+       int box_x = cEvent->position().x() - offset.x();
+       int box_y = cEvent->position().y() - offset.y();
+#endif
        _currX = box_x;
        _currY = box_y;
        if(cEvent->button() == Qt::MiddleButton)
@@ -411,8 +426,13 @@ void ImageView::mouseMoveEvent(QMouseEvent* cEvent)
    // Mouse event coordinates are relative to top-left of image view (including toolbar!)
    // Get current cursor position relative to top-left of image box
    QPoint offset = _pGLImageBox->pos();
+#if QT_VERSION < QT_VERSION_CHECK(6,0,0)
    int box_x = cEvent->x() - offset.x();
    int box_y = cEvent->y() - offset.y();
+#else
+   int box_x = cEvent->position().x() - offset.x();
+   int box_y = cEvent->position().y() - offset.y();
+#endif
    if (_mouseEventsEnabled)
    {
        switch(_currMode)
@@ -444,8 +464,13 @@ void ImageView::mouseReleaseEvent(QMouseEvent* cEvent)
        // Mouse event coordinates are relative to top-left of image view (including toolbar!)
        // Get current cursor position relative to top-left of image box
        QPoint offset = _pGLImageBox->pos();
+#if QT_VERSION < QT_VERSION_CHECK(6,0,0)
        int box_x = cEvent->x() - offset.x();
        int box_y = cEvent->y() - offset.y();
+#else
+       int box_x = cEvent->position().x() - offset.x();
+       int box_y = cEvent->position().y() - offset.y();
+#endif
        switch(_currMode)
        {
            case selection:
@@ -532,8 +557,8 @@ QString ImageView::createStatusBarText()
 
    // Create text for status bar
     QString txt;
-    if ((colorFormat == IB_CF_GREY8) || 
-        (colorFormat == IB_CF_GREY16) || 
+    if ((colorFormat == IB_CF_GREY8) ||
+        (colorFormat == IB_CF_GREY16) ||
         (colorFormat == IB_CF_GREY32))
     {
         double grey_value;
@@ -546,7 +571,7 @@ QString ImageView::createStatusBarText()
             txt = QString::fromLatin1("x,y = %1  |  %2 = %3")
                   .arg(tr("outside image"), tr("zoom")).arg(zoomFactor,0,'f',1);
     }
-    else if ((colorFormat == IB_CF_RGB24) || 
+    else if ((colorFormat == IB_CF_RGB24) ||
              (colorFormat == IB_CF_RGB48))
     {
         double red, green, blue;
@@ -561,7 +586,7 @@ QString ImageView::createStatusBarText()
                   .arg((int)red).arg((int)green).arg((int)blue)
                   .arg(tr("zoom")).arg(zoomFactor,0,'f',1);
     }
-    else if ((colorFormat == IB_CF_BGR24) || 
+    else if ((colorFormat == IB_CF_BGR24) ||
              (colorFormat == IB_CF_BGR48))
     {
         double red, green, blue;
@@ -576,7 +601,7 @@ QString ImageView::createStatusBarText()
                   .arg((int)red).arg((int)green).arg((int)blue)
                   .arg(tr("zoom")).arg(zoomFactor,0,'f',1);
     }
-    else if ((colorFormat == IB_CF_RGBA32) || 
+    else if ((colorFormat == IB_CF_RGBA32) ||
              (colorFormat == IB_CF_RGBA64))
     {
         double red, green, blue, alpha;
@@ -592,7 +617,7 @@ QString ImageView::createStatusBarText()
                   .arg((int)red).arg((int)green).arg((int)blue).arg((int)alpha)
                   .arg(tr("zoom")).arg(zoomFactor,0,'f',1);
     }
-    else if ((colorFormat == IB_CF_BGRA32) || 
+    else if ((colorFormat == IB_CF_BGRA32) ||
              (colorFormat == IB_CF_BGRA64))
     {
         double red, green, blue, alpha;
@@ -662,7 +687,7 @@ void ImageView::addSelect(int currX, int currY)
 }
 
 // Draw any 2D graphics necessary
-// Use GLImageBox::ICToWC_X and ICToWC_Y methods to transform image coordinates into widget coordinates (which 
+// Use GLImageBox::ICToWC_X and ICToWC_Y methods to transform image coordinates into widget coordinates (which
 // must be used by the OpenGL vertex commands).
 void ImageView::drawGraphics()
 {

@@ -24,9 +24,6 @@
 #ifndef FEM_CONSTRAINTPulley_H
 #define FEM_CONSTRAINTPulley_H
 
-#include <App/DocumentObject.h>
-#include <App/PropertyStandard.h>
-
 #include "FemConstraintGear.h"
 
 

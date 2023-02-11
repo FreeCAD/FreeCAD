@@ -20,17 +20,11 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
-//#ifndef _PreComp_
-//# include <gp.hxx>
-//#endif
-
-#include <Mod/Part/App/Geometry.h>
-#include "SketchObject.h"
 #include "SketchGeometryExtensionPy.h"
 #include "SketchGeometryExtensionPy.cpp"
+
 
 using namespace Sketcher;
 

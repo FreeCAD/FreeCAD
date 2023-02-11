@@ -43,6 +43,7 @@ public:
     Py::Object repr() override;
     Py::Object showDialog(const Py::Tuple&);
     Py::Object activeDialog(const Py::Tuple&);
+    Py::Object activeTaskDialog(const Py::Tuple&);
     Py::Object closeDialog(const Py::Tuple&);
     Py::Object addTaskWatcher(const Py::Tuple&);
     Py::Object clearTaskWatcher(const Py::Tuple&);
@@ -67,6 +68,72 @@ private:
     Py::Object watcher;
 };
 
+/**
+ * @brief The TaskDialogPy class
+ * This class exposes a TaskDialog written in C++ to Python.
+ */
+class TaskDialogPy : public Py::PythonExtension<TaskDialogPy>
+{
+public:
+    using BaseType = Py::PythonExtension<TaskDialogPy>;
+    static void init_type();    // announce properties and methods
+
+    explicit TaskDialogPy(TaskDialog*);
+    ~TaskDialogPy() override;
+
+    Py::Object repr() override;
+    Py::Object getattr(const char *) override;
+    int setattr(const char *, const Py::Object &) override;
+
+public:
+    Py::Object getDialogContent(const Py::Tuple&);
+
+    /// tells the framework which buttons are wished for the dialog
+    Py::Object getStandardButtons(const Py::Tuple&);
+
+    /// Defines whether a task dialog can be rejected by pressing Esc
+    Py::Object setEscapeButtonEnabled(const Py::Tuple&);
+    Py::Object isEscapeButtonEnabled(const Py::Tuple&);
+
+    /// Defines whether a task dialog must be closed if the document changed the
+    /// active transaction.
+    Py::Object setAutoCloseOnTransactionChange(const Py::Tuple&);
+    Py::Object isAutoCloseOnTransactionChange(const Py::Tuple&);
+
+    Py::Object getDocumentName(const Py::Tuple&);
+
+    /*!
+      Indicates whether this task dialog allows other commands to modify
+      the document while it is open.
+    */
+    Py::Object isAllowedAlterDocument(const Py::Tuple&);
+
+    /*!
+      Indicates whether this task dialog allows other commands to modify
+      the 3d view while it is open.
+    */
+    Py::Object isAllowedAlterView(const Py::Tuple&);
+
+    /*!
+      Indicates whether this task dialog allows other commands to modify
+      the selection while it is open.
+    */
+    Py::Object isAllowedAlterSelection(const Py::Tuple&);
+    Py::Object needsFullSpace(const Py::Tuple&);
+
+    /// is called by the framework if the dialog is accepted (Ok)
+    Py::Object accept(const Py::Tuple&);
+    /// is called by the framework if the dialog is rejected (Cancel)
+    Py::Object reject(const Py::Tuple&);
+
+private:
+    QPointer<TaskDialog> dialog;
+};
+
+/**
+ * @brief The TaskDialogPython class
+ * This wraps a task dialog that is written in Python.
+ */
 class GuiExport TaskDialogPython : public TaskDialog
 {
 public:

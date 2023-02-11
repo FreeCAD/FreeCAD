@@ -20,7 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <Bnd_Box.hxx>
@@ -450,7 +449,6 @@ void ProfileBased::getFaceFromLinkSub(TopoDS_Face& upToFace, const App::Property
 
 void ProfileBased::getUpToFace(TopoDS_Face& upToFace,
                               const TopoDS_Shape& support,
-                              const TopoDS_Face& supportface,
                               const TopoDS_Shape& sketchshape,
                               const std::string& method,
                               const gp_Dir& dir)
@@ -462,7 +460,7 @@ void ProfileBased::getUpToFace(TopoDS_Face& upToFace,
 
         std::vector<Part::cutFaces> cfaces = Part::findAllFacesCutBy(support, sketchshape, dir);
         if (cfaces.empty())
-            throw Base::ValueError("SketchBased: Up to face: No faces found in this direction");
+            throw Base::ValueError("SketchBased: No faces found in this direction");
 
         // Find nearest/furthest face
         std::vector<Part::cutFaces>::const_iterator it, it_near, it_far;
@@ -522,20 +520,21 @@ void ProfileBased::getUpToFace(TopoDS_Face& upToFace,
         }
     }
 
-    // Check that the upToFace does not intersect the sketch face and
-    // is not parallel to the extrusion direction (for simplicity, supportface is used instead of sketchshape)
-    BRepAdaptor_Surface adapt1(TopoDS::Face(supportface));
-    BRepAdaptor_Surface adapt2(TopoDS::Face(upToFace));
-
-    if (adapt2.GetType() == GeomAbs_Plane) {
-        if (adapt1.Plane().Axis().IsNormal(adapt2.Plane().Axis(), Precision::Confusion()))
-            throw Base::ValueError("SketchBased: Up to face: Must not be parallel to extrusion direction!");
-    }
-
-    // We must measure from sketchshape, not supportface, here
+    // Check that the upToFace is either not parallel to the extrusion direction
+    // and that upToFace is not too near
+    BRepAdaptor_Surface upToFaceSurface(TopoDS::Face(upToFace));
     BRepExtrema_DistShapeShape distSS(sketchshape, upToFace);
-    if (distSS.Value() < Precision::Confusion())
-        throw Base::ValueError("SketchBased: Up to face: Must not intersect sketch!");
+    if (upToFaceSurface.GetType() == GeomAbs_Plane) {
+        // Check that the upToFace is not parallel to the extrusion direction
+        if (dir.IsNormal(upToFaceSurface.Plane().Axis().Direction(), Precision::Confusion()))
+            throw Base::ValueError(
+                "SketchBased: The UpTo-Face must not be parallel to the extrusion direction!");
+
+        // Check the distance if the upToFace is normal to the extrusion direction
+        if (dir.IsParallel(upToFaceSurface.Plane().Axis().Direction(), Precision::Confusion()))
+            if (distSS.Value() < Precision::Confusion())
+                throw Base::ValueError("SketchBased: The UpTo-Face is too close to the sketch");
+    }
 }
 
 void ProfileBased::addOffsetToFace(TopoDS_Face& upToFace, const gp_Dir& dir, double offset)
@@ -543,8 +542,8 @@ void ProfileBased::addOffsetToFace(TopoDS_Face& upToFace, const gp_Dir& dir, dou
     // Move the face in the extrusion direction
     // TODO: For non-planar faces, we could consider offsetting the surface
     if (fabs(offset) > Precision::Confusion()) {
-        BRepAdaptor_Surface adapt2(TopoDS::Face(upToFace));
-        if (adapt2.GetType() == GeomAbs_Plane) {
+        BRepAdaptor_Surface upToFaceSurface(TopoDS::Face(upToFace));
+        if (upToFaceSurface.GetType() == GeomAbs_Plane) {
             gp_Trsf mov;
             mov.SetTranslation(offset * gp_Vec(dir));
             TopLoc_Location loc(mov);

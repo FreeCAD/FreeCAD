@@ -48,7 +48,7 @@ class GuiExport ExpressionCompleter : public QCompleter
 {
     Q_OBJECT
 public:
-    ExpressionCompleter(const App::DocumentObject * currentDocObj, 
+    ExpressionCompleter(const App::DocumentObject * currentDocObj,
             QObject *parent = nullptr, bool noProperty = false, bool checkInList = true);
 
     void getPrefixRange(int &start, int &end) const {
@@ -70,7 +70,7 @@ public Q_SLOTS:
 private:
     void init();
     QString pathFromIndex ( const QModelIndex & index ) const override;
-    QStringList splitPath ( const QString & path ) const override;
+    QStringList splitPath ( const QString & input ) const override;
 
     int prefixStart = 0;
     int prefixEnd = 0;
@@ -95,7 +95,10 @@ Q_SIGNALS:
     void textChanged2(QString text, int pos);
 public Q_SLOTS:
     void slotTextChanged(const QString & text);
-    void slotCompleteText(const QString & completionPrefix);
+    // activated == pressed enter on the completion item
+    void slotCompleteText(const QString& completionPrefix, bool isActivated);
+    void slotCompleteTextHighlighted(const QString& completionPrefix);
+    void slotCompleteTextSelected(const QString& completionPrefix);
 protected:
     void keyPressEvent(QKeyEvent * event) override;
     void contextMenuEvent(QContextMenuEvent * event) override;

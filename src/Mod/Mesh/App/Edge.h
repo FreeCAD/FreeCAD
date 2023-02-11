@@ -20,15 +20,13 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef MESH_EDGE_H
 #define MESH_EDGE_H
 
-#include <Base/Matrix.h>
-#include <Base/Vector3D.h>
 #include <Base/Handle.h>
 
 #include <Mod/Mesh/App/Core/Elements.h>
+
 
 namespace Mesh
 {

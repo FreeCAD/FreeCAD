@@ -8,6 +8,7 @@ import os
 import sys
 import io
 import FreeCAD, unittest, Mesh
+import MeshEnums
 from FreeCAD import Base
 import time, tempfile, math
 # http://python-kurs.eu/threads.php
@@ -29,7 +30,7 @@ class MeshTopoTestCases(unittest.TestCase):
         self.planarMesh = []
         for x in range(3):
             for y in range(3):
-                self.planarMesh.append( [0.0 + x, 0.0 + y,0.0000] ) 
+                self.planarMesh.append( [0.0 + x, 0.0 + y,0.0000] )
                 self.planarMesh.append( [1.0 + x, 1.0 + y,0.0000] )
                 self.planarMesh.append( [0.0 + x, 1.0 + y,0.0000] )
                 self.planarMesh.append( [0.0 + x, 0.0 + y,0.0000] )
@@ -254,7 +255,7 @@ class MeshGeoTestCases(unittest.TestCase):
 
 
     def testIntersection(self):
-        self.planarMesh.append( [0.9961,1.5413,4.3943] ) 
+        self.planarMesh.append( [0.9961,1.5413,4.3943] )
         self.planarMesh.append( [9.4796,10.024,-3.0937] )
         self.planarMesh.append( [1.4308,11.3841,2.6829] )
         self.planarMesh.append( [2.6493,2.2536,3.0679] )
@@ -268,7 +269,7 @@ class MeshGeoTestCases(unittest.TestCase):
 
 
     def testIntersection2(self):
-        self.planarMesh.append( [-16.097176,-29.891157,15.987688] ) 
+        self.planarMesh.append( [-16.097176,-29.891157,15.987688] )
         self.planarMesh.append( [-16.176304,-29.859991,15.947966] )
         self.planarMesh.append( [-16.071451,-29.900553,15.912505] )
         self.planarMesh.append( [-16.092241,-29.893408,16.020439] )
@@ -472,7 +473,7 @@ class PivyTestCases(unittest.TestCase):
     def testRayPick(self):
         if not FreeCAD.GuiUp:
             return
-        self.planarMesh.append( [-16.097176,-29.891157,15.987688] ) 
+        self.planarMesh.append( [-16.097176,-29.891157,15.987688] )
         self.planarMesh.append( [-16.176304,-29.859991,15.947966] )
         self.planarMesh.append( [-16.071451,-29.900553,15.912505] )
         self.planarMesh.append( [-16.092241,-29.893408,16.020439] )
@@ -496,7 +497,7 @@ class PivyTestCases(unittest.TestCase):
     def testPrimitiveCount(self):
         if not FreeCAD.GuiUp:
             return
-        self.planarMesh.append( [-16.097176,-29.891157,15.987688] ) 
+        self.planarMesh.append( [-16.097176,-29.891157,15.987688] )
         self.planarMesh.append( [-16.176304,-29.859991,15.947966] )
         self.planarMesh.append( [-16.071451,-29.900553,15.912505] )
         self.planarMesh.append( [-16.092241,-29.893408,16.020439] )
@@ -681,3 +682,44 @@ class MeshSubElement(unittest.TestCase):
 
     def tearDown(self):
         pass
+
+class MeshProperty(unittest.TestCase):
+    def setUp(self):
+        self.doc = FreeCAD.newDocument("MeshTest")
+
+    def tearDown(self):
+        FreeCAD.closeDocument(self.doc.Name)
+
+    def testMaterial(self):
+        mesh = self.doc.addObject("Mesh::Feature", "Sphere")
+        mesh.Mesh = Mesh.createBox(1.0, 1.0, 1.0)
+        len1 = int(mesh.Mesh.CountFacets / 2)
+        len2 = int(mesh.Mesh.CountFacets - len1)
+        material = {"transparency" : [0.2] * len1 + [0.8] * len2}
+        material["binding"] = MeshEnums.Binding.PER_FACE
+        material["ambientColor"] = [(1,0,0)] * (len1 + len2)
+        material["diffuseColor"] = [(0,1,0)] * (len1 + len2)
+        material["specularColor"] = [(0,0,1)] * (len1 + len2)
+        material["emissiveColor"] = [(1,1,1)] * (len1 + len2)
+        material["shininess"] = [0.3] * (len1 + len2)
+
+        mesh.addProperty("Mesh::PropertyMaterial", "Material")
+        mesh.Material = material
+
+        TempPath = tempfile.gettempdir()
+        SaveName = TempPath + os.sep + "mesh_with_material.FCStd"
+        self.doc.saveAs(SaveName)
+        FreeCAD.closeDocument(self.doc.Name)
+
+        self.doc = FreeCAD.openDocument(SaveName)
+        mesh2 = self.doc.Sphere
+        material2 = mesh2.Material
+
+        self.assertEqual(int(material2["binding"]), int(MeshEnums.Binding.PER_FACE))
+        self.assertEqual(len(material2["ambientColor"]), len1 + len2)
+        self.assertEqual(len(material2["diffuseColor"]), len1 + len2)
+        self.assertEqual(len(material2["specularColor"]), len1 + len2)
+        self.assertEqual(len(material2["emissiveColor"]), len1 + len2)
+        self.assertEqual(len(material2["shininess"]), len1 + len2)
+        self.assertEqual(len(material2["transparency"]), len1 + len2)
+

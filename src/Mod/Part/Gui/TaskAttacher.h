@@ -44,7 +44,7 @@ namespace Gui {
 class ViewProvider;
 }
 
-namespace PartGui { 
+namespace PartGui {
 
 class Ui_TaskAttacher;
 
@@ -118,7 +118,7 @@ private:
      * current set of references. Maintains selection when possible.
      */
     void updateListOfModes();
-    
+
     /**
      * @brief selectMapMode Select the given mode in the list widget
      */
@@ -167,11 +167,11 @@ public:
     bool accept() override;
     /// is called by the framework if the dialog is rejected (Cancel)
     bool reject() override;
-    /// is called by the framework if the user presses the help button 
+    /// is called by the framework if the user presses the help button
     bool isAllowedAlterDocument(void) const override
     { return false; }
 
-    /// returns for Close and Help button 
+    /// returns for Close and Help button
     QDialogButtonBox::StandardButtons getStandardButtons(void) const override
     { return QDialogButtonBox::Ok|QDialogButtonBox::Cancel; }
 

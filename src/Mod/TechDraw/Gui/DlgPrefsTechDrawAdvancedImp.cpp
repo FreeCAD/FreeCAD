@@ -22,12 +22,11 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
 #include "DlgPrefsTechDrawAdvancedImp.h"
-#include <Mod/TechDraw/Gui/ui_DlgPrefsTechDrawAdvanced.h>
-#include <Gui/PrefWidgets.h>
+#include "ui_DlgPrefsTechDrawAdvanced.h"
+
 
 using namespace TechDrawGui;
 

@@ -22,7 +22,6 @@
 //this file originally part of Drawing workbench
 //migrated to TechDraw workbench 2022-01-26 by Wandererfan
 
-
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
@@ -32,14 +31,9 @@
 # include <TopoDS_Compound.hxx>
 #endif
 
-
-#include <Base/Writer.h>
-#include <Base/Reader.h>
-#include <Base/Exception.h>
-#include <Base/FileInfo.h>
-
 #include "FeatureProjection.h"
 #include "ProjectionAlgos.h"
+
 
 using namespace TechDraw;
 

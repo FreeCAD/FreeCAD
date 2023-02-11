@@ -20,37 +20,26 @@
  ***************************************************************************/
 
 #include "PreCompiled.h"
+
 #ifndef _PreComp_
-# include <QAction>
-# include <QFileDialog>
-# include <QImage>
-# include <QImageReader>
-# include <QMessageBox>
-# include <QTextStream>
+# include <sstream>
 #endif
 
-#include <ctime>
 #if defined(FC_OS_WIN32)
-#include <sys/timeb.h>
+# include <sys/timeb.h>
 #endif
 
-#include <Base/Exception.h>
-#include <Base/Interpreter.h>
-#include <Base/Tools.h>
 #include <App/Document.h>
 #include <Gui/Application.h>
-#include <Gui/MainWindow.h>
 #include <Gui/Command.h>
 #include <Gui/Document.h>
-#include <Gui/ViewProvider.h>
-#include <Gui/BitmapFactory.h>
-# include <Gui/FileDialog.h>
+#include <Gui/FileDialog.h>
+#include <Gui/MainWindow.h>
+#include <Mod/Spreadsheet/App/Sheet.h>
 
-#include "SpreadsheetView.h"
-#include "../App/Sheet.h"
-#include <App/Range.h>
-#include "ViewProviderSpreadsheet.h"
 #include "PropertiesDialog.h"
+#include "SpreadsheetView.h"
+
 
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 

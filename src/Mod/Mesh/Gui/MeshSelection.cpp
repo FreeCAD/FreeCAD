@@ -24,22 +24,19 @@
 #ifndef _PreComp_
 # include <algorithm>
 # include <climits>
+# include <QBitmap>
+
 # include <Inventor/SbBox2s.h>
 # include <Inventor/SoPickedPoint.h>
 # include <Inventor/details/SoFaceDetail.h>
-# include <Inventor/events/SoLocation2Event.h>
 # include <Inventor/events/SoMouseButtonEvent.h>
 # include <Inventor/nodes/SoCamera.h>
-# include <QBitmap>
 #endif
 
-#include "MeshSelection.h"
-#include "ViewProvider.h"
-
-#include <Base/Console.h>
-#include <Base/Tools.h>
 #include <App/Application.h>
 #include <App/Document.h>
+#include <Base/Console.h>
+#include <Base/Tools.h>
 #include <Gui/Application.h>
 #include <Gui/Document.h>
 #include <Gui/MouseSelection.h>
@@ -48,11 +45,13 @@
 #include <Gui/View3DInventor.h>
 #include <Gui/View3DInventorViewer.h>
 #include <Mod/Mesh/App/MeshFeature.h>
-#include <Mod/Mesh/App/Core/Algorithm.h>
 #include <Mod/Mesh/App/Core/MeshKernel.h>
 #include <Mod/Mesh/App/Core/Iterator.h>
 #include <Mod/Mesh/App/Core/TopoAlgorithm.h>
-#include <Mod/Mesh/App/Core/Tools.h>
+
+#include "MeshSelection.h"
+#include "ViewProvider.h"
+
 
 using namespace MeshGui;
 
@@ -549,7 +548,7 @@ void MeshSelection::pickFaceCallback(void * ud, SoEventCallback * n)
 
             // By specifying the indexed mesh node 'pcFaceSet' we make sure that the picked point is
             // really from the mesh we render and not from any other geometry
-            Gui::ViewProvider* vp = view->getDocument()->getViewProviderByPathFromTail(point->getPath());
+            Gui::ViewProvider* vp = view->getViewProviderByPathFromTail(point->getPath());
             if (!vp || !vp->getTypeId().isDerivedFrom(ViewProviderMesh::getClassTypeId()))
                 return;
             ViewProviderMesh* mesh = static_cast<ViewProviderMesh*>(vp);

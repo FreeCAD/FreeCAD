@@ -117,7 +117,7 @@ App::DocumentObjectExecReturn *Draft::execute()
 
     // Pull direction
     gp_Dir pullDirection;
-    App::DocumentObject* refDirection = PullDirection.getValue();    
+    App::DocumentObject* refDirection = PullDirection.getValue();
     if (refDirection) {
         if (refDirection->getTypeId().isDerivedFrom(PartDesign::Line::getClassTypeId())) {
                     PartDesign::Line* line = static_cast<PartDesign::Line*>(refDirection);

@@ -20,27 +20,22 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
-
 #ifndef _PreComp_
+# include <BRepAdaptor_Curve.hxx>
+# include <CPnts_AbscissaPoint.hxx>
+# include <TopoDS.hxx>
+# include <TopoDS_Edge.hxx>
 #endif
 
-#include "Edge2TracObject.h"
-//#include <App/DocumentObjectPy.h>
-//#include <Base/Placement.h>
 #include <Base/Sequencer.h>
 #include <Mod/Part/App/edgecluster.h>
 #include <Mod/Part/App/PartFeature.h>
-#include <TopoDS.hxx>
-#include <TopoDS_Edge.hxx>
-#include <TopoDS_Vertex.hxx>
-#include <BRep_Tool.hxx>
-#include <BRepAdaptor_Curve.hxx>
-#include <CPnts_AbscissaPoint.hxx>
-#include <TopExp.hxx>
-#include "Waypoint.h"
+
+#include "Edge2TracObject.h"
 #include "Trajectory.h"
+#include "Waypoint.h"
+
 
 using namespace Robot;
 using namespace App;

@@ -20,23 +20,17 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
-
 #ifndef _PreComp_
+# include <iomanip>
 # include <sstream>
 #endif
 
-#include <iomanip>
-
-#include <Base/Exception.h>
-#include <Base/FileInfo.h>
-
 #include "FeatureViewAnnotation.h"
+
 
 using namespace Drawing;
 using namespace std;
-
 
 //===========================================================================
 // FeatureViewAnnotation
@@ -51,7 +45,8 @@ FeatureViewAnnotation::FeatureViewAnnotation(void)
 
     ADD_PROPERTY_TYPE(Text ,(""),vgroup,App::Prop_None,"The text to be displayed");
     ADD_PROPERTY_TYPE(Font ,("Sans"),vgroup,App::Prop_None,"The name of the font to use");
-    ADD_PROPERTY_TYPE(TextColor,(0.0f,0.0f,0.0f),vgroup,App::Prop_None,"The color of the text");
+    ADD_PROPERTY_TYPE(TextColor, (0.0f, 0.0f, 0.0f), vgroup, App::Prop_None,
+                      "The color of the text");
 }
 
 FeatureViewAnnotation::~FeatureViewAnnotation()
@@ -60,7 +55,7 @@ FeatureViewAnnotation::~FeatureViewAnnotation()
 
 App::DocumentObjectExecReturn *FeatureViewAnnotation::execute(void)
 {
-  std::stringstream result,hr,hg,hb;
+  stringstream result,hr,hg,hb;
     const App::Color& c = TextColor.getValue();
     hr << hex << setfill('0') << setw(2) << (int)(255.0*c.r);
     hg << hex << setfill('0') << setw(2) << (int)(255.0*c.g);
@@ -74,7 +69,7 @@ App::DocumentObjectExecReturn *FeatureViewAnnotation::execute(void)
             << " fill=\"#" << hr.str() << hg.str() << hb.str() << "\">" << endl;
 
     int index=0;
-    for (std::vector<std::string>::const_iterator it = Text.getValues().begin(); it != Text.getValues().end(); ++it) {
+    for (vector<string>::const_iterator it = Text.getValues().begin(); it != Text.getValues().end(); ++it) {
         result << "<tspan x=\"0\" dy=\"1em\">" << it->c_str() << "</tspan>" << endl;
         index++;
     }

@@ -20,15 +20,17 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef REVERSEENGINEERINGGUI_SEGMENTATIONMANUAL_H
 #define REVERSEENGINEERINGGUI_SEGMENTATIONMANUAL_H
 
+#include <memory>
+
 #include <QDialog>
+
 #include <Gui/TaskView/TaskDialog.h>
 #include <Gui/TaskView/TaskView.h>
 #include <Mod/Mesh/Gui/MeshSelection.h>
-#include <memory>
+
 
 namespace ReverseEngineeringGui {
 class Ui_SegmentationManual;

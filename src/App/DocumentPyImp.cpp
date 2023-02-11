@@ -363,16 +363,11 @@ PyObject*  DocumentPy::importLinks(PyObject *args)
             objs.push_back(static_cast<DocumentObjectPy*>(seq[i].ptr())->getDocumentObjectPtr());
         }
     }
-    else if (obj == Py_None) {
-        // do nothing here
-    }
-    else if (!PyObject_TypeCheck(obj,&DocumentObjectPy::Type)) {
-        PyErr_SetString(PyExc_TypeError,
-            "Expect first argument to be either a document object or sequence of document objects");
-        return nullptr;
-    }
     else {
-        objs.push_back(static_cast<DocumentObjectPy*>(obj)->getDocumentObjectPtr());
+        Base::PyTypeCheck(&obj, &DocumentObjectPy::Type,
+            "Expect first argument to be either a document object, sequence of document objects or None");
+        if (obj)
+            objs.push_back(static_cast<DocumentObjectPy*>(obj)->getDocumentObjectPtr());
     }
 
     if (objs.empty())
@@ -385,7 +380,8 @@ PyObject*  DocumentPy::importLinks(PyObject *args)
         for (size_t i=0;i<ret.size();++i)
             tuple.setItem(i,Py::Object(ret[i]->getPyObject(),true));
         return Py::new_reference_to(tuple);
-    } PY_CATCH
+    }
+    PY_CATCH
 }
 
 PyObject*  DocumentPy::moveObject(PyObject *args)
@@ -861,22 +857,21 @@ PyObject* DocumentPy::getLinksTo(PyObject *args)
         return nullptr;
 
     PY_TRY {
+        Base::PyTypeCheck(&pyobj, &DocumentObjectPy::Type, "Expect the first argument of type document object");
         DocumentObject *obj = nullptr;
-        if (pyobj!=Py_None) {
-            if (!PyObject_TypeCheck(pyobj,&DocumentObjectPy::Type)) {
-                PyErr_SetString(PyExc_TypeError, "Expect the first argument of type document object");
-                return nullptr;
-            }
+        if (pyobj)
             obj = static_cast<DocumentObjectPy*>(pyobj)->getDocumentObjectPtr();
-        }
+
         std::set<DocumentObject *> links;
         getDocumentPtr()->getLinksTo(links,obj,options,count);
         Py::Tuple ret(links.size());
         int i=0;
         for (auto o : links)
             ret.setItem(i++,Py::Object(o->getPyObject(),true));
+
         return Py::new_reference_to(ret);
-    } PY_CATCH
+    }
+    PY_CATCH
 }
 
 Py::List DocumentPy::getInList() const

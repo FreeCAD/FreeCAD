@@ -1,4 +1,3 @@
-
 /***************************************************************************
 * Copyright (c) 2014 Abdullah Tahiri <abdullah.tahiri.yo@gmail.com>        *
 *                                                                          *
@@ -23,17 +22,8 @@
 #ifndef PROPERTYCONSTRAINTLISTITEM_H
 #define PROPERTYCONSTRAINTLISTITEM_H
 
-#include <QObject>
-#include <QPointer>
-#include <QItemEditorFactory>
 #include <vector>
-#include <QList>
-
-#include <Base/Type.h>
-#include <Base/Quantity.h>
-#include <Base/UnitsApi.h>
-#include <App/PropertyStandard.h>
-#include <Gui/Widgets.h>
+#include <QObject>
 
 #include <Gui/propertyeditor/PropertyItem.h>
 

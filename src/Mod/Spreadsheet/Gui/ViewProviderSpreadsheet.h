@@ -1,6 +1,6 @@
 /***************************************************************************
- *   Copyright (c) 2011 Jrgen Riegel (juergen.riegel@web.de)               *
- *   Copyright (c) 2015 Eivind Kvedalen (eivind@kvedalen.name)             *
+ *   Copyright (c) 2011 Juergen Riegel <juergen.riegel@web.de>             *
+ *   Copyright (c) 2015 Eivind Kvedalen <eivind@kvedalen.name>             *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -21,14 +21,15 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef SPREADSHEET_ViewProviderImagePlane_H
 #define SPREADSHEET_ViewProviderImagePlane_H
+
+#include <QPointer>
 
 #include <Gui/ViewProviderDocumentObject.h>
 #include <Gui/ViewProviderPythonFeature.h>
 #include <Mod/Spreadsheet/SpreadsheetGlobal.h>
-#include <QPointer>
+
 
 namespace Spreadsheet {
 class Sheet;

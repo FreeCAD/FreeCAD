@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2014 Nathan Miller  <Nathan.A.Mill[at]gmail.com>        *
+ *   Copyright (c) 2014 Nathan Miller <Nathan.A.Mill[at]gmail.com>         *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -22,18 +22,13 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-#include <BRepBuilderAPI_MakeFace.hxx>
-#include <TopoDS.hxx>
-#include <TopoDS_Edge.hxx>
-#include <Precision.hxx>
+# include <BRepBuilderAPI_Sewing.hxx>
+# include <Precision.hxx>
+# include <TopoDS.hxx>
 #endif
 
 #include "FeatureSewing.h"
-#include <BRepBuilderAPI_Sewing.hxx>
-#include <BRep_Tool.hxx>
-#include <gp_Pnt.hxx>
-#include <Base/Tools.h>
-#include <Base/Exception.h>
+
 
 using namespace Surface;
 

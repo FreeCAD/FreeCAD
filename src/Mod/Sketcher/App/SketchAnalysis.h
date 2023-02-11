@@ -21,14 +21,16 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef SKETCHER_SKETCHANALYSIS_H
 #define SKETCHER_SKETCHANALYSIS_H
 
-#include <vector>
 #include <memory>
+#include <vector>
+
 #include <Base/Vector3D.h>
+
 #include "Analyse.h"
+
 
 namespace Sketcher {
 
@@ -60,7 +62,7 @@ public:
     /// Make applies the constraints stored internally in the SketchAnalysis object.
     ///
     /// A second type of routines, complex routines, are thought for running fully automatic and they Detect, Analyse and Make.
-    /// They may also apply a variaty of types of Constraints.
+    /// They may also apply a variety of constraint types.
     ///
     /// A third type of routines do not relate to autoconstraining at all, and include validation methods for sketches.
     explicit SketchAnalysis(Sketcher::SketchObject * Obj);

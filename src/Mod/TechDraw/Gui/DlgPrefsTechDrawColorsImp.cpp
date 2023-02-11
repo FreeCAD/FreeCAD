@@ -22,12 +22,11 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
 #include "DlgPrefsTechDrawColorsImp.h"
 #include "ui_DlgPrefsTechDrawColors.h"
-#include <Gui/PrefWidgets.h>
+
 
 using namespace TechDrawGui;
 
@@ -62,6 +61,10 @@ void DlgPrefsTechDrawColorsImp::saveSettings()
     ui->pcbMarkup->onSave();
     ui->pcbHighlight->onSave();
     ui->pcb_Grid->onSave();
+    ui->pcbPageColor->onSave();
+    ui->pcbLightOnDark->onSave();
+    ui->pcbMonochrome->onSave();
+    ui->pcbLightTextColor->onSave();
 }
 
 void DlgPrefsTechDrawColorsImp::loadSettings()
@@ -83,6 +86,10 @@ void DlgPrefsTechDrawColorsImp::loadSettings()
     ui->pcbMarkup->onRestore();
     ui->pcbHighlight->onRestore();
     ui->pcb_Grid->onRestore();
+    ui->pcbPageColor->onRestore();
+    ui->pcbLightOnDark->onRestore();
+    ui->pcbMonochrome->onRestore();
+    ui->pcbLightTextColor->onRestore();
 }
 
 /**

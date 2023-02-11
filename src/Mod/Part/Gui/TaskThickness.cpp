@@ -20,34 +20,27 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
-
 #ifndef _PreComp_
 # include <QMessageBox>
-# include <QTextStream>
 #endif
 
-#include "ui_TaskOffset.h"
-#include "TaskThickness.h"
-
+#include <App/Application.h>
+#include <App/Document.h>
+#include <App/DocumentObject.h>
 #include <Gui/Application.h>
 #include <Gui/BitmapFactory.h>
+#include <Gui/Command.h>
 #include <Gui/CommandT.h>
 #include <Gui/Document.h>
 #include <Gui/Selection.h>
 #include <Gui/SelectionFilter.h>
 #include <Gui/SelectionObject.h>
 #include <Gui/ViewProvider.h>
-
-#include <Base/Console.h>
-#include <Base/Interpreter.h>
-#include <Base/Tools.h>
-#include <App/Application.h>
-#include <App/Document.h>
-#include <App/DocumentObject.h>
-#include <Gui/Command.h>
 #include <Mod/Part/App/PartFeatures.h>
+
+#include "TaskThickness.h"
+#include "ui_TaskOffset.h"
 
 
 using namespace PartGui;
@@ -230,9 +223,9 @@ bool ThicknessWidget::accept()
         Gui::cmdAppObjectArgs(d->thickness, "Value = %f", d->ui.spinOffset->value().getValue());
         Gui::cmdAppObjectArgs(d->thickness, "Mode = %i", d->ui.modeType->currentIndex());
         Gui::cmdAppObjectArgs(d->thickness, "Join = %i", d->ui.joinType->currentIndex());
-        Gui::cmdAppObjectArgs(d->thickness, "Intersection = %s", 
+        Gui::cmdAppObjectArgs(d->thickness, "Intersection = %s",
             d->ui.intersection->isChecked() ? "True" : "False");
-        Gui::cmdAppObjectArgs(d->thickness, "SelfIntersection = %s", 
+        Gui::cmdAppObjectArgs(d->thickness, "SelfIntersection = %s",
             d->ui.selfIntersection->isChecked() ? "True" : "False");
 
         Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.recompute()");

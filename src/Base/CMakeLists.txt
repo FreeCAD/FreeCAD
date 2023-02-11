@@ -56,17 +56,11 @@ else(MSVC)
     )
 endif(MSVC)
 
-if (BUILD_QT5)
-    include_directories(
-        ${Qt5Core_INCLUDE_DIRS}
-    )
-    list(APPEND FreeCADBase_LIBS ${Qt5Core_LIBRARIES})
-else()
-    include_directories(
-        ${QT_QTCORE_INCLUDE_DIR}
-    )
-    list(APPEND FreeCADBase_LIBS ${QT_QTCORE_LIBRARY})
-endif()
+include_directories(
+    ${QtCore_INCLUDE_DIRS}
+)
+list(APPEND FreeCADBase_LIBS ${QtCore_LIBRARIES})
+
 
 if (BUILD_DYNAMIC_LINK_PYTHON)
     list(APPEND FreeCADBase_LIBS ${PYTHON_LIBRARIES})
@@ -108,16 +102,10 @@ endif(SWIG_FOUND)
 if (EXISTS ${CMAKE_SOURCE_DIR}/src/zipios++ AND NOT FREECAD_USE_EXTERNAL_ZIPIOS)
 SET(zipios_SRCS
     ../zipios++/backbuffer.h
-    ../zipios++/basicentry.cpp
-    ../zipios++/basicentry.h
     ../zipios++/collcoll.cpp
     ../zipios++/collcoll.h
     ../zipios++/deflateoutputstreambuf.cpp
     ../zipios++/deflateoutputstreambuf.h
-    ../zipios++/dircoll.cpp
-    ../zipios++/dircoll.h
-    ../zipios++/directory.cpp
-    ../zipios++/directory.h
     ../zipios++/fcoll.cpp
     ../zipios++/fcoll.h
     ../zipios++/fcollexceptions.cpp
@@ -206,7 +194,6 @@ SET(FreeCADBase_UNITAPI_SRCS
     Unit.h
     Unit.cpp
     UnitPyImp.cpp
-    
 )
 SOURCE_GROUP("Units" FILES ${FreeCADBase_UNITAPI_SRCS})
 
@@ -253,6 +240,7 @@ SET(FreeCADBase_CPP_SRCS
     Placement.cpp
     PlacementPyImp.cpp
     PrecisionPyImp.cpp
+    ProgressIndicatorPy.cpp
     PyExport.cpp
     PyObjectBase.cpp
     QtTools.cpp
@@ -319,6 +307,7 @@ SET(FreeCADBase_HPP_SRCS
     Persistence.h
     Placement.h
     Precision.h
+    ProgressIndicatorPy.h
     PyExport.h
     PyObjectBase.h
     QtTools.h

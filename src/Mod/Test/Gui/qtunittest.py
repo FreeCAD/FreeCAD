@@ -33,6 +33,7 @@ import traceback
 
 import unittest
 import sys
+import time
 import traceback
 import string
 
@@ -54,7 +55,6 @@ class BaseGUITestRunner:
         self.currentResult = None
         self.running = 0
         self.__rollbackImporter = None
-        #apply(self.initGUI, args, kwargs)
         self.initGUI(args, kwargs)
 
     def getSelectedTestName(self):
@@ -89,9 +89,42 @@ class BaseGUITestRunner:
         self.totalTests = test.countTestCases()
         self.running = 1
         self.notifyRunning()
-        test.run(self.currentResult)
+        startTime = time.time()
+        result = test.run(self.currentResult)
+        stopTime = time.time()
+        timeTaken = stopTime - startTime
         self.running = 0
         self.notifyStopped()
+
+        expectedFails = unexpectedSuccesses = skipped = 0
+        try:
+            results = map(len, (result.expectedFailures,
+                                result.unexpectedSuccesses,
+                                result.skipped))
+        except AttributeError:
+            pass
+        else:
+            expectedFails, unexpectedSuccesses, skipped = results
+
+        self.stream.write("\n{}\nRan {} tests in {:.3}s\n\n".format("-" * 70, result.testsRun, timeTaken))
+        infos = []
+        if not result.wasSuccessful():
+            failed, errored = len(result.failures), len(result.errors)
+            if failed:
+                infos.append("failures=%d" % failed)
+            if errored:
+                infos.append("errors=%d" % errored)
+            if skipped:
+                infos.append("skipped=%d" % skipped)
+            if expectedFails:
+                infos.append("expected failures=%d" % expectedFails)
+            if unexpectedSuccesses:
+                infos.append("unexpected successes=%d" % unexpectedSuccesses)
+
+            self.stream.write("FAILED (%s)\n" % (", ".join(infos),))
+        else:
+            self.stream.write("OK\n")
+
 
     def stopClicked(self):
         "To be called in response to user stopping the running of a test"
@@ -187,6 +220,7 @@ class QtTestRunner(BaseGUITestRunner):
         self.failCountVar = 0
         self.errorCountVar = 0
         self.remainingCountVar = 0
+        self.stream = sys.stdout
 
     def getSelectedTestName(self):
         return self.gui.getUnitTest()
@@ -224,6 +258,7 @@ class QtTestRunner(BaseGUITestRunner):
         tracebackText = ''.join(tracebackLines)
         self.gui.insertError("Failure: %s" % test,tracebackText)
         self.errorInfo.append((test,err))
+        self.stream.write("FAILED: {}\n{}\n".format(test, tracebackText))
 
     def notifyTestErrored(self, test, err):
         self.errorCountVar=self.errorCountVar+1
@@ -234,6 +269,7 @@ class QtTestRunner(BaseGUITestRunner):
         tracebackText = ''.join(tracebackLines)
         self.gui.insertError("Error: %s" % test,tracebackText)
         self.errorInfo.append((test,err))
+        self.stream.write("{}\nERROR: {}\n{}\n{}\n".format("=" * 70, test, "-" * 70, tracebackText))
 
     def notifyTestFinished(self, test):
         self.remainingCountVar=self.remainingCountVar-1

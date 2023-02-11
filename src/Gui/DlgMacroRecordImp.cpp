@@ -103,10 +103,8 @@ void DlgMacroRecordImp::on_buttonStart_clicked()
     if (fi.isFile() && fi.exists()) {
         if (QMessageBox::question(this, tr("Existing macro"),
                 tr("The macro '%1' already exists. Do you want to overwrite?").arg(fn),
-                QMessageBox::Yes,
-                QMessageBox::No|
-                QMessageBox::Default|
-                QMessageBox::Escape) == QMessageBox::No)
+                QMessageBox::Yes | QMessageBox::No,
+                QMessageBox::No) == QMessageBox::No)
         return;
     }
 

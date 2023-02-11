@@ -44,6 +44,7 @@
 #include <Base/Exception.h>
 #include <Base/Interpreter.h>
 #include <App/ExpressionParser.h>
+#include <App/Material.h>
 
 #include "Widgets.h"
 #include "Action.h"
@@ -66,8 +67,8 @@ using namespace Base;
 CommandIconView::CommandIconView ( QWidget * parent )
   : QListWidget(parent)
 {
-    connect(this, SIGNAL (currentItemChanged(QListWidgetItem *, QListWidgetItem *)),
-            this, SLOT (onSelectionChanged(QListWidgetItem *, QListWidgetItem *)) );
+    connect(this, &QListWidget::currentItemChanged,
+            this, &CommandIconView::onSelectionChanged);
 }
 
 /**
@@ -95,10 +96,10 @@ void CommandIconView::startDrag (Qt::DropActions supportedActions)
         dataStream << (*it)->text();
     }
 
-    QMimeData *mimeData = new QMimeData;
+    auto mimeData = new QMimeData;
     mimeData->setData(QString::fromLatin1("text/x-action-items"), itemData);
 
-    QDrag *drag = new QDrag(this);
+    auto drag = new QDrag(this);
     drag->setMimeData(mimeData);
     drag->setHotSpot(QPoint(pixmap.width()/2, pixmap.height()/2));
     drag->setPixmap(pixmap);
@@ -192,22 +193,16 @@ ActionSelector::ActionSelector(QWidget* parent)
     upButton->setText(QString());
     downButton->setText(QString());
 
-    connect(addButton, SIGNAL(clicked()),
-            this, SLOT(on_addButton_clicked()) );
-    connect(removeButton, SIGNAL(clicked()),
-            this, SLOT(on_removeButton_clicked()) );
-    connect(upButton, SIGNAL(clicked()),
-            this, SLOT(on_upButton_clicked()) );
-    connect(downButton, SIGNAL(clicked()),
-            this, SLOT(on_downButton_clicked()) );
-    connect(availableWidget, SIGNAL(itemDoubleClicked(QTreeWidgetItem*,int)),
-            this, SLOT(onItemDoubleClicked(QTreeWidgetItem*,int)) );
-    connect(selectedWidget, SIGNAL(itemDoubleClicked(QTreeWidgetItem*,int)),
-            this, SLOT(onItemDoubleClicked(QTreeWidgetItem*,int)) );
-    connect(availableWidget, SIGNAL(currentItemChanged(QTreeWidgetItem*,QTreeWidgetItem *)),
-            this, SLOT(onCurrentItemChanged(QTreeWidgetItem *,QTreeWidgetItem *)) );
-    connect(selectedWidget, SIGNAL(currentItemChanged(QTreeWidgetItem*,QTreeWidgetItem *)),
-            this, SLOT(onCurrentItemChanged(QTreeWidgetItem *,QTreeWidgetItem *)) );
+    connect(addButton, &QPushButton::clicked, this, &ActionSelector::onAddButtonClicked);
+    connect(removeButton, &QPushButton::clicked, this, &ActionSelector::onRemoveButtonClicked);
+    connect(upButton, &QPushButton::clicked, this, &ActionSelector::onUpButtonClicked);
+    connect(downButton, &QPushButton::clicked, this, &ActionSelector::onDownButtonClicked);
+
+    connect(availableWidget, &QTreeWidget::itemDoubleClicked, this, &ActionSelector::onItemDoubleClicked);
+    connect(availableWidget, &QTreeWidget::currentItemChanged, this, &ActionSelector::onCurrentItemChanged);
+    connect(selectedWidget, &QTreeWidget::itemDoubleClicked, this, &ActionSelector::onItemDoubleClicked);
+    connect(selectedWidget, &QTreeWidget::currentItemChanged, this, &ActionSelector::onCurrentItemChanged);
+
     retranslateUi();
     setButtonsEnabled();
 }
@@ -236,7 +231,6 @@ QString ActionSelector::availableLabel() const
     return labelAvailable->text();
 }
 
-
 void ActionSelector::retranslateUi()
 {
     labelAvailable->setText(QApplication::translate("Gui::ActionSelector", "Available:"));
@@ -261,16 +255,16 @@ void ActionSelector::keyPressEvent(QKeyEvent* event)
         switch (event->key())
         {
         case Qt::Key_Right:
-            on_addButton_clicked();
+            onAddButtonClicked();
             break;
         case Qt::Key_Left:
-            on_removeButton_clicked();
+            onRemoveButtonClicked();
             break;
         case Qt::Key_Up:
-            on_upButton_clicked();
+            onUpButtonClicked();
             break;
         case Qt::Key_Down:
-            on_downButton_clicked();
+            onDownButtonClicked();
             break;
         default:
             event->ignore();
@@ -313,7 +307,7 @@ void ActionSelector::onItemDoubleClicked(QTreeWidgetItem * item, int column)
     }
 }
 
-void ActionSelector::on_addButton_clicked()
+void ActionSelector::onAddButtonClicked()
 {
     QTreeWidgetItem* item = availableWidget->currentItem();
     if (item) {
@@ -325,7 +319,7 @@ void ActionSelector::on_addButton_clicked()
     }
 }
 
-void ActionSelector::on_removeButton_clicked()
+void ActionSelector::onRemoveButtonClicked()
 {
     QTreeWidgetItem* item = selectedWidget->currentItem();
     if (item) {
@@ -337,7 +331,7 @@ void ActionSelector::on_removeButton_clicked()
     }
 }
 
-void ActionSelector::on_upButton_clicked()
+void ActionSelector::onUpButtonClicked()
 {
     QTreeWidgetItem* item = selectedWidget->currentItem();
     if (item && item->isSelected()) {
@@ -350,7 +344,7 @@ void ActionSelector::on_upButton_clicked()
     }
 }
 
-void ActionSelector::on_downButton_clicked()
+void ActionSelector::onDownButtonClicked()
 {
     QTreeWidgetItem* item = selectedWidget->currentItem();
     if (item && item->isSelected()) {
@@ -389,6 +383,11 @@ bool AccelLineEdit::isNone() const
  */
 void AccelLineEdit::keyPressEvent (QKeyEvent * e)
 {
+    if (isReadOnly()) {
+        QLineEdit::keyPressEvent(e);
+        return;
+    }
+
     QString txtLine = text();
 
     int key = e->key();
@@ -420,18 +419,23 @@ void AccelLineEdit::keyPressEvent (QKeyEvent * e)
         break;
     }
 
-    // 4 keys are allowed for QShortcut
-    switch(keyPressedCount) {
-    case 4:
+    if (txtLine.isEmpty()) {
+        // Text maybe cleared by QLineEdit's built in clear button
         keyPressedCount = 0;
-        txtLine.clear();
-        break;
-    case 0:
-        txtLine.clear();
-        break;
-    default:
-        txtLine += QChar::fromLatin1(',');
-        break;
+    } else {
+        // 4 keys are allowed for QShortcut
+        switch (keyPressedCount) {
+        case 4:
+            keyPressedCount = 0;
+            txtLine.clear();
+            break;
+        case 0:
+            txtLine.clear();
+            break;
+        default:
+            txtLine += QString::fromLatin1(",");
+            break;
+        }
     }
 
     // Handles modifiers applying a mask.
@@ -482,7 +486,7 @@ void ModifierLineEdit::keyPressEvent (QKeyEvent * e)
     int key = e->key();
     Qt::KeyboardModifiers state = e->modifiers();
 
-    switch(key) {
+    switch (key) {
     case Qt::Key_Backspace:
     case Qt::Key_Delete:
         clear();
@@ -527,9 +531,8 @@ ClearLineEdit::ClearLineEdit (QWidget * parent)
 {
     clearAction = this->addAction(QIcon(QString::fromLatin1(":/icons/edit-cleartext.svg")),
                                         QLineEdit::TrailingPosition);
-    connect(clearAction, SIGNAL(triggered()), this, SLOT(clear()));
-    connect(this, SIGNAL(textChanged(const QString&)),
-            this, SLOT(updateClearButton(const QString&)));
+    connect(clearAction, &QAction::triggered, this, &ClearLineEdit::clear);
+    connect(this, &QLineEdit::textChanged, this, &ClearLineEdit::updateClearButton);
 }
 
 void ClearLineEdit::resizeEvent(QResizeEvent *e)
@@ -573,9 +576,9 @@ CheckListDialog::~CheckListDialog()
  */
 void CheckListDialog::setCheckableItems( const QStringList& items )
 {
-    for ( QStringList::ConstIterator it = items.begin(); it != items.end(); ++it ) {
-        QTreeWidgetItem* item = new QTreeWidgetItem(ui->treeWidget);
-        item->setText(0, *it);
+    for (const auto & it : items) {
+        auto item = new QTreeWidgetItem(ui->treeWidget);
+        item->setText(0, it);
         item->setCheckState(0, Qt::Unchecked);
     }
 }
@@ -586,10 +589,10 @@ void CheckListDialog::setCheckableItems( const QStringList& items )
  */
 void CheckListDialog::setCheckableItems( const QList<CheckListItem>& items )
 {
-    for ( QList<CheckListItem>::ConstIterator it = items.begin(); it != items.end(); ++it ) {
-        QTreeWidgetItem* item = new QTreeWidgetItem(ui->treeWidget);
-        item->setText(0, (*it).first);
-        item->setCheckState(0, ( (*it).second ? Qt::Checked : Qt::Unchecked));
+    for (const auto & it : items) {
+        auto item = new QTreeWidgetItem(ui->treeWidget);
+        item->setText(0, it.first);
+        item->setCheckState(0, ( it.second ? Qt::Checked : Qt::Unchecked));
     }
 }
 
@@ -650,7 +653,7 @@ ColorButton::ColorButton(QWidget* parent)
 {
     d = new ColorButtonP();
     d->col = palette().color(QPalette::Active,QPalette::Midlight);
-    connect(this, SIGNAL(clicked()), SLOT(onChooseColor()));
+    connect(this, &ColorButton::clicked, this, &ColorButton::onChooseColor);
 
     int e = style()->pixelMetric(QStyle::PM_ButtonIconSize);
     setIconSize(QSize(2*e, e));
@@ -680,6 +683,30 @@ void ColorButton::setColor(const QColor& c)
 QColor ColorButton::color() const
 {
     return d->col;
+}
+
+/**
+ * Sets the packed color \a c to the button.
+ */
+void ColorButton::setPackedColor(uint32_t c)
+{
+    App::Color color;
+    color.setPackedValue(c);
+    d->col.setRedF(color.r);
+    d->col.setGreenF(color.g);
+    d->col.setBlueF(color.b);
+    d->col.setAlphaF(color.a);
+    d->dirty = true;
+    update();
+}
+
+/**
+ * Returns the current packed color of the button.
+ */
+uint32_t ColorButton::packedColor() const
+{
+    App::Color color(d->col.redF(), d->col.greenF(), d->col.blueF(), d->col.alphaF());
+    return color.getPackedValue();
 }
 
 void ColorButton::setAllowChangeColor(bool ok)
@@ -767,29 +794,42 @@ void ColorButton::paintEvent (QPaintEvent * e)
     QPushButton::paintEvent(e);
 }
 
-/**
- * Opens a QColorDialog to set a new color.
- */
-void ColorButton::onChooseColor()
+void ColorButton::showModeless()
 {
-    if (!d->allowChange)
-        return;
-    if (d->modal) {
-        QColor currentColor = d->col;
-        QColorDialog cd(d->col, this);
+    if (d->cd.isNull()) {
+        d->old = d->col;
+
+        QColorDialog* dlg = new QColorDialog(d->col, this);
+        dlg->setAttribute(Qt::WA_DeleteOnClose);
         if (DialogOptions::dontUseNativeColorDialog())
-            cd.setOptions(QColorDialog::DontUseNativeDialog);
-        cd.setOption(QColorDialog::ColorDialogOption::ShowAlphaChannel, d->allowTransparency);
+            dlg->setOptions(QColorDialog::DontUseNativeDialog);
+        dlg->setOption(QColorDialog::ColorDialogOption::ShowAlphaChannel, d->allowTransparency);
+        connect(dlg, &QColorDialog::rejected, this, &ColorButton::onRejected);
+        connect(dlg, &QColorDialog::currentColorChanged, this, &ColorButton::onColorChosen);
+        d->cd = dlg;
+    }
+    d->cd->show();
+}
 
-        if (d->autoChange) {
-            connect(&cd, SIGNAL(currentColorChanged(const QColor &)),
-                    this, SLOT(onColorChosen(const QColor&)));
-        }
+void ColorButton::showModal()
+{
+    QColor currentColor = d->col;
+    QColorDialog* dlg = new QColorDialog(d->col, this);
+    dlg->setAttribute(Qt::WA_DeleteOnClose);
+    if (DialogOptions::dontUseNativeColorDialog())
+        dlg->setOptions(QColorDialog::DontUseNativeDialog);
+    dlg->setOption(QColorDialog::ColorDialogOption::ShowAlphaChannel, d->allowTransparency);
 
-        cd.setCurrentColor(currentColor);
-        cd.adjustSize();
-        if (cd.exec() == QDialog::Accepted) {
-            QColor c = cd.selectedColor();
+    if (d->autoChange) {
+        connect(dlg, &QColorDialog::currentColorChanged, this, &ColorButton::onColorChosen);
+    }
+
+    dlg->setCurrentColor(currentColor);
+    dlg->adjustSize();
+
+    connect(dlg, &QColorDialog::finished, this, [&](int result) {
+        if (result == QDialog::Accepted) {
+            QColor c = dlg->selectedColor();
             if (c.isValid()) {
                 setColor(c);
                 Q_EMIT changed();
@@ -799,21 +839,23 @@ void ColorButton::onChooseColor()
             setColor(currentColor);
             Q_EMIT changed();
         }
+    });
+
+    dlg->exec();
+}
+
+/**
+ * Opens a QColorDialog to set a new color.
+ */
+void ColorButton::onChooseColor()
+{
+    if (!d->allowChange)
+        return;
+    if (d->modal) {
+        showModal();
     }
     else {
-        if (d->cd.isNull()) {
-            d->old = d->col;
-            d->cd = new QColorDialog(d->col, this);
-            if (DialogOptions::dontUseNativeColorDialog())
-                d->cd->setOptions(QColorDialog::DontUseNativeDialog);
-            d->cd->setOption(QColorDialog::ColorDialogOption::ShowAlphaChannel, d->allowTransparency);
-            d->cd->setAttribute(Qt::WA_DeleteOnClose);
-            connect(d->cd, SIGNAL(rejected()),
-                    this, SLOT(onRejected()));
-            connect(d->cd, SIGNAL(currentColorChanged(const QColor &)),
-                    this, SLOT(onColorChosen(const QColor&)));
-        }
-        d->cd->show();
+        showModeless();
     }
 }
 
@@ -1037,8 +1079,8 @@ void StatefulLabel::setState(QString state)
 LabelButton::LabelButton (QWidget * parent)
   : QWidget(parent)
 {
-    QHBoxLayout *layout = new QHBoxLayout(this);
-    layout->setMargin(0);
+    auto layout = new QHBoxLayout(this);
+    layout->setContentsMargins(0, 0, 0, 0);
     layout->setSpacing(1);
 
     label = new QLabel(this);
@@ -1051,8 +1093,8 @@ LabelButton::LabelButton (QWidget * parent)
 #endif
     layout->addWidget(button);
 
-    connect(button, SIGNAL(clicked()), this, SLOT(browse()));
-    connect(button, SIGNAL(clicked()), this, SIGNAL(buttonClicked()));
+    connect(button, &QPushButton::clicked, this, &LabelButton::browse);
+    connect(button, &QPushButton::clicked, this, &LabelButton::buttonClicked);
 }
 
 LabelButton::~LabelButton()
@@ -1165,7 +1207,7 @@ bool ToolTip::eventFilter(QObject* o, QEvent*e)
     // after it gets visible. We just filter out all timer events to keep the
     // label visible.
     if (o->inherits("QLabel")) {
-        QLabel* label = qobject_cast<QLabel*>(o);
+        auto label = qobject_cast<QLabel*>(o);
         // Ignore the timer events to prevent from being closed
         if (label->windowFlags() & Qt::ToolTip) {
             if (e->type() == QEvent::Show) {
@@ -1192,9 +1234,9 @@ StatusWidget::StatusWidget(QWidget* parent)
     label = new QLabel(this);
     label->setAlignment(Qt::AlignCenter);
 
-    QGridLayout* gridLayout = new QGridLayout(this);
+    auto gridLayout = new QGridLayout(this);
     gridLayout->setSpacing(6);
-    gridLayout->setMargin(9);
+    gridLayout->setContentsMargins(9, 9, 9, 9);
     gridLayout->addWidget(label, 0, 0, 1, 1);
 }
 
@@ -1212,7 +1254,7 @@ void StatusWidget::showText(int ms)
     show();
     QTimer timer;
     QEventLoop loop;
-    QObject::connect(&timer, SIGNAL(timeout()), &loop, SLOT(quit()));
+    QObject::connect(&timer, &QTimer::timeout, &loop, &QEventLoop::quit);
     timer.start(ms);
     loop.exec(QEventLoop::ExcludeUserInputEvents);
     hide();
@@ -1237,7 +1279,7 @@ void StatusWidget::hideEvent(QHideEvent*)
 class LineNumberArea : public QWidget
 {
 public:
-    LineNumberArea(PropertyListEditor *editor) : QWidget(editor) {
+    explicit LineNumberArea(PropertyListEditor *editor) : QWidget(editor) {
         codeEditor = editor;
     }
 
@@ -1258,12 +1300,12 @@ PropertyListEditor::PropertyListEditor(QWidget *parent) : QPlainTextEdit(parent)
 {
     lineNumberArea = new LineNumberArea(this);
 
-    connect(this, SIGNAL(blockCountChanged(int)),
-            this, SLOT(updateLineNumberAreaWidth(int)));
-    connect(this, SIGNAL(updateRequest(QRect,int)),
-            this, SLOT(updateLineNumberArea(QRect,int)));
-    connect(this, SIGNAL(cursorPositionChanged()),
-            this, SLOT(highlightCurrentLine()));
+    connect(this, &QPlainTextEdit::blockCountChanged,
+            this, &PropertyListEditor::updateLineNumberAreaWidth);
+    connect(this, &QPlainTextEdit::updateRequest,
+            this, &PropertyListEditor::updateLineNumberArea);
+    connect(this, &QPlainTextEdit::cursorPositionChanged,
+            this, &PropertyListEditor::highlightCurrentLine);
 
     updateLineNumberAreaWidth(0);
     highlightCurrentLine();
@@ -1361,7 +1403,7 @@ public:
 
     void accept() override
     {
-        PropertyListEditor* edit = this->findChild<PropertyListEditor*>();
+        auto edit = this->findChild<PropertyListEditor*>();
         QStringList lines;
         if (edit) {
             QString inputText = edit->toPlainText();
@@ -1402,15 +1444,15 @@ LabelEditor::LabelEditor (QWidget * parent)
   : QWidget(parent)
 {
     type = String;
-    QHBoxLayout *layout = new QHBoxLayout(this);
-    layout->setMargin(0);
+    auto layout = new QHBoxLayout(this);
+    layout->setContentsMargins(0, 0, 0, 0);
     layout->setSpacing(2);
 
     lineEdit = new QLineEdit(this);
     layout->addWidget(lineEdit);
 
-    connect(lineEdit, SIGNAL(textChanged(const QString &)),
-            this, SLOT(validateText(const QString &)));
+    connect(lineEdit, &QLineEdit::textChanged,
+            this, &LabelEditor::validateText);
 
     button = new QPushButton(QLatin1String("..."), this);
 #if defined (Q_OS_MAC)
@@ -1418,7 +1460,7 @@ LabelEditor::LabelEditor (QWidget * parent)
 #endif
     layout->addWidget(button);
 
-    connect(button, SIGNAL(clicked()), this, SLOT(changeText()));
+    connect(button, &QPushButton::clicked, this, &LabelEditor::changeText);
 
     setFocusProxy(lineEdit);
 }
@@ -1448,24 +1490,28 @@ void LabelEditor::setText(const QString& s)
 
 void LabelEditor::changeText()
 {
-    PropertyListDialog dlg(static_cast<int>(type), this);
-    dlg.setWindowTitle(tr("List"));
-    QVBoxLayout* hboxLayout = new QVBoxLayout(&dlg);
-    QDialogButtonBox* buttonBox = new QDialogButtonBox(&dlg);
+    PropertyListDialog* dlg = new PropertyListDialog(static_cast<int>(type), this);
+    dlg->setAttribute(Qt::WA_DeleteOnClose);
+    dlg->setWindowTitle(tr("List"));
+
+    auto hboxLayout = new QVBoxLayout(dlg);
+    auto buttonBox = new QDialogButtonBox(dlg);
     buttonBox->setStandardButtons(QDialogButtonBox::Ok | QDialogButtonBox::Cancel);
 
-    PropertyListEditor *edit = new PropertyListEditor(&dlg);
+    auto edit = new PropertyListEditor(dlg);
     edit->setPlainText(this->plainText);
 
     hboxLayout->addWidget(edit);
     hboxLayout->addWidget(buttonBox);
-    connect(buttonBox, SIGNAL(accepted()), &dlg, SLOT(accept()));
-    connect(buttonBox, SIGNAL(rejected()), &dlg, SLOT(reject()));
-    if (dlg.exec() == QDialog::Accepted) {
+    connect(buttonBox, &QDialogButtonBox::accepted, dlg, &PropertyListDialog::accept);
+    connect(buttonBox, &QDialogButtonBox::rejected, dlg, &PropertyListDialog::reject);
+    connect(dlg, &PropertyListDialog::accepted, this, [&] {
         QString inputText = edit->toPlainText();
         QString text = QString::fromLatin1("[%1]").arg(inputText);
         lineEdit->setText(text);
-    }
+    });
+
+    dlg->exec();
 }
 
 /**
@@ -1510,7 +1556,7 @@ ExpLineEdit::ExpLineEdit(QWidget* parent, bool expressionOnly)
 {
     makeLabel(this);
 
-    QObject::connect(iconLabel, SIGNAL(clicked()), this, SLOT(openFormulaDialog()));
+    QObject::connect(iconLabel, &ExpressionLabel::clicked, this, &ExpLineEdit::openFormulaDialog);
     if (expressionOnly)
         QMetaObject::invokeMethod(this, "openFormulaDialog", Qt::QueuedConnection, QGenericReturnArgument());
 }
@@ -1625,9 +1671,9 @@ void ExpLineEdit::openFormulaDialog()
 {
     Q_ASSERT(isBound());
 
-    Gui::Dialog::DlgExpressionInput* box = new Gui::Dialog::DlgExpressionInput(
+    auto box = new Gui::Dialog::DlgExpressionInput(
             getPath(), getExpression(),Unit(), this);
-    connect(box, SIGNAL(finished(int)), this, SLOT(finishFormulaDialog()));
+    connect(box, &Dialog::DlgExpressionInput::finished, this, &ExpLineEdit::finishFormulaDialog);
     box->show();
 
     QPoint pos = mapToGlobal(QPoint(0,0));
@@ -1637,7 +1683,7 @@ void ExpLineEdit::openFormulaDialog()
 
 void ExpLineEdit::finishFormulaDialog()
 {
-    Gui::Dialog::DlgExpressionInput* box = qobject_cast<Gui::Dialog::DlgExpressionInput*>(sender());
+    auto box = qobject_cast<Gui::Dialog::DlgExpressionInput*>(sender());
     if (!box) {
         qWarning() << "Sender is not a Gui::Dialog::DlgExpressionInput";
         return;

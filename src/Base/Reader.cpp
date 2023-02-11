@@ -451,22 +451,14 @@ void Base::XMLReader::endCDATA ()
     ReadType = EndCDATA;
 }
 
-#if (XERCES_VERSION_MAJOR == 2)
-void Base::XMLReader::characters(const   XMLCh* const chars, const unsigned int length)
-#else
 void Base::XMLReader::characters(const   XMLCh* const chars, const XMLSize_t length)
-#endif
 {
     Characters = StrX(chars).c_str();
     ReadType = Chars;
     CharacterCount += length;
 }
 
-#if (XERCES_VERSION_MAJOR == 2)
-void Base::XMLReader::ignorableWhitespace( const   XMLCh* const /*chars*/, const unsigned int /*length*/)
-#else
 void Base::XMLReader::ignorableWhitespace( const   XMLCh* const /*chars*/, const XMLSize_t /*length*/)
-#endif
 {
     //fSpaceCount += length;
 }

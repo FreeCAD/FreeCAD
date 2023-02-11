@@ -203,7 +203,7 @@ static void _copyShape(const char *cmdName, bool resolve,bool needElement=false,
                 const char *element = nullptr;
                 auto sobj = obj->resolve(sub.c_str(),nullptr,nullptr,&element);
                 if(!sobj) continue;
-                if(!needElement && element) 
+                if(!needElement && element)
                     subMap.emplace(sub.substr(0,element-sub.c_str()),sobj);
                 else
                     subMap.emplace(sub,sobj);
@@ -221,7 +221,7 @@ static void _copyShape(const char *cmdName, bool resolve,bool needElement=false,
                         needElement ? "True" : "False",
                         refine ? "True" : "False",
                         needElement ? ".copy()" : "",
-                        v.second->getNameInDocument(), 
+                        v.second->getNameInDocument(),
                         Gui::Command::getObjectCmd(v.second).c_str());
             auto newObj = App::GetApplication().getActiveDocument()->getActiveObject();
             Gui::Command::copyVisual(newObj, "ShapeColor", v.second);

@@ -20,14 +20,12 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
-#ifndef _PreComp_
-#endif
-
 #include <Mod/Mesh/App/MeshFeature.h>
+
 #include "PropertyEditorMesh.h"
+
 
 using namespace MeshGui;
 using MeshCore::MeshKernel;

@@ -23,19 +23,14 @@
 #include "PreCompiled.h"
 
 #include <Base/VectorPy.h>
-
-#include <Mod/Part/App/Geometry.h>
 #include <Mod/Part/App/GeometryCurvePy.h>
 #include <Mod/Part/App/TopoShapePy.h>
-#include <CXX/Objects.hxx>
-
-#include "Sketch.h"
-#include "Constraint.h"
-#include "ConstraintPy.h"
 
 // inclusion of the generated files (generated out of SketchPy.xml)
 #include "SketchPy.h"
 #include "SketchPy.cpp"
+#include "ConstraintPy.h"
+
 
 using namespace Sketcher;
 using namespace Part;
@@ -160,7 +155,7 @@ PyObject* SketchPy::movePoint(PyObject *args)
         return nullptr;
     Base::Vector3d* toPoint = static_cast<Base::VectorPy*>(pcObj)->getVectorPtr();
 
-    return Py::new_reference_to(Py::Long(getSketchPtr()->movePoint(index1,(Sketcher::PointPos)index2,*toPoint,(relative>0))));
+    return Py::new_reference_to(Py::Long(getSketchPtr()->movePoint(index1,static_cast<Sketcher::PointPos>(index2),*toPoint,(relative>0))));
 }
 
 // +++ attributes implementer ++++++++++++++++++++++++++++++++++++++++++++++++

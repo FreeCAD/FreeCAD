@@ -103,14 +103,6 @@ if(BUILD_FEM_VTK)
     )
 endif(BUILD_FEM_VTK)
 
-
-if(BUILD_QT5)
-    qt5_wrap_ui(FemGui_UIC_HDRS ${FemGui_UIC_SRCS})
-else()
-    qt4_wrap_ui(FemGui_UIC_HDRS ${FemGui_UIC_SRCS})
-endif()
-
-
 SET(FemGui_DLG_SRCS
     ${FemGui_UIC_HDRS}
     DlgSettingsFemCcx.ui
@@ -191,12 +183,7 @@ SET(FemGui_DLG_SRCS
 )
 SOURCE_GROUP("Constraint-Dialogs" FILES ${FemGui_DLG_SRCS})
 
-
-if(BUILD_QT5)
-    qt5_add_resources(FemResource_SRCS Resources/Fem.qrc)
-else()
-    qt4_add_resources(FemResource_SRCS Resources/Fem.qrc)
-endif()
+qt_add_resources(FemResource_SRCS Resources/Fem.qrc)
 SOURCE_GROUP("Resources" FILES ${FemResource_SRCS})
 
 
@@ -388,6 +375,7 @@ SET(FemGuiPythonUI_SRCS
     Resources/ui/ConstraintCentrif.ui
     Resources/ui/ConstraintTie.ui
     Resources/ui/ConstraintSectionPrint.ui
+    Resources/ui/CurrentDensity.ui
     Resources/ui/ElectrostaticPotential.ui
     Resources/ui/ElementFluid1D.ui
     Resources/ui/ElementGeometry1D.ui
@@ -396,6 +384,7 @@ SET(FemGuiPythonUI_SRCS
     Resources/ui/FlowVelocity.ui
     Resources/ui/InitialFlowVelocity.ui
     Resources/ui/InitialPressure.ui
+    Resources/ui/Magnetization.ui
     Resources/ui/Material.ui
     Resources/ui/MaterialReinforcement.ui
     Resources/ui/MeshBoundaryLayer.ui

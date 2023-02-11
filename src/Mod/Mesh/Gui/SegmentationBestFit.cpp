@@ -20,20 +20,17 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
-
 #ifndef _PreComp_
 # include <sstream>
+
 # include <QDialog>
 # include <QDoubleSpinBox>
-# include <QVBoxLayout>
 # include <QMessageBox>
 # include <QPointer>
+# include <QVBoxLayout>
 #endif
 
-#include "SegmentationBestFit.h"
-#include "ui_SegmentationBestFit.h"
 #include <App/Application.h>
 #include <App/Document.h>
 #include <App/DocumentObjectGroup.h>
@@ -41,8 +38,11 @@
 #include <Gui/SelectionObject.h>
 #include <Mod/Mesh/App/Core/Approximation.h>
 #include <Mod/Mesh/App/Core/Segmentation.h>
-#include <Mod/Mesh/App/Mesh.h>
 #include <Mod/Mesh/App/MeshFeature.h>
+
+#include "SegmentationBestFit.h"
+#include "ui_SegmentationBestFit.h"
+
 
 using namespace MeshGui;
 
@@ -221,8 +221,8 @@ ParametersDialog::ParametersDialog(std::vector<float>& val, FitParameter* fitPar
         ++index;
     }
 
-    QObject::connect(buttonBox, SIGNAL(accepted()), this, SLOT(accept()));
-    QObject::connect(buttonBox, SIGNAL(rejected()), this, SLOT(reject()));
+    QObject::connect(buttonBox, &QDialogButtonBox::accepted, this, &ParametersDialog::accept);
+    QObject::connect(buttonBox, &QDialogButtonBox::rejected, this, &ParametersDialog::reject);
     QMetaObject::connectSlotsByName(this);
 
     Gui::SelectionObject obj(mesh);

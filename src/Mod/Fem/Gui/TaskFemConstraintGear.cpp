@@ -21,39 +21,24 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <TopoDS.hxx>
-# include <BRepAdaptor_Surface.hxx>
-# include <Geom_Plane.hxx>
-# include <gp_Pln.hxx>
-# include <gp_Ax1.hxx>
-# include <BRepAdaptor_Curve.hxx>
-# include <Geom_Line.hxx>
-# include <gp_Lin.hxx>
-
 # include <QMessageBox>
+# include <TopoDS.hxx>
 #endif
 
-#include "ui_TaskFemConstraintBearing.h"
-#include "TaskFemConstraintGear.h"
-#include <App/Application.h>
 #include <App/Document.h>
-#include <App/PropertyGeo.h>
-#include <Gui/Application.h>
-#include <Gui/Document.h>
-#include <Gui/BitmapFactory.h>
-#include <Gui/ViewProvider.h>
-#include <Gui/WaitCursor.h>
-#include <Gui/Selection.h>
 #include <Gui/Command.h>
+#include <Gui/Selection.h>
+#include <Gui/ViewProvider.h>
 #include <Mod/Fem/App/FemConstraintGear.h>
 #include <Mod/Fem/App/FemTools.h>
 #include <Mod/Part/App/PartFeature.h>
 
-#include <Base/Console.h>
+#include "TaskFemConstraintGear.h"
+#include "ui_TaskFemConstraintBearing.h"
+
 
 using namespace FemGui;
 using namespace Gui;
@@ -63,16 +48,16 @@ using namespace Gui;
 TaskFemConstraintGear::TaskFemConstraintGear(ViewProviderFemConstraint *ConstraintView,QWidget *parent, const char *pixmapname)
     : TaskFemConstraintBearing(ConstraintView, parent, pixmapname)
 {
-    connect(ui->spinDiameter, SIGNAL(valueChanged(double)),
-            this, SLOT(onDiameterChanged(double)));
-    connect(ui->spinForce, SIGNAL(valueChanged(double)),
-            this, SLOT(onForceChanged(double)));
-    connect(ui->spinForceAngle, SIGNAL(valueChanged(double)),
-            this, SLOT(onForceAngleChanged(double)));
-    connect(ui->buttonDirection, SIGNAL(pressed()),
-            this, SLOT(onButtonDirection()));
-    connect(ui->checkReversed, SIGNAL(toggled(bool)),
-            this, SLOT(onCheckReversed(bool)));
+    connect(ui->spinDiameter, qOverload<double>(&QDoubleSpinBox::valueChanged),
+            this, &TaskFemConstraintGear::onDiameterChanged);
+    connect(ui->spinForce, qOverload<double>(&QDoubleSpinBox::valueChanged),
+            this, &TaskFemConstraintGear::onForceChanged);
+    connect(ui->spinForceAngle, qOverload<double>(&QDoubleSpinBox::valueChanged),
+            this, &TaskFemConstraintGear::onForceAngleChanged);
+    connect(ui->buttonDirection, &QPushButton::pressed,
+            this, [=]{onButtonDirection(true);});
+    connect(ui->checkReversed, &QCheckBox::toggled,
+            this, &TaskFemConstraintGear::onCheckReversed);
 
     // Temporarily prevent unnecessary feature recomputes
     ui->spinDiameter->blockSignals(true);

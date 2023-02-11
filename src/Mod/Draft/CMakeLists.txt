@@ -12,8 +12,6 @@ SET(Draft_SRCS_base
     DraftGui.py
     DraftVecUtils.py
     DraftGeomUtils.py
-    DraftLayer.py
-    DraftFillet.py
     WorkingPlane.py
     TestDraft.py
     TestDraftGui.py

@@ -49,7 +49,7 @@ std::string CylinderPy::representation() const
 
 PyObject *CylinderPy::PyMake(struct _typeobject *, PyObject *, PyObject *)  // Python wrapper
 {
-    // create a new instance of CylinderPy and the Twin object 
+    // create a new instance of CylinderPy and the Twin object
     return new CylinderPy(new GeomCylinder);
 }
 
@@ -154,7 +154,7 @@ Py::Float CylinderPy::getRadius() const
 {
     Handle(Geom_CylindricalSurface) cyl = Handle(Geom_CylindricalSurface)::DownCast
         (getGeomCylinderPtr()->handle());
-    return Py::Float(cyl->Radius()); 
+    return Py::Float(cyl->Radius());
 }
 
 void CylinderPy::setRadius(Py::Float arg)
@@ -244,7 +244,7 @@ PyObject *CylinderPy::getCustomAttributes(const char* /*attr*/) const
 
 int CylinderPy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)
 {
-    return 0; 
+    return 0;
 }
 
 

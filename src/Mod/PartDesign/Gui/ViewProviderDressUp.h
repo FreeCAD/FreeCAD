@@ -49,8 +49,8 @@ public:
 
     /// Highlight the references that have been selected
     void highlightReferences(const bool on);
-    
-    /** 
+
+    /**
      * Returns the feature Name associated with the view provider.
      * Should be reimplemented in the successor.
      */

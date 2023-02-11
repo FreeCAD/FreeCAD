@@ -35,6 +35,14 @@
 			<tag>Tag C</tag>
 			<tag>Tag D</tag>
 		</workbench>
+		<workbench>
+			<classname>TestWorkbenchD</classname>
+			<depend>DependencyA</depend>
+			<depend type="internal">InternalWorkbench</depend>
+			<depend type="addon">AddonWorkbench</depend>
+			<depend type="python">PythonPackage</depend>
+			<depend type="automatic">DependencyB</depend>
+		</workbench>
 		<macro>
 			<name>Macro A</name>
 			<file>Nonexistent File.FCMacro</file>

@@ -24,6 +24,8 @@
 #ifndef _PreComp_
 # include <QApplication>
 # include <QMessageBox>
+# include <QRegularExpression>
+# include <QRegularExpressionMatch>
 # include <QWhatsThis>
 #endif
 
@@ -89,11 +91,11 @@ void StdCmdWorkbench::activated(int i)
     catch(const Base::PyException& e) {
         QString msg(QLatin1String(e.what()));
         // ignore '<type 'exceptions.*Error'>' prefixes
-        QRegExp rx;
+        QRegularExpression rx;
         rx.setPattern(QLatin1String("^\\s*<type 'exceptions.\\w*'>:\\s*"));
-        int pos = rx.indexIn(msg);
-        if (pos != -1)
-            msg = msg.mid(rx.matchedLength());
+        auto match = rx.match(msg);
+        if (match.hasMatch())
+            msg = msg.mid(match.capturedLength());
         QMessageBox::critical(getMainWindow(), QObject::tr("Cannot load workbench"), msg);
     }
     catch(...) {
@@ -145,7 +147,7 @@ StdCmdRecentFiles::StdCmdRecentFiles()
  */
 void StdCmdRecentFiles::activated(int iMsg)
 {
-    RecentFilesAction* act = qobject_cast<RecentFilesAction*>(_pcAction);
+    auto act = qobject_cast<RecentFilesAction*>(_pcAction);
     if (act) act->activateFile( iMsg );
 }
 
@@ -154,7 +156,7 @@ void StdCmdRecentFiles::activated(int iMsg)
  */
 Action * StdCmdRecentFiles::createAction()
 {
-    RecentFilesAction* pcAction = new RecentFilesAction(this, getMainWindow());
+    auto pcAction = new RecentFilesAction(this, getMainWindow());
     pcAction->setObjectName(QLatin1String("recentFiles"));
     pcAction->setDropDownMenu(true);
     applyCommandData(this->className(), pcAction);
@@ -185,7 +187,7 @@ StdCmdRecentMacros::StdCmdRecentMacros()
  */
 void StdCmdRecentMacros::activated(int iMsg)
 {
-    RecentMacrosAction* act = qobject_cast<RecentMacrosAction*>(_pcAction);
+    auto act = qobject_cast<RecentMacrosAction*>(_pcAction);
     if (act) act->activateFile( iMsg );
 }
 
@@ -194,7 +196,7 @@ void StdCmdRecentMacros::activated(int iMsg)
  */
 Action * StdCmdRecentMacros::createAction()
 {
-    RecentMacrosAction* pcAction = new RecentMacrosAction(this, getMainWindow());
+    auto pcAction = new RecentMacrosAction(this, getMainWindow());
     pcAction->setObjectName(QLatin1String("recentMacros"));
     pcAction->setDropDownMenu(true);
     applyCommandData(this->className(), pcAction);
@@ -828,7 +830,7 @@ StdCmdUnitsCalculator::StdCmdUnitsCalculator()
 void StdCmdUnitsCalculator::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    Gui::Dialog::DlgUnitsCalculator *dlg = new Gui::Dialog::DlgUnitsCalculator( getMainWindow() );
+    auto dlg = new Gui::Dialog::DlgUnitsCalculator( getMainWindow() );
     dlg->show();
 }
 
@@ -865,7 +867,7 @@ StdCmdUserEditMode::StdCmdUserEditMode()
 
 Gui::Action * StdCmdUserEditMode::createAction()
 {
-    Gui::ActionGroup* pcAction = new Gui::ActionGroup(this, Gui::getMainWindow());
+    auto pcAction = new Gui::ActionGroup(this, Gui::getMainWindow());
     pcAction->setDropDownMenu(true);
     pcAction->setIsMode(true);
     applyCommandData(this->className(), pcAction);
@@ -900,7 +902,7 @@ void StdCmdUserEditMode::languageChange()
 
     if (!_pcAction)
         return;
-    Gui::ActionGroup* pcAction = qobject_cast<Gui::ActionGroup*>(_pcAction);
+    auto pcAction = qobject_cast<Gui::ActionGroup*>(_pcAction);
     QList<QAction*> a = pcAction->actions();
 
     for (int i = 0 ; i < a.count() ; i++) {
@@ -914,7 +916,7 @@ void StdCmdUserEditMode::languageChange()
 
 void StdCmdUserEditMode::updateIcon(int mode)
 {
-    Gui::ActionGroup *actionGroup = dynamic_cast<Gui::ActionGroup *>(_pcAction);
+    auto actionGroup = dynamic_cast<Gui::ActionGroup *>(_pcAction);
     if (!actionGroup)
         return;
 

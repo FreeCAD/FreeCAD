@@ -476,11 +476,12 @@ Gui::MenuItem* Workbench::setupMenuBar() const
     sketch->setCommand("&Sketch");
 
     *sketch << "PartDesign_NewSketch"
-            << "Sketcher_LeaveSketch"
-            << "Sketcher_ViewSketch"
+            << "Sketcher_EditSketch"
             << "Sketcher_MapSketch"
             << "Sketcher_ReorientSketch"
-            << "Sketcher_ValidateSketch";
+            << "Sketcher_ValidateSketch"
+            << "Sketcher_MergeSketches"
+            << "Sketcher_MirrorSketch";
 
     Gui::MenuItem* part = new Gui::MenuItem;
     root->insertItem(item, part);
@@ -608,6 +609,7 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
           << "PartDesign_NewSketch"
           << "Sketcher_EditSketch"
           << "Sketcher_MapSketch"
+          << "Sketcher_ValidateSketch"
           << "Separator"
           << "PartDesign_Point"
           << "PartDesign_Line"

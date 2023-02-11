@@ -20,17 +20,15 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef SKETCHER_GEOMETRYFACADE_H
 #define SKETCHER_GEOMETRYFACADE_H
 
-#include <Base/BaseClass.h>
-
-#include <Base/Console.h> // Only for Debug - To be removed
 #include <boost/uuid/uuid_io.hpp>
 
-#include <Mod/Part/App/Geometry.h>
-#include <Mod/Sketcher/App/SketchGeometryExtension.h>
+#include <Base/BaseClass.h>
+
+#include "SketchGeometryExtension.h"
+
 
 namespace Sketcher
 {
@@ -123,6 +121,7 @@ public: // Utility methods
     static bool getConstruction(const Part::Geometry * geometry);
     static void setConstruction(Part::Geometry * geometry, bool construction);
     static bool isInternalType(const Part::Geometry * geometry, InternalType::InternalType type);
+    static bool isInternalAligned(const Part::Geometry* geometry);
     static bool getBlocked(const Part::Geometry * geometry);
 
 public:
@@ -167,6 +166,8 @@ public:
 
     bool isInternalAligned() const { return this->getInternalType() != InternalType::None; }
 
+    bool isInternalType(InternalType::InternalType type) const { return this->getInternalType() == type; }
+
     // Geometry Extension Information
     inline const std::string &getExtensionName () const {return SketchGeoExtension->getName();}
 
@@ -196,12 +197,12 @@ public:
     boost::uuids::uuid getTag() const {return getGeo()->getTag();}
 
     std::vector<std::weak_ptr<const Part::GeometryExtension>> getExtensions() const {return getGeo()->getExtensions();}
-    bool hasExtension(Base::Type type) const {return getGeo()->hasExtension(type);}
+    bool hasExtension(const Base::Type & type) const {return getGeo()->hasExtension(type);}
     bool hasExtension(const std::string & name) const {return getGeo()->hasExtension(name);}
-    std::weak_ptr<const Part::GeometryExtension> getExtension(Base::Type type) const {return getGeo()->getExtension(type);}
-    std::weak_ptr<const Part::GeometryExtension> getExtension(std::string name) const {return getGeo()->getExtension(name);}
+    std::weak_ptr<const Part::GeometryExtension> getExtension(const Base::Type & type) const {return getGeo()->getExtension(type);}
+    std::weak_ptr<const Part::GeometryExtension> getExtension(const std::string & name) const {return getGeo()->getExtension(name);}
     void setExtension(std::unique_ptr<Part::GeometryExtension> &&geo) {return getGeo()->setExtension(std::move(geo));}
-    void deleteExtension(Base::Type type) {return getGeo()->deleteExtension(type);}
+    void deleteExtension(const Base::Type & type) {return getGeo()->deleteExtension(type);}
     void deleteExtension(const std::string & name) {return getGeo()->deleteExtension(name);}
 
     void mirror(const Base::Vector3d & point) {return getGeo()->mirror(point);}
@@ -238,7 +239,7 @@ private:
 //
 // GeometryTypedFacade
 
-/** @brief  It provides all the funcionality of GeometryFacade (derives from it), but in addition
+/** @brief  It provides all the functionality of GeometryFacade (derives from it), but in addition
  * allows to indicate the type of a Part::Geometry derived class.
  *
  * @details
@@ -271,16 +272,20 @@ class SketcherExport GeometryTypedFacade : public GeometryFacade
 
 public: // Factory methods
     static std::unique_ptr<GeometryTypedFacade<GeometryT>> getTypedFacade(GeometryT * geometry, bool owner = false) {
-        if(geometry)
+        if(geometry) {
             return std::unique_ptr<GeometryTypedFacade<GeometryT>>(new GeometryTypedFacade(geometry, owner));
-        else
+        }
+        else {
             return std::unique_ptr<GeometryTypedFacade<GeometryT>>(nullptr);
+        }
     }
     static std::unique_ptr<const GeometryTypedFacade<GeometryT>> getTypedFacade(const GeometryT * geometry) {
-        if(geometry)
+        if(geometry) {
             return std::unique_ptr<const GeometryTypedFacade<GeometryT>>(new GeometryTypedFacade(geometry));
-        else
+        }
+        else {
             return std::unique_ptr<const GeometryTypedFacade<GeometryT>>(nullptr);
+        }
     }
 
     // This function takes direct ownership of the object it creates.

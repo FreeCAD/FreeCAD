@@ -20,15 +20,14 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
-
 #ifndef _PreComp_
-#include <TopExp.hxx>
-#include <TopExp_Explorer.hxx>
+# include <TopExp.hxx>
+# include <TopExp_Explorer.hxx>
+
+# include <boost/algorithm/string/predicate.hpp>
 #endif
 
-#include <boost/algorithm/string/predicate.hpp>
 #include "ReferenceHighlighter.h"
 
 

@@ -20,12 +20,10 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
-#ifndef _PreComp_
-#endif
 
 #include "MeshTexture.h"
+
 
 using namespace Mesh;
 

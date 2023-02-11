@@ -30,8 +30,8 @@
 #include <vtkAppendPolyData.h>
 #include <vtkExtractEdges.h>
 #include <vtkGeometryFilter.h>
-#include <vtkSmartPointer.h>
 #include <vtkOutlineCornerFilter.h>
+#include <vtkSmartPointer.h>
 #include <vtkVertexGlyphFilter.h>
 
 class SoIndexedPointSet;
@@ -103,7 +103,7 @@ public:
     // handling when object is deleted
     bool onDelete(const std::vector<std::string>&) override;
     bool canDelete(App::DocumentObject* obj) const override;
-    virtual void onSelectionChanged(const Gui::SelectionChanges &sel);
+    virtual void onSelectionChanged(const Gui::SelectionChanges& sel);
 
       /** @name Selection handling
       * This group of methods do the selection handling.
@@ -137,7 +137,7 @@ protected:
     SoNormalBinding*            m_normalBinding;
     SoNormal*                   m_normals;
     SoDrawStyle*                m_drawStyle;
-    SoSeparator*                m_seperator;
+    SoSeparator*                m_separator;
     Gui::SoFCColorBar*          m_colorBar;
     SoSeparator*                m_colorRoot;
     SoDrawStyle*                m_colorStyle;
@@ -156,6 +156,7 @@ private:
                         vtkDataArray *tcoords);
     void WriteColorData(bool ResetColorBarRange);
     void WriteTransparency();
+    void addAbsoluteField(vtkDataSet* dset, std::string FieldName);
 
     App::Enumeration m_coloringEnum, m_vectorEnum;
     bool m_blockPropertyChanges;

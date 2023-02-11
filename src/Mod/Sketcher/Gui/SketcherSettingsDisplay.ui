@@ -257,7 +257,7 @@ Supports all unit systems except 'US customary' and 'Building US/Euro'.</string>
          <string>Cursor position coordinates will be displayed beside cursor while editing sketch.</string>
         </property>
         <property name="text">
-         <string>Show coodinates beside cursor while editing</string>
+         <string>Show coordinates beside cursor while editing</string>
         </property>
         <property name="checked">
          <bool>true</bool>

@@ -20,20 +20,12 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
-#ifndef _PreComp_
-#endif
 
-#include <Base/Console.h>
-#include <Base/Exception.h>
-#include <Base/Sequencer.h>
 #include <Base/Converter.h>
 
 #include "Core/Algorithm.h"
 #include "Core/Evaluation.h"
-#include "Core/Iterator.h"
-#include "Core/Visitor.h"
 
 #include "FeatureMeshSegmentByMesh.h"
 
@@ -46,10 +38,10 @@ PROPERTY_SOURCE(Mesh::SegmentByMesh, Mesh::Feature)
 
 SegmentByMesh::SegmentByMesh()
 {
-    ADD_PROPERTY(Source  ,(nullptr));
-    ADD_PROPERTY(Tool    ,(nullptr));
-    ADD_PROPERTY(Base    ,(0.0,0.0,0.0));
-    ADD_PROPERTY(Normal  ,(0.0,0.0,1.0));
+    ADD_PROPERTY(Source, (nullptr));
+    ADD_PROPERTY(Tool, (nullptr));
+    ADD_PROPERTY(Base, (0.0, 0.0, 0.0));
+    ADD_PROPERTY(Normal, (0.0, 0.0, 1.0));
 }
 
 short SegmentByMesh::mustExecute() const
@@ -116,8 +108,8 @@ App::DocumentObjectExecReturn *SegmentByMesh::execute()
         cAlg.GetFacetsFromToolMesh(rToolMesh, Base::Vector3f(0.0, 1.0f, 0.0f), faces);
 
     // if the clipping plane was set then we want only the visible facets
-    if ( cNormal.Length() > 0.1f ) { // not a null vector 
-        // now we have too many facets since we have (invisible) facets near to the back clipping plane, 
+    if ( cNormal.Length() > 0.1f ) { // not a null vector
+        // now we have too many facets since we have (invisible) facets near to the back clipping plane,
         // so we need the nearest facet to the front clipping plane
         //
         float fDist = FLOAT_MAX;

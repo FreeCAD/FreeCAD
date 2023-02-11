@@ -11,12 +11,12 @@
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="35"/>
       <source>General OpenSCAD Settings</source>
-      <translation>Yleiset OpenSCAD asetukset</translation>
+      <translation>Yleiset OpenSCAD-asetukset</translation>
     </message>
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="43"/>
       <source>OpenSCAD executable</source>
-      <translation>OpenSCAD suoritettava tiedosto</translation>
+      <translation>OpenSCAD-suoritustiedosto</translation>
     </message>
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="56"/>
@@ -26,7 +26,7 @@
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="74"/>
       <source>OpenSCAD import</source>
-      <translation>OpenSCAD tuonti</translation>
+      <translation>OpenSCAD-tuonti</translation>
     </message>
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="82"/>
@@ -106,8 +106,13 @@
     </message>
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="266"/>
-      <source>maximum fragment size</source>
-      <translation>suurin palan koko</translation>
+      <source>Maximum fragment size</source>
+      <translation type="unfinished">Maximum fragment size</translation>
+    </message>
+    <message>
+      <location filename="../ui/openscadprefs-base.ui" line="385"/>
+      <source>Convexity</source>
+      <translation type="unfinished">Convexity</translation>
     </message>
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="286"/>
@@ -119,11 +124,6 @@
       <location filename="../ui/openscadprefs-base.ui" line="289"/>
       <source>angular (fa)</source>
       <translation>kulma (fa)</translation>
-    </message>
-    <message>
-      <location filename="../ui/openscadprefs-base.ui" line="299"/>
-      <source>°</source>
-      <translation>°</translation>
     </message>
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="328"/>
@@ -140,11 +140,6 @@
       <location filename="../ui/openscadprefs-base.ui" line="359"/>
       <source>mm</source>
       <translation>mm</translation>
-    </message>
-    <message>
-      <location filename="../ui/openscadprefs-base.ui" line="385"/>
-      <source>convexity</source>
-      <translation>kaarevuus</translation>
     </message>
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="422"/>
@@ -189,17 +184,17 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="101"/>
       <source>Unable to explode %s</source>
-      <translation>Ei onnistuta räjäyttämään auki %s</translation>
+      <translation type="unfinished">Unable to explode %s</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="148"/>
       <source>Convert Edges to Faces</source>
-      <translation>Muunna reunat tahkoiksi</translation>
+      <translation type="unfinished">Convert Edges to Faces</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="308"/>
       <source>Please select 3 objects first</source>
-      <translation>Valitse 3 objektia ensin</translation>
+      <translation type="unfinished">Please select 3 objects first</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="340"/>
@@ -235,94 +230,52 @@
       <location filename="../../OpenSCADCommands.py" line="345"/>
       <location filename="../../OpenSCADCommands.py" line="368"/>
       <source>as Mesh</source>
-      <translation>pintaverkkona</translation>
+      <translation type="unfinished">as Mesh</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="358"/>
       <location filename="../../OpenSCADCommands.py" line="369"/>
       <source>Add OpenSCAD Element</source>
-      <translation>Lisää OpenSCAD-elementti</translation>
+      <translation type="unfinished">Add OpenSCAD Element</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="443"/>
       <location filename="../../OpenSCADCommands.py" line="472"/>
       <source>Perform</source>
-      <translation>Suorita</translation>
+      <translation type="unfinished">Perform</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="469"/>
       <location filename="../../OpenSCADCommands.py" line="473"/>
       <source>Mesh Boolean</source>
-      <translation>verkkopinta Boolean</translation>
+      <translation type="unfinished">Mesh Boolean</translation>
     </message>
     <message>
-      <location filename="../../importCSG.py" line="549"/>
-      <location filename="../../importCSG.py" line="1385"/>
-      <source>Unsupported Function</source>
-      <translation>Toiminto jota ei tueta</translation>
+      <location filename="../../OpenSCADCommands.py" line="474"/>
+      <source>Minkowski sum</source>
+      <translation type="unfinished">Minkowski sum</translation>
     </message>
     <message>
-      <location filename="../../importCSG.py" line="549"/>
-      <location filename="../../importCSG.py" line="1385"/>
-      <source>Press OK</source>
-      <translation>Paina OK</translation>
-    </message>
-    <message>
-      <location filename="../../OpenSCADUtils.py" line="710"/>
+      <location filename="../../OpenSCADUtils.py" line="709"/>
       <source>OpenSCAD file contains both 2D and 3D shapes. That is not supported in this importer, all shapes must have the same dimensionality.</source>
       <translation type="unfinished">OpenSCAD file contains both 2D and 3D shapes. That is not supported in this importer, all shapes must have the same dimensionality.</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADUtils.py" line="722"/>
-      <source>Error all shapes must be either 2D or both must be 3D</source>
-      <translation>Virhe: kaikki muodot on oltava joko 2D tai molemmat oltava 3D</translation>
-    </message>
-  </context>
-  <context>
-    <name>OpenSCAD_AddOpenSCADElement</name>
-    <message>
-      <location filename="../../OpenSCADCommands.py" line="516"/>
-      <source>Add OpenSCAD Element...</source>
-      <translation>Lisää OpenSCAD-elementti...</translation>
+      <location filename="../../OpenSCADUtils.py" line="721"/>
+      <source>Error: either all shapes must be 2D or all shapes must be 3D</source>
+      <translation type="unfinished">Error: either all shapes must be 2D or all shapes must be 3D</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="520"/>
-      <source>Add an OpenSCAD element by entering OpenSCAD code and executing the OpenSCAD binary</source>
-      <translation>Lisää OpenSCAD-elementti syöttämällä OpenSCAD koodi ja suorittamalla OpenSCAD binääri</translation>
-    </message>
-  </context>
-  <context>
-    <name>OpenSCAD_ColorCodeShape</name>
-    <message>
-      <location filename="../../OpenSCADCommands.py" line="125"/>
-      <source>Color Shapes</source>
-      <translation>Väritä muodot</translation>
+      <location filename="../../importCSG.py" line="557"/>
+      <location filename="../../importCSG.py" line="1436"/>
+      <source>Unsupported Function</source>
+      <translation type="unfinished">Unsupported Function</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="128"/>
-      <source>Color Shapes by validity and type</source>
-      <translation>Väritä muotoja riippuen tyypistä ja käypyydestä</translation>
-    </message>
-  </context>
-  <context>
-    <name>OpenSCAD_Edgestofaces</name>
-    <message>
-      <location filename="../../OpenSCADCommands.py" line="145"/>
-      <source>Convert Edges To Faces</source>
-      <translation>Muunna reunat tahkoiksi</translation>
-    </message>
-  </context>
-  <context>
-    <name>OpenSCAD_ExpandPlacements</name>
-    <message>
-      <location filename="../../OpenSCADCommands.py" line="290"/>
-      <source>Expand Placements</source>
-      <translation>Laajenna sijoitteluja</translation>
-    </message>
-    <message>
-      <location filename="../../OpenSCADCommands.py" line="293"/>
-      <source>Expand all placements downwards the FeatureTree</source>
-      <translation>Laajenna sijoitteluja ominaisuuspuussa alaspäin</translation>
+      <location filename="../../importCSG.py" line="557"/>
+      <location filename="../../importCSG.py" line="1436"/>
+      <source>Press OK</source>
+      <translation>Paina OK</translation>
     </message>
   </context>
   <context>
@@ -330,77 +283,33 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="109"/>
       <source>Explode Group</source>
-      <translation>Räjäytä ryhmä</translation>
+      <translation type="unfinished">Explode Group</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="112"/>
       <source>Remove fusion, apply placement to children, and color randomly</source>
-      <translation>Poista liitos, kiinnitä sijoitus jälkeläisiin ja väriin satunnaisesti</translation>
+      <translation type="unfinished">Remove fusion, apply placement to children, and color randomly</translation>
     </message>
   </context>
   <context>
-    <name>OpenSCAD_Hull</name>
+    <name>OpenSCAD_ColorCodeShape</name>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="551"/>
-      <source>Hull</source>
-      <translation>Runko</translation>
+      <location filename="../../OpenSCADCommands.py" line="125"/>
+      <source>Color Shapes</source>
+      <translation type="unfinished">Color Shapes</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="554"/>
-      <source>Perform Hull</source>
-      <translation>Tee runko</translation>
-    </message>
-  </context>
-  <context>
-    <name>OpenSCAD_IncreaseToleranceFeature</name>
-    <message>
-      <location filename="../../OpenSCADCommands.py" line="273"/>
-      <source>Increase Tolerance Feature</source>
-      <translation>Lisää sallittu poikkeama -ominaisuutta</translation>
-    </message>
-    <message>
-      <location filename="../../OpenSCADCommands.py" line="276"/>
-      <source>Create Feature that allows to increase the tolerance</source>
-      <translation>Luo ominaisuus, jonka avulla voit lisätä sallittua poikkeamaa</translation>
+      <location filename="../../OpenSCADCommands.py" line="128"/>
+      <source>Color Shapes by validity and type</source>
+      <translation type="unfinished">Color Shapes by validity and type</translation>
     </message>
   </context>
   <context>
-    <name>OpenSCAD_MeshBoolean</name>
+    <name>OpenSCAD_Edgestofaces</name>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="531"/>
-      <source>Mesh Boolean...</source>
-      <translation>verkkopinta Boolean...</translation>
-    </message>
-    <message>
-      <location filename="../../OpenSCADCommands.py" line="535"/>
-      <source>Export objects as meshes and use OpenSCAD to perform a boolean operation</source>
-      <translation>Vie kohteet verkkopintoina ja käytä OpenSCAD: ia Boolean toiminnon suorittamiseen</translation>
-    </message>
-  </context>
-  <context>
-    <name>OpenSCAD_Minkowski</name>
-    <message>
-      <location filename="../../OpenSCADCommands.py" line="570"/>
-      <source>Minkowski</source>
-      <translation>Minkowski</translation>
-    </message>
-    <message>
-      <location filename="../../OpenSCADCommands.py" line="573"/>
-      <source>Perform Minkowski</source>
-      <translation>Suorita Minkowski</translation>
-    </message>
-  </context>
-  <context>
-    <name>OpenSCAD_MirrorMeshFeature</name>
-    <message>
-      <location filename="../../OpenSCADCommands.py" line="194"/>
-      <source>Mirror Mesh Feature...</source>
-      <translation>Peilaa verkkopinta omaisuus...</translation>
-    </message>
-    <message>
-      <location filename="../../OpenSCADCommands.py" line="197"/>
-      <source>Create Mirror Mesh Feature</source>
-      <translation>Luo peilauksen verkkopinta ominaisuus</translation>
+      <location filename="../../OpenSCADCommands.py" line="145"/>
+      <source>Convert Edges To Faces</source>
+      <translation type="unfinished">Convert Edges To Faces</translation>
     </message>
   </context>
   <context>
@@ -408,51 +317,25 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="164"/>
       <source>Refine Shape Feature</source>
-      <translation>Tarkenna muoto ominaisuutta</translation>
+      <translation type="unfinished">Refine Shape Feature</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="167"/>
       <source>Create Refine Shape Feature</source>
-      <translation>Luo tarkenna muoto ominaisuutta</translation>
+      <translation type="unfinished">Create Refine Shape Feature</translation>
     </message>
   </context>
   <context>
-    <name>OpenSCAD_RemoveSubtree</name>
+    <name>OpenSCAD_MirrorMeshFeature</name>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="323"/>
-      <source>Remove Objects and their Children</source>
-      <translation>Poista objektit ja niiden jälkeläiset</translation>
+      <location filename="../../OpenSCADCommands.py" line="194"/>
+      <source>Mirror Mesh Feature...</source>
+      <translation type="unfinished">Mirror Mesh Feature...</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="326"/>
-      <source>Removes the selected objects and all children that are not referenced from other objects</source>
-      <translation>Poistaa valitut objektit ja kaikki niiden jälkeläiset, joihin ei viitata muista objekteista</translation>
-    </message>
-  </context>
-  <context>
-    <name>OpenSCAD_ReplaceObject</name>
-    <message>
-      <location filename="../../OpenSCADCommands.py" line="311"/>
-      <source>Replace Object</source>
-      <translation>Korvaa objekti</translation>
-    </message>
-    <message>
-      <location filename="../../OpenSCADCommands.py" line="314"/>
-      <source>Replace an object in the Feature Tree. Please select old, new, and parent object</source>
-      <translation>Korvaa objekti ominaisuuspuussa. Valitse vanha, uusi ja isäntäobjekti</translation>
-    </message>
-  </context>
-  <context>
-    <name>OpenSCAD_ResizeMeshFeature</name>
-    <message>
-      <location filename="../../OpenSCADCommands.py" line="253"/>
-      <source>Resize Mesh Feature...</source>
-      <translation>Muuta Verkkopinnan koko...</translation>
-    </message>
-    <message>
-      <location filename="../../OpenSCADCommands.py" line="257"/>
-      <source>Create Resize Mesh Feature</source>
-      <translation>Luo verkkopinnan kokomuutos ominaisuus</translation>
+      <location filename="../../OpenSCADCommands.py" line="197"/>
+      <source>Create Mirror Mesh Feature</source>
+      <translation type="unfinished">Create Mirror Mesh Feature</translation>
     </message>
   </context>
   <context>
@@ -460,28 +343,142 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="223"/>
       <source>Scale Mesh Feature...</source>
-      <translation>Skaalaa verkkopinta omaisuus...</translation>
+      <translation type="unfinished">Scale Mesh Feature...</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="227"/>
       <source>Create Scale Mesh Feature</source>
-      <translation>Luo verkkopinnan skaalaus ominaisuus</translation>
+      <translation type="unfinished">Create Scale Mesh Feature</translation>
     </message>
   </context>
   <context>
-    <name>Workbech</name>
+    <name>OpenSCAD_ResizeMeshFeature</name>
     <message>
-      <location filename="../../InitGui.py" line="156"/>
-      <source>OpenSCAD Part tools</source>
-      <translation>OpenSCAD osan työkalut</translation>
+      <location filename="../../OpenSCADCommands.py" line="253"/>
+      <source>Resize Mesh Feature...</source>
+      <translation type="unfinished">Resize Mesh Feature...</translation>
+    </message>
+    <message>
+      <location filename="../../OpenSCADCommands.py" line="257"/>
+      <source>Create Resize Mesh Feature</source>
+      <translation type="unfinished">Create Resize Mesh Feature</translation>
+    </message>
+  </context>
+  <context>
+    <name>OpenSCAD_IncreaseToleranceFeature</name>
+    <message>
+      <location filename="../../OpenSCADCommands.py" line="273"/>
+      <source>Increase Tolerance Feature</source>
+      <translation type="unfinished">Increase Tolerance Feature</translation>
+    </message>
+    <message>
+      <location filename="../../OpenSCADCommands.py" line="276"/>
+      <source>Create Feature that allows increasing the tolerance</source>
+      <translation type="unfinished">Create Feature that allows increasing the tolerance</translation>
+    </message>
+  </context>
+  <context>
+    <name>OpenSCAD_ExpandPlacements</name>
+    <message>
+      <location filename="../../OpenSCADCommands.py" line="290"/>
+      <source>Expand Placements</source>
+      <translation type="unfinished">Expand Placements</translation>
+    </message>
+    <message>
+      <location filename="../../OpenSCADCommands.py" line="293"/>
+      <source>Expand all placements downwards in the Tree view</source>
+      <translation type="unfinished">Expand all placements downwards in the Tree view</translation>
+    </message>
+  </context>
+  <context>
+    <name>OpenSCAD_ReplaceObject</name>
+    <message>
+      <location filename="../../OpenSCADCommands.py" line="311"/>
+      <source>Replace Object</source>
+      <translation type="unfinished">Replace Object</translation>
+    </message>
+    <message>
+      <location filename="../../OpenSCADCommands.py" line="314"/>
+      <source>Replace an object in the Tree view. Please select old, new, and parent object</source>
+      <translation type="unfinished">Replace an object in the Tree view. Please select old, new, and parent object</translation>
+    </message>
+  </context>
+  <context>
+    <name>OpenSCAD_RemoveSubtree</name>
+    <message>
+      <location filename="../../OpenSCADCommands.py" line="323"/>
+      <source>Remove Objects and their Children</source>
+      <translation type="unfinished">Remove Objects and their Children</translation>
+    </message>
+    <message>
+      <location filename="../../OpenSCADCommands.py" line="326"/>
+      <source>Removes the selected objects and all children that are not referenced from other objects</source>
+      <translation type="unfinished">Removes the selected objects and all children that are not referenced from other objects</translation>
+    </message>
+  </context>
+  <context>
+    <name>OpenSCAD_AddOpenSCADElement</name>
+    <message>
+      <location filename="../../OpenSCADCommands.py" line="517"/>
+      <source>Add OpenSCAD Element...</source>
+      <translation type="unfinished">Add OpenSCAD Element...</translation>
+    </message>
+    <message>
+      <location filename="../../OpenSCADCommands.py" line="521"/>
+      <source>Add an OpenSCAD element by entering OpenSCAD code and executing the OpenSCAD binary</source>
+      <translation type="unfinished">Add an OpenSCAD element by entering OpenSCAD code and executing the OpenSCAD binary</translation>
+    </message>
+  </context>
+  <context>
+    <name>OpenSCAD_MeshBoolean</name>
+    <message>
+      <location filename="../../OpenSCADCommands.py" line="532"/>
+      <source>Mesh Boolean...</source>
+      <translation type="unfinished">Mesh Boolean...</translation>
+    </message>
+    <message>
+      <location filename="../../OpenSCADCommands.py" line="536"/>
+      <source>Export objects as meshes and use OpenSCAD to perform a boolean operation</source>
+      <translation type="unfinished">Export objects as meshes and use OpenSCAD to perform a boolean operation</translation>
+    </message>
+  </context>
+  <context>
+    <name>OpenSCAD_Hull</name>
+    <message>
+      <location filename="../../OpenSCADCommands.py" line="552"/>
+      <source>Hull</source>
+      <translation>Runko</translation>
+    </message>
+    <message>
+      <location filename="../../OpenSCADCommands.py" line="555"/>
+      <source>Use OpenSCAD to create a hull</source>
+      <translation type="unfinished">Use OpenSCAD to create a hull</translation>
     </message>
   </context>
   <context>
     <name>Workbench</name>
     <message>
       <location filename="../../InitGui.py" line="152"/>
-      <source>OpenSCADTools</source>
-      <translation>OpenSCAD Työkalut</translation>
+      <source>OpenSCAD Tools</source>
+      <translation>OpenSCAD-työkalut</translation>
+    </message>
+    <message>
+      <location filename="../../InitGui.py" line="156"/>
+      <source>Frequently-used Part WB tools</source>
+      <translation type="unfinished">Frequently-used Part WB tools</translation>
+    </message>
+  </context>
+  <context>
+    <name>OpenSCAD_Minkowski</name>
+    <message>
+      <location filename="../../OpenSCADCommands.py" line="571"/>
+      <source>Minkowski sum</source>
+      <translation type="unfinished">Minkowski sum</translation>
+    </message>
+    <message>
+      <location filename="../../OpenSCADCommands.py" line="574"/>
+      <source>Use OpenSCAD to create a Minkowski sum</source>
+      <translation type="unfinished">Use OpenSCAD to create a Minkowski sum</translation>
     </message>
   </context>
 </TS>

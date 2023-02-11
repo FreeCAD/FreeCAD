@@ -37,11 +37,11 @@ namespace GCS
 ///////////////////////////////////////
 
 Constraint::Constraint()
-: origpvec(0), pvec(0), scale(1.), tag(0), pvecChangedFlag(true), driving(true)
+: origpvec(0), pvec(0), scale(1.), tag(0), pvecChangedFlag(true), driving(true), internalAlignment(Alignment::NoInternalAlignment)
 {
 }
 
-void Constraint::redirectParams(MAP_pD_pD redirectionmap)
+void Constraint::redirectParams(const MAP_pD_pD & redirectionmap)
 {
     int i=0;
     for (VEC_pD::iterator param=origpvec.begin();
@@ -126,6 +126,456 @@ double ConstraintEqual::grad(double *param)
     double deriv=0.;
     if (param == param1()) deriv += 1;
     if (param == param2()) deriv += -1;
+    return scale * deriv;
+}
+
+// Weighted Linear Combination
+
+ConstraintWeightedLinearCombination::ConstraintWeightedLinearCombination(size_t givennumpoles, const std::vector<double *>& givenpvec, const std::vector<double>& givenfactors)
+    : factors(givenfactors)
+    , numpoles(givennumpoles)
+{
+    pvec = givenpvec;
+    assert(pvec.size() == 2*numpoles + 1);
+    assert(factors.size() == numpoles);
+    origpvec = pvec;
+    rescale();
+}
+
+ConstraintType ConstraintWeightedLinearCombination::getTypeId()
+{
+    return WeightedLinearCombination;
+}
+
+void ConstraintWeightedLinearCombination::rescale(double coef)
+{
+    scale = coef * 1.;
+}
+
+double ConstraintWeightedLinearCombination::error()
+{
+    // Explanation of the math here:
+    // https://forum.freecadweb.org/viewtopic.php?f=9&t=71130&start=120#p635538
+
+    double sum = 0;
+    double wsum = 0;
+
+    for (size_t i = 0; i < numpoles; ++i) {
+        double wcontrib = *weightat(i) * factors[i];
+        wsum += wcontrib;
+        sum += *poleat(i) * wcontrib;
+    }
+
+    return scale * ((*thepoint()) * wsum - sum);
+}
+
+double ConstraintWeightedLinearCombination::grad(double *param)
+{
+    // Equations are from here:
+    // https://forum.freecadweb.org/viewtopic.php?f=9&t=71130&start=120#p635538
+
+    double deriv=0.;
+
+    if (param == thepoint()) {
+        // Eq. (11)
+        double wsum = 0;
+        for (size_t i = 0; i < numpoles; ++i) {
+            wsum += *weightat(i) * factors[i];
+        }
+        deriv = wsum;
+        return scale * deriv;
+    }
+
+    for (size_t i = 0; i < numpoles; ++i) {
+        if (param == poleat(i)) {
+            // Eq. (12)
+            deriv = -(*weightat(i) * factors[i]);
+            return scale * deriv;
+        }
+        if (param == weightat(i)) {
+            // Eq. (13)
+            deriv = (*thepoint() - *poleat(i)) * factors[i];
+            return scale * deriv;
+        }
+    }
+
+    return scale * deriv;
+}
+
+// Center of Gravity
+
+ConstraintCenterOfGravity::ConstraintCenterOfGravity(const std::vector<double *>& givenpvec, const std::vector<double>& givenweights)
+    : weights(givenweights)
+{
+    pvec = givenpvec;
+    numpoints = pvec.size() - 1;
+    assert(pvec.size() > 1);
+    assert(weights.size() == numpoints);
+    origpvec = pvec;
+    rescale();
+}
+
+ConstraintType ConstraintCenterOfGravity::getTypeId()
+{
+    return CenterOfGravity;
+}
+
+void ConstraintCenterOfGravity::rescale(double coef)
+{
+    scale = coef * 1.;
+}
+
+double ConstraintCenterOfGravity::error()
+{
+    double sum = 0;
+    for (size_t i = 0; i < numpoints; ++i)
+        sum += *pointat(i) * weights[i];
+
+    return scale * (*thecenter() - sum);
+}
+
+double ConstraintCenterOfGravity::grad(double *param)
+{
+    double deriv=0.;
+    if (param == thecenter())
+        deriv = 1;
+
+    for (size_t i = 0; i < numpoints; ++i)
+        if (param == pointat(i))
+            deriv = -weights[i];
+
+    return scale * deriv;
+}
+
+// Slope at B-spline knot
+
+ConstraintSlopeAtBSplineKnot::ConstraintSlopeAtBSplineKnot(BSpline& b, Line& l, size_t knotindex)
+{
+    // set up pvec: pole x-coords, pole y-coords, pole weights,
+    // line point 1 coords, line point 2 coords
+
+    numpoles = b.degree - b.mult[knotindex] + 1;
+    // slope at knot doesn't make sense if there's only C0 continuity
+    assert(numpoles >= 2);
+
+    pvec.reserve(3*numpoles + 4);
+
+    // `startpole` is the first pole affecting the knot with `knotindex`
+    size_t startpole = 0;
+    // See `System::addConstraintInternalAlignmentKnotPoint()` for some elaboration
+    for (size_t j = 1; j <= knotindex; ++j)
+        startpole += b.mult[j];
+    if (!b.periodic && startpole >= b.poles.size())
+        startpole = b.poles.size() - 1;
+
+    for (size_t i = 0; i < numpoles; ++i)
+        pvec.push_back(b.poles[(startpole + i) % b.poles.size()].x);
+    for (size_t i = 0; i < numpoles; ++i)
+        pvec.push_back(b.poles[(startpole + i) % b.poles.size()].y);
+    for (size_t i = 0; i < numpoles; ++i)
+        pvec.push_back(b.weights[(startpole + i) % b.weights.size()]);
+    pvec.push_back(l.p1.x);
+    pvec.push_back(l.p1.y);
+    pvec.push_back(l.p2.x);
+    pvec.push_back(l.p2.y);
+
+    // Set up factors to get slope at knot point
+    std::vector<double> tempfactors((numpoles + 1), 1.0 / (numpoles + 1));
+    factors.resize(numpoles);
+    slopefactors.resize(numpoles);
+    for (size_t i = 0; i < numpoles + 1; ++i) {
+        tempfactors[i] =
+            b.getLinCombFactor(*(b.knots[knotindex]), startpole + b.degree, startpole + i, b.degree - 1) /
+            (b.flattenedknots[startpole + b.degree + i] - b.flattenedknots[startpole + i]);
+    }
+    for (size_t i = 0; i < numpoles; ++i) {
+        factors[i] =
+            b.getLinCombFactor(*(b.knots[knotindex]), startpole + b.degree, startpole + i);
+        slopefactors[i] = b.degree * (tempfactors[i] - tempfactors[i+1]);
+    }
+
+    origpvec = pvec;
+    rescale();
+}
+
+ConstraintType ConstraintSlopeAtBSplineKnot::getTypeId()
+{
+    return SlopeAtBSplineKnot;
+}
+
+void ConstraintSlopeAtBSplineKnot::rescale(double coef)
+{
+    double slopex = 0., slopey = 0.;
+
+    for (size_t i = 0; i < numpoles; ++i) {
+        slopex += *polexat(i) * slopefactors[i];
+        slopey += *poleyat(i) * slopefactors[i];
+    }
+
+    scale = coef / sqrt((slopex*slopex + slopey*slopey));
+}
+
+double ConstraintSlopeAtBSplineKnot::error()
+{
+    double xsum = 0., xslopesum = 0.;
+    double ysum = 0., yslopesum = 0.;
+    double wsum = 0., wslopesum = 0.;
+
+    for (size_t i = 0; i < numpoles; ++i) {
+        double wcontrib = *weightat(i) * factors[i];
+        double wslopecontrib = *weightat(i) * slopefactors[i];
+        wsum += wcontrib;
+        xsum += *polexat(i) * wcontrib;
+        ysum += *poleyat(i) * wcontrib;
+        wslopesum += wslopecontrib;
+        xslopesum += *polexat(i) * wslopecontrib;
+        yslopesum += *poleyat(i) * wslopecontrib;
+    }
+
+    // This is actually wsum^2 * the respective slopes
+    // See Eq (19) from:
+    // https://forum.freecadweb.org/viewtopic.php?f=9&t=71130&start=120#p635538
+    double slopex = wsum*xslopesum - wslopesum*xsum;
+    double slopey = wsum*yslopesum - wslopesum*ysum;
+
+    // Normalizing it ensures that the cross product is not zero just because
+    // one vector is zero.
+    double linex = *linep2x() - *linep1x();
+    double liney = *linep2y() - *linep1y();
+    double dirx = linex / sqrt(linex*linex + liney*liney);
+    double diry = liney / sqrt(linex*linex + liney*liney);
+
+    // error is the cross product
+    return scale * (slopex*diry - slopey*dirx);
+}
+
+double ConstraintSlopeAtBSplineKnot::grad(double *param)
+{
+    // Equations are from here:
+    // https://forum.freecadweb.org/viewtopic.php?f=9&t=71130&start=120#p635538
+    double result = 0.0;
+    double linex = *linep2x() - *linep1x();
+    double liney = *linep2y() - *linep1y();
+    double dirx = linex / sqrt(linex*linex + liney*liney);
+    double diry = liney / sqrt(linex*linex + liney*liney);
+
+    for (size_t i = 0; i < numpoles; ++i) {
+        if (param == polexat(i)) {
+            // Eq. (21)
+            double wsum = 0., wslopesum = 0.;
+            for (size_t j = 0; j < numpoles; ++j) {
+                double wcontrib = *weightat(j) * factors[j];
+                double wslopecontrib = *weightat(j) * slopefactors[j];
+                wsum += wcontrib;
+                wslopesum += wslopecontrib;
+            }
+            result = (wsum*slopefactors[i] - wslopesum*factors[i]) * diry;
+            return scale * result;
+        }
+        if (param == poleyat(i)) {
+            // Eq. (21)
+            double wsum = 0., wslopesum = 0.;
+            for (size_t i = 0; i < numpoles; ++i) {
+                double wcontrib = *weightat(i) * factors[i];
+                double wslopecontrib = *weightat(i) * slopefactors[i];
+                wsum += wcontrib;
+                wslopesum += wslopecontrib;
+            }
+            result = - (wsum*slopefactors[i] - wslopesum*factors[i]) * dirx;
+            return scale * result;
+        }
+        if (param == weightat(i)) {
+            // Eq. (22)
+            double xsum = 0., xslopesum = 0.;
+            double ysum = 0., yslopesum = 0.;
+            for (size_t j = 0; j < numpoles; ++j) {
+                double wcontrib = *weightat(j) * factors[j];
+                double wslopecontrib = *weightat(j) * slopefactors[j];
+                xsum += wcontrib * (*polexat(j) - *polexat(i));
+                xslopesum += wslopecontrib * (*polexat(j) - *polexat(i));
+                ysum += wcontrib * (*poleyat(j) - *poleyat(i));
+                yslopesum += wslopecontrib * (*poleyat(j) - *poleyat(i));
+            }
+            result =
+                (factors[i]*xslopesum - slopefactors[i]*xsum) * diry -
+                (factors[i]*yslopesum - slopefactors[i]*ysum) * dirx;
+            return scale * result;
+        }
+    }
+
+    double slopex = 0., slopey = 0.;
+
+    auto getSlopes = [&]() {
+        double xsum = 0., xslopesum = 0.;
+        double ysum = 0., yslopesum = 0.;
+        double wsum = 0., wslopesum = 0.;
+
+        for (size_t i = 0; i < numpoles; ++i) {
+            double wcontrib = *weightat(i) * factors[i];
+            double wslopecontrib = *weightat(i) * slopefactors[i];
+            wsum += wcontrib;
+            xsum += *polexat(i) * wcontrib;
+            ysum += *poleyat(i) * wcontrib;
+            wslopesum += wslopecontrib;
+            xslopesum += *polexat(i) * wslopecontrib;
+            yslopesum += *poleyat(i) * wslopecontrib;
+        }
+
+        // This is actually wsum^2 * the respective slopes
+        slopex = wsum*xslopesum - wslopesum*xsum;
+        slopey = wsum*yslopesum - wslopesum*ysum;
+    };
+
+    if (param == linep1x()) {
+        getSlopes();
+        double dDirxDLinex = (liney*liney) / pow(linex*linex + liney*liney, 1.5);
+        double dDiryDLinex = -(linex*liney) / pow(linex*linex + liney*liney, 1.5);
+        // NOTE: d(linex)/d(x1) = -1
+        result = slopex*(-dDiryDLinex) - slopey*(-dDirxDLinex);
+        return scale * result;
+    }
+    if (param == linep2x()) {
+        getSlopes();
+        double dDirxDLinex = (liney*liney) / pow(linex*linex + liney*liney, 1.5);
+        double dDiryDLinex = -(linex*liney) / pow(linex*linex + liney*liney, 1.5);
+        // NOTE: d(linex)/d(x2) = 1
+        result = slopex*dDiryDLinex - slopey*dDirxDLinex;
+        return scale * result;
+    }
+    if (param == linep1y()) {
+        getSlopes();
+        double dDirxDLiney = -(linex*liney) / pow(linex*linex + liney*liney, 1.5);
+        double dDiryDLiney = (linex*linex) / pow(linex*linex + liney*liney, 1.5);
+        // NOTE: d(liney)/d(y1) = -1
+        result = slopex*(-dDiryDLiney) - slopey*(-dDirxDLiney);
+        return scale * result;
+    }
+    if (param == linep2y()) {
+        getSlopes();
+        double dDirxDLiney = -(linex*liney) / pow(linex*linex + liney*liney, 1.5);
+        double dDiryDLiney = (linex*linex) / pow(linex*linex + liney*liney, 1.5);
+        // NOTE: d(liney)/d(y2) = 1
+        result = slopex*dDiryDLiney - slopey*dDirxDLiney;
+        return scale * result;
+    }
+
+    return scale * result;
+}
+
+// Point On BSpline
+
+ConstraintPointOnBSpline::ConstraintPointOnBSpline(double* point, double* initparam, int coordidx, BSpline& b)
+    : bsp(b)
+{
+    // This is always going to be true
+    numpoints = bsp.degree + 1;
+
+    pvec.reserve(2 + 2*b.poles.size());
+    pvec.push_back(point);
+    pvec.push_back(initparam);
+
+    setStartPole(*initparam);
+
+    for (size_t i = 0; i < b.poles.size(); ++i) {
+        if (coordidx == 0)
+            pvec.push_back(b.poles[i].x);
+        else
+            pvec.push_back(b.poles[i].y);
+    }
+    for (size_t i = 0; i < b.weights.size(); ++i)
+        pvec.push_back(b.weights[i]);
+
+    if (bsp.flattenedknots.empty())
+        bsp.setupFlattenedKnots();
+
+    origpvec = pvec;
+    rescale();
+}
+
+ConstraintType ConstraintPointOnBSpline::getTypeId()
+{
+    return PointOnBSpline;
+}
+
+void ConstraintPointOnBSpline::setStartPole(double u)
+{
+    // The startpole logic is repeated in a lot of places,
+    // for example in GCS and slope at knot
+    // find relevant poles
+    startpole = 0;
+    for (size_t j = 1; j < bsp.mult.size() && *(bsp.knots[j]) <= u; ++j)
+        startpole += bsp.mult[j];
+    if (!bsp.periodic && startpole >= bsp.poles.size())
+        startpole = bsp.poles.size() - bsp.degree - 1;
+}
+
+void ConstraintPointOnBSpline::rescale(double coef)
+{
+    scale = coef * 1.0;
+}
+
+double ConstraintPointOnBSpline::error()
+{
+    if (*theparam() < bsp.flattenedknots[startpole + bsp.degree] ||
+        *theparam() > bsp.flattenedknots[startpole + bsp.degree + 1])
+        setStartPole(*theparam());
+
+    double sum = 0;
+    double wsum = 0;
+
+    // TODO: maybe make it global so it doesn't have to be created every time
+    VEC_D d(numpoints);
+    for (size_t i = 0; i < numpoints; ++i)
+        d[i] = *poleat(i) * *weightat(i);
+    sum = BSpline::splineValue(*theparam(), startpole + bsp.degree, bsp.degree, d, bsp.flattenedknots);
+    for (size_t i = 0; i < numpoints; ++i)
+        d[i] = *weightat(i);
+    wsum = BSpline::splineValue(*theparam(), startpole + bsp.degree, bsp.degree, d, bsp.flattenedknots);
+
+    // TODO: Change the poles as the point moves between pieces
+
+    return scale * (*thepoint() * wsum - sum);
+}
+
+double ConstraintPointOnBSpline::grad(double *gcsparam)
+{
+    double deriv=0.;
+    if (gcsparam == thepoint()) {
+        VEC_D d(numpoints);
+        for (size_t i = 0; i < numpoints; ++i)
+            d[i] = *weightat(i);
+        double wsum = BSpline::splineValue(*theparam(), startpole + bsp.degree, bsp.degree, d, bsp.flattenedknots);
+        deriv += wsum;
+    }
+
+    if (gcsparam == theparam()) {
+        VEC_D d(numpoints - 1);
+        for (size_t i = 1; i < numpoints; ++i) {
+            d[i-1] =
+                (*poleat(i) * *weightat(i) - *poleat(i-1) * *weightat(i-1)) /
+                (bsp.flattenedknots[startpole+i+bsp.degree] - bsp.flattenedknots[startpole+i]);
+        }
+        double slopevalue = BSpline::splineValue(*theparam(), startpole + bsp.degree, bsp.degree-1, d, bsp.flattenedknots);
+        for (size_t i = 1; i < numpoints; ++i) {
+            d[i-1] =
+                (*weightat(i) - *weightat(i-1)) /
+                (bsp.flattenedknots[startpole+i+bsp.degree] - bsp.flattenedknots[startpole+i]);
+        }
+        double wslopevalue = BSpline::splineValue(*theparam(), startpole + bsp.degree, bsp.degree-1, d, bsp.flattenedknots);
+        deriv += (*thepoint() * wslopevalue - slopevalue) * bsp.degree;
+    }
+
+    for (size_t i = 0; i < numpoints; ++i) {
+        if (gcsparam == poleat(i)) {
+            auto factorsI = bsp.getLinCombFactor(*theparam(), startpole + bsp.degree, startpole + i);
+            deriv += -(*weightat(i) * factorsI);
+        }
+        if (gcsparam == weightat(i)) {
+            auto factorsI = bsp.getLinCombFactor(*theparam(), startpole + bsp.degree, startpole + i);
+            deriv += (*thepoint() - *poleat(i)) * factorsI;
+        }
+    }
+
     return scale * deriv;
 }
 
@@ -1805,10 +2255,9 @@ void ConstraintPointOnParabola::errorgrad(double *err, double *grad, double *par
     proj = point_to_focus.scalarProd(xdir, &dproj);
 
     if (err)
-	*err = pf - 2*focal - proj;
+    *err = pf - 2*focal - proj;
     if (grad)
-	*grad = dpf - 2*dfocal - dproj;
-
+    *grad = dpf - 2*dfocal - dproj;
 }
 
 double ConstraintPointOnParabola::error()

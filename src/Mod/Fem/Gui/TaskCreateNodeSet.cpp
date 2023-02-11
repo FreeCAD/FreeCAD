@@ -20,39 +20,33 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <QString>
-# include <QSlider>
-
-# include <Standard_math.hxx>
-
-# include <Inventor/nodes/SoEventCallback.h>
-# include <Inventor/nodes/SoCamera.h>
 # include <Inventor/events/SoMouseButtonEvent.h>
+# include <Inventor/nodes/SoCamera.h>
+# include <Inventor/nodes/SoEventCallback.h>
 
 # include <SMESH_Mesh.hxx>
 # include <SMESHDS_Mesh.hxx>
-# include <SMDSAbs_ElementType.hxx>
+# include <Standard_math.hxx>
 #endif
 
-#include "ui_TaskCreateNodeSet.h"
-#include "TaskCreateNodeSet.h"
-#include <Gui/Application.h>
-#include <Gui/Document.h>
-#include <Gui/BitmapFactory.h>
-#include <Gui/ViewProvider.h>
-#include <Gui/WaitCursor.h>
 #include <Base/Console.h>
+#include <Gui/Application.h>
+#include <Gui/BitmapFactory.h>
+#include <Gui/Document.h>
+#include <Gui/Utilities.h>
 #include <Gui/View3DInventor.h>
 #include <Gui/View3DInventorViewer.h>
-#include <Gui/Utilities.h>
-
+#include <Gui/ViewProvider.h>
+#include <Gui/WaitCursor.h>
 #include <Mod/Fem/App/FemMeshObject.h>
 #include <Mod/Fem/App/FemSetNodesObject.h>
-#include "ViewProviderFemMesh.h"
+
+#include "TaskCreateNodeSet.h"
+#include "ui_TaskCreateNodeSet.h"
 #include "FemSelectionGate.h"
+#include "ViewProviderFemMesh.h"
 
 
 using namespace FemGui;
@@ -75,9 +69,9 @@ TaskCreateNodeSet::TaskCreateNodeSet(Fem::FemSetNodesObject* pcObject, QWidget* 
 
     this->groupLayout()->addWidget(proxy);
 
-    QObject::connect(ui->toolButton_Poly, SIGNAL(clicked()), this, SLOT(Poly()));
-    QObject::connect(ui->toolButton_Pick, SIGNAL(clicked()), this, SLOT(Pick()));
-    QObject::connect(ui->comboBox, SIGNAL(activated(int)), this, SLOT(SwitchMethod(int)));
+    QObject::connect(ui->toolButton_Poly, &QToolButton::clicked, this, &TaskCreateNodeSet::Poly);
+    QObject::connect(ui->toolButton_Pick, &QToolButton::clicked, this, &TaskCreateNodeSet::Pick);
+    QObject::connect(ui->comboBox, qOverload<int>(&QComboBox::activated), this, &TaskCreateNodeSet::SwitchMethod);
 
     // check if the Link to the FemMesh is defined
     assert(pcObject->FemMesh.getValue<Fem::FemMeshObject*>());
@@ -126,8 +120,6 @@ void TaskCreateNodeSet::SwitchMethod(int Value)
         ui->toolButton_Poly->setEnabled(true);
     }
 }
-
-
 
 void TaskCreateNodeSet::DefineNodesCallback(void* ud, SoEventCallback* n)
 {
@@ -189,9 +181,11 @@ void TaskCreateNodeSet::onSelectionChanged(const Gui::SelectionChanges& msg)
     if (msg.Type == Gui::SelectionChanges::AddSelection) {
         std::string subName(msg.pSubName);
         unsigned int i = 0;
-        for (; i < subName.size(); i++)
-            if (msg.pSubName[i] == 'F')
+        for (; i < subName.size(); i++) {
+            if (msg.pSubName[i] == 'F') {
                 break;
+            }
+        }
 
         int elem = atoi(subName.substr(4).c_str());
         int face = atoi(subName.substr(i + 1).c_str());
@@ -206,14 +200,14 @@ void TaskCreateNodeSet::onSelectionChanged(const Gui::SelectionChanges& msg)
             std::set<long> tmp = pcObject->FemMesh.getValue<Fem::FemMeshObject*>()->FemMesh.getValue().getSurfaceNodes(elem, face);
             tempSet.insert(tmp.begin(), tmp.end());
         }
-        else
+        else {
             tempSet = pcObject->FemMesh.getValue<Fem::FemMeshObject*>()->FemMesh.getValue().getSurfaceNodes(elem, face);
+        }
 
         selectionMode = none;
         Gui::Selection().rmvSelectionGate();
 
         MeshViewProvider->setHighlightNodes(tempSet);
-
     }
 }
 

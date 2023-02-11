@@ -92,15 +92,6 @@ public:
     bool eventFilter(QObject* obj, QEvent* ev) override;
 };
 
-class KeyboardFilter : public QObject
-{
-    Q_OBJECT
-
-public:
-    explicit KeyboardFilter(QObject* parent);
-    bool eventFilter(QObject* obj, QEvent* ev) override;
-};
-
 }
 
 #endif // GUI_APPLICATION_H

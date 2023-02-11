@@ -20,23 +20,17 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
-
 #ifndef _PreComp_
-
+# include <cassert>
 #endif  // #ifndef _PreComp_
 
-#include <cassert>
-
-#include <Base/Vector3D.h>
 #include <Base/Exception.h>
-
-#include <Mod/Sketcher/App/GeometryFacade.h>
-
-#include <Mod/Sketcher/App/Constraint.h>
+#include <Base/Vector3D.h>
 
 #include "GeoList.h"
+#include "GeometryFacade.h"
+
 
 using namespace Sketcher;
 

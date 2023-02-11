@@ -20,25 +20,18 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
 # include <QString>
-# include <QSlider>
 #endif
 
-
-#include "ui_TaskObjectName.h"
-#include "TaskObjectName.h"
-#include <Gui/Application.h>
-#include <Gui/Document.h>
 #include <App/DocumentObject.h>
 #include <Gui/BitmapFactory.h>
-#include <Gui/ViewProvider.h>
-#include <Gui/WaitCursor.h>
-#include <Base/Console.h>
-#include <Gui/Selection.h>
+#include <Gui/Document.h>
+
+#include "TaskObjectName.h"
+#include "ui_TaskObjectName.h"
 
 
 using namespace FemGui;
@@ -59,9 +52,10 @@ TaskObjectName::TaskObjectName(App::DocumentObject *pcObject,QWidget *parent)
 
     this->groupLayout()->addWidget(proxy);
 
-    QObject::connect(ui->lineEdit_ObjectName,SIGNAL(textChanged (const QString&)),this,SLOT(TextChanged(const QString&)));
+    QObject::connect(
+        ui->lineEdit_ObjectName, &QLineEdit::textChanged, this, &TaskObjectName::TextChanged);
 
-    if(strcmp(pcObject->Label.getValue(),"") != 0)
+    if (strcmp(pcObject->Label.getValue(),"") != 0)
         ui->lineEdit_ObjectName->setText(QString::fromUtf8(pcObject->Label.getValue()));
     else
         ui->lineEdit_ObjectName->setText(QString::fromLatin1(pcObject->getNameInDocument()));

@@ -98,8 +98,10 @@ DlgProjectInformationImp::DlgProjectInformationImp(App::Document* doc, QWidget* 
 #endif
     QString text = lines.join(QLatin1String("\n"));
     ui->textEditComment->setPlainText( text );
-    connect(ui->pushButtonOpenURL, SIGNAL(clicked()),this, SLOT(open_url()));
-    connect(ui->comboLicense, SIGNAL(currentIndexChanged(int)), this, SLOT(onLicenseTypeChanged(int)));
+    connect(ui->pushButtonOpenURL, &QPushButton::clicked,
+            this, &DlgProjectInformationImp::open_url);
+    connect(ui->comboLicense, qOverload<int>(&QComboBox::currentIndexChanged),
+            this, &DlgProjectInformationImp::onLicenseTypeChanged);
 }
 
 /**

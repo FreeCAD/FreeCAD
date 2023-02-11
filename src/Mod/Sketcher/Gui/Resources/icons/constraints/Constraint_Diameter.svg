@@ -1,35 +1,26 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!-- Created with Inkscape (http://www.inkscape.org/) -->
 
-<svg width="64px" height="64px" id="svg2816" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:cc="http://creativecommons.org/ns#" xmlns:dc="http://purl.org/dc/elements/1.1/">
-  <defs id="defs2818">
-    <linearGradient id="linearGradient3602">
-      <stop style="stop-color:#ff2600;stop-opacity:1" offset="0" id="stop3604" />
-      <stop style="stop-color:#ff5f00;stop-opacity:1" offset="1" id="stop3606" />
-    </linearGradient>
-    <linearGradient xlink:href="#linearGradient3602-7" id="linearGradient3608-5" x1="3.909091" y1="14.363636" x2="24.81818" y2="14.363636" gradientUnits="userSpaceOnUse" />
-    <linearGradient id="linearGradient3602-7">
-      <stop style="stop-color:#c51900;stop-opacity:1" offset="0" id="stop3604-1" />
-      <stop style="stop-color:#ff5f00;stop-opacity:1" offset="1" id="stop3606-3" />
-    </linearGradient>
-    <linearGradient xlink:href="#linearGradient3602-5" id="linearGradient3608-1" x1="3.909091" y1="14.363636" x2="24.81818" y2="14.363636" gradientUnits="userSpaceOnUse" />
-    <linearGradient id="linearGradient3602-5">
-      <stop style="stop-color:#c51900;stop-opacity:1" offset="0" id="stop3604-9" />
-      <stop style="stop-color:#ff5f00;stop-opacity:1" offset="1" id="stop3606-9" />
-    </linearGradient>
-    <linearGradient y2="14.363636" x2="24.81818" y1="14.363636" x1="3.909091" gradientUnits="userSpaceOnUse" id="linearGradient3686" xlink:href="#linearGradient3602-5" />
-    <linearGradient xlink:href="#linearGradient3602-58" id="linearGradient3608-8" x1="3.909091" y1="14.363636" x2="24.81818" y2="14.363636" gradientUnits="userSpaceOnUse" />
-    <linearGradient id="linearGradient3602-58">
-      <stop style="stop-color:#c51900;stop-opacity:1" offset="0" id="stop3604-2" />
-      <stop style="stop-color:#ff5f00;stop-opacity:1" offset="1" id="stop3606-2" />
-    </linearGradient>
-    <linearGradient y2="14.363636" x2="24.81818" y1="14.363636" x1="3.909091" gradientUnits="userSpaceOnUse" id="linearGradient3726" xlink:href="#linearGradient3602-58" />
-  </defs>
-  <metadata id="metadata2821">
+<svg
+   width="64px"
+   height="64px"
+   version="1.1"
+   id="svg275"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <defs
+     id="defs279" />
+  <metadata
+     id="metadata255">
     <rdf:RDF>
-      <cc:Work rdf:about="">
+      <cc:Work
+         rdf:about="">
         <dc:format>image/svg+xml</dc:format>
-        <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
         <dc:creator>
           <cc:Agent>
             <dc:title>[wmayer]</dc:title>
@@ -57,12 +48,56 @@
       </cc:Work>
     </rdf:RDF>
   </metadata>
-  <g id="layer1">
-    <path style="fill:none;stroke:#280000;stroke-width:8;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" d="M 9.1774902,55.778454 54.70652,9.4891308" id="path3135" />
-    <path style="fill:none;stroke:#280000;stroke-width:9.23076916;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:10.8" id="path3060" d="M 62,32 A 30,30 0 1 1 2,32 30,30 0 1 1 62,32 z" transform="matrix(0.86666667,0,0,0.86666667,4.266667,4.2666666)" />
-    <circle style="fill:none;stroke:#cc0000;stroke-width:4.61538458;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:10.8" id="path3060-3" transform="matrix(0.86666667,0,0,0.86666667,4.266667,4.2666666)" d="M 62,32 A 30,30 0 1 1 2,32 30,30 0 1 1 62,32 z" />
-    <path style="fill:none;stroke:#cc0000;stroke-width:4;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" d="M 9.0370074,55.71083 54.512184,9.48795" id="path3135-3" />
-    <path style="fill:none;stroke:#ef2929;stroke-width:2.22222209;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:10.8" id="path3060-3-7" d="M 62,32 A 30,30 0 1 1 2,32 30,30 0 1 1 62,32 z" transform="matrix(0.9,0,0,0.9,3.2,3.1999999)" />
-    <path style="fill:none;stroke:#ef2929;stroke-width:2;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" d="M 7.9368201,55.392887 54.550409,8.2380011" id="path3135-3-6" />
+  <g
+     fill="none"
+     stroke-linecap="round"
+     id="g273">
+    <path
+       d="m9.1775 55.778 45.529-46.289"
+       stroke="#280000"
+       stroke-width="8"
+       id="path257" />
+    <path
+       transform="matrix(.86667 0 0 .86667 4.2667 4.2667)"
+       d="m62 32a30 30 0 1 1-60 0 30 30 0 1 1 60 0z"
+       stroke="#280000"
+       stroke-dashoffset="10.8"
+       stroke-linejoin="round"
+       stroke-width="9.2308"
+       id="path259" />
+    <g
+       stroke="#c00"
+       id="g267">
+      <circle
+         transform="matrix(.86667 0 0 .86667 4.2667 4.2667)"
+         d="M 62,32 A 30,30 0 1 1 2,32 30,30 0 1 1 62,32 z"
+         stroke-dashoffset="10.8"
+         stroke-linejoin="round"
+         stroke-width="4.6154"
+         id="circle261" />
+      <path
+         d="m58 32c0 14.359-11.641 26-26 26s-26-11.641-26-26c0-14.359 11.641-26 26-26s26 11.641 26 26z"
+         stroke-dashoffset="10.8"
+         stroke-linejoin="round"
+         stroke-width="4"
+         id="path263" />
+      <path
+         d="m9.037 55.711 45.475-46.223"
+         stroke-width="4"
+         id="path265" />
+    </g>
+    <path
+       transform="matrix(.9 0 0 .9 3.2 3.2)"
+       d="m62 32a30 30 0 1 1-60 0 30 30 0 1 1 60 0z"
+       stroke="#ef2929"
+       stroke-dashoffset="10.8"
+       stroke-linejoin="round"
+       stroke-width="2.2222"
+       id="path269" />
+    <path
+       d="m7.9368 55.393 46.614-47.155"
+       stroke="#ef2929"
+       stroke-width="2"
+       id="path271" />
   </g>
 </svg>

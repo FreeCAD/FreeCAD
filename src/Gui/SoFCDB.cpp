@@ -272,11 +272,11 @@ SoNode* replaceSwitches(SoNodeList* children, SoGroup* parent)
         SoNode* node = (*children)[i];
         if (node->getTypeId().isDerivedFrom(SoGroup::getClassTypeId())) {
             if (node->getTypeId().isDerivedFrom(SoSwitch::getClassTypeId())) {
-                SoSwitch* group = static_cast<SoSwitch*>(node);
+                auto group = static_cast<SoSwitch*>(node);
                 int which = group->whichChild.getValue();
                 if (which == SO_SWITCH_NONE)
                     continue;
-                SoGroup* newParent = new SoGroup();
+                auto newParent = new SoGroup();
                 SoNodeList c;
                 if (which >= 0) {
                     c.append(group->getChild(which));
@@ -291,7 +291,7 @@ SoNode* replaceSwitches(SoNodeList* children, SoGroup* parent)
                 parent->addChild(newParent);
             }
             else {
-                SoGroup* newParent = static_cast<SoGroup*>(node->getTypeId().createInstance());
+                auto newParent = static_cast<SoGroup*>(node->getTypeId().createInstance());
                 replaceSwitches(node->getChildren(), newParent);
                 parent->addChild(newParent);
             }
@@ -428,7 +428,7 @@ bool Gui::SoFCDB::writeToX3D(SoNode* node, bool exportViewpoints, std::string& b
         SoPathList& paths = sa.getPaths();
         for (int i=0; i<paths.getLength(); i++) {
             SoPath* path = paths[i];
-            SoVRMLShape* shape = static_cast<SoVRMLShape*>(path->getTail());
+            auto shape = static_cast<SoVRMLShape*>(path->getTail());
             SoNode* geom = shape->geometry.getValue();
             if (geom && geom->getTypeId() == SoVRMLIndexedFaceSet::getClassTypeId()) {
                 SoNode* norm = static_cast<SoVRMLIndexedFaceSet*>(geom)->normal.getValue();
@@ -519,11 +519,11 @@ void Gui::SoFCDB::writeX3DFields(SoNode* node, std::map<SoNode*, std::string>& n
             SoField* field = fielddata->getField(node, i);
             if (!field->isDefault()) {
                 if (field->isOfType(SoSFNode::getClassTypeId())) {
-                    SoSFNode* sfNode = static_cast<SoSFNode*>(field);
+                    auto sfNode = static_cast<SoSFNode*>(field);
                     writeX3DChild(sfNode->getValue(), nodeMap, numDEF, spaces+2, out);
                 }
                 else if (field->isOfType(SoMFNode::getClassTypeId())) {
-                    SoMFNode* mfNode = static_cast<SoMFNode*>(field);
+                    auto mfNode = static_cast<SoMFNode*>(field);
                     for (int j=0; j<mfNode->getNum(); j++) {
                         writeX3DChild(mfNode->getNode(j), nodeMap, numDEF, spaces+2, out);
                     }

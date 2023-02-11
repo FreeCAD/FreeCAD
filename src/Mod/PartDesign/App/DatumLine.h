@@ -43,13 +43,13 @@ public:
     App::PropertyEnumeration ResizeMode;
     App::PropertyLength Length;
     void onChanged(const App::Property *prop) override;
-    
+
     const char* getViewProviderName() const override {
         return "PartDesignGui::ViewProviderDatumLine";
     }
 
     Base::Vector3d getDirection() const;
-    
+
 private:
     static const char* ResizeModeEnums[];
 };

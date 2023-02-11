@@ -55,17 +55,20 @@ TaskFemConstraintTemperature::TaskFemConstraintTemperature(ViewProviderFemConstr
 
     // create a context menu for the listview of the references
     createDeleteAction(ui->lw_references);
-    deleteAction->connect(deleteAction, SIGNAL(triggered()), this, SLOT(onReferenceDeleted()));
+    connect(deleteAction, &QAction::triggered,
+            this, &TaskFemConstraintTemperature::onReferenceDeleted);
 
-    connect(ui->lw_references, SIGNAL(currentItemChanged(QListWidgetItem*, QListWidgetItem*)),
-        this, SLOT(setSelection(QListWidgetItem*)));
-    connect(ui->lw_references, SIGNAL(itemClicked(QListWidgetItem*)),
-        this, SLOT(setSelection(QListWidgetItem*)));
-    connect(ui->rb_temperature, SIGNAL(clicked(bool)), this, SLOT(Temp()));
-    connect(ui->rb_cflux, SIGNAL(clicked(bool)), this, SLOT(Flux()));
+    connect(ui->lw_references, &QListWidget::currentItemChanged,
+            this, &TaskFemConstraintTemperature::setSelection);
+    connect(ui->lw_references, &QListWidget::itemClicked,
+            this, &TaskFemConstraintTemperature::setSelection);
+    connect(ui->rb_temperature, &QRadioButton::clicked,
+            this, &TaskFemConstraintTemperature::Temp);
+    connect(ui->rb_cflux, &QRadioButton::clicked,
+            this, &TaskFemConstraintTemperature::Flux);
 
-    connect(ui->if_temperature, SIGNAL(valueChanged(double)),
-            this, SLOT(onTempCfluxChanged(double)));
+    connect(ui->if_temperature, qOverload<double>(&InputField::valueChanged),
+            this, &TaskFemConstraintTemperature::onTempCfluxChanged);
 
     this->groupLayout()->addWidget(proxy);
 

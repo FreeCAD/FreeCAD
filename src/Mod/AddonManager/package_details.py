@@ -1,24 +1,22 @@
-# -*- coding: utf-8 -*-
-
 # ***************************************************************************
 # *                                                                         *
-# *   Copyright (c) 2022 FreeCAD Project Association                        *
+# *   Copyright (c) 2022-2023 FreeCAD Project Association                   *
 # *                                                                         *
-# *   This program is free software; you can redistribute it and/or modify  *
-# *   it under the terms of the GNU Lesser General Public License (LGPL)    *
-# *   as published by the Free Software Foundation; either version 2 of     *
-# *   the License, or (at your option) any later version.                   *
-# *   for detail see the LICENCE text file.                                 *
+# *   This file is part of FreeCAD.                                         *
 # *                                                                         *
-# *   This program is distributed in the hope that it will be useful,       *
-# *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
-# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
-# *   GNU Library General Public License for more details.                  *
+# *   FreeCAD is free software: you can redistribute it and/or modify it    *
+# *   under the terms of the GNU Lesser General Public License as           *
+# *   published by the Free Software Foundation, either version 2.1 of the  *
+# *   License, or (at your option) any later version.                       *
 # *                                                                         *
-# *   You should have received a copy of the GNU Library General Public     *
-# *   License along with this program; if not, write to the Free Software   *
-# *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
-# *   USA                                                                   *
+# *   FreeCAD is distributed in the hope that it will be useful, but        *
+# *   WITHOUT ANY WARRANTY; without even the implied warranty of            *
+# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU      *
+# *   Lesser General Public License for more details.                       *
+# *                                                                         *
+# *   You should have received a copy of the GNU Lesser General Public      *
+# *   License along with FreeCAD. If not, see                               *
+# *   <https://www.gnu.org/licenses/>.                                      *
 # *                                                                         *
 # ***************************************************************************
 
@@ -27,9 +25,9 @@
 import os
 from typing import Optional
 
-from PySide2.QtCore import *
-from PySide2.QtGui import *
-from PySide2.QtWidgets import *
+from PySide.QtCore import *
+from PySide.QtGui import *
+from PySide.QtWidgets import *
 
 import FreeCAD
 import FreeCADGui
@@ -55,14 +53,14 @@ translate = FreeCAD.Qt.translate
 show_javascript_console_output = False
 
 try:
-    from PySide2.QtWebEngineWidgets import *
+    from PySide.QtWebEngineWidgets import *
 
     HAS_QTWEBENGINE = True
 except ImportError:
     FreeCAD.Console.PrintWarning(
         translate(
             "AddonsInstaller",
-            "Addon Manager Warning: Could not import QtWebEngineWidgets, it seems to be missing from your system. Please use your system's package manager to install the python3-pyside2.qtwebengine* and python3-pyside2.qtwebchannel packages, and if possible alert your package creator to the missing dependency. Display of package README will be limited until this dependency is resolved.",
+            "Addon Manager Warning: Could not import QtWebEngineWidgets. Your system's package manager may provide a package for this dependency, search the package manager for possible resolutions. Display of package README will be limited until this dependency is resolved.",
         )
         + "\n"
     )
@@ -175,7 +173,6 @@ class PackageDetails(QWidget):
         self.set_change_branch_button_state()
         self.set_disable_button_state()
         if status != Addon.Status.NOT_INSTALLED:
-
             version = repo.installed_version
             date = ""
             installed_version_string = "<h3>"
@@ -269,7 +266,6 @@ class PackageDetails(QWidget):
                     + "."
                 )
             elif status == Addon.Status.UNCHECKED:
-
                 pref = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Addons")
                 autocheck = pref.GetBool("AutoCheck", False)
                 if autocheck:
@@ -555,8 +551,8 @@ class PackageDetails(QWidget):
                 sibling = article.previousSibling;
             }
         }
-    } else if (url.hostname === "gitlab.com" || 
-               url.hostname === "framagit.org" || 
+    } else if (url.hostname === "gitlab.com" ||
+               url.hostname === "framagit.org" ||
                url.hostname === "salsa.debian.org") {
         // These all use the GitLab page display...
         const articles = document.getElementsByTagName("article");
@@ -570,7 +566,7 @@ class PackageDetails(QWidget):
                 sibling = article.previousSibling;
             }
         }
-    } else if (url.hostname === "wiki.freecad.org" || 
+    } else if (url.hostname === "wiki.freecad.org" ||
                url.hostname === "wiki.freecadweb.org") {
         const first_heading = document.getElementById('firstHeading');
         const body_content = document.getElementById('bodyContent');
@@ -728,21 +724,26 @@ if HAS_QTWEBENGINE:
         def __init__(self, parent):
             super().__init__(parent)
             self.settings().setAttribute(QWebEngineSettings.ErrorPageEnabled, False)
+            self.stored_url = None
 
-        def acceptNavigationRequest(self, url, _type, isMainFrame):
+        def acceptNavigationRequest(self, requested_url, _type, isMainFrame):
             """A callback for navigation requests: this widget will only display navigation requests to the
-            FreeCAD Wiki (for translation purposes) -- anything else will open in a new window."""
+            FreeCAD Wiki (for translation purposes) -- anything else will open in a new window.
+            """
             if _type == QWebEnginePage.NavigationTypeLinkClicked:
-
                 # See if the link is to a FreeCAD Wiki page -- if so, follow it, otherwise ask the OS to open it
                 if (
-                    url.host() == "wiki.freecad.org"
-                    or url.host() == "wiki.freecadweb.org"
+                    requested_url.host() == "wiki.freecad.org"
+                    or requested_url.host() == "wiki.freecadweb.org"
                 ):
-                    return super().acceptNavigationRequest(url, _type, isMainFrame)
-                QDesktopServices.openUrl(url)
+                    return super().acceptNavigationRequest(
+                        requested_url, _type, isMainFrame
+                    )
+                QDesktopServices.openUrl(requested_url)
+                self.stored_url = self.url()
+                QTimer.singleShot(0, self._reload_stored_url)
                 return False
-            return super().acceptNavigationRequest(url, _type, isMainFrame)
+            return super().acceptNavigationRequest(requested_url, _type, isMainFrame)
 
         def javaScriptConsoleMessage(self, level, message, lineNumber, _):
             """Handle JavaScript console messages by optionally outputting them to the FreeCAD Console. This
@@ -757,6 +758,10 @@ if HAS_QTWEBENGINE:
                     FreeCAD.Console.PrintWarning(f"{tag} {lineNumber}: {message}\n")
                 elif level == QWebEnginePage.ErrorMessageLevel:
                     FreeCAD.Console.PrintError(f"{tag} {lineNumber}: {message}\n")
+
+        def _reload_stored_url(self):
+            if self.stored_url:
+                self.load(self.stored_url)
 
 
 class Ui_PackageDetails(object):

@@ -278,15 +278,17 @@ bool isIOFile(PyObject* file)
 
 void PropertyFileIncluded::setPyObject(PyObject *value)
 {
-    std::string string;
     if (PyUnicode_Check(value)) {
-        string = PyUnicode_AsUTF8(value);
+        std::string string = PyUnicode_AsUTF8(value);
+        setValue(string.c_str());
     }
     else if (PyBytes_Check(value)) {
-        string = PyBytes_AsString(value);
+        std::string string = PyBytes_AsString(value);
+        setValue(string.c_str());
     }
     else if (isIOFile(value)){
-        string = getNameFromFile(value);
+        std::string string = getNameFromFile(value);
+        setValue(string.c_str());
     }
     else if (PyTuple_Check(value)) {
         if (PyTuple_Size(value) != 2)
@@ -329,16 +331,22 @@ void PropertyFileIncluded::setPyObject(PyObject *value)
         }
 
         setValue(fileStr.c_str(),nameStr.c_str());
-        return;
+    }
+    else if (PyDict_Check(value)) {
+        Py::Dict dict(value);
+        if (dict.hasKey("filter")) {
+            setFilter(Py::String(dict.getItem("filter")));
+        }
+        if (dict.hasKey("filename")) {
+            std::string string = static_cast<std::string>(Py::String(dict.getItem("filename")));
+            setValue(string.c_str());
+        }
     }
     else {
         std::string error = std::string("Type must be string or file, not ");
         error += value->ob_type->tp_name;
         throw Base::TypeError(error);
     }
-
-    // assign the string
-    setValue(string.c_str());
 }
 
 void PropertyFileIncluded::Save (Base::Writer &writer) const
@@ -569,6 +577,16 @@ unsigned int PropertyFileIncluded::getMemSize () const
     return mem;
 }
 
+void PropertyFileIncluded::setFilter(std::string filter)
+{
+    m_filter = std::move(filter);
+}
+
+std::string PropertyFileIncluded::getFilter() const
+{
+    return m_filter;
+}
+
 //**************************************************************************
 // PropertyFile
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -590,5 +608,22 @@ void PropertyFile::setFilter(const std::string f)
 std::string PropertyFile::getFilter() const
 {
     return m_filter;
+}
+
+void PropertyFile::setPyObject(PyObject *value)
+{
+    if (PyDict_Check(value)) {
+        Py::Dict dict(value);
+        if (dict.hasKey("filter")) {
+            setFilter(Py::String(dict.getItem("filter")));
+        }
+        if (dict.hasKey("filename")) {
+            std::string string = static_cast<std::string>(Py::String(dict.getItem("filename")));
+            setValue(string.c_str());
+        }
+    }
+    else {
+        PropertyString::setPyObject(value);
+    }
 }
 

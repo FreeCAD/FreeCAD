@@ -20,16 +20,17 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
-#include "ActiveAnalysisObserver.h"
+
 #include <Gui/Application.h>
 #include <Gui/Document.h>
 #include <Gui/ViewProviderDocumentObject.h>
 #include <Mod/Fem/App/FemAnalysis.h>
 
-using namespace FemGui;
+#include "ActiveAnalysisObserver.h"
 
+
+using namespace FemGui;
 
 ActiveAnalysisObserver* ActiveAnalysisObserver::inst = nullptr;
 

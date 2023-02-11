@@ -20,25 +20,19 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
-
 #ifndef _PreComp_
 # include <sstream>
 #endif
 
-
 #include <App/DocumentObject.h>
 #include <App/PropertyContainer.h>
-#include <Base/Console.h>
-#include <Base/Writer.h>
 #include <Base/Reader.h>
-#include <Base/Exception.h>
-#include <Base/FileInfo.h>
-#include <Base/Stream.h>
+#include <Base/Writer.h>
 
 #include "PropertyPath.h"
 #include "PathPy.h"
+
 
 using namespace Path;
 

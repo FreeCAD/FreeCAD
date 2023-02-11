@@ -20,14 +20,13 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef __QtAll__
 #define __QtAll__
 
-// Qt Toolkit
 // QtCore
 #include <qglobal.h>
 #include <QBuffer>
+#include <QDebug>
 #include <QDirIterator>
 #include <QElapsedTimer>
 #include <qeventloop.h>
@@ -40,12 +39,15 @@
 #include <QPointer>
 #include <QProcess>
 #include <qrect.h>
-#include <qregexp.h>
+#include <QRegularExpression>
+#include <QRegularExpressionMatch>
+#include <QRegularExpressionMatchIterator>
+#include <QRegularExpressionValidator>
 #include <qrunnable.h>
 #include <QSet>
 #include <QSignalMapper>
+#include <QString>
 #include <QTemporaryFile>
-#include <qtextcodec.h>
 #include <qtextstream.h>
 #include <qthread.h>
 #include <qthreadpool.h>
@@ -56,12 +58,13 @@
 #include <QVariant>
 #include <QVariantAnimation>
 #include <QWaitCondition>
+
 // QtGui
 #include <QAbstractEventDispatcher>
 #include <QAbstractItemModel>
 #include <QStandardItemModel>
 #include <QAbstractTextDocumentLayout>
-#include <qaction.h>
+#include <QAction>
 #include <QActionGroup>
 #include <qapplication.h>
 #include <QBitmap>
@@ -87,6 +90,7 @@
 #include <QGraphicsSvgItem>
 #include <QGraphicsSceneContextMenuEvent>
 #include <QGroupBox>
+#include <QGuiApplication>
 #include <QHeaderView>
 #include <qimage.h>
 #include <QImageWriter>
@@ -102,15 +106,22 @@
 #include <QMainWindow>
 #include <QMdiArea>
 #include <QMdiSubWindow>
+#include <QMenu>
 #include <qmenubar.h>
-#include <qmessagebox.h>
+#include <QMessageBox>
 #include <QMessageLogContext>
 #include <QMimeData>
 #include <qmovie.h>
+#include <QOpenGLContext>
+#include <QOpenGLDebugMessage>
+#include <QOpenGLFunctions>
 #include <QOpenGLTexture>
-#include <qpainter.h>
+#include <QPaintEngine>
+#include <QPainter>
+#include <QPainterPath>
 #include <qpalette.h>
 #include <qpixmap.h>
+#include <QPdfWriter>
 #include <QPixmapCache>
 #include <QPlainTextEdit>
 #include <QPrinter>
@@ -132,12 +143,13 @@
 #include <qspinbox.h>
 #include <qsplashscreen.h>
 #include <qsplitter.h>
-#include <qstatusbar.h>
+#include <QStatusBar>
 #include <qstyle.h>
 #include <QStyledItemDelegate>
 #include <qstylefactory.h>
 #include <QStyleOptionButton>
 #include <QStylePainter>
+#include <QSurfaceFormat>
 #include <QSyntaxHighlighter>
 #include <qtabbar.h>
 #include <QTableView>
@@ -146,6 +158,8 @@
 #include <QTextDocument>
 #include <QTextDocumentFragment>
 #include <QTextEdit>
+#include <QTextList>
+#include <QTextTableCell>
 #include <QToolBar>
 #include <qtoolbox.h>
 #include <qtoolbutton.h>
@@ -156,20 +170,30 @@
 #include <QWindow>
 #include <QWhatsThis>
 #include <QWhatsThisClickedEvent>
+
 // QtNetwork
 #include <QNetworkAccessManager>
 #include <QTcpServer>
 #include <QTcpSocket>
+
+// QtOpenGL
+#include <QGLWidget>
+
 // QtSvg
+#include <QSvgGenerator>
 #include <QSvgRenderer>
 #include <QSvgWidget>
+
 // QtWidgets
+#include <QGraphicsColorizeEffect>
 #include <QGraphicsScene>
 #include <QGraphicsView>
 #include <QStackedWidget>
+#include <QTableWidgetItem>
 #include <QWidget>
+
 // QtXML
-# include <QDomDocument>
-# include <QDomElement>
+#include <QDomDocument>
+#include <QDomElement>
 
 #endif

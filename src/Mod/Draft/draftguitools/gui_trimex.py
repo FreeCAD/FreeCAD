@@ -547,7 +547,7 @@ class Trimex(gui_base_original.Modifier):
                     obj.FirstAngle = ang
         self.doc.recompute()
 
-    def finish(self, closed=False):
+    def finish(self, cont=False):
         """Terminate the operation of the Trimex tool."""
         super(Trimex, self).finish()
         self.force = None

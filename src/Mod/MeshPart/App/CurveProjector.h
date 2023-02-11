@@ -20,20 +20,18 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef _CurveProjector_h_
 #define _CurveProjector_h_
 
 #ifdef FC_USE_GTS
-#  include <gts.h>
+# include <gts.h>
 #endif
 
-#include <gp_Pln.hxx>
 #include <TopoDS_Edge.hxx>
 
-#include <Base/Vector3D.h>
 #include <Mod/Mesh/App/Mesh.h>
 #include <Mod/MeshPart/MeshPartGlobal.h>
+
 
 namespace MeshCore
 {
@@ -64,7 +62,7 @@ public:
 
   template<class T>
     struct TopoDSLess {
-    bool operator()(const T& x, const T& y) const { 
+    bool operator()(const T& x, const T& y) const {
       return x.HashCode(INT_MAX-1) < y.HashCode(INT_MAX-1);
     }
   };

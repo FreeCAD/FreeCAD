@@ -81,29 +81,29 @@ TaskDraftParameters::TaskDraftParameters(ViewProviderDressUp *DressUpView, QWidg
 
     QMetaObject::connectSlotsByName(this);
 
-    connect(ui->draftAngle, SIGNAL(valueChanged(double)),
-        this, SLOT(onAngleChanged(double)));
-    connect(ui->checkReverse, SIGNAL(toggled(bool)),
-        this, SLOT(onReversedChanged(bool)));
-    connect(ui->buttonRefAdd, SIGNAL(toggled(bool)),
-        this, SLOT(onButtonRefAdd(bool)));
-    connect(ui->buttonRefRemove, SIGNAL(toggled(bool)),
-        this, SLOT(onButtonRefRemove(bool)));
-    connect(ui->buttonPlane, SIGNAL(toggled(bool)),
-        this, SLOT(onButtonPlane(bool)));
-    connect(ui->buttonLine, SIGNAL(toggled(bool)),
-        this, SLOT(onButtonLine(bool)));
+    connect(ui->draftAngle, qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
+        this, &TaskDraftParameters::onAngleChanged);
+    connect(ui->checkReverse, &QCheckBox::toggled,
+        this, &TaskDraftParameters::onReversedChanged);
+    connect(ui->buttonRefAdd, &QToolButton::toggled,
+        this, &TaskDraftParameters::onButtonRefAdd);
+    connect(ui->buttonRefRemove, &QToolButton::toggled,
+        this, &TaskDraftParameters::onButtonRefRemove);
+    connect(ui->buttonPlane, &QToolButton::toggled,
+        this, &TaskDraftParameters::onButtonPlane);
+    connect(ui->buttonLine, &QToolButton::toggled,
+        this, &TaskDraftParameters::onButtonLine);
 
     // Create context menu
     createDeleteAction(ui->listWidgetReferences, ui->buttonRefRemove);
-    connect(deleteAction, SIGNAL(triggered()), this, SLOT(onRefDeleted()));
+    connect(deleteAction, &QAction::triggered, this, &TaskDraftParameters::onRefDeleted);
 
-    connect(ui->listWidgetReferences, SIGNAL(currentItemChanged(QListWidgetItem*, QListWidgetItem*)),
-        this, SLOT(setSelection(QListWidgetItem*)));
-    connect(ui->listWidgetReferences, SIGNAL(itemClicked(QListWidgetItem*)),
-        this, SLOT(setSelection(QListWidgetItem*)));
-    connect(ui->listWidgetReferences, SIGNAL(itemDoubleClicked(QListWidgetItem*)),
-        this, SLOT(doubleClicked(QListWidgetItem*)));
+    connect(ui->listWidgetReferences, &QListWidget::currentItemChanged,
+        this, &TaskDraftParameters::setSelection);
+    connect(ui->listWidgetReferences, &QListWidget::itemClicked,
+        this, &TaskDraftParameters::setSelection);
+    connect(ui->listWidgetReferences, &QListWidget::itemDoubleClicked,
+        this, &TaskDraftParameters::doubleClicked);
 
     App::DocumentObject* ref = pcDraft->NeutralPlane.getValue();
     strings = pcDraft->NeutralPlane.getSubValues();

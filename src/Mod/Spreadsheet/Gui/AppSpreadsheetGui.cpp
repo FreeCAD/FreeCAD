@@ -22,35 +22,26 @@
  ***************************************************************************/
 
 #include "PreCompiled.h"
-#ifndef _PreComp_
-# include <QIcon>
-# include <QImage>
-# include <QFileInfo>
-#endif
 
-#include <CXX/Extensions.hxx>
-#include <CXX/Objects.hxx>
-
+#include <App/Application.h>
+#include <App/Document.h>
 #include <Base/Console.h>
 #include <Base/Exception.h>
 #include <Base/FileInfo.h>
 #include <Base/Interpreter.h>
-#include <App/Application.h>
-#include <App/Document.h>
-#include <Gui/MainWindow.h>
-#include <Gui/Document.h>
 #include <Gui/Application.h>
-#include <Gui/BitmapFactory.h>
+#include <Gui/MainWindow.h>
 #include <Gui/WidgetFactory.h>
 #include <Gui/Language/Translator.h>
 #include <Mod/Spreadsheet/App/Sheet.h>
+
 #include "DlgSettingsImp.h"
-#include "Workbench.h"
-#include "ViewProviderSpreadsheet.h"
 #include "SpreadsheetView.h"
+#include "SheetTableViewAccessibleInterface.h"
+#include "ViewProviderSpreadsheet.h"
+#include "Workbench.h"
 
-
-// use a different name to CreateCommand()
+ // use a different name to CreateCommand()
 void CreateSpreadsheetCommands(void);
 
 void loadSpreadsheetResource()
@@ -61,51 +52,50 @@ void loadSpreadsheetResource()
 }
 
 namespace SpreadsheetGui {
-class Module : public Py::ExtensionModule<Module>
-{
-public:
-    Module() : Py::ExtensionModule<Module>("SpreadsheetGui")
+    class Module : public Py::ExtensionModule<Module>
     {
+    public:
+        Module() : Py::ExtensionModule<Module>("SpreadsheetGui")
+        {
         add_varargs_method("open",&Module::open
-        );
-        initialize("This module is the SpreadsheetGui module."); // register with Python
-    }
+            );
+            initialize("This module is the SpreadsheetGui module."); // register with Python
+        }
 
-    ~Module() override {}
+        ~Module() override {}
 
-private:
-    Py::Object open(const Py::Tuple& args)
-    {
-        char* Name;
+    private:
+        Py::Object open(const Py::Tuple& args)
+        {
+            char* Name;
         const char* DocName=nullptr;
         if (!PyArg_ParseTuple(args.ptr(), "et|s","utf-8",&Name,&DocName))
-            throw Py::Exception();
-        std::string EncodedName = std::string(Name);
-        PyMem_Free(Name);
+                throw Py::Exception();
+            std::string EncodedName = std::string(Name);
+            PyMem_Free(Name);
 
-        try {
-            Base::FileInfo file(EncodedName);
+            try {
+                Base::FileInfo file(EncodedName);
             App::Document *pcDoc = App::GetApplication().newDocument(DocName ? DocName : QT_TR_NOOP("Unnamed"));
             Spreadsheet::Sheet *pcSheet = static_cast<Spreadsheet::Sheet *>(pcDoc->addObject("Spreadsheet::Sheet", file.fileNamePure().c_str()));
 
-            pcSheet->importFromFile(EncodedName, '\t', '"', '\\');
-            pcSheet->execute();
-        }
-        catch (const Base::Exception& e) {
-            throw Py::RuntimeError(e.what());
-        }
+                pcSheet->importFromFile(EncodedName, '\t', '"', '\\');
+                pcSheet->execute();
+            }
+            catch (const Base::Exception& e) {
+                throw Py::RuntimeError(e.what());
+            }
 
-        return Py::None();
+            return Py::None();
+        }
+    };
+
+    PyObject* initModule()
+    {
+        return Base::Interpreter().addModule(new Module);
     }
-};
-
-PyObject* initModule()
-{
-    return Base::Interpreter().addModule(new Module);
-}
 
 } // namespace SpreadsheetGui
-
 
 /* Python entry */
 PyMOD_INIT_FUNC(SpreadsheetGui)
@@ -117,6 +107,8 @@ PyMOD_INIT_FUNC(SpreadsheetGui)
 
     // instantiating the commands
     CreateSpreadsheetCommands();
+
+    QAccessible::installFactory(SpreadsheetGui::SheetTableViewAccessibleInterface::ifactory);
 
     SpreadsheetGui::ViewProviderSheet::init();
     SpreadsheetGui::ViewProviderSheetPython::init();

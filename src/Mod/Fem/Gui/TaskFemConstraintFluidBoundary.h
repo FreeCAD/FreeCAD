@@ -25,7 +25,6 @@
 
 #include <QObject>
 
-#include <App/PropertyStandard.h>
 #include <Mod/Fem/App/FemSolverObject.h>
 
 #include "TaskFemConstraintOnBoundary.h"

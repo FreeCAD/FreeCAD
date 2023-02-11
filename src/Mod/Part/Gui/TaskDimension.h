@@ -23,22 +23,23 @@
 #ifndef TASKDIMENSION_H
 #define TASKDIMENSION_H
 
-#include <gp_Vec.hxx>
 #include <gp_Lin.hxx>
+#include <gp_Vec.hxx>
 
-#include <Inventor/fields/SoSFVec3f.h>
-#include <Inventor/fields/SoSFMatrix.h>
-#include <Inventor/fields/SoSFString.h>
-#include <Inventor/nodekits/SoSeparatorKit.h>
-#include <Inventor/fields/SoSFColor.h>
-#include <Inventor/fields/SoSFRotation.h>
-#include <Inventor/fields/SoSFFloat.h>
 #include <Inventor/engines/SoSubEngine.h>
 #include <Inventor/engines/SoEngine.h>
+#include <Inventor/fields/SoSFColor.h>
+#include <Inventor/fields/SoSFFloat.h>
+#include <Inventor/fields/SoSFMatrix.h>
+#include <Inventor/fields/SoSFRotation.h>
+#include <Inventor/fields/SoSFString.h>
+#include <Inventor/fields/SoSFVec3f.h>
+#include <Inventor/nodekits/SoSeparatorKit.h>
 
+#include <Base/Matrix.h>
 #include <Gui/TaskView/TaskDialog.h>
 #include <Gui/TaskView/TaskView.h>
-#include <Base/Matrix.h>
+
 
 class TopoDS_Shape;
 class TopoDS_Face;
@@ -197,17 +198,17 @@ public:
   ~SteppedSelection() override;
   QPushButton* getButton(const uint &index);
   void setIconDone(const uint &index);
-  
+
 protected:
   using ButtonIconPairType = std::pair<QPushButton *, QLabel *>;
   std::vector<ButtonIconPairType> buttons;
   QPixmap *stepActive;
   QPixmap *stepDone;
-  
+
 private Q_SLOTS:
   void selectionSlot(bool checked);
   void buildPixmaps();
-  
+
 };
 
 /*! just convenience container*/
@@ -255,7 +256,7 @@ public:
   bool needsFullSpace() const override {return false;}
 protected:
   void onSelectionChanged(const Gui::SelectionChanges& msg) override;
-    
+
 protected Q_SLOTS:
   void selection1Slot(bool checked);
   void selection2Slot(bool checked);
@@ -280,7 +281,7 @@ private:
 };
 
 /*! @brief Convert to vector
- * 
+ *
  * Used to construct a vector from various input types
  */
 class VectorAdapter
@@ -302,7 +303,7 @@ public:
   /*!Build a vector From 2 vectors.
    *vector will be equal to @param vector2 - @param vector1.*/
   VectorAdapter(const gp_Vec &vector1, const gp_Vec &vector2);
-  
+
   /*!make sure no errors in vector construction.
    * @return true = vector is good. false = vector is NOT good.*/
   bool isValid() const {return status;}
@@ -312,7 +313,7 @@ public:
   /*!build occ line used for extrema calculation*/
   operator gp_Lin() const;//explicit bombs
   gp_Vec getPickPoint() const {return origin;}
-  
+
 private:
   void projectOriginOntoVector(const gp_Vec &pickedPointIn);
   bool status;
@@ -334,7 +335,7 @@ public:
   bool needsFullSpace() const override {return false;}
 protected:
   void onSelectionChanged(const Gui::SelectionChanges& msg) override;
-    
+
 protected Q_SLOTS:
   void selection1Slot(bool checked);
   void selection2Slot(bool checked);

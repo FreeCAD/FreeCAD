@@ -47,4 +47,4 @@ protected:
 } // namespace MeshPartGui
 
 
-#endif // MESHPARTGUI_WORKBENCH_H 
+#endif // MESHPARTGUI_WORKBENCH_H

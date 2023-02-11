@@ -1,5 +1,5 @@
 /***************************************************************************
- *                                                                         *
+ *   Copyright (c) 2011 Werner Mayer <wmayer[at]users.sourceforge.net>     *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -24,9 +24,9 @@
 #define SKETCHERGUI_SOZOOMTRANSLATION_H
 
 #include <Inventor/nodes/SoTranslation.h>
-#include <Inventor/nodes/SoSubNode.h>
-#include <Inventor/nodes/SoTransformation.h>
+
 #include <Mod/Sketcher/SketcherGlobal.h>
+
 
 namespace SketcherGui {
 

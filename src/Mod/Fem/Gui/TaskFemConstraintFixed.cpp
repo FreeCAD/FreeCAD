@@ -53,12 +53,12 @@ TaskFemConstraintFixed::TaskFemConstraintFixed(ViewProviderFemConstraintFixed* C
 
     // create a context menu for the listview of the references
     createDeleteAction(ui->lw_references);
-    deleteAction->connect(deleteAction, SIGNAL(triggered()), this, SLOT(onReferenceDeleted()));
-
-    connect(ui->lw_references, SIGNAL(currentItemChanged(QListWidgetItem*, QListWidgetItem*)),
-        this, SLOT(setSelection(QListWidgetItem*)));
-    connect(ui->lw_references, SIGNAL(itemClicked(QListWidgetItem*)),
-        this, SLOT(setSelection(QListWidgetItem*)));
+    connect(deleteAction, &QAction::triggered,
+        this, &TaskFemConstraintFixed::onReferenceDeleted);
+    connect(ui->lw_references, &QListWidget::currentItemChanged,
+        this, &TaskFemConstraintFixed::setSelection);
+    connect(ui->lw_references, &QListWidget::itemClicked,
+        this, &TaskFemConstraintFixed::setSelection);
 
     this->groupLayout()->addWidget(proxy);
 

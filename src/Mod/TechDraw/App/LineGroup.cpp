@@ -23,20 +23,19 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-#include <fstream>
-#include <sstream>
-#include <iomanip>
-#include <stdexcept>
+# include <fstream>
+# include <iomanip>
+# include <sstream>
+# include <stdexcept>
 #endif
 
-#include <App/Application.h>
 #include <Base/Console.h>
 #include <Base/FileInfo.h>
-#include <Base/Parameter.h>
 #include <Base/Stream.h>
 
-#include "Preferences.h"
 #include "LineGroup.h"
+#include "Preferences.h"
+
 
 using namespace TechDraw;
 

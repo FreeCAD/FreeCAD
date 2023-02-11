@@ -145,8 +145,8 @@ PyObject *TopoShapePyOld::PyMake(PyTypeObject  *ignored, PyObject *args, PyObjec
 int TopoShapePyOld::PyInit(PyObject* self, PyObject* args, PyObject*)
 {
   PyObject *pcObj=0;
-  if (!PyArg_ParseTuple(args, "|O!", &(TopoShapePyOld::Type), &pcObj))     // convert args: Python->C 
-    return -1;                             // NULL triggers exception 
+  if (!PyArg_ParseTuple(args, "|O!", &(TopoShapePyOld::Type), &pcObj))     // convert args: Python->C
+    return -1;                             // NULL triggers exception
 
   if ( pcObj )
   {
@@ -160,7 +160,7 @@ int TopoShapePyOld::PyInit(PyObject* self, PyObject* args, PyObject*)
 //--------------------------------------------------------------------------
 // Parents structure
 //--------------------------------------------------------------------------
-PyParentObject TopoShapePyOld::Parents[] = {&Base::PyObjectBase::Type,&TopoShapePyOld::Type, NULL};     
+PyParentObject TopoShapePyOld::Parents[] = {&Base::PyObjectBase::Type,&TopoShapePyOld::Type, NULL};
 
 //--------------------------------------------------------------------------
 // constructor
@@ -171,46 +171,46 @@ TopoShapePyOld::TopoShapePyOld(PyTypeObject *T)
   Base::Console().Log("Create TopoShape: %p \n",this);
 }
 
-TopoShapePyOld::TopoShapePyOld(const TopoDS_Shape &cShape, PyTypeObject *T) 
+TopoShapePyOld::TopoShapePyOld(const TopoDS_Shape &cShape, PyTypeObject *T)
  : PyObjectBase( 0,T), _cTopoShape(cShape)
 {
 	Console().Log("Create TopoShape %p\n",this);
 }
 
 //--------------------------------------------------------------------------
-//  TopoShapePyOld destructor 
+//  TopoShapePyOld destructor
 //--------------------------------------------------------------------------
 TopoShapePyOld::~TopoShapePyOld()						// Everything handled in parent
 {
 	Console().Log("Destroy TopoShape %p\n",this);
-} 
+}
 
 //--------------------------------------------------------------------------
 // TopoShapePyOld Attributes
 //--------------------------------------------------------------------------
 PyObject *TopoShapePyOld::_getattr(const char *attr)				// __getattr__ function: note only need to handle new state
-{ 
+{
 	try{
 		// Access the number of attributes at this label
 		if (Base::streq(attr, "AttributeCount"))
 		{
-			return Py_BuildValue("i", 1); 
+			return Py_BuildValue("i", 1);
 		}else
 			_getattr_up(PyObjectBase); 						// send to parent
 	}catch(...){
 		Console().Log("Exception in TopoShapePyOld::_getattr()\n");
 		return 0;
 	}
-} 
+}
 
 int TopoShapePyOld::_setattr(const char *attr, PyObject *value) 	// __setattr__ function: note only need to handle new state
-{ 
+{
 	if (Base::streq(attr, "Real"))						// settable new state
-		; 
-	else  
+		;
+	else
 		return PyObjectBase::_setattr(attr, value);	// send up to parent
 	return 0;
-} 
+}
 
 //--------------------------------------------------------------------------
 // PartFeaturePy representation
@@ -229,23 +229,23 @@ PyObject *TopoShapePyOld::_repr(void)
 //--------------------------------------------------------------------------
 
 PyObject *TopoShapePyOld::hasChild(PyObject *args)
-{ 
-  if (!PyArg_ParseTuple(args, "" ))   
-    return NULL;                      
-	Py_Return; 
+{
+  if (!PyArg_ParseTuple(args, "" ))
+    return NULL;
+	Py_Return;
 }
 
 PyObject *TopoShapePyOld::isNull(PyObject *args)
-{ 
-  if (!PyArg_ParseTuple(args, "" ))   
+{
+  if (!PyArg_ParseTuple(args, "" ))
     return NULL;
 
   return Py_BuildValue("O", (_cTopoShape.IsNull() ? Py_True : Py_False));
 }
 
 PyObject *TopoShapePyOld::isValid(PyObject *args)
-{ 
-  if (!PyArg_ParseTuple(args, "" ))   
+{
+  if (!PyArg_ParseTuple(args, "" ))
     return NULL;
   if ( !_cTopoShape.IsNull() )
   {
@@ -253,12 +253,12 @@ PyObject *TopoShapePyOld::isValid(PyObject *args)
     return Py_BuildValue("O", (aChecker.IsValid() ? Py_True : Py_False));
   }
 
-  return Py_BuildValue("O", Py_False); 
+  return Py_BuildValue("O", Py_False);
 }
 
 PyObject *TopoShapePyOld::analyze(PyObject *args)
-{ 
-  if (!PyArg_ParseTuple(args, "" ))   
+{
+  if (!PyArg_ParseTuple(args, "" ))
     return NULL;
   if ( !_cTopoShape.IsNull() )
   {
@@ -392,7 +392,7 @@ PyObject *TopoShapePyOld::analyze(PyObject *args)
     }
   }
 
-  Py_Return; 
+  Py_Return;
 }
 
 #if 0 // need a define for version of OCC
@@ -413,11 +413,11 @@ class ProgressIndicator : public MoniTool_ProgressIndicator
 {
 public:
   ProgressIndicator() {}
-  virtual ~ProgressIndicator() 
+  virtual ~ProgressIndicator()
   {
     Base::Sequencer().stop();
   }
-  
+
   virtual  void Reset()
   {
   }
@@ -448,11 +448,11 @@ public:
 PyObject *TopoShapePyOld::importIGES(PyObject *args)
 {
   char* filename;
-  if (!PyArg_ParseTuple(args, "s", &filename ))   
+  if (!PyArg_ParseTuple(args, "s", &filename ))
     return NULL;
 
   PY_TRY {
- 
+
     // checking for the file
     Base::FileInfo File(filename);
     if(!File.isReadable()) {
@@ -469,11 +469,11 @@ PyObject *TopoShapePyOld::importIGES(PyObject *args)
     }
 
 #if 0
-    // get all root shapes 
+    // get all root shapes
     Handle(TColStd_HSequenceOfTransient) aList=aReader.GiveList("xst-transferrable-roots");
     for (Standard_Integer j=1; j<=aList->Length(); j++) {
       Handle(IGESData_IGESEntity) igesEntity=Handle(IGESData_IGESEntity)::DownCast(aList->Value(j));
-      // get names 
+      // get names
       Handle(TCollection_HAsciiString) name = igesEntity->NameValue();
       if ( !name.IsNull() ) {
         const char* cname = name->ToCString();
@@ -486,13 +486,13 @@ PyObject *TopoShapePyOld::importIGES(PyObject *args)
       }
       const char* type = igesEntity->DynamicType()->Name();
     }
- 
+
     //Standard_Integer val = Interface_Static::IVal("read.iges.bspline.continuity");
     //Interface_Static::SetIVal("read.iges.bspline.continuity", 2);
     //Standard_Integer ic = Interface_Static::IVal("read.precision.mode");
     //Standard_Real rp = Interface_Static::RVal("read.precision.val");
-    
-    //Handle(TColStd_HSequenceOfTransient) aList; 
+
+    //Handle(TColStd_HSequenceOfTransient) aList;
     //aList = aReader.GiveList ("iges-type(114)");
     //int ct = aList->Length();
     //Reader.TransferList(aList);
@@ -502,17 +502,17 @@ PyObject *TopoShapePyOld::importIGES(PyObject *args)
     // one shape that contains all subshapes
     aReader.TransferRoots();
     //ct = aReader.NbShapes();
-    
+
     _cTopoShape = aReader.OneShape();
   } PY_CATCH;
 
-  Py_Return; 
+  Py_Return;
 }
 
 PyObject *TopoShapePyOld::exportIGES(PyObject *args)
 {
   char* filename;
-  if (!PyArg_ParseTuple(args, "s", &filename ))   
+  if (!PyArg_ParseTuple(args, "s", &filename ))
     return NULL;
 
   PY_TRY {
@@ -553,13 +553,13 @@ PyObject *TopoShapePyOld::exportIGES(PyObject *args)
 
   } PY_CATCH;
 
-  Py_Return; 
+  Py_Return;
 }
 
 PyObject *TopoShapePyOld::importSTEP(PyObject *args)
 {
   char* filename;
-  if (!PyArg_ParseTuple(args, "s", &filename ))   
+  if (!PyArg_ParseTuple(args, "s", &filename ))
     return NULL;
 
   PY_TRY {
@@ -581,7 +581,7 @@ PyObject *TopoShapePyOld::importSTEP(PyObject *args)
     Handle(TColStd_HSequenceOfTransient) aList=aReader.GiveList("xst-transferrable-roots");
     for (Standard_Integer j=1; j<=aList->Length(); j++) {
       Handle(IGESData_IGESEntity) igesEntity=Handle(IGESData_IGESEntity)::DownCast(aList->Value(j));
-      // get names 
+      // get names
       Handle(TCollection_HAsciiString) name = igesEntity->NameValue();
       if ( !name.IsNull() ) {
         const char* cname = name->ToCString();
@@ -623,7 +623,7 @@ PyObject *TopoShapePyOld::importSTEP(PyObject *args)
 
   } PY_CATCH;
 
-  Py_Return; 
+  Py_Return;
 }
 
 PyObject *TopoShapePyOld::exportSTEP(PyObject *args)
@@ -647,16 +647,16 @@ PyObject *TopoShapePyOld::exportSTEP(PyObject *args)
       PyErr_SetString(PartExceptionOCCError,"Writing STEP failed");
       return NULL;
     }
-        
+
   } PY_CATCH;
 
-  Py_Return; 
+  Py_Return;
 }
 
 PyObject *TopoShapePyOld::importBREP(PyObject *args)
 {
   char* filename;
-  if (!PyArg_ParseTuple(args, "s", &filename ))   
+  if (!PyArg_ParseTuple(args, "s", &filename ))
     return NULL;
 
   PY_TRY {
@@ -666,7 +666,7 @@ PyObject *TopoShapePyOld::importBREP(PyObject *args)
       PyErr_SetString(PartExceptionOCCError,"File to read does not exist or is not readable");
       return NULL;
     }
-    
+
     // read brep file
     BRep_Builder aBuilder;
     if (!BRepTools::Read(_cTopoShape,(const Standard_CString)filename,aBuilder)) {
@@ -675,7 +675,7 @@ PyObject *TopoShapePyOld::importBREP(PyObject *args)
     }
   } PY_CATCH;
 
-  Py_Return; 
+  Py_Return;
 }
 
 PyObject *TopoShapePyOld::exportBREP(PyObject *args)
@@ -692,7 +692,7 @@ PyObject *TopoShapePyOld::exportBREP(PyObject *args)
     }
   } PY_CATCH;
 
-  Py_Return; 
+  Py_Return;
 }
 
 PyObject *TopoShapePyOld::exportSTL(PyObject *args)
@@ -707,7 +707,7 @@ PyObject *TopoShapePyOld::exportSTL(PyObject *args)
 	  writer.Write( _cTopoShape, (const Standard_CString)filename );
   } PY_CATCH;
 
-  Py_Return; 
+  Py_Return;
 }
 
 #endif

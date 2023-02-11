@@ -96,7 +96,7 @@ void DlgSettingsUnitsImp::on_comboBox_ViewSystem_currentIndexChanged(int index)
         return; // happens when clearing the combo box in retranslateUi()
 
     // Enable/disable the fractional inch option depending on system
-    if( (UnitSystem)index == UnitSystem::ImperialBuilding )
+    if( static_cast<UnitSystem>(index) == UnitSystem::ImperialBuilding )
     {
         ui->comboBox_FracInch->setEnabled(true);
     }
@@ -135,7 +135,7 @@ void DlgSettingsUnitsImp::saveSettings()
 
     // Set and save the Unit System
     viewSystemIndex = ui->comboBox_ViewSystem->currentIndex();
-    UnitsApi::setSchema((UnitSystem)viewSystemIndex);
+    UnitsApi::setSchema(static_cast<UnitSystem>(viewSystemIndex));
 }
 
 void DlgSettingsUnitsImp::loadSettings()

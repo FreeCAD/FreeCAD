@@ -24,15 +24,14 @@
 #ifndef FEATUREGEOMFILLSURFACE_H
 #define FEATUREGEOMFILLSURFACE_H
 
+#include <App/PropertyLinks.h>
+#include <Mod/Part/App/FeaturePartSpline.h>
+#include <Mod/Surface/SurfaceGlobal.h>
+
 #include <Geom_BoundedSurface.hxx>
 #include <GeomFill_FillingStyle.hxx>
 #include <ShapeExtend_WireData.hxx>
 
-#include <App/PropertyStandard.h>
-#include <App/PropertyUnits.h>
-#include <App/PropertyLinks.h>
-#include <Mod/Part/App/FeaturePartSpline.h>
-#include <Mod/Surface/SurfaceGlobal.h>
 
 namespace Surface
 {

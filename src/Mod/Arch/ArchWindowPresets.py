@@ -87,7 +87,7 @@ def makeWindowPreset(windowtype,width,height,h1,h2,h3,w1,w2,o1,o2,placement=None
             s.addConstraint(Sketcher.Constraint('Vertical',idx+7))
 
         def simpleFrame(s,width,height,h1,h2,tol):
-            
+
             "creates a simple frame with constraints"
 
             p1 = Vector(h1+tol,h1+tol,0)

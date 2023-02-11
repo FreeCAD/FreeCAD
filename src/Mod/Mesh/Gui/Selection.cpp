@@ -21,14 +21,12 @@
  ***************************************************************************/
 
 #include "PreCompiled.h"
-#ifndef _PreComp_
-#endif
 
 #include "Selection.h"
 #include "ui_Selection.h"
 
-using namespace MeshGui;
 
+using namespace MeshGui;
 
 /* TRANSLATOR MeshGui::Selection */
 

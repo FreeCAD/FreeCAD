@@ -20,23 +20,19 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef ROBOTGUI_TaskDlgEdge2Trac_H
 #define ROBOTGUI_TaskDlgEdge2Trac_H
 
 #include <Gui/TaskView/TaskDialog.h>
-#include <Mod/Robot/App/RobotObject.h>
-#include <Mod/Robot/App/TrajectoryObject.h>
 #include <Mod/Robot/App/Edge2TracObject.h>
 
 #include "TaskEdge2TracParameter.h"
 
+
 // forward
 namespace Gui { namespace TaskView { class TaskSelectLinkProperty;}}
 
-
 namespace RobotGui {
-
 
 /// simulation dialog for the TaskView
 class RobotGuiExport TaskDlgEdge2Trac : public Gui::TaskView::TaskDialog

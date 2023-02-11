@@ -61,7 +61,7 @@ private Q_SLOTS:
     void onCheckReverse(const bool on);
     void onAngle(const double a);
     void onOccurrences(const uint n);
-    virtual void onUpdateView(bool);
+    void onUpdateView(bool) override;
     void onFeatureDeleted() override;
 
 protected:

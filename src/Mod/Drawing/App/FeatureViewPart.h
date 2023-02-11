@@ -20,22 +20,18 @@
  *                                                                         *
  ***************************************************************************/
 
- 
-
-
 #ifndef _FeatureViewPart_h_
 #define _FeatureViewPart_h_
 
-
 #include <App/DocumentObject.h>
-#include <App/PropertyLinks.h>
-#include "FeatureView.h"
 #include <App/FeaturePython.h>
+#include <App/PropertyLinks.h>
+
+#include "FeatureView.h"
 
 
 namespace Drawing
 {
-
 
 /** Base class of all View Features in the drawing module
  */

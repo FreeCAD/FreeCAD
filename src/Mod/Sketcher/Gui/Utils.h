@@ -20,7 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef SKETCHERGUI_Recompute_H
 #define SKETCHERGUI_Recompute_H
 
@@ -28,7 +27,9 @@
 #include <Base/Tools.h>
 #include <Base/Tools2D.h>
 #include <Mod/Sketcher/App/GeoEnum.h>
+
 #include "AutoConstraint.h"
+
 
 namespace App {
     class DocumentObject;
@@ -71,8 +72,6 @@ std::string getStrippedPythonExceptionString(const Base::Exception&);
 void getIdsFromName(const std::string &name, const Sketcher::SketchObject* Obj, int &GeoId, Sketcher::PointPos &PosId);
 
 bool checkBothExternal(int GeoId1, int GeoId2);
-
-bool checkBothExternalOrBSplinePoints(const Sketcher::SketchObject* Obj,int GeoId1, int GeoId2);
 
 bool isPointOrSegmentFixed(const Sketcher::SketchObject* Obj, int GeoId);
 
@@ -129,13 +128,12 @@ void removeRedundantHorizontalVertical(Sketcher::SketchObject* psketch,
 
 void ConstraintToAttachment(Sketcher::GeoElementId element, Sketcher::GeoElementId attachment, double distance, App::DocumentObject* obj);
 
-//convenience functions for cursor coodinates
+//convenience functions for cursor coordinates
 bool        hideUnits();
 bool        showCursorCoords();
 bool        useSystemDecimals();
 std::string lengthToDisplayFormat(double value, int digits);
 std::string angleToDisplayFormat(double value, int digits);
-
 }
 
 /// converts a 2D vector into a 3D vector in the XY plane

@@ -20,10 +20,12 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
-#include "FemSettings.h"
+
 #include <App/Application.h>
+
+#include "FemSettings.h"
+
 
 using namespace FemGui;
 

@@ -23,10 +23,9 @@
 #ifndef GUI_TASKVIEW_TASKGEOMHATCH_H
 #define GUI_TASKVIEW_TASKGEOMHATCH_H
 
-#include <Mod/TechDraw/TechDrawGlobal.h>
-
 #include <Gui/TaskView/TaskDialog.h>
 #include <Gui/TaskView/TaskView.h>
+#include <Mod/TechDraw/TechDrawGlobal.h>
 
 
 namespace App
@@ -83,6 +82,10 @@ private:
     double m_origScale;
     double m_origWeight;
     App::Color m_origColor;
+    double m_rotation;
+    double m_origRotation;
+    Base::Vector3d m_offset;
+    Base::Vector3d m_origOffset;
 
     bool m_createMode;
 
@@ -91,6 +94,8 @@ private Q_SLOTS:
         void onScaleChanged();
         void onLineWeightChanged();
         void onColorChanged();
+        void onRotationChanged();
+        void onOffsetChanged();
 
 };
 

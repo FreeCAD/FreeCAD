@@ -33,5 +33,6 @@ from .TDToolsMovers import *
 from .TDToolsUtil import *
 from .CommandShareView import CommandShareView
 from .CommandMoveView import CommandMoveView
+from .CommandAxoLengthDimension import CommandAxoLengthDimension
 from .TaskShareView import TaskShareView
 from .TaskMoveView import TaskMoveView

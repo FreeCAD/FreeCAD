@@ -20,17 +20,13 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
-#ifndef _PreComp_
-# include <QApplication>
-#endif
+
+#include <Gui/Application.h>
 
 #include "DlgSettingsImp.h"
 #include "ui_DlgSettings.h"
-#include <Gui/Application.h>
-#include <Gui/PrefWidgets.h>
-#include <Base/Console.h>
+
 
 using namespace SpreadsheetGui;
 
@@ -63,6 +59,8 @@ void DlgSettingsImp::saveSettings()
     hGrp->SetASCII("ImportExportDelimiter", delimiter.toStdString().c_str());
     ui->quoteCharLineEdit->onSave();
     ui->escapeCharLineEdit->onSave();
+    ui->formatString->onSave();
+    ui->checkBoxShowAlias->onSave();
 }
 
 void DlgSettingsImp::loadSettings()
@@ -93,6 +91,8 @@ void DlgSettingsImp::loadSettings()
 
     ui->quoteCharLineEdit->onRestore();
     ui->escapeCharLineEdit->onRestore();
+    ui->formatString->onRestore();
+    ui->checkBoxShowAlias->onRestore();
 }
 
 /**

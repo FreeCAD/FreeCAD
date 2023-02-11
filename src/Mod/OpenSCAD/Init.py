@@ -1,8 +1,5 @@
-# FreeCAD init script of the OpenSCAD module
-# (c) 2001 Juergen Riegel
-
 #***************************************************************************
-#*   Copyright (c) 2002 Juergen Riegel <juergen.riegel@web.de>             *
+#*   Copyright (c) 2001,2002 Juergen Riegel <juergen.riegel@web.de>        *
 #*                                                                         *
 #*   This file is part of the FreeCAD CAx development system.              *
 #*                                                                         *
@@ -23,6 +20,8 @@
 #*   USA                                                                   *
 #*                                                                         *
 #***************************************************************************/
+
+# FreeCAD init script of the OpenSCAD module
 
 import os
 import FreeCAD

@@ -94,7 +94,7 @@ bool Gui::GuiNativeEvent::xcbEventFilter(void *xcb_void, long* result)
       return false;
 
     spnav_event navEvent;
-    
+
 	const xcb_client_message_event_t* xcb_ev = static_cast<const xcb_client_message_event_t*>(xcb_void);
     // Qt4 used XEvents in native event filters, but Qt5 changed to XCB.  The
     // SpaceNavigator API only works with XEvent, so we need to construct a
@@ -169,15 +169,15 @@ bool Gui::GuiNativeEvent::x11EventFilter(XEvent *event)
     if (event->type == ClientMessage)
     {
         Atom message_type = event->xclient.message_type;
-        
+
         if (message_type == motion_flush_event)
         {
             nMotionEvents--;
             if (nMotionEvents == 0)
-            {               
+            {
             mainApp->postMotionEvent(motionDataArray);
             }
-            
+
             return true;
         } // XEvent: motion_flush_event
     } // XEvent: ClientMessage
@@ -185,7 +185,7 @@ bool Gui::GuiNativeEvent::x11EventFilter(XEvent *event)
     /*
     From here on we deal with spacenav events only:
     - motion: The event data is saved and a self addressed flush event
-              is sent through the window system (XEvent). 
+              is sent through the window system (XEvent).
               In the case of an event flooding, the motion data is added up.
     - button: A Spaceball event is posted (QInputEvent).
     */
@@ -197,8 +197,8 @@ bool Gui::GuiNativeEvent::x11EventFilter(XEvent *event)
     {
         /*
         If the motion data of the preceding event has not been processed
-        through posting an Spaceball event (flooding situation), 
-        the motion data provided by the incoming event is added to the saved data. 
+        through posting an Spaceball event (flooding situation),
+        the motion data provided by the incoming event is added to the saved data.
         */
     	int dx, dy, dz, drx, dry, drz;
 
@@ -220,36 +220,36 @@ bool Gui::GuiNativeEvent::x11EventFilter(XEvent *event)
             dry = motionDataArray[4];
             drz = motionDataArray[5];
         }
-        
+
         motionDataArray[0] = -navEvent.motion.x;
         motionDataArray[1] = -navEvent.motion.z;
         motionDataArray[2] = -navEvent.motion.y;
         motionDataArray[3] = -navEvent.motion.rx;
         motionDataArray[4] = -navEvent.motion.rz;
         motionDataArray[5] = -navEvent.motion.ry;
-        
+
         motionDataArray[0] += dx;
         motionDataArray[1] += dy;
         motionDataArray[2] += dz;
         motionDataArray[3] += drx;
         motionDataArray[4] += dry;
         motionDataArray[5] += drz;
-        
+
         /*
         Send a self addressed flush event through the window system. This will
         trigger a Spaceball event if FreeCAD is ready to do so.
         */
         nMotionEvents++;
         XClientMessageEvent flushEvent;
-        
+
         flushEvent.display = display;
         flushEvent.window = event->xclient.window;
         flushEvent.type = ClientMessage;
-        flushEvent.format = 8;    
+        flushEvent.format = 8;
         flushEvent.message_type = motion_flush_event;
-        
+
         XSendEvent (display, flushEvent.window, False, 0, (XEvent*)&flushEvent); // siehe spnavd, False, 0
-        
+
         return true;
     }
 

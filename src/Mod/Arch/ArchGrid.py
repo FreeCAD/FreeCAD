@@ -298,20 +298,34 @@ class ViewProviderArchGrid:
         import Arch_rc
         return ":/icons/Arch_Grid.svg"
 
-    def setEdit(self,vobj,mode=0):
+    def attach(self, vobj):
+        self.Object = vobj.Object
+
+    def setEdit(self, vobj, mode):
+        if mode != 0:
+            return None
 
         taskd = ArchGridTaskPanel(vobj.Object)
         FreeCADGui.Control.showDialog(taskd)
         return True
 
-    def unsetEdit(self,vobj,mode):
+    def unsetEdit(self, vobj, mode):
+        if mode != 0:
+            return None
 
         FreeCADGui.Control.closeDialog()
-        return
+        return True
 
-    def doubleClicked(self,vobj):
+    def setupContextMenu(self, vobj, menu):
+        actionEdit = QtGui.QAction(translate("Arch", "Edit"),
+                                   menu)
+        QtCore.QObject.connect(actionEdit,
+                               QtCore.SIGNAL("triggered()"),
+                               self.edit)
+        menu.addAction(actionEdit)
 
-        self.setEdit(vobj)
+    def edit(self):
+        FreeCADGui.ActiveDocument.setEdit(self.Object, 0)
 
     def __getstate__(self):
 

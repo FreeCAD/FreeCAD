@@ -68,12 +68,14 @@ class DraftModification(unittest.TestCase):
         _msg("  Line")
         _msg("  a={0}, b={1}".format(a, b))
         obj = Draft.make_line(a, b)
+        App.ActiveDocument.recompute()
 
         c = Vector(3, 1, 0)
         _msg("  Translation vector")
         _msg("  c={}".format(c))
         Draft.move(obj, c)
-        self.assertTrue(obj.Start == Vector(3, 3, 0),
+        App.ActiveDocument.recompute()
+        self.assertTrue(obj.Start.isEqual(Vector(3, 3, 0), 1e-6),
                         "'{}' failed".format(operation))
 
     def test_copy(self):
@@ -108,17 +110,18 @@ class DraftModification(unittest.TestCase):
         _msg("  Rotation")
         _msg("  angle={} degrees".format(rot))
         Draft.rotate(obj, rot)
-        self.assertTrue(obj.Start.isEqual(c, 1e-12),
+        App.ActiveDocument.recompute()
+        self.assertTrue(obj.Start.isEqual(c, 1e-6),
                         "'{}' failed".format(operation))
 
     def test_offset_open(self):
-        """Create a wire, then produce an offset copy."""
+        """Create an open wire, then produce an offset copy."""
         operation = "Draft Offset"
         _msg("  Test '{}'".format(operation))
         a = Vector(0, 2, 0)
         b = Vector(2, 4, 0)
         c = Vector(5, 2, 0)
-        _msg("  Wire")
+        _msg("  Open wire")
         _msg("  a={0}, b={1}".format(a, b))
         _msg("  c={0}".format(c))
         wire = Draft.make_wire([a, b, c])
@@ -130,22 +133,52 @@ class DraftModification(unittest.TestCase):
         obj = Draft.offset(wire, offset, copy=True)
         self.assertTrue(obj, "'{}' failed".format(operation))
 
-    def test_offset_closed(self):
-        """Create a rectangle, then produce an offset copy."""
+    def test_offset_closed_with_reversed_edge(self):
+        """Create a closed wire with a reversed edge, then produce an offset copy."""
+        # Regression test for:
+        # https://github.com/FreeCAD/FreeCAD/pull/5496
         operation = "Draft Offset"
         _msg("  Test '{}'".format(operation))
-        length = 4
-        width = 2
-        _msg("  Rectangle")
+        _msg("  Closed wire with reversed edge")
+        a = Vector(0, 0, 0)
+        b = Vector(10, 0, 0)
+        c = Vector(10, 4, 0)
+        d = Vector(0, 4, 0)
+        edges = [Part.makeLine(a, b),
+                 Part.makeLine(b, c),
+                 Part.makeLine(c, d),
+                 Part.makeLine(a, d)]
+        wire = Part.Wire(edges)
+        obj = App.ActiveDocument.addObject("Part::Feature")
+        obj.Shape = wire
+
+        offset = Vector(0, -1, 0)
+        new = Draft.offset(obj, offset, copy=True)
+        self.assertTrue(len(new.Points) == 4, "'{}' failed".format(operation))
+
+    def test_offset_rectangle_with_face(self):
+        """Create a rectangle with a face, then produce an offset copy."""
+        # Regression test for:
+        # https://github.com/FreeCAD/FreeCAD/pull/7670
+        operation = "Draft Offset"
+        _msg("  Test '{}'".format(operation))
+        length = 10
+        width = 4
+        _msg("  Rectangle with face")
         _msg("  length={0}, width={1}".format(length, width))
         rect = Draft.make_rectangle(length, width)
+        rect.MakeFace = True
         App.ActiveDocument.recompute()
 
-        offset = Vector(-1, -1, 0)
+        offset = Vector(0, -1, 0)
         _msg("  Offset")
         _msg("  vector={}".format(offset))
         obj = Draft.offset(rect, offset, copy=True)
-        self.assertTrue(obj, "'{}' failed".format(operation))
+        App.ActiveDocument.recompute()
+        obj_is_ok = (obj.Shape.CenterOfGravity == Vector(5, 2, 0)
+                     and obj.Length == 12
+                     and obj.Height == 6)
+        self.assertTrue(obj_is_ok, "'{}' failed".format(operation))
 
     def test_trim(self):
         """Trim a line. NOT IMPLEMENTED."""
@@ -540,12 +573,10 @@ class DraftModification(unittest.TestCase):
         self.assertTrue(obj.hasExtension("Part::AttachExtension"),
                         "'{}' failed".format(operation))
 
-    def test_draft_to_drawing(self):
-        """Create a solid, and then a projected view in a Drawing page."""
-        operation = "Draft Drawing"
+    def test_draft_to_techdraw(self):
+        """Create a solid, and then a DraftView on a TechDraw page."""
+        operation = "TechDraw DraftView (relies on Draft code)"
         _msg("  Test '{}'".format(operation))
-        _wrn("  The Drawing Workbench is obsolete since 0.17,")
-        _wrn("  consider using the TechDraw Workbench instead")
         prism = App.ActiveDocument.addObject("Part::Prism")
         prism.Polygon = 5
         # Rotate the prism 45 degrees around the Y axis
@@ -555,21 +586,20 @@ class DraftModification(unittest.TestCase):
         _msg("  n_sides={}".format(prism.Polygon))
         _msg("  placement={}".format(prism.Placement))
 
-        svg_template = 'Mod/Drawing/Templates/A3_Landscape.svg'
-        template = Draft.get_param("template",
-                                   App.getResourceDir() + svg_template)
-        try:
-            page = App.ActiveDocument.addObject('Drawing::FeaturePage')
-            page.Template = template
-            _msg("  Drawing view")
-            _msg("  page={}".format(page.TypeId))
-            _msg("  template={}".format(page.Template))
-            obj = Draft.make_drawing_view(prism, page, otherProjection=None)
-            self.assertTrue(obj, "'{}' failed".format(operation))
-        except TypeError:
-            pass
-        except ModuleNotFoundError:
-            pass
+        page = App.ActiveDocument.addObject("TechDraw::DrawPage")
+        _msg("  page={}".format(page.TypeId))
+        template = App.ActiveDocument.addObject("TechDraw::DrawSVGTemplate")
+        template.Template = App.getResourceDir() \
+                            + "Mod/TechDraw/Templates/A3_Landscape_blank.svg"
+        page.Template = template
+        _msg("  template={}".format(template.TypeId))
+        view = App.ActiveDocument.addObject("TechDraw::DrawViewDraft")
+        view.Source = prism
+        view.Direction = App.Vector(0, 0, 1)
+        page.addView(view)
+        _msg("  view={}".format(view.TypeId))
+        self.assertTrue(view, "'{}' failed".format(operation))
+        self.assertTrue(view in page.OutList, "'{}' failed".format(operation))
 
     def test_mirror(self):
         """Create a rectangle, then a mirrored shape."""
@@ -641,7 +671,7 @@ class DraftModification(unittest.TestCase):
                    Vector( 5.0, 14.5, 0.0)]
         vrts = obj.Shape.Vertexes
         for i in range(4):
-            self.assertTrue(vrts[i].Point.isEqual(newEnds[i], 1e-8),
+            self.assertTrue(vrts[i].Point.isEqual(newEnds[i], 1e-6),
                             "'{}' failed".format(operation))
         # check midpoints of arcs:
         newMids = [Vector( 9.0,  4.0, 0.0),
@@ -651,7 +681,7 @@ class DraftModification(unittest.TestCase):
         for i in range(4):
             edge = obj.Shape.Edges[i]
             par = (edge.LastParameter - edge.FirstParameter) / 2.0
-            self.assertTrue(edge.valueAt(par).isEqual(newMids[i], 1e-8),
+            self.assertTrue(edge.valueAt(par).isEqual(newMids[i], 1e-6),
                             "'{}' failed".format(operation))
 
     def test_scale_part_feature_lines(self):
@@ -684,7 +714,7 @@ class DraftModification(unittest.TestCase):
                   Vector( 5.0, 14.5, 0.0)]
         vrts = obj.Shape.Vertexes
         for i in range(4):
-            self.assertTrue(vrts[i].Point.isEqual(newPts[i], 1e-8),
+            self.assertTrue(vrts[i].Point.isEqual(newPts[i], 1e-6),
                             "'{}' failed".format(operation))
 
     def test_scale_rectangle(self):
@@ -707,15 +737,15 @@ class DraftModification(unittest.TestCase):
         newBase = Vector(5.0, 5.5, 0.0)
         newLen = 8.0
         newHgt = 9.0
-        self.assertTrue(obj.Placement.Base.isEqual(newBase, 1e-8),
+        self.assertTrue(obj.Placement.Base.isEqual(newBase, 1e-6),
                         "'{}' failed".format(operation))
         self.assertAlmostEqual(obj.Length,
                                newLen,
-                               delta = 1e-8,
+                               delta = 1e-6,
                                msg = "'{}' failed".format(operation))
         self.assertAlmostEqual(obj.Height,
                                newHgt,
-                               delta = 1e-8,
+                               delta = 1e-6,
                                msg = "'{}' failed".format(operation))
 
     def test_scale_spline(self):
@@ -740,7 +770,7 @@ class DraftModification(unittest.TestCase):
                   Vector( 9.0, 14.5, 0.0),
                   Vector(13.0,  5.5, 0.0)]
         for i in range(3):
-            self.assertTrue(obj.Points[i].add(base).isEqual(newPts[i], 1e-8),
+            self.assertTrue(obj.Points[i].add(base).isEqual(newPts[i], 1e-6),
                             "'{}' failed".format(operation))
 
     def test_scale_wire(self):
@@ -768,7 +798,7 @@ class DraftModification(unittest.TestCase):
                   Vector( 5.0, 14.5, 0.0)]
         vrts = obj.Shape.Vertexes
         for i in range(4):
-            self.assertTrue(vrts[i].Point.isEqual(newPts[i], 1e-8),
+            self.assertTrue(vrts[i].Point.isEqual(newPts[i], 1e-6),
                             "'{}' failed".format(operation))
 
     def tearDown(self):

@@ -109,6 +109,7 @@ private:
     Connection connectChangedDocument;
     QTabWidget* tabs;
     QTimer* timer;
+    bool updating = false;
 };
 
 namespace DockWnd {

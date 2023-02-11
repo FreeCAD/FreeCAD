@@ -22,16 +22,11 @@
 
 #include "PreCompiled.h"
 
-#include <Base/Console.h>
-#include <Base/Exception.h>
-#include <Base/Vector3D.h>
-#include <Base/VectorPy.h>
-
 #include "Mod/TechDraw/App/CosmeticExtension.h"
-
 // inclusion of the generated files (generated out of CosmeticExtensionPy.xml)
 #include "CosmeticExtensionPy.h"
 #include "CosmeticExtensionPy.cpp"
+
 
 using namespace TechDraw;
 

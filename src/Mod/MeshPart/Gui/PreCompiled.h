@@ -20,7 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef __PRECOMPILED_GUI__
 #define __PRECOMPILED_GUI__
 
@@ -34,34 +33,49 @@
 
 #ifdef _PreComp_
 
-// standard
-#include <iostream>
-#include <cassert>
-#include <cmath>
-
 // STL
-#include <vector>
-#include <map>
-#include <string>
-#include <list>
-#include <set>
-#include <algorithm>
-#include <stack>
-#include <queue>
-#include <bitset>
-
-#ifdef FC_OS_WIN32
-# include <windows.h>
-#endif
-
+#include <cfloat>
+#include <sstream>
 
 // Qt Toolkit
-#ifndef __QtAll__
-# include <Gui/QtAll.h>
-#endif
+#include <QApplication>
+#include <QFuture>
+#include <QMenu>
+#include <QMessageBox>
+#include <QKeyEvent>
+#include <QMessageBox>
+#include <QPointer>
+#include <QPushButton>
+#include <QStatusBar>
+#include <QtConcurrentMap>
+#include <QTimer>
 
 // OCCT
+#include <BRep_Builder.hxx>
+#include <BRep_Tool.hxx>
+#include <BRepBuilderAPI_MakeEdge.hxx>
 #include <BRepBuilderAPI_MakePolygon.hxx>
+#include <BRepMesh_IncrementalMesh.hxx>
+#include <Geom_BSplineCurve.hxx>
+#include <GeomAPI_PointsToBSpline.hxx>
+#include <gp_Pnt.hxx>
+#include <Poly_Polygon3D.hxx>
+#include <TColgp_Array1OfPnt.hxx>
+#include <TopoDS.hxx>
+#include <TopoDS_Compound.hxx>
+#include <TopoDS_Edge.hxx>
+#include <TopoDS_Wire.hxx>
+
+// Inventor
+#include <Inventor/SoPickedPoint.h>
+#include <Inventor/details/SoFaceDetail.h>
+#include <Inventor/events/SoMouseButtonEvent.h>
+#include <Inventor/nodes/SoBaseColor.h>
+#include <Inventor/nodes/SoCoordinate3.h>
+#include <Inventor/nodes/SoDrawStyle.h>
+#include <Inventor/nodes/SoLineSet.h>
+#include <Inventor/nodes/SoPointSet.h>
+#include <Inventor/nodes/SoSeparator.h>
 
 #endif //_PreComp_
 

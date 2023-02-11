@@ -26,10 +26,10 @@
 #endif
 
 #include "DrawParametricTemplate.h"
-
 // inclusion of the generated files (generated out of DrawParametricTemplateSFPy.xml)
 #include <Mod/TechDraw/App/DrawParametricTemplatePy.h>
 #include <Mod/TechDraw/App/DrawParametricTemplatePy.cpp>
+
 
 using namespace TechDraw;
 

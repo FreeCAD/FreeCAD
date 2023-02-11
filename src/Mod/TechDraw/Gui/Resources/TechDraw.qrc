@@ -3,7 +3,7 @@
         <file>icons/actions/section-down.svg</file>
         <file>icons/actions/section-left.svg</file>
         <file>icons/actions/section-right.svg</file>
-        <file>icons/actions/section-up.svg</file>  
+        <file>icons/actions/section-up.svg</file>
         <file>icons/actions/TechDraw_2LineCenterline.svg</file>
         <file>icons/actions/TechDraw_2PointCenterline.svg</file>
         <file>icons/actions/TechDraw_ActiveView.svg</file>
@@ -28,6 +28,7 @@
         <file>icons/actions/TechDraw_Line2Points.svg</file>
         <file>icons/actions/TechDraw_Midpoints.svg</file>
         <file>icons/actions/TechDraw_MoveView.svg</file>
+        <file>icons/actions/TechDraw_AxoLengthDimension.svg</file>
         <file>icons/actions/TechDraw_Multiview.svg</file>
         <file>icons/actions/TechDraw_PageDefault.svg</file>
         <file>icons/actions/TechDraw_PageTemplate.svg</file>
@@ -51,6 +52,7 @@
         <file>icons/actions/TechDraw_View.svg</file>
         <file>icons/actions/TechDraw_WeldSymbol.svg</file>
         <file>icons/actions/TechDraw_SurfaceFinishSymbols.svg</file>
+        <file>icons/actions/TechDraw_ComplexSection.svg</file>
         <file>icons/arrow-ccw.svg</file>
         <file>icons/arrow-cw.svg</file>
         <file>icons/arrow-down.svg</file>
@@ -82,6 +84,7 @@
         <file>icons/TechDraw_Balloon.svg</file>
         <file>icons/TechDraw_DiameterDimension.svg</file>
         <file>icons/TechDraw_Dimension.svg</file>
+        <file>icons/TechDraw_DimensionRepair.svg</file>
         <file>icons/TechDraw_ExtensionAreaAnnotation.svg</file>
         <file>icons/TechDraw_ExtensionCascadeHorizDimension.svg</file>
         <file>icons/TechDraw_ExtensionCascadeObliqueDimension.svg</file>
@@ -180,6 +183,8 @@
         <!-- main wb icon and preferences icons -->
         <file>icons/preferences-techdraw.svg</file>
 
+        <!-- bitmap images -->
+
         <!-- translations -->
         <file>translations/TechDraw_af.qm</file>
         <file>translations/TechDraw_ar.qm</file>
@@ -221,5 +226,7 @@
         <file>translations/TechDraw_vi.qm</file>
         <file>translations/TechDraw_zh-CN.qm</file>
         <file>translations/TechDraw_zh-TW.qm</file>
+        <file>translations/TechDraw_sr-CS.qm</file>
+        <file>translations/TechDraw_be.qm</file>
     </qresource>
 </RCC>

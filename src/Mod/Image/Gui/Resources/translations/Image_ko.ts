@@ -2,70 +2,19 @@
 <!DOCTYPE TS>
 <TS version="2.1" language="ko" sourcelanguage="en">
   <context>
-    <name>Image_Scaling</name>
-    <message>
-      <location filename="../../../ImageTools/_CommandImageScaling.py" line="63"/>
-      <source>Scale image plane</source>
-      <translation>이미지 평면 크기 조정</translation>
-    </message>
-    <message>
-      <location filename="../../../ImageTools/_CommandImageScaling.py" line="65"/>
-      <source>Scales an image plane by defining a distance between two points</source>
-      <translation>두 점들 사이에 정의된 거리를 이용해서 이미지 평면을 스케일링</translation>
-    </message>
-  </context>
-  <context>
-    <name>Dialog</name>
-    <message>
-      <location filename="../../../ImageTools/_CommandImageScaling.py" line="134"/>
-      <source>Scale image plane</source>
-      <translation>이미지 평면 크기 조정</translation>
-    </message>
-    <message>
-      <location filename="../../../ImageTools/_CommandImageScaling.py" line="135"/>
-      <source>Distance [mm]</source>
-      <translation>거리[mm]</translation>
-    </message>
-    <message>
-      <location filename="../../../ImageTools/_CommandImageScaling.py" line="136"/>
-      <source>Select first point</source>
-      <translation>첫번째 점 선택</translation>
-    </message>
-    <message>
-      <location filename="../../../ImageTools/_CommandImageScaling.py" line="154"/>
-      <source>&lt;font color='red'&gt;Enter distance&lt;/font&gt;</source>
-      <translation>&lt;font color='red'&gt;거리 입력&lt;/font&gt;</translation>
-    </message>
-    <message>
-      <location filename="../../../ImageTools/_CommandImageScaling.py" line="157"/>
-      <source>&lt;font color='red'&gt;Select ImagePlane&lt;/font&gt;</source>
-      <translation>&lt;font color='red'&gt;이미지 평면 선택&lt;/font&gt;</translation>
-    </message>
-    <message>
-      <location filename="../../../ImageTools/_CommandImageScaling.py" line="182"/>
-      <source>Select second point</source>
-      <translation>두번째 점 선택</translation>
-    </message>
-    <message>
-      <location filename="../../../ImageTools/_CommandImageScaling.py" line="191"/>
-      <source>Select Image Plane and type distance</source>
-      <translation>이미지 평면을 선택하고 거리를 입력</translation>
-    </message>
-  </context>
-  <context>
     <name>CmdCreateImagePlane</name>
     <message>
-      <location filename="../../Command.cpp" line="101"/>
+      <location filename="../../Command.cpp" line="100"/>
       <source>Image</source>
       <translation>이미지</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="102"/>
+      <location filename="../../Command.cpp" line="101"/>
       <source>Create image plane...</source>
-      <translation>이미지 평면을 생성...</translation>
+      <translation>이미지 평면 만들기...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="103"/>
+      <location filename="../../Command.cpp" line="102"/>
       <source>Create a planar image in the 3D space</source>
       <translation>3D 공간에서 평면 이미지를 만들기</translation>
     </message>
@@ -73,19 +22,19 @@
   <context>
     <name>CmdImageOpen</name>
     <message>
-      <location filename="../../Command.cpp" line="53"/>
+      <location filename="../../Command.cpp" line="55"/>
       <source>Image</source>
       <translation>이미지</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="54"/>
+      <location filename="../../Command.cpp" line="56"/>
       <source>Open...</source>
       <translation>열기...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="55"/>
+      <location filename="../../Command.cpp" line="57"/>
       <source>Open image view</source>
-      <translation>이미지 뷰 열기</translation>
+      <translation>이미지 보기 열기</translation>
     </message>
   </context>
   <context>
@@ -103,22 +52,28 @@
     <message>
       <location filename="../../Command.cpp" line="177"/>
       <source>Image Scaling</source>
-      <translation>이미지 스케일링</translation>
+      <translation>이미지 크기조정</translation>
+    </message>
+  </context>
+  <context>
+    <name>Command</name>
+    <message>
+      <location filename="../../Command.cpp" line="150"/>
+      <source>Create ImagePlane</source>
+      <translation>이미지 평면 만들기</translation>
     </message>
   </context>
   <context>
     <name>ImageGui::GLImageBox</name>
     <message>
-      <location filename="../../GLImageBox.cpp" line="332"/>
-      <location filename="../../OpenGLImageBox.cpp" line="384"/>
+      <location filename="../../OpenGLImageBox.cpp" line="393"/>
       <source>Image pixel format</source>
       <translation>이미지 픽셀 형식</translation>
     </message>
     <message>
-      <location filename="../../GLImageBox.cpp" line="333"/>
-      <location filename="../../OpenGLImageBox.cpp" line="385"/>
+      <location filename="../../OpenGLImageBox.cpp" line="394"/>
       <source>Undefined type of colour space for image viewing</source>
-      <translation>색깔 공간의 이미지 보기에 대한 정의 되지 않은 형식</translation>
+      <translation>이미지 보기를 위한 정의되지 않은 색상 공간 유형</translation>
     </message>
   </context>
   <context>
@@ -162,101 +117,152 @@
   <context>
     <name>ImageGui::ImageView</name>
     <message>
-      <location filename="../../ImageView.cpp" line="111"/>
+      <location filename="../../ImageView.cpp" line="108"/>
       <source>&amp;Fit image</source>
-      <translation>&amp; 맞는 이미지</translation>
+      <translation>이미지 맞춤(&amp;F)</translation>
     </message>
     <message>
-      <location filename="../../ImageView.cpp" line="113"/>
+      <location filename="../../ImageView.cpp" line="110"/>
       <source>Stretch the image to fit the view</source>
-      <translation>보기에 맞게 이미지를 스트레칭</translation>
+      <translation>보기에 맞게 이미지 늘리기</translation>
     </message>
     <message>
-      <location filename="../../ImageView.cpp" line="117"/>
+      <location filename="../../ImageView.cpp" line="114"/>
       <source>&amp;1:1 scale</source>
       <translation>&amp; 1:1 스케일</translation>
     </message>
     <message>
-      <location filename="../../ImageView.cpp" line="119"/>
+      <location filename="../../ImageView.cpp" line="116"/>
       <source>Display the image at a 1:1 scale</source>
-      <translation>이미지를 1:1 스케일로 표시</translation>
+      <translation>이미지를 1:1 비율로 화면표시하기</translation>
     </message>
     <message>
-      <location filename="../../ImageView.cpp" line="128"/>
+      <location filename="../../ImageView.cpp" line="125"/>
       <source>Standard</source>
       <translation>표준</translation>
     </message>
     <message>
-      <location filename="../../ImageView.cpp" line="146"/>
+      <location filename="../../ImageView.cpp" line="143"/>
       <source>Ready...</source>
       <translation>준비...</translation>
     </message>
     <message>
-      <location filename="../../ImageView.cpp" line="539"/>
+      <location filename="../../ImageView.cpp" line="568"/>
       <source>grey</source>
-      <translation>흑백</translation>
+      <translation>회색</translation>
     </message>
     <message>
-      <location filename="../../ImageView.cpp" line="540"/>
-      <location filename="../../ImageView.cpp" line="543"/>
-      <location filename="../../ImageView.cpp" line="553"/>
-      <location filename="../../ImageView.cpp" line="558"/>
-      <location filename="../../ImageView.cpp" line="568"/>
-      <location filename="../../ImageView.cpp" line="573"/>
-      <location filename="../../ImageView.cpp" line="584"/>
-      <location filename="../../ImageView.cpp" line="589"/>
-      <location filename="../../ImageView.cpp" line="600"/>
-      <location filename="../../ImageView.cpp" line="605"/>
+      <location filename="../../ImageView.cpp" line="569"/>
+      <location filename="../../ImageView.cpp" line="572"/>
+      <location filename="../../ImageView.cpp" line="582"/>
+      <location filename="../../ImageView.cpp" line="587"/>
+      <location filename="../../ImageView.cpp" line="597"/>
+      <location filename="../../ImageView.cpp" line="602"/>
+      <location filename="../../ImageView.cpp" line="613"/>
+      <location filename="../../ImageView.cpp" line="618"/>
+      <location filename="../../ImageView.cpp" line="629"/>
+      <location filename="../../ImageView.cpp" line="634"/>
       <source>zoom</source>
       <translation>확대/축소</translation>
     </message>
     <message>
-      <location filename="../../ImageView.cpp" line="543"/>
-      <location filename="../../ImageView.cpp" line="553"/>
-      <location filename="../../ImageView.cpp" line="568"/>
-      <location filename="../../ImageView.cpp" line="584"/>
-      <location filename="../../ImageView.cpp" line="600"/>
+      <location filename="../../ImageView.cpp" line="572"/>
+      <location filename="../../ImageView.cpp" line="582"/>
+      <location filename="../../ImageView.cpp" line="597"/>
+      <location filename="../../ImageView.cpp" line="613"/>
+      <location filename="../../ImageView.cpp" line="629"/>
       <source>outside image</source>
-      <translation>외부 이미지</translation>
+      <translation>외면 이미지</translation>
     </message>
   </context>
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../Command.cpp" line="68"/>
-      <location filename="../../Command.cpp" line="115"/>
+      <location filename="../../Command.cpp" line="70"/>
+      <location filename="../../Command.cpp" line="114"/>
       <source>Images</source>
       <translation>이미지</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="73"/>
-      <location filename="../../Command.cpp" line="120"/>
+      <location filename="../../Command.cpp" line="75"/>
+      <location filename="../../Command.cpp" line="119"/>
       <source>All files</source>
       <translation>모든 파일</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="75"/>
-      <location filename="../../Command.cpp" line="122"/>
+      <location filename="../../Command.cpp" line="77"/>
+      <location filename="../../Command.cpp" line="121"/>
       <source>Choose an image file to open</source>
-      <translation>이미지 파일 선택</translation>
+      <translation>열려는 이미지 파일 고르기</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="128"/>
+      <location filename="../../Command.cpp" line="127"/>
       <source>Error opening image</source>
       <translation>이미지 여는 중 오류</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="129"/>
+      <location filename="../../Command.cpp" line="128"/>
       <source>Could not load the chosen image</source>
-      <translation>선택한 이미지를 로드할 수 없습니다.</translation>
+      <translation>선택한 이미지를 불러올 수 없습니다</translation>
     </message>
   </context>
   <context>
     <name>Workbench</name>
     <message>
-      <location filename="../../Workbench.cpp" line="36"/>
+      <location filename="../../Workbench.cpp" line="33"/>
       <source>Image</source>
       <translation>이미지</translation>
+    </message>
+  </context>
+  <context>
+    <name>Image_Scaling</name>
+    <message>
+      <location filename="../../../ImageTools/_CommandImageScaling.py" line="55"/>
+      <source>Scale image plane</source>
+      <translation type="unfinished">Scale image plane</translation>
+    </message>
+    <message>
+      <location filename="../../../ImageTools/_CommandImageScaling.py" line="59"/>
+      <source>Scales an image plane by defining a distance between two points</source>
+      <translation type="unfinished">Scales an image plane by defining a distance between two points</translation>
+    </message>
+  </context>
+  <context>
+    <name>Dialog</name>
+    <message>
+      <location filename="../../../ImageTools/_CommandImageScaling.py" line="139"/>
+      <source>Scale image plane</source>
+      <translation type="unfinished">Scale image plane</translation>
+    </message>
+    <message>
+      <location filename="../../../ImageTools/_CommandImageScaling.py" line="140"/>
+      <source>Distance</source>
+      <translation type="unfinished">Distance</translation>
+    </message>
+    <message>
+      <location filename="../../../ImageTools/_CommandImageScaling.py" line="141"/>
+      <source>Select first point</source>
+      <translation type="unfinished">Select first point</translation>
+    </message>
+    <message>
+      <location filename="../../../ImageTools/_CommandImageScaling.py" line="156"/>
+      <source>Enter distance</source>
+      <translation type="unfinished">Enter distance</translation>
+    </message>
+    <message>
+      <location filename="../../../ImageTools/_CommandImageScaling.py" line="159"/>
+      <source>Select image plane</source>
+      <translation type="unfinished">Select image plane</translation>
+    </message>
+    <message>
+      <location filename="../../../ImageTools/_CommandImageScaling.py" line="184"/>
+      <source>Select second point</source>
+      <translation type="unfinished">Select second point</translation>
+    </message>
+    <message>
+      <location filename="../../../ImageTools/_CommandImageScaling.py" line="193"/>
+      <source>Select Image Plane and type distance</source>
+      <translation type="unfinished">Select Image Plane and type distance</translation>
     </message>
   </context>
 </TS>

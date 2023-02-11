@@ -20,25 +20,16 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
-
 #ifndef _PreComp_
+# include "kdl_cp/chain.hpp"
 #endif
 
-#include <Base/Writer.h>
 #include <Base/Reader.h>
-
-#include "kdl_cp/chain.hpp"
-#include "kdl_cp/chainfksolver.hpp"
-#include "kdl_cp/chainfksolverpos_recursive.hpp"
-#include "kdl_cp/frames_io.hpp"
-#include "kdl_cp/chainiksolver.hpp"
-#include "kdl_cp/chainiksolvervel_pinv.hpp"
-#include "kdl_cp/chainjnttojacsolver.hpp"
-#include "kdl_cp/chainiksolverpos_nr.hpp"
+#include <Base/Writer.h>
 
 #include "Waypoint.h"
+
 
 #ifndef M_PI
     #define M_PI 3.14159265358979323846

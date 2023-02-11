@@ -129,10 +129,10 @@ void TaskSelectLinkProperty::activate()
     else if (LinkList) {
         // save the start values for a cnacel operation (reject())
         const std::vector<App::DocumentObject*> &Values = LinkList->getValues();
-        for(std::vector<App::DocumentObject*>::const_iterator it = Values.begin();it!=Values.end();++it)
+        for(const auto & Value : Values)
         {
-            std::string ObjName = (*it)->getNameInDocument();
-            std::string DocName = (*it)->getDocument()->getName();
+            std::string ObjName = Value->getNameInDocument();
+            std::string DocName = Value->getDocument()->getName();
             Gui::Selection().addSelection(DocName.c_str(),ObjName.c_str());
         }
     }
@@ -174,8 +174,8 @@ void TaskSelectLinkProperty::sendSelection2Property()
     else if (LinkList) {
         std::vector<Gui::SelectionObject> sel = Gui::Selection().getSelectionEx();
         std::vector<App::DocumentObject*> temp;
-        for (std::vector<Gui::SelectionObject>::iterator it=sel.begin();it!=sel.end();++it)
-            temp.push_back(it->getObject());
+        for (auto & it : sel)
+            temp.push_back(it.getObject());
         
         LinkList->setValues(temp);
     }
@@ -208,12 +208,12 @@ void TaskSelectLinkProperty::OnChange(Gui::SelectionSingleton::SubjectType &rCal
         Reason.Type == SelectionChanges::ClrSelection) {
             ui->listWidget->clear();
             std::vector<Gui::SelectionSingleton::SelObj> sel = Gui::Selection().getSelection();
-            for (std::vector<Gui::SelectionSingleton::SelObj>::const_iterator it=sel.begin();it!=sel.end();++it){
+            for (const auto & it : sel){
                 std::string temp;
-                temp += it->FeatName;
-                if (strcmp(it->SubName, "") != 0){
+                temp += it.FeatName;
+                if (strcmp(it.SubName, "") != 0){
                     temp += "::";
-                    temp += it->SubName;
+                    temp += it.SubName;
                 }
                 new QListWidgetItem(QString::fromLatin1(temp.c_str()), ui->listWidget);
             }

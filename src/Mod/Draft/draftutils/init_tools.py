@@ -141,47 +141,26 @@ def get_draft_utility_commands_toolbar():
 
 def get_draft_snap_commands():
     """Return the snapping commands list."""
-    return ['Draft_Snap_Lock',
-            'Draft_Snap_Endpoint',
-            'Draft_Snap_Midpoint',
-            'Draft_Snap_Center',
-            'Draft_Snap_Angle',
-            'Draft_Snap_Intersection',
-            'Draft_Snap_Perpendicular',
-            'Draft_Snap_Extension',
-            'Draft_Snap_Parallel',
-            'Draft_Snap_Special',
-            'Draft_Snap_Near',
-            'Draft_Snap_Ortho',
-            'Draft_Snap_Grid',
-            'Draft_Snap_WorkingPlane',
-            'Draft_Snap_Dimensions',
-            'Separator',
-            'Draft_ToggleGrid']
-
-
-def get_draft_snap_tooltips():
-    """Return a dictionary with tooltips for the snapping commands.
-
-    For the snapping commands in the default toolbar and in the statusbar the
-    tooltips from the `GetResources` functions in gui_snaps.py are not used.
-    """
-    return {'Draft_Snap_Lock'         : translate('draft', 'Snap Lock'),
-            'Draft_Snap_Endpoint'     : translate('draft', 'Snap Endpoint'),
-            'Draft_Snap_Midpoint'     : translate('draft', 'Snap Midpoint'),
-            'Draft_Snap_Center'       : translate('draft', 'Snap Center'),
-            'Draft_Snap_Angle'        : translate('draft', 'Snap Angle'),
-            'Draft_Snap_Intersection' : translate('draft', 'Snap Intersection'),
-            'Draft_Snap_Perpendicular': translate('draft', 'Snap Perpendicular'),
-            'Draft_Snap_Extension'    : translate('draft', 'Snap Extension'),
-            'Draft_Snap_Parallel'     : translate('draft', 'Snap Parallel'),
-            'Draft_Snap_Special'      : translate('draft', 'Snap Special'),
-            'Draft_Snap_Near'         : translate('draft', 'Snap Near'),
-            'Draft_Snap_Ortho'        : translate('draft', 'Snap Ortho'),
-            'Draft_Snap_Grid'         : translate('draft', 'Snap Grid'),
-            'Draft_Snap_WorkingPlane' : translate('draft', 'Snap WorkingPlane'),
-            'Draft_Snap_Dimensions'   : translate('draft', 'Snap Dimensions'),
-            'Draft_ToggleGrid'        : translate('draft', 'Toggle Draft Grid')}
+    return ["Draft_Snap_Lock",
+            "Draft_Snap_Endpoint",
+            "Draft_Snap_Midpoint",
+            "Draft_Snap_Center",
+            "Draft_Snap_Angle",
+            "Draft_Snap_Intersection",
+            "Draft_Snap_Perpendicular",
+            "Draft_Snap_Extension",
+            "Draft_Snap_Parallel",
+            "Draft_Snap_Special",
+            "Draft_Snap_Near",
+            "Draft_Snap_Ortho",
+            "Draft_Snap_Grid",
+            "Draft_Snap_WorkingPlane",
+            "Draft_Snap_Dimensions",
+            # "Separator", # Removed: if the Python generated BIM snap toolbar
+                           # is displayed in the Draft WB the separator appears
+                           # after the last button. Can be reinstated when the
+                           # BIM WB has a `normal` snap toolbar as well.
+            "Draft_ToggleGrid"]
 
 
 def get_draft_context_commands():

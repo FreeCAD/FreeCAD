@@ -48,8 +48,8 @@ DlgActiveBody::DlgActiveBody(QWidget *parent, App::Document*& doc, const QString
 {
     ui->setupUi(this);
 
-    connect(ui->bodySelect, SIGNAL(itemDoubleClicked(QListWidgetItem *)),
-            this, SLOT(accept()));
+    connect(ui->bodySelect, &QListWidget::itemDoubleClicked,
+            this, &DlgActiveBody::accept);
 
     if (!infoText.isEmpty()) {
         ui->label->setText(infoText + QString::fromUtf8("\n\n") + tr("Please select"));

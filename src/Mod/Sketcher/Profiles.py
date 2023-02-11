@@ -54,7 +54,7 @@ class _CommandProfileHexagon1:
                 'Accel': "",
                 'CmdType': "ForEdit",
                 'ToolTip': QtCore.QT_TRANSLATE_NOOP("Sketcher_ProfilesHexagon1","Creates a hexagonal profile in the sketch")}
-        
+
     def Activated(self):
         FreeCAD.ActiveDocument.openTransaction("Create hexagon profile")
         FreeCADGui.addModule("ProfileLib.Hexagon")

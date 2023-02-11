@@ -22,60 +22,44 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-#include <QAction>
-#include <QApplication>
-#include <QContextMenuEvent>
-#include <QGraphicsScene>
-#include <QGraphicsSceneHoverEvent>
-#include <QGraphicsSceneMouseEvent>
-#include <QMenu>
-#include <QMessageBox>
-#include <QMouseEvent>
-#include <QPainter>
-#include <QPainterPathStroker>
-#include <QStyleOptionGraphicsItem>
-#include <QTextOption>
-#include <QTransform>
+# include <QGraphicsSceneHoverEvent>
+# include <QGraphicsSceneMouseEvent>
+# include <QPainter>
+# include <QStyleOptionGraphicsItem>
+# include <QTransform>
 #endif
 
 #include <App/Application.h>
-#include <App/Document.h>
 #include <App/DocumentObject.h>
-#include <App/Material.h>
 #include <Base/Console.h>
-#include <Base/Tools.h>
-#include <Gui/Selection.h>
-#include <Gui/Command.h>
 #include <Gui/Application.h>
 #include <Gui/Document.h>
+#include <Gui/Selection.h>
 #include <Gui/Tools.h>
 #include <Gui/ViewProvider.h>
-
-#include "Rez.h"
-#include "ZVALUE.h"
-#include "QGSPage.h"
-#include "QGVPage.h"
-#include "QGCustomLabel.h"
-#include "QGCustomBorder.h"
-#include "QGCustomText.h"
-#include "QGICaption.h"
-#include "QGCustomClip.h"
-#include "QGCustomImage.h"
-#include "QGIVertex.h"
-#include "QGIViewClip.h"
-#include "ViewProviderDrawingView.h"
-#include "ViewProviderPage.h"
-#include "MDIViewPage.h"
-
 #include <Mod/TechDraw/App/DrawPage.h>
-#include <Mod/TechDraw/App/DrawView.h>
-#include <Mod/TechDraw/App/DrawViewClip.h>
 #include <Mod/TechDraw/App/DrawProjGroup.h>
 #include <Mod/TechDraw/App/DrawProjGroupItem.h>
 #include <Mod/TechDraw/App/DrawUtil.h>
+#include <Mod/TechDraw/App/DrawView.h>
 
-#include "PreferencesGui.h"
 #include "QGIView.h"
+#include "MDIViewPage.h"
+#include "PreferencesGui.h"
+#include "QGCustomBorder.h"
+#include "QGCustomClip.h"
+#include "QGCustomImage.h"
+#include "QGCustomLabel.h"
+#include "QGICaption.h"
+#include "QGIVertex.h"
+#include "QGIViewClip.h"
+#include "QGSPage.h"
+#include "QGVPage.h"
+#include "Rez.h"
+#include "ViewProviderDrawingView.h"
+#include "ViewProviderPage.h"
+#include "ZVALUE.h"
+
 
 using namespace TechDrawGui;
 using namespace TechDraw;
@@ -216,7 +200,7 @@ QVariant QGIView::itemChange(GraphicsItemChange change, const QVariant &value)
             m_colCurrent = getSelectColor();
 //            m_selectState = 2;
         } else {
-            m_colCurrent = PreferencesGui::normalQColor();
+            m_colCurrent = PreferencesGui::getAccessibleQColor(PreferencesGui::normalQColor());
 //            m_selectState = 0;
         }
         drawBorder();
@@ -284,7 +268,7 @@ void QGIView::hoverLeaveEvent(QGraphicsSceneHoverEvent *event)
     if(isSelected()) {
         m_colCurrent = getSelectColor();
     } else {
-        m_colCurrent = PreferencesGui::normalQColor();
+        m_colCurrent = PreferencesGui::getAccessibleQColor(PreferencesGui::normalQColor());
     }
     drawBorder();
 }
@@ -319,8 +303,6 @@ double QGIView::getYInClip(double y)
 QGIViewClip* QGIView::getClipGroup()
 {
     if (!getViewObject()->isInClip()) {
-        Base::Console().Log( "Logic Error - getClipGroup called for child "
-                         "(%s) not in Clip\n", getViewName() );
         return nullptr;
     }
 
@@ -725,17 +707,17 @@ void QGIView::setStackFromVP()
 
 QColor QGIView::prefNormalColor()
 {
-    return PreferencesGui::normalQColor();
+    return PreferencesGui::getAccessibleQColor(PreferencesGui::normalQColor());
 }
 
 QColor QGIView::getPreColor()
 {
-    return PreferencesGui::preselectQColor();
+    return PreferencesGui::getAccessibleQColor(PreferencesGui::preselectQColor());
 }
 
 QColor QGIView::getSelectColor()
 {
-    return PreferencesGui::selectQColor();
+    return PreferencesGui::getAccessibleQColor(PreferencesGui::selectQColor());
 }
 
 Base::Reference<ParameterGrp> QGIView::getParmGroupCol()

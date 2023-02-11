@@ -45,7 +45,7 @@ namespace Gui
   class Document;
   class ViewProviderDocumentObject;
   class SelectionChanges;
-  
+
   namespace DAG
   {
     class LineEdit : public QLineEdit
@@ -59,7 +59,7 @@ namespace Gui
     protected:
     void keyPressEvent(QKeyEvent*) override;
     };
-    
+
     class Model : public QGraphicsScene
     {
       Q_OBJECT
@@ -68,13 +68,13 @@ namespace Gui
       ~Model() override;
       void awake(); //!< hooked up to event dispatcher for update when idle.
       void selectionChanged(const SelectionChanges& msg);
-      
+
     protected:
       void mouseMoveEvent(QGraphicsSceneMouseEvent* event) override;
       void mousePressEvent(QGraphicsSceneMouseEvent* event) override;
       void mouseDoubleClickEvent(QGraphicsSceneMouseEvent* event) override;
       void contextMenuEvent(QGraphicsSceneContextMenuEvent* event) override;
-      
+
     private Q_SLOTS:
       void updateSlot();
       void onRenameSlot();
@@ -82,7 +82,7 @@ namespace Gui
       void renameRejectedSlot();
       void editingStartSlot();
       void editingFinishedSlot();
-      
+
     private:
       Model(){}
       //documentObject slots.
@@ -102,20 +102,20 @@ namespace Gui
       void slotInEdit(const Gui::ViewProviderDocumentObject &VPDObjectIn);
       void slotResetEdit(const Gui::ViewProviderDocumentObject &VPDObjectIn);
       void slotChangeIcon(const Gui::ViewProviderDocumentObject &VPDObjectIn, std::shared_ptr<QGraphicsPixmapItem> icon);
-      
+
       std::shared_ptr<GraphLinkContainer> graphLink;
       std::shared_ptr<Graph> theGraph;
       bool graphDirty;
-      
+
       void indexVerticesEdges();
       void removeAllItems();
       void addVertexItemsToScene(const Vertex &vertexIn);
       void removeVertexItemsFromScene(const Vertex &vertexIn);
       void updateStates();
       std::size_t columnFromMask(const ColumnMask&);
-      
+
       RectItem* getRectFromPosition(const QPointF &position); //!< can be nullptr
-      
+
     //! @name View Constants for spacing
     //@{
       float fontHeight;                           //!< height of the current qApp default font.
@@ -133,9 +133,9 @@ namespace Gui
       std::vector<QBrush> forgroundBrushes;       //!< brushes to paint points, connectors, text.
       void setupViewConstants();
     //@}
-      
+
       RectItem *currentPrehighlight;
-      
+
       enum class SelectionMode
       {
         Single,
@@ -144,22 +144,22 @@ namespace Gui
       SelectionMode selectionMode;
       std::vector<Vertex> getAllSelected();
       void visiblyIsolate(Vertex sourceIn); //!< hide any connected feature and turn on sourceIn.
-      
+
       QPointF lastPick;
       bool lastPickValid = false;
-      
+
       QPixmap visiblePixmapEnabled;
       QPixmap visiblePixmapDisabled;
       QPixmap passPixmap;
       QPixmap failPixmap;
       QPixmap pendingPixmap;
       Vertex lastAddedVertex = Graph::null_vertex(); //!< needed because python objects are not ready.
-      
+
       QAction *renameAction;
       QAction *editingFinishedAction;
       QGraphicsProxyWidget *proxy = nullptr;
       void finishRename();
-      
+
       //filters
       void setupFilters();
       using FilterContainer = std::vector<std::shared_ptr<FilterBase> >;

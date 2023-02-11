@@ -53,7 +53,7 @@ DlgRevertToBackupConfigImp::~DlgRevertToBackupConfigImp()
 void Gui::Dialog::DlgRevertToBackupConfigImp::onItemSelectionChanged()
 {
     auto items = ui->listWidget->selectedItems();
-    if (items.count() == 1) 
+    if (items.count() == 1)
         ui->buttonBox->button(QDialogButtonBox::StandardButton::Ok)->setEnabled(true);
     else
         ui->buttonBox->button(QDialogButtonBox::StandardButton::Ok)->setEnabled(false);
@@ -79,7 +79,7 @@ void DlgRevertToBackupConfigImp::showEvent(QShowEvent* event)
     const auto& backups = Application::Instance->prefPackManager()->configBackups();
     for (const auto& backup : backups) {
         auto filename = backup.filename().string();
-        auto modification_date = QDateTime::fromTime_t(fs::last_write_time(backup));
+        auto modification_date = QDateTime::fromSecsSinceEpoch(fs::last_write_time(backup));
         auto item = new QListWidgetItem(QLocale().toString(modification_date));
         item->setData(Qt::UserRole, QString::fromStdString(backup.string()));
         ui->listWidget->addItem(item);
@@ -98,10 +98,10 @@ void DlgRevertToBackupConfigImp::accept()
     auto item = items[0];
     auto path = item->data(Qt::UserRole).toString().toStdString();
     if (fs::exists(path)) {
-        ParameterManager newParameters;
-        newParameters.LoadDocument(path.c_str());
+        auto newParameters = ParameterManager::Create();
+        newParameters->LoadDocument(path.c_str());
         auto baseAppGroup = App::GetApplication().GetUserParameter().GetGroup("BaseApp");
-        newParameters.GetGroup("BaseApp")->copyTo(baseAppGroup);
+        newParameters->GetGroup("BaseApp")->copyTo(baseAppGroup);
     }
     else {
         Base::Console().Error("Preference Pack Internal Error: Invalid backup file location");

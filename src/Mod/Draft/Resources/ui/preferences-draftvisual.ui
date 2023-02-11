@@ -395,7 +395,7 @@
            <string>An SVG linestyle definition</string>
           </property>
           <property name="text">
-           <string>0.09,0.05</string>
+           <string notr="true">0.09,0.05</string>
           </property>
           <property name="alignment">
            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -438,7 +438,7 @@
            <string>An SVG linestyle definition</string>
           </property>
           <property name="text">
-           <string>0.09,0.05,0.02,0.05</string>
+           <string notr="true">0.09,0.05,0.02,0.05</string>
           </property>
           <property name="alignment">
            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -481,7 +481,7 @@
            <string>An SVG linestyle definition</string>
           </property>
           <property name="text">
-           <string>0.02,0.02</string>
+           <string notr="true">0.02,0.02</string>
           </property>
           <property name="alignment">
            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>

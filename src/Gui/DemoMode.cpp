@@ -51,13 +51,13 @@ DemoMode::DemoMode(QWidget* /*parent*/, Qt::WindowFlags fl)
 
     timer = new QTimer(this);
     timer->setInterval(1000 * ui->timeout->value());
-    connect(timer, SIGNAL(timeout()), this, SLOT(onAutoPlay()));
+    connect(timer, &QTimer::timeout, this, &DemoMode::onAutoPlay);
     oldvalue = ui->angleSlider->value();
 
     wasHidden = false;
     showHideTimer = new QTimer(this);
     showHideTimer->setInterval(5000);
-    connect(showHideTimer, SIGNAL(timeout()), this, SLOT(hide()));
+    connect(showHideTimer, &QTimer::timeout, this, &DemoMode::hide);
 }
 
 /** Destroys the object and frees any allocated resources */
@@ -159,7 +159,7 @@ void DemoMode::on_angleSlider_valueChanged(int v)
         SoCamera* cam = view->getViewer()->getSoRenderManager()->getCamera();
         if (!cam)
             return;
-        float angle = Base::toRadians<float>(/*90-v*/v - this->oldvalue);
+        auto angle = Base::toRadians<float>(/*90-v*/v - this->oldvalue);
         SbRotation rot(SbVec3f(-1, 0, 0), angle);
         reorientCamera(cam ,rot);
         this->oldvalue = v;

@@ -20,11 +20,11 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
-#include <Base/Console.h>
+
 #include "DlgTemplateField.h"
-#include <Mod/TechDraw/Gui/ui_DlgTemplateField.h>
+#include "ui_DlgTemplateField.h"
+
 
 using namespace TechDrawGui;
 

@@ -27,7 +27,7 @@
 
 #include <QGraphicsItem>
 #include <QGraphicsTextItem>
-#include <QPointF>
+
 
 QT_BEGIN_NAMESPACE
 class QPainter;

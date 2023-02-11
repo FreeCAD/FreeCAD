@@ -28,7 +28,7 @@
 #include <Gui/TaskView/TaskDialog.h>
 
 namespace Part { class Thickness; }
-namespace PartGui { 
+namespace PartGui {
 
 class ThicknessWidget : public QWidget
 {

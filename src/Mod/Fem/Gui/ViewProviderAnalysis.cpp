@@ -44,14 +44,12 @@
 #include <Mod/Fem/App/FemResultObject.h>
 #include <Mod/Fem/App/FemSetObject.h>
 #include <Mod/Fem/App/FemSolverObject.h>
+#ifdef FC_USE_VTK
+# include <Mod/Fem/App/FemPostObject.h>
+#endif
 
 #include "ViewProviderAnalysis.h"
 #include "TaskDlgAnalysis.h"
-
-
-#ifdef FC_USE_VTK
-    #include <Mod/Fem/App/FemPostObject.h>
-#endif
 
 
 using namespace FemGui;

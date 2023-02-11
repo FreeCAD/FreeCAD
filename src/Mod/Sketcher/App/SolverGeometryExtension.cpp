@@ -23,13 +23,12 @@
 #include "PreCompiled.h"
 
 #include <Base/Exception.h>
-
 #include <Mod/Part/App/Geometry.h>
 
 #include "SolverGeometryExtension.h"
 
-using namespace Sketcher;
 
+using namespace Sketcher;
 
 //---------- Geometry Extension
 TYPESYSTEM_SOURCE(Sketcher::SolverGeometryExtension,Part::GeometryExtension)

@@ -97,6 +97,11 @@ bool Placement::isIdentity() const
     return none;
 }
 
+bool Placement::isIdentity(double tol) const
+{
+    return isSame(Placement(), tol);
+}
+
 bool Placement::isSame(const Placement& p) const
 {
     return this->_rot.isSame(p._rot) &&

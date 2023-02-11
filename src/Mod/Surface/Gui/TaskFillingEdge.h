@@ -24,15 +24,19 @@
 #ifndef SURFACEGUI_TASKFILLINGEDGE_H
 #define SURFACEGUI_TASKFILLINGEDGE_H
 
-#include <Gui/TaskView/TaskDialog.h>
-#include <Gui/TaskView/TaskView.h>
-#include <Gui/SelectionFilter.h>
+#include <QWidget>
 #include <Gui/DocumentObserver.h>
-#include <Base/BoundBox.h>
-#include <Mod/Part/Gui/ViewProviderSpline.h>
+#include <Gui/SelectionFilter.h>
 #include <Mod/Surface/App/FeatureFilling.h>
+#include <Mod/Surface/Gui/SelectionMode.h>
+
 
 class QListWidgetItem;
+
+namespace Gui
+{
+class ButtonGroup;
+}
 
 namespace SurfaceGui
 {
@@ -48,7 +52,11 @@ class FillingEdgePanel : public QWidget,
 
 protected:
     class ShapeSelection;
-    enum SelectionMode { None, AppendEdge, RemoveEdge };
+    enum SelectionMode {
+        None = SurfaceGui::SelectionMode::None,
+        AppendEdge = SurfaceGui::SelectionMode::AppendEdgeConstraint,
+        RemoveEdge = SurfaceGui::SelectionMode::RemoveEdgeConstraint
+    };
     SelectionMode selectionMode;
     Surface::Filling* editedObject;
     bool checkCommand;
@@ -66,6 +74,7 @@ public:
     bool accept();
     bool reject();
     void setEditedObject(Surface::Filling* obj);
+    void appendButtons(Gui::ButtonGroup *);
 
 protected:
     void changeEvent(QEvent *e) override;
@@ -79,13 +88,16 @@ protected:
     void modifyBoundary(bool);
 
 private Q_SLOTS:
-    void on_buttonUnboundEdgeAdd_clicked();
-    void on_buttonUnboundEdgeRemove_clicked();
+    void on_buttonUnboundEdgeAdd_toggled(bool checked);
+    void on_buttonUnboundEdgeRemove_toggled(bool checked);
     void on_listUnbound_itemDoubleClicked(QListWidgetItem*);
     void on_buttonUnboundAccept_clicked();
     void on_buttonUnboundIgnore_clicked();
     void onDeleteUnboundEdge();
     void clearSelection();
+
+private:
+    void exitSelectionMode();
 };
 
 } //namespace SurfaceGui

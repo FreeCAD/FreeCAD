@@ -70,7 +70,7 @@ DownloadManager::DownloadManager(QWidget *parent)
     ui->downloadsView->horizontalHeader()->setStretchLastSection(true);
     m_model = new DownloadModel(this);
     ui->downloadsView->setModel(m_model);
-    connect(ui->cleanupButton, SIGNAL(clicked()), this, SLOT(cleanup()));
+    connect(ui->cleanupButton, &QPushButton::clicked, this, &DownloadManager::cleanup);
     load();
 
     Gui::DockWindowManager* pDockMgr = Gui::DockWindowManager::instance();
@@ -161,13 +161,13 @@ void DownloadManager::handleUnsupportedContent(QNetworkReply *reply, bool reques
     if (ok && size == 0)
         return;
 
-    DownloadItem *item = new DownloadItem(reply, requestFileName, this);
+    auto item = new DownloadItem(reply, requestFileName, this);
     addItem(item);
 }
 
 void DownloadManager::addItem(DownloadItem *item)
 {
-    connect(item, SIGNAL(statusChanged()), this, SLOT(updateRow()));
+    connect(item, &DownloadItem::statusChanged, this, &DownloadManager::updateRow);
     int row = m_downloads.count();
     m_model->beginInsertRows(QModelIndex(), row, row);
     m_downloads.append(item);
@@ -182,13 +182,13 @@ void DownloadManager::addItem(DownloadItem *item)
 
 void DownloadManager::updateRow()
 {
-    DownloadItem *item = qobject_cast<DownloadItem*>(sender());
+    auto item = qobject_cast<DownloadItem*>(sender());
     int row = m_downloads.indexOf(item);
     if (-1 == row)
         return;
     if (!m_iconProvider)
         m_iconProvider = new QFileIconProvider();
-    QIcon icon = m_iconProvider->icon(item->m_output.fileName());
+    QIcon icon = m_iconProvider->icon(QFileInfo(item->m_output.fileName()));
     if (icon.isNull())
         icon = style()->standardIcon(QStyle::SP_FileIcon);
     item->fileIcon->setPixmap(icon.pixmap(48, 48));
@@ -264,7 +264,7 @@ void DownloadManager::load()
         QString fileName = settings.value(key + QLatin1String("location")).toString();
         bool done = settings.value(key + QLatin1String("done"), true).toBool();
         if (!url.isEmpty() && !fileName.isEmpty()) {
-            DownloadItem *item = new DownloadItem(nullptr, false, this);
+            auto item = new DownloadItem(nullptr, false, this);
             item->m_output.setFileName(fileName);
             item->fileNameLabel->setText(QFileInfo(item->m_output.fileName()).fileName());
             item->m_url = url;

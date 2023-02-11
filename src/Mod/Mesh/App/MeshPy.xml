@@ -3,11 +3,11 @@
 	<PythonExport
 		Father="ComplexGeoDataPy"
 		Include="Mod/Mesh/App/Mesh.h"
-		Name="MeshPy" 
+		Name="MeshPy"
 		Twin="MeshObject"
-		TwinPointer="MeshObject" 
-		Namespace="Mesh" 
-		FatherInclude="App/ComplexGeoDataPy.h" 
+		TwinPointer="MeshObject"
+		Namespace="Mesh"
+		FatherInclude="App/ComplexGeoDataPy.h"
 		FatherNamespace="Data"
 		Constructor="true">
 		<Documentation>

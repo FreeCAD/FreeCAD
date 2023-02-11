@@ -41,7 +41,7 @@ namespace bp = boost::placeholders;
 DAG::DockWindow::DockWindow(Gui::Document* gDocumentIn, QWidget* parent): Gui::DockWindow(gDocumentIn, parent)
 {
   dagView = new View(this);
-  QVBoxLayout *layout = new QVBoxLayout();
+  auto layout = new QVBoxLayout();
   layout->addWidget(dagView);
   this->setLayout(layout);
 }
@@ -52,9 +52,10 @@ View::View(QWidget* parentIn): QGraphicsView(parentIn)
   this->setRenderHint(QPainter::TextAntialiasing, true);
   conActive = Application::Instance->signalActiveDocument.connect(boost::bind(&View::slotActiveDocument, this, bp::_1));
   conDelete = Application::Instance->signalDeleteDocument.connect(boost::bind(&View::slotDeleteDocument, this, bp::_1));
-  
+
   //just update the dagview when the gui process is idle.
-  connect(QAbstractEventDispatcher::instance(), SIGNAL(awake()), this, SLOT(awakeSlot()));
+  connect(QAbstractEventDispatcher::instance(), &QAbstractEventDispatcher::awake,
+          this, &View::awakeSlot);
 }
 
 View::~View()
@@ -80,7 +81,7 @@ void View::slotActiveDocument(const Document &documentIn)
 
 void View::slotDeleteDocument(const Document &documentIn)
 {
-  ModelMap::iterator it = modelMap.find(&documentIn);
+  ModelMap::const_iterator it = modelMap.find(&documentIn);
   if (it != modelMap.end())
     modelMap.erase(it);
 }

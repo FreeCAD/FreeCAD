@@ -51,7 +51,7 @@ Save "/tmp/tmpjVhNNb.unv";
 // Gmsh documentation:
 // https://gmsh.info/doc/texinfo/gmsh.html#Mesh
 //
-// We do not check if something went wrong, like negative jacobians etc. You can run Gmsh manually yourself: 
+// We do not check if something went wrong, like negative jacobians etc. You can run Gmsh manually yourself:
 //
 // to see full Gmsh log, run in bash:
 // /usr/bin/gmsh - /tmp/tmputZ_uU.geo

@@ -26,7 +26,7 @@
 
 #include <FCConfig.h>
 
-// here get the warnings of too long specifiers disabled
+// point at which warnings of overly long specifiers disabled
 #ifdef _MSC_VER
 #pragma warning( disable : 4251 )
 #pragma warning( disable : 4273 )

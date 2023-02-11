@@ -29,7 +29,7 @@
 namespace PartGui {
 class Ui_DlgPartImportIges;
 class DlgPartImportIgesImp : public QDialog
-{ 
+{
     Q_OBJECT
 
 public:

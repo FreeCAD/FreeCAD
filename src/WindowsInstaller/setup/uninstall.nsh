@@ -67,9 +67,8 @@ Section "un.FreeCAD" un.SecUnProgramFiles
      DeleteRegKey SHELL_CONTEXT "Software\Classes\${APP_EXT}"
   ${EndIf}
   
-  # clean other registry entries
+  # clean other registry entry
   DeleteRegKey SHCTX "SOFTWARE\Microsoft\Windows\CurrentVersion\App Paths\${APP_NAME}.exe"
-  DeleteRegKey SHCTX "SOFTWARE\${APP_REGKEY}"
   
   # Eventually refresh shell icons
    ${RefreshShellIcons}
@@ -86,9 +85,9 @@ Section /o "un.$(UnFreeCADPreferencesTitle)" un.SecUnPreferences
  # remove FreeCAD's config files
  StrCpy $AppSubfolder ${APP_DIR_USERDATA}
  Call un.DelAppPathSub # function from Utils.nsh
+ # remove the registry key that stores the main window parameters
+ DeleteRegKey HKCU "SOFTWARE\${APP_NAME}"
  NotPreferences:
- # remove registry settings
- DeleteRegKey HKCU "Software\${APP_NAME}\${APP_NAME}${APP_SERIES_NAME}"
   
 SectionEnd
 

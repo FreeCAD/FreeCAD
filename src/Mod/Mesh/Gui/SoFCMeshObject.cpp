@@ -20,21 +20,19 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
-
 #ifndef _PreComp_
 # include <algorithm>
 # include <climits>
 # ifdef FC_OS_WIN32
-# include <windows.h>
+#  include <windows.h>
 # endif
 # ifdef FC_OS_MACOSX
-# include <OpenGL/gl.h>
-# include <OpenGL/glu.h>
+#  include <OpenGL/gl.h>
+#  include <OpenGL/glu.h>
 # else
-# include <GL/gl.h>
-# include <GL/glu.h>
+#  include <GL/gl.h>
+#  include <GL/glu.h>
 # endif
 # include <Inventor/SbLine.h>
 # include <Inventor/SoPickedPoint.h>
@@ -45,28 +43,26 @@
 # include <Inventor/actions/SoGLRenderAction.h>
 # include <Inventor/actions/SoPickAction.h>
 # include <Inventor/actions/SoSearchAction.h>
-# include <Inventor/actions/SoWriteAction.h>
 # include <Inventor/bundles/SoMaterialBundle.h>
 # include <Inventor/bundles/SoTextureCoordinateBundle.h>
 # include <Inventor/details/SoFaceDetail.h>
 # include <Inventor/details/SoLineDetail.h>
-# include <Inventor/errors/SoReadError.h>
 # include <Inventor/misc/SoState.h>
 #endif
 
-#include "SoFCMeshObject.h"
 #include <Base/Console.h>
 #include <Base/Exception.h>
 #include <Gui/SoFCInteractiveElement.h>
 #include <Gui/SoFCSelectionAction.h>
 #include <Mod/Mesh/App/Core/Algorithm.h>
-#include <Mod/Mesh/App/Core/MeshIO.h>
-#include <Mod/Mesh/App/Core/MeshKernel.h>
 #include <Mod/Mesh/App/Core/Elements.h>
 #include <Mod/Mesh/App/Core/Grid.h>
+#include <Mod/Mesh/App/Core/MeshKernel.h>
+
+#include "SoFCMeshObject.h"
+
 
 using namespace MeshGui;
-
 
 class SoOutputStreambuf : public std::streambuf
 {
@@ -563,11 +559,11 @@ void SoFCMeshObjectNode::getPrimitiveCount(SoGetPrimitiveCountAction * action)
 }
 
 // Helper functions: draw vertices
-inline void glVertex(const MeshCore::MeshPoint& _v)  
+inline void glVertex(const MeshCore::MeshPoint& _v)
 {
     float v[3];
     v[0]=_v.x; v[1]=_v.y;v[2]=_v.z;
-    glVertex3fv(v); 
+    glVertex3fv(v);
 }
 
 // Helper functions: draw normal
@@ -575,19 +571,19 @@ inline void glNormal(const Base::Vector3f& _n)
 {
     float n[3];
     n[0]=_n.x; n[1]=_n.y;n[2]=_n.z;
-    glNormal3fv(n); 
+    glNormal3fv(n);
 }
 
 // Helper functions: draw normal
 inline void glNormal(float* n)
 {
-    glNormal3fv(n); 
+    glNormal3fv(n);
 }
 
 // Helper function: convert Vec to SbVec3f
 inline SbVec3f sbvec3f(const Base::Vector3f& _v)
 {
-    return SbVec3f(_v.x, _v.y, _v.z); 
+    return SbVec3f(_v.x, _v.y, _v.z);
 }
 
 SO_NODE_SOURCE(SoFCMeshObjectShape)
@@ -644,9 +640,9 @@ void SoFCMeshObjectShape::GLRender(SoGLRenderAction *action)
 
         SbBool needNormals = !mb.isColorOnly()/* || tb.isFunction()*/;
         mb.sendFirst();  // make sure we have the correct material
-    
+
         SbBool ccw = true;
-        if (SoShapeHintsElement::getVertexOrdering(state) == SoShapeHintsElement::CLOCKWISE) 
+        if (SoShapeHintsElement::getVertexOrdering(state) == SoShapeHintsElement::CLOCKWISE)
             ccw = false;
 
         if (!mode || mesh->countFacets() <= this->renderTriangleLimit) {
@@ -739,7 +735,7 @@ void SoFCMeshObjectShape::drawFaces(const Mesh::MeshObject * mesh, SoMaterialBun
                 n[0] = (v1.y-v0.y)*(v2.z-v0.z)-(v1.z-v0.z)*(v2.y-v0.y);
                 n[1] = (v1.z-v0.z)*(v2.x-v0.x)-(v1.x-v0.x)*(v2.z-v0.z);
                 n[2] = (v1.x-v0.x)*(v2.y-v0.y)-(v1.y-v0.y)*(v2.x-v0.x);
-    
+
                 if(perFace)
                 mb->send(it-rFacets.begin(), true);
                 glNormal(n);
@@ -841,7 +837,7 @@ void SoFCMeshObjectShape::drawPoints(const Mesh::MeshObject * mesh, SbBool needN
                     n[0] = -((v1.y-v0.y)*(v2.z-v0.z)-(v1.z-v0.z)*(v2.y-v0.y));
                     n[1] = -((v1.z-v0.z)*(v2.x-v0.x)-(v1.x-v0.x)*(v2.z-v0.z));
                     n[2] = -((v1.x-v0.x)*(v2.y-v0.y)-(v1.y-v0.y)*(v2.x-v0.x));
-      
+
                     // Calculate the center point p=(v0+v1+v2)/3
                     float p[3];
                     p[0] = (v0.x+v1.x+v2.x)/3.0f;
@@ -1146,7 +1142,7 @@ void SoFCMeshObjectShape::generatePrimitives(SoAction* action)
     vertex.setDetail(&pointDetail);
 
     beginShape(action, TRIANGLES, &faceDetail);
-    try 
+    try
     {
         for (MeshCore::MeshFacetArray::_TConstIterator it = rFacets.begin(); it != rFacets.end(); ++it)
         {
@@ -1298,9 +1294,9 @@ void SoFCMeshSegmentShape::GLRender(SoGLRenderAction *action)
 
         SbBool needNormals = !mb.isColorOnly()/* || tb.isFunction()*/;
         mb.sendFirst();  // make sure we have the correct material
-    
+
         SbBool ccw = true;
-        if (SoShapeHintsElement::getVertexOrdering(state) == SoShapeHintsElement::CLOCKWISE) 
+        if (SoShapeHintsElement::getVertexOrdering(state) == SoShapeHintsElement::CLOCKWISE)
             ccw = false;
 
         if (!mode || mesh->countFacets() <= this->renderTriangleLimit) {
@@ -1384,7 +1380,7 @@ void SoFCMeshSegmentShape::drawFaces(const Mesh::MeshObject * mesh, SoMaterialBu
                 n[0] = (v1.y-v0.y)*(v2.z-v0.z)-(v1.z-v0.z)*(v2.y-v0.y);
                 n[1] = (v1.z-v0.z)*(v2.x-v0.x)-(v1.x-v0.x)*(v2.z-v0.z);
                 n[2] = (v1.x-v0.x)*(v2.y-v0.y)-(v1.y-v0.y)*(v2.x-v0.x);
-    
+
                 if(perFace)
                 mb->send(*it, true);
                 glNormal(n);
@@ -1494,7 +1490,7 @@ void SoFCMeshSegmentShape::drawPoints(const Mesh::MeshObject * mesh, SbBool need
                     n[0] = -((v1.y-v0.y)*(v2.z-v0.z)-(v1.z-v0.z)*(v2.y-v0.y));
                     n[1] = -((v1.z-v0.z)*(v2.x-v0.x)-(v1.x-v0.x)*(v2.z-v0.z));
                     n[2] = -((v1.x-v0.x)*(v2.y-v0.y)-(v1.y-v0.y)*(v2.x-v0.x));
-      
+
                     // Calculate the center point p=(v0+v1+v2)/3
                     float p[3];
                     p[0] = (v0.x+v1.x+v2.x)/3.0f;
@@ -1562,7 +1558,7 @@ void SoFCMeshSegmentShape::generatePrimitives(SoAction* action)
     vertex.setDetail(&pointDetail);
 
     beginShape(action, TRIANGLES, &faceDetail);
-    try 
+    try
     {
         for (std::vector<Mesh::FacetIndex>::const_iterator it = rSegm.begin(); it != rSegm.end(); ++it)
         {
@@ -1643,7 +1639,7 @@ void SoFCMeshSegmentShape::computeBBox(SoAction *action, SbBox3f &box, SbVec3f &
                     cBox.Add(rPoint[face._aulPoints[1]]);
                     cBox.Add(rPoint[face._aulPoints[2]]);
             }
-            
+
             box.setBounds(SbVec3f(cBox.MinX,cBox.MinY,cBox.MinZ),
                           SbVec3f(cBox.MaxX,cBox.MaxY,cBox.MaxZ));
             Base::Vector3f mid = cBox.GetCenter();
@@ -1713,7 +1709,7 @@ void SoFCMeshObjectBoundary::drawLines(const Mesh::MeshObject * mesh) const
     const MeshCore::MeshPointArray & rPoints = mesh->getKernel().GetPoints();
     const MeshCore::MeshFacetArray & rFacets = mesh->getKernel().GetFacets();
 
-    // When rendering open edges use the given line width * 3 
+    // When rendering open edges use the given line width * 3
     GLfloat lineWidth;
     glGetFloatv(GL_LINE_WIDTH, &lineWidth);
     glLineWidth(3.0f*lineWidth);

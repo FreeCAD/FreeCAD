@@ -556,7 +556,7 @@ get date suffix according to the specified format</string>
       <item row="0" column="0">
        <widget class="Gui::PrefCheckBox" name="prefDuplicateLabel">
         <property name="toolTip">
-         <string>Allow objects to have same label/name</string>
+         <string>Allow objects to have same label</string>
         </property>
         <property name="text">
          <string>Allow duplicate object labels in one document</string>

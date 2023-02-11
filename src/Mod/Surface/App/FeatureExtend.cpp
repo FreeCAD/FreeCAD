@@ -22,28 +22,29 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-#include <BRepAdaptor_Surface.hxx>
-#include <BRepBuilderAPI_MakeFace.hxx>
-#include <BRepLProp_SLProps.hxx>
-#include <TColgp_Array2OfPnt.hxx>
-#include <gp_Pnt.hxx>
-#include <Geom_BSplineSurface.hxx>
-#include <GeomAPI_PointsToBSplineSurface.hxx>
-#include <TopoDS.hxx>
-#include <TopoDS_Face.hxx>
-#include <Precision.hxx>
-#include <Standard_Version.hxx>
+# include <BRepAdaptor_Surface.hxx>
+# include <BRepBuilderAPI_MakeFace.hxx>
+# include <BRepLProp_SLProps.hxx>
+# include <Geom_BSplineSurface.hxx>
+# include <GeomAPI_PointsToBSplineSurface.hxx>
+# include <gp_Pnt.hxx>
+# include <Precision.hxx>
+# include <Standard_Version.hxx>
+# include <TColgp_Array2OfPnt.hxx>
+# include <TopoDS.hxx>
+# include <TopoDS_Face.hxx>
 #endif
 
-#include "FeatureExtend.h"
 #include <Base/Tools.h>
-#include <Base/Exception.h>
+
+#include "FeatureExtend.h"
+
 
 using namespace Surface;
 
-const App::PropertyIntegerConstraint::Constraints SampleRange = {2,INT_MAX,1};
-const App::PropertyFloatConstraint::Constraints ToleranceRange = {0.0,10.0,0.01};
-const App::PropertyFloatConstraint::Constraints ExtendRange = {-0.5,10.0,0.01};
+const App::PropertyIntegerConstraint::Constraints SampleRange = {2, INT_MAX, 1};
+const App::PropertyFloatConstraint::Constraints ToleranceRange = {0.0, 10.0, 0.01};
+const App::PropertyFloatConstraint::Constraints ExtendRange = {-0.5, 10.0, 0.01};
 PROPERTY_SOURCE(Surface::Extend, Part::Spline)
 
 Extend::Extend() : lockOnChangeMutex(false)

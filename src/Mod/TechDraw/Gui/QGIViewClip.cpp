@@ -23,22 +23,18 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-#include <algorithm>    // std::find
-#include <QGraphicsScene>
+# include <algorithm>    // std::find
+# include <QGraphicsScene>
 #endif
 
-#include <App/Application.h>
-#include <App/Material.h>
 #include <Base/Console.h>
-#include <Base/Parameter.h>
-
 #include <Mod/TechDraw/App/DrawViewClip.h>
 
-#include "Rez.h"
-#include "QGCustomRect.h"
-#include "QGCustomClip.h"
-#include "DrawGuiUtil.h"
 #include "QGIViewClip.h"
+#include "QGCustomClip.h"
+#include "QGCustomRect.h"
+#include "Rez.h"
+
 
 using namespace TechDrawGui;
 

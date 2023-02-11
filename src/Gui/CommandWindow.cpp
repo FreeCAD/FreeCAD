@@ -44,33 +44,6 @@ using namespace Gui;
 
 
 //===========================================================================
-// Std_ArrangeIcons
-//===========================================================================
-DEF_STD_CMD_A(StdCmdArrangeIcons)
-
-StdCmdArrangeIcons::StdCmdArrangeIcons()
-  : Command("Std_ArrangeIcons")
-{
-    sGroup        = "Window";
-    sMenuText     = QT_TR_NOOP("Arrange &Icons");
-    sToolTipText  = QT_TR_NOOP("Arrange Icons");
-    sWhatsThis    = "Std_ArrangeIcons";
-    sStatusTip    = QT_TR_NOOP("Arrange Icons");
-    eType         = 0;
-}
-
-void StdCmdArrangeIcons::activated(int iMsg)
-{
-    Q_UNUSED(iMsg);
-    getMainWindow()->arrangeIcons ();
-}
-
-bool StdCmdArrangeIcons::isActive()
-{
-    return !(getMainWindow()->windows().isEmpty());
-}
-
-//===========================================================================
 // Std_TileWindows
 //===========================================================================
 DEF_STD_CMD_A(StdCmdTileWindows)
@@ -229,7 +202,12 @@ StdCmdActivatePrevWindow::StdCmdActivatePrevWindow()
     sWhatsThis    = "Std_ActivatePrevWindow";
     sStatusTip    = QT_TR_NOOP("Activate previous window");
     sPixmap       = "Std_WindowPrev";
-    sAccel        = keySequenceToAccel(QKeySequence::PreviousChild);
+    // Depending on the OS 'QKeySequence::PreviousChild' gives
+    // Ctrl+Shift+Backtab instead of Ctrl+Shift+Tab which leads
+    // to a strange behaviour when using it.
+    // A workaround is to create a shortcut as Shift + QKeySequence::NextChild
+    static std::string previousChild = std::string("Shift+") + keySequenceToAccel(QKeySequence::NextChild);
+    sAccel        = previousChild.c_str();
     eType         = 0;
 }
 
@@ -376,7 +354,8 @@ protected:
     Action * action;
     bool eventFilter(QObject *obj, QEvent *event) override
     {
-        if (getMainWindow()->findChild<QStatusBar *>() && obj == getMainWindow()->statusBar() && ((event->type() == QEvent::Hide) || (event->type() == QEvent::Show))) {
+        if (getMainWindow() && getMainWindow()->findChild<QStatusBar *>() && obj == getMainWindow()->statusBar() &&
+            ((event->type() == QEvent::Hide) || (event->type() == QEvent::Show))) {
             this->action->setChecked(getMainWindow()->statusBar()->isVisible());
         }
         return false;
@@ -401,7 +380,7 @@ Action * StdCmdStatusBar::createAction()
     Action *pcAction = Command::createAction();
     pcAction->setCheckable(true);
     pcAction->setChecked(false, true);
-    FilterStatusBar *fsb = new FilterStatusBar(pcAction);
+    auto fsb = new FilterStatusBar(pcAction);
     getMainWindow()->statusBar()->installEventFilter(fsb);
 
     return pcAction;
@@ -487,7 +466,6 @@ void CreateWindowStdCommands()
 {
     CommandManager &rcCmdMgr = Application::Instance->commandManager();
 
-    rcCmdMgr.addCommand(new StdCmdArrangeIcons());
     rcCmdMgr.addCommand(new StdCmdTileWindows());
     rcCmdMgr.addCommand(new StdCmdCascadeWindows());
     rcCmdMgr.addCommand(new StdCmdCloseActiveWindow());

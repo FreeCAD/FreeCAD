@@ -307,7 +307,7 @@ typedef unsigned __int64    uint64_t;
 #include <FCGlobal.h>
 
 //**************************************************************************
-// here get the warnings of too long specifiers disabled (needed for VC6)
+// point at which warnings of overly long specifiers disabled (needed for VC6)
 #ifdef _MSC_VER
 #   pragma warning( disable : 4251 )
 //#   pragma warning( disable : 4503 )

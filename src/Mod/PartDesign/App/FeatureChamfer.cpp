@@ -162,7 +162,7 @@ App::DocumentObjectExecReturn *Chamfer::execute()
 
             // Set the face based on flipDirection for all edges by default. Note for chamferType==0 it does not matter which face is used.
             TopoDS_Face face = TopoDS::Face( flipDirection ? faceLast : faceFirst );
-    
+
             // for chamfer types otherthan Equal (type = 0) check if one of the faces associated with the edge
             // is one of the originally selected faces. If so use the other face by default or the selected face if "flipDirection" is set
             if (chamferType != 0) {
@@ -171,14 +171,14 @@ App::DocumentObjectExecReturn *Chamfer::execute()
                 for (const auto &itFN : FaceNames) {
                     const TopoDS_Shape selFace = baseShape.getSubShape(itFN.c_str());
 
-                    if ( faceLast.IsEqual(selFace) ) 
+                    if ( faceLast.IsEqual(selFace) )
                         face = TopoDS::Face( flipDirection ? faceFirst : faceLast );
-                    
-                    else if ( faceFirst.IsEqual(selFace) ) 
+
+                    else if ( faceFirst.IsEqual(selFace) )
                         face = TopoDS::Face( flipDirection ? faceLast : faceFirst );
                 }
 
-            } 
+            }
 
             switch (chamferType) {
                 case 0: // Equal distance

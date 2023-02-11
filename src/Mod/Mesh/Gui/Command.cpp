@@ -20,66 +20,59 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # ifdef FC_OS_WIN32
-# include <windows.h>
+#  include <windows.h>
 # endif
+# include <map>
+
 # include <QApplication>
-# include <qaction.h>
-# include <qdir.h>
 # include <qfileinfo.h>
 # include <qinputdialog.h>
 # include <qmessagebox.h>
 # include <QPointer>
 # include <qstringlist.h>
-//# include <gts.h>
-# include <map>
 #endif
 
 #ifndef __InventorAll__
 # include <Gui/InventorAll.h>
 #endif
 
-#include <Mod/Mesh/App/Core/Smoothing.h>
-#include <Mod/Mesh/App/MeshFeature.h>
-#include <Mod/Mesh/App/FeatureMeshCurvature.h>
-
-#include <Base/Console.h>
-#include <Base/Exception.h>
-#include <Base/Interpreter.h>
-#include <Base/Tools.h>
-#include <App/Document.h>
 #include <App/DocumentObjectGroup.h>
 #include <App/DocumentObject.h>
+#include <Base/Console.h>
+#include <Base/Tools.h>
 #include <Gui/Application.h>
 #include <Gui/BitmapFactory.h>
-#include <Gui/MainWindow.h>
 #include <Gui/Command.h>
 #include <Gui/Control.h>
 #include <Gui/Document.h>
 #include <Gui/FileDialog.h>
-#include <Gui/Selection.h>
+#include <Gui/MainWindow.h>
 #include <Gui/MouseSelection.h>
-#include <Gui/ViewProvider.h>
+#include <Gui/NavigationStyle.h>
+#include <Gui/Selection.h>
 #include <Gui/View3DInventor.h>
 #include <Gui/View3DInventorViewer.h>
-#include <Gui/NavigationStyle.h>
 #include <Gui/WaitCursor.h>
-#include <CXX/Objects.hxx>
 
+#include <Mod/Mesh/App/FeatureMeshCurvature.h>
+#include <Mod/Mesh/App/MeshFeature.h>
+#include <Mod/Mesh/App/Core/Smoothing.h>
+
+#include "DlgDecimating.h"
 #include "DlgEvaluateMeshImp.h"
 #include "DlgRegularSolidImp.h"
-#include "RemoveComponents.h"
-#include "RemeshGmsh.h"
 #include "DlgSmoothing.h"
-#include "DlgDecimating.h"
-#include "ViewProviderMeshFaceSet.h"
-#include "ViewProviderCurvature.h"
 #include "MeshEditor.h"
+#include "RemeshGmsh.h"
+#include "RemoveComponents.h"
 #include "Segmentation.h"
 #include "SegmentationBestFit.h"
+#include "ViewProviderCurvature.h"
+#include "ViewProviderMeshFaceSet.h"
+
 
 using namespace Mesh;
 
@@ -112,8 +105,8 @@ void CmdMeshTransform::activated(int)
   doCommand(Doc,"App.activeDocument().addObject(\"Mesh::Transform\",\"%s\")",fName.c_str());
   doCommand(Doc,"App.activeDocument().%s.Source = App.activeDocument().%s",fName.c_str(),cSel[0].FeatName);
   doCommand(Gui,"Gui.hide(\"%s\")",cSel[0].FeatName);
-  commitCommand(); 
- 
+  commitCommand();
+
   updateActive();
 }
 
@@ -152,8 +145,8 @@ void CmdMeshDemolding::activated(int)
   doCommand(Doc,"App.activeDocument().addObject(\"Mesh::TransformDemolding\",\"%s\")",fName.c_str());
   doCommand(Doc,"App.activeDocument().%s.Source = App.activeDocument().%s",fName.c_str(),cSel[0].FeatName);
   doCommand(Gui,"Gui.hide(\"%s\")",cSel[0].FeatName);
-  commitCommand(); 
- 
+  commitCommand();
+
   updateActive();
 }
 

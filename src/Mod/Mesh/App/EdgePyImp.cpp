@@ -20,17 +20,16 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
-#include "Mesh.h"
-#include "Edge.h"
-#include <Mod/Mesh/App/EdgePy.h>
-#include <Mod/Mesh/App/EdgePy.cpp>
-
 #include <Base/Converter.h>
-#include <Base/VectorPy.h>
 #include <Base/GeometryPyCXX.h>
+#include <Base/VectorPy.h>
+
+#include "Edge.h"
+#include "EdgePy.h"
+#include "EdgePy.cpp"
+
 
 using namespace Mesh;
 
@@ -44,7 +43,7 @@ std::string EdgePy::representation() const
     str << "(" << ptr->_aclPoints[1].x << ", " << ptr->_aclPoints[1].y << ", " << ptr->_aclPoints[1].z << ", Idx=" << ptr->PIndex[1] << "), ";
     str << "Idx=" << ptr->Index << ", (" << ptr->NIndex[0] << ", " << ptr->NIndex[1] << ")";
     str << ")";
- 
+
     return str.str();
 }
 
@@ -190,5 +189,5 @@ PyObject *EdgePy::getCustomAttributes(const char* /*attr*/) const
 
 int EdgePy::setCustomAttributes(const char* /*attr*/, PyObject * /*obj*/)
 {
-    return 0; 
+    return 0;
 }

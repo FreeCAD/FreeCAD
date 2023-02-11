@@ -23,26 +23,24 @@
 #ifndef WEBGUI_BROWSERVIEW_H
 #define WEBGUI_BROWSERVIEW_H
 
+#include <QLineEdit>
+#include <QPointer>
+#if defined(QTWEBENGINE)
+# include <QWebEngineView>
+namespace WebGui {
+ class WebEngineUrlRequestInterceptor;
+}
+#elif defined(QTWEBKIT)
+# include <QWebView>
+#endif
 
 #include <Gui/MDIView.h>
 #include <Gui/Window.h>
 #include <Mod/Web/WebGlobal.h>
-#include <QLineEdit>
-#include <QPointer>
 
-#if defined(QTWEBENGINE)
-#include <QWebEngineView>
-
-namespace WebGui {
-class WebEngineUrlRequestInterceptor;
-}
-#elif defined(QTWEBKIT)
-#include <QWebView>
-#endif
-
-class QUrl;
-class QNetworkRequest;
 class QNetworkReply;
+class QNetworkRequest;
+class QUrl;
 
 namespace WebGui {
 class UrlWidget;
@@ -115,7 +113,11 @@ protected Q_SLOTS:
     bool chckHostAllowed(const QString& host);
     void urlFilter(const QUrl &url);
 #ifdef QTWEBENGINE
+#if QT_VERSION < QT_VERSION_CHECK(6,0,0)
     void onDownloadRequested(QWebEngineDownloadItem *request);
+#else
+    void onDownloadRequested(QWebEngineDownloadRequest *request);
+#endif
     void onLinkHovered(const QString& url);
 #else
     void onDownloadRequested(const QNetworkRequest& request);

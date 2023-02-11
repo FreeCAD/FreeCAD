@@ -23,58 +23,45 @@
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <QApplication>
-# include <QGraphicsView>
 # include <QMessageBox>
-# include <iostream>
-# include <string>
 # include <sstream>
-# include <cstdlib>
-# include <exception>
-#endif  //#ifndef _PreComp_
+#endif
 
-#include <App/Document.h>
 #include <App/DocumentObject.h>
 #include <Gui/Action.h>
 #include <Gui/Application.h>
 #include <Gui/BitmapFactory.h>
 #include <Gui/Command.h>
 #include <Gui/Control.h>
-#include <Gui/Document.h>
+#include <Gui/MainWindow.h>
 #include <Gui/Selection.h>
 #include <Gui/SelectionObject.h>
-#include <Gui/MainWindow.h>
-#include <Gui/FileDialog.h>
 #include <Gui/ViewProvider.h>
-
-#include <Mod/Part/App/PartFeature.h>
-
-#include <Mod/TechDraw/App/DrawView.h>
-#include <Mod/TechDraw/App/DrawViewPart.h>
-#include <Mod/TechDraw/App/DrawViewCollection.h>
-#include <Mod/TechDraw/App/DrawViewAnnotation.h>
-#include <Mod/TechDraw/App/DrawLeaderLine.h>
-#include <Mod/TechDraw/App/DrawWeldSymbol.h>
-#include <Mod/TechDraw/App/DrawPage.h>
-#include <Mod/TechDraw/App/DrawUtil.h>
-#include <Mod/TechDraw/App/Geometry.h>
 #include <Mod/TechDraw/App/Cosmetic.h>
+#include <Mod/TechDraw/App/Geometry.h>
+#include <Mod/TechDraw/App/DrawLeaderLine.h>
+#include <Mod/TechDraw/App/DrawPage.h>
+#include <Mod/TechDraw/App/DrawView.h>
+#include <Mod/TechDraw/App/DrawViewAnnotation.h>
+#include <Mod/TechDraw/App/DrawViewPart.h>
+#include <Mod/TechDraw/App/DrawWeldSymbol.h>
+#include <Mod/TechDraw/App/DrawUtil.h>
 
 #include "DrawGuiUtil.h"
-#include "TaskLeaderLine.h"
-#include "TaskRichAnno.h"
-#include "TaskCosVertex.h"
-#include "TaskCenterLine.h"
-#include "TaskLineDecor.h"
-#include "TaskWeldingSymbol.h"
-#include "TaskCosmeticLine.h"
-#include "ViewProviderViewPart.h"
 #include "QGIView.h"
+#include "TaskCenterLine.h"
+#include "TaskCosmeticLine.h"
+#include "TaskCosVertex.h"
+#include "TaskLeaderLine.h"
+#include "TaskLineDecor.h"
+#include "TaskRichAnno.h"
 #include "TaskSurfaceFinishSymbols.h"
+#include "TaskWeldingSymbol.h"
+#include "ViewProviderViewPart.h"
+
 
 using namespace TechDrawGui;
 using namespace TechDraw;
-using namespace std;
-
 
 //internal functions
 bool _checkSelectionHatch(Gui::Command* cmd);

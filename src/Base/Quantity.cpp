@@ -332,8 +332,8 @@ Quantity Quantity::MegaNewton       (1e+9          ,Unit(1,1,-2));
 
 Quantity Quantity::NewtonPerMeter        (1.00         ,Unit(0,1,-2)); //Newton per meter (N/m or kg/s^2)
 Quantity Quantity::MilliNewtonPerMeter   (1e-3         ,Unit(0,1,-2));
-Quantity Quantity::KiloNewtonPerMeter    (1e3          ,Unit(0,1,-2)); 
-Quantity Quantity::MegaNewtonPerMeter    (1e6          ,Unit(0,1,-2)); 
+Quantity Quantity::KiloNewtonPerMeter    (1e3          ,Unit(0,1,-2));
+Quantity Quantity::MegaNewtonPerMeter    (1e6          ,Unit(0,1,-2));
 
 Quantity Quantity::Pascal           (0.001         ,Unit(-1,1,-2)); // Pascal (kg/m/s^2 or N/m^2)
 Quantity Quantity::KiloPascal       (1.00          ,Unit(-1,1,-2));
@@ -377,7 +377,9 @@ Quantity Quantity::Gauss            (1e-4          ,Unit(0,1,-2,-1)); // 1 G = 1
 
 Quantity Quantity::Weber            (1e6           ,Unit(2,1,-2,-1)); // Weber (kg*m^2/s^2/A)
 
-Quantity Quantity::Oersted          (0.07957747    ,Unit(-1,0,0,1)); // Oersted (A/m)
+// disable Oersted because people need to input e.g. a field strength of
+// 1 ampere per meter -> 1 A/m and not get the recalculation to Oersted
+//Quantity Quantity::Oersted(0.07957747, Unit(-1, 0, 0, 1));// Oersted (A/m)
 
 Quantity Quantity::PicoFarad        (1e-18         ,Unit(-2,-1,4,2));
 Quantity Quantity::NanoFarad        (1e-15         ,Unit(-2,-1,4,2));
@@ -461,11 +463,15 @@ void Quantity_yyerror(char *errorinfo)
 #endif
 
 
-// for VC9 (isatty and fileno not supported anymore)
-//#ifdef _MSC_VER
-//int isatty (int i) {return _isatty(i);}
-//int fileno(FILE *stream) {return _fileno(stream);}
-//#endif
+#if defined(__clang__)
+# pragma clang diagnostic push
+# pragma clang diagnostic ignored "-Wsign-compare"
+# pragma clang diagnostic ignored "-Wunneeded-internal-declaration"
+#elif defined (__GNUC__)
+# pragma GCC diagnostic push
+# pragma GCC diagnostic ignored "-Wsign-compare"
+# pragma GCC diagnostic ignored "-Wfree-nonheap-object"
+#endif
 
 namespace QuantityParser {
 
@@ -479,22 +485,15 @@ int QuantityLexer();
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 // Scanner, defined in QuantityParser.l
-#if defined(__clang__)
-# pragma clang diagnostic push
-# pragma clang diagnostic ignored "-Wsign-compare"
-# pragma clang diagnostic ignored "-Wunneeded-internal-declaration"
-#elif defined (__GNUC__)
-# pragma GCC diagnostic push
-# pragma GCC diagnostic ignored "-Wsign-compare"
-#endif
 #include "QuantityLexer.c"
+#endif // DOXYGEN_SHOULD_SKIP_THIS
+}
+
 #if defined(__clang__)
 # pragma clang diagnostic pop
 #elif defined (__GNUC__)
 # pragma GCC diagnostic pop
 #endif
-#endif // DOXYGEN_SHOULD_SKIP_THIS
-}
 
 Quantity Quantity::parse(const QString &string)
 {

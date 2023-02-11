@@ -25,6 +25,7 @@
 # include <algorithm>
 # include <QApplication>
 # include <QDir>
+# include <QKeyEvent>
 # include <QRegularExpression>
 # include <QStringList>
 # include <QTranslator>
@@ -32,6 +33,7 @@
 #endif
 
 #include <App/Application.h>
+#include <Gui/TextEdit.h>
 #include "Translator.h"
 
 
@@ -42,7 +44,7 @@ using namespace Gui;
  *
  * The internationalization of FreeCAD makes heavy use of the internationalization
  * support of Qt. For more details refer to your Qt documentation.
- * 
+ *
  * \section stepbystep Step by step
  * To integrate a new language into FreeCAD or one of its application modules
  * you have to perform the following steps:
@@ -50,13 +52,13 @@ using namespace Gui;
  * \subsection tsfile Creation of a .ts file
  * First you have to generate a .ts file for the language to be translated. You can do this
  * by running the \a lupdate tool in the \a bin path of your Qt installation. As argument
- * you can specify either all related source files and the .ts output file or a Qt project 
+ * you can specify either all related source files and the .ts output file or a Qt project
  * file (.pro) which contains all relevant source files.
  *
  * \subsection translate Translation into your language
  * To translate the english string literals into the language you want to support you can open your
  * .ts file with \a QtLinguist and translate all literals by hand. Another way
- * for translation is to use the tool \a tsauto from Sebastien Fricker.This tool uses the 
+ * for translation is to use the tool \a tsauto from Sebastien Fricker.This tool uses the
  * engine from Google web page (www.google.com). tsauto supports the languages
  * \li english
  * \li french
@@ -67,7 +69,7 @@ using namespace Gui;
  *
  * \remark To get most of the literals translated you should have removed all
  * special characters (like &, !, ?, ...). Otherwise the translation could fail.
- * After having translated all literals you can load the .ts file into QtLinguist and 
+ * After having translated all literals you can load the .ts file into QtLinguist and
  * invoke the menu item \a Release which generates the binary .qm file.
  *
  * \subsection usets Integration of the .qm file
@@ -83,17 +85,17 @@ using namespace Gui;
  *
  * Command Line: rcc.exe -name $(InputName) $(InputPath) -o "$(InputDir)qrc_$(InputName).cpp"
  * Outputs:      $(InputDir)qrc_$(InputName).cpp
- * 
+ *
  * For the gcc build system you just have to add the line \<resourcefile\>.qrc to the BUILT_SOURCES
  * sources section of the Makefile.am, run automake and configure (or ./confog.status) afterwards.
  *
  * Finally, you have to add a the line
  * \code
- * 
+ *
  * Q_INIT_RESOURCE(resource);
  *
  * \endcode
- * 
+ *
  * where \a resource is the name of the .qrc file. That's all!
  */
 
@@ -134,6 +136,7 @@ Translator::Translator()
     d->mapLanguageTopLevelDomain[QT_TR_NOOP("Afrikaans"            )] = "af";
     d->mapLanguageTopLevelDomain[QT_TR_NOOP("Arabic"               )] = "ar";
     d->mapLanguageTopLevelDomain[QT_TR_NOOP("Basque"               )] = "eu";
+    d->mapLanguageTopLevelDomain[QT_TR_NOOP("Belarusian"           )] = "be";
     d->mapLanguageTopLevelDomain[QT_TR_NOOP("Bulgarian"            )] = "bg";
     d->mapLanguageTopLevelDomain[QT_TR_NOOP("Catalan"              )] = "ca";
     d->mapLanguageTopLevelDomain[QT_TR_NOOP("Chinese Simplified"   )] = "zh-CN";
@@ -146,6 +149,7 @@ Translator::Translator()
     d->mapLanguageTopLevelDomain[QT_TR_NOOP("Finnish"              )] = "fi";
     d->mapLanguageTopLevelDomain[QT_TR_NOOP("French"               )] = "fr";
     d->mapLanguageTopLevelDomain[QT_TR_NOOP("Galician"             )] = "gl";
+    d->mapLanguageTopLevelDomain[QT_TR_NOOP("Georgian"             )] = "ka";
     d->mapLanguageTopLevelDomain[QT_TR_NOOP("German"               )] = "de";
     d->mapLanguageTopLevelDomain[QT_TR_NOOP("Greek"                )] = "el";
     d->mapLanguageTopLevelDomain[QT_TR_NOOP("Hungarian"            )] = "hu";
@@ -161,6 +165,8 @@ Translator::Translator()
     d->mapLanguageTopLevelDomain[QT_TR_NOOP("Portuguese"           )] = "pt-PT";
     d->mapLanguageTopLevelDomain[QT_TR_NOOP("Romanian"             )] = "ro";
     d->mapLanguageTopLevelDomain[QT_TR_NOOP("Russian"              )] = "ru";
+    d->mapLanguageTopLevelDomain[QT_TR_NOOP("Serbian"              )] = "sr";
+    d->mapLanguageTopLevelDomain[QT_TR_NOOP("Serbian, Latin"       )] = "sr-CS";
     d->mapLanguageTopLevelDomain[QT_TR_NOOP("Slovak"               )] = "sk";
     d->mapLanguageTopLevelDomain[QT_TR_NOOP("Slovenian"            )] = "sl";
     d->mapLanguageTopLevelDomain[QT_TR_NOOP("Spanish"              )] = "es-ES";
@@ -170,10 +176,9 @@ Translator::Translator()
     d->mapLanguageTopLevelDomain[QT_TR_NOOP("Ukrainian"            )] = "uk";
     d->mapLanguageTopLevelDomain[QT_TR_NOOP("Valencian"            )] = "val-ES";
     d->mapLanguageTopLevelDomain[QT_TR_NOOP("Vietnamese"           )] = "vi";
-    d->mapLanguageTopLevelDomain[QT_TR_NOOP("Georgian")] = "ka";
 
-    auto entries = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/General")->
-        GetASCII("AdditionalLanguageDomainEntries", "");
+    auto hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/General");
+    auto entries = hGrp->GetASCII("AdditionalLanguageDomainEntries", "");
     // The format of the entries is "Language Name 1"="code1";"Language Name 2"="code2";...
     // Example: <FCText Name="AdditionalLanguageDomainEntries">"Romanian"="ro";"Polish"="pl";</FCText>
     QRegularExpression matchingRE(QString::fromUtf8("\"(.*[^\\s]+.*)\"\\s*=\\s*\"([^\\s]+)\";?"));
@@ -188,6 +193,8 @@ Translator::Translator()
     d->activatedLanguage = "English";
 
     d->paths = directories();
+
+    enableDecimalPointConversion(hGrp->GetBool("SubstituteDecimalSeparator", false));
 }
 
 Translator::~Translator()
@@ -280,7 +287,7 @@ void Translator::updateLocaleChange() const
 
 QStringList Translator::directories() const
 {
-    QStringList list; 
+    QStringList list;
     auto dir = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/General")->
         GetASCII("AdditionalTranslationsDirectory", "");
     if (!dir.empty())
@@ -290,7 +297,7 @@ QStringList Translator::directories() const
     QDir resc(QString::fromUtf8(App::Application::getResourceDir().c_str()));
     list.push_back(resc.absoluteFilePath(QLatin1String("translations")));
     list.push_back(QLatin1String(":/translations"));
-    
+
     return list;
 }
 
@@ -303,11 +310,11 @@ void Translator::installQMFiles(const QDir& dir, const char* locale)
 {
     QString filter = QString::fromLatin1("*_%1.qm").arg(QLatin1String(locale));
     QStringList fileNames = dir.entryList(QStringList(filter), QDir::Files, QDir::Name);
-    for (QStringList::Iterator it = fileNames.begin(); it != fileNames.end(); ++it){
+    for (const auto &it : fileNames){
         bool ok=false;
         for (std::list<QTranslator*>::const_iterator tt = d->translators.begin();
             tt != d->translators.end(); ++tt) {
-            if ((*tt)->objectName() == *it) {
+            if ((*tt)->objectName() == it) {
                 ok = true; // this file is already installed
                 break;
             }
@@ -315,9 +322,9 @@ void Translator::installQMFiles(const QDir& dir, const char* locale)
 
         // okay, we need to install this file
         if (!ok) {
-            QTranslator* translator = new QTranslator;
-            translator->setObjectName(*it);
-            if (translator->load(dir.filePath(*it))) {
+            auto translator = new QTranslator;
+            translator->setObjectName(it);
+            if (translator->load(dir.filePath(it))) {
                 qApp->installTranslator(translator);
                 d->translators.push_back(translator);
             }
@@ -330,7 +337,7 @@ void Translator::installQMFiles(const QDir& dir, const char* locale)
 
 /**
  * This method checks for newly added (internal) .qm files which might be added at runtime. This e.g. happens if a plugin
- * gets loaded at runtime. For each newly added files that supports the currently set language a new translator object is created 
+ * gets loaded at runtime. For each newly added files that supports the currently set language a new translator object is created
  * to load the file.
  */
 void Translator::refresh()
@@ -355,6 +362,57 @@ void Translator::removeTranslators()
     }
 
     d->translators.clear();
+}
+
+bool Translator::eventFilter(QObject* obj, QEvent* ev)
+{
+    if (ev->type() == QEvent::KeyPress || ev->type() == QEvent::KeyRelease) {
+        QKeyEvent *kev = static_cast<QKeyEvent *>(ev);
+        Qt::KeyboardModifiers mod = kev->modifiers();
+        int key = kev->key();
+        if ((mod & Qt::KeypadModifier) && (key == Qt::Key_Period || key == Qt::Key_Comma)) {
+            if (ev->spontaneous()) {
+                auto dp = QString(QLocale().decimalPoint());
+#if QT_VERSION < QT_VERSION_CHECK(6,0,0)
+                int dpcode = QKeySequence(dp)[0];
+#else
+                int dpcode = QKeySequence(dp)[0].key();
+#endif
+                if (kev->text() != dp) {
+                    QKeyEvent modifiedKeyEvent(kev->type(), dpcode, mod, dp, kev->isAutoRepeat(), kev->count());
+                    qApp->sendEvent(obj, &modifiedKeyEvent);
+                    return true;
+                }
+            }
+            if (dynamic_cast<Gui::TextEdit*>(obj) && key != Qt::Key_Period) {
+                QKeyEvent modifiedKeyEvent(kev->type(), Qt::Key_Period, mod, QChar::fromLatin1('.'), kev->isAutoRepeat(), kev->count());
+                qApp->sendEvent(obj, &modifiedKeyEvent);
+                return true;
+            }
+        }
+    }
+    return false;
+}
+
+void Translator::enableDecimalPointConversion(bool on)
+{
+    if (!on) {
+        decimalPointConverter.reset();
+        return;
+    }
+#if FC_DEBUG
+    if (on && decimalPointConverter) {
+        Base::Console().Instance().Warning("Translator: decimal point converter is already installed\n");
+    }
+#endif
+    if (on && !decimalPointConverter) {
+        decimalPointConverter = std::unique_ptr<Translator, std::function<void(Translator*)>>(this,
+            [](Translator* evFilter) {
+                qApp->removeEventFilter(evFilter);
+            }
+        );
+        qApp->installEventFilter(decimalPointConverter.get());
+    }
 }
 
 #include "moc_Translator.cpp"

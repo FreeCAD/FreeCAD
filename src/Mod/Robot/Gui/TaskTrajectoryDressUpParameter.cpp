@@ -20,24 +20,17 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
-
 #ifndef _PreComp_
+# include <QString>
 #endif
 
-#include <QString>
-#include <QSlider>
-#include "ui_TaskTrajectoryDressUpParameter.h"
-#include "TaskTrajectoryDressUpParameter.h"
-#include <Gui/Application.h>
-#include <Gui/Document.h>
 #include <Gui/BitmapFactory.h>
-#include <Gui/ViewProvider.h>
-#include <Gui/WaitCursor.h>
-#include <Base/Console.h>
-#include <Gui/Selection.h>
 #include <Gui/Placement.h>
+#include <Gui/Selection.h>
+
+#include "TaskTrajectoryDressUpParameter.h"
+#include "ui_TaskTrajectoryDressUpParameter.h"
 
 
 using namespace RobotGui;
@@ -69,7 +62,8 @@ TaskTrajectoryDressUpParameter::TaskTrajectoryDressUpParameter(Robot::Trajectory
     PosAdd = pcObject->PosAdd.getValue();
     viewPlacement();
 
-    QObject::connect(ui->toolButtonChoosePlacement,SIGNAL(clicked()),this,SLOT(createPlacementDlg()));
+    QObject::connect(ui->toolButtonChoosePlacement, &QToolButton::clicked,
+                     this, &TaskTrajectoryDressUpParameter::createPlacementDlg);
 
 }
 
@@ -94,6 +88,7 @@ void TaskTrajectoryDressUpParameter::writeValues()
 void TaskTrajectoryDressUpParameter::createPlacementDlg()
 {
     Gui::Dialog::Placement plc;
+    plc.setSelection(Gui::Selection().getSelectionEx());
     plc.setPlacement(PosAdd);
     if (plc.exec() == QDialog::Accepted) {
         PosAdd = plc.getPlacement();

@@ -20,23 +20,26 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <QButtonGroup>
-# include <QRegExp>
-# include <QRegExpValidator>
+# include <QRegularExpression>
+# include <QRegularExpressionValidator>
+# include <QVBoxLayout>
 # include <Interface_Static.hxx>
 #endif
 
-#include <Base/Parameter.h>
-#include <App/Application.h>
-#include <Mod/Part/App/ImportStep.h>
+#include <Mod/Part/App/Interface.h>
+#include <Mod/Part/App/IGES/ImportExportSettings.h>
+#include <Mod/Part/App/OCAF/ImportExportSettings.h>
+#include <Mod/Part/App/STEP/ImportExportSettings.h>
 
 #include "DlgSettingsGeneral.h"
 #include "ui_DlgSettingsGeneral.h"
 #include "ui_DlgImportExportIges.h"
-#include "ui_DlgImportExportStep.h"
+#include "DlgExportStep.h"
+#include "DlgImportStep.h"
+
 
 using namespace PartGui;
 
@@ -95,13 +98,13 @@ DlgImportExportIges::DlgImportExportIges(QWidget* parent)
     bg->addButton(ui->radioButtonBRepOff, 0);
     bg->addButton(ui->radioButtonBRepOn, 1);
 
-    QRegExp rx;
+    QRegularExpression rx;
     rx.setPattern(QString::fromLatin1("[\\x00-\\x7F]+"));
-    QRegExpValidator* companyValidator = new QRegExpValidator(ui->lineEditCompany);
-    companyValidator->setRegExp(rx);
+    QRegularExpressionValidator* companyValidator = new QRegularExpressionValidator(ui->lineEditCompany);
+    companyValidator->setRegularExpression(rx);
     ui->lineEditCompany->setValidator(companyValidator);
-    QRegExpValidator* authorValidator = new QRegExpValidator(ui->lineEditAuthor);
-    authorValidator->setRegExp(rx);
+    QRegularExpressionValidator* authorValidator = new QRegularExpressionValidator(ui->lineEditAuthor);
+    authorValidator->setRegularExpression(rx);
     ui->lineEditAuthor->setValidator(authorValidator);
 }
 
@@ -115,63 +118,39 @@ DlgImportExportIges::~DlgImportExportIges()
 
 void DlgImportExportIges::saveSettings()
 {
-    int unit = ui->comboBoxUnits->currentIndex();
-    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
-        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/Part")->GetGroup("IGES");
-    hGrp->SetInt("Unit", unit);
-    switch (unit) {
-        case 1:
-            Interface_Static::SetCVal("write.iges.unit","M");
-            break;
-        case 2:
-            Interface_Static::SetCVal("write.iges.unit","INCH");
-            break;
-        default:
-            Interface_Static::SetCVal("write.iges.unit","MM");
-            break;
-    }
+    Part::IGES::ImportExportSettings settings;
 
-    hGrp->SetBool("BrepMode", bg->checkedId() == 1);
-    Interface_Static::SetIVal("write.iges.brep.mode", bg->checkedId());
+    int unit = ui->comboBoxUnits->currentIndex();
+    settings.setUnit(static_cast<Part::Interface::Unit>(unit));
+    settings.setBRepMode(bg->checkedId() == 1);
 
     // Import
-    hGrp->SetBool("SkipBlankEntities", ui->checkSkipBlank->isChecked());
+    settings.setSkipBlankEntities(ui->checkSkipBlank->isChecked());
 
     // header info
-    hGrp->SetASCII("Company", ui->lineEditCompany->text().toLatin1());
-    hGrp->SetASCII("Author", ui->lineEditAuthor->text().toLatin1());
-  //hGrp->SetASCII("Product", ui->lineEditProduct->text().toLatin1());
-
-    Interface_Static::SetCVal("write.iges.header.company", ui->lineEditCompany->text().toLatin1());
-    Interface_Static::SetCVal("write.iges.header.author", ui->lineEditAuthor->text().toLatin1());
-  //Interface_Static::SetCVal("write.iges.header.product", ui->lineEditProduct->text().toLatin1());
+    settings.setCompany(ui->lineEditCompany->text().toLatin1());
+    settings.setAuthor(ui->lineEditAuthor->text().toLatin1());
 }
 
 void DlgImportExportIges::loadSettings()
 {
-    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
-        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/Part")->GetGroup("IGES");
-    int unit = hGrp->GetInt("Unit", 0);
-    ui->comboBoxUnits->setCurrentIndex(unit);
+    Part::IGES::ImportExportSettings settings;
 
-    int value = Interface_Static::IVal("write.iges.brep.mode");
-    bool brep = hGrp->GetBool("BrepMode", value > 0);
+    ui->comboBoxUnits->setCurrentIndex(static_cast<int>(settings.getUnit()));
+
+    bool brep = settings.getBRepMode();
     if (brep)
         ui->radioButtonBRepOn->setChecked(true);
     else
         ui->radioButtonBRepOff->setChecked(true);
 
     // Import
-    ui->checkSkipBlank->setChecked(hGrp->GetBool("SkipBlankEntities", true));
+    ui->checkSkipBlank->setChecked(settings.getSkipBlankEntities());
 
     // header info
-    ui->lineEditCompany->setText(QString::fromStdString(hGrp->GetASCII("Company",
-        Interface_Static::CVal("write.iges.header.company"))));
-    ui->lineEditAuthor->setText(QString::fromStdString(hGrp->GetASCII("Author",
-        Interface_Static::CVal("write.iges.header.author"))));
-  //ui->lineEditProduct->setText(QString::fromStdString(hGrp->GetASCII("Product")));
-    ui->lineEditProduct->setText(QString::fromLatin1(
-        Interface_Static::CVal("write.iges.header.product")));
+    ui->lineEditCompany->setText(QString::fromStdString(settings.getCompany()));
+    ui->lineEditAuthor->setText(QString::fromStdString(settings.getAuthor()));
+    ui->lineEditProduct->setText(QString::fromStdString(settings.getProductName()));
 }
 
 /**
@@ -190,45 +169,23 @@ void DlgImportExportIges::changeEvent(QEvent *e)
 // ----------------------------------------------------------------------------
 
 DlgImportExportStep::DlgImportExportStep(QWidget* parent)
-  : PreferencePage(parent), ui(new Ui_DlgImportExportStep)
+  : PreferencePage(parent)
+  , exportStep(new DlgExportStep(this))
+  , importStep(new DlgImportStep(this))
+  , headerStep(new DlgExportHeaderStep(this))
 {
-    ui->setupUi(this);
+    setWindowTitle(tr("STEP"));
+    QVBoxLayout* layout = new QVBoxLayout(this);
+    layout->setSpacing(0);
+    layout->setContentsMargins(0, 0, 0, 0);
+    setLayout(layout);
 
-    ui->comboBoxSchema->setItemData(0, QByteArray("AP203"));
-    ui->comboBoxSchema->setItemData(1, QByteArray("AP214CD"));
-    ui->comboBoxSchema->setItemData(2, QByteArray("AP214DIS"));
-    ui->comboBoxSchema->setItemData(3, QByteArray("AP214IS"));
-    ui->comboBoxSchema->setItemData(4, QByteArray("AP242DIS"));
+    layout->addWidget(exportStep);
+    layout->addWidget(importStep);
+    layout->addWidget(headerStep);
 
-    ui->lineEditProduct->setReadOnly(true);
-    //ui->radioButtonAP203->setToolTip(tr("Configuration controlled 3D designs of mechanical parts and assemblies"));
-    //ui->radioButtonAP214->setToolTip(tr("Core data for automotive mechanical design processes"));
-
-    // https://tracker.dev.opencascade.org/view.php?id=25654
-    ui->checkBoxPcurves->setToolTip(tr("This parameter indicates whether parametric curves (curves in parametric space of surface)\n"
-                                       "should be written into the STEP file. This parameter can be set to off in order to minimize\n"
-                                       "the size of the resulting STEP file."));
-
-    QRegExp rx;
-    rx.setPattern(QString::fromLatin1("[\\x00-\\x7F]+"));
-    QRegExpValidator* companyValidator = new QRegExpValidator(ui->lineEditCompany);
-    companyValidator->setRegExp(rx);
-    ui->lineEditCompany->setValidator(companyValidator);
-    QRegExpValidator* authorValidator = new QRegExpValidator(ui->lineEditAuthor);
-    authorValidator->setRegExp(rx);
-    ui->lineEditAuthor->setValidator(authorValidator);
-
-    Part::ImportExportSettings settings;
-    ui->checkBoxMergeCompound->setChecked(settings.getReadShapeCompoundMode());
-    ui->checkBoxExportHiddenObj->setChecked(settings.getExportHiddenObject());
-    ui->checkBoxImportHiddenObj->setChecked(settings.getImportHiddenObject());
-    ui->checkBoxExportLegacy->setChecked(settings.getExportLegacy());
-    ui->checkBoxKeepPlacement->setChecked(settings.getExportKeepPlacement());
-    ui->checkBoxUseLinkGroup->setChecked(settings.getUseLinkGroup());
-    ui->checkBoxUseBaseName->setChecked(settings.getUseBaseName());
-    ui->checkBoxReduceObjects->setChecked(settings.getReduceObjects());
-    ui->checkBoxExpandCompound->setChecked(settings.getExpandCompound());
-    ui->checkBoxShowProgress->setChecked(settings.getShowProgress());
+    QSpacerItem* verticalSpacer = new QSpacerItem(20, 82, QSizePolicy::Minimum, QSizePolicy::Expanding);
+    layout->addItem(verticalSpacer);
 }
 
 /**
@@ -241,109 +198,22 @@ DlgImportExportStep::~DlgImportExportStep()
 
 void DlgImportExportStep::saveSettings()
 {
-    int unit = ui->comboBoxUnits->currentIndex();
-    Base::Reference<ParameterGrp> hPartGrp = App::GetApplication().GetUserParameter()
-        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/Part");
-
-    // General
-    Base::Reference<ParameterGrp> hGenGrp = hPartGrp->GetGroup("General");
-    int writesurfacecurve = ui->checkBoxPcurves->isChecked() ? 1 : 0;
-    hGenGrp->SetInt("WriteSurfaceCurveMode", writesurfacecurve);
-    Interface_Static::SetIVal("write.surfacecurve.mode", writesurfacecurve);
-
-    // STEP
-    Base::Reference<ParameterGrp> hStepGrp = hPartGrp->GetGroup("STEP");
-    hStepGrp->SetInt("Unit", unit);
-    switch (unit) {
-        case 1:
-            Interface_Static::SetCVal("write.step.unit","M");
-            break;
-        case 2:
-            Interface_Static::SetCVal("write.step.unit","INCH");
-            break;
-        default:
-            Interface_Static::SetCVal("write.step.unit","MM");
-            break;
-    }
-
-    // scheme
-    // possible values: AP214CD (1996), AP214DIS (1998), AP214IS (2002), AP242DIS
-    QByteArray schema = ui->comboBoxSchema->itemData(ui->comboBoxSchema->currentIndex()).toByteArray();
-    Interface_Static::SetCVal("write.step.schema",schema);
-    hStepGrp->SetASCII("Scheme", schema);
-
-    // header info
-    hStepGrp->SetASCII("Company", ui->lineEditCompany->text().toLatin1());
-    hStepGrp->SetASCII("Author", ui->lineEditAuthor->text().toLatin1());
-  //hStepGrp->SetASCII("Product", ui->lineEditProduct->text().toLatin1());
-
-    // (h)STEP of Import module
-    ui->checkBoxMergeCompound->onSave();
-    ui->checkBoxExportHiddenObj->onSave();
-    ui->checkBoxExportLegacy->onSave();
-    ui->checkBoxKeepPlacement->onSave();
-    ui->checkBoxImportHiddenObj->onSave();
-    ui->checkBoxUseLinkGroup->onSave();
-    ui->checkBoxUseBaseName->onSave();
-    ui->checkBoxReduceObjects->onSave();
-    ui->checkBoxExpandCompound->onSave();
-    ui->checkBoxShowProgress->onSave();
-    ui->comboBoxImportMode->onSave();
+    exportStep->saveSettings();
+    importStep->saveSettings();
+    headerStep->saveSettings();
 }
 
 void DlgImportExportStep::loadSettings()
 {
-    Base::Reference<ParameterGrp> hPartGrp = App::GetApplication().GetUserParameter()
-        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/Part");
-
-    // General
-    Base::Reference<ParameterGrp> hGenGrp = hPartGrp->GetGroup("General");
-    int writesurfacecurve = Interface_Static::IVal("write.surfacecurve.mode");
-    writesurfacecurve = hGenGrp->GetInt("WriteSurfaceCurveMode", writesurfacecurve);
-    ui->checkBoxPcurves->setChecked(writesurfacecurve == 0 ? false : true);
-
-    // STEP
-    Base::Reference<ParameterGrp> hStepGrp = hPartGrp->GetGroup("STEP");
-    int unit = hStepGrp->GetInt("Unit", 0);
-    ui->comboBoxUnits->setCurrentIndex(unit);
-
-    // scheme
-    QByteArray ap(hStepGrp->GetASCII("Scheme", Interface_Static::CVal("write.step.schema")).c_str());
-    int index = ui->comboBoxSchema->findData(QVariant(ap));
-    if (index >= 0)
-        ui->comboBoxSchema->setCurrentIndex(index);
-
-    // header info
-    ui->lineEditCompany->setText(QString::fromStdString(hStepGrp->GetASCII("Company")));
-    ui->lineEditAuthor->setText(QString::fromStdString(hStepGrp->GetASCII("Author")));
-    ui->lineEditProduct->setText(QString::fromLatin1(
-        Interface_Static::CVal("write.step.product.name")));
-
-    // (h)STEP of Import module
-    ui->checkBoxMergeCompound->onRestore();
-    ui->checkBoxExportHiddenObj->onRestore();
-    ui->checkBoxExportLegacy->onRestore();
-    ui->checkBoxKeepPlacement->onRestore();
-    ui->checkBoxImportHiddenObj->onRestore();
-    ui->checkBoxUseLinkGroup->onRestore();
-    ui->checkBoxUseBaseName->onRestore();
-    ui->checkBoxReduceObjects->onRestore();
-    ui->checkBoxExpandCompound->onRestore();
-    ui->checkBoxShowProgress->onRestore();
-    ui->comboBoxImportMode->onRestore();
+    exportStep->loadSettings();
+    importStep->loadSettings();
+    headerStep->loadSettings();
 }
 
-/**
- * Sets the strings of the subwidgets using the current language.
- */
-void DlgImportExportStep::changeEvent(QEvent *e)
+void DlgImportExportStep::changeEvent(QEvent *)
 {
-    if (e->type() == QEvent::LanguageChange) {
-        ui->retranslateUi(this);
-    }
-    else {
-        QWidget::changeEvent(e);
-    }
+    // do nothing
 }
+
 
 #include "moc_DlgSettingsGeneral.cpp"

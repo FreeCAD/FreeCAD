@@ -88,6 +88,7 @@
 #include "GeometryPy.h"
 #include "ImportIges.h"
 #include "ImportStep.h"
+#include "Interface.h"
 #include "modelRefine.h"
 #include "OCCError.h"
 #include "PartFeature.h"
@@ -123,14 +124,14 @@ PartExport void getPyShapes(PyObject *obj, std::vector<TopoShape> &shapes) {
         return;
     if(PyObject_TypeCheck(obj,&Part::TopoShapePy::Type))
         shapes.push_back(*static_cast<TopoShapePy*>(obj)->getTopoShapePtr());
-    else if (PyObject_TypeCheck(obj, &GeometryPy::Type)) 
+    else if (PyObject_TypeCheck(obj, &GeometryPy::Type))
         shapes.emplace_back(static_cast<GeometryPy*>(obj)->getGeometryPtr()->toShape());
     else if(PySequence_Check(obj)) {
         Py::Sequence list(obj);
         for (Py::Sequence::iterator it = list.begin(); it != list.end(); ++it) {
             if (PyObject_TypeCheck((*it).ptr(), &(Part::TopoShapePy::Type)))
                 shapes.push_back(*static_cast<TopoShapePy*>((*it).ptr())->getTopoShapePtr());
-            else if (PyObject_TypeCheck((*it).ptr(), &GeometryPy::Type)) 
+            else if (PyObject_TypeCheck((*it).ptr(), &GeometryPy::Type))
                 shapes.emplace_back(static_cast<GeometryPy*>(
                                 (*it).ptr())->getGeometryPtr()->toShape());
             else
@@ -621,7 +622,7 @@ public:
             "             transformation matrix\n"
             "* retType: 0: return TopoShape,\n"
             "           1: return (shape,subObj,mat), where subObj is the object referenced in 'subname',\n"
-            "              and 'mat' is the accumulated transformation matrix of that sub-object.\n" 
+            "              and 'mat' is the accumulated transformation matrix of that sub-object.\n"
             "           2: same as 1, but make sure 'subObj' is resolved if it is a link.\n"
             "* refine: refine the returned shape"
         );
@@ -734,7 +735,7 @@ private:
 
         if (file.hasExtension("stp") || file.hasExtension("step")) {
             // create new document and add Import feature
-            App::Document *pcDoc = App::GetApplication().newDocument("Unnamed");
+            App::Document *pcDoc = App::GetApplication().newDocument();
 #if 1
             ImportStepParts(pcDoc,EncodedName.c_str());
 #else
@@ -745,7 +746,7 @@ private:
         }
 #if 1
         else if (file.hasExtension("igs") || file.hasExtension("iges")) {
-            App::Document *pcDoc = App::GetApplication().newDocument("Unnamed");
+            App::Document *pcDoc = App::GetApplication().newDocument();
             ImportIgesParts(pcDoc,EncodedName.c_str());
             pcDoc->recompute();
         }
@@ -884,7 +885,7 @@ private:
     {
         PyObject *shape;
         Py::List list;
-        if (!PyArg_ParseTuple(args.ptr(), "O", &shape)) 
+        if (!PyArg_ParseTuple(args.ptr(), "O", &shape))
             throw Py::Exception();
         auto theShape = static_cast<Part::TopoShapePy*>(shape)->getTopoShapePtr()->getShape();
         for (TopExp_Explorer ex(theShape, TopAbs_FACE); ex.More(); ex.Next()) {
@@ -1346,7 +1347,7 @@ private:
             error = "Different point and parameter";
             break;
         case BRepBuilderAPI_LineThroughIdenticPoints:
-            error = "Line through identic points";
+            error = "Line through identical points";
             break;
         }
         // Error
@@ -2031,7 +2032,7 @@ private:
 #else
 #ifdef FC_OS_WIN32
             //PyUNICODE is only 16 bits on Windows (wchar_t), so passing 32 bit UCS4
-            //will result in unknow glyph in even positions, and wrong characters in
+            //will result in unknown glyph in even positions, and wrong characters in
             //odd positions.
             unichars = (Py_UNICODE*)PyUnicode_AsWideCharString(p, &pysize);
 #else
@@ -2047,7 +2048,7 @@ private:
 #else
 #ifdef FC_OS_WIN32
             //PyUNICODE is only 16 bits on Windows (wchar_t), so passing 32 bit UCS4
-            //will result in unknow glyph in even positions, and wrong characters in
+            //will result in unknown glyph in even positions, and wrong characters in
             //odd positions.
             unichars = (Py_UNICODE*)PyUnicode_AsWideCharString(intext, &pysize);
 #else
@@ -2061,19 +2062,7 @@ private:
 
         try {
             if (useFontSpec) {
-#ifdef FC_OS_WIN32
-//    Windows doesn't do Utf8 by default and FreeType doesn't do wchar. 
-//    this is a hacky work around.
-//    copy fontspec to Ascii temp name
-                std::string tempFile = Base::FileInfo::getTempFileName();   //utf8/ascii
-				Base::FileInfo fiIn(fontspec);
-				fiIn.copyTo(tempFile.c_str());
-                CharList = FT2FC(unichars,pysize,tempFile.c_str(),height,track);
-				Base::FileInfo fiTemp(tempFile);
-				fiTemp.deleteFile();
-#else
                 CharList = FT2FC(unichars,pysize,fontspec,height,track);
-#endif
             }
             else {
                 CharList = FT2FC(unichars,pysize,dir,fontfile,height,track);
@@ -2103,17 +2092,17 @@ private:
             throw Py::Exception();
 
         if (unit) {
-            if (!Interface_Static::SetCVal("write.iges.unit",unit)) {
+            if (!Interface::writeIgesUnit(unit)) {
                 throw Py::RuntimeError("Failed to set 'write.iges.unit'");
             }
-            if (!Interface_Static::SetCVal("write.step.unit",unit)) {
+            if (!Interface::writeStepUnit(unit)) {
                 throw Py::RuntimeError("Failed to set 'write.step.unit'");
             }
         }
 
         Py::Dict dict;
-        dict.setItem("write.iges.unit", Py::String(Interface_Static::CVal("write.iges.unit")));
-        dict.setItem("write.step.unit", Py::String(Interface_Static::CVal("write.step.unit")));
+        dict.setItem("write.iges.unit", Py::String(Interface::writeIgesUnit()));
+        dict.setItem("write.step.unit", Py::String(Interface::writeStepUnit()));
         return dict;
     }
     Py::Object setStaticValue(const Py::Tuple& args)
@@ -2278,7 +2267,7 @@ private:
             TopoDS_Shape* shape = new TopoDS_Shape();
             (*shape) = static_cast<TopoShapePy*>(pcObj)->getTopoShapePtr()->getShape();
             PyObject* proxy = nullptr;
-            proxy = Base::Interpreter().createSWIGPointerObj("OCC.TopoDS", "TopoDS_Shape *", (void*)shape, 1);
+            proxy = Base::Interpreter().createSWIGPointerObj("OCC.TopoDS", "TopoDS_Shape *", static_cast<void*>(shape), 1);
             return Py::asObject(proxy);
         }
         catch (const Base::Exception& e) {
@@ -2295,7 +2284,7 @@ private:
         try {
             TopoShape* shape = new TopoShape();
             Base::Interpreter().convertSWIGPointerObj("OCC.TopoDS","TopoDS_Shape *", proxy, &ptr, 0);
-            TopoDS_Shape* s = reinterpret_cast<TopoDS_Shape*>(ptr);
+            TopoDS_Shape* s = static_cast<TopoDS_Shape*>(ptr);
             shape->setShape(*s);
             return Py::asObject(new TopoShapePy(shape));
         }
@@ -2313,15 +2302,15 @@ private:
         PyObject *noElementMap = Py_False;
         PyObject *refine = Py_False;
         short retType = 0;
-        static char* kwd_list[] = {"obj", "subname", "mat", 
+        static char* kwd_list[] = {"obj", "subname", "mat",
             "needSubElement","transform","retType","noElementMap","refine",nullptr};
         if (!PyArg_ParseTupleAndKeywords(args.ptr(), kwds.ptr(), "O!|sO!O!O!hO!O!", kwd_list,
-                &App::DocumentObjectPy::Type, &pObj, &subname, &Base::MatrixPy::Type, &pyMat, 
+                &App::DocumentObjectPy::Type, &pObj, &subname, &Base::MatrixPy::Type, &pyMat,
                 &PyBool_Type,&needSubElement,&PyBool_Type,&transform,&retType,
                 &PyBool_Type,&noElementMap,&PyBool_Type,&refine))
             throw Py::Exception();
 
-        App::DocumentObject *obj = 
+        App::DocumentObject *obj =
             static_cast<App::DocumentObjectPy*>(pObj)->getDocumentObjectPtr();
         App::DocumentObject *subObj = nullptr;
         Base::Matrix4D mat;

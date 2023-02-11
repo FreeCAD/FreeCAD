@@ -19,14 +19,15 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
-#include "PathSegmentWalker.h"
+
+#include <vector>
 
 #include <App/Application.h>
 #include <Base/Parameter.h>
 
-#include <vector>
+#include "PathSegmentWalker.h"
+
 
 #define ARC_MIN_SEGMENTS   20.0  // minimum # segments to interpolate an arc
 

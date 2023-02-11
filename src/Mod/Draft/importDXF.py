@@ -143,9 +143,6 @@ Please either enable FreeCAD to download these libraries:
 Or download these libraries manually, as explained on
 https://github.com/yorikvanhavre/Draft-dxf-importer
 To enabled FreeCAD to download these libraries, answer Yes.""")
-            if six.PY2:
-                if not isinstance(message, six.text_type):
-                    message = message.decode('utf8')
             reply = QtGui.QMessageBox.question(None, "", message,
                                                QtGui.QMessageBox.Yes | QtGui.QMessageBox.No,
                                                QtGui.QMessageBox.No)
@@ -2771,11 +2768,6 @@ def open(filename):
         getDXFlibs()
         if dxfReader:
             docname = os.path.splitext(os.path.basename(filename))[0]
-            if six.PY2:
-                if isinstance(docname, six.text_type):
-                    # workaround since newDocument
-                    # currently can't handle unicode filenames
-                    docname = docname.encode(sys.getfilesystemencoding())
             doc = FreeCAD.newDocument(docname)
             doc.Label = decodeName(docname)
             processdxf(doc, filename)
@@ -2784,11 +2776,6 @@ def open(filename):
             errorDXFLib(gui)
     else:
         docname = os.path.splitext(os.path.basename(filename))[0]
-        if six.PY2:
-            if isinstance(docname, six.text_type):
-                # workaround since newDocument
-                # currently can't handle unicode filenames
-                docname = docname.encode(sys.getfilesystemencoding())
         doc = FreeCAD.newDocument(docname)
         doc.Label = decodeName(docname)
         FreeCAD.setActiveDocument(doc.Name)
@@ -2827,11 +2814,6 @@ def insert(filename, docname):
         getDXFlibs()
         if dxfReader:
             groupname = os.path.splitext(os.path.basename(filename))[0]
-            if six.PY2:
-                if isinstance(groupname, six.text_type):
-                    # workaround since newDocument
-                    # currently can't handle unicode filenames
-                    groupname = groupname.encode(sys.getfilesystemencoding())
             importgroup = doc.addObject("App::DocumentObjectGroup", groupname)
             importgroup.Label = decodeName(groupname)
             processdxf(doc, filename)
@@ -3509,46 +3491,8 @@ def getStrGroup(ob):
     str
         The name of the layer in capital letters,
         as the DXF R12 format seems to favor this style.
-        ::
-            return getStr(getGroup(ob)).upper()
-
-        By calling `getStr()`, we make sure the layer has a valid
-        utf8 or ascii name.
     """
-    return getStr(getGroup(ob)).upper()
-
-
-def getStr(l):
-    """Return a string that is valid in both Python 2 and 3.
-
-    If Python 2 is used, it tries to encode the string into ascii,
-    replacing characters as necessary, for example,
-    accented characters.
-
-    Parameters
-    ----------
-    l : str
-        Any string either in Python 2 or 3.
-
-    Returns
-    -------
-    str
-        The same `l` string if Python 3,
-        or ascii encoded if Python 2 is used.
-    """
-    if six.PY2:
-        if isinstance(l, six.text_type):
-            # dxf R12 files are rather over-sensitive with utf8...
-            try:
-                import unicodedata
-            except Exception:
-                # fallback
-                return l.encode("ascii", errors="replace")
-            else:
-                # better encoding, replaces accented latin characters
-                # with corresponding ascii letter
-                return ''.join((c for c in unicodedata.normalize('NFD', l) if unicodedata.category(c) != 'Mn')).encode("ascii", errors="replace")
-    return l
+    return getGroup(ob).upper()
 
 
 def export(objectslist, filename, nospline=False, lwPoly=False):
@@ -3678,9 +3622,9 @@ def export(objectslist, filename, nospline=False, lwPoly=False):
                             ltype = 'HIDDEN'
                         elif ob.ViewObject.DrawStyle == "Dashdot":
                             ltype = 'DASHDOT'
-                    # print("exporting layer:", getStr(ob.Label),
+                    # print("exporting layer:", ob.Label,
                     #       getACI(ob), ltype)
-                    dxf.layers.append(dxfLibrary.Layer(name=getStr(ob.Label),
+                    dxf.layers.append(dxfLibrary.Layer(name=ob.Label,
                                                        color=getACI(ob),
                                                        lineType=ltype))
 
@@ -3886,9 +3830,6 @@ def export(objectslist, filename, nospline=False, lwPoly=False):
                                                     color=getACI(ob),
                                                     layer=getStrGroup(ob)))
 
-            if six.PY2:
-                if isinstance(filename, six.text_type):
-                    filename = filename.encode("utf8")
             dxf.saveas(filename)
 
         FCC.PrintMessage("successfully exported" + " " + filename + "\n")

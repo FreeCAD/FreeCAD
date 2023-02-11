@@ -22,13 +22,10 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-#include <cassert>
-#include <QGraphicsScene>
-#include <QMouseEvent>
-#include <QPainter>
-#include <QPainterPath>
-#include <QPainterPathStroker>
-#include <QStyleOptionGraphicsItem>
+# include <cassert>
+
+# include <QPainterPath>
+# include <QPainterPathStroker>
 #endif
 
 #include <App/Application.h>
@@ -36,8 +33,9 @@
 #include <Base/Console.h>
 #include <Base/Parameter.h>
 
-#include "PreferencesGui.h"
 #include "QGIEdge.h"
+#include "PreferencesGui.h"
+
 
 using namespace TechDrawGui;
 using namespace TechDraw;
@@ -87,7 +85,7 @@ QColor QGIEdge::getHiddenColor()
     Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
         .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Colors");
     App::Color fcColor = App::Color((uint32_t) hGrp->GetUnsigned("HiddenColor", 0x000000FF));
-    return fcColor.asValue<QColor>();
+    return PreferencesGui::getAccessibleQColor(fcColor.asValue<QColor>());
 }
 
 Qt::PenStyle QGIEdge::getHiddenStyle()

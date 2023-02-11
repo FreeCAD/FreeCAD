@@ -59,7 +59,7 @@ public:
 
 private Q_SLOTS:
     void onPlaneChanged(int num);
-    virtual void onUpdateView(bool);
+    void onUpdateView(bool) override;
     void onFeatureDeleted() override;
 
 protected:

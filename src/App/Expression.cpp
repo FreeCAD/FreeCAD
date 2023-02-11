@@ -110,13 +110,13 @@ FC_LOG_LEVEL_INIT("Expression", true, true)
 
 #define EXPR_THROW(_msg) _EXPR_THROW(_msg,this)
 
-#define RUNTIME_THROW(_msg) __EXPR_THROW(Base::RuntimeError,_msg, (Expression*)0)
+#define RUNTIME_THROW(_msg) __EXPR_THROW(Base::RuntimeError,_msg, static_cast<Expression*>(nullptr))
 
-#define TYPE_THROW(_msg) __EXPR_THROW(Base::TypeError,_msg, (Expression*)0)
+#define TYPE_THROW(_msg) __EXPR_THROW(Base::TypeError,_msg, static_cast<Expression*>(nullptr))
 
-#define PARSER_THROW(_msg) __EXPR_THROW(Base::ParserError,_msg, (Expression*)0)
+#define PARSER_THROW(_msg) __EXPR_THROW(Base::ParserError,_msg, static_cast<Expression*>(nullptr))
 
-#define PY_THROW(_msg) __EXPR_THROW(Py::RuntimeError,_msg, (Expression*)0)
+#define PY_THROW(_msg) __EXPR_THROW(Py::RuntimeError,_msg, static_cast<Expression*>(nullptr))
 
 static inline std::ostream &operator<<(std::ostream &os, const App::Expression *expr) {
     if(expr) {
@@ -3193,12 +3193,6 @@ static int column;
 #define yylex ExpressionParserlex
 int ExpressionParserlex();
 
-// Parser, defined in ExpressionParser.y
-# define YYTOKENTYPE
-#include "ExpressionParser.tab.c"
-
-#ifndef DOXYGEN_SHOULD_SKIP_THIS
-// Scanner, defined in ExpressionParser.l
 #if defined(__clang__)
 # pragma clang diagnostic push
 # pragma clang diagnostic ignored "-Wsign-compare"
@@ -3206,14 +3200,24 @@ int ExpressionParserlex();
 #elif defined (__GNUC__)
 # pragma GCC diagnostic push
 # pragma GCC diagnostic ignored "-Wsign-compare"
+# pragma GCC diagnostic ignored "-Wfree-nonheap-object"
 #endif
+
+// Parser, defined in ExpressionParser.y
+# define YYTOKENTYPE
+#include "ExpressionParser.tab.c"
+
+#ifndef DOXYGEN_SHOULD_SKIP_THIS
+// Scanner, defined in ExpressionParser.l
 #include "lex.ExpressionParser.c"
+#endif // DOXYGEN_SHOULD_SKIP_THIS
+
 #if defined(__clang__)
 # pragma clang diagnostic pop
 #elif defined (__GNUC__)
 # pragma GCC diagnostic pop
 #endif
-#endif // DOXYGEN_SHOULD_SKIP_THIS
+
 #ifdef _MSC_VER
 # define strdup _strdup
 #endif
@@ -3333,7 +3337,6 @@ Expression * App::ExpressionParser::parse(const App::DocumentObject *owner, cons
     else {
         delete ScanResult;
         throw Expression::Exception("Expression can not evaluate to a value.");
-        return nullptr;
     }
 }
 
@@ -3385,34 +3388,33 @@ UnitExpression * ExpressionParser::parseUnit(const App::DocumentObject *owner, c
     else {
         delete simplified;
         throw Expression::Exception("Expression is not a unit.");
-        return nullptr;
     }
+}
+
+namespace {
+std::tuple<int, int> getTokenAndStatus(const std::string & str)
+{
+    ExpressionParser::YY_BUFFER_STATE buf = ExpressionParser::ExpressionParser_scan_string(str.c_str());
+    int token = ExpressionParser::ExpressionParserlex();
+    int status = ExpressionParser::ExpressionParserlex();
+    ExpressionParser::ExpressionParser_delete_buffer(buf);
+
+    return std::make_tuple(token, status);
+}
 }
 
 bool ExpressionParser::isTokenAnIndentifier(const std::string & str)
 {
-    ExpressionParser::YY_BUFFER_STATE buf = ExpressionParser_scan_string(str.c_str());
-    int token = ExpressionParserlex();
-    int status = ExpressionParserlex();
-    ExpressionParser_delete_buffer(buf);
-
-    if (status == 0 && (token == IDENTIFIER || token == CELLADDRESS ))
-        return true;
-    else
-        return false;
+    int token{}, status{};
+    std::tie(token, status) = getTokenAndStatus(str);
+    return (status == 0 && (token == IDENTIFIER || token == CELLADDRESS));
 }
 
 bool ExpressionParser::isTokenAUnit(const std::string & str)
 {
-    ExpressionParser::YY_BUFFER_STATE buf = ExpressionParser_scan_string(str.c_str());
-    int token = ExpressionParserlex();
-    int status = ExpressionParserlex();
-    ExpressionParser_delete_buffer(buf);
-
-    if (status == 0 && token == UNIT)
-        return true;
-    else
-        return false;
+    int token{}, status{};
+    std::tie(token, status) = getTokenAndStatus(str);
+    return (status == 0 && token == UNIT);
 }
 
 #if defined(__clang__)

@@ -32,6 +32,10 @@ from typing import List
 import time
 import FreeCAD
 
+from PySide import QtCore  # Needed to detect thread interruption
+
+import addonmanager_utilities as utils
+
 translate = FreeCAD.Qt.translate
 
 
@@ -99,8 +103,8 @@ class GitManager:
         """Fetches and pulls the local_path from its remote"""
         old_dir = os.getcwd()
         os.chdir(local_path)
-        self._synchronous_call_git(["fetch"])
         try:
+            self._synchronous_call_git(["fetch"])
             self._synchronous_call_git(["pull"])
             self._synchronous_call_git(["submodule", "update", "--init", "--recursive"])
         except GitFailed as e:
@@ -120,7 +124,9 @@ class GitManager:
                 + "...\n"
             )
             remote = self.get_remote(local_path)
-            with open(os.path.join(local_path, "ADDON_DISABLED"), "w", encoding="utf-8") as f:
+            with open(
+                os.path.join(local_path, "ADDON_DISABLED"), "w", encoding="utf-8"
+            ) as f:
                 f.write(
                     "This is a backup of an addon that failed to update cleanly so was re-cloned. "
                     + "It was disabled by the Addon Manager's git update facility and can be "
@@ -195,7 +201,9 @@ class GitManager:
             # branch = self._synchronous_call_git(["branch", "--show-current"]).strip()
 
             # This is more universal (albeit more opaque to the reader):
-            branch = self._synchronous_call_git(["rev-parse", "--abbrev-ref", "HEAD"]).strip()
+            branch = self._synchronous_call_git(
+                ["rev-parse", "--abbrev-ref", "HEAD"]
+            ).strip()
         except GitFailed as e:
             os.chdir(old_dir)
             raise e
@@ -227,6 +235,7 @@ class GitManager:
             os.chdir(original_cwd)
             raise e
         os.chdir(original_cwd)
+        shutil.rmtree(backup_path, ignore_errors=True)
 
     def get_remote(self, local_path) -> str:
         """Get the repository that this local path is set to fetch from"""
@@ -256,6 +265,74 @@ class GitManager:
         os.chdir(old_dir)
         return result
 
+    def get_branches(self, local_path) -> List[str]:
+        """Get a list of all available branches (local and remote)"""
+        old_dir = os.getcwd()
+        os.chdir(local_path)
+        try:
+            stdout = self._synchronous_call_git(
+                ["branch", "-a", "--format=%(refname:lstrip=2)"]
+            )
+        except GitFailed as e:
+            os.chdir(old_dir)
+            raise e
+        os.chdir(old_dir)
+        branches = []
+        for branch in stdout.split("\n"):
+            branches.append(branch)
+        return branches
+
+    def get_last_committers(self, local_path, n=10):
+        """Examine the last n entries of the commit history, and return a list of all of the
+        committers, their email addresses, and how many commits each one is responsible for."""
+        old_dir = os.getcwd()
+        os.chdir(local_path)
+        authors = self._synchronous_call_git(["log", f"-{n}", "--format=%cN"]).split(
+            "\n"
+        )
+        emails = self._synchronous_call_git(["log", f"-{n}", "--format=%cE"]).split(
+            "\n"
+        )
+        os.chdir(old_dir)
+
+        result_dict = {}
+        for author, email in zip(authors, emails):
+            if not author or not email:
+                continue
+            if author not in result_dict:
+                result_dict[author] = {}
+                result_dict[author]["email"] = [email]
+                result_dict[author]["count"] = 1
+            else:
+                if email not in result_dict[author]["email"]:
+                    # Same author name, new email address -- treat it as the same
+                    # person with a second email, instead of as a whole new person
+                    result_dict[author]["email"].append(email)
+                result_dict[author]["count"] += 1
+        return result_dict
+
+    def get_last_authors(self, local_path, n=10):
+        """Examine the last n entries of the commit history, and return a list of all of the
+        authors, their email addresses, and how many commits each one is responsible for."""
+        old_dir = os.getcwd()
+        os.chdir(local_path)
+        authors = self._synchronous_call_git(["log", f"-{n}", "--format=%aN"])
+        emails = self._synchronous_call_git(["log", f"-{n}", "--format=%aE"])
+        os.chdir(old_dir)
+
+        result_dict = {}
+        for author, email in zip(authors, emails):
+            if author not in result_dict:
+                result_dict[author]["email"] = [email]
+                result_dict[author]["count"] = 1
+            else:
+                if email not in result_dict[author]["email"]:
+                    # Same author name, new email address -- treat it as the same
+                    # person with a second email, instead of as a whole new person
+                    result_dict[author]["email"].append(email)
+                result_dict[author]["count"] += 1
+        return result_dict
+
     def _find_git(self):
         # Find git. In preference order
         #   A) The value of the GitExecutable user preference
@@ -282,30 +359,14 @@ class GitManager:
         """Calls git and returns its output."""
         final_args = [self.git_exe]
         final_args.extend(args)
-        try:
-            if os.name == "nt":
-                proc = subprocess.run(
-                    final_args,
-                    stdout=subprocess.PIPE,
-                    stderr=subprocess.PIPE,
-                    check=True,
-                    shell=True # On Windows this will prevent all the pop-up consoles
-                )
-            else:
-                proc = subprocess.run(
-                    final_args,
-                    stdout=subprocess.PIPE,
-                    stderr=subprocess.PIPE,
-                    check=True,
-                )
-        except subprocess.CalledProcessError as e:
-            raise GitFailed(str(e)) from e
 
-        if proc.returncode != 0:
+        try:
+            proc = utils.run_interruptable_subprocess(final_args)
+        except subprocess.CalledProcessError as e:
             raise GitFailed(
-                f"Git returned a non-zero exit status: {proc.returncode}\n"
+                f"Git returned a non-zero exit status: {e.returncode}\n"
                 + f"Called with: {' '.join(final_args)}\n\n"
-                + f"Returned stderr:\n{proc.stderr.decode()}"
+                + f"Returned stderr:\n{e.stderr}"
             )
 
-        return proc.stdout.decode()
+        return proc.stdout

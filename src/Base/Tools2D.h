@@ -20,10 +20,8 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef BASE_TOOLS2D_H
 #define BASE_TOOLS2D_H
-
 
 #include <algorithm>
 #include <cmath>
@@ -34,8 +32,9 @@
 
 #include "Vector3D.h"
 #ifndef FC_GLOBAL_H
-#include <FCGlobal.h>
+# include <FCGlobal.h>
 #endif
+
 
 namespace Base {
 

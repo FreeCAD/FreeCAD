@@ -493,6 +493,12 @@ SET(Part_SRCS
     ${HLRBRepPy_SRCS}
     ${ShapeFixPy_SRCS}
     ${ShapeUpgradePy_SRCS}
+    IGES/ImportExportSettings.cpp
+    IGES/ImportExportSettings.h
+    OCAF/ImportExportSettings.cpp
+    OCAF/ImportExportSettings.h
+    STEP/ImportExportSettings.cpp
+    STEP/ImportExportSettings.h
     Attacher.cpp
     Attacher.h
     AppPart.cpp
@@ -519,6 +525,8 @@ SET(Part_SRCS
     ImportIges.h
     ImportStep.cpp
     ImportStep.h
+    Interface.cpp
+    Interface.h
     PreCompiled.cpp
     PreCompiled.h
     ProgressIndicator.cpp

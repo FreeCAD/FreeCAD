@@ -29,19 +29,18 @@
 #endif
 
 #include "SphereFit.h"
-#include <Base/Console.h>
+
 
 using namespace MeshCoreFit;
 
 SphereFit::SphereFit()
-  : _vCenter(0,0,0)
-  , _dRadius(0)
-  , _numIter(0)
-  , _posConvLimit(0.0001)
-  , _vConvLimit(0.001)
-  , _maxIter(50)
-{
-}
+  : _vCenter(0, 0, 0),
+	_dRadius(0),
+	_numIter(0),
+	_posConvLimit(0.0001),
+	_vConvLimit(0.001),
+	_maxIter(50)
+{}
 
 SphereFit::~SphereFit()
 {

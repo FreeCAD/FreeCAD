@@ -20,13 +20,11 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
-#ifndef _PreComp_
-#endif
 
 #include "DlgPartCylinderImp.h"
 #include "ui_DlgPartCylinder.h"
+
 
 using namespace PartGui;
 

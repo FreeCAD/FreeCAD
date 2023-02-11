@@ -46,8 +46,8 @@ void WorkbenchFactoryInst::destruct ()
 
 Workbench* WorkbenchFactoryInst::createWorkbench ( const char* sName ) const
 {
-  Workbench* obj = (Workbench*)Produce( sName );
-  Workbench* w = dynamic_cast<Workbench*>(obj);
+    auto obj = (Workbench*)Produce( sName );
+    auto w = dynamic_cast<Workbench*>(obj);
   if ( !w )
   {
     delete obj; // delete the unknown object as no workbench object

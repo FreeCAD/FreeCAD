@@ -58,6 +58,11 @@ class ShapeString(DraftObject):
         obj.addProperty("App::PropertyBool", "MakeFace", "Draft", _tip).MakeFace = True
 
     def execute(self, obj):
+        if self.props_changed_placement_only():
+            obj.positionBySupport()
+            self.props_changed_clear()
+            return
+
         import Part
         # import OpenSCAD2Dgeom
         if obj.String and obj.FontFile:
@@ -109,6 +114,10 @@ class ShapeString(DraftObject):
             if plm:
                 obj.Placement = plm
         obj.positionBySupport()
+        self.props_changed_clear()
+
+    def onChanged(self, obj, prop):
+        self.props_changed_store(prop)
 
     def makeFaces(self, wireChar):
         import Part

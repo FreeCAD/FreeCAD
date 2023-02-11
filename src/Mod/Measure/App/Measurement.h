@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2013      Luke Parry <l.parry@warwick.ac.uk>            *
+ *   Copyright (c) 2013 Luke Parry <l.parry@warwick.ac.uk>                 *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -22,6 +22,8 @@
 
 #ifndef MEASURE_MEASUREMENT_H
 #define MEASURE_MEASUREMENT_H
+
+#include <gp_Pnt.hxx>
 
 #include <App/DocumentObject.h>
 #include <App/PropertyLinks.h>
@@ -69,7 +71,6 @@ public:
     PyObject *getPyObject() override;
     virtual unsigned int getMemSize() const;
 
-public:
   // Methods for distances (edge length, two points, edge and a point
   double length() const;
   Base::Vector3d delta() const;                                                 //when would client use delta??
@@ -83,8 +84,12 @@ public:
   // Calculate volumetric/mass properties
   Base::Vector3d massCenter() const;
 
+  static Base::Vector3d toVector3d(const gp_Pnt gp) { return Base::Vector3d(gp.X(), gp.Y(), gp.Z()); }
+
 protected:
   TopoDS_Shape getShape(App::DocumentObject *obj , const char *subName) const;
+
+private:
   MeasureType measureType;
   Py::SmartPtr PythonObject;
 };

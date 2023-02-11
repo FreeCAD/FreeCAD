@@ -118,7 +118,7 @@ public:
 protected:
     void extensionOnChanged(const App::Property* /*prop*/) override;
     virtual void extHandleChangedPropertyName(Base::XMLReader &reader, const char* TypeName, const char* PropName);
-    
+
     App::PropertyPlacement& getPlacement() const;
 
 public:

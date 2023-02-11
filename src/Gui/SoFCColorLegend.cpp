@@ -142,14 +142,14 @@ void SoFCColorLegend::setMarkerLabel(const SoMFString& label)
     if (num > 1) {
         std::vector<SbVec3f> pos = getLabelPositions(num, _bbox);
 
-        SoTransform* trans = new SoTransform;
+        auto trans = new SoTransform;
         trans->translation.setValue(pos[0]);
         labelGroup->addChild(trans);
 
         for (int i=0; i<num; i++) {
-            SoTransform* trans = new SoTransform;
-            SoBaseColor* color = new SoBaseColor;
-            SoText2    * text2 = new SoText2;
+            auto trans = new SoTransform;
+            auto color = new SoBaseColor;
+            auto text2 = new SoText2;
 
             trans->translation.setValue(pos[i+1]);
             color->rgb.setValue(0, 0, 0);
@@ -169,14 +169,14 @@ void SoFCColorLegend::setMarkerValue(const SoMFString& value)
     if (num > 1) {
         std::vector<SbVec3f> pos = getValuePositions(num, _bbox);
 
-        SoTransform* trans = new SoTransform;
+        auto trans = new SoTransform;
         trans->translation.setValue(pos[0]);
         valueGroup->addChild(trans);
 
         for (int i=0; i<num; i++) {
-            SoTransform* trans = new SoTransform;
-            SoBaseColor* color = new SoBaseColor;
-            SoText2    * text2 = new SoText2;
+            auto trans = new SoTransform;
+            auto color = new SoBaseColor;
+            auto text2 = new SoText2;
 
             trans->translation.setValue(pos[i+1]);
             color->rgb.setValue(0, 0, 0);
@@ -320,7 +320,7 @@ void SoFCColorLegend::setColorLegend(const App::ColorLegend& legend)
     modifyPoints(_bbox);
 
     // for numFields colors we need numFields quads
-    SoIndexedFaceSet * faceset = new SoIndexedFaceSet;
+    auto faceset = new SoIndexedFaceSet;
     faceset->coordIndex.setNum(5 * intFields);
     for (int j = 0; j < intFields; j++) {
         faceset->coordIndex.set1Value(5*j,   4*j);
@@ -330,14 +330,14 @@ void SoFCColorLegend::setColorLegend(const App::ColorLegend& legend)
         faceset->coordIndex.set1Value(5*j+4, SO_END_FACE_INDEX);
     }
 
-    SoMaterial* mat = new SoMaterial;
+    auto mat = new SoMaterial;
     mat->diffuseColor.setNum(intFields);
     for (std::size_t k = 0; k < numFields; k++) {
         App::Color col = legend.getColor(k);
         mat->diffuseColor.set1Value(k, col.r, col.g, col.b);
     }
 
-    SoMaterialBinding* matBinding = new SoMaterialBinding;
+    auto matBinding = new SoMaterialBinding;
     matBinding->value = SoMaterialBinding::PER_FACE;
 
     // first clear the children

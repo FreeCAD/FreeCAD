@@ -24,8 +24,7 @@
 #define PATH_DlgProcessorChooser_H
 
 #include <QDialog>
-#include <QString>
-#include <App/DocumentObject.h>
+
 
 class Ui_DlgProcessorChooser;
 

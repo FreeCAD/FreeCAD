@@ -1,24 +1,22 @@
-# -*- coding: utf-8 -*-
-
 # ***************************************************************************
 # *                                                                         *
-# *   Copyright (c) 2022 FreeCAD Project Association                        *
+# *   Copyright (c) 2022-2023 FreeCAD Project Association                   *
 # *                                                                         *
-# *   This program is free software; you can redistribute it and/or modify  *
-# *   it under the terms of the GNU Lesser General Public License (LGPL)    *
-# *   as published by the Free Software Foundation; either version 2 of     *
-# *   the License, or (at your option) any later version.                   *
-# *   for detail see the LICENSE text file.                                 *
+# *   This file is part of FreeCAD.                                         *
 # *                                                                         *
-# *   This program is distributed in the hope that it will be useful,       *
-# *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
-# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
-# *   GNU Library General Public License for more details.                  *
+# *   FreeCAD is free software: you can redistribute it and/or modify it    *
+# *   under the terms of the GNU Lesser General Public License as           *
+# *   published by the Free Software Foundation, either version 2.1 of the  *
+# *   License, or (at your option) any later version.                       *
 # *                                                                         *
-# *   You should have received a copy of the GNU Library General Public     *
-# *   License along with this program; if not, write to the Free Software   *
-# *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
-# *   USA                                                                   *
+# *   FreeCAD is distributed in the hope that it will be useful, but        *
+# *   WITHOUT ANY WARRANTY; without even the implied warranty of            *
+# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU      *
+# *   Lesser General Public License for more details.                       *
+# *                                                                         *
+# *   You should have received a copy of the GNU Lesser General Public      *
+# *   License along with FreeCAD. If not, see                               *
+# *   <https://www.gnu.org/licenses/>.                                      *
 # *                                                                         *
 # ***************************************************************************
 
@@ -74,10 +72,10 @@ except ImportError:
     # For standalone testing support working without the FreeCAD import
     HAVE_FREECAD = False
 
-from PySide2 import QtCore
+from PySide import QtCore
 
 if FreeCAD.GuiUp:
-    from PySide2 import QtWidgets
+    from PySide import QtWidgets
 
 
 # This is the global instance of the NetworkManager that outside code
@@ -86,20 +84,18 @@ AM_NETWORK_MANAGER = None
 
 HAVE_QTNETWORK = True
 try:
-    from PySide2 import QtNetwork
+    from PySide import QtNetwork
 except ImportError:
     if HAVE_FREECAD:
         FreeCAD.Console.PrintError(
             translate(
                 "AddonsInstaller",
-                "Could not import QtNetwork -- it does not appear to be installed on your system. Please install the package 'python3-pyside2.qtnetwork' on your system and if possible contact your FreeCAD package maintainer to alert them to the missing dependency. The Addon Manager will not be available.",
+                'Could not import QtNetwork -- it does not appear to be installed on your system. Your provider may have a package for this dependency (often called "python3-pyside2.qtnetwork")',
             )
             + "\n"
         )
     else:
-        print(
-            "Could not import QtNetwork, unable to test this file. Try installing the python3-pyside2.qtnetwork package."
-        )
+        print("Could not import QtNetwork, unable to test this file.")
         sys.exit(1)
     HAVE_QTNETWORK = False
 
@@ -214,7 +210,17 @@ if HAVE_QTNETWORK:
                     )  # This may still be QNetworkProxy.NoProxy
             elif userProxyCheck:
                 host, _, port_string = proxy_string.rpartition(":")
-                port = 0 if not port_string else int(port_string)
+                try:
+                    port = 0 if not port_string else int(port_string)
+                except ValueError:
+                    FreeCAD.Console.PrintError(
+                        translate(
+                            "AddonsInstaller",
+                            "Failed to convert the specified proxy port '{}' to a port number",
+                        ).format(port_string)
+                        + "\n"
+                    )
+                    port = 0
                 # For now assume an HttpProxy, but eventually this should be a parameter
                 proxy = QtNetwork.QNetworkProxy(
                     QtNetwork.QNetworkProxy.HttpProxy, host, port
@@ -540,7 +546,7 @@ if HAVE_QTNETWORK:
                 f = self.file_buffers[index]
             try:
                 f.write(buffer.data())
-            except IOError as e:
+            except OSError as e:
                 if HAVE_FREECAD:
                     FreeCAD.Console.PrintError(
                         f"Network Manager internal error: {str(e)}"

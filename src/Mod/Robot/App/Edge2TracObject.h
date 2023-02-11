@@ -20,17 +20,13 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef ROBOT_Edge2TracObject_H
 #define ROBOT_Edge2TracObject_H
 
-#include <App/GeoFeature.h>
-#include <App/PropertyFile.h>
 #include <App/PropertyGeo.h>
 
-#include "Trajectory.h"
 #include "TrajectoryObject.h"
-#include "PropertyTrajectory.h"
+
 
 namespace Robot
 {

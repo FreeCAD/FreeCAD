@@ -20,12 +20,13 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef SKETCHERGUI_DrawSketchHandlerFillet_H
 #define SKETCHERGUI_DrawSketchHandlerFillet_H
 
+#include <QMessageBox>
+
 #include "GeometryCreationMode.h"
-#include "Utils.h"
+
 
 namespace SketcherGui {
 

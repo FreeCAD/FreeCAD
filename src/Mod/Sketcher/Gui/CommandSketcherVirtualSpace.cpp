@@ -20,14 +20,9 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <cfloat>
-# include <QMessageBox>
-# include <Precision.hxx>
-# include <QApplication>
-# include <Standard_Version.hxx>
 # include <QMessageBox>
 #endif
 
@@ -39,7 +34,6 @@
 #include <Gui/SelectionObject.h>
 #include <Gui/CommandT.h>
 #include <Gui/MainWindow.h>
-#include <Gui/DlgEditFileIncludePropertyExternal.h>
 
 #include <Gui/Action.h>
 #include <Gui/BitmapFactory.h>
@@ -51,6 +45,7 @@
 #include <Mod/Sketcher/App/SketchObject.h>
 
 #include "Utils.h"
+
 
 using namespace std;
 using namespace SketcherGui;

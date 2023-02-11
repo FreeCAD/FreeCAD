@@ -426,83 +426,87 @@ QString Unit::getString() const
 
 QString Unit::getTypeString() const
 {
-    if(*this == Unit::Length                      )
+    if (*this == Unit::Length)
         return QString::fromLatin1("Length");
-    if(*this == Unit::Area                        )
+    if (*this == Unit::Area)
         return QString::fromLatin1("Area");
-    if(*this == Unit::Volume                      )
+    if (*this == Unit::Volume)
         return QString::fromLatin1("Volume");
-    if(*this == Unit::Mass                        )
+    if (*this == Unit::Mass)
         return QString::fromLatin1("Mass");
-    if(*this == Unit::Angle                       )
+    if (*this == Unit::Angle)
         return QString::fromLatin1("Angle");
-    if(*this == Unit::Density                     )
+    if (*this == Unit::Density)
         return QString::fromLatin1("Density");
-    if(*this == Unit::TimeSpan                    )
+    if (*this == Unit::TimeSpan)
         return QString::fromLatin1("TimeSpan");
-    if(*this == Unit::Frequency                   )
+    if (*this == Unit::Frequency)
         return QString::fromLatin1("Frequency");
-    if(*this == Unit::Velocity                    )
+    if (*this == Unit::Velocity)
         return QString::fromLatin1("Velocity");
-    if(*this == Unit::Acceleration                )
+    if (*this == Unit::Acceleration)
         return QString::fromLatin1("Acceleration");
-    if(*this == Unit::Temperature                 )
+    if (*this == Unit::Temperature)
         return QString::fromLatin1("Temperature");
-    if(*this == Unit::ElectricCurrent             )
+    if (*this == Unit::CurrentDensity)
+        return QString::fromLatin1("CurrentDensity");
+    if (*this == Unit::ElectricCurrent)
         return QString::fromLatin1("ElectricCurrent");
-    if(*this == Unit::ElectricPotential           )
+    if (*this == Unit::ElectricPotential)
         return QString::fromLatin1("ElectricPotential");
-    if(*this == Unit::ElectricCharge              )
+    if (*this == Unit::ElectricCharge)
         return QString::fromLatin1("ElectricCharge");
-    if(*this == Unit::MagneticFieldStrength       )
+    if (*this == Unit::MagneticFieldStrength)
         return QString::fromLatin1("MagneticFieldStrength");
-    if(*this == Unit::MagneticFlux                )
+    if (*this == Unit::MagneticFlux)
         return QString::fromLatin1("MagneticFlux");
-    if(*this == Unit::MagneticFluxDensity         )
+    if (*this == Unit::MagneticFluxDensity)
         return QString::fromLatin1("MagneticFluxDensity");
-    if(*this == Unit::ElectricalCapacitance       )
+    if (*this == Unit::Magnetization)
+        return QString::fromLatin1("Magnetization");
+    if (*this == Unit::ElectricalCapacitance)
         return QString::fromLatin1("ElectricalCapacitance");
-    if(*this == Unit::ElectricalInductance        )
+    if (*this == Unit::ElectricalInductance)
         return QString::fromLatin1("ElectricalInductance");
-    if(*this == Unit::ElectricalConductance       )
+    if (*this == Unit::ElectricalConductance)
         return QString::fromLatin1("ElectricalConductance");
-    if(*this == Unit::ElectricalResistance        )
+    if (*this == Unit::ElectricalResistance)
         return QString::fromLatin1("ElectricalResistance");
-    if(*this == Unit::ElectricalConductivity      )
+    if (*this == Unit::ElectricalConductivity)
         return QString::fromLatin1("ElectricalConductivity");
-    if(*this == Unit::AmountOfSubstance           )
+    if (*this == Unit::AmountOfSubstance)
         return QString::fromLatin1("AmountOfSubstance");
-    if(*this == Unit::LuminousIntensity           )
+    if (*this == Unit::LuminousIntensity)
         return QString::fromLatin1("LuminousIntensity");
-    if(*this == Unit::Pressure                    )
+    if (*this == Unit::Pressure)
         return QString::fromLatin1("Pressure");
-    if(*this == Unit::Force                       )
+    if (*this == Unit::Force)
         return QString::fromLatin1("Force");
-    if(*this == Unit::Work                        )
+    if (*this == Unit::Work)
         return QString::fromLatin1("Work");
-    if(*this == Unit::Power                       )
+    if (*this == Unit::Power)
         return QString::fromLatin1("Power");
-    if(*this == Unit::Stiffness                   )
+    if (*this == Unit::Stiffness)
         return QString::fromLatin1("Stiffness");
-    if(*this == Unit::SpecificEnergy              )
+    if (*this == Unit::SpecificEnergy)
         return QString::fromLatin1("SpecificEnergy");
-    if(*this == Unit::ThermalConductivity         )
+    if (*this == Unit::ThermalConductivity)
         return QString::fromLatin1("ThermalConductivity");
-    if(*this == Unit::ThermalExpansionCoefficient )
+    if (*this == Unit::ThermalExpansionCoefficient)
         return QString::fromLatin1("ThermalExpansionCoefficient");
-    if(*this == Unit::VolumetricThermalExpansionCoefficient )
+    if (*this == Unit::VolumetricThermalExpansionCoefficient)
         return QString::fromLatin1("VolumetricThermalExpansionCoefficient");
-    if(*this == Unit::SpecificHeat                )
+    if (*this == Unit::SpecificHeat)
         return QString::fromLatin1("SpecificHeat");
-    if(*this == Unit::ThermalTransferCoefficient  )
+    if (*this == Unit::ThermalTransferCoefficient)
         return QString::fromLatin1("ThermalTransferCoefficient");
-    if(*this == Unit::HeatFlux                    )
+    if (*this == Unit::HeatFlux)
         return QString::fromLatin1("HeatFlux");
-    if(*this == Unit::DynamicViscosity            )
+    if (*this == Unit::DynamicViscosity)
         return QString::fromLatin1("DynamicViscosity");
-    if(*this == Unit::KinematicViscosity          )
+    if (*this == Unit::KinematicViscosity)
         return QString::fromLatin1("KinematicViscosity");
-    if(*this == Unit::VacuumPermittivity          )
+    if (*this == Unit::VacuumPermittivity)
         return QString::fromLatin1("VacuumPermittivity");
 
     return QString();
@@ -526,12 +530,14 @@ Unit Unit::Velocity(1,0,-1);
 Unit Unit::Acceleration(1,0,-2);
 Unit Unit::Temperature(0,0,0,0,1);
 
+Unit Unit::CurrentDensity(-2,0,0,1);
 Unit Unit::ElectricCurrent(0,0,0,1);
 Unit Unit::ElectricPotential(2,1,-3,-1);
 Unit Unit::ElectricCharge(0,0,1,1);
 Unit Unit::MagneticFieldStrength(-1,0,0,1);
 Unit Unit::MagneticFlux(2,1,-2,-1);
 Unit Unit::MagneticFluxDensity(0,1,-2,-1);
+Unit Unit::Magnetization(-1,0,0,1);
 Unit Unit::ElectricalCapacitance(-2,-1,4,2);
 Unit Unit::ElectricalInductance(2,1,-2,-2);
 Unit Unit::ElectricalConductance(-2,-1,3,2);

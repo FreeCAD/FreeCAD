@@ -52,6 +52,7 @@
 #endif
 
 #include <App/Document.h>
+#include <Base/Builder3D.h>
 #include <Base/Console.h>
 #include <Base/Interpreter.h>
 
@@ -60,6 +61,7 @@
 #include "Document.h"
 #include "FileDialog.h"
 #include "MainWindow.h"
+#include "NaviCube.h"
 #include "NavigationStyle.h"
 #include "SoFCDB.h"
 #include "SoFCSelectionAction.h"
@@ -136,42 +138,10 @@ View3DInventor::View3DInventor(Gui::Document* pcDocument, QWidget* parent,
     setCentralWidget(stack);
 
     // apply the user settings
-    OnChange(*hGrp,"EyeDistance");
-    OnChange(*hGrp,"CornerCoordSystem");
-    OnChange(*hGrp,"CornerCoordSystemSize");
-    OnChange(*hGrp,"ShowAxisCross");
-    OnChange(*hGrp,"UseAutoRotation");
-    OnChange(*hGrp,"Gradient");
-    OnChange(*hGrp,"BackgroundColor");
-    OnChange(*hGrp,"BackgroundColor2");
-    OnChange(*hGrp,"BackgroundColor3");
-    OnChange(*hGrp,"BackgroundColor4");
-    OnChange(*hGrp,"UseBackgroundColorMid");
-    OnChange(*hGrp,"ShowFPS");
-    OnChange(*hGrp,"ShowNaviCube");
-    OnChange(*hGrpNavi, "CornerNaviCube");
-    OnChange(*hGrp,"UseVBO");
-    OnChange(*hGrp,"RenderCache");
-    OnChange(*hGrp,"Orthographic");
-    OnChange(*hGrp,"HeadlightColor");
-    OnChange(*hGrp,"HeadlightDirection");
-    OnChange(*hGrp,"HeadlightIntensity");
-    OnChange(*hGrp,"EnableBacklight");
-    OnChange(*hGrp,"BacklightColor");
-    OnChange(*hGrp,"BacklightDirection");
-    OnChange(*hGrp,"BacklightIntensity");
-    OnChange(*hGrp,"NavigationStyle");
-    OnChange(*hGrp,"OrbitStyle");
-    OnChange(*hGrp,"Sensitivity");
-    OnChange(*hGrp,"ResetCursorPosition");
-    OnChange(*hGrp,"DimensionsVisible");
-    OnChange(*hGrp,"Dimensions3dVisible");
-    OnChange(*hGrp,"DimensionsDeltaVisible");
-    OnChange(*hGrp,"PickRadius");
-    OnChange(*hGrp,"TransparentObjectRenderType");
+    applySettings();
 
     stopSpinTimer = new QTimer(this);
-    connect(stopSpinTimer, SIGNAL(timeout()), this, SLOT(stopAnimating()));
+    connect(stopSpinTimer, &QTimer::timeout, this, &View3DInventor::stopAnimating);
 }
 
 View3DInventor::~View3DInventor()
@@ -226,6 +196,44 @@ PyObject *View3DInventor::getPyObject()
     return _viewerPy;
 }
 
+void View3DInventor::applySettings()
+{
+    // apply the user settings
+    View3DInventor::OnChange(*hGrp,"EyeDistance");
+    View3DInventor::OnChange(*hGrp,"CornerCoordSystem");
+    View3DInventor::OnChange(*hGrp,"CornerCoordSystemSize");
+    View3DInventor::OnChange(*hGrp,"ShowAxisCross");
+    View3DInventor::OnChange(*hGrp,"UseAutoRotation");
+    View3DInventor::OnChange(*hGrp,"Gradient");
+    View3DInventor::OnChange(*hGrp,"BackgroundColor");
+    View3DInventor::OnChange(*hGrp,"BackgroundColor2");
+    View3DInventor::OnChange(*hGrp,"BackgroundColor3");
+    View3DInventor::OnChange(*hGrp,"BackgroundColor4");
+    View3DInventor::OnChange(*hGrp,"UseBackgroundColorMid");
+    View3DInventor::OnChange(*hGrp,"ShowFPS");
+    View3DInventor::OnChange(*hGrp,"ShowNaviCube");
+    View3DInventor::OnChange(*hGrpNavi, "CornerNaviCube");
+    View3DInventor::OnChange(*hGrp,"UseVBO");
+    View3DInventor::OnChange(*hGrp,"RenderCache");
+    View3DInventor::OnChange(*hGrp,"Orthographic");
+    View3DInventor::OnChange(*hGrp,"HeadlightColor");
+    View3DInventor::OnChange(*hGrp,"HeadlightDirection");
+    View3DInventor::OnChange(*hGrp,"HeadlightIntensity");
+    View3DInventor::OnChange(*hGrp,"EnableBacklight");
+    View3DInventor::OnChange(*hGrp,"BacklightColor");
+    View3DInventor::OnChange(*hGrp,"BacklightDirection");
+    View3DInventor::OnChange(*hGrp,"BacklightIntensity");
+    View3DInventor::OnChange(*hGrp,"NavigationStyle");
+    View3DInventor::OnChange(*hGrp,"OrbitStyle");
+    View3DInventor::OnChange(*hGrp,"Sensitivity");
+    View3DInventor::OnChange(*hGrp,"ResetCursorPosition");
+    View3DInventor::OnChange(*hGrp,"DimensionsVisible");
+    View3DInventor::OnChange(*hGrp,"Dimensions3dVisible");
+    View3DInventor::OnChange(*hGrp,"DimensionsDeltaVisible");
+    View3DInventor::OnChange(*hGrp,"PickRadius");
+    View3DInventor::OnChange(*hGrp,"TransparentObjectRenderType");
+}
+
 void View3DInventor::OnChange(ParameterGrp::SubjectType &rCaller,ParameterGrp::MessageType Reason)
 {
     const ParameterGrp& rGrp = static_cast<ParameterGrp&>(rCaller);
@@ -237,14 +245,13 @@ void View3DInventor::OnChange(ParameterGrp::SubjectType &rCaller,ParameterGrp::M
         _viewer->getHeadlight()->color.setValue(headlightColor);
     }
     else if (strcmp(Reason,"HeadlightDirection") == 0) {
-        std::string pos = rGrp.GetASCII("HeadlightDirection");
-        QString flt = QString::fromLatin1("([-+]?[0-9]+\\.?[0-9]+)");
-        QRegExp rx(QString::fromLatin1("^\\(%1,%1,%1\\)$").arg(flt));
-        if (rx.indexIn(QLatin1String(pos.c_str())) > -1) {
-            float x = rx.cap(1).toFloat();
-            float y = rx.cap(2).toFloat();
-            float z = rx.cap(3).toFloat();
-            _viewer->getHeadlight()->direction.setValue(x,y,z);
+        try {
+            std::string pos = rGrp.GetASCII("HeadlightDirection");
+            Base::Vector3f dir = Base::to_vector(pos);
+            _viewer->getHeadlight()->direction.setValue(dir.x, dir.y, dir.z);
+        }
+        catch (const std::exception&) {
+            // ignore exception
         }
     }
     else if (strcmp(Reason,"HeadlightIntensity") == 0) {
@@ -262,14 +269,13 @@ void View3DInventor::OnChange(ParameterGrp::SubjectType &rCaller,ParameterGrp::M
         _viewer->getBacklight()->color.setValue(backlightColor);
     }
     else if (strcmp(Reason,"BacklightDirection") == 0) {
-        std::string pos = rGrp.GetASCII("BacklightDirection");
-        QString flt = QString::fromLatin1("([-+]?[0-9]+\\.?[0-9]+)");
-        QRegExp rx(QString::fromLatin1("^\\(%1,%1,%1\\)$").arg(flt));
-        if (rx.indexIn(QLatin1String(pos.c_str())) > -1) {
-            float x = rx.cap(1).toFloat();
-            float y = rx.cap(2).toFloat();
-            float z = rx.cap(3).toFloat();
-            _viewer->getBacklight()->direction.setValue(x,y,z);
+        try {
+            std::string pos = rGrp.GetASCII("BacklightDirection");
+            Base::Vector3f dir = Base::to_vector(pos);
+            _viewer->getBacklight()->direction.setValue(dir.x, dir.y, dir.z);
+        }
+        catch (const std::exception&) {
+            // ignore exception
         }
     }
     else if (strcmp(Reason,"BacklightIntensity") == 0) {
@@ -289,7 +295,7 @@ void View3DInventor::OnChange(ParameterGrp::SubjectType &rCaller,ParameterGrp::M
     else if (strcmp(Reason,"HighlightColor") == 0) {
         float transparency;
         SbColor highlightColor(0.8f, 0.1f, 0.1f);
-        unsigned long highlight = (unsigned long)(highlightColor.getPackedValue());
+        auto highlight = (unsigned long)(highlightColor.getPackedValue());
         highlight = rGrp.GetUnsigned("HighlightColor", highlight);
         highlightColor.setPackedValue((uint32_t)highlight, transparency);
         SoSFColor col; col.setValue(highlightColor);
@@ -299,7 +305,7 @@ void View3DInventor::OnChange(ParameterGrp::SubjectType &rCaller,ParameterGrp::M
     else if (strcmp(Reason,"SelectionColor") == 0) {
         float transparency;
         SbColor selectionColor(0.1f, 0.8f, 0.1f);
-        unsigned long selection = (unsigned long)(selectionColor.getPackedValue());
+        auto selection = (unsigned long)(selectionColor.getPackedValue());
         selection = rGrp.GetUnsigned("SelectionColor", selection);
         selectionColor.setPackedValue((uint32_t)selection, transparency);
         SoSFColor col; col.setValue(selectionColor);
@@ -351,37 +357,56 @@ void View3DInventor::OnChange(ParameterGrp::SubjectType &rCaller,ParameterGrp::M
         }
     }
     else if (strcmp(Reason,"EyeDistance") == 0) {
-        _viewer->getSoRenderManager()->setStereoOffset(rGrp.GetFloat("EyeDistance",5.0));
+        _viewer->getSoRenderManager()->setStereoOffset(rGrp.GetFloat("EyeDistance", 5.0));
     }
     else if (strcmp(Reason,"CornerCoordSystem") == 0) {
-        _viewer->setFeedbackVisibility(rGrp.GetBool("CornerCoordSystem",true));
+        _viewer->setFeedbackVisibility(rGrp.GetBool("CornerCoordSystem", true));
     }
     else if (strcmp(Reason,"CornerCoordSystemSize") == 0) {
-        _viewer->setFeedbackSize(rGrp.GetInt("CornerCoordSystemSize",10));
+        _viewer->setFeedbackSize(rGrp.GetInt("CornerCoordSystemSize", 10));
     }
     else if (strcmp(Reason,"ShowAxisCross") == 0) {
-        _viewer->setAxisCross(rGrp.GetBool("ShowAxisCross",false));
+        _viewer->setAxisCross(rGrp.GetBool("ShowAxisCross", false));
     }
     else if (strcmp(Reason,"UseAutoRotation") == 0) {
-        _viewer->setAnimationEnabled(rGrp.GetBool("UseAutoRotation",false));
+        _viewer->setAnimationEnabled(rGrp.GetBool("UseAutoRotation", false));
     }
     else if (strcmp(Reason,"Gradient") == 0) {
-        _viewer->setGradientBackground((rGrp.GetBool("Gradient",true)));
+        _viewer->setGradientBackground((rGrp.GetBool("Gradient", true)));
     }
     else if (strcmp(Reason,"ShowFPS") == 0) {
-        _viewer->setEnabledFPSCounter(rGrp.GetBool("ShowFPS",false));
+        _viewer->setEnabledFPSCounter(rGrp.GetBool("ShowFPS", false));
     }
     else if (strcmp(Reason,"ShowNaviCube") == 0) {
-        _viewer->setEnabledNaviCube(rGrp.GetBool("ShowNaviCube",true));
+        _viewer->setEnabledNaviCube(rGrp.GetBool("ShowNaviCube", true));
     }
     else if (strcmp(Reason, "CornerNaviCube") == 0) {
         _viewer->setNaviCubeCorner(rGrp.GetInt("CornerNaviCube", 1));
     }
+    else if (strcmp(Reason, "CubeSize") == 0) {
+        _viewer->getNavigationCube()->setSize(rGrp.GetInt("CubeSize", 132));
+    }
+    else if (strcmp(Reason, "NaviRotateToNearest") == 0) {
+        _viewer->getNavigationCube()->setNaviRotateToNearest(
+            rGrp.GetBool("NaviRotateToNearest", true));
+    }
+    else if (strcmp(Reason, "NaviStepByTurn") == 0) {
+        _viewer->getNavigationCube()->setNaviStepByTurn(rGrp.GetInt("NaviStepByTurn", 8));
+    }
+    else if (strcmp(Reason, "FontSize") == 0) {
+        _viewer->getNavigationCube()->setFontSize(
+            rGrp.GetInt("FontSize", _viewer->getNavigationCube()->getDefaultFontSize()));
+    }
+    else if (strcmp(Reason, "FontString") == 0) {
+        std::string font = rGrp.GetASCII(
+            "FontString", NaviCube::getDefaultSansserifFont().family().toStdString().c_str());
+        _viewer->getNavigationCube()->setFont(font);
+    }
     else if (strcmp(Reason,"UseVBO") == 0) {
-        _viewer->setEnabledVBO(rGrp.GetBool("UseVBO",false));
+        _viewer->setEnabledVBO(rGrp.GetBool("UseVBO", false));
     }
     else if (strcmp(Reason,"RenderCache") == 0) {
-        _viewer->setRenderCache(rGrp.GetInt("RenderCache",0));
+        _viewer->setRenderCache(rGrp.GetInt("RenderCache", 0));
     }
     else if (strcmp(Reason,"Orthographic") == 0) {
         // check whether a perspective or orthogrphic camera should be set
@@ -423,10 +448,10 @@ void View3DInventor::OnChange(ParameterGrp::SubjectType &rCaller,ParameterGrp::M
         }
     }
     else {
-        unsigned long col1 = rGrp.GetUnsigned("BackgroundColor", 3940932863UL);
-        unsigned long col2 = rGrp.GetUnsigned("BackgroundColor2", 2526456575UL); // default color (blue/grey)
-        unsigned long col3 = rGrp.GetUnsigned("BackgroundColor3", 3570714879UL); // default color (light yellow/bluey)
-        unsigned long col4 = rGrp.GetUnsigned("BackgroundColor4", 1869583359UL); // default color (blue/grey)
+        unsigned long col1 = rGrp.GetUnsigned("BackgroundColor",3940932863UL);
+        unsigned long col2 = rGrp.GetUnsigned("BackgroundColor2",859006463UL); // default color (dark blue)
+        unsigned long col3 = rGrp.GetUnsigned("BackgroundColor3",2880160255UL); // default color (blue/grey)
+        unsigned long col4 = rGrp.GetUnsigned("BackgroundColor4",1869583359UL); // default color (blue/grey)
         float r1,g1,b1,r2,g2,b2,r3,g3,b3,r4,g4,b4;
         r1 = ((col1 >> 24) & 0xff) / 255.0; g1 = ((col1 >> 16) & 0xff) / 255.0; b1 = ((col1 >> 8) & 0xff) / 255.0;
         r2 = ((col2 >> 24) & 0xff) / 255.0; g2 = ((col2 >> 16) & 0xff) / 255.0; b2 = ((col2 >> 8) & 0xff) / 255.0;
@@ -502,8 +527,8 @@ void View3DInventor::printPreview()
     restorePrinterSettings(&printer);
 
     QPrintPreviewDialog dlg(&printer, this);
-    connect(&dlg, SIGNAL(paintRequested (QPrinter *)),
-            this, SLOT(print(QPrinter *)));
+    connect(&dlg, &QPrintPreviewDialog::paintRequested,
+            this, qOverload<QPrinter*>(&View3DInventor::print));
     dlg.exec();
     savePrinterSettings(&printer);
 }
@@ -570,19 +595,19 @@ bool View3DInventor::onMsg(const char* pMsg, const char** ppReturn)
         return true;
     }
     else if(strcmp("Example1",pMsg) == 0 ) {
-        SoSeparator * root = new SoSeparator;
+        auto root = new SoSeparator;
         Texture3D(root);
         _viewer->setSceneGraph(root);
         return true;
     }
     else if(strcmp("Example2",pMsg) == 0 ) {
-        SoSeparator * root = new SoSeparator;
+        auto root = new SoSeparator;
         LightManip(root);
         _viewer->setSceneGraph(root);
         return true;
     }
     else if(strcmp("Example3",pMsg) == 0 ) {
-        SoSeparator * root = new SoSeparator;
+        auto root = new SoSeparator;
         AnimationTexture(root);
         _viewer->setSceneGraph(root);
         return true;
@@ -873,7 +898,7 @@ void View3DInventor::windowStateChanged(MDIView* view)
         // must be hidden, hence we can start the timer.
         // Note: If view is top-level or fullscreen it doesn't necessarily hide the other view
         // e.g. if it is on a second monitor.
-        canStartTimer = (!this->isTopLevel() && !view->isTopLevel() && view->isMaximized());
+        canStartTimer = (!this->isWindow() && !view->isWindow() && view->isMaximized());
     } else if (isMinimized()) {
         // I am the active view but minimized
         canStartTimer = true;
@@ -976,7 +1001,7 @@ void View3DInventor::setCurrentViewMode(ViewMode newmode)
             this->removeAction(*it);
 
         // Step two
-        QMdiSubWindow* mdi = qobject_cast<QMdiSubWindow*>(parentWidget());
+        auto mdi = qobject_cast<QMdiSubWindow*>(parentWidget());
         if (mdi && mdi->layout())
             mdi->layout()->invalidate();
     }
@@ -990,7 +1015,7 @@ bool View3DInventor::eventFilter(QObject* watched, QEvent* e)
     // Note: We don't need to care about removing an action if its parent widget gets destroyed.
     // This does the action itself for us.
     if (watched != this && e->type() == QEvent::ActionAdded) {
-        QActionEvent* a = static_cast<QActionEvent*>(e);
+        auto a = static_cast<QActionEvent*>(e);
         QAction* action = a->action();
 
         if (!action->isSeparator()) {
@@ -1032,7 +1057,7 @@ void View3DInventor::contextMenuEvent (QContextMenuEvent*e)
 void View3DInventor::customEvent(QEvent * e)
 {
     if (e->type() == QEvent::User) {
-        NavigationStyleEvent* se = static_cast<NavigationStyleEvent*>(e);
+        auto se = static_cast<NavigationStyleEvent*>(e);
         ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath
             ("User parameter:BaseApp/Preferences/View");
         if (hGrp->GetBool("SameStyleForAllViews", true))

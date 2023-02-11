@@ -86,7 +86,7 @@ public:
 /**
  * Python class for redirection of stdout to FreeCAD's output
  * console window. This allows to report all Python output to
- * the output window which simplifies debugging scripts.
+ * the report view which simplifies debugging scripts.
  * @see PythonStdout
  * @see PythonStderr
  * @author Werner Mayer
@@ -109,7 +109,7 @@ public:
 /**
  * Python class for redirection of stderr to FreeCAD's output
  * console window. This allows to report all Python errors to
- * the output window which simplifies error tracking.
+ * the report view which simplifies error tracking.
  * @see PythonStdout
  * @see PythonStderr
  * @author Werner Mayer

@@ -23,22 +23,20 @@
 #ifndef PATH_AREA_H
 #define PATH_AREA_H
 
-#include <QCoreApplication>
 #include <chrono>
+#include <list>
 #include <memory>
 #include <vector>
-#include <list>
-#include <TopoDS.hxx>
-#include <gp_Pln.hxx>
-#include <gp_Circ.hxx>
-#include <gp_GTrsf.hxx>
 
-#include <Base/Console.h>
-#include <Mod/Part/App/TopoShape.h>
-#include <Mod/Part/App/PartPyCXX.h>
+#include <TopoDS.hxx>
+
 #include <Mod/Path/PathGlobal.h>
-#include "Path.h"
+#include <Mod/Part/App/PartPyCXX.h>
+#include <Mod/Part/App/TopoShape.h>
+
 #include "AreaParams.h"
+#include "Path.h"
+
 
 class CArea;
 class CCurve;

@@ -122,7 +122,7 @@ void AttachEnginePy::setMode(Py::String arg)
 {
     try {
         AttachEngine &attacher = *(this->getAttachEnginePtr());
-        std::string modeName = (std::string)arg;
+        std::string modeName = static_cast<std::string>(arg);
         attacher.mapMode = attacher.getModeByName(modeName);
     } ATTACHERPY_STDCATCH_ATTR;
 }

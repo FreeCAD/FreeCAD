@@ -179,7 +179,7 @@ PyObject* DocumentPy::addAnnotation(PyObject *args)
         return nullptr;
 
     PY_TRY {
-        ViewProviderExtern *pcExt = new ViewProviderExtern();
+        auto pcExt = new ViewProviderExtern();
 
         pcExt->setModeByFile(psModName ? psModName : "Main", psFileName);
         pcExt->adjustDocumentName(getDocumentPtr()->getDocument()->getName());
@@ -269,9 +269,33 @@ PyObject* DocumentPy::mdiViewsOfType(PyObject *args)
     PY_TRY {
         std::list<Gui::MDIView*> views = getDocumentPtr()->getMDIViewsOfType(type);
         Py::List list;
-        for (std::list<Gui::MDIView*>::iterator it = views.begin(); it != views.end(); ++it)
+        for (auto it = views.begin(); it != views.end(); ++it)
             list.append(Py::asObject((*it)->getPyObject()));
         return Py::new_reference_to(list);
+    }
+    PY_CATCH;
+}
+
+PyObject* DocumentPy::save(PyObject *args)
+{
+    if (!PyArg_ParseTuple(args, ""))
+        return nullptr;
+
+    PY_TRY {
+        bool ok = getDocumentPtr()->save();
+        return Py::new_reference_to(Py::Boolean(ok));
+    }
+    PY_CATCH;
+}
+
+PyObject* DocumentPy::saveAs(PyObject *args)
+{
+    if (!PyArg_ParseTuple(args, ""))
+        return nullptr;
+
+    PY_TRY {
+        bool ok = getDocumentPtr()->saveAs();
+        return Py::new_reference_to(Py::Boolean(ok));
     }
     PY_CATCH;
 }
@@ -331,7 +355,7 @@ PyObject* DocumentPy::toggleTreeItem(PyObject *args)
     // get the gui document of the Assembly Item
     //ActiveAppDoc = Item->getDocument();
     //ActiveGuiDoc = Gui::Application::Instance->getDocument(getDocumentPtr());
-    Gui::ViewProviderDocumentObject* ActiveVp = dynamic_cast<Gui::ViewProviderDocumentObject*>(getDocumentPtr()->getViewProvider(Object));
+    auto ActiveVp = dynamic_cast<Gui::ViewProviderDocumentObject*>(getDocumentPtr()->getViewProvider(Object));
     switch (mod) {
         case 0:
             getDocumentPtr()->signalExpandObject(*ActiveVp, TreeItemMode::ToggleItem, parent, subname);

@@ -106,7 +106,7 @@
                 <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Change file defining type and shape of Tool Bit.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                </property>
                <property name="text">
-                <string>...</string>
+                <string notr="true">...</string>
                </property>
               </widget>
              </item>
@@ -135,10 +135,10 @@
           <item row="0" column="1">
            <widget class="Gui::InputField" name="toolCuttingEdgeAngle">
             <property name="text">
-             <string>0 °</string>
+             <string notr="true">0 °</string>
             </property>
             <property name="unit" stdset="0">
-             <string>°</string>
+             <string notr="true">°</string>
             </property>
            </widget>
           </item>

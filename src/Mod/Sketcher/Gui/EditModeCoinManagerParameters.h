@@ -20,32 +20,27 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef SKETCHERGUI_EditModeCoinManagerParameters_H
 #define SKETCHERGUI_EditModeCoinManagerParameters_H
 
-#ifndef _PreComp_
-# include <Inventor/nodes/SoMaterial.h>
-# include <Inventor/nodes/SoCoordinate3.h>
-# include <Inventor/nodes/SoLineSet.h>
-# include <Inventor/nodes/SoGroup.h>
-# include <Inventor/nodes/SoMarkerSet.h>
-# include <Inventor/nodes/SoText2.h>
-# include <Inventor/nodes/SoPickStyle.h>
-# include <Inventor/nodes/SoTranslation.h>
-# include <Inventor/nodes/SoDrawStyle.h>
-# include <Inventor/SbColor.h>
-#endif  // #ifndef _PreComp_
+#include <map>
+#include <vector>
+
+#include <QString>
+
+#include <Inventor/SbColor.h>
+#include <Inventor/nodes/SoDrawStyle.h>
+#include <Inventor/nodes/SoCoordinate3.h>
+#include <Inventor/nodes/SoGroup.h>
+#include <Inventor/nodes/SoLineSet.h>
+#include <Inventor/nodes/SoMarkerSet.h>
+#include <Inventor/nodes/SoMaterial.h>
+#include <Inventor/nodes/SoPickStyle.h>
+#include <Inventor/nodes/SoText2.h>
+#include <Inventor/nodes/SoTranslation.h>
 
 #include <Gui/Inventor/SmSwitchboard.h>
-
-#include <qstring.h>
-#include <qcolor.h>
-
 #include <Mod/Sketcher/App/GeoList.h>
-
-#include <vector>
-#include <map>
 
 
 namespace Part {
@@ -117,15 +112,6 @@ struct DrawingParameters {
     static SbColor NonDrivingConstrDimColor;                    // Color used for non-driving (reference) dimensional constraints
     static SbColor ExprBasedConstrDimColor;                     // Color used for expression based dimensional constraints
     static SbColor DeactivatedConstrDimColor;                   // Color used for deactivated dimensional constraints
-    //@}
-
-    /** @name Rendering Icon colors **/
-    //@{
-    static QColor constrIcoColor;                               // Icon color for constraints
-    static QColor nonDrivingConstrIcoColor;                     // Icon color for references (non-driving constraints)
-    static QColor constrIconSelColor;                           // Icon color for selected constraints
-    static QColor constrIconPreselColor;                        // Icon color for preselected constraints
-    static QColor constrIconDisabledColor;                      // Icon color for disabled constraints
     //@}
 
     /** @name Rendering sizes (also to support HDPI monitors) **/

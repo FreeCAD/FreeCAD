@@ -426,7 +426,7 @@ class Twist:
 
                 spine = Part.makePolygon([(0,0,0),(0,0,fp.Height.Value)])
                 if fp.Angle.Value == 0.0:
-                    auxiliary_spine = Part.makePolygon([(1,1,0),(fp.Scale[0],fp.Scale[1],fp.Height.Value)])
+                    auxiliary_spine = None
                 else:
                     num_revolutions = abs(fp.Angle.Value)/360.0
                     pitch = fp.Height.Value / num_revolutions
@@ -445,7 +445,8 @@ class Twist:
                     pipe_shell.setSpineSupport(spine)
                     pipe_shell.add(wire1)
                     pipe_shell.add(wire2)
-                    pipe_shell.setAuxiliarySpine(auxiliary_spine,True,0)
+                    if auxiliary_spine:
+                        pipe_shell.setAuxiliarySpine(auxiliary_spine,True,0)
                     assert(pipe_shell.isReady())
                     pipe_shell.build()
                     faces.extend(pipe_shell.shape().Faces)

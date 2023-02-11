@@ -22,21 +22,15 @@
 
 #include "PreCompiled.h"
 
-#ifndef _PreComp_
-#endif
-
 #include <App/Application.h>
 #include <Base/Console.h>
-#include <Base/Exception.h>
 #include <Base/Parameter.h>
 
-#include "DrawPage.h"
-#include "DrawView.h"
-#include "DrawUtil.h"
-
-#include <Mod/TechDraw/App/DrawLeaderLinePy.h>  // generated from DrawLeaderLinePy.xml
 #include "DrawLeaderLine.h"
+#include "DrawLeaderLinePy.h"  // generated from DrawLeaderLinePy.xml
 #include "ArrowPropEnum.h"
+#include "DrawView.h"
+
 
 using namespace TechDraw;
 
@@ -185,9 +179,6 @@ double DrawLeaderLine::getBaseScale() const
     DrawView* parent = getBaseView();
     if (parent) {
         result = parent->getScale();
-    } else {
-        //TARFU
-        Base::Console().Log("DrawLeaderLine - %s - scale not found.  Using 1.0. \n", getNameInDocument());
     }
     return result;
 }
@@ -200,9 +191,6 @@ double DrawLeaderLine::getScale() const
         DrawView* parent = getBaseView();
         if (parent) {
             result = parent->getScale();
-        } else {
-            //TARFU
-            Base::Console().Log("DrawLeaderLine - %s - scale not found.  Using 1.0. \n", getNameInDocument());
         }
     }
     return result;
@@ -283,7 +271,7 @@ Base::Vector3d DrawLeaderLine::getTailPoint() const
 bool DrawLeaderLine::getDefAuto() const
 {
     Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter().GetGroup("BaseApp")->
-                                         GetGroup("Preferences")->GetGroup("Mod/TechDraw/LeaderLines");
+                                         GetGroup("Preferences")->GetGroup("Mod/TechDraw/LeaderLine");
     bool result = hGrp->GetBool("AutoHorizontal", true);
     return result;
 }

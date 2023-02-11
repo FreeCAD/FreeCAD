@@ -33,6 +33,8 @@ import Draft
 import Part
 import Sketcher
 
+from draftutils.messages import _msg
+
 if App.GuiUp:
     import FreeCADGui
 
@@ -476,22 +478,25 @@ class ArchTest(unittest.TestCase):
         self.failUnless(si,"Arch Site failed")
 
     def testWindow(self):
-        App.Console.PrintLog ('Checking Arch Window...\n')
-        l=Draft.makeLine(App.Vector(0,0,0),App.Vector(-2,0,0))
-        w = Arch.makeWall(l)
-        sk = App.ActiveDocument.addObject('Sketcher::SketchObject','Sketch001')
-        sk.Support = (w,["Face3"])
-        sk.addGeometry(Part.LineSegment(App.Vector(-1.80,1.30,0),App.Vector(-0.90,1.30,0)))
-        sk.addGeometry(Part.LineSegment(App.Vector(-0.90,1.30,0),App.Vector(-0.90,0.25,0)))
-        sk.addGeometry(Part.LineSegment(App.Vector(-0.90,0.25,0),App.Vector(-1.80,0.25,0)))
-        sk.addGeometry(Part.LineSegment(App.Vector(-1.80,0.25,0),App.Vector(-1.80,1.30,0)))
-        sk.addConstraint(Sketcher.Constraint('Coincident',0,2,1,1))
-        sk.addConstraint(Sketcher.Constraint('Coincident',1,2,2,1))
-        sk.addConstraint(Sketcher.Constraint('Coincident',2,2,3,1))
-        sk.addConstraint(Sketcher.Constraint('Coincident',3,2,0,1))
+        operation = "Arch Window"
+        _msg("  Test '{}'".format(operation))
+        line = Draft.makeLine(App.Vector(0, 0, 0), App.Vector(3000, 0, 0))
+        wall = Arch.makeWall(line)
+        sk = App.ActiveDocument.addObject("Sketcher::SketchObject", "Sketch001")
+        sk.Placement.Rotation = App.Rotation(App.Vector(1, 0, 0), 90)
+        sk.addGeometry(Part.LineSegment(App.Vector( 500,  800, 0), App.Vector(1500,  800, 0)))
+        sk.addGeometry(Part.LineSegment(App.Vector(1500,  800, 0), App.Vector(1500, 2000, 0)))
+        sk.addGeometry(Part.LineSegment(App.Vector(1500, 2000, 0), App.Vector( 500, 2000, 0)))
+        sk.addGeometry(Part.LineSegment(App.Vector( 500, 2000, 0), App.Vector( 500,  800, 0)))
+        sk.addConstraint(Sketcher.Constraint('Coincident', 0, 2, 1, 1))
+        sk.addConstraint(Sketcher.Constraint('Coincident', 1, 2, 2, 1))
+        sk.addConstraint(Sketcher.Constraint('Coincident', 2, 2, 3, 1))
+        sk.addConstraint(Sketcher.Constraint('Coincident', 3, 2, 0, 1))
+        App.ActiveDocument.recompute()
         win = Arch.makeWindow(sk)
-        Arch.removeComponents(win,host=w)
-        self.failUnless(win,"Arch Window failed")
+        Arch.removeComponents(win, host=wall)
+        App.ActiveDocument.recompute()
+        self.assertTrue(win, "'{}' failed".format(operation))
 
     def testRoof(self):
         App.Console.PrintLog ('Checking Arch Roof...\n')
@@ -504,6 +509,7 @@ class ArchTest(unittest.TestCase):
         """Create 81 roofs using a range of arguments.
         """
         operation = "Arch Roof testRoof81Permutations"
+        _msg("  Test '{}'".format(operation))
         pts = [App.Vector(   0,    0, 0),
                App.Vector(2000,    0, 0),
                App.Vector(4000,    0, 0),
@@ -543,6 +549,7 @@ class ArchTest(unittest.TestCase):
         This corner case results in a flat roof.
         """
         operation = "Arch Roof testRoofAllAngles90"
+        _msg("  Test '{}'".format(operation))
         pts = [App.Vector(   0,    0, 0),
                App.Vector(2000,    0, 0),
                App.Vector(2000, 2000, 0),
@@ -562,6 +569,7 @@ class ArchTest(unittest.TestCase):
         2 triangular segments with a single apex point.
         """
         operation = "Arch Roof testRoofApex"
+        _msg("  Test '{}'".format(operation))
         rec = Draft.makeRectangle(length = 4000,
                                   height = 3000,
                                   face = False)
@@ -581,6 +589,7 @@ class ArchTest(unittest.TestCase):
         eave point.
         """
         operation = "Arch Roof testRoofSingleEavePoint"
+        _msg("  Test '{}'".format(operation))
         pts = [App.Vector(    0,    0, 0),
                App.Vector( 2000,    0, 0),
                App.Vector( 4000, 2000, 0),
@@ -679,6 +688,35 @@ class ArchTest(unittest.TestCase):
         App.ActiveDocument.recompute()
         r = (w.Shape.Volume < 0.75)
         self.failUnless(r,"Arch Remove failed")
+
+    def testBuildingPart(self):
+        """Create a BuildingPart from a wall with a window and check its shape.
+        """
+        # Also regression test for:
+        # https://github.com/FreeCAD/FreeCAD/issues/6178
+        operation = "Arch BuildingPart"
+        _msg("  Test '{}'".format(operation))
+        # Most of the code below taken from testWindow function.
+        line = Draft.makeLine(App.Vector(0, 0, 0), App.Vector(3000, 0, 0))
+        wall = Arch.makeWall(line)
+        sk = App.ActiveDocument.addObject("Sketcher::SketchObject", "Sketch001")
+        sk.Placement.Rotation = App.Rotation(App.Vector(1, 0, 0), 90)
+        sk.addGeometry(Part.LineSegment(App.Vector( 500,  800, 0), App.Vector(1500,  800, 0)))
+        sk.addGeometry(Part.LineSegment(App.Vector(1500,  800, 0), App.Vector(1500, 2000, 0)))
+        sk.addGeometry(Part.LineSegment(App.Vector(1500, 2000, 0), App.Vector( 500, 2000, 0)))
+        sk.addGeometry(Part.LineSegment(App.Vector( 500, 2000, 0), App.Vector( 500,  800, 0)))
+        sk.addConstraint(Sketcher.Constraint('Coincident', 0, 2, 1, 1))
+        sk.addConstraint(Sketcher.Constraint('Coincident', 1, 2, 2, 1))
+        sk.addConstraint(Sketcher.Constraint('Coincident', 2, 2, 3, 1))
+        sk.addConstraint(Sketcher.Constraint('Coincident', 3, 2, 0, 1))
+        App.ActiveDocument.recompute()
+        win = Arch.makeWindow(sk)
+        Arch.removeComponents(win, host=wall)
+        App.ActiveDocument.recompute()
+        bp = Arch.makeBuildingPart()
+        bp.Group = [wall]
+        App.ActiveDocument.recompute()
+        self.assertTrue(len(bp.Shape.Faces) == 16, "'{}' failed".format(operation))
 
     def tearDown(self):
         App.closeDocument("ArchTest")

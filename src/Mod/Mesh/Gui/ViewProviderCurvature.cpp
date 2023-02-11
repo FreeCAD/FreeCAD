@@ -20,64 +20,47 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
-
 #ifndef _PreComp_
+# include <algorithm>
+# include <ios>
+# include <sstream>
+# include <QCursor>
+# include <QMenu>
+
 # include <Inventor/SoPickedPoint.h>
-# include <Inventor/actions/SoSearchAction.h>
 # include <Inventor/details/SoFaceDetail.h>
-# include <Inventor/details/SoPointDetail.h>
-# include <Inventor/events/SoMouseButtonEvent.h>
-# include <Inventor/events/SoKeyboardEvent.h>
+# include <Inventor/actions/SoSearchAction.h>
 # include <Inventor/events/SoLocation2Event.h>
+# include <Inventor/events/SoMouseButtonEvent.h>
 # include <Inventor/nodes/SoDrawStyle.h>
 # include <Inventor/nodes/SoIndexedFaceSet.h>
 # include <Inventor/nodes/SoMaterial.h>
-# include <Inventor/nodes/SoMaterialBinding.h>
 # include <Inventor/nodes/SoShapeHints.h>
 # include <Inventor/sensors/SoIdleSensor.h>
-# include <algorithm>
-# include <sstream>
-# include <QEvent>
-# include <QMenu>
-# include <QMessageBox>
-# include <QCursor>
-# include <QToolTip>
-# include <QWhatsThis>
 #endif
 
 # include <boost/range/adaptors.hpp>
-# include <iomanip>
-# include <ios>
 
-// Here the FreeCAD includes sorted by Base,App,Gui......
-#include <Base/Console.h>
-#include <Base/Parameter.h>
-#include <Base/Exception.h>
-#include <Base/Sequencer.h>
 #include <App/Annotation.h>
-#include <App/Application.h>
 #include <App/Document.h>
 #include <App/DocumentObjectGroup.h>
+#include <Base/Console.h>
 #include <Gui/Application.h>
 #include <Gui/BitmapFactory.h>
 #include <Gui/Document.h>
 #include <Gui/MainWindow.h>
 #include <Gui/Selection.h>
-#include <Gui/SoFCSelection.h>
 #include <Gui/SoFCColorBar.h>
+#include <Gui/SoFCSelection.h>
 #include <Gui/View3DInventorViewer.h>
-#include <Gui/ViewProviderGeometryObject.h>
 #include <Gui/Widgets.h>
 
-#include <Mod/Mesh/App/MeshProperties.h>
-#include <Mod/Mesh/App/MeshFeature.h>
 #include <Mod/Mesh/App/FeatureMeshCurvature.h>
-#include <Mod/Mesh/App/MeshProperties.h>
+#include <Mod/Mesh/App/MeshFeature.h>
 
-#include "ViewProvider.h"
 #include "ViewProviderCurvature.h"
+
 
 using namespace Mesh;
 using namespace MeshGui;
@@ -535,14 +518,13 @@ void ViewProviderMeshCurvature::curvatureInfoCallback(void * ud, SoEventCallback
 
             // By specifying the indexed mesh node 'pcFaceSet' we make sure that the picked point is
             // really from the mesh we render and not from any other geometry
-            Gui::ViewProvider* vp = view->getDocument()->getViewProviderByPathFromTail(point->getPath());
+            Gui::ViewProvider* vp = view->getViewProviderByPathFromTail(point->getPath());
             if (!vp || !vp->getTypeId().isDerivedFrom(ViewProviderMeshCurvature::getClassTypeId()))
                 return;
             ViewProviderMeshCurvature* self = static_cast<ViewProviderMeshCurvature*>(vp);
             const SoDetail* detail = point->getDetail(point->getPath()->getTail());
             if (detail && detail->getTypeId() == SoFaceDetail::getClassTypeId()) {
-                // safe downward cast, know the type
-                SoFaceDetail * facedetail = (SoFaceDetail *)detail;
+                const SoFaceDetail * facedetail = static_cast<const SoFaceDetail *>(detail);
                 // get the curvature info of the three points of the picked facet
                 int index1 = facedetail->getPoint(0)->getCoordinateIndex();
                 int index2 = facedetail->getPoint(1)->getCoordinateIndex();
@@ -570,14 +552,13 @@ void ViewProviderMeshCurvature::curvatureInfoCallback(void * ud, SoEventCallback
 
         // By specifying the indexed mesh node 'pcFaceSet' we make sure that the picked point is
         // really from the mesh we render and not from any other geometry
-        Gui::ViewProvider* vp = view->getDocument()->getViewProviderByPathFromTail(point->getPath());
+        Gui::ViewProvider* vp = view->getViewProviderByPathFromTail(point->getPath());
         if (!vp || !vp->getTypeId().isDerivedFrom(ViewProviderMeshCurvature::getClassTypeId()))
             return;
         ViewProviderMeshCurvature* that = static_cast<ViewProviderMeshCurvature*>(vp);
         const SoDetail* detail = point->getDetail(point->getPath()->getTail());
         if (detail && detail->getTypeId() == SoFaceDetail::getClassTypeId()) {
-            // safe downward cast, know the type
-            SoFaceDetail * facedetail = (SoFaceDetail *)detail;
+            const SoFaceDetail * facedetail = static_cast<const SoFaceDetail *>(detail);
             // get the curvature info of the three points of the picked facet
             int index1 = facedetail->getPoint(0)->getCoordinateIndex();
             int index2 = facedetail->getPoint(1)->getCoordinateIndex();
@@ -594,7 +575,7 @@ std::string ViewProviderMeshCurvature::curvatureInfo(bool detail, int index1, in
     App::Property* prop = pcObject->getPropertyByName("CurvInfo");
     std::stringstream str;
     if (prop && prop->getTypeId() == Mesh::PropertyCurvatureList::getClassTypeId()) {
-        Mesh::PropertyCurvatureList* curv = (Mesh::PropertyCurvatureList*)prop;
+        Mesh::PropertyCurvatureList* curv = static_cast<Mesh::PropertyCurvatureList*>(prop);
         const Mesh::CurvatureInfo& cVal1 = (*curv)[index1];
         const Mesh::CurvatureInfo& cVal2 = (*curv)[index2];
         const Mesh::CurvatureInfo& cVal3 = (*curv)[index3];

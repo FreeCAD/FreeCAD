@@ -407,7 +407,7 @@ void SoFrameLabel::drawImage()
         return;
     }
 
-    QFont font(QString::fromLatin1(name.getValue()), size.getValue());
+    QFont font(QString::fromLatin1(QByteArray(name.getValue())), size.getValue());
     QFontMetrics fm(font);
     int w = 0;
     int h = fm.height() * num;
@@ -481,7 +481,7 @@ TranslateManip::TranslateManip()
 {
     SO_NODE_CONSTRUCTOR(TranslateManip);
 
-    SoTranslate2Dragger *myDrag = new SoTranslate2Dragger;
+    auto myDrag = new SoTranslate2Dragger;
     setDragger(myDrag);
 }
 

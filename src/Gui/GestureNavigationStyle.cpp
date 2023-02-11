@@ -723,7 +723,7 @@ public:
                              panDist,
                              SbVec2f(0,0));
             } else if (ev.inventor_event->isOfType(SoGesturePinchEvent::getClassTypeId())){
-                const SoGesturePinchEvent* const pinch = static_cast<const SoGesturePinchEvent*>(ev.inventor_event);
+                const auto pinch = static_cast<const SoGesturePinchEvent*>(ev.inventor_event);
                 SbVec2f panDist = ns.normalizePixelPos(pinch->deltaCenter.getValue());
                 ns.panCamera(ns.viewer->getSoRenderManager()->getCamera(),
                              ratio,
@@ -963,7 +963,7 @@ bool GestureNavigationStyle::isDraggerUnderCursor(SbVec2s pos)
     rp.apply(this->viewer->getSoRenderManager()->getSceneGraph());
     SoPickedPoint* pick = rp.getPickedPoint();
     if (pick){
-        const SoFullPath* fullpath = static_cast<const SoFullPath*>(pick->getPath());
+        const auto fullpath = static_cast<const SoFullPath*>(pick->getPath());
         for(int i = 0; i < fullpath->getLength(); ++i){
             if(fullpath->getNode(i)->isOfType(SoDragger::getClassTypeId()))
                 return true;

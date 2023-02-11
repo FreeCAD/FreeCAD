@@ -155,13 +155,7 @@ Py::Object Vector2dPy::getattro(const Py::String &name_)
     //
     std::string name( name_.as_std_string( "utf-8" ) );
 
-    if (name == "__members__") { // Py2
-        Py::List attr;
-        attr.append(Py::String("x"));
-        attr.append(Py::String("y"));
-        return attr;
-    }
-    else if (name == "__dict__") { // Py3
+    if (name == "__dict__") {
         Py::Dict attr;
         attr.setItem(Py::String("x"), Py::Float(v.x));
         attr.setItem(Py::String("y"), Py::Float(v.y));

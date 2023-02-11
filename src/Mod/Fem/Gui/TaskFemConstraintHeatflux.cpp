@@ -54,21 +54,21 @@ TaskFemConstraintHeatflux::TaskFemConstraintHeatflux(ViewProviderFemConstraintHe
 
     // create a context menu for the listview of the references
     createDeleteAction(ui->lw_references);
-    deleteAction->connect(deleteAction, SIGNAL(triggered()), this, SLOT(onReferenceDeleted()));
+    connect(deleteAction, &QAction::triggered, this, &TaskFemConstraintHeatflux::onReferenceDeleted);
 
-    connect(ui->rb_convection, SIGNAL(clicked(bool)), this, SLOT(Conv()));
-    connect(ui->rb_dflux, SIGNAL(clicked(bool)), this, SLOT(Flux()));
+    connect(ui->rb_convection, &QRadioButton::clicked,
+            this, &TaskFemConstraintHeatflux::Conv);
+    connect(ui->rb_dflux, &QRadioButton::clicked,
+            this, &TaskFemConstraintHeatflux::Flux);
 
-    connect(ui->if_heatflux, SIGNAL(valueChanged(double)),
-            this, SLOT(onHeatFluxChanged(double)));
-    connect(ui->if_ambienttemp, SIGNAL(valueChanged(double)),
-            this, SLOT(onAmbientTempChanged(double)));
-    //connect(ui->if_facetemp, SIGNAL(valueChanged(double)),
-    //        this, SLOT(onFaceTempChanged(double)));
-    connect(ui->if_filmcoef, SIGNAL(valueChanged(double)),
-            this, SLOT(onFilmCoefChanged(double)));
-    connect(ui->lw_references, SIGNAL(itemClicked(QListWidgetItem*)),
-        this, SLOT(setSelection(QListWidgetItem*)));
+    connect(ui->if_heatflux, qOverload<double>(&InputField::valueChanged),
+            this, &TaskFemConstraintHeatflux::onHeatFluxChanged);
+    connect(ui->if_ambienttemp, qOverload<double>(&InputField::valueChanged),
+            this, &TaskFemConstraintHeatflux::onAmbientTempChanged);
+    connect(ui->if_filmcoef, qOverload<double>(&InputField::valueChanged),
+            this, &TaskFemConstraintHeatflux::onFilmCoefChanged);
+    connect(ui->lw_references, &QListWidget::itemClicked,
+            this, &TaskFemConstraintHeatflux::setSelection);
 
     this->groupLayout()->addWidget(proxy);
 

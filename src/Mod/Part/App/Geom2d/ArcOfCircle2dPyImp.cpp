@@ -48,7 +48,7 @@ std::string ArcOfCircle2dPy::representation() const
 
 PyObject *ArcOfCircle2dPy::PyMake(struct _typeobject *, PyObject *, PyObject *)  // Python wrapper
 {
-    // create a new instance of ArcOfCirclePy and the Twin object 
+    // create a new instance of ArcOfCirclePy and the Twin object
     return new ArcOfCircle2dPy(new Geom2dArcOfCircle);
 }
 
@@ -132,5 +132,5 @@ PyObject *ArcOfCircle2dPy::getCustomAttributes(const char* ) const
 
 int ArcOfCircle2dPy::setCustomAttributes(const char* , PyObject *)
 {
-    return 0; 
+    return 0;
 }

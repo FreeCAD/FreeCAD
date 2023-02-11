@@ -69,16 +69,6 @@ class BaseViewProxy(object):
         return mode
 
 
-class HeatProxy(BaseProxy):
-    pass
-
-
-class HeatViewProxy(BaseViewProxy):
-
-    def getIcon(self):
-        return ":/icons/FEM_EquationHeat.svg"
-
-
 class ElasticityProxy(BaseProxy):
     pass
 
@@ -89,23 +79,7 @@ class ElasticityViewProxy(BaseViewProxy):
         return ":/icons/FEM_EquationElasticity.svg"
 
 
-class ElectrostaticViewProxy(BaseViewProxy):
-
-    def getIcon(self):
-        return ":/icons/FEM_EquationElectrostatic.svg"
-
-
-class ElectrostaticProxy(BaseProxy):
-    pass
-
-
-class FluxViewProxy(BaseViewProxy):
-
-    def getIcon(self):
-        return ":/icons/FEM_EquationFlux.svg"
-
-
-class FluxProxy(BaseProxy):
+class ElectricforceProxy(BaseProxy):
     pass
 
 
@@ -115,8 +89,14 @@ class ElectricforceViewProxy(BaseViewProxy):
         return ":/icons/FEM_EquationElectricforce.svg"
 
 
-class ElectricforceProxy(BaseProxy):
+class ElectrostaticProxy(BaseProxy):
     pass
+
+
+class ElectrostaticViewProxy(BaseViewProxy):
+
+    def getIcon(self):
+        return ":/icons/FEM_EquationElectrostatic.svg"
 
 
 class FlowProxy(BaseProxy):
@@ -127,5 +107,46 @@ class FlowViewProxy(BaseViewProxy):
 
     def getIcon(self):
         return ":/icons/FEM_EquationFlow.svg"
+
+
+class FluxProxy(BaseProxy):
+    pass
+
+
+class FluxViewProxy(BaseViewProxy):
+
+    def getIcon(self):
+        return ":/icons/FEM_EquationFlux.svg"
+
+
+class HeatProxy(BaseProxy):
+    pass
+
+
+class HeatViewProxy(BaseViewProxy):
+
+    def getIcon(self):
+        return ":/icons/FEM_EquationHeat.svg"
+
+
+class MagnetodynamicProxy(BaseProxy):
+    pass
+
+
+class MagnetodynamicViewProxy(BaseViewProxy):
+
+    def getIcon(self):
+        return ":/icons/FEM_EquationMagnetodynamic.svg"
+
+
+class Magnetodynamic2DProxy(BaseProxy):
+    pass
+
+
+class Magnetodynamic2DViewProxy(BaseViewProxy):
+
+    def getIcon(self):
+        return ":/icons/FEM_EquationMagnetodynamic2D.svg"
+
 
 ##  @}

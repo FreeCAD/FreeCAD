@@ -68,7 +68,7 @@ const char* Hole::DrillPointEnums[]                  = { "Flat", "Angled", nullp
 
 /* "None" profile */
 
-const char* Hole::HoleCutType_None_Enums[]           = { "None", "Counterbore", "Countersink", nullptr };
+const char* Hole::HoleCutType_None_Enums[]           = { "None", "Counterbore", "Countersink", "Counterdrill", nullptr };
 const char* Hole::ThreadSize_None_Enums[]            = { "None", nullptr };
 const char* Hole::ThreadClass_None_Enums[]           = { "None", nullptr };
 
@@ -475,7 +475,11 @@ const Hole::UTSClearanceDefinition Hole::UTSHoleDiameters[22] =
 };
 
 /* ISO coarse metric enums */
-std::vector<std::string> Hole::HoleCutType_ISOmetric_Enums  = { "None", "Counterbore", "Countersink", "Cheesehead (deprecated)", "Countersink socket screw (deprecated)", "Cap screw (deprecated)" };
+std::vector<std::string> Hole::HoleCutType_ISOmetric_Enums = {
+    "None",
+    "Counterbore",
+    "Countersink",
+    "Counterdrill"};
 const char* Hole::ThreadSize_ISOmetric_Enums[]   = { "M1",   "M1.1", "M1.2", "M1.4", "M1.6",
                                                      "M1.8", "M2",   "M2.2", "M2.5", "M3",
                                                      "M3.5", "M4",   "M4.5", "M5",   "M6",
@@ -486,7 +490,11 @@ const char* Hole::ThreadSize_ISOmetric_Enums[]   = { "M1",   "M1.1", "M1.2", "M1
                                                      "M52",  "M56",  "M60",  "M64",  "M68",  nullptr };
 const char* Hole::ThreadClass_ISOmetric_Enums[]  = { "4G", "4H", "5G", "5H", "6G", "6H", "7G", "7H","8G", "8H", nullptr };
 
-std::vector<std::string> Hole::HoleCutType_ISOmetricfine_Enums  = { "None", "Counterbore", "Countersink", "Cheesehead (deprecated)", "Countersink socket screw (deprecated)", "Cap screw (deprecated)" };
+std::vector<std::string> Hole::HoleCutType_ISOmetricfine_Enums = {
+    "None",
+    "Counterbore",
+    "Countersink",
+    "Counterdrill"};
 const char* Hole::ThreadSize_ISOmetricfine_Enums[]   = {
     "M1x0.2",      "M1.1x0.2",    "M1.2x0.2",    "M1.4x0.2",
     "M1.6x0.2",    "M1.8x0.2",    "M2x0.25",     "M2.2x0.25",
@@ -597,7 +605,7 @@ const double Hole::ThreadRunout[ThreadRunout_size][2] = {
 /* Details from https://en.wikipedia.org/wiki/Unified_Thread_Standard */
 
 /* UTS coarse */
-const char* Hole::HoleCutType_UNC_Enums[]  = { "None", "Counterbore", "Countersink", nullptr};
+const char* Hole::HoleCutType_UNC_Enums[]  = { "None", "Counterbore", "Countersink", "Counterdrill", nullptr};
 const char* Hole::ThreadSize_UNC_Enums[]   = { "#1", "#2", "#3", "#4", "#5", "#6",
                                                "#8",  "#10", "#12",
                                                "1/4", "5/16", "3/8", "7/16", "1/2", "9/16",
@@ -608,7 +616,7 @@ const char* Hole::ThreadSize_UNC_Enums[]   = { "#1", "#2", "#3", "#4", "#5", "#6
 const char* Hole::ThreadClass_UNC_Enums[]  = { "1B", "2B", "3B", nullptr };
 
 /* UTS fine */
-const char* Hole::HoleCutType_UNF_Enums[]  = { "None", "Counterbore", "Countersink", nullptr};
+const char* Hole::HoleCutType_UNF_Enums[]  = { "None", "Counterbore", "Countersink", "Counterdrill", nullptr};
 const char* Hole::ThreadSize_UNF_Enums[]   = { "#0", "#1", "#2", "#3", "#4", "#5", "#6",
                                                "#8", "#10", "#12",
                                                "1/4", "5/16", "3/8", "7/16", "1/2", "9/16",
@@ -617,7 +625,7 @@ const char* Hole::ThreadSize_UNF_Enums[]   = { "#0", "#1", "#2", "#3", "#4", "#5
 const char* Hole::ThreadClass_UNF_Enums[]  = { "1B", "2B", "3B", nullptr };
 
 /* UTS extrafine */
-const char* Hole::HoleCutType_UNEF_Enums[] = { "None", "Counterbore", "Countersink", nullptr};
+const char* Hole::HoleCutType_UNEF_Enums[] = { "None", "Counterbore", "Countersink", "Counterdrill", nullptr};
 const char* Hole::ThreadSize_UNEF_Enums[]  = { "#12", "1/4", "5/16", "3/8", "7/16", "1/2",
                                                "9/16", "5/8", "11/16", "3/4", "13/16", "7/8",
                                                "15/16", "1", "1 1/16", "1 1/8", "1 1/4",
@@ -760,7 +768,7 @@ void Hole::updateHoleCutParams()
             HoleCutDepth.setReadOnly(false);
             HoleCutCountersinkAngle.setReadOnly(true);
         }
-        else if (holeCutTypeStr == "Countersink") {
+        else if (holeCutTypeStr == "Countersink"  || holeCutTypeStr == "Counterdrill") {
             // read ISO 10642 values
             const CutDimensionSet& counter = find_cutDimensionSet(threadTypeStr, "ISO 10642");
             if (HoleCutDiameter.getValue() == 0.0 || HoleCutDiameter.getValue() <= diameterVal) {
@@ -776,9 +784,43 @@ void Hole::updateHoleCutParams()
             if (HoleCutCountersinkAngle.getValue() == 0.0) {
                 HoleCutCountersinkAngle.setValue(counter.angle);
             }
+            if (HoleCutDepth.getValue() == 0.0 && holeCutTypeStr == "Counterdrill") {
+                HoleCutDepth.setValue(1.0);
+            }
             HoleCutDiameter.setReadOnly(false);
             HoleCutDepth.setReadOnly(false);
             HoleCutCountersinkAngle.setReadOnly(false);
+        }
+
+        // handle since FreeCAD 0.18 deprecated types that were
+        // removed after FreeCAD 0.20
+        if (holeCutTypeStr == "Cheesehead (deprecated)") {
+            HoleCutType.setValue("Counterbore");
+            holeCutTypeStr = "Counterbore";
+            HoleCutDiameter.setValue(diameterVal * 1.6);
+            HoleCutDepth.setValue(diameterVal * 0.6);
+            HoleCutDiameter.setReadOnly(false);
+            HoleCutDepth.setReadOnly(false);
+        }
+        else if (holeCutTypeStr == "Countersink socket screw (deprecated)") {
+            HoleCutType.setValue("Countersink");
+            holeCutTypeStr = "Countersink";
+            HoleCutDiameter.setValue(diameterVal * 2.0);
+            HoleCutDepth.setValue(diameterVal * 0.0);
+            if (HoleCutCountersinkAngle.getValue() == 0.0) {
+                HoleCutCountersinkAngle.setValue(90.0);
+            }
+            HoleCutDiameter.setReadOnly(false);
+            HoleCutDepth.setReadOnly(false);
+            HoleCutCountersinkAngle.setReadOnly(false);
+        }
+        else if (holeCutTypeStr == "Cap screw (deprecated)") {
+            HoleCutType.setValue("Counterbore");
+            holeCutTypeStr = "Counterbore";
+            HoleCutDiameter.setValue(diameterVal * 1.5);
+            HoleCutDepth.setValue(diameterVal * 1.25);
+            HoleCutDiameter.setReadOnly(false);
+            HoleCutDepth.setReadOnly(false);
         }
 
         // cut definition
@@ -864,32 +906,6 @@ void Hole::updateHoleCutParams()
             }
         }
 
-        // handle legacy types but don't change user settings for
-        // user defined None, Counterbore and Countersink
-        // handle legacy types but don't change user settings for
-        // user defined None, Counterbore and Countersink
-        else if (holeCutTypeStr == "Cheesehead (deprecated)") {
-            HoleCutDiameter.setValue(diameterVal * 1.6);
-            HoleCutDepth.setValue(diameterVal * 0.6);
-            HoleCutDiameter.setReadOnly(false);
-            HoleCutDepth.setReadOnly(false);
-        }
-        else if (holeCutTypeStr == "Countersink socket screw (deprecated)") {
-            HoleCutDiameter.setValue(diameterVal * 2.0);
-            HoleCutDepth.setValue(diameterVal * 0.0);
-            if (HoleCutCountersinkAngle.getValue() == 0.0) {
-                HoleCutCountersinkAngle.setValue(90.0);
-            }
-            HoleCutDiameter.setReadOnly(false);
-            HoleCutDepth.setReadOnly(false);
-            HoleCutCountersinkAngle.setReadOnly(false);
-        }
-        else if (holeCutTypeStr == "Cap screw (deprecated)") {
-            HoleCutDiameter.setValue(diameterVal * 1.5);
-            HoleCutDepth.setValue(diameterVal * 1.25);
-            HoleCutDiameter.setReadOnly(false);
-            HoleCutDepth.setReadOnly(false);
-        }
     }
     else { // we have an UTS profile or none
 
@@ -907,7 +923,7 @@ void Hole::updateHoleCutParams()
             HoleCutDiameter.setReadOnly(false);
             HoleCutDepth.setReadOnly(false);
         }
-        else if (holeCutTypeStr == "Countersink") {
+        else if (holeCutTypeStr == "Countersink" || holeCutTypeStr == "Counterdrill") {
             if (HoleCutDiameter.getValue() == 0.0 || HoleCutDiameter.getValue() <= diameterVal) {
                 HoleCutDiameter.setValue(diameterVal * 1.7);
                 // 82 degrees for UTS, 90 otherwise
@@ -921,6 +937,9 @@ void Hole::updateHoleCutParams()
                     HoleCutCountersinkAngle.setValue(82.0);
                 else
                     HoleCutCountersinkAngle.setValue(90.0);
+            }
+            if (HoleCutDepth.getValue() == 0.0 && holeCutTypeStr == "Counterdrill") {
+                HoleCutDepth.setValue(1.0);
             }
             HoleCutDiameter.setReadOnly(false);
             HoleCutDepth.setReadOnly(false);
@@ -1698,18 +1717,15 @@ App::DocumentObjectExecReturn* Hole::execute()
         const std::string holeCutType = HoleCutType.getValueAsString();
         const std::string threadType = ThreadType.getValueAsString();
         bool isCountersink = (holeCutType == "Countersink" ||
-            holeCutType == "Countersink socket screw (deprecated)" ||
             isDynamicCountersink(threadType, holeCutType));
         bool isCounterbore = (holeCutType == "Counterbore" ||
-            holeCutType == "Cheesehead (deprecated)" ||
-            holeCutType == "Cap screw (deprecated)" ||
             isDynamicCounterbore(threadType, holeCutType));
+        bool isCounterdrill = (holeCutType == "Counterdrill");
 
         double TaperedAngleVal = Tapered.getValue() ? Base::toRadians(TaperedAngle.getValue()) : Base::toRadians(90.0);
         double radiusBottom = Diameter.getValue() / 2.0 - length / tan(TaperedAngleVal);
 
         double radius = Diameter.getValue() / 2.0;
-        double holeCutRadius = HoleCutDiameter.getValue() / 2.0;
         gp_Pnt firstPoint(0, 0, 0);
         gp_Pnt lastPoint(0, 0, 0);
         double lengthCounter = 0.0;
@@ -1719,44 +1735,28 @@ App::DocumentObjectExecReturn* Hole::execute()
         if (TaperedAngleVal <= 0.0 || TaperedAngleVal > Base::toRadians(180.0))
             return new App::DocumentObjectExecReturn("Hole error: Invalid taper angle");
 
-        if (isCountersink) {
+        if (isCountersink || isCounterbore || isCounterdrill) {
+            double holeCutRadius = HoleCutDiameter.getValue() / 2.0;
+            double holeCutDepth = HoleCutDepth.getValue();
             double countersinkAngle = Base::toRadians(HoleCutCountersinkAngle.getValue() / 2.0);
 
-            if (countersinkAngle <= 0 || countersinkAngle > Base::toRadians(180.0))
-                return new App::DocumentObjectExecReturn("Hole error: Invalid countersink angle");
+            if ( isCounterbore) {
+                // Counterbore is rendered the same way as a countersink, but with a hardcoded angle of 90deg
+                countersinkAngle = Base::toRadians(90.0);
+            }
+
+            if ( isCountersink) {
+                holeCutDepth = 0;
+            }
 
             if (holeCutRadius < radius)
                 return new App::DocumentObjectExecReturn("Hole error: Hole cut diameter too small");
-
-            // Top point
-            gp_Pnt newPoint = toPnt(holeCutRadius * xDir);
-            mkWire.Add(BRepBuilderAPI_MakeEdge(lastPoint, newPoint));
-            lastPoint = newPoint;
-
-            computeIntersection(gp_Pnt( holeCutRadius, 0, 0 ),
-                                gp_Pnt(holeCutRadius - sin(countersinkAngle), -cos(countersinkAngle), 0),
-                                gp_Pnt(radius, 0, 0),
-                                gp_Pnt(radiusBottom, -length, 0), xPosCounter, zPosCounter);
-            if (-length > zPosCounter)
-                return new App::DocumentObjectExecReturn("Hole error: Invalid countersink");
-
-            lengthCounter = zPosCounter;
-
-            newPoint = toPnt(xPosCounter * xDir + zPosCounter * zDir);
-            mkWire.Add(BRepBuilderAPI_MakeEdge(lastPoint, newPoint));
-            lastPoint = newPoint;
-        }
-        else if (isCounterbore) {
-            double holeCutDepth = HoleCutDepth.getValue();
-
-            if (holeCutDepth <= 0.0)
-                return new App::DocumentObjectExecReturn("Hole error: Hole cut depth must be greater than zero");
 
             if (holeCutDepth > length)
                 return new App::DocumentObjectExecReturn("Hole error: Hole cut depth must be less than hole depth");
 
-            if (holeCutRadius < radius)
-                return new App::DocumentObjectExecReturn("Hole error: Hole cut diameter too small");
+            if (holeCutDepth < 0.0)
+                return new App::DocumentObjectExecReturn("Hole error: Hole cut depth must be greater or equal to zero");
 
             // Top point
             gp_Pnt newPoint = toPnt(holeCutRadius * xDir);
@@ -1764,15 +1764,20 @@ App::DocumentObjectExecReturn* Hole::execute()
             lastPoint = newPoint;
 
             // Bottom of counterbore
-            newPoint = toPnt(holeCutRadius * xDir - holeCutDepth * zDir);
-            mkWire.Add(BRepBuilderAPI_MakeEdge(lastPoint, newPoint));
-            lastPoint = newPoint;
+            if (holeCutDepth > 0.0) {
+                newPoint = toPnt(holeCutRadius * xDir - holeCutDepth * zDir);
+                mkWire.Add(BRepBuilderAPI_MakeEdge(lastPoint, newPoint));
+                lastPoint = newPoint;
+            }
 
             // Compute intersection of tapered edge and line at bottom of counterbore hole
-            computeIntersection(gp_Pnt(0, -holeCutDepth, 0),
-                                gp_Pnt(holeCutRadius, -holeCutDepth, 0),
+            computeIntersection(gp_Pnt(holeCutRadius, -holeCutDepth, 0 ),
+                                gp_Pnt(holeCutRadius - sin(countersinkAngle), -cos(countersinkAngle) - holeCutDepth, 0),
                                 gp_Pnt(radius, 0, 0),
-                                gp_Pnt(radiusBottom, length, 0), xPosCounter, zPosCounter);
+                                gp_Pnt(radiusBottom, -length, 0), xPosCounter, zPosCounter);
+
+            if (-length > zPosCounter)
+                return new App::DocumentObjectExecReturn("Hole error: Invalid countersink");
 
             lengthCounter = zPosCounter;
             newPoint = toPnt(xPosCounter * xDir + zPosCounter * zDir);

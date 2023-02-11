@@ -21,47 +21,28 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <sstream>
-
 # include <QAction>
 # include <QKeyEvent>
 # include <QListWidget>
-# include <QRegExp>
-# include <QTextStream>
 # include <QMessageBox>
-
-# include <Precision.hxx>
-# include <TopoDS.hxx>
-# include <BRepAdaptor_Surface.hxx>
-# include <Geom_Plane.hxx>
-# include <gp_Pln.hxx>
-# include <gp_Ax1.hxx>
-# include <BRepAdaptor_Curve.hxx>
-# include <Geom_Line.hxx>
-# include <gp_Lin.hxx>
-
-# include <boost/lexical_cast.hpp> //OvG conversion between string and int etc.
+# include <sstream>
+# include <boost/lexical_cast.hpp> // OvG conversion between string and int etc.
 #endif
 
-#include "ui_TaskFemConstraint.h"
-#include "TaskFemConstraint.h"
-#include <App/Application.h>
 #include <App/Document.h>
 #include <Gui/Application.h>
-#include <Gui/Document.h>
 #include <Gui/BitmapFactory.h>
-#include <Gui/ViewProvider.h>
-#include <Gui/WaitCursor.h>
-#include <Gui/Selection.h>
 #include <Gui/Command.h>
+#include <Gui/Document.h>
+#include <Gui/Selection.h>
+#include <Gui/ViewProvider.h>
 #include <Mod/Fem/App/FemConstraint.h>
-#include <Mod/Part/App/PartFeature.h>
 
-#include <Base/Console.h>
+#include "TaskFemConstraint.h"
+#include "ui_TaskFemConstraint.h"
 
 
 using namespace FemGui;
@@ -97,8 +78,8 @@ TaskFemConstraint::TaskFemConstraint(ViewProviderFemConstraint *ConstraintView,Q
         buttonBox = new QDialogButtonBox();
         buttonBox->addButton(okButton, QDialogButtonBox::AcceptRole);
         buttonBox->addButton(cancelButton, QDialogButtonBox::RejectRole);
-        QObject::connect(okButton, SIGNAL(clicked()), this, SLOT(onButtonWizOk()));
-        QObject::connect(cancelButton, SIGNAL(clicked()), this, SLOT(onButtonWizCancel()));
+        QObject::connect(okButton, &QPushButton::clicked, this, &TaskFemConstraint::onButtonWizOk);
+        QObject::connect(cancelButton, &QPushButton::clicked, this, &TaskFemConstraint::onButtonWizCancel);
         ConstraintView->wizardWidget->addWidget(buttonBox);
     }
 }

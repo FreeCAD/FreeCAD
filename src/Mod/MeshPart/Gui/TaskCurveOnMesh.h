@@ -23,9 +23,11 @@
 #ifndef MESHPART_GUI_TASKCURVEONMESH_H
 #define MESHPART_GUI_TASKCURVEONMESH_H
 
+#include <QPointer>
+
 #include <Gui/TaskView/TaskDialog.h>
 #include <Gui/TaskView/TaskView.h>
-#include <QPointer>
+
 
 namespace Gui {
 class View3DInventor;

@@ -26,6 +26,8 @@
 # include <QContextMenuEvent>
 # include <QMenu>
 # include <QPixmapCache>
+# include <QRegularExpression>
+# include <QRegularExpressionMatch>
 #endif
 
 #include <App/Application.h>
@@ -77,14 +79,19 @@ InputField::InputField(QWidget * parent)
     SaveSize(5)
 {
     setValidator(new InputValidator(this));
-    setFocusPolicy(Qt::WheelFocus);
+    if (!App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/General")->GetBool("ComboBoxWheelEventFilter",false)) {
+        setFocusPolicy(Qt::WheelFocus);
+    }
+    else {
+        setFocusPolicy(Qt::StrongFocus);
+    }
     iconLabel = new ExpressionLabel(this);
     iconLabel->setCursor(Qt::ArrowCursor);
     QPixmap pixmap = getValidationIcon(":/icons/button_valid.svg", QSize(sizeHint().height(),sizeHint().height()));
     iconLabel->setPixmap(pixmap);
     iconLabel->setStyleSheet(QString::fromLatin1("QLabel { border: none; padding: 0px; }"));
     iconLabel->hide();
-    connect(this, SIGNAL(textChanged(const QString&)), this, SLOT(updateIconLabel(const QString&)));
+    connect(this, &QLineEdit::textChanged, this, &InputField::updateIconLabel);
     int frameWidth = style()->pixelMetric(QStyle::PM_DefaultFrameWidth);
     setStyleSheet(QString::fromLatin1("QLineEdit { padding-right: %1px } ").arg(iconLabel->sizeHint().width() + frameWidth + 1));
     QSize msz = minimumSizeHint();
@@ -93,8 +100,7 @@ InputField::InputField(QWidget * parent)
 
     this->setContextMenuPolicy(Qt::DefaultContextMenu);
 
-    QObject::connect(this, SIGNAL(textChanged(QString)),
-                     this, SLOT(newInput(QString)));
+    connect(this, &QLineEdit::textChanged, this, &InputField::newInput);
 }
 
 InputField::~InputField()
@@ -105,7 +111,7 @@ void InputField::bind(const App::ObjectIdentifier &_path)
 {
     ExpressionBinding::bind(_path);
 
-    PropertyQuantity * prop = freecad_dynamic_cast<PropertyQuantity>(getPath().getProperty());
+    auto * prop = freecad_dynamic_cast<PropertyQuantity>(getPath().getProperty());
 
     if (prop)
         actQuantity = Base::Quantity(prop->getValue());
@@ -189,7 +195,7 @@ void InputField::contextMenuEvent(QContextMenuEvent *event)
 {
     QMenu *editMenu = createStandardContextMenu();
     editMenu->setTitle(tr("Edit"));
-    QMenu* menu = new QMenu(QString::fromLatin1("InputFieldContextmenu"));
+    auto menu = new QMenu(QString::fromLatin1("InputFieldContextmenu"));
 
     menu->addMenu(editMenu);
     menu->addSeparator();
@@ -201,9 +207,9 @@ void InputField::contextMenuEvent(QContextMenuEvent *event)
     // add the history menu part...
     std::vector<QString> history = getHistory();
 
-    for(std::vector<QString>::const_iterator it = history.begin();it!= history.end();++it){
-        actions.push_back(menu->addAction(*it));
-        values.push_back(*it);
+    for(const auto & it : history){
+        actions.push_back(menu->addAction(it));
+        values.push_back(it);
     }
 
     // add the save value portion of the menu
@@ -211,9 +217,9 @@ void InputField::contextMenuEvent(QContextMenuEvent *event)
     QAction *SaveValueAction = menu->addAction(tr("Save value"));
     std::vector<QString> savedValues = getSavedValues();
 
-    for(std::vector<QString>::const_iterator it = savedValues.begin();it!= savedValues.end();++it){
-        actions.push_back(menu->addAction(*it));
-        values.push_back(*it);
+    for(const auto & savedValue : savedValues){
+        actions.push_back(menu->addAction(savedValue));
+        values.push_back(savedValue);
     }
 
     // call the menu and wait until its back
@@ -224,7 +230,7 @@ void InputField::contextMenuEvent(QContextMenuEvent *event)
         pushToSavedValues();
     else{
         int i=0;
-        for(std::vector<QAction *>::const_iterator it = actions.begin();it!=actions.end();++it,i++)
+        for(auto it = actions.begin();it!=actions.end();++it,i++)
             if(*it == saveAction)
                 this->setText(values[i]);
     }
@@ -246,7 +252,7 @@ void InputField::newInput(const QString & text)
 
             std::unique_ptr<Expression> evalRes(getExpression()->eval());
 
-            NumberExpression * value = freecad_dynamic_cast<NumberExpression>(evalRes.get());
+            auto * value = freecad_dynamic_cast<NumberExpression>(evalRes.get());
             if (value) {
                 res.setValue(value->getValue());
                 res.setUnit(value->getUnit());
@@ -311,8 +317,8 @@ void InputField::pushToHistory(const QString &valueq)
 
     // check if already in:
     std::vector<QString> hist = InputField::getHistory();
-    for(std::vector<QString>::const_iterator it = hist.begin();it!=hist.end();++it)
-        if( *it == val)
+    for(const auto & it : hist)
+        if( it == val)
             return;
 
     std::string value(val.toUtf8());
@@ -592,30 +598,16 @@ void InputField::setHistorySize(int i)
 
 void InputField::selectNumber()
 {
-    QString str = text();
-    unsigned int i = 0;
-
-    QChar d = locale().decimalPoint();
-    QChar g = locale().groupSeparator();
-    QChar n = locale().negativeSign();
-    QChar e = locale().exponential();
-
-    for (QString::const_iterator it = str.cbegin(); it != str.cend(); ++it) {
-        if (it->isDigit())
-            i++;
-        else if (*it == d)
-            i++;
-        else if (*it == g)
-            i++;
-        else if (*it == n)
-            i++;
-        else if (*it == e && actQuantity.getFormat().format != Base::QuantityFormat::Fixed)
-            i++;
-        else // any non-number character
-            break;
+    QString expr = QString::fromLatin1("^([%1%2]?[0-9\\%3]*)\\%4?([0-9]+(%5[%1%2]?[0-9]+)?)")
+                   .arg(locale().negativeSign())
+                   .arg(locale().positiveSign())
+                   .arg(locale().groupSeparator())
+                   .arg(locale().decimalPoint())
+                   .arg(locale().exponential());
+    auto rmatch = QRegularExpression(expr).match(text());
+    if (rmatch.hasMatch()) {
+        setSelection(0, rmatch.capturedLength());
     }
-
-    setSelection(0, i);
 }
 
 void InputField::showEvent(QShowEvent * event)
@@ -699,6 +691,9 @@ void InputField::keyPressEvent(QKeyEvent *event)
 
 void InputField::wheelEvent (QWheelEvent * event)
 {
+    if (!hasFocus())
+        return;
+
     if (isReadOnly()) {
         QLineEdit::wheelEvent(event);
         return;
@@ -724,10 +719,18 @@ void InputField::wheelEvent (QWheelEvent * event)
 void InputField::fixup(QString& input) const
 {
     input.remove(locale().groupSeparator());
-    if (locale().negativeSign() != QLatin1Char('-'))
-        input.replace(locale().negativeSign(), QLatin1Char('-'));
-    if (locale().positiveSign() != QLatin1Char('+'))
-        input.replace(locale().positiveSign(), QLatin1Char('+'));
+
+    QString asciiMinus(QStringLiteral("-"));
+    QString localeMinus(locale().negativeSign());
+    if (localeMinus != asciiMinus) {
+        input.replace(localeMinus, asciiMinus);
+    }
+
+    QString asciiPlus(QStringLiteral("+"));
+    QString localePlus(locale().positiveSign());
+    if (localePlus != asciiPlus) {
+        input.replace(localePlus, asciiPlus);
+    }
 }
 
 QValidator::State InputField::validate(QString& input, int& pos) const

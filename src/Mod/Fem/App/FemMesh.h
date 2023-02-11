@@ -23,14 +23,15 @@
 #ifndef FEM_FEMMESH_H
 #define FEM_FEMMESH_H
 
+#include <list>
+#include <memory>
+#include <vector>
+
+#include <SMESH_Version.h>
+
 #include <App/ComplexGeoData.h>
 #include <Base/Quantity.h>
 #include <Mod/Fem/FemGlobal.h>
-
-#include <vector>
-#include <list>
-#include <memory>
-#include <SMESH_Version.h>
 
 
 class SMESH_Gen;

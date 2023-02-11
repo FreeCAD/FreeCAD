@@ -20,32 +20,26 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
-
 #ifndef _PreComp_
-#   include <cassert>
+# include <cassert>
 #endif
 
-/// Here the FreeCAD includes sorted by Base,App,Gui......
-
-#include <Base/Exception.h>
+#include <App/ExpressionParser.h>
+#include <App/ObjectIdentifier.h>
+#include <Base/QuantityPy.h>
 #include <Base/Reader.h>
 #include <Base/Writer.h>
 #include <Base/Tools.h>
-#include <Base/QuantityPy.h>
-#include <App/ObjectIdentifier.h>
-#include <App/DocumentObject.h>
-#include <App/ExpressionParser.h>
 
 #include "PropertyConstraintList.h"
 #include "ConstraintPy.h"
+
 
 using namespace App;
 using namespace Base;
 using namespace std;
 using namespace Sketcher;
-
 
 //**************************************************************************
 // PropertyConstraintList

@@ -23,15 +23,14 @@
 #ifndef TECHDRAW_FEATUREVIEWGROUP_H_
 #define TECHDRAW_FEATUREVIEWGROUP_H_
 
-#include <Mod/TechDraw/TechDrawGlobal.h>
-
 #include <string>
-# include <QRectF>
+#include <QRectF>
 
 #include <App/DocumentObject.h>
 #include <App/PropertyLinks.h>
 #include <Base/BoundBox.h>
 #include <Base/Vector3D.h>
+#include <Mod/TechDraw/TechDrawGlobal.h>
 
 #include "DrawViewCollection.h"
 
@@ -79,7 +78,8 @@ public:
 
     /// Check if container has a view of a specific type
     bool hasProjection(const char *viewProjType) const;
-
+    ///check if it is safe to delete item
+    bool canDelete(const char *viewProjType) const;
     App::DocumentObject * getProjObj(const char *viewProjType) const;
     DrawProjGroupItem* getProjItem(const char *viewProjType) const;
 
@@ -189,6 +189,11 @@ protected:
     gp_Dir vec2dir(Base::Vector3d v);
 
     void handleChangedPropertyType(Base::XMLReader &reader, const char *TypeName, App::Property * prop) override;
+
+    double getMaxRowHeight(std::array<int, 3> list,
+                           std::array<Base::BoundBox3d, MAXPROJECTIONCOUNT> bboxes);
+    double getMaxColWidth(std::array<int, 3> list,
+                          std::array<Base::BoundBox3d, MAXPROJECTIONCOUNT> bboxes);
 };
 
 } //namespace TechDraw

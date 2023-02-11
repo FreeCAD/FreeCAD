@@ -20,26 +20,24 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
-
 #ifndef _PreComp_
-# include <qobject.h>
 # include <QDir>
+# include <qobject.h>
 # include <QFileInfo>
 # include <QMessageBox>
 #endif
 
-#include "Workbench.h"
 #include <App/Application.h>
-#include <Gui/ToolBarManager.h>
-#include <Gui/MenuManager.h>
-#include <Gui/MainWindow.h>
 #include <Gui/Control.h>
+#include <Gui/MainWindow.h>
+#include <Gui/MenuManager.h>
+#include <Gui/ToolBarManager.h>
 #include <Gui/WaitCursor.h>
 #include <Gui/TaskView/TaskView.h>
 #include <Gui/TaskView/TaskWatcher.h>
 
+#include "Workbench.h"
 #include "TaskWatcher.h"
 
 

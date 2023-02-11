@@ -22,25 +22,21 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-#include <cassert>
-#include <qmath.h>
-#include <QPainter>
-#include <QPainterPath>
-#include <QRectF>
-#include <QStyleOptionGraphicsItem>
+# include <cassert>
+
+# include <QPainter>
+# include <QPainterPath>
+# include <QRectF>
+# include <QStyleOptionGraphicsItem>
 #endif
 
-#include <App/Application.h>
-#include <App/Material.h>
-#include <Base/Console.h>
-#include <Base/Parameter.h>
-
-#include <Mod/TechDraw/App/Preferences.h>
 #include <Mod/TechDraw/App/LineGroup.h>
+#include <Mod/TechDraw/App/Preferences.h>
 
+#include "QGIMatting.h"
 #include "Rez.h"
 #include "ZVALUE.h"
-#include "QGIMatting.h"
+
 
 using namespace TechDrawGui;
 

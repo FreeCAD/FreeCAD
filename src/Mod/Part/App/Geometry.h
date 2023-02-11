@@ -99,14 +99,14 @@ public:
 
     std::vector<std::weak_ptr<const GeometryExtension>> getExtensions() const;
 
-    bool hasExtension(Base::Type type) const;
+    bool hasExtension(const Base::Type & type) const;
     bool hasExtension(const std::string & name) const;
-    std::weak_ptr<const GeometryExtension> getExtension(Base::Type type) const;
+    std::weak_ptr<const GeometryExtension> getExtension(const Base::Type & type) const;
     std::weak_ptr<const GeometryExtension> getExtension(const std::string & name) const;
-    std::weak_ptr<GeometryExtension> getExtension(Base::Type type);
+    std::weak_ptr<GeometryExtension> getExtension(const Base::Type & type);
     std::weak_ptr<GeometryExtension> getExtension(const std::string & name);
     void setExtension(std::unique_ptr<GeometryExtension> &&geo);
-    void deleteExtension(Base::Type type);
+    void deleteExtension(const Base::Type & type);
     void deleteExtension(const std::string & name);
 
     void mirror(const Base::Vector3d& point);
@@ -304,8 +304,9 @@ public:
     int getMultiplicity(int index) const;
     int getDegree() const;
     bool isPeriodic() const;
+    void setPeriodic() const;
     bool isRational() const;
-    bool join(const Handle(Geom_BSplineCurve)&);
+    bool join(const Handle(Geom_BoundedCurve)&);
     void makeC1Continuous(double, double);
     std::list<Geometry*> toBiArcs(double tolerance) const;
 

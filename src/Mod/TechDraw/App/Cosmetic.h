@@ -23,16 +23,15 @@
 #ifndef TECHDRAW_COSMETIC_H
 #define TECHDRAW_COSMETIC_H
 
-#include <Mod/TechDraw/TechDrawGlobal.h>
-
 #include <boost/uuid/uuid.hpp>
 
 #include <App/FeaturePython.h>
-#include <App/Material.h>
 #include <Base/Persistence.h>
 #include <Base/Vector3D.h>
+#include <Mod/TechDraw/TechDrawGlobal.h>
 
 #include "Geometry.h"
+
 
 class TopoDS_Edge;
 

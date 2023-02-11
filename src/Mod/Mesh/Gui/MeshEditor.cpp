@@ -27,11 +27,10 @@
 # include <functional>
 # include <QMenu>
 # include <QTimer>
+
 # include <Inventor/SbLine.h>
-# include <Inventor/SbPlane.h>
 # include <Inventor/SoPickedPoint.h>
 # include <Inventor/details/SoFaceDetail.h>
-# include <Inventor/details/SoPointDetail.h>
 # include <Inventor/events/SoKeyboardEvent.h>
 # include <Inventor/events/SoLocation2Event.h>
 # include <Inventor/events/SoMouseButtonEvent.h>
@@ -41,24 +40,24 @@
 # include <Inventor/nodes/SoDirectionalLight.h>
 # include <Inventor/nodes/SoDrawStyle.h>
 # include <Inventor/nodes/SoFaceSet.h>
-# include <Inventor/nodes/SoLineSet.h>
-# include <Inventor/nodes/SoMarkerSet.h>
 # include <Inventor/nodes/SoPickStyle.h>
+# include <Inventor/nodes/SoPointSet.h>
 # include <Inventor/nodes/SoSeparator.h>
 # include <Inventor/nodes/SoShapeHints.h>
 #endif
 
+#include <App/Application.h>
+#include <App/Document.h>
+#include <Gui/View3DInventor.h>
+#include <Gui/View3DInventorViewer.h>
+#include <Gui/WaitCursor.h>
+#include <Mod/Mesh/App/MeshFeature.h>
+#include <Mod/Mesh/App/Core/Algorithm.h>
+
 #include "MeshEditor.h"
 #include "SoFCMeshObject.h"
 #include "SoPolygon.h"
-#include <App/Document.h>
-#include <Mod/Mesh/App/MeshFeature.h>
-#include <Mod/Mesh/App/Core/Algorithm.h>
-#include <Mod/Mesh/App/Core/Triangulation.h>
-#include <Gui/Application.h>
-#include <Gui/WaitCursor.h>
-#include <Gui/View3DInventor.h>
-#include <Gui/View3DInventorViewer.h>
+
 
 using namespace MeshGui;
 namespace sp = std::placeholders;
@@ -289,7 +288,7 @@ void MeshFaceAddition::showMarker(SoPickedPoint* pp)
             int face_index = fd->getFaceIndex();
             if (face_index >= (int)facets.size())
                 return;
-            // is a border facet picked? 
+            // is a border facet picked?
             MeshCore::MeshFacet f = facets[face_index];
             if (!f.HasOpenEdge()) {
                 // check if a neighbour facet is at the border
@@ -381,13 +380,13 @@ void MeshFaceAddition::addFacetCallback(void * ud, SoEventCallback * n)
                 QAction* clr = menu.addAction(MeshFaceAddition::tr("Clear"));
                 QAction* act = menu.exec(QCursor::pos());
                 if (act == add) {
-                    QTimer::singleShot(300, that, SLOT(addFace()));
+                    QTimer::singleShot(300, that, &MeshFaceAddition::addFace);
                 }
                 else if (act == swp) {
-                    QTimer::singleShot(300, that, SLOT(flipNormal()));
+                    QTimer::singleShot(300, that, &MeshFaceAddition::flipNormal);
                 }
                 else if (act == clr) {
-                    QTimer::singleShot(300, that, SLOT(clearPoints()));
+                    QTimer::singleShot(300, that, &MeshFaceAddition::clearPoints);
                 }
             }
         }
@@ -396,7 +395,7 @@ void MeshFaceAddition::addFacetCallback(void * ud, SoEventCallback * n)
             QAction* fin = menu.addAction(MeshFaceAddition::tr("Finish"));
             QAction* act = menu.exec(QCursor::pos());
             if (act == fin) {
-                QTimer::singleShot(300, that, SLOT(finishEditing()));
+                QTimer::singleShot(300, that, &MeshFaceAddition::finishEditing);
             }
         }
     }
@@ -718,7 +717,7 @@ void MeshFillHole::fileHoleCallback(void * ud, SoEventCallback * n)
                             self->myNumPoints = 2;
                             self->myVertex2 = vertex_index;
                             self->myPolygon = it->second;
-                            QTimer::singleShot(300, self, SLOT(closeBridge()));
+                            QTimer::singleShot(300, self, &MeshFillHole::closeBridge);
                         }
                     }
                 }
@@ -729,7 +728,7 @@ void MeshFillHole::fileHoleCallback(void * ud, SoEventCallback * n)
             QAction* fin = menu.addAction(MeshFillHole::tr("Finish"));
             QAction* act = menu.exec(QCursor::pos());
             if (act == fin) {
-                QTimer::singleShot(300, self, SLOT(finishEditing()));
+                QTimer::singleShot(300, self, &MeshFillHole::finishEditing);
             }
         }
     }

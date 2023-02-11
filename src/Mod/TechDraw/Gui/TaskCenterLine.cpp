@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2019 WandererFan <wandererfan@gmail.com                 *
+ *   Copyright (c) 2019 WandererFan <wandererfan@gmail.com>                *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -22,44 +22,27 @@
 
 #include "PreCompiled.h"
 
-#ifndef _PreComp_
-#include <cmath>
-#include <BRepBndLib.hxx>
-#include <Bnd_Box.hxx>
-#include <QButtonGroup>
-#include <QStatusBar>
-#include <QGraphicsScene>
-#endif // #ifndef _PreComp_
-
-
 #include <Base/Console.h>
 #include <Base/Tools.h>
 #include <Base/UnitsApi.h>
-
 #include <Gui/Application.h>
 #include <Gui/BitmapFactory.h>
 #include <Gui/Command.h>
-#include <Gui/Control.h>
 #include <Gui/Document.h>
-#include <Gui/MainWindow.h>
-#include <Gui/Selection.h>
 #include <Gui/ViewProvider.h>
-#include <Gui/WaitCursor.h>
-
+#include <Mod/TechDraw/App/Cosmetic.h>
 #include <Mod/TechDraw/App/DrawPage.h>
 #include <Mod/TechDraw/App/DrawUtil.h>
-#include <Mod/TechDraw/App/DrawView.h>
 #include <Mod/TechDraw/App/DrawViewPart.h>
 #include <Mod/TechDraw/App/Geometry.h>
-#include <Mod/TechDraw/App/Cosmetic.h>
+#include <Mod/TechDraw/App/LineGroup.h>
 
-#include <Mod/TechDraw/Gui/ui_TaskCenterLine.h>
-
+#include "TaskCenterLine.h"
+#include "ui_TaskCenterLine.h"
 #include "PreferencesGui.h"
 #include "QGIView.h"
 #include "ViewProviderViewPart.h"
 
-#include "TaskCenterLine.h"
 
 using namespace Gui;
 using namespace TechDraw;
@@ -165,14 +148,18 @@ void TaskCenterLine::setUiConnect()
         ui->rbAligned->setEnabled(true);
 
     // now connection
-    connect(ui->cpLineColor, SIGNAL(changed()), this, SLOT(onColorChanged()));
-    connect(ui->dsbWeight, SIGNAL(valueChanged(double)), this, SLOT(onWeightChanged()));
-    connect(ui->cboxStyle, SIGNAL(currentIndexChanged(int)), this, SLOT(onStyleChanged()));
-    connect(ui->qsbVertShift, SIGNAL(valueChanged(double)), this, SLOT(onShiftVertChanged()));
-    connect(ui->qsbHorizShift, SIGNAL(valueChanged(double)), this, SLOT(onShiftHorizChanged()));
-    connect(ui->qsbExtend, SIGNAL(valueChanged(double)), this, SLOT(onExtendChanged()));
-    connect(ui->qsbRotate, SIGNAL(valueChanged(double)), this, SLOT(onRotationChanged()));
-    connect(ui->bgOrientation, SIGNAL(buttonClicked(int)), this, SLOT(onOrientationChanged()));
+    connect(ui->cpLineColor, &ColorButton::changed, this, &TaskCenterLine::onColorChanged);
+    connect(ui->dsbWeight, qOverload<double>(&QuantitySpinBox::valueChanged), this, &TaskCenterLine::onWeightChanged);
+    connect(ui->cboxStyle, qOverload<int>(&QComboBox::currentIndexChanged), this, &TaskCenterLine::onStyleChanged);
+    connect(ui->qsbVertShift, qOverload<double>(&QuantitySpinBox::valueChanged), this, &TaskCenterLine::onShiftVertChanged);
+    connect(ui->qsbHorizShift, qOverload<double>(&QuantitySpinBox::valueChanged), this, &TaskCenterLine::onShiftHorizChanged);
+    connect(ui->qsbExtend, qOverload<double>(&QuantitySpinBox::valueChanged), this, &TaskCenterLine::onExtendChanged);
+    connect(ui->qsbRotate, qOverload<double>(&QuantitySpinBox::valueChanged), this, &TaskCenterLine::onRotationChanged);
+#if QT_VERSION < QT_VERSION_CHECK(5,15,0)
+    connect(ui->bgOrientation, qOverload<int>(&QButtonGroup::buttonClicked), this, &TaskCenterLine::onOrientationChanged);
+#else
+    connect(ui->bgOrientation, &QButtonGroup::idClicked, this, &TaskCenterLine::onOrientationChanged);
+#endif
 }
 
 void TaskCenterLine::setUiPrimary()
@@ -326,7 +313,6 @@ void TaskCenterLine::createCenterLine()
     }
 
     if (!cl) {
-        Base::Console().Log("TCL::createCenterLine - CenterLine creation failed!\n");
         Gui::Command::abortCommand();
         return;
     }

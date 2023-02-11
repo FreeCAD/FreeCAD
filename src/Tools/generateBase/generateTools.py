@@ -22,20 +22,20 @@ def temporary_exec(text, globals, locals):
 
 
 def ensureDir(path,mode=0o777):
-	try: 
-		os.makedirs(path,mode)
-	except OSError as err:
-		# https://docs.python.org/3/tutorial/errors.html
-		#  raise an error unless it's about an already existing directory
-		print("Dir Exist")
-		#if errno != 17 or not os.path.isdir(path):
-		#	raise
-			
+    try: 
+        os.makedirs(path,mode)
+    except OSError as err:
+        # https://docs.python.org/3/tutorial/errors.html
+        #  raise an error unless it's about an already existing directory
+        print("Dir Exist")
+        #if errno != 17 or not os.path.isdir(path):
+        #	raise
+            
 def convertMultilineString(str):
-	str = str.replace('\n','\\n')
-	str = str.replace('"','\\"')
-	return str	
-	
+    str = str.replace('\n','\\n')
+    str = str.replace('"','\\"')
+    return str	
+    
 "Yet Another Python Templating Utility, Version 1.2"
 
 import sys

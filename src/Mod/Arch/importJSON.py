@@ -49,10 +49,7 @@ def export(exportList, filename):
         }
 
     # Write file
-    if six.PY2:
-        outfile = pythonopen(filename, "wb")
-    else:
-        outfile = pythonopen(filename, "w")
+    outfile = pythonopen(filename, "w")
     json.dump(data, outfile, separators = (',', ':'))
     outfile.close()
 

@@ -141,6 +141,7 @@ public:
     void exitSelectionMode();
 
     virtual void apply() = 0;
+    virtual void onUpdateView(bool) = 0;
 
     /*!
      * \brief setEnabledTransaction

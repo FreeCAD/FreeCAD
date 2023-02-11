@@ -48,7 +48,7 @@ namespace Gui
       bool enabled;
       Type type;
     };
-    
+
     /*! Hide all children of app::origin that are not
      * used by subsequent features
      */
@@ -58,7 +58,7 @@ namespace Gui
       FilterOrigin();
       bool goFilter(const Vertex &vertexIn, const Graph &graphIn, const GraphLinkContainer &linkIn) const override;
     };
-    
+
     /*! Hide nodes of type*/
     class FilterTyped : public FilterBase
     {

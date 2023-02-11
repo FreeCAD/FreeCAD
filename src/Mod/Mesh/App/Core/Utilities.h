@@ -20,12 +20,12 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef MESH_UTILITIES_H
 #define MESH_UTILITIES_H
 
 #include <Base/Converter.h>
 #include <Mod/Mesh/App/WildMagic4/Wm4Vector3.h>
+
 
 namespace Base {
 // Specialization for Wm4::Vector3d

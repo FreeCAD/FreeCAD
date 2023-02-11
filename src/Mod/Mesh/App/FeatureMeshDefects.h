@@ -20,13 +20,13 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef MESH_FEATURE_MESH_DEFECTS_H
 #define MESH_FEATURE_MESH_DEFECTS_H
 
-#include <App/PropertyStandard.h>
 #include <App/PropertyLinks.h>
+
 #include "MeshFeature.h"
+
 
 namespace Mesh
 {
@@ -271,4 +271,4 @@ public:
 } //namespace Mesh
 
 
-#endif // MESH_FEATURE_MESH_DEFECTS_H 
+#endif // MESH_FEATURE_MESH_DEFECTS_H

@@ -1,23 +1,23 @@
-# -*- coding: utf-8 -*-
 # ***************************************************************************
 # *                                                                         *
+# *   Copyright (c) 2022-2023 FreeCAD Project Association                   *
 # *   Copyright (c) 2018 Gaël Écorchard <galou_breizh@yahoo.fr>             *
 # *                                                                         *
-# *   This program is free software; you can redistribute it and/or modify  *
-# *   it under the terms of the GNU Lesser General Public License (LGPL)    *
-# *   as published by the Free Software Foundation; either version 2 of     *
-# *   the License, or (at your option) any later version.                   *
-# *   for detail see the LICENCE text file.                                 *
+# *   This file is part of FreeCAD.                                         *
 # *                                                                         *
-# *   This program is distributed in the hope that it will be useful,       *
-# *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
-# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
-# *   GNU Library General Public License for more details.                  *
+# *   FreeCAD is free software: you can redistribute it and/or modify it    *
+# *   under the terms of the GNU Lesser General Public License as           *
+# *   published by the Free Software Foundation, either version 2.1 of the  *
+# *   License, or (at your option) any later version.                       *
 # *                                                                         *
-# *   You should have received a copy of the GNU Library General Public     *
-# *   License along with this program; if not, write to the Free Software   *
-# *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
-# *   USA                                                                   *
+# *   FreeCAD is distributed in the hope that it will be useful, but        *
+# *   WITHOUT ANY WARRANTY; without even the implied warranty of            *
+# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU      *
+# *   Lesser General Public License for more details.                       *
+# *                                                                         *
+# *   You should have received a copy of the GNU Lesser General Public      *
+# *   License along with FreeCAD. If not, see                               *
+# *   <https://www.gnu.org/licenses/>.                                      *
 # *                                                                         *
 # ***************************************************************************
 
@@ -33,9 +33,9 @@ from typing import Dict, Tuple, List, Union, Optional
 
 import FreeCAD
 import NetworkManager
-from PySide2 import QtCore
+from PySide import QtCore
 
-from addonmanager_utilities import remove_directory_if_empty, is_float
+from addonmanager_utilities import is_float
 
 translate = FreeCAD.Qt.translate
 
@@ -49,6 +49,9 @@ translate = FreeCAD.Qt.translate
 
 class Macro:
     """This class provides a unified way to handle macros coming from different sources"""
+
+    # Use a stored class variable for this so that we can override it during testing
+    network_manager = None
 
     # pylint: disable=too-many-instance-attributes
     def __init__(self, name):
@@ -87,6 +90,14 @@ class Macro:
         """For cache purposes this entire class is dumped directly"""
 
         return self.__dict__
+
+    @classmethod
+    def _get_network_manager(cls):
+        if cls.network_manager is None:
+            # Make sure we're initialized:
+            NetworkManager.InitializeNetworkManager()
+            cls.network_manager = NetworkManager.AM_NETWORK_MANAGER
+        return cls.network_manager
 
     @property
     def filename(self):
@@ -257,7 +268,8 @@ class Macro:
         it. If the macro's code is hosted elsewhere, as specified by a "rawcodeurl" found on
         the wiki page, that code is downloaded and used as the source."""
         code = ""
-        p = NetworkManager.AM_NETWORK_MANAGER.blocking_get(url)
+        nm = Macro._get_network_manager()
+        p = nm.blocking_get(url)
         if not p:
             FreeCAD.Console.PrintWarning(
                 translate(
@@ -319,12 +331,13 @@ class Macro:
         self.raw_code_url = re.findall('rawcodeurl.*?href="(http.*?)">', page_data)
         if self.raw_code_url:
             self.raw_code_url = self.raw_code_url[0]
-            u2 = NetworkManager.AM_NETWORK_MANAGER.blocking_get(self.raw_code_url)
+            nm = Macro._get_network_manager()
+            u2 = nm.blocking_get(self.raw_code_url)
             if not u2:
                 FreeCAD.Console.PrintWarning(
                     translate(
                         "AddonsInstaller",
-                        "Unable to open macro code URL {rawcodeurl}",
+                        "Unable to open macro code URL {}",
                     ).format(self.raw_code_url)
                     + "\n"
                 )
@@ -345,12 +358,13 @@ class Macro:
 
     def clean_icon(self):
         """Downloads the macro's icon from whatever source is specified and stores a local
-        copy, potentially updating the interal icon location to that local storage."""
+        copy, potentially updating the internal icon location to that local storage."""
         if self.icon.startswith("http://") or self.icon.startswith("https://"):
             FreeCAD.Console.PrintLog(
                 f"Attempting to fetch macro icon from {self.icon}\n"
             )
-            p = NetworkManager.AM_NETWORK_MANAGER.blocking_get(self.icon)
+            nm = Macro._get_network_manager()
+            p = nm.blocking_get(self.icon)
             if p:
                 cache_path = FreeCAD.getUserCachePath()
                 am_path = os.path.join(cache_path, "AddonManager", "MacroIcons")
@@ -404,7 +418,7 @@ class Macro:
         try:
             with codecs.open(macro_path, "w", "utf-8") as macrofile:
                 macrofile.write(self.code)
-        except IOError:
+        except OSError:
             return False, [f"Failed to write {macro_path}"]
         # Copy related files, which are supposed to be given relative to
         # self.src_filename.
@@ -433,13 +447,14 @@ class Macro:
                 )
                 try:
                     shutil.copy(self.icon, dst_file)
-                except IOError:
+                except OSError:
                     warnings.append(f"Failed to copy icon to {dst_file}")
             elif self.icon not in self.other_files:
                 self.other_files.append(self.icon)
 
     def _copy_other_files(self, macro_dir, warnings) -> bool:
         """Copy any specified "other files" into the install directory"""
+        base_dir = os.path.dirname(self.src_filename)
         for other_file in self.other_files:
             if not other_file:
                 continue
@@ -461,20 +476,21 @@ class Macro:
             else:
                 src_file = os.path.normpath(os.path.join(base_dir, other_file))
                 dst_file = os.path.normpath(os.path.join(macro_dir, other_file))
-            self._fetch_single_file(other_file, src_file, dst_file)
+            self._fetch_single_file(other_file, src_file, dst_file, warnings)
             try:
                 shutil.copy(src_file, dst_file)
-            except IOError:
+            except OSError:
                 warnings.append(f"Failed to copy {src_file} to {dst_file}")
         return True  # No fatal errors, but some files may have failed to copy
 
-    def _fetch_single_file(self, other_file, src_file, dst_file):
+    def _fetch_single_file(self, other_file, src_file, dst_file, warnings):
         if not os.path.isfile(src_file):
             # If the file does not exist, see if we have a raw code URL to fetch from
             if self.raw_code_url:
                 fetch_url = self.raw_code_url.rsplit("/", 1)[0] + "/" + other_file
                 FreeCAD.Console.PrintLog(f"Attempting to fetch {fetch_url}...\n")
-                p = NetworkManager.AM_NETWORK_MANAGER.blocking_get(fetch_url)
+                nm = Macro._get_network_manager()
+                p = nm.blocking_get(fetch_url)
                 if p:
                     with open(dst_file, "wb") as f:
                         f.write(p)
@@ -493,89 +509,6 @@ class Macro:
                         "Could not locate macro-specified file {} (should have been at {})",
                     ).format(other_file, src_file)
                 )
-
-    def remove(self) -> bool:
-        """Remove a macro and all its related files
-
-        Returns True if the macro was removed correctly.
-        """
-
-        if not self.is_installed():
-            # Macro not installed, nothing to do.
-            return True
-        macro_dir = FreeCAD.getUserMacroDir(True)
-
-        try:
-            self._remove_core_macro_file(macro_dir)
-            self._remove_xpm_data(macro_dir)
-            self._remove_other_files(macro_dir)
-        except IsADirectoryError:
-            FreeCAD.Console.PrintError(
-                translate(
-                    "AddonsInstaller",
-                    "Tried to remove a directory when a file was expected\n",
-                )
-            )
-            return False
-        except FileNotFoundError:
-            FreeCAD.Console.PrintError(
-                translate(
-                    "AddonsInstaller",
-                    "Macro file could not be found, nothing to remove\n",
-                )
-            )
-            return False
-        return True
-
-    def _remove_other_files(self, macro_dir):
-        # Remove related files, which are supposed to be given relative to
-        # self.src_filename.
-        for other_file in self.other_files:
-            if not other_file:
-                continue
-            FreeCAD.Console.PrintMessage(other_file + "...")
-            dst_file = os.path.join(macro_dir, other_file)
-            if not dst_file or not os.path.exists(dst_file):
-                FreeCAD.Console.PrintMessage("X\n")
-                continue
-            try:
-                os.remove(dst_file)
-                remove_directory_if_empty(os.path.dirname(dst_file))
-                FreeCAD.Console.PrintMessage("✓\n")
-            except IsADirectoryError:
-                FreeCAD.Console.PrintMessage(" is a directory, not removed\n")
-            except FileNotFoundError:
-                FreeCAD.Console.PrintMessage(" could not be found, nothing to remove\n")
-        if os.path.isabs(self.icon):
-            dst_file = os.path.normpath(
-                os.path.join(macro_dir, os.path.basename(self.icon))
-            )
-            if os.path.exists(dst_file):
-                try:
-                    FreeCAD.Console.PrintMessage(os.path.basename(self.icon) + "...")
-                    os.remove(dst_file)
-                    FreeCAD.Console.PrintMessage("✓\n")
-                except IsADirectoryError:
-                    FreeCAD.Console.PrintMessage(" is a directory, not removed\n")
-                except FileNotFoundError:
-                    FreeCAD.Console.PrintMessage(
-                        " could not be found, nothing to remove\n"
-                    )
-        return True
-
-    def _remove_core_macro_file(self, macro_dir):
-        macro_path = os.path.join(macro_dir, self.filename)
-        macro_path_with_macro_prefix = os.path.join(macro_dir, "Macro_" + self.filename)
-        if os.path.exists(macro_path):
-            os.remove(macro_path)
-        elif os.path.exists(macro_path_with_macro_prefix):
-            os.remove(macro_path_with_macro_prefix)
-
-    def _remove_xpm_data(self, macro_dir):
-        if self.xpm:
-            xpm_file = os.path.join(macro_dir, self.name + "_icon.xpm")
-            if os.path.exists(xpm_file):
-                os.remove(xpm_file)
 
     def parse_wiki_page_for_icon(self, page_data: str) -> None:
         """Attempt to find a url for the icon in the wiki page. Sets self.icon if found."""
@@ -608,7 +541,8 @@ class Macro:
             FreeCAD.Console.PrintLog(
                 f"Found a File: link for macro {self.name} -- {wiki_icon}\n"
             )
-            p = NetworkManager.AM_NETWORK_MANAGER.blocking_get(wiki_icon)
+            nm = Macro._get_network_manager()
+            p = nm.blocking_get(wiki_icon)
             if p:
                 p = p.data().decode("utf8")
                 f = io.StringIO(p)

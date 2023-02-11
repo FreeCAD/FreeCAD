@@ -25,7 +25,7 @@
 
 #include "Application.h"
 
-// inclution of the generated files (generated out of PropertyContainerPy.xml)
+// inclusion of the generated files (generated out of PropertyContainerPy.xml)
 #include <App/ExtensionPy.h>
 #include <App/ExtensionPy.cpp>
 

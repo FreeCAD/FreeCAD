@@ -40,8 +40,8 @@
 #include <Gui/SelectionObject.h>
 #include <Gui/ViewProvider.h>
 #include <Mod/Fem/App/FemConstraintFluidBoundary.h>
-#include <Mod/Fem/App/FemMeshObject.h>
 #include <Mod/Fem/App/FemAnalysis.h>
+#include <Mod/Fem/App/FemMeshObject.h>
 #include <Mod/Fem/App/FemSolverObject.h>
 #include <Mod/Fem/App/FemTools.h>
 
@@ -119,7 +119,8 @@ TaskFemConstraintFluidBoundary::TaskFemConstraintFluidBoundary(ViewProviderFemCo
 
     // create a context menu for the listview of the references
     createDeleteAction(ui->listReferences);
-    deleteAction->connect(deleteAction, SIGNAL(triggered()), this, SLOT(onReferenceDeleted()));
+    connect(deleteAction, &QAction::triggered,
+            this, &TaskFemConstraintFluidBoundary::onReferenceDeleted);
 
     // setup ranges
     ui->spinBoundaryValue->setMinimum(-FLOAT_MAX);
@@ -135,25 +136,25 @@ TaskFemConstraintFluidBoundary::TaskFemConstraintFluidBoundary(ViewProviderFemCo
     ui->spinHTCoeffValue->setMinimum(0.0);
     ui->spinHTCoeffValue->setMaximum(FLOAT_MAX);
 
-    connect(ui->comboBoundaryType, SIGNAL(currentIndexChanged(int)),
-            this, SLOT(onBoundaryTypeChanged(void)));
-    connect(ui->comboSubtype, SIGNAL(currentIndexChanged(int)),
-            this, SLOT(onSubtypeChanged(void)));
-    connect(ui->spinBoundaryValue, SIGNAL(valueChanged(double)),
-            this, SLOT(onBoundaryValueChanged(double)));
+    connect(ui->comboBoundaryType, qOverload<int>(&QComboBox::currentIndexChanged),
+            this, &TaskFemConstraintFluidBoundary::onBoundaryTypeChanged);
+    connect(ui->comboSubtype, qOverload<int>(&QComboBox::currentIndexChanged),
+            this, &TaskFemConstraintFluidBoundary::onSubtypeChanged);
+    connect(ui->spinBoundaryValue, qOverload<double>(&QDoubleSpinBox::valueChanged),
+            this, &TaskFemConstraintFluidBoundary::onBoundaryValueChanged);
 
-    connect(ui->comboTurbulenceSpecification, SIGNAL(currentIndexChanged(int)),
-            this, SLOT(onTurbulenceSpecificationChanged(void)));
-    connect(ui->comboThermalBoundaryType, SIGNAL(currentIndexChanged(int)),
-            this, SLOT(onThermalBoundaryTypeChanged(void)));
+    connect(ui->comboTurbulenceSpecification, qOverload<int>(&QComboBox::currentIndexChanged),
+            this, &TaskFemConstraintFluidBoundary::onTurbulenceSpecificationChanged);
+    connect(ui->comboThermalBoundaryType, qOverload<int>(&QComboBox::currentIndexChanged),
+            this, &TaskFemConstraintFluidBoundary::onThermalBoundaryTypeChanged);
 
-    connect(ui->buttonDirection, SIGNAL(pressed()),
-            this, SLOT(onButtonDirection()));
-    connect(ui->checkReverse, SIGNAL(toggled(bool)),
-            this, SLOT(onCheckReverse(bool)));
+    connect(ui->buttonDirection, &QPushButton::pressed,
+            this, [=]{onButtonDirection(true);});
+    connect(ui->checkReverse, &QCheckBox::toggled,
+            this, &TaskFemConstraintFluidBoundary::onCheckReverse);
 
-    connect(ui->listReferences, SIGNAL(itemClicked(QListWidgetItem*)),
-        this, SLOT(setSelection(QListWidgetItem*)));
+    connect(ui->listReferences, &QListWidget::itemClicked,
+            this, &TaskFemConstraintFluidBoundary::setSelection);
 
     this->groupLayout()->addWidget(proxy);
 

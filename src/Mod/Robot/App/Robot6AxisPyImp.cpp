@@ -20,18 +20,18 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
+#ifndef _PreComp_
+# include <sstream>
+#endif
 
-#include "Mod/Robot/App/Robot6Axis.h"
-#include <Base/PlacementPy.h>
 #include <Base/MatrixPy.h>
-#include <Base/Exception.h>
-#include <sstream>
+#include <Base/PlacementPy.h>
 
 // inclusion of the generated files (generated out of Robot6AxisPy.xml)
 #include "Robot6AxisPy.h"
 #include "Robot6AxisPy.cpp"
+
 
 using namespace Robot;
 

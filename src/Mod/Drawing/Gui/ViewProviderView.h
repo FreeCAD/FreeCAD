@@ -20,11 +20,9 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef DRAWINGGUI_VIEWPROVIDERVIEW_H
 #define DRAWINGGUI_VIEWPROVIDERVIEW_H
 
-#include <Gui/ViewProviderFeature.h>
 #include <Gui/ViewProviderDocumentObjectGroup.h>
 
 

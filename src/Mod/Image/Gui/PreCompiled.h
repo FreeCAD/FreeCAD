@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) Jürgen Riegel          (juergen.riegel@web.de) 2002     *
+ *   Copyright (c) 2002 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -25,7 +25,7 @@
 
 #include <FCConfig.h>
 
-// here get the warnings of too long specifiers disabled (needed for VC6)
+// point at which warnings of overly long specifiers disabled (needed for VC6)
 #ifdef _MSC_VER
 # pragma warning(disable : 4005)
 # pragma warning(disable : 4251)
@@ -35,34 +35,17 @@
 
 #ifdef _PreComp_
 
-// standard
-#include <cassert>
+// STL
 #include <cmath>
-#include <iostream>
 #include <sstream>
 
-// STL
-#include <algorithm>
-#include <bitset>
-#include <list>
-#include <map>
-#include <queue>
-#include <set>
-#include <stack>
-#include <string>
-#include <vector>
-
-#ifdef FC_OS_WIN32
-# include <windows.h>
-#endif
-
 // Inventor
-# include <Inventor/nodes/SoCoordinate3.h>
-# include <Inventor/nodes/SoFaceSet.h>
-# include <Inventor/nodes/SoMaterial.h>
-# include <Inventor/nodes/SoSeparator.h>
-# include <Inventor/nodes/SoTexture2.h>
-# include <Inventor/nodes/SoTextureCoordinate2.h>
+#include <Inventor/nodes/SoCoordinate3.h>
+#include <Inventor/nodes/SoFaceSet.h>
+#include <Inventor/nodes/SoMaterial.h>
+#include <Inventor/nodes/SoSeparator.h>
+#include <Inventor/nodes/SoTexture2.h>
+#include <Inventor/nodes/SoTextureCoordinate2.h>
 
 // Qt Toolkit
 #ifndef __QtAll__

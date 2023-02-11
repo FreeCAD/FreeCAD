@@ -20,14 +20,13 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef _LuxTools_h_
 #define _LuxTools_h_
 
-#include <gp_Vec.hxx>
 #include <vector>
 
 #include "PovTools.h"
+
 
 class TopoDS_Shape;
 class TopoDS_Face;

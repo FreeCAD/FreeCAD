@@ -20,18 +20,14 @@
  *                                                                         *
  ***************************************************************************/
 
-
-
 #include "PreCompiled.h"
 
-#ifndef _PreComp_
-#endif
+#include <Base/Tools.h>
+#include "Core/Degeneration.h"
+#include "Core/Triangulation.h"
 
 #include "FeatureMeshDefects.h"
-#include "Core/Degeneration.h"
-#include "Core/TopoAlgorithm.h"
-#include "Core/Triangulation.h"
-#include <Base/Tools.h>
+
 
 using namespace Mesh;
 

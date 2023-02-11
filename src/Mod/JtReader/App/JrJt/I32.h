@@ -1,5 +1,5 @@
-/***************************************************************************
-*   Copyright (c) Juergen Riegel         (juergen.riegel@web.de) 2014     *
+/**************************************************************************
+*   Copyright (c) 2014 Juergen Riegel <juergen.riegel@web.de>             *
 *                                                                         *
 *   This file is part of the FreeCAD CAx development system.              *
 *                                                                         *
@@ -30,24 +30,24 @@ using namespace std;
 
 struct I32
 {
-	I32(){};
+    I32(){};
 
-	I32(Context& cont)
-	{
-		read(cont);
-	}
+    I32(Context& cont)
+    {
+        read(cont);
+    }
 
-	inline operator int32_t() const
-	{
-		return _I32;
-	}
+    inline operator int32_t() const
+    {
+        return _I32;
+    }
 
-	inline void read(Context& cont)
-	{
-		cont.Strm.read((char*)&_I32, 4);
-	}
+    inline void read(Context& cont)
+    {
+        cont.Strm.read((char*)&_I32, 4);
+    }
 
-	int32_t _I32;
+    int32_t _I32;
 };
 
 

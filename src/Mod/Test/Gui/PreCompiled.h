@@ -20,7 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef __PRECOMPILED_GUI__
 #define __PRECOMPILED_GUI__
 
@@ -28,38 +27,17 @@
 
 #ifdef _PreComp_
 
-// here get the warnings of too long specifiers disabled (needed for VC6)
+// point at which warnings of overly long specifiers disabled (needed for VC6)
 #ifdef _MSC_VER
 # pragma warning( disable : 4251 )
 # pragma warning( disable : 4503 )
 # pragma warning( disable : 4786 )  // specifier longer then 255 chars
 #endif
 
-// standard
-#include <cstdio>
-#include <cassert>
-
-// STL
-#include <algorithm>
-#include <iostream>
-#include <list>
-#include <map>
-#include <queue>
-#include <set>
-#include <sstream>
-#include <stack>
-#include <string>
-#include <vector>
-#include <bitset>
-
-#ifdef FC_OS_WIN32
-# include <windows.h>
-#endif
-
 // Qt Toolkit
-#ifndef __QtAll__
-# include <Gui/QtAll.h>
-#endif
+#include <QApplication>
+#include <QEventLoop>
+#include <QMessageBox>
 
 #endif  //_PreComp_
 

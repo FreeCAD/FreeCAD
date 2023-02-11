@@ -645,9 +645,9 @@ PyObject* Application::sOpen(PyObject * /*self*/, PyObject *args)
         else if (ext == QLatin1String("py") ||
                  ext == QLatin1String("fcmacro") ||
                  ext == QLatin1String("fcscript")) {
-            PythonEditor* editor = new PythonEditor();
+            auto editor = new PythonEditor();
             editor->setWindowIcon(Gui::BitmapFactory().iconFromTheme("applications-python"));
-            PythonEditorView* edit = new PythonEditorView(editor, getMainWindow());
+            auto edit = new PythonEditorView(editor, getMainWindow());
             edit->open(fileName);
             edit->resize(400, 300);
             getMainWindow()->addWindow( edit );
@@ -719,9 +719,9 @@ PyObject* Application::sInsert(PyObject * /*self*/, PyObject *args)
         else if (ext == QLatin1String("py") ||
                  ext == QLatin1String("fcmacro") ||
                  ext == QLatin1String("fcscript")) {
-            PythonEditor* editor = new PythonEditor();
+            auto editor = new PythonEditor();
             editor->setWindowIcon(Gui::BitmapFactory().iconFromTheme("applications-python"));
-            PythonEditorView* edit = new PythonEditorView(editor, getMainWindow());
+            auto edit = new PythonEditorView(editor, getMainWindow());
             edit->open(fileName);
             edit->resize(400, 300);
             getMainWindow()->addWindow( edit );
@@ -769,7 +769,7 @@ PyObject* Application::sExport(PyObject * /*self*/, PyObject *args)
             ext == QLatin1String("xhtml")) {
 
             // build up the graph
-            SoSeparator* sep = new SoSeparator();
+            auto sep = new SoSeparator();
             sep->ref();
 
             for (Py::Sequence::iterator it = list.begin(); it != list.end(); ++it) {
@@ -804,7 +804,7 @@ PyObject* Application::sExport(PyObject * /*self*/, PyObject *args)
             if (gui_doc) {
                 Gui::MDIView* view = gui_doc->getActiveView();
                 if (view) {
-                    View3DInventor* view3d = qobject_cast<View3DInventor*>(view);
+                    auto view3d = qobject_cast<View3DInventor*>(view);
                     if (view3d)
                         view3d->viewAll();
                     QPrinter printer(QPrinter::ScreenResolution);
@@ -1495,14 +1495,14 @@ PyObject* Application::sCreateViewer(PyObject * /*self*/, PyObject *args)
         return nullptr;
     }
     else if (num_of_views == 1) {
-        View3DInventor* viewer = new View3DInventor(nullptr, nullptr);
+        auto viewer = new View3DInventor(nullptr, nullptr);
         if (title)
             viewer->setWindowTitle(QString::fromUtf8(title));
         Gui::getMainWindow()->addWindow(viewer);
         return viewer->getPyObject();
     }
     else {
-        SplitView3DInventor* viewer = new SplitView3DInventor(num_of_views, nullptr, nullptr);
+        auto viewer = new SplitView3DInventor(num_of_views, nullptr, nullptr);
         if (title)
             viewer->setWindowTitle(QString::fromUtf8(title));
         Gui::getMainWindow()->addWindow(viewer);

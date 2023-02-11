@@ -36,7 +36,7 @@ namespace Path
     class PathExport Command : public Base::Persistence
     {
     TYPESYSTEM_HEADER();
-    
+
     public:
         //constructors
         Command();
@@ -47,7 +47,7 @@ namespace Path
         virtual unsigned int getMemSize (void) const;
         virtual void Save (Base::Writer &/*writer*/) const;
         virtual void Restore(Base::XMLReader &/*reader*/);
-        
+
         // specific methods
         Base::Placement getPlacement (const Base::Vector3d pos = Base::Vector3d()) const; // returns a placement from the x,y,z,a,b,c parameters
         Base::Vector3d getCenter (void) const; // returns a 3d vector from the i,j,k parameters
@@ -70,7 +70,7 @@ namespace Path
         std::string Name;
         std::map<std::string,double> Parameters;
     };
-    
+
 } //namespace Path
 
 #endif // PATH_COMMAND_H

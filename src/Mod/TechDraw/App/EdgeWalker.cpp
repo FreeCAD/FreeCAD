@@ -26,30 +26,25 @@
 //**************************************************************************
 
 #include "PreCompiled.h"
+
 #ifndef _PreComp_
-#include <BRepBuilderAPI_MakeWire.hxx>
-#include <BRepBndLib.hxx>
-#include <Bnd_Box.hxx>
-#include <ShapeAnalysis.hxx>
-#include <BRep_Tool.hxx>
-#include <ShapeFix_ShapeTolerance.hxx>
-#include <ShapeExtend_WireData.hxx>
-#include <ShapeFix_Wire.hxx>
-#include <TopExp.hxx>
+# include <cmath>
+# include <sstream>
+# include <BRep_Tool.hxx>
+# include <BRepBuilderAPI_MakeWire.hxx>
+# include <ShapeAnalysis.hxx>
+# include <ShapeFix_ShapeTolerance.hxx>
+# include <ShapeExtend_WireData.hxx>
+# include <ShapeFix_Wire.hxx>
+# include <TopExp.hxx>
+# include <boost/graph/boyer_myrvold_planar_test.hpp>
 #endif
 
-#include <sstream>
-#include <cmath>
-
-#include <boost/graph/boyer_myrvold_planar_test.hpp>
-#include <boost/graph/is_kuratowski_subgraph.hpp>
-
 #include <Base/Console.h>
-#include <Base/Exception.h>
 
-#include "DrawUtil.h"
-#include "EWTOLERANCE.h"
 #include "EdgeWalker.h"
+#include "DrawUtil.h"
+
 
 using namespace TechDraw;
 using namespace boost;
@@ -166,41 +161,6 @@ bool EdgeWalker::prepare()
         for (auto&  i: e.incidenceList) {
             planar_embedding[e.iVertex].push_back(i.eDesc);
         }
-    }
-
-    // Test for planarity
-    using vec_t = std::vector< graph_traits<TechDraw::graph>::edge_descriptor >;
-    std::vector<vec_t> embedding(num_vertices(m_g));
-    using kura_edges_t = std::vector< graph_traits<TechDraw::graph>::edge_descriptor >;
-    kura_edges_t kEdges;
-    kura_edges_t::iterator ki, ki_end;
-    graph_traits<TechDraw::graph>::edge_descriptor e1;
-
-#if 0 // Function declared in block and lacking of implementation
-    // Get the index associated with edge
-    graph_traits<TechDraw::graph>::edges_size_type
-        get(boost::edge_index_t,
-            const TechDraw::graph& m_g,
-            graph_traits<TechDraw::graph>::edge_descriptor edge);
-#endif
-
-    bool isPlanar = boyer_myrvold_planarity_test(boyer_myrvold_params::graph = m_g,
-                                 boyer_myrvold_params::embedding = &embedding[0],            // this is "an" embedding but not one for finding
-                                 boyer_myrvold_params::kuratowski_subgraph =                 // closed regions in an edge pile.
-                                       std::back_inserter(kEdges));
-    if (!isPlanar) {
-        //TODO: remove kura subgraph to make planar??
-        Base::Console().Message("EW::prepare - input is NOT planar\n");
-        ki_end = kEdges.end();
-        std::stringstream ss;
-        ss << "EW::prepare - obstructing edges: ";
-        for(ki = kEdges.begin(); ki != ki_end; ++ki) {
-            e1 = *ki;
-            ss << boost::get(edge_index, m_g, e1) << ", ";
-        }
-        ss << std::endl;
-        Base::Console().Message("%s\n", ss.str().c_str());
-        return false;
     }
 
     m_eV.setGraph(m_g);
@@ -391,7 +351,7 @@ std::vector<TopoDS_Wire> EdgeWalker::sortStrip(std::vector<TopoDS_Wire> fw, bool
 {
     std::vector<TopoDS_Wire> closedWires;                  //all the wires should be closed, but anomalies happen
     for (auto& w: fw) {
-        if (BRep_Tool::IsClosed(w)) {
+        if (!w.IsNull() && BRep_Tool::IsClosed(w)) {
             closedWires.push_back(w);
         }
     }

@@ -99,7 +99,8 @@ public:
 
     enum OrbitStyle {
         Turntable,
-        Trackball
+        Trackball,
+        FreeTurntable
     };
 
     enum class RotationCenterMode {

@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <GenerateModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="generateMetaModel_Module.xsd">
-  <PythonExport 
-      Father="GeometryPy" 
-      Name="PointPy" 
+  <PythonExport
+      Father="GeometryPy"
+      Name="PointPy"
       PythonName="Part.Point"
-      Twin="GeomPoint" 
-      TwinPointer="GeomPoint" 
-      Include="Mod/Part/App/Geometry.h" 
-      Namespace="Part" 
-      FatherInclude="Mod/Part/App/GeometryPy.h" 
+      Twin="GeomPoint"
+      TwinPointer="GeomPoint"
+      Include="Mod/Part/App/Geometry.h"
+      Namespace="Part"
+      FatherInclude="Mod/Part/App/GeometryPy.h"
       FatherNamespace="Part"
       Constructor="true">
     <Documentation>

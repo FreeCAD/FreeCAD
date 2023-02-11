@@ -7,18 +7,19 @@
 #define _dxf_h_
 
 #include <algorithm>
+#include <cmath>
+#include <cstdio>
+#include <cstring>
+#include <iosfwd>
 #include <list>
-#include <vector>
 #include <map>
 #include <set>
 #include <string>
-#include <iosfwd>
-#include <cstdio>
-#include <cstring>
-#include <cmath>
+#include <vector>
 
 #include <Base/Vector3D.h>
 #include <Mod/Import/ImportGlobal.h>
+
 
 //Following is required to be defined on Ubuntu with OCC 6.3.1
 #ifndef HAVE_IOSTREAM

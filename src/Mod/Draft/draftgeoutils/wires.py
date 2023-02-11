@@ -246,36 +246,9 @@ def superWire(edgeslist, closed=False):
 
 
 def isReallyClosed(wire):
-    """Check if a wire is really closed."""
-    # TODO yet to find out why not use wire.isClosed() direct,
-    # in isReallyClosed(wire)
-
-    # Remark out below - Found not true if a vertex is used again
-    # in a wire in sketch (e.g. wire with shape like 'd', 'b', 'g', ...)
-    # if len(wire.Edges) == len(wire.Vertexes): return True
-
-    # Found cases where Wire[-1] are not 'last' vertexes
-    # e.g. Part.Wire( Part.__sortEdges__(<Rectangle Geometries>.toShape()))
-    # aboveWire.isClosed() == True, but Wire[-1] are the 3rd vertex
-    # for the rectangle - use Edges[i].Vertexes[0/1] instead
-    length = len(wire.Edges)
-
-    # Test if it is full circle / ellipse first
-    if length == 1:
-        if len(wire.Edges[0].Vertexes) == 1:
-            return True  # This is a closed wire - full circle/ellipse
-        else:
-            # TODO Should be False if 1 edge but not single vertex, correct?
-            # No need to test further below.
-            return False
-
-    # If more than 1 edge, further test below
-    v1 = wire.Edges[0].Vertexes[0].Point   # v1 = wire.Vertexes[0].Point
-    v2 = wire.Edges[length-1].Vertexes[1].Point  # v2 = wire.Vertexes[-1].Point
-    if DraftVecUtils.equals(v1, v2):
-        return True
-
-    return False
+    if isinstance(wire, (Part.Wire, Part.Edge)):
+        return wire.isClosed()
+    return isinstance(wire, Part.Face)
 
 
 def curvetowire(obj, steps):

@@ -23,11 +23,10 @@
 #ifndef SURFACE_FEATUREFILLING_H
 #define SURFACE_FEATUREFILLING_H
 
-#include <App/PropertyStandard.h>
-#include <App/PropertyUnits.h>
 #include <App/PropertyLinks.h>
 #include <Mod/Part/App/FeaturePartSpline.h>
 #include <Mod/Surface/SurfaceGlobal.h>
+
 
 class BRepFill_Filling;
 

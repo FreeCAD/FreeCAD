@@ -1,5 +1,5 @@
-/***************************************************************************
-*   Copyright (c) Juergen Riegel         (juergen.riegel@web.de) 2014     *
+/**************************************************************************
+*   Copyright (c) 2014 Juergen Riegel <juergen.riegel@web.de>             *
 *                                                                         *
 *   This file is part of the FreeCAD CAx development system.              *
 *                                                                         *
@@ -30,26 +30,26 @@ using namespace std;
 
 struct U16
 {
-	U16(){};
+    U16(){};
 
-	U16(uint16_t ui) :_U16(ui){}
+    U16(uint16_t ui) :_U16(ui){}
 
-	U16(Context& cont)
-	{
-		read(cont);
-	}
+    U16(Context& cont)
+    {
+        read(cont);
+    }
 
-	inline void read(Context& cont)
-	{
-		cont.Strm.read((char*)&_U16, 2);
-	}
+    inline void read(Context& cont)
+    {
+        cont.Strm.read((char*)&_U16, 2);
+    }
 
-	inline operator uint16_t() const
-	{
-		return _U16;
-	}
+    inline operator uint16_t() const
+    {
+        return _U16;
+    }
 
-	uint16_t _U16;
+    uint16_t _U16;
 };
 
 

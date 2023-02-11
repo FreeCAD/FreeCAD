@@ -22,13 +22,9 @@
 
 #include "PreCompiled.h"
 
-#ifndef _PreComp_
-#endif
-
 #include "DlgSettingsPathColor.h"
 #include "ui_DlgSettingsPathColor.h"
-#include <Gui/PrefWidgets.h>
-#include <Base/Console.h>
+
 
 using namespace PathGui;
 

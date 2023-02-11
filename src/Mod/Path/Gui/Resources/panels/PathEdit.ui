@@ -145,7 +145,7 @@
     <item row="0" column="2">
      <widget class="QToolButton" name="postProcessorSetOutputFile">
       <property name="text">
-       <string>...</string>
+       <string notr="true">...</string>
       </property>
      </widget>
     </item>
@@ -1403,7 +1403,7 @@
          <item>
           <widget class="QToolButton" name="operationUp">
            <property name="text">
-            <string>...</string>
+            <string notr="true">...</string>
            </property>
            <property name="icon">
             <iconset resource="../../../../../Gui/Icons/resource.qrc">
@@ -1414,7 +1414,7 @@
          <item>
           <widget class="QToolButton" name="operationDown">
            <property name="text">
-            <string>...</string>
+            <string notr="true">...</string>
            </property>
            <property name="icon">
             <iconset resource="../../../../../Gui/Icons/resource.qrc">

@@ -23,14 +23,14 @@
 #include "PreCompiled.h"
 
 #include <Base/Console.h>
-#include <Base/PyObjectBase.h>
 #include <Base/Interpreter.h>
+#include <Base/PyObjectBase.h>
 
+#include "LuxFeature.h"
+#include "LuxProject.h"
 #include "RayFeature.h"
 #include "RayProject.h"
 #include "RaySegment.h"
-#include "LuxFeature.h"
-#include "LuxProject.h"
 
 
 namespace Raytracing {

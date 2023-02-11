@@ -23,28 +23,20 @@
 #ifndef SKETCHER_SKETCHOBJECT_H
 #define SKETCHER_SKETCHOBJECT_H
 
-#include <App/PropertyStandard.h>
-#include <App/PropertyFile.h>
 #include <App/FeaturePython.h>
+#include <App/PropertyFile.h>
 #include <Base/Axis.h>
-
 #include <Mod/Part/App/Part2DObject.h>
 #include <Mod/Part/App/PropertyGeometryList.h>
 #include <Mod/Sketcher/App/PropertyConstraintList.h>
-
 #include <Mod/Sketcher/App/SketchAnalysis.h>
 
-#include "GeometryFacade.h"
-
 #include "Analyse.h"
-
+#include "GeoEnum.h"
+#include "GeoList.h"
+#include "GeometryFacade.h"
 #include "Sketch.h"
 
-#include "SketchGeometryExtension.h"
-
-#include "GeoEnum.h"
-
-#include "GeoList.h"
 
 namespace Sketcher
 {
@@ -102,12 +94,23 @@ public:
      */
     bool isSupportedGeometry(const Part::Geometry *geo) const;
     /*!
-     \brief Add geometry to a sketch
+     \brief Add geometry to a sketch - It adds a copy with a different uuid (internally uses copy() instead of clone())
      \param geo - geometry to add
      \param construction - true for construction lines
      \retval int - GeoId of added element
      */
     int addGeometry(const Part::Geometry *geo, bool construction=false);
+
+    /*!
+     \brief Add geometry to a sketch using up the provided newgeo. Caveat: It will use the provided newgeo with the uuid it has.
+     This is different from the addGeometry method with a naked pointer, where a different uuid is ensured. The caller is responsible
+     for provided a new or existing uuid, as necessary.
+     \param geo - geometry to add
+     \param construction - true for construction lines
+     \retval int - GeoId of added element
+     */
+    int addGeometry(std::unique_ptr<Part::Geometry> newgeo, bool construction=false);
+
     /*!
      \brief Add multiple geometry elements to a sketch
      \param geoList - geometry to add
@@ -229,7 +232,7 @@ public:
     /// get the driving status of this constraint
     int getDriving(int ConstrId, bool &isdriving);
     /// toggle the driving status of this constraint
-    int toggleDriving(int ConstrId);
+    int toggleDriving(int ConstrId) {return setDriving(ConstrId, !Constraints.getValues()[ConstrId]->isDriving);}
 
     /// set the driving status of this constraint and solve
     int setActive(int ConstrId, bool isactive);
@@ -289,6 +292,14 @@ public:
     int extend(int geoId, double increment, PointPos endPoint);
     /// split a curve
     int split(int geoId, const Base::Vector3d &point);
+    /*!
+      \brief Join one or two curves at the given end points
+      \details The combined curve will be a b-spline
+      \param geoId1, posId1, geoId2, posId2: the end points to join
+      \retval - 0 on success, -1 on failure
+    */
+    int join(int geoId1, Sketcher::PointPos posId1,
+             int geoId2, Sketcher::PointPos posId2);
 
     /// adds symmetric geometric elements with respect to the refGeoId (line or point)
     int addSymmetric(const std::vector<int> &geoIdList, int refGeoId, Sketcher::PointPos refPosId=Sketcher::PointPos::none);

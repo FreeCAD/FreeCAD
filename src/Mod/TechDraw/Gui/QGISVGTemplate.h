@@ -25,15 +25,15 @@
 
 #include <Mod/TechDraw/TechDrawGlobal.h>
 
-QT_BEGIN_NAMESPACE
+
 class QGraphicsScene;
 class QGraphicsSvgItem;
 class QSvgRenderer;
 class QFile;
 class QString;
-QT_END_NAMESPACE
 
-namespace TechDraw {
+namespace TechDraw
+{
 class DrawSVGTemplate;
 }
 
@@ -43,33 +43,36 @@ namespace TechDrawGui
 {
 class QGSPage;
 
-class TechDrawGuiExport QGISVGTemplate : public QGITemplate
+class TechDrawGuiExport QGISVGTemplate: public QGITemplate
 {
     Q_OBJECT
 
 public:
     explicit QGISVGTemplate(QGSPage* scene);
-    virtual ~QGISVGTemplate();
+    ~QGISVGTemplate() override;
 
-    enum {Type = QGraphicsItem::UserType + 153};
-    int type() const { return Type; }
+    enum
+    {
+        Type = QGraphicsItem::UserType + 153
+    };
+    int type() const override { return Type; }
 
-    void draw();
-    virtual void updateView(bool update = false);
+    void draw() override;
+    void updateView(bool update = false) override;
 
-    TechDraw::DrawSVGTemplate *getSVGTemplate();
+    TechDraw::DrawSVGTemplate* getSVGTemplate();
 
 protected:
-    void openFile(const QFile &file);
-    void load (const QString & fileName);
+    void openFile(const QFile& file);
+    void load(const QByteArray& svgCode);
     void createClickHandles(void);
 
 protected:
     bool firstTime;
-    QGraphicsSvgItem *m_svgItem;
-    QSvgRenderer *m_svgRender;
-};  // class QGISVGTemplate
+    QGraphicsSvgItem* m_svgItem;
+    QSvgRenderer* m_svgRender;
+};// class QGISVGTemplate
 
-}
+}// namespace TechDrawGui
 
-#endif // DRAWINGGUI_QGRAPHICSITEMSVGTEMPLATE_H
+#endif// DRAWINGGUI_QGRAPHICSITEMSVGTEMPLATE_H

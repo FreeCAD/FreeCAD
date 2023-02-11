@@ -22,35 +22,30 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <TColgp_Array1OfPnt.hxx>
 # include <Geom_BSplineSurface.hxx>
+# include <TColgp_Array1OfPnt.hxx>
 #endif
 
 #include <Base/Console.h>
 #include <Base/Converter.h>
-#include <Base/Interpreter.h>
-#include <Base/PyObjectBase.h>
 #include <Base/GeometryPyCXX.h>
-
-#include <CXX/Extensions.hxx>
-#include <CXX/Objects.hxx>
-
+#include <Base/Interpreter.h>
 #include <Mod/Part/App/BSplineSurfacePy.h>
-#include <Mod/Mesh/App/Mesh.h>
 #include <Mod/Mesh/App/MeshPy.h>
 #include <Mod/Points/App/PointsPy.h>
+#if defined(HAVE_PCL_FILTERS)
+# include <pcl/filters/passthrough.h>
+# include <pcl/filters/voxel_grid.h>
+# include <pcl/point_types.h>
+#endif
 
 #include "ApproxSurface.h"
 #include "BSplineFitting.h"
-#include "SurfaceTriangulation.h"
 #include "RegionGrowing.h"
-#include "Segmentation.h"
 #include "SampleConsensus.h"
-#if defined(HAVE_PCL_FILTERS)
-#include <pcl/filters/passthrough.h>
-#include <pcl/filters/voxel_grid.h>
-#include <pcl/point_types.h>
-#endif
+#include "Segmentation.h"
+#include "SurfaceTriangulation.h"
+
 
 /*
 Dependency of pcl components:

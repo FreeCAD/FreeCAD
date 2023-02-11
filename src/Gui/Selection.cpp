@@ -47,6 +47,7 @@
 #include "MainWindow.h"
 #include "MDIView.h"
 #include "SelectionFilter.h"
+#include "SelectionObserverPython.h"
 #include "Tree.h"
 #include "ViewProviderDocumentObject.h"
 
@@ -161,195 +162,6 @@ void SelectionObserver::detachSelection()
         connectSelection.disconnect();
         if (!filterDocName.empty())
             Selection().rmvSelectionGate();
-    }
-}
-
-// -------------------------------------------
-
-std::vector<SelectionObserverPython*> SelectionObserverPython::_instances;
-
-SelectionObserverPython::SelectionObserverPython(const Py::Object& obj, ResolveMode resolve)
-    : SelectionObserver(true, resolve), inst(obj)
-{
-#undef FC_PY_ELEMENT
-#define FC_PY_ELEMENT(_name) FC_PY_GetCallable(obj.ptr(),#_name,py_##_name);
-    FC_PY_SEL_OBSERVER
-}
-
-SelectionObserverPython::~SelectionObserverPython()
-{
-}
-
-void SelectionObserverPython::addObserver(const Py::Object& obj, ResolveMode resolve)
-{
-    _instances.push_back(new SelectionObserverPython(obj, resolve));
-}
-
-void SelectionObserverPython::removeObserver(const Py::Object& obj)
-{
-    SelectionObserverPython* obs=nullptr;
-    for (std::vector<SelectionObserverPython*>::iterator it =
-        _instances.begin(); it != _instances.end(); ++it) {
-        if ((*it)->inst == obj) {
-            obs = *it;
-            _instances.erase(it);
-            break;
-        }
-    }
-
-    delete obs;
-}
-
-void SelectionObserverPython::onSelectionChanged(const SelectionChanges& msg)
-{
-    switch (msg.Type)
-    {
-    case SelectionChanges::AddSelection:
-        addSelection(msg);
-        break;
-    case SelectionChanges::RmvSelection:
-        removeSelection(msg);
-        break;
-    case SelectionChanges::SetSelection:
-        setSelection(msg);
-        break;
-    case SelectionChanges::ClrSelection:
-        clearSelection(msg);
-        break;
-    case SelectionChanges::SetPreselect:
-        setPreselection(msg);
-        break;
-    case SelectionChanges::RmvPreselect:
-        removePreselection(msg);
-        break;
-    case SelectionChanges::PickedListChanged:
-        pickedListChanged();
-        break;
-    default:
-        break;
-    }
-}
-
-void SelectionObserverPython::pickedListChanged()
-{
-    if(py_pickedListChanged.isNone())
-        return;
-    Base::PyGILStateLocker lock;
-    try {
-        Py::Callable(py_pickedListChanged).apply(Py::Tuple());
-    }
-    catch (Py::Exception&) {
-        Base::PyException e; // extract the Python error text
-        e.ReportException();
-    }
-}
-
-void SelectionObserverPython::addSelection(const SelectionChanges& msg)
-{
-    if(py_addSelection.isNone())
-        return;
-    Base::PyGILStateLocker lock;
-    try {
-        Py::Tuple args(4);
-        args.setItem(0, Py::String(msg.pDocName ? msg.pDocName : ""));
-        args.setItem(1, Py::String(msg.pObjectName ? msg.pObjectName : ""));
-        args.setItem(2, Py::String(msg.pSubName ? msg.pSubName : ""));
-        Py::Tuple tuple(3);
-        tuple[0] = Py::Float(msg.x);
-        tuple[1] = Py::Float(msg.y);
-        tuple[2] = Py::Float(msg.z);
-        args.setItem(3, tuple);
-        Base::pyCall(py_addSelection.ptr(),args.ptr());
-    }
-    catch (Py::Exception&) {
-        Base::PyException e; // extract the Python error text
-        e.ReportException();
-    }
-}
-
-void SelectionObserverPython::removeSelection(const SelectionChanges& msg)
-{
-    if(py_removeSelection.isNone())
-        return;
-    Base::PyGILStateLocker lock;
-    try {
-        Py::Tuple args(3);
-        args.setItem(0, Py::String(msg.pDocName ? msg.pDocName : ""));
-        args.setItem(1, Py::String(msg.pObjectName ? msg.pObjectName : ""));
-        args.setItem(2, Py::String(msg.pSubName ? msg.pSubName : ""));
-        Base::pyCall(py_removeSelection.ptr(),args.ptr());
-    }
-    catch (Py::Exception&) {
-        Base::PyException e; // extract the Python error text
-        e.ReportException();
-    }
-}
-
-void SelectionObserverPython::setSelection(const SelectionChanges& msg)
-{
-    if(py_setSelection.isNone())
-        return;
-    Base::PyGILStateLocker lock;
-    try {
-        Py::Tuple args(1);
-        args.setItem(0, Py::String(msg.pDocName ? msg.pDocName : ""));
-        Base::pyCall(py_setSelection.ptr(),args.ptr());
-    }
-    catch (Py::Exception&) {
-        Base::PyException e; // extract the Python error text
-        e.ReportException();
-    }
-}
-
-void SelectionObserverPython::clearSelection(const SelectionChanges& msg)
-{
-    if(py_clearSelection.isNone())
-        return;
-    Base::PyGILStateLocker lock;
-    try {
-        Py::Tuple args(1);
-        args.setItem(0, Py::String(msg.pDocName ? msg.pDocName : ""));
-        Base::pyCall(py_clearSelection.ptr(),args.ptr());
-    }
-    catch (Py::Exception&) {
-        Base::PyException e; // extract the Python error text
-        e.ReportException();
-    }
-}
-
-void SelectionObserverPython::setPreselection(const SelectionChanges& msg)
-{
-    if(py_setPreselection.isNone())
-        return;
-    Base::PyGILStateLocker lock;
-    try {
-        Py::Tuple args(3);
-        args.setItem(0, Py::String(msg.pDocName ? msg.pDocName : ""));
-        args.setItem(1, Py::String(msg.pObjectName ? msg.pObjectName : ""));
-        args.setItem(2, Py::String(msg.pSubName ? msg.pSubName : ""));
-        Base::pyCall(py_setPreselection.ptr(),args.ptr());
-    }
-    catch (Py::Exception&) {
-        Base::PyException e; // extract the Python error text
-        e.ReportException();
-    }
-}
-
-void SelectionObserverPython::removePreselection(const SelectionChanges& msg)
-{
-    if(py_removePreselection.isNone())
-        return;
-    Base::PyGILStateLocker lock;
-    try {
-        Py::Tuple args(3);
-        args.setItem(0, Py::String(msg.pDocName ? msg.pDocName : ""));
-        args.setItem(1, Py::String(msg.pObjectName ? msg.pObjectName : ""));
-        args.setItem(2, Py::String(msg.pSubName ? msg.pSubName : ""));
-        Base::pyCall(py_removePreselection.ptr(),args.ptr());
-    }
-    catch (Py::Exception&) {
-        Base::PyException e; // extract the Python error text
-        e.ReportException();
     }
 }
 
@@ -626,8 +438,7 @@ int SelectionSingleton::getAsPropertyLinkSubList(App::PropertyLinkSubList &prop)
     std::vector<Gui::SelectionObject> sel = this->getSelectionEx();
     std::vector<App::DocumentObject*> objs; objs.reserve(sel.size() * 2);
     std::vector<std::string> subs; subs.reserve(sel.size()*2);
-    for (std::size_t iobj = 0; iobj < sel.size(); iobj++) {
-        Gui::SelectionObject &selitem = sel[iobj];
+    for (auto & selitem : sel) {
         App::DocumentObject* obj = selitem.getObject();
         const std::vector<std::string> &subnames = selitem.getSubNames();
 
@@ -637,9 +448,9 @@ int SelectionSingleton::getAsPropertyLinkSubList(App::PropertyLinkSubList &prop)
             subs.emplace_back();
         }
         else {
-            for (std::size_t isub = 0; isub < subnames.size(); isub++) {
+            for (const auto & subname : subnames) {
                 objs.push_back(obj);
-                subs.push_back(subnames[isub]);
+                subs.push_back(subname);
             }
         }
     }
@@ -1259,9 +1070,9 @@ bool SelectionSingleton::addSelections(const char* pDocName, const char* pObject
     }
 
     bool update = false;
-    for(std::vector<std::string>::const_iterator it = pSubNames.begin(); it != pSubNames.end(); ++it) {
+    for(const auto & pSubName : pSubNames) {
         _SelObj temp;
-        int ret = checkSelection(pDocName, pObjectName, it->c_str(), ResolveMode::NoResolve, temp);
+        int ret = checkSelection(pDocName, pObjectName, pSubName.c_str(), ResolveMode::NoResolve, temp);
         if (ret!=0)
             continue;
 
@@ -1490,7 +1301,7 @@ void SelectionSingleton::setVisible(VisibleState vis) {
 
             // Fall back to direct object visibility setting
         }
-        if(!filter.insert(std::make_pair(obj,(App::DocumentObject*)nullptr)).second){
+        if(!filter.insert(std::make_pair(obj,static_cast<App::DocumentObject*>(nullptr))).second){
             continue;
         }
 
@@ -2069,7 +1880,7 @@ PyObject *SelectionSingleton::sAddSelection(PyObject * /*self*/, PyObject *args)
     x = 0, y = 0, z = 0;
     if (PyArg_ParseTuple(args, "O!|sfffO!", &(App::DocumentObjectPy::Type),&object,
                 &subname,&x,&y,&z,&PyBool_Type,&clearPreselect)) {
-        App::DocumentObjectPy* docObjPy = static_cast<App::DocumentObjectPy*>(object);
+        auto docObjPy = static_cast<App::DocumentObjectPy*>(object);
         App::DocumentObject* docObj = docObjPy->getDocumentObjectPtr();
         if (!docObj || !docObj->getNameInDocument()) {
             PyErr_SetString(Base::PyExc_FC_GeneralError, "Cannot check invalid object");
@@ -2087,7 +1898,7 @@ PyObject *SelectionSingleton::sAddSelection(PyObject * /*self*/, PyObject *args)
     if (PyArg_ParseTuple(args, "O!O|O!", &(App::DocumentObjectPy::Type),&object,
                 &sequence,&PyBool_Type,&clearPreselect))
     {
-        App::DocumentObjectPy* docObjPy = static_cast<App::DocumentObjectPy*>(object);
+        auto docObjPy = static_cast<App::DocumentObjectPy*>(object);
         App::DocumentObject* docObj = docObjPy->getDocumentObjectPtr();
         if (!docObj || !docObj->getNameInDocument()) {
             PyErr_SetString(Base::PyExc_FC_GeneralError, "Cannot check invalid object");
@@ -2125,7 +1936,7 @@ PyObject *SelectionSingleton::sUpdateSelection(PyObject * /*self*/, PyObject *ar
             &object, &subname))
         return nullptr;
 
-    App::DocumentObjectPy* docObjPy = static_cast<App::DocumentObjectPy*>(object);
+    auto docObjPy = static_cast<App::DocumentObjectPy*>(object);
     App::DocumentObject* docObj = docObjPy->getDocumentObjectPtr();
     if (!docObj || !docObj->getNameInDocument()) {
         PyErr_SetString(Base::PyExc_FC_GeneralError, "Cannot check invalid object");
@@ -2155,7 +1966,7 @@ PyObject *SelectionSingleton::sRemoveSelection(PyObject * /*self*/, PyObject *ar
     if (!PyArg_ParseTuple(args, "O!|s", &(App::DocumentObjectPy::Type),&object,&subname))
         return nullptr;
 
-    App::DocumentObjectPy* docObjPy = static_cast<App::DocumentObjectPy*>(object);
+    auto docObjPy = static_cast<App::DocumentObjectPy*>(object);
     App::DocumentObject* docObj = docObjPy->getDocumentObjectPtr();
     if (!docObj || !docObj->getNameInDocument()) {
         PyErr_SetString(Base::PyExc_FC_GeneralError, "Cannot check invalid object");
@@ -2210,7 +2021,7 @@ PyObject *SelectionSingleton::sIsSelected(PyObject * /*self*/, PyObject *args)
         return nullptr;
 
     try {
-        App::DocumentObjectPy* docObj = static_cast<App::DocumentObjectPy*>(object);
+        auto docObj = static_cast<App::DocumentObjectPy*>(object);
         bool ok = Selection().isSelected(docObj->getDocumentObjectPtr(), subname, toEnum(resolve));
 
         return Py_BuildValue("O", (ok ? Py_True : Py_False));
@@ -2254,13 +2065,13 @@ PyObject *SelectionSingleton::sGetSelection(PyObject * /*self*/, PyObject *args)
         std::set<App::DocumentObject*> noduplicates;
         std::vector<App::DocumentObject*> selectedObjects; // keep the order of selection
         Py::List list;
-        for (std::vector<SelectionSingleton::SelObj>::iterator it = sel.begin(); it != sel.end(); ++it) {
-            if (noduplicates.insert(it->pObject).second) {
-                selectedObjects.push_back(it->pObject);
+        for (const auto & it : sel) {
+            if (noduplicates.insert(it.pObject).second) {
+                selectedObjects.push_back(it.pObject);
             }
         }
-        for (std::vector<App::DocumentObject*>::iterator it = selectedObjects.begin(); it != selectedObjects.end(); ++it) {
-            list.append(Py::asObject((*it)->getPyObject()));
+        for (const auto & selectedObject : selectedObjects) {
+            list.append(Py::asObject(selectedObject->getPyObject()));
         }
         return Py::new_reference_to(list);
     }
@@ -2293,7 +2104,7 @@ PyObject *SelectionSingleton::sSetPreselection(PyObject * /*self*/, PyObject *ar
     static char *kwlist[] = {"obj","subname","x","y","z","tp",nullptr};
     if (PyArg_ParseTupleAndKeywords(args, kwd, "O!|sfffi", kwlist,
                 &(App::DocumentObjectPy::Type),&object,&subname,&x,&y,&z,&type)) {
-        App::DocumentObjectPy* docObjPy = static_cast<App::DocumentObjectPy*>(object);
+        auto docObjPy = static_cast<App::DocumentObjectPy*>(object);
         App::DocumentObject* docObj = docObjPy->getDocumentObjectPtr();
         if (!docObj || !docObj->getNameInDocument()) {
             PyErr_SetString(Base::PyExc_FC_GeneralError, "Cannot check invalid object");
@@ -2343,8 +2154,14 @@ PyObject *SelectionSingleton::sGetCompleteSelection(PyObject * /*self*/, PyObjec
         sel = Selection().getCompleteSelection(toEnum(resolve));
 
         Py::List list;
-        for (std::vector<SelectionSingleton::SelObj>::iterator it = sel.begin(); it != sel.end(); ++it) {
-            list.append(Py::asObject(it->pObject->getPyObject()));
+        for (const auto & it : sel) {
+            SelectionObject obj(SelectionChanges(SelectionChanges::AddSelection,
+                                                 it.DocName,
+                                                 it.FeatName,
+                                                 it.SubName,
+                                                 it.TypeName,
+                                                 it.x, it.y, it.z));
+            list.append(Py::asObject(obj.getPyObject()));
         }
         return Py::new_reference_to(list);
     }
@@ -2371,8 +2188,8 @@ PyObject *SelectionSingleton::sGetSelectionEx(PyObject * /*self*/, PyObject *arg
                 App::DocumentObject::getClassTypeId(), toEnum(resolve), Base::asBoolean(single));
 
         Py::List list;
-        for (std::vector<SelectionObject>::iterator it = sel.begin(); it != sel.end(); ++it) {
-            list.append(Py::asObject(it->getPyObject()));
+        for (auto & it : sel) {
+            list.append(Py::asObject(it.getPyObject()));
         }
         return Py::new_reference_to(list);
     }
@@ -2396,8 +2213,8 @@ PyObject *SelectionSingleton::sGetPickedList(PyObject * /*self*/, PyObject *args
 
     try {
         Py::List list;
-        for (std::vector<SelectionObject>::iterator it = sel.begin(); it != sel.end(); ++it) {
-            list.append(Py::asObject(it->getPyObject()));
+        for (auto & it : sel) {
+            list.append(Py::asObject(it.getPyObject()));
         }
         return Py::new_reference_to(list);
     }
@@ -2524,17 +2341,10 @@ PyObject *SelectionSingleton::sSetVisible(PyObject * /*self*/, PyObject *args)
         return nullptr;
 
     PY_TRY {
-        VisibleState vis;
-        if(visible == Py_None) {
-            vis = VisToggle;
-        }
-        else if (PyBool_Check(visible)) {
-            vis = Base::asBoolean(visible) ? VisShow : VisHide;
-        }
-        else {
-            PyErr_SetString(PyExc_ValueError, "Argument is neither None nor Bool");
-            return nullptr;
-        }
+        VisibleState vis = VisToggle;
+        Base::PyTypeCheck(&visible, &PyBool_Type);
+        if (visible)
+            vis = PyObject_IsTrue(visible) ? VisShow : VisHide;
 
         Selection().setVisible(vis);
         Py_Return;

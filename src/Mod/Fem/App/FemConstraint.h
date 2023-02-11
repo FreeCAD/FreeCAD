@@ -21,16 +21,15 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef FEM_CONSTRAINT_H
 #define FEM_CONSTRAINT_H
 
-#include <Base/Vector3D.h>
-#include <App/FeaturePython.h>
 #include <App/DocumentObject.h>
+#include <App/FeaturePython.h>
 #include <App/PropertyLinks.h>
-#include <App/PropertyGeo.h>
+#include <Base/Vector3D.h>
 #include <Mod/Fem/FemGlobal.h>
+
 
 namespace Fem {
 

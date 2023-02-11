@@ -22,11 +22,7 @@ set(ReenGui_LIBS
     MeshGui
 )
 
-if(BUILD_QT5)
-    qt5_add_resources(ReenGui_QRC_SRCS Resources/ReverseEngineering.qrc)
-else()
-    qt4_add_resources(ReenGui_QRC_SRCS Resources/ReverseEngineering.qrc)
-endif()
+qt_add_resources(ReenGui_QRC_SRCS Resources/ReverseEngineering.qrc)
 
 set(Dialogs_UIC_SRCS
     FitBSplineSurface.ui
@@ -34,12 +30,6 @@ set(Dialogs_UIC_SRCS
     Segmentation.ui
     SegmentationManual.ui
 )
-
-if(BUILD_QT5)
-    qt5_wrap_ui(Dialogs_UIC_HDRS ${Dialogs_UIC_SRCS})
-else()
-    qt4_wrap_ui(Dialogs_UIC_HDRS ${Dialogs_UIC_SRCS})
-endif()
 
 SET(Dialogs_SRCS
     ${Dialogs_UIC_HDRS}
@@ -71,9 +61,14 @@ SET(ReverseEngineeringGuiIcon_SVG
     Resources/icons/ReverseEngineeringWorkbench.svg
 )
 
+if(FREECAD_USE_PCH)
+    add_definitions(-D_PreComp_)
+    GET_MSVC_PRECOMPILED_SOURCE("PreCompiled.cpp" PCH_SRCS ${ReenGui_SRCS})
+    ADD_MSVC_PRECOMPILED_HEADER(ReverseEngineeringGui PreCompiled.h PreCompiled.cpp PCH_SRCS)
+endif(FREECAD_USE_PCH)
+
 add_library(ReverseEngineeringGui SHARED ${ReenGui_SRCS} ${ReverseEngineeringGuiIcon_SVG})
 target_link_libraries(ReverseEngineeringGui ${ReenGui_LIBS})
-
 
 SET_BIN_DIR(ReverseEngineeringGui ReverseEngineeringGui /Mod/ReverseEngineering)
 SET_PYTHON_PREFIX_SUFFIX(ReverseEngineeringGui)

@@ -291,7 +291,7 @@ class Results(run.Results):
             else:
                 self.report.error("Result file not found.")
                 self.fail()
-        else:    
+        else:
             if os.path.isfile(possible_post_file_single):
                 postPath = possible_post_file_single
             elif os.path.isfile(possible_post_file_old):

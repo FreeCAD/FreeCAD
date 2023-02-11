@@ -20,18 +20,18 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <ostream>
 # include <sstream>
 #endif
 
-
-#include "Writer3MF.h"
+#include <Base/Tools.h>
 #include "Core/Evaluation.h"
 #include "Core/MeshKernel.h"
-#include <Base/Tools.h>
+
+#include "Writer3MF.h"
+
 
 using namespace MeshCore;
 

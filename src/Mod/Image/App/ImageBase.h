@@ -54,7 +54,7 @@ public:
     unsigned short getNumSamples() const { return _numSamples; }
     unsigned short getNumBitsPerSample() const { return _numBitsPerSample; }
     unsigned short getNumBytesPerPixel() const { return _numBytesPerPixel; }
-    
+
     virtual void clear();
     virtual int createCopy(void* pSrcPixelData, unsigned long width, unsigned long height, int format, unsigned short numSigBitsPerSample);
     virtual int pointTo(void* pSrcPixelData, unsigned long width, unsigned long height, int format, unsigned short numSigBitsPerSample, bool takeOwnership);

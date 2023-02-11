@@ -24,8 +24,9 @@
 #define MESHGUI_MESHEDITOR_H
 
 #include <QObject>
+
 #include <Mod/Mesh/Gui/ViewProvider.h>
-#include <boost_signals2.hpp>
+
 
 class SoCoordinate3;
 class SoFaceSet;

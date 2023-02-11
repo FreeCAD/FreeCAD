@@ -29,6 +29,7 @@
 # include <Inventor/nodes/SoPerspectiveCamera.h>
 #endif
 
+#include <Base/Builder3D.h>
 #include <Base/Interpreter.h>
 
 #include "SplitView3DInventor.h"
@@ -70,6 +71,13 @@ void AbstractSplitView::deleteSelf()
         (*it)->setSceneGraph(nullptr);
     }
     MDIView::deleteSelf();
+}
+
+void AbstractSplitView::setDocumentOfViewers(Gui::Document* document)
+{
+    for (auto view : _viewer) {
+        view->setDocument(document);
+    }
 }
 
 void AbstractSplitView::viewAll()
@@ -140,15 +148,14 @@ void AbstractSplitView::OnChange(ParameterGrp::SubjectType &rCaller,ParameterGrp
             (*it)->getHeadlight()->color.setValue(headlightColor);
     }
     else if (strcmp(Reason,"HeadlightDirection") == 0) {
-        std::string pos = rGrp.GetASCII("HeadlightDirection");
-        QString flt = QString::fromLatin1("([-+]?[0-9]+\\.?[0-9]+)");
-        QRegExp rx(QString::fromLatin1("^\\(%1,%1,%1\\)$").arg(flt));
-        if (rx.indexIn(QLatin1String(pos.c_str())) > -1) {
-            float x = rx.cap(1).toFloat();
-            float y = rx.cap(2).toFloat();
-            float z = rx.cap(3).toFloat();
+        try {
+            std::string pos = rGrp.GetASCII("HeadlightDirection");
+            Base::Vector3f dir = Base::to_vector(pos);
             for (std::vector<View3DInventorViewer*>::iterator it = _viewer.begin(); it != _viewer.end(); ++it)
-                (*it)->getHeadlight()->direction.setValue(x,y,z);
+                (*it)->getHeadlight()->direction.setValue(dir.x, dir.y, dir.z);
+        }
+        catch (const std::exception&) {
+            // ignore exception
         }
     }
     else if (strcmp(Reason,"HeadlightIntensity") == 0) {
@@ -169,15 +176,14 @@ void AbstractSplitView::OnChange(ParameterGrp::SubjectType &rCaller,ParameterGrp
             (*it)->getBacklight()->color.setValue(backlightColor);
     }
     else if (strcmp(Reason,"BacklightDirection") == 0) {
-        std::string pos = rGrp.GetASCII("BacklightDirection");
-        QString flt = QString::fromLatin1("([-+]?[0-9]+\\.?[0-9]+)");
-        QRegExp rx(QString::fromLatin1("^\\(%1,%1,%1\\)$").arg(flt));
-        if (rx.indexIn(QLatin1String(pos.c_str())) > -1) {
-            float x = rx.cap(1).toFloat();
-            float y = rx.cap(2).toFloat();
-            float z = rx.cap(3).toFloat();
+        try {
+            std::string pos = rGrp.GetASCII("BacklightDirection");
+            Base::Vector3f dir = Base::to_vector(pos);
             for (std::vector<View3DInventorViewer*>::iterator it = _viewer.begin(); it != _viewer.end(); ++it)
-                (*it)->getBacklight()->direction.setValue(x,y,z);
+                (*it)->getBacklight()->direction.setValue(dir.x, dir.y, dir.z);
+        }
+        catch (const std::exception&) {
+            // ignore exception
         }
     }
     else if (strcmp(Reason,"BacklightIntensity") == 0) {
@@ -198,7 +204,7 @@ void AbstractSplitView::OnChange(ParameterGrp::SubjectType &rCaller,ParameterGrp
     else if (strcmp(Reason,"HighlightColor") == 0) {
         float transparency;
         SbColor highlightColor(0.8f, 0.1f, 0.1f);
-        unsigned long highlight = (unsigned long)(highlightColor.getPackedValue());
+        auto highlight = (unsigned long)(highlightColor.getPackedValue());
         highlight = rGrp.GetUnsigned("HighlightColor", highlight);
         highlightColor.setPackedValue((uint32_t)highlight, transparency);
         SoSFColor col; col.setValue(highlightColor);
@@ -209,7 +215,7 @@ void AbstractSplitView::OnChange(ParameterGrp::SubjectType &rCaller,ParameterGrp
     else if (strcmp(Reason,"SelectionColor") == 0) {
         float transparency;
         SbColor selectionColor(0.1f, 0.8f, 0.1f);
-        unsigned long selection = (unsigned long)(selectionColor.getPackedValue());
+        auto selection = (unsigned long)(selectionColor.getPackedValue());
         selection = rGrp.GetUnsigned("SelectionColor", selection);
         selectionColor.setPackedValue((uint32_t)selection, transparency);
         SoSFColor col; col.setValue(selectionColor);
@@ -286,10 +292,10 @@ void AbstractSplitView::OnChange(ParameterGrp::SubjectType &rCaller,ParameterGrp
             (*it)->setPickRadius(rGrp.GetFloat("PickRadius", 5.0f));
     }
     else {
-        unsigned long col1 = rGrp.GetUnsigned("BackgroundColor", 3940932863UL);
-        unsigned long col2 = rGrp.GetUnsigned("BackgroundColor2", 2526456575UL); // default color (blue/grey)
-        unsigned long col3 = rGrp.GetUnsigned("BackgroundColor3", 3570714879UL); // default color (light yellow/blue)
-        unsigned long col4 = rGrp.GetUnsigned("BackgroundColor4", 1869583359UL); // default color (blue/grey)
+        unsigned long col1 = rGrp.GetUnsigned("BackgroundColor",3940932863UL);
+        unsigned long col2 = rGrp.GetUnsigned("BackgroundColor2",859006463UL); // default color (dark blue)
+        unsigned long col3 = rGrp.GetUnsigned("BackgroundColor3",2880160255UL); // default color (blue/grey)
+        unsigned long col4 = rGrp.GetUnsigned("BackgroundColor4",1869583359UL); // default color (blue/grey)
         float r1,g1,b1,r2,g2,b2,r3,g3,b3,r4,g4,b4;
         r1 = ((col1 >> 24) & 0xff) / 255.0; g1 = ((col1 >> 16) & 0xff) / 255.0; b1 = ((col1 >> 8) & 0xff) / 255.0;
         r2 = ((col2 >> 24) & 0xff) / 255.0; g2 = ((col2 >> 16) & 0xff) / 255.0; b2 = ((col2 >> 8) & 0xff) / 255.0;
@@ -519,7 +525,7 @@ Py::Object AbstractSplitViewPy::getattr(const char * attr)
 
 AbstractSplitView* AbstractSplitViewPy::getSplitViewPtr()
 {
-    AbstractSplitView* view = qobject_cast<AbstractSplitView*>(base.getMDIViewPtr());
+    auto view = qobject_cast<AbstractSplitView*>(base.getMDIViewPtr());
     if (!(view && view->getViewer(0)))
         throw Py::RuntimeError("Object already deleted");
     return view;
@@ -790,8 +796,8 @@ SplitView3DInventor::SplitView3DInventor(int views, Gui::Document* pcDocument, Q
     }
     else {
         mainSplitter = new QSplitter(Qt::Vertical, this);
-        QSplitter *topSplitter = new QSplitter(Qt::Horizontal, mainSplitter);
-        QSplitter *botSplitter = new QSplitter(Qt::Horizontal, mainSplitter);
+        auto topSplitter = new QSplitter(Qt::Horizontal, mainSplitter);
+        auto botSplitter = new QSplitter(Qt::Horizontal, mainSplitter);
 
         if (glformat) {
             _viewer.push_back(new View3DInventorViewer(f, topSplitter));
@@ -820,6 +826,8 @@ SplitView3DInventor::SplitView3DInventor(int views, Gui::Document* pcDocument, Q
 
     mainSplitter->show();
     setCentralWidget(mainSplitter);
+
+    setDocumentOfViewers(pcDocument);
 
     // apply the user settings
     setupSettings();

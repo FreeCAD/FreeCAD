@@ -17,12 +17,6 @@ set(Dialog_UIC_SRCS
     DlgPointsRead.ui
 )
 
-if (BUILD_QT5)
-    qt5_wrap_ui(Dialogs_UIC_HDRS ${Dialog_UIC_SRCS})
-else()
-    qt4_wrap_ui(Dialogs_UIC_HDRS ${Dialog_UIC_SRCS})
-endif()
-
 SET(Dialogs_SRCS
     ${Dialogs_UIC_HDRS}
     DlgPointsRead.ui
@@ -31,11 +25,7 @@ SET(Dialogs_SRCS
 )
 SOURCE_GROUP("Dialogs" FILES ${Dialogs_SRCS})
 
-if (BUILD_QT5)
-    qt5_add_resources(Resource_SRCS Resources/Points.qrc)
-else()
-    qt4_add_resources(Resource_SRCS Resources/Points.qrc)
-endif()
+qt_add_resources(Resource_SRCS Resources/Points.qrc)
 
 SET(Resource_SRCS
     ${Resource_SRCS}
@@ -64,9 +54,14 @@ SET(PointsGuiIcon_SVG
     Resources/icons/PointsWorkbench.svg
 )
 
+if(FREECAD_USE_PCH)
+    add_definitions(-D_PreComp_)
+    GET_MSVC_PRECOMPILED_SOURCE("PreCompiled.cpp" PCH_SRCS ${PointsGui_SRCS})
+    ADD_MSVC_PRECOMPILED_HEADER(PointsGui PreCompiled.h PreCompiled.cpp PCH_SRCS)
+endif(FREECAD_USE_PCH)
+
 add_library(PointsGui SHARED ${PointsGui_SRCS} ${PointsGui_Scripts} ${PointsGuiIcon_SVG})
 target_link_libraries(PointsGui ${PointsGui_LIBS})
-
 
 fc_target_copy_resource_flat(PointsGui
     ${CMAKE_CURRENT_SOURCE_DIR}

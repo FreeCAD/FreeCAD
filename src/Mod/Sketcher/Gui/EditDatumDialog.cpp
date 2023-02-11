@@ -1,4 +1,5 @@
 /***************************************************************************
+ *   Copyright (c) 2011 Werner Mayer <wmayer[at]users.sourceforge.net>     *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -139,11 +140,13 @@ void EditDatumDialog::exec(bool atCursor)
 
         ui_ins_datum->cbDriving->setChecked(! Constr->isDriving);
 
-        connect(ui_ins_datum->cbDriving, SIGNAL(toggled(bool)), this, SLOT(drivingToggled(bool)));
-        connect(ui_ins_datum->labelEdit, SIGNAL(valueChanged(const Base::Quantity&)), this, SLOT(datumChanged()));
-        connect(ui_ins_datum->labelEdit, SIGNAL(showFormulaDialog(bool)), this, SLOT(formEditorOpened(bool)));
-        connect(&dlg, SIGNAL(accepted()), this, SLOT(accepted()));
-        connect(&dlg, SIGNAL(rejected()), this, SLOT(rejected()));
+        connect(ui_ins_datum->cbDriving, &QCheckBox::toggled, this, &EditDatumDialog::drivingToggled);
+        connect(ui_ins_datum->labelEdit, qOverload<const Base::Quantity&>(&Gui::QuantitySpinBox::valueChanged),
+                this, &EditDatumDialog::datumChanged);
+        connect(ui_ins_datum->labelEdit, &Gui::QuantitySpinBox::showFormulaDialog,
+                this, &EditDatumDialog::formEditorOpened);
+        connect(&dlg, &QDialog::accepted, this, &EditDatumDialog::accepted);
+        connect(&dlg, &QDialog::rejected, this, &EditDatumDialog::rejected);
 
         if (atCursor) {
             dlg.show(); // Need to show the dialog so geometry is computed

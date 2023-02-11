@@ -20,12 +20,13 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef MESH_CYLINDER_FIT_H
 #define MESH_CYLINDER_FIT_H
 
-#include "Approximation.h"
 #include <Eigen/Eigenvalues>
+
+#include "Approximation.h"
+
 
 // -------------------------------------------------------------------------------
 namespace MeshCoreFit {
@@ -33,7 +34,7 @@ namespace MeshCoreFit {
 using Matrix5x5 = Eigen::Matrix<double,5,5,Eigen::RowMajor>;
 
 /**
- * Best-fit cylinder for a given set of points. 
+ * Best-fit cylinder for a given set of points.
  * Doesn't expect points on any top or bottom end-planes, only points on the side surface
  */
 class MeshExport CylinderFit : public MeshCore::Approximation

@@ -20,12 +20,13 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef MESH_SMOOTHING_H
 #define MESH_SMOOTHING_H
 
 #include <vector>
+
 #include "Definitions.h"
+
 
 namespace MeshCore
 {
@@ -38,16 +39,16 @@ class MeshRefFacetToFacets;
 class MeshExport AbstractSmoothing
 {
 public:
-    enum Component { 
+    enum Component {
         Tangential,         ///< Smooth tangential direction
         Normal,             ///< Smooth normal direction
         TangentialNormal    ///< Smooth tangential and normal direction
     };
 
-    enum Continuity { 
-        C0, 
-        C1, 
-        C2 
+    enum Continuity {
+        C0,
+        C1,
+        C2
     };
 
     explicit AbstractSmoothing(MeshKernel&);
@@ -141,4 +142,4 @@ private:
 } // namespace MeshCore
 
 
-#endif  // MESH_SMOOTHING_H 
+#endif  // MESH_SMOOTHING_H

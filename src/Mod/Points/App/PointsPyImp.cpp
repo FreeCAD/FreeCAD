@@ -20,18 +20,21 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
+#ifndef _PreComp_
+# include <boost/math/special_functions/fpclassify.hpp>
+#endif
 
-#include "Mod/Points/App/Points.h"
 #include <Base/Builder3D.h>
-#include <Base/VectorPy.h>
+#include <Base/Converter.h>
 #include <Base/GeometryPyCXX.h>
-#include <boost/math/special_functions/fpclassify.hpp>
+#include <Base/VectorPy.h>
 
+#include "Points.h"
 // inclusion of the generated files (generated out of PointsPy.xml)
 #include "PointsPy.h"
 #include "PointsPy.cpp"
+
 
 using namespace Points;
 
@@ -123,13 +126,16 @@ PyObject* PointsPy::writeInventor(PyObject * args)
 
     std::stringstream result;
     Base::InventorBuilder builder(result);
-    builder.beginPoints();
+    builder.beginSeparator();
+    std::vector<Base::Vector3f> points;
     PointKernel* kernel = getPointKernelPtr();
-    for (Points::PointKernel::const_iterator it = kernel->begin(); it != kernel->end(); ++it)
-        builder.addPoint((float)it->x,(float)it->y,(float)it->z);
-    builder.endPoints();
-    builder.addPointSet();
-    builder.close();
+    points.reserve(kernel->size());
+    for (Points::PointKernel::const_iterator it = kernel->begin(); it != kernel->end(); ++it) {
+        points.push_back(Base::convertTo<Base::Vector3f>(*it));
+    }
+    builder.addNode(Base::Coordinate3Item{points});
+    builder.addNode(Base::PointSetItem{});
+    builder.endSeparator();
 
     return Py::new_reference_to(Py::String(result.str()));
 }

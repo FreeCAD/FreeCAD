@@ -20,33 +20,21 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <QString>
-# include <QSlider>
-
-# include <Standard_math.hxx>
 #endif
 
-#include "ui_TaskTetParameter.h"
-#include "TaskTetParameter.h"
-#include <Gui/Application.h>
-#include <Gui/Document.h>
 #include <Gui/BitmapFactory.h>
-#include <Gui/ViewProvider.h>
-#include <Gui/WaitCursor.h>
-#include <Base/Console.h>
-#include <Gui/View3DInventor.h>
-#include <Gui/View3DInventorViewer.h>
-#include <Gui/Utilities.h>
-#include <Mod/Fem/App/FemMeshShapeNetgenObject.h>
 #include <Mod/Fem/App/FemMesh.h>
+#include <Mod/Fem/App/FemMeshShapeNetgenObject.h>
+
+#include "TaskTetParameter.h"
+#include "ui_TaskTetParameter.h"
 
 
 using namespace FemGui;
 using namespace Gui;
-
 
 TaskTetParameter::TaskTetParameter(Fem::FemMeshShapeNetgenObject *pcObject,QWidget *parent)
     : TaskBox(Gui::BitmapFactory().pixmap("FEM_CreateNodesSet"),
@@ -71,13 +59,20 @@ TaskTetParameter::TaskTetParameter(Fem::FemMeshShapeNetgenObject *pcObject,QWidg
     ui->spinBox_SegsPerRadius->setValue(pcObject->NbSegsPerRadius.getValue());
     ui->checkBox_Optimize->setChecked(pcObject->Optimize.getValue());
 
-    QObject::connect(ui->doubleSpinBox_MaxSize,SIGNAL(valueChanged(double)),this,SLOT(maxSizeValueChanged(double)));
-    QObject::connect(ui->comboBox_Fineness,SIGNAL(activated  (int)),this,SLOT(SwitchMethod(int)));
-    QObject::connect(ui->checkBox_SecondOrder,SIGNAL(stateChanged  (int)),this,SLOT(setQuadric(int)));
-    QObject::connect(ui->doubleSpinBox_GrowthRate,SIGNAL(valueChanged(double)),this,SLOT(setGrowthRate(double)));
-    QObject::connect(ui->spinBox_SegsPerEdge,SIGNAL(valueChanged (int)),this,SLOT(setSegsPerEdge(int)));
-    QObject::connect(ui->spinBox_SegsPerRadius,SIGNAL(valueChanged (int)),this,SLOT(setSegsPerRadius(int)));
-    QObject::connect(ui->checkBox_Optimize,SIGNAL(stateChanged  (int)),this,SLOT(setOptimize(int)));
+    QObject::connect(ui->doubleSpinBox_MaxSize, qOverload<double>(&QDoubleSpinBox::valueChanged),
+                     this, &TaskTetParameter::maxSizeValueChanged);
+    QObject::connect(ui->comboBox_Fineness, qOverload<int>(&QComboBox::activated),
+                     this, &TaskTetParameter::SwitchMethod);
+    QObject::connect(ui->checkBox_SecondOrder, &QCheckBox::stateChanged,
+                     this, &TaskTetParameter::setQuadric);
+    QObject::connect(ui->doubleSpinBox_GrowthRate, qOverload<double>(&QDoubleSpinBox::valueChanged),
+                     this, &TaskTetParameter::setGrowthRate);
+    QObject::connect(ui->spinBox_SegsPerEdge, qOverload<int>(&QSpinBox::valueChanged),
+                     this, &TaskTetParameter::setSegsPerEdge);
+    QObject::connect(ui->spinBox_SegsPerRadius, qOverload<int>(&QSpinBox::valueChanged),
+                     this, &TaskTetParameter::setSegsPerRadius);
+    QObject::connect(ui->checkBox_Optimize, &QCheckBox::stateChanged,
+                     this, &TaskTetParameter::setOptimize);
 
     if(pcObject->FemMesh.getValue().getInfo().numNode == 0)
         touched = true;
@@ -94,11 +89,12 @@ TaskTetParameter::~TaskTetParameter()
 
 void TaskTetParameter::SwitchMethod(int Value)
 {
-    if(Value == 5){
+    if (Value == 5) {
         ui->doubleSpinBox_GrowthRate->setEnabled(true);
         ui->spinBox_SegsPerEdge->setEnabled(true);
         ui->spinBox_SegsPerRadius->setEnabled(true);
-    }else{
+    }
+    else {
         ui->doubleSpinBox_GrowthRate->setEnabled(false);
         ui->spinBox_SegsPerEdge->setEnabled(false);
         ui->spinBox_SegsPerRadius->setEnabled(false);
@@ -151,15 +147,10 @@ void TaskTetParameter::setInfo()
 {
     Fem::FemMesh::FemMeshInfo info = pcObject->FemMesh.getValue().getInfo();
     //Base::BoundBox3d bndBox = pcObject->FemMesh.getValue().getBoundBox();
-
-
     ui->lineEdit_InfoNodes      ->setText(QString::number(info.numNode));
     ui->lineEdit_InfoTriangle   ->setText(QString::number(info.numFaces));
     ui->lineEdit_InfoTet        ->setText(QString::number(info.numTetr));
 }
-
-
-
 
 
 #include "moc_TaskTetParameter.cpp"

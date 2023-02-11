@@ -20,56 +20,26 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
-
 #ifndef _PreComp_
 # include <sstream>
+# include <TopoDS_Shape.hxx>
 #endif
 
-
-#include <HLRBRep_Algo.hxx>
-#include <TopoDS_Shape.hxx>
-#include <HLRTopoBRep_OutLiner.hxx>
-//#include <BRepAPI_MakeOutLine.hxx>
-#include <HLRAlgo_Projector.hxx>
-#include <HLRBRep_ShapeBounds.hxx>
-#include <HLRBRep_HLRToShape.hxx>
-#include <gp_Ax2.hxx>
-#include <gp_Pnt.hxx>
-#include <gp_Dir.hxx>
-#include <Poly_Polygon3D.hxx>
-#include <Poly_Triangulation.hxx>
-#include <Poly_PolygonOnTriangulation.hxx>
-#include <TopoDS.hxx>
-#include <TopoDS_Face.hxx>
-#include <TopoDS_Edge.hxx>
-#include <TopoDS_Vertex.hxx>
-#include <TopExp.hxx>
-#include <TopExp_Explorer.hxx>
-#include <TopTools_IndexedMapOfShape.hxx>
-#include <TopTools_IndexedDataMapOfShapeListOfShape.hxx>
-#include <TopTools_ListOfShape.hxx>
-#include <TColgp_Array1OfPnt2d.hxx>
-#include <BRep_Tool.hxx>
-
-
-#include <Base/Exception.h>
-#include <Base/FileInfo.h>
 #include <Mod/Part/App/PartFeature.h>
 
 #include "FeatureViewPart.h"
 #include "ProjectionAlgos.h"
 
+
 using namespace Drawing;
 using namespace std;
-
 
 //===========================================================================
 // FeatureViewPart
 //===========================================================================
 
-App::PropertyFloatConstraint::Constraints FeatureViewPart::floatRange = {0.01,5.0,0.05};
+App::PropertyFloatConstraint::Constraints FeatureViewPart::floatRange = {0.01, 5.0, 0.05};
 
 PROPERTY_SOURCE(Drawing::FeatureViewPart, Drawing::FeatureView)
 

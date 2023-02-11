@@ -82,11 +82,11 @@
 #endif
 
 #include <qobject.h>
-#include <QRegExp>
 #include <QTextCharFormat>
 #include <QFileInfo>
 #include <QApplication>
 #include <QMessageBox>
+#include <QMetaMethod>
 #include <QAction>
 #include <QString>
 #include <QSlider>

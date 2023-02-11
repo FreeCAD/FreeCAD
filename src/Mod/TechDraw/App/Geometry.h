@@ -23,20 +23,18 @@
 #ifndef TECHDRAW_GEOMETRY_H
 #define TECHDRAW_GEOMETRY_H
 
-#include <Mod/TechDraw/TechDrawGlobal.h>
-
+#include <memory>
 #include <boost/uuid/uuid.hpp>
 
 #include <Base/Reader.h>
 #include <Base/Vector3D.h>
 #include <Base/Writer.h>
+#include <Mod/TechDraw/TechDrawGlobal.h>
 
 #include <TopoDS_Edge.hxx>
 #include <TopoDS_Face.hxx>
 #include <TopoDS_Vertex.hxx>
 #include <TopoDS_Wire.hxx>
-
-#include <memory>
 
 
 namespace TechDraw {
@@ -134,6 +132,8 @@ class TechDrawExport BaseGeom : public std::enable_shared_from_this<BaseGeom>
         //Uniqueness
         boost::uuids::uuid getTag() const;
         virtual std::string getTagAsString() const;
+
+        std::string geomTypeName();
 
 private:
         void intersectionLL(TechDraw::BaseGeomPtr geom1,
@@ -276,7 +276,7 @@ class TechDrawExport BSpline: public BaseGeom
         bool isLine();
         bool isCircle();
         TopoDS_Edge asCircle(bool& isArc);
-        void getCircleParms(bool& isCircle, double& radius, Base::Vector3d& center, bool& isArc);
+//        void getCircleParms(bool& isCircle, double& radius, Base::Vector3d& center, bool& isArc);
         bool intersectsArc(Base::Vector3d p1, Base::Vector3d p2);
         std::vector<BezierSegment> segments;
 };
@@ -392,6 +392,10 @@ class TechDrawExport GeometryUtils
         static TopoDS_Edge edgeFromGeneric(TechDraw::GenericPtr g);
         static TopoDS_Edge edgeFromCircle(TechDraw::CirclePtr c);
         static TopoDS_Edge edgeFromCircleArc(TechDraw::AOCPtr c);
+
+        static bool isCircle(TopoDS_Edge occEdge);
+        static bool getCircleParms(TopoDS_Edge occEdge, double& radius, Base::Vector3d& center, bool& isArc);
+        static TopoDS_Edge asCircle(TopoDS_Edge occEdge, bool& arc);
 };
 
 } //end namespace TechDraw

@@ -924,8 +924,8 @@ void CmdPartDesignMoveFeatureInTree::activated(int iMsg)
             for(auto dep : App::Document::getDependencyList({obj})) {
                 auto it = orders.find(dep);
                 if(it != orders.end() && it->second > i) {
-                    ss << feat->Label.getValue() << ", " << 
-                        obj->Label.getValue() << " -> " << 
+                    ss << feat->Label.getValue() << ", " <<
+                        obj->Label.getValue() << " -> " <<
                         it->first->Label.getValue();
                     if(!failed)
                         failed = true;
@@ -937,7 +937,7 @@ void CmdPartDesignMoveFeatureInTree::activated(int iMsg)
     }
     if(failed) {
         QMessageBox::critical (nullptr, QObject::tr( "Dependency violation" ),
-                QObject::tr( "Early feature must not depend on later feature.\n\n") 
+                QObject::tr( "Early feature must not depend on later feature.\n\n")
                     + QString::fromUtf8(ss.str().c_str()));
         abortCommand();
         return;

@@ -62,6 +62,7 @@ public:
     void setRotation(const Rotation& Rot) {_rot = Rot;}
 
     bool isIdentity() const;
+    bool isIdentity(double tol) const;
     void invert();
     Placement inverse() const;
     void move(const Vector3d& MovVec);

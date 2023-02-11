@@ -25,7 +25,7 @@ TaskGroup::TaskGroup(QWidget *parent, bool hasHeader)
     setScheme(ActionPanelScheme::defaultScheme());
 
     QVBoxLayout *vbl = new QVBoxLayout();
-    vbl->setMargin(4);
+    vbl->setContentsMargins(4, 4, 4, 4);
     vbl->setSpacing(0);
     setLayout(vbl);
 
@@ -63,7 +63,7 @@ bool TaskGroup::addWidget(QWidget *widget, bool addToLayout, bool addStretch)
 
   if (addStretch) {
     QHBoxLayout *hbl = new QHBoxLayout();
-    hbl->setMargin(0);
+    hbl->setContentsMargins(0, 0, 0, 0);
     hbl->setSpacing(0);
     hbl->addWidget(widget);
     hbl->addStretch();

@@ -54,7 +54,8 @@ DlgSettingsDocumentImp::DlgSettingsDocumentImp( QWidget* parent )
     ui->prefCountBackupFiles->setMaximum(INT_MAX);
     ui->prefCompression->setMinimum(Z_NO_COMPRESSION);
     ui->prefCompression->setMaximum(Z_BEST_COMPRESSION);
-    connect( ui->prefLicenseType, SIGNAL(currentIndexChanged(int)), this, SLOT(onLicenseTypeChanged(int)) );
+    connect(ui->prefLicenseType, qOverload<int>(&QComboBox::currentIndexChanged),
+            this, &DlgSettingsDocumentImp::onLicenseTypeChanged);
 }
 
 /**

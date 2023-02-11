@@ -21,7 +21,7 @@
 # ***************************************************************************
 
 import FreeCAD
-import PathScripts.PathPropertyBag as PathPropertyBag
+import Path.Base.PropertyBag as PathPropertyBag
 import PathTests.PathTestUtils as PathTestUtils
 
 

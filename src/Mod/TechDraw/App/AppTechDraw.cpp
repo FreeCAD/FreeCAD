@@ -21,47 +21,47 @@
 #include "PreCompiled.h"
 
 #include <Base/Console.h>
-#include <Base/PyObjectBase.h>
 #include <Base/Interpreter.h>
+#include <Base/PyObjectBase.h>
 
-#include "DrawPage.h"
-#include "DrawSVGTemplate.h"
-#include "DrawParametricTemplate.h"
-#include "DrawView.h"
-#include "DrawViewCollection.h"
-#include "DrawViewPart.h"
-#include "DrawViewSection.h"
-#include "DrawViewAnnotation.h"
-#include "DrawViewDimension.h"
-#include "DrawViewDimExtent.h"
-#include "LandmarkDimension.h"
-#include "DrawProjGroupItem.h"
-#include "DrawProjGroup.h"
-#include "DrawViewSymbol.h"
-#include "DrawViewClip.h"
-#include "DrawHatch.h"
+#include "CosmeticExtension.h"
+#include "Cosmetic.h"
+#include "DrawComplexSection.h"
 #include "DrawGeomHatch.h"
-#include "DrawViewDraft.h"
-#include "DrawViewArch.h"
-#include "DrawViewSpreadsheet.h"
-#include "DrawViewMulti.h"
-#include "DrawViewImage.h"
-#include "DrawViewDetail.h"
-#include "DrawViewBalloon.h"
+#include "DrawHatch.h"
 #include "DrawLeaderLine.h"
+#include "DrawPage.h"
+#include "DrawParametricTemplate.h"
+#include "DrawProjGroup.h"
+#include "DrawProjGroupItem.h"
 #include "DrawRichAnno.h"
+#include "DrawSVGTemplate.h"
 #include "DrawTile.h"
 #include "DrawTileWeld.h"
+#include "DrawViewAnnotation.h"
+#include "DrawViewArch.h"
+#include "DrawViewBalloon.h"
+#include "DrawViewClip.h"
+#include "DrawViewCollection.h"
+#include "DrawViewDetail.h"
+#include "DrawViewDimension.h"
+#include "DrawViewDimExtent.h"
+#include "DrawViewDraft.h"
+#include "DrawView.h"
+#include "DrawViewImage.h"
+#include "DrawViewPart.h"
+#include "DrawViewSection.h"
+#include "DrawViewSpreadsheet.h"
+#include "DrawViewSymbol.h"
 #include "DrawWeldSymbol.h"
-#include "Cosmetic.h"
-#include "PropertyGeomFormatList.h"
+#include "FeatureProjection.h"
+#include "LandmarkDimension.h"
 #include "PropertyCenterLineList.h"
 #include "PropertyCosmeticEdgeList.h"
 #include "PropertyCosmeticVertexList.h"
+#include "PropertyGeomFormatList.h"
 
-#include "CosmeticExtension.h"
 
-#include "FeatureProjection.h"
 
 namespace TechDraw {
     extern PyObject* initModule();
@@ -91,7 +91,7 @@ PyMOD_INIT_FUNC(TechDraw)
     TechDraw::DrawViewSpreadsheet ::init();
 
     TechDraw::DrawViewSection     ::init();
-    TechDraw::DrawViewMulti       ::init();
+    TechDraw::DrawComplexSection     ::init();
     TechDraw::DrawViewDimension   ::init();
     TechDraw::DrawViewDimExtent   ::init();
     TechDraw::LandmarkDimension     ::init();
@@ -135,7 +135,8 @@ PyMOD_INIT_FUNC(TechDraw)
     TechDraw::DrawPagePython      ::init();
     TechDraw::DrawViewPython      ::init();
     TechDraw::DrawViewPartPython  ::init();
-    TechDraw::DrawViewMultiPython ::init();
+    TechDraw::DrawViewSectionPython::init();
+    TechDraw::DrawComplexSectionPython ::init();
     TechDraw::DrawTemplatePython  ::init();
     TechDraw::DrawViewSymbolPython::init();
     TechDraw::DrawLeaderLinePython::init();

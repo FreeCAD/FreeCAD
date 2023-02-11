@@ -20,7 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # ifdef FC_OS_LINUX
@@ -28,21 +27,15 @@
 # endif
 #endif
 
+#include <Base/Console.h>
+#include <Base/Builder3D.h>
+#include <Mod/Mesh/App/Core/Evaluation.h>
+#include <Mod/Mesh/App/Core/Iterator.h>
+#include <Mod/Mesh/App/Core/MeshKernel.h>
+#include <Mod/Mesh/App/Core/TopoAlgorithm.h>
 
 #include "MeshAlgos.h"
 
-#include <Mod/Mesh/App/Mesh.h>
-#include <Mod/Mesh/App/Core/MeshIO.h>
-#include <Mod/Mesh/App/Core/MeshKernel.h>
-#include <Mod/Mesh/App/Core/Iterator.h>
-#include <Mod/Mesh/App/Core/Algorithm.h>
-#include <Mod/Mesh/App/Core/TopoAlgorithm.h>
-#include <Mod/Mesh/App/Core/Evaluation.h>
-
-#include <Base/Exception.h>
-#include <Base/FileInfo.h>
-#include <Base/Console.h>
-#include <Base/Builder3D.h>
 
 using namespace MeshPart;
 using namespace MeshCore;
@@ -64,7 +57,7 @@ void MeshAlgos::offset(MeshCore::MeshKernel* Mesh, float fSize)
 
 void MeshAlgos::offsetSpecial2(MeshCore::MeshKernel* Mesh, float fSize)
 {
-    Base::Builder3D builder;  
+    Base::Builder3D builder;
     std::vector<Base::Vector3f> PointNormals= Mesh->CalcVertexNormals();
     std::vector<Base::Vector3f> FaceNormals;
     std::set<MeshCore::FacetIndex> fliped;
@@ -76,8 +69,10 @@ void MeshAlgos::offsetSpecial2(MeshCore::MeshKernel* Mesh, float fSize)
     unsigned int i = 0;
 
     // go through all the Vertex normals
-    for(std::vector<Base::Vector3f>::iterator It= PointNormals.begin();It != PointNormals.end();++It,i++){
-        builder.addSingleLine(Mesh->GetPoint(i),Mesh->GetPoint(i)+It->Normalize() * fSize);
+    for(std::vector<Base::Vector3f>::iterator It= PointNormals.begin();It != PointNormals.end();++It,i++) {
+        Base::Line3f line{Mesh->GetPoint(i), Mesh->GetPoint(i) + It->Normalize() * fSize};
+        Base::DrawStyle drawStyle;
+        builder.addNode(Base::LineItem{line, drawStyle});
         // and move each mesh point in the normal direction
         Mesh->MovePoint(i,It->Normalize() * fSize);
     }
@@ -92,8 +87,11 @@ void MeshAlgos::offsetSpecial2(MeshCore::MeshKernel* Mesh, float fSize)
                 continue;
             // calculate the angle between them
             float angle = acos((FaceNormals[i] * it->GetNormal()) / (it->GetNormal().Length() * FaceNormals[i].Length()));
-            if(angle > 1.6){
-                builder.addSinglePoint(it->GetGravityPoint(),4,1,0,0);
+            if (angle > 1.6){
+                Base::DrawStyle drawStyle;
+                drawStyle.pointSize = 4.0F;
+                Base::PointItem item{it->GetGravityPoint(), drawStyle, Base::ColorRGB{1.0F, 0.0F, 0.0F}};
+                builder.addNode(item);
                 fliped.insert(it.Position());
             }
         }
@@ -154,9 +152,9 @@ void MeshAlgos::coarsen(MeshCore::MeshKernel* /*Mesh*/, float /*f*/)
   guint stop_number=100000;
   gdouble fold = 3.1415 / 180.;
 
-  gts_surface_coarsen (surface, 
-                       NULL, NULL, 
-                       NULL, NULL, 
+  gts_surface_coarsen (surface,
+                       NULL, NULL,
+                       NULL, NULL,
                        (GtsStopFunc)gts_coarsen_stop_number,
                        &stop_number, fold);
 
@@ -269,15 +267,15 @@ MeshCore::MeshKernel* MeshAlgos::boolean(MeshCore::MeshKernel* pMesh1,
     gts_surface_inter_boolean (si, s3, GTS_1_OUT_2);
   }
 
-  // check that the resulting surface is not self-intersecting 
+  // check that the resulting surface is not self-intersecting
   if (check_self_intersection) {
     GtsSurface * self_intersects;
 
     self_intersects = gts_surface_is_self_intersecting (s3);
     if (self_intersects != NULL) {
 //      if (verbose)
-//	      gts_surface_print_stats (self_intersects, stderr);
- //     gts_surface_write (self_intersects, stdout);
+//        gts_surface_print_stats (self_intersects, stderr);
+//     gts_surface_write (self_intersects, stdout);
       gts_object_destroy (GTS_OBJECT (self_intersects));
       gts_object_destroy (GTS_OBJECT (s1));
       gts_object_destroy (GTS_OBJECT (s2));
@@ -288,22 +286,22 @@ MeshCore::MeshKernel* MeshAlgos::boolean(MeshCore::MeshKernel* pMesh1,
       throw std::runtime_error("the resulting surface is self-intersecting\n");
     }
   }
-  // display summary information about the resulting surface 
+  // display summary information about the resulting surface
 //  if (verbose)
 //    gts_surface_print_stats (s3, stderr);
-  // write resulting surface to standard output 
+  // write resulting surface to standard output
 
   // get the standard mesh
   fillMeshFromGTSSurface(pResult,s3);
 
 
-  // destroy surfaces 
+  // destroy surfaces
   gts_object_destroy (GTS_OBJECT (s1));
   gts_object_destroy (GTS_OBJECT (s2));
 //  gts_object_destroy (GTS_OBJECT (s3));
 //  gts_object_destroy (GTS_OBJECT (si));
 
-  // destroy bounding box trees (including bounding boxes) 
+  // destroy bounding box trees (including bounding boxes)
 //  gts_bb_tree_destroy (tree1, true);
 //  gts_bb_tree_destroy (tree2, true);
 
@@ -319,7 +317,7 @@ MeshCore::MeshKernel* MeshAlgos::boolean(MeshCore::MeshKernel* pMesh1,
 static GtsEdge * new_edge (GtsVertex * v1, GtsVertex * v2)
 {
   GtsSegment * s = gts_vertices_are_connected (v1, v2);
-  if( s == NULL ) 
+  if( s == NULL )
     return gts_edge_new (gts_edge_class (), v1, v2);
   else
     return GTS_EDGE (s);
@@ -350,10 +348,10 @@ GtsSurface* MeshAlgos::createGTSSurface(MeshCore::MeshKernel* Mesh)
   {
     // getting the three points of the facet
     Mesh->GetFacetPoints(pFIter,p1,p2,p3);
-    
+
     // creating the edges and add the face to the surface
-    gts_surface_add_face (Surf, 
-  	    gts_face_new (Surf->face_class,
+    gts_surface_add_face (Surf,
+          gts_face_new (Surf->face_class,
           new_edge (aVertex[p1],aVertex[p2]),
           new_edge (aVertex[p2],aVertex[p3]),
           new_edge (aVertex[p3],aVertex[p1])));
@@ -398,7 +396,7 @@ void MeshAlgos::fillMeshFromGTSSurface(MeshCore::MeshKernel* pMesh, GtsSurface* 
 //  gts_surface_foreach_vertex(pSurface,(GtsFunc) onVertices,&MeshK);
   gts_surface_foreach_face (pSurface, (GtsFunc) onFaces,&VAry);
 
-  // destroy surfaces 
+  // destroy surfaces
   gts_object_destroy (GTS_OBJECT (pSurface));
 
   // put the facets the simple way in the mesh, totp is recalculated!
@@ -428,9 +426,9 @@ void MeshAlgos::cutByShape(const TopoDS_Shape &aShape,const MeshCore::MeshKernel
   CurveProjectorWithToolMesh Project(aShape,*pMesh,*pToolMesh);
 
   //IntersectionLine Lines;
-//  MeshWithProperty *ResultMesh = new MeshWithProperty(); 
+//  MeshWithProperty *ResultMesh = new MeshWithProperty();
 
-  
+
  // boolean(pMesh,ToolMesh,ResultMesh,1);
 
 
@@ -460,7 +458,7 @@ class _VertexCompare
 {
   public:
     bool operator () (const TopoDS_Vertex &rclV1, const TopoDS_Vertex &rclV2) const
-    { 
+    {
       if (rclV1.IsSame(rclV2) == Standard_True)
         return false;
 
@@ -502,19 +500,19 @@ void MeshAlgos::LoftOnCurve(MeshCore::MeshKernel &ResultMesh, const TopoDS_Shape
     GeomLProp_CLProps prop(BRep_Tool::Curve(Edge,fBegin,fEnd),1,0.0000000001);
     int res = int((fEnd - fBegin)/MaxSize);
     // do at least 2 segments
-    if(res < 2) 
+    if(res < 2)
       res = 2;
     gp_Dir Tangent;
 
     std::vector<Base::Vector3f> prePoint(poly.size());
     std::vector<Base::Vector3f> actPoint(poly.size());
-    
+
     // checking if there is already a end to connect
     if(ConnectMap.find(V1) != ConnectMap.end() ){
       bBegin = true;
       prePoint = ConnectMap[V1];
     }
-    
+
     if(ConnectMap.find(V2) != ConnectMap.end() )
       bEnd = true;
 
@@ -550,7 +548,7 @@ void MeshAlgos::LoftOnCurve(MeshCore::MeshKernel &ResultMesh, const TopoDS_Shape
         ConnectMap[V2] = actPoint;
 
       if(i==1 && bBegin)
-        // using the end of an other edge as start 
+        // using the end of an other edge as start
         prePoint = ConnectMap[V1];
 
       if(i==0 && !bBegin)
@@ -561,7 +559,7 @@ void MeshAlgos::LoftOnCurve(MeshCore::MeshKernel &ResultMesh, const TopoDS_Shape
       {
         for(l=0;l<actPoint.size();l++)
         {
-          if(l) // not first point in row 
+          if(l) // not first point in row
           {
             if(i == res-1 && bEnd) // if last row and a end to connect
               actPoint = ConnectMap[V2];

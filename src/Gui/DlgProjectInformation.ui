@@ -297,7 +297,7 @@
       <item row="11" column="0">
        <widget class="QLabel" name="textLabelComment">
         <property name="text">
-         <string>Commen&amp;t:</string>
+         <string>&amp;Comment:</string>
         </property>
         <property name="alignment">
          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>

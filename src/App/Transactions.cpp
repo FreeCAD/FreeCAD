@@ -194,9 +194,12 @@ void Transaction::addObjectNew(TransactionalObject *Obj)
     auto pos = index.find(Obj);
     if (pos != index.end()) {
         if (pos->second->status == TransactionObject::Del) {
-            delete pos->second;
-            delete pos->first;
+            // first remove the item from the container before deleting it
+            auto second = pos->second;
+            auto first = pos->first;
             index.erase(pos);
+            delete second;
+            delete first;
         }
         else {
             pos->second->status = TransactionObject::New;

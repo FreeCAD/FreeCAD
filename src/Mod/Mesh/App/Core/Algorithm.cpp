@@ -20,12 +20,14 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
 # include <algorithm>
 #endif
+
+#include <Base/Console.h>
+#include <Base/Sequencer.h>
 
 #include "Algorithm.h"
 #include "Approximation.h"
@@ -34,8 +36,6 @@
 #include "Grid.h"
 #include "Triangulation.h"
 
-#include <Base/Console.h>
-#include <Base/Sequencer.h>
 
 using namespace MeshCore;
 using Base::BoundBox3f;

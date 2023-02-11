@@ -22,7 +22,7 @@
 
 import FreeCAD
 import Part
-import PathScripts.PathGeom as PathGeom
+import Path
 import math
 import unittest
 
@@ -73,11 +73,11 @@ class PathTestBase(unittest.TestCase):
         self.assertCoincide(edge.valueAt(edge.FirstParameter), pt1)
         self.assertCoincide(edge.valueAt(edge.LastParameter), pt2)
         ptm = edge.valueAt((edge.LastParameter + edge.FirstParameter) / 2)
-        side = PathGeom.Side.of(pt2 - pt1, ptm - pt1)
+        side = Path.Geom.Side.of(pt2 - pt1, ptm - pt1)
         if "CW" == direction:
-            self.assertEqual(side, PathGeom.Side.Left)
+            self.assertEqual(side, Path.Geom.Side.Left)
         else:
-            self.assertEqual(side, PathGeom.Side.Right)
+            self.assertEqual(side, Path.Geom.Side.Right)
 
     def assertCircle(self, edge, pt, r):
         """Verivy that edge is a circle at given location."""
@@ -162,7 +162,7 @@ class PathTestBase(unittest.TestCase):
                     e.FirstParameter + (e.LastParameter - e.FirstParameter) * fraction
                 )
 
-            if PathGeom.pointsCoincide(e1.Vertexes[0].Point, e2.Vertexes[0].Point):
+            if Path.Geom.pointsCoincide(e1.Vertexes[0].Point, e2.Vertexes[0].Point):
                 self.assertCoincide(e1.Vertexes[-1].Point, e2.Vertexes[-1].Point)
                 self.assertCoincide(valueAt(e1, 0.10), valueAt(e2, 0.10))
                 self.assertCoincide(valueAt(e1, 0.20), valueAt(e2, 0.20))

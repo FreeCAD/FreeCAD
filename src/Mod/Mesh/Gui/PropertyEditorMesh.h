@@ -25,8 +25,9 @@
 
 #include <Gui/propertyeditor/PropertyItem.h>
 #ifndef MESH_GLOBAL_H
-#include <Mod/Mesh/MeshGlobal.h>
+# include <Mod/Mesh/MeshGlobal.h>
 #endif
+
 
 namespace MeshGui {
 

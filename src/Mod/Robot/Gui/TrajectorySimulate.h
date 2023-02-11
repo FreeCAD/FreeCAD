@@ -20,19 +20,15 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef GUI_TASKVIEW_TrajectorySimulate_H
 #define GUI_TASKVIEW_TrajectorySimulate_H
 
-
-#include <QDialog>
 #include <memory>
+#include <QDialog>
 
 #include <Mod/Robot/App/RobotObject.h>
-#include <Mod/Robot/App/Robot6Axis.h>
-#include <Mod/Robot/App/TrajectoryObject.h>
-#include <Mod/Robot/App/Trajectory.h>
 #include <Mod/Robot/App/Simulation.h>
+#include <Mod/Robot/App/TrajectoryObject.h>
 
 #include "ViewProviderRobotObject.h"
 

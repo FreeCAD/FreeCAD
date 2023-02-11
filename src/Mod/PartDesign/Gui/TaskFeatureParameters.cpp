@@ -97,7 +97,7 @@ bool TaskDlgFeatureParameters::accept() {
             TaskFeatureParameters *param = qobject_cast<TaskFeatureParameters *> (wgt);
             if(!param)
                 continue;
-            
+
             param->saveHistory ();
             param->apply ();
         }

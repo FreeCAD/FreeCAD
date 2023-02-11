@@ -27,7 +27,11 @@ import FreeCAD
 import Arch
 import ArchIFC
 
+if FreeCAD.GuiUp:
+    import FreeCADGui as Gui
+
 from draftutils.messages import _msg, _wrn
+
 
 PREDEFINED_RGB = {"black": (0, 0, 0),
                   "red": (1.0, 0, 0),
@@ -41,16 +45,6 @@ PREDEFINED_RGB = {"black": (0, 0, 0),
 
 DEBUG_prod_repr = False
 DEBUG_prod_colors = False
-
-
-def decode(filename, utf=False):
-    """Turn unicode into strings, only for Python 2."""
-    if six.PY2 and isinstance(filename, six.text_type):
-        # This is a workaround since ifcopenshell 0.6 currently
-        # can't handle unicode filenames
-        encoding = "utf8" if utf else sys.getfilesystemencoding()
-        filename = filename.encode(encoding)
-    return filename
 
 
 def dd2dms(dd):
@@ -78,6 +72,49 @@ def dms2dd(degrees, minutes, seconds, milliseconds=0):
     """
     dd = float(degrees) + float(minutes)/60 + float(seconds)/3600
     return dd
+
+
+def getPreferences():
+    """Retrieve the IFC preferences available in import and export.
+
+    MERGE_MODE_ARCH:
+        0 = parametric arch objects
+        1 = non-parametric arch objects
+        2 = Part shapes
+        3 = One compound per storey
+    """
+    p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch")
+
+    if FreeCAD.GuiUp and p.GetBool("ifcShowDialog", False):
+        Gui.showPreferences("Import-Export", 0)
+
+    preferences = {
+        'DEBUG': p.GetBool("ifcDebug", False),
+        'PREFIX_NUMBERS': p.GetBool("ifcPrefixNumbers", False),
+        'SKIP': p.GetString("ifcSkip", "").split(","),
+        'SEPARATE_OPENINGS': p.GetBool("ifcSeparateOpenings", False),
+        'ROOT_ELEMENT': p.GetString("ifcRootElement", "IfcProduct"),
+        'GET_EXTRUSIONS': p.GetBool("ifcGetExtrusions", False),
+        'MERGE_MATERIALS': p.GetBool("ifcMergeMaterials", False),
+        'MERGE_MODE_ARCH': p.GetInt("ifcImportModeArch", 0),
+        'MERGE_MODE_STRUCT': p.GetInt("ifcImportModeStruct", 1),
+        'CREATE_CLONES': p.GetBool("ifcCreateClones", True),
+        'IMPORT_PROPERTIES': p.GetBool("ifcImportProperties", False),
+        'SPLIT_LAYERS': p.GetBool("ifcSplitLayers", False),  # wall layer, not layer for visual props
+        'FITVIEW_ONIMPORT': p.GetBool("ifcFitViewOnImport", False),
+        'ALLOW_INVALID': p.GetBool("ifcAllowInvalid", False),
+        'REPLACE_PROJECT': p.GetBool("ifcReplaceProject", False),
+        'MULTICORE': p.GetInt("ifcMulticore", 0),
+        'IMPORT_LAYER': p.GetBool("ifcImportLayer", True)
+    }
+
+    if preferences['MERGE_MODE_ARCH'] > 0:
+        preferences['SEPARATE_OPENINGS'] = False
+        preferences['GET_EXTRUSIONS'] = False
+    if not preferences['SEPARATE_OPENINGS']:
+        preferences['SKIP'].append("IfcOpeningElement")
+
+    return preferences
 
 
 class ProjectImporter:
@@ -587,20 +624,14 @@ def getIfcProperties(ifcfile, pid, psets, d):
     for pset in psets.keys():
         # print("reading pset: ",pset)
         psetname = ifcfile[pset].Name
-        if six.PY2:
-            psetname = psetname.encode("utf8")
         for prop in psets[pset]:
             e = ifcfile[prop]
             pname = e.Name
-            if six.PY2:
-                pname = pname.encode("utf8")
             if e.is_a("IfcPropertySingleValue"):
                 if e.NominalValue:
                     ptype = e.NominalValue.is_a()
                     if ptype in ['IfcLabel','IfcText','IfcIdentifier','IfcDescriptiveMeasure']:
                         pvalue = e.NominalValue.wrappedValue
-                        if six.PY2:
-                            pvalue = pvalue.encode("utf8")
                     else:
                         pvalue = str(e.NominalValue.wrappedValue)
                     if hasattr(e.NominalValue,'Unit'):
@@ -1058,8 +1089,6 @@ def createAnnotation(annotation,doc,ifcscale,preferences):
             grid_placement = None
             if annotation.Name:
                 name = annotation.Name
-                if six.PY2:
-                    name = name.encode("utf8")
             if annotation.ObjectPlacement:
                 # https://forum.freecadweb.org/viewtopic.php?f=39&t=40027
                 grid_placement = getPlacement(annotation.ObjectPlacement,scaling=1)
@@ -1073,8 +1102,6 @@ def createAnnotation(annotation,doc,ifcscale,preferences):
         name = "Annotation"
         if annotation.Name:
             name = annotation.Name
-            if six.PY2:
-                name = name.encode("utf8")
         if "annotation" not in name.lower():
             name = "Annotation " + name
         if preferences['PREFIX_NUMBERS']: name = "ID" + str(aid) + " " + name

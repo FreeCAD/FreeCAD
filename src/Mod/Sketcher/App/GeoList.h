@@ -20,15 +20,15 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef SKETCHER_GeoList_H
 #define SKETCHER_GeoList_H
 
-#include <vector>
 #include <memory>
+#include <vector>
 
-#include <Mod/Sketcher/App/GeoEnum.h>
-#include <Mod/Sketcher/App/GeometryFacade.h>
+#include "GeoEnum.h"
+#include "GeometryFacade.h"
+
 
 namespace Base {
     template< typename T >

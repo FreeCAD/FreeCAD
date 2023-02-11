@@ -38,14 +38,14 @@ public:
     ViewProviderAddSub();
     /// destructor
     ~ViewProviderAddSub() override;
-    
+
     void attach(App::DocumentObject*) override;
     void updateData(const App::Property*) override;
-    
-protected: 
+
+protected:
     void updateAddSubShapeIndicator();
     void setPreviewDisplayMode(bool);
-    
+
     SoSeparator*                previewShape;
     PartGui::SoBrepFaceSet*     previewFaceSet;
     SoCoordinate3*              previewCoords;

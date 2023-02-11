@@ -54,7 +54,7 @@ z : float
 w : float\n
 Rotation(dir1, dir2, dir3, seq)
 Define from three vectors that define rotated axes directions plus an optional
-3-characher string of capital letters 'X', 'Y', 'Z' that sets the order of 
+3-characher string of capital letters 'X', 'Y', 'Z' that sets the order of
 importance of the axes (e.g., 'ZXY' means z direction is followed strictly,
 x is used but corrected if necessary, y is ignored).
 dir1 : Base.Vector
@@ -160,8 +160,10 @@ Returns True if all values in the quaternion representation are zero.</UserDocu>
         </Methode>
         <Methode Name="isIdentity" Const="true">
             <Documentation>
-                <UserDocu>isIdentity() -> bool\n
-Returns True if the rotation equals the 4D identity matrix.</UserDocu>
+                <UserDocu>isIdentity(tol=0) -> bool\n
+Returns True if the rotation equals the 4D identity matrix.
+tol : float\n    Tolerance used to check for identity.
+    If tol is negative or zero, no tolerance is used.</UserDocu>
             </Documentation>
         </Methode>
         <Attribute Name="Q" ReadOnly="false">

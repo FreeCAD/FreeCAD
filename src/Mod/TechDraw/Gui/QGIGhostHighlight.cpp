@@ -22,28 +22,15 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-#include <QGraphicsSceneEvent>
-#include <QPainter>
-#include <QPainterPathStroker>
-#include <QStyleOptionGraphicsItem>
-#include <QPen>
-#include <QColor>
+# include <QGraphicsSceneEvent>
 #endif
 
-#include <App/Application.h>
-#include <App/Material.h>
-#include <Base/Console.h>
-#include <Base/Parameter.h>
-
 #include <Mod/TechDraw/App/DrawUtil.h>
-//#include <Mod/TechDraw/App/Preferences.h>
 
-#include <qmath.h>
-#include "Rez.h"
-#include "DrawGuiUtil.h"
-#include "PreferencesGui.h"
-#include "QGIView.h"
 #include "QGIGhostHighlight.h"
+#include "PreferencesGui.h"
+#include "Rez.h"
+
 
 using namespace TechDrawGui;
 using namespace TechDraw;

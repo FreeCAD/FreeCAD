@@ -28,6 +28,7 @@
 #include <vector>
 
 #include <QDialogButtonBox>
+#include <QPointer>
 #include <FCGlobal.h>
 
 
@@ -39,6 +40,9 @@ namespace Gui {
 namespace TaskView {
 
 class TaskContent;
+class TaskDialogAttorney;
+class TaskDialogPy;
+class TaskView;
 
 /// Father class of content with header and Icon
 class GuiExport TaskDialog : public QObject
@@ -133,6 +137,7 @@ Q_SIGNALS:
     void aboutToBeDestroyed();
     
 protected:
+    QPointer<QDialogButtonBox> buttonBox;
     /// List of TaskBoxes of that dialog
     std::vector<QWidget*> Content;
     ButtonPosition pos;
@@ -141,6 +146,21 @@ private:
     std::string documentName;
     bool escapeButton;
     bool autoCloseTransaction;
+
+    friend class TaskDialogAttorney;
+};
+
+class TaskDialogAttorney {
+private:
+    static void setButtonBox(TaskDialog* dlg, QDialogButtonBox* box) {
+        dlg->buttonBox = box;
+    }
+    static QDialogButtonBox* getButtonBox(TaskDialog* dlg) {
+        return dlg->buttonBox;
+    }
+
+    friend class TaskDialogPy;
+    friend class TaskView;
 };
 
 } //namespace TaskView

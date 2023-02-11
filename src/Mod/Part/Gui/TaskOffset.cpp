@@ -20,32 +20,24 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
 # include <QMessageBox>
-# include <QTextStream>
 #endif
 
-#include "ui_TaskOffset.h"
-#include "TaskOffset.h"
-
+#include <App/Application.h>
+#include <App/Document.h>
+#include <App/DocumentObject.h>
 #include <Gui/Application.h>
 #include <Gui/BitmapFactory.h>
 #include <Gui/CommandT.h>
 #include <Gui/Document.h>
-#include <Gui/Selection.h>
-#include <Gui/SelectionFilter.h>
 #include <Gui/ViewProvider.h>
-
-#include <Base/Console.h>
-#include <Base/Interpreter.h>
-#include <Base/UnitsApi.h>
-#include <App/Application.h>
-#include <App/Document.h>
-#include <App/DocumentObject.h>
 #include <Mod/Part/App/FeatureOffset.h>
+
+#include "TaskOffset.h"
+#include "ui_TaskOffset.h"
 
 
 using namespace PartGui;

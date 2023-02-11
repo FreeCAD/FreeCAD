@@ -69,17 +69,18 @@ TaskCSysDragger::~TaskCSysDragger()
 
 void TaskCSysDragger::setupGui()
 {
-  Gui::TaskView::TaskBox *incrementsBox = new Gui::TaskView::TaskBox(
+    auto incrementsBox = new Gui::TaskView::TaskBox(
       Gui::BitmapFactory().pixmap("button_valid"),
       tr("Increments"), true, nullptr);
 
-  QGridLayout *gridLayout = new QGridLayout();
+    auto gridLayout = new QGridLayout();
   gridLayout->setColumnStretch(1, 1);
 
-  QLabel *tLabel = new QLabel(tr("Translation Increment:"), incrementsBox);
+  auto tLabel = new QLabel(tr("Translation Increment:"), incrementsBox);
   gridLayout->addWidget(tLabel, 0, 0, Qt::AlignRight);
 
-  int spinBoxWidth = QApplication::fontMetrics().averageCharWidth() * 20;
+  QFontMetrics metrics(QApplication::font());
+  int spinBoxWidth = metrics.averageCharWidth() * 20;
   tSpinBox = new QuantitySpinBox(incrementsBox);
   tSpinBox->setMinimum(0.0);
   tSpinBox->setMaximum(std::numeric_limits<double>::max());
@@ -87,7 +88,7 @@ void TaskCSysDragger::setupGui()
   tSpinBox->setMinimumWidth(spinBoxWidth);
   gridLayout->addWidget(tSpinBox, 0, 1, Qt::AlignLeft);
 
-  QLabel *rLabel = new QLabel(tr("Rotation Increment:"), incrementsBox);
+  auto rLabel = new QLabel(tr("Rotation Increment:"), incrementsBox);
   gridLayout->addWidget(rLabel, 1, 0, Qt::AlignRight);
 
   rSpinBox = new QuantitySpinBox(incrementsBox);
@@ -100,8 +101,8 @@ void TaskCSysDragger::setupGui()
   incrementsBox->groupLayout()->addLayout(gridLayout);
   Content.push_back(incrementsBox);
 
-  connect(tSpinBox, SIGNAL(valueChanged(double)), this, SLOT(onTIncrementSlot(double)));
-  connect(rSpinBox, SIGNAL(valueChanged(double)), this, SLOT(onRIncrementSlot(double)));
+  connect(tSpinBox, qOverload<double>(&QuantitySpinBox::valueChanged), this, &TaskCSysDragger::onTIncrementSlot);
+  connect(rSpinBox, qOverload<double>(&QuantitySpinBox::valueChanged), this, &TaskCSysDragger::onRIncrementSlot);
 }
 
 void TaskCSysDragger::onTIncrementSlot(double freshValue)

@@ -17,8 +17,8 @@
 #include <Gui/Language/Translator.h>
 
 #include "ImageView.h"
-#include "Workbench.h"
 #include "ViewProviderImagePlane.h"
+#include "Workbench.h"
 
 
 // use a different name to CreateCommand()

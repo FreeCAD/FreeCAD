@@ -20,18 +20,15 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef PATH_FeaturePath_H
 #define PATH_FeaturePath_H
 
 #include <App/DocumentObject.h>
 #include <App/GeoFeature.h>
-#include <App/PropertyFile.h>
-#include <App/PropertyGeo.h>
 #include <App/FeaturePython.h>
 
-#include "Path.h"
 #include "PropertyPath.h"
+
 
 namespace Path
 {

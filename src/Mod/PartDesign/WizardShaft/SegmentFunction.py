@@ -26,7 +26,7 @@ import numpy as np
 
 class SegmentFunctionSegment:
     "One segment of a segment function"
-    
+
     def __init__(self, st, var, coeff, exp):
         self.start = st
         self.variable = var
@@ -37,7 +37,7 @@ class SegmentFunctionSegment:
         "Return true if the start of this segment is xval"
         #FIXME: 1E-9 is arbitrary here. But since units are in meters, 1E-9 is a nanometer...
         return abs(self.start - xval) < 1E-9
-        
+
     def isZero(self):
         #FIXME: 1E-9 is arbitrary here. But since units are in meters, 1E-9 is a nanometer...
         return abs(self.coefficient) < 1E-5
@@ -50,14 +50,14 @@ class SegmentFunctionSegment:
 
     def clone(self):
         return SegmentFunctionSegment(self.start, self.variable, self.coefficient, self.exponent)
-        
+
     def negate(self):
         self.coefficient *= -1
         return self
-        
+
     def negated(self):
         return SegmentFunctionSegment(self.start, self.variable, self.coefficient * -1.0, self.exponent)
-        
+
     def __mul__(self,  value):
         return SegmentFunctionSegment(self.start, self.variable, self.coefficient * value, self.exponent)
 
@@ -76,7 +76,7 @@ class SegmentFunction:
         self.variable = "x"
         self.segments = []
         self.name = name
-        
+
     def findSegment(self,  xval):
         "Find segment valid for the given xval"
         for s in self.segments:
@@ -94,14 +94,14 @@ class SegmentFunction:
         for s in self.segments:
             s.negate()
         return self
-        
+
     def negated(self):
         result = SegmentFunction()
         result.variable = self.variable
         for s in self.segments:
             result.segments.append(s.negated())
         return result
-        
+
     def __mul__(self,  value):
         result = SegmentFunction()
         result.variable = self.variable
@@ -124,7 +124,7 @@ class SegmentFunction:
         for key in sorted(dict.keys()):
             #if abs(dict[key]) > 1E-9:
             self.segments.append(SegmentFunctionSegment(key, var, dict[key], 0))
-            
+
     def addSegment(self, st,  coeff,  exp = 0.0):
         if abs(coeff) > 1E-9:
             self.segments.insert(self.index(st), SegmentFunctionSegment(st, self.variable, coeff, exp))
@@ -196,24 +196,24 @@ class SegmentFunction:
 
 class IntervalFunction:
     "Function defined in intervals"
-    
+
     def __init__(self):
         self.intervals = []
         self.values = []
-    
+
     def addInterval(self,  begin,  length,  value):
         self.intervals.append((begin,  length))
         self.values.append(value)
-        
-    def value(self,  xval):            
+
+    def value(self,  xval):
         for i in range(len(self.intervals)):
             if xval >= self.intervals[i][0] and xval < self.intervals[i][0] + self.intervals[i][1]:
                 return  self.values[i]
         return self.values[len(self.values)-1]
-        
+
     def lowervalue(self,  xval):
         return self.value(xval - 1E-8)
-        
+
     def index(self,  xval):
         lastStart = 0.0
         for i in range(len(self.intervals)):
@@ -226,25 +226,25 @@ class IntervalFunction:
     def interval(self, xval):
         "Return interval (begin, length) for this xval"
         return self.intervals[self.index(xval)]
-        
+
     def begin(self, xval):
         return self.intervals[self.index(xval)][0]
-        
+
     def length(self, xval):
         return self.intervals[self.index(xval)][1]
 
 class StressFunction:
     "Specialization for segment-wise display of stresses"
     # The hairy thing about this is that the segments of the segfunc usually do not correspond with the intervals of the intfunc!
-    
+
     def __init__(self,  f,  i):
         self.segfunc = f # The segment function for the force/moment
         self.intfunc = i # The divisors, an interval function giving a specific value for each interval
         name = "sigma"
-        
+
     def isZero(self):
         return self.segfunc.isZero()
-        
+
     def evaluate(self, maxX, pointsX):
         # Note: This usually creates a few more points than specified in pointsX
         offset = (maxX - self.segfunc.segments[0].start) / (pointsX - 1)
@@ -253,10 +253,10 @@ class StressFunction:
         xvals = xvals.union(starts) # Make sure we have a point on each segment start
         divs = set([self.intfunc.intervals[i][0] for i in range(len(self.intfunc.intervals))])
         xvals = xvals.union(divs)
-        
+
         xresult = []
         yresult = []
-        for xval in sorted(xvals):            
+        for xval in sorted(xvals):
             if xval in starts:
                 # create double point at segment border
                 xresult.append(xval)
@@ -268,10 +268,10 @@ class StressFunction:
             xresult.append(xval)
             yresult.append(self.segfunc.value(xval) / self.intfunc.value(xval))
         return (xresult, yresult)
-        
+
 class TranslationFunction:
     "Specialization for segment-wise display of translations"
-    
+
     def __init__(self,  f,  E,  d,  tangents,  translations):
         if f.isZero():
             self.transfunc = None
@@ -289,7 +289,7 @@ class TranslationFunction:
         self.module = E
         self.intfunc = d
         self.name = "w"
-        
+
         # Solve boundary conditions. There are two types:
         # External boundary conditions, e.g. a given tangent direction or translation value at a given x-value
         # Internal boundary conditions, i.e. at the segment borders the tangent direction and translation of the lines must be equal
@@ -301,20 +301,20 @@ class TranslationFunction:
         b = np.zeros(shape = 2 * len(self.intfunc.intervals))
         # Current row where coefficients of next equation will be added
         row = 0
-        
+
         # First look at external boundary conditions
         for bound in tangents:
             xval = bound[0]
-            tang = bound[1] 
+            tang = bound[1]
             i = self.intfunc.index(xval) # index of this segment
-            I_i = self.intfunc.value(xval) # Area moment of this segment              
+            I_i = self.intfunc.value(xval) # Area moment of this segment
             # w_i'(xval) = tang    =>  (tangfunc(xval) + C_i0) / (E * I_i) = tang =>  C_i0  = tang * (E * I_i) - tangfunc(xval)
             A[row][2 * i] = 1.0
             b[row] = tang * E * I_i - self.tangfunc.value(xval)
             row += 1
         for bound in translations:
             xval = bound[0]
-            trans = bound[1] 
+            trans = bound[1]
             i = self.intfunc.index(xval) # index of this segment
             I_i = self.intfunc.value(xval) # Area moment of this segment
             # w_i(xval) = trans    =>  (transfunc(xval) + C_i0 * xval + C_i1) / (E * I_i) = trans =>  xval / (E * I_i) * C_i0 + 1 / (E * I_i) * C_i1 = trans - transfunc(xval) / (E * I_i)
@@ -322,7 +322,7 @@ class TranslationFunction:
             A[row][2 * i + 1] = 1 / (E * I_i)
             b[row] = trans - self.transfunc.value(xval) / (E * I_i)
             row += 1
-        
+
         # Now look at internal boundary conditions (n intervals have n-1 common segment boundaries)
         for i in range(len(self.intfunc.intervals) - 1):
             x_start = self.intfunc.intervals[i][0]
@@ -343,24 +343,24 @@ class TranslationFunction:
             A[row][2 * (i+1) + 1] = -1 / (E * I_ip1)
             b[row] = self.transfunc.value(x_end) / (E * I_ip1) - self.transfunc.value(x_end) / (E * I_i)
             row += 1
-            
+
         #FreeCAD.Console.PrintMessage(A)
         #FreeCAD.Console.PrintMessage(" * x = ")
         #FreeCAD.Console.PrintMessage(b)
         #FreeCAD.Console.PrintMessage("\n")
-        
+
         try:
             self.boundaries = np.linalg.solve(A, b) # A * self.boundaries = b
         except np.linalg.linalg.LinAlgError as e:
             FreeCAD.Console.PrintMessage(e.message)
             FreeCAD.Console.PrintMessage(". No solution possible.\n")
             return
-        
+
     def isZero(self):
         if self.transfunc is None:
             return True
         return self.transfunc.isZero()
-        
+
     def evaluate(self, maxX, pointsX):
         # Note: This usually creates a few more points than specified in pointsX
         offset = (maxX - self.transfunc.segments[0].start) / (pointsX - 1)
@@ -370,7 +370,7 @@ class TranslationFunction:
         divs = set([self.intfunc.intervals[i][0] for i in range(len(self.intfunc.intervals))])
         xvals = xvals.union(divs)
         E = self.module
-        
+
         xresult = []
         yresult = []
         # Coverity has reported a problem that I_i, C_i0 or C_i1:
@@ -383,11 +383,11 @@ class TranslationFunction:
                 C_i0 = self.boundaries[2 * i]
                 C_i1 = self.boundaries[2 * i + 1]
                 FreeCAD.Console.PrintMessage("Interval %u: %f to %f, I_i: %f, C_i0: %f, C_i1: %f\n" % (i,  begin, length,  I_i,  C_i0,  C_i1))
-        
+
             xresult.append(xval)
             # w(xval) = (transfunc(xval) + C_i0 * xval + C_i1) / (E * I_i)
             value = (self.transfunc.value(xval)  + C_i0 * xval + C_i1) / (E * I_i)
             yresult.append(value)
-            
+
         return (xresult, yresult)
 

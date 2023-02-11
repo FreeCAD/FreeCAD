@@ -168,6 +168,9 @@ class TestObjectOpen(unittest.TestCase):
         self,
         doc
     ):
+        import ObjectsFem
+        from femtools.femutils import type_of_obj
+
         # see comments at file end, the code was created by some python code
         """
         # see code lines after comment block for the smarter version
@@ -181,6 +184,11 @@ class TestObjectOpen(unittest.TestCase):
         self.assertEqual(
             ConstraintBodyHeatSource,
             doc.ConstraintBodyHeatSource.Proxy.__class__
+        )
+
+        self.assertEqual(
+            "Fem::ConstraintCurrentDensity",
+            type_of_obj(ObjectsFem.makeConstraintCurrentDensity(doc))
         )
 
         from femobjects.constraint_electrostaticpotential import ConstraintElectrostaticPotential
@@ -199,6 +207,11 @@ class TestObjectOpen(unittest.TestCase):
         self.assertEqual(
             ConstraintInitialFlowVelocity,
             doc.ConstraintInitialFlowVelocity.Proxy.__class__
+        )
+
+        self.assertEqual(
+            "Fem::ConstraintMagnetization",
+            type_of_obj(ObjectsFem.makeConstraintMagnetization(doc))
         )
 
         from femobjects.constraint_selfweight import ConstraintSelfWeight
@@ -343,6 +356,16 @@ class TestObjectOpen(unittest.TestCase):
         self.assertEqual(
             Proxy,
             doc.Heat.Proxy.__class__
+        )
+
+        self.assertEqual(
+            "Fem::EquationElmerMagnetodynamic2D",
+            type_of_obj(ObjectsFem.makeEquationMagnetodynamic2D(doc))
+        )
+
+        self.assertEqual(
+            "Fem::EquationElmerMagnetodynamic",
+            type_of_obj(ObjectsFem.makeEquationMagnetodynamic(doc))
         )
 
 

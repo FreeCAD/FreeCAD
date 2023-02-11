@@ -21,19 +21,15 @@
 # *                                                                         *
 # ***************************************************************************
 
-from importlib import reload
-
 import FreeCAD
 
-# import Part
 import Path
-import PathScripts.PathLog as PathLog
 import PathTests.PathTestUtils as PathTestUtils
-from PathScripts.post import refactored_test_post as postprocessor
+from Path.Post.scripts import refactored_test_post as postprocessor
 
 
-PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
-PathLog.trackModule(PathLog.thisModule())
+Path.Log.setLevel(Path.Log.Level.DEBUG, Path.Log.thisModule())
+Path.Log.trackModule(Path.Log.thisModule())
 
 
 class TestRefactoredTestPost(PathTestUtils.PathTestBase):
@@ -72,6 +68,7 @@ class TestRefactoredTestPost(PathTestUtils.PathTestBase):
         This method is called prior to each `test()` method.  Add code and
         objects here that are needed for multiple `test()` methods.
         """
+        self.maxDiff = None
         self.doc = FreeCAD.ActiveDocument
         self.con = FreeCAD.Console
         self.docobj = FreeCAD.ActiveDocument.addObject("Path::Feature", "testpath")
@@ -91,15 +88,17 @@ class TestRefactoredTestPost(PathTestUtils.PathTestBase):
 
     def single_compare(self, path, expected, args, debug=False):
         """Perform a test with a single comparison."""
+        nl = "\n"
         self.docobj.Path = Path.Path(path)
         postables = [self.docobj]
         gcode = postprocessor.export(postables, "gcode.tmp", args)
         if debug:
-            print("--------\n" + gcode + "--------\n")
+            print(f"--------{nl}{gcode}--------{nl}")
         self.assertEqual(gcode, expected)
 
     def compare_third_line(self, path_string, expected, args, debug=False):
-        """Perform a test with a single comparison only to the third line of the output."""
+        """Perform a test with a single comparison to the third line of the output."""
+        nl = "\n"
         if path_string:
             self.docobj.Path = Path.Path([Path.Command(path_string)])
         else:
@@ -107,7 +106,7 @@ class TestRefactoredTestPost(PathTestUtils.PathTestBase):
         postables = [self.docobj]
         gcode = postprocessor.export(postables, "gcode.tmp", args)
         if debug:
-            print("--------\n" + gcode + "--------\n")
+            print(f"--------{nl}{gcode}--------{nl}")
         self.assertEqual(gcode.splitlines()[2], expected)
 
     #
@@ -137,7 +136,7 @@ class TestRefactoredTestPost(PathTestUtils.PathTestBase):
         self.assertEqual(gcode.splitlines()[0], "(Exported by FreeCAD)")
         self.assertEqual(
             gcode.splitlines()[1],
-            "(Post Processor: PathScripts.post.refactored_test_post)",
+            "(Post Processor: Path.Post.scripts.refactored_test_post)",
         )
         self.assertEqual(gcode.splitlines()[2], "(Cam File: )")
         self.assertIn("(Output Time: ", gcode.splitlines()[3])
@@ -169,7 +168,7 @@ G21
         self.assertEqual(gcode.splitlines()[0], "(Exported by FreeCAD)")
         self.assertEqual(
             gcode.splitlines()[1],
-            "(Post Processor: PathScripts.post.refactored_test_post)",
+            "(Post Processor: Path.Post.scripts.refactored_test_post)",
         )
         self.assertEqual(gcode.splitlines()[2], "(Cam File: )")
         self.assertIn("(Output Time: ", gcode.splitlines()[3])
@@ -191,9 +190,7 @@ G21
 
         Empty path.  Outputs all arguments.
         """
-        self.single_compare(
-            [],
-            """Arguments that are shared with all postprocessors:
+        expected = """Arguments that are commonly used:
   --metric              Convert output for Metric mode (G21) (default)
   --inches              Convert output for US imperial mode (G20)
   --axis-modal          Don't output axis values if they are the same as the
@@ -247,15 +244,25 @@ G21
   --tool_change         Insert M6 and any other tool change G-code for all
                         tool changes (default)
   --no-tool_change      Convert M6 to a comment for all tool changes
-  --translate_drill     Translate drill cycles G81, G82 & G83 into G0/G1
+  --translate_drill     Translate drill cycles G73, G81, G82 & G83 into G0/G1
                         movements
-  --no-translate_drill  Don't translate drill cycles G81, G82 & G83 into G0/G1
-                        movements (default)
+  --no-translate_drill  Don't translate drill cycles G73, G81, G82 & G83 into
+                        G0/G1 movements (default)
   --wait-for-spindle WAIT_FOR_SPINDLE
                         Time to wait (in seconds) after M3, M4 (default = 0.0)
-""",
-            "--output_all_arguments",
+"""
+        self.docobj.Path = Path.Path([])
+        postables = [self.docobj]
+        gcode: str = postprocessor.export(
+            postables, "gcode.tmp", "--output_all_arguments"
         )
+        # The argparse help routine turns out to be sensitive to the
+        # number of columns in the terminal window that the tests
+        # are run from.  This affects the indenting in the output.
+        # The next couple of lines remove all of the white space.
+        gcode = "".join(gcode.split())
+        expected = "".join(expected.split())
+        self.assertEqual(gcode, expected)
 
     def test00020(self):
         """Test Outputting visible arguments.
@@ -310,7 +317,9 @@ G21
 
     def test00120(self):
         """Test axis-precision."""
-        self.compare_third_line("G0 X10 Y20 Z30", "G0 X10.00 Y20.00 Z30.00", "--axis-precision=2")
+        self.compare_third_line(
+            "G0 X10 Y20 Z30", "G0 X10.00 Y20.00 Z30.00", "--axis-precision=2"
+        )
 
     def test00130(self):
         """Test comments."""
@@ -352,7 +361,9 @@ G21
 
     def test00160(self):
         """Test inches."""
+        #
         c = Path.Command("G0 X10 Y20 Z30 A10 B20 C30 U10 V20 W30")
+
         self.docobj.Path = Path.Path([c])
         postables = [self.docobj]
         args = "--inches"
@@ -600,26 +611,42 @@ G21
         """Test G10 command Generation."""
         self.compare_third_line("G10 L1 P2 Z1.23456", "G10 L1 Z1.235 P2", "")
         self.compare_third_line(
-            "G10 L1 P2 R1.23456 I2.34567 J3.456789 Q3", "G10 L1 I2.346 J3.457 R1.235 P2 Q3", ""
+            "G10 L1 P2 R1.23456 I2.34567 J3.456789 Q3",
+            "G10 L1 I2.346 J3.457 R1.235 P2 Q3",
+            "",
         )
         self.compare_third_line(
-            "G10 L2 P3 X1.23456 Y2.34567 Z3.456789", "G10 L2 X1.235 Y2.346 Z3.457 P3", ""
-        )
-        self.compare_third_line("G10 L2 P0 X0 Y0 Z0", "G10 L2 X0.000 Y0.000 Z0.000 P0", "")
-        self.compare_third_line(
-            "G10 L10 P1 X1.23456 Y2.34567 Z3.456789", "G10 L10 X1.235 Y2.346 Z3.457 P1", ""
+            "G10 L2 P3 X1.23456 Y2.34567 Z3.456789",
+            "G10 L2 X1.235 Y2.346 Z3.457 P3",
+            "",
         )
         self.compare_third_line(
-            "G10 L10 P2 R1.23456 I2.34567 J3.456789 Q3", "G10 L10 I2.346 J3.457 R1.235 P2 Q3", ""
+            "G10 L2 P0 X0 Y0 Z0", "G10 L2 X0.000 Y0.000 Z0.000 P0", ""
         )
         self.compare_third_line(
-            "G10 L11 P1 X1.23456 Y2.34567 Z3.456789", "G10 L11 X1.235 Y2.346 Z3.457 P1", ""
+            "G10 L10 P1 X1.23456 Y2.34567 Z3.456789",
+            "G10 L10 X1.235 Y2.346 Z3.457 P1",
+            "",
         )
         self.compare_third_line(
-            "G10 L11 P2 R1.23456 I2.34567 J3.456789 Q3", "G10 L11 I2.346 J3.457 R1.235 P2 Q3", ""
+            "G10 L10 P2 R1.23456 I2.34567 J3.456789 Q3",
+            "G10 L10 I2.346 J3.457 R1.235 P2 Q3",
+            "",
         )
         self.compare_third_line(
-            "G10 L20 P9 X1.23456 Y2.34567 Z3.456789", "G10 L20 X1.235 Y2.346 Z3.457 P9", ""
+            "G10 L11 P1 X1.23456 Y2.34567 Z3.456789",
+            "G10 L11 X1.235 Y2.346 Z3.457 P1",
+            "",
+        )
+        self.compare_third_line(
+            "G10 L11 P2 R1.23456 I2.34567 J3.456789 Q3",
+            "G10 L11 I2.346 J3.457 R1.235 P2 Q3",
+            "",
+        )
+        self.compare_third_line(
+            "G10 L20 P9 X1.23456 Y2.34567 Z3.456789",
+            "G10 L20 X1.235 Y2.346 Z3.457 P9",
+            "",
         )
 
     def test01170(self):
@@ -774,7 +801,9 @@ G21
                 Path.Command(
                     "G52 X1.234567 Y2.345678 Z3.456789 A4.567891 B5.678912 C6.789123 U7.891234 V8.912345 W9.123456"
                 ),
-                Path.Command("G52 X0 Y0.0 Z0.00 A0.000 B0.0000 C0.00000 U0.000000 V0 W0"),
+                Path.Command(
+                    "G52 X0 Y0.0 Z0.00 A0.000 B0.0000 C0.00000 U0.000000 V0 W0"
+                ),
             ],
             """G90
 G21
@@ -788,7 +817,9 @@ G52 X0.000 Y0.000 Z0.000 A0.000 B0.000 C0.000 U0.000 V0.000 W0.000
                 Path.Command(
                     "G52 X1.234567 Y2.345678 Z3.456789 A4.567891 B5.678912 C6.789123 U7.891234 V8.912345 W9.123456"
                 ),
-                Path.Command("G52 X0 Y0.0 Z0.00 A0.000 B0.0000 C0.00000 U0.000000 V0 W0"),
+                Path.Command(
+                    "G52 X0 Y0.0 Z0.00 A0.000 B0.0000 C0.00000 U0.000000 V0 W0"
+                ),
             ],
             """G90
 G20
@@ -856,9 +887,9 @@ G52 X0.0000 Y0.0000 Z0.0000 A0.0000 B0.0000 C0.0000 U0.0000 V0.0000 W0.0000
         """Test G59 command Generation."""
         self.compare_third_line("G59", "G59", "")
         #
-        # Some gcode interpreters us G59 P- to select additional
+        # Some gcode interpreters use G59 P- to select additional
         # work coordinate systems.  This is considered somewhat
-        # obsolete and is being replaces by G54.1 P- instead.
+        # obsolete and is being replaced by G54.1 P- instead.
         #
         self.compare_third_line("G59 P2.34567", "G59 P2", "")
 
@@ -911,7 +942,9 @@ G52 X0.0000 Y0.0000 Z0.0000 A0.0000 B0.0000 C0.0000 U0.0000 V0.0000 W0.0000
         self.compare_third_line("G64", "G64", "")
         self.compare_third_line("G64 P3.456789", "G64 P3.457", "")
         self.compare_third_line("G64 P3.456789 Q4.567891", "G64 P3.457 Q4.568", "")
-        self.compare_third_line("G64 P3.456789 Q4.567891", "G64 P0.1361 Q0.1798", "--inches")
+        self.compare_third_line(
+            "G64 P3.456789 Q4.567891", "G64 P0.1361 Q0.1798", "--inches"
+        )
 
     def test01730(self):
         """Test G73 command Generation."""

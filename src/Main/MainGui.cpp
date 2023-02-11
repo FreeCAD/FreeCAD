@@ -42,7 +42,6 @@
 #include <QApplication>
 #include <QLocale>
 #include <QMessageBox>
-#include <QTextCodec>
 
 // FreeCAD header
 #include <App/Application.h>
@@ -55,7 +54,7 @@
 
 void PrintInitHelp(void);
 
-const char sBanner[] = "\xc2\xa9 Juergen Riegel, Werner Mayer, Yorik van Havre and others 2001-2022\n"\
+const char sBanner[] = "\xc2\xa9 Juergen Riegel, Werner Mayer, Yorik van Havre and others 2001-2023\n"\
 "FreeCAD is free and open-source software licensed under the terms of LGPL2+ license.\n"\
 "FreeCAD wouldn't be possible without FreeCAD community.\n"\
 "  #####                 ####  ###   ####  \n" \
@@ -95,20 +94,6 @@ private:
     Base::FileInfo fi;
     FILE* file;
 };
-
-#if defined (FC_OS_LINUX) || defined(FC_OS_BSD)
-QString myDecoderFunc(const QByteArray &localFileName)
-{
-    QTextCodec* codec = QTextCodec::codecForName("UTF-8");
-    return codec->toUnicode(localFileName);
-}
-
-QByteArray myEncoderFunc(const QString &fileName)
-{
-    QTextCodec* codec = QTextCodec::codecForName("UTF-8");
-    return codec->fromUnicode(fileName);
-}
-#endif
 
 int main( int argc, char ** argv )
 {

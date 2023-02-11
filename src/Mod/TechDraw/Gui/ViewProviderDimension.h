@@ -24,13 +24,12 @@
 #ifndef DRAWINGGUI_VIEWPROVIDERDIMENSION_H
 #define DRAWINGGUI_VIEWPROVIDERDIMENSION_H
 
-#include <Mod/TechDraw/TechDrawGlobal.h>
-
 #include <App/PropertyUnits.h>
-
+#include <Mod/TechDraw/TechDrawGlobal.h>
 #include <Mod/TechDraw/App/DrawViewDimension.h>
 
 #include "ViewProviderDrawingView.h"
+
 
 namespace TechDrawGui {
 
@@ -84,6 +83,7 @@ public:
     double prefWeight() const;
     int prefStandardAndStyle() const;
     bool canDelete(App::DocumentObject* obj) const override;
+    void setPixmapForType();
 
 protected:
     void handleChangedPropertyType(Base::XMLReader &reader, const char *TypeName, App::Property * prop) override;

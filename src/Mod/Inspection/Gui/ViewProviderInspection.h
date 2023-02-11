@@ -20,13 +20,14 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef INSPECTIOGUI_VIEWPROVIDERINSPECTION_H
 #define INSPECTIOGUI_VIEWPROVIDERINSPECTION_H
 
+#include <App/ComplexGeoData.h>
 #include <Base/Observer.h>
 #include <Gui/ViewProviderDocumentObject.h>
 #include <Gui/ViewProviderDocumentObjectGroup.h>
+
 
 class SoGroup;
 class SoMaterial;
@@ -81,6 +82,15 @@ protected:
     void onChanged(const App::Property* prop) override;
     void setDistances();
     QString inspectDistance(const SoPickedPoint* pp) const;
+
+private:
+    bool setupFaces(const Data::ComplexGeoData*);
+    bool setupLines(const Data::ComplexGeoData*);
+    bool setupPoints(const Data::ComplexGeoData*, App::PropertyContainer* container);
+    void setupCoords(const std::vector<Base::Vector3d>&);
+    void setupNormals(const std::vector<Base::Vector3f>&);
+    void setupLineIndexes(const std::vector<Data::ComplexGeoData::Line>&);
+    void setupFaceIndexes(const std::vector<Data::ComplexGeoData::Facet>&);
 
 protected:
     SoMaterial       * pcColorMat;

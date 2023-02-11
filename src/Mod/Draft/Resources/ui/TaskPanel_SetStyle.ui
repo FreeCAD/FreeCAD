@@ -183,7 +183,7 @@
          <string>The transparency of faces</string>
         </property>
         <property name="suffix">
-         <string> %</string>
+         <string notr="true"> %</string>
         </property>
         <property name="maximum">
          <number>100</number>
@@ -275,13 +275,13 @@
        </widget>
       </item>
       <item row="5" column="1">
-       <widget class="QSpinBox" name="LineSpacing">
+       <widget class="QDoubleSpinBox" name="LineSpacing">
         <property name="toolTip">
          <string>The spacing between different lines of text</string>
         </property>
        </widget>
       </item>
-     <item row="6" column="0">
+      <item row="6" column="0">
        <widget class="QLabel" name="label_6">
         <property name="text">
          <string>Arrow style</string>
@@ -392,9 +392,9 @@
       </widget>
      </item>
      <item>
-      <widget class="QPushButton" name="dimButton">
+      <widget class="QPushButton" name="annotButton">
        <property name="text">
-        <string>Texts/dims</string>
+        <string>Annotations</string>
        </property>
       </widget>
      </item>

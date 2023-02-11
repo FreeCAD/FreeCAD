@@ -292,13 +292,13 @@ int ImageBase::pointTo(void* pSrcPixelData, unsigned long width, unsigned long h
 }
 
 // Gets the value of a sample at the given pixel position
-// Returns 0 for valid value or -1 if coordinates or sample index are out of range or 
+// Returns 0 for valid value or -1 if coordinates or sample index are out of range or
 // if there is no image data
 int ImageBase::getSample(int x, int y, unsigned short sampleIndex, double &value)
 {
-    if ((!_pPixelData) || 
+    if ((!_pPixelData) ||
         (sampleIndex >= _numSamples) ||
-        (x < 0) || (x >= (int)_width) || 
+        (x < 0) || (x >= (int)_width) ||
         (y < 0) || (y >= (int)_height))
         return -1;
 

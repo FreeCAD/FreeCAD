@@ -40,7 +40,7 @@ def makeCompoundFilter(name, into_group = None):
     else:
         obj = into_group.newObject("Part::FeaturePython", name)
     _CompoundFilter(obj)
-    if obj.ViewObject:    
+    if obj.ViewObject:
         _ViewProviderCompoundFilter(obj.ViewObject)
     return obj
 

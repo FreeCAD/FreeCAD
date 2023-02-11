@@ -81,7 +81,6 @@ class DraftWorkbench(FreeCADGui.Workbench):
             import Draft_rc
             import DraftTools
             import DraftGui
-            import DraftFillet
             FreeCADGui.addLanguagePath(":/translations")
             FreeCADGui.addIconPath(":/icons")
         except Exception as exc:
@@ -112,6 +111,9 @@ class DraftWorkbench(FreeCADGui.Workbench):
         it.init_toolbar(self,
                         QT_TRANSLATE_NOOP("Workbench", "Draft utility tools"),
                         self.utility_commands_toolbar)
+        it.init_toolbar(self,
+                        QT_TRANSLATE_NOOP("Workbench", "Draft snap"),
+                        it.get_draft_snap_commands())
 
         # Set up menus
         it.init_menu(self,

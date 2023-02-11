@@ -149,7 +149,7 @@ Py::Object View3DInventorViewerPy::getattr(const char * attr)
     else {
         Py::Object obj = Py::PythonExtension<View3DInventorViewerPy>::getattr(attr);
         if (PyCFunction_Check(obj.ptr())) {
-            PyCFunctionObject* op = reinterpret_cast<PyCFunctionObject*>(obj.ptr());
+            auto op = reinterpret_cast<PyCFunctionObject*>(obj.ptr());
             if (!pycxx_handler)
                 pycxx_handler = op->m_ml->ml_meth;
             op->m_ml->ml_meth = method_varargs_ext_handler;
@@ -179,7 +179,7 @@ Py::Object View3DInventorViewerPy::getSoRenderManager(const Py::Tuple& args)
     try {
         SoRenderManager* manager = _viewer->getSoRenderManager();
         PyObject* proxy = nullptr;
-        proxy = Base::Interpreter().createSWIGPointerObj("pivy.coin", "SoRenderManager *", (void*)manager, 0);
+        proxy = Base::Interpreter().createSWIGPointerObj("pivy.coin", "SoRenderManager *", static_cast<void*>(manager), 0);
         return Py::Object(proxy, true);
     }
     catch (const Base::Exception& e) {
@@ -195,7 +195,7 @@ Py::Object View3DInventorViewerPy::getSceneGraph(const Py::Tuple& args)
     try {
         SoNode* scene = _viewer->getSceneGraph();
         PyObject* proxy = nullptr;
-        proxy = Base::Interpreter().createSWIGPointerObj("pivy.coin", "SoSeparator *", (void*)scene, 1);
+        proxy = Base::Interpreter().createSWIGPointerObj("pivy.coin", "SoSeparator *", static_cast<void*>(scene), 1);
         scene->ref();
         return Py::Object(proxy, true);
     }
@@ -213,7 +213,7 @@ Py::Object View3DInventorViewerPy::setSceneGraph(const Py::Tuple& args)
     void* ptr = nullptr;
     try {
         Base::Interpreter().convertSWIGPointerObj("pivy.coin", "SoNode *", proxy, &ptr, 0);
-        SoNode* node = static_cast<SoNode*>(ptr);
+        auto node = static_cast<SoNode*>(ptr);
         _viewer->setSceneGraph(node);
         return Py::None();
     }
@@ -230,7 +230,7 @@ Py::Object View3DInventorViewerPy::getSoEventManager(const Py::Tuple& args)
     try {
         SoEventManager* manager = _viewer->getSoEventManager();
         PyObject* proxy = nullptr;
-        proxy = Base::Interpreter().createSWIGPointerObj("pivy.coin", "SoEventManager *", (void*)manager, 0);
+        proxy = Base::Interpreter().createSWIGPointerObj("pivy.coin", "SoEventManager *", static_cast<void*>(manager), 0);
         return Py::Object(proxy, true);
     }
     catch (const Base::Exception& e) {

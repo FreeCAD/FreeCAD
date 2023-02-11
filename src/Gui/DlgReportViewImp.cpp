@@ -42,6 +42,7 @@ DlgReportViewImp::DlgReportViewImp( QWidget* parent )
   , ui(new Ui_DlgReportView)
 {
     ui->setupUi(this);
+    ui->colorText->setColor(qApp->palette().windowText().color());
 }
 
 /**

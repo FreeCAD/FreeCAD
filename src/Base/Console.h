@@ -21,9 +21,6 @@
  *                                                                         *
  ***************************************************************************/
 
-
-
-
 #ifndef BASE_CONSOLE_H
 #define BASE_CONSOLE_H
 
@@ -563,7 +560,7 @@ public:
     void UnsetConsoleMode(ConsoleMode m);
     /// Enables or disables message types of a certain console observer
     ConsoleMsgFlags SetEnabledMsgType(const char* sObs, ConsoleMsgFlags type, bool b);
-    /// Enables or disables message types of a certain console observer
+    /// Checks if message types of a certain console observer are enabled
     bool IsMsgTypeEnabled(const char* sObs, FreeCAD_ConsoleMsgType type) const;
     void SetConnectionMode(ConnectionMode mode);
 

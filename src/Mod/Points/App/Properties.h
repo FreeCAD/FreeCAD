@@ -20,25 +20,21 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef POINTS_POINTPROPERTIES_H
 #define POINTS_POINTPROPERTIES_H
 
 #include <vector>
 
-#include <Base/Vector3D.h>
+#include <App/PropertyStandard.h>
 #include <Base/Matrix.h>
 #include <Base/Reader.h>
 #include <Base/Writer.h>
 
-#include <App/PropertyStandard.h>
-#include <App/PropertyGeo.h>
-
 #include "Points.h"
+
 
 namespace Points
 {
-
 
 /** Greyvalue property.
  */

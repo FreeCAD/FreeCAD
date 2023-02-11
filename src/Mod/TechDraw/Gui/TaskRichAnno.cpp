@@ -21,49 +21,35 @@
  ***************************************************************************/
 
 #include "PreCompiled.h"
-
 #ifndef _PreComp_
-#include <cmath>
-#include <QStatusBar>
-#include <QGraphicsScene>
-#include <QDialog>
-#endif // #ifndef _PreComp_
-
-#include <Base/Console.h>
-#include <Base/Tools.h>
+# include <cmath>
+# include <QDialog>
+#endif
 
 #include <App/Document.h>
-
+#include <Base/Console.h>
+#include <Base/Tools.h>
 #include <Gui/Application.h>
 #include <Gui/BitmapFactory.h>
 #include <Gui/Command.h>
-#include <Gui/Control.h>
 #include <Gui/Document.h>
-#include <Gui/MainWindow.h>
-#include <Gui/Selection.h>
 #include <Gui/ViewProvider.h>
-#include <Gui/WaitCursor.h>
-
-#include <Mod/TechDraw/App/DrawPage.h>
-#include <Mod/TechDraw/App/DrawUtil.h>
-#include <Mod/TechDraw/App/DrawView.h>
 #include <Mod/TechDraw/App/DrawLeaderLine.h>
+#include <Mod/TechDraw/App/DrawPage.h>
 #include <Mod/TechDraw/App/DrawRichAnno.h>
-//#include <Mod/TechDraw/App/Preferences.h>
+#include <Mod/TechDraw/App/LineGroup.h>
 
-#include <Mod/TechDraw/Gui/ui_TaskRichAnno.h>
-
+#include "ui_TaskRichAnno.h"
+#include "TaskRichAnno.h"
+#include "mrichtextedit.h"
 #include "PreferencesGui.h"
-#include "QGSPage.h"
 #include "QGIView.h"
+#include "QGMText.h"
+#include "QGSPage.h"
+#include "Rez.h"
 #include "ViewProviderPage.h"
 #include "ViewProviderRichAnno.h"
-#include "QGMText.h"
-#include "QGIRichAnno.h"
-#include "Rez.h"
-#include "mrichtextedit.h"
 
-#include "TaskRichAnno.h"
 
 using namespace Gui;
 using namespace TechDraw;
@@ -72,17 +58,13 @@ using namespace TechDrawGui;
 //ctor for edit
 TaskRichAnno::TaskRichAnno(TechDrawGui::ViewProviderRichAnno* annoVP) :
     ui(new Ui_TaskRichAnno),
-    blockUpdate(false),
     m_annoVP(annoVP),
     m_baseFeat(nullptr),
     m_basePage(nullptr),
     m_annoFeat(nullptr),
     m_qgParent(nullptr),
     m_createMode(false),
-    m_text(nullptr),
-    m_saveContextPolicy(Qt::DefaultContextMenu),
     m_inProgressLock(false),
-    m_qgAnno(nullptr),
     m_btnOK(nullptr),
     m_btnCancel(nullptr),
     m_textDialog(nullptr),
@@ -124,25 +106,21 @@ TaskRichAnno::TaskRichAnno(TechDrawGui::ViewProviderRichAnno* annoVP) :
                                             -m_annoFeat->Y.getValue(),
                                              0.0));
 
-    connect(ui->pbEditor, SIGNAL(clicked(bool)),
-                this, SLOT(onEditorClicked(bool)));
+    connect(ui->pbEditor, &QPushButton::clicked,
+            this, &TaskRichAnno::onEditorClicked);
 }
 
 //ctor for creation
 TaskRichAnno::TaskRichAnno(TechDraw::DrawView* baseFeat,
                            TechDraw::DrawPage* page) :
     ui(new Ui_TaskRichAnno),
-    blockUpdate(false),
     m_annoVP(nullptr),
     m_baseFeat(baseFeat),
     m_basePage(page),
     m_annoFeat(nullptr),
     m_qgParent(nullptr),
     m_createMode(true),
-    m_text(nullptr),
-    m_saveContextPolicy(Qt::DefaultContextMenu),
     m_inProgressLock(false),
-    m_qgAnno(nullptr),
     m_btnOK(nullptr),
     m_btnCancel(nullptr),
     m_textDialog(nullptr),
@@ -163,8 +141,8 @@ TaskRichAnno::TaskRichAnno(TechDraw::DrawView* baseFeat,
 
     setUiPrimary();
 
-    connect(ui->pbEditor, SIGNAL(clicked(bool)),
-                this, SLOT(onEditorClicked(bool)));
+    connect(ui->pbEditor, &QPushButton::clicked,
+            this, &TaskRichAnno::onEditorClicked);
 }
 
 void TaskRichAnno::updateTask()
@@ -263,10 +241,10 @@ void TaskRichAnno::onEditorClicked(bool clicked)
     m_textDialog->setMinimumWidth (400);
     m_textDialog->setMinimumHeight(400);
 
-    connect(m_rte, SIGNAL(saveText(QString)),
-            this, SLOT(onSaveAndExit(QString)));
-    connect(m_rte, SIGNAL(editorFinished()),
-            this, SLOT(onEditorExit()));
+    connect(m_rte, &MRichTextEdit::saveText,
+            this, &TaskRichAnno::onSaveAndExit);
+    connect(m_rte, &MRichTextEdit::editorFinished,
+            this, &TaskRichAnno::onEditorExit);
 
     m_textDialog->show();
 }
@@ -324,7 +302,7 @@ void TaskRichAnno::createAnnoFeature()
     if (obj->isDerivedFrom(TechDraw::DrawRichAnno::getClassTypeId())) {
         m_annoFeat = static_cast<TechDraw::DrawRichAnno*>(obj);
         commonFeatureUpdate();
-        if (m_baseFeat != nullptr) {
+        if (m_baseFeat) {
             QPointF qTemp = calcTextStartPos(m_annoFeat->getScale());
             Base::Vector3d vTemp(qTemp.x(), qTemp.y());
             m_annoFeat->X.setValue(Rez::appX(vTemp.x));
@@ -410,8 +388,6 @@ void TaskRichAnno::removeFeature()
         if (Gui::Command::hasPendingCommand()) {
             std::vector<std::string> undos = Gui::Application::Instance->activeDocument()->getUndoVector();
             Gui::Application::Instance->activeDocument()->undo(1);
-        } else {
-            Base::Console().Log("TaskRichAnno: Edit mode - NO command is active\n");
         }
     }
 }

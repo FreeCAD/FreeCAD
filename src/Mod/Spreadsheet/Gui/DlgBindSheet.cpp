@@ -21,16 +21,19 @@
  ****************************************************************************/
 
 #include "PreCompiled.h"
+
 #include <boost/algorithm/string.hpp>
 #include <QMessageBox>
-#include "DlgBindSheet.h"
-#include <Base/Tools.h>
-#include <App/Range.h>
-#include <App/Document.h>
+
 #include <App/Application.h>
+#include <App/Document.h>
 #include <App/ExpressionParser.h>
+#include <App/Range.h>
 #include <Gui/CommandT.h>
+
+#include "DlgBindSheet.h"
 #include "ui_DlgBindSheet.h"
+
 
 using namespace App;
 using namespace Spreadsheet;
@@ -127,7 +130,7 @@ DlgBindSheet::DlgBindSheet(Sheet *sheet, const std::vector<Range> &ranges, QWidg
         }
     }
 
-    connect(ui->btnDiscard, SIGNAL(clicked()), this, SLOT(onDiscard()));
+    connect(ui->btnDiscard, &QPushButton::clicked, this, &DlgBindSheet::onDiscard);
 }
 
 DlgBindSheet::~DlgBindSheet()
@@ -149,7 +152,7 @@ void DlgBindSheet::accept()
                 if(!doc)
                     FC_THROWM(Base::RuntimeError, "Cannot find document " << docname);
                 obj = Base::freecad_dynamic_cast<Sheet>(doc->getObject(sep+1));
-            } else 
+            } else
                 obj = Base::freecad_dynamic_cast<Sheet>(sheet->getDocument()->getObject(ref));
             if(!obj)
                 FC_THROWM(Base::RuntimeError, "Cannot find Spreadsheet '" << ref << "'");
@@ -177,13 +180,13 @@ void DlgBindSheet::accept()
         checkAddress(fromEnd, fromCellEnd, false);
 
         std::string toStart(ui->lineEditToStart->text().trimmed().toLatin1().constData());
-        if(boost::starts_with(toStart,"=")) 
+        if(boost::starts_with(toStart,"="))
             toStart.erase(toStart.begin());
         else
             checkAddress(toStart, toCellStart, true);
 
         std::string toEnd(ui->lineEditToEnd->text().trimmed().toLatin1().constData());
-        if(boost::starts_with(toEnd,"=")) 
+        if(boost::starts_with(toEnd,"="))
             toEnd.erase(toEnd.begin());
         else {
             checkAddress(toEnd, toCellEnd, true);

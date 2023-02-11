@@ -4,6 +4,7 @@ body {
     font-family: FONTFAMILY;
     font-size: FONTSIZE;
 }
+OVERFLOW
 a, a:link, a:visited {
     text-decoration: none;
     color: LINKCOLOR;
@@ -188,11 +189,12 @@ ul.workbenches li, ul.addonslist li {
     width: 30%;
 }
 #notepad {
-    width: 100%;
+    width: 95%;
     height: 100%;
     color: TEXTCOLOR;
     background: BOXCOLOR;
     border: none;
     padding: 5px;
     border-radius: 3px;
+    min-height: 300px;
 }

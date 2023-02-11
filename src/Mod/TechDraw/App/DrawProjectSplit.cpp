@@ -20,77 +20,41 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
+# include <algorithm>
+# include <limits>
 # include <sstream>
-
+#include <Bnd_Box.hxx>
 #include <BRep_Tool.hxx>
-#include <BRepGProp.hxx>
 #include <BRepAdaptor_Curve.hxx>
 #include <BRepAlgoAPI_Common.hxx>
 #include <BRepAlgoAPI_Fuse.hxx>
-#include <BRepBuilderAPI_MakeEdge.hxx>
-#include <BRepBuilderAPI_MakeVertex.hxx>
-#include <BRepBuilderAPI_MakeWire.hxx>
-#include <BRepBuilderAPI_Copy.hxx>
-#include <BRepLProp_CurveTool.hxx>
-#include <BRepLProp_CLProps.hxx>
-#include <BRepExtrema_DistShapeShape.hxx>
-#include <BRepBuilderAPI_MakeFace.hxx>
-#include <BRep_Tool.hxx>
-#include <BRepTools.hxx>
 #include <BRepBndLib.hxx>
-#include <Bnd_Box.hxx>
+#include <BRepBuilderAPI_Copy.hxx>
+#include <BRepBuilderAPI_MakeEdge.hxx>
+#include <BRepLProp_CurveTool.hxx>
 #include <Geom_Curve.hxx>
-#include <GeomAPI_ProjectPointOnCurve.hxx>
-#include <GProp_GProps.hxx>
-#include <GCPnts_AbscissaPoint.hxx>
+#include <GeomLib_Tool.hxx>
 #include <gp_Ax2.hxx>
 #include <gp_Pnt.hxx>
-#include <gp_Dir.hxx>
-#include <gp_Pln.hxx>
-#include <gp_XYZ.hxx>
-#include <HLRBRep_Algo.hxx>
-#include <HLRAlgo_Projector.hxx>
-#include <HLRBRep_ShapeBounds.hxx>
-#include <HLRBRep_HLRToShape.hxx>
-#include <ShapeAnalysis.hxx>
-#include <ShapeFix_ShapeTolerance.hxx>
-#include <ShapeExtend_WireData.hxx>
-#include <ShapeFix_Wire.hxx>
-#include <TopoDS.hxx>
-#include <TopoDS_Shape.hxx>
-#include <TopoDS_Face.hxx>
 #include <TopExp.hxx>
 #include <TopExp_Explorer.hxx>
-#include <TopTools_IndexedMapOfShape.hxx>
-
+#include <TopoDS.hxx>
+#include <TopoDS_Shape.hxx>
 #endif
 
-#include <limits>
-#include <algorithm>
-#include <cmath>
-#include <GeomLib_Tool.hxx>
-
-#include <App/Application.h>
-#include <Base/BoundBox.h>
 #include <Base/Console.h>
-#include <Base/Exception.h>
-#include <Base/FileInfo.h>
 #include <Base/Parameter.h>
-#include <Mod/Part/App/PartFeature.h>
 
+#include "DrawProjectSplit.h"
 #include "DrawUtil.h"
 #include "Geometry.h"
 #include "GeometryObject.h"
-#include "EWTOLERANCE.h"
-#include "DrawProjectSplit.h"
+
 
 using namespace TechDraw;
-using namespace std;
-
 
 //===========================================================================
 // DrawProjectSplit
@@ -121,7 +85,7 @@ std::vector<TopoDS_Edge> DrawProjectSplit::getEdgesForWalker(TopoDS_Shape shape,
     scaledShape = TechDraw::scaleShape(copyShape,
                                        scale);
     gp_Ax2 viewAxis = TechDraw::legacyViewAxis1(Base::Vector3d(0.0, 0.0, 0.0), direction, false);
-    TechDraw::GeometryObject* go = buildGeometryObject(scaledShape, viewAxis);
+    TechDraw::GeometryObjectPtr go = buildGeometryObject(scaledShape, viewAxis);
     const std::vector<TechDraw::BaseGeomPtr>& goEdges = go->getVisibleFaceEdges(false, false);
     for (auto& e: goEdges){
         edgesIn.push_back(e->occEdge);
@@ -136,15 +100,14 @@ std::vector<TopoDS_Edge> DrawProjectSplit::getEdgesForWalker(TopoDS_Shape shape,
         }
     }
 
-    delete go;
     return nonZero;
 }
 
 //project the shape using viewAxis (coordinate system) and return a geometry object
-TechDraw::GeometryObject* DrawProjectSplit::buildGeometryObject(TopoDS_Shape shape,
+TechDraw::GeometryObjectPtr DrawProjectSplit::buildGeometryObject(TopoDS_Shape shape,
                                                                         const gp_Ax2& viewAxis)
 {
-    TechDraw::GeometryObject* geometryObject = new TechDraw::GeometryObject("DrawProjectSplit", nullptr);
+    TechDraw::GeometryObjectPtr geometryObject(std::make_shared<TechDraw::GeometryObject>("DrawProjectSplit", nullptr));
 
     if (geometryObject->usePolygonHLR()){
         geometryObject->projectShapeWithPolygonAlgo(shape, viewAxis);
@@ -548,6 +511,12 @@ std::vector<TopoDS_Edge> DrawProjectSplit::scrubEdges(const std::vector<TechDraw
 std::vector<TopoDS_Edge> DrawProjectSplit::scrubEdges(std::vector<TopoDS_Edge>& origEdges,
                                                       std::vector<TopoDS_Edge> &closedEdges)
 {
+    if (origEdges.empty()) {
+        //how did this happen? if Scale is zero, all the edges will be zero length,
+        //but Scale property has constraint, so this shouldn't happen!
+//        Base::Console().Message("DPS::scrubEdges(2) - origEdges is empty\n");     //debug
+        return std::vector<TopoDS_Edge>();
+    }
     //HLR usually delivers overlapping edges. We need to refine edge overlaps
     //into non-overlapping pieces
     std::vector<TopoDS_Edge> noOverlaps;
@@ -815,10 +784,10 @@ std::vector<TopoDS_Edge> DrawProjectSplit::splitIntersectingEdges(std::vector<To
                     //one edge is a subset of the other.
                     if (sameEndPoints(inEdges.at(iEdge0), intersectEdges.front())) {
                         //we got the outer edge back so mark the inner edge
-                        skipThisEdge.at(iEdge1);
+                        skipThisEdge.at(iEdge1) = true;
                     } else if (sameEndPoints(inEdges.at(iEdge1), intersectEdges.front())) {
                         //we got the inner edge back so mark the outer edge and go to the next outer edge
-                        skipThisEdge.at(iEdge0);
+                        skipThisEdge.at(iEdge0) = true;
                         break;          //next outer edge
                     } else {
                         //not sure what this means?  bad geometry?

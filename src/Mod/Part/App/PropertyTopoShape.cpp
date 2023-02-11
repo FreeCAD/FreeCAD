@@ -271,7 +271,7 @@ void PropertyPartShape::saveToFile(Base::Writer &writer) const
     static Base::FileInfo fi(App::Application::getTempFileName());
 
     TopoDS_Shape myShape = _Shape.getShape();
-    if (!BRepTools_Write(myShape,(Standard_CString)fi.filePath().c_str())) {
+    if (!BRepTools_Write(myShape,static_cast<Standard_CString>(fi.filePath().c_str()))) {
         // Note: Do NOT throw an exception here because if the tmp. file could
         // not be created we should not abort.
         // We only print an error message but continue writing the next files to the
@@ -323,7 +323,7 @@ void PropertyPartShape::loadFromFile(Base::Reader &reader)
     // If it's still empty after reading the (non-empty) file there must occurred an error.
     TopoDS_Shape shape;
     if (ulSize > 0) {
-        if (!BRepTools::Read(shape, (Standard_CString)fi.filePath().c_str(), builder)) {
+        if (!BRepTools::Read(shape, static_cast<Standard_CString>(fi.filePath().c_str()), builder)) {
             // Note: Do NOT throw an exception here because if the tmp. created file could
             // not be read it's NOT an indication for an invalid input stream 'reader'.
             // We only print an error message but continue reading the next files from the

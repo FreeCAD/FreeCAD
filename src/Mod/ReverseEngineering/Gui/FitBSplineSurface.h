@@ -20,13 +20,12 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef REENGUI_FITBSPLINESURFACE_H
 #define REENGUI_FITBSPLINESURFACE_H
 
-#include <Gui/TaskView/TaskView.h>
 #include <Gui/TaskView/TaskDialog.h>
-#include <App/DocumentObserver.h>
+#include <Gui/TaskView/TaskView.h>
+
 
 namespace ReenGui {
 

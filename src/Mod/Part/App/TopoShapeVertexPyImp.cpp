@@ -54,7 +54,7 @@ std::string TopoShapeVertexPy::representation() const
 
 PyObject *TopoShapeVertexPy::PyMake(struct _typeobject *, PyObject *, PyObject *)  // Python wrapper
 {
-    // create a new instance of TopoShapeVertexPy and the Twin object 
+    // create a new instance of TopoShapeVertexPy and the Twin object
     return new TopoShapeVertexPy(new TopoShape);
 }
 
@@ -208,5 +208,5 @@ PyObject *TopoShapeVertexPy::getCustomAttributes(const char* /*attr*/) const
 
 int TopoShapeVertexPy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)
 {
-    return 0; 
+    return 0;
 }

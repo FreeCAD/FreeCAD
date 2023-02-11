@@ -104,7 +104,11 @@ protected:
     void rowsInserted (const QModelIndex & parent, int start, int end) override;
     void rowsAboutToBeRemoved (const QModelIndex & parent, int start, int end) override;
     void drawBranches(QPainter *painter, const QRect &rect, const QModelIndex &index) const override;
+#if QT_VERSION < QT_VERSION_CHECK(6,0,0)
     QStyleOptionViewItem viewOptions() const override;
+#else
+    void initViewItemOption(QStyleOptionViewItem *option) const override;
+#endif
     void contextMenuEvent(QContextMenuEvent *event) override;
     bool event(QEvent*) override;
 

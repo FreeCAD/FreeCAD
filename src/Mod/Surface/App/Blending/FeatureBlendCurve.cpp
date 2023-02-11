@@ -25,16 +25,17 @@
 #ifndef _PreComp_
 #include <BRepAdaptor_Curve.hxx>
 #include <BRepBuilderAPI_MakeEdge.hxx>
-#include <Base/Tools.h>
-#include <Geom_Curve.hxx>
-#include <Precision.hxx>
 #include <Standard_Version.hxx>
 #include <TopoDS.hxx>
 #include <gp_Pnt.hxx>
 #endif
-#include "FeatureBlendCurve.h"
+
+#include <Base/Tools.h>
 #include "Mod/Surface/App/Blending/BlendCurve.h"
 #include "Mod/Surface/App/Blending/BlendPoint.h"
+
+#include "FeatureBlendCurve.h"
+
 
 using namespace Surface;
 

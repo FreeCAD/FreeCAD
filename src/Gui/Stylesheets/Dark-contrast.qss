@@ -105,8 +105,8 @@ Sub windows
 ==================================================================================================*/
 QMdiSubWindow {
     border:1px solid #333333;
-    margin-top: 30px;    
-    margin-left: 4px;    
+    margin-top: 30px;
+    margin-left: 4px;
     margin-right: 4px;
     margin-bottom:4px;
 }
@@ -801,8 +801,8 @@ Gui--PropertyEditor--PropertyEditor QAbstractSpinBox:disabled {
 
 /* hack to hide weird redundant information inside cells with links and no editable data (but editable via "..." button) */
 Gui--PropertyEditor--PropertyEditor > QWidget > QWidget > QLabel {
-	color: #ffffff;
-	background-color: #0f0f0f; /* same as focused background color */
+    color: #ffffff;
+    background-color: #0f0f0f; /* same as focused background color */
 }
 
 /* hack to disable margin inside Property values to following elements */

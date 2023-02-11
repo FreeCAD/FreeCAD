@@ -28,8 +28,8 @@
 #include <Mod/TechDraw/TechDrawGlobal.h>
 
 #include <App/DocumentObject.h>
-#include <App/PropertyGeo.h>
 #include <Mod/Part/App/PartFeature.h>
+
 
 namespace TechDraw
 {

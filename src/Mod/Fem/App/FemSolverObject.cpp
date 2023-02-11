@@ -21,15 +21,12 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
-#ifndef _PreComp_
-#endif
+#include <App/DocumentObjectPy.h>
+#include <App/FeaturePythonPyImp.h>
 
 #include "FemSolverObject.h"
-#include <App/FeaturePythonPyImp.h>
-#include <App/DocumentObjectPy.h>
 
 
 using namespace Fem;

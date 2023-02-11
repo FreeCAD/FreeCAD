@@ -20,39 +20,32 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <Inventor/SbString.h>
 # include <cfloat>
-# include <QMessageBox>
-# include <Precision.hxx>
+
 # include <QApplication>
-# include <Standard_Version.hxx>
-# include <QInputDialog>
+# include <QMessageBox>
+
+# include <Inventor/SbString.h>
 #endif
 
-#include <Base/Console.h>
-#include <Base/UnitsApi.h>
 #include <App/Application.h>
+#include <Base/Console.h>
+#include <Gui/Action.h>
 #include <Gui/Application.h>
+#include <Gui/BitmapFactory.h>
+#include <Gui/CommandT.h>
 #include <Gui/Document.h>
+#include <Gui/MainWindow.h>
 #include <Gui/Selection.h>
 #include <Gui/SelectionObject.h>
-#include <Gui/CommandT.h>
-#include <Gui/MainWindow.h>
-#include <Gui/DlgEditFileIncludePropertyExternal.h>
-
-#include <Gui/Action.h>
-#include <Gui/BitmapFactory.h>
-
-#include "ViewProviderSketch.h"
-#include "DrawSketchHandler.h"
-
-#include <Mod/Part/App/Geometry.h>
 #include <Mod/Sketcher/App/SketchObject.h>
 
+#include "DrawSketchHandler.h"
 #include "Utils.h"
+#include "ViewProviderSketch.h"
+
 
 using namespace std;
 using namespace SketcherGui;
@@ -1197,6 +1190,131 @@ bool CmdSketcherInsertKnot::isActive()
     return isSketcherBSplineActive(getActiveGuiDocument(), true);
 }
 
+DEF_STD_CMD_A(CmdSketcherJoinCurves)
+
+CmdSketcherJoinCurves::CmdSketcherJoinCurves()
+    : Command("Sketcher_JoinCurves")
+{
+    sAppModule      = "Sketcher";
+    sGroup          = "Sketcher";
+    sMenuText       = QT_TR_NOOP("Join curves");
+    sToolTipText    = QT_TR_NOOP("Join two curves at selected end points");
+    sWhatsThis      = "Sketcher_JoinCurves";
+    sStatusTip      = sToolTipText;
+    sPixmap         = "Sketcher_JoinCurves";
+    sAccel          = "";
+    eType           = ForEdit;
+}
+
+void CmdSketcherJoinCurves::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+
+    // get the selection
+    std::vector<Gui::SelectionObject> selection;
+    selection = getSelection().getSelectionEx(0, Sketcher::SketchObject::getClassTypeId());
+
+    // only one sketch with its subelements are allowed to be selected
+    if (selection.size() != 1) {
+        return;
+    }
+
+    // get the needed lists and objects
+    const std::vector<std::string> &SubNames = selection[0].getSubNames();
+
+    int GeoIds[2];
+    Sketcher::PointPos PosIds[2];
+
+    Sketcher::SketchObject* Obj = static_cast<Sketcher::SketchObject*>(selection[0].getObject());
+
+    switch (SubNames.size()) {
+    case 0: {
+        // Nothing is selected
+        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Selection is empty"),
+                             QObject::tr("Nothing is selected. Please select end points of curves."));
+        return;
+    }
+    case 1: {
+        std::vector<int> GeoIdList;
+        std::vector<Sketcher::PointPos> PosIdList;
+
+        int selGeoId;
+        Sketcher::PointPos selPosId;
+
+        getIdsFromName(SubNames[0], Obj, selGeoId, selPosId);
+
+        Obj->getDirectlyCoincidentPoints(selGeoId, selPosId, GeoIdList, PosIdList);
+
+        // Find the right pair of coincident points
+        size_t j = 0;
+        for (size_t i = 0; i < GeoIdList.size(); ++i) {
+            if (Sketcher::PointPos::start == PosIdList[i] ||
+                Sketcher::PointPos::end   == PosIdList[i]) {
+                if (j < 2) {
+                    GeoIds[j] = GeoIdList[i];
+                    PosIds[j] = PosIdList[i];
+                    ++j;
+                }
+                else {
+                    QMessageBox::warning(
+                        Gui::getMainWindow(), QObject::tr("Too many curves on point"),
+                        QObject::tr("Exactly two curve should end at the selected point to be able to join them."));
+                    return;
+                }
+            }
+        }
+        if (j < 2) {
+            QMessageBox::warning(
+                Gui::getMainWindow(), QObject::tr("Too few curves on point"),
+                QObject::tr("Exactly two curve should end at the selected point to be able to join them."));
+            return;
+        }
+
+        break;
+    }
+    case 2: {
+        getIdsFromName(SubNames[0], Obj, GeoIds[0], PosIds[0]);
+        getIdsFromName(SubNames[1], Obj, GeoIds[1], PosIds[1]);
+        break;
+    }
+    default: {
+        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
+                             QObject::tr("Two end points, or coincident point should be selected."));
+        return;
+    }
+    }
+
+    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Join Curves"));
+    bool applied = false;
+
+    try {
+        Gui::cmdAppObjectArgs(selection[0].getObject(), "join(%d, %d, %d, %d) ",
+                              GeoIds[0], static_cast<int>(PosIds[0]),
+                              GeoIds[1], static_cast<int>(PosIds[1]));
+        applied = true;
+
+        // Warning: GeoId list will have changed
+    }
+    catch (const Base::Exception& e) {
+        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Error"),
+                             QObject::tr(getStrippedPythonExceptionString(e).c_str()));
+        getSelection().clearSelection();
+    }
+
+    if (applied)
+        Gui::Command::commitCommand();
+    else
+        Gui::Command::abortCommand();
+
+    tryAutoRecomputeIfNotSolve(Obj);
+    getSelection().clearSelection();
+}
+
+bool CmdSketcherJoinCurves::isActive(void)
+{
+    return isSketcherBSplineActive(getActiveGuiDocument(), true);
+}
+
 void CreateSketcherCommandsBSpline()
 {
     Gui::CommandManager &rcCmdMgr = Gui::Application::Instance->commandManager();
@@ -1214,4 +1332,5 @@ void CreateSketcherCommandsBSpline()
     rcCmdMgr.addCommand(new CmdSketcherDecreaseKnotMultiplicity());
     rcCmdMgr.addCommand(new CmdSketcherCompModifyKnotMultiplicity());
     rcCmdMgr.addCommand(new CmdSketcherInsertKnot());
+    rcCmdMgr.addCommand(new CmdSketcherJoinCurves());
 }

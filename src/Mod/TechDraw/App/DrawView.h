@@ -23,17 +23,14 @@
 #ifndef DrawView_h_
 #define DrawView_h_
 
-#include <Mod/TechDraw/TechDrawGlobal.h>
-
 #include <boost_signals2.hpp>
-
 #include <QCoreApplication>
-#include <QObject>
 #include <QRectF>
 
 #include <App/DocumentObject.h>
 #include <App/FeaturePython.h>
 #include <App/PropertyUnits.h>
+#include <Mod/TechDraw/TechDrawGlobal.h>
 
 
 namespace TechDraw
@@ -89,6 +86,7 @@ public:
     virtual std::vector<DrawPage*> findAllParentPages() const;
     virtual int countParentPages() const;
     virtual QRectF getRect() const;                      //must be overridden by derived class
+    QRectF getRectAligned() const;
     virtual double autoScale() const;
     virtual double autoScale(double w, double h) const;
     virtual bool checkFit() const;

@@ -107,12 +107,14 @@ public:
     static Unit Acceleration;
     static Unit Temperature;
 
+    static Unit CurrentDensity;
     static Unit ElectricCurrent;
     static Unit ElectricPotential;
     static Unit ElectricCharge;
     static Unit MagneticFieldStrength;
     static Unit MagneticFlux;
     static Unit MagneticFluxDensity;
+    static Unit Magnetization;
     static Unit ElectricalCapacitance;
     static Unit ElectricalInductance;
     static Unit ElectricalConductance;

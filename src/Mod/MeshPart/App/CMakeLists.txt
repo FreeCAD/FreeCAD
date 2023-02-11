@@ -61,6 +61,12 @@ set(MeshPart_Scripts
     ../Init.py
 )
 
+if(FREECAD_USE_PCH)
+    add_definitions(-D_PreComp_)
+    GET_MSVC_PRECOMPILED_SOURCE("PreCompiled.cpp" PCH_SRCS ${MeshPart_SRCS})
+    ADD_MSVC_PRECOMPILED_HEADER(MeshPart PreCompiled.h PreCompiled.cpp PCH_SRCS)
+endif(FREECAD_USE_PCH)
+
 # Suppress -Wundefined-var-template
 if (MINGW AND CMAKE_COMPILER_IS_CLANGXX)
     unset(_flag_found CACHE)

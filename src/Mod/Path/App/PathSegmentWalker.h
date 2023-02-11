@@ -22,10 +22,12 @@
 #ifndef PATHSEGMENTWALKER_H
 #define PATHSEGMENTWALKER_H
 
-#include <Base/Vector3D.h>
-#include <Mod/Path/App/Path.h>
-
 #include <deque>
+
+#include <Base/Vector3D.h>
+
+#include "Path.h"
+
 
 namespace Path
 {

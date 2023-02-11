@@ -22,9 +22,6 @@
 
 #include "PreCompiled.h"
 
-#include <CXX/Extensions.hxx>
-#include <CXX/Objects.hxx>
-
 #include <Base/Console.h>
 #include <Base/Interpreter.h>
 #include <Base/PyObjectBase.h>
@@ -32,14 +29,15 @@
 #include <Gui/BitmapFactory.h>
 #include <Gui/Language/Translator.h>
 #include <Gui/WidgetFactory.h>
-#include "Workbench.h"
-#include "ViewProviderSketch.h"
-#include "ViewProviderPython.h"
+
+#include "PropertyConstraintListItem.h"
+#include "SketcherSettings.h"
 #include "SoDatumLabel.h"
 #include "SoZoomTranslation.h"
-#include "SketcherSettings.h"
-#include "PropertyConstraintListItem.h"
+#include "ViewProviderPython.h"
+#include "ViewProviderSketch.h"
 #include "ViewProviderSketchGeometryExtension.h"
+#include "Workbench.h"
 
 
 // create the commands
@@ -57,7 +55,6 @@ void loadSketcherResource()
     Q_INIT_RESOURCE(Sketcher);
     Gui::Translator::instance()->refresh();
 }
-
 
 namespace SketcherGui {
 class Module : public Py::ExtensionModule<Module>

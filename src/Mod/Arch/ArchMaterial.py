@@ -209,14 +209,21 @@ class _ViewProviderArchMaterialContainer:
     def attach(self,vobj):
         self.Object = vobj.Object
 
-    def setupContextMenu(self,vobj,menu):
-        from PySide import QtCore,QtGui
-        action1 = QtGui.QAction(QtGui.QIcon(":/icons/Arch_Material_Group.svg"),"Merge duplicates",menu)
-        QtCore.QObject.connect(action1,QtCore.SIGNAL("triggered()"),self.mergeByName)
-        menu.addAction(action1)
-        action2 = QtGui.QAction(QtGui.QIcon(),"Reorder children alphabetically",menu)
-        QtCore.QObject.connect(action2,QtCore.SIGNAL("triggered()"),self.reorder)
-        menu.addAction(action2)
+    def setupContextMenu(self, vobj, menu):
+        actionMergeByName = QtGui.QAction(QtGui.QIcon(":/icons/Arch_Material_Group.svg"),
+                                          translate("Arch", "Merge duplicates"),
+                                          menu)
+        QtCore.QObject.connect(actionMergeByName,
+                               QtCore.SIGNAL("triggered()"),
+                               self.mergeByName)
+        menu.addAction(actionMergeByName)
+
+        actionReorder = QtGui.QAction(translate("Arch", "Reorder children alphabetically"),
+                                      menu)
+        QtCore.QObject.connect(actionReorder,
+                               QtCore.SIGNAL("triggered()"),
+                               self.reorder)
+        menu.addAction(actionReorder)
 
     def mergeByName(self):
         if hasattr(self,"Object"):
@@ -426,7 +433,6 @@ class _ViewProviderArchMaterial:
 
     def attach(self, vobj):
         self.Object = vobj.Object
-        return
 
     def updateData(self, obj, prop):
         if prop == "Color":
@@ -466,19 +472,33 @@ class _ViewProviderArchMaterial:
                         if o.Label == vobj.Object.Material["Father"]:
                             o.touch()
 
-    def setEdit(self,vobj,mode):
+    def setEdit(self, vobj, mode):
+        if mode != 0:
+            return None
+
         self.taskd = _ArchMaterialTaskPanel(vobj.Object)
         FreeCADGui.Control.showDialog(self.taskd)
         self.taskd.form.FieldName.setFocus()
         self.taskd.form.FieldName.selectAll()
         return True
 
-    def unsetEdit(self,vobj,mode):
+    def unsetEdit(self, vobj, mode):
+        if mode != 0:
+            return None
+
         FreeCADGui.Control.closeDialog()
-        FreeCAD.ActiveDocument.recompute()
-        if hasattr(self,"taskd"):
-            del self.taskd
-        return
+        return True
+
+    def setupContextMenu(self, vobj, menu):
+        actionEdit = QtGui.QAction(translate("Arch", "Edit"),
+                                   menu)
+        QtCore.QObject.connect(actionEdit,
+                               QtCore.SIGNAL("triggered()"),
+                               self.edit)
+        menu.addAction(actionEdit)
+
+    def edit(self):
+        FreeCADGui.ActiveDocument.setEdit(self.Object, 0)
 
     def setTaskValue(self,widgetname,value):
         if hasattr(self,"taskd"):
@@ -618,9 +638,13 @@ class _ArchMaterialTaskPanel:
             if hasattr(self.obj,"Material"):
                 self.obj.Material = self.material
                 self.obj.Label = self.material['Name']
-        FreeCADGui.ActiveDocument.resetEdit()
-        FreeCADGui.Control.closeDialog()
         FreeCAD.ActiveDocument.recompute()
+        FreeCADGui.ActiveDocument.resetEdit()
+        return True
+
+    def reject(self):
+        FreeCADGui.ActiveDocument.resetEdit()
+        return True
 
     def chooseMat(self, card):
         "sets self.material from a card"
@@ -738,24 +762,43 @@ class _ViewProviderArchMultiMaterial:
     def getIcon(self):
         return ":/icons/Arch_Material_Multi.svg"
 
-    def setEdit(self,vobj,mode=0):
+    def attach(self, vobj):
+        self.Object = vobj.Object
+
+    def setEdit(self, vobj, mode):
+        if mode != 0:
+            return None
+
         taskd = _ArchMultiMaterialTaskPanel(vobj.Object)
         FreeCADGui.Control.showDialog(taskd)
         return True
 
-    def unsetEdit(self,vobj,mode=0):
+    def unsetEdit(self, vobj, mode):
+        if mode != 0:
+            return None
+
         FreeCADGui.Control.closeDialog()
-        FreeCAD.ActiveDocument.recompute()
         return True
+
+    def doubleClicked(self,vobj):
+        self.edit()
+
+    def setupContextMenu(self, vobj, menu):
+        actionEdit = QtGui.QAction(translate("Arch", "Edit"),
+                                   menu)
+        QtCore.QObject.connect(actionEdit,
+                               QtCore.SIGNAL("triggered()"),
+                               self.edit)
+        menu.addAction(actionEdit)
+
+    def edit(self):
+        FreeCADGui.ActiveDocument.setEdit(self.Object, 0)
 
     def __getstate__(self):
         return None
 
     def __setstate__(self,state):
         return None
-
-    def doubleClicked(self,vobj):
-        self.setEdit(vobj)
 
     def isShow(self):
         return True
@@ -968,6 +1011,11 @@ class _ArchMultiMaterialTaskPanel:
             if self.form.nameField.text():
                 self.obj.Label = self.form.nameField.text()
         FreeCAD.ActiveDocument.recompute()
+        FreeCADGui.ActiveDocument.resetEdit()
+        return True
+
+    def reject(self):
+        FreeCADGui.ActiveDocument.resetEdit()
         return True
 
 

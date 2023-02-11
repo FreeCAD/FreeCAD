@@ -26,8 +26,8 @@
 #include <vtkBoundingBox.h>
 #include <vtkImplicitFunction.h>
 #include <vtkPlane.h>
-#include <vtkSphere.h>
 #include <vtkSmartPointer.h>
+#include <vtkSphere.h>
 
 #include <App/PropertyUnits.h>
 

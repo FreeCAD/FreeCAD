@@ -34,7 +34,6 @@ import FreeCAD as App
 import DraftVecUtils
 import draftutils.utils as utils
 
-from draftutils.utils import param
 from draftutils.messages import _msg, _wrn
 
 # Delay import of module until first use because it is heavy
@@ -90,6 +89,7 @@ def getProj(vec, plane=None):
 
 def get_discretized(edge, plane):
     """Get a discretized edge on a plane."""
+    param = App.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft")
     pieces = param.GetFloat("svgDiscretization", 10.0)
 
     if pieces == 0:

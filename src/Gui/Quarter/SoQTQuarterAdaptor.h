@@ -91,6 +91,7 @@ public:
 
     virtual void saveHomePosition();
     virtual void resetToHomePosition();
+    virtual bool hasHomePosition() const {return m_storedcamera;}
 
     virtual void setSceneGraph(SoNode* root) {
         QuarterWidget::setSceneGraph(root);

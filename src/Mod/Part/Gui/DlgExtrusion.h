@@ -23,12 +23,13 @@
 #ifndef PARTGUI_DLGEXTRUSION_H
 #define PARTGUI_DLGEXTRUSION_H
 
-#include <Gui/TaskView/TaskDialog.h>
-#include <Gui/TaskView/TaskView.h>
+#include <QDialog>
 #include <string>
 
+#include <Gui/TaskView/TaskDialog.h>
+#include <Gui/TaskView/TaskView.h>
 #include <Mod/Part/App/FeatureExtrusion.h>
-#include <QDialog>
+
 
 class TopoDS_Shape;
 

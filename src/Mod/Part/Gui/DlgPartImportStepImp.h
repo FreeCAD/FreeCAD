@@ -30,7 +30,7 @@ namespace PartGui {
 class Ui_DlgPartImportStep;
 
 class DlgPartImportStepImp : public QDialog
-{ 
+{
     Q_OBJECT
 
 public:

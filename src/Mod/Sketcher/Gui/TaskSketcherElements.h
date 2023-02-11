@@ -20,15 +20,17 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef GUI_TASKVIEW_TaskSketcherElements_H
 #define GUI_TASKVIEW_TaskSketcherElements_H
 
-#include <Gui/TaskView/TaskView.h>
-#include <Gui/Selection.h>
-#include <boost_signals2.hpp>
+#include <QStyledItemDelegate>
 #include <QListWidget>
-#include <QIcon>
+
+#include <boost_signals2.hpp>
+
+#include <Gui/Selection.h>
+#include <Gui/TaskView/TaskView.h>
+
 
 namespace App {
 class Property;
@@ -39,6 +41,93 @@ namespace SketcherGui {
 class ViewProviderSketch;
 class Ui_TaskSketcherElements;
 
+
+
+// helper class to store additional information about the listWidget entry.
+class ElementItem : public QListWidgetItem
+{
+    public:
+
+    enum class GeometryState {
+        Normal,
+        Construction,
+        InternalAlignment,
+        External
+    };
+
+    // Struct to identify the selection/preselection of a subelement of the item
+    enum class SubElementType {
+        edge,
+        start,
+        end,
+        mid,
+        none
+    };
+
+    ElementItem(int elementnr, int startingVertex, int midVertex, int endVertex,
+        Base::Type geometryType, GeometryState state, const QString & lab) :
+        ElementNbr(elementnr)
+        , StartingVertex(startingVertex)
+        , MidVertex(midVertex)
+        , EndVertex(endVertex)
+        , GeometryType(std::move(geometryType))
+        , State(state)
+        , isLineSelected(false)
+        , isStartingPointSelected(false)
+        , isEndPointSelected(false)
+        , isMidPointSelected(false)
+        , clickedOn(SubElementType::none)
+        , hovered(SubElementType::none)
+        , rightClicked(false)
+        , label(lab)
+    {}
+
+    ~ElementItem() override {
+    }
+
+    int ElementNbr;
+    int StartingVertex;
+    int MidVertex;
+    int EndVertex;
+
+    Base::Type GeometryType;
+    GeometryState State;
+
+    bool isLineSelected;
+    bool isStartingPointSelected;
+    bool isEndPointSelected;
+    bool isMidPointSelected;
+
+
+    SubElementType clickedOn;
+    SubElementType hovered;
+    bool rightClicked;
+
+    QString label;
+};
+
+class ElementView;
+
+class ElementItemDelegate : public QStyledItemDelegate
+{
+    Q_OBJECT
+public:
+    explicit ElementItemDelegate(ElementView* parent);
+    ~ElementItemDelegate() override;
+
+    void paint(QPainter* painter, const QStyleOptionViewItem& option, const QModelIndex& index) const override;
+    bool editorEvent(QEvent* event, QAbstractItemModel* model, const QStyleOptionViewItem& option, const QModelIndex& index) override;
+
+    ElementItem* getElementtItem(const QModelIndex& index) const;
+
+    const int border = 1; //1px, looks good around buttons.
+    const int leftMargin = 4; //4px on the left of icons, looks good.
+    const int textBottomMargin = 5; //5px center the text.
+
+Q_SIGNALS:
+    void itemHovered(QModelIndex);
+};
+
 class ElementView : public QListWidget
 {
     Q_OBJECT
@@ -46,14 +135,10 @@ class ElementView : public QListWidget
 public:
     explicit ElementView(QWidget *parent = nullptr);
     ~ElementView() override;
-
-
-Q_SIGNALS:
-    void onFilterShortcutPressed();
+    ElementItem* itemFromIndex(const QModelIndex& index);
 
 protected:
     void contextMenuEvent (QContextMenuEvent* event) override;
-    void keyPressEvent(QKeyEvent * event) override;
 
 protected Q_SLOTS:
     // Constraints
@@ -86,23 +171,49 @@ protected Q_SLOTS:
     void doSelectHAxis();
     void doSelectVAxis();
     void deleteSelectedItems();
+
+    void onIndexHovered(QModelIndex index);
+
+Q_SIGNALS:
+    void onItemHovered(QListWidgetItem *);
+};
+
+class ElementFilterList : public QListWidget
+{
+    Q_OBJECT
+
+public:
+    explicit ElementFilterList(QWidget* parent = nullptr);
+    ~ElementFilterList() override;
+
+protected:
+    void changeEvent(QEvent* e) override;
+    virtual void languageChange();
+
+private:
+    using filterItemRepr =  std::pair<const char *, const int>; // {filter item text, filter item level}
+    inline static const std::vector<filterItemRepr> filterItems = {
+        {QT_TR_NOOP("Normal"),0},
+        {QT_TR_NOOP("Construction"),0},
+        {QT_TR_NOOP("Internal"),0},
+        {QT_TR_NOOP("External"),0},
+        {QT_TR_NOOP("All types"),0},
+        {QT_TR_NOOP("Point"),1},
+        {QT_TR_NOOP("Line"),1},
+        {QT_TR_NOOP("Circle"),1},
+        {QT_TR_NOOP("Ellipse"),1},
+        {QT_TR_NOOP("Arc of circle"),1},
+        {QT_TR_NOOP("Arc of ellipse"),1},
+        {QT_TR_NOOP("Arc of hyperbola"),1},
+        {QT_TR_NOOP("Arc of parabola"),1},
+        {QT_TR_NOOP("B-Spline"),1}
+    };
+
 };
 
 class TaskSketcherElements : public Gui::TaskView::TaskBox, public Gui::SelectionObserver
 {
     Q_OBJECT
-
-    class MultIcon {
-
-    public:
-        explicit MultIcon(const char*);
-
-        QIcon Normal;
-        QIcon Construction;
-        QIcon External;
-
-        QIcon getIcon(bool construction, bool external) const;
-    };
 
 public:
     explicit TaskSketcherElements(ViewProviderSketch *sketchView);
@@ -113,20 +224,20 @@ public:
 
 private:
     void slotElementsChanged();
-    void updateIcons(int element);
-    void updatePreselection();
-    void updateVisibility(int filterindex);
-    void setItemVisibility(int elementindex,int filterindex);
+    void updateVisibility();
+    void setItemVisibility(QListWidgetItem* item);
     void clearWidget();
+    void createFilterButtonActions();
+    void createSettingsButtonActions();
+    void connectSignals();
 
 public Q_SLOTS:
-    void on_listWidgetElements_itemSelectionChanged();
-    void on_listWidgetElements_itemEntered(QListWidgetItem *item);
-    void on_listWidgetElements_filterShortcutPressed();
-    void on_listWidgetElements_currentFilterChanged ( int index );
-    void on_listWidgetElements_currentModeFilterChanged ( int index );
-    void on_namingBox_stateChanged(int state);
-    void on_autoSwitchBox_stateChanged(int state);
+    void onListWidgetElementsItemPressed(QListWidgetItem* item);
+    void onListWidgetElementsItemEntered(QListWidgetItem *item);
+    void onListWidgetElementsMouseMoveOnItem(QListWidgetItem* item);
+    void onSettingsExtendedInformationChanged();
+    void onFilterBoxStateChanged(int val);
+    void onListMultiFilterItemChanged(QListWidgetItem* item);
 
 protected:
     void changeEvent(QEvent *e) override;
@@ -136,15 +247,17 @@ protected:
     Connection connectionElementsChanged;
 
 private:
+    using SubElementType = ElementItem::SubElementType;
     QWidget* proxy;
     std::unique_ptr<Ui_TaskSketcherElements> ui;
     int focusItemIndex;
     int previouslySelectedItemIndex;
+    int previouslyHoveredItemIndex;
+    SubElementType previouslyHoveredType;
+
+    ElementFilterList* filterList;
 
     bool isNamingBoxChecked;
-    bool isautoSwitchBoxChecked;
-
-    bool inhibitSelectionUpdate;
 };
 
 } //namespace SketcherGui

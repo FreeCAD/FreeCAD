@@ -23,6 +23,8 @@
 #ifndef MESHGUI_VIEWPROVIDERMESHTRANSFORM_H
 #define MESHGUI_VIEWPROVIDERMESHTRANSFORM_H
 
+#include "ViewProvider.h"
+
 class SoSeparator;
 class SbVec3f;
 class SoSwitch;
@@ -38,9 +40,6 @@ namespace Gui {
   class View3DInventorViewer;
 }
 
-
-#include "ViewProvider.h"
-
 namespace MeshGui {
 
 /** Like Mesh viewprovider but with manipulator
@@ -54,9 +53,9 @@ public:
   ~ViewProviderMeshTransform() override;
 
 
-  /** 
+  /**
    * Extracts the mesh data from the feature \a pcFeature and creates
-   * an Inventor node \a SoNode with these data. 
+   * an Inventor node \a SoNode with these data.
    */
   void attach(App::DocumentObject *) override;
 

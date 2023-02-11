@@ -20,17 +20,16 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef MESHPARTGUI_TESSELLATION_H
 #define MESHPARTGUI_TESSELLATION_H
 
-#include <Gui/TaskView/TaskDialog.h>
-#include <Gui/TaskView/TaskView.h>
-#include <Gui/Selection.h>
-#include <App/DocumentObserver.h>
-#include <Mod/Mesh/Gui/RemeshGmsh.h>
 #include <memory>
 #include <QPointer>
+
+#include <Gui/TaskView/TaskDialog.h>
+#include <Gui/TaskView/TaskView.h>
+#include <Mod/Mesh/Gui/RemeshGmsh.h>
+
 
 namespace App {
 class Document;

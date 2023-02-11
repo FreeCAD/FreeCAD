@@ -20,10 +20,8 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
-#include "Voronoi.h"
 #include "VoronoiEdge.h"
 
 

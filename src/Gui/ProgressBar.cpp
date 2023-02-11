@@ -70,10 +70,10 @@ struct ProgressBarPrivate
                 parent = QWidget::find(window->winId());
         }
         while (parent) {
-            QMessageBox* dlg = qobject_cast<QMessageBox*>(parent);
+            auto* dlg = qobject_cast<QMessageBox*>(parent);
             if (dlg && dlg->isModal())
                 return true;
-            QProgressDialog* pd = qobject_cast<QProgressDialog*>(parent);
+            auto* pd = qobject_cast<QProgressDialog*>(parent);
             if (pd)
                 return true;
             parent = parent->parentWidget();
@@ -398,7 +398,7 @@ ProgressBar::ProgressBar (SequencerBar* s, QWidget * parent)
     d->minimumDuration = 2000; // 2 seconds
     d->delayShowTimer = new QTimer(this);
     d->delayShowTimer->setSingleShot(true);
-    connect(d->delayShowTimer, SIGNAL(timeout()), this, SLOT(delayedShow()));
+    connect(d->delayShowTimer, &QTimer::timeout, this, &ProgressBar::delayedShow);
     d->observeEventFilter = 0;
 
     setFixedWidth(120);
@@ -410,7 +410,7 @@ ProgressBar::ProgressBar (SequencerBar* s, QWidget * parent)
 
 ProgressBar::~ProgressBar ()
 {
-    disconnect(d->delayShowTimer, SIGNAL(timeout()), this, SLOT(delayedShow()));
+    disconnect(d->delayShowTimer, &QTimer::timeout, this, &ProgressBar::delayedShow);
     delete d->delayShowTimer;
     delete d;
 }
@@ -486,9 +486,9 @@ void ProgressBar::aboutToHide()
 
 bool ProgressBar::canAbort() const
 {
-    int ret = QMessageBox::question(getMainWindow(),tr("Aborting"),
-    tr("Do you really want to abort the operation?"),  QMessageBox::Yes,
-    QMessageBox::No|QMessageBox::Default);
+    auto ret = QMessageBox::question(getMainWindow(),tr("Aborting"),
+    tr("Do you really want to abort the operation?"),  QMessageBox::Yes | QMessageBox::No,
+    QMessageBox::No);
 
     return (ret == QMessageBox::Yes) ? true : false;
 }
@@ -558,7 +558,7 @@ bool ProgressBar::eventFilter(QObject* o, QEvent* e)
         QThread* thr = this->thread(); // this is the main thread
         if (thr != currentThread) {
             if (e->type() == QEvent::KeyPress) {
-                QKeyEvent* ke = static_cast<QKeyEvent*>(e);
+                auto ke = static_cast<QKeyEvent*>(e);
                 if (ke->key() == Qt::Key_Escape) {
                     // cancel the operation
                     sequencer->tryToCancel();
@@ -574,7 +574,7 @@ bool ProgressBar::eventFilter(QObject* o, QEvent* e)
         // check for ESC
         case QEvent::KeyPress:
             {
-                QKeyEvent* ke = static_cast<QKeyEvent*>(e);
+                auto ke = static_cast<QKeyEvent*>(e);
                 if (ke->key() == Qt::Key_Escape) {
                     // eventFilter() was called from the application 50 times without performing a new step (app could hang)
                     if (d->observeEventFilter > 50) {

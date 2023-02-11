@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <GenerateModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="generateMetaModel_Module.xsd">
-  <PythonExport 
+  <PythonExport
       Father="PyObjectBase"
       Name="ShapeFix_EdgeConnectPy"
       PythonName="Part.ShapeFix.EdgeConnect"
-      Twin="ShapeFix_EdgeConnect" 
+      Twin="ShapeFix_EdgeConnect"
       TwinPointer="ShapeFix_EdgeConnect"
       Include="ShapeFix_EdgeConnect.hxx"
       Namespace="Part"

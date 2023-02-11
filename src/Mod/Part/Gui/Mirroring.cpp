@@ -31,7 +31,7 @@
 
 # include <cfloat>
 # include <QMessageBox>
-# include <QRegExp>
+# include <QRegularExpression>
 # include <QTreeWidget>
 #endif
 
@@ -77,7 +77,7 @@ Mirroring::Mirroring(QWidget* parent)
     sel.applyFrom(Gui::Selection().getObjectsOfType(App::Part::getClassTypeId()));
 }
 
-/*  
+/*
  *  Destroys the object and frees any allocated resources
  */
 Mirroring::~Mirroring()
@@ -110,7 +110,7 @@ void Mirroring::findShapes()
         if (!shape.isNull()) {
             QString label = QString::fromUtf8((*it)->Label.getValue());
             QString name = QString::fromLatin1((*it)->getNameInDocument());
-            
+
             QTreeWidgetItem* child = new QTreeWidgetItem();
             child->setText(0, label);
             child->setToolTip(0, label);
@@ -142,7 +142,7 @@ bool Mirroring::accept()
     activeDoc->openTransaction("Mirroring");
 
     QString shape, label;
-    QRegExp rx(QString::fromLatin1(" \\(Mirror #\\d+\\)$"));
+    QRegularExpression rx(QString::fromLatin1(" \\(Mirror #\\d+\\)$"));
     QList<QTreeWidgetItem *> items = ui->shapes->selectedItems();
     float normx=0, normy=0, normz=0;
     int index = ui->comboBox->currentIndex();

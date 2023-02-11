@@ -23,11 +23,13 @@
 #ifndef MESHCORE_SEGMENTATION_H
 #define MESHCORE_SEGMENTATION_H
 
-#include "MeshKernel.h"
-#include "Curvature.h"
-#include "Visitor.h"
-#include <vector>
 #include <memory>
+#include <vector>
+
+#include "Curvature.h"
+#include "MeshKernel.h"
+#include "Visitor.h"
+
 
 namespace MeshCore {
 
@@ -256,7 +258,7 @@ class MeshExport MeshSurfaceVisitor : public MeshFacetVisitor
 public:
     MeshSurfaceVisitor (MeshSurfaceSegment& segm, std::vector<FacetIndex> &indices);
     ~MeshSurfaceVisitor () override;
-    bool AllowVisit (const MeshFacet& face, const MeshFacet&, 
+    bool AllowVisit (const MeshFacet& face, const MeshFacet&,
                      FacetIndex, unsigned long, unsigned short neighbourIndex) override;
     bool Visit (const MeshFacet & face, const MeshFacet &,
                 FacetIndex ulFInd, unsigned long) override;

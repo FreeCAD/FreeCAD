@@ -18,14 +18,14 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
-#include <QApplication>
-#include <QMessageBox>
+#ifndef _PreComp_
+# include <QApplication>
+# include <QMessageBox>
+#endif
 
-#include <App/Application.h>
-#include <App/Document.h>
+#include <App/DocumentObject.h>
 #include <Base/Console.h>
 #include <Gui/Action.h>
 #include <Gui/Application.h>
@@ -36,7 +36,6 @@
 #include <Gui/MainWindow.h>
 #include <Gui/Selection.h>
 #include <Gui/ViewProvider.h>
-
 #include <Mod/TechDraw/App/DrawPage.h>
 #include <Mod/TechDraw/App/DrawView.h>
 
@@ -46,13 +45,11 @@
 
 using namespace TechDrawGui;
 using namespace TechDraw;
-using namespace std;
 
 void execStackTop(Gui::Command* cmd);
 void execStackBottom(Gui::Command* cmd);
 void execStackUp(Gui::Command* cmd);
 void execStackDown(Gui::Command* cmd);
-
 
 //===========================================================================
 // TechDraw_StackGroup
@@ -74,7 +71,7 @@ CmdTechDrawStackGroup::CmdTechDrawStackGroup()
 void CmdTechDrawStackGroup::activated(int iMsg)
 {
     Gui::TaskView::TaskDialog *dlg = Gui::Control().activeDialog();
-    if (dlg != nullptr) {
+    if (dlg) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Task In Progress"),
             QObject::tr("Close active task dialog and try again."));
         return;
@@ -190,7 +187,7 @@ void CmdTechDrawStackTop::activated(int iMsg)
     Q_UNUSED(iMsg);
 
     Gui::TaskView::TaskDialog *dlg = Gui::Control().activeDialog();
-    if (dlg != nullptr) {
+    if (dlg) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Task In Progress"),
             QObject::tr("Close active task dialog and try again."));
         return;
@@ -250,7 +247,7 @@ void CmdTechDrawStackBottom::activated(int iMsg)
     Q_UNUSED(iMsg);
 
     Gui::TaskView::TaskDialog *dlg = Gui::Control().activeDialog();
-    if (dlg != nullptr) {
+    if (dlg) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Task In Progress"),
             QObject::tr("Close active task dialog and try again."));
         return;
@@ -310,7 +307,7 @@ void CmdTechDrawStackUp::activated(int iMsg)
     Q_UNUSED(iMsg);
 
     Gui::TaskView::TaskDialog *dlg = Gui::Control().activeDialog();
-    if (dlg != nullptr) {
+    if (dlg) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Task In Progress"),
             QObject::tr("Close active task dialog and try again."));
         return;
@@ -370,7 +367,7 @@ void CmdTechDrawStackDown::activated(int iMsg)
     Q_UNUSED(iMsg);
 
     Gui::TaskView::TaskDialog *dlg = Gui::Control().activeDialog();
-    if (dlg != nullptr) {
+    if (dlg) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Task In Progress"),
             QObject::tr("Close active task dialog and try again."));
         return;

@@ -19,19 +19,19 @@
  *   Suite 330, Boston, MA  02111-1307, USA                                 *
  *                                                                          *
  ****************************************************************************/
+
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <Qt>
-# include <QListWidget>
 # include <QListWidgetItem>
-# include <QPushButton>
 # include <QList>
 #endif
 
-#include <Base/Console.h>
+#include <Base/Console.h> // for FC_LOG_LEVEL_INIT
 #include <Base/Tools.h>
+
 #include "DlgPageChooser.h"
 #include "ui_DlgPageChooser.h"
+
 
 FC_LOG_LEVEL_INIT("Gui", true, true)
 
@@ -50,8 +50,8 @@ DlgPageChooser::DlgPageChooser(
 
     fillList(labels, names);
 
-    connect(ui->bbButtons, SIGNAL(accepted()), this, SLOT(accept()));
-    connect(ui->bbButtons, SIGNAL(rejected()), this, SLOT(reject()));
+    connect(ui->bbButtons, &QDialogButtonBox::accepted, this, &QDialog::accept);
+    connect(ui->bbButtons, &QDialogButtonBox::rejected, this, &QDialog::reject);
 }
 
 /**

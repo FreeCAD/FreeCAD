@@ -27,9 +27,9 @@
 
 #include <App/Document.h>
 #include <App/DocumentObject.h>
+#include <Gui/Application.h>
 #include <Gui/Command.h>
 #include <Gui/Document.h>
-#include <Gui/Application.h>
 #include <Gui/MainWindow.h>
 #include <Gui/PrefWidgets.h>
 #include <Gui/ViewProvider.h>
@@ -83,12 +83,12 @@ VisualInspection::VisualInspection(QWidget* parent, Qt::WindowFlags fl)
     : QDialog(parent, fl), ui(new Ui_VisualInspection)
 {
     ui->setupUi(this);
-    connect(ui->treeWidgetActual, SIGNAL(itemClicked(QTreeWidgetItem*, int)), 
-            this, SLOT(onActivateItem(QTreeWidgetItem*)));
-    connect(ui->treeWidgetNominal, SIGNAL(itemClicked(QTreeWidgetItem*, int)), 
-            this, SLOT(onActivateItem(QTreeWidgetItem*)));
-    connect(ui->buttonBox, SIGNAL(helpRequested()),
-            Gui::getMainWindow(), SLOT(whatsThis()));
+    connect(ui->treeWidgetActual, &QTreeWidget::itemClicked,
+            this, &VisualInspection::onActivateItem);
+    connect(ui->treeWidgetNominal, &QTreeWidget::itemClicked,
+            this, &VisualInspection::onActivateItem);
+    connect(ui->buttonBox, &QDialogButtonBox::helpRequested,
+            Gui::getMainWindow(), &Gui::MainWindow::whatsThis);
 
     //FIXME: Not used yet
     ui->textLabel2->hide();
@@ -178,7 +178,7 @@ void VisualInspection::saveSettings()
 void VisualInspection::onActivateItem(QTreeWidgetItem* item)
 {
     if (item) {
-        SingleSelectionItem* sel = (SingleSelectionItem*)item;
+        SingleSelectionItem* sel = static_cast<SingleSelectionItem*>(item);
         SingleSelectionItem* cmp = sel->getCompetitiveItem();
         if (cmp && cmp->checkState(0) == Qt::Checked)
             cmp->setCheckState(0, Qt::Unchecked);

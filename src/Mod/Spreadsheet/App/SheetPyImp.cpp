@@ -24,15 +24,15 @@
 #include "PreCompiled.h"
 
 #include <boost/tokenizer.hpp>
-#include <Base/Exception.h>
-#include <Mod/Spreadsheet/App/Sheet.h>
-#include <App/PropertyStandard.h>
-#include "Utils.h"
-#include <App/Range.h>
 
+#include <App/Range.h>
+#include <Base/Exception.h>
+
+#include "Sheet.h"
 // inclusion of the generated files (generated out of SheetPy.xml)
 #include "SheetPy.h"
 #include "SheetPy.cpp"
+
 
 using namespace Spreadsheet;
 using namespace App;
@@ -494,13 +494,8 @@ PyObject* SheetPy::setAlias(PyObject *args)
 
     try {
         address = stringToAddress(strAddress);
-        if (PyUnicode_Check(value))
-            getSheetPtr()->setAlias(address, PyUnicode_AsUTF8(value));
-        else if (value == Py_None)
-            getSheetPtr()->setAlias(address, "");
-        else
-            throw Base::TypeError("String or None expected");
-
+        Base::PyTypeCheck(&value, &PyUnicode_Type, "String or None expected");
+        getSheetPtr()->setAlias(address, value ? PyUnicode_AsUTF8(value) : "");
         Py_Return;
     }
     catch (const Base::Exception & e) {
@@ -523,10 +518,8 @@ PyObject* SheetPy::getAlias(PyObject *args)
 
         if (cell && cell->getAlias(alias))
             return Py::new_reference_to( Py::String( alias ) );
-        else {
-            Py_INCREF(Py_None);
-            return Py_None;
-        }
+        else
+            Py_Return;
     }
     catch (const Base::Exception & e) {
         PyErr_SetString(PyExc_ValueError, e.what());
@@ -546,10 +539,8 @@ PyObject* SheetPy::getCellFromAlias(PyObject *args)
 
         if (!address.empty())
             return Py::new_reference_to( Py::String( address ) );
-        else {
-            Py_INCREF(Py_None);
-            return Py_None;
-        }
+        else
+            Py_Return;
     }
     catch (const Base::Exception & e) {
         PyErr_SetString(PyExc_ValueError, e.what());
@@ -988,6 +979,57 @@ PyObject *SheetPy::recomputeCells(PyObject *args) {
         Py_Return;
     }PY_CATCH;
 }
+
+PyObject *SheetPy::getUsedCells(PyObject *args)
+{
+    if (!PyArg_ParseTuple(args, "")) {
+        return nullptr;
+    }
+    auto usedCells = getSheetPtr()->getCells()->getUsedCells();
+    Py::List pyCellList;
+    for (const auto &cell : usedCells) { 
+        pyCellList.append(Py::String(cell.toString()));
+    }
+    return Py::new_reference_to(pyCellList);
+}
+
+PyObject *SheetPy::getUsedRange(PyObject *args)
+{
+    if (!PyArg_ParseTuple(args, "")) {
+        return nullptr;
+    }
+    auto usedRange = getSheetPtr()->getCells()->getUsedRange();
+    Py::Tuple pyTuple(2);
+    pyTuple[0] = Py::String(std::get<0>(usedRange).toString());
+    pyTuple[1] = Py::String(std::get<1>(usedRange).toString());
+    return Py::new_reference_to(pyTuple);
+}
+
+PyObject *SheetPy::getNonEmptyCells(PyObject *args)
+{
+    if (!PyArg_ParseTuple(args, "")) {
+        return nullptr;
+    }
+    auto nonEmptyCells = getSheetPtr()->getCells()->getNonEmptyCells();
+    Py::List pyCellList;
+    for (const auto &cell : nonEmptyCells) { 
+        pyCellList.append(Py::String(cell.toString())); 
+    }
+    return Py::new_reference_to(pyCellList);
+}
+
+PyObject *SheetPy::getNonEmptyRange(PyObject *args)
+{
+    if (!PyArg_ParseTuple(args, "")) {
+        return nullptr;
+    }
+    auto nonEmptyRange = getSheetPtr()->getCells()->getNonEmptyRange();
+    Py::Tuple pyTuple(2);
+    pyTuple[0] = Py::String(std::get<0>(nonEmptyRange).toString());
+    pyTuple[1] = Py::String(std::get<1>(nonEmptyRange).toString());
+    return Py::new_reference_to(pyTuple);
+}
+
 
 // +++ custom attributes implementer ++++++++++++++++++++++++++++++++++++++++
 

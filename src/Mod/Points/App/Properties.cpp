@@ -20,30 +20,28 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 #ifndef _PreComp_
+# include <algorithm>
 # include <cmath>
 # include <iostream>
-# include <algorithm>
+# include <QtConcurrentMap>
 #endif
 
 #include <Base/Converter.h>
-#include <Base/Exception.h>
 #include <Base/Matrix.h>
 #include <Base/Persistence.h>
 #include <Base/Stream.h>
-#include <Base/Writer.h>
 #include <Base/VectorPy.h>
+#include <Base/Writer.h>
 
-#include "Points.h"
 #include "Properties.h"
-#include "PointsPy.h"
+#include "Points.h"
 
-#include <QtConcurrentMap>
 #ifdef _MSC_VER
 # include <ppl.h>
 #endif
+
 
 using namespace Points;
 using namespace std;

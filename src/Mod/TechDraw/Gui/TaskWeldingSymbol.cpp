@@ -21,51 +21,28 @@
  ***************************************************************************/
 
 #include "PreCompiled.h"
-
 #ifndef _PreComp_
-#include <cmath>
-#include <BRepBndLib.hxx>
-#include <Bnd_Box.hxx>
-#include <QApplication>
-#include <QGraphicsScene>
-#include <QPushButton>
-#include <QStatusBar>
+# include <cmath>
+# include <QPushButton>
 #endif // #ifndef _PreComp_
 
-
+#include <App/Document.h>
 #include <Base/Console.h>
 #include <Base/Tools.h>
-#include <Base/UnitsApi.h>
-
-#include <App/Document.h>
-
-#include <Gui/Application.h>
 #include <Gui/BitmapFactory.h>
 #include <Gui/Command.h>
-#include <Gui/Control.h>
 #include <Gui/Document.h>
-#include <Gui/MainWindow.h>
-#include <Gui/Selection.h>
-#include <Gui/ViewProvider.h>
-#include <Gui/WaitCursor.h>
 
 #include <Mod/TechDraw/App/DrawPage.h>
-#include <Mod/TechDraw/App/DrawUtil.h>
-#include <Mod/TechDraw/App/DrawView.h>
-#include <Mod/TechDraw/App/DrawViewPart.h>
 #include <Mod/TechDraw/App/DrawLeaderLine.h>
-#include <Mod/TechDraw/App/DrawWeldSymbol.h>
-#include <Mod/TechDraw/App/DrawTile.h>
 #include <Mod/TechDraw/App/DrawTileWeld.h>
-#include <Mod/TechDraw/App/Geometry.h>
-#include <Mod/TechDraw/App/Cosmetic.h>
-#include <Mod/TechDraw/Gui/ui_TaskWeldingSymbol.h>
-
-#include "PreferencesGui.h"
-#include "SymbolChooser.h"
+#include <Mod/TechDraw/App/DrawWeldSymbol.h>
 
 #include "TaskWeldingSymbol.h"
 #include "ui_TaskWeldingSymbol.h"
+#include "PreferencesGui.h"
+#include "SymbolChooser.h"
+
 
 using namespace Gui;
 using namespace TechDraw;
@@ -89,16 +66,16 @@ TaskWeldingSymbol::TaskWeldingSymbol(TechDraw::DrawLeaderLine* leadFeat) :
 
     setUiPrimary();
 
-    connect(ui->pbArrowSymbol, SIGNAL(clicked(bool)),
-            this, SLOT(onArrowSymbolCreateClicked()));
-    connect(ui->pbOtherSymbol, SIGNAL(clicked(bool)),
-            this, SLOT(onOtherSymbolCreateClicked()));
-    connect(ui->pbOtherErase, SIGNAL(clicked(bool)),
-            this, SLOT(onOtherEraseCreateClicked()));
-    connect(ui->pbFlipSides, SIGNAL(clicked(bool)),
-            this, SLOT(onFlipSidesCreateClicked()));
-    connect(ui->fcSymbolDir, SIGNAL(fileNameSelected(QString)),
-            this, SLOT(onDirectorySelected(QString)));
+    connect(ui->pbArrowSymbol, &QPushButton::clicked,
+            this, &TaskWeldingSymbol::onArrowSymbolCreateClicked);
+    connect(ui->pbOtherSymbol, &QPushButton::clicked,
+            this, &TaskWeldingSymbol::onOtherSymbolCreateClicked);
+    connect(ui->pbOtherErase, &QPushButton::clicked,
+            this, &TaskWeldingSymbol::onOtherEraseCreateClicked);
+    connect(ui->pbFlipSides, &QPushButton::clicked,
+            this, &TaskWeldingSymbol::onFlipSidesCreateClicked);
+    connect(ui->fcSymbolDir, &FileChooser::fileNameSelected,
+            this, &TaskWeldingSymbol::onDirectorySelected);
 }
 
 //ctor for edit
@@ -129,40 +106,40 @@ TaskWeldingSymbol::TaskWeldingSymbol(TechDraw::DrawWeldSymbol* weld) :
 
     setUiEdit();
 
-    connect(ui->pbArrowSymbol, SIGNAL(clicked(bool)),
-        this, SLOT(onArrowSymbolClicked()));
-    connect(ui->pbOtherSymbol, SIGNAL(clicked(bool)),
-        this, SLOT(onOtherSymbolClicked()));
-    connect(ui->pbOtherErase, SIGNAL(clicked(bool)),
-        this, SLOT(onOtherEraseClicked()));
-    connect(ui->pbFlipSides, SIGNAL(clicked(bool)),
-        this, SLOT(onFlipSidesClicked()));
+    connect(ui->pbArrowSymbol, &QPushButton::clicked,
+        this, &TaskWeldingSymbol::onArrowSymbolClicked);
+    connect(ui->pbOtherSymbol, &QPushButton::clicked,
+        this, &TaskWeldingSymbol::onOtherSymbolClicked);
+    connect(ui->pbOtherErase, &QPushButton::clicked,
+        this, &TaskWeldingSymbol::onOtherEraseClicked);
+    connect(ui->pbFlipSides, &QPushButton::clicked,
+        this, &TaskWeldingSymbol::onFlipSidesClicked);
 
-    connect(ui->fcSymbolDir, SIGNAL(fileNameSelected(const QString&)),
-        this, SLOT(onDirectorySelected(const QString&)));
+    connect(ui->fcSymbolDir, &FileChooser::fileNameSelected,
+        this, &TaskWeldingSymbol::onDirectorySelected);
 
-    connect(ui->leArrowTextL, SIGNAL(textEdited(QString)),
-        this, SLOT(onArrowTextChanged()));
-    connect(ui->leArrowTextR, SIGNAL(textEdited(QString)),
-        this, SLOT(onArrowTextChanged()));
-    connect(ui->leArrowTextC, SIGNAL(textEdited(QString)),
-        this, SLOT(onArrowTextChanged()));
+    connect(ui->leArrowTextL, &QLineEdit::textEdited,
+        this, &TaskWeldingSymbol::onArrowTextChanged);
+    connect(ui->leArrowTextR, &QLineEdit::textEdited,
+        this, &TaskWeldingSymbol::onArrowTextChanged);
+    connect(ui->leArrowTextC, &QLineEdit::textEdited,
+        this, &TaskWeldingSymbol::onArrowTextChanged);
 
-    connect(ui->leOtherTextL, SIGNAL(textEdited(QString)),
-        this, SLOT(onOtherTextChanged()));
-    connect(ui->leOtherTextR, SIGNAL(textEdited(QString)),
-        this, SLOT(onOtherTextChanged()));
-    connect(ui->leOtherTextC, SIGNAL(textEdited(QString)),
-        this, SLOT(onOtherTextChanged()));
+    connect(ui->leOtherTextL, &QLineEdit::textEdited,
+        this, &TaskWeldingSymbol::onOtherTextChanged);
+    connect(ui->leOtherTextR, &QLineEdit::textEdited,
+        this, &TaskWeldingSymbol::onOtherTextChanged);
+    connect(ui->leOtherTextC, &QLineEdit::textEdited,
+        this, &TaskWeldingSymbol::onOtherTextChanged);
 
-    connect(ui->leTailText, SIGNAL(textEdited(QString)),
-        this, SLOT(onWeldingChanged()));
-    connect(ui->cbFieldWeld, SIGNAL(toggled(bool)),
-        this, SLOT(onWeldingChanged()));
-    connect(ui->cbAllAround, SIGNAL(toggled(bool)),
-        this, SLOT(onWeldingChanged()));
-    connect(ui->cbAltWeld, SIGNAL(toggled(bool)),
-        this, SLOT(onWeldingChanged()));
+    connect(ui->leTailText, &QLineEdit::textEdited,
+        this, &TaskWeldingSymbol::onWeldingChanged);
+    connect(ui->cbFieldWeld, &QCheckBox::toggled,
+        this, &TaskWeldingSymbol::onWeldingChanged);
+    connect(ui->cbAllAround, &QCheckBox::toggled,
+        this, &TaskWeldingSymbol::onWeldingChanged);
+    connect(ui->cbAltWeld, &QCheckBox::toggled,
+        this, &TaskWeldingSymbol::onWeldingChanged);
 }
 
 TaskWeldingSymbol::~TaskWeldingSymbol()
@@ -267,8 +244,8 @@ void TaskWeldingSymbol::symbolDialog(const char* source)
 {
     QString _source = tr(source);
     SymbolChooser* dlg = new SymbolChooser(this, m_currDir, _source);
-    connect(dlg, SIGNAL(symbolSelected(QString, QString)),
-            this, SLOT(onSymbolSelected(QString, QString)));
+    connect(dlg, &SymbolChooser::symbolSelected,
+            this, &TaskWeldingSymbol::onSymbolSelected);
     dlg->setAttribute(Qt::WA_DeleteOnClose);
     dlg->exec();
 }

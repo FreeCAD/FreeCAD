@@ -20,38 +20,26 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
-
 #ifndef _PreComp_
-# include <Standard_math.hxx>
-
-# include <Inventor/actions/SoGetBoundingBoxAction.h>
 # include <Inventor/SbBox3f.h>
+# include <Inventor/SbLine.h>
+# include <Inventor/SbTime.h>
 # include <Inventor/SoPickedPoint.h>
+# include <Inventor/actions/SoGetBoundingBoxAction.h>
 # include <Inventor/details/SoPointDetail.h>
 # include <Inventor/events/SoKeyboardEvent.h>
 # include <Inventor/nodes/SoCamera.h>
-# include <Inventor/SbLine.h>
-# include <Inventor/SbTime.h>
 
-/// Qt Include Files
-# include <QAction>
 # include <QApplication>
-# include <QColor>
-# include <QDesktopWidget>
-# include <QDialog>
-# include <QFont>
-# include <QKeyEvent>
+# include <QFontMetricsF>
 # include <QMenu>
 # include <QMessageBox>
-# include <QPainter>
+# include <QScreen>
 # include <QTextStream>
 #endif
 
-/// Here the FreeCAD includes sorted by Base,App,Gui......
 #include <Base/Console.h>
-#include <Base/Tools.h>
 #include <Base/Vector3D.h>
 #include <Gui/Application.h>
 #include <Gui/BitmapFactory.h>
@@ -63,21 +51,20 @@
 #include <Gui/Selection.h>
 #include <Gui/SelectionObject.h>
 #include <Gui/SoFCUnifiedSelection.h>
+#include "Gui/ToolBarManager.h"
 #include <Gui/Utilities.h>
 #include <Gui/View3DInventor.h>
 #include <Gui/View3DInventorViewer.h>
-
 #include <Mod/Part/App/Geometry.h>
 #include <Mod/Sketcher/App/GeoList.h>
 #include <Mod/Sketcher/App/GeometryFacade.h>
-#include <Mod/Sketcher/App/Sketch.h>
 #include <Mod/Sketcher/App/SketchObject.h>
 #include <Mod/Sketcher/App/SolverGeometryExtension.h>
 
 #include "ViewProviderSketch.h"
 #include "DrawSketchHandler.h"
-#include "EditModeCoinManager.h"
 #include "EditDatumDialog.h"
+#include "EditModeCoinManager.h"
 #include "TaskDlgEditSketch.h"
 #include "TaskSketcherValidation.h"
 #include "Utils.h"
@@ -283,20 +270,21 @@ ViewProviderSketch::ViewProviderSketch()
     listener(nullptr),
     editCoinManager(nullptr),
     pObserver(std::make_unique<ViewProviderSketch::ParameterObserver>(*this)),
-    sketchHandler(nullptr)
+    sketchHandler(nullptr),
+    viewOrientationFactor(1)
 {
     PartGui::ViewProviderAttachExtension::initExtension(this);
 
     ADD_PROPERTY_TYPE(Autoconstraints,(true),"Auto Constraints",(App::PropertyType)(App::Prop_None),"Create auto constraints");
     ADD_PROPERTY_TYPE(AvoidRedundant,(true),"Auto Constraints",(App::PropertyType)(App::Prop_None),"Avoid redundant autoconstraint");
-    ADD_PROPERTY_TYPE(TempoVis,(Py::None()),"Visibility automation",(App::PropertyType)(App::Prop_None),"Object that handles hiding and showing other objects when entering/leaving sketch.");
-    ADD_PROPERTY_TYPE(HideDependent,(true),"Visibility automation",(App::PropertyType)(App::Prop_None),"If true, all objects that depend on the sketch are hidden when opening editing.");
-    ADD_PROPERTY_TYPE(ShowLinks,(true),"Visibility automation",(App::PropertyType)(App::Prop_None),"If true, all objects used in links to external geometry are shown when opening sketch.");
-    ADD_PROPERTY_TYPE(ShowSupport,(true),"Visibility automation",(App::PropertyType)(App::Prop_None),"If true, all objects this sketch is attached to are shown when opening sketch.");
-    ADD_PROPERTY_TYPE(RestoreCamera,(true),"Visibility automation",(App::PropertyType)(App::Prop_None),"If true, camera position before entering sketch is remembered, and restored after closing it.");
-    ADD_PROPERTY_TYPE(ForceOrtho,(false),"Visibility automation",(App::PropertyType)(App::Prop_None),"If true, camera type will be forced to orthographic view when entering editing mode.");
-    ADD_PROPERTY_TYPE(SectionView,(false),"Visibility automation",(App::PropertyType)(App::Prop_None),"If true, only objects (or part of) located behind the sketch plane are visible.");
-    ADD_PROPERTY_TYPE(EditingWorkbench,("SketcherWorkbench"),"Visibility automation",(App::PropertyType)(App::Prop_None),"Name of the workbench to activate when editing this sketch.");
+    ADD_PROPERTY_TYPE(TempoVis,(Py::None()),"Visibility automation",(App::PropertyType)(App::Prop_ReadOnly),"Object that handles hiding and showing other objects when entering/leaving sketch.");
+    ADD_PROPERTY_TYPE(HideDependent,(true),"Visibility automation",(App::PropertyType)(App::Prop_ReadOnly),"If true, all objects that depend on the sketch are hidden when opening editing.");
+    ADD_PROPERTY_TYPE(ShowLinks,(true),"Visibility automation",(App::PropertyType)(App::Prop_ReadOnly),"If true, all objects used in links to external geometry are shown when opening sketch.");
+    ADD_PROPERTY_TYPE(ShowSupport,(true),"Visibility automation",(App::PropertyType)(App::Prop_ReadOnly),"If true, all objects this sketch is attached to are shown when opening sketch.");
+    ADD_PROPERTY_TYPE(RestoreCamera,(true),"Visibility automation",(App::PropertyType)(App::Prop_ReadOnly),"If true, camera position before entering sketch is remembered, and restored after closing it.");
+    ADD_PROPERTY_TYPE(ForceOrtho,(false),"Visibility automation",(App::PropertyType)(App::Prop_ReadOnly),"If true, camera type will be forced to orthographic view when entering editing mode.");
+    ADD_PROPERTY_TYPE(SectionView,(false),"Visibility automation",(App::PropertyType)(App::Prop_ReadOnly),"If true, only objects (or part of) located behind the sketch plane are visible.");
+    ADD_PROPERTY_TYPE(EditingWorkbench,("SketcherWorkbench"),"Visibility automation",(App::PropertyType)(App::Prop_ReadOnly),"Name of the workbench to activate when editing this sketch.");
 
     // Default values that will be overridden by preferences (if existing)
     PointSize.setValue(4);
@@ -312,6 +300,7 @@ ViewProviderSketch::ViewProviderSketch()
     //rubberband selection
     rubberband = std::make_unique<Gui::Rubberband>();
 
+    cameraSensor.setFunction(&ViewProviderSketch::camSensCB);
 }
 
 ViewProviderSketch::~ViewProviderSketch()
@@ -508,12 +497,6 @@ bool ViewProviderSketch::keyPressed(bool pressed, int key)
             return false;
         }
         break;
-    case SoKeyboardEvent::LEFT_SHIFT:
-        if (Mode < STATUS_SKETCH_UseHandler) {
-            editCoinManager->setConstraintSelectability(!pressed);
-            return true;
-        }
-        [[fallthrough]];
     default:
         {
             if (isInEditMode() && sketchHandler)
@@ -555,9 +538,11 @@ void ViewProviderSketch::getProjectingLine(const SbVec2s& pnt, const Gui::View3D
 {
     const SbViewportRegion& vp = viewer->getSoRenderManager()->getViewportRegion();
 
-    short x,y; pnt.getValue(x,y);
-    SbVec2f siz = vp.getViewportSize();
-    float dX, dY; siz.getValue(dX, dY);
+    short x, y;
+    pnt.getValue(x,y);
+    SbVec2f VPsize = vp.getViewportSize();
+    float dX, dY;
+    VPsize.getValue(dX, dY);
 
     float fRatio = vp.getViewportAspectRatio();
     float pX = (float)x / float(vp.getViewportSizePixels()[0]);
@@ -566,10 +551,10 @@ void ViewProviderSketch::getProjectingLine(const SbVec2s& pnt, const Gui::View3D
     // now calculate the real points respecting aspect ratio information
     //
     if (fRatio > 1.0f) {
-        pX = (pX - 0.5f*dX) * fRatio + 0.5f*dX;
+        pX = (pX - 0.5f * dX) * fRatio + 0.5f * dX;
     }
     else if (fRatio < 1.0f) {
-        pY = (pY - 0.5f*dY) / fRatio + 0.5f*dY;
+        pY = (pY - 0.5f * dY) / fRatio + 0.5f * dY;
     }
 
     SoCamera* pCam = viewer->getSoRenderManager()->getCamera();
@@ -577,12 +562,12 @@ void ViewProviderSketch::getProjectingLine(const SbVec2s& pnt, const Gui::View3D
         return;
     SbViewVolume  vol = pCam->getViewVolume();
 
-    vol.projectPointToLine(SbVec2f(pX,pY), line);
+    vol.projectPointToLine(SbVec2f(pX, pY), line);
 }
 
 Base::Placement ViewProviderSketch::getEditingPlacement() const {
     auto doc = Gui::Application::Instance->editDocument();
-    if(!doc || doc->getInEdit()!=this)
+    if (!doc || doc->getInEdit() != this)
         return getSketchObject()->globalPlacement();
 
     // TODO: won't work if there is scale. Hmm... what to do...
@@ -592,26 +577,26 @@ Base::Placement ViewProviderSketch::getEditingPlacement() const {
 void ViewProviderSketch::getCoordsOnSketchPlane(const SbVec3f &point, const SbVec3f &normal, double &u, double &v) const
 {
     // Plane form
-    Base::Vector3d R0(0,0,0),RN(0,0,1),RX(1,0,0),RY(0,1,0);
+    Base::Vector3d R0(0, 0, 0), RN(0, 0, 1), RX(1, 0, 0), RY(0, 1, 0);
 
     // move to position of Sketch
     Base::Placement Plz = getEditingPlacement();
-    R0 = Plz.getPosition() ;
+    R0 = Plz.getPosition();
     Base::Rotation tmp(Plz.getRotation());
-    tmp.multVec(RN,RN);
-    tmp.multVec(RX,RX);
-    tmp.multVec(RY,RY);
+    tmp.multVec(RN, RN);
+    tmp.multVec(RX, RX);
+    tmp.multVec(RY, RY);
     Plz.setRotation(tmp);
 
     // line
-    Base::Vector3d R1(point[0],point[1],point[2]),RA(normal[0],normal[1],normal[2]);
+    Base::Vector3d R1(point[0], point[1], point[2]), RA(normal[0], normal[1], normal[2]);
     if (fabs(RN*RA) < FLT_EPSILON)
         throw Base::ZeroDivisionError("View direction is parallel to sketch plane");
     // intersection point on plane
-    Base::Vector3d S = R1 + ((RN * (R0-R1))/(RN*RA))*RA;
+    Base::Vector3d S = R1 + ((RN * (R0 - R1)) / (RN * RA)) * RA;
 
     // distance to x Axle of the sketch
-    S.TransformToCoordinateSystem(R0,RX,RY);
+    S.TransformToCoordinateSystem(R0, RX, RY);
 
     u = S.x;
     v = S.y;
@@ -670,7 +655,7 @@ bool ViewProviderSketch::mouseButtonPressed(int Button, bool pressed, const SbVe
                         //Base::Console().Log("start dragging, point:%d\n",this->DragPoint);
                         Mode = STATUS_SELECT_Cross;
                         done = true;
-                    } else if (preselection.PreselectConstraintSet.empty() != true) {
+                    } else if (!preselection.PreselectConstraintSet.empty()) {
                         //Base::Console().Log("start dragging, point:%d\n",this->DragPoint);
                         Mode = STATUS_SELECT_Constraint;
                         done = true;
@@ -890,9 +875,11 @@ bool ViewProviderSketch::mouseButtonPressed(int Button, bool pressed, const SbVe
                     }
                     Mode = STATUS_NONE;
                     return true;
-                case STATUS_SKETCH_StartRubberBand: // a single click happened, so clear selection
+                case STATUS_SKETCH_StartRubberBand: // a single click happened, so clear selection unless user hold control.
+                    if (!(QApplication::keyboardModifiers() & Qt::ControlModifier)) {
+                        Gui::Selection().clearSelection();
+                    }
                     Mode = STATUS_NONE;
-                    Gui::Selection().clearSelection();
                     return true;
                 case STATUS_SKETCH_UseRubberBand:
                     doBoxSelection(DoubleClick::prvCursorPos, cursorPos, viewer);
@@ -927,7 +914,7 @@ bool ViewProviderSketch::mouseButtonPressed(int Button, bool pressed, const SbVe
                             return true;
                         } else if (preselection.isPreselectCurveValid()) {
                             return true;
-                        } else if (preselection.PreselectConstraintSet.empty() != true) {
+                        } else if (!preselection.PreselectConstraintSet.empty()) {
                             return true;
                         } else {
                             Gui::MenuItem geom;
@@ -1054,7 +1041,7 @@ void ViewProviderSketch::editDoubleClicked()
     else if (preselection.isCrossPreselected()) {
         Base::Console().Log("double click cross:%d\n",preselection.PreselectCross);
     }
-    else if (preselection.PreselectConstraintSet.empty() != true) {
+    else if (!preselection.PreselectConstraintSet.empty()) {
         // Find the constraint
         const std::vector<Sketcher::Constraint *> &constrlist = getSketchObject()->Constraints.getValues();
 
@@ -1077,6 +1064,16 @@ bool ViewProviderSketch::mouseMove(const SbVec2s &cursorPos, Gui::View3DInventor
 {
     // maximum radius for mouse moves when selecting a geometry before switching to drag mode
     const int dragIgnoredDistance = 3;
+
+    static bool selectableConstraints = true;
+
+    if (Mode < STATUS_SKETCH_UseHandler) {
+        bool tmpSelCons = QApplication::keyboardModifiers() & Qt::ShiftModifier;
+        if (tmpSelCons != !selectableConstraints) {
+            selectableConstraints = !tmpSelCons;
+            editCoinManager->setConstraintSelectability(selectableConstraints);
+        }
+    }
 
     if (!isInEditMode())
         return false;
@@ -1732,27 +1729,37 @@ bool ViewProviderSketch::detectAndShowPreselection(SoPickedPoint * Point, const 
 
     if (Point) {
 
-        EditModeCoinManager::PreselectionResult result = editCoinManager->detectPreselection(Point, cursorPos);
+        EditModeCoinManager::PreselectionResult result =
+            editCoinManager->detectPreselection(Point, cursorPos);
 
-        if (result.PointIndex != -1 && result.PointIndex != preselection.PreselectPoint) { // if a new point is hit
+        if (result.PointIndex != -1
+            && result.PointIndex != preselection.PreselectPoint) {// if a new point is hit
             std::stringstream ss;
             ss << "Vertex" << result.PointIndex + 1;
-            bool accepted = setPreselect(ss.str(), Point->getPoint()[0], Point->getPoint()[1], Point->getPoint()[2]) != 0;
+            bool accepted = setPreselect(ss.str(), Point->getPoint()[0], Point->getPoint()[1],
+                                         Point->getPoint()[2])
+                != 0;
             preselection.blockedPreselection = !accepted;
             if (accepted) {
-                setPreselectPoint(result.PointIndex );
+                setPreselectPoint(result.PointIndex);
 
                 if (sketchHandler)
                     sketchHandler->applyCursor();
                 return true;
             }
-        } else if (result.GeoIndex != -1 && result.GeoIndex != preselection.PreselectCurve) {  // if a new curve is hit
+        }
+        else if (result.GeoIndex != -1
+                 && result.GeoIndex != preselection.PreselectCurve) {// if a new curve is hit
             std::stringstream ss;
             if (result.GeoIndex >= 0)
                 ss << "Edge" << result.GeoIndex + 1;
             else // external geometry
-                ss << "ExternalEdge" << -result.GeoIndex + Sketcher::GeoEnum::RefExt + 1; // convert index start from -3 to 1
-            bool accepted = setPreselect(ss.str(), Point->getPoint()[0], Point->getPoint()[1], Point->getPoint()[2]) != 0;
+                ss << "ExternalEdge"
+                   << -result.GeoIndex + Sketcher::GeoEnum::RefExt
+                        + 1;// convert index start from -3 to 1
+            bool accepted = setPreselect(ss.str(), Point->getPoint()[0], Point->getPoint()[1],
+                                         Point->getPoint()[2])
+                != 0;
             preselection.blockedPreselection = !accepted;
             if (accepted) {
                 resetPreselectPoint();
@@ -1762,34 +1769,53 @@ bool ViewProviderSketch::detectAndShowPreselection(SoPickedPoint * Point, const 
                     sketchHandler->applyCursor();
                 return true;
             }
-        } else if (result.Cross != EditModeCoinManager::PreselectionResult::Axes::None  && static_cast<int>(result.Cross ) != static_cast<int>(preselection.PreselectCross)) {  // if a cross line is hit
+        }
+        else if (result.Cross != EditModeCoinManager::PreselectionResult::Axes::None
+                 && static_cast<int>(result.Cross)
+                     != static_cast<int>(preselection.PreselectCross)) {// if a cross line is hit
             std::stringstream ss;
-            switch(result.Cross ){
-                case EditModeCoinManager::PreselectionResult::Axes::RootPoint:      ss << "RootPoint" ; break;
-                case EditModeCoinManager::PreselectionResult::Axes::HorizontalAxis: ss << "H_Axis"    ; break;
-                case EditModeCoinManager::PreselectionResult::Axes::VerticalAxis:   ss << "V_Axis"    ; break;
-                case EditModeCoinManager::PreselectionResult::Axes::None:           break; // silent warning - be explicit
+            switch (result.Cross) {
+                case EditModeCoinManager::PreselectionResult::Axes::RootPoint:
+                    ss << "RootPoint";
+                    break;
+                case EditModeCoinManager::PreselectionResult::Axes::HorizontalAxis:
+                    ss << "H_Axis";
+                    break;
+                case EditModeCoinManager::PreselectionResult::Axes::VerticalAxis:
+                    ss << "V_Axis";
+                    break;
+                case EditModeCoinManager::PreselectionResult::Axes::None:
+                    break;// silent warning - be explicit
             }
-            bool accepted = setPreselect(ss.str(), Point->getPoint()[0], Point->getPoint()[1], Point->getPoint()[2]) != 0;
+            bool accepted = setPreselect(ss.str(), Point->getPoint()[0], Point->getPoint()[1],
+                                         Point->getPoint()[2])
+                != 0;
             preselection.blockedPreselection = !accepted;
             if (accepted) {
                 if (result.Cross == EditModeCoinManager::PreselectionResult::Axes::RootPoint)
                     setPreselectRootPoint();
                 else
                     resetPreselectPoint();
-                preselection.PreselectCross = static_cast<Preselection::Axes>(static_cast<int>(result.Cross ));
+                preselection.PreselectCross =
+                    static_cast<Preselection::Axes>(static_cast<int>(result.Cross));
 
                 if (sketchHandler)
                     sketchHandler->applyCursor();
                 return true;
             }
-        } else if (!result.ConstrIndices.empty() && result.ConstrIndices != preselection.PreselectConstraintSet) { // if a constraint is hit
+        }
+        else if (!result.ConstrIndices.empty()
+                 && result.ConstrIndices
+                     != preselection.PreselectConstraintSet) {// if a constraint is hit
             bool accepted = true;
-            for(std::set<int>::iterator it = result.ConstrIndices.begin(); it != result.ConstrIndices.end(); ++it) {
+            for (std::set<int>::iterator it = result.ConstrIndices.begin();
+                 it != result.ConstrIndices.end(); ++it) {
                 std::stringstream ss;
                 ss << Sketcher::PropertyConstraintList::getConstraintName(*it);
 
-                accepted &= setPreselect(ss.str(), Point->getPoint()[0], Point->getPoint()[1], Point->getPoint()[2]) != 0;
+                accepted &= setPreselect(ss.str(), Point->getPoint()[0], Point->getPoint()[1],
+                                         Point->getPoint()[2])
+                    != 0;
 
                 preselection.blockedPreselection = !accepted;
                 //TODO: Should we clear preselections that went through, if one fails?
@@ -1802,10 +1828,14 @@ bool ViewProviderSketch::detectAndShowPreselection(SoPickedPoint * Point, const 
                     sketchHandler->applyCursor();
                 return true;//Preselection changed
             }
-        } else if ((result.PointIndex == -1 && result.GeoIndex == -1 &&
-                    result.Cross == EditModeCoinManager::PreselectionResult::Axes::None && result.ConstrIndices.empty()) &&
-                   (preselection.isPreselectPointValid() || preselection.isPreselectCurveValid() || preselection.isCrossPreselected()
-                    || preselection.PreselectConstraintSet.empty() != true || preselection.blockedPreselection)) {
+        }
+        else if ((result.PointIndex == -1 && result.GeoIndex == -1
+                  && result.Cross == EditModeCoinManager::PreselectionResult::Axes::None
+                  && result.ConstrIndices.empty())
+                 && (preselection.isPreselectPointValid() || preselection.isPreselectCurveValid()
+                     || preselection.isCrossPreselected()
+                     || !preselection.PreselectConstraintSet.empty()
+                     || preselection.blockedPreselection)) {
             // we have just left a preselection
             resetPreselectPoint();
             preselection.blockedPreselection = false;
@@ -1813,10 +1843,12 @@ bool ViewProviderSketch::detectAndShowPreselection(SoPickedPoint * Point, const 
                 sketchHandler->applyCursor();
             return true;
         }
-        Gui::Selection().setPreselectCoord(Point->getPoint()[0], Point->getPoint()[1], Point->getPoint()[2]);
-
-    } else if (preselection.isPreselectCurveValid() || preselection.isPreselectPointValid() ||
-               preselection.PreselectConstraintSet.empty() != true || preselection.isCrossPreselected() || preselection.blockedPreselection) {
+        Gui::Selection().setPreselectCoord(Point->getPoint()[0], Point->getPoint()[1],
+                                           Point->getPoint()[2]);
+    }
+    else if (preselection.isPreselectCurveValid() || preselection.isPreselectPointValid()
+             || !preselection.PreselectConstraintSet.empty() || preselection.isCrossPreselected()
+             || preselection.blockedPreselection) {
         resetPreselectPoint();
         preselection.blockedPreselection = false;
         if (sketchHandler)
@@ -2704,6 +2736,25 @@ void ViewProviderSketch::setupContextMenu(QMenu *menu, QObject *receiver, const 
     Gui::ViewProvider::setupContextMenu(menu, receiver, member);
 }
 
+namespace
+{
+    inline const QStringList editModeToolbarNames()
+    {
+        return QStringList{ QString::fromLatin1("Sketcher Edit Mode"),
+                            QString::fromLatin1("Sketcher geometries"),
+                            QString::fromLatin1("Sketcher constraints"),
+                            QString::fromLatin1("Sketcher tools"),
+                            QString::fromLatin1("Sketcher B-spline tools"),
+                            QString::fromLatin1("Sketcher virtual space") };
+    }
+
+    inline const QStringList nonEditModeToolbarNames()
+    {
+        return QStringList{ QString::fromLatin1("Structure"),
+                            QString::fromLatin1("Sketcher") };
+    }
+}
+
 bool ViewProviderSketch::setEdit(int ModNum)
 {
     // When double-clicking on the item for this sketch the
@@ -2846,6 +2897,14 @@ bool ViewProviderSketch::setEdit(int ModNum)
 
     Gui::getMainWindow()->installEventFilter(listener);
 
+    /*Modify toolbars dynamically.
+    First save state of toolbars in case user changed visibility of a toolbar but he's not changing the wb.
+    This happens in someone works directly from sketcher, changing from edit mode to not-edit-mode*/
+    Gui::ToolBarManager::getInstance()->saveState();
+
+    Gui::ToolBarManager::getInstance()->setToolbarVisibility(true, editModeToolbarNames());
+    Gui::ToolBarManager::getInstance()->setToolbarVisibility(false, nonEditModeToolbarNames());
+
     return true;
 }
 
@@ -2976,6 +3035,15 @@ void ViewProviderSketch::UpdateSolverInformation()
 void ViewProviderSketch::unsetEdit(int ModNum)
 {
     Q_UNUSED(ModNum);
+
+    /*Modify toolbars dynamically.
+    First save state of toolbars in case user changed visibility of a toolbar but he's not changing the wb.
+    This happens in someone works directly from sketcher, changing from edit mode to not-edit-mode*/
+    Gui::ToolBarManager::getInstance()->saveState();
+
+    Gui::ToolBarManager::getInstance()->setToolbarVisibility(false, editModeToolbarNames());
+    Gui::ToolBarManager::getInstance()->setToolbarVisibility(true, nonEditModeToolbarNames());
+
     TightGrid.setValue(true);
 
     if(listener) {
@@ -3112,14 +3180,51 @@ void ViewProviderSketch::setEditViewer(Gui::View3DInventorViewer* viewer, int Mo
     rubberband->setViewer(viewer);
 
     viewer->setupEditingRoot();
+
+    cameraSensor.setData(new VPRender{this, viewer->getSoRenderManager()});
+    cameraSensor.attach(viewer->getSoRenderManager()->getSceneGraph());
 }
 
 void ViewProviderSketch::unsetEditViewer(Gui::View3DInventorViewer* viewer)
 {
+    auto dataPtr = static_cast<VPRender*>(cameraSensor.getData());
+    delete dataPtr;
+    cameraSensor.setData(nullptr);
+    cameraSensor.detach();
+
     viewer->removeGraphicsItem(rubberband.get());
     viewer->setEditing(false);
     SoNode* root = viewer->getSceneGraph();
     static_cast<Gui::SoFCUnifiedSelection*>(root)->selectionRole.setValue(true);
+}
+
+void ViewProviderSketch::camSensCB(void *data, SoSensor *)
+{
+    VPRender *proxyVPrdr = static_cast<VPRender*>(data);
+    if (!proxyVPrdr)
+        return;
+
+    auto vp = proxyVPrdr->vp;
+    auto cam = proxyVPrdr->renderMgr->getCamera();
+
+    auto rotSk = Base::Rotation(vp->getDocument()->getEditingTransform()); //sketch orientation
+    auto rotc = cam->orientation.getValue().getValue();
+    auto rotCam = Base::Rotation(rotc[0], rotc[1], rotc[2], rotc[3]); // camera orientation (needed because float to double conversion)
+
+    // Is camera in the same hemisphere as positive sketch normal ?
+    auto orientation = (rotCam.invert()*rotSk).multVec(Base::Vector3d(0,0,1));
+    auto tmpFactor = orientation.z<0?-1:1;
+
+    if (tmpFactor != vp->viewOrientationFactor) { // redraw only if viewing side changed
+        Base::Console().Log("Switching side, now %s, redrawing\n", tmpFactor < 0 ? "back" : "front");
+        vp->viewOrientationFactor = tmpFactor;
+        vp->draw();
+
+        QString cmdStr = QStringLiteral(
+            "ActiveSketch.ViewObject.TempoVis.sketchClipPlane(ActiveSketch, ActiveSketch.ViewObject.SectionView, %1)\n")
+            .arg(tmpFactor<0?QLatin1String("True"):QLatin1String("False"));
+        Base::Interpreter().runStringObject(cmdStr.toLatin1());
+    }
 }
 
 int ViewProviderSketch::getPreselectPoint() const
@@ -3544,11 +3649,16 @@ QFont ViewProviderSketch::getApplicationFont() const
 
 int ViewProviderSketch::defaultFontSizePixels() const
 {
-    return QApplication::fontMetrics().height();
+    QFontMetricsF metrics(QApplication::font());
+    return static_cast<int>(metrics.height());
 }
 
 int ViewProviderSketch::getApplicationLogicalDPIX() const {
-    return QApplication::desktop()->logicalDpiX();
+    return int(QApplication::primaryScreen()->logicalDotsPerInchX());
+}
+
+int ViewProviderSketch::getViewOrientationFactor() const {
+    return viewOrientationFactor;
 }
 
 double ViewProviderSketch::getRotation(SbVec3f pos0, SbVec3f pos1) const

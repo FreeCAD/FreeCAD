@@ -21,6 +21,10 @@
  ***************************************************************************/
 
 #include "PreCompiled.h"
+#ifndef _PreComp_
+# include <QRegularExpression>
+# include <QRegularExpressionMatch>
+#endif
 
 #include "DlgSettingsImageImp.h"
 #include "ui_DlgSettingsImage.h"
@@ -215,15 +219,22 @@ void DlgSettingsImageImp::on_standardSizeBox_activated(int index)
     else {
         // try to extract from the string
         QString text = ui->standardSizeBox->itemText(index);
-        QRegExp rx(QLatin1String("\\b\\d{2,5}\\b"));
+        QRegularExpression rx(QLatin1String("\\b\\d{2,5}\\b"));
         int pos = 0;
-        pos = rx.indexIn(text, pos);
-        QString w = text.mid(pos, rx.matchedLength());
-        ui->spinWidth->setValue(w.toInt());
-        pos += rx.matchedLength();
-        pos = rx.indexIn(text, pos);
-        QString h = text.mid(pos, rx.matchedLength());
-        ui->spinHeight->setValue(h.toInt());
+        auto match = rx.match(text, pos);
+        if (match.hasMatch()) {
+            pos = match.capturedStart();
+            QString width = text.mid(pos, match.capturedLength());
+            ui->spinWidth->setValue(width.toInt());
+            pos += match.capturedLength();
+        }
+
+        match = rx.match(text, pos);
+        if (match.hasMatch()) {
+            pos = match.capturedStart();
+            QString height = text.mid(pos, match.capturedLength());
+            ui->spinHeight->setValue(height.toInt());
+        }
     }
 }
 

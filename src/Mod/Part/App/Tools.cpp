@@ -610,11 +610,17 @@ Handle (Poly_Triangulation) Part::Tools::triangulationOfFace(const TopoDS_Face& 
         return mesh;
 
     // If no triangulation exists then the shape is probably infinite
-    BRepAdaptor_Surface adapt(face);
-    double u1 = adapt.FirstUParameter();
-    double u2 = adapt.LastUParameter();
-    double v1 = adapt.FirstVParameter();
-    double v2 = adapt.LastVParameter();
+    double u1{}, u2{}, v1{}, v2{};
+    try {
+        BRepAdaptor_Surface adapt(face);
+        u1 = adapt.FirstUParameter();
+        u2 = adapt.LastUParameter();
+        v1 = adapt.FirstVParameter();
+        v2 = adapt.LastVParameter();
+    }
+    catch (const Standard_Failure&) {
+        return nullptr;
+    }
 
     auto selectRange = [](double& p1, double& p2) {
         if (Precision::IsInfinite(p1) && Precision::IsInfinite(p2)) {
@@ -639,7 +645,7 @@ Handle (Poly_Triangulation) Part::Tools::triangulationOfFace(const TopoDS_Face& 
     TopoDS_Shape shape = mkBuilder.Shape();
     shape.Location(loc);
 
-    BRepMesh_IncrementalMesh(shape, 0.1);
+    BRepMesh_IncrementalMesh(shape, 0.005, false, 0.1, true);
     return BRep_Tool::Triangulation(TopoDS::Face(shape), loc);
 }
 
@@ -665,7 +671,7 @@ Handle(Poly_Polygon3D) Part::Tools::polygonOfEdge(const TopoDS_Edge& edge, TopLo
     TopLoc_Location inv = loc.Inverted();
     shape.Location(inv);
 
-    BRepMesh_IncrementalMesh(shape, 0.1);
+    BRepMesh_IncrementalMesh(shape, 0.005, false, 0.1, true);
     TopLoc_Location tmp;
     return BRep_Tool::Polygon3D(TopoDS::Edge(shape), tmp);
 }

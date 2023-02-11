@@ -23,18 +23,16 @@
 #ifndef TECHDRAW_COSMETICEXTENSION_H
 #define TECHDRAW_COSMETICEXTENSION_H
 
-#include <Mod/TechDraw/TechDrawGlobal.h>
-
 #include <App/DocumentObjectExtension.h>
 #include <App/ExtensionPython.h>
 #include <Base/Vector3D.h>
+#include <Mod/TechDraw/TechDrawGlobal.h>
 
+#include "Geometry.h"
 #include "PropertyCenterLineList.h"
 #include "PropertyCosmeticEdgeList.h"
 #include "PropertyCosmeticVertexList.h"
 #include "PropertyGeomFormatList.h"
-
-#include "Geometry.h"
 
 
 namespace TechDraw {

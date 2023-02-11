@@ -23,7 +23,7 @@
    <item>
     <widget class="QGroupBox" name="groupBox">
      <property name="title">
-      <string>Dimension settings</string>
+      <string>Measurement settings</string>
      </property>
      <layout class="QVBoxLayout" name="verticalLayout">
       <item>
@@ -210,7 +210,7 @@
         <item>
          <widget class="QPushButton" name="pushButtonRefresh">
           <property name="text">
-           <string>Refresh existing measures</string>
+           <string>Refresh existing measurements</string>
           </property>
          </widget>
         </item>

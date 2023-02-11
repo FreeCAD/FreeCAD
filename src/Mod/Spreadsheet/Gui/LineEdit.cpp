@@ -21,14 +21,15 @@
  ***************************************************************************/
 
 #include "PreCompiled.h"
+
 #ifndef _PreComp_
+# include <QApplication>
 # include <QEvent>
 # include <QKeyEvent>
 #endif
 
-#include <QCoreApplication>
-
 #include "LineEdit.h"
+
 
 using namespace SpreadsheetGui;
 
@@ -75,7 +76,7 @@ bool LineEdit::event(QEvent *event)
     else if (event && event->type() == QEvent::KeyPress && !completerActive()) {
         QKeyEvent * kevent = static_cast<QKeyEvent*>(event);
         lastKeyPressed = kevent->key();
-        lastModifiers = kevent->modifiers(); 
+        lastModifiers = kevent->modifiers();
     }
     return Gui::ExpressionLineEdit::event(event);
 }

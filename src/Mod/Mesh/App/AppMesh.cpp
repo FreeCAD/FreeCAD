@@ -22,25 +22,27 @@
 
 #include "PreCompiled.h"
 
+#include <App/Application.h>
 #include <Base/Console.h>
 #include <Base/Interpreter.h>
-#include <App/Application.h>
 
-#include "Mesh.h"
-#include "MeshPy.h"
-#include "MeshPointPy.h"
 #include "EdgePy.h"
+#include "Exporter.h"
 #include "FacetPy.h"
-#include "MeshFeaturePy.h"
-#include "FeatureMeshImport.h"
-#include "FeatureMeshExport.h"
-#include "FeatureMeshTransform.h"
-#include "FeatureMeshTransformDemolding.h"
 #include "FeatureMeshCurvature.h"
+#include "FeatureMeshDefects.h"
+#include "FeatureMeshExport.h"
+#include "FeatureMeshImport.h"
 #include "FeatureMeshSegmentByMesh.h"
 #include "FeatureMeshSetOperations.h"
-#include "FeatureMeshDefects.h"
 #include "FeatureMeshSolid.h"
+#include "FeatureMeshTransform.h"
+#include "FeatureMeshTransformDemolding.h"
+#include "Mesh.h"
+#include "MeshFeaturePy.h"
+#include "MeshPointPy.h"
+#include "MeshPy.h"
+
 
 namespace Mesh {
 extern PyObject* initModule();
@@ -68,9 +70,12 @@ PyMOD_INIT_FUNC(Mesh)
     Base::Interpreter().addType(&Mesh::MeshPy       ::Type,meshModule,"Mesh");
     Base::Interpreter().addType(&Mesh::MeshFeaturePy::Type,meshModule,"Feature");
 
+    Mesh::Extension3MFFactory::addProducer(new Mesh::GuiExtension3MFProducer);
+
     // init Type system
     Mesh::PropertyNormalList    ::init();
     Mesh::PropertyCurvatureList ::init();
+    Mesh::PropertyMaterial      ::init();
     Mesh::PropertyMeshKernel    ::init();
 
     Mesh::MeshObject            ::init();

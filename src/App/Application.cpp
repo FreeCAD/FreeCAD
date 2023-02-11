@@ -25,12 +25,12 @@
 
 #ifndef _PreComp_
 # if defined(FC_OS_LINUX) || defined(FC_OS_MACOSX) || defined(FC_OS_BSD)
-# include <unistd.h>
-# include <pwd.h>
-# include <sys/types.h>
+#  include <unistd.h>
+#  include <pwd.h>
+#  include <sys/types.h>
 # elif defined(__MINGW32__)
-# define WINVER 0x502 // needed for SetDllDirectory
-# include <Windows.h>
+#  define WINVER 0x502 // needed for SetDllDirectory
+#  include <Windows.h>
 # endif
 # include <boost/program_options.hpp>
 # include <boost/date_time/posix_time/posix_time.hpp>
@@ -71,8 +71,8 @@
 #include <Base/Persistence.h>
 #include <Base/PlacementPy.h>
 #include <Base/PrecisionPy.h>
+#include <Base/ProgressIndicatorPy.h>
 #include <Base/RotationPy.h>
-#include <Base/Sequencer.h>
 #include <Base/Tools.h>
 #include <Base/Translate.h>
 #include <Base/Type.h>
@@ -154,25 +154,13 @@ namespace sp = std::placeholders;
 // Application
 //==========================================================================
 
-ParameterManager *App::Application::_pcSysParamMngr;
-ParameterManager *App::Application::_pcUserParamMngr;
+Base::Reference<ParameterManager> App::Application::_pcSysParamMngr;
+Base::Reference<ParameterManager> App::Application::_pcUserParamMngr;
 Base::ConsoleObserverStd  *Application::_pConsoleObserverStd = nullptr;
 Base::ConsoleObserverFile *Application::_pConsoleObserverFile = nullptr;
 
 AppExport std::map<std::string, std::string> Application::mConfig;
 
-// Custom Python exception types
-BaseExport extern PyObject* Base::PyExc_FC_GeneralError;
-BaseExport extern PyObject* Base::PyExc_FC_FreeCADAbort;
-BaseExport extern PyObject* Base::PyExc_FC_XMLBaseException;
-BaseExport extern PyObject* Base::PyExc_FC_XMLParseException;
-BaseExport extern PyObject* Base::PyExc_FC_XMLAttributeError;
-BaseExport extern PyObject* Base::PyExc_FC_UnknownProgramOption;
-BaseExport extern PyObject* Base::PyExc_FC_BadFormatError;
-BaseExport extern PyObject* Base::PyExc_FC_BadGraphError;
-BaseExport extern PyObject* Base::PyExc_FC_ExpressionError;
-BaseExport extern PyObject* Base::PyExc_FC_ParserError;
-BaseExport extern PyObject* Base::PyExc_FC_CADKernelError;
 
 //**************************************************************************
 // Construction and destruction
@@ -359,7 +347,7 @@ void Application::setupPythonTypes()
 
 void Application::setupPythonException(PyObject* module)
 {
-    // Define cusom Python exception types
+    // Define custom Python exception types
     //
     Base::PyExc_FC_GeneralError = PyErr_NewException("Base.FreeCADError", PyExc_RuntimeError, nullptr);
     Py_INCREF(Base::PyExc_FC_GeneralError);
@@ -419,10 +407,39 @@ void Application::renameDocument(const char *OldName, const char *NewName)
 
 Document* Application::newDocument(const char * Name, const char * UserName, bool createView, bool tempDoc)
 {
-    // get a valid name anyway!
-    if (!Name || Name[0] == '\0')
-        Name = "Unnamed";
-    string name = getUniqueDocumentName(Name, tempDoc);
+    auto getNameAndLabel = [this](const char * Name, const char * UserName) -> std::tuple<std::string, std::string> {
+        bool defaultName = (!Name || Name[0] == '\0');
+
+        // get a valid name anyway!
+        if (defaultName) {
+            Name = "Unnamed";
+        }
+
+        std::string userName;
+        if (UserName && UserName[0] != '\0') {
+            userName = UserName;
+        }
+        else {
+            userName = defaultName ? QObject::tr("Unnamed").toStdString() : Name;
+
+            std::vector<std::string> names;
+            names.reserve(DocMap.size());
+            for (const auto& pos : DocMap) {
+                names.emplace_back(pos.second->Label.getValue());
+            }
+
+            if (!names.empty()) {
+                userName = Base::Tools::getUniqueName(userName, names);
+            }
+        }
+
+        return std::make_tuple(std::string(Name), userName);
+    };
+
+    auto tuple = getNameAndLabel(Name, UserName);
+    std::string name = std::get<0>(tuple);
+    std::string userName = std::get<1>(tuple);
+    name = getUniqueDocumentName(name.c_str(), tempDoc);
 
     // return the temporary document if it exists
     if (tempDoc) {
@@ -431,34 +448,16 @@ Document* Application::newDocument(const char * Name, const char * UserName, boo
             return it->second;
     }
 
-    std::string userName;
-    if (UserName && UserName[0] != '\0') {
-        userName = UserName;
-    }
-    else {
-        userName = Name;
-        std::vector<std::string> names;
-        names.reserve(DocMap.size());
-        std::map<string,Document*>::const_iterator pos;
-        for (pos = DocMap.begin();pos != DocMap.end();++pos) {
-            names.emplace_back(pos->second->Label.getValue());
-        }
-
-        if (!names.empty())
-            userName = Base::Tools::getUniqueName(userName, names);
-    }
-
     // create the FreeCAD document
     std::unique_ptr<Document> newDoc(new Document(name.c_str()));
-    if (tempDoc)
-        newDoc->setStatus(Document::TempDoc, true);
+    newDoc->setStatus(Document::TempDoc, tempDoc);
 
     auto oldActiveDoc = _pActiveDoc;
-    auto doc = newDoc.get();
+    auto doc = newDoc.release(); // now owned by the Application
 
     // add the document to the internal list
-    DocMap[name] = newDoc.release(); // now owned by the Application
-    _pActiveDoc = DocMap[name];
+    DocMap[name] = doc;
+    _pActiveDoc = doc;
 
     // connect the signals to the application for the new document
     _pActiveDoc->signalBeforeChange.connect(std::bind(&App::Application::slotBeforeChangeDocument, this, sp::_1, sp::_2));
@@ -479,14 +478,13 @@ Document* Application::newDocument(const char * Name, const char * UserName, boo
     _pActiveDoc->signalAbortTransaction.connect(std::bind(&App::Application::slotAbortTransaction, this, sp::_1));
     _pActiveDoc->signalStartSave.connect(std::bind(&App::Application::slotStartSaveDocument, this, sp::_1, sp::_2));
     _pActiveDoc->signalFinishSave.connect(std::bind(&App::Application::slotFinishSaveDocument, this, sp::_1, sp::_2));
-    _pActiveDoc->signalChangePropertyEditor.connect(
-            std::bind(&App::Application::slotChangePropertyEditor, this, sp::_1, sp::_2));
+    _pActiveDoc->signalChangePropertyEditor.connect(std::bind(&App::Application::slotChangePropertyEditor, this, sp::_1, sp::_2));
 
     // make sure that the active document is set in case no GUI is up
     {
         Base::PyGILStateLocker lock;
         Py::Object active(_pActiveDoc->getPyObject(), true);
-        Py::Module("FreeCAD").setAttr(std::string("ActiveDocument"),active);
+        Py::Module("FreeCAD").setAttr(std::string("ActiveDocument"), active);
     }
 
     signalNewDocument(*_pActiveDoc, createView);
@@ -582,7 +580,7 @@ std::string Application::getUniqueDocumentName(const char *Name, bool tempDoc) c
     else {
         std::vector<std::string> names;
         names.reserve(DocMap.size());
-        for (pos = DocMap.begin();pos != DocMap.end();++pos) {
+        for (pos = DocMap.begin(); pos != DocMap.end(); ++pos) {
             if (!tempDoc || !pos->second->testStatus(Document::TempDoc))
                 names.push_back(pos->first);
         }
@@ -1152,22 +1150,30 @@ std::string Application::getHelpDir()
 #endif
 }
 
-int Application::checkLinkDepth(int depth, bool no_throw) {
-    if(_objCount<0) {
+int Application::checkLinkDepth(int depth, MessageOption option)
+{
+    if (_objCount < 0) {
         _objCount = 0;
-        for(auto &v : DocMap)
+        for (auto &v : DocMap) {
             _objCount += v.second->countObjects();
+        }
     }
-    if(depth > _objCount+2) {
+
+    if (depth > _objCount + 2) {
         const char *msg = "Link recursion limit reached. "
                 "Please check for cyclic reference.";
-        if(no_throw) {
+        switch (option) {
+        case MessageOption::Quiet:
+            return 0;
+        case MessageOption::Error:
             FC_ERR(msg);
             return 0;
-        }else
+        case MessageOption::Throw:
             throw Base::RuntimeError(msg);
+        }
     }
-    return _objCount+2;
+
+    return _objCount + 2;
 }
 
 std::set<DocumentObject *> Application::getLinksTo(
@@ -1209,33 +1215,33 @@ ParameterManager & Application::GetUserParameter()
 
 ParameterManager * Application::GetParameterSet(const char* sName) const
 {
-    std::map<std::string,ParameterManager *>::const_iterator it = mpcPramManager.find(sName);
+    auto it = mpcPramManager.find(sName);
     if ( it != mpcPramManager.end() )
         return it->second;
     else
         return nullptr;
 }
 
-const std::map<std::string,ParameterManager *> & Application::GetParameterSetList() const
+const std::map<std::string,Base::Reference<ParameterManager>> &
+Application::GetParameterSetList(void) const
 {
     return mpcPramManager;
 }
 
 void Application::AddParameterSet(const char* sName)
 {
-    std::map<std::string,ParameterManager *>::const_iterator it = mpcPramManager.find(sName);
+    auto it = mpcPramManager.find(sName);
     if ( it != mpcPramManager.end() )
         return;
-    mpcPramManager[sName] = new ParameterManager();
+    mpcPramManager[sName] = ParameterManager::Create();
 }
 
 void Application::RemoveParameterSet(const char* sName)
 {
-    std::map<std::string,ParameterManager *>::iterator it = mpcPramManager.find(sName);
+    auto it = mpcPramManager.find(sName);
     // Must not delete user or system parameter
     if ( it == mpcPramManager.end() || it->second == _pcUserParamMngr || it->second == _pcSysParamMngr )
         return;
-    delete it->second;
     mpcPramManager.erase(it);
 }
 
@@ -1254,7 +1260,7 @@ Base::Reference<ParameterGrp>  Application::GetParameterGroupByPath(const char* 
     cName.erase(0,pos+1);
 
     // test if name is valid
-    std::map<std::string,ParameterManager *>::iterator It = mpcPramManager.find(cTemp.c_str());
+    auto It = mpcPramManager.find(cTemp.c_str());
     if (It == mpcPramManager.end())
         throw Base::ValueError("Application::GetParameterGroupByPath() unknown parameter set name specified");
 
@@ -1645,8 +1651,8 @@ void Application::destruct()
     Base::Console().Log("Saving user parameter...done\n");
 
     // now save all other parameter files
-    std::map<std::string,ParameterManager *>& paramMgr = _pcSingleton->mpcPramManager;
-    for (std::map<std::string,ParameterManager *>::iterator it = paramMgr.begin(); it != paramMgr.end(); ++it) {
+    auto& paramMgr = _pcSingleton->mpcPramManager;
+    for (auto it = paramMgr.begin(); it != paramMgr.end(); ++it) {
         if ((it->second != _pcSysParamMngr) && (it->second != _pcUserParamMngr)) {
             if (it->second->HasSerializer()) {
                 Base::Console().Log("Saving %s...\n", it->first.c_str());
@@ -1654,9 +1660,6 @@ void Application::destruct()
                 Base::Console().Log("Saving %s...done\n", it->first.c_str());
             }
         }
-
-        // clean up
-        delete it->second;
     }
 
     paramMgr.clear();
@@ -1911,7 +1914,9 @@ void Application::initTypes()
     App::PropertyAcceleration       ::init();
     App::PropertyForce              ::init();
     App::PropertyPressure           ::init();
+    App::PropertyCurrentDensity     ::init();
     App::PropertyElectricPotential  ::init();
+    App::PropertyMagnetization      ::init();
     App::PropertyVacuumPermittivity ::init();
     App::PropertyInteger            ::init();
     App::PropertyIntegerConstraint  ::init();
@@ -1995,6 +2000,8 @@ void Application::initTypes()
     App::FeatureTest               ::init();
     App::FeatureTestException      ::init();
     App::FeatureTestColumn         ::init();
+    App::FeatureTestRow            ::init();
+    App::FeatureTestAbsAddress     ::init();
     App::FeatureTestPlacement      ::init();
     App::FeatureTestAttribute      ::init();
 
@@ -2140,6 +2147,7 @@ void parseProgramOptions(int ac, char ** av, const string& exe, variables_map& v
     ("response-file", value<string>(),"Can be specified with '@name', too")
     ("dump-config", "Dumps configuration")
     ("get-config", value<string>(), "Prints the value of the requested configuration key")
+    ("set-config", value< vector<string> >()->multitoken(), "Sets the value of a configuration key")
     ("keep-deprecated-paths", "If set then config files are kept on the old location")
     ;
 
@@ -2159,6 +2167,7 @@ void parseProgramOptions(int ac, char ** av, const string& exe, variables_map& v
     ("module-path,M", value< vector<string> >()->composing(),"Additional module paths")
     ("python-path,P", value< vector<string> >()->composing(),"Additional python paths")
     ("single-instance", "Allow to run a single instance of the application")
+    ("pass", value< vector<string> >()->multitoken(), "Ignores the following arguments and pass them through to be used by a script")
     ;
 
 
@@ -2303,17 +2312,20 @@ void processProgramOptions(const variables_map& vm, std::map<std::string,std::st
         if (vm.count("verbose")) {
             str << "\nLibrary versions:\n";
             str << "boost    " << BOOST_LIB_VERSION << '\n';
-            str << "Coin3D   " << FC_COIN3D_VERSION << '\n';
-            str << "Eigen3   " << FC_EIGEN3_VERSION << '\n';
+            str << "Coin3D   " << fcCoin3dVersion << '\n';
+            str << "Eigen3   " << fcEigen3Version << '\n';
 #ifdef OCC_VERSION_STRING_EXT
             str << "OCC      " << OCC_VERSION_STRING_EXT << '\n';
 #endif
             str << "Qt       " << QT_VERSION_STR << '\n';
             str << "Python   " << PY_VERSION << '\n';
-            str << "PySide   " << FC_PYSIDE_VERSION << '\n';
-            str << "shiboken " << FC_SHIBOKEN_VERSION << '\n';
-            str << "VTK      " << FC_VTK_VERSION << '\n';
-            str << "xerces-c " << FC_XERCESC_VERSION << '\n';
+            str << "PySide   " << fcPysideVersion << '\n';
+            str << "shiboken " << fcShibokenVersion << '\n';
+#ifdef SMESH_VERSION_STR
+            str << "SMESH    " << SMESH_VERSION_STR << '\n';
+#endif
+            str << "VTK      " << fcVtkVersion << '\n';
+            str << "xerces-c " << fcXercescVersion << '\n';
         }
         throw Base::ProgramInformation(str.str());
     }
@@ -2326,7 +2338,7 @@ void processProgramOptions(const variables_map& vm, std::map<std::string,std::st
     if (vm.count("module-path")) {
         vector<string> Mods = vm["module-path"].as< vector<string> >();
         string temp;
-        for (vector<string>::const_iterator It= Mods.begin();It != Mods.end();++It)
+        for (vector<string>::const_iterator It = Mods.begin(); It != Mods.end(); ++It)
             temp += *It + ";";
         temp.erase(temp.end()-1);
         mConfig["AdditionalModulePaths"] = temp;
@@ -2334,14 +2346,14 @@ void processProgramOptions(const variables_map& vm, std::map<std::string,std::st
 
     if (vm.count("python-path")) {
         vector<string> Paths = vm["python-path"].as< vector<string> >();
-        for (vector<string>::const_iterator It= Paths.begin();It != Paths.end();++It)
+        for (vector<string>::const_iterator It = Paths.begin(); It != Paths.end(); ++It)
             Base::Interpreter().addPythonPath(It->c_str());
     }
 
     if (vm.count("input-file")) {
         vector<string> files(vm["input-file"].as< vector<string> >());
         int OpenFileCount=0;
-        for (vector<string>::const_iterator It = files.begin();It != files.end();++It) {
+        for (vector<string>::const_iterator It = files.begin(); It != files.end(); ++It) {
 
             //cout << "Input files are: "
             //     << vm["input-file"].as< vector<string> >() << "\n";
@@ -2421,6 +2433,18 @@ void processProgramOptions(const variables_map& vm, std::map<std::string,std::st
         str << std::endl;
         throw Base::ProgramInformation(str.str());
     }
+
+    if (vm.count("set-config")) {
+        std::vector<std::string> configKeyValue = vm["set-config"].as< std::vector<std::string> >();
+        for (const auto& it : configKeyValue) {
+            auto pos = it.find('=');
+            if (pos != std::string::npos) {
+                std::string key = it.substr(0, pos);
+                std::string val = it.substr(pos + 1);
+                mConfig[key] = val;
+            }
+        }
+    }
 }
 }
 
@@ -2433,10 +2457,14 @@ void Application::initConfig(int argc, char ** argv)
     // We only set these keys if not yet defined. Therefore it suffices to search
     // only for 'BuildVersionMajor'.
     if (App::Application::Config().find("BuildVersionMajor") == App::Application::Config().end()) {
-        std::stringstream str; str << FCVersionMajor << "." << FCVersionMinor;
+        std::stringstream str;
+        str << FCVersionMajor
+            << "." << FCVersionMinor
+            << "." << FCVersionPoint;
         App::Application::Config()["ExeVersion"         ] = str.str();
         App::Application::Config()["BuildVersionMajor"  ] = FCVersionMajor;
         App::Application::Config()["BuildVersionMinor"  ] = FCVersionMinor;
+        App::Application::Config()["BuildVersionPoint"  ] = FCVersionPoint;
         App::Application::Config()["BuildRevision"      ] = FCRevision;
         App::Application::Config()["BuildRepositoryURL" ] = FCRepositoryURL;
         App::Application::Config()["BuildRevisionDate"  ] = FCRevisionDate;
@@ -2516,17 +2544,21 @@ void Application::initConfig(int argc, char ** argv)
         // Remove banner if FreeCAD is invoked via the -c command as regular
         // Python interpreter
         if (!(mConfig["Verbose"] == "Strict"))
-            Base::Console().Message("%s %s, Libs: %s.%sR%s\n%s",mConfig["ExeName"].c_str(),
+            Base::Console().Message("%s %s, Libs: %s.%s.%sR%s\n%s",
+                              mConfig["ExeName"].c_str(),
                               mConfig["ExeVersion"].c_str(),
                               mConfig["BuildVersionMajor"].c_str(),
                               mConfig["BuildVersionMinor"].c_str(),
+                              mConfig["BuildVersionPoint"].c_str(),
                               mConfig["BuildRevision"].c_str(),
                               mConfig["CopyrightInfo"].c_str());
         else
-            Base::Console().Message("%s %s, Libs: %s.%sB%s\n",mConfig["ExeName"].c_str(),
+            Base::Console().Message("%s %s, Libs: %s.%s.%sR%s\n",
+                              mConfig["ExeName"].c_str(),
                               mConfig["ExeVersion"].c_str(),
                               mConfig["BuildVersionMajor"].c_str(),
                               mConfig["BuildVersionMinor"].c_str(),
+                              mConfig["BuildVersionPoint"].c_str(),
                               mConfig["BuildRevision"].c_str());
     }
     LoadParameters();
@@ -2602,9 +2634,12 @@ void Application::initConfig(int argc, char ** argv)
     mConfig["BOOST_VERSION"] = BOOST_LIB_VERSION;
     mConfig["PYTHON_VERSION"] = PY_VERSION;
     mConfig["QT_VERSION"] = QT_VERSION_STR;
-    mConfig["EIGEN_VERSION"] = FC_EIGEN3_VERSION;
-    mConfig["PYSIDE_VERSION"] = FC_PYSIDE_VERSION;
-    mConfig["XERCESC_VERSION"] = FC_XERCESC_VERSION;
+    mConfig["EIGEN_VERSION"] = fcEigen3Version;
+    mConfig["PYSIDE_VERSION"] = fcPysideVersion;
+#ifdef SMESH_VERSION_STR
+    mConfig["SMESH_VERSION"] = SMESH_VERSION_STR;
+#endif
+    mConfig["XERCESC_VERSION"] = fcXercescVersion;
 
 
     logStatus();
@@ -2812,7 +2847,7 @@ void Application::runApplication()
         Base::Console().Log("Exiting on purpose\n");
     }
     else {
-        Base::Console().Log("Unknown Run mode (%d) in main()?!?\n\n",mConfig["RunMode"].c_str());
+        Base::Console().Log("Unknown Run mode (%d) in main()?!?\n\n", mConfig["RunMode"].c_str());
     }
 }
 
@@ -2822,9 +2857,9 @@ void Application::logStatus()
         boost::posix_time::second_clock::local_time());
     Base::Console().Log("Time = %s\n", time_str.c_str());
 
-    for (std::map<std::string,std::string>::iterator It = mConfig.begin();It!= mConfig.end();++It) {
-        Base::Console().Log("%s = %s\n",It->first.c_str(),It->second.c_str());
-    }
+    for (std::map<std::string, std::string>::iterator It = mConfig.begin(); It != mConfig.end();
+         ++It)
+        Base::Console().Log("%s = %s\n", It->first.c_str(), It->second.c_str());
 }
 
 void Application::LoadParameters()
@@ -2837,10 +2872,10 @@ void Application::LoadParameters()
         mConfig["SystemParameter"] = mConfig["UserConfigPath"] + "system.cfg";
 
     // create standard parameter sets
-    _pcSysParamMngr = new ParameterManager();
+    _pcSysParamMngr = ParameterManager::Create();
     _pcSysParamMngr->SetSerializer(new ParameterSerializer(mConfig["SystemParameter"]));
 
-    _pcUserParamMngr = new ParameterManager();
+    _pcUserParamMngr = ParameterManager::Create();
     _pcUserParamMngr->SetSerializer(new ParameterSerializer(mConfig["UserParameter"]));
 
     try {
@@ -2926,10 +2961,15 @@ QString getUserHome()
     QString path;
 #if defined(FC_OS_LINUX) || defined(FC_OS_CYGWIN) || defined(FC_OS_BSD) || defined(FC_OS_MACOSX)
     // Default paths for the user specific stuff
-    struct passwd *pwd = getpwuid(getuid());
-    if (!pwd)
+    struct passwd pwd;
+    struct passwd *result;
+    const std::size_t buflen = 16384;
+    std::vector<char> buffer(buflen);
+    int error = getpwuid_r(getuid(), &pwd, buffer.data(), buffer.size(), &result);
+    Q_UNUSED(error)
+    if (!result)
         throw Base::RuntimeError("Getting HOME path from system failed!");
-    path = QString::fromUtf8(pwd->pw_dir);
+    path = QString::fromUtf8(result->pw_dir);
 #else
     path = QStandardPaths::writableLocation(QStandardPaths::HomeLocation);
 #endif

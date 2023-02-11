@@ -23,9 +23,9 @@
 #ifndef LINEEDIT_H
 #define LINEEDIT_H
 
-#include <Gui/ExpressionCompleter.h>
 #include <QWidget>
-#include <QModelIndex>
+#include <Gui/ExpressionCompleter.h>
+
 
 namespace SpreadsheetGui {
 

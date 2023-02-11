@@ -73,7 +73,7 @@ void ButtonView::goSelectionChanged(const QItemSelection &selected, const QItemS
 void ButtonView::goChangedCommand(const QString& commandName)
 {
     QModelIndex index(this->currentIndex());
-    ButtonModel *model = dynamic_cast<ButtonModel*>(this->model());
+    auto model = dynamic_cast<ButtonModel*>(this->model());
     if (model && index.isValid())
         model->setCommand(index.row(), commandName);
 }
@@ -252,9 +252,9 @@ void ButtonModel::goButtonPress(int number)
 void ButtonModel::goMacroRemoved(const QByteArray& macroName)
 {
     GroupVector groupVector = spaceballButtonGroup()->GetGroups();
-    for (GroupVector::iterator it = groupVector.begin(); it != groupVector.end(); ++it)
-        if (std::string(macroName.data()) == (*it)->GetASCII("Command"))
-            (*it)->SetASCII("Command", "");
+    for (auto & it : groupVector)
+        if (std::string(macroName.data()) == it->GetASCII("Command"))
+            it->SetASCII("Command", "");
 }
 
 void ButtonModel::goClear()
@@ -302,8 +302,7 @@ void ButtonModel::loadConfig(const char *RequiredDeviceName)
 CommandView::CommandView(QWidget *parent) : QTreeView(parent)
 {
     this->setEnabled(false);
-    connect(this, SIGNAL(clicked(const QModelIndex&)),
-            this, SLOT(goClicked(const QModelIndex&)));
+    connect(this, &QTreeView::clicked, this, &CommandView::goClicked);
 }
 
 void CommandView::goChangeCommandSelection(const QString& commandName)
@@ -500,7 +499,7 @@ void CommandModel::goAddMacro(const QByteArray &macroName)
             location = groups.size();
         //add row
         this->beginInsertRows(QModelIndex(), location, location);
-        CommandNode *macroNode = new CommandNode(CommandNode::GroupType);
+        auto macroNode = new CommandNode(CommandNode::GroupType);
         macroNode->parent = rootNode;
         rootNode->children.insert(location, macroNode);
         this->endInsertRows();
@@ -519,7 +518,7 @@ void CommandModel::goAddMacro(const QByteArray &macroName)
         return;
 
     this->beginInsertRows(macrosIndex, parentNode->children.size(), parentNode->children.size());
-    CommandNode *childNode = new CommandNode(CommandNode::CommandType);
+    auto childNode = new CommandNode(CommandNode::CommandType);
     childNode->parent = parentNode;
     parentNode->children.push_back(childNode);
     childNode->aCommand = command;
@@ -559,22 +558,22 @@ void CommandModel::initialize()
 {
     rootNode = new CommandNode(CommandNode::RootType);
     QStringList groups(orderedGroups());
-    for (QStringList::iterator it = groups.begin(); it != groups.end(); ++it)
-        groupCommands(*it);
+    for (const auto & group : groups)
+        groupCommands(group);
 }
 
 void CommandModel::groupCommands(const QString& groupName)
 {
-    CommandNode *parentNode = new CommandNode(CommandNode::GroupType);
+    auto parentNode = new CommandNode(CommandNode::GroupType);
     parentNode->parent = rootNode;
     rootNode->children.push_back(parentNode);
     std::vector <Command*> commands = Application::Instance->commandManager().getGroupCommands(groupName.toLatin1());
-    for (std::vector <Command*>::iterator it = commands.begin(); it != commands.end(); ++it)
+    for (const auto & command : commands)
     {
-        CommandNode *childNode = new CommandNode(CommandNode::CommandType);
+        auto childNode = new CommandNode(CommandNode::CommandType);
         childNode->parent = parentNode;
         parentNode->children.push_back(childNode);
-        childNode->aCommand = *it;
+        childNode->aCommand = command;
     }
 }
 
@@ -582,9 +581,9 @@ QStringList CommandModel::orderedGroups()
 {
     QStringList groups;
     std::vector <Command*> commands = Application::Instance->commandManager().getAllCommands();
-    for (std::vector <Command*>::iterator it = commands.begin(); it != commands.end(); ++it)
+    for (const auto & command : commands)
     {
-        QString groupName(QString::fromLatin1((*it)->getGroupName()));
+        QString groupName(QString::fromLatin1(command->getGroupName()));
         if (!groups.contains(groupName))
             groups << groupName;
     }
@@ -663,7 +662,7 @@ DlgCustomizeSpaceball::DlgCustomizeSpaceball(QWidget *parent)
   , devModel(nullptr)
 {
     this->setWindowTitle(tr("Spaceball Buttons"));
-    GUIApplicationNativeEventAware *app = qobject_cast<GUIApplicationNativeEventAware *>(QApplication::instance());
+    auto app = qobject_cast<GUIApplicationNativeEventAware *>(QApplication::instance());
     if (!app)
         return;
     if (!app->isSpaceballPresent())
@@ -674,13 +673,13 @@ DlgCustomizeSpaceball::DlgCustomizeSpaceball(QWidget *parent)
 
     setupButtonModelView();
     setupCommandModelView();
-    connect(buttonView, SIGNAL(changeCommandSelection(const QString&)),
-            commandView, SLOT(goChangeCommandSelection(const QString&)));
-    connect(commandView, SIGNAL(changedCommand(const QString&)),
-            buttonView, SLOT(goChangedCommand(const QString&)));
+    connect(buttonView, &ButtonView::changeCommandSelection,
+            commandView, &CommandView::goChangeCommandSelection);
+    connect(commandView, &CommandView::changedCommand,
+            buttonView, &ButtonView::goChangedCommand);
     setupLayout();
-    connect(clearButton, SIGNAL(clicked()), this, SLOT(goClear()));
-    connect(printReference, SIGNAL(clicked()), this, SLOT(goPrint()));
+    connect(clearButton, &QPushButton::clicked, this, &DlgCustomizeSpaceball::goClear);
+    connect(printReference, &QPushButton::clicked, this, &DlgCustomizeSpaceball::goPrint);
 }
 
 DlgCustomizeSpaceball::~DlgCustomizeSpaceball()
@@ -690,9 +689,9 @@ DlgCustomizeSpaceball::~DlgCustomizeSpaceball()
 
 void DlgCustomizeSpaceball::setMessage(const QString& message)
 {
-    QLabel *messageLabel = new QLabel(message,this);
-    QVBoxLayout *layout = new QVBoxLayout();
-    QHBoxLayout *layout2 = new QHBoxLayout();
+    auto messageLabel = new QLabel(message,this);
+    auto layout = new QVBoxLayout();
+    auto layout2 = new QHBoxLayout();
     layout2->addStretch();
     layout2->addWidget(messageLabel);
     layout2->addStretch();
@@ -707,8 +706,8 @@ void DlgCustomizeSpaceball::setupButtonModelView()
     buttonView->setModel(buttonModel);
 
     //had to do this here as the views default selection model is not created until after construction.
-    connect(buttonView->selectionModel(), SIGNAL(selectionChanged(const QItemSelection&, const QItemSelection&)),
-            buttonView, SLOT(goSelectionChanged(const QItemSelection&, const QItemSelection&)));
+    connect(buttonView->selectionModel(), &QItemSelectionModel::selectionChanged,
+            buttonView, &ButtonView::goSelectionChanged);
 }
 
 void DlgCustomizeSpaceball::setupCommandModelView()
@@ -720,7 +719,7 @@ void DlgCustomizeSpaceball::setupCommandModelView()
 
 void DlgCustomizeSpaceball::setupLayout()
 {
-    QLabel *buttonLabel = new QLabel(tr("Buttons"), this);
+    auto buttonLabel = new QLabel(tr("Buttons"), this);
     clearButton = new QPushButton(tr("Reset"), this);
     devModel = new QComboBox(this);
 
@@ -736,27 +735,27 @@ void DlgCustomizeSpaceball::setupLayout()
         devModel->setCurrentIndex(0);
     }
 
-    QVBoxLayout *buttonGroup = new QVBoxLayout();
+    auto buttonGroup = new QVBoxLayout();
     buttonGroup->addWidget(buttonLabel);
     buttonGroup->addWidget(buttonView);
-    QHBoxLayout *clearLayout = new QHBoxLayout();
+    auto clearLayout = new QHBoxLayout();
     clearLayout->addWidget(devModel);
     clearLayout->addWidget(clearButton);
     clearLayout->addStretch();
     buttonGroup->addLayout(clearLayout);
 
-    QSplitter *splitter = new QSplitter(this);
-    QWidget *leftPane = new QWidget(this);
+    auto splitter = new QSplitter(this);
+    auto leftPane = new QWidget(this);
     leftPane->setLayout(buttonGroup);
     splitter->addWidget(leftPane);
     splitter->addWidget(commandView);
 
     printReference = new QPushButton(tr("Print Reference"), this);
-    QHBoxLayout *printLayout = new QHBoxLayout();
+    auto printLayout = new QHBoxLayout();
     printLayout->addStretch();
     printLayout->addWidget(printReference);
 
-    QVBoxLayout *layout = new QVBoxLayout();
+    auto layout = new QVBoxLayout();
     layout->addWidget(splitter);
     layout->addLayout(printLayout);
 
@@ -783,8 +782,8 @@ void DlgCustomizeSpaceball::goClear()
 
 void DlgCustomizeSpaceball::goPrint()
 {
-    QTableView *view = new QTableView(this);
-    PrintModel *model = new PrintModel(this, buttonModel, commandModel);
+    auto view = new QTableView(this);
+    auto model = new PrintModel(this, buttonModel, commandModel);
     view->horizontalHeader()->setSectionResizeMode(QHeaderView::Fixed);
     view->setModel(model);
     view->horizontalHeader()->resizeSection(0, 150);
@@ -804,7 +803,7 @@ bool DlgCustomizeSpaceball::event(QEvent *event)
 {
     if (event->type() != Spaceball::ButtonEvent::ButtonEventType)
         return CustomizeActionPage::event(event);
-    Spaceball::ButtonEvent *buttonEvent = dynamic_cast<Spaceball::ButtonEvent *>(event);
+    auto buttonEvent = dynamic_cast<Spaceball::ButtonEvent *>(event);
     if (!buttonEvent)
         return true;
     buttonEvent->setHandled(true);

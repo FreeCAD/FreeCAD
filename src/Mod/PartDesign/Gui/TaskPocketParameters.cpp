@@ -20,16 +20,16 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
-
 #ifndef _PreComp_
 # include <Precision.hxx>
 #endif
 
 #include <Mod/PartDesign/App/FeaturePocket.h>
+
 #include "ui_TaskPadPocketParameters.h"
 #include "TaskPocketParameters.h"
+
 
 using namespace PartDesignGui;
 using namespace Gui;
@@ -108,8 +108,10 @@ void TaskPocketParameters::onModeChanged(int index)
             pcPocket->Type.setValue("UpToFirst");
             break;
         case Modes::ToFace:
-            // Because of the code at the beginning of Pocket::execute() which is used to detect
-            // broken legacy parts, we must set the length to zero here!
+            // Note: ui->checkBoxReversed is purposely enabled because the selected face
+            // could be a circular one around the sketch
+            // Also note: Because of the code at the beginning of Pocket::execute() which is used
+            // to detect broken legacy parts, we must set the length to zero here!
             oldLength = pcPocket->Length.getValue();
             pcPocket->Type.setValue("UpToFace");
             pcPocket->Length.setValue(0.0);

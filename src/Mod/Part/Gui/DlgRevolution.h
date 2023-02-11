@@ -23,10 +23,11 @@
 #ifndef PARTGUI_DLGREVOLUTION_H
 #define PARTGUI_DLGREVOLUTION_H
 
-#include <Gui/Selection.h>
 #include <Gui/InputVector.h>
+#include <Gui/Selection.h>
 #include <Gui/TaskView/TaskDialog.h>
 #include <Gui/TaskView/TaskView.h>
+
 
 namespace PartGui {
 

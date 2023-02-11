@@ -78,37 +78,37 @@
           </property>
           <item>
            <property name="text">
-            <string>1/2"</string>
+            <string notr="true">1/2"</string>
            </property>
           </item>
           <item>
            <property name="text">
-            <string>1/4"</string>
+            <string notr="true">1/4"</string>
            </property>
           </item>
           <item>
            <property name="text">
-            <string>1/8"</string>
+            <string notr="true">1/8"</string>
            </property>
           </item>
           <item>
            <property name="text">
-            <string>1/16"</string>
+            <string notr="true">1/16"</string>
            </property>
           </item>
           <item>
            <property name="text">
-            <string>1/32"</string>
+            <string notr="true">1/32"</string>
            </property>
           </item>
           <item>
            <property name="text">
-            <string>1/64"</string>
+            <string notr="true">1/64"</string>
            </property>
           </item>
           <item>
            <property name="text">
-            <string>1/128"</string>
+            <string notr="true">1/128"</string>
            </property>
           </item>
          </widget>

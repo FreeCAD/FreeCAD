@@ -279,6 +279,16 @@ QString UnitsSchemaMKS::schemaTranslate(const Quantity &quant, double &factor, Q
         unitString = QString::fromLatin1("C");
         factor = 1.0;
     }
+    else if (unit == Unit::CurrentDensity) {
+        if (UnitValue <= 1e3) {
+            unitString = QString::fromLatin1("A/m^2");
+            factor = 1e-6;
+        }
+        else {
+            unitString = QString::fromLatin1("A/mm^2");
+            factor = 1;
+        }
+    }
     else if (unit == Unit::MagneticFluxDensity) {
         if (UnitValue <= 1e-3) {
             unitString = QString::fromLatin1("G");
@@ -290,13 +300,17 @@ QString UnitsSchemaMKS::schemaTranslate(const Quantity &quant, double &factor, Q
         }
     }
     else if (unit == Unit::MagneticFieldStrength) {
-        unitString = QString::fromLatin1("Oe");
-        factor = 0.07957747;
+        unitString = QString::fromLatin1("A/m");
+        factor = 1e-3;
     }
     else if (unit == Unit::MagneticFlux) {
         unitString = QString::fromLatin1("Wb");
         factor = 1e6;
     }
+    else if (unit == Unit::Magnetization) {
+        unitString = QString::fromLatin1("A/m");
+        factor = 1e-3;
+    } 
     else if (unit == Unit::ElectricalConductance) {
         if (UnitValue < 1e-9) {
             unitString = QString::fromUtf8("\xC2\xB5S");

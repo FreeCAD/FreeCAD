@@ -618,27 +618,27 @@
               <widget class="QTableWidget" name="tw_pump_characteristics">
                <row>
                 <property name="text">
-                 <string>1</string>
+                 <string notr="true">1</string>
                 </property>
                </row>
                <row>
                 <property name="text">
-                 <string>2</string>
+                 <string notr="true">2</string>
                 </property>
                </row>
                <row>
                 <property name="text">
-                 <string>3</string>
+                 <string notr="true">3</string>
                 </property>
                </row>
                <row>
                 <property name="text">
-                 <string>4</string>
+                 <string notr="true">4</string>
                 </property>
                </row>
                <row>
                 <property name="text">
-                 <string>5</string>
+                 <string notr="true">5</string>
                 </property>
                </row>
                <column>

@@ -20,21 +20,20 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
-
 #ifndef _PreComp_
 # include <QSignalBlocker>
 #endif
 
-#include <Base/UnitsApi.h>
 #include <App/Document.h>
+#include <Base/UnitsApi.h>
 #include <Gui/Command.h>
 #include <Mod/PartDesign/App/FeatureExtrude.h>
 
 #include "ui_TaskPadPocketParameters.h"
 #include "TaskExtrudeParameters.h"
 #include "ReferenceSelection.h"
+
 
 using namespace PartDesignGui;
 using namespace Gui;
@@ -735,9 +734,7 @@ void TaskExtrudeParameters::translateFaceName()
 
         if (ok) {
             ui->lineFaceName->setText(QString::fromLatin1("%1:%2%3")
-                                      .arg(parts[0],
-                                           tr("Face"),
-                                           QString(faceId)));
+                                      .arg(parts[0], tr("Face")).arg(faceId));
         }
         else {
             ui->lineFaceName->setText(parts[0]);

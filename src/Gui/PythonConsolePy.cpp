@@ -163,7 +163,7 @@ Py::Object PythonStderr::isatty()
 void OutputStdout::init_type()
 {
     behaviors().name("OutputStdout");
-    behaviors().doc("Redirection of stdout to FreeCAD's output window");
+    behaviors().doc("Redirection of stdout to FreeCAD's report view");
     // you must have overwritten the virtual functions
     behaviors().supportRepr();
     add_varargs_method("write",&OutputStdout::write,"write()");
@@ -228,7 +228,7 @@ Py::Object OutputStdout::isatty()
 void OutputStderr::init_type()
 {
     behaviors().name("OutputStderr");
-    behaviors().doc("Redirection of stdout to FreeCAD's output window");
+    behaviors().doc("Redirection of stdout to FreeCAD's report view");
     // you must have overwritten the virtual functions
     behaviors().supportRepr();
     add_varargs_method("write",&OutputStderr::write,"write()");

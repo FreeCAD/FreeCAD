@@ -20,15 +20,16 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef SKETCHERGUI_DrawSketchHandler_H
 #define SKETCHERGUI_DrawSketchHandler_H
 
-#include <Base/Tools2D.h>
-#include <Mod/Sketcher/App/Constraint.h>
+#include <Inventor/SbString.h>
+
 #include <Gui/Selection.h>
+#include <Mod/Sketcher/App/Constraint.h>
 
 #include "AutoConstraint.h"
+
 
 class QPixmap;
 

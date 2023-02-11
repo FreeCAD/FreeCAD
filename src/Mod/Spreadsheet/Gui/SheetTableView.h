@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) Eivind Kvedalen (eivind@kvedalen.name) 2015             *
+ *   Copyright (c) 2015 Eivind Kvedalen <eivind@kvedalen.name>             *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -23,19 +23,20 @@
 #ifndef SHEETTABLEVIEW_H
 #define SHEETTABLEVIEW_H
 
-#include <QTableView>
 #include <QHeaderView>
-#include <QKeyEvent>
+#include <QTableView>
+#include <QTimer>
+
 #include <Mod/Spreadsheet/App/Sheet.h>
-#include <Mod/Spreadsheet/App/Utils.h>
+
 
 namespace SpreadsheetGui {
 
 class SheetViewHeader : public QHeaderView {
     Q_OBJECT
 public:
-    SheetViewHeader(QTableView *owner, Qt::Orientation o) 
-        : QHeaderView(o),owner(owner) 
+    SheetViewHeader(QTableView *owner, Qt::Orientation o)
+        : QHeaderView(o),owner(owner)
     {
         setSectionsClickable(true);
     }
@@ -54,7 +55,7 @@ class SheetTableView : public QTableView
 public:
     explicit SheetTableView(QWidget *parent = nullptr);
     ~SheetTableView() override;
-    
+
     void edit(const QModelIndex &index);
     void setSheet(Spreadsheet::Sheet *_sheet);
     std::vector<App::Range> selectedRanges() const;
@@ -73,7 +74,7 @@ public Q_SLOTS:
 
 protected Q_SLOTS:
     void commitData(QWidget *editor) override;
-    void updateCellSpan(App::CellAddress address);
+    void updateCellSpan();
     void insertRows();
     void insertRowsAfter();
     void removeRows();
@@ -102,6 +103,9 @@ protected:
 
     QMenu *contextMenu;
 
+    QAction *actionProperties;
+    QAction *actionRecompute;
+    QAction *actionConf;
     QAction *actionMerge;
     QAction *actionSplit;
     QAction *actionCopy;
@@ -110,7 +114,10 @@ protected:
     QAction *actionDel;
     QAction *actionBind;
 
+    QTimer timer;
+
     boost::signals2::scoped_connection cellSpanChangedConnection;
+    std::set<App::CellAddress> spanChanges;
 };
 
 }

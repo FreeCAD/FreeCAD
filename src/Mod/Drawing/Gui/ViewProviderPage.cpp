@@ -20,32 +20,21 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
-
 #ifndef _PreComp_
-# include <QAction>
 # include <QMenu>
 # include <QTimer>
 #endif
 
-/// Here the FreeCAD includes sorted by Base,App,Gui......
-#include <Base/Console.h>
-#include <Base/Parameter.h>
-#include <Base/Exception.h>
-#include <Base/Sequencer.h>
-#include <App/Application.h>
-#include <App/Document.h>
 #include <App/DocumentObject.h>
 #include <Gui/Application.h>
-#include <Gui/Selection.h>
-#include <Gui/MainWindow.h>
 #include <Gui/BitmapFactory.h>
+#include <Gui/MainWindow.h>
 #include <Gui/ViewProviderDocumentObjectGroup.h>
-
+#include <Mod/Drawing/App/FeaturePage.h>
 
 #include "ViewProviderPage.h"
-#include <Mod/Drawing/App/FeaturePage.h>
+
 
 using namespace DrawingGui;
 

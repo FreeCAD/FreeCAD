@@ -24,39 +24,28 @@
 
 #ifndef _PreComp_
 # include <sstream>
+# include <BRep_Builder.hxx>
+# include <BRepAlgoAPI_Fuse.hxx>
+# include <BRepTools.hxx>
+# include <TopoDS.hxx>
+# include <TopoDS_Iterator.hxx>
+# include <TopoDS_Vertex.hxx>
 #endif
-
-#include <BRep_Builder.hxx>
-#include <BRepAlgoAPI_Fuse.hxx>
-#include <BRepBuilderAPI_Copy.hxx>
-#include <BRepTools.hxx>
-#include <TopExp.hxx>
-#include <TopExp_Explorer.hxx>
-#include <TopoDS_Vertex.hxx>
-#include <TopoDS.hxx>
-#include <TopoDS_Edge.hxx>
 
 #include <App/Application.h>
 #include <App/Document.h>
 #include <App/GroupExtension.h>
-#include <App/Part.h>
 #include <App/Link.h>
-
-#include <Base/BoundBox.h>
+#include <App/Part.h>
 #include <Base/Console.h>
-#include <Base/Exception.h>
-#include <Base/FileInfo.h>
 #include <Base/Parameter.h>
 #include <Base/Placement.h>
-
 #include <Mod/Part/App/PartFeature.h>
 #include <Mod/Part/App/PrimitiveFeature.h>
-#include <Mod/Part/App/FeaturePartCircle.h>
-#include <Mod/Part/App/TopoShape.h>
-#include <Mod/Part/App/PropertyTopoShape.h>
 
 #include "ShapeExtractor.h"
 #include "DrawUtil.h"
+
 
 using namespace TechDraw;
 
@@ -280,16 +269,12 @@ std::vector<TopoDS_Shape> ShapeExtractor::getShapesFromObject(const App::Documen
                     result.insert(result.end(), shapes.begin(), shapes.end());
                 }
             }
-        } else {
-                Base::Console().Log("SE::getShapesFromObject - Group is not a PropertyLinkList!\n");
         }
     } else if (sProp) {       //has a Shape property
         Part::PropertyPartShape* shape = dynamic_cast<Part::PropertyPartShape*>(sProp);
         if (shape) {
             TopoDS_Shape occShape = shape->getValue();
             result.push_back(occShape);
-        } else {
-            Base::Console().Log("SE::getShapesFromObject - Shape is not a PropertyPartShape!\n");
         }
     }
     return result;

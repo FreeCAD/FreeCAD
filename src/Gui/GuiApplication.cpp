@@ -31,7 +31,6 @@
 # include <QDataStream>
 # include <QFileInfo>
 # include <QFileOpenEvent>
-# include <QKeyEvent>
 # include <QSessionManager>
 # include <QTimer>
 #endif
@@ -60,9 +59,11 @@ using namespace Gui;
 GUIApplication::GUIApplication(int & argc, char ** argv)
     : GUIApplicationNativeEventAware(argc, argv)
 {
-    connect(this, SIGNAL(commitDataRequest(QSessionManager &)),
-            SLOT(commitData(QSessionManager &)), Qt::DirectConnection);
+    connect(this, &GUIApplication::commitDataRequest,
+            this, &GUIApplication::commitData, Qt::DirectConnection);
+#if QT_VERSION < QT_VERSION_CHECK(6,0,0)
     setFallbackSessionManagementEnabled(false);
+#endif
 }
 
 GUIApplication::~GUIApplication()
@@ -199,8 +200,8 @@ public:
     {
         // Start a QLocalServer to listen for connections
         server = new QLocalServer();
-        QObject::connect(server, SIGNAL(newConnection()),
-                         q_ptr, SLOT(receiveConnection()));
+        QObject::connect(server, &QLocalServer::newConnection,
+                         q_ptr, &GUISingleApplication::receiveConnection);
         // first attempt
         if (!server->listen(serverName)) {
             if (server->serverError() == QAbstractSocket::AddressInUseError) {
@@ -230,7 +231,7 @@ GUISingleApplication::GUISingleApplication(int & argc, char ** argv)
       d_ptr(new Private(this))
 {
     d_ptr->setupConnection();
-    connect(d_ptr->timer, SIGNAL(timeout()), this, SLOT(processMessages()));
+    connect(d_ptr->timer, &QTimer::timeout, this, &GUISingleApplication::processMessages);
 }
 
 GUISingleApplication::~GUISingleApplication()
@@ -273,8 +274,8 @@ void GUISingleApplication::receiveConnection()
     if (!socket)
         return;
 
-    connect(socket, SIGNAL(disconnected()),
-            socket, SLOT(deleteLater()));
+    connect(socket, &QLocalSocket::disconnected,
+            socket, &QLocalSocket::deleteLater);
     if (socket->waitForReadyRead()) {
         QDataStream in(socket);
         if (!in.atEnd()) {
@@ -308,7 +309,7 @@ bool WheelEventFilter::eventFilter(QObject* obj, QEvent* ev)
 {
     if (qobject_cast<QComboBox*>(obj) && ev->type() == QEvent::Wheel)
         return true;
-    QAbstractSpinBox* sb = qobject_cast<QAbstractSpinBox*>(obj);
+    auto sb = qobject_cast<QAbstractSpinBox*>(obj);
     if (sb) {
         if (ev->type() == QEvent::Show) {
             sb->setFocusPolicy(Qt::StrongFocus);
@@ -319,30 +320,5 @@ bool WheelEventFilter::eventFilter(QObject* obj, QEvent* ev)
     }
     return false;
 }
-
-KeyboardFilter::KeyboardFilter(QObject* parent)
-  : QObject(parent)
-{
-}
-
-bool KeyboardFilter::eventFilter(QObject* obj, QEvent* ev)
-{
-    if (ev->type() == QEvent::KeyPress || ev->type() == QEvent::KeyRelease) {
-        QKeyEvent *kev = static_cast<QKeyEvent *>(ev);
-        Qt::KeyboardModifiers mod = kev->modifiers();
-        int key = kev->key();
-        if ((mod & Qt::KeypadModifier) && (key == Qt::Key_Period || key == Qt::Key_Comma))
-        {
-            QChar dp = QLocale().decimalPoint();
-            if (key != dp) {
-                QKeyEvent modifiedKeyEvent(kev->type(), dp.digitValue(), mod, QString(dp), kev->isAutoRepeat(), kev->count());
-                qApp->sendEvent(obj, &modifiedKeyEvent);
-                return true;
-            }
-        }
-    }
-    return false;
-}
-
 
 #include "moc_GuiApplication.cpp"

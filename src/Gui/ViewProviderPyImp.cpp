@@ -114,11 +114,11 @@ PyObject*  ViewProviderPy::supportedProperties(PyObject *args)
     std::vector<Base::Type> ary;
     Base::Type::getAllDerivedFrom(App::Property::getClassTypeId(), ary);
     Py::List res;
-    for (std::vector<Base::Type>::iterator it = ary.begin(); it != ary.end(); ++it) {
-        Base::BaseClass *data = static_cast<Base::BaseClass*>(it->createInstance());
+    for (auto & it : ary) {
+        auto data = static_cast<Base::BaseClass*>(it.createInstance());
         if (data) {
             delete data;
-            res.append(Py::String(it->getName()));
+            res.append(Py::String(it.getName()));
         }
     }
     return Py::new_reference_to(res);
@@ -161,11 +161,12 @@ PyObject*  ViewProviderPy::isVisible(PyObject *args)
 
 PyObject*  ViewProviderPy::canDragObject(PyObject *args)
 {
-    PyObject *obj = nullptr;
-    if (!PyArg_ParseTuple(args, "|O!", &App::DocumentObjectPy::Type, &obj))
+    PyObject *obj = Py_None;
+    if (!PyArg_ParseTuple(args, "|O", &obj))
         return nullptr;
 
     PY_TRY {
+        Base::PyTypeCheck(&obj, &App::DocumentObjectPy::Type);
         bool ret;
         if (!obj)
             ret = getViewProviderPtr()->canDragObjects();
@@ -180,17 +181,20 @@ PyObject*  ViewProviderPy::canDragObject(PyObject *args)
 
 PyObject*  ViewProviderPy::canDropObject(PyObject *args, PyObject *kw)
 {
-    PyObject *obj = nullptr;
-    PyObject *owner = nullptr;
-    PyObject *pyElements = nullptr;
+    PyObject *obj = Py_None;
+    PyObject *owner = Py_None;
+    PyObject *pyElements = Py_None;
     const char *subname = nullptr;
     static char* kwlist[] = {"obj","owner","subname","elem",nullptr};
-    if (!PyArg_ParseTupleAndKeywords(args, kw, "|O!O!sO", kwlist,
-            &App::DocumentObjectPy::Type,&obj, &App::DocumentObjectPy::Type, &owner,
-            &subname, &pyElements))
+    if (!PyArg_ParseTupleAndKeywords(args, kw, "|OOsO", kwlist,
+            &obj, &owner, &subname, &pyElements))
         return nullptr;
 
     PY_TRY {
+        Base::PyTypeCheck(&obj, &App::DocumentObjectPy::Type, "expecting 'obj' to be of type App.DocumentObject or None");
+        Base::PyTypeCheck(&owner, &App::DocumentObjectPy::Type, "expecting 'owner' to be of type App.DocumentObject or None");
+        Base::PyTypeCheck(&pyElements, PySequence_Check, "expecting 'elem' to be sequence or None");
+
         bool ret;
         App::DocumentObject* pcObject;
         App::DocumentObject* pcOwner = nullptr;
@@ -238,16 +242,18 @@ PyObject*  ViewProviderPy::canDragAndDropObject(PyObject *args)
 PyObject*  ViewProviderPy::dropObject(PyObject *args, PyObject *kw)
 {
     PyObject *obj;
-    PyObject *owner = nullptr;
-    PyObject *pyElements = nullptr;
+    PyObject *owner = Py_None;
+    PyObject *pyElements = Py_None;
     const char *subname = nullptr;
     static char* kwlist[] = {"obj","owner","subname","elem",nullptr};
-    if (!PyArg_ParseTupleAndKeywords(args, kw, "O!|O!sO", kwlist,
-            &App::DocumentObjectPy::Type,&obj, &App::DocumentObjectPy::Type, &owner,
-            &subname, &pyElements))
+    if (!PyArg_ParseTupleAndKeywords(args, kw, "O!|OsO", kwlist,
+            &App::DocumentObjectPy::Type, &obj, &owner, &subname, &pyElements))
         return nullptr;
 
     PY_TRY {
+        Base::PyTypeCheck(&owner, &App::DocumentObjectPy::Type, "expecting 'owner' to be of type App.DocumentObject or None");
+        Base::PyTypeCheck(&pyElements, PySequence_Check, "expecting 'elem' to be sequence or None");
+
         auto pcObject = static_cast<App::DocumentObjectPy*>(obj)->getDocumentObjectPtr();
         App::DocumentObject *pcOwner = nullptr;
         App::PropertyStringList elements;
@@ -317,7 +323,7 @@ PyObject* ViewProviderPy::addDisplayMode(PyObject * args)
     }
 
     PY_TRY {
-        SoNode* node = static_cast<SoNode*>(ptr);
+        auto node = static_cast<SoNode*>(ptr);
         getViewProviderPtr()->addDisplayMaskMode(node,mode);
         Py_Return;
     }
@@ -334,8 +340,8 @@ PyObject*  ViewProviderPy::listDisplayModes(PyObject *args)
         PyObject* pyList = PyList_New(modes.size());
         int i=0;
 
-        for ( std::vector<std::string>::iterator it = modes.begin(); it != modes.end(); ++it ) {
-            PyObject* str = PyUnicode_FromString(it->c_str());
+        for (const auto & mode : modes) {
+            PyObject* str = PyUnicode_FromString(mode.c_str());
             PyList_SetItem(pyList, i++, str);
         }
 
@@ -368,7 +374,7 @@ PyObject*  ViewProviderPy::setTransformation(PyObject *args)
     PyErr_Clear();
 
     if (PyArg_ParseTuple(args, "O!",&(Base::PlacementPy::Type),&p)) {
-        Base::PlacementPy* plc = static_cast<Base::PlacementPy*>(p);
+        auto plc = static_cast<Base::PlacementPy*>(p);
         getViewProviderPtr()->setTransformation(plc->getPlacementPtr()->toMatrix());
         Py_Return;
     }
@@ -478,7 +484,7 @@ PyObject* ViewProviderPy::getElementPicked(PyObject* args)
 
     void *ptr = nullptr;
     Base::Interpreter().convertSWIGPointerObj("pivy.coin", "_p_SoPickedPoint", obj, &ptr, 0);
-    SoPickedPoint *pp = static_cast<SoPickedPoint*>(ptr);
+    auto pp = static_cast<SoPickedPoint*>(ptr);
     if(!pp)
         throw Base::TypeError("type must be coin.SoPickedPoint");
 
@@ -499,7 +505,7 @@ PyObject* ViewProviderPy::getDetailPath(PyObject* args)
 
     void *ptr = nullptr;
     Base::Interpreter().convertSWIGPointerObj("pivy.coin", "_p_SoPath", path, &ptr, 0);
-    SoPath *pPath = static_cast<SoPath*>(ptr);
+    auto pPath = static_cast<SoPath*>(ptr);
     if(!pPath)
         throw Base::TypeError("'path' must be a coin.SoPath");
     SoDetail *det = nullptr;
@@ -509,7 +515,7 @@ PyObject* ViewProviderPy::getDetailPath(PyObject* args)
     }
     if(!det)
         Py_Return;
-    return Base::Interpreter().createSWIGPointerObj("pivy.coin", "_p_SoDetail", (void*)det, 0);
+    return Base::Interpreter().createSWIGPointerObj("pivy.coin", "_p_SoDetail", static_cast<void*>(det), 0);
 }
 
 PyObject *ViewProviderPy::signalChangeIcon(PyObject *args)

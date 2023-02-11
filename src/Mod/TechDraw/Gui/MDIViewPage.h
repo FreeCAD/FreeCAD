@@ -23,14 +23,12 @@
 #ifndef TECHDRAWGUI_MDIVIEWPAGE_H
 #define TECHDRAWGUI_MDIVIEWPAGE_H
 
-#include <Mod/TechDraw/TechDrawGlobal.h>
-
-#include <QPointF>
 #include <QPrinter>
 
 #include <Gui/MDIView.h>
 #include <Gui/MDIViewPy.h>
 #include <Gui/Selection.h>
+#include <Mod/TechDraw/TechDrawGlobal.h>
 
 #include "ViewProviderPage.h"
 
@@ -87,6 +85,19 @@ public:
     static void printAllPages();
     static void printAll(QPrinter* printer,
                          App::Document* doc);
+    static void printAllPdf(QPrinter* printer,
+                            App::Document* doc);
+    static void printBannerPage(QPrinter* printer, QPainter& painter,
+                                QPageLayout& pageLayout,
+                                App::Document* doc,
+                                std::vector<App::DocumentObject*>& docObjs);
+    static void renderPage(ViewProviderPage* vpp,
+                           QPainter& painter,
+                           QRectF& sourceRect,
+                           QRect& targetRect);
+    static void setPageLayout(QPageLayout& pageLayout,
+                              TechDraw::DrawPage* dPage,
+                              double& width, double& height);
 
     void saveSVG(std::string file);
     void saveDXF(std::string file);
@@ -102,7 +113,6 @@ public:
 
     void setTabText(std::string tabText);
 
-    static MDIViewPage *getFromScene(const QGSPage *scene);
     void contextMenuEvent(QContextMenuEvent *event) override;
 
     void setScene(QGSPage* scene, QGVPage* view);

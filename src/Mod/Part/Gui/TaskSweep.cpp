@@ -20,7 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
@@ -38,9 +37,10 @@
 # include <TopTools_HSequenceOfShape.hxx>
 #endif
 
-#include "ui_TaskSweep.h"
-#include "TaskSweep.h"
-
+#include <App/Application.h>
+#include <App/Document.h>
+#include <App/DocumentObject.h>
+#include <App/Link.h>
 #include <Gui/Application.h>
 #include <Gui/BitmapFactory.h>
 #include <Gui/Command.h>
@@ -50,14 +50,10 @@
 #include <Gui/SelectionObject.h>
 #include <Gui/ViewProvider.h>
 #include <Gui/WaitCursor.h>
-
-#include <Base/Console.h>
-#include <Base/Interpreter.h>
-#include <App/Application.h>
-#include <App/Document.h>
-#include <App/DocumentObject.h>
-#include <App/Link.h>
 #include <Mod/Part/App/PartFeature.h>
+
+#include "TaskSweep.h"
+#include "ui_TaskSweep.h"
 
 
 using namespace PartGui;
@@ -140,10 +136,10 @@ SweepWidget::SweepWidget(QWidget* parent)
     d->ui.selector->setSelectedLabel(tr("Selected profiles"));
     d->ui.labelPath->clear();
 
-    connect(d->ui.selector->availableTreeWidget(), SIGNAL(currentItemChanged(QTreeWidgetItem*, QTreeWidgetItem*)),
-            this, SLOT(onCurrentItemChanged(QTreeWidgetItem*, QTreeWidgetItem*)));
-    connect(d->ui.selector->selectedTreeWidget(), SIGNAL(currentItemChanged(QTreeWidgetItem*, QTreeWidgetItem*)),
-            this, SLOT(onCurrentItemChanged(QTreeWidgetItem*, QTreeWidgetItem*)));
+    connect(d->ui.selector->availableTreeWidget(), &QTreeWidget::currentItemChanged,
+            this, &SweepWidget::onCurrentItemChanged);
+    connect(d->ui.selector->selectedTreeWidget(), &QTreeWidget::currentItemChanged,
+            this, &SweepWidget::onCurrentItemChanged);
 
     findShapes();
 }
@@ -209,7 +205,7 @@ void SweepWidget::findShapes()
             shape.ShapeType() == TopAbs_VERTEX) {
             QString label = QString::fromUtf8((*it)->Label.getValue());
             QString name = QString::fromLatin1((*it)->getNameInDocument());
-            
+
             QTreeWidgetItem* child = new QTreeWidgetItem();
             child->setText(0, label);
             child->setToolTip(0, label);
@@ -496,7 +492,7 @@ void TaskSweep::clicked(int id)
         }
 
         label->show();
-        QTimer::singleShot(3000, label, SLOT(hide()));
+        QTimer::singleShot(3000, label, &Gui::StatusWidget::hide);
     }
 }
 

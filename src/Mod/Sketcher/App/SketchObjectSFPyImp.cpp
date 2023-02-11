@@ -22,11 +22,10 @@
 
 #include "PreCompiled.h"
 
-#include "Mod/Sketcher/App/SketchObjectSF.h"
-
 // inclusion of the generated files (generated out of SketchObjectSFPy.xml)
 #include "SketchObjectSFPy.h"
 #include "SketchObjectSFPy.cpp"
+
 
 using namespace Sketcher;
 
@@ -35,8 +34,6 @@ std::string SketchObjectSFPy::representation() const
 {
     return "<SketchObjectSF object>";
 }
-
-
 
 PyObject *SketchObjectSFPy::getCustomAttributes(const char* /*attr*/) const
 {
@@ -47,5 +44,3 @@ int SketchObjectSFPy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*
 {
     return 0; 
 }
-
-

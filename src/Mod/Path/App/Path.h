@@ -20,40 +20,39 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef PATH_Path_H
 #define PATH_Path_H
 
-#include "Command.h"
-//#include "Mod/Robot/App/kdl_cp/path_composite.hpp"
-//#include "Mod/Robot/App/kdl_cp/frames_io.hpp"
 #include <Base/BoundBox.h>
 #include <Base/Persistence.h>
 #include <Base/Vector3D.h>
+
+#include "Command.h"
+
 
 namespace Path
 {
 
     /** The representation of a CNC Toolpath */
-    
+
     class PathExport Toolpath : public Base::Persistence
     {
         TYPESYSTEM_HEADER();
-    
+
         public:
             Toolpath();
             Toolpath(const Toolpath&);
             ~Toolpath();
-            
+
             Toolpath &operator=(const Toolpath&);
-        
+
             // from base class
             virtual unsigned int getMemSize (void) const;
             virtual void Save (Base::Writer &/*writer*/) const;
             virtual void Restore(Base::XMLReader &/*reader*/);
             void SaveDocFile (Base::Writer &writer) const;
             void RestoreDocFile(Base::Reader &reader);
-        
+
             // interface
             void clear(void); // clears the internal data
             void addCommand(const Command &Cmd); // adds a command at the end
@@ -65,12 +64,12 @@ namespace Path
             void setFromGCode(const std::string); // sets the path from the contents of the given GCode string
             std::string toGCode(void) const; // gets a gcode string representation from the Path
             Base::BoundBox3d getBoundBox(void) const;
-            
+
             // shortcut functions
             unsigned int getSize(void) const { return vpcCommands.size(); }
             const std::vector<Command*> &getCommands(void) const { return vpcCommands; }
             const Command &getCommand(unsigned int pos)    const { return *vpcCommands[pos]; }
-        
+
             // support for rotation
             const Base::Vector3d& getCenter() const { return center; }
             void setCenter(const Base::Vector3d &c);
@@ -81,7 +80,7 @@ namespace Path
             std::vector<Command*> vpcCommands;
             Base::Vector3d center;
             //KDL::Path_Composite *pcPath;
-            
+
         /*
         inline  KDL::Frame toFrame(const Base::Placement &To){
             return KDL::Frame(KDL::Rotation::Quaternion(To.getRotation()[0],

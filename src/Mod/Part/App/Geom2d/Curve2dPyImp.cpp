@@ -230,7 +230,7 @@ PyObject* Curve2dPy::toShape(PyObject *args)
             return Py::new_reference_to(shape2pyshape(edge));
         }
         catch (Standard_Failure& e) {
-    
+
             PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
             return nullptr;
         }

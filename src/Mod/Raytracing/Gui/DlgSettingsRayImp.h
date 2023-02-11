@@ -20,12 +20,13 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef RAYTRACINGGUI_DLGSETTINGSRAYIMP_H
 #define RAYTRACINGGUI_DLGSETTINGSRAYIMP_H
 
-#include <Gui/PropertyPage.h>
 #include <memory>
+
+#include <Gui/PropertyPage.h>
+
 
 namespace RaytracingGui {
 class Ui_DlgSettingsRay;

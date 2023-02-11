@@ -21,19 +21,16 @@
  ***************************************************************************/
 
 #include "PreCompiled.h"
-
 #ifndef _PreComp_
-# include <QPixmap>
 # include <QDialog>
 #endif
 
 #include <Gui/BitmapFactory.h>
 #include <Gui/MainWindow.h>
-#include <Base/Tools.h>
-#include <Base/UnitsApi.h>
 
 #include "ui_SketchOrientationDialog.h"
 #include "SketchOrientationDialog.h"
+
 
 using namespace SketcherGui;
 
@@ -44,10 +41,10 @@ SketchOrientationDialog::SketchOrientationDialog()
     ui->setupUi(this);
     onPreview();
 
-    connect(ui->Reverse_checkBox, SIGNAL(clicked(bool)), this, SLOT(onPreview()));
-    connect(ui->XY_radioButton  , SIGNAL(clicked(bool)), this, SLOT(onPreview()));
-    connect(ui->XZ_radioButton  , SIGNAL(clicked(bool)), this, SLOT(onPreview()));
-    connect(ui->YZ_radioButton  , SIGNAL(clicked(bool)), this, SLOT(onPreview()));
+    connect(ui->Reverse_checkBox, &QCheckBox::clicked, this, &SketchOrientationDialog::onPreview);
+    connect(ui->XY_radioButton  , &QRadioButton::clicked, this, &SketchOrientationDialog::onPreview);
+    connect(ui->XZ_radioButton  , &QRadioButton::clicked, this, &SketchOrientationDialog::onPreview);
+    connect(ui->YZ_radioButton  , &QRadioButton::clicked, this, &SketchOrientationDialog::onPreview);
 }
 
 SketchOrientationDialog::~SketchOrientationDialog()

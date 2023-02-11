@@ -20,7 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
@@ -28,7 +27,6 @@
 #endif
 
 #include "Tools.h"
-#include "Iterator.h"
 
 
 using namespace MeshCore;
@@ -76,7 +74,7 @@ unsigned long MeshSearchNeighbours::NeighboursFromFacet (FacetIndex ulFacetIdx, 
         bFound = ExpandRadius(ulMinPoints);
     }
 
-    int nCtExpandRadius = 0; 
+    int nCtExpandRadius = 0;
     // search neighbours, add not marked facets, test distance, add outer points
     MeshFacetArray::_TConstIterator f_beg = _rclFAry.begin();
     while (bFound && (nCtExpandRadius < 10)) {

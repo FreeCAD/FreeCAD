@@ -1,5 +1,6 @@
 /***************************************************************************
  *   Copyright (c) 2014 Yorik van Havre <yorik@uncreated.net>              *
+ *   Copyright (c) 2017 Lei Zheng <realthunder.dev@gmail.com>             *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -19,31 +20,15 @@
  *   Suite 330, Boston, MA  02111-1307, USA                                *
  *                                                                         *
  ***************************************************************************/
-/*
- *  Copyright (c) 2017 Zheng, Lei <realthunder.dev@gmail.com>
- */
 
 #include "PreCompiled.h"
-
 #ifndef _PreComp_
-# include <TopoDS.hxx>
-# include <TopoDS_Shape.hxx>
-# include <TopoDS_Edge.hxx>
-# include <TopExp_Explorer.hxx>
-# include <Standard_Failure.hxx>
 # include <Standard_Version.hxx>
-# include <BRepBuilderAPI_MakeWire.hxx>
+# include <TopoDS_Shape.hxx>
 #endif
 
 #include "FeaturePathShape.h"
-#include "Command.h"
 
-#include <App/DocumentObjectPy.h>
-#include <Base/Placement.h>
-#include <Mod/Part/App/TopoShape.h>
-#include <Mod/Part/App/PartFeature.h>
-
-#include "FeatureArea.h"
 
 using namespace Path;
 

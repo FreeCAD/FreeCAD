@@ -21,14 +21,14 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef DRAWINGGUI_DLGPREFSTECHDRAWIMPANNOTATION_H
 #define DRAWINGGUI_DLGPREFSTECHDRAWIMPANNOTATION_H
 
-#include <Mod/TechDraw/TechDrawGlobal.h>
+#include <memory>
 
 #include <Gui/PropertyPage.h>
-#include <memory>
+#include <Mod/TechDraw/TechDrawGlobal.h>
+
 
 namespace TechDrawGui {
 class Ui_DlgPrefsTechDrawAnnotationImp;

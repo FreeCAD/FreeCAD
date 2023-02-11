@@ -41,7 +41,7 @@ std::string OffsetSurfacePy::representation() const
 
 PyObject *OffsetSurfacePy::PyMake(struct _typeobject *, PyObject *, PyObject *)  // Python wrapper
 {
-    // create a new instance of OffsetSurfacePy and the Twin object 
+    // create a new instance of OffsetSurfacePy and the Twin object
     return new OffsetSurfacePy(new GeomOffsetSurface);
 }
 
@@ -50,8 +50,8 @@ int OffsetSurfacePy::PyInit(PyObject* args, PyObject* /*kwd*/)
 {
     PyObject* pGeom;
     double offset;
-    if (!PyArg_ParseTuple(args, "O!d", 
-                            &(GeometryPy::Type), &pGeom, 
+    if (!PyArg_ParseTuple(args, "O!d",
+                            &(GeometryPy::Type), &pGeom,
                             &offset))
         return -1;
 
@@ -128,5 +128,5 @@ PyObject *OffsetSurfacePy::getCustomAttributes(const char* /*attr*/) const
 
 int OffsetSurfacePy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)
 {
-    return 0; 
+    return 0;
 }

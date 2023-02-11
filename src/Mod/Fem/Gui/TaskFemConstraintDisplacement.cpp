@@ -54,12 +54,13 @@ TaskFemConstraintDisplacement::TaskFemConstraintDisplacement(ViewProviderFemCons
 
     // create a context menu for the listview of the references
     createDeleteAction(ui->lw_references);
-    deleteAction->connect(deleteAction, SIGNAL(triggered()), this, SLOT(onReferenceDeleted()));
+    connect(deleteAction, &QAction::triggered,
+            this, &TaskFemConstraintDisplacement::onReferenceDeleted);
 
-    connect(ui->lw_references, SIGNAL(currentItemChanged(QListWidgetItem*, QListWidgetItem*)),
-        this, SLOT(setSelection(QListWidgetItem*)));
-    connect(ui->lw_references, SIGNAL(itemClicked(QListWidgetItem*)),
-        this, SLOT(setSelection(QListWidgetItem*)));
+    connect(ui->lw_references, &QListWidget::currentItemChanged,
+            this, &TaskFemConstraintDisplacement::setSelection);
+    connect(ui->lw_references, &QListWidget::itemClicked,
+            this, &TaskFemConstraintDisplacement::setSelection);
 
     this->groupLayout()->addWidget(proxy);
 
@@ -132,26 +133,32 @@ TaskFemConstraintDisplacement::TaskFemConstraintDisplacement(ViewProviderFemCons
     }
 
     // Connect decimal value inputs
-    connect(ui->spinxDisplacement, SIGNAL(valueChanged(double)), this, SLOT(x_changed(double)));
-    connect(ui->spinyDisplacement, SIGNAL(valueChanged(double)), this, SLOT(y_changed(double)));
-    connect(ui->spinzDisplacement, SIGNAL(valueChanged(double)), this, SLOT(z_changed(double)));
-    connect(ui->spinxRotation, SIGNAL(valueChanged(double)), this, SLOT(x_rot(double)));
-    connect(ui->spinyRotation, SIGNAL(valueChanged(double)), this, SLOT(y_rot(double)));
-    connect(ui->spinzRotation, SIGNAL(valueChanged(double)), this, SLOT(z_rot(double)));
+    connect(ui->spinxDisplacement, qOverload<double>(&QDoubleSpinBox::valueChanged),
+            this, &TaskFemConstraintDisplacement::x_changed);
+    connect(ui->spinyDisplacement, qOverload<double>(&QDoubleSpinBox::valueChanged),
+            this, &TaskFemConstraintDisplacement::y_changed);
+    connect(ui->spinzDisplacement, qOverload<double>(&QDoubleSpinBox::valueChanged),
+            this, &TaskFemConstraintDisplacement::z_changed);
+    connect(ui->spinxRotation, qOverload<double>(&QDoubleSpinBox::valueChanged),
+            this, &TaskFemConstraintDisplacement::x_rot);
+    connect(ui->spinyRotation, qOverload<double>(&QDoubleSpinBox::valueChanged),
+            this, &TaskFemConstraintDisplacement::y_rot);
+    connect(ui->spinzRotation, qOverload<double>(&QDoubleSpinBox::valueChanged),
+            this, &TaskFemConstraintDisplacement::z_rot);
     // Connect check box values displacements
-    connect(ui->dispxfix, SIGNAL(stateChanged(int)), this, SLOT(fixx(int)));
-    connect(ui->dispxfree, SIGNAL(stateChanged(int)), this, SLOT(freex(int)));
-    connect(ui->dispyfix, SIGNAL(stateChanged(int)), this, SLOT(fixy(int)));
-    connect(ui->dispyfree, SIGNAL(stateChanged(int)), this, SLOT(freey(int)));
-    connect(ui->dispzfix, SIGNAL(stateChanged(int)), this, SLOT(fixz(int)));
-    connect(ui->dispzfree, SIGNAL(stateChanged(int)), this, SLOT(freez(int)));
+    connect(ui->dispxfix, &QCheckBox::stateChanged, this, &TaskFemConstraintDisplacement::fixx);
+    connect(ui->dispxfree, &QCheckBox::stateChanged, this, &TaskFemConstraintDisplacement::freex);
+    connect(ui->dispyfix, &QCheckBox::stateChanged, this, &TaskFemConstraintDisplacement::fixy);
+    connect(ui->dispyfree, &QCheckBox::stateChanged, this, &TaskFemConstraintDisplacement::freey);
+    connect(ui->dispzfix, &QCheckBox::stateChanged, this, &TaskFemConstraintDisplacement::fixz);
+    connect(ui->dispzfree, &QCheckBox::stateChanged, this, &TaskFemConstraintDisplacement::freez);
     // Connect to check box values for rotations
-    connect(ui->rotxfix, SIGNAL(stateChanged(int)), this, SLOT(rotfixx(int)));
-    connect(ui->rotxfree, SIGNAL(stateChanged(int)), this, SLOT(rotfreex(int)));
-    connect(ui->rotyfix, SIGNAL(stateChanged(int)), this, SLOT(rotfixy(int)));
-    connect(ui->rotyfree, SIGNAL(stateChanged(int)), this, SLOT(rotfreey(int)));
-    connect(ui->rotzfix, SIGNAL(stateChanged(int)), this, SLOT(rotfixz(int)));
-    connect(ui->rotzfree, SIGNAL(stateChanged(int)), this, SLOT(rotfreez(int)));
+    connect(ui->rotxfix, &QCheckBox::stateChanged, this, &TaskFemConstraintDisplacement::rotfixx);
+    connect(ui->rotxfree, &QCheckBox::stateChanged, this, &TaskFemConstraintDisplacement::rotfreex);
+    connect(ui->rotyfix, &QCheckBox::stateChanged, this, &TaskFemConstraintDisplacement::rotfixy);
+    connect(ui->rotyfree, &QCheckBox::stateChanged, this, &TaskFemConstraintDisplacement::rotfreey);
+    connect(ui->rotzfix, &QCheckBox::stateChanged, this, &TaskFemConstraintDisplacement::rotfixz);
+    connect(ui->rotzfree, &QCheckBox::stateChanged, this, &TaskFemConstraintDisplacement::rotfreez);
 
     //Selection buttons
     buttonGroup->addButton(ui->btnAdd, (int)SelectionChangeModes::refAdd);

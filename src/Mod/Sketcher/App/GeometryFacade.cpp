@@ -20,19 +20,14 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 #ifndef _PreComp_
-
+# include <boost/uuid/uuid_io.hpp>
 #endif
 
 #include "GeometryFacade.h"
-
-//#include <Base/Console.h> // Only for Debug, when/if necessary
-#include <Base/Exception.h>
-#include <boost/uuid/uuid_io.hpp>
-
 #include "GeometryFacadePy.h"
+
 
 using namespace Sketcher;
 
@@ -158,6 +153,14 @@ bool GeometryFacade::isInternalType(const Part::Geometry * geometry, InternalTyp
 
     auto gf = GeometryFacade::getFacade(geometry);
     return gf->getInternalType() == type;
+}
+
+bool GeometryFacade::isInternalAligned(const Part::Geometry * geometry)
+{
+    throwOnNullPtr(geometry);
+
+    auto gf = GeometryFacade::getFacade(geometry);
+    return gf->isInternalAligned();
 }
 
 bool GeometryFacade::getBlocked(const Part::Geometry * geometry)

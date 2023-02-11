@@ -20,18 +20,18 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <sstream>
 #endif
+
+#include <Base/VectorPy.h>
 
 #include "Mesh.h"
 #include "MeshPoint.h"
 #include "MeshPointPy.h"
 #include "MeshPointPy.cpp"
 
-#include <Base/VectorPy.h>
 
 using namespace Mesh;
 

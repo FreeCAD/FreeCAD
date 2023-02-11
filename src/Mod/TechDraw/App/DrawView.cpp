@@ -20,36 +20,28 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
+# include <cmath>
 # include <sstream>
 # include <Standard_Failure.hxx>
-#include <Precision.hxx>
-#include <cmath>
+# include <Precision.hxx>
 #endif
-
 
 #include <App/Application.h>
 #include <App/Document.h>
-#include <Base/Writer.h>
 #include <Base/Reader.h>
-#include <Base/Exception.h>
-#include <Base/FileInfo.h>
-#include <Base/Console.h>
-#include <Base/UnitsApi.h>
-
-#include "DrawPage.h"
-#include "DrawViewCollection.h"
-#include "DrawViewClip.h"
-#include "DrawLeaderLine.h"
-#include "Preferences.h"
-#include "DrawUtil.h"
-
 #include <Mod/TechDraw/App/DrawViewPy.h>  // generated from DrawViewPy.xml
 
 #include "DrawView.h"
+#include "DrawLeaderLine.h"
+#include "DrawPage.h"
+#include "DrawUtil.h"
+#include "DrawViewClip.h"
+#include "DrawViewCollection.h"
+#include "Preferences.h"
+
 
 using namespace TechDraw;
 
@@ -82,7 +74,7 @@ DrawView::DrawView():
 
     ScaleType.setEnums(ScaleTypeEnums);
     ADD_PROPERTY_TYPE(ScaleType, (prefScaleType()), group, App::Prop_Output, "Scale Type");
-    ADD_PROPERTY_TYPE(Scale, (prefScale()), group, App::Prop_Output, "Scale factor of the view. Scale factors like 1:100 can be written as =1/100");
+    ADD_PROPERTY_TYPE(Scale, (prefScale()), group, App::Prop_None, "Scale factor of the view. Scale factors like 1:100 can be written as =1/100");
     Scale.setConstraints(&scaleRange);
 
     ADD_PROPERTY_TYPE(Caption, (""), group, App::Prop_Output, "Short text about the view");
@@ -125,6 +117,15 @@ void DrawView::onChanged(const App::Property* prop)
 //Coding note: calling execute, recompute or recomputeFeature inside an onChanged
 //method can create infinite loops if the called method changes a property.  In general
 //don't do this!  There are situations where it is OK, but careful analysis is a must.
+
+    if (prop == &Scale &&
+        Scale.getValue() < Precision::Confusion()) {
+        //this is not supposed to happen since Scale has constraints, but it may
+        //happen during changes made in PropertyEditor?
+        Scale.setValue(1.0);
+        return;
+    }
+
     if (isRestoring()) {
         App::DocumentObject::onChanged(prop);
         return;
@@ -224,6 +225,14 @@ QRectF DrawView::getRect() const
     return result;
 }
 
+//get the rectangle centered on the position
+QRectF DrawView::getRectAligned() const
+{
+    double top = Y.getValue() + 0.5 * getRect().height();
+    double left = X.getValue() - 0.5 * getRect().width();
+    return {left, top, getRect().width(), - getRect().height()};
+}
+
 void DrawView::onDocumentRestored()
 {
     handleXYLock();
@@ -264,11 +273,16 @@ void DrawView::validateScale()
 int DrawView::countParentPages() const
 {
     int count = 0;
+    std::vector<App::DocumentObject*> parentAll = getInList();
 
-    std::vector<App::DocumentObject*> parent = getInList();
-    for (std::vector<App::DocumentObject*>::iterator it = parent.begin(); it != parent.end(); ++it) {
-        if ((*it)->getTypeId().isDerivedFrom(DrawPage::getClassTypeId())) {
-            //page = static_cast<TechDraw::DrawPage *>(*it);
+    //it can happen that a page is repeated in the InList, so we need to
+    //prune the duplicates
+    std::sort(parentAll.begin(), parentAll.end());
+    auto last = std::unique(parentAll.begin(), parentAll.end());
+    parentAll.erase(last, parentAll.end());
+
+    for (auto& parent : parentAll) {
+        if (parent->getTypeId().isDerivedFrom(DrawPage::getClassTypeId())) {
             count++;
         }
     }
@@ -283,19 +297,17 @@ DrawPage* DrawView::findParentPage() const
     // Get Feature Page
     DrawPage *page = nullptr;
     DrawViewCollection *collection = nullptr;
-    std::vector<App::DocumentObject*> parent = getInList();
-    for (std::vector<App::DocumentObject*>::iterator it = parent.begin(); it != parent.end(); ++it) {
-        if ((*it)->getTypeId().isDerivedFrom(DrawPage::getClassTypeId())) {
-            page = static_cast<TechDraw::DrawPage *>(*it);
-        }
-
-        if ((*it)->getTypeId().isDerivedFrom(DrawViewCollection::getClassTypeId())) {
-            collection = static_cast<TechDraw::DrawViewCollection *>(*it);
+    std::vector<App::DocumentObject*> parentsAll = getInList();
+    for (auto& parent : parentsAll) {
+        if (parent->getTypeId().isDerivedFrom(DrawPage::getClassTypeId())) {
+            page = static_cast<TechDraw::DrawPage *>(parent);
+        } else if (parent->getTypeId().isDerivedFrom(DrawViewCollection::getClassTypeId())) {
+            collection = static_cast<TechDraw::DrawViewCollection *>(parent);
             page = collection->findParentPage();
         }
 
         if(page)
-          break; // Found page so leave
+          break; // Found a page so leave
     }
 
     return page;
@@ -308,14 +320,13 @@ std::vector<DrawPage*> DrawView::findAllParentPages() const
     std::vector<DrawPage*> result;
     DrawPage *page = nullptr;
     DrawViewCollection *collection = nullptr;
-    std::vector<App::DocumentObject*> parent = getInList();
-    for (std::vector<App::DocumentObject*>::iterator it = parent.begin(); it != parent.end(); ++it) {
-        if ((*it)->getTypeId().isDerivedFrom(DrawPage::getClassTypeId())) {
-            page = static_cast<TechDraw::DrawPage *>(*it);
-        }
+    std::vector<App::DocumentObject*> parentsAll = getInList();
 
-        if ((*it)->getTypeId().isDerivedFrom(DrawViewCollection::getClassTypeId())) {
-            collection = static_cast<TechDraw::DrawViewCollection *>(*it);
+   for (auto& parent : parentsAll) {
+        if (parent->getTypeId().isDerivedFrom(DrawPage::getClassTypeId())) {
+            page = static_cast<TechDraw::DrawPage*>(parent);
+        } else if (parent->getTypeId().isDerivedFrom(DrawViewCollection::getClassTypeId())) {
+            collection = static_cast<TechDraw::DrawViewCollection *>(parent);
             page = collection->findParentPage();
         }
 
@@ -324,9 +335,13 @@ std::vector<DrawPage*> DrawView::findAllParentPages() const
         }
     }
 
+    //prune the duplicates
+    std::sort(result.begin(), result.end());
+    auto last = std::unique(result.begin(), result.end());
+    result.erase(last, result.end());
+
     return result;
 }
-
 
 bool DrawView::isInClip()
 {
@@ -441,7 +456,6 @@ double DrawView::getScale() const
     }
     if (!(result > 0.0)) {
         result = 1.0;
-        Base::Console().Log("DrawView - %s - bad scale found (%.3f) using 1.0\n", getNameInDocument(), Scale.getValue());
     }
     return result;
 }
@@ -473,10 +487,6 @@ void DrawView::handleChangedPropertyType(Base::XMLReader &reader, const char * T
             } else {
                 Scale.setValue(1.0);
             }
-        } else {
-            // has Scale prop that isn't Float!
-            Base::Console().Log("DrawPage::Restore - old Document Scale is Not Float!\n");
-            // no idea
         }
     }
     else if (prop->isDerivedFrom(App::PropertyLinkList::getClassTypeId())

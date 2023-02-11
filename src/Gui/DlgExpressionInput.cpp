@@ -57,15 +57,17 @@ DlgExpressionInput::DlgExpressionInput(const App::ObjectIdentifier & _path,
     ui->setupUi(this);
 
     // Connect signal(s)
-    connect(ui->expression, SIGNAL(textChanged(QString)), this, SLOT(textChanged(QString)));
-    connect(ui->discardBtn, SIGNAL(clicked()), this, SLOT(setDiscarded()));
+    connect(ui->expression, &ExpressionLineEdit::textChanged,
+        this, &DlgExpressionInput::textChanged);
+    connect(ui->discardBtn, &QPushButton::clicked,
+        this, &DlgExpressionInput::setDiscarded);
 
     if (expression) {
         ui->expression->setText(Base::Tools::fromStdString(expression->toString()));
     }
     else {
         QVariant text = parent->property("text");
-        if (text.canConvert(QMetaType::QString)) {
+        if (text.canConvert<QString>()) {
             ui->expression->setText(text.toString());
         }
     }
@@ -109,6 +111,45 @@ DlgExpressionInput::~DlgExpressionInput()
 {
     qApp->removeEventFilter(this);
     delete ui;
+}
+
+void NumberRange::setRange(double min, double max)
+{
+    minimum = min;
+    maximum = max;
+    defined = true;
+}
+
+void NumberRange::clearRange()
+{
+    defined = false;
+}
+
+void NumberRange::throwIfOutOfRange(const Base::Quantity& value) const
+{
+    if (!defined)
+        return;
+
+    if (value.getValue() < minimum || value.getValue() > maximum) {
+        Base::Quantity minVal(minimum, value.getUnit());
+        Base::Quantity maxVal(maximum, value.getUnit());
+        QString valStr = value.getUserString();
+        QString minStr = minVal.getUserString();
+        QString maxStr = maxVal.getUserString();
+        QString error = QString::fromLatin1("Value out of range (%1 out of [%2, %3])").arg(valStr, minStr, maxStr);
+
+        throw Base::ValueError(error.toStdString());
+    }
+}
+
+void DlgExpressionInput::setRange(double minimum, double maximum)
+{
+    numberRange.setRange(minimum, maximum);
+}
+
+void DlgExpressionInput::clearRange()
+{
+    numberRange.clearRange();
 }
 
 QPoint DlgExpressionInput::expressionPosition() const
@@ -156,7 +197,7 @@ void DlgExpressionInput::textChanged(const QString &text)
             //set default palette as we may have read text right now
             ui->msg->setPalette(ui->okBtn->palette());
 
-            NumberExpression * n = Base::freecad_dynamic_cast<NumberExpression>(result.get());
+            auto * n = Base::freecad_dynamic_cast<NumberExpression>(result.get());
             if (n) {
                 Base::Quantity value = n->getQuantity();
                 QString msg = value.getUserString();
@@ -179,10 +220,13 @@ void DlgExpressionInput::textChanged(const QString &text)
                     ui->msg->setPalette(p);
                 }
 
+                numberRange.throwIfOutOfRange(value);
+
                 ui->msg->setText(msg);
             }
-            else
+            else {
                 ui->msg->setText(Base::Tools::fromStdString(result->toString()));
+            }
 
         }
     }
@@ -252,7 +296,7 @@ bool DlgExpressionInput::eventFilter(QObject *obj, QEvent *ev)
         // cursor is on this or an underlying widget or outside.
         if (!underMouse()) {
             // if the expression fields context-menu is open do not close the dialog
-            QMenu* menu = qobject_cast<QMenu*>(obj);
+            auto menu = qobject_cast<QMenu*>(obj);
             if (menu && menu->parentWidget() == ui->expression) {
                 return false;
             }

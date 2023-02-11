@@ -25,52 +25,44 @@
 # define WNT // avoid conflict with GUID
 #endif
 #ifndef _PreComp_
-# include <gp_Trsf.hxx>
-# include <TopExp.hxx>
-# include <TopExp_Explorer.hxx>
+# include <Interface_Static.hxx>
+# include <Quantity_ColorRGBA.hxx>
 # include <Standard_Failure.hxx>
 # include <Standard_Version.hxx>
-# include <XCAFApp_Application.hxx>
-# include <XCAFDoc_DocumentTool.hxx>
-# include <XCAFDoc_ShapeTool.hxx>
-# include <XCAFDoc_ColorTool.hxx>
-# include <XCAFDoc_Location.hxx>
-# include <XCAFDoc_GraphNode.hxx>
-# include <TDF_Label.hxx>
-# include <TDF_Tool.hxx>
-# include <TDF_LabelSequence.hxx>
-# include <TDF_ChildIterator.hxx>
 # include <TDataStd_Name.hxx>
-# include <Quantity_ColorRGBA.hxx>
-# include <TopoDS_Iterator.hxx>
-# include <Interface_Static.hxx>
 # include <TDF_AttributeSequence.hxx>
-# include <TopTools_MapOfShape.hxx>
+# include <TDF_ChildIterator.hxx>
+# include <TDF_Label.hxx>
+# include <TDF_LabelSequence.hxx>
+# include <TDF_Tool.hxx>
+# include <TopExp.hxx>
+# include <TopExp_Explorer.hxx>
+# include <TopoDS_Iterator.hxx>
+# include <XCAFDoc_ColorTool.hxx>
+# include <XCAFDoc_DocumentTool.hxx>
+# include <XCAFDoc_GraphNode.hxx>
+# include <XCAFDoc_ShapeTool.hxx>
 #endif
 
 #include <XCAFDoc_ShapeMapTool.hxx>
 
 #include <boost/format.hpp>
-#include <boost/regex.hpp>
 #include <boost/algorithm/string.hpp>
-#include <Base/Parameter.h>
-#include <Base/Console.h>
-#include <Base/FileInfo.h>
+
 #include <App/Application.h>
 #include <App/Document.h>
-#include <App/DocumentObjectPy.h>
-#include <App/Part.h>
-#include <App/Link.h>
-#include <App/GroupExtension.h>
-#include <Mod/Part/App/PartFeature.h>
-#include <Mod/Part/App/FeatureCompound.h>
-#include "ImportOCAF2.h"
-#include <Mod/Part/App/ProgressIndicator.h>
-#include <Mod/Part/App/ImportIges.h>
-#include <Mod/Part/App/ImportStep.h>
-
 #include <App/DocumentObject.h>
-#include <App/DocumentObjectGroup.h>
+#include <App/GroupExtension.h>
+#include <App/Link.h>
+#include <Base/Console.h>
+#include <Base/FileInfo.h>
+#include <Base/Parameter.h>
+#include <Mod/Part/App/FeatureCompound.h>
+#include <Mod/Part/App/Interface.h>
+#include <Mod/Part/App/OCAF/ImportExportSettings.h>
+
+#include "ImportOCAF2.h"
+
 
 #if OCC_VERSION_HEX >= 0x070500
 // See https://dev.opencascade.org/content/occt-3d-viewer-becomes-srgb-aware
@@ -121,7 +113,7 @@ static std::string labelName(TDF_Label label) {
 }
 
 static void printLabel(TDF_Label label, Handle(XCAFDoc_ShapeTool) aShapeTool,
-    Handle(XCAFDoc_ColorTool) aColorTool, const char *msg = nullptr) 
+    Handle(XCAFDoc_ColorTool) aColorTool, const char *msg = nullptr)
 {
     if(label.IsNull() || !FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG))
         return;
@@ -158,7 +150,7 @@ static void printLabel(TDF_Label label, Handle(XCAFDoc_ShapeTool) aShapeTool,
     Base::Console().NotifyLog(ss.str().c_str());
 }
 
-static void dumpLabels(TDF_Label label, Handle(XCAFDoc_ShapeTool) aShapeTool, 
+static void dumpLabels(TDF_Label label, Handle(XCAFDoc_ShapeTool) aShapeTool,
     Handle(XCAFDoc_ColorTool) aColorTool, int depth=0)
 {
     std::string indent(depth*2,' ');
@@ -170,55 +162,88 @@ static void dumpLabels(TDF_Label label, Handle(XCAFDoc_ShapeTool) aShapeTool,
 
 /////////////////////////////////////////////////////////////////////
 
+ImportOCAFOptions::ImportOCAFOptions()
+{
+    defaultFaceColor.setPackedValue(0xCCCCCC00);
+    defaultFaceColor.a = 0;
+
+    defaultEdgeColor.setPackedValue(421075455UL);
+    defaultEdgeColor.a = 0;
+}
+
 ImportOCAF2::ImportOCAF2(Handle(TDocStd_Document) h, App::Document* d, const std::string& name)
     : pDoc(h), pDocument(d), default_name(name), sequencer(nullptr)
 {
     aShapeTool = XCAFDoc_DocumentTool::ShapeTool (pDoc->Main());
     aColorTool = XCAFDoc_DocumentTool::ColorTool(pDoc->Main());
 
-    Part::ImportExportSettings settings;
-    merge = settings.getReadShapeCompoundMode();
-    useLinkGroup = settings.getUseLinkGroup();
-    useBaseName = settings.getUseBaseName();
-    importHidden = settings.getImportHiddenObject();
-    reduceObjects = settings.getReduceObjects();
-    showProgress = settings.getShowProgress();
-    expandCompound = settings.getExpandCompound();
-
     if (d->isSaved()) {
         Base::FileInfo fi(d->FileName.getValue());
         filePath = fi.dirPath();
     }
-    mode = static_cast<int>(settings.getImportMode());
 
-    auto hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
-    defaultFaceColor.setPackedValue(hGrp->GetUnsigned("DefaultShapeColor",0xCCCCCC00));
-    defaultFaceColor.a = 0;
-
-    defaultEdgeColor.setPackedValue(hGrp->GetUnsigned("DefaultShapeLineColor",421075455UL));
-    defaultEdgeColor.a = 0;
-
-    if (useLinkGroup) {
-        // Interface_Static::SetIVal("read.stepcaf.subshapes.name",1);
-        aShapeTool->SetAutoNaming(Standard_False);
-    }
+    setUseLinkGroup(options.useLinkGroup);
 }
 
 ImportOCAF2::~ImportOCAF2()
 {
 }
 
-void ImportOCAF2::setMode(int m) {
-    if(m<0 || m>=ModeMax)
+ImportOCAFOptions ImportOCAF2::customImportOptions()
+{
+    Part::OCAF::ImportExportSettings settings;
+
+    ImportOCAFOptions defaultOptions;
+    defaultOptions.merge = settings.getReadShapeCompoundMode();
+    defaultOptions.useLinkGroup = settings.getUseLinkGroup();
+    defaultOptions.useBaseName = settings.getUseBaseName();
+    defaultOptions.importHidden = settings.getImportHiddenObject();
+    defaultOptions.reduceObjects = settings.getReduceObjects();
+    defaultOptions.showProgress = settings.getShowProgress();
+    defaultOptions.expandCompound = settings.getExpandCompound();
+    defaultOptions.mode = static_cast<int>(settings.getImportMode());
+
+    auto hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
+    defaultOptions.defaultFaceColor.setPackedValue(hGrp->GetUnsigned("DefaultShapeColor", defaultOptions.defaultFaceColor.getPackedValue()));
+    defaultOptions.defaultFaceColor.a = 0;
+
+    defaultOptions.defaultEdgeColor.setPackedValue(hGrp->GetUnsigned("DefaultShapeLineColor", defaultOptions.defaultEdgeColor.getPackedValue()));
+    defaultOptions.defaultEdgeColor.a = 0;
+
+    return defaultOptions;
+}
+
+void ImportOCAF2::setImportOptions(ImportOCAFOptions opts)
+{
+    options = opts;
+    setUseLinkGroup(options.useLinkGroup);
+}
+
+void ImportOCAF2::setUseLinkGroup(bool enable)
+{
+    options.useLinkGroup = enable;
+
+    // Interface_Static::SetIVal("read.stepcaf.subshapes.name",1);
+    aShapeTool->SetAutoNaming(!enable);
+}
+
+void ImportOCAF2::setMode(int m)
+{
+    if (m<0 || m >= ModeMax) {
         FC_WARN("Invalid import mode " << m);
-    else
-        mode = m;
-    if(mode!=SingleDoc) {
-        if(pDocument->isSaved()) {
+    }
+    else {
+        options.mode = m;
+    }
+
+    if (options.mode != SingleDoc) {
+        if (pDocument->isSaved()) {
             Base::FileInfo fi(pDocument->FileName.getValue());
             filePath = fi.dirPath();
-        }else
+        }
+        else {
             FC_WARN("Disable multi-document mode because the input document is not saved.");
+        }
     }
 }
 
@@ -233,7 +258,7 @@ std::string ImportOCAF2::getLabelName(TDF_Label label) {
         return name;
     if(!XCAFDoc_ShapeTool::IsReference(label))
         return labelName(label);
-    if(!useBaseName)
+    if(!options.useBaseName)
         name = labelName(label);
     TDF_Label ref;
     if(name.empty() && XCAFDoc_ShapeTool::GetReferredShape(label,ref))
@@ -280,7 +305,7 @@ bool ImportOCAF2::getColor(const TopoDS_Shape &shape, Info &info, bool check, bo
         // color. And this will look weird in FC. So for shape with face
         // we'll ignore the curve color, if it is the same as the face color.
         if((c!=info.faceColor || !TopExp_Explorer(shape,TopAbs_FACE).More()) &&
-           (!check || info.edgeColor!=c)) 
+           (!check || info.edgeColor!=c))
         {
             info.edgeColor = c;
             info.hasEdgeColor = true;
@@ -289,15 +314,15 @@ bool ImportOCAF2::getColor(const TopoDS_Shape &shape, Info &info, bool check, bo
     }
     if(!check) {
         if(!info.hasFaceColor)
-            info.faceColor = defaultFaceColor;
+            info.faceColor = options.defaultFaceColor;
         if(!info.hasEdgeColor)
-            info.edgeColor = defaultEdgeColor;
+            info.edgeColor = options.defaultEdgeColor;
     }
     return ret;
 }
 
 App::DocumentObject *ImportOCAF2::expandShape(
-        App::Document *doc, TDF_Label label, const TopoDS_Shape &shape) 
+        App::Document *doc, TDF_Label label, const TopoDS_Shape &shape)
 {
     if(shape.IsNull() || !TopExp_Explorer(shape,TopAbs_VERTEX).More())
         return nullptr;
@@ -348,7 +373,7 @@ App::DocumentObject *ImportOCAF2::expandShape(
     return info.obj;
 }
 
-bool ImportOCAF2::createObject(App::Document *doc, TDF_Label label, 
+bool ImportOCAF2::createObject(App::Document *doc, TDF_Label label,
         const TopoDS_Shape &shape, Info &info, bool newDoc)
 {
     if(shape.IsNull() || !TopExp_Explorer(shape,TopAbs_VERTEX).More()) {
@@ -433,11 +458,12 @@ bool ImportOCAF2::createObject(App::Document *doc, TDF_Label label,
 
     Part::Feature *feature;
 
-    if(newDoc && (mode==ObjectPerDoc || mode==ObjectPerDir))
+    if(newDoc && (options.mode == ObjectPerDoc ||
+                  options.mode == ObjectPerDir))
         doc = getDocument(doc,label);
 
-    if(expandCompound && 
-       (tshape.countSubShapes(TopAbs_SOLID)>1 || 
+    if(options.expandCompound &&
+       (tshape.countSubShapes(TopAbs_SOLID)>1 ||
         (!tshape.countSubShapes(TopAbs_SOLID) && tshape.countSubShapes(TopAbs_SHELL)>1)))
     {
         feature = dynamic_cast<Part::Feature*>(expandShape(doc,label,shape));
@@ -460,7 +486,7 @@ bool ImportOCAF2::createObject(App::Document *doc, TDF_Label label,
 }
 
 App::Document *ImportOCAF2::getDocument(App::Document *doc, TDF_Label label) {
-    if(filePath.empty() || mode==SingleDoc || merge)
+    if(filePath.empty() || options.mode==SingleDoc || options.merge)
         return doc;
 
     auto name = getLabelName(label);
@@ -471,11 +497,11 @@ App::Document *ImportOCAF2::getDocument(App::Document *doc, TDF_Label label) {
     std::ostringstream ss;
     Base::FileInfo fi(doc->FileName.getValue());
     std::string path = fi.dirPath();
-    if(mode == GroupPerDir || mode == ObjectPerDir) {
+    if(options.mode == GroupPerDir || options.mode == ObjectPerDir) {
         for(int i=0;i<1000;++i) {
             ss.str("");
             ss << path << '/' << fi.fileNamePure() << "_parts";
-            if(i>0) 
+            if(i>0)
                 ss << '_' << std::setfill('0') << std::setw(3) << i;
             Base::FileInfo fi2(ss.str());
             if(fi2.exists()) {
@@ -492,7 +518,7 @@ App::Document *ImportOCAF2::getDocument(App::Document *doc, TDF_Label label) {
     for(int i=0;i<1000;++i) {
         ss.str("");
         ss << path << '/' << newDoc->getName() << ".fcstd";
-        if(i>0) 
+        if(i>0)
             ss << '_' << std::setfill('0') << std::setw(3) << i;
         Base::FileInfo fi(ss.str());
         if(!fi.exists()) {
@@ -506,16 +532,16 @@ App::Document *ImportOCAF2::getDocument(App::Document *doc, TDF_Label label) {
     return doc;
 }
 
-bool ImportOCAF2::createGroup(App::Document *doc, Info &info, const TopoDS_Shape &shape, 
-                             std::vector<App::DocumentObject*> &children, 
+bool ImportOCAF2::createGroup(App::Document *doc, Info &info, const TopoDS_Shape &shape,
+                             std::vector<App::DocumentObject*> &children,
                              const boost::dynamic_bitset<> &visibilities,
-                             bool canReduce) 
+                             bool canReduce)
 {
     assert(children.size() == visibilities.size());
     if(children.empty())
         return false;
     bool hasColor = getColor(shape,info,false,true);
-    if(canReduce && !hasColor && reduceObjects && children.size()==1 && visibilities[0]) {
+    if(canReduce && !hasColor && options.reduceObjects && children.size()==1 && visibilities[0]) {
         info.obj = children.front();
         info.free = true;
         info.propPlacement = dynamic_cast<App::PropertyPlacement*>(info.obj->getPropertyByName("Placement"));
@@ -550,9 +576,9 @@ bool ImportOCAF2::createGroup(App::Document *doc, Info &info, const TopoDS_Shape
 
 App::DocumentObject* ImportOCAF2::loadShapes()
 {
-    if(!useLinkGroup) {
+    if(!options.useLinkGroup) {
         ImportLegacy legacy(*this);
-        legacy.setMerge(merge);
+        legacy.setMerge(options.merge);
         legacy.loadShapes();
         return nullptr;
     }
@@ -564,7 +590,7 @@ App::DocumentObject* ImportOCAF2::loadShapes()
     aShapeTool->GetShapes(labels);
     Base::SequencerLauncher seq("Importing...",labels.Length());
     FC_MSG("free shape count " << labels.Length());
-    sequencer = showProgress?&seq:nullptr;
+    sequencer = options.showProgress ? &seq : nullptr;
 
     labels.Clear();
     myShapes.clear();
@@ -577,15 +603,15 @@ App::DocumentObject* ImportOCAF2::loadShapes()
     int count = 0;
     for (Standard_Integer i=1; i <= labels.Length(); i++ ) {
         auto label = labels.Value(i);
-        if(!importHidden && !aColorTool->IsVisible(label))
+        if(!options.importHidden && !aColorTool->IsVisible(label))
             continue;
         ++count;
     }
     for (Standard_Integer i=1; i <= labels.Length(); i++ ) {
         auto label = labels.Value(i);
-        if(!importHidden && !aColorTool->IsVisible(label))
+        if(!options.importHidden && !aColorTool->IsVisible(label))
             continue;
-        auto obj = loadShape(pDocument, label, 
+        auto obj = loadShape(pDocument, label,
                 aShapeTool->GetShape(label), false, count>1);
         if(obj) {
             objs.push_back(obj);
@@ -604,7 +630,7 @@ App::DocumentObject* ImportOCAF2::loadShapes()
         // ret->Visibility.setValue(true);
         ret->recomputeFeature(true);
     }
-    if(merge && ret && !ret->isDerivedFrom(Part::Feature::getClassTypeId())) {
+    if(options.merge && ret && !ret->isDerivedFrom(Part::Feature::getClassTypeId())) {
         auto shape = Part::Feature::getTopoShape(ret);
         auto feature = static_cast<Part::Feature*>(
                 pDocument->addObject("Part::Feature", "Feature"));
@@ -625,7 +651,7 @@ App::DocumentObject* ImportOCAF2::loadShapes()
     return ret;
 }
 
-void ImportOCAF2::getSHUOColors(TDF_Label label, 
+void ImportOCAF2::getSHUOColors(TDF_Label label,
         std::map<std::string,App::Color> &colors, bool appendFirst)
 {
     TDF_AttributeSequence seq;
@@ -677,14 +703,14 @@ void ImportOCAF2::getSHUOColors(TDF_Label label,
             if(aColorTool->GetColor(slabel, XCAFDoc_ColorSurf, aColor) ||
                aColorTool->GetColor(slabel, XCAFDoc_ColorGen, aColor))
             {
-                colors.emplace(subname,convertColor(aColor));
+                colors.emplace(subname, convertColor(aColor));
             }
         }
     }
 }
 
-App::DocumentObject *ImportOCAF2::loadShape(App::Document *doc, 
-        TDF_Label label, const TopoDS_Shape &shape, bool baseOnly, bool newDoc) 
+App::DocumentObject *ImportOCAF2::loadShape(App::Document *doc,
+        TDF_Label label, const TopoDS_Shape &shape, bool baseOnly, bool newDoc)
 {
     if(shape.IsNull())
         return nullptr;
@@ -699,7 +725,7 @@ App::DocumentObject *ImportOCAF2::loadShape(App::Document *doc,
         bool res;
         if(baseLabel.IsNull() || !aShapeTool->IsAssembly(baseLabel))
             res = createObject(doc,baseLabel,baseShape,info,newDoc);
-        else 
+        else
             res = createAssembly(doc,baseLabel,baseShape,info,newDoc);
         if(!res)
             return nullptr;
@@ -710,7 +736,7 @@ App::DocumentObject *ImportOCAF2::loadShape(App::Document *doc,
         return it->second.obj;
 
     std::map<std::string,App::Color> shuoColors;
-    if(!useLinkGroup)
+    if(!options.useLinkGroup)
         getSHUOColors(label,shuoColors,false);
 
     auto info = it->second;
@@ -762,7 +788,7 @@ struct ChildInfo {
     TopoDS_Shape shape;
 };
 
-bool ImportOCAF2::createAssembly(App::Document *_doc, 
+bool ImportOCAF2::createAssembly(App::Document *_doc,
         TDF_Label label, const TopoDS_Shape &shape, Info &info, bool newDoc)
 {
     (void)label;
@@ -782,20 +808,20 @@ bool ImportOCAF2::createAssembly(App::Document *_doc,
             continue;
         TDF_Label childLabel;
         aShapeTool->Search(childShape,childLabel,Standard_True,Standard_True,Standard_False);
-        if(!childLabel.IsNull() && !importHidden && !aColorTool->IsVisible(childLabel))
+        if(!childLabel.IsNull() && !options.importHidden && !aColorTool->IsVisible(childLabel))
             continue;
-        auto obj = loadShape(doc,childLabel,childShape,reduceObjects);
+        auto obj = loadShape(doc, childLabel, childShape, options.reduceObjects);
         if(!obj)
             continue;
         bool vis = true;
         if(!childLabel.IsNull() && aShapeTool->IsComponent(childLabel))
             vis = aColorTool->IsVisible(childLabel);
-        if(!reduceObjects) {
+        if(!options.reduceObjects) {
             visibilities.push_back(vis);
             children.push_back(obj);
             getSHUOColors(childLabel,shuoColors,true);
             continue;
-        } 
+        }
 
         auto &childInfo = childrenMap[obj];
         if (childInfo.plas.empty()) {
@@ -809,7 +835,7 @@ bool ImportOCAF2::createAssembly(App::Document *_doc,
         childInfo.plas.emplace_back(Part::TopoShape::convert(childShape.Location().Transformation()));
         Quantity_ColorRGBA aColor;
         if (aColorTool->GetColor(childShape, XCAFDoc_ColorSurf, aColor)) {
-            childInfo.colors[childInfo.plas.size()-1] = convertColor(aColor); 
+            childInfo.colors[childInfo.plas.size()-1] = convertColor(aColor);
         }
     }
     assert(visibilities.size() == children.size());
@@ -820,7 +846,7 @@ bool ImportOCAF2::createAssembly(App::Document *_doc,
         return false;
     }
 
-    if(reduceObjects) {
+    if(options.reduceObjects) {
         int i=-1;
         for(auto &child : children) {
             ++i;
@@ -879,21 +905,38 @@ bool ImportOCAF2::createAssembly(App::Document *_doc,
 
 // ----------------------------------------------------------------------------
 
+ExportOCAFOptions::ExportOCAFOptions()
+{
+    defaultColor.setPackedValue(0xCCCCCC00);
+    defaultColor.a = 0;
+}
+
 ExportOCAF2::ExportOCAF2(Handle(TDocStd_Document) h, GetShapeColorsFunc func)
     : pDoc(h) , getShapeColors(func)
 {
     aShapeTool = XCAFDoc_DocumentTool::ShapeTool(pDoc->Main());
     aColorTool = XCAFDoc_DocumentTool::ColorTool(pDoc->Main());
 
-    Part::ImportExportSettings settings;
-    exportHidden = settings.getExportHiddenObject();
-    keepPlacement = settings.getExportKeepPlacement();
+    Part::Interface::writeStepAssembly(Part::Interface::Assembly::Auto);
+}
 
-    Interface_Static::SetIVal("write.step.assembly",2);
+/*!
+ * \brief ExportOCAF2::customExportOptions
+ * \return options from user settings
+ */
+ExportOCAFOptions ExportOCAF2::customExportOptions()
+{
+    Part::OCAF::ImportExportSettings settings;
+
+    ExportOCAFOptions defaultOptions;
+    defaultOptions.exportHidden = settings.getExportHiddenObject();
+    defaultOptions.keepPlacement = settings.getExportKeepPlacement();
 
     auto handle = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
-    defaultColor.setPackedValue(handle->GetUnsigned("DefaultShapeColor",0xCCCCCC00));
-    defaultColor.a = 0;
+    defaultOptions.defaultColor.setPackedValue(handle->GetUnsigned("DefaultShapeColor", defaultOptions.defaultColor.getPackedValue()));
+    defaultOptions.defaultColor.a = 0;
+
+    return defaultOptions;
 }
 
 void ExportOCAF2::setName(TDF_Label label, App::DocumentObject *obj, const char *name) {
@@ -983,7 +1026,7 @@ TDF_Label ExportOCAF2::findComponent(const char *subname, TDF_Label label, TDF_L
     return TDF_Label();
 }
 
-void ExportOCAF2::setupObject(TDF_Label label, App::DocumentObject *obj, 
+void ExportOCAF2::setupObject(TDF_Label label, App::DocumentObject *obj,
         const Part::TopoShape &shape, const std::string &prefix, const char *name, bool force)
 {
     setName(label,obj,name);
@@ -1073,7 +1116,7 @@ void ExportOCAF2::setupObject(TDF_Label label, App::DocumentObject *obj,
                 // capability of overriding context-depdendent element color,
                 // only whole shape color. Newer version of the same document
                 // (https://www.cax-if.org/documents/rec_prac_styling_org_v15.pdf)
-                // does support this, in section 5.1. 
+                // does support this, in section 5.1.
                 //
                 // The above observation is confirmed by further inspection of
                 // OCCT code, XCAFDoc_ShapeTool.cxx and STEPCAFControl_Writer.cxx.
@@ -1146,8 +1189,8 @@ void ExportOCAF2::exportObjects(std::vector<App::DocumentObject*> &objs, const c
 #endif
 }
 
-TDF_Label ExportOCAF2::exportObject(App::DocumentObject* parentObj, 
-        const char *sub, TDF_Label parent, const char *name) 
+TDF_Label ExportOCAF2::exportObject(App::DocumentObject* parentObj,
+        const char *sub, TDF_Label parent, const char *name)
 {
     App::DocumentObject *obj;
     auto shape = Part::Feature::getTopoShape(parentObj,sub,false,nullptr,&obj,false,!sub);
@@ -1199,7 +1242,7 @@ TDF_Label ExportOCAF2::exportObject(App::DocumentObject* parentObj,
             // have to flaten all multi-level link without scales. In other
             // word, all link will all be forced to refer to the same
             // non-located shape
-            
+
             // retrieve OCAF computed shape, in case the current object returns
             // a new shape every time Part::Feature::getTopoShape() is called.
             auto baseShape = aShapeTool->GetShape(it->second);
@@ -1241,7 +1284,7 @@ TDF_Label ExportOCAF2::exportObject(App::DocumentObject* parentObj,
             // not call setupObject() on a non-located baseshape like above,
             // because OCCT does not respect shape style sharing when not
             // exporting assembly
-            if(!keepPlacement || shape.getPlacement() == Base::Placement())
+            if(!options.keepPlacement || shape.getPlacement() == Base::Placement())
                 shape.setShape(shape.getShape().Located(TopLoc_Location()));
             else {
                 Base::Matrix4D mat = shape.getTransform();
@@ -1297,7 +1340,7 @@ TDF_Label ExportOCAF2::exportObject(App::DocumentObject* parentObj,
         if(vis < 0)
             vis = sobj->Visibility.getValue()?1:0;
 
-        if(!vis && !exportHidden)
+        if(!vis && !options.exportHidden)
             continue;
 
         TDF_Label childLabel = exportObject(obj,subobj.c_str(),label,linkArray?childName.c_str():nullptr);
@@ -1321,9 +1364,9 @@ TDF_Label ExportOCAF2::exportObject(App::DocumentObject* parentObj,
             Quantity_ColorRGBA col;
             if(!aColorTool->GetInstanceColor(childShape,XCAFDoc_ColorGen,col) &&
                !aColorTool->GetInstanceColor(childShape,XCAFDoc_ColorSurf,col) &&
-               !aColorTool->GetInstanceColor(childShape,XCAFDoc_ColorCurv,col)) 
+               !aColorTool->GetInstanceColor(childShape,XCAFDoc_ColorCurv,col))
             {
-                auto &c = defaultColor;
+                auto &c = options.defaultColor;
                 aColorTool->SetColor(childLabel, convertColor(c), XCAFDoc_ColorGen);
                 FC_WARN(labelName(childLabel) << " set default color");
             }
@@ -1364,7 +1407,7 @@ bool ExportOCAF2::canFallback(std::vector<App::DocumentObject*> objs) {
             continue;
         if(obj->getExtensionByType<App::LinkBaseExtension>(true))
             return false;
-        for(auto &sub : obj->getSubObjects()) 
+        for(auto &sub : obj->getSubObjects())
             objs.push_back(obj->getSubObject(sub.c_str()));
     }
     return true;

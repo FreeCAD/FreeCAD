@@ -20,24 +20,30 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef GUI_TASKVIEW_TaskSketcherConstraints_H
 #define GUI_TASKVIEW_TaskSketcherConstraints_H
 
-#include <Gui/TaskView/TaskView.h>
-#include <Gui/Selection.h>
-#include <boost_signals2.hpp>
 #include <QListWidget>
 
+#include <Base/Parameter.h>
+#include <Gui/Selection.h>
+#include <Gui/TaskView/TaskView.h>
 #include <Mod/Sketcher/App/Constraint.h>
 
 #include "ConstraintFilters.h"
+
 
 namespace App {
 class Property;
 }
 
+namespace Gui {
+    class ViewProvider;
+}
+
 namespace SketcherGui {
+
+using namespace ConstraintFilter;
 
 class ViewProviderSketch;
 class Ui_TaskSketcherConstraints;
@@ -73,12 +79,73 @@ protected Q_SLOTS:
     void hideConstraints();
 };
 
-class TaskSketcherConstraints : public Gui::TaskView::TaskBox, public Gui::SelectionObserver
+class ConstraintFilterList : public QListWidget
+{
+    Q_OBJECT
+
+public:
+    explicit ConstraintFilterList(QWidget* parent = nullptr);
+    ~ConstraintFilterList() override;
+
+    void setPartiallyChecked();
+
+    FilterValueBitset getMultiFilter();
+
+    int normalFilterCount; //All filters but selected and associated
+    int selectedFilterIndex;
+    int associatedFilterIndex;
+
+protected:
+    void changeEvent(QEvent* e) override;
+    virtual void languageChange();
+
+private:
+    using filterItemRepr = std::pair<const char*, const int>; // {filter item text, filter item level}
+    inline static const std::vector<filterItemRepr> filterItems = {
+        {QT_TR_NOOP("All"),0},
+        {QT_TR_NOOP("Geometric"),0},
+        {QT_TR_NOOP("Coincident"),1},
+        {QT_TR_NOOP("Point on Object"),1},
+        {QT_TR_NOOP("Vertical"),1},
+        {QT_TR_NOOP("Horizontal"),1},
+        {QT_TR_NOOP("Parallel"),1},
+        {QT_TR_NOOP("Perpendicular"),1},
+        {QT_TR_NOOP("Tangent"),1},
+        {QT_TR_NOOP("Equality"),1},
+        {QT_TR_NOOP("Symmetric"),1},
+        {QT_TR_NOOP("Block"),1},
+        {QT_TR_NOOP("Internal Alignment"),1},
+        {QT_TR_NOOP("Datums"),0},
+        {QT_TR_NOOP("Horizontal Distance"),1},
+        {QT_TR_NOOP("Vertical Distance"),1},
+        {QT_TR_NOOP("Distance"),1},
+        {QT_TR_NOOP("Radius"),1},
+        {QT_TR_NOOP("Weight"),1},
+        {QT_TR_NOOP("Diameter"),1},
+        {QT_TR_NOOP("Angle"),1},
+        {QT_TR_NOOP("Snell's Law"),1},
+        {QT_TR_NOOP("Named"),0},
+        {QT_TR_NOOP("Reference"),0},
+        {QT_TR_NOOP("Selected constraints"),0},
+        {QT_TR_NOOP("Associated constraints"),0},
+    };
+};
+
+class TaskSketcherConstraints :
+    public Gui::TaskView::TaskBox,
+    public Gui::SelectionObserver,
+    public ParameterGrp::ObserverType
 {
     Q_OBJECT
 
     enum class ActionTarget {
         All,
+        Selected
+    };
+
+    enum class SpecialFilterType {
+        None,
+        Associated,
         Selected
     };
 
@@ -88,6 +155,9 @@ public:
 
     /// Observer message from the Selection
     void onSelectionChanged(const Gui::SelectionChanges& msg) override;
+    void OnChange(Base::Subject<const char*> &rCaller,const char* rcReason) override;
+
+    SpecialFilterType specialFilterMode;
 
 private:
     void slotConstraintsChanged();
@@ -97,32 +167,26 @@ private:
     void updateSelectionFilter();
     void updateAssociatedConstraintsFilter();
     void updateList();
-    void createVisibilityButtonActions();
-
-    template <class T>
-    bool isFilter(T filterValue);
 
     void getSelectionGeoId(QString expr, int & geoid, Sketcher::PointPos & pos);
 
 public Q_SLOTS:
-    void on_comboBoxFilter_currentIndexChanged(int);
     void on_listWidgetConstraints_itemSelectionChanged();
     void on_listWidgetConstraints_itemActivated(QListWidgetItem *item);
     void on_listWidgetConstraints_itemChanged(QListWidgetItem * item);
     void on_listWidgetConstraints_updateDrivingStatus(QListWidgetItem *item, bool status);
     void on_listWidgetConstraints_updateActiveStatus(QListWidgetItem *item, bool status);
     void on_listWidgetConstraints_emitCenterSelectedItems();
-    void on_filterInternalAlignment_stateChanged(int state);
-    void on_extendedInformation_stateChanged(int state);
-    void on_visualisationTrackingFilter_stateChanged(int state);
-    void on_visibilityButton_trackingaction_changed();
-    void on_visibilityButton_clicked(bool);
-    void on_showAllButton_clicked(bool);
-    void on_hideAllButton_clicked(bool);
     void on_listWidgetConstraints_emitShowSelection3DVisibility();
     void on_listWidgetConstraints_emitHideSelection3DVisibility();
-    void on_multipleFilterButton_clicked(bool);
-    void on_settingsDialogButton_clicked(bool);
+    void on_filterBox_stateChanged(int val);
+    void on_showHideButton_clicked(bool);
+    void on_settings_restrictVisibility_changed(bool value = false);
+    void on_settings_extendedInformation_changed(bool value = false);
+    void on_settings_hideInternalAligment_changed(bool value = false);
+    void on_settings_autoConstraints_changed(bool value = false);
+    void on_settings_autoRemoveRedundant_changed(bool value = false);
+    void on_filterList_itemChanged(QListWidgetItem* item);
 
 protected:
     void changeEvent(QEvent *e) override;
@@ -131,12 +195,18 @@ protected:
     Connection connectionConstraintsChanged;
 
 private:
+    void onChangedSketchView(const Gui::ViewProvider&, const App::Property&);
+
+private:
     QWidget* proxy;
     bool inEditMode;
     std::unique_ptr<Ui_TaskSketcherConstraints> ui;
     ConstraintFilter::FilterValueBitset multiFilterStatus; // Stores the filters to be aggregated to form the multifilter.
     std::vector<unsigned int> selectionFilter; // holds the constraint ids of the selected constraints
     std::vector<unsigned int> associatedConstraintsFilter; // holds the constraint ids of the constraints associated with the selected geometry
+    ConstraintFilterList* filterList;
+    boost::signals2::scoped_connection changedSketchView;
+
 };
 
 } //namespace SketcherGui

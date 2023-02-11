@@ -22,19 +22,17 @@
 
 #include "PreCompiled.h"
 
-#include <CXX/Extensions.hxx>
-#include <CXX/Objects.hxx>
-
 #include <Base/Console.h>
 #include <Base/Interpreter.h>
 #include <Base/PyObjectBase.h>
 #include <Gui/Application.h>
 #include <Gui/Language/Translator.h>
+
+#include "ViewProviderEdge2TracObject.h"
 #include "ViewProviderRobotObject.h"
 #include "ViewProviderTrajectory.h"
-#include "ViewProviderEdge2TracObject.h"
-#include "ViewProviderTrajectoryDressUp.h"
 #include "ViewProviderTrajectoryCompound.h"
+#include "ViewProviderTrajectoryDressUp.h"
 #include "Workbench.h"
 
 

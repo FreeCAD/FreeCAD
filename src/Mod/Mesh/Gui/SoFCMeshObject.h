@@ -25,14 +25,12 @@
 
 #include <Inventor/fields/SoSField.h>
 #include <Inventor/fields/SoSFUInt32.h>
-#include <Inventor/fields/SoSubField.h>
 #include <Inventor/fields/SoSFVec3f.h>
 #include <Inventor/fields/SoSFVec3s.h>
-#include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/nodes/SoShape.h>
 #include <Inventor/elements/SoReplacedElement.h>
-#include <Mod/Mesh/App/Core/Elements.h>
 #include <Mod/Mesh/App/Mesh.h>
+
 
 using GLuint = unsigned int;
 using GLint = int;
@@ -201,7 +199,7 @@ private:
     void notify(SoNotList * list) override;
     Binding findMaterialBinding(SoState * const state) const;
     // Draw faces
-    void drawFaces(const Mesh::MeshObject *, SoMaterialBundle* mb, Binding bind, 
+    void drawFaces(const Mesh::MeshObject *, SoMaterialBundle* mb, Binding bind,
                    SbBool needNormals, SbBool ccw) const;
     void drawPoints(const Mesh::MeshObject *, SbBool needNormals, SbBool ccw) const;
     unsigned int countTriangles(SoAction * action) const;
@@ -255,7 +253,7 @@ private:
     ~SoFCMeshSegmentShape() override {}
     Binding findMaterialBinding(SoState * const state) const;
     // Draw faces
-    void drawFaces(const Mesh::MeshObject *, SoMaterialBundle* mb, Binding bind, 
+    void drawFaces(const Mesh::MeshObject *, SoMaterialBundle* mb, Binding bind,
                    SbBool needNormals, SbBool ccw) const;
     void drawPoints(const Mesh::MeshObject *, SbBool needNormals, SbBool ccw) const;
 };

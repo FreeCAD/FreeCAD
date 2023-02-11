@@ -52,15 +52,15 @@ TaskFemConstraintPressure::TaskFemConstraintPressure(ViewProviderFemConstraintPr
 
     // create a context menu for the listview of the references
     createDeleteAction(ui->lw_references);
-    deleteAction->connect(deleteAction, SIGNAL(triggered()), this, SLOT(onReferenceDeleted()));
+    connect(deleteAction, &QAction::triggered, this, &TaskFemConstraintPressure::onReferenceDeleted);
 
-    connect(ui->lw_references, SIGNAL(currentItemChanged(QListWidgetItem*, QListWidgetItem*)),
-        this, SLOT(setSelection(QListWidgetItem*)));
-    connect(ui->lw_references, SIGNAL(itemClicked(QListWidgetItem*)),
-        this, SLOT(setSelection(QListWidgetItem*)));
+    connect(ui->lw_references, &QListWidget::currentItemChanged,
+            this, &TaskFemConstraintPressure::setSelection);
+    connect(ui->lw_references, &QListWidget::itemClicked,
+            this, &TaskFemConstraintPressure::setSelection);
 
-    connect(ui->checkBoxReverse, SIGNAL(toggled(bool)),
-        this, SLOT(onCheckReverse(bool)));
+    connect(ui->checkBoxReverse, &QCheckBox::toggled,
+            this, &TaskFemConstraintPressure::onCheckReverse);
 
     this->groupLayout()->addWidget(proxy);
 

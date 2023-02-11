@@ -127,13 +127,13 @@
 #define PACKAGE_NAME "FreeCAD"
 
 /* Define to the full name and version of this package. */
-#define PACKAGE_STRING "FreeCAD ${FREECAD_VERSION}"
+#define PACKAGE_STRING "${PACKAGE_STRING}"
 
 /* Define to the one symbol short name of this package. */
 #define PACKAGE_TARNAME "FreeCAD"
 
 /* Define to the version of this package. */
-#define PACKAGE_VERSION "${FREECAD_VERSION}"
+#define PACKAGE_VERSION "${PACKAGE_VERSION}"
 
 /* Define to 1 if you have the ANSI C header files. */
 #cmakedefine STDC_HEADERS
@@ -142,7 +142,7 @@
 #cmakedefine USE_STD_IOSTREAM
 
 /* Version number of package */
-#define VERSION "${FREECAD_VERSION}"
+#define VERSION "${PACKAGE_VERSION}"
 
 /* Define to 1 if the X Window System is missing or not being used. */
 /* #cmakedefine X_DISPLAY_MISSING */

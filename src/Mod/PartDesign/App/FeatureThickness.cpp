@@ -33,20 +33,22 @@
 
 using namespace PartDesign;
 
-const char* PartDesign::Thickness::ModeEnums[] = {"Skin","Pipe", "RectoVerso",nullptr};
-const char* PartDesign::Thickness::JoinEnums[] = {"Arc", "Intersection",nullptr};
+const char *PartDesign::Thickness::ModeEnums[] = {"Skin", "Pipe", "RectoVerso", nullptr};
+const char *PartDesign::Thickness::JoinEnums[] = {"Arc", "Intersection", nullptr};
 
 PROPERTY_SOURCE(PartDesign::Thickness, PartDesign::DressUp)
 
 Thickness::Thickness()
 {
-    ADD_PROPERTY_TYPE(Value,(1.0),"Thickness",App::Prop_None,"Thickness value");
-    ADD_PROPERTY_TYPE(Mode,(long(0)),"Thickness",App::Prop_None,"Mode");
+    ADD_PROPERTY_TYPE(Value, (1.0), "Thickness", App::Prop_None, "Thickness value");
+    ADD_PROPERTY_TYPE(Mode, (long(0)), "Thickness", App::Prop_None, "Mode");
     Mode.setEnums(ModeEnums);
-    ADD_PROPERTY_TYPE(Join,(long(0)),"Thickness",App::Prop_None,"Join type");
+    ADD_PROPERTY_TYPE(Join, (long(0)), "Thickness", App::Prop_None, "Join type");
     Join.setEnums(JoinEnums);
-    ADD_PROPERTY_TYPE(Reversed,(false),"Thickness",App::Prop_None,"Apply the thickness towards the solids interior");
-    ADD_PROPERTY_TYPE(Intersection,(false),"Thickness",App::Prop_None,"Enable intersection-handling");
+    ADD_PROPERTY_TYPE(Reversed, (false), "Thickness", App::Prop_None,
+                      "Apply the thickness towards the solids interior");
+    ADD_PROPERTY_TYPE(Intersection, (false), "Thickness", App::Prop_None,
+                      "Enable intersection-handling");
 }
 
 short Thickness::mustExecute() const
@@ -65,7 +67,8 @@ App::DocumentObjectExecReturn *Thickness::execute()
     Part::TopoShape TopShape;
     try {
         TopShape = getBaseShape();
-    } catch (Base::Exception& e) {
+    }
+    catch (Base::Exception &e) {
         return new App::DocumentObjectExecReturn(e.what());
     }
 

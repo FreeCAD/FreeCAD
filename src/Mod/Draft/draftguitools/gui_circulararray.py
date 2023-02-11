@@ -132,7 +132,7 @@ class CircularArray(gui_base.GuiCommandBase):
                                           self.callback_click)
         if Gui.Control.activeDialog():
             Gui.Control.closeDialog()
-            super(CircularArray, self).finish()
+            self.finish()
 
 
 Gui.addCommand('Draft_CircularArray', CircularArray())

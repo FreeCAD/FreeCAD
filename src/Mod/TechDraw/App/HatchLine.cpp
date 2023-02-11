@@ -23,12 +23,10 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-#include <sstream>
-#include <iomanip>
-#include <QFile>
-#include <QFileInfo>
-#include <stdexcept>
 #include <cmath>
+#include <iomanip>
+#include <sstream>
+#include <stdexcept>
 #endif
 
 #include <TopoDS_Vertex.hxx>
@@ -39,10 +37,9 @@
 #include <Base/Stream.h>
 #include <Base/Vector3D.h>
 
-#include "Geometry.h"
-
-#include "DrawUtil.h"
 #include "HatchLine.h"
+#include "DrawUtil.h"
+
 
 using namespace TechDraw;
 
@@ -216,8 +213,6 @@ Base::Vector3d LineSet::getPatternStartPoint(TechDraw::BaseGeomPtr g, double &of
                 offset = ceil(patsStartOrg) - patsStartOrg;      //fraction of a patternLength patstartorg to repeat point
                 offset = offset * patternLength;
             }
-        } else {
-            Base::Console().Log("ERROR - HL::getPatternStart - something has gone wrong!\n");
         }
     }
     return result;
@@ -319,8 +314,7 @@ std::vector<PATLineSpec> PATLineSpec::getSpecsForPattern(std::string& parmFile, 
     if (status) {
         lineSpecs = loadPatternDef(inFile);
     } else {
-        //this message can come up when changing PAT file or pattern name
-        Base::Console().Log( "Could not find pattern: %s\n", parmName.c_str() );
+        //this can come up when changing PAT file or pattern name
         return result;
     }
 

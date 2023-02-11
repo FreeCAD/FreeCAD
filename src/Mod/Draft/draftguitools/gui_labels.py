@@ -86,7 +86,7 @@ class Label(gui_base_original.Creator):
         self.labeltype = get_label_types()[i]
         utils.setParam("labeltype", self.labeltype)
 
-    def finish(self, closed=False, cont=False):
+    def finish(self, cont=False):
         """Finish the command."""
         if self.ghost:
             self.ghost.finalize()

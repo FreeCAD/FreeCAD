@@ -20,23 +20,19 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <QMessageBox>
-# include <QStyleFactory>
 #endif
 
-#include <Base/PyObjectBase.h>
 #include <Base/Interpreter.h>
 #include <Gui/MainWindow.h>
+
 #include "UnitTestImp.h"
 #include "ui_UnitTest.h"
-#include "UnitTestPy.h"
 
 
 using namespace TestGui;
-
 
 /* TRANSLATOR TestGui::UnitTestDialog */
 
@@ -276,6 +272,19 @@ void UnitTestDialog::clearUnitTests()
 QString UnitTestDialog::getUnitTest() const
 {
     return ui->comboTests->currentText();
+}
+
+/**
+ * Runs the currently selected test and closes the dialog afterwards.
+ * It returns true if all tests have passed and false otherwise.
+ */
+bool UnitTestDialog::runCurrentTest()
+{
+    clearErrorList();
+    on_startButton_clicked();
+    int count = ui->treeViewFailure->topLevelItemCount();
+    reject();
+    return (count == 0);
 }
 
 /**

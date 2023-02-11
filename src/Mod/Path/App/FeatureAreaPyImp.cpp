@@ -22,9 +22,7 @@
 
 #include "PreCompiled.h"
 
-#include <CXX/Objects.hxx>
 #include <Mod/Part/App/TopoShapePy.h>
-#include "FeatureArea.h"
 
 // inclusion of the generated files (generated out of FeatureAreaPy.xml)
 #include "FeatureAreaPy.h"
@@ -32,8 +30,8 @@
 
 #include "AreaPy.h"
 
-using namespace Path;
 
+using namespace Path;
 
 // returns a string which represent the object e.g. when printed in python
 std::string FeatureAreaPy::representation() const
@@ -65,9 +63,9 @@ PyObject* FeatureAreaPy::setParams(PyObject *args, PyObject *keywds)
     //populate the CONF variables with values in properties
     PARAM_FOREACH(AREA_SET,AREA_PARAMS_CONF)
 
-    //Parse arguments to overwrite CONF variables 
-    if (!PyArg_ParseTupleAndKeywords(args, keywds, 
-                "|" PARAM_PY_KWDS(AREA_PARAMS_CONF), kwlist, 
+    //Parse arguments to overwrite CONF variables
+    if (!PyArg_ParseTupleAndKeywords(args, keywds,
+                "|" PARAM_PY_KWDS(AREA_PARAMS_CONF), kwlist,
                 PARAM_REF(PARAM_FNAME,AREA_PARAMS_CONF)))
         return nullptr;
 

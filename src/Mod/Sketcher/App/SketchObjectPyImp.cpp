@@ -22,31 +22,27 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <sstream>
-# include <Geom_TrimmedCurve.hxx>
 # include <memory>
+# include <sstream>
+
+# include <Geom_TrimmedCurve.hxx>
 #endif
 
-#include <Mod/Sketcher/App/SketchObject.h>
-#include <Mod/Part/App/LinePy.h>
-#include <Mod/Part/App/Geometry.h>
-#include <Mod/Part/App/DatumFeature.h>
-#include <Base/GeometryPyCXX.h>
-#include <Base/VectorPy.h>
-#include <Base/AxisPy.h>
-#include <Base/Tools.h>
-#include <Base/QuantityPy.h>
 #include <App/Document.h>
-#include <App/OriginFeature.h>
-#include <CXX/Objects.hxx>
+#include <Base/AxisPy.h>
+#include <Base/QuantityPy.h>
+#include <Base/Tools.h>
+#include <Base/VectorPy.h>
+#include <Mod/Part/App/Geometry.h>
+#include <Mod/Part/App/LinePy.h>
 
 // inclusion of the generated files (generated out of SketchObjectSFPy.xml)
 #include "SketchObjectPy.h"
 #include "SketchObjectPy.cpp"
 // other python types
 #include "ConstraintPy.h"
-#include "GeometryFacade.h"
 #include "GeometryFacadePy.h"
+
 
 using namespace Sketcher;
 
@@ -55,7 +51,6 @@ std::string SketchObjectPy::representation() const
 {
     return "<Sketcher::SketchObject>";
 }
-
 
 PyObject* SketchObjectPy::solve(PyObject *args)
 {
@@ -571,7 +566,7 @@ PyObject* SketchObjectPy::delConstraintOnPoint(PyObject *args)
         return nullptr;
 
     if (pos >= static_cast<int>(Sketcher::PointPos::none) && pos <= static_cast<int>(Sketcher::PointPos::mid)) { // This is the whole range of valid positions
-        if (this->getSketchObjectPtr()->delConstraintOnPoint(Index,(Sketcher::PointPos)pos)) {
+        if (this->getSketchObjectPtr()->delConstraintOnPoint(Index,static_cast<Sketcher::PointPos>(pos))) {
             std::stringstream str;
             str << "Not able to delete a constraint on point with the given index: " << Index
                 << " and position: " << pos;
@@ -1007,7 +1002,7 @@ PyObject* SketchObjectPy::movePoint(PyObject *args)
 
     Base::Vector3d v1 = static_cast<Base::VectorPy*>(pcObj)->value();
 
-    if (this->getSketchObjectPtr()->movePoint(GeoId,(Sketcher::PointPos)PointType,v1,(relative>0))) {
+    if (this->getSketchObjectPtr()->movePoint(GeoId,static_cast<Sketcher::PointPos>(PointType),v1,(relative>0))) {
         std::stringstream str;
         str << "Not able to move point with the id and type: (" << GeoId << ", " << PointType << ")";
         PyErr_SetString(PyExc_ValueError, str.str().c_str());
@@ -1051,7 +1046,7 @@ PyObject* SketchObjectPy::getPoint(PyObject *args)
         return nullptr;
     }
 
-    return new Base::VectorPy(new Base::Vector3d(obj->getPoint(GeoId,(Sketcher::PointPos)PointType)));
+    return new Base::VectorPy(new Base::Vector3d(obj->getPoint(GeoId,static_cast<Sketcher::PointPos>(PointType))));
 }
 
 PyObject* SketchObjectPy::getAxis(PyObject *args)
@@ -1093,7 +1088,7 @@ PyObject* SketchObjectPy::fillet(PyObject *args)
     PyErr_Clear();
     // Point, radius
     if (PyArg_ParseTuple(args, "iid|iO!", &geoId1, &posId1, &radius, &trim, &PyBool_Type, &createCorner)) {
-        if (this->getSketchObjectPtr()->fillet(geoId1, (Sketcher::PointPos) posId1, radius, trim,
+        if (this->getSketchObjectPtr()->fillet(geoId1, static_cast<Sketcher::PointPos>(posId1), radius, trim,
               Base::asBoolean(createCorner))) {
             std::stringstream str;
             str << "Not able to fillet point with ( geoId: " << geoId1 << ", PointPos: " << posId1 << " )";
@@ -1159,11 +1154,38 @@ PyObject* SketchObjectPy::split(PyObject *args)
         return nullptr;
 
     Base::Vector3d v1 = static_cast<Base::VectorPy*>(pcObj)->value();
-    if (this->getSketchObjectPtr()->split(GeoId,v1)) {
+    try {
+        if (this->getSketchObjectPtr()->split(GeoId,v1)) {
+            std::stringstream str;
+            str << "Not able to split curve with the given index: " << GeoId;
+            PyErr_SetString(PyExc_ValueError, str.str().c_str());
+            return nullptr;
+        }
+    }
+    catch (const Base::ValueError & e) {
+        throw Py::ValueError(e.getMessage());
+    }
+
+    Py_Return;
+}
+
+PyObject* SketchObjectPy::join(PyObject *args)
+{
+    int GeoId1(Sketcher::GeoEnum::GeoUndef), GeoId2(Sketcher::GeoEnum::GeoUndef);
+    int PosId1 = static_cast<int>(Sketcher::PointPos::none),
+        PosId2 = static_cast<int>(Sketcher::PointPos::none);
+
+    if (!PyArg_ParseTuple(args, "iiii", &GeoId1, &PosId1, &GeoId2, &PosId2))
+        return 0;
+
+    if (this->getSketchObjectPtr()->join(GeoId1, (Sketcher::PointPos) PosId1,
+                                         GeoId2, (Sketcher::PointPos) PosId2)) {
         std::stringstream str;
-        str << "Not able to split curve with the given index: " << GeoId;
+        str << "Not able to join the curves with end points: ("
+            << GeoId1 << ", " << PosId1 << "), ("
+            << GeoId2 << ", " << PosId2 << ")";
         PyErr_SetString(PyExc_ValueError, str.str().c_str());
-        return nullptr;
+        return 0;
     }
 
     Py_Return;
@@ -1187,7 +1209,7 @@ PyObject* SketchObjectPy::addSymmetric(PyObject *args)
                 geoIdList.push_back(PyLong_AsLong((*it).ptr()));
         }
 
-        int ret = this->getSketchObjectPtr()->addSymmetric(geoIdList,refGeoId,(Sketcher::PointPos) refPosId) + 1;
+        int ret = this->getSketchObjectPtr()->addSymmetric(geoIdList,refGeoId,static_cast<Sketcher::PointPos>(refPosId)) + 1;
 
         if(ret == -1)
             throw Py::TypeError("Symmetric operation unsuccessful!");
@@ -1299,8 +1321,8 @@ PyObject* SketchObjectPy::addRectangularArray(PyObject *args)
         std::vector<int> geoIdList;
         Py::Sequence list(pcObj);
         for (Py::Sequence::iterator it = list.begin(); it != list.end(); ++it) {
-	    if (PyLong_Check((*it).ptr()))
-		geoIdList.push_back(PyLong_AsLong((*it).ptr()));
+        if (PyLong_Check((*it).ptr()))
+        geoIdList.push_back(PyLong_AsLong((*it).ptr()));
         }
 
         try {
@@ -1711,11 +1733,11 @@ void SketchObjectPy::setMissingPointOnPointConstraints(Py::List arg)
     for (const auto& ti : arg) {
         Py::Tuple t(ti);
         ConstraintIds c;
-        c.First = (long)Py::Long(t.getItem(0));
+        c.First = static_cast<long>(Py::Long(t.getItem(0)));
         c.FirstPos = checkpos(t,1);
-        c.Second = (long)Py::Long(t.getItem(2));
+        c.Second = static_cast<long>(Py::Long(t.getItem(2)));
         c.SecondPos = checkpos(t,3);
-        c.Type = (Sketcher::ConstraintType)(long)Py::Long(t.getItem(4));
+        c.Type = static_cast<Sketcher::ConstraintType>(static_cast<long>(Py::Long(t.getItem(4))));
 
         constraints.push_back(c);
     }
@@ -1752,11 +1774,11 @@ void SketchObjectPy::setMissingVerticalHorizontalConstraints(Py::List arg)
     for (const auto& ti : arg) {
         Py::Tuple t(ti);
         ConstraintIds c;
-        c.First = (long)Py::Long(t.getItem(0));
+        c.First = static_cast<long>(Py::Long(t.getItem(0)));
         c.FirstPos = checkpos(t,1);
-        c.Second = (long)Py::Long(t.getItem(2));
+        c.Second = static_cast<long>(Py::Long(t.getItem(2)));
         c.SecondPos = checkpos(t,3);
-        c.Type = (Sketcher::ConstraintType)(long)Py::Long(t.getItem(4));
+        c.Type = static_cast<Sketcher::ConstraintType>(static_cast<long>(Py::Long(t.getItem(4))));
 
         constraints.push_back(c);
     }

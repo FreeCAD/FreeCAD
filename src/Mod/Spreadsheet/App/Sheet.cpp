@@ -23,39 +23,29 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
+# include <deque>
+# include <memory>
+# include <sstream>
+# include <boost/tokenizer.hpp>
 #endif
 
-#include <boost/regex.hpp>
-#include <boost/tokenizer.hpp>
-#include <boost/range/adaptor/map.hpp>
-#include <boost/range/algorithm/copy.hpp>
-#include <boost/assign.hpp>
-#include <boost/graph/topological_sort.hpp>
 #include <App/Application.h>
 #include <App/Document.h>
 #include <App/DynamicProperty.h>
-#include <App/FeaturePythonPyImp.h>
 #include <App/ExpressionParser.h>
+#include <App/FeaturePythonPyImp.h>
 #include <Base/Exception.h>
 #include <Base/FileInfo.h>
-#include <Base/Placement.h>
 #include <Base/Reader.h>
 #include <Base/Stream.h>
-#include <Base/Writer.h>
 #include <Base/Tools.h>
-#include <Base/Console.h>
+
 #include "Sheet.h"
 #include "SheetObserver.h"
-#include "Utils.h"
 #include "SheetPy.h"
-#include <ostream>
-#include <fstream>
-#include <string>
-#include <iomanip>
-#include <boost/regex.hpp>
-#include <deque>
 
-FC_LOG_LEVEL_INIT("Spreadsheet",true,true)
+
+FC_LOG_LEVEL_INIT("Spreadsheet", true, true)
 
 using namespace Base;
 using namespace App;
@@ -820,9 +810,6 @@ void Sheet::recomputeCell(CellAddress p)
         if(e.isDerivedFrom(Base::AbortException::getClassTypeId()))
             throw;
     }
-
-    if (!cell || cell->spansChanged())
-        cellSpanChanged(p);
 }
 
 PropertySheet::BindingType
@@ -1259,7 +1246,7 @@ void Sheet::removeColumns(int col, int count)
 }
 
 /**
-  * Inser \a count rows at row \a row.
+  * Insert \a count rows at row \a row.
   *
   * @param row   Address of row where the rows are inserted.
   * @param count Number of rows to insert.

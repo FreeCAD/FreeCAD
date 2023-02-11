@@ -21,17 +21,19 @@
  ****************************************************************************/
 
 #include "PreCompiled.h"
-#include <boost/algorithm/string/predicate.hpp>
+
 #include <QMessageBox>
-#include "DlgSheetConf.h"
-#include <Base/Tools.h>
-#include <App/Range.h>
-#include <App/Document.h>
-#include <App/Application.h>
-#include <App/ExpressionParser.h>
+
 #include <App/AutoTransaction.h>
+#include <App/Document.h>
+#include <App/ExpressionParser.h>
+#include <App/Range.h>
+#include <Base/Tools.h>
 #include <Gui/CommandT.h>
+
+#include "DlgSheetConf.h"
 #include "ui_DlgSheetConf.h"
+
 
 using namespace App;
 using namespace Spreadsheet;
@@ -53,7 +55,7 @@ DlgSheetConf::DlgSheetConf(Sheet *sheet, Range range, QWidget *parent)
 
     ui->lineEditProp->setDocumentObject(sheet,false);
 
-    connect(ui->btnDiscard, SIGNAL(clicked()), this, SLOT(onDiscard()));
+    connect(ui->btnDiscard, &QPushButton::clicked, this, &DlgSheetConf::onDiscard);
 
     CellAddress from,to;
     std::string rangeConf;
@@ -107,12 +109,12 @@ App::Property *DlgSheetConf::prepare(CellAddress &from, CellAddress &to,
             e.ReportException();
             FC_THROWM(Base::RuntimeError, "Failed to parse expression for property");
         }
-        if(expr->hasComponent() || !expr->isDerivedFrom(App::VariableExpression::getClassTypeId())) 
+        if(expr->hasComponent() || !expr->isDerivedFrom(App::VariableExpression::getClassTypeId()))
             FC_THROWM(Base::RuntimeError, "Invalid property expression: " << expr->toString());
 
         path = static_cast<App::VariableExpression*>(expr.get())->getPath();
         auto obj = path.getDocumentObject();
-        if(!obj) 
+        if(!obj)
             FC_THROWM(Base::RuntimeError, "Invalid object referenced in: " << expr->toString());
 
         int pseudoType;
@@ -180,7 +182,7 @@ void DlgSheetConf::accept()
 
         std::string exprTxt(ui->lineEditProp->text().trimmed().toUtf8().constData());
         App::ExpressionPtr expr(App::Expression::parse(sheet,exprTxt));
-        if(expr->hasComponent() || !expr->isDerivedFrom(App::VariableExpression::getClassTypeId())) 
+        if(expr->hasComponent() || !expr->isDerivedFrom(App::VariableExpression::getClassTypeId()))
             FC_THROWM(Base::RuntimeError, "Invalid property expression: " << expr->toString());
 
         AutoTransaction guard("Setup conf table");

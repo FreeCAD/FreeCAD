@@ -26,6 +26,7 @@
 # include <QAction>
 # include <QMap>
 # include <QPointer>
+# include <QTimer>
 #endif
 
 #include "ActionFunction.h"
@@ -58,14 +59,14 @@ void ActionFunction::trigger(QAction* action, std::function<void()> func)
     Q_D(ActionFunction);
 
     d->triggerMap[action] = func;
-    connect(action, SIGNAL(triggered()), this, SLOT(triggered()));
+    connect(action, &QAction::triggered, this, &ActionFunction::triggered);
 }
 
 void ActionFunction::triggered()
 {
     Q_D(ActionFunction);
 
-    QAction* a = qobject_cast<QAction*>(sender());
+    auto a = qobject_cast<QAction*>(sender());
     QMap<QAction*, std::function<void()> >::iterator it = d->triggerMap.find(a);
     if (it != d->triggerMap.end()) {
         // invoke the class function here
@@ -85,7 +86,7 @@ void ActionFunction::toggled(bool on)
 {
     Q_D(ActionFunction);
 
-    QAction* a = qobject_cast<QAction*>(sender());
+    auto a = qobject_cast<QAction*>(sender());
     QMap<QAction*, std::function<void(bool)> >::iterator it = d->toggleMap.find(a);
     if (it != d->toggleMap.end()) {
         // invoke the class function here
@@ -105,7 +106,7 @@ void ActionFunction::hovered()
 {
     Q_D(ActionFunction);
 
-    QAction* a = qobject_cast<QAction*>(sender());
+    auto a = qobject_cast<QAction*>(sender());
     QMap<QAction*, std::function<void()> >::iterator it = d->hoverMap.find(a);
     if (it != d->hoverMap.end()) {
         // invoke the class function here
@@ -175,6 +176,11 @@ void TimerFunction::timeout()
         d->timeoutFuncQVariant(d->argQVariant);
     if (d->autoDelete)
         deleteLater();
+}
+
+void TimerFunction::singleShot(int ms)
+{
+    QTimer::singleShot(ms, this, &Gui::TimerFunction::timeout);
 }
 
 #include "moc_ActionFunction.cpp"

@@ -20,13 +20,14 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef SKETCHERGUI_DrawSketchHandlerLineSet_H
 #define SKETCHERGUI_DrawSketchHandlerLineSet_H
 
+#include <boost/math/special_functions/fpclassify.hpp>
+#include <Inventor/events/SoKeyboardEvent.h>
 
 #include "GeometryCreationMode.h"
-#include "Utils.h"
+
 
 namespace SketcherGui {
 

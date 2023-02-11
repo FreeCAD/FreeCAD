@@ -23,38 +23,29 @@
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <algorithm>
-# include <memory>
 # include <map>
+# include <memory>
 #endif
 
-#include <CXX/Extensions.hxx>
-#include <CXX/Objects.hxx>
-
-#include <Base/Interpreter.h>
-#include <Base/FileInfo.h>
-#include <Base/Tools.h>
 #include <App/Application.h>
 #include <App/Document.h>
 #include <App/DocumentObjectPy.h>
-#include <App/Property.h>
-#include <Base/PlacementPy.h>
-
 #include <Base/GeometryPyCXX.h>
+#include <Base/Interpreter.h>
+#include <Base/PlacementPy.h>
 #include <Base/VectorPy.h>
-
-#include "Core/MeshKernel.h"
-#include "Core/MeshIO.h"
+#include "Core/Approximation.h"
 #include "Core/Evaluation.h"
 #include "Core/Iterator.h"
-#include "Core/Approximation.h"
-
+#include "Core/MeshIO.h"
+#include "Core/MeshKernel.h"
 #include "WildMagic4/Wm4ContBox3.h"
 
-#include "Mesh.h"
+#include "MeshPy.h"
 #include "Exporter.h"
 #include "Importer.h"
-#include "FeatureMeshImport.h"
-#include <Mod/Mesh/App/MeshPy.h>
+#include "Mesh.h"
+
 
 using namespace Mesh;
 using namespace MeshCore;
@@ -175,7 +166,7 @@ private:
         PyMem_Free(Name);
 
         // create new document and add Import feature
-        App::Document *pcDoc = App::GetApplication().newDocument("Unnamed");
+        App::Document *pcDoc = App::GetApplication().newDocument();
 
         Mesh::Importer import(pcDoc);
         import.load(EncodedName);
@@ -269,7 +260,8 @@ private:
             exporter.reset( new ExporterAMF(outputFileName, meta, exportAmfCompressed) );
         }
         else if (exportFormat == MeshIO::ThreeMF) {
-            exporter.reset( new Exporter3MF(outputFileName) );
+            Extension3MFFactory::initialize();
+            exporter.reset( new Exporter3MF(outputFileName, Extension3MFFactory::createExtensions()) );
         }
         else if (exportFormat != MeshIO::Undefined) {
             exporter.reset( new MergeExporter(outputFileName, exportFormat) );
@@ -349,7 +341,7 @@ private:
         if (!PyArg_ParseTuple(args.ptr(), "|fff",&x,&y,&z))
             throw Py::Exception();
 
-        if (y==0) 
+        if (y==0)
             y=x;
 
         float hx = x/2.0f;

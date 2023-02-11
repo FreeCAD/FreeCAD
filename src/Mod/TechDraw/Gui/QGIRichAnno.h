@@ -27,12 +27,11 @@
 
 #include <QFont>
 #include <QGraphicsItem>
-#include <QObject>
-#include <QPainterPath>
 #include <QPen>
 #include <QStyleOptionGraphicsItem>
 
 #include "QGIView.h"
+
 
 namespace TechDraw {
 class DrawRichAnno;

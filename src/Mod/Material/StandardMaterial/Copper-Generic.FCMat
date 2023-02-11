@@ -22,5 +22,6 @@ SpecificHeat = 385.0 J/kg/K
 ThermalConductivity = 398.0 W/m/K
 ThermalExpansionCoefficient = 16.5 µm/m/K
 
-[Electrical]
-ElectricalConductivity = 588235.3 S/m
+[Electromagnetic]
+ElectricalConductivity = 59.59 MS/m
+RelativePermeability = 0.999994

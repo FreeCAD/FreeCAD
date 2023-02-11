@@ -93,7 +93,7 @@ public:
 
     /// returns for Close and Help button
     QDialogButtonBox::StandardButtons getStandardButtons() const override
-	{ return QDialogButtonBox::Ok|QDialogButtonBox::Cancel; }
+    { return QDialogButtonBox::Ok|QDialogButtonBox::Cancel; }
 
 protected:
 

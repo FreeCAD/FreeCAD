@@ -21,19 +21,15 @@
  ***************************************************************************/
 
 #include "PreCompiled.h"
-
 #ifndef _PreComp_
-# include <QPixmap>
 # include <QDialog>
 #endif
 
-#include <Gui/BitmapFactory.h>
 #include <Gui/MainWindow.h>
-#include <Base/Tools.h>
-#include <Base/UnitsApi.h>
 
 #include "ui_SketcherRegularPolygonDialog.h"
 #include "SketcherRegularPolygonDialog.h"
+
 
 using namespace SketcherGui;
 

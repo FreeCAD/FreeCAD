@@ -20,16 +20,15 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
+#include <Gui/Command.h>
 
 #include "TaskDlgEditSketch.h"
 #include "ViewProviderSketch.h"
-#include <Gui/Command.h>
+
 
 using namespace SketcherGui;
-
 
 //**************************************************************************
 //**************************************************************************
@@ -55,7 +54,10 @@ TaskDlgEditSketch::TaskDlgEditSketch(ViewProviderSketch *sketchView)
         Content.push_back(SolverAdvanced);
     }
 
-    Content.push_back(General);
+    if (hGrp->GetBool("ShowSettingsWidget", true)) {
+        Content.push_back(General);
+    }
+
     Content.push_back(Constraints);
     Content.push_back(Elements);
 
@@ -78,6 +80,10 @@ TaskDlgEditSketch::~TaskDlgEditSketch()
     std::vector<QWidget*>::iterator it = std::find(Content.begin(), Content.end(), SolverAdvanced);
     if (it == Content.end())
         Content.push_back(SolverAdvanced);
+    // same thing for edit control panel
+    it = std::find(Content.begin(), Content.end(), General);
+    if (it == Content.end())
+        Content.push_back(General);
 }
 
 //==== calls from the TaskView ===============================================================

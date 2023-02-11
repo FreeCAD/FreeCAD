@@ -14,6 +14,7 @@
   <url type="readme">https://github.com/chennes/FreeCAD-Package/blob/main/README.md</url>
   <url type="documentation">https://github.com/chennes/FreeCAD-Package/blob/main/README.md</url>
   <url type="bugtracker">https://github.com/chennes/FreeCAD-Package/issues</url>
+  <url type="discussion">https://forum.freecadweb.org/</url>
   <icon>Resources/icons/PackageIcon.svg</icon>
   <tag>Tag0</tag>
   <tag>Tag1</tag>

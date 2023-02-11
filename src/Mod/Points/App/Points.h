@@ -27,19 +27,18 @@
 #include <vector>
 #include <iterator>
 
-#include <Base/Vector3D.h>
+#include <App/ComplexGeoData.h>
+#include <App/PropertyGeo.h>
 #include <Base/Matrix.h>
 #include <Base/Reader.h>
+#include <Base/Vector3D.h>
 #include <Base/Writer.h>
 
-#include <App/ComplexGeoData.h>
-#include <App/PropertyStandard.h>
-#include <App/PropertyGeo.h>
+
 #include <Mod/Points/PointsGlobal.h>
 
 namespace Points
 {
-
 
 /** Point kernel
  */
@@ -92,7 +91,7 @@ public:
 
     void getPoints(std::vector<Base::Vector3d> &Points,
         std::vector<Base::Vector3d> &Normals,
-        float Accuracy, uint16_t flags=0) const override;
+        double Accuracy, uint16_t flags=0) const override;
     void transformGeometry(const Base::Matrix4D &rclMat) override;
     Base::BoundBox3d getBoundBox()const override;
 

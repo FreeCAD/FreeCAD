@@ -28,11 +28,12 @@
 #include <Gui/Application.h>
 #include <Gui/WidgetFactory.h>
 #include <Gui/Language/Translator.h>
-#include "ViewProviderPath.h"
+
 #include "DlgSettingsPathColor.h"
+#include "ViewProviderArea.h"
+#include "ViewProviderPath.h"
 #include "ViewProviderPathCompound.h"
 #include "ViewProviderPathShape.h"
-#include "ViewProviderArea.h"
 
 
 // use a different name to CreateCommand()

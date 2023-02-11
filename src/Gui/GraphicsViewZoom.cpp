@@ -69,14 +69,14 @@ void GraphicsViewZoom::set_zoom_factor_base(double value) {
 
 bool GraphicsViewZoom::eventFilter(QObject *object, QEvent *event) {
   if (event->type() == QEvent::MouseMove) {
-    QMouseEvent* mouse_event = static_cast<QMouseEvent*>(event);
+      auto mouse_event = static_cast<QMouseEvent*>(event);
     QPointF delta = target_viewport_pos - mouse_event->pos();
     if (qAbs(delta.x()) > 5 || qAbs(delta.y()) > 5) {
       target_viewport_pos = mouse_event->pos();
       target_scene_pos = _view->mapToScene(mouse_event->pos());
     }
   } else if (event->type() == QEvent::Wheel) {
-    QWheelEvent* wheel_event = static_cast<QWheelEvent*>(event);
+      auto wheel_event = static_cast<QWheelEvent*>(event);
     if (QApplication::keyboardModifiers() == _modifiers) {
       QPoint delta = wheel_event->angleDelta();
       if (qAbs(delta.y()) > qAbs(delta.x())) { // vertical

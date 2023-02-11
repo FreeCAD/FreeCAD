@@ -46,22 +46,6 @@ __url__    = "https://www.freecadweb.org"
 
 # module functions ###############################################
 
-
-def string_replace(text, pattern, replacement):
-    """
-    if py2 isn't supported anymore calls to this function
-    should be replaced with:
-    `text.replace(pattern, replacement)`
-    for python2 the encoding must be done, as unicode replacement leads to something like this:
-    ```
-    >>> a = u'abc mm ^3'
-    >>> a.replace(u"^3", u"³")
-    u'abc mm \xc2\xb3'
-    ```
-    """
-    return text.replace(pattern, replacement)
-
-
 def getStringList(objects):
     '''getStringList(objects): returns a string defining a list
     of objects'''
@@ -114,7 +98,7 @@ def addComponents(objectsList,host):
     if hostType in ["Floor","Building","Site","Project","BuildingPart"]:
         for o in objectsList:
             host.addObject(o)
-    elif hostType in ["Wall","Structure","Window","Roof","Stairs","StructuralSystem","Panel","Component"]:
+    elif hostType in ["Wall","Structure","Precast","Window","Roof","Stairs","StructuralSystem","Panel","Component"]:
         import DraftGeomUtils
         a = host.Additions
         if hasattr(host,"Axes"):
@@ -127,7 +111,7 @@ def addComponents(objectsList,host):
                             g = o.Hosts
                             g.append(host)
                             o.Hosts = g
-                elif DraftGeomUtils.isValidPath(o.Shape) and (hostType == "Structure"):
+                elif DraftGeomUtils.isValidPath(o.Shape) and (hostType in ["Structure","Precast"]):
                     if o.Support == host:
                         o.Support = None
                     host.Tool = o
@@ -158,7 +142,7 @@ def removeComponents(objectsList,host=None):
     if not isinstance(objectsList,list):
         objectsList = [objectsList]
     if host:
-        if Draft.getType(host) in ["Wall","Structure","Window","Roof","Stairs","StructuralSystem","Panel","Component"]:
+        if Draft.getType(host) in ["Wall","Structure","Precast","Window","Roof","Stairs","StructuralSystem","Panel","Component"]:
             if hasattr(host,"Tool"):
                 if objectsList[0] == host.Tool:
                     host.Tool = None
@@ -199,7 +183,7 @@ def removeComponents(objectsList,host=None):
                        c.remove(o)
                        h.Group = c
                        o.ViewObject.show()
-               elif tp in ["Wall","Structure"]:
+               elif tp in ["Wall","Structure","Precast"]:
                    a = h.Additions
                    s = h.Subtractions
                    if o in a:
@@ -745,27 +729,38 @@ def pruneIncluded(objectslist,strict=False):
     for obj in objectslist:
         toplevel = True
         if obj.isDerivedFrom("Part::Feature"):
-            if not (Draft.getType(obj) in ["Window","Clone","Pipe","Rebar"]):
+            if Draft.getType(obj) not in ["Window","Clone","Pipe","Rebar"]:
                 for parent in obj.InList:
-                    if parent.isDerivedFrom("Part::Feature") and not (Draft.getType(parent) in ["Space","Facebinder","Window","Roof","Clone","Site","Project"]):
-                        if not parent.isDerivedFrom("Part::Part2DObject"):
-                            # don't consider 2D objects based on arch elements
-                            if hasattr(parent,"Host") and (parent.Host == obj):
-                                pass
-                            elif hasattr(parent,"Hosts") and (obj in parent.Hosts):
-                                pass
-                            elif hasattr(parent,"TypeId") and (parent.TypeId == "Part::Mirroring"):
-                                pass
-                            elif hasattr(parent,"CloneOf"):
-                                if parent.CloneOf:
-                                    if parent.CloneOf.Name != obj.Name:
-                                        toplevel = False
-                                else:
-                                    toplevel = False
-                            else:
+                    if not parent.isDerivedFrom("Part::Feature"):
+                        pass
+                    elif Draft.getType(parent) in ["Space","Facebinder","Window","Roof","Clone","Site","Project"]:
+                        pass
+                    elif parent.isDerivedFrom("Part::Part2DObject"):
+                        # don't consider 2D objects based on arch elements
+                        pass
+                    elif parent.isDerivedFrom("PartDesign::FeatureBase"):
+                        # don't consider a PartDesign_Clone that references obj
+                        pass
+                    elif parent.isDerivedFrom("PartDesign::Body") and obj == parent.BaseFeature:
+                        # don't consider a PartDesign_Body with a PartDesign_Clone that references obj
+                        pass
+                    elif hasattr(parent,"Host") and parent.Host == obj:
+                        pass
+                    elif hasattr(parent,"Hosts") and obj in parent.Hosts:
+                        pass
+                    elif hasattr(parent,"TypeId") and parent.TypeId == "Part::Mirroring":
+                        pass
+                    elif hasattr(parent,"CloneOf"):
+                        if parent.CloneOf:
+                            if parent.CloneOf.Name != obj.Name:
                                 toplevel = False
-                    if (toplevel == False) and strict:
-                        if not(parent in objectslist) and not(parent in newlist):
+                        else:
+                            toplevel = False
+                    else:
+                        toplevel = False
+
+                    if toplevel == False and strict:
+                        if parent not in objectslist and parent not in newlist:
                             toplevel = True
         if toplevel:
             newlist.append(obj)
@@ -859,14 +854,14 @@ def survey(callback=False):
                                 if o.Object.Shape.Solids:
                                     u = FreeCAD.Units.Quantity(o.Object.Shape.Volume,FreeCAD.Units.Volume)
                                     t = u.getUserPreferred()[0]
-                                    t = string_replace(t, "^3","³")
+                                    t = t.replace("^3","³")
                                     anno.LabelText = "v " + t
                                     FreeCAD.Console.PrintMessage("Object: " + n + ", Element: Whole, Volume: " + utf8_decode(t) + "\n")
                                     FreeCAD.SurveyObserver.totalVolume += u.Value
                                 elif o.Object.Shape.Faces:
                                     u = FreeCAD.Units.Quantity(o.Object.Shape.Area,FreeCAD.Units.Area)
                                     t = u.getUserPreferred()[0]
-                                    t = string_replace(t, "^2","²")
+                                    t = t.replace("^2","²")
                                     anno.LabelText = "a " + t
                                     FreeCAD.Console.PrintMessage("Object: " + n + ", Element: Whole, Area: " + utf8_decode(t) + "\n")
                                     FreeCAD.SurveyObserver.totalArea += u.Value
@@ -902,7 +897,7 @@ def survey(callback=False):
                                     if "Face" in el:
                                         u = FreeCAD.Units.Quantity(e.Area,FreeCAD.Units.Area)
                                         t = u.getUserPreferred()[0]
-                                        t = string_replace(t, "^2","²")
+                                        t = t.replace("^2","²")
                                         anno.LabelText = "a " + t
                                         FreeCAD.Console.PrintMessage("Object: " + n + ", Element: " + el + ", Area: "+ utf8_decode(t)  + "\n")
                                         FreeCAD.SurveyObserver.totalArea += u.Value
@@ -938,12 +933,12 @@ def survey(callback=False):
                     if FreeCAD.SurveyObserver.totalArea:
                         u = FreeCAD.Units.Quantity(FreeCAD.SurveyObserver.totalArea,FreeCAD.Units.Area)
                         t = u.getUserPreferred()[0]
-                        t = string_replace(t, "^2","²")
+                        t = t.replace("^2","²")
                         msg += " Area: " + t
                     if FreeCAD.SurveyObserver.totalVolume:
                         u = FreeCAD.Units.Quantity(FreeCAD.SurveyObserver.totalVolume,FreeCAD.Units.Volume)
                         t = u.getUserPreferred()[0]
-                        t = string_replace(t, "^3","³")
+                        t = t.replace("^3","³")
                         msg += " Volume: " + t
                     FreeCAD.Console.PrintMessage(msg+"\n")
 
@@ -1049,7 +1044,7 @@ class SurveyTaskPanel:
         if hasattr(FreeCAD,"SurveyObserver"):
             u = FreeCAD.Units.Quantity(FreeCAD.SurveyObserver.totalArea,FreeCAD.Units.Area)
             t = u.getUserPreferred()[0]
-            t = string_replace(t, "^2","²")
+            t = t.replace("^2","²")
             if FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch").GetBool("surveyUnits",True):
                 QtGui.QApplication.clipboard().setText(t)
             else:
@@ -1138,10 +1133,10 @@ class SurveyTaskPanel:
 def toggleIfcBrepFlag(obj):
     """toggleIfcBrepFlag(obj): toggles the IFC brep flag of the given object, forcing it
     to be exported as brep geometry or not."""
-    if not hasattr(obj,"IfcAttributes"):
-        FreeCAD.Console.PrintMessage(translate("Arch","Object doesn't have settable IFC Attributes"))
+    if not hasattr(obj,"IfcData"):
+        FreeCAD.Console.PrintMessage(translate("Arch","Object doesn't have settable IFCData"))
     else:
-        d = obj.IfcAttributes
+        d = obj.IfcData
         if "FlagForceBrep" in d.keys():
             if d["FlagForceBrep"] == "True":
                 d["FlagForceBrep"] = "False"
@@ -1152,7 +1147,7 @@ def toggleIfcBrepFlag(obj):
         else:
             d["FlagForceBrep"] = "True"
             FreeCAD.Console.PrintMessage(translate("Arch","Enabling Brep force flag of object")+" "+obj.Label+"\n")
-        obj.IfcAttributes = d
+        obj.IfcData = d
 
 
 def makeCompoundFromSelected(objects=None):

@@ -1,12 +1,5 @@
-# Image gui init module
-# (c) 2003 Juergen Riegel
-#
-# Gathering all the information to start FreeCAD
-# This is the second one of three init scripts, the third one
-# runs when the gui is up
-
 #***************************************************************************
-#*   (c) Juergen Riegel (juergen.riegel@web.de) 2002                       *
+#*   Copyright (c) 2002,2003 Juergen Riegel <juergen.riegel@web.de>        *
 #*                                                                         *
 #*   This file is part of the FreeCAD CAx development system.              *
 #*                                                                         *
@@ -26,9 +19,13 @@
 #*   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
 #*   USA                                                                   *
 #*                                                                         *
-#*   Juergen Riegel 2002                                                   *
 #***************************************************************************/
 
+# Image gui init module
+#
+# Gathering all the information to start FreeCAD
+# This is the second one of three init scripts, the third one
+# runs when the gui is up
 
 
 class ImageWorkbench ( Workbench ):
@@ -41,12 +38,12 @@ class ImageWorkbench ( Workbench ):
     def Initialize(self):
         # load the module
         import ImageGui
-        
+
         try:
             import ImageTools._CommandImageScaling
         except ImportError as err:
-            FreeCAD.Console.PrintError("Features from ImageTools package cannot be loaded. {err}\n".format(err= str(err)))        
-        
+            FreeCAD.Console.PrintError("Features from ImageTools package cannot be loaded. {err}\n".format(err= str(err)))
+
     def GetClassName(self):
         return "ImageGui::Workbench"
 

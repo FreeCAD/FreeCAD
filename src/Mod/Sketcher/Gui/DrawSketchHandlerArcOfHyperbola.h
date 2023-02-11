@@ -20,13 +20,13 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef SKETCHERGUI_DrawSketchHandlerArcOfHyperbola_H
 #define SKETCHERGUI_DrawSketchHandlerArcOfHyperbola_H
 
+#include <boost/math/special_functions/fpclassify.hpp>
 
 #include "GeometryCreationMode.h"
-#include "Utils.h"
+
 
 namespace SketcherGui {
 
@@ -53,9 +53,9 @@ public:
 
     void mouseMove(Base::Vector2d onSketchPos) override
     {
-        if (Mode==STATUS_SEEK_First) {
+        if (Mode == STATUS_SEEK_First) {
             setPositionText(onSketchPos);
-            if (seekAutoConstraint(sugConstr1, onSketchPos, Base::Vector2d(0.f,0.f))) {
+            if (seekAutoConstraint(sugConstr1, onSketchPos, Base::Vector2d(0.f, 0.f))) {
                 renderSuggestConstraintsCursor(sugConstr1);
                 return;
             }
@@ -73,7 +73,7 @@ public:
             }
 
             drawEdit(EditCurve);
-            if (seekAutoConstraint(sugConstr2, onSketchPos, Base::Vector2d(0.f,0.f),
+            if (seekAutoConstraint(sugConstr2, onSketchPos, Base::Vector2d(0.f, 0.f),
                                    AutoConstraint::CURVE)) {
                 renderSuggestConstraintsCursor(sugConstr2);
                 return;
@@ -88,7 +88,7 @@ public:
             double angleatpoint = acosh(((onSketchPos.x-centerPoint.x)*cos(phi)+(onSketchPos.y-centerPoint.y)*sin(phi))/a);
             double b=(onSketchPos.y-centerPoint.y-a*cosh(angleatpoint)*sin(phi))/(sinh(angleatpoint)*cos(phi));
 
-            if(!boost::math::isnan(b)){
+            if (!boost::math::isnan(b)) {
                 for (int i=15; i >= -15; i--) {
                     // P(U) = O + MajRad*Cosh(U)*XDir + MinRad*Sinh(U)*YDir
                     //double angle = i*M_PI/16.0;
@@ -108,7 +108,7 @@ public:
                 }
 
                 drawEdit(EditCurve);
-                if (seekAutoConstraint(sugConstr3, onSketchPos, Base::Vector2d(0.f,0.f))) {
+                if (seekAutoConstraint(sugConstr3, onSketchPos, Base::Vector2d(0.f, 0.f))) {
                     renderSuggestConstraintsCursor(sugConstr3);
                     return;
                 }

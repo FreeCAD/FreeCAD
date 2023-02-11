@@ -520,6 +520,36 @@ inline PyObject * PyAsUnicodeObject(const std::string &str)
     return PyAsUnicodeObject(str.c_str());
 }
 
+/** Helper functions to check if a python object is of a specific type or None,
+ *  otherwise raise an exception.
+ *  If the object is None, the pointer is set to nullptr.
+ */
+inline void PyTypeCheck(PyObject** ptr, PyTypeObject* type, const char* msg=nullptr)
+{
+    if (*ptr == Py_None) {
+        *ptr = nullptr;
+        return;
+    }
+    if (!PyObject_TypeCheck(*ptr, type)) {
+        if (!msg) {
+            std::stringstream str;
+            str << "Type must be " << type->tp_name << " or None, not " << (*ptr)->ob_type->tp_name;
+            throw Base::TypeError(str.str());
+        }
+        throw Base::TypeError(msg);
+    }
+}
+
+inline void PyTypeCheck(PyObject** ptr, int (*method)(PyObject*), const char* msg)
+{
+    if (*ptr == Py_None) {
+        *ptr = nullptr;
+        return;
+    }
+    if (!method(*ptr))
+        throw Base::TypeError(msg);
+}
+
 
 } // namespace Base
 

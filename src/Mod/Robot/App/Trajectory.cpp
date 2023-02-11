@@ -20,29 +20,27 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
 # include <memory>
+
+# include "kdl_cp/path_line.hpp"
+# include "kdl_cp/path_roundedcomposite.hpp"
+# include "kdl_cp/rotational_interpolation_sa.hpp"
+# include "kdl_cp/trajectory_composite.hpp"
+# include "kdl_cp/trajectory_segment.hpp"
+# include "kdl_cp/utilities/error.h"
+# include "kdl_cp/velocityprofile_trap.hpp"
 #endif
 
-#include <Base/Writer.h>
-#include <Base/Reader.h>
 #include <Base/Exception.h>
-
-#include "kdl_cp/chain.hpp"
-#include "kdl_cp/path_line.hpp"
-#include "kdl_cp/path_roundedcomposite.hpp"
-#include "kdl_cp/trajectory_composite.hpp"
-#include "kdl_cp/rotational_interpolation_sa.hpp"
-#include "kdl_cp/velocityprofile_trap.hpp"
-#include "kdl_cp/trajectory_segment.hpp"
-#include "kdl_cp/path_roundedcomposite.hpp"
-#include "kdl_cp/utilities/error.h"
+#include <Base/Reader.h>
+#include <Base/Writer.h>
 
 #include "Trajectory.h"
 #include "RobotAlgos.h"
+
 
 #ifndef M_PI
     #define M_PI 3.14159265358979323846

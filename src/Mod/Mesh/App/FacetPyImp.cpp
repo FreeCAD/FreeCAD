@@ -20,17 +20,17 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
-#include "Mesh.h"
-#include "Facet.h"
-#include <Mod/Mesh/App/FacetPy.h>
-#include <Mod/Mesh/App/FacetPy.cpp>
-#include <Mod/Mesh/App/EdgePy.h>
-
-#include <Base/VectorPy.h>
 #include <Base/GeometryPyCXX.h>
+#include <Base/VectorPy.h>
+
+#include "Facet.h"
+#include "FacetPy.h"
+#include "FacetPy.cpp"
+#include "EdgePy.h"
+#include "Mesh.h"
+
 
 using namespace Mesh;
 
@@ -52,13 +52,13 @@ std::string FacetPy::representation() const
         str << "(" << ptr->_aclPoints[2].x << ", " << ptr->_aclPoints[2].y << ", " << ptr->_aclPoints[2].z << ")";
     }
     str << ")";
- 
+
     return str.str();
 }
 
 PyObject *FacetPy::PyMake(struct _typeobject *, PyObject *, PyObject *)  // Python wrapper
 {
-    // create a new instance of FacetPy and the Twin object 
+    // create a new instance of FacetPy and the Twin object
     return new FacetPy(new Facet);
 }
 
@@ -309,7 +309,7 @@ PyObject *FacetPy::getCustomAttributes(const char* /*attr*/) const
 
 int FacetPy::setCustomAttributes(const char* /*attr*/, PyObject * /*obj*/)
 {
-    return 0; 
+    return 0;
 }
 
 

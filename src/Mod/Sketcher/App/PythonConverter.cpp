@@ -20,20 +20,14 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
-
 #ifndef _PreComp_
+# include <boost/format.hpp>
 #endif  // #ifndef _PreComp_
 
-#include <boost/format.hpp>
-
 #include <Base/Exception.h>
-
-#include <Mod/Part/App/Geometry.h>
-#include <Mod/Sketcher/App/GeometryFacade.h>
-
 #include <Mod/Sketcher/App/Constraint.h>
+#include <Mod/Sketcher/App/GeometryFacade.h>
 
 #include "PythonConverter.h"
 

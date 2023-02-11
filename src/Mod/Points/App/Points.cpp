@@ -20,25 +20,21 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <cmath>
 # include <iostream>
+# include <QtConcurrentMap>
+# include <boost/math/special_functions/fpclassify.hpp>
 #endif
 
-#include <boost/math/special_functions/fpclassify.hpp>
-#include <QtConcurrentMap>
-
-#include <Base/Exception.h>
 #include <Base/Matrix.h>
-#include <Base/Persistence.h>
 #include <Base/Stream.h>
 #include <Base/Writer.h>
 
 #include "Points.h"
 #include "PointsAlgos.h"
-#include "PointsPy.h"
+
 
 #ifdef _MSC_VER
 # include <ppl.h>
@@ -235,7 +231,7 @@ void PointKernel::save(std::ostream& out) const
 
 void PointKernel::getPoints(std::vector<Base::Vector3d> &Points,
                             std::vector<Base::Vector3d> &/*Normals*/,
-                            float /*Accuracy*/, uint16_t /*flags*/) const
+                            double /*Accuracy*/, uint16_t /*flags*/) const
 {
     unsigned long ctpoints = _Points.size();
     Points.reserve(ctpoints);

@@ -106,8 +106,13 @@
     </message>
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="266"/>
-      <source>maximum fragment size</source>
-      <translation>ფრაგმენტის მაქს. ზომა</translation>
+      <source>Maximum fragment size</source>
+      <translation>ფრაგმენტის მაქსიმალური ზომა</translation>
+    </message>
+    <message>
+      <location filename="../ui/openscadprefs-base.ui" line="385"/>
+      <source>Convexity</source>
+      <translation>ამობურცულობა</translation>
     </message>
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="286"/>
@@ -119,11 +124,6 @@
       <location filename="../ui/openscadprefs-base.ui" line="289"/>
       <source>angular (fa)</source>
       <translation>კუთხოვნობა (fa)</translation>
-    </message>
-    <message>
-      <location filename="../ui/openscadprefs-base.ui" line="299"/>
-      <source>°</source>
-      <translation>°</translation>
     </message>
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="328"/>
@@ -140,11 +140,6 @@
       <location filename="../ui/openscadprefs-base.ui" line="359"/>
       <source>mm</source>
       <translation>მმ</translation>
-    </message>
-    <message>
-      <location filename="../ui/openscadprefs-base.ui" line="385"/>
-      <source>convexity</source>
-      <translation>ამობურცულობა</translation>
     </message>
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="422"/>
@@ -184,7 +179,7 @@
     <message>
       <location filename="../../InitGui.py" line="143"/>
       <source>It looks like you may be using a sandboxed version of FreeCAD.</source>
-      <translation>როგორც ჩანს FreeCAD-ის შეზღუდულ ვერსიას იყენებთ.</translation>
+      <translation>როგორც ჩანს, FreeCAD-ის შეზღუდულ ვერსიას იყენებთ.</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="101"/>
@@ -235,7 +230,7 @@
       <location filename="../../OpenSCADCommands.py" line="345"/>
       <location filename="../../OpenSCADCommands.py" line="368"/>
       <source>as Mesh</source>
-      <translation>როგორც მრავალკუთხა ბადე</translation>
+      <translation>როგორც ბადე</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="358"/>
@@ -253,76 +248,34 @@
       <location filename="../../OpenSCADCommands.py" line="469"/>
       <location filename="../../OpenSCADCommands.py" line="473"/>
       <source>Mesh Boolean</source>
-      <translation>მრავალკუთხა ბადის ბულევური ოპერაციები</translation>
+      <translation>ბადის ბულევური ოპერაციები</translation>
     </message>
     <message>
-      <location filename="../../importCSG.py" line="549"/>
-      <location filename="../../importCSG.py" line="1385"/>
-      <source>Unsupported Function</source>
-      <translation>მხარდაუჭერელი ფუნქცია</translation>
+      <location filename="../../OpenSCADCommands.py" line="474"/>
+      <source>Minkowski sum</source>
+      <translation>მინკოვსკის ჯამი</translation>
     </message>
     <message>
-      <location filename="../../importCSG.py" line="549"/>
-      <location filename="../../importCSG.py" line="1385"/>
-      <source>Press OK</source>
-      <translation>დააჭირეთ დიახ-ს</translation>
-    </message>
-    <message>
-      <location filename="../../OpenSCADUtils.py" line="710"/>
+      <location filename="../../OpenSCADUtils.py" line="709"/>
       <source>OpenSCAD file contains both 2D and 3D shapes. That is not supported in this importer, all shapes must have the same dimensionality.</source>
       <translation>OpenSCAD ფაილი შეიცავს ორივე, 2D და 3D მოხაზულობებს. შემომტანს ამის მხარდაჭერა არ გააჩნია. ყველა მოხაზულობა ერთ განზომილებაში უნდა იყოს.</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADUtils.py" line="722"/>
-      <source>Error all shapes must be either 2D or both must be 3D</source>
-      <translation>შეცდომა. ყველა კონტური ან 2 ან 3განზომილებიანი უნდა იყოს. შერევა აკრძალულია</translation>
-    </message>
-  </context>
-  <context>
-    <name>OpenSCAD_AddOpenSCADElement</name>
-    <message>
-      <location filename="../../OpenSCADCommands.py" line="516"/>
-      <source>Add OpenSCAD Element...</source>
-      <translation>OpenSCAD-ის ელემენტის დამატება...</translation>
+      <location filename="../../OpenSCADUtils.py" line="721"/>
+      <source>Error: either all shapes must be 2D or all shapes must be 3D</source>
+      <translation>შეცდომა: ყველა მოხაზულობა ან 2D უნდა იყოს, ან 3D. არა შერეული</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="520"/>
-      <source>Add an OpenSCAD element by entering OpenSCAD code and executing the OpenSCAD binary</source>
-      <translation>OpenSCAD-ის კოდის ჩასმით და OpenSCAD-ის გაშვებით OpenSCAD-ის ელემენტის დამატება</translation>
-    </message>
-  </context>
-  <context>
-    <name>OpenSCAD_ColorCodeShape</name>
-    <message>
-      <location filename="../../OpenSCADCommands.py" line="125"/>
-      <source>Color Shapes</source>
-      <translation>ფერით მონიშვნა</translation>
+      <location filename="../../importCSG.py" line="557"/>
+      <location filename="../../importCSG.py" line="1436"/>
+      <source>Unsupported Function</source>
+      <translation>მხარდაუჭერელი ფუნქცია</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="128"/>
-      <source>Color Shapes by validity and type</source>
-      <translation>მონახაზების შეფერადება სისწორისა და ტიპის მიხედვით</translation>
-    </message>
-  </context>
-  <context>
-    <name>OpenSCAD_Edgestofaces</name>
-    <message>
-      <location filename="../../OpenSCADCommands.py" line="145"/>
-      <source>Convert Edges To Faces</source>
-      <translation>წიბოების ზედაპრებად გარდაქმნა</translation>
-    </message>
-  </context>
-  <context>
-    <name>OpenSCAD_ExpandPlacements</name>
-    <message>
-      <location filename="../../OpenSCADCommands.py" line="290"/>
-      <source>Expand Placements</source>
-      <translation>მდებარეობების განშლა</translation>
-    </message>
-    <message>
-      <location filename="../../OpenSCADCommands.py" line="293"/>
-      <source>Expand all placements downwards the FeatureTree</source>
-      <translation>ყველა განლაგება თვისებების ხის ქვემოთ გაფართოება</translation>
+      <location filename="../../importCSG.py" line="557"/>
+      <location filename="../../importCSG.py" line="1436"/>
+      <source>Press OK</source>
+      <translation>დააჭირეთ დიახ-ს</translation>
     </message>
   </context>
   <context>
@@ -339,55 +292,37 @@
     </message>
   </context>
   <context>
-    <name>OpenSCAD_Hull</name>
+    <name>OpenSCAD_ColorCodeShape</name>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="551"/>
-      <source>Hull</source>
-      <translation>გარსი</translation>
+      <location filename="../../OpenSCADCommands.py" line="125"/>
+      <source>Color Shapes</source>
+      <translation>მოხაზულობის ფერი</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="554"/>
-      <source>Perform Hull</source>
-      <translation>გარსის გადაფარება</translation>
-    </message>
-  </context>
-  <context>
-    <name>OpenSCAD_IncreaseToleranceFeature</name>
-    <message>
-      <location filename="../../OpenSCADCommands.py" line="273"/>
-      <source>Increase Tolerance Feature</source>
-      <translation>დაშვების გაზრდის თვისება</translation>
-    </message>
-    <message>
-      <location filename="../../OpenSCADCommands.py" line="276"/>
-      <source>Create Feature that allows to increase the tolerance</source>
-      <translation>ისეთი თვისების შექმნა, რომელიც უფლებას გაძლევთ გაზარდოთ დაშვება</translation>
+      <location filename="../../OpenSCADCommands.py" line="128"/>
+      <source>Color Shapes by validity and type</source>
+      <translation>მონახაზების შეფერადება სისწორისა და ტიპის მიხედვით</translation>
     </message>
   </context>
   <context>
-    <name>OpenSCAD_MeshBoolean</name>
+    <name>OpenSCAD_Edgestofaces</name>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="531"/>
-      <source>Mesh Boolean...</source>
-      <translation>მრავალკუთხა ბადის ბულევური ოპერაციები...</translation>
-    </message>
-    <message>
-      <location filename="../../OpenSCADCommands.py" line="535"/>
-      <source>Export objects as meshes and use OpenSCAD to perform a boolean operation</source>
-      <translation>ობიექტების, როგორც პოლიხაზური ბადეების გატანა და ბულევური ოპერაციებისთვის OpenSCAD-ის გამოყენება</translation>
+      <location filename="../../OpenSCADCommands.py" line="145"/>
+      <source>Convert Edges To Faces</source>
+      <translation>წიბოების ზედაპრებად გარდაქმნა</translation>
     </message>
   </context>
   <context>
-    <name>OpenSCAD_Minkowski</name>
+    <name>OpenSCAD_RefineShapeFeature</name>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="570"/>
-      <source>Minkowski</source>
-      <translation>მინკოვსკის მეტრიკა</translation>
+      <location filename="../../OpenSCADCommands.py" line="164"/>
+      <source>Refine Shape Feature</source>
+      <translation>მოხაზულობის თვისების დაზუსტება</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="573"/>
-      <source>Perform Minkowski</source>
-      <translation>მინკოვსკის მეტრიკის შესრულება</translation>
+      <location filename="../../OpenSCADCommands.py" line="167"/>
+      <source>Create Refine Shape Feature</source>
+      <translation>ბადის ფორმის დაზუსტების თვისების შექმნა</translation>
     </message>
   </context>
   <context>
@@ -404,42 +339,16 @@
     </message>
   </context>
   <context>
-    <name>OpenSCAD_RefineShapeFeature</name>
+    <name>OpenSCAD_ScaleMeshFeature</name>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="164"/>
-      <source>Refine Shape Feature</source>
-      <translation>ფორმის ჩამაგრების ელემენტი</translation>
+      <location filename="../../OpenSCADCommands.py" line="223"/>
+      <source>Scale Mesh Feature...</source>
+      <translation>ბადის თვისების მასშტაბირება...</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="167"/>
-      <source>Create Refine Shape Feature</source>
-      <translation>ბადის ფორმის დაზუსტების თვისების შექმნა</translation>
-    </message>
-  </context>
-  <context>
-    <name>OpenSCAD_RemoveSubtree</name>
-    <message>
-      <location filename="../../OpenSCADCommands.py" line="323"/>
-      <source>Remove Objects and their Children</source>
-      <translation>ობიექტების და მათი ქვეობიექტების წაშლა</translation>
-    </message>
-    <message>
-      <location filename="../../OpenSCADCommands.py" line="326"/>
-      <source>Removes the selected objects and all children that are not referenced from other objects</source>
-      <translation>წაშლის მონიშნულ ობიექტებს და ყველა ქვეობიექტს, რომლებიც არ არის ბმული სხვა ობიექტებიდან</translation>
-    </message>
-  </context>
-  <context>
-    <name>OpenSCAD_ReplaceObject</name>
-    <message>
-      <location filename="../../OpenSCADCommands.py" line="311"/>
-      <source>Replace Object</source>
-      <translation>ობიექტის შეცვლა</translation>
-    </message>
-    <message>
-      <location filename="../../OpenSCADCommands.py" line="314"/>
-      <source>Replace an object in the Feature Tree. Please select old, new, and parent object</source>
-      <translation>ობიექტის ჩანაცვლება თვისებების ხეში. აირჩიეთ ძველი, ახალი და მშობელი ობიექტი</translation>
+      <location filename="../../OpenSCADCommands.py" line="227"/>
+      <source>Create Scale Mesh Feature</source>
+      <translation>ბადის თვისების მასშტაბირების შექმნა</translation>
     </message>
   </context>
   <context>
@@ -456,32 +365,120 @@
     </message>
   </context>
   <context>
-    <name>OpenSCAD_ScaleMeshFeature</name>
+    <name>OpenSCAD_IncreaseToleranceFeature</name>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="223"/>
-      <source>Scale Mesh Feature...</source>
-      <translation>ბადის ელემენტის მასშტაბირება...</translation>
+      <location filename="../../OpenSCADCommands.py" line="273"/>
+      <source>Increase Tolerance Feature</source>
+      <translation>დაშვების გაზრდის თვისება</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="227"/>
-      <source>Create Scale Mesh Feature</source>
-      <translation>ბადის თვისების მასშტაბირების შექმნა</translation>
+      <location filename="../../OpenSCADCommands.py" line="276"/>
+      <source>Create Feature that allows increasing the tolerance</source>
+      <translation>ისეთი თვისების შექმნა, რომელიც უფლებას გაძლევთ, დაშვება გაზარდოთ</translation>
     </message>
   </context>
   <context>
-    <name>Workbech</name>
+    <name>OpenSCAD_ExpandPlacements</name>
     <message>
-      <location filename="../../InitGui.py" line="156"/>
-      <source>OpenSCAD Part tools</source>
-      <translation>OpenSCAD-ის ხელსაწყოები ნაწილებისთვის</translation>
+      <location filename="../../OpenSCADCommands.py" line="290"/>
+      <source>Expand Placements</source>
+      <translation>მდებარეობების განშლა</translation>
+    </message>
+    <message>
+      <location filename="../../OpenSCADCommands.py" line="293"/>
+      <source>Expand all placements downwards in the Tree view</source>
+      <translation>ყველა ამ განლაგების ხის ხედში დაყოლებით გაშლა</translation>
+    </message>
+  </context>
+  <context>
+    <name>OpenSCAD_ReplaceObject</name>
+    <message>
+      <location filename="../../OpenSCADCommands.py" line="311"/>
+      <source>Replace Object</source>
+      <translation>ობიექტის შეცვლა</translation>
+    </message>
+    <message>
+      <location filename="../../OpenSCADCommands.py" line="314"/>
+      <source>Replace an object in the Tree view. Please select old, new, and parent object</source>
+      <translation>ობიექტის ჩანაცვლება ამ ხის ხედში. აირჩიეთ ძველი, ახალი და მშობელი ობიექტი</translation>
+    </message>
+  </context>
+  <context>
+    <name>OpenSCAD_RemoveSubtree</name>
+    <message>
+      <location filename="../../OpenSCADCommands.py" line="323"/>
+      <source>Remove Objects and their Children</source>
+      <translation>ობიექტების და მათი ქვეობიექტების წაშლა</translation>
+    </message>
+    <message>
+      <location filename="../../OpenSCADCommands.py" line="326"/>
+      <source>Removes the selected objects and all children that are not referenced from other objects</source>
+      <translation>წაშლის მონიშნულ ობიექტებს და ყველა ქვეობიექტს, რომლებიც არ არის ბმული სხვა ობიექტებიდან</translation>
+    </message>
+  </context>
+  <context>
+    <name>OpenSCAD_AddOpenSCADElement</name>
+    <message>
+      <location filename="../../OpenSCADCommands.py" line="517"/>
+      <source>Add OpenSCAD Element...</source>
+      <translation>OpenSCAD-ის ელემენტის დამატება...</translation>
+    </message>
+    <message>
+      <location filename="../../OpenSCADCommands.py" line="521"/>
+      <source>Add an OpenSCAD element by entering OpenSCAD code and executing the OpenSCAD binary</source>
+      <translation>OpenSCAD-ის კოდის ჩასმით და OpenSCAD-ის გაშვებით OpenSCAD-ის ელემენტის დამატება</translation>
+    </message>
+  </context>
+  <context>
+    <name>OpenSCAD_MeshBoolean</name>
+    <message>
+      <location filename="../../OpenSCADCommands.py" line="532"/>
+      <source>Mesh Boolean...</source>
+      <translation>ბადის ბულევური ოპერაციები...</translation>
+    </message>
+    <message>
+      <location filename="../../OpenSCADCommands.py" line="536"/>
+      <source>Export objects as meshes and use OpenSCAD to perform a boolean operation</source>
+      <translation>ობიექტების, როგორც პოლიხაზური ბადეების გატანა და ბულევური ოპერაციებისთვის OpenSCAD-ის გამოყენება</translation>
+    </message>
+  </context>
+  <context>
+    <name>OpenSCAD_Hull</name>
+    <message>
+      <location filename="../../OpenSCADCommands.py" line="552"/>
+      <source>Hull</source>
+      <translation>გარსი</translation>
+    </message>
+    <message>
+      <location filename="../../OpenSCADCommands.py" line="555"/>
+      <source>Use OpenSCAD to create a hull</source>
+      <translation>გამოიყენეთ OpenSCAD ფიუზელაჟის შესაქმნელად</translation>
     </message>
   </context>
   <context>
     <name>Workbench</name>
     <message>
       <location filename="../../InitGui.py" line="152"/>
-      <source>OpenSCADTools</source>
-      <translation>OenSCAD-ის ხელსაწყოები</translation>
+      <source>OpenSCAD Tools</source>
+      <translation>OpenSCAD-ის ხელსაწყოები</translation>
+    </message>
+    <message>
+      <location filename="../../InitGui.py" line="156"/>
+      <source>Frequently-used Part WB tools</source>
+      <translation>ხშირად გამოყენებული ნაწილის სამუშაო მაგიდის ხელსაწყოები</translation>
+    </message>
+  </context>
+  <context>
+    <name>OpenSCAD_Minkowski</name>
+    <message>
+      <location filename="../../OpenSCADCommands.py" line="571"/>
+      <source>Minkowski sum</source>
+      <translation>მინკოვსკის ჯამი</translation>
+    </message>
+    <message>
+      <location filename="../../OpenSCADCommands.py" line="574"/>
+      <source>Use OpenSCAD to create a Minkowski sum</source>
+      <translation>OpenSCAD-ის გამოყენება მინკოვსკის ჯამის შესაქმნელად</translation>
     </message>
   </context>
 </TS>

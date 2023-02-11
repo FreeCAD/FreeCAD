@@ -17,7 +17,8 @@ ThermalConductivity = 0.02587 W/m/K
 ; thermal expansion coefficient of ideal gas is 1/temperature
 ThermalExpansionCoefficient = 3.43e-3 1/K
 
-[Electrical]
+[Electromagnetic]
 RelativePermittivity = 1.00059
 ; at 18°C and 50Hz
 ElectricalConductivity = 1e-12 S/m
+RelativePermeability = 1.0

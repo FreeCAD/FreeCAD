@@ -20,15 +20,17 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef MESHGUI_SEGMENTATIONBESTFIT_H
 #define MESHGUI_SEGMENTATIONBESTFIT_H
 
-#include <QDialog>
 #include <list>
+#include <QDialog>
+
 #include <Gui/TaskView/TaskDialog.h>
 #include <Gui/TaskView/TaskView.h>
+
 #include "MeshSelection.h"
+
 
 class QDoubleSpinBox;
 

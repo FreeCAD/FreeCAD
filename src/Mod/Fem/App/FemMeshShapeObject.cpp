@@ -25,51 +25,33 @@
 
 #ifndef _PreComp_
 # include <Python.h>
+# include <BRepBuilderAPI_Copy.hxx>
+# include <BRepTools.hxx>
 # include <SMESH_Gen.hxx>
 # include <SMESH_Mesh.hxx>
-# include <SMDS_VolumeTool.hxx>
-# include <StdMeshers_Arithmetic1D.hxx>
-# include <StdMeshers_AutomaticLength.hxx>
 # include <StdMeshers_MaxLength.hxx>
 # include <StdMeshers_LocalLength.hxx>
 # include <StdMeshers_MaxElementArea.hxx>
-# include <StdMeshers_NotConformAllowed.hxx>
 # include <StdMeshers_QuadranglePreference.hxx>
 # include <StdMeshers_Quadrangle_2D.hxx>
 # include <StdMeshers_Regular_1D.hxx>
-# include <StdMeshers_UseExisting_1D2D.hxx>
-# include <StdMeshers_CompositeSegment_1D.hxx>
 # include <StdMeshers_Deflection1D.hxx>
 # include <StdMeshers_Hexa_3D.hxx>
-# include <StdMeshers_LayerDistribution.hxx>
-# include <StdMeshers_LengthFromEdges.hxx>
-# include <StdMeshers_MaxElementVolume.hxx>
-# include <StdMeshers_MEFISTO_2D.hxx>
-# include <StdMeshers_NumberOfLayers.hxx>
 # include <StdMeshers_NumberOfSegments.hxx>
-# include <StdMeshers_Prism_3D.hxx>
-# include <StdMeshers_Projection_1D.hxx>
-# include <StdMeshers_Projection_2D.hxx>
-# include <StdMeshers_Projection_3D.hxx>
-# include <StdMeshers_QuadraticMesh.hxx>
 # include <StdMeshers_RadialPrism_3D.hxx>
 # include <StdMeshers_SegmentAroundVertex_0D.hxx>
 # include <StdMeshers_ProjectionSource1D.hxx>
 # include <StdMeshers_ProjectionSource2D.hxx>
 # include <StdMeshers_ProjectionSource3D.hxx>
-# include <StdMeshers_SegmentLengthAroundVertex.hxx>
 # include <StdMeshers_StartEndLength.hxx>
-# include <StdMeshers_CompositeHexa_3D.hxx>
-
-# include <BRepBuilderAPI_Copy.hxx>
-# include <BRepTools.hxx>
 #endif
+
+#include <App/DocumentObjectPy.h>
+#include <Mod/Part/App/PartFeature.h>
 
 #include "FemMeshShapeObject.h"
 #include "FemMesh.h"
-#include <App/DocumentObjectPy.h>
-#include <Base/Placement.h>
-#include <Mod/Part/App/PartFeature.h>
+
 
 using namespace Fem;
 using namespace App;
@@ -79,7 +61,9 @@ PROPERTY_SOURCE(Fem::FemMeshShapeObject, Fem::FemMeshObject)
 
 FemMeshShapeObject::FemMeshShapeObject()
 {
-    ADD_PROPERTY_TYPE(Shape,(nullptr), "FEM Mesh",Prop_None,"Geometry object, the mesh is made from. The geometry object has to have a Shape.");
+    ADD_PROPERTY_TYPE(
+        Shape, (nullptr), "FEM Mesh", Prop_None,
+        "Geometry object, the mesh is made from. The geometry object has to have a Shape.");
 }
 
 FemMeshShapeObject::~FemMeshShapeObject()

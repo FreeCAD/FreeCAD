@@ -24,7 +24,7 @@
 #define SURFACEGUI_VIEWPROVIDEREXTEND_H
 
 #include <Mod/Part/Gui/ViewProviderSpline.h>
-#include <Mod/Surface/App/FeatureExtend.h>
+
 
 namespace SurfaceGui
 {

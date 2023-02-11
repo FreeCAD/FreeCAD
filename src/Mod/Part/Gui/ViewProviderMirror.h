@@ -41,7 +41,7 @@ public:
     void setupContextMenu(QMenu*, QObject*, const char*) override;
     std::vector<App::DocumentObject*> claimChildren() const override;
     bool onDelete(const std::vector<std::string> &) override;
-    
+
 protected:
     bool setEdit(int ModNum) override;
     void unsetEdit(int ModNum) override;
@@ -108,7 +108,7 @@ public:
     /// destructor
     ~ViewProviderRevolution() override;
 
-    /// grouping handling 
+    /// grouping handling
     std::vector<App::DocumentObject*> claimChildren()const override;
     bool onDelete(const std::vector<std::string> &) override;
 };
@@ -123,7 +123,7 @@ public:
     /// destructor
     ~ViewProviderLoft() override;
 
-    /// grouping handling 
+    /// grouping handling
     std::vector<App::DocumentObject*> claimChildren()const override;
     bool onDelete(const std::vector<std::string> &) override;
 };
@@ -138,7 +138,7 @@ public:
     /// destructor
     ~ViewProviderSweep() override;
 
-    /// grouping handling 
+    /// grouping handling
     std::vector<App::DocumentObject*> claimChildren()const override;
     bool onDelete(const std::vector<std::string> &) override;
 };
@@ -153,7 +153,7 @@ public:
     /// destructor
     ~ViewProviderOffset() override;
 
-    /// grouping handling 
+    /// grouping handling
     std::vector<App::DocumentObject*> claimChildren()const override;
     void setupContextMenu(QMenu*, QObject*, const char*) override;
     bool onDelete(const std::vector<std::string> &) override;
@@ -183,7 +183,7 @@ public:
     /// destructor
     ~ViewProviderThickness() override;
 
-    /// grouping handling 
+    /// grouping handling
     std::vector<App::DocumentObject*> claimChildren()const override;
     void setupContextMenu(QMenu*, QObject*, const char*) override;
     bool onDelete(const std::vector<std::string> &) override;

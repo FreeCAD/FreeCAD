@@ -58,26 +58,29 @@ TaskFemConstraintTransform::TaskFemConstraintTransform(ViewProviderFemConstraint
 
     // create a context menu for the listview of the references
     createDeleteAction(ui->lw_Rect);
-    deleteAction->connect(deleteAction, SIGNAL(triggered()), this, SLOT(onReferenceDeleted()));
+    connect(deleteAction, &QAction::triggered, this, &TaskFemConstraintTransform::onReferenceDeleted);
 
     // highlight seletcted list items in the model
-    connect(ui->lw_Rect, SIGNAL(currentItemChanged(QListWidgetItem*, QListWidgetItem*)),
-        this, SLOT(setSelection(QListWidgetItem*)));
-    connect(ui->lw_Rect, SIGNAL(itemClicked(QListWidgetItem*)),
-        this, SLOT(setSelection(QListWidgetItem*)));
-    connect(ui->lw_displobj_rect, SIGNAL(currentItemChanged(QListWidgetItem*, QListWidgetItem*)),
-        this, SLOT(setSelection(QListWidgetItem*)));
-    connect(ui->lw_displobj_rect, SIGNAL(itemClicked(QListWidgetItem*)),
-        this, SLOT(setSelection(QListWidgetItem*)));
+    connect(ui->lw_Rect, &QListWidget::currentItemChanged,
+            this, &TaskFemConstraintTransform::setSelection);
+    connect(ui->lw_Rect, &QListWidget::itemClicked,
+            this, &TaskFemConstraintTransform::setSelection);
+    connect(ui->lw_displobj_rect, &QListWidget::currentItemChanged,
+            this, &TaskFemConstraintTransform::setSelection);
+    connect(ui->lw_displobj_rect, &QListWidget::itemClicked,
+            this, &TaskFemConstraintTransform::setSelection);
 
     this->groupLayout()->addWidget(proxy);
 
-    connect(ui->rb_rect, SIGNAL(clicked(bool)), this, SLOT(Rect()));
-    connect(ui->rb_cylin, SIGNAL(clicked(bool)), this, SLOT(Cyl()));
+    connect(ui->rb_rect, &QRadioButton::clicked, this, &TaskFemConstraintTransform::Rect);
+    connect(ui->rb_cylin, &QRadioButton::clicked, this, &TaskFemConstraintTransform::Cyl);
 
-    connect(ui->sp_X, SIGNAL(valueChanged(int)), this, SLOT(x_Changed(int)));
-    connect(ui->sp_Y, SIGNAL(valueChanged(int)), this, SLOT(y_Changed(int)));
-    connect(ui->sp_Z, SIGNAL(valueChanged(int)), this, SLOT(z_Changed(int)));
+    connect(ui->sp_X, qOverload<int>(&QSpinBox::valueChanged),
+            this, &TaskFemConstraintTransform::x_Changed);
+    connect(ui->sp_Y, qOverload<int>(&QSpinBox::valueChanged),
+            this, &TaskFemConstraintTransform::y_Changed);
+    connect(ui->sp_Z, qOverload<int>(&QSpinBox::valueChanged),
+            this, &TaskFemConstraintTransform::z_Changed);
 
     // Get the feature data
     Fem::ConstraintTransform* pcConstraint = static_cast<Fem::ConstraintTransform*>(ConstraintView->getObject());
@@ -133,8 +136,8 @@ TaskFemConstraintTransform::TaskFemConstraintTransform(ViewProviderFemConstraint
         }
     }
     //Selection buttons
-    connect(ui->btnAdd, SIGNAL(clicked()), this, SLOT(addToSelection()));
-    connect(ui->btnRemove, SIGNAL(clicked()), this, SLOT(removeFromSelection()));
+    connect(ui->btnAdd, &QToolButton::clicked, this, &TaskFemConstraintTransform::addToSelection);
+    connect(ui->btnRemove, &QToolButton::clicked, this, &TaskFemConstraintTransform::removeFromSelection);
 
     updateUI();
     if ((p == 0) && (!Objects.empty())) {
@@ -288,15 +291,15 @@ void TaskFemConstraintTransform::addToSelection()
                 }
             }
             if (addMe) {
-                disconnect(ui->lw_Rect, SIGNAL(currentItemChanged(QListWidgetItem*, QListWidgetItem*)),
-                    this, SLOT(setSelection(QListWidgetItem*)));
+                disconnect(ui->lw_Rect, &QListWidget::currentItemChanged,
+                    this, &TaskFemConstraintTransform::setSelection);
                 for (std::size_t i = 0; i < ObjDispl.size(); i++) {
                     if ((makeRefText(ObjDispl[i], SubElemDispl[i])) == (makeRefText(obj, subNames[subIt]))) {
                         Objects.push_back(obj);
                         SubElements.push_back(subNames[subIt]);
                         ui->lw_Rect->addItem(makeRefText(obj, subNames[subIt]));
-                        connect(ui->lw_Rect, SIGNAL(currentItemChanged(QListWidgetItem*, QListWidgetItem*)),
-                            this, SLOT(setSelection(QListWidgetItem*)));
+                        connect(ui->lw_Rect, &QListWidget::currentItemChanged,
+                            this, &TaskFemConstraintTransform::setSelection);
                     }
                 }
                 if (Objects.empty()) {

@@ -26,16 +26,18 @@
 #include <Mod/TechDraw/TechDrawGlobal.h>
 
 #include <QGraphicsScene>
-#include <QPageLayout>
+
 
 class QTemporaryFile;
 class QLabel;
 
-namespace App {
+namespace App
+{
 class DocumentObject;
 }
 
-namespace TechDraw {
+namespace TechDraw
+{
 class DrawView;
 class DrawViewPart;
 class DrawViewSection;
@@ -54,7 +56,7 @@ class DrawLeaderLine;
 class DrawViewBalloon;
 class DrawRichAnno;
 class DrawWeldSymbol;
-}
+}// namespace TechDraw
 
 namespace TechDrawGui
 {
@@ -67,31 +69,31 @@ class QGILeaderLine;
 class QGIRichAnno;
 class QGITile;
 
-class TechDrawGuiExport QGSPage : public QGraphicsScene
+class TechDrawGuiExport QGSPage: public QGraphicsScene
 {
     Q_OBJECT
 
 public:
-    explicit QGSPage(ViewProviderPage *vpPage, QWidget *parent = nullptr);
+    explicit QGSPage(ViewProviderPage* vpPage, QWidget* parent = nullptr);
     ~QGSPage() = default;
 
-    bool addView(const App::DocumentObject *obj);
-    bool attachView(App::DocumentObject *obj);
-    QGIView * addViewDimension(TechDraw::DrawViewDimension *dimFeat);
-    QGIView * addViewBalloon(TechDraw::DrawViewBalloon *balloonFeat);
-    QGIView * addProjectionGroup(TechDraw::DrawProjGroup *projGroupFeat);
-    QGIView * addViewPart(TechDraw::DrawViewPart *partFeat);
-    QGIView * addViewSection(TechDraw::DrawViewSection *sectionFeat);
-    QGIView * addDrawView(TechDraw::DrawView *viewFeat);
-    QGIView * addDrawViewCollection(TechDraw::DrawViewCollection *collectionFeat);
-    QGIView * addDrawViewAnnotation(TechDraw::DrawViewAnnotation *annoFeat);
-    QGIView * addDrawViewSymbol(TechDraw::DrawViewSymbol *symbolFeat);
-    QGIView * addDrawViewClip(TechDraw::DrawViewClip *clipFeat);
-    QGIView * addDrawViewSpreadsheet(TechDraw::DrawViewSpreadsheet *sheetFeat);
-    QGIView * addDrawViewImage(TechDraw::DrawViewImage *imageFeat);
-    QGIView * addViewLeader(TechDraw::DrawLeaderLine* leaderFeat);
-    QGIView * addRichAnno(TechDraw::DrawRichAnno* richFeat);
-    QGIView * addWeldSymbol(TechDraw::DrawWeldSymbol* weldFeat);
+    bool addView(const App::DocumentObject* obj);
+    bool attachView(App::DocumentObject* obj);
+    QGIView* addViewDimension(TechDraw::DrawViewDimension* dimFeat);
+    QGIView* addViewBalloon(TechDraw::DrawViewBalloon* balloonFeat);
+    QGIView* addProjectionGroup(TechDraw::DrawProjGroup* projGroupFeat);
+    QGIView* addViewPart(TechDraw::DrawViewPart* partFeat);
+    QGIView* addViewSection(TechDraw::DrawViewSection* sectionFeat);
+    QGIView* addDrawView(TechDraw::DrawView* viewFeat);
+    QGIView* addDrawViewCollection(TechDraw::DrawViewCollection* collectionFeat);
+    QGIView* addDrawViewAnnotation(TechDraw::DrawViewAnnotation* annoFeat);
+    QGIView* addDrawViewSymbol(TechDraw::DrawViewSymbol* symbolFeat);
+    QGIView* addDrawViewClip(TechDraw::DrawViewClip* clipFeat);
+    QGIView* addDrawViewSpreadsheet(TechDraw::DrawViewSpreadsheet* sheetFeat);
+    QGIView* addDrawViewImage(TechDraw::DrawViewImage* imageFeat);
+    QGIView* addViewLeader(TechDraw::DrawLeaderLine* leaderFeat);
+    QGIView* addRichAnno(TechDraw::DrawRichAnno* richFeat);
+    QGIView* addWeldSymbol(TechDraw::DrawWeldSymbol* weldFeat);
 
     void addChildrenToPage();
     void fixOrphans(bool force = false);
@@ -99,35 +101,36 @@ public:
     void redrawAllViews();
     void redraw1View(TechDraw::DrawView* dView);
 
-    QGIView* findQViewForDocObj(App::DocumentObject *obj) const;
+    QGIView* findQViewForDocObj(App::DocumentObject* obj) const;
     QGIView* getQGIVByName(std::string name);
-    QGIView* findParent(QGIView *) const;
-    void findMissingViews( const std::vector<App::DocumentObject*> &list, std::vector<App::DocumentObject*> &missing);
-    bool hasQView(App::DocumentObject *obj);
+    QGIView* findParent(QGIView*) const;
+    void findMissingViews(const std::vector<App::DocumentObject*>& list,
+                          std::vector<App::DocumentObject*>& missing);
+    bool hasQView(App::DocumentObject* obj);
 
     void addBalloonToParent(QGIViewBalloon* balloon, QGIView* parent);
-    void createBalloon(QPointF origin, TechDraw::DrawViewPart *parent);
+    void createBalloon(QPointF origin, TechDraw::DrawView* parent);
 
     void addDimToParent(QGIViewDimension* dim, QGIView* parent);
     void addLeaderToParent(QGILeaderLine* lead, QGIView* parent);
     void addAnnoToParent(QGIRichAnno* anno, QGIView* parent);
 
-    std::vector<QGIView *> getViews() const;
+    std::vector<QGIView*> getViews() const;
 
-    int addQView(QGIView * view);
-    int removeQView(QGIView *view);
+    int addQView(QGIView* view);
+    int removeQView(QGIView* view);
     int removeQViewByName(const char* name);
-    void removeQViewFromScene(QGIView *view);
+    void removeQViewFromScene(QGIView* view);
 
-    void setPageTemplate(TechDraw::DrawTemplate *templateFeat);
-    QGITemplate * getTemplate() const;
+    void setPageTemplate(TechDraw::DrawTemplate* templateFeat);
+    QGITemplate* getTemplate() const;
     void removeTemplate();
     void matchSceneRectToTemplate();
-    void attachTemplate(TechDraw::DrawTemplate *obj);
+    void attachTemplate(TechDraw::DrawTemplate* obj);
     void updateTemplate(bool force = false);
     QPointF getTemplateCenter();
 
-    TechDraw::DrawPage * getDrawPage();
+    TechDraw::DrawPage* getDrawPage();
 
     void setExporting(bool enable);
     virtual void refreshViews();
@@ -143,18 +146,13 @@ public:
 
 protected:
     QColor getBackgroundColor();
-    bool orphanExists(const char *viewName, const std::vector<App::DocumentObject*> &list);
+    bool orphanExists(const char* viewName, const std::vector<App::DocumentObject*>& list);
 
 private:
-    QGITemplate *pageTemplate;
-    ViewProviderPage *m_vpPage;
-
-    QPageLayout::Orientation m_orientation;
-    QPageSize::PageSizeId m_paperSize;
-    qreal pagewidth, pageheight;
-
+    QGITemplate* pageTemplate;
+    ViewProviderPage* m_vpPage;
 };
 
-} // namespace
+}// namespace TechDrawGui
 
-#endif // TECHDRAWGUI_QGSCENE_H
+#endif// TECHDRAWGUI_QGSCENE_H

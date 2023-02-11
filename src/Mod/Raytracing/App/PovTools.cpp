@@ -23,26 +23,22 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <BRep_Tool.hxx>
+# include <sstream>
+
 # include <BRepMesh_IncrementalMesh.hxx>
-# include <GeomAPI_ProjectPointOnSurf.hxx>
-# include <GeomLProp_SLProps.hxx>
-# include <Poly_Triangulation.hxx>
 # include <TopExp_Explorer.hxx>
 # include <TopoDS.hxx>
 # include <TopoDS_Face.hxx>
-# include <sstream>
 #endif
 
+#include <App/ComplexGeoData.h>
 #include <Base/Console.h>
-#include <Base/Exception.h>
 #include <Base/Sequencer.h>
 #include <Base/Stream.h>
-#include <App/ComplexGeoData.h>
-
+#include <Mod/Part/App/Tools.h>
 
 #include "PovTools.h"
-#include <Mod/Part/App/Tools.h>
+
 
 using Base::Console;
 

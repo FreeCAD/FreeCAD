@@ -61,7 +61,7 @@ private:
     static void slotRelabelDocument(const App::Document &doc);
 };
 
-class AppExport PropertyExpressionEngine : public App::PropertyExpressionContainer, 
+class AppExport PropertyExpressionEngine : public App::PropertyExpressionContainer,
                                            private App::AtomicPropertyChangeInterface<PropertyExpressionEngine>
 {
     TYPESYSTEM_HEADER_WITH_OVERRIDE();
@@ -139,7 +139,7 @@ public:
         ExecuteOnRestore,
     };
     /** Evaluate the expressions
-     * 
+     *
      * @param option: execution option, see ExecuteOption.
      */
     DocumentObjectExecReturn * execute(ExecuteOption option=ExecuteAll, bool *touched=nullptr);
@@ -161,7 +161,7 @@ public:
 
     size_t numExpressions() const;
 
-    ///signal called when an expression was changed 
+    ///signal called when an expression was changed
     boost::signals2::signal<void (const App::ObjectIdentifier &)> expressionChanged;
 
     void afterRestore() override;
@@ -192,7 +192,7 @@ private:
                               boost::unordered_map<int, App::ObjectIdentifier> &revNodes, std::vector<Edge> &edges) const;
 
     void buildGraph(const ExpressionMap &exprs,
-                boost::unordered_map<int, App::ObjectIdentifier> &revNodes, 
+                boost::unordered_map<int, App::ObjectIdentifier> &revNodes,
                 DiGraph &g, ExecuteOption option=ExecuteAll) const;
 
     void slotChangedObject(const App::DocumentObject &obj, const App::Property &prop);

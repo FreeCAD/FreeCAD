@@ -22,15 +22,14 @@
 
 #include "PreCompiled.h"
 
-#include <Base/Writer.h>
 #include <Base/Reader.h>
-
+#include <Base/Writer.h>
 #include <Mod/Sketcher/App/SketchGeometryExtensionPy.h>
 
 #include "SketchGeometryExtension.h"
 
-using namespace Sketcher;
 
+using namespace Sketcher;
 
 //---------- Geometry Extension
 constexpr std::array<const char *, InternalType::NumInternalGeometryType> SketchGeometryExtension::internaltype2str;
@@ -72,7 +71,7 @@ void SketchGeometryExtension::restoreAttributes(Base::XMLReader &reader)
     if(reader.hasAttribute("id"))
         Id = reader.getAttributeAsInteger("id");
 
-    InternalGeometryType = (InternalType::InternalType) reader.getAttributeAsInteger("internalGeometryType");
+    InternalGeometryType = static_cast<InternalType::InternalType>(reader.getAttributeAsInteger("internalGeometryType"));
 
     GeometryModeFlags = GeometryModeFlagType(reader.getAttribute("geometryModeFlags"));
 

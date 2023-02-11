@@ -23,14 +23,14 @@
 #ifndef MESHGUI_SOFCINDEXEDFACESET_H
 #define MESHGUI_SOFCINDEXEDFACESET_H
 
-#include <Inventor/nodes/SoIndexedFaceSet.h>
-#include <Inventor/elements/SoMaterialBindingElement.h>
 #include <Inventor/engines/SoSubEngine.h>
-#include <Inventor/fields/SoSFBool.h>
 #include <Inventor/fields/SoMFColor.h>
+#include <Inventor/fields/SoSFBool.h>
+#include <Inventor/nodes/SoIndexedFaceSet.h>
 #ifndef MESH_GLOBAL_H
 #include <Mod/Mesh/MeshGlobal.h>
 #endif
+
 
 class SoGLCoordinateElement;
 class SoTextureCoordinateBundle;

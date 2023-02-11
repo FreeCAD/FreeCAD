@@ -37,6 +37,7 @@
 #include <App/DocumentObject.h>
 #include <App/Expression.h>
 #include <App/ObjectIdentifier.h>
+#include <App/PropertyGeo.h>
 #include <Base/Tools.h>
 
 
@@ -165,6 +166,28 @@ std::string ExpressionBinding::getExpressionString(bool no_throw) const
 std::string ExpressionBinding::getEscapedExpressionString() const
 {
     return Base::Tools::escapedUnicodeFromUtf8(getExpressionString(false).c_str());
+}
+
+bool ExpressionBinding::assignToProperty(const std::string & propName, double value)
+{
+    if (isBound()) {
+        const App::ObjectIdentifier & path = getPath();
+        const Property * prop = path.getProperty();
+
+        /* Skip update if property is bound and we know it is read-only */
+        if (prop && prop->isReadOnly())
+            return true;
+
+        if (prop && prop->getTypeId().isDerivedFrom(App::PropertyPlacement::getClassTypeId())) {
+            std::string p = path.getSubPathStr();
+            if (p == ".Rotation.Angle") {
+                value = Base::toRadians(value);
+            }
+        }
+    }
+
+    Gui::Command::doCommand(Gui::Command::Doc, "%s = %f", propName.c_str(), value);
+    return true;
 }
 
 QPixmap ExpressionBinding::getIcon(const char* name, const QSize& size) const

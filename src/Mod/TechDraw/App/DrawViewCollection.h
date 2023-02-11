@@ -24,12 +24,12 @@
 #ifndef TECHDRAW_FEATUREVIEWCOLLECTION_h_
 #define TECHDRAW_FEATUREVIEWCOLLECTION_h_
 
-#include <Mod/TechDraw/TechDrawGlobal.h>
-
 #include <App/DocumentObject.h>
 #include <App/PropertyLinks.h>
+#include <Mod/TechDraw/TechDrawGlobal.h>
 
 #include "DrawView.h"
+
 
 namespace TechDraw
 {

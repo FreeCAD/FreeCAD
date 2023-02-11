@@ -26,8 +26,8 @@
 import FreeCAD, FreeCADGui, os, unittest
 import tempfile
 
-from PySide2 import QtWidgets, QtCore
-from PySide2.QtWidgets import QApplication
+from PySide import QtWidgets, QtCore
+from PySide.QtWidgets import QApplication
 
 class CallableCheckWarning:
     def __call__(self):

@@ -23,11 +23,10 @@
 #ifndef SURFACE_FEATURECUT_H
 #define SURFACE_FEATURECUT_H
 
-#include <App/PropertyStandard.h>
-#include <App/PropertyUnits.h>
 #include <App/PropertyLinks.h>
 #include <Mod/Part/App/PartFeature.h>
 #include <Mod/Surface/SurfaceGlobal.h>
+
 
 namespace Surface
 {

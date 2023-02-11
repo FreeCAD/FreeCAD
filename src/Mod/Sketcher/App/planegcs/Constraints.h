@@ -68,7 +68,11 @@ namespace GCS
         InternalAlignmentPoint2Hyperbola = 22,
         PointOnParabola = 23,
         EqualFocalDistance = 24,
-        EqualLineLength = 25
+        EqualLineLength = 25,
+        CenterOfGravity = 26,
+        WeightedLinearCombination = 27,
+        SlopeAtBSplineKnot = 28,
+        PointOnBSpline = 29
     };
 
     enum InternalAlignmentType {
@@ -94,6 +98,13 @@ namespace GCS
 
     class Constraint
     {
+
+    public:
+        enum class Alignment  {
+            NoInternalAlignment,
+            InternalAlignment
+        };
+
     _PROTECTED_UNLESS_EXTRACT_MODE_:
         VEC_pD origpvec; // is used only as a reference for redirecting and reverting pvec
         VEC_pD pvec;
@@ -101,19 +112,24 @@ namespace GCS
         int tag;
         bool pvecChangedFlag;  //indicates that pvec has changed and saved pointers must be reconstructed (currently used only in AngleViaPoint)
         bool driving;
+        Alignment internalAlignment;
+
     public:
         Constraint();
         virtual ~Constraint(){}
 
         inline VEC_pD params() { return pvec; }
 
-        void redirectParams(MAP_pD_pD redirectionmap);
+        void redirectParams(const MAP_pD_pD & redirectionmap);
         void revertParams();
         void setTag(int tagId) { tag = tagId; }
         int getTag() { return tag; }
 
         void setDriving(bool isdriving) { driving = isdriving; }
         bool isDriving() const { return driving; }
+
+        void setInternalAlignment(Alignment isinternalalignment) { internalAlignment = isinternalalignment; }
+        Alignment isInternalAlignment() const { return internalAlignment; }
 
         virtual ConstraintType getTypeId();
         virtual void rescale(double coef=1.);
@@ -141,6 +157,103 @@ namespace GCS
         void rescale(double coef=1.) override;
         double error() override;
         double grad(double *) override;
+    };
+
+    // Center of Gravity
+    class ConstraintCenterOfGravity : public Constraint
+    {
+        inline double* thecenter() { return pvec[0]; }
+        inline double* pointat(size_t i) { return pvec[1 + i]; }
+    public:
+        /// Constrains that the first parameter is center of gravity of rest
+        /// Let `pvec = [q, p_1, p_2,...]`, and
+        /// `givenweights = [f_1, f_2,...]`, then this constraint ensures
+        /// `q = sum(p_i*f_i)`.
+        ConstraintCenterOfGravity(const std::vector<double *>& givenpvec, const std::vector<double>& givenweights);
+        ConstraintType getTypeId() override;
+        void rescale(double coef=1.) override;
+        double error() override;
+        double grad(double *) override;
+    private:
+        std::vector<double> weights;
+        double numpoints;
+    };
+
+    // Weighted Linear Combination
+    class ConstraintWeightedLinearCombination : public Constraint
+    {
+        inline double* thepoint() { return pvec[0]; }
+        inline double* poleat(size_t i) { return pvec[1 + i]; }
+        inline double* weightat(size_t i) { return pvec[1 + numpoles + i]; }
+    public:
+        /// Constrains that the first element in pvec is a linear combination
+        /// of the next numpoints elements in homogeneous coordinates with
+        /// weights given in the last numpoints elements.
+        /// Let `pvec = [q, p_1, p_2,... w_1, w_2,...]`, and
+        /// `givenfactors = [f_1, f_2,...]`, then this constraint ensures
+        /// `q*sum(w_i*f_i) = sum(p_i*w_i*f_i)`.
+        ///
+        /// This constraint is currently used to ensure that a B-spline knot
+        /// point remains at the position determined by it's poles.
+        /// In that case, `q` is the x (or y) coordinate of the knot, `p_i` are
+        /// the x (or y) coordinates of the poles, and `w_i` are their weights.
+        /// Finally, `f_i` are obtained using `BSpline::getLinCombFactor()`.
+        ConstraintWeightedLinearCombination(size_t givennumpoints, const std::vector<double *>& givenpvec, const std::vector<double>& givenfactors);
+        ConstraintType getTypeId() override;
+        void rescale(double coef=1.) override;
+        double error() override;
+        double grad(double *) override;
+    private:
+        std::vector<double> factors;
+        size_t numpoles;
+    };
+
+    // Slope at knot
+    class ConstraintSlopeAtBSplineKnot : public Constraint
+    {
+    private:
+        inline double* polexat(size_t i) { return pvec[i]; }
+        inline double* poleyat(size_t i) { return pvec[numpoles + i]; }
+        inline double* weightat(size_t i) { return pvec[2*numpoles + i]; }
+        inline double* linep1x() { return pvec[3*numpoles + 0]; }
+        inline double* linep1y() { return pvec[3*numpoles + 1]; }
+        inline double* linep2x() { return pvec[3*numpoles + 2]; }
+        inline double* linep2y() { return pvec[3*numpoles + 3]; }
+    public:
+        // TODO: Should be able to make the geometries passed const
+        // Constrains the slope at a (C1 continuous) knot of the b-spline
+        ConstraintSlopeAtBSplineKnot(BSpline& b, Line& l, size_t knotindex);
+        ConstraintType getTypeId() override;
+        void rescale(double coef=1.) override;
+        double error() override;
+        double grad(double *) override;
+    private:
+        std::vector<double> factors;
+        std::vector<double> slopefactors;
+        size_t numpoles;
+    };
+
+    // Point On BSpline
+    class ConstraintPointOnBSpline : public Constraint
+    {
+    private:
+        inline double* thepoint() { return pvec[0]; }
+        // TODO: better name because param has a different meaning here?
+        inline double* theparam() { return pvec[1]; }
+        inline double* poleat(size_t i) { return pvec[2 + (startpole + i) % bsp.poles.size()]; }
+        inline double* weightat(size_t i) { return pvec[2 + bsp.poles.size() + (startpole + i) % bsp.weights.size()]; }
+        void setStartPole(double u);
+    public:
+        /// TODO: Explain how it's provided
+        /// coordidx = 0 if x, 1 if y
+        ConstraintPointOnBSpline(double* point, double* initparam, int coordidx, BSpline& b);
+        ConstraintType getTypeId() override;
+        void rescale(double coef=1.) override;
+        double error() override;
+        double grad(double *) override;
+        size_t numpoints;
+        BSpline& bsp;
+        size_t startpole;
     };
 
     // Difference
@@ -552,7 +665,7 @@ namespace GCS
     public:
         ConstraintPointOnParabola(Point &p, Parabola &e);
         ConstraintPointOnParabola(Point &p, ArcOfParabola &a);
-	~ConstraintPointOnParabola() override;
+    ~ConstraintPointOnParabola() override;
         #ifdef _GCS_EXTRACT_SOLVER_SUBSYSTEM_
         inline ConstraintPointOnParabola(){}
         #endif

@@ -132,9 +132,13 @@ void Flag::resizeEvent(QResizeEvent* e)
 void Flag::mouseMoveEvent(QMouseEvent *e)
 {
     if (e->buttons() & Qt::LeftButton) {
+#if QT_VERSION < QT_VERSION_CHECK(6,0,0)
         move(e->globalPos() - dragPosition);
+#else
+        move(e->globalPosition().toPoint() - dragPosition);
+#endif
         e->accept();
-        View3DInventorViewer* viewer = dynamic_cast<View3DInventorViewer*>(parentWidget());
+        auto viewer = dynamic_cast<View3DInventorViewer*>(parentWidget());
         if (viewer)
             viewer->getSoRenderManager()->scheduleRedraw();
     }
@@ -143,7 +147,11 @@ void Flag::mouseMoveEvent(QMouseEvent *e)
 void Flag::mousePressEvent(QMouseEvent *e)
 {
     if (e->button() == Qt::LeftButton) {
+#if QT_VERSION < QT_VERSION_CHECK(6,0,0)
         dragPosition = e->globalPos() - frameGeometry().topLeft();
+#else
+        dragPosition = e->globalPosition().toPoint() - frameGeometry().topLeft();
+#endif
         e->accept();
     }
 }
@@ -183,7 +191,7 @@ QSize Flag::sizeHint() const
 FlagLayout::FlagLayout(QWidget *parent, int margin, int spacing)
     : QLayout(parent)
 {
-    setMargin(margin);
+    setContentsMargins(margin, margin, margin, margin);
     setSpacing(spacing);
 }
 

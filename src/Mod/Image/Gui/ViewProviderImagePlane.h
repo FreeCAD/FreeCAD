@@ -29,7 +29,7 @@
 
 class SoCoordinate3;
 class SoDrawStyle;
-class SoTexture2; 
+class SoTexture2;
 class QImage;
 
 namespace ImageGui

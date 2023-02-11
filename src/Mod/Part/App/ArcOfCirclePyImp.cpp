@@ -55,10 +55,10 @@ std::string ArcOfCirclePy::representation() const
 
     std::stringstream str;
     str << "ArcOfCircle (";
-    str << "Radius : " << fRad << ", "; 
-    str << "Position : (" << loc.X() << ", "<< loc.Y() << ", "<< loc.Z() << "), "; 
-    str << "Direction : (" << dir.X() << ", "<< dir.Y() << ", "<< dir.Z() << "), "; 
-    str << "Parameter : (" << u1 << ", " << u2 << ")"; 
+    str << "Radius : " << fRad << ", ";
+    str << "Position : (" << loc.X() << ", "<< loc.Y() << ", "<< loc.Z() << "), ";
+    str << "Direction : (" << dir.X() << ", "<< dir.Y() << ", "<< dir.Z() << "), ";
+    str << "Parameter : (" << u1 << ", " << u2 << ")";
     str << ")";
 
     return str.str();
@@ -66,7 +66,7 @@ std::string ArcOfCirclePy::representation() const
 
 PyObject *ArcOfCirclePy::PyMake(struct _typeobject *, PyObject *, PyObject *)  // Python wrapper
 {
-    // create a new instance of ArcOfCirclePy and the Twin object 
+    // create a new instance of ArcOfCirclePy and the Twin object
     return new ArcOfCirclePy(new GeomArcOfCircle);
 }
 
@@ -128,7 +128,7 @@ int ArcOfCirclePy::PyInit(PyObject* args, PyObject* /*kwds*/)
 
 Py::Float ArcOfCirclePy::getRadius() const
 {
-    return Py::Float(getGeomArcOfCirclePtr()->getRadius()); 
+    return Py::Float(getGeomArcOfCirclePtr()->getRadius());
 }
 
 void  ArcOfCirclePy::setRadius(Py::Float arg)
@@ -151,5 +151,5 @@ PyObject *ArcOfCirclePy::getCustomAttributes(const char* ) const
 
 int ArcOfCirclePy::setCustomAttributes(const char* , PyObject *)
 {
-    return 0; 
+    return 0;
 }

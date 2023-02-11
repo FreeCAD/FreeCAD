@@ -20,13 +20,13 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef GUI_TASKVIEW_TaskSketcherMessages_H
 #define GUI_TASKVIEW_TaskSketcherMessages_H
 
-#include <Gui/TaskView/TaskView.h>
-#include <Gui/Selection.h>
 #include <boost_signals2.hpp>
+
+#include <Gui/TaskView/TaskView.h>
+
 
 class Ui_TaskSketcherMessages;
 using Connection = boost::signals2::connection;

@@ -65,7 +65,7 @@ Gui::GuiNativeEvent::tdx_drv_handler(io_connect_t connection,
     //printf("tdx_drv_handler\n");
     //printf("connection: %X\n", connection);
     //printf("messageType %c%c%c%c\n", messageType/0x1000000, messageType/0x10000, messageType/0x100, messageType);
-    ConnexionDeviceStatePtr msg = (ConnexionDeviceStatePtr)messageArgument;
+    auto msg = (ConnexionDeviceStatePtr)messageArgument;
 
     switch(messageType) {
     case kConnexionMsgDeviceState:

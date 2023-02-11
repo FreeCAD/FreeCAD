@@ -20,7 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <sstream>
@@ -28,6 +27,7 @@
 
 #include "Facet.h"
 #include "Mesh.h"
+
 
 using namespace Mesh;
 

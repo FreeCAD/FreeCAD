@@ -20,15 +20,11 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
-#ifndef _PreComp_
-#endif
-
-#include "FemSetGeometryObject.h"
 #include <App/DocumentObjectPy.h>
-#include <Base/Placement.h>
+#include "FemSetGeometryObject.h"
+
 
 using namespace Fem;
 using namespace App;

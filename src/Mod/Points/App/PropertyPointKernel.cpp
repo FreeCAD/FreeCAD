@@ -20,22 +20,20 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
+# include <algorithm>
 # include <cmath>
 # include <iostream>
-# include <algorithm>
 #endif
 
-#include <Base/Exception.h>
 #include <Base/Matrix.h>
-#include <Base/Stream.h>
 #include <Base/Writer.h>
 
 #include "PropertyPointKernel.h"
 #include "PointsPy.h"
+
 
 using namespace Points;
 
@@ -93,7 +91,7 @@ PyObject *PropertyPointKernel::getPyObject()
 void PropertyPointKernel::setPyObject(PyObject *value)
 {
     if (PyObject_TypeCheck(value, &(PointsPy::Type))) {
-        PointsPy  *pcObject = (PointsPy*)value;
+        PointsPy  *pcObject = static_cast<PointsPy*>(value);
         setValue( *(pcObject->getPointKernelPtr()));
     }
     else {

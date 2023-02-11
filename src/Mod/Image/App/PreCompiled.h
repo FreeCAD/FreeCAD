@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) Jürgen Riegel          (juergen.riegel@web.de) 2002     *
+ *   Copyright (c) 2002 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -26,24 +26,13 @@
 #include <FCConfig.h>
 
 #ifdef _PreComp_
-/// here get the warnings of to long specifieres disabled (needed for VC6)
+/// point at which warnings of overly long specifiers disabled (needed for VC6)
 #ifdef _MSC_VER
-#	pragma warning( disable : 4251 )
-#	pragma warning( disable : 4503 )
-#	pragma warning( disable : 4786 )  // specifier longer then 255 chars
+# pragma warning(disable : 4005)
+# pragma warning(disable : 4251)
+# pragma warning(disable : 4503)
+# pragma warning(disable : 4786)// specifier longer then 255 chars
 #endif
-
-// standard
-#include <iostream>
-#include <sstream>
-#include <cstdio>
-#include <cassert>
-#include <string>
-#include <map>
-#include <vector>
-#include <set>
-#include <bitset>
 
 #endif // _PreComp_
 #endif
-

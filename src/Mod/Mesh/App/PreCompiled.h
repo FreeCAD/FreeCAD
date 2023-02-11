@@ -26,7 +26,7 @@
 
 #include <FCConfig.h>
 
-// here get the warnings of too long specifiers disabled (needed for VC6)
+// point at which warnings of overly long specifiers disabled (needed for VC6)
 #ifdef _MSC_VER
 #   pragma warning( disable : 4251 )
 #   pragma warning( disable : 4503 )
@@ -43,6 +43,7 @@
 #include <cmath>
 #include <cfloat>
 #include <fcntl.h>
+#include <fstream>
 #include <ios>
 
 #ifdef FC_USE_GTS
@@ -50,7 +51,6 @@
 #endif
 // STL
 #include <algorithm>
-#include <bitset>
 #include <iostream>
 #include <iomanip>
 #include <list>
@@ -62,23 +62,19 @@
 #include <string>
 #include <vector>
 
-#ifdef FC_OS_WIN32
-#include <io.h>
-#endif
-
+// boost
 #include <boost/algorithm/string/replace.hpp>
 #include <boost/core/ignore_unused.hpp>
 #include <boost/lexical_cast.hpp>
 #include <boost/tokenizer.hpp>
+#include <boost/regex.hpp>
 
+// Xerces
 #include <xercesc/util/PlatformUtils.hpp>
 #include <xercesc/util/XercesVersion.hpp>
 #include <xercesc/dom/DOM.hpp>
 #include <xercesc/dom/DOMImplementation.hpp>
 #include <xercesc/dom/DOMImplementationLS.hpp>
-#if (XERCES_VERSION_MAJOR == 2)
-#include <xercesc/dom/DOMWriter.hpp>
-#endif
 #include <xercesc/framework/StdOutFormatTarget.hpp>
 #include <xercesc/framework/LocalFileFormatTarget.hpp>
 #include <xercesc/framework/LocalFileInputSource.hpp>

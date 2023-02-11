@@ -24,10 +24,10 @@
 #define BASE_IINPUTSOURCE_H
 
 #include <iosfwd>
+#include <memory>
 
 #include <xercesc/util/BinInputStream.hpp>
 #include <xercesc/sax/InputSource.hpp>
-#include <QTextCodec>
 #ifndef FC_GLOBAL_H
 #include <FCGlobal.h>
 #endif
@@ -50,14 +50,9 @@ public :
   // -----------------------------------------------------------------------
   //  Implementation of the input stream interface
   // -----------------------------------------------------------------------
-#if (XERCES_VERSION_MAJOR == 2)
-  virtual unsigned int curPos() const;
-  virtual unsigned int readBytes( XMLByte* const toFill, const unsigned int maxToRead );
-#else
   XMLFilePos curPos() const override;
   XMLSize_t readBytes( XMLByte* const toFill, const XMLSize_t maxToRead ) override;
   const XMLCh* getContentType() const override {return nullptr;}
-#endif
 
 private :
   // -----------------------------------------------------------------------
@@ -75,7 +70,8 @@ private :
   // -----------------------------------------------------------------------
   std::istream            &stream;
   XERCES_CPP_NAMESPACE_QUALIFIER MemoryManager* const    fMemoryManager;
-  QTextCodec::ConverterState state;
+  struct TextCodec;
+  std::unique_ptr<TextCodec> codec;
 };
 
 

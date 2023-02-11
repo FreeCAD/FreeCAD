@@ -238,17 +238,17 @@ Py::Object MDIViewPy::setActiveObject(const Py::Tuple& args)
     if (!PyArg_ParseTuple(args.ptr(), "s|Os", &name, &docObject, &subname))
         throw Py::Exception();
 
-    if (_view) {
-        if (docObject == Py_None) {
-            _view->setActiveObject(nullptr, name);
-        }
-        else {
-            if (!PyObject_TypeCheck(docObject, &App::DocumentObjectPy::Type))
-                throw Py::TypeError("Expect the second argument to be a document object or None");
-
-            App::DocumentObject* obj = static_cast<App::DocumentObjectPy*>(docObject)->getDocumentObjectPtr();
+    try {
+        Base::PyTypeCheck(&docObject, &App::DocumentObjectPy::Type,
+            "Expect the second argument to be a document object or None");
+        if (_view) {
+            App::DocumentObject* obj = docObject ?
+                static_cast<App::DocumentObjectPy*>(docObject)->getDocumentObjectPtr() : nullptr;
             _view->setActiveObject(obj, name, subname);
         }
+    }
+    catch (const Base::Exception& e) {
+        throw Py::Exception(e.getPyExceptionType(), e.what());
     }
 
     return Py::None();

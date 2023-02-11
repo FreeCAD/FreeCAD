@@ -20,39 +20,31 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <TopoDS_Shape.hxx>
-# include <TopoDS_Face.hxx>
-# include <TopoDS.hxx>
-# include <BRepAdaptor_Surface.hxx>
 # include <QApplication>
 # include <QInputDialog>
 # include <QMessageBox>
 #endif
 
 #include <App/DocumentObjectGroup.h>
-#include <App/OriginFeature.h>
 #include <Gui/Application.h>
-#include <Gui/Document.h>
 #include <Gui/CommandT.h>
 #include <Gui/Control.h>
+#include <Gui/Document.h>
 #include <Gui/MainWindow.h>
-#include <Gui/DlgEditFileIncludePropertyExternal.h>
 #include <Gui/SelectionFilter.h>
 #include <Gui/SelectionObject.h>
-
-#include <Mod/Sketcher/App/SketchObjectSF.h>
+#include <Mod/Sketcher/App/Constraint.h>
 #include <Mod/Sketcher/App/SketchObject.h>
 #include <Mod/Part/App/Attacher.h>
 #include <Mod/Part/App/Part2DObject.h>
 
-#include "SketchOrientationDialog.h"
 #include "SketchMirrorDialog.h"
-#include "ViewProviderSketch.h"
+#include "SketchOrientationDialog.h"
 #include "TaskSketcherValidation.h"
-#include "../App/Constraint.h"
+#include "ViewProviderSketch.h"
+
 
 using namespace std;
 using namespace SketcherGui;
@@ -964,7 +956,17 @@ CmdSketcherViewSection::CmdSketcherViewSection()
 void CmdSketcherViewSection::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    doCommand(Doc,"ActiveSketch.ViewObject.TempoVis.sketchClipPlane(ActiveSketch)");
+    QString cmdStr = QLatin1String("ActiveSketch.ViewObject.TempoVis.sketchClipPlane(ActiveSketch, None, %1)\n");
+    Gui::Document *doc = getActiveGuiDocument();
+    bool revert = false;
+    if(doc) {
+        SketcherGui::ViewProviderSketch* vp = dynamic_cast<SketcherGui::ViewProviderSketch*>(doc->getInEdit());
+        if (vp) {
+            revert = vp->getViewOrientationFactor() < 0?true:false;
+        }
+    }
+    cmdStr = cmdStr.arg(revert?QLatin1String("True"):QLatin1String("False"));
+    doCommand(Doc, cmdStr.toLatin1());
 }
 
 bool CmdSketcherViewSection::isActive()

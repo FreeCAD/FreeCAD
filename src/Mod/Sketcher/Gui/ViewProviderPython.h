@@ -20,12 +20,12 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef SketcherGui_VIEWPROVIDERPYTHON_H
 #define SketcherGui_VIEWPROVIDERPYTHON_H
 
 #include <Gui/ViewProviderPythonFeature.h>
 #include <Mod/Sketcher/Gui/ViewProviderSketch.h>
+
 
 namespace SketcherGui {
 

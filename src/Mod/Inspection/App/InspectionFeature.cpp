@@ -25,23 +25,22 @@
 #ifndef _PreComp_
 #include <numeric>
 
-#include <gp_Pnt.hxx>
 #include <BRepExtrema_DistShapeShape.hxx>
 #include <BRepBuilderAPI_MakeVertex.hxx>
 #include <BRepClass3d_SolidClassifier.hxx>
 #include <BRepGProp_Face.hxx>
+#include <gp_Pnt.hxx>
+#include <TopExp.hxx>
 #include <TopoDS.hxx>
 
-#include <QtConcurrentMap>
 #include <QEventLoop>
 #include <QFuture>
 #include <QFutureWatcher>
+#include <QtConcurrentMap>
 #endif
 
-#include <App/Application.h>
 #include <Base/Console.h>
 #include <Base/FutureWatcherProgress.h>
-#include <Base/Parameter.h>
 #include <Base/Sequencer.h>
 #include <Base/Stream.h>
 
@@ -105,15 +104,30 @@ Base::Vector3f InspectActualPoints::getPoint(unsigned long index) const
 
 InspectActualShape::InspectActualShape(const Part::TopoShape& shape) : _rShape(shape)
 {
-    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath
-        ("User parameter:BaseApp/Preferences/Mod/Part");
-    float deviation = hGrp->GetFloat("MeshDeviation",0.2);
+    Standard_Real deflection = _rShape.getAccuracy();
+    fetchPoints(deflection);
+}
 
-    Base::BoundBox3d bbox = _rShape.getBoundBox();
-    Standard_Real deflection = (bbox.LengthX() + bbox.LengthY() + bbox.LengthZ())/300.0 * deviation;
-
-    std::vector<Data::ComplexGeoData::Facet> f;
-    _rShape.getFaces(points, f, (float)deflection);
+void InspectActualShape::fetchPoints(double deflection)
+{
+    // get points from faces or sub-sampled edges
+    TopTools_IndexedMapOfShape mapOfShapes;
+    TopExp::MapShapes(_rShape.getShape(), TopAbs_FACE, mapOfShapes);
+    if (!mapOfShapes.IsEmpty()) {
+        std::vector<Data::ComplexGeoData::Facet> faces;
+        _rShape.getFaces(points, faces, deflection);
+    }
+    else {
+        TopExp::MapShapes(_rShape.getShape(), TopAbs_EDGE, mapOfShapes);
+        if (!mapOfShapes.IsEmpty()) {
+            std::vector<Data::ComplexGeoData::Line> lines;
+            _rShape.getLines(points, lines, deflection);
+        }
+        else {
+            std::vector<Base::Vector3d> normals;
+            _rShape.getPoints(points, normals, deflection);
+        }
+    }
 }
 
 unsigned long InspectActualShape::countPoints() const
@@ -474,37 +488,49 @@ float InspectNominalShape::getDistance(const Base::Vector3f& point) const
         fMinDist = (float)distss->Value();
         // the shape is a solid, check if the vertex is inside
         if (isSolid) {
-            const Standard_Real tol = 0.001;
-            BRepClass3d_SolidClassifier classifier(_rShape);
-            classifier.Perform(pnt3d, tol);
-            if (classifier.State() == TopAbs_IN) {
+            if (isInsideSolid(pnt3d))
                 fMinDist = -fMinDist;
-            }
-
         }
         else if (fMinDist > 0) {
-            // check if the distance was compued from a face
-            for (Standard_Integer index = 1; index <= distss->NbSolution(); index++) {
-                if (distss->SupportTypeShape1(index) == BRepExtrema_IsInFace) {
-                    TopoDS_Shape face = distss->SupportOnShape1(index);
-                    Standard_Real u, v;
-                    distss->ParOnFaceS1(index, u, v);
-                    //gp_Pnt pnt = distss->PointOnShape1(index);
-                    BRepGProp_Face props(TopoDS::Face(face));
-                    gp_Vec normal;
-                    gp_Pnt center;
-                    props.Normal(u, v, center, normal);
-                    gp_Vec dir(center, pnt3d);
-                    Standard_Real scalar = normal.Dot(dir);
-                    if (scalar < 0) {
-                        fMinDist = -fMinDist;
-                    }
-                    break;
-                }
-            }
+            // check if the distance was computed from a face
+            if (isBelowFace(pnt3d))
+                fMinDist = -fMinDist;
         }
     }
     return fMinDist;
+}
+
+bool InspectNominalShape::isInsideSolid(const gp_Pnt& pnt3d) const
+{
+    const Standard_Real tol = 0.001;
+    BRepClass3d_SolidClassifier classifier(_rShape);
+    classifier.Perform(pnt3d, tol);
+    return (classifier.State() == TopAbs_IN);
+}
+
+bool InspectNominalShape::isBelowFace(const gp_Pnt& pnt3d) const
+{
+    // check if the distance was computed from a face
+    for (Standard_Integer index = 1; index <= distss->NbSolution(); index++) {
+        if (distss->SupportTypeShape1(index) == BRepExtrema_IsInFace) {
+            TopoDS_Shape face = distss->SupportOnShape1(index);
+            Standard_Real u, v;
+            distss->ParOnFaceS1(index, u, v);
+            //gp_Pnt pnt = distss->PointOnShape1(index);
+            BRepGProp_Face props(TopoDS::Face(face));
+            gp_Vec normal;
+            gp_Pnt center;
+            props.Normal(u, v, center, normal);
+            gp_Vec dir(center, pnt3d);
+            Standard_Real scalar = normal.Dot(dir);
+            if (scalar < 0) {
+                return true;
+            }
+            break;
+        }
+    }
+
+    return false;
 }
 
 // ----------------------------------------------------------------
@@ -700,6 +726,8 @@ public:
     }
     double getRMS()
     {
+        if (this->m_numv == 0)
+            return 0.0;
         return sqrt(this->m_sumsq / (double)this->m_numv);
     }
     int m_numv;
@@ -794,12 +822,12 @@ App::DocumentObjectExecReturn* Feature::execute(void)
     //future.waitForFinished(); // blocks the GUI
     Base::FutureWatcherProgress progress("Inspecting...", actual->countPoints());
     QFutureWatcher<float> watcher;
-    QObject::connect(&watcher, SIGNAL(progressValueChanged(int)),
-                     &progress, SLOT(progressValueChanged(int)));
+    QObject::connect(&watcher, &QFutureWatcher<float>::progressValueChanged,
+                     &progress, &Base::FutureWatcherProgress::progressValueChanged);
 
     // keep it responsive during computation
     QEventLoop loop;
-    QObject::connect(&watcher, SIGNAL(finished()), &loop, SLOT(quit()));
+    QObject::connect(&watcher, &QFutureWatcher::finished, &loop, &QEventLoop::quit);
     watcher.setFuture(future);
     loop.exec();
 
@@ -880,11 +908,12 @@ App::DocumentObjectExecReturn* Feature::execute(void)
         // Setup progress bar
         Base::FutureWatcherProgress progress("Inspecting...", actual->countPoints());
         QFutureWatcher<DistanceInspectionRMS> watcher;
-        QObject::connect(&watcher, SIGNAL(progressValueChanged(int)),
-            &progress, SLOT(progressValueChanged(int)));
+        QObject::connect(&watcher, &QFutureWatcher<DistanceInspectionRMS>::progressValueChanged,
+                         &progress, &Base::FutureWatcherProgress::progressValueChanged);
         // Keep UI responsive during computation
         QEventLoop loop;
-        QObject::connect(&watcher, SIGNAL(finished()), &loop, SLOT(quit()));
+        QObject::connect(&watcher, &QFutureWatcher<DistanceInspectionRMS>::finished,
+                         &loop, &QEventLoop::quit);
         watcher.setFuture(future);
         loop.exec();
         res = future.result();

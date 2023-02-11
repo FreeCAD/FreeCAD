@@ -106,8 +106,13 @@
     </message>
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="266"/>
-      <source>maximum fragment size</source>
-      <translation>zati-tamaina maximoa</translation>
+      <source>Maximum fragment size</source>
+      <translation>Zati-tamaina maximoa</translation>
+    </message>
+    <message>
+      <location filename="../ui/openscadprefs-base.ui" line="385"/>
+      <source>Convexity</source>
+      <translation>Ganbiltasuna</translation>
     </message>
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="286"/>
@@ -119,11 +124,6 @@
       <location filename="../ui/openscadprefs-base.ui" line="289"/>
       <source>angular (fa)</source>
       <translation>angeluarra (fa)</translation>
-    </message>
-    <message>
-      <location filename="../ui/openscadprefs-base.ui" line="299"/>
-      <source>°</source>
-      <translation>°</translation>
     </message>
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="328"/>
@@ -140,11 +140,6 @@
       <location filename="../ui/openscadprefs-base.ui" line="359"/>
       <source>mm</source>
       <translation>mm</translation>
-    </message>
-    <message>
-      <location filename="../ui/openscadprefs-base.ui" line="385"/>
-      <source>convexity</source>
-      <translation>ganbiltasuna</translation>
     </message>
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="422"/>
@@ -256,39 +251,44 @@
       <translation>Amaraun boolearra</translation>
     </message>
     <message>
-      <location filename="../../importCSG.py" line="549"/>
-      <location filename="../../importCSG.py" line="1385"/>
-      <source>Unsupported Function</source>
-      <translation>Onartzen ez den funtzioa</translation>
+      <location filename="../../OpenSCADCommands.py" line="474"/>
+      <source>Minkowski sum</source>
+      <translation>Minkowski batuketa</translation>
     </message>
     <message>
-      <location filename="../../importCSG.py" line="549"/>
-      <location filename="../../importCSG.py" line="1385"/>
-      <source>Press OK</source>
-      <translation>Sakatu 'Ados'</translation>
-    </message>
-    <message>
-      <location filename="../../OpenSCADUtils.py" line="710"/>
+      <location filename="../../OpenSCADUtils.py" line="709"/>
       <source>OpenSCAD file contains both 2D and 3D shapes. That is not supported in this importer, all shapes must have the same dimensionality.</source>
       <translation>OpenSCAD fitxategiak 2D eta 3D formak ditu. Hori ez da onartzen inportatzaile honetan, forma guztiek dimentsio bera izan behar dute.</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADUtils.py" line="722"/>
-      <source>Error all shapes must be either 2D or both must be 3D</source>
-      <translation>Errorea, forma guztiek 2D izan behar dute edo 3D izan behar dute</translation>
+      <location filename="../../OpenSCADUtils.py" line="721"/>
+      <source>Error: either all shapes must be 2D or all shapes must be 3D</source>
+      <translation type="unfinished">Error: either all shapes must be 2D or all shapes must be 3D</translation>
+    </message>
+    <message>
+      <location filename="../../importCSG.py" line="557"/>
+      <location filename="../../importCSG.py" line="1436"/>
+      <source>Unsupported Function</source>
+      <translation>Onartzen ez den funtzioa</translation>
+    </message>
+    <message>
+      <location filename="../../importCSG.py" line="557"/>
+      <location filename="../../importCSG.py" line="1436"/>
+      <source>Press OK</source>
+      <translation>Sakatu 'Ados'</translation>
     </message>
   </context>
   <context>
-    <name>OpenSCAD_AddOpenSCADElement</name>
+    <name>OpenSCAD_ExplodeGroup</name>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="516"/>
-      <source>Add OpenSCAD Element...</source>
-      <translation>Gehitu OpenSCAD elementua...</translation>
+      <location filename="../../OpenSCADCommands.py" line="109"/>
+      <source>Explode Group</source>
+      <translation>Lehertu taldea</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="520"/>
-      <source>Add an OpenSCAD element by entering OpenSCAD code and executing the OpenSCAD binary</source>
-      <translation>Gehitu OpenSCAD elementu bat OpenSCAD kodea sartuz eta OpenSCAD bitarra exekutatuz</translation>
+      <location filename="../../OpenSCADCommands.py" line="112"/>
+      <source>Remove fusion, apply placement to children, and color randomly</source>
+      <translation>Kendu fusioa, aplikatu kokapena haurrei, eta koloreztatu ausaz</translation>
     </message>
   </context>
   <context>
@@ -313,81 +313,16 @@
     </message>
   </context>
   <context>
-    <name>OpenSCAD_ExpandPlacements</name>
+    <name>OpenSCAD_RefineShapeFeature</name>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="290"/>
-      <source>Expand Placements</source>
-      <translation>Hedatu kokapenak</translation>
+      <location filename="../../OpenSCADCommands.py" line="164"/>
+      <source>Refine Shape Feature</source>
+      <translation>Forma finduko elementua</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="293"/>
-      <source>Expand all placements downwards the FeatureTree</source>
-      <translation>Hedatu kokapen guztiak elementu-zuhaitzean beherantz</translation>
-    </message>
-  </context>
-  <context>
-    <name>OpenSCAD_ExplodeGroup</name>
-    <message>
-      <location filename="../../OpenSCADCommands.py" line="109"/>
-      <source>Explode Group</source>
-      <translation>Lehertu taldea</translation>
-    </message>
-    <message>
-      <location filename="../../OpenSCADCommands.py" line="112"/>
-      <source>Remove fusion, apply placement to children, and color randomly</source>
-      <translation>Kendu fusioa, aplikatu kokapena haurrei, eta koloreztatu ausaz</translation>
-    </message>
-  </context>
-  <context>
-    <name>OpenSCAD_Hull</name>
-    <message>
-      <location filename="../../OpenSCADCommands.py" line="551"/>
-      <source>Hull</source>
-      <translation>Krosko</translation>
-    </message>
-    <message>
-      <location filename="../../OpenSCADCommands.py" line="554"/>
-      <source>Perform Hull</source>
-      <translation>Egin kroskoa</translation>
-    </message>
-  </context>
-  <context>
-    <name>OpenSCAD_IncreaseToleranceFeature</name>
-    <message>
-      <location filename="../../OpenSCADCommands.py" line="273"/>
-      <source>Increase Tolerance Feature</source>
-      <translation>Handitu tolerantzia-elementua</translation>
-    </message>
-    <message>
-      <location filename="../../OpenSCADCommands.py" line="276"/>
-      <source>Create Feature that allows to increase the tolerance</source>
-      <translation>Sortu tolerantzia handitzea ahalbidetzen duen elementua</translation>
-    </message>
-  </context>
-  <context>
-    <name>OpenSCAD_MeshBoolean</name>
-    <message>
-      <location filename="../../OpenSCADCommands.py" line="531"/>
-      <source>Mesh Boolean...</source>
-      <translation>Amaraun boolearra...</translation>
-    </message>
-    <message>
-      <location filename="../../OpenSCADCommands.py" line="535"/>
-      <source>Export objects as meshes and use OpenSCAD to perform a boolean operation</source>
-      <translation>Esportatu objektuak amaraun gisa eta erabili OpenSCAD eragiketa boolearra egiteko</translation>
-    </message>
-  </context>
-  <context>
-    <name>OpenSCAD_Minkowski</name>
-    <message>
-      <location filename="../../OpenSCADCommands.py" line="570"/>
-      <source>Minkowski</source>
-      <translation>Minkowski</translation>
-    </message>
-    <message>
-      <location filename="../../OpenSCADCommands.py" line="573"/>
-      <source>Perform Minkowski</source>
-      <translation>Egin Minkowski</translation>
+      <location filename="../../OpenSCADCommands.py" line="167"/>
+      <source>Create Refine Shape Feature</source>
+      <translation>Sortu forma finduko elementua</translation>
     </message>
   </context>
   <context>
@@ -404,42 +339,16 @@
     </message>
   </context>
   <context>
-    <name>OpenSCAD_RefineShapeFeature</name>
+    <name>OpenSCAD_ScaleMeshFeature</name>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="164"/>
-      <source>Refine Shape Feature</source>
-      <translation>Forma finduko elementua</translation>
+      <location filename="../../OpenSCADCommands.py" line="223"/>
+      <source>Scale Mesh Feature...</source>
+      <translation>Eskalatu amaraun-elementua...</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="167"/>
-      <source>Create Refine Shape Feature</source>
-      <translation>Sortu forma finduko elementua</translation>
-    </message>
-  </context>
-  <context>
-    <name>OpenSCAD_RemoveSubtree</name>
-    <message>
-      <location filename="../../OpenSCADCommands.py" line="323"/>
-      <source>Remove Objects and their Children</source>
-      <translation>Kendu objektuak eta haien haurrak</translation>
-    </message>
-    <message>
-      <location filename="../../OpenSCADCommands.py" line="326"/>
-      <source>Removes the selected objects and all children that are not referenced from other objects</source>
-      <translation>Beste objektu batzuetan erreferentzia ez duten hautatutako objektuak eta haien haurrak kentzen ditu</translation>
-    </message>
-  </context>
-  <context>
-    <name>OpenSCAD_ReplaceObject</name>
-    <message>
-      <location filename="../../OpenSCADCommands.py" line="311"/>
-      <source>Replace Object</source>
-      <translation>Ordeztu objektua</translation>
-    </message>
-    <message>
-      <location filename="../../OpenSCADCommands.py" line="314"/>
-      <source>Replace an object in the Feature Tree. Please select old, new, and parent object</source>
-      <translation>Ordeztu objektu bat elementu-zuhaitzean. Hautatu objektu zaharra, berria eta gurasoa</translation>
+      <location filename="../../OpenSCADCommands.py" line="227"/>
+      <source>Create Scale Mesh Feature</source>
+      <translation>Sortu amaraun-elementuaren eskala aldatzea</translation>
     </message>
   </context>
   <context>
@@ -456,32 +365,120 @@
     </message>
   </context>
   <context>
-    <name>OpenSCAD_ScaleMeshFeature</name>
+    <name>OpenSCAD_IncreaseToleranceFeature</name>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="223"/>
-      <source>Scale Mesh Feature...</source>
-      <translation>Eskalatu amaraun-elementua...</translation>
+      <location filename="../../OpenSCADCommands.py" line="273"/>
+      <source>Increase Tolerance Feature</source>
+      <translation>Handitu tolerantzia-elementua</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="227"/>
-      <source>Create Scale Mesh Feature</source>
-      <translation>Sortu amaraun-elementuaren eskala aldatzea</translation>
+      <location filename="../../OpenSCADCommands.py" line="276"/>
+      <source>Create Feature that allows increasing the tolerance</source>
+      <translation>Sortu tolerantzia handitzea ahalbidetzen duen elementua</translation>
     </message>
   </context>
   <context>
-    <name>Workbech</name>
+    <name>OpenSCAD_ExpandPlacements</name>
     <message>
-      <location filename="../../InitGui.py" line="156"/>
-      <source>OpenSCAD Part tools</source>
-      <translation>OpenSCAD piezen tresna</translation>
+      <location filename="../../OpenSCADCommands.py" line="290"/>
+      <source>Expand Placements</source>
+      <translation>Hedatu kokapenak</translation>
+    </message>
+    <message>
+      <location filename="../../OpenSCADCommands.py" line="293"/>
+      <source>Expand all placements downwards in the Tree view</source>
+      <translation>Hedatu kokapen guztiak zuhaitz-bistan beherantz</translation>
+    </message>
+  </context>
+  <context>
+    <name>OpenSCAD_ReplaceObject</name>
+    <message>
+      <location filename="../../OpenSCADCommands.py" line="311"/>
+      <source>Replace Object</source>
+      <translation>Ordeztu objektua</translation>
+    </message>
+    <message>
+      <location filename="../../OpenSCADCommands.py" line="314"/>
+      <source>Replace an object in the Tree view. Please select old, new, and parent object</source>
+      <translation>Ordeztu objektu bat zuhaitz-bistan. Hautatu objektu zaharra, berria eta gurasoa</translation>
+    </message>
+  </context>
+  <context>
+    <name>OpenSCAD_RemoveSubtree</name>
+    <message>
+      <location filename="../../OpenSCADCommands.py" line="323"/>
+      <source>Remove Objects and their Children</source>
+      <translation>Kendu objektuak eta haien haurrak</translation>
+    </message>
+    <message>
+      <location filename="../../OpenSCADCommands.py" line="326"/>
+      <source>Removes the selected objects and all children that are not referenced from other objects</source>
+      <translation>Beste objektu batzuetan erreferentzia ez duten hautatutako objektuak eta haien haurrak kentzen ditu</translation>
+    </message>
+  </context>
+  <context>
+    <name>OpenSCAD_AddOpenSCADElement</name>
+    <message>
+      <location filename="../../OpenSCADCommands.py" line="517"/>
+      <source>Add OpenSCAD Element...</source>
+      <translation>Gehitu OpenSCAD elementua...</translation>
+    </message>
+    <message>
+      <location filename="../../OpenSCADCommands.py" line="521"/>
+      <source>Add an OpenSCAD element by entering OpenSCAD code and executing the OpenSCAD binary</source>
+      <translation>Gehitu OpenSCAD elementu bat OpenSCAD kodea sartuz eta OpenSCAD bitarra exekutatuz</translation>
+    </message>
+  </context>
+  <context>
+    <name>OpenSCAD_MeshBoolean</name>
+    <message>
+      <location filename="../../OpenSCADCommands.py" line="532"/>
+      <source>Mesh Boolean...</source>
+      <translation>Amaraun boolearra...</translation>
+    </message>
+    <message>
+      <location filename="../../OpenSCADCommands.py" line="536"/>
+      <source>Export objects as meshes and use OpenSCAD to perform a boolean operation</source>
+      <translation>Esportatu objektuak amaraun gisa eta erabili OpenSCAD eragiketa boolearra egiteko</translation>
+    </message>
+  </context>
+  <context>
+    <name>OpenSCAD_Hull</name>
+    <message>
+      <location filename="../../OpenSCADCommands.py" line="552"/>
+      <source>Hull</source>
+      <translation>Krosko</translation>
+    </message>
+    <message>
+      <location filename="../../OpenSCADCommands.py" line="555"/>
+      <source>Use OpenSCAD to create a hull</source>
+      <translation>Erabili OpenSCAD krosko bat sortzeko</translation>
     </message>
   </context>
   <context>
     <name>Workbench</name>
     <message>
       <location filename="../../InitGui.py" line="152"/>
-      <source>OpenSCADTools</source>
+      <source>OpenSCAD Tools</source>
       <translation>OpenSCAD tresnak</translation>
+    </message>
+    <message>
+      <location filename="../../InitGui.py" line="156"/>
+      <source>Frequently-used Part WB tools</source>
+      <translation type="unfinished">Frequently-used Part WB tools</translation>
+    </message>
+  </context>
+  <context>
+    <name>OpenSCAD_Minkowski</name>
+    <message>
+      <location filename="../../OpenSCADCommands.py" line="571"/>
+      <source>Minkowski sum</source>
+      <translation>Minkowski batuketa</translation>
+    </message>
+    <message>
+      <location filename="../../OpenSCADCommands.py" line="574"/>
+      <source>Use OpenSCAD to create a Minkowski sum</source>
+      <translation type="unfinished">Use OpenSCAD to create a Minkowski sum</translation>
     </message>
   </context>
 </TS>

@@ -23,17 +23,19 @@
 #ifndef PARTGUI_DLGFILLETEDGES_H
 #define PARTGUI_DLGFILLETEDGES_H
 
+#include <QDialog>
+#include <QItemDelegate>
+#include <QStandardItemModel>
+
+#include <Gui/Selection.h>
 #include <Gui/TaskView/TaskDialog.h>
 #include <Gui/TaskView/TaskView.h>
-#include <Gui/Selection.h>
-#include <QDialog>
-#include <QStandardItemModel>
-#include <QItemDelegate>
+
 
 namespace Base {
     class Quantity;
 }
-namespace Part { 
+namespace Part {
     class FilletBase;
     class Fillet;
     class Chamfer;
@@ -56,7 +58,7 @@ public:
     void setModelData(QWidget *editor, QAbstractItemModel *model,
                       const QModelIndex &index) const override;
 
-    void updateEditorGeometry(QWidget *editor, 
+    void updateEditorGeometry(QWidget *editor,
         const QStyleOptionViewItem &option, const QModelIndex &index) const override;
 };
 

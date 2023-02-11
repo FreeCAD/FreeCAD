@@ -90,7 +90,7 @@ def cmdExplode():
     except Exception as ex:
         FreeCAD.ActiveDocument.abortTransaction()
         FreeCAD.Console.PrintError("{}\n".format(ex))
-        
+
     FreeCAD.ActiveDocument.commitTransaction()
     FreeCADGui.doCommand("App.ActiveDocument.recompute()")
-    
+

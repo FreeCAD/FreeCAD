@@ -32,6 +32,7 @@
 
 class TopoDS_Shape;
 class BRepExtrema_DistShapeShape;
+class gp_Pnt;
 
 namespace MeshCore {
 class MeshKernel;
@@ -87,6 +88,9 @@ public:
     explicit InspectActualShape(const Part::TopoShape&);
     unsigned long countPoints() const override;
     Base::Vector3f getPoint(unsigned long) const override;
+
+private:
+    void fetchPoints(double deflection);
 
 private:
     const Part::TopoShape& _rShape;
@@ -151,6 +155,10 @@ public:
     InspectNominalShape(const TopoDS_Shape&, float offset);
     ~InspectNominalShape() override;
     float getDistance(const Base::Vector3f&) const override;
+
+private:
+    bool isInsideSolid(const gp_Pnt&) const;
+    bool isBelowFace(const gp_Pnt&) const;
 
 private:
     BRepExtrema_DistShapeShape* distss;

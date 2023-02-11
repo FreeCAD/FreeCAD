@@ -24,13 +24,11 @@
 #define MESHGUI_VIEWPROVIDERMESH_H
 
 #include <vector>
-#include <Inventor/fields/SoSFVec2f.h>
 
-#include <Mod/Mesh/App/Core/Elements.h>
-#include <Mod/Mesh/App/Types.h>
-#include <Gui/ViewProviderGeometryObject.h>
 #include <Gui/ViewProviderBuilder.h>
-#include <App/PropertyStandard.h>
+#include <Gui/ViewProviderGeometryObject.h>
+#include <Mod/Mesh/App/Types.h>
+#include <Mod/Mesh/App/Core/Elements.h>
 
 
 class SoGroup;
@@ -43,6 +41,7 @@ class SoCoordinate3;
 class SoIndexedFaceSet;
 class SoShapeHints;
 class SoMaterialBinding;
+class SoMFColor;
 class SoCamera;
 class SoAction;
 class SbViewportRegion;
@@ -70,6 +69,9 @@ namespace MeshCore {
   struct Material;
 }
 
+namespace Mesh {
+class PropertyMaterial;
+}
 
 namespace MeshGui {
 class SoFCMeshObjectNode;
@@ -196,9 +198,16 @@ protected:
     void highlightColors();
     bool canHighlightColors() const;
     App::PropertyColorList* getColorProperty() const;
+    Mesh::PropertyMaterial* getMaterialProperty() const;
     void tryColorPerVertexOrFace(bool);
     void setColorPerVertex(const App::PropertyColorList*);
     void setColorPerFace(const App::PropertyColorList*);
+
+    void setColorField(const std::vector<App::Color>&, SoMFColor&);
+    void setAmbientColor(const std::vector<App::Color>&);
+    void setDiffuseColor(const std::vector<App::Color>&);
+    void setSpecularColor(const std::vector<App::Color>&);
+    void setEmissiveColor(const std::vector<App::Color>&);
 
     virtual SoShape* getShapeNode() const;
     virtual SoNode* getCoordNode() const;

@@ -27,7 +27,7 @@
 The scale operation can also be done with subelements.
 
 The subelements operations only really work with polylines (Wires)
-because internally the functions `scaleVertex` and `scaleEdge`
+because internally the functions `scale_vertex` and `scale_edge`
 only work with polylines that have a `Points` property.
 """
 ## @package gui_scale
@@ -121,10 +121,11 @@ class Scale(gui_base_original.Modifier):
         import Part
 
         ghosts = []
-        for object in self.selected_subelements:
-            for subelement in object.SubObjects:
-                if isinstance(subelement, (Part.Vertex, Part.Edge)):
-                    ghosts.append(trackers.ghostTracker(subelement))
+        for sel in Gui.Selection.getSelectionEx("", 0):
+            for sub in sel.SubElementNames if sel.SubElementNames else [""]:
+                if "Vertex" in sub or "Edge" in sub:
+                    shape = Part.getShape(sel.Object, sub, needSubElement=True, retType=0)
+                    ghosts.append(trackers.ghostTracker(shape))
         return ghosts
 
     def pickRef(self):
@@ -190,12 +191,12 @@ class Scale(gui_base_original.Modifier):
         """Scale only the subelements if the appropriate option is set.
 
         The subelements operations only really work with polylines (Wires)
-        because internally the functions `scaleVertex` and `scaleEdge`
+        because internally the functions `scale_vertex` and `scale_edge`
         only work with polylines that have a `Points` property.
 
         BUG: the code should not cause an error. It should check that
         the selected object is not a rectangle or another object
-        that can't be used with `scaleVertex` and `scaleEdge`.
+        that can't be used with `scale_vertex` and `scale_edge`.
         """
         Gui.addModule("Draft")
         try:
@@ -271,7 +272,7 @@ class Scale(gui_base_original.Modifier):
                 _cmd += ']'
                 arguments.append(_cmd)
         all_args = ', '.join(arguments)
-        command.append('Draft.copyScaledEdges([' + all_args + '])')
+        command.append('Draft.copy_scaled_edges([' + all_args + '])')
         command.append('FreeCAD.ActiveDocument.recompute()')
         return command
 
@@ -286,7 +287,7 @@ class Scale(gui_base_original.Modifier):
             for index, subelement in enumerate(obj.SubObjects):
                 if isinstance(subelement, Part.Vertex):
                     _vertex_index = int(obj.SubElementNames[index][V:]) - 1
-                    _cmd = 'Draft.scaleVertex'
+                    _cmd = 'Draft.scale_vertex'
                     _cmd += '('
                     _cmd += 'FreeCAD.ActiveDocument.'
                     _cmd += obj.ObjectName + ', '
@@ -297,7 +298,7 @@ class Scale(gui_base_original.Modifier):
                     command.append(_cmd)
                 elif isinstance(subelement, Part.Edge):
                     _edge_index = int(obj.SubElementNames[index][E:]) - 1
-                    _cmd = 'Draft.scaleEdge'
+                    _cmd = 'Draft.scale_edge'
                     _cmd += '('
                     _cmd += 'FreeCAD.ActiveDocument.'
                     _cmd += obj.ObjectName + ', '
@@ -418,7 +419,7 @@ class Scale(gui_base_original.Modifier):
                     self.task.lock.setChecked(True)
                     self.task.setValue(d2/d1)
 
-    def finish(self, closed=False, cont=False):
+    def finish(self, cont=False):
         """Terminate the operation."""
         super(Scale, self).finish()
         for ghost in self.ghosts:

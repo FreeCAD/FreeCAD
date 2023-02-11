@@ -21,14 +21,14 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef DRAWINGGUI_DLGPREFSTECHDRAWIMPDIMENSIONS_H
 #define DRAWINGGUI_DLGPREFSTECHDRAWIMPDIMENSIONS_H
 
-#include <Mod/TechDraw/TechDrawGlobal.h>
+#include <memory>
 
 #include <Gui/PropertyPage.h>
-#include <memory>
+#include <Mod/TechDraw/TechDrawGlobal.h>
+
 
 namespace TechDrawGui {
 class Ui_DlgPrefsTechDrawDimensionsImp;

@@ -21,24 +21,25 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
 # include <qobject.h>
+# include <QToolBar>
 #endif
 
-#include "Workbench.h"
-#include <Gui/ToolBarManager.h>
-#include <Gui/MenuManager.h>
-#include <Gui/Application.h>
-#include <Gui/MainWindow.h>
-#include <Gui/Command.h>
-#include <QToolBar>
-#include "qtcolorpicker.h"
-#include "Mod/Spreadsheet/App/Sheet.h"
 #include <App/Range.h>
+#include <Gui/Application.h>
+#include <Gui/Command.h>
+#include <Gui/MainWindow.h>
+#include <Gui/MenuManager.h>
+#include <Gui/ToolBarManager.h>
+#include "Mod/Spreadsheet/App/Sheet.h"
 #include "Mod/Spreadsheet/Gui/SpreadsheetView.h"
+
+#include "Workbench.h"
+#include "qtcolorpicker.h"
+
 
 using namespace Base;
 using namespace App;
@@ -81,11 +82,11 @@ void Workbench::activated()
             if (!fgList.empty())
                 foregroundColor = fgList[0];
             else {
-                foregroundColor = new QtColorPicker();
+                foregroundColor = new QtColorPicker(bar);
                 foregroundColor->setObjectName(QString::fromLatin1("Spreadsheet_ForegroundColor"));
                 foregroundColor->setStandardColors();
                 foregroundColor->setCurrentColor(palette.color(QPalette::WindowText));
-                QObject::connect(foregroundColor, SIGNAL(colorSet(QColor)), workbenchHelper.get(), SLOT(setForegroundColor(QColor)));
+                QObject::connect(foregroundColor, &QtColorPicker::colorSet, workbenchHelper.get(), &WorkbenchHelper::setForegroundColor);
             }
             foregroundColor->setToolTip(QObject::tr("Set cell(s) foreground color"));
             foregroundColor->setWhatsThis(QObject::tr("Sets the Spreadsheet cell(s) foreground color"));
@@ -96,11 +97,11 @@ void Workbench::activated()
             if (!bgList.empty())
                 backgroundColor = bgList[0];
             else {
-                backgroundColor = new QtColorPicker();
+                backgroundColor = new QtColorPicker(bar);
                 backgroundColor->setObjectName(QString::fromLatin1("Spreadsheet_BackgroundColor"));
                 backgroundColor->setStandardColors();
                 backgroundColor->setCurrentColor(palette.color(QPalette::Base));
-                QObject::connect(backgroundColor, SIGNAL(colorSet(QColor)), workbenchHelper.get(), SLOT(setBackgroundColor(QColor)));
+                QObject::connect(backgroundColor, &QtColorPicker::colorSet, workbenchHelper.get(), &WorkbenchHelper::setBackgroundColor);
             }
             backgroundColor->setToolTip(QObject::tr("Set cell(s) background color"));
             backgroundColor->setWhatsThis(QObject::tr("Sets the Spreadsheet cell(s) background color"));

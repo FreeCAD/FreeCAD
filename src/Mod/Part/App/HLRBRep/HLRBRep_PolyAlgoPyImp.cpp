@@ -28,11 +28,12 @@
 # include <gp_Pnt.hxx>
 # include <HLRAlgo_Projector.hxx>
 # include <Standard_Version.hxx>
+
+# include <boost/math/special_functions/fpclassify.hpp>
 #endif
 
 #include <Base/GeometryPyCXX.h>
 #include <Base/VectorPy.h>
-#include <boost/math/special_functions/fpclassify.hpp>
 
 #include "HLRBRep/HLRBRep_PolyAlgoPy.h"
 #include "HLRBRep/HLRBRep_PolyAlgoPy.cpp"

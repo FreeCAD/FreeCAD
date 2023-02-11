@@ -307,7 +307,7 @@ CmdPartCut::CmdPartCut()
 void CmdPartCut::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    std::vector<Gui::SelectionObject> Sel = 
+    std::vector<Gui::SelectionObject> Sel =
         getSelection().getSelectionEx(nullptr, App::DocumentObject::getClassTypeId(), Gui::ResolveMode::FollowLink);
     if (Sel.size() != 2) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
@@ -385,7 +385,7 @@ CmdPartCommon::CmdPartCommon()
 void CmdPartCommon::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    std::vector<Gui::SelectionObject> Sel = 
+    std::vector<Gui::SelectionObject> Sel =
         getSelection().getSelectionEx(nullptr, App::DocumentObject::getClassTypeId(), Gui::ResolveMode::FollowLink);
 
     //test if selected object is a compound, and if it is, look how many children it has...
@@ -485,7 +485,7 @@ CmdPartFuse::CmdPartFuse()
 void CmdPartFuse::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    std::vector<Gui::SelectionObject> Sel = 
+    std::vector<Gui::SelectionObject> Sel =
         getSelection().getSelectionEx(nullptr, App::DocumentObject::getClassTypeId(), Gui::ResolveMode::FollowLink);
 
     //test if selected object is a compound, and if it is, look how many children it has...
@@ -683,7 +683,7 @@ CmdPartCompSplitFeatures::CmdPartCompSplitFeatures()
     sAppModule      = "Part";
     sGroup          = QT_TR_NOOP("Part");
     sMenuText       = QT_TR_NOOP("Split objects...");
-    sToolTipText    = QT_TR_NOOP("Shape splitting tools. Compsolid creation tools. OCC 6.9.0 or later is required.");
+    sToolTipText    = QT_TR_NOOP("Shape splitting and Compsolid creation tools.");
     sWhatsThis      = "Part_CompSplitFeatures";
     sStatusTip      = sToolTipText;
 }
@@ -974,7 +974,7 @@ CmdPartSection::CmdPartSection()
 void CmdPartSection::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    std::vector<Gui::SelectionObject> Sel = 
+    std::vector<Gui::SelectionObject> Sel =
         getSelection().getSelectionEx(nullptr, App::DocumentObject::getClassTypeId(), Gui::ResolveMode::FollowLink);
     if (Sel.size() != 2) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
@@ -2542,7 +2542,7 @@ CmdPartSectionCut::CmdPartSectionCut()
 
 Gui::Action* CmdPartSectionCut::createAction()
 {
-    Gui::Action* pcAction = (Gui::Action*)Gui::Command::createAction();
+    Gui::Action* pcAction = Gui::Command::createAction();
 #if 0
     pcAction->setCheckable(true);
 #endif

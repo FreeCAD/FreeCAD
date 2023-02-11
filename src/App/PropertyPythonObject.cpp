@@ -347,12 +347,12 @@ void PropertyPythonObject::Restore(Base::XMLReader &reader)
                 load_json = true;
             }
             else if (boost::regex_search(start, end, what, pickle)) {
-                std::string nam = std::string(what[1].first, what[1].second);
-                std::string cls = std::string(what[2].first, what[2].second);
-                Py::Module mod(PyImport_ImportModule(nam.c_str()),true);
+                std::string name = std::string(what[1].first, what[1].second);
+                std::string type = std::string(what[2].first, what[2].second);
+                Py::Module mod(PyImport_ImportModule(name.c_str()),true);
                 if (mod.isNull())
                     throw Py::Exception();
-                this->object = PyObject_CallObject(mod.getAttr(cls).ptr(), nullptr);
+                this->object = PyObject_CallObject(mod.getAttr(type).ptr(), nullptr);
                 load_pickle = true;
                 buffer = std::string(what[2].second, end);
             }

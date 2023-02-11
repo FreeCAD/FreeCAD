@@ -21,7 +21,6 @@
  ***************************************************************************/
 
 #include "PreCompiled.h"
-
 #ifndef _PreComp_
 # ifdef FC_OS_WIN32
 # include <windows.h>
@@ -33,30 +32,26 @@
 # else
 # include <GL/gl.h>
 # endif
-# include <cfloat>
+
 # include <algorithm>
+# include <cfloat>
+# include <cmath>
 # include <QFontMetrics>
-# include <QGLWidget>
 # include <QPainter>
-# include <QPen>
+
 # include <Inventor/SoPrimitiveVertex.h>
 # include <Inventor/actions/SoGLRenderAction.h>
-# include <Inventor/misc/SoState.h>
-# include <cmath>
-# include <Inventor/actions/SoGetMatrixAction.h>
-# include <Inventor/elements/SoFontNameElement.h>
-# include <Inventor/elements/SoFontSizeElement.h>
-# include <Inventor/elements/SoModelMatrixElement.h>
-# include <Inventor/elements/SoProjectionMatrixElement.h>
-# include <Inventor/elements/SoViewingMatrixElement.h>
-# include <Inventor/elements/SoViewVolumeElement.h>
+# include <Inventor/elements/SoFocalDistanceElement.h>
 # include <Inventor/elements/SoViewportRegionElement.h>
+# include <Inventor/elements/SoViewVolumeElement.h>
+# include <Inventor/misc/SoState.h>
 #endif // _PreComp_
 
-
-#include "SoDatumLabel.h"
 #include <Gui/BitmapFactory.h>
 #include <Gui/Tools.h>
+
+#include "SoDatumLabel.h"
+
 
 #define ZCONSTR 0.006f
 
@@ -113,7 +108,7 @@ void SoDatumLabel::drawImage()
         return;
     }
 
-    QFont font(QString::fromLatin1(name.getValue()), size.getValue());
+    QFont font(QString::fromLatin1(name.getValue(), -1), size.getValue());
     QFontMetrics fm(font);
     QString str = QString::fromUtf8(s[0].getString());
 
@@ -155,12 +150,242 @@ void SoDatumLabel::computeBBox(SoAction * /*action*/, SbBox3f &box, SbVec3f &cen
     }
 }
 
+void SoDatumLabel::generateDistancePrimitives(SoAction * action, const SbVec3f& p1, const SbVec3f& p2)
+{
+    float length = this->param1.getValue();
+    float length2 = this->param2.getValue();
+    SbVec3f dir, normal;
+    if (this->datumtype.getValue() == DISTANCE) {
+        dir = (p2-p1);
+    } else if (this->datumtype.getValue() == DISTANCEX) {
+        dir = SbVec3f( (p2[0] - p1[0] >= FLT_EPSILON) ? 1 : -1, 0, 0);
+    } else if (this->datumtype.getValue() == DISTANCEY) {
+        dir = SbVec3f(0, (p2[1] - p1[1] >= FLT_EPSILON) ? 1 : -1, 0);
+    }
+
+    dir.normalize();
+    normal = SbVec3f (-dir[1],dir[0],0);
+
+    float normproj12 = (p2-p1).dot(normal);
+    SbVec3f p1_ = p1 + normproj12 * normal;
+
+    SbVec3f midpos = (p1_ + p2)/2;
+    // Get magnitude of angle between horizontal
+    float angle = atan2f(dir[1],dir[0]);
+
+    SbVec3f img1 = SbVec3f(-this->imgWidth / 2, -this->imgHeight / 2, 0.f);
+    SbVec3f img2 = SbVec3f(-this->imgWidth / 2,  this->imgHeight / 2, 0.f);
+    SbVec3f img3 = SbVec3f( this->imgWidth / 2, -this->imgHeight / 2, 0.f);
+    SbVec3f img4 = SbVec3f( this->imgWidth / 2,  this->imgHeight / 2, 0.f);
+
+    // Rotate through an angle
+    float s = sin(angle);
+    float c = cos(angle);
+
+    img1 = SbVec3f((img1[0] * c) - (img1[1] * s), (img1[0] * s) + (img1[1] * c), 0.f);
+    img2 = SbVec3f((img2[0] * c) - (img2[1] * s), (img2[0] * s) + (img2[1] * c), 0.f);
+    img3 = SbVec3f((img3[0] * c) - (img3[1] * s), (img3[0] * s) + (img3[1] * c), 0.f);
+    img4 = SbVec3f((img4[0] * c) - (img4[1] * s), (img4[0] * s) + (img4[1] * c), 0.f);
+
+    SbVec3f textOffset = midpos + normal * length + dir * length2;
+
+    img1 += textOffset;
+    img2 += textOffset;
+    img3 += textOffset;
+    img4 += textOffset;
+
+    // Primitive Shape is only for text as this should only be selectable
+    SoPrimitiveVertex pv;
+
+    this->beginShape(action, QUADS);
+
+    pv.setNormal( SbVec3f(0.f, 0.f, 1.f) );
+
+    // Set coordinates
+    pv.setPoint( img1 );
+    shapeVertex(&pv);
+
+    pv.setPoint( img2 );
+    shapeVertex(&pv);
+
+    pv.setPoint( img3 );
+    shapeVertex(&pv);
+
+    pv.setPoint( img4 );
+    shapeVertex(&pv);
+
+    this->endShape();
+}
+
+void SoDatumLabel::generateDiameterPrimitives(SoAction * action, const SbVec3f& p1, const SbVec3f& p2)
+{
+    SbVec3f dir = (p2-p1);
+    dir.normalize();
+
+    float length = this->param1.getValue();
+    SbVec3f pos = p2 + length*dir;
+
+    float angle = atan2f(dir[1],dir[0]);
+
+    SbVec3f img1 = SbVec3f(-this->imgWidth / 2, -this->imgHeight / 2, 0.f);
+    SbVec3f img2 = SbVec3f(-this->imgWidth / 2,  this->imgHeight / 2, 0.f);
+    SbVec3f img3 = SbVec3f( this->imgWidth / 2, -this->imgHeight / 2, 0.f);
+    SbVec3f img4 = SbVec3f( this->imgWidth / 2,  this->imgHeight / 2, 0.f);
+
+    // Rotate through an angle
+    float s = sin(angle);
+    float c = cos(angle);
+
+    img1 = SbVec3f((img1[0] * c) - (img1[1] * s), (img1[0] * s) + (img1[1] * c), 0.f);
+    img2 = SbVec3f((img2[0] * c) - (img2[1] * s), (img2[0] * s) + (img2[1] * c), 0.f);
+    img3 = SbVec3f((img3[0] * c) - (img3[1] * s), (img3[0] * s) + (img3[1] * c), 0.f);
+    img4 = SbVec3f((img4[0] * c) - (img4[1] * s), (img4[0] * s) + (img4[1] * c), 0.f);
+
+    SbVec3f textOffset = pos;
+
+    img1 += textOffset;
+    img2 += textOffset;
+    img3 += textOffset;
+    img4 += textOffset;
+
+    // Primitive Shape is only for text as this should only be selectable
+    SoPrimitiveVertex pv;
+
+    this->beginShape(action, QUADS);
+
+    pv.setNormal( SbVec3f(0.f, 0.f, 1.f) );
+
+    // Set coordinates
+    pv.setPoint( img1 );
+    shapeVertex(&pv);
+
+    pv.setPoint( img2 );
+    shapeVertex(&pv);
+
+    pv.setPoint( img3 );
+    shapeVertex(&pv);
+
+    pv.setPoint( img4 );
+    shapeVertex(&pv);
+
+    this->endShape();
+}
+
+void SoDatumLabel::generateAnglePrimitives(SoAction * action, const SbVec3f& p0)
+{
+    // Only the angle intersection point is needed
+
+    // Load the Parameters
+    float length     = this->param1.getValue();
+    float startangle = this->param2.getValue();
+    float range      = this->param3.getValue();
+
+    float r = 2*length;
+
+    // Useful Information
+    // v0 - vector for text position
+    // p0 - vector for angle intersect
+    SbVec3f v0(cos(startangle+range/2),sin(startangle+range/2),0);
+
+    SbVec3f textOffset = p0 + v0 * r;
+
+    SbVec3f img1 = SbVec3f(-this->imgWidth / 2, -this->imgHeight / 2, 0.f);
+    SbVec3f img2 = SbVec3f(-this->imgWidth / 2,  this->imgHeight / 2, 0.f);
+    SbVec3f img3 = SbVec3f( this->imgWidth / 2, -this->imgHeight / 2, 0.f);
+    SbVec3f img4 = SbVec3f( this->imgWidth / 2,  this->imgHeight / 2, 0.f);
+
+    img1 += textOffset;
+    img2 += textOffset;
+    img3 += textOffset;
+    img4 += textOffset;
+
+    // Primitive Shape is only for text as this should only be selectable
+    SoPrimitiveVertex pv;
+
+    this->beginShape(action, QUADS);
+
+    pv.setNormal( SbVec3f(0.f, 0.f, 1.f) );
+
+    // Set coordinates
+    pv.setPoint( img1 );
+    shapeVertex(&pv);
+
+    pv.setPoint( img2 );
+    shapeVertex(&pv);
+
+    pv.setPoint( img3 );
+    shapeVertex(&pv);
+
+    pv.setPoint( img4 );
+    shapeVertex(&pv);
+
+    this->endShape();
+}
+
+void SoDatumLabel::generateSymmetricPrimitives(SoAction * action, const SbVec3f& p1, const SbVec3f& p2)
+{
+    // Get the Scale. See GLRender function for details on the viewport width calculation
+    //SoState *state = action->getState();
+    //const SbViewVolume & vv = SoViewVolumeElement::get(state);
+    //float scale = vv.getWorldToScreenScale(SbVec3f(0.f,0.f,0.f), 1.0f);
+    //SbVec2s vp_size = SoViewportRegionElement::get(state).getViewportSizePixels();
+    //scale /= float(vp_size[0]);
+
+    SbVec3f dir = (p2-p1);
+    dir.normalize();
+    SbVec3f normal (-dir[1],dir[0],0);
+
+    float margin = this->imgHeight / 4.0;
+
+    // Calculate coordinates for the first arrow
+    SbVec3f ar0, ar1, ar2;
+    ar0  = p1 + dir * 5 * margin ;
+    ar1  = ar0 - dir * 0.866f * 2 * margin; // Base Point of Arrow
+    ar2  = ar1 + normal * margin; // Triangular corners
+    ar1 -= normal * margin;
+
+    // Calculate coordinates for the second arrow
+    SbVec3f ar3, ar4, ar5;
+    ar3  = p2 - dir * 5 * margin ;
+    ar4  = ar3 + dir * 0.866f * 2 * margin; // Base Point of 2nd Arrow
+
+    ar5  = ar4 + normal * margin; // Triangular corners
+    ar4 -= normal * margin;
+
+    SoPrimitiveVertex pv;
+
+    this->beginShape(action, TRIANGLES);
+
+    pv.setNormal( SbVec3f(0.f, 0.f, 1.f) );
+
+    // Set coordinates
+    pv.setPoint( ar0 );
+    shapeVertex(&pv);
+
+    pv.setPoint( ar1 );
+    shapeVertex(&pv);
+
+    pv.setPoint( ar2 );
+    shapeVertex(&pv);
+
+    // Set coordinates
+    pv.setPoint( ar3 );
+    shapeVertex(&pv);
+
+    pv.setPoint( ar4 );
+    shapeVertex(&pv);
+
+    pv.setPoint( ar5 );
+    shapeVertex(&pv);
+
+    this->endShape();
+}
+
 void SoDatumLabel::generatePrimitives(SoAction * action)
 {
-
     // Initialisation check (needs something more sensible) prevents an infinite loop bug
-    if(this->imgHeight <= FLT_EPSILON || this->imgWidth <= FLT_EPSILON)
-      return;
+    if (this->imgHeight <= FLT_EPSILON || this->imgWidth <= FLT_EPSILON)
+        return;
 
     // Get the points stored
     const SbVec3f *points = this->pnts.getValues(0);
@@ -168,231 +393,24 @@ void SoDatumLabel::generatePrimitives(SoAction * action)
     SbVec3f p2 = points[1];
 
     // Change the offset and bounding box parameters depending on Datum Type
-    if(this->datumtype.getValue() == DISTANCE || this->datumtype.getValue() == DISTANCEX || this->datumtype.getValue() == DISTANCEY ){
-
-        float length = this->param1.getValue();
-        float length2 = this->param2.getValue();
-        SbVec3f dir, normal;
-        if (this->datumtype.getValue() == DISTANCE) {
-            dir = (p2-p1);
-        } else if (this->datumtype.getValue() == DISTANCEX) {
-            dir = SbVec3f( (p2[0] - p1[0] >= FLT_EPSILON) ? 1 : -1, 0, 0);
-        } else if (this->datumtype.getValue() == DISTANCEY) {
-            dir = SbVec3f(0, (p2[1] - p1[1] >= FLT_EPSILON) ? 1 : -1, 0);
-        }
-
-        dir.normalize();
-        normal = SbVec3f (-dir[1],dir[0],0);
-
-        float normproj12 = (p2-p1).dot(normal);
-        SbVec3f p1_ = p1 + normproj12 * normal;
-
-        SbVec3f midpos = (p1_ + p2)/2;
-        // Get magnitude of angle between horizontal
-        float angle = atan2f(dir[1],dir[0]);
-
-        SbVec3f img1 = SbVec3f(-this->imgWidth / 2, -this->imgHeight / 2, 0.f);
-        SbVec3f img2 = SbVec3f(-this->imgWidth / 2,  this->imgHeight / 2, 0.f);
-        SbVec3f img3 = SbVec3f( this->imgWidth / 2, -this->imgHeight / 2, 0.f);
-        SbVec3f img4 = SbVec3f( this->imgWidth / 2,  this->imgHeight / 2, 0.f);
-
-        // Rotate through an angle
-        float s = sin(angle);
-        float c = cos(angle);
-
-        img1 = SbVec3f((img1[0] * c) - (img1[1] * s), (img1[0] * s) + (img1[1] * c), 0.f);
-        img2 = SbVec3f((img2[0] * c) - (img2[1] * s), (img2[0] * s) + (img2[1] * c), 0.f);
-        img3 = SbVec3f((img3[0] * c) - (img3[1] * s), (img3[0] * s) + (img3[1] * c), 0.f);
-        img4 = SbVec3f((img4[0] * c) - (img4[1] * s), (img4[0] * s) + (img4[1] * c), 0.f);
-
-        SbVec3f textOffset = midpos + normal * length + dir * length2;
-
-        img1 += textOffset;
-        img2 += textOffset;
-        img3 += textOffset;
-        img4 += textOffset;
-
-        // Primitive Shape is only for text as this should only be selectable
-        SoPrimitiveVertex pv;
-
-        this->beginShape(action, QUADS);
-
-        pv.setNormal( SbVec3f(0.f, 0.f, 1.f) );
-
-        // Set coordinates
-        pv.setPoint( img1 );
-        shapeVertex(&pv);
-
-        pv.setPoint( img2 );
-        shapeVertex(&pv);
-
-        pv.setPoint( img3 );
-        shapeVertex(&pv);
-
-        pv.setPoint( img4 );
-        shapeVertex(&pv);
-
-        this->endShape();
-
-    } else if (this->datumtype.getValue() == RADIUS || this->datumtype.getValue() == DIAMETER) {
-
-        SbVec3f dir = (p2-p1);
-        dir.normalize();
-
-        float length = this->param1.getValue();
-        SbVec3f pos = p2 + length*dir;
-
-        float angle = atan2f(dir[1],dir[0]);
-
-        SbVec3f img1 = SbVec3f(-this->imgWidth / 2, -this->imgHeight / 2, 0.f);
-        SbVec3f img2 = SbVec3f(-this->imgWidth / 2,  this->imgHeight / 2, 0.f);
-        SbVec3f img3 = SbVec3f( this->imgWidth / 2, -this->imgHeight / 2, 0.f);
-        SbVec3f img4 = SbVec3f( this->imgWidth / 2,  this->imgHeight / 2, 0.f);
-
-        // Rotate through an angle
-        float s = sin(angle);
-        float c = cos(angle);
-
-        img1 = SbVec3f((img1[0] * c) - (img1[1] * s), (img1[0] * s) + (img1[1] * c), 0.f);
-        img2 = SbVec3f((img2[0] * c) - (img2[1] * s), (img2[0] * s) + (img2[1] * c), 0.f);
-        img3 = SbVec3f((img3[0] * c) - (img3[1] * s), (img3[0] * s) + (img3[1] * c), 0.f);
-        img4 = SbVec3f((img4[0] * c) - (img4[1] * s), (img4[0] * s) + (img4[1] * c), 0.f);
-
-        SbVec3f textOffset = pos;
-
-        img1 += textOffset;
-        img2 += textOffset;
-        img3 += textOffset;
-        img4 += textOffset;
-
-        // Primitive Shape is only for text as this should only be selectable
-        SoPrimitiveVertex pv;
-
-        this->beginShape(action, QUADS);
-
-        pv.setNormal( SbVec3f(0.f, 0.f, 1.f) );
-
-        // Set coordinates
-        pv.setPoint( img1 );
-        shapeVertex(&pv);
-
-        pv.setPoint( img2 );
-        shapeVertex(&pv);
-
-        pv.setPoint( img3 );
-        shapeVertex(&pv);
-
-        pv.setPoint( img4 );
-        shapeVertex(&pv);
-
-        this->endShape();
-    } else if (this->datumtype.getValue() == ANGLE) {
-
-        // Only the angle intersection point is needed
-        SbVec3f p0 = points[0];
-
-        // Load the Parameters
-        float length     = this->param1.getValue();
-        float startangle = this->param2.getValue();
-        float range      = this->param3.getValue();
-
-        float r = 2*length;
-
-        // Useful Information
-        // v0 - vector for text position
-        // p0 - vector for angle intersect
-        SbVec3f v0(cos(startangle+range/2),sin(startangle+range/2),0);
-
-        SbVec3f textOffset = p0 + v0 * r;
-
-        SbVec3f img1 = SbVec3f(-this->imgWidth / 2, -this->imgHeight / 2, 0.f);
-        SbVec3f img2 = SbVec3f(-this->imgWidth / 2,  this->imgHeight / 2, 0.f);
-        SbVec3f img3 = SbVec3f( this->imgWidth / 2, -this->imgHeight / 2, 0.f);
-        SbVec3f img4 = SbVec3f( this->imgWidth / 2,  this->imgHeight / 2, 0.f);
-
-        img1 += textOffset;
-        img2 += textOffset;
-        img3 += textOffset;
-        img4 += textOffset;
-
-        // Primitive Shape is only for text as this should only be selectable
-        SoPrimitiveVertex pv;
-
-        this->beginShape(action, QUADS);
-
-        pv.setNormal( SbVec3f(0.f, 0.f, 1.f) );
-
-        // Set coordinates
-        pv.setPoint( img1 );
-        shapeVertex(&pv);
-
-        pv.setPoint( img2 );
-        shapeVertex(&pv);
-
-        pv.setPoint( img3 );
-        shapeVertex(&pv);
-
-        pv.setPoint( img4 );
-        shapeVertex(&pv);
-
-        this->endShape();
-    } else if (this->datumtype.getValue() == SYMMETRIC) {
-
-        // Get the Scale. See GLRender function for details on the viewport width calculation
-        //SoState *state = action->getState();
-        //const SbViewVolume & vv = SoViewVolumeElement::get(state);
-        //float scale = vv.getWorldToScreenScale(SbVec3f(0.f,0.f,0.f), 1.0f);
-        //SbVec2s vp_size = SoViewportRegionElement::get(state).getViewportSizePixels();
-        //scale /= float(vp_size[0]);
-
-        SbVec3f dir = (p2-p1);
-        dir.normalize();
-        SbVec3f normal (-dir[1],dir[0],0);
-
-        float margin = this->imgHeight / 4.0;
-
-        // Calculate coordinates for the first arrow
-        SbVec3f ar0, ar1, ar2;
-        ar0  = p1 + dir * 5 * margin ;
-        ar1  = ar0 - dir * 0.866f * 2 * margin; // Base Point of Arrow
-        ar2  = ar1 + normal * margin; // Triangular corners
-        ar1 -= normal * margin;
-
-        // Calculate coordinates for the second arrow
-        SbVec3f ar3, ar4, ar5;
-        ar3  = p2 - dir * 5 * margin ;
-        ar4  = ar3 + dir * 0.866f * 2 * margin; // Base Point of 2nd Arrow
-
-        ar5  = ar4 + normal * margin; // Triangular corners
-        ar4 -= normal * margin;
-
-        SoPrimitiveVertex pv;
-
-        this->beginShape(action, TRIANGLES);
-
-        pv.setNormal( SbVec3f(0.f, 0.f, 1.f) );
-
-        // Set coordinates
-        pv.setPoint( ar0 );
-        shapeVertex(&pv);
-
-        pv.setPoint( ar1 );
-        shapeVertex(&pv);
-
-        pv.setPoint( ar2 );
-        shapeVertex(&pv);
-
-        // Set coordinates
-        pv.setPoint( ar3 );
-        shapeVertex(&pv);
-
-        pv.setPoint( ar4 );
-        shapeVertex(&pv);
-
-        pv.setPoint( ar5 );
-        shapeVertex(&pv);
-
-        this->endShape();
+    if (this->datumtype.getValue() == DISTANCE ||
+        this->datumtype.getValue() == DISTANCEX ||
+        this->datumtype.getValue() == DISTANCEY) {
+
+        generateDistancePrimitives(action, p1, p2);
+    }
+    else if (this->datumtype.getValue() == RADIUS ||
+             this->datumtype.getValue() == DIAMETER) {
+
+        generateDiameterPrimitives(action, p1, p2);
+    }
+    else if (this->datumtype.getValue() == ANGLE) {
+
+        generateAnglePrimitives(action, p1);
+    }
+    else if (this->datumtype.getValue() == SYMMETRIC) {
+
+        generateSymmetricPrimitives(action, p1, p2);
     }
 }
 
@@ -417,15 +435,8 @@ void SoDatumLabel::notify(SoNotList * l)
     inherited::notify(l);
 }
 
-void SoDatumLabel::GLRender(SoGLRenderAction * action)
+float SoDatumLabel::getScaleFactor(SoState* state) const
 {
-    SoState *state = action->getState();
-
-    if (!shouldGLRender(action))
-        return;
-    if (action->handleTransparency(true))
-      return;
-
     /**Remark from Stefan Tröger:
     * The scale calculation is based on knowledge of SbViewVolume::getWorldToScreenScale
     * implementation internals. The factor returned from this function is calculated from the view frustums
@@ -434,15 +445,33 @@ void SoDatumLabel::GLRender(SoGLRenderAction * action)
     * This is not documented and therefore may change on later coin versions!
     */
     const SbViewVolume & vv = SoViewVolumeElement::get(state);
-    // As reference use the center point the camera is looking at on the near plane
+    // As reference use the center point the camera is looking at on the focal plane
     // because then independent of the camera we get a constant scale factor when panning.
     // If we used (0,0,0) instead then the scale factor would change heavily in perspective
     // rendering mode. See #0002921 and #0002922.
-    SbVec3f center = vv.getSightPoint(vv.getNearDist());
+    // It's important to use the distance to the focal plane an not near or far plane because
+    // depending on additionally displayed objects they may change heavily and thus impact the
+    // scale factor. See #7082 and #7860.
+    float focal = SoFocalDistanceElement::get(state);
+    SbVec3f center = vv.getSightPoint(focal);
     float scale = vv.getWorldToScreenScale(center, 1.f);
     const SbViewportRegion & vp = SoViewportRegionElement::get(state);
     SbVec2s vp_size = vp.getViewportSizePixels();
     scale /= float(vp_size[0]);
+
+    return scale;
+}
+
+void SoDatumLabel::GLRender(SoGLRenderAction * action)
+{
+    SoState *state = action->getState();
+
+    if (!shouldGLRender(action))
+        return;
+    if (action->handleTransparency(true))
+        return;
+
+    float scale = getScaleFactor(state);
 
     const SbString* s = string.getValues(0);
     bool hasText = (s->getLength() > 0) ? true : false;
@@ -470,10 +499,6 @@ void SoDatumLabel::GLRender(SoGLRenderAction * action)
     }
 
     if (this->datumtype.getValue() == SYMMETRIC) {
-        // For the symmetry constraint that does not have text, but does have arrows
-        //this->imgHeight = 3.36f;
-        //this->imgWidth  = 5.26f;
-
         this->imgHeight = scale*25.0f;
         this->imgWidth = scale*25.0f;
     }
@@ -488,13 +513,13 @@ void SoDatumLabel::GLRender(SoGLRenderAction * action)
     glDisable(GL_LIGHTING);
 
     //Enable Anti-alias
-    if(action->isSmoothing())
-    {
-      glEnable(GL_LINE_SMOOTH);
-      glEnable(GL_BLEND);
-      glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
-      glHint(GL_LINE_SMOOTH_HINT,GL_NICEST);
+    if (action->isSmoothing()) {
+        glEnable(GL_LINE_SMOOTH);
+        glEnable(GL_BLEND);
+        glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
+        glHint(GL_LINE_SMOOTH_HINT,GL_NICEST);
     }
+
     // Position for Datum Text Label
     float angle = 0;
 
@@ -573,12 +598,13 @@ void SoDatumLabel::GLRender(SoGLRenderAction * action)
             // Increase Margin to improve visibility
             float tmpMargin = this->imgHeight /0.75;
             par3 = par4;
-            if((par2-par1).dot(dir) > (par4 - par1).length()) {
+            if ((par2-par1).dot(dir) > (par4 - par1).length()) {
                 par3 = par2;
                 par2 = par1 - dir * tmpMargin;
                 flipTriang = true;
             }
-        } else if ((par2-par1).dot(dir) < 0.f) {
+        }
+        else if ((par2-par1).dot(dir) < 0.f) {
             float tmpMargin = this->imgHeight /0.75;
             par2 = par1;
             if((par3-par1).dot(dir) < 0.f) {
@@ -589,17 +615,17 @@ void SoDatumLabel::GLRender(SoGLRenderAction * action)
         }
         // Perp Lines
         glBegin(GL_LINES);
-        glVertex2f(p1[0], p1[1]);
-        glVertex2f(perp1[0], perp1[1]);
+            glVertex2f(p1[0], p1[1]);
+            glVertex2f(perp1[0], perp1[1]);
 
-        glVertex2f(p2[0], p2[1]);
-        glVertex2f(perp2[0], perp2[1]);
+            glVertex2f(p2[0], p2[1]);
+            glVertex2f(perp2[0], perp2[1]);
 
-        glVertex2f(par1[0], par1[1]);
-        glVertex2f(par2[0], par2[1]);
+            glVertex2f(par1[0], par1[1]);
+            glVertex2f(par2[0], par2[1]);
 
-        glVertex2f(par3[0], par3[1]);
-        glVertex2f(par4[0], par4[1]);
+            glVertex2f(par3[0], par3[1]);
+            glVertex2f(par4[0], par4[1]);
         glEnd();
 
         SbVec3f ar1 = par1 + ((flipTriang) ? -1 : 1) * dir * 0.866f * 2 * margin;
@@ -612,13 +638,13 @@ void SoDatumLabel::GLRender(SoGLRenderAction * action)
 
         //Draw a pretty arrowhead (Equilateral) (Eventually could be improved to other shapes?)
         glBegin(GL_TRIANGLES);
-          glVertex2f(par1[0], par1[1]);
-          glVertex2f(ar1[0], ar1[1]);
-          glVertex2f(ar2[0], ar2[1]);
+            glVertex2f(par1[0], par1[1]);
+            glVertex2f(ar1[0], ar1[1]);
+            glVertex2f(ar2[0], ar2[1]);
 
-          glVertex2f(par4[0], par4[1]);
-          glVertex2f(ar3[0], ar3[1]);
-          glVertex2f(ar4[0], ar4[1]);
+            glVertex2f(par4[0], par4[1]);
+            glVertex2f(ar3[0], ar3[1]);
+            glVertex2f(ar4[0], ar4[1]);
         glEnd();
 
         // BOUNDING BOX CALCULATION - IMPORTANT
@@ -677,7 +703,7 @@ void SoDatumLabel::GLRender(SoGLRenderAction * action)
 
         SbVec3f p3 = pos +  dir * (this->imgWidth / 2 + margin);
         if ((p3-p1).length() > (p2-p1).length())
-        p2 = p3;
+            p2 = p3;
 
         // Calculate the points
         SbVec3f pnt1 = pos - dir * (margin + this->imgWidth / 2);
@@ -685,17 +711,17 @@ void SoDatumLabel::GLRender(SoGLRenderAction * action)
 
         // Draw the Lines
         glBegin(GL_LINES);
-        glVertex2f(p1[0], p1[1]);
-        glVertex2f(pnt1[0], pnt1[1]);
+            glVertex2f(p1[0], p1[1]);
+            glVertex2f(pnt1[0], pnt1[1]);
 
-        glVertex2f(pnt2[0], pnt2[1]);
-        glVertex2f(p2[0], p2[1]);
+            glVertex2f(pnt2[0], pnt2[1]);
+            glVertex2f(p2[0], p2[1]);
         glEnd();
 
         glBegin(GL_TRIANGLES);
-          glVertex2f(ar0[0], ar0[1]);
-          glVertex2f(ar1[0], ar1[1]);
-          glVertex2f(ar2[0], ar2[1]);
+            glVertex2f(ar0[0], ar0[1]);
+            glVertex2f(ar1[0], ar1[1]);
+            glVertex2f(ar2[0], ar2[1]);
         glEnd();
 
         if (this->datumtype.getValue() == DIAMETER) {
@@ -706,9 +732,9 @@ void SoDatumLabel::GLRender(SoGLRenderAction * action)
             ar1_1 -= normal * margin;
 
             glBegin(GL_TRIANGLES);
-            glVertex2f(ar0_1[0], ar0_1[1]);
-            glVertex2f(ar1_1[0], ar1_1[1]);
-            glVertex2f(ar2_1[0], ar2_1[1]);
+                glVertex2f(ar0_1[0], ar0_1[1]);
+                glVertex2f(ar1_1[0], ar1_1[1]);
+                glVertex2f(ar2_1[0], ar2_1[1]);
             glEnd();
 
         }
@@ -767,9 +793,7 @@ void SoDatumLabel::GLRender(SoGLRenderAction * action)
         // Draw
         glBegin(GL_LINE_STRIP);
 
-        int i=0;
-
-        for (; i < countSegments; i++) {
+        for (int i=0; i < countSegments; i++) {
             double theta = startangle + segment*i;
             SbVec3f v1 = p0+SbVec3f(r*cos(theta),r*sin(theta),0);
             glVertex2f(v1[0],v1[1]);
@@ -777,8 +801,7 @@ void SoDatumLabel::GLRender(SoGLRenderAction * action)
         glEnd();
 
         glBegin(GL_LINE_STRIP);
-        i=0;
-        for (; i < countSegments; i++) {
+        for (int i=0; i < countSegments; i++) {
             double theta = endangle - segment*i;
             SbVec3f v1 = p0+SbVec3f(r*cos(theta),r*sin(theta),0);
             glVertex2f(v1[0],v1[1]);
@@ -795,11 +818,11 @@ void SoDatumLabel::GLRender(SoGLRenderAction * action)
         SbVec3f pnt4 = p0+(r+margin)*v2;
 
         glBegin(GL_LINES);
-        glVertex2f(pnt1[0],pnt1[1]);
-        glVertex2f(pnt2[0],pnt2[1]);
+            glVertex2f(pnt1[0],pnt1[1]);
+            glVertex2f(pnt2[0],pnt2[1]);
 
-        glVertex2f(pnt3[0],pnt3[1]);
-        glVertex2f(pnt4[0],pnt4[1]);
+            glVertex2f(pnt3[0],pnt3[1]);
+            glVertex2f(pnt4[0],pnt4[1]);
         glEnd();
 
         // BOUNDING BOX CALCULATION - IMPORTANT
@@ -854,12 +877,12 @@ void SoDatumLabel::GLRender(SoGLRenderAction * action)
         ar1 -= normal * margin;
 
         glBegin(GL_LINES);
-          glVertex3f(p1[0], p1[1], ZCONSTR);
-          glVertex3f(ar0[0], ar0[1], ZCONSTR);
-          glVertex3f(ar0[0], ar0[1], ZCONSTR);
-          glVertex3f(ar1[0], ar1[1], ZCONSTR);
-          glVertex3f(ar0[0], ar0[1], ZCONSTR);
-          glVertex3f(ar2[0], ar2[1], ZCONSTR);
+            glVertex3f(p1[0], p1[1], ZCONSTR);
+            glVertex3f(ar0[0], ar0[1], ZCONSTR);
+            glVertex3f(ar0[0], ar0[1], ZCONSTR);
+            glVertex3f(ar1[0], ar1[1], ZCONSTR);
+            glVertex3f(ar0[0], ar0[1], ZCONSTR);
+            glVertex3f(ar2[0], ar2[1], ZCONSTR);
         glEnd();
 
         // Calculate coordinates for the second arrow
@@ -870,12 +893,12 @@ void SoDatumLabel::GLRender(SoGLRenderAction * action)
         ar4 -= normal * margin;
 
         glBegin(GL_LINES);
-          glVertex3f(p2[0], p2[1], ZCONSTR);
-          glVertex3f(ar3[0], ar3[1], ZCONSTR);
-          glVertex3f(ar3[0], ar3[1], ZCONSTR);
-          glVertex3f(ar4[0], ar4[1], ZCONSTR);
-          glVertex3f(ar3[0], ar3[1], ZCONSTR);
-          glVertex3f(ar5[0], ar5[1], ZCONSTR);
+            glVertex3f(p2[0], p2[1], ZCONSTR);
+            glVertex3f(ar3[0], ar3[1], ZCONSTR);
+            glVertex3f(ar3[0], ar3[1], ZCONSTR);
+            glVertex3f(ar4[0], ar4[1], ZCONSTR);
+            glVertex3f(ar3[0], ar3[1], ZCONSTR);
+            glVertex3f(ar5[0], ar5[1], ZCONSTR);
         glEnd();
 
         // BOUNDING BOX CALCULATION - IMPORTANT
@@ -899,6 +922,7 @@ void SoDatumLabel::GLRender(SoGLRenderAction * action)
         const unsigned char * dataptr = this->image.getValue(imgsize, nc);
 
         //Get the camera z-direction
+        const SbViewVolume & vv = SoViewVolumeElement::get(state);
         SbVec3f z = vv.zVector();
 
         bool flip = norm.getValue().dot(z) > FLT_EPSILON;

@@ -64,52 +64,14 @@
     </message>
   </context>
   <context>
-    <name>Dialog</name>
-    <message>
-      <location filename="../../../ImageTools/_CommandImageScaling.py" line="138"/>
-      <source>Scale image plane</source>
-      <translation>Keisti paveikslo plokštumos dydį</translation>
-    </message>
-    <message>
-      <location filename="../../../ImageTools/_CommandImageScaling.py" line="139"/>
-      <source>Distance [mm]</source>
-      <translation type="unfinished">Distance [mm]</translation>
-    </message>
-    <message>
-      <location filename="../../../ImageTools/_CommandImageScaling.py" line="140"/>
-      <source>Select first point</source>
-      <translation type="unfinished">Select first point</translation>
-    </message>
-    <message>
-      <location filename="../../../ImageTools/_CommandImageScaling.py" line="165"/>
-      <source>Enter distance</source>
-      <translation type="unfinished">Enter distance</translation>
-    </message>
-    <message>
-      <location filename="../../../ImageTools/_CommandImageScaling.py" line="168"/>
-      <source>Select ImagePlane</source>
-      <translation type="unfinished">Select ImagePlane</translation>
-    </message>
-    <message>
-      <location filename="../../../ImageTools/_CommandImageScaling.py" line="193"/>
-      <source>Select second point</source>
-      <translation type="unfinished">Select second point</translation>
-    </message>
-    <message>
-      <location filename="../../../ImageTools/_CommandImageScaling.py" line="202"/>
-      <source>Select Image Plane and type distance</source>
-      <translation type="unfinished">Select Image Plane and type distance</translation>
-    </message>
-  </context>
-  <context>
     <name>ImageGui::GLImageBox</name>
     <message>
-      <location filename="../../OpenGLImageBox.cpp" line="392"/>
+      <location filename="../../OpenGLImageBox.cpp" line="393"/>
       <source>Image pixel format</source>
       <translation>Vaizdo taško formatas</translation>
     </message>
     <message>
-      <location filename="../../OpenGLImageBox.cpp" line="393"/>
+      <location filename="../../OpenGLImageBox.cpp" line="394"/>
       <source>Undefined type of colour space for image viewing</source>
       <translation>Nenustatytas spalvų erdvės tipas vaizdo peržiūrai</translation>
     </message>
@@ -155,75 +117,62 @@
   <context>
     <name>ImageGui::ImageView</name>
     <message>
-      <location filename="../../ImageView.cpp" line="107"/>
+      <location filename="../../ImageView.cpp" line="108"/>
       <source>&amp;Fit image</source>
       <translation>&amp;Talpinti vaizdą</translation>
     </message>
     <message>
-      <location filename="../../ImageView.cpp" line="109"/>
+      <location filename="../../ImageView.cpp" line="110"/>
       <source>Stretch the image to fit the view</source>
       <translation>Priderinti vaizdą, kad tilptų peržiūros srityje</translation>
     </message>
     <message>
-      <location filename="../../ImageView.cpp" line="113"/>
+      <location filename="../../ImageView.cpp" line="114"/>
       <source>&amp;1:1 scale</source>
       <translation>&amp; 1:1 dydis</translation>
     </message>
     <message>
-      <location filename="../../ImageView.cpp" line="115"/>
+      <location filename="../../ImageView.cpp" line="116"/>
       <source>Display the image at a 1:1 scale</source>
       <translation>Rodyti vaizdą tikruoju dydžiu</translation>
     </message>
     <message>
-      <location filename="../../ImageView.cpp" line="124"/>
+      <location filename="../../ImageView.cpp" line="125"/>
       <source>Standard</source>
       <translation>Įprastinis</translation>
     </message>
     <message>
-      <location filename="../../ImageView.cpp" line="142"/>
+      <location filename="../../ImageView.cpp" line="143"/>
       <source>Ready...</source>
       <translation>Pasirengęs...</translation>
     </message>
     <message>
-      <location filename="../../ImageView.cpp" line="543"/>
+      <location filename="../../ImageView.cpp" line="544"/>
       <source>grey</source>
       <translation>pilka</translation>
     </message>
     <message>
-      <location filename="../../ImageView.cpp" line="544"/>
-      <location filename="../../ImageView.cpp" line="547"/>
-      <location filename="../../ImageView.cpp" line="557"/>
-      <location filename="../../ImageView.cpp" line="562"/>
-      <location filename="../../ImageView.cpp" line="572"/>
-      <location filename="../../ImageView.cpp" line="577"/>
-      <location filename="../../ImageView.cpp" line="588"/>
-      <location filename="../../ImageView.cpp" line="593"/>
-      <location filename="../../ImageView.cpp" line="604"/>
-      <location filename="../../ImageView.cpp" line="609"/>
+      <location filename="../../ImageView.cpp" line="545"/>
+      <location filename="../../ImageView.cpp" line="548"/>
+      <location filename="../../ImageView.cpp" line="558"/>
+      <location filename="../../ImageView.cpp" line="563"/>
+      <location filename="../../ImageView.cpp" line="573"/>
+      <location filename="../../ImageView.cpp" line="578"/>
+      <location filename="../../ImageView.cpp" line="589"/>
+      <location filename="../../ImageView.cpp" line="594"/>
+      <location filename="../../ImageView.cpp" line="605"/>
+      <location filename="../../ImageView.cpp" line="610"/>
       <source>zoom</source>
       <translation>priartinimas</translation>
     </message>
     <message>
-      <location filename="../../ImageView.cpp" line="547"/>
-      <location filename="../../ImageView.cpp" line="557"/>
-      <location filename="../../ImageView.cpp" line="572"/>
-      <location filename="../../ImageView.cpp" line="588"/>
-      <location filename="../../ImageView.cpp" line="604"/>
+      <location filename="../../ImageView.cpp" line="548"/>
+      <location filename="../../ImageView.cpp" line="558"/>
+      <location filename="../../ImageView.cpp" line="573"/>
+      <location filename="../../ImageView.cpp" line="589"/>
+      <location filename="../../ImageView.cpp" line="605"/>
       <source>outside image</source>
       <translation>išorinis vaizdas</translation>
-    </message>
-  </context>
-  <context>
-    <name>Image_Scaling</name>
-    <message>
-      <location filename="../../../ImageTools/_CommandImageScaling.py" line="56"/>
-      <source>Scale image plane</source>
-      <translation>Keisti paveikslo plokštumos dydį</translation>
-    </message>
-    <message>
-      <location filename="../../../ImageTools/_CommandImageScaling.py" line="60"/>
-      <source>Scales an image plane by defining a distance between two points</source>
-      <translation>Pakeičia paveikslo plokštumos dydį nurodant atstumą tarp dviejų taškų</translation>
     </message>
   </context>
   <context>
@@ -260,7 +209,7 @@
   <context>
     <name>Workbench</name>
     <message>
-      <location filename="../../Workbench.cpp" line="32"/>
+      <location filename="../../Workbench.cpp" line="33"/>
       <source>Image</source>
       <translation>Paveikslėlis</translation>
     </message>

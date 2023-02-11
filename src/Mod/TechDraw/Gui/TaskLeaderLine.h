@@ -23,13 +23,13 @@
 #ifndef TECHDRAWGUI_TASKTEXTLEADER_H
 #define TECHDRAWGUI_TASKTEXTLEADER_H
 
-#include <Mod/TechDraw/TechDrawGlobal.h>
+#include "QGTracker.h"
 
 #include <Base/Vector3D.h>
 #include <Gui/TaskView/TaskDialog.h>
 #include <Gui/TaskView/TaskView.h>
+#include <Mod/TechDraw/TechDrawGlobal.h>
 
-#include "QGTracker.h"
 
 namespace TechDraw
 {
@@ -105,7 +105,6 @@ protected Q_SLOTS:
 
 private:
     std::unique_ptr<Ui_TaskLeaderLine> ui;
-    bool blockUpdate;
 
     QGTracker* m_tracker;
 
@@ -123,7 +122,6 @@ private:
     Base::Vector3d m_attachPoint;
 
     bool m_createMode;
-    QGEPath* m_leadLine;
 
     QGTracker::TrackerMode m_trackerMode;
     Qt::ContextMenuPolicy  m_saveContextPolicy;
@@ -138,8 +136,6 @@ private:
     std::vector<Base::Vector3d> m_savePoints;
     double m_saveX;
     double m_saveY;
-
-    bool m_haveMdi;
 
 private Q_SLOTS:
     void onStartSymbolChanged();

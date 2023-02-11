@@ -20,24 +20,22 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
-
 #ifndef _PreComp_
 # include <QApplication>
 #endif
 
-#include "TaskDlgEdge2Trac.h"
-
 #include <Base/Console.h>
 #include <Base/Exception.h>
-#include <Gui/TaskView/TaskSelectLinkProperty.h>
 #include <Gui/Application.h>
 #include <Gui/Document.h>
 
+#include <Gui/TaskView/TaskSelectLinkProperty.h>
+
+#include "TaskDlgEdge2Trac.h"
+
 
 using namespace RobotGui;
-
 
 //**************************************************************************
 //**************************************************************************

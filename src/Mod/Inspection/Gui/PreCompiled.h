@@ -20,67 +20,46 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef GUI_PRECOMPILED_H
 #define GUI_PRECOMPILED_H
 
 #include <FCConfig.h>
 
-#ifdef FC_OS_WIN32
-# ifndef NOMINMAX
-# define NOMINMAX
-# endif
-#endif
-
 #ifdef _MSC_VER
-#   pragma warning(disable : 4005)
+# pragma warning(disable : 4005)
+# pragma warning(disable : 4251)
+# pragma warning(disable : 4503)
+# pragma warning(disable : 4786)// specifier longer then 255 chars
 #endif
 
 #ifdef _PreComp_
 
-// standard
-#include <cstdio>
-#include <cassert>
-
 // STL
-#include <algorithm>
-#include <iostream>
-#include <list>
-#include <map>
-#include <queue>
-#include <set>
-#include <sstream>
-#include <stack>
-#include <string>
-#include <vector>
-
-#ifdef FC_OS_WIN32
-# include <windows.h>
-#endif
+#include <cfloat>
 
 // Inventor
 #include <Inventor/SoPickedPoint.h>
 #include <Inventor/actions/SoRayPickAction.h>
 #include <Inventor/actions/SoSearchAction.h>
 #include <Inventor/details/SoFaceDetail.h>
+#include <Inventor/errors/SoDebugError.h>
 #include <Inventor/events/SoButtonEvent.h>
 #include <Inventor/events/SoKeyboardEvent.h>
 #include <Inventor/events/SoMouseButtonEvent.h>
-#include <Inventor/lists/SoPickedPointList.h> 
 #include <Inventor/nodes/SoCoordinate3.h>
 #include <Inventor/nodes/SoDrawStyle.h>
 #include <Inventor/nodes/SoIndexedFaceSet.h>
+#include <Inventor/nodes/SoIndexedLineSet.h>
 #include <Inventor/nodes/SoMaterial.h>
 #include <Inventor/nodes/SoMaterialBinding.h>
 #include <Inventor/nodes/SoNormal.h>
 #include <Inventor/nodes/SoPointSet.h>
 #include <Inventor/nodes/SoShapeHints.h>
-#include <Inventor/errors/SoDebugError.h>
 
-// Qt Toolkit
-#ifndef __QtAll__
-# include <Gui/QtAll.h>
-#endif
+// Qt
+#include <QApplication>
+#include <QMenu>
+#include <QMessageBox>
 
 #endif  //_PreComp_
 

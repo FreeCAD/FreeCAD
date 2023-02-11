@@ -45,7 +45,7 @@ PyObject *FeaturePy::getCustomAttributes(const char* ) const
 
 int FeaturePy::setCustomAttributes(const char* , PyObject *)
 {
-    return 0; 
+    return 0;
 }
 
 PyObject* FeaturePy::getBaseObject(PyObject * /*args*/)

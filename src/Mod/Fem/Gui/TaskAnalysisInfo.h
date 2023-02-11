@@ -24,7 +24,6 @@
 #define FEMGUI_TaskAnalysisInfo_H
 
 #include <Gui/TaskView/TaskView.h>
-#include <Mod/Fem/App/FemSetNodesObject.h>
 
 
 class Ui_TaskAnalysisInfo;
@@ -58,9 +57,6 @@ class TaskAnalysisInfo : public Gui::TaskView::TaskBox
 public:
     explicit TaskAnalysisInfo(Fem::FemAnalysis *pcObject,QWidget *parent = nullptr);
     ~TaskAnalysisInfo() override;
-
-private Q_SLOTS:
-    void SwitchMethod(int Value);
 
 protected:
     Fem::FemAnalysis *pcObject;

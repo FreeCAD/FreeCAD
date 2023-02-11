@@ -22,20 +22,19 @@
 #ifndef PARTGUI_DLGPROJECTIONONSURFACE_H
 #define PARTGUI_DLGPROJECTIONONSURFACE_H
 
-#include <QWidget>
-#include <QDoubleSpinBox>
-
-#include <Gui/TaskView/TaskDialog.h>
-#include <Gui/TaskView/TaskView.h>
-
-#include "../App/PartFeature.h"
-#include <App/DocumentObserver.h>
-
-#include "TopoDS_Shape.hxx"
+#include "gp_Dir.hxx"
 #include "TopoDS_Edge.hxx"
 #include "TopoDS_Face.hxx"
+#include "TopoDS_Shape.hxx"
 #include "TopoDS_Wire.hxx"
-#include "gp_Dir.hxx"
+
+#include <QDoubleSpinBox>
+#include <QWidget>
+#include <App/DocumentObserver.h>
+#include <Gui/TaskView/TaskDialog.h>
+#include <Gui/TaskView/TaskView.h>
+#include <Mod/Part/App/PartFeature.h>
+
 
 namespace PartGui {
 
@@ -133,7 +132,7 @@ private:
     std::string m_currentShowType;
 
     std::vector<QWidget*> m_guiObjectVec;
-    
+
     const QString m_projectionObjectName;
     Part::Feature* m_projectionObject;
     App::Document* m_partDocument;
@@ -141,7 +140,7 @@ private:
 
     class EdgeSelection;
     EdgeSelection* filterEdge;
-    
+
     class FaceSelection;
     FaceSelection* filterFace;
 };

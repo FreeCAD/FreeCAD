@@ -42,9 +42,14 @@ template <typename T>
 inline Vector3<T> getVectorFromTuple(PyObject* o)
 {
     Py::Sequence tuple(o);
-    T x = static_cast<T>(Py::Float(tuple.getItem(0)));
-    T y = static_cast<T>(Py::Float(tuple.getItem(1)));
-    T z = static_cast<T>(Py::Float(tuple.getItem(2)));
+    if (tuple.size() != 3) {
+        throw Py::ValueError("Expected sequence of size 3");
+    }
+
+    T x = static_cast<T>(Py::Float(tuple[0]));
+    T y = static_cast<T>(Py::Float(tuple[1]));
+    T z = static_cast<T>(Py::Float(tuple[2]));
+
     return Vector3<T>(x,y,z);
 }
 
@@ -160,6 +165,10 @@ public:
     Vector& operator= (PyObject* rhsp);
     Vector& operator= (const Base::Vector3d&);
     Vector& operator= (const Base::Vector3f&);
+    operator Base::Vector3d() const
+    {
+        return toVector();
+    }
 
     Base::Vector3d toVector() const;
 

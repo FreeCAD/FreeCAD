@@ -28,9 +28,8 @@
 
 #include <Mod/TechDraw/TechDrawGlobal.h>
 
-#include <QObject>
-
 #include "QGCustomText.h"
+
 
 QT_BEGIN_NAMESPACE
 class QPainter;

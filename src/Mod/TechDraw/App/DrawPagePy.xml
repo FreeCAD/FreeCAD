@@ -28,21 +28,24 @@
         <UserDocu>getAllViews() - returns a list of all the views on page including Views inside Collections</UserDocu>
       </Documentation>
     </Methode>
-    <Methode Name="getPageWidth">
+    <Attribute Name="PageWidth" ReadOnly="true">
       <Documentation>
-        <UserDocu>Return the width of this page</UserDocu>
+        <UserDocu>Returns the width of this page</UserDocu>
       </Documentation>
-    </Methode>
-    <Methode Name="getPageHeight">
+      <Parameter Name="PageWidth" Type="Float"/>
+    </Attribute>
+    <Attribute Name="PageHeight" ReadOnly="true">
       <Documentation>
-        <UserDocu>Return the height of this page</UserDocu>
+        <UserDocu>Returns the height of this page</UserDocu>
       </Documentation>
-    </Methode>
-    <Methode Name="getPageOrientation">
+      <Parameter Name="PageHeight" Type="Float"/>
+    </Attribute>
+    <Attribute Name="PageOrientation" ReadOnly="true">
       <Documentation>
-        <UserDocu>Return the orientation of this page</UserDocu>
+        <UserDocu>Returns the orientation of this page</UserDocu>
       </Documentation>
-    </Methode>
+      <Parameter Name="PageOrientation" Type="String"/>
+    </Attribute>
     <Methode Name="requestPaint">
       <Documentation>
         <UserDocu>Ask the Gui to redraw this page</UserDocu>

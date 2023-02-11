@@ -113,6 +113,21 @@ def makeConstraintCentrif(
     return obj
 
 
+def makeConstraintCurrentDensity(
+    doc,
+    name="ConstraintCurrentDensity"
+):
+    """makeConstraintCurrentDensity(document, [name]):
+    makes a Fem CurrentDensity object"""
+    obj = doc.addObject("Fem::ConstraintPython", name)
+    from femobjects import constraint_currentdensity
+    constraint_currentdensity.ConstraintCurrentDensity(obj)
+    if FreeCAD.GuiUp:
+        from femviewprovider import view_constraint_currentdensity
+        view_constraint_currentdensity.VPConstraintCurrentDensity(obj.ViewObject)
+    return obj
+
+
 def makeConstraintContact(
     doc,
     name="ConstraintContact"
@@ -250,6 +265,21 @@ def makeConstraintInitialTemperature(
     """makeConstraintInitialTemperature(document, name):
     makes a Fem ConstraintInitialTemperature object"""
     obj = doc.addObject("Fem::ConstraintInitialTemperature", name)
+    return obj
+
+
+def makeConstraintMagnetization(
+    doc,
+    name="ConstraintMagnetization"
+):
+    """makeConstraintMagnetization(document, [name]):
+    makes a Fem Magnetization object"""
+    obj = doc.addObject("Fem::ConstraintPython", name)
+    from femobjects import constraint_magnetization
+    constraint_magnetization.ConstraintMagnetization(obj)
+    if FreeCAD.GuiUp:
+        from femviewprovider import view_constraint_magnetization
+        view_constraint_magnetization.VPConstraintMagnetization(obj.ViewObject)
     return obj
 
 
@@ -782,6 +812,34 @@ def makeEquationHeat(
     creates a FEM heat equation for a solver"""
     from femsolver.elmer.equations import heat
     obj = heat.create(doc, name)
+    if base_solver:
+        base_solver.addObject(obj)
+    return obj
+
+
+def makeEquationMagnetodynamic(
+    doc,
+    base_solver=None,
+    name="Magnetodynamic"
+):
+    """makeEquationMagnetodynamic(document, [base_solver], [name]):
+    creates a FEM magnetodynamic equation for a solver"""
+    from femsolver.elmer.equations import magnetodynamic
+    obj = magnetodynamic.create(doc, name)
+    if base_solver:
+        base_solver.addObject(obj)
+    return obj
+
+
+def makeEquationMagnetodynamic2D(
+    doc,
+    base_solver=None,
+    name="Magnetodynamic2D"
+):
+    """makeEquationMagnetodynamic2D(document, [base_solver], [name]):
+    creates a FEM magnetodynamic2D equation for a solver"""
+    from femsolver.elmer.equations import magnetodynamic2D
+    obj = magnetodynamic2D.create(doc, name)
     if base_solver:
         base_solver.addObject(obj)
     return obj

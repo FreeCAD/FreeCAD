@@ -195,7 +195,7 @@ private:
         for (int i=0; i<this->direction->count()-1; i++) {
             QVariant data = this->direction->itemData (i);
             if (data.canConvert<Base::Vector3d>()) {
-                const Base::Vector3d val = data.value<Base::Vector3d>();
+                const auto val = data.value<Base::Vector3d>();
                 if (val == dir) {
                     this->direction->setCurrentIndex(i);
                     return;
@@ -315,7 +315,7 @@ public:
         for (int i=0; i<this->direction->count()-1; i++) {
             QVariant data = this->direction->itemData (i);
             if (data.canConvert<Base::Vector3d>()) {
-                const Base::Vector3d val = data.value<Base::Vector3d>();
+                const auto val = data.value<Base::Vector3d>();
                 if (val == dir) {
                     this->direction->setCurrentIndex(i);
                     return;
@@ -501,7 +501,7 @@ public:
         for (int i=0; i<ui->direction->count()-1; i++) {
             QVariant data = ui->direction->itemData (i);
             if (data.canConvert<Base::Vector3d>()) {
-                const Base::Vector3d val = data.value<Base::Vector3d>();
+                const auto val = data.value<Base::Vector3d>();
                 if (val == dir) {
                     ui->direction->setCurrentIndex(i);
                     return;

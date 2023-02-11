@@ -22,22 +22,15 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-#include <cassert>
-#include <QGraphicsScene>
-#include <QGraphicsSceneHoverEvent>
-#include <qmath.h>
-#include <QMouseEvent>
+# include <cassert>
+
 #include <QPainter>
 #include <QRectF>
 #include <QStyleOptionGraphicsItem>
 #endif
 
-#include <App/Application.h>
-#include <App/Material.h>
-#include <Base/Console.h>
-#include <Base/Parameter.h>
-
 #include "QGCustomBorder.h"
+
 
 using namespace TechDrawGui;
 

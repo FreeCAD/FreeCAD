@@ -20,14 +20,11 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef _LuxFeature_h_
 #define _LuxFeature_h_
 
 #include <App/DocumentObject.h>
 #include <App/PropertyLinks.h>
-#include <App/PropertyFile.h>
-#include <App/PropertyStandard.h>
 
 #include "RaySegment.h"
 

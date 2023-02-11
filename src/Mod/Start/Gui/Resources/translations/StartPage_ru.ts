@@ -56,7 +56,7 @@
     <message>
       <location filename="TranslationTexts.py" line="52"/>
       <source>This section contains documentation useful for FreeCAD users in general: a list of all the workbenches, detailed instructions on how to install and use the FreeCAD application, tutorials, and all you need to get started.</source>
-      <translation>Этот раздел содержит полезную для пользователей FreeCAD справочную документацию: список всех верстаков, подробные инструкции о том, как установить и использовать приложение FreeCAD, учебники и все, что вам нужно для начала.</translation>
+      <translation>Этот раздел содержит полезную для пользователей FreeCAD справочную документацию: список всех верстаков, подробные инструкции о том, как установить и использовать приложение FreeCAD, учебники и всё, что Вам нужно для начала.</translation>
     </message>
     <message>
       <location filename="TranslationTexts.py" line="53"/>
@@ -76,7 +76,7 @@
     <message>
       <location filename="TranslationTexts.py" line="56"/>
       <source>This section contains material for developers: How to compile FreeCAD yourself, how the FreeCAD source code is structured + how to navigate in it, how to develop new workbenches and/or embed FreeCAD in your own application.</source>
-      <translation>Этот раздел содержит материалы для разработчиков: как скомпилировать FreeCAD самому, как структурирован исходный код FreeCAD + как ориентироваться в нем и как разрабатывать новые рабочие окружения, и/или встраивать FreeCAD в собственные приложения.</translation>
+      <translation>Этот раздел содержит материалы для разработчиков: как скомпилировать FreeCAD самому, как структурирован исходный код FreeCAD + как ориентироваться в нём и как разрабатывать новые верстаки, и/или встраивать FreeCAD в собственные приложения.</translation>
     </message>
     <message>
       <location filename="TranslationTexts.py" line="57"/>
@@ -126,7 +126,7 @@
     <message>
       <location filename="TranslationTexts.py" line="66"/>
       <source>Below is a list of available extra workbenches that can be added to your FreeCAD installation. Browse and install them from menu Tools -&gt; Addons manager. You can learn more about any of them by clicking the links below.</source>
-      <translation>Ниже перечислен список доступных дополнительных верстаков, которые могут быть добавлены в ваш FreeCAD. Просматривайте и устанавливайте их из меню Инструменты -&gt; Менеджер дополнений. Вы можете узнать больше о любом из них, нажав на ссылки ниже.</translation>
+      <translation>Ниже перечислен список доступных дополнительных верстаков, которые могут быть добавлены в Ваш FreeCAD. Просматривайте и устанавливайте их из меню Инструменты -&gt; Менеджер дополнений. Вы можете узнать больше о любом из них, нажав на ссылки ниже.</translation>
     </message>
     <message>
       <location filename="TranslationTexts.py" line="67"/>

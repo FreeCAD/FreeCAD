@@ -592,17 +592,14 @@ class MaterialsDelegate(QtGui.QStyledItemDelegate):
             return
 
         if column == 1:
-
             row = index.row()
 
             PP = group.child(row, 0)
             matproperty = PP.text().replace(" ", "")  # remove spaces
 
             TT = group.child(row, 2)
-
             if TT:
                 Type = TT.text()
-
             else:
                 Type = "String"
 
@@ -612,15 +609,12 @@ class MaterialsDelegate(QtGui.QStyledItemDelegate):
             editor = matProperWidget(parent, matproperty, Type, Value)
 
         elif column == 0:
-
             if group.text() == "User defined":
                 editor = matProperWidget(parent)
-
             else:
                 return
 
         else:
-
             return
 
         return editor
@@ -632,21 +626,17 @@ class MaterialsDelegate(QtGui.QStyledItemDelegate):
         Type = editor.property("Type")
         model = index.model()
         item = model.itemFromIndex(index)
-        print("item1={}".format(item.text()))
 
         if Type == "Color":
-
             color = editor.property("color")
             color = tuple([v/255.0 for v in color.getRgb()])
             item.setText(str(color))
 
         elif Type == "File":
-
             lineEdit = editor.children()[1]
             item.setText(lineEdit.text())
 
         else:
-
             super(MaterialsDelegate, self).setEditorData(editor, index)
 
 
@@ -670,31 +660,33 @@ def matProperWidget(parent=None, matproperty=None, Type="String", Value=None,
 
     # the user defined properties are of Type String and thus uses a "Gui::PrefLineEdit"
 
-    print(matproperty)
-    print(Type)
-    print(Value)
-
     ui = FreeCADGui.UiLoader()
 
     if Type == "String":
-
         widget = ui.createWidget("Gui::PrefLineEdit")
 
     elif Type == "URL":
-
         widget = ui.createWidget("Gui::PrefLineEdit")
 
     elif Type == "File":
-
         widget = ui.createWidget("Gui::FileChooser")
         if Value:
             lineEdit = widget.children()[1]
             lineEdit.setText(Value)
 
-    elif Type == "Quantity" or Type == "Float":
-
+    elif Type == "Quantity":
         widget = ui.createWidget("Gui::InputField")
-        # print(matproperty)
+
+        # set quantity if possible
+        # for properties with an underscored number (vectorial values),
+        # we must strip the part after the first underscore to obtain the bound unit
+        # since in cardutils.py in def get_material_template
+        # the underscores were removed, we must check for numbers
+        import re
+        if re.search(r'\d', matproperty):
+            matpropertyNum = matproperty.rstrip('0123456789')
+            matproperty = matpropertyNum
+
         if hasattr(FreeCAD.Units, matproperty):
             unit = getattr(FreeCAD.Units, matproperty)
             quantity = FreeCAD.Units.Quantity(1, unit)
@@ -704,34 +696,31 @@ def matProperWidget(parent=None, matproperty=None, Type="String", Value=None,
                 "Not known unit for property: {}. Probably the Quantity does not have a unit.\n"
                 .format(matproperty)
             )
-            # the Gui::InputField is used for Floats too, because of the digits
 
     elif Type == "Integer":
-
         widget = ui.createWidget("Gui::UIntSpinBox")
 
-    # elif Type == "Float":
-
-    #     widget = ui.createWidget("Gui::PrefDoubleSpinBox")
-    # has only 2 digit precision, but for example RelativePermittivity needs much more
-    # see material card for Air, thus Workaround
-    # a "Gui::InputField" without unit is used
+    elif Type == "Float":
+        widget = ui.createWidget("Gui::PrefDoubleSpinBox")
+        # the magnetic permeability is the parameter for which many decimals matter
+        # the most however, even for this, 6 digits are sufficient
+        widget.setDecimals(6)
+        if minimum is None:
+            widget.setProperty("minimum", -1e12)
+        if maximum is None:
+            widget.setProperty("maximum", 1e12)
 
     elif Type == "Enumerator":
-
         widget = ui.createWidget("Gui::PrefComboBox")
 
     elif Type == "Boolean":
-
         widget = ui.createWidget("Gui::PrefComboBox")
         widget.insertItems(0, ["", "False", "True"])
 
     elif Type == "Vector":
-
         widget = ui.createWidget("Gui::PrefLineEdit")
 
     elif Type == "Color":
-
         widget = ui.createWidget("Gui::PrefColorButton")
         if Value:
             value = string2tuple(Value)
@@ -740,7 +729,6 @@ def matProperWidget(parent=None, matproperty=None, Type="String", Value=None,
             widget.setProperty("color", color)
 
     else:
-
         widget = QtGui.QLineEdit()
 
     if minimum is not None:

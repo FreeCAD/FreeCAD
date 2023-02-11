@@ -20,14 +20,15 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef DRAWINGGUI_DRAWINGVIEW_H
 #define DRAWINGGUI_DRAWINGVIEW_H
 
-#include <Gui/MDIView.h>
-#include <Mod/Drawing/DrawingGlobal.h>
 #include <QGraphicsView>
 #include <QPrinter>
+
+#include <Gui/MDIView.h>
+#include <Mod/Drawing/DrawingGlobal.h>
+
 
 QT_BEGIN_NAMESPACE
 class QSlider;

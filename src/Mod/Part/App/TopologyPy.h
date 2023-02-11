@@ -46,15 +46,15 @@ class AppPartExport TopoShapePyOld :public Base::PyObjectBase
 	Py_Header;
 
 protected:
-	/// Destruction 
+	/// Destruction
 	~TopoShapePyOld();
 
 public:
 
-	/// Constructor 
+	/// Constructor
   TopoShapePyOld(PyTypeObject *T = &Type);
   TopoShapePyOld(const TopoDS_Shape &cShape, PyTypeObject *T = &TopoShapePyOld::Type);
-	/// for Construction in python 
+	/// for Construction in python
   static PyObject *PyMake(PyTypeObject*, PyObject*, PyObject*);
   static int PyInit(PyObject*, PyObject*, PyObject*);
 
@@ -67,7 +67,7 @@ public:
 	TopoDS_Shape getTopoShape(void){return _cTopoShape;}
 
 	//---------------------------------------------------------------------
-	// python exports goes here +++++++++++++++++++++++++++++++++++++++++++	
+	// python exports goes here +++++++++++++++++++++++++++++++++++++++++++
 	//---------------------------------------------------------------------
 
 	virtual PyObject *_repr(void);  				// the representation

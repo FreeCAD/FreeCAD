@@ -29,7 +29,9 @@
 
 #include <App/Document.h>
 #include <App/DocumentObject.h>
+#include <Base/Console.h>
 #include <Base/Parameter.h>
+#include <Base/Tools.h>
 
 #include "PropertyView.h"
 #include "Application.h"
@@ -68,13 +70,13 @@ static ParameterGrp::handle _GetParam() {
 PropertyView::PropertyView(QWidget *parent)
   : QWidget(parent), SelectionObserver(false, ResolveMode::NoResolve)
 {
-    QGridLayout* pLayout = new QGridLayout( this );
+    auto pLayout = new QGridLayout( this );
     pLayout->setSpacing(0);
-    pLayout->setMargin (0);
+    pLayout->setContentsMargins(0, 0, 0, 0);
 
     timer = new QTimer(this);
     timer->setSingleShot(true);
-    connect(timer, SIGNAL(timeout()), this, SLOT(onTimer()));
+    connect(timer, &QTimer::timeout, this, &PropertyView::onTimer);
 
     tabs = new QTabWidget (this);
     tabs->setObjectName(QString::fromUtf8("propertyTab"));
@@ -97,7 +99,7 @@ PropertyView::PropertyView(QWidget *parent)
         tabs->setCurrentIndex(preferredTab);
 
     // connect after adding all tabs, so adding doesn't thrash the parameter
-    connect(tabs, SIGNAL(currentChanged(int)), this, SLOT(tabChanged(int)));
+    connect(tabs, &QTabWidget::currentChanged, this, &PropertyView::tabChanged);
 
     this->connectPropData =
     App::GetApplication().signalChangedObject.connect(boost::bind
@@ -331,7 +333,14 @@ void PropertyView::onSelectionChanged(const SelectionChanges& msg)
     timer->start(ViewParams::instance()->getPropertyViewTimer());
 }
 
-void PropertyView::onTimer() {
+void PropertyView::onTimer()
+{
+    // See https://forum.freecadweb.org/viewtopic.php?f=8&t=72526
+    if (this->updating) {
+        Base::Console().Log("Ignore recursive call of PropertyView::onTimer()\n");
+        return;
+    }
+    Base::StateLocker guard(this->updating);
 
     timer->stop();
 
@@ -412,7 +421,7 @@ void PropertyView::onTimer() {
                 nameType.propName = prop->getName();
                 nameType.propId = prop->getTypeId().getKey();
 
-                std::vector<PropInfo>::iterator pi = std::find_if(propDataMap.begin(), propDataMap.end(), PropFind(nameType));
+                auto pi = std::find_if(propDataMap.begin(), propDataMap.end(), PropFind(nameType));
                 if (pi != propDataMap.end()) {
                     pi->propList.push_back(prop);
                 }
@@ -433,7 +442,7 @@ void PropertyView::onTimer() {
                 nameType.propName = pt->first;
                 nameType.propId = pt->second->getTypeId().getKey();
 
-                std::vector<PropInfo>::iterator pi = std::find_if(propViewMap.begin(), propViewMap.end(), PropFind(nameType));
+                auto pi = std::find_if(propViewMap.begin(), propViewMap.end(), PropFind(nameType));
                 if (pi != propViewMap.end()) {
                     pi->propList.push_back(pt->second);
                 }
@@ -548,10 +557,10 @@ PropertyDockView::PropertyDockView(Gui::Document* pcDocument, QWidget *parent)
 {
     setWindowTitle(tr("Property View"));
 
-    PropertyView* view = new PropertyView(this);
-    QGridLayout* pLayout = new QGridLayout(this);
+    auto view = new PropertyView(this);
+    auto pLayout = new QGridLayout(this);
     pLayout->setSpacing(0);
-    pLayout->setMargin (0);
+    pLayout->setContentsMargins(0, 0, 0, 0);
     pLayout->addWidget(view, 0, 0);
 
     resize( 200, 400 );

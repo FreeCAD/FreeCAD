@@ -22,9 +22,9 @@
 
 import FreeCAD
 import Path
-import PathScripts.PathDressupDogbone as PathDressupDogbone
-import PathScripts.PathJob as PathJob
-import PathScripts.PathProfileFaces as PathProfileFaces
+import Path.Dressup.Gui.Dogbone as PathDressupDogbone
+import Path.Main.Job as PathJob
+import Path.Op.Profile as PathProfile
 
 from PathTests.PathTestUtils import PathTestBase
 
@@ -42,8 +42,8 @@ class TestFeature:
     def __init__(self):
         self.Path = Path.Path()
 
-    def addProperty(self, typ, nam, category, tip):
-        setattr(self, nam, None)
+    def addProperty(self, typ, name, category, tip):
+        setattr(self, name, None)
 
     def setEditorMode(self, prop, mode):
         pass
@@ -135,7 +135,7 @@ class TestDressupDogbone(PathTestBase):
 
         PathJob.Create("Job", [cut], None)
 
-        profile = PathProfileFaces.Create("Profile Faces")
+        profile = PathProfile.Create("Profile")
         profile.Base = (cut, face)
         profile.StepDown = 5
         # set start and final depth in order to eliminate effects of stock (and its default values)

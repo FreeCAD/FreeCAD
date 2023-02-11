@@ -86,7 +86,7 @@ int AbstractMouseSelection::handleEvent(const SoEvent* const ev, const SbViewpor
     y = h-y; // the origin is at the left bottom corner (instead of left top corner)
 
     if (ev->getTypeId().isDerivedFrom(SoMouseButtonEvent::getClassTypeId())) {
-        const SoMouseButtonEvent* const event = (const SoMouseButtonEvent*) ev;
+        const auto event = (const SoMouseButtonEvent*) ev;
         const SbBool press = event->getState() == SoButtonEvent::DOWN ? true : false;
 
         if (press) {

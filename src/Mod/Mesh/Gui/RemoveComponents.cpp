@@ -20,21 +20,20 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
-
 #ifndef _PreComp_
 # include <QPushButton>
 #endif
 
-#include "RemoveComponents.h"
-#include "ui_RemoveComponents.h"
 #include <Gui/Application.h>
 #include <Gui/Document.h>
 #include <Gui/Selection.h>
 
-using namespace MeshGui;
+#include "RemoveComponents.h"
+#include "ui_RemoveComponents.h"
 
+
+using namespace MeshGui;
 
 RemoveComponents::RemoveComponents(QWidget* parent, Qt::WindowFlags fl)
   : QWidget(parent, fl)
@@ -175,9 +174,9 @@ RemoveComponentsDialog::RemoveComponentsDialog(QWidget* parent, Qt::WindowFlags 
     okButton->setText(MeshGui::TaskRemoveComponents::tr("Delete"));
     buttonBox->addButton(MeshGui::TaskRemoveComponents::tr("Invert"),
         QDialogButtonBox::ActionRole);
-    
-    connect(buttonBox, SIGNAL(clicked(QAbstractButton*)),
-            this, SLOT(clicked(QAbstractButton*)));
+
+    connect(buttonBox, &QDialogButtonBox::clicked,
+            this, &RemoveComponentsDialog::clicked);
 
     hboxLayout->addWidget(widget);
     hboxLayout->addWidget(buttonBox);

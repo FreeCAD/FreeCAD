@@ -128,7 +128,7 @@ int Hyperbola2dPy::PyInit(PyObject* args, PyObject* kwds)
 Py::Float Hyperbola2dPy::getMajorRadius() const
 {
     Handle(Geom2d_Hyperbola) hyperbola = Handle(Geom2d_Hyperbola)::DownCast(getGeom2dHyperbolaPtr()->handle());
-    return Py::Float(hyperbola->MajorRadius()); 
+    return Py::Float(hyperbola->MajorRadius());
 }
 
 void Hyperbola2dPy::setMajorRadius(Py::Float arg)
@@ -140,7 +140,7 @@ void Hyperbola2dPy::setMajorRadius(Py::Float arg)
 Py::Float Hyperbola2dPy::getMinorRadius() const
 {
     Handle(Geom2d_Hyperbola) hyperbola = Handle(Geom2d_Hyperbola)::DownCast(getGeom2dHyperbolaPtr()->handle());
-    return Py::Float(hyperbola->MinorRadius()); 
+    return Py::Float(hyperbola->MinorRadius());
 }
 
 void Hyperbola2dPy::setMinorRadius(Py::Float arg)
@@ -152,7 +152,7 @@ void Hyperbola2dPy::setMinorRadius(Py::Float arg)
 Py::Float Hyperbola2dPy::getFocal() const
 {
     Handle(Geom2d_Hyperbola) hyperbola = Handle(Geom2d_Hyperbola)::DownCast(getGeom2dHyperbolaPtr()->handle());
-    return Py::Float(hyperbola->Focal()); 
+    return Py::Float(hyperbola->Focal());
 }
 
 Py::Object Hyperbola2dPy::getFocus1() const
@@ -176,5 +176,5 @@ PyObject *Hyperbola2dPy::getCustomAttributes(const char* /*attr*/) const
 
 int Hyperbola2dPy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)
 {
-    return 0; 
+    return 0;
 }

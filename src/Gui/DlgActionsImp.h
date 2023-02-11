@@ -88,6 +88,7 @@ private:
 private:
     std::unique_ptr<Ui_DlgCustomActions> ui;
     QString m_sPixmap; /**< Name of the specified pixmap */
+    bool bChanged = false;
 };
 
 class Ui_DlgChooseIcon;

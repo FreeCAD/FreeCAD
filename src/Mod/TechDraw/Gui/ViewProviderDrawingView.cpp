@@ -28,6 +28,8 @@
 #include <boost/signals2/connection.hpp>
 #endif
 
+#include <climits>
+
 #include <App/DocumentObject.h>
 #include <Base/Console.h>
 #include <Base/Tools.h>
@@ -40,6 +42,7 @@
 #include <Mod/TechDraw/App/DrawView.h>
 
 #include "ViewProviderDrawingView.h"
+#include "ViewProviderDrawingViewExtension.h"
 #include "MDIViewPage.h"
 #include "QGIView.h"
 #include "QGSPage.h"
@@ -50,9 +53,12 @@ namespace bp = boost::placeholders;
 
 PROPERTY_SOURCE(TechDrawGui::ViewProviderDrawingView, Gui::ViewProviderDocumentObject)
 
-ViewProviderDrawingView::ViewProviderDrawingView()
+ViewProviderDrawingView::ViewProviderDrawingView() :
+    m_myName(std::string())
 {
 //    Base::Console().Message("VPDV::VPDV\n");
+    initExtension(this);
+
     sPixmap = "TechDraw_TreeView";
     static const char *group = "Base";
 
@@ -77,6 +83,7 @@ void ViewProviderDrawingView::attach(App::DocumentObject *pcFeat)
     auto bndProgressMessage = boost::bind(&ViewProviderDrawingView::onProgressMessage, this, bp::_1, bp::_2, bp::_3);
     auto feature = getViewObject();
     if (feature) {
+        m_myName = feature->getNameInDocument();
         connectGuiRepaint = feature->signalGuiPaint.connect(bnd);
         connectProgressMessage = feature->signalProgressMessage.connect(bndProgressMessage);
         //TODO: would be good to start the QGIV creation process here, but no guarantee we actually have
@@ -185,6 +192,11 @@ bool ViewProviderDrawingView::isShow() const
     return Visibility.getValue();
 }
 
+void ViewProviderDrawingView::dropObject(App::DocumentObject* docObj)
+{
+    getViewProviderPage()->dropObject(docObj);
+}
+
 void ViewProviderDrawingView::startRestoring()
 {
     Gui::ViewProviderDocumentObject::startRestoring();
@@ -242,9 +254,8 @@ void ViewProviderDrawingView::onGuiRepaint(const TechDraw::DrawView* dv)
 {
 //    Base::Console().Message("VPDV::onGuiRepaint(%s) - this: %x\n", dv->getNameInDocument(), this);
     Gui::Document* guiDoc = Gui::Application::Instance->getDocument(getViewObject()->getDocument());
-    if (guiDoc == nullptr) {
+    if (!guiDoc)
         return;
-    }
 
     std::vector<TechDraw::DrawPage*> pages = getViewObject()->findAllParentPages();
     if (pages.size() > 1) {
@@ -347,40 +358,78 @@ void ViewProviderDrawingView::stackDown()
 
 void ViewProviderDrawingView::stackTop()
 {
-    Gui::Document* gDoc = getDocument();
-    std::vector<ViewProvider*> vps = gDoc->getViewProvidersOfType(TechDrawGui::ViewProviderDrawingView::getClassTypeId());
-    int maxZ = 0;
-    for (auto& vp: vps) {
-        ViewProviderDrawingView* vpdv = static_cast<ViewProviderDrawingView*>(vp);
-        int z = vpdv->StackOrder.getValue();
-        if (z > maxZ) {
-            maxZ = z;
+    QGIView* qView = getQView();
+    if (!qView || !getViewProviderPage()) {
+        //no view, nothing to stack
+        return;
+    }
+    int maxZ = INT_MIN;
+    auto parent = qView->parentItem();
+    if (parent) {
+        //if we have a parentItem, we have to stack within the parentItem, not within the page
+        auto siblings = parent->childItems();
+        for (auto& child : siblings) {
+            if (child->zValue() > maxZ) {
+                maxZ = child->zValue();
+            }
+        }
+    } else {
+        //if we have no parentItem, we are a top level QGIView and we need to stack
+        //with respect to the other top level views on this page
+        std::vector<App::DocumentObject*> peerObjects = getViewProviderPage()->claimChildren();
+        Gui::Document* gDoc = getDocument();
+        for (auto& peer: peerObjects) {
+            auto vpPeer = gDoc->getViewProvider(peer);
+            ViewProviderDrawingView* vpdv = static_cast<ViewProviderDrawingView*>(vpPeer);
+            int z = vpdv->StackOrder.getValue();
+            if (z > maxZ) {
+                maxZ = z;
+            }
         }
     }
     StackOrder.setValue(maxZ + 1);
-    QGIView* v = getQView();
-    if (v) {
-        v->setStack(maxZ + 1);
-    }
+    qView->setStack(maxZ + 1);
 }
 
 void ViewProviderDrawingView::stackBottom()
 {
-    Gui::Document* gDoc = getDocument();
-    std::vector<ViewProvider*> vps = gDoc->getViewProvidersOfType(TechDrawGui::ViewProviderDrawingView::getClassTypeId());
-    int minZ = 0;
-    for (auto& vp: vps) {
-        ViewProviderDrawingView* vpdv = static_cast<ViewProviderDrawingView*>(vp);
-        int z = vpdv->StackOrder.getValue();
-        if (z < minZ) {
-            minZ = z;
+    QGIView* qView = getQView();
+    if (!qView || !getViewProviderPage()) {
+        //no view, nothing to stack
+        return;
+    }
+    int minZ = INT_MAX;
+    auto parent = qView->parentItem();
+    if (parent) {
+        //if we have a parentItem, we have to stack within the parentItem, not within the page
+        auto siblings = parent->childItems();
+        for (auto& child : siblings) {
+            if (child->zValue() < minZ) {
+                minZ = child->zValue();
+            }
+        }
+    } else {
+        //TODO: need to special case DPGI or any other member of a collection
+        //if we have no parentItem, we are a top level QGIView and we need to stack
+        //with respect to the other top level views on this page
+        std::vector<App::DocumentObject*> peerObjects = getViewProviderPage()->claimChildren();
+        Gui::Document* gDoc = getDocument();
+        for (auto& peer: peerObjects) {
+            auto vpPeer = gDoc->getViewProvider(peer);
+            ViewProviderDrawingView* vpdv = static_cast<ViewProviderDrawingView*>(vpPeer);
+            int z = vpdv->StackOrder.getValue();
+            if (z < minZ) {
+                minZ = z;
+            }
         }
     }
     StackOrder.setValue(minZ - 1);
-    QGIView* v = getQView();
-    if (v) {
-        v->setStack(minZ - 1);
-    }
+    qView->setStack(minZ - 1);
+}
+
+const char*  ViewProviderDrawingView::whoAmI() const
+{
+    return m_myName.c_str();
 }
 
 TechDraw::DrawView* ViewProviderDrawingView::getViewObject() const

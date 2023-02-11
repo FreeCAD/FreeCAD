@@ -133,7 +133,7 @@ protected:
 
 protected Q_SLOTS:
     void changeGroup(QListWidgetItem *current, QListWidgetItem *previous);
-    void on_buttonBox_clicked(QAbstractButton*);
+    void onButtonBoxClicked(QAbstractButton*);
     void resizeWindow(int w, int h);
 
 private:

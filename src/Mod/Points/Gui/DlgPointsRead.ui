@@ -154,12 +154,12 @@
           </property>
           <item>
            <property name="text">
-            <string>,</string>
+            <string notr="true">,</string>
            </property>
           </item>
           <item>
            <property name="text">
-            <string>;</string>
+            <string notr="true">;</string>
            </property>
           </item>
           <item>
@@ -345,7 +345,7 @@
         <item>
          <widget class="QLineEdit" name="lineEditPreviewLines">
           <property name="text">
-           <string>100</string>
+           <string notr="true">100</string>
           </property>
          </widget>
         </item>

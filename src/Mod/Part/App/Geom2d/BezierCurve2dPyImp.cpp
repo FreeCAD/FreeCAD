@@ -341,21 +341,21 @@ Py::Long BezierCurve2dPy::getDegree() const
 {
     Handle(Geom2d_BezierCurve) curve = Handle(Geom2d_BezierCurve)::DownCast
         (getGeometry2dPtr()->handle());
-    return Py::Long(curve->Degree()); 
+    return Py::Long(curve->Degree());
 }
 
 Py::Long BezierCurve2dPy::getMaxDegree() const
 {
     Handle(Geom2d_BezierCurve) curve = Handle(Geom2d_BezierCurve)::DownCast
         (getGeometry2dPtr()->handle());
-    return Py::Long(curve->MaxDegree()); 
+    return Py::Long(curve->MaxDegree());
 }
 
 Py::Long BezierCurve2dPy::getNbPoles() const
 {
     Handle(Geom2d_BezierCurve) curve = Handle(Geom2d_BezierCurve)::DownCast
         (getGeometry2dPtr()->handle());
-    return Py::Long(curve->NbPoles()); 
+    return Py::Long(curve->NbPoles());
 }
 
 Py::Object BezierCurve2dPy::getStartPoint() const
@@ -381,5 +381,5 @@ PyObject *BezierCurve2dPy::getCustomAttributes(const char* /*attr*/) const
 
 int BezierCurve2dPy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)
 {
-    return 0; 
+    return 0;
 }

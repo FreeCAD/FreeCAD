@@ -21,19 +21,13 @@
  ***************************************************************************/
 
 #include "PreCompiled.h"
-#ifndef _PreComp_
-# include <QGraphicsScene>
-#endif
-
-#include <Base/Console.h>
-#include <Base/Exception.h>
 
 #include <Mod/TechDraw/App/DrawTemplate.h>
 
-#include "ZVALUE.h"
-#include "TemplateTextField.h"
-#include "QGSPage.h"
 #include "QGITemplate.h"
+#include "QGSPage.h"
+#include "ZVALUE.h"
+
 
 using namespace TechDrawGui;
 

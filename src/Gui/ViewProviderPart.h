@@ -43,7 +43,7 @@ public:
 
     bool doubleClicked() override;
     void setupContextMenu(QMenu* menu, QObject* receiver, const char* member) override;
-    
+
     /// deliver the icon shown in the tree view
     /// override from ViewProvider.h
     QIcon getIcon() const override;

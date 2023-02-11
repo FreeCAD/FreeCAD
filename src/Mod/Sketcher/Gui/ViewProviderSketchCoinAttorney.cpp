@@ -20,16 +20,10 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
-#ifndef _PreComp_
-
-#endif  // #ifndef _PreComp_
-
-#include "ViewProviderSketch.h"
-
 #include "ViewProviderSketchCoinAttorney.h"
+
 
 using namespace SketcherGui;
 using namespace Sketcher;

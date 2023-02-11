@@ -171,7 +171,15 @@ def InitApplications():
     sys.path = [ModDir] + libpaths + [ExtDir] + sys.path
 
     # The AddonManager may install additional Python packages in
-    # this path:
+    # these paths:
+    import platform
+    major,minor,_ = platform.python_version_tuple()
+    vendor_path = os.path.join(
+        FreeCAD.getUserAppDataDir(), "AdditionalPythonPackages",f"py{major}{minor}"
+    )
+    if os.path.isdir(vendor_path):
+        sys.path.append(vendor_path)
+
     additional_packages_path = os.path.join(FreeCAD.getUserAppDataDir(),"AdditionalPythonPackages")
     if os.path.isdir(additional_packages_path):
         sys.path.append(additional_packages_path)
@@ -351,8 +359,6 @@ class FCADLogger(object):
         build.
     '''
 
-    _string_type = str if sys.version_info[0] >= 3 else basestring
-
     _levels = { 'Error':0, 'error':0,
                 'Warning':1, 'warn':1,
                 'Message':2, 'msg':2, 'info':2,
@@ -521,7 +527,7 @@ class FCADLogger(object):
                      string.format()
         '''
 
-        if (args or kargs) and isinstance(msg,self.__class__._string_type):
+        if (args or kargs) and isinstance(msg,str):
             if not kargs:
                 msg = msg.format(*args)
             else:
@@ -800,7 +806,9 @@ App.Units.Gauss         = App.Units.Quantity('G')
 
 App.Units.Weber         = App.Units.Quantity('Wb')
 
-App.Units.Oersted       = App.Units.Quantity('Oe')
+# disable Oersted because people need to input e.g. a field strength of
+# 1 ampere per meter -> 1 A/m and not get the recalculation to Oersted
+# App.Units.Oersted       = App.Units.Quantity('Oe')
 
 App.Units.PicoFarad     = App.Units.Quantity('pF')
 App.Units.NanoFarad     = App.Units.Quantity('nF')
@@ -853,15 +861,18 @@ App.Units.Velocity      = App.Units.Unit(1,0,-1)
 App.Units.Acceleration  = App.Units.Unit(1,0,-2)
 App.Units.Temperature   = App.Units.Unit(0,0,0,0,1)
 
+App.Units.CurrentDensity        = App.Units.Unit(-2,0,0,1)
 App.Units.ElectricCurrent       = App.Units.Unit(0,0,0,1)
 App.Units.ElectricPotential     = App.Units.Unit(2,1,-3,-1)
 App.Units.ElectricCharge        = App.Units.Unit(0,0,1,1)
 App.Units.MagneticFluxDensity   = App.Units.Unit(0,1,-2,-1)
+App.Units.Magnetization         = App.Units.Unit(-1,0,0,1)
 App.Units.ElectricalCapacitance = App.Units.Unit(-2,-1,4,2)
 App.Units.ElectricalInductance  = App.Units.Unit(2,1,-2,-2)
 App.Units.ElectricalConductance = App.Units.Unit(-2,-1,3,2)
 App.Units.ElectricalResistance  = App.Units.Unit(2,1,-3,-2)
 App.Units.ElectricalConductivity = App.Units.Unit(-3,-1,3,2)
+
 App.Units.AmountOfSubstance = App.Units.Unit(0,0,0,0,0,1)
 App.Units.LuminousIntensity = App.Units.Unit(0,0,0,0,0,0,1)
 

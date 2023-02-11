@@ -22,33 +22,22 @@
  ***************************************************************************/
 
 #include "PreCompiled.h"
-
 #ifndef _PreComp_
-#include <cmath>
+# include <cmath>
 #endif // #ifndef _PreComp_
 
+#include <App/Document.h>
 #include <Base/Console.h>
-
-#include <Gui/Application.h>
 #include <Gui/BitmapFactory.h>
 #include <Gui/Command.h>
 #include <Gui/Document.h>
-#include <Gui/Selection.h>
-#include <Gui/ViewProvider.h>
 
-#include <App/Application.h>
-#include <App/Document.h>
-#include <App/DocumentObject.h>
-
-#include <Mod/TechDraw/App/DrawViewBalloon.h>
-#include <Mod/TechDraw/App/DrawPage.h>
-#include <Mod/TechDraw/App/ArrowPropEnum.h>
-
+#include "TaskBalloon.h"
+#include "ui_TaskBalloon.h"
 #include "DrawGuiUtil.h"
 #include "QGIViewBalloon.h"
 #include "ViewProviderBalloon.h"
-#include "TaskBalloon.h"
-#include "ui_TaskBalloon.h"
+
 
 using namespace Gui;
 using namespace TechDraw;
@@ -64,26 +53,26 @@ TaskBalloon::TaskBalloon(QGIViewBalloon *parent, ViewProviderBalloon *balloonVP)
     ui->setupUi(this);
 
     ui->qsbShapeScale->setValue(parent->getBalloonFeat()->ShapeScale.getValue());
-    connect(ui->qsbShapeScale, SIGNAL(valueChanged(double)), this, SLOT(onShapeScaleChanged()));
+    connect(ui->qsbShapeScale, qOverload<double>(&QuantitySpinBox::valueChanged), this, &TaskBalloon::onShapeScaleChanged);
 
     ui->qsbSymbolScale->setValue(parent->getBalloonFeat()->EndTypeScale.getValue());
-    connect(ui->qsbSymbolScale, SIGNAL(valueChanged(double)), this, SLOT(onEndSymbolScaleChanged()));
+    connect(ui->qsbSymbolScale, qOverload<double>(&QuantitySpinBox::valueChanged), this, &TaskBalloon::onEndSymbolScaleChanged);
 
     std::string value = parent->getBalloonFeat()->Text.getValue();
     QString qs = QString::fromUtf8(value.data(), value.size());
     ui->leText->setText(qs);
     ui->leText->selectAll();
-    connect(ui->leText, SIGNAL(textChanged(QString)), this, SLOT(onTextChanged()));
-    QTimer::singleShot(0, ui->leText, SLOT(setFocus()));
+    connect(ui->leText, &QLineEdit::textChanged, this, &TaskBalloon::onTextChanged);
+    QTimer::singleShot(0, ui->leText, qOverload<>(&QLineEdit::setFocus));
 
     DrawGuiUtil::loadArrowBox(ui->comboEndSymbol);
     i = parent->getBalloonFeat()->EndType.getValue();
     ui->comboEndSymbol->setCurrentIndex(i);
-    connect(ui->comboEndSymbol, SIGNAL(currentIndexChanged(int)), this, SLOT(onEndSymbolChanged()));
+    connect(ui->comboEndSymbol, qOverload<int>(&QComboBox::currentIndexChanged), this, &TaskBalloon::onEndSymbolChanged);
 
     i = parent->getBalloonFeat()->BubbleShape.getValue();
     ui->comboBubbleShape->setCurrentIndex(i);
-    connect(ui->comboBubbleShape, SIGNAL(currentIndexChanged(int)), this, SLOT(onBubbleShapeChanged()));
+    connect(ui->comboBubbleShape, qOverload<int>(&QComboBox::currentIndexChanged), this, &TaskBalloon::onBubbleShapeChanged);
 
     ui->qsbFontSize->setUnit(Base::Unit::Length);
     ui->qsbFontSize->setMinimum(0);
@@ -97,7 +86,7 @@ TaskBalloon::TaskBalloon(QGIViewBalloon *parent, ViewProviderBalloon *balloonVP)
 
     if (balloonVP) {
         ui->textColor->setColor(balloonVP->Color.getValue().asValue<QColor>());
-        connect(ui->textColor, SIGNAL(changed()), this, SLOT(onColorChanged()));
+        connect(ui->textColor, &ColorButton::changed, this, &TaskBalloon::onColorChanged);
         ui->qsbFontSize->setValue(balloonVP->Fontsize.getValue());
         ui->comboLineVisible->setCurrentIndex(balloonVP->LineVisible.getValue());
         ui->qsbLineWidth->setValue(balloonVP->LineWidth.getValue());
@@ -105,10 +94,10 @@ TaskBalloon::TaskBalloon(QGIViewBalloon *parent, ViewProviderBalloon *balloonVP)
     // new balloons have already the preferences BalloonKink length
     ui->qsbKinkLength->setValue(parent->getBalloonFeat()->KinkLength.getValue());
 
-    connect(ui->qsbFontSize, SIGNAL(valueChanged(double)), this, SLOT(onFontsizeChanged()));
-    connect(ui->comboLineVisible, SIGNAL(currentIndexChanged(int)), this, SLOT(onLineVisibleChanged()));
-    connect(ui->qsbLineWidth, SIGNAL(valueChanged(double)), this, SLOT(onLineWidthChanged()));
-    connect(ui->qsbKinkLength, SIGNAL(valueChanged(double)), this, SLOT(onKinkLengthChanged()));
+    connect(ui->qsbFontSize, qOverload<double>(&QuantitySpinBox::valueChanged), this, &TaskBalloon::onFontsizeChanged);
+    connect(ui->comboLineVisible, qOverload<int>(&QComboBox::currentIndexChanged), this, &TaskBalloon::onLineVisibleChanged);
+    connect(ui->qsbLineWidth, qOverload<double>(&QuantitySpinBox::valueChanged), this, &TaskBalloon::onLineWidthChanged);
+    connect(ui->qsbKinkLength, qOverload<double>(&QuantitySpinBox::valueChanged), this, &TaskBalloon::onKinkLengthChanged);
 }
 
 TaskBalloon::~TaskBalloon()

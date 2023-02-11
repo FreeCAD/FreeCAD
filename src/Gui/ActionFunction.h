@@ -67,7 +67,7 @@ class GuiExport ActionFunction : public QObject
 
 public:
     /// Constructor
-    ActionFunction(QObject*);
+    explicit ActionFunction(QObject*);
     ~ActionFunction() override;
 
     /*!
@@ -96,13 +96,14 @@ class GuiExport TimerFunction : public QObject
 
 public:
     /// Constructor
-    TimerFunction(QObject* = nullptr);
+    explicit TimerFunction(QObject* = nullptr);
     ~TimerFunction() override;
 
     void setFunction(std::function<void()> func);
     void setFunction(std::function<void(QObject*)> func, QObject* args);
     void setFunction(std::function<void(QVariant)> func, QVariant args);
     void setAutoDelete(bool);
+    void singleShot(int ms);
 
 private Q_SLOTS:
     void timeout();

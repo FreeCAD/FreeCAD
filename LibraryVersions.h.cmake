@@ -9,47 +9,53 @@
 #  include <${OCC_INCLUDE_DIR}/Standard_Version.hxx>
 #endif
 
+#cmakedefine BUILD_SMESH
+
+#if defined(BUILD_SMESH)
+#  include <SMESH_Version.h>
+#endif
+
 
 /* No need for Boost (version info is always included in the source) */
 /* No need for Python (version info is always included in the source) */
 /* No need for Qt (version info is always included in the source) */
+/* No need for SMESH (version info is always included in the source) */
 /* No need for zlib (version info is always included in the source) */
 
-// No CMake version info for SMESH, libarea, Zipios, or KDL
+// No CMake version info for libarea, Zipios, or KDL
 
 // Coin3D
-constexpr char * FC_COIN3D_VERSION = "${COIN3D_VERSION}";
+constexpr char * fcCoin3dVersion = "${COIN3D_VERSION}";
 
 // Eigen3
-constexpr char * FC_EIGEN3_VERSION = "${EIGEN3_VERSION}";
+constexpr char * fcEigen3Version = "${EIGEN3_VERSION}";
 
 // FreeType
-constexpr char * FC_FREETYPE_VERSION = "${FREETYPE_VERSION_STRING}";
+constexpr char * fcFreetypeVersion = "${FREETYPE_VERSION_STRING}";
 
 // pcl
-constexpr char * FC_PCL_VERSION = "${PCL_VERSION}";
+constexpr char * fcPclVersion = "${PCL_VERSION}";
 
 // PyCXX
-constexpr char * FC_PYCXX_VERSION = "${PYCXX_VERSION}";
+constexpr char * fcPycxxVersion = "${PYCXX_VERSION}";
 
 // PySide
-constexpr char * FC_PYSIDE_VERSION = "${PySide2_VERSION}";
+constexpr char * fcPysideVersion = "${PySide2_VERSION}";
 
 // PyBind
-constexpr char * FC_PYBIND11_VERSION = "${pybind11_VERSION}";
+constexpr char * fcPybind11Version = "${pybind11_VERSION}";
 
 // Shiboken
-constexpr char * FC_SHIBOKEN_VERSION = "${Shiboken2_VERSION}";
+constexpr char * fcShibokenVersion = "${Shiboken2_VERSION}";
 
 // vtk
-constexpr char * FC_VTK_VERSION = "${VTK_VERSION}";
+constexpr char * fcVtkVersion = "${VTK_VERSION}";
 
 // Xerces-C
-constexpr char * FC_XERCESC_VERSION = "${XercesC_VERSION}";
+constexpr char * fcXercescVersion = "${XercesC_VERSION}";
 
 // Pivy
-constexpr char * FC_PIVY_VERSION = "${PIVY_VERSION}";
+constexpr char * fcPivyVersion = "${PIVY_VERSION}";
 
 
 #endif // LIBRARY_VERSIONS_H
-

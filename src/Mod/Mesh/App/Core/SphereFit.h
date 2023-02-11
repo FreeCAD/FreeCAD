@@ -20,12 +20,12 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef MESH_SPHERE_FIT_H
 #define MESH_SPHERE_FIT_H
 
-#include "Approximation.h"
 #include <Eigen/Eigenvalues>
+#include "Approximation.h"
+
 
 // -------------------------------------------------------------------------------
 namespace MeshCoreFit {
@@ -33,7 +33,7 @@ namespace MeshCoreFit {
 using Matrix4x4 = Eigen::Matrix<double,4,4,Eigen::RowMajor>;
 
 /**
- * Best-fit sphere for a given set of points. 
+ * Best-fit sphere for a given set of points.
  */
 class MeshExport SphereFit : public MeshCore::Approximation
 {

@@ -64,12 +64,12 @@ PyObject *ExpressionBindingPy::PyMake(struct _typeobject *, PyObject * args, PyO
     QWidget* obj = dynamic_cast<QWidget*>(wrap.toQObject(Py::Object(pyObj)));
     if (obj) {
         do {
-            QuantitySpinBox* qsb = qobject_cast<QuantitySpinBox*>(obj);
+            auto qsb = qobject_cast<QuantitySpinBox*>(obj);
             if (qsb) {
                 expr = qsb;
                 break;
             }
-            InputField* inp = qobject_cast<InputField*>(obj);
+            auto inp = qobject_cast<InputField*>(obj);
             if (inp) {
                 expr = inp;
                 break;

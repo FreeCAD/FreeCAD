@@ -240,7 +240,7 @@ void ViewProviderAddSub::setPreviewDisplayMode(bool onoff) {
     // not sufficient to only revert the mask mode. Also the child
     // number of the switch node must be reverted.
     if (onoff) {
-        if(pcModeSwitch->getChild(getDefaultMode()) == previewShape) 
+        if(pcModeSwitch->getChild(getDefaultMode()) == previewShape)
             return;
         displayMode = getActiveDisplayMode();
         whichChild = pcModeSwitch->whichChild.getValue();
@@ -248,7 +248,7 @@ void ViewProviderAddSub::setPreviewDisplayMode(bool onoff) {
     }
 
     if (!onoff) {
-        if(pcModeSwitch->getChild(getDefaultMode()) != previewShape) 
+        if(pcModeSwitch->getChild(getDefaultMode()) != previewShape)
             return;
         setDisplayMaskMode(displayMode.c_str());
         pcModeSwitch->whichChild.setValue(whichChild);

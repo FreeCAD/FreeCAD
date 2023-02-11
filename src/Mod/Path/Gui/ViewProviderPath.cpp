@@ -23,42 +23,35 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
+# include <boost/algorithm/string/replace.hpp>
+
 # include <Inventor/SbVec3f.h>
-# include <Inventor/nodes/SoSeparator.h>
-# include <Inventor/nodes/SoTransform.h>
-# include <Inventor/nodes/SoRotation.h>
+# include <Inventor/details/SoLineDetail.h>
 # include <Inventor/nodes/SoBaseColor.h>
-# include <Inventor/nodes/SoMaterial.h>
-# include <Inventor/nodes/SoMaterialBinding.h>
 # include <Inventor/nodes/SoCoordinate3.h>
 # include <Inventor/nodes/SoDrawStyle.h>
-# include <Inventor/nodes/SoIndexedLineSet.h>
+# include <Inventor/nodes/SoMaterial.h>
+# include <Inventor/nodes/SoMaterialBinding.h>
 # include <Inventor/nodes/SoPointSet.h>
-# include <Inventor/nodes/SoShapeHints.h>
-# include <Inventor/details/SoLineDetail.h>
+# include <Inventor/nodes/SoSeparator.h>
 # include <Inventor/nodes/SoSwitch.h>
-# include <Inventor/nodes/SoAnnotation.h>
-# include <QFile>
+# include <Inventor/nodes/SoTransform.h>
 #endif
 
-#include <boost/algorithm/string/replace.hpp>
+#include <App/Application.h>
+#include <App/DocumentObject.h>
+#include <Base/Parameter.h>
+#include <Base/Stream.h>
+#include <Gui/Application.h>
+#include <Gui/BitmapFactory.h>
+#include <Gui/SoAxisCrossKit.h>
+#include <Gui/SoFCBoundingBox.h>
+#include <Gui/SoFCUnifiedSelection.h>
+#include <Mod/Path/App/FeaturePath.h>
+#include <Mod/Path/App/PathSegmentWalker.h>
 
 #include "ViewProviderPath.h"
 
-#include <Mod/Path/App/FeaturePath.h>
-#include <Mod/Path/App/Path.h>
-#include <Mod/Path/App/PathSegmentWalker.h>
-#include <App/Application.h>
-#include <App/Document.h>
-#include <Base/FileInfo.h>
-#include <Base/Stream.h>
-#include <Base/Console.h>
-#include <Base/Parameter.h>
-#include <Gui/Application.h>
-#include <Gui/BitmapFactory.h>
-#include <Gui/SoFCBoundingBox.h>
-#include <Gui/SoAxisCrossKit.h>
-#include <Gui/SoFCUnifiedSelection.h>
 
 using namespace Gui;
 using namespace PathGui;

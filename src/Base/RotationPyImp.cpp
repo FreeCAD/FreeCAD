@@ -377,9 +377,11 @@ PyObject* RotationPy::isSame(PyObject *args)
 
 PyObject* RotationPy::isIdentity(PyObject *args)
 {
-    if (!PyArg_ParseTuple(args, ""))
+    double tol = 0.0;
+    if (!PyArg_ParseTuple(args, "|d", &tol))
         return nullptr;
-    bool null = getRotationPtr()->isIdentity();
+    bool null = tol > 0.0 ? getRotationPtr()->isIdentity(tol)
+                          : getRotationPtr()->isIdentity();
     return Py_BuildValue("O", (null ? Py_True : Py_False));
 }
 

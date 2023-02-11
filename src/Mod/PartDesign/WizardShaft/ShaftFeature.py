@@ -36,7 +36,7 @@ class ShaftFeature:
         # TODO: Discover existing sketch and get data from it
         self.sketch = self.Doc.addObject("Sketcher::SketchObject","SketchShaft")
         self.sketch.Placement = self.App.Placement(self.App.Vector(0,0,0),self.App.Rotation(0,0,0,1))
-        
+
         self.feature = 0
         self.segments = 0 # number of segments
         self.totalLength = 0 # total length of all segments
@@ -72,7 +72,7 @@ class ShaftFeature:
             # First segment of shaft
             # Create centerline
             self.sketch.addGeometry(Part.LineSegment(self.App.Vector(0,0,0), self.App.Vector(self.totalLength,0,0)))
-            self.sketch.addConstraint(Sketcher.Constraint('DistanceX',0, self.totalLength)) # Constraint1            
+            self.sketch.addConstraint(Sketcher.Constraint('DistanceX',0, self.totalLength)) # Constraint1
             self.sketch.addConstraint(Sketcher.Constraint('DistanceY', -1,1,0,1,innerradius)) # Constraint2
             self.sketch.addConstraint(Sketcher.Constraint('PointOnObject',0,1,-2)) # Constraint3
             self.sketch.addConstraint(Sketcher.Constraint('Horizontal', 0)) # Constraint4

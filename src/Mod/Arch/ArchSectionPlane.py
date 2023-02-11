@@ -948,13 +948,8 @@ class _SectionPlane:
             p.reverse()
         p.Placement = obj.Placement
         obj.Shape = p
-
-    def onChanged(self,obj,prop):
-
-        # clean svg cache if needed
-        if prop in ["Placement","Objects","OnlySolids","UseMaterialColorForFill","Clip"]:
-            self.svgcache = None
-            self.shapecache = None
+        self.svgcache = None
+        self.shapecache = None
 
     def getNormal(self,obj):
 
@@ -1054,6 +1049,7 @@ class _ViewProviderSectionPlane:
         self.drawstyle = coin.SoDrawStyle()
         self.drawstyle.style = coin.SoDrawStyle.LINES
         self.lcoords = coin.SoCoordinate3()
+        import PartGui # Required for "SoBrepEdgeSet" (because a SectionPlane is not a Part::FeaturePython object).
         ls = coin.SoType.fromName("SoBrepEdgeSet").createInstance()
         ls.coordIndex.setValues(0,57,[0,1,-1,2,3,4,5,-1,6,7,8,9,-1,10,11,-1,12,13,14,15,-1,16,17,18,19,-1,20,21,-1,22,23,24,25,-1,26,27,28,29,-1,30,31,-1,32,33,34,35,-1,36,37,38,39,-1,40,41,42,43,44])
         self.txtcoords = coin.SoTransform()
@@ -1159,7 +1155,9 @@ class _ViewProviderSectionPlane:
         elif prop == "LineWidth":
             self.drawstyle.lineWidth = vobj.LineWidth
         elif prop in ["CutView","CutMargin"]:
-            if hasattr(vobj,"CutView") and FreeCADGui.ActiveDocument.ActiveView:
+            if hasattr(vobj, "CutView") \
+                    and FreeCADGui.ActiveDocument.ActiveView \
+                    and hasattr(FreeCADGui.ActiveDocument.ActiveView, "getSceneGraph"):
                 sg = FreeCADGui.ActiveDocument.ActiveView.getSceneGraph()
                 if vobj.CutView:
                     if self.clip:
@@ -1215,7 +1213,9 @@ class _ViewProviderSectionPlane:
 
         return None
 
-    def setEdit(self,vobj,mode):
+    def setEdit(self, vobj, mode):
+        if mode != 0:
+            return None
 
         taskd = SectionPlaneTaskPanel()
         taskd.obj = vobj.Object
@@ -1223,27 +1223,35 @@ class _ViewProviderSectionPlane:
         FreeCADGui.Control.showDialog(taskd)
         return True
 
-    def unsetEdit(self,vobj,mode):
+    def unsetEdit(self, vobj, mode):
+        if mode != 0:
+            return None
 
         FreeCADGui.Control.closeDialog()
-        return False
+        return True
 
-    def doubleClicked(self,vobj):
+    def doubleClicked(self, vobj):
+        self.edit()
 
-        self.setEdit(vobj,None)
+    def setupContextMenu(self, vobj, menu):
+        actionEdit = QtGui.QAction(translate("Arch", "Edit"),
+                                   menu)
+        QtCore.QObject.connect(actionEdit,
+                               QtCore.SIGNAL("triggered()"),
+                               self.edit)
+        menu.addAction(actionEdit)
 
-    def setupContextMenu(self,vobj,menu):
-        """CONTEXT MENU setup"""
-        from PySide import QtCore,QtGui
-        action1 = QtGui.QAction(QtGui.QIcon(":/icons/Draft_Edit.svg"),"Toggle Cutview",menu)
-        action1.triggered.connect(lambda f=self.contextCutview, arg=vobj:f(arg))
-        menu.addAction(action1)
+        actionToggleCutview = QtGui.QAction(QtGui.QIcon(":/icons/Draft_Edit.svg"),
+                                            translate("Arch", "Toggle Cutview"),
+                                            menu)
+        actionToggleCutview.triggered.connect(lambda f=self.toggleCutview, arg=vobj: f(arg))
+        menu.addAction(actionToggleCutview)
 
-    def contextCutview(self,vobj):
-        """CONTEXT MENU command to toggle CutView property on and off"""
-        if vobj.CutView:
-            vobj.CutView = False
-        else: vobj.CutView = True
+    def edit(self):
+        FreeCADGui.ActiveDocument.setEdit(self.Object, 0)
+
+    def toggleCutview(self, vobj):
+        vobj.CutView = not vobj.CutView
 
 
 class _ArchDrawingView:

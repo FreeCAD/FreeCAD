@@ -44,6 +44,7 @@
 #include "PropertyView.h"
 #include "Selection.h"
 #include "Tree.h"
+#include "TreeParams.h"
 #include "View3DInventor.h"
 #include "ViewProviderDocumentObject.h"
 
@@ -77,22 +78,23 @@ DlgPropertyLink::DlgPropertyLink(QWidget* parent)
 
     timer = new QTimer(this);
     timer->setSingleShot(true);
-    connect(timer, SIGNAL(timeout()), this, SLOT(onTimer()));
+
+    connect(timer, &QTimer::timeout, this, &DlgPropertyLink::onTimer);
 
     ui->treeWidget->setEditTriggers(QAbstractItemView::DoubleClicked);
     ui->treeWidget->setItemDelegate(new ItemDelegate(this));
     ui->treeWidget->setMouseTracking(true);
-    connect(ui->treeWidget, SIGNAL(itemEntered(QTreeWidgetItem*, int)),
-            this, SLOT(onItemEntered(QTreeWidgetItem*)));
+    connect(ui->treeWidget, &QTreeWidget::itemEntered,
+            this, &DlgPropertyLink::onItemEntered);
 
-    connect(ui->treeWidget, SIGNAL(itemExpanded(QTreeWidgetItem*)),
-            this, SLOT(onItemExpanded(QTreeWidgetItem*)));
+    connect(ui->treeWidget, &QTreeWidget::itemExpanded,
+            this, &DlgPropertyLink::onItemExpanded);
 
-    connect(ui->treeWidget, SIGNAL(itemSelectionChanged()), this, SLOT(onItemSelectionChanged()));
+    connect(ui->treeWidget, &QTreeWidget::itemSelectionChanged, this, &DlgPropertyLink::onItemSelectionChanged);
 
-    connect(ui->searchBox, SIGNAL(returnPressed()), this, SLOT(onItemSearch()));
+    connect(ui->searchBox, &QLineEdit::returnPressed, this, &DlgPropertyLink::onItemSearch);
 
-    connect(ui->buttonBox, SIGNAL(clicked(QAbstractButton*)), this, SLOT(onClicked(QAbstractButton*)));
+    connect(ui->buttonBox, &QDialogButtonBox::clicked, this, &DlgPropertyLink::onClicked);
 
     refreshButton = ui->buttonBox->addButton(tr("Reset"), QDialogButtonBox::ActionRole);
     resetButton = ui->buttonBox->addButton(tr("Clear"), QDialogButtonBox::ResetRole);
@@ -449,7 +451,7 @@ void DlgPropertyLink::showEvent(QShowEvent *ev) {
 }
 
 void DlgPropertyLink::onItemEntered(QTreeWidgetItem *) {
-    int timeout = Gui::TreeParams::Instance()->PreSelectionDelay()/2;
+    int timeout = Gui::TreeParams::getPreSelectionDelay()/2;
     if(timeout < 0)
         timeout = 1;
     timer->start(timeout);
@@ -509,7 +511,7 @@ void DlgPropertyLink::onItemSelectionChanged()
 
     bool focus = false;
     // Do auto view switch if tree view does not do it
-    if(!TreeParams::Instance()->SyncView()) {
+    if(!TreeParams::getSyncView()) {
         focus = ui->treeWidget->hasFocus();
         auto doc = Gui::Application::Instance->getDocument(sobjs.front().getDocumentName().c_str());
         if(doc) {

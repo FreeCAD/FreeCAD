@@ -670,11 +670,13 @@ class _ViewProviderSpace(ArchComponent.ViewProviderComponent):
                 if hasattr(vobj,"FirstLine"):
                     scale = vobj.FirstLine.Value/vobj.FontSize.Value
                     self.header.scaleFactor.setValue([scale,scale,scale])
+                    self.onChanged(vobj, "TextPosition")
 
         elif (prop == "FirstLine"):
             if hasattr(self,"header") and hasattr(vobj,"FontSize") and hasattr(vobj,"FirstLine"):
                 scale = vobj.FirstLine.Value/vobj.FontSize.Value
                 self.header.scaleFactor.setValue([scale,scale,scale])
+                self.onChanged(vobj, "TextPosition")
 
         elif prop == "TextColor":
             if hasattr(self,"color") and hasattr(vobj,"TextColor"):
@@ -721,7 +723,10 @@ class _ViewProviderSpace(ArchComponent.ViewProviderComponent):
             if hasattr(vobj,"Transparency"):
                 self.fmat.transparency.setValue(vobj.Transparency/100.0)
 
-    def setEdit(self,vobj,mode):
+    def setEdit(self, vobj, mode):
+        if mode != 0:
+            return None
+
         taskd = SpaceTaskPanel()
         taskd.obj = self.Object
         taskd.update()

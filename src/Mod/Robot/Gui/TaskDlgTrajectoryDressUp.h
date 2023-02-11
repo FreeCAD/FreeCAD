@@ -20,23 +20,19 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef ROBOTGUI_TaskDlgTrajectoryDressUp_H
 #define ROBOTGUI_TaskDlgTrajectoryDressUp_H
 
 #include <Gui/TaskView/TaskDialog.h>
-#include <Mod/Robot/App/RobotObject.h>
-#include <Mod/Robot/App/TrajectoryObject.h>
 #include <Mod/Robot/App/TrajectoryDressUpObject.h>
 
 #include "TaskTrajectoryDressUpParameter.h"
 
+
 // forward
 namespace Gui { namespace TaskView { class TaskSelectLinkProperty;}}
 
-
 namespace RobotGui {
-
 
 /// simulation dialog for the TaskView
 class RobotGuiExport TaskDlgTrajectoryDressUp : public Gui::TaskView::TaskDialog

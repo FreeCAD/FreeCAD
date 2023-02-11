@@ -22,8 +22,9 @@
 
 #include "PreCompiled.h"
 
-#include "Workbench.h"
 #include <Gui/ToolBarManager.h>
+
+#include "Workbench.h"
 
 
 using namespace ImageGui;

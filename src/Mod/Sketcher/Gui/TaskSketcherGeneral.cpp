@@ -20,23 +20,19 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
-
-
-#include "ui_TaskSketcherGeneral.h"
-#include "TaskSketcherGeneral.h"
-#include <Gui/Application.h>
-#include <Gui/Document.h>
-#include <Gui/BitmapFactory.h>
-#include <Gui/ViewProvider.h>
-#include <Gui/WaitCursor.h>
-#include <Base/Tools.h>
-#include <Base/UnitsApi.h>
 
 #include <QEvent>
 
+#include <Base/Tools.h>
+#include <Gui/Application.h>
+#include <Gui/BitmapFactory.h>
+#include <Gui/ViewProvider.h>
+
+#include "ui_TaskSketcherGeneral.h"
+#include "TaskSketcherGeneral.h"
 #include "ViewProviderSketch.h"
+
 
 using namespace SketcherGui;
 using namespace Gui::TaskView;
@@ -49,16 +45,16 @@ SketcherGeneralWidget::SketcherGeneralWidget(QWidget *parent)
     ui->renderingOrder->setSizeAdjustPolicy(QAbstractScrollArea::AdjustToContents);
 
     // connecting the needed signals
-    connect(ui->checkBoxShowGrid, SIGNAL(toggled(bool)),
-            this, SIGNAL(emitToggleGridView(bool)));
-    connect(ui->checkBoxGridSnap, SIGNAL(toggled(bool)),
-            this, SIGNAL(emitToggleGridSnap(bool)));
-    connect(ui->gridSize, SIGNAL(valueChanged(double)),
-            this, SIGNAL(emitSetGridSize(double)));
-    connect(ui->checkBoxAutoconstraints, SIGNAL(toggled(bool)),
-            this, SIGNAL(emitToggleAutoconstraints(bool)));
-    connect(ui->checkBoxRedundantAutoconstraints, SIGNAL(toggled(bool)),
-        this, SIGNAL(emitToggleAvoidRedundant(bool)));
+    connect(ui->checkBoxShowGrid, &QCheckBox::toggled,
+            this, &SketcherGeneralWidget::emitToggleGridView);
+    connect(ui->checkBoxGridSnap, &QCheckBox::toggled,
+            this, &SketcherGeneralWidget::emitToggleGridSnap);
+    connect(ui->gridSize, qOverload<double>(&Gui::PrefQuantitySpinBox::valueChanged),
+            this, &SketcherGeneralWidget::emitSetGridSize);
+    connect(ui->checkBoxAutoconstraints, &QCheckBox::toggled,
+            this, &SketcherGeneralWidget::emitToggleAutoconstraints);
+    connect(ui->checkBoxRedundantAutoconstraints, &QCheckBox::toggled,
+            this, &SketcherGeneralWidget::emitToggleAvoidRedundant);
     ui->renderingOrder->installEventFilter(this);
 }
 
@@ -166,7 +162,6 @@ void SketcherGeneralWidget::checkAvoidRedundant(bool on)
 
 void SketcherGeneralWidget::enableGridSettings(bool on)
 {
-    ui->label->setEnabled(on);
     ui->gridSize->setEnabled(on);
     ui->checkBoxGridSnap->setEnabled(on);
 }
@@ -212,33 +207,33 @@ TaskSketcherGeneral::TaskSketcherGeneral(ViewProviderSketch *sketchView)
 
     // connecting the needed signals
     QObject::connect(
-        widget, SIGNAL(emitToggleGridView(bool)),
-        this  , SLOT  (onToggleGridView(bool))
+        widget, &SketcherGeneralWidget::emitToggleGridView,
+        this  , &TaskSketcherGeneral::onToggleGridView
     );
 
     QObject::connect(
-        widget, SIGNAL(emitToggleGridSnap(bool)),
-        this  , SLOT  (onToggleGridSnap(bool))
+        widget, &SketcherGeneralWidget::emitToggleGridSnap,
+        this  , &TaskSketcherGeneral::onToggleGridSnap
     );
 
     QObject::connect(
-        widget, SIGNAL(emitSetGridSize(double)),
-        this  , SLOT  (onSetGridSize(double))
+        widget, &SketcherGeneralWidget::emitSetGridSize,
+        this  , &TaskSketcherGeneral::onSetGridSize
     );
 
     QObject::connect(
-        widget, SIGNAL(emitToggleAutoconstraints(bool)),
-        this  , SLOT  (onToggleAutoconstraints(bool))
+        widget, &SketcherGeneralWidget::emitToggleAutoconstraints,
+        this  , &TaskSketcherGeneral::onToggleAutoconstraints
     );
     
     QObject::connect(
-        widget, SIGNAL(emitToggleAvoidRedundant(bool)),
-        this  , SLOT  (onToggleAvoidRedundant(bool))
+        widget, &SketcherGeneralWidget::emitToggleAvoidRedundant,
+        this  , &TaskSketcherGeneral::onToggleAvoidRedundant
     );
 
     QObject::connect(
-        widget, SIGNAL(emitRenderOrderChanged()),
-        this  , SLOT  (onRenderOrderChanged())
+        widget, &SketcherGeneralWidget::emitRenderOrderChanged,
+        this  , &TaskSketcherGeneral::onRenderOrderChanged
     );
 
     Gui::Selection().Attach(this);

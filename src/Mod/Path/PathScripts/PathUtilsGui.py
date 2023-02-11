@@ -22,18 +22,18 @@
 
 import FreeCADGui
 import FreeCAD
-import PathGui as PGui  # ensure Path/Gui/Resources are loaded
-import PathScripts
-import PathScripts.PathJobCmd as PathJobCmd
+import Path
+import Path.Main.Gui.JobCmd as PathJobCmd
+import Path.Tool.Controller as PathToolController
+import PathGui
 import PathScripts.PathUtils as PathUtils
 from PySide import QtGui
-import PathScripts.PathLog as PathLog
 
 if False:
-    PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
-    PathLog.trackModule(PathLog.thisModule())
+    Path.Log.setLevel(Path.Log.Level.DEBUG, Path.Log.thisModule())
+    Path.Log.trackModule(Path.Log.thisModule())
 else:
-    PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
+    Path.Log.setLevel(Path.Log.Level.INFO, Path.Log.thisModule())
 
 translate = FreeCAD.Qt.translate
 
@@ -45,9 +45,7 @@ class PathUtilsUserInput(object):
         # Return the first one and remove all from selection
         for sel in FreeCADGui.Selection.getSelectionEx():
             if hasattr(sel.Object, "Proxy"):
-                if isinstance(
-                    sel.Object.Proxy, PathScripts.PathToolController.ToolController
-                ):
+                if isinstance(sel.Object.Proxy, PathToolController.ToolController):
                     if tc is None:
                         tc = sel.Object
                     FreeCADGui.Selection.removeSelection(sel.Object)

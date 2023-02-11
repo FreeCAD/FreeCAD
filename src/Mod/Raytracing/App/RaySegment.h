@@ -20,22 +20,16 @@
  *                                                                         *
  ***************************************************************************/
 
- 
-
-
 #ifndef _RaySegment_h_
 #define _RaySegment_h_
 
-
 #include <App/DocumentObject.h>
 #include <App/PropertyStandard.h>
-#include <App/PropertyGeo.h>
 #include <Mod/Raytracing/RaytracingGlobal.h>
 
 
 namespace Raytracing
 {
-
 
 /** Base class of all View Features in the drawing module
  */

@@ -49,9 +49,9 @@ std::string CirclePy::representation() const
 
     std::stringstream str;
     str << "Circle (";
-    str << "Radius : " << fRad << ", "; 
-    str << "Position : (" << loc.X() << ", "<< loc.Y() << ", "<< loc.Z() << "), "; 
-    str << "Direction : (" << dir.X() << ", "<< dir.Y() << ", "<< dir.Z() << ")"; 
+    str << "Radius : " << fRad << ", ";
+    str << "Position : (" << loc.X() << ", "<< loc.Y() << ", "<< loc.Z() << "), ";
+    str << "Direction : (" << dir.X() << ", "<< dir.Y() << ", "<< dir.Z() << ")";
     str << ")";
 
     return str.str();
@@ -59,7 +59,7 @@ std::string CirclePy::representation() const
 
 PyObject *CirclePy::PyMake(struct _typeobject *, PyObject *, PyObject *)  // Python wrapper
 {
-    // create a new instance of CirclePy and the Twin object 
+    // create a new instance of CirclePy and the Twin object
     Handle(Geom_Circle) circle = new Geom_Circle(gp_Circ());
     return new CirclePy(new GeomCircle(circle));
 }
@@ -164,7 +164,7 @@ int CirclePy::PyInit(PyObject* args, PyObject* kwds)
 Py::Float CirclePy::getRadius() const
 {
     Handle(Geom_Circle) circle = Handle(Geom_Circle)::DownCast(getGeomCirclePtr()->handle());
-    return Py::Float(circle->Radius()); 
+    return Py::Float(circle->Radius());
 }
 
 void  CirclePy::setRadius(Py::Float arg)
@@ -180,5 +180,5 @@ PyObject *CirclePy::getCustomAttributes(const char* ) const
 
 int CirclePy::setCustomAttributes(const char* , PyObject *)
 {
-    return 0; 
+    return 0;
 }

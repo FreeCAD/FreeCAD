@@ -31,7 +31,7 @@ namespace Gui {
     class ViewProvider;
 }
 
-namespace PartGui { 
+namespace PartGui {
 
 class ViewProviderPartExt;
 

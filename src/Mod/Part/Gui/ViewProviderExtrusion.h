@@ -39,7 +39,7 @@ public:
     /// destructor
     ~ViewProviderExtrusion() override;
 
-    /// grouping handling 
+    /// grouping handling
     std::vector<App::DocumentObject*> claimChildren(void)const override;
 };
 

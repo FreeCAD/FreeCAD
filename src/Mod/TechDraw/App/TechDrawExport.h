@@ -22,14 +22,14 @@
 //this file originally part of Drawing workbench
 //migrated to TechDraw workbench 2022-01-26 by Wandererfan
 
-
 #ifndef TECHDRAW_EXPORT_H
 #define TECHDRAW_EXPORT_H
 
-#include <Mod/TechDraw/TechDrawGlobal.h>
-
 #include <string>
 #include <TopoDS_Edge.hxx>
+
+#include <Mod/TechDraw/TechDrawGlobal.h>
+
 
 class TopoDS_Shape;
 class BRepAdaptor_Curve;

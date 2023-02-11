@@ -20,14 +20,12 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef FEM_ViewProviderSolver_H
 #define FEM_ViewProviderSolver_H
 
-#include <Gui/ViewProviderGeometryObject.h>
-#include <Gui/ViewProviderBuilder.h>
 #include <Gui/ViewProviderPythonFeature.h>
 #include <Mod/Fem/FemGlobal.h>
+
 
 class SoCoordinate3;
 class SoDrawStyle;
@@ -38,8 +36,6 @@ class SoMaterialBinding;
 
 namespace FemGui
 {
-
-
 
 class FemGuiExport ViewProviderSolver : public Gui::ViewProviderDocumentObject
 {

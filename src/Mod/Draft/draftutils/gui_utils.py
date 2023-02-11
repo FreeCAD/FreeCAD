@@ -337,6 +337,65 @@ def remove_hidden(objectslist):
 removeHidden = remove_hidden
 
 
+def get_diffuse_color(objs):
+    """Get a (cumulative) diffuse color from one or more objects.
+    Part::Feature objects are processed. Objects with Groups are recursively
+    checked for those objects.
+
+    If all tuples in the result are identical a list with a single tuple is
+    returned. In theory all faces of an object can be set to the same diffuse
+    color that is different from its shape color, but that seems rare. The
+    function does not take that into acount.
+
+    Parameters
+    ----------
+    objs: a single object or an iterable with objects.
+
+    Returns
+    -------
+    list of tuples
+        The list will be empty if no valid object is found.
+    """
+    def _get_color(obj):
+        if obj.isDerivedFrom("Part::Feature"):
+            if len(obj.ViewObject.DiffuseColor) == len(obj.Shape.Faces):
+                return obj.ViewObject.DiffuseColor
+            else:
+                col = obj.ViewObject.ShapeColor
+                col = (col[0], col[1], col[2], obj.ViewObject.Transparency / 100.0)
+                return [col] * len(obj.Shape.Faces)
+        elif obj.hasExtension("App::GeoFeatureGroupExtension"):
+            cols = []
+            for sub in obj.Group:
+                cols += _get_color(sub)
+            return cols
+        else:
+            return []
+
+    if not isinstance(objs, list):
+        # Quick check to avoid processing a single object:
+        obj = objs
+        if obj.isDerivedFrom("Part::Feature") \
+                and (len(obj.ViewObject.DiffuseColor) == 1 \
+                        or len(obj.ViewObject.DiffuseColor) == len(obj.Shape.Faces)):
+            return obj.ViewObject.DiffuseColor
+        # Create a list for further processing:
+        objs = [objs]
+
+    colors = []
+    for obj in objs:
+        colors += _get_color(obj)
+
+    if len(colors) > 1:
+        first = colors[0]
+        for next in colors[1:]:
+            if next != first:
+                break
+        else:
+            colors = [first]
+    return colors
+
+
 def format_object(target, origin=None):
     """Apply visual properties from the Draft toolbar or another object.
 
@@ -398,8 +457,6 @@ def format_object(target, origin=None):
         if not origin or not hasattr(origin, 'ViewObject'):
             if "FontSize" in obrep.PropertiesList:
                 obrep.FontSize = fs
-            if "TextSize" in obrep.PropertiesList:
-                obrep.TextSize = fs
             if "TextColor" in obrep.PropertiesList:
                 obrep.TextColor = tcol
             if "LineWidth" in obrep.PropertiesList:
@@ -407,12 +464,7 @@ def format_object(target, origin=None):
             if "PointColor" in obrep.PropertiesList:
                 obrep.PointColor = lcol
             if "LineColor" in obrep.PropertiesList:
-                if hasattr(obrep,"FontName") and (not hasattr(obrep,"TextColor")):
-                    # dimensions and other objects with text but no specific
-                    # TextColor property. TODO: Add TextColor property to dimensions
-                    obrep.LineColor = tcol
-                else:
-                    obrep.LineColor = lcol
+                obrep.LineColor = lcol
             if "ShapeColor" in obrep.PropertiesList:
                 obrep.ShapeColor = fcol
         else:
@@ -432,9 +484,10 @@ def format_object(target, origin=None):
                                 pass
             if matchrep.DisplayMode in obrep.listDisplayModes():
                 obrep.DisplayMode = matchrep.DisplayMode
-            if (hasattr(matchrep, "DiffuseColor")
-                    and hasattr(obrep, "DiffuseColor")):
-                obrep.DiffuseColor = matchrep.DiffuseColor
+            if hasattr(obrep, "DiffuseColor"):
+                difcol = get_diffuse_color(origin)
+                if difcol:
+                    obrep.DiffuseColor = difcol
 
 
 formatObject = format_object

@@ -48,23 +48,6 @@ SET(Blending_SRCS
   Blending/BlendCurve.h
 )
 
-SET(BlendingPy_SRCS
-  Blending/BlendPointPy.xml
-  Blending/BlendPointPyImp.cpp
-  Blending/BlendCurvePy.xml
-  Blending/BlendCurvePyImp.cpp
-)
-SOURCE_GROUP("Blending" FILES ${BlendingPy_SRCS})
-
-SET(Blending_SRCS
-  Blending/FeatureBlendCurve.cpp
-  Blending/FeatureBlendCurve.h
-  Blending/BlendPoint.cpp
-  Blending/BlendPoint.h
-  Blending/BlendCurve.cpp
-  Blending/BlendCurve.h
-)
-
 SET(Surface_SRCS
   ${Blending_SRCS}
   ${BlendingPy_SRCS}
@@ -84,6 +67,12 @@ SET(Surface_SRCS
   FeatureCut.cpp
   FeatureCut.h
 )
+
+if(FREECAD_USE_PCH)
+    add_definitions(-D_PreComp_)
+    GET_MSVC_PRECOMPILED_SOURCE("PreCompiled.cpp" PCH_SRCS ${Surface_SRCS})
+    ADD_MSVC_PRECOMPILED_HEADER(Surface PreCompiled.h PreCompiled.cpp PCH_SRCS)
+endif(FREECAD_USE_PCH)
 
 link_directories(${OCC_LIBRARY_DIR})
 add_library(Surface SHARED ${Surface_SRCS})

@@ -43,7 +43,7 @@ public:
     ~ViewProviderBoolean() override;
 
     App::PropertyEnumeration Display;
-    
+
     /// grouping handling
     void setupContextMenu(QMenu*, QObject*, const char*) override;
 
@@ -53,7 +53,7 @@ public:
 
 protected:
     bool setEdit(int ModNum) override;
-    
+
     static const char* DisplayEnum[];
 
 };

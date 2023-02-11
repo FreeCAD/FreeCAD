@@ -20,13 +20,13 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
 #include <cmath>
 
-#include "Definitions.h"
 #include <Base/Tools.h>
+#include "Definitions.h"
+
 
 namespace MeshCore {
 

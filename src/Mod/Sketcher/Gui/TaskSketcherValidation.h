@@ -20,19 +20,20 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef SKETCHERGUI_TASKSKETCHERVALIDATION_H
 #define SKETCHERGUI_TASKSKETCHERVALIDATION_H
 
-#include <vector>
 #include <memory>
-#include <Base/Vector3D.h>
+#include <vector>
+
 #include <App/DocumentObserver.h>
+#include <Base/Vector3D.h>
 #include <Gui/TaskView/TaskDialog.h>
 #include <Mod/Sketcher/App/SketchAnalysis.h>
 
+
 class SoGroup;
-namespace Sketcher { class SketchObject; } 
+namespace Sketcher { class SketchObject; }
 
 namespace SketcherGui {
 

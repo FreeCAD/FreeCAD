@@ -1,15 +1,15 @@
-![Logo](https://www.freecadweb.org/images/logo.png)
+<a href="https://freecadweb.org"><img src="https://www.freecadweb.org/svg/icon-freecad.svg" height="100px" width="100px"></a>
 
 ### Your own 3D parametric modeler
 
 [Website](https://www.freecadweb.org) • 
 [Documentation](https://wiki.freecadweb.org) •
 [Forum](https://forum.freecadweb.org/) •
-[Bug tracker](https://www.freecadweb.org/tracker/) •
+[Bug tracker](https://github.com/FreeCAD/FreeCAD/issues) •
 [Git repository](https://github.com/FreeCAD/FreeCAD)
 
 
-[![Release](https://img.shields.io/github/release/freecad/freecad.svg)](https://github.com/freecad/freecad/releases/latest) [![Master][freecad-master-status]][gitlab-branch-master] [![Crowdin](https://d322cqt584bo4o.cloudfront.net/freecad/localized.svg)](https://crowdin.com/project/freecad) [![Gitter](https://img.shields.io/gitter/room/freecad/freecad.svg)](https://gitter.im/freecad/freecad?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge) [![Language grade: Python](https://img.shields.io/lgtm/grade/python/g/FreeCAD/FreeCAD.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/FreeCAD/FreeCAD/context:python) [![Language grade: C/C++](https://img.shields.io/lgtm/grade/cpp/g/FreeCAD/FreeCAD.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/FreeCAD/FreeCAD/context:cpp) [![Liberapay](https://img.shields.io/liberapay/receives/FreeCAD.svg?logo=liberapay)](https://liberapay.com/FreeCAD)
+[![Release](https://img.shields.io/github/release/freecad/freecad.svg)](https://github.com/freecad/freecad/releases/latest) [![Master][freecad-master-status]][gitlab-branch-master] [![Crowdin](https://d322cqt584bo4o.cloudfront.net/freecad/localized.svg)](https://crowdin.com/project/freecad) [![Gitter](https://img.shields.io/gitter/room/freecad/freecad.svg)](https://gitter.im/freecad/freecad?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge) [![Liberapay](https://img.shields.io/liberapay/receives/FreeCAD.svg?logo=liberapay)](https://liberapay.com/FreeCAD)
 
 <img src="https://user-images.githubusercontent.com/1828501/174066870-1692005b-f8d7-43fb-a289-6d2f07f73d7f.png" width="800"/>
 
@@ -97,8 +97,9 @@ To report an issue please:
 - Upload an example file to demonstrate problem. 
 
 For more detail see:
-- [Wiki Page about the Bug Tracker](https://wiki.freecadweb.org/Tracker)
-- [Bug Tracker](https://tracker.freecadweb.org)
+- [Bug Tracker](https://github.com/FreeCAD/FreeCAD/issues)
+- [Reporting Issues and Requesting Features](https://github.com/FreeCAD/FreeCAD/issues/new/choose)
+- [Contributing](https://github.com/FreeCAD/FreeCAD/blob/master/CONTRIBUTING.md)
 - [Help Forum](https://forum.freecadweb.org/viewforum.php?f=3)
 
 

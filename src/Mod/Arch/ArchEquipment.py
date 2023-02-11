@@ -285,7 +285,7 @@ class _Equipment(ArchComponent.Component):
         self.addSketchArchFeatures(obj)
 
     def addSketchArchFeatures(self,obj,linkObj=None,mode=None):
-        ''' 
+        '''
            To add features in the SketchArch External Add-on, if present (https://github.com/paullee0/FreeCAD_SketchArch)
            -  import ArchSketchObject module, and
            -  set properties that are common to ArchObjects (including Links) and ArchSketch
@@ -348,7 +348,7 @@ class _Equipment(ArchComponent.Component):
         self.executeSketchArchFeatures(obj)
 
     def executeSketchArchFeatures(self, obj, linkObj=None, index=None, linkElement=None):
-        ''' 
+        '''
            To execute features in the SketchArch External Add-on  (https://github.com/paullee0/FreeCAD_SketchArch)
            -  import ArchSketchObject module, and
            -  execute features that are common to ArchObjects (including Links) and ArchSketch
@@ -377,7 +377,7 @@ class _Equipment(ArchComponent.Component):
 
         # Execute features in the SketchArch External Add-on, if present
         self.executeSketchArchFeatures(obj, linkObj)
- 
+
     def computeAreas(self,obj):
         return
 

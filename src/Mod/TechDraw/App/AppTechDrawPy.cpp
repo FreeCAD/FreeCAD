@@ -21,67 +21,55 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 #ifndef _PreComp_
-#include <TopoDS.hxx>
-#include <TopoDS_Edge.hxx>
-#include <TopoDS_Face.hxx>
-#include <TopoDS_Wire.hxx>
-#include <TopoDS_Compound.hxx>
-#include <gp_Trsf.hxx>
-#include <gp_Vec.hxx>
-#include <BRep_Builder.hxx>
-#include <BRepBuilderAPI_Transform.hxx>
-#include <BRepTools.hxx>
+# include <BRep_Builder.hxx>
+# include <BRepBuilderAPI_Transform.hxx>
+# include <gp_Trsf.hxx>
+# include <gp_Vec.hxx>
+# include <TopoDS.hxx>
+# include <TopoDS_Compound.hxx>
+# include <TopoDS_Edge.hxx>
+# include <TopoDS_Face.hxx>
+# include <TopoDS_Wire.hxx>
 #endif
 
-#include <Mod/TechDraw/TechDrawGlobal.h>
-
-#include <boost/regex.hpp>
-
-#include <CXX/Extensions.hxx>
-#include <CXX/Objects.hxx>
-
-#include <Base/Console.h>
-#include <Base/PyObjectBase.h>
-#include <Base/Exception.h>
-#include <Base/GeometryPyCXX.h>
-#include <Base/Vector3D.h>
-#include <Base/VectorPy.h>
+#include <boost_regex.hpp>
 
 #include <App/DocumentObject.h>
 #include <App/DocumentObjectPy.h>
-
+#include <Base/Console.h>
+#include <Base/Exception.h>
+#include <Base/Vector3D.h>
+#include <Base/VectorPy.h>
+#include <Mod/Import/App/dxf/ImpExpDxf.h>
+#include <Mod/Part/App/OCCError.h>
 #include <Mod/Part/App/TopoShape.h>
-#include <Mod/Part/App/TopoShapePy.h>
+#include <Mod/Part/App/TopoShapeCompoundPy.h>
 #include <Mod/Part/App/TopoShapeEdgePy.h>
 #include <Mod/Part/App/TopoShapeFacePy.h>
+#include <Mod/Part/App/TopoShapePy.h>
 #include <Mod/Part/App/TopoShapeWirePy.h>
-#include <Mod/Part/App/TopoShapeCompoundPy.h>
-#include <Mod/Part/App/OCCError.h>
+#include <Mod/TechDraw/TechDrawGlobal.h>
 
-#include <Mod/Import/App/dxf/ImpExpDxf.h>
-
-#include "DrawProjectSplit.h"
-#include "DrawViewPart.h"
-#include "DrawViewPartPy.h"
-#include "DrawViewAnnotation.h"
-#include "DrawViewDimension.h"
+#include "DimensionGeometry.h"
+#include "DrawDimHelper.h"
+#include "DrawGeomHatch.h"
 #include "DrawPage.h"
 #include "DrawPagePy.h"
-#include "Geometry.h"
-#include "GeometryObject.h"
-#include "EdgeWalker.h"
-#include "DrawUtil.h"
+#include "DrawProjectSplit.h"
 #include "DrawProjGroup.h"
 #include "DrawProjGroupItem.h"
-#include "DrawDimHelper.h"
-#include "HatchLine.h"
-#include "DrawGeomHatch.h"
-
-#include "TechDrawExport.h"
+#include "DrawUtil.h"
+#include "DrawViewAnnotation.h"
+#include "DrawViewDimension.h"
+#include "DrawViewPart.h"
+#include "DrawViewPartPy.h"
+#include "EdgeWalker.h"
+#include "Geometry.h"
+#include "GeometryObject.h"
 #include "ProjectionAlgos.h"
+#include "TechDrawExport.h"
 
 
 namespace TechDraw {
@@ -254,7 +242,6 @@ private:
         }
 
         if (edgeList.empty()) {
-            Base::Console().Log("LOG - edgeWalker: input is empty\n");
             return Py::None();
         }
 
@@ -278,11 +265,12 @@ private:
             throw Py::Exception();
         }
 
-        if(sortedWires.empty()) {
+        if (sortedWires.empty()) {
             Base::Console().Warning("ATDP::edgeWalker: Wire detection failed\n");
             return Py::None();
-        } else {
-            for (auto& w:sortedWires) {
+        }
+        else {
+            for (auto& w : sortedWires) {
                 PyObject* wire = new TopoShapeWirePy(new TopoShape(w));
                 result.append(Py::asObject(wire));
             }
@@ -380,7 +368,6 @@ private:
         }
 
         if (edgeList.empty()) {
-            Base::Console().Log("LOG - ATDP::findShapeOutline: input is empty\n");
             return Py::None();
         }
 
@@ -424,7 +411,7 @@ private:
             if (PyObject_TypeCheck(viewObj, &(TechDraw::DrawViewPartPy::Type))) {
                 obj = static_cast<App::DocumentObjectPy*>(viewObj)->getDocumentObjectPtr();
                 dvp = static_cast<TechDraw::DrawViewPart*>(obj);
-                TechDraw::GeometryObject* gObj = dvp->getGeometryObject();
+                TechDraw::GeometryObjectPtr gObj = dvp->getGeometryObject();
                 TopoDS_Shape shape = TechDraw::mirrorShape(gObj->getVisHard());
                 ss << dxfOut.exportEdges(shape);
                 shape = TechDraw::mirrorShape(gObj->getVisOutline());
@@ -482,7 +469,7 @@ private:
             if (PyObject_TypeCheck(viewObj, &(TechDraw::DrawViewPartPy::Type))) {
                 obj = static_cast<App::DocumentObjectPy*>(viewObj)->getDocumentObjectPtr();
                 dvp = static_cast<TechDraw::DrawViewPart*>(obj);
-                TechDraw::GeometryObject* gObj = dvp->getGeometryObject();
+                TechDraw::GeometryObjectPtr gObj = dvp->getGeometryObject();
                 //visible group begin "<g ... >"
                 ss << grpHead1;
 //                double thick = dvp->LineWidth.getValue();
@@ -546,7 +533,7 @@ private:
     {
         if(!dvp->hasGeometry())
             return;
-        TechDraw::GeometryObject* gObj = dvp->getGeometryObject();
+        TechDraw::GeometryObjectPtr gObj = dvp->getGeometryObject();
         TopoDS_Shape shape = TechDraw::mirrorShape(gObj->getVisHard());
         double offX = 0.0;
         double offY = 0.0;
@@ -610,7 +597,7 @@ private:
         //add the cosmetic edges also
         std::vector<TechDraw::BaseGeomPtr> geoms = dvp->getEdgeGeometry();
         std::vector<TopoDS_Edge> cosmeticEdges;
-        for (auto& g: geoms) {
+        for (auto& g : geoms) {
             if (g->hlrVisible && g->cosmetic) {
                 cosmeticEdges.push_back(g->occEdge);
             }
@@ -738,13 +725,13 @@ private:
                             Base::Vector3d textLocn(dvd->X.getValue() + parentX, dvd->Y.getValue() + parentY, 0.0);
                             Base::Vector3d lineLocn(dvd->X.getValue() + parentX, dvd->Y.getValue() + parentY, 0.0);
                             pointPair pts = dvd->getLinearPoints();
-                            Base::Vector3d dimLine = pts.first - pts.second;
+                            Base::Vector3d dimLine = pts.first() - pts.second();
                             Base::Vector3d norm(-dimLine.y, dimLine.x, 0.0);
                             norm.Normalize();
                             lineLocn = lineLocn + (norm * gap);
-                            Base::Vector3d extLine1Start = Base::Vector3d(pts.first.x, -pts.first.y, 0.0) +
+                            Base::Vector3d extLine1Start = Base::Vector3d(pts.first().x, - pts.first().y, 0.0) +
                                                            Base::Vector3d(parentX, parentY, 0.0);
-                            Base::Vector3d extLine2Start = Base::Vector3d(pts.second.x, -pts.second.y, 0.0) +
+                            Base::Vector3d extLine2Start = Base::Vector3d(pts.second().x, - pts.second().y, 0.0) +
                                                            Base::Vector3d(parentX, parentY, 0.0);
                             if (dvd->Type.isValue("DistanceX") ) {
                                 type = 1;
@@ -756,12 +743,12 @@ private:
                             Base::Vector3d textLocn(dvd->X.getValue() + parentX, dvd->Y.getValue() + parentY, 0.0);
                             Base::Vector3d lineLocn(dvd->X.getValue() + parentX, dvd->Y.getValue() + parentY, 0.0);
                             anglePoints pts = dvd->getAnglePoints();
-                            Base::Vector3d end1 = pts.ends.first;
+                            Base::Vector3d end1 = pts.first();
                             end1.y = -end1.y;
-                            Base::Vector3d end2 = pts.ends.second;
+                            Base::Vector3d end2 = pts.second();
                             end2.y = -end2.y;
 
-                            Base::Vector3d apex = pts.vertex;
+                            Base::Vector3d apex = pts.vertex();
                             apex.y = -apex.y;
                             apex = apex + parentPos;
 
@@ -779,7 +766,7 @@ private:
                             Base::Vector3d center = pts.center;
                             center.y = -center.y;
                             center = center + parentPos;
-                            Base::Vector3d lineDir = (arrowPts.first - arrowPts.second).Normalize();
+                            Base::Vector3d lineDir = (arrowPts.first() - arrowPts.second()).Normalize();
                             Base::Vector3d arcPoint = center + lineDir * pts.radius;
                             writer.exportRadialDim(center, textLocn, arcPoint, dimText);
                         } else if(dvd->Type.isValue("Diameter")){
@@ -789,7 +776,7 @@ private:
                             Base::Vector3d center = pts.center;
                             center.y = -center.y;
                             center = center + parentPos;
-                            Base::Vector3d lineDir = (arrowPts.first - arrowPts.second).Normalize();
+                            Base::Vector3d lineDir = (arrowPts.first() - arrowPts.second()).Normalize();
                             Base::Vector3d end1 = center + lineDir * pts.radius;
                             Base::Vector3d end2 = center - lineDir * pts.radius;
                             writer.exportDiametricDim(textLocn, end1, end2, dimText);
@@ -1027,9 +1014,9 @@ private:
             TopoDS_Compound comp;
             builder.MakeCompound(comp);
             try {
-                for (auto& lsr:lsresult) {
+                for (auto& lsr : lsresult) {
                     std::vector<TopoDS_Edge> edgeList = lsr.getEdges();
-                    for (auto& edge:edgeList) {
+                    for (auto& edge : edgeList) {
                         if (!edge.IsNull()) {
                             builder.Add(comp, edge);
                         }

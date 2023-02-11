@@ -22,32 +22,23 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-#include <cassert>
-#include <QGraphicsScene>
-#include <QGraphicsSceneHoverEvent>
-#include <qmath.h>
-#include <QMouseEvent>
-#include <QPaintDevice>
-#include <QPainter>
-#include <QPrinter>
-#include <QRectF>
-#include <QSvgGenerator>
-#include <QStyleOptionGraphicsItem>
+# include <cassert>
+
+# include <QGraphicsSceneHoverEvent>
+# include <QPainter>
+# include <QRectF>
+# include <QStyleOptionGraphicsItem>
 #endif
 
 #include <App/Application.h>
-#include <App/Material.h>
 #include <Base/Console.h>
 #include <Base/Parameter.h>
 
-#include "DrawGuiUtil.h"
+#include "QGCustomText.h"
 #include "PreferencesGui.h"
 #include "QGICMark.h"
-#include "QGIView.h"
-#include "Rez.h"
 #include "ZVALUE.h"
 
-#include "QGCustomText.h"
 
 using namespace TechDrawGui;
 

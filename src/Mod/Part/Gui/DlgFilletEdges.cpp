@@ -20,58 +20,56 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <algorithm>
 # include <climits>
 # include <sstream>
+# include <QHeaderView>
+# include <QItemDelegate>
+# include <QItemSelectionModel>
+# include <QLocale>
+# include <QMessageBox>
+# include <QTimer>
+# include <QVBoxLayout>
+
 # include <BRep_Tool.hxx>
 # include <TopoDS.hxx>
 # include <TopoDS_Edge.hxx>
 # include <TopoDS_Shape.hxx>
 # include <TopExp.hxx>
-# include <TopExp_Explorer.hxx>
 # include <TopTools_ListOfShape.hxx>
 # include <TopTools_IndexedDataMapOfShapeListOfShape.hxx>
 # include <TopTools_IndexedMapOfShape.hxx>
-# include <QItemDelegate>
-# include <QLocale>
-# include <QHeaderView>
-# include <QMessageBox>
-# include <QVBoxLayout>
-# include <QItemSelection>
-# include <QItemSelectionModel>
-# include <QTimer>
+
 # include <Inventor/actions/SoSearchAction.h>
 # include <Inventor/details/SoLineDetail.h>
 #endif
 
-#include "DlgFilletEdges.h"
-#include "ui_DlgFilletEdges.h"
-#include "SoBrepFaceSet.h"
-#include "SoBrepEdgeSet.h"
-#include "SoBrepPointSet.h"
-
-
-#include "../App/PartFeature.h"
-#include "../App/FeatureFillet.h"
-#include "../App/FeatureChamfer.h"
-#include <Base/UnitsApi.h>
 #include <App/Application.h>
 #include <App/Document.h>
 #include <App/DocumentObject.h>
+#include <Base/UnitsApi.h>
 #include <Gui/Application.h>
 #include <Gui/BitmapFactory.h>
 #include <Gui/Command.h>
 #include <Gui/QuantitySpinBox.h>
-#include <Gui/WaitCursor.h>
 #include <Gui/Selection.h>
 #include <Gui/SelectionFilter.h>
 #include <Gui/SelectionObject.h>
 #include <Gui/SoFCUnifiedSelection.h>
 #include <Gui/ViewProvider.h>
+#include <Gui/WaitCursor.h>
 #include <Gui/Window.h>
+#include <Mod/Part/App/FeatureChamfer.h>
+#include <Mod/Part/App/FeatureFillet.h>
+
+#include "DlgFilletEdges.h"
+#include "ui_DlgFilletEdges.h"
+#include "SoBrepEdgeSet.h"
+#include "SoBrepFaceSet.h"
+#include "SoBrepPointSet.h"
+
 
 using namespace PartGui;
 namespace bp = boost::placeholders;
@@ -249,16 +247,16 @@ DlgFilletEdges::DlgFilletEdges(FilletType type, Part::FilletBase* fillet, QWidge
     d->connectApplicationDeletedDocument = App::GetApplication().signalDeleteDocument
         .connect(boost::bind(&DlgFilletEdges::onDeleteDocument, this, bp::_1));
     // set tree view with three columns
-    QStandardItemModel* model = new FilletRadiusModel(this);
-    connect(model, SIGNAL(toggleCheckState(const QModelIndex&)),
-            this, SLOT(toggleCheckState(const QModelIndex&)));
+    FilletRadiusModel* model = new FilletRadiusModel(this);
+    connect(model, &FilletRadiusModel::toggleCheckState,
+            this, &DlgFilletEdges::toggleCheckState);
     model->insertColumns(0,3);
 
     // timer for highlighting
     d->highlighttimer = new QTimer(this);
     d->highlighttimer->setSingleShot(true);
-    connect(d->highlighttimer,SIGNAL(timeout()),
-            this, SLOT(onHighlightEdges()));
+    connect(d->highlighttimer, &QTimer::timeout,
+            this, &DlgFilletEdges::onHighlightEdges);
 
     d->filletType = type;
     if (d->filletType == DlgFilletEdges::CHAMFER) {
@@ -291,7 +289,7 @@ DlgFilletEdges::DlgFilletEdges(FilletType type, Part::FilletBase* fillet, QWidge
     findShapes();
 }
 
-/*  
+/*
  *  Destroys the object and frees any allocated resources
  */
 DlgFilletEdges::~DlgFilletEdges()
@@ -431,7 +429,7 @@ void DlgFilletEdges::onSelectEdge(const QString& subelement, int type)
 void DlgFilletEdges::onSelectEdgesOfFace(const QString& subelement, int type)
 {
     bool ok;
-    int index = subelement.midRef(4).toInt(&ok);
+    int index = subelement.mid(4).toInt(&ok);
     if (ok) {
         try {
             const TopoDS_Shape& face = d->all_faces.FindKey(index);
@@ -979,8 +977,8 @@ FilletEdgesDialog::FilletEdgesDialog(DlgFilletEdges::FilletType type, Part::Fill
     QDialogButtonBox* buttonBox = new QDialogButtonBox(this);
     buttonBox->setStandardButtons(QDialogButtonBox::Cancel|QDialogButtonBox::Ok);
 
-    QObject::connect(buttonBox, SIGNAL(accepted()), this, SLOT(accept()));
-    QObject::connect(buttonBox, SIGNAL(rejected()), this, SLOT(reject()));
+    QObject::connect(buttonBox, &QDialogButtonBox::accepted, this, &FilletEdgesDialog::accept);
+    QObject::connect(buttonBox, &QDialogButtonBox::rejected, this, &FilletEdgesDialog::reject);
 
     hboxLayout->addWidget(widget);
     hboxLayout->addWidget(buttonBox);
@@ -1045,7 +1043,7 @@ DlgChamferEdges::DlgChamferEdges(Part::FilletBase* chamfer, QWidget* parent, Qt:
     this->setWindowTitle(tr("Chamfer Edges"));
 }
 
-/*  
+/*
  *  Destroys the object and frees any allocated resources
  */
 DlgChamferEdges::~DlgChamferEdges()

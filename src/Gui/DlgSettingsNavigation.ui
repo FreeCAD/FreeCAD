@@ -7,13 +7,13 @@
     <x>0</x>
     <y>0</y>
     <width>500</width>
-    <height>391</height>
+    <height>394</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Navigation</string>
   </property>
-  <layout class="QVBoxLayout" name="verticalLayout_2">
+  <layout class="QVBoxLayout" name="verticalLayout">
    <item>
     <widget class="QGroupBox" name="groupBoxNaviCube">
      <property name="title">
@@ -117,7 +117,7 @@
         </item>
        </widget>
       </item>
-      <item row="1" column="0" colspan="2">
+      <item row="2" column="0" colspan="2">
        <widget class="Gui::PrefCheckBox" name="naviCubeToNearest">
         <property name="toolTip">
          <string>Rotates to nearest possible state when clicking a cube face</string>
@@ -136,14 +136,37 @@
         </property>
        </widget>
       </item>
-      <item row="2" column="0">
+      <item row="2" column="3">
+       <widget class="QLabel" name="TextLabel3">
+        <property name="text">
+         <string>Font name:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="4">
+       <widget class="Gui::PrefComboBox" name="naviCubeFontName">
+        <property name="toolTip">
+         <string>Font name of the navigation cube</string>
+        </property>
+        <property name="currentIndex">
+         <number>-1</number>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>FontString</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>NaviCube</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="0">
        <widget class="QLabel" name="label_3">
         <property name="text">
          <string>Cube size</string>
         </property>
        </widget>
       </item>
-      <item row="2" column="1">
+      <item row="3" column="1">
        <widget class="Gui::PrefSpinBox" name="prefCubeSize">
         <property name="toolTip">
          <string>Size of the navigation cube</string>
@@ -165,6 +188,44 @@
         </property>
         <property name="prefEntry" stdset="0">
          <cstring>CubeSize</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>NaviCube</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="3">
+       <widget class="QLabel" name="TextLabel4">
+        <property name="text">
+         <string>Font size:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="4">
+       <widget class="Gui::PrefSpinBox" name="naviCubeFontSize">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="toolTip">
+         <string>Font size of the navigation cube</string>
+        </property>
+        <property name="minimum">
+         <number>1</number>
+        </property>
+        <property name="maximum">
+         <number>999</number>
+        </property>
+        <property name="singleStep">
+         <number>5</number>
+        </property>
+        <property name="value">
+         <number>100</number>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>FontSize</cstring>
         </property>
         <property name="prefPath" stdset="0">
          <cstring>NaviCube</cstring>
@@ -279,7 +340,8 @@ Select a set and then press the button to view said configurations.</string>
         <property name="toolTip">
          <string>Rotation orbit style.
 Trackball: moving the mouse horizontally will rotate the part around the y-axis
-Turntable: the part will be rotated around the z-axis.</string>
+Turntable: the part will be rotated around the z-axis (with constrained axes).
+Free Turntable: the part will be rotated around the z-axis.</string>
         </property>
         <property name="currentIndex">
          <number>1</number>
@@ -292,6 +354,11 @@ Turntable: the part will be rotated around the z-axis.</string>
         <item>
          <property name="text">
           <string>Trackball</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Free Turntable</string>
          </property>
         </item>
        </widget>

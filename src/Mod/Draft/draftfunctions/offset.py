@@ -72,9 +72,12 @@ def offset(obj, delta, copy=False, bind=False, sym=False, occ=False):
     newwire = None
     delete = None
 
-    if utils.get_type(obj).startswith("Part::") or utils.get_type(obj).startswith("Sketcher::"):
-        copy = True
+    if (copy is False
+            and (utils.get_type(obj).startswith("Sketcher::")
+                or utils.get_type(obj).startswith("Part::")
+                or utils.get_type(obj).startswith("PartDesign::"))): # For PartDesign_SubShapeBinders which can reference sketches.
         print("the offset tool is currently unable to offset a non-Draft object directly - Creating a copy")
+        copy = True
 
     def getRect(p,obj):
         """returns length,height,placement"""
@@ -199,7 +202,7 @@ def offset(obj, delta, copy=False, bind=False, sym=False, occ=False):
             try:
                 if p:
                     newobj = make_wire(p)
-                    newobj.Closed = obj.Shape.isClosed()
+                    newobj.Closed = DraftGeomUtils.isReallyClosed(obj.Shape)
             except Part.OCCError:
                 pass
             if (not newobj) and newwire:

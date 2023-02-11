@@ -143,48 +143,8 @@ structuralifcobjects = (
     "IfcStructuralPlanarAction"
 )
 
-
-def getPreferences():
-    """Retrieve the IFC preferences available in import and export.
-
-    MERGE_MODE_ARCH:
-        0 = parametric arch objects
-        1 = non-parametric arch objects
-        2 = Part shapes
-        3 = One compound per storey
-    """
-    p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch")
-
-    if FreeCAD.GuiUp and p.GetBool("ifcShowDialog", False):
-        Gui.showPreferences("Import-Export", 0)
-
-    preferences = {
-        'DEBUG': p.GetBool("ifcDebug", False),
-        'PREFIX_NUMBERS': p.GetBool("ifcPrefixNumbers", False),
-        'SKIP': p.GetString("ifcSkip", "").split(","),
-        'SEPARATE_OPENINGS': p.GetBool("ifcSeparateOpenings", False),
-        'ROOT_ELEMENT': p.GetString("ifcRootElement", "IfcProduct"),
-        'GET_EXTRUSIONS': p.GetBool("ifcGetExtrusions", False),
-        'MERGE_MATERIALS': p.GetBool("ifcMergeMaterials", False),
-        'MERGE_MODE_ARCH': p.GetInt("ifcImportModeArch", 0),
-        'MERGE_MODE_STRUCT': p.GetInt("ifcImportModeStruct", 1),
-        'CREATE_CLONES': p.GetBool("ifcCreateClones", True),
-        'IMPORT_PROPERTIES': p.GetBool("ifcImportProperties", False),
-        'SPLIT_LAYERS': p.GetBool("ifcSplitLayers", False),  # wall layer, not layer for visual props
-        'FITVIEW_ONIMPORT': p.GetBool("ifcFitViewOnImport", False),
-        'ALLOW_INVALID': p.GetBool("ifcAllowInvalid", False),
-        'REPLACE_PROJECT': p.GetBool("ifcReplaceProject", False),
-        'MULTICORE': p.GetInt("ifcMulticore", 0),
-        'IMPORT_LAYER': p.GetBool("ifcImportLayer", True)
-    }
-
-    if preferences['MERGE_MODE_ARCH'] > 0:
-        preferences['SEPARATE_OPENINGS'] = False
-        preferences['GET_EXTRUSIONS'] = False
-    if not preferences['SEPARATE_OPENINGS']:
-        preferences['SKIP'].append("IfcOpeningElement")
-
-    return preferences
+# backwards compatibility
+getPreferences = importIFCHelper.getPreferences
 
 
 def export(exportList, filename, colors=None, preferences=None):
@@ -206,7 +166,6 @@ def open(filename, skip=[], only=[], root=None):
     Most of the work is done in the `insert` function.
     """
     docname = os.path.splitext(os.path.basename(filename))[0]
-    docname = importIFCHelper.decode(docname, utf=True)
     doc = FreeCAD.newDocument(docname)
     doc.Label = docname
     doc = insert(filename, doc.Name, skip, only, root)
@@ -255,9 +214,15 @@ def insert(srcfile, docname, skip=[], only=[], root=None, preferences=None):
     starttime = time.time()  # in seconds
 
     if preferences is None:
-        preferences = getPreferences()
+        preferences = importIFCHelper.getPreferences()
 
     if preferences["MULTICORE"] and not hasattr(srcfile, "by_guid"):
+        # override with BIM IFC importer if present
+        try:
+            import BimIfcImport
+            return BimIfcImport.insert(srcfile, docname, preferences)
+        except:
+            pass
         return importIFCmulticore.insert(srcfile, docname, preferences)
 
     try:
@@ -285,7 +250,7 @@ def insert(srcfile, docname, skip=[], only=[], root=None, preferences=None):
     else:
         if preferences['DEBUG']:
             _msg("Opening '{}'... ".format(srcfile), end="")
-        filename = importIFCHelper.decode(srcfile, utf=True)
+        filename = srcfile
         filesize = os.path.getsize(filename) * 1E-6  # in megabytes
         ifcfile = ifcopenshell.open(filename)
 
@@ -431,8 +396,6 @@ def insert(srcfile, docname, skip=[], only=[], root=None, preferences=None):
         name = str(ptype[3:])
         if product.Name:
             name = product.Name
-            if six.PY2:
-                name = name.encode("utf8")
         if preferences['PREFIX_NUMBERS']:
             name = "ID" + str(pid) + " " + name
         obj = None
@@ -871,9 +834,6 @@ def insert(srcfile, docname, skip=[], only=[], root=None, preferences=None):
                             if l.is_a("IfcPropertySingleValue"):
                                 if preferences['DEBUG']:
                                     print("property name",l.Name,type(l.Name))
-                                if six.PY2:
-                                    catname = catname.encode("utf8")
-                                    lname = lname.encode("utf8")
                                 ifc_spreadsheet.set(str('A'+str(n)), catname)
                                 ifc_spreadsheet.set(str('B'+str(n)), lname)
                                 if l.NominalValue:
@@ -883,10 +843,7 @@ def insert(srcfile, docname, skip=[], only=[], root=None, preferences=None):
                                         # print("l.NominalValue.Unit",l.NominalValue.Unit,type(l.NominalValue.Unit))
                                     ifc_spreadsheet.set(str('C'+str(n)), l.NominalValue.is_a())
                                     if l.NominalValue.is_a() in ['IfcLabel','IfcText','IfcIdentifier','IfcDescriptiveMeasure']:
-                                        if six.PY2:
-                                            ifc_spreadsheet.set(str('D'+str(n)), "'" + str(l.NominalValue.wrappedValue.encode("utf8")))
-                                        else:
-                                            ifc_spreadsheet.set(str('D'+str(n)), "'" + str(l.NominalValue.wrappedValue))
+                                        ifc_spreadsheet.set(str('D'+str(n)), "'" + str(l.NominalValue.wrappedValue))
                                     else:
                                         ifc_spreadsheet.set(str('D'+str(n)), str(l.NominalValue.wrappedValue))
                                     if hasattr(l.NominalValue,'Unit'):
@@ -1050,8 +1007,6 @@ def insert(srcfile, docname, skip=[], only=[], root=None, preferences=None):
             else:
                 if preferences['DEBUG']: print("no group name specified for entity: #", ifcfile[host].id(), ", entity type is used!")
                 grp_name = ifcfile[host].is_a() + "_" + str(ifcfile[host].id())
-            if six.PY2:
-                grp_name = grp_name.encode("utf8")
             grp = doc.addObject("App::DocumentObjectGroup",grp_name)
             grp.Label = grp_name
             objects[host] = grp
@@ -1205,8 +1160,6 @@ def insert(srcfile, docname, skip=[], only=[], root=None, preferences=None):
         name = "Material"
         if material.Name:
             name = material.Name
-            if six.PY2:
-                name = name.encode("utf8")
         # mdict["Name"] = name on duplicate material names in IFC this could result in crash
         # https://forum.freecadweb.org/viewtopic.php?f=23&t=63260
         # thus use "Description"
@@ -1234,15 +1187,26 @@ def insert(srcfile, docname, skip=[], only=[], root=None, preferences=None):
         if preferences["MERGE_MATERIALS"]:
             for added_mat in added_mats:
                 if (
-                    "Description" in added_mat.Material
-                    and "DiffuseColor" in added_mat.Material
-                    and "DiffuseColor" in mdict  # Description has been set thus it is in mdict
+                    "Description" in added_mat.Material  # Description has been set thus it is in mdict
                     and added_mat.Material["Description"] == mdict["Description"]
-                    and added_mat.Material["DiffuseColor"] == mdict["DiffuseColor"]
                 ):
-                    matobj = added_mat
-                    add_material = False
-                    break
+                    if (
+                        (
+                            "DiffuseColor" in added_mat.Material
+                            and "DiffuseColor" in mdict
+                            and added_mat.Material["DiffuseColor"] == mdict["DiffuseColor"]
+                        )  # color in added mat with the same matname and new mat is the same
+                        or
+                        (
+                            "DiffuseColor" not in added_mat.Material
+                            and "DiffuseColor" not in mdict
+                        )  # there is no color in added mat with the same matname and new mat
+                        # on model imported from ArchiCAD color was not found for all IFC material objects,
+                        # thus DiffuseColor was not set for created materials, workaround to merge these too
+                    ):
+                        matobj = added_mat
+                        add_material = False
+                        break
 
         # add a new material object
         if add_material is True:

@@ -87,16 +87,7 @@ def move(objectslist, vector, copy=False):
         else:
             real_vector = vector
 
-        if utils.get_type(obj) == "Point":
-            if copy:
-                newobj = make_copy.make_copy(obj)
-            else:
-                newobj = obj
-            newobj.X = obj.X.Value + real_vector.x
-            newobj.Y = obj.Y.Value + real_vector.y
-            newobj.Z = obj.Z.Value + real_vector.z
-
-        elif obj.isDerivedFrom("App::DocumentObjectGroup"):
+        if obj.isDerivedFrom("App::DocumentObjectGroup"):
             if copy:
                 newobj = newgroups[obj.Name]
             else:
@@ -138,7 +129,8 @@ def move(objectslist, vector, copy=False):
                 newobj = make_copy.make_copy(obj)
             else:
                 newobj = obj
-            newobj.Center = obj.Start.add(real_vector)
+            newobj.Center = obj.Center.add(real_vector)
+            newobj.Dimline = obj.Dimline.add(real_vector)
 
         elif hasattr(obj, "Placement"):
             if copy:
@@ -177,6 +169,7 @@ def move_vertex(object, vertex_index, vector):
     Needed for SubObjects modifiers.
     Implemented by Dion Moult during 0.19 dev cycle (works only with Draft Wire).
     """
+    vector = object.getGlobalPlacement().inverse().Rotation.multVec(vector)
     points = object.Points
     points[vertex_index] = points[vertex_index].add(vector)
     object.Points = points
@@ -190,11 +183,11 @@ def move_edge(object, edge_index, vector):
     Needed for SubObjects modifiers.
     Implemented by Dion Moult during 0.19 dev cycle (works only with Draft Wire).
     """
-    moveVertex(object, edge_index, vector)
+    move_vertex(object, edge_index, vector)
     if utils.isClosedEdge(edge_index, object):
-        moveVertex(object, 0, vector)
+        move_vertex(object, 0, vector)
     else:
-        moveVertex(object, edge_index+1, vector)
+        move_vertex(object, edge_index+1, vector)
 
 
 moveEdge = move_edge
@@ -219,11 +212,11 @@ def copy_moved_edge(object, edge_index, vector):
     Needed for SubObjects modifiers.
     Implemented by Dion Moult during 0.19 dev cycle (works only with Draft Wire).
     """
-    vertex1 = object.Placement.multVec(object.Points[edge_index]).add(vector)
+    vertex1 = object.getGlobalPlacement().multVec(object.Points[edge_index]).add(vector)
     if utils.isClosedEdge(edge_index, object):
-        vertex2 = object.Placement.multVec(object.Points[0]).add(vector)
+        vertex2 = object.getGlobalPlacement().multVec(object.Points[0]).add(vector)
     else:
-        vertex2 = object.Placement.multVec(object.Points[edge_index+1]).add(vector)
+        vertex2 = object.getGlobalPlacement().multVec(object.Points[edge_index+1]).add(vector)
     return make_line.make_line(vertex1, vertex2)
 
 ## @}

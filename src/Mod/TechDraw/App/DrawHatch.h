@@ -23,12 +23,11 @@
 #ifndef TechDraw_DrawHatch_h_
 #define TechDraw_DrawHatch_h_
 
-#include <Mod/TechDraw/TechDrawGlobal.h>
-
 #include <App/DocumentObject.h>
 #include <App/FeaturePython.h>
 #include <App/PropertyFile.h>
-#include <App/PropertyLinks.h>
+#include <Mod/TechDraw/TechDrawGlobal.h>
+
 
 namespace App {
 class Color;
@@ -44,18 +43,18 @@ class TechDrawExport DrawHatch : public App::DocumentObject
 
 public:
     DrawHatch();
-    ~DrawHatch() = default;
+    ~DrawHatch() override = default;
 
     App::PropertyLinkSub     Source;       // the dvp & face this hatch belongs to
     App::PropertyFile        HatchPattern;
     App::PropertyFileIncluded SvgIncluded;
 
     App::DocumentObjectExecReturn *execute() override;
-    short mustExecute() const override;
 
     const char* getViewProviderName() const override {
         return "TechDrawGui::ViewProviderHatch";
     }
+    void setupObject() override;
     void unsetupObject() override;
 
     //return PyObject as DrawHatchPy
@@ -75,9 +74,6 @@ public:
 
 protected:
     void onChanged(const App::Property* prop) override;
-    void onDocumentRestored() override;
-    void setupObject() override;
-    void setupFileIncluded();
     void replaceFileIncluded(std::string newSvgFile);
 
 private:

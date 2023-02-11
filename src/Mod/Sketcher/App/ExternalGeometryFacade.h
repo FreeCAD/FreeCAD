@@ -20,18 +20,15 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef SKETCHER_GEOMETRYEXTERNALFACADE_H
 #define SKETCHER_GEOMETRYEXTERNALFACADE_H
 
-#include <Base/BaseClass.h>
-
-#include <Base/Console.h> // Only for Debug - To be removed
 #include <boost/uuid/uuid_io.hpp>
 
-#include <Mod/Part/App/Geometry.h>
-#include <Mod/Sketcher/App/SketchGeometryExtension.h>
+#include <Base/BaseClass.h>
 #include <Mod/Sketcher/App/ExternalGeometryExtension.h>
+#include <Mod/Sketcher/App/SketchGeometryExtension.h>
+
 
 namespace Sketcher
 {

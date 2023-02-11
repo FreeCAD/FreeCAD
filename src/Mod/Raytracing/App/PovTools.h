@@ -20,13 +20,14 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef _PovTools_h_
 #define _PovTools_h_
 
 #include <gp_Vec.hxx>
 #include <vector>
+
 #include <Mod/Raytracing/RaytracingGlobal.h>
+
 
 class TopoDS_Shape;
 class TopoDS_Face;

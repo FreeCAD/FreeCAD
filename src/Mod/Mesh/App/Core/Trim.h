@@ -23,10 +23,10 @@
 #ifndef MESHTRIM_H
 #define MESHTRIM_H
 
-#include <Mod/Mesh/App/Core/Elements.h>
-#include <Mod/Mesh/App/Core/MeshKernel.h>
-#include <Base/Tools2D.h>
 #include <Base/ViewProj.h>
+
+#include "MeshKernel.h"
+
 
 namespace MeshCore {
 
@@ -57,7 +57,7 @@ public:
      * Setter: Trimm INNER or OUTER
      */
     void SetInnerOrOuter(TMode tMode);
- 
+
 private:
     /**
      * Checks if the polygon cuts the facet
@@ -85,9 +85,9 @@ private:
      * Checks if a polygon point lies within a facet
      */
     bool IsPolygonPointInFacet(FacetIndex ulIndex, Base::Vector3f& clPoint);
-    
+
     /**
-     * Calculates the two intersection points between polygonline and facet in 2D 
+     * Calculates the two intersection points between polygonline and facet in 2D
      * and project the points back into 3D (not very exactly)
      */
     bool GetIntersectionPointsOfPolygonAndFacet(FacetIndex ulIndex, int& iSide,

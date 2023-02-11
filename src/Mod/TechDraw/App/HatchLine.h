@@ -25,17 +25,17 @@
 #ifndef TechDraw_HATCHLINE_H_
 #define TechDraw_HATCHLINE_H_
 
-#include <Mod/TechDraw/TechDrawGlobal.h>
-
 #include <string>
 #include <vector>
 
-#include <TopoDS_Edge.hxx>
 #include <Bnd_Box.hxx>
-#include <Base/Vector3D.h>
+#include <TopoDS_Edge.hxx>
 
+#include <Base/Vector3D.h>
+#include <Mod/TechDraw/TechDrawGlobal.h>
 
 #include "Geometry.h"
+
 
 namespace TechDraw
 {

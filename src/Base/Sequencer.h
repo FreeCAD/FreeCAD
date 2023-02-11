@@ -24,9 +24,6 @@
 #ifndef BASE_SEQUENCER_H
 #define BASE_SEQUENCER_H
 
-#include <memory>
-#include <CXX/Extensions.hxx>
-
 #include "Exception.h"
 
 
@@ -383,27 +380,6 @@ inline SequencerBase& Sequencer ()
 {
     return SequencerBase::Instance();
 }
-
-class BaseExport ProgressIndicatorPy : public Py::PythonExtension<ProgressIndicatorPy>
-{
-public:
-    static void init_type();    // announce properties and methods
-
-    ProgressIndicatorPy();
-    ~ProgressIndicatorPy() override;
-
-    Py::Object repr() override;
-
-    Py::Object start(const Py::Tuple&);
-    Py::Object next(const Py::Tuple&);
-    Py::Object stop(const Py::Tuple&);
-
-private:
-    static PyObject *PyMake(struct _typeobject *, PyObject *, PyObject *);
-
-private:
-    std::unique_ptr<SequencerLauncher> _seq;
-};
 
 } // namespace Base
 

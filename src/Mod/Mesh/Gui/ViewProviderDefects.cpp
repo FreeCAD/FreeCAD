@@ -20,9 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
-
 #ifndef _PreComp_
 # include <Inventor/nodes/SoBaseColor.h>
 # include <Inventor/nodes/SoCoordinate3.h>
@@ -34,23 +32,15 @@
 # include <Inventor/nodes/SoShapeHints.h>
 #endif
 
-/// Here the FreeCAD includes sorted by Base,App,Gui......
-#include <Base/Console.h>
-#include <Base/Parameter.h>
-#include <Base/Exception.h>
-#include <Base/Sequencer.h>
 #include <App/Application.h>
-#include <Gui/Selection.h>
+#include <Base/Parameter.h>
 #include <Gui/Inventor/MarkerBitmaps.h>
-
-#include <Mod/Mesh/App/Core/Degeneration.h>
-#include <Mod/Mesh/App/Core/Evaluation.h>
-#include <Mod/Mesh/App/Core/Iterator.h>
-#include <Mod/Mesh/App/Mesh.h>
 #include <Mod/Mesh/App/MeshFeature.h>
+#include <Mod/Mesh/App/Core/Degeneration.h>
+#include <Mod/Mesh/App/Core/Iterator.h>
 
-#include "ViewProvider.h"
 #include "ViewProviderDefects.h"
+
 
 using namespace Mesh;
 using namespace MeshGui;
@@ -477,7 +467,7 @@ void ViewProviderMeshDegenerations::showDefects(const std::vector<Mesh::ElementI
     int j=0;
     for (std::vector<Mesh::ElementIndex>::const_iterator it = inds.begin(); it != inds.end(); ++it) {
         cF.Set(*it);
-        const MeshCore::MeshPoint& rE0 = cF->_aclPoints[0]; 
+        const MeshCore::MeshPoint& rE0 = cF->_aclPoints[0];
         const MeshCore::MeshPoint& rE1 = cF->_aclPoints[1];
         const MeshCore::MeshPoint& rE2 = cF->_aclPoints[2];
 
@@ -645,7 +635,7 @@ void ViewProviderMeshSelfIntersections::showDefects(const std::vector<Mesh::Elem
     Mesh::Feature* f = static_cast<Mesh::Feature*>(pcObject);
     const MeshCore::MeshKernel & rMesh = f->Mesh.getValue().getKernel();
     MeshCore::MeshEvalSelfIntersection eval(rMesh);
-  
+
     std::vector<std::pair<Mesh::ElementIndex, Mesh::ElementIndex> > intersection;
     std::vector<Mesh::ElementIndex>::const_iterator it;
     for (it = indices.begin(); it != indices.end(); ) {

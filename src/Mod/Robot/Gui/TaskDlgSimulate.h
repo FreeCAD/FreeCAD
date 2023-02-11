@@ -20,7 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef ROBOTGUI_TASKDLGSIMULATE_H
 #define ROBOTGUI_TASKDLGSIMULATE_H
 
@@ -29,12 +28,12 @@
 #include <Mod/Robot/App/TrajectoryObject.h>
 
 #include "TaskRobot6Axis.h"
-#include "TaskTrajectory.h"
 #include "TaskRobotControl.h"
 #include "TaskRobotMessages.h"
+#include "TaskTrajectory.h"
+
 
 namespace RobotGui {
-
 
 /// simulation dialog for the TaskView
 class RobotGuiExport TaskDlgSimulate : public Gui::TaskView::TaskDialog

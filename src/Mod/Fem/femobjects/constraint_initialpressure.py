@@ -52,5 +52,4 @@ class ConstraintInitialPressure(base_fempythonobject.BaseFemPythonObject):
                 "Initial Pressure"
             )
             # App::PropertyPressure is in kPa and we initialize 1 bar
-            obj.Pressure = 100 
-
+            obj.Pressure = 100

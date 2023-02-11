@@ -98,7 +98,7 @@ def is_of_type(obj, ty):
 
 
 def is_derived_from(obj, t):
-    """ Check if *obj* is derived from *t* honoring Fems typesytem.
+    """ Check if *obj* is derived from *t* honoring Fems typesystem.
 
     Essentially just call ``obj.isDerivedFrom(t)`` and return it's value. For
     objects using Fems typesystem (see :py:func:`type_of_obj`) return always

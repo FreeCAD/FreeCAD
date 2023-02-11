@@ -93,8 +93,8 @@ if args.freecad:
 
 import FreeCAD
 import Path
-import PathScripts.PathPropertyBag as PathPropertyBag
-import PathScripts.PathUtil as PathUtil
+import Path.Base.PropertyBag as PathPropertyBag
+import Path.Base.Util as PathUtil
 
 set_var = None
 set_val = None

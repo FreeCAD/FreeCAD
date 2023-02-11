@@ -24,13 +24,17 @@
 
 #ifndef _PreComp_
 # include <boost_signals2.hpp>
+# include <boost/core/ignore_unused.hpp>
 # include <QApplication>
-# include <QRegExp>
 # include <QEvent>
 # include <QCloseEvent>
 # include <QMdiSubWindow>
+# include <QPrintDialog>
+# include <QPrintPreviewDialog>
 # include <QPrinter>
 # include <QPrinterInfo>
+# include <QRegularExpression>
+# include <QRegularExpressionMatch>
 #endif
 
 #include <Base/Interpreter.h>
@@ -40,6 +44,7 @@
 #include "MDIViewPy.h"
 #include "Application.h"
 #include "Document.h"
+#include "FileDialog.h"
 #include "MainWindow.h"
 #include "ViewProviderDocumentObject.h"
 
@@ -144,16 +149,19 @@ void MDIView::onRelabel(Gui::Document *pDoc)
         // Try to separate document name and view number if there is one
         QString cap = windowTitle();
         // Either with dirty flag ...
-        QRegExp rx(QLatin1String("(\\s\\:\\s\\d+\\[\\*\\])$"));
-        int pos = rx.lastIndexIn(cap);
-        if (pos == -1) {
+        QRegularExpression rx(QLatin1String("(\\s\\:\\s\\d+\\[\\*\\])$"));
+        QRegularExpressionMatch match;
+        //int pos =
+        boost::ignore_unused(cap.lastIndexOf(rx, -1, &match));
+        if (!match.hasMatch()) {
             // ... or not
             rx.setPattern(QLatin1String("(\\s\\:\\s\\d+)$"));
-            pos = rx.lastIndexIn(cap);
+            //pos =
+            boost::ignore_unused(cap.lastIndexOf(rx, -1, &match));
         }
-        if (pos != -1) {
+        if (match.hasMatch()) {
             cap = QString::fromUtf8(pDoc->getDocument()->Label.getValue());
-            cap += rx.cap();
+            cap += match.captured();
             setWindowTitle(cap);
         }
         else {
@@ -232,17 +240,33 @@ void MDIView::print(QPrinter* printer)
 
 void MDIView::print()
 {
-    std::cerr << "Printing not implemented for " << this->metaObject()->className() << std::endl;
+    QPrinter printer(QPrinter::ScreenResolution);
+    printer.setFullPage(true);
+    QPrintDialog dlg(&printer, this);
+    if (dlg.exec() == QDialog::Accepted) {
+        print(&printer);
+    }
 }
 
 void MDIView::printPdf()
 {
-    std::cerr << "Printing PDF not implemented for " << this->metaObject()->className() << std::endl;
+    QString filename = FileDialog::getSaveFileName(this, tr("Export PDF"), QString(),
+        QString::fromLatin1("%1 (*.pdf)").arg(tr("PDF file")));
+    if (!filename.isEmpty()) {
+        QPrinter printer(QPrinter::ScreenResolution);
+        printer.setOutputFormat(QPrinter::PdfFormat);
+        printer.setOutputFileName(filename);
+        print(&printer);
+    }
 }
 
 void MDIView::printPreview()
 {
-    std::cerr << "Printing preview not implemented for " << this->metaObject()->className() << std::endl;
+    QPrinter printer(QPrinter::ScreenResolution);
+    QPrintPreviewDialog dlg(&printer, this);
+    connect(&dlg, &QPrintPreviewDialog::paintRequested,
+            this, qOverload<QPrinter*>(&MDIView::print));
+    dlg.exec();
 }
 
 void MDIView::savePrinterSettings(QPrinter* printer)
@@ -277,8 +301,8 @@ QStringList MDIView::undoActions() const
     Gui::Document* doc = getGuiDocument();
     if (doc) {
         std::vector<std::string> vecUndos = doc->getUndoVector();
-        for (std::vector<std::string>::iterator i = vecUndos.begin(); i != vecUndos.end(); ++i) {
-            actions << QCoreApplication::translate("Command", i->c_str());
+        for (const auto & vecUndo : vecUndos) {
+            actions << QCoreApplication::translate("Command", vecUndo.c_str());
         }
     }
 
@@ -291,8 +315,8 @@ QStringList MDIView::redoActions() const
     Gui::Document* doc = getGuiDocument();
     if (doc) {
         std::vector<std::string> vecRedos = doc->getRedoVector();
-        for (std::vector<std::string>::iterator i = vecRedos.begin(); i != vecRedos.end(); ++i) {
-            actions << QCoreApplication::translate("Command", i->c_str());
+        for (const auto & vecRedo : vecRedos) {
+            actions << QCoreApplication::translate("Command", vecRedo.c_str());
         }
     }
 

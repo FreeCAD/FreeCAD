@@ -24,7 +24,11 @@
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <QApplication>
+# include <QFileDialog>
 # include <QLocale>
+# include <QMessageBox>
+# include <algorithm>
+# include <boost/filesystem.hpp>
 #endif
 
 #include "DlgGeneralImp.h"
@@ -37,10 +41,11 @@
 #include "DlgRevertToBackupConfigImp.h"
 #include "MainWindow.h"
 #include "PreferencePackManager.h"
+#include "UserSettings.h"
 #include "Language/Translator.h"
 
-
 using namespace Gui::Dialog;
+namespace fs = boost::filesystem;
 
 /* TRANSLATOR Gui::Dialog::DlgGeneralImp */
 
@@ -62,9 +67,9 @@ DlgGeneralImp::DlgGeneralImp( QWidget* parent )
     // sorted by their menu text
     QStringList work = Application::Instance->workbenches();
     QMap<QString, QString> menuText;
-    for (QStringList::Iterator it = work.begin(); it != work.end(); ++it) {
-        QString text = Application::Instance->workbenchMenuText(*it);
-        menuText[text] = *it;
+    for (const auto & it : work) {
+        QString text = Application::Instance->workbenchMenuText(it);
+        menuText[text] = it;
     }
 
     {   // add special workbench to selection
@@ -86,6 +91,8 @@ DlgGeneralImp::DlgGeneralImp( QWidget* parent )
     }
 
     recreatePreferencePackMenu();
+
+    connect(ui->ImportConfig, &QPushButton::clicked, this, &DlgGeneralImp::onImportConfigClicked);
     connect(ui->SaveNewPreferencePack, &QPushButton::clicked, this, &DlgGeneralImp::saveAsNewPreferencePack);
 
     ui->ManagePreferencePacks->setToolTip(tr("Manage preference packs"));
@@ -113,7 +120,8 @@ DlgGeneralImp::~DlgGeneralImp()
  */
 void DlgGeneralImp::setRecentFileSize()
 {
-    RecentFilesAction *recent = getMainWindow()->findChild<RecentFilesAction *>(QLatin1String("recentFiles"));
+    auto recent = getMainWindow()->findChild<RecentFilesAction *>
+        (QLatin1String("recentFiles"));
     if (recent) {
         ParameterGrp::handle hGrp = WindowParameter::getDefaultParameter()->GetGroup("RecentFiles");
         recent->resizeList(hGrp->GetInt("RecentFiles", 4));
@@ -159,6 +167,10 @@ void DlgGeneralImp::setNumberLocale(bool force/* = false*/)
     localeIndex = localeFormat;
 }
 
+void DlgGeneralImp::setDecimalPointConversion(bool on) {
+    Translator::instance()->enableDecimalPointConversion(on);
+}
+
 void DlgGeneralImp::saveSettings()
 {
     int index = ui->AutoloadModuleCombo->currentIndex();
@@ -177,6 +189,7 @@ void DlgGeneralImp::saveSettings()
     bool force = setLanguage();
     // In case type is "Selected language", we need to force locale change
     setNumberLocale(force);
+    setDecimalPointConversion(ui->SubstituteDecimal->isChecked());
 
     ParameterGrp::handle hGrp = WindowParameter::getDefaultParameter()->GetGroup("General");
     QVariant size = ui->toolbarIconSize->itemData(ui->toolbarIconSize->currentIndex());
@@ -202,6 +215,8 @@ void DlgGeneralImp::saveSettings()
     hGrp->GetGroup("ComboView")->SetBool("Enabled",comboView);
     hGrp->GetGroup("TreeView")->SetBool("Enabled",treeView);
     hGrp->GetGroup("PropertyView")->SetBool("Enabled",propertyView);
+
+    saveWorkbenchSelector();
 
     hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/MainWindow");
     hGrp->SetBool("TiledBackground", ui->tiledBackground->isChecked());
@@ -236,7 +251,7 @@ void DlgGeneralImp::loadSettings()
     TStringMap list = Translator::instance()->supportedLocales();
     ui->Languages->clear();
     ui->Languages->addItem(QString::fromLatin1("English"), QByteArray("English"));
-    for (TStringMap::iterator it = list.begin(); it != list.end(); ++it, index++) {
+    for (auto it = list.begin(); it != list.end(); ++it, index++) {
         QByteArray lang = it->first.c_str();
         QString langname = QString::fromLatin1(lang.constData());
 
@@ -272,6 +287,7 @@ void DlgGeneralImp::loadSettings()
     }
     ui->toolbarIconSize->setCurrentIndex(index);
 
+    //TreeMode combobox setup.
     ui->treeMode->clear();
     ui->treeMode->addItem(tr("Combo View"));
     ui->treeMode->addItem(tr("TreeView and PropertyView"));
@@ -287,6 +303,9 @@ void DlgGeneralImp::loadSettings()
     }
     ui->treeMode->setCurrentIndex(index);
 
+    //workbench selector position combobox setup
+    loadWorkbenchSelector();
+
     hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/MainWindow");
     ui->tiledBackground->setChecked(hGrp->GetBool("TiledBackground", false));
 
@@ -296,16 +315,15 @@ void DlgGeneralImp::loadSettings()
     QStringList filter;
     filter << QString::fromLatin1("*.qss");
     filter << QString::fromLatin1("*.css");
-    QFileInfoList fileNames;
 
     // read from user, resource and built-in directory
     QStringList qssPaths = QDir::searchPaths(QString::fromLatin1("qss"));
-    for (QStringList::iterator it = qssPaths.begin(); it != qssPaths.end(); ++it) {
-        dir.setPath(*it);
-        fileNames = dir.entryInfoList(filter, QDir::Files, QDir::Name);
-        for (QFileInfoList::iterator jt = fileNames.begin(); jt != fileNames.end(); ++jt) {
-            if (cssFiles.find(jt->baseName()) == cssFiles.end()) {
-                cssFiles[jt->baseName()] = jt->fileName();
+    for (const auto & qssPath : qssPaths) {
+        dir.setPath(qssPath);
+        QFileInfoList fileNames = dir.entryInfoList(filter, QDir::Files, QDir::Name);
+        for (const auto & fileName : qAsConst(fileNames)) {
+            if (cssFiles.find(fileName.baseName()) == cssFiles.end()) {
+                cssFiles[fileName.baseName()] = fileName.fileName();
             }
         }
     }
@@ -341,15 +359,15 @@ void DlgGeneralImp::loadSettings()
         ui->StyleSheets->setCurrentIndex(index);
 }
 
-void DlgGeneralImp::changeEvent(QEvent *e)
+void DlgGeneralImp::changeEvent(QEvent *event)
 {
-    if (e->type() == QEvent::LanguageChange) {
+    if (event->type() == QEvent::LanguageChange) {
         int index = ui->UseLocaleFormatting->currentIndex();
         ui->retranslateUi(this);
         ui->UseLocaleFormatting->setCurrentIndex(index);
     }
     else {
-        QWidget::changeEvent(e);
+        QWidget::changeEvent(event);
     }
 }
 
@@ -364,7 +382,7 @@ void DlgGeneralImp::recreatePreferencePackMenu()
     ui->PreferencePacks->horizontalHeader()->setSectionResizeMode(1, QHeaderView::ResizeMode::Stretch);
     ui->PreferencePacks->horizontalHeader()->setSectionResizeMode(2, QHeaderView::ResizeMode::ResizeToContents);
     QStringList columnHeaders;
-    columnHeaders << tr("Preference Pack Name") 
+    columnHeaders << tr("Preference Pack Name")
                   << tr("Tags")
                   << QString(); // for the "Load" buttons
     ui->PreferencePacks->setHorizontalHeaderLabels(columnHeaders);
@@ -389,7 +407,7 @@ void DlgGeneralImp::recreatePreferencePackMenu()
             else
                 tagString.append(QStringLiteral(", ") + QString::fromStdString(tag));
         }
-        QTableWidgetItem* kind = new QTableWidgetItem(tagString);
+        auto kind = new QTableWidgetItem(tagString);
         ui->PreferencePacks->setItem(row, 1, kind);
         auto button = new QPushButton(icon, tr("Apply"));
         button->setToolTip(tr("Apply the %1 preference pack").arg(QString::fromStdString(pack.first)));
@@ -413,25 +431,28 @@ void DlgGeneralImp::saveAsNewPreferencePack()
 void DlgGeneralImp::revertToSavedConfig()
 {
     revertToBackupConfigDialog = std::make_unique<DlgRevertToBackupConfigImp>(this);
-    connect(revertToBackupConfigDialog.get(), &DlgRevertToBackupConfigImp::accepted, [this]() {
+    connect(revertToBackupConfigDialog.get(), &DlgRevertToBackupConfigImp::accepted, this, [this]() {
         auto parentDialog = qobject_cast<DlgPreferencesImp*> (this->window());
-        if (parentDialog)
+        if (parentDialog) {
             parentDialog->reload();
-        });
+        }
+    });
     revertToBackupConfigDialog->open();
 }
 
-void DlgGeneralImp::newPreferencePackDialogAccepted() 
+void DlgGeneralImp::newPreferencePackDialogAccepted()
 {
     auto preferencePackTemplates = Application::Instance->prefPackManager()->templateFiles();
     auto selection = newPreferencePackDialog->selectedTemplates();
     std::vector<PreferencePackManager::TemplateFile> selectedTemplates;
-    std::copy_if(preferencePackTemplates.begin(), preferencePackTemplates.end(), std::back_inserter(selectedTemplates), [selection](PreferencePackManager::TemplateFile& t) {
-        for (const auto& item : selection)
-            if (item.group == t.group && item.name == t.name)
+    std::copy_if(preferencePackTemplates.begin(), preferencePackTemplates.end(), std::back_inserter(selectedTemplates), [selection](PreferencePackManager::TemplateFile& tf) {
+        for (const auto& item : selection) {
+            if (item.group == tf.group && item.name == tf.name) {
                 return true;
+            }
+        }
         return false;
-        });
+    });
     auto preferencePackName = newPreferencePackDialog->preferencePackName();
     Application::Instance->prefPackManager()->save(preferencePackName, selectedTemplates);
     recreatePreferencePackMenu();
@@ -447,6 +468,31 @@ void DlgGeneralImp::onManagePreferencePacksClicked()
     this->preferencePackManagementDialog->show();
 }
 
+void DlgGeneralImp::onImportConfigClicked()
+{
+    auto path = fs::path(QFileDialog::getOpenFileName(this,
+        tr("Choose a FreeCAD config file to import"),
+        QString(),
+        QString::fromUtf8("*.cfg")).toStdString());
+    if (!path.empty()) {
+        // Create a name from the filename:
+        auto packName = path.filename().stem().string();
+        std::replace(packName.begin(), packName.end(), '_', ' ');
+        auto existingPacks = Application::Instance->prefPackManager()->preferencePackNames();
+        if (std::find(existingPacks.begin(), existingPacks.end(), packName)
+            != existingPacks.end()) {
+            auto result = QMessageBox::question(
+                this, tr("File exists"),
+                tr("A preference pack with that name already exists. Overwrite?"));
+            if (result == QMessageBox::No) { // Maybe someday ask for a new name?
+                return;
+            }
+        }
+        Application::Instance->prefPackManager()->importConfig(packName, path);
+        recreatePreferencePackMenu();
+    }
+}
+
 void DlgGeneralImp::onLoadPreferencePackClicked(const std::string& packName)
 {
     if (Application::Instance->prefPackManager()->apply(packName)) {
@@ -456,5 +502,21 @@ void DlgGeneralImp::onLoadPreferencePackClicked(const std::string& packName)
     }
 }
 
+void DlgGeneralImp::saveWorkbenchSelector()
+{
+    //save workbench selector position
+    auto index = ui->WorkbenchSelectorPosition->currentIndex();
+    WorkbenchSwitcher::setIndex(index);
+}
+
+void DlgGeneralImp::loadWorkbenchSelector()
+{
+    //workbench selector position combobox setup
+    ui->WorkbenchSelectorPosition->clear();
+    ui->WorkbenchSelectorPosition->addItem(tr("Toolbar"));
+    ui->WorkbenchSelectorPosition->addItem(tr("Left corner"));
+    ui->WorkbenchSelectorPosition->addItem(tr("Right corner"));
+    ui->WorkbenchSelectorPosition->setCurrentIndex(WorkbenchSwitcher::getIndex());
+}
 
 #include "moc_DlgGeneralImp.cpp"

@@ -6,12 +6,11 @@
 # include <SMESHDS_Mesh.hxx>
 #endif
 
-#include <Base/VectorPy.h>
 #include <Base/GeometryPyCXX.h>
+#include <Base/VectorPy.h>
 #include <Mod/Fem/App/FemMeshObject.h>
 
 #include "ViewProviderFemMesh.h"
-
 // inclusion of the generated files (generated out of ViewProviderFemMeshPy.xml)
 #include "ViewProviderFemMeshPy.h"
 #include "ViewProviderFemMeshPy.cpp"

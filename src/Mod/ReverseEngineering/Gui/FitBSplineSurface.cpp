@@ -20,34 +20,25 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
-
 #ifndef _PreComp_
 # include <algorithm>
 # include <QMessageBox>
-# include <QTextStream>
 #endif
 
-#include "ui_FitBSplineSurface.h"
-#include "FitBSplineSurface.h"
-
-#include <Gui/Application.h>
-#include <Gui/BitmapFactory.h>
-#include <Gui/Command.h>
-#include <Gui/Document.h>
-#include <Gui/Selection.h>
-#include <Gui/ViewProvider.h>
-#include <Gui/WaitCursor.h>
-
-#include <Base/Interpreter.h>
-#include <Base/Converter.h>
-#include <Base/CoordinateSystem.h>
-#include <App/Application.h>
 #include <App/ComplexGeoData.h>
 #include <App/Document.h>
 #include <App/Placement.h>
+#include <Base/Converter.h>
+#include <Base/CoordinateSystem.h>
+#include <Gui/BitmapFactory.h>
+#include <Gui/Command.h>
+#include <Gui/Selection.h>
+#include <Gui/WaitCursor.h>
 #include <Mod/Mesh/App/Core/Approximation.h>
+
+#include "ui_FitBSplineSurface.h"
+#include "FitBSplineSurface.h"
 
 
 using namespace ReenGui;
@@ -120,7 +111,7 @@ void FitBSplineSurfaceWidget::on_makePlacement_clicked()
             const App::PropertyComplexGeoData* geom = geo->getPropertyOfGeometry();
             if (geom) {
                 std::vector<Base::Vector3d> points, normals;
-                geom->getComplexData()->getPoints(points, normals, 0.001f);
+                geom->getComplexData()->getPoints(points, normals, 0.001);
 
                 std::vector<Base::Vector3f> data;
                 std::transform(points.begin(), points.end(), std::back_inserter(data), [](const Base::Vector3d& v) {

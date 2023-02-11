@@ -21,22 +21,16 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <Standard_math.hxx>
-# include <Precision.hxx>
-#endif
-
-#include "Mod/Fem/App/FemConstraint.h"
-#include "TaskFemConstraintOnBoundary.h"
-#include "ViewProviderFemConstraintOnBoundary.h"
-#include <Base/Console.h>
 #include <Gui/Application.h>
-#include <Gui/Control.h>
-#include <Mod/Part/Gui/ViewProvider.h>
+#include "Mod/Fem/App/FemConstraint.h"
 #include <Mod/Part/Gui/ReferenceHighlighter.h>
+#include <Mod/Part/Gui/ViewProvider.h>
+
+#include "ViewProviderFemConstraintOnBoundary.h"
+#include "TaskFemConstraintOnBoundary.h"
+
 
 using namespace FemGui;
 
@@ -75,7 +69,8 @@ void ViewProviderFemConstraintOnBoundary::highlightReferences(const bool on)
 
                 // go through the subelements with constraint and recolor them
                 // TODO: Replace `ShapeColor` with anything more appropriate
-                PartGui::ReferenceHighlighter highlighter(base->Shape.getValue(), colors.empty()?ShapeColor.getValue():colors[0]);
+                PartGui::ReferenceHighlighter highlighter(
+                    base->Shape.getValue(), colors.empty() ? ShapeColor.getValue() : colors[0]);
                 highlighter.getVertexColors(subSet.second, colors);
                 vp->PointColorArray.setValues(colors);
             }
@@ -87,7 +82,8 @@ void ViewProviderFemConstraintOnBoundary::highlightReferences(const bool on)
 
                 // go through the subelements with constraint and recolor them
                 // TODO: Replace `ShapeColor` with anything more appropriate
-                PartGui::ReferenceHighlighter highlighter(base->Shape.getValue(), colors.empty()?ShapeColor.getValue():colors[0]);
+                PartGui::ReferenceHighlighter highlighter(
+                    base->Shape.getValue(), colors.empty() ? ShapeColor.getValue() : colors[0]);
                 highlighter.getEdgeColors(subSet.second, colors);
                 vp->LineColorArray.setValues(colors);
             }
@@ -99,7 +95,8 @@ void ViewProviderFemConstraintOnBoundary::highlightReferences(const bool on)
 
                 // go through the subelements with constraint and recolor them
                 // TODO: Replace `FaceColor` with anything more appropriate
-                PartGui::ReferenceHighlighter highlighter(base->Shape.getValue(), colors.empty()?FaceColor.getValue():colors[0]);
+                PartGui::ReferenceHighlighter highlighter(
+                    base->Shape.getValue(), colors.empty() ? FaceColor.getValue() : colors[0]);
                 highlighter.getFaceColors(subSet.second, colors);
                 vp->DiffuseColor.setValues(colors);
             }

@@ -23,8 +23,8 @@
 #ifndef MESHTRIM_BY_PLANE_H
 #define MESHTRIM_BY_PLANE_H
 
-#include <Mod/Mesh/App/Core/Elements.h>
-#include <Mod/Mesh/App/Core/MeshKernel.h>
+#include "MeshKernel.h"
+
 
 namespace MeshCore {
 

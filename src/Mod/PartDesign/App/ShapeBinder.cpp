@@ -571,6 +571,7 @@ void SubShapeBinder::update(SubShapeBinder::UpdateOption options) {
 
                 auto tmpDoc = App::GetApplication().newDocument(
                     "_tmp_binder", nullptr, false, true);
+                tmpDoc->setUndoMode(0);
                 auto objs = tmpDoc->copyObject({ obj }, true, true);
                 if (!objs.empty()) {
                     for (auto it = objs.rbegin(); it != objs.rend(); ++it)
@@ -729,7 +730,20 @@ void SubShapeBinder::update(SubShapeBinder::UpdateOption options) {
             }
         }
 
-        if (!fused && result.hasSubShape(TopAbs_EDGE)
+        if (!fused && (MakeFace.getValue() || Offset.getValue() != 0.0)
+            && !result.hasSubShape(TopAbs_FACE)
+            && result.hasSubShape(TopAbs_EDGE))
+        {
+            result = result.makeWires();
+            if (MakeFace.getValue()) {
+                try {
+                    result = result.makeFace(nullptr);
+                }
+                catch (...) {}
+            }
+        }
+
+        if (!fused && result.hasSubShape(TopAbs_WIRE)
             && Offset.getValue() != 0.0) {
             try {
                 result = result.makeOffset2D(Offset.getValue(),
@@ -743,17 +757,6 @@ void SubShapeBinder::update(SubShapeBinder::UpdateOption options) {
                 msg << Label.getValue() << ": failed to make 2D offset" << std::endl;
                 Base::Console().Error(msg.str().c_str());
             }
-        }
-
-        if (!fused && MakeFace.getValue()
-            && !result.hasSubShape(TopAbs_FACE)
-            && result.hasSubShape(TopAbs_EDGE))
-        {
-            result = result.makeWires();
-            try {
-                result = result.makeFace(nullptr);
-            }
-            catch (...) {}
         }
 
         if (Refine.getValue())

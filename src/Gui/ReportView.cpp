@@ -58,9 +58,9 @@ ReportView::ReportView( QWidget* parent )
     setObjectName(QLatin1String("ReportOutput"));
 
     resize( 529, 162 );
-    QGridLayout* tabLayout = new QGridLayout( this );
+    auto tabLayout = new QGridLayout( this );
     tabLayout->setSpacing( 0 );
-    tabLayout->setMargin( 0 );
+    tabLayout->setContentsMargins( 0, 0, 0, 0 );
 
     tabWidget = new QTabWidget( this );
     tabWidget->setObjectName(QString::fromUtf8("tabWidget"));
@@ -69,7 +69,7 @@ ReportView::ReportView( QWidget* parent )
     tabLayout->addWidget( tabWidget, 0, 0 );
 
 
-    // create the output window
+    // create the output window for 'Report view'
     tabOutput = new ReportOutput();
     tabOutput->setWindowTitle(tr("Output"));
     tabOutput->setWindowIcon(BitmapFactory().pixmap("MacroEditor"));
@@ -141,7 +141,7 @@ void ReportHighlighter::highlightBlock (const QString & text)
 {
     if (text.isEmpty())
         return;
-    TextBlockData* ud = static_cast<TextBlockData*>(this->currentBlockUserData());
+    auto ud = static_cast<TextBlockData*>(this->currentBlockUserData());
     if (!ud) {
         ud = new TextBlockData;
         this->setCurrentBlockUserData(ud);
@@ -154,26 +154,26 @@ void ReportHighlighter::highlightBlock (const QString & text)
 
     QVector<TextBlockData::State> block = ud->block;
     int start = 0;
-    for (QVector<TextBlockData::State>::Iterator it = block.begin(); it != block.end(); ++it) {
-        switch (it->type)
+    for (const auto & it : block) {
+        switch (it.type)
         {
         case Message:
-            setFormat(start, it->length-start, txtCol);
+            setFormat(start, it.length-start, txtCol);
             break;
         case Warning:
-            setFormat(start, it->length-start, warnCol);
+            setFormat(start, it.length-start, warnCol);
             break;
         case Error:
-            setFormat(start, it->length-start, errCol);
+            setFormat(start, it.length-start, errCol);
             break;
         case LogText:
-            setFormat(start, it->length-start, logCol);
+            setFormat(start, it.length-start, logCol);
             break;
         default:
             break;
         }
 
-        start = it->length;
+        start = it.length;
     }
 }
 
@@ -305,7 +305,7 @@ void ReportOutputObserver::showReportView()
 bool ReportOutputObserver::eventFilter(QObject *obj, QEvent *event)
 {
     if (event->type() == QEvent::User && obj == reportView.data()) {
-        CustomReportEvent* cr = dynamic_cast<CustomReportEvent*>(event);
+        auto cr = dynamic_cast<CustomReportEvent*>(event);
         if (cr) {
             ReportHighlighter::Paragraph msgType = cr->messageType();
             if (msgType == ReportHighlighter::Warning) {
@@ -478,7 +478,7 @@ void ReportOutput::SendLog(const std::string& msg, Base::LogStyle level)
     }
 
     // Send the event to itself to allow thread-safety. Qt will delete it when done.
-    CustomReportEvent* ev = new CustomReportEvent(style, qMsg);
+    auto ev = new CustomReportEvent(style, qMsg);
     QApplication::postEvent(this, ev);
 }
 
@@ -486,7 +486,7 @@ void ReportOutput::customEvent ( QEvent* ev )
 {
     // Appends the text stored in the event to the text view
     if ( ev->type() ==  QEvent::User ) {
-        CustomReportEvent* ce = (CustomReportEvent*)ev;
+        auto ce = static_cast<CustomReportEvent*>(ev);
         reportHl->setParagraphType(ce->messageType());
 
         bool showTimecode = getWindowParameter()->GetBool("checkShowReportTimecode", true);
@@ -516,7 +516,7 @@ void ReportOutput::customEvent ( QEvent* ev )
 bool ReportOutput::event(QEvent* event)
 {
     if (event && event->type() == QEvent::ShortcutOverride) {
-        QKeyEvent * kevent = static_cast<QKeyEvent*>(event);
+        auto kevent = static_cast<QKeyEvent*>(event);
         if (kevent == QKeySequence::Copy)
             kevent->accept();
     }
@@ -526,10 +526,10 @@ bool ReportOutput::event(QEvent* event)
 void ReportOutput::changeEvent(QEvent *ev)
 {
     if (ev->type() == QEvent::StyleChange) {
-        QPalette pal = palette();
+        QPalette pal = qApp->palette();
         QColor color = pal.windowText().color();
         unsigned int text = (color.red() << 24) | (color.green() << 16) | (color.blue() << 8);
-        unsigned long value = static_cast<unsigned long>(text);
+        auto value = static_cast<unsigned long>(text);
         // if this parameter is not already set use the style's window text color
         value = getWindowParameter()->GetUnsigned("colorText", value);
         getWindowParameter()->SetUnsigned("colorText", value);
@@ -544,71 +544,71 @@ void ReportOutput::contextMenuEvent ( QContextMenuEvent * e )
     bool bShowOnWarn = ReportOutputParameter::showOnWarning();
     bool bShowOnError = ReportOutputParameter::showOnError();
 
-    QMenu* menu = new QMenu(this);
-    QMenu* optionMenu = new QMenu( menu );
+    auto menu = new QMenu(this);
+    auto optionMenu = new QMenu( menu );
     optionMenu->setTitle(tr("Options"));
     menu->addMenu(optionMenu);
     menu->addSeparator();
 
-    QMenu* displayMenu = new QMenu(optionMenu);
+    auto displayMenu = new QMenu(optionMenu);
     displayMenu->setTitle(tr("Display message types"));
     optionMenu->addMenu(displayMenu);
 
-    QAction* logMsg = displayMenu->addAction(tr("Normal messages"), this, SLOT(onToggleNormalMessage()));
+    QAction* logMsg = displayMenu->addAction(tr("Normal messages"), this, &ReportOutput::onToggleNormalMessage);
     logMsg->setCheckable(true);
     logMsg->setChecked(bMsg);
 
-    QAction* logAct = displayMenu->addAction(tr("Log messages"), this, SLOT(onToggleLogMessage()));
+    QAction* logAct = displayMenu->addAction(tr("Log messages"), this, &ReportOutput::onToggleLogMessage);
     logAct->setCheckable(true);
     logAct->setChecked(bLog);
 
-    QAction* wrnAct = displayMenu->addAction(tr("Warnings"), this, SLOT(onToggleWarning()));
+    QAction* wrnAct = displayMenu->addAction(tr("Warnings"), this, &ReportOutput::onToggleWarning);
     wrnAct->setCheckable(true);
     wrnAct->setChecked(bWrn);
 
-    QAction* errAct = displayMenu->addAction(tr("Errors"), this, SLOT(onToggleError()));
+    QAction* errAct = displayMenu->addAction(tr("Errors"), this, &ReportOutput::onToggleError);
     errAct->setCheckable(true);
     errAct->setChecked(bErr);
 
-    QMenu* showOnMenu = new QMenu (optionMenu);
-    showOnMenu->setTitle(tr("Show output window on"));
+    auto showOnMenu = new QMenu (optionMenu);
+    showOnMenu->setTitle(tr("Show Report view on"));
     optionMenu->addMenu(showOnMenu);
 
-    QAction* showNormAct = showOnMenu->addAction(tr("Normal messages"), this, SLOT(onToggleShowReportViewOnNormalMessage()));
+    QAction* showNormAct = showOnMenu->addAction(tr("Normal messages"), this, &ReportOutput::onToggleShowReportViewOnNormalMessage);
     showNormAct->setCheckable(true);
     showNormAct->setChecked(bShowOnNormal);
 
-    QAction* showLogAct = showOnMenu->addAction(tr("Log messages"), this, SLOT(onToggleShowReportViewOnLogMessage()));
+    QAction* showLogAct = showOnMenu->addAction(tr("Log messages"), this, &ReportOutput::onToggleShowReportViewOnLogMessage);
     showLogAct->setCheckable(true);
     showLogAct->setChecked(bShowOnLog);
 
-    QAction* showWrnAct = showOnMenu->addAction(tr("Warnings"), this, SLOT(onToggleShowReportViewOnWarning()));
+    QAction* showWrnAct = showOnMenu->addAction(tr("Warnings"), this, &ReportOutput::onToggleShowReportViewOnWarning);
     showWrnAct->setCheckable(true);
     showWrnAct->setChecked(bShowOnWarn);
 
-    QAction* showErrAct = showOnMenu->addAction(tr("Errors"), this, SLOT(onToggleShowReportViewOnError()));
+    QAction* showErrAct = showOnMenu->addAction(tr("Errors"), this, &ReportOutput::onToggleShowReportViewOnError);
     showErrAct->setCheckable(true);
     showErrAct->setChecked(bShowOnError);
 
     optionMenu->addSeparator();
 
-    QAction* stdoutAct = optionMenu->addAction(tr("Redirect Python output"), this, SLOT(onToggleRedirectPythonStdout()));
+    QAction* stdoutAct = optionMenu->addAction(tr("Redirect Python output"), this, &ReportOutput::onToggleRedirectPythonStdout);
     stdoutAct->setCheckable(true);
     stdoutAct->setChecked(d->redirected_stdout);
 
-    QAction* stderrAct = optionMenu->addAction(tr("Redirect Python errors"), this, SLOT(onToggleRedirectPythonStderr()));
+    QAction* stderrAct = optionMenu->addAction(tr("Redirect Python errors"), this, &ReportOutput::onToggleRedirectPythonStderr);
     stderrAct->setCheckable(true);
     stderrAct->setChecked(d->redirected_stderr);
 
     optionMenu->addSeparator();
-    QAction* botAct = optionMenu->addAction(tr("Go to end"), this, SLOT(onToggleGoToEnd()));
+    QAction* botAct = optionMenu->addAction(tr("Go to end"), this, &ReportOutput::onToggleGoToEnd);
     botAct->setCheckable(true);
     botAct->setChecked(gotoEnd);
 
     // Use Qt's internal translation of the Copy & Select All commands
     const char* context = "QWidgetTextControl";
     QString copyStr = QCoreApplication::translate(context, "&Copy");
-    QAction* copy = menu->addAction(copyStr, this, SLOT(copy()), QKeySequence(QKeySequence::Copy));
+    QAction* copy = menu->addAction(copyStr, this, &ReportOutput::copy, QKeySequence(QKeySequence::Copy));
     copy->setEnabled(textCursor().hasSelection());
     QIcon icon = QIcon::fromTheme(QString::fromLatin1("edit-copy"));
     if (!icon.isNull())
@@ -616,11 +616,11 @@ void ReportOutput::contextMenuEvent ( QContextMenuEvent * e )
 
     menu->addSeparator();
     QString selectStr = QCoreApplication::translate(context, "Select All");
-    menu->addAction(selectStr, this, SLOT(selectAll()), QKeySequence(QKeySequence::SelectAll));
+    menu->addAction(selectStr, this, &ReportOutput::selectAll, QKeySequence(QKeySequence::SelectAll));
 
-    menu->addAction(tr("Clear"), this, SLOT(clear()));
+    menu->addAction(tr("Clear"), this, &ReportOutput::clear);
     menu->addSeparator();
-    menu->addAction(tr("Save As..."), this, SLOT(onSaveAs()));
+    menu->addAction(tr("Save As..."), this, &ReportOutput::onSaveAs);
 
     menu->exec(e->globalPos());
     delete menu;

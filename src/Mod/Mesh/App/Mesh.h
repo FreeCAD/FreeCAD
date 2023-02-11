@@ -20,29 +20,29 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef MESH_MESH_H
 #define MESH_MESH_H
 
-#include <vector>
 #include <list>
+#include <map>
 #include <set>
 #include <string>
-#include <map>
+#include <vector>
+
+#include <App/ComplexGeoData.h>
+#include <App/PropertyGeo.h>
 
 #include <Base/Matrix.h>
 #include <Base/Tools3D.h>
 
-#include <App/PropertyStandard.h>
-#include <App/PropertyGeo.h>
-#include <App/ComplexGeoData.h>
-
-#include "Core/MeshKernel.h"
-#include "Core/MeshIO.h"
 #include "Core/Iterator.h"
-#include "MeshPoint.h"
+#include "Core/MeshIO.h"
+#include "Core/MeshKernel.h"
+
 #include "Facet.h"
+#include "MeshPoint.h"
 #include "Segment.h"
+
 
 namespace Py {
 class List;
@@ -150,9 +150,9 @@ public:
     /** Get points from object with given accuracy */
     void getPoints(std::vector<Base::Vector3d> &Points,
         std::vector<Base::Vector3d> &Normals,
-        float Accuracy, uint16_t flags=0) const override;
+        double Accuracy, uint16_t flags=0) const override;
     void getFaces(std::vector<Base::Vector3d> &Points,std::vector<Facet> &Topo,
-        float Accuracy, uint16_t flags=0) const override;
+        double Accuracy, uint16_t flags=0) const override;
     std::vector<PointIndex> getPointsFromFacets(const std::vector<FacetIndex>& facets) const;
     bool nearestFacetOnRay(const TRay& ray, double maxAngle, TFaceSection& output) const;
     std::vector<TFaceSection> foraminate(const TRay& ray, double maxAngle) const;

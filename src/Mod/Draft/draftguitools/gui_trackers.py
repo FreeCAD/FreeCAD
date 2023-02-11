@@ -541,7 +541,6 @@ class arcTracker(Tracker):
             self.normal = normal
         else:
             self.normal = FreeCAD.DraftWorkingPlane.axis
-        self.basevector = self.getDeviation()
         self.recompute()
         super().__init__(dotted, scolor, swidth,
                          [self.trans, self.sep], name="arcTracker")
@@ -579,7 +578,7 @@ class arcTracker(Tracker):
         c = self.trans.translation.getValue()
         center = Vector(c[0], c[1], c[2])
         rad = pt.sub(center)
-        a = DraftVecUtils.angle(rad, self.basevector, self.normal)
+        a = DraftVecUtils.angle(rad, self.getDeviation(), self.normal)
         # print(a)
         return a
 
@@ -611,7 +610,6 @@ class arcTracker(Tracker):
         e = arc.toShape()
         self.autoinvert = False
         self.normal = e.Curve.Axis.negative()  # axis is always in wrong direction
-        self.basevector = self.getDeviation()
         self.setCenter(e.Curve.Center)
         self.setRadius(e.Curve.Radius)
         self.setStartPoint(p1)

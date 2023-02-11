@@ -34,6 +34,7 @@ class QIcon;
 class QGraphicsObject;
 class QGraphicsItem;
 class QObject;
+class QPrinter;
 class QWidget;
 QT_END_NAMESPACE
 
@@ -46,12 +47,15 @@ public:
     bool loadCoreModule();
     bool loadGuiModule();
     bool loadWidgetsModule();
+    bool loadPrintSupportModule();
     bool loadUiToolsModule();
 
     bool toCString(const Py::Object&, std::string&);
     QObject* toQObject(const Py::Object&);
     QGraphicsItem* toQGraphicsItem(PyObject* ptr);
     QGraphicsObject* toQGraphicsObject(PyObject* pyPtr);
+
+    Py::Object fromQPrinter(QPrinter*);
 
     Py::Object fromQObject(QObject*, const char* className=nullptr);
     Py::Object fromQWidget(QWidget*, const char* className=nullptr);
@@ -66,6 +70,10 @@ public:
     QDir* toQDir(PyObject* pyobj);
     static void createChildrenNameAttributes(PyObject* root, QObject* object);
     static void setParent(PyObject* pyWdg, QObject* parent);
+
+private:
+    static std::string shiboken;
+    static std::string PySide;
 };
 
 } // namespace Gui

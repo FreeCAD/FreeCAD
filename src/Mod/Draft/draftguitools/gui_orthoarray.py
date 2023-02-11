@@ -119,7 +119,7 @@ class OrthoArray(gui_base.GuiCommandBase):
                                           self.callback_click)
         if Gui.Control.activeDialog():
             Gui.Control.closeDialog()
-            super(OrthoArray, self).finish()
+            self.finish()
 
 
 Gui.addCommand('Draft_OrthoArray', OrthoArray())

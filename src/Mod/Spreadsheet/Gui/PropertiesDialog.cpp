@@ -20,15 +20,17 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
-#include "PropertiesDialog.h"
-#include <Base/Tools.h>
+
 #include <App/Range.h>
 #include <App/Document.h>
 #include <App/ExpressionParser.h>
+#include <Base/Tools.h>
 #include <Gui/CommandT.h>
+
+#include "PropertiesDialog.h"
 #include "ui_PropertiesDialog.h"
+
 
 using namespace App;
 using namespace Spreadsheet;
@@ -103,30 +105,30 @@ PropertiesDialog::PropertiesDialog(Sheet *_sheet, const std::vector<Range> &_ran
     ui->alias->setText(Base::Tools::fromStdString(alias));
 
     // Colors
-    connect(ui->foregroundColor, SIGNAL(colorChanged(QColor)), this, SLOT(foregroundColorChanged(QColor)));
-    connect(ui->backgroundColor, SIGNAL(colorChanged(QColor)), this, SLOT(backgroundColorChanged(QColor)));
+    connect(ui->foregroundColor, &QtColorPicker::colorChanged, this, &PropertiesDialog::foregroundColorChanged);
+    connect(ui->backgroundColor, &QtColorPicker::colorChanged, this, &PropertiesDialog::backgroundColorChanged);
 
     // Alignment
-    connect(ui->alignLeft, SIGNAL(clicked()), this, SLOT(alignmentChanged()));
-    connect(ui->alignRight, SIGNAL(clicked()), this, SLOT(alignmentChanged()));
-    connect(ui->alignHCenter, SIGNAL(clicked()), this, SLOT(alignmentChanged()));
-    connect(ui->alignTop, SIGNAL(clicked()), this, SLOT(alignmentChanged()));
-    connect(ui->alignVCenter, SIGNAL(clicked()), this, SLOT(alignmentChanged()));
-    connect(ui->alignBottom, SIGNAL(clicked()), this, SLOT(alignmentChanged()));
+    connect(ui->alignLeft, &QRadioButton::clicked, this, &PropertiesDialog::alignmentChanged);
+    connect(ui->alignRight, &QRadioButton::clicked, this, &PropertiesDialog::alignmentChanged);
+    connect(ui->alignHCenter, &QRadioButton::clicked, this, &PropertiesDialog::alignmentChanged);
+    connect(ui->alignTop, &QRadioButton::clicked, this, &PropertiesDialog::alignmentChanged);
+    connect(ui->alignVCenter, &QRadioButton::clicked, this, &PropertiesDialog::alignmentChanged);
+    connect(ui->alignBottom, &QRadioButton::clicked, this, &PropertiesDialog::alignmentChanged);
 
     // Style
-    connect(ui->styleBold, SIGNAL(clicked()), this, SLOT(styleChanged()));
-    connect(ui->styleItalic, SIGNAL(clicked()), this, SLOT(styleChanged()));
-    connect(ui->styleUnderline, SIGNAL(clicked()), this, SLOT(styleChanged()));
+    connect(ui->styleBold, &QCheckBox::clicked, this, &PropertiesDialog::styleChanged);
+    connect(ui->styleItalic, &QCheckBox::clicked, this, &PropertiesDialog::styleChanged);
+    connect(ui->styleUnderline, &QCheckBox::clicked, this, &PropertiesDialog::styleChanged);
 
     // Display unit
-    connect(ui->displayUnit, SIGNAL(textEdited(QString)), this, SLOT(displayUnitChanged(QString)));
+    connect(ui->displayUnit, &QLineEdit::textEdited, this, &PropertiesDialog::displayUnitChanged);
 
     // Alias is only allowed for a single cell
     ui->tabWidget->widget(4)->setEnabled(_ranges.size() == 1 && _ranges[0].size() == 1);
 
     // Alias
-    connect(ui->alias, SIGNAL(textEdited(QString)), this, SLOT(aliasChanged(QString)));
+    connect(ui->alias, &QLineEdit::textEdited, this, &PropertiesDialog::aliasChanged);
 
     ui->tabWidget->setCurrentIndex(0);
     ui->buttonBox->button(QDialogButtonBox::Ok)->setEnabled(displayUnitOk && aliasOk);

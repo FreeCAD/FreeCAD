@@ -20,22 +20,17 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
+
+#include <Gui/Application.h>
+#include <Gui/BitmapFactory.h>
+#include <Gui/Command.h>
+#include <Mod/Sketcher/App/SketchObject.h>
 
 #include "ui_TaskSketcherMessages.h"
 #include "TaskSketcherMessages.h"
-#include <Gui/Application.h>
-#include <Gui/Document.h>
-#include <Gui/BitmapFactory.h>
-#include <Gui/ViewProvider.h>
-#include <Gui/WaitCursor.h>
-#include <Gui/Selection.h>
-#include <Gui/Command.h>
-
-#include <Mod/Sketcher/App/SketchObject.h>
-
 #include "ViewProviderSketch.h"
+
 
 using namespace SketcherGui;
 using namespace Gui::TaskView;

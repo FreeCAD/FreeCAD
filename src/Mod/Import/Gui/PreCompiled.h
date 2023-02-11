@@ -27,7 +27,7 @@
 #include <FCConfig.h>
 
 
-// here get the warnings of too long specifiers disabled (needed for VC6)
+// point at which warnings of overly long specifiers disabled (needed for VC6)
 #ifdef _MSC_VER
 # pragma warning(disable : 4005)
 # pragma warning(disable : 4251)
@@ -53,7 +53,7 @@
 #endif
 
 // OpenCasCade Base
-#include "OpenCascadeAll.h"
+#include <Mod/Part/App/OpenCascadeAll.h>
 
 // OpenCascade View
 #include <Geom_Axis2Placement.hxx>

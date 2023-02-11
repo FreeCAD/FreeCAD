@@ -22,23 +22,17 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <QIcon>
 # include <QImage>
 # include <QFileInfo>
 #endif
 
-#include <CXX/Extensions.hxx>
-#include <CXX/Objects.hxx>
+#include <Base/Exception.h>
+#include <Base/Interpreter.h>
+#include <Gui/BitmapFactory.h>
+#include <Gui/MainWindow.h>
 
 #include "ImageView.h"
 
-#include <Base/Console.h>
-#include <Base/Exception.h>
-#include <Base/FileInfo.h>
-#include <Base/Interpreter.h>
-#include <App/Application.h>
-#include <Gui/MainWindow.h>
-#include <Gui/BitmapFactory.h>
 
 namespace ImageGui {
 class Module : public Py::ExtensionModule<Module>

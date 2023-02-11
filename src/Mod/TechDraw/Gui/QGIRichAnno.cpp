@@ -22,65 +22,31 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-#include <BRep_Builder.hxx>
-#include <TopoDS_Compound.hxx>
-#include <TopoDS_Shape.hxx>
-#include <TopoDS_Edge.hxx>
-#include <TopoDS.hxx>
-#include <BRepAdaptor_Curve.hxx>
-#include <Precision.hxx>
-
-#include <QGraphicsScene>
-#include <QGraphicsSceneMouseEvent>
-#include <QGraphicsItem>
-#include <QPainter>
-#include <QPainterPath>
-#include <QPaintDevice>
-#include <QSvgGenerator>
-#include <QRegExp>
-#include <QTextDocument>
-#include <QTextDocumentFragment>
-#include <QTextFrame>
-#include <QTextBlock>
-#include <QTextCursor>
-#include <QDialog>
-
-
 # include <cmath>
+
+# include <QDialog>
+# include <QGraphicsItem>
+# include <QGraphicsSceneMouseEvent>
+# include <QPainter>
+# include <QRegularExpression>
+# include <QRegularExpressionMatch>
+# include <QTextBlock>
+# include <QTextCursor>
+# include <QTextDocumentFragment>
 #endif
 
 #include <App/Application.h>
-#include <App/Material.h>
-#include <Base/Console.h>
-#include <Base/Exception.h>
-#include <Base/Parameter.h>
-#include <Base/Tools.h>
-#include <Base/UnitsApi.h>
-#include <Gui/Command.h>
-
-#include <Mod/Part/App/PartFeature.h>
-
-//#include <Mod/TechDraw/App/Preferences.h>
 #include <Mod/TechDraw/App/DrawRichAnno.h>
-#include <Mod/TechDraw/App/DrawUtil.h>
-#include <Mod/TechDraw/App/Geometry.h>
-
-#include "Rez.h"
-#include "ZVALUE.h"
-#include "PreferencesGui.h"
-#include "QGIArrow.h"
-#include "ViewProviderRichAnno.h"
-#include "MDIViewPage.h"
-#include "DrawGuiUtil.h"
-#include "QGVPage.h"
-#include "QGIPrimPath.h"
-#include "QGEPath.h"
-#include "QGMText.h"
-#include "QGCustomText.h"
-#include "QGCustomRect.h"
 
 #include "QGIRichAnno.h"
 #include "mrichtextedit.h"
+#include "PreferencesGui.h"
+#include "QGCustomRect.h"
+#include "QGCustomText.h"
+#include "Rez.h"
+#include "ViewProviderRichAnno.h"
+#include "ZVALUE.h"
+
 
 using namespace TechDraw;
 using namespace TechDrawGui;
@@ -130,7 +96,6 @@ void QGIRichAnno::updateView(bool update)
     Q_UNUSED(update);
     auto annoFeat( dynamic_cast<TechDraw::DrawRichAnno*>(getViewObject()) );
     if (!annoFeat) {
-        Base::Console().Log("QGIRA::updateView - no feature!\n");
         return;
     }
 
@@ -188,16 +153,17 @@ void QGIRichAnno::setTextItem()
     //font sizes differently from QGraphicsTextItem (?)
     if (!getExporting()) {
         //convert point font sizes to (Rez, mm) font sizes
-        QRegExp rxFontSize(QString::fromUtf8("font-size:([0-9]*)pt;"));
+        QRegularExpression rxFontSize(QString::fromUtf8("font-size:([0-9]*)pt;"));
+        QRegularExpressionMatch match;
         double mmPerPoint = 0.353;
         double sizeConvert = Rez::getRezFactor() * mmPerPoint;
         int pos = 0;
         QStringList findList;
         QStringList replList;
-        while ((pos = rxFontSize.indexIn(inHtml, pos)) != -1) {
-            QString found = rxFontSize.cap(0);
+        while ((pos = inHtml.indexOf(rxFontSize, pos, &match)) != -1) {
+            QString found = match.captured(0);
             findList << found;
-            QString qsOldSize = rxFontSize.cap(1);
+            QString qsOldSize = match.captured(1);
 
             QString repl = found;
             double newSize = qsOldSize.toDouble();
@@ -205,7 +171,7 @@ void QGIRichAnno::setTextItem()
             QString qsNewSize = QString::number(newSize, 'f', 2);
             repl.replace(qsOldSize, qsNewSize);
             replList << repl;
-            pos += rxFontSize.matchedLength();
+            pos += match.capturedLength();
         }
         QString outHtml = inHtml;
         int iRepl = 0;
@@ -304,7 +270,7 @@ QPen QGIRichAnno::rectPen() const
         return pen;
 
     double rectWeight = Rez::guiX(vp->LineWidth.getValue());
-    Qt::PenStyle rectStyle = (Qt::PenStyle) vp->LineStyle.getValue();
+    Qt::PenStyle rectStyle = static_cast<Qt::PenStyle>(vp->LineStyle.getValue());
     App::Color temp = vp->LineColor.getValue();
     QColor rectColor = temp.asValue<QColor>();
 
@@ -349,8 +315,8 @@ void QGIRichAnno::mouseDoubleClickEvent(QGraphicsSceneMouseEvent* event) {
     QGridLayout gridLayout(&dialog);
     gridLayout.addWidget(&richEdit, 0, 0, 1, 1);
 
-    connect(&richEdit, SIGNAL(saveText(QString)), &dialog, SLOT(accept()));
-    connect(&richEdit, SIGNAL(editorFinished(void)), &dialog, SLOT(reject()));
+    connect(&richEdit, &MRichTextEdit::saveText, &dialog, &QDialog::accept);
+    connect(&richEdit, &MRichTextEdit::editorFinished, &dialog, &QDialog::reject);
 
     if (dialog.exec()) {
         QString newText = richEdit.toHtml();

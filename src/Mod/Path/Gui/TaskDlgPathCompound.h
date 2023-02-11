@@ -20,16 +20,15 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef PATHGUI_TaskDlgPathCompound_H
 #define PATHGUI_TaskDlgPathCompound_H
 
-#include <Gui/TaskView/TaskView.h>
 #include <Gui/TaskView/TaskDialog.h>
-#include <Mod/Path/App/FeaturePath.h>
+#include <Gui/TaskView/TaskView.h>
 #include <Mod/Path/App/FeaturePathCompound.h>
 
 #include "ViewProviderPathCompound.h"
+
 
 class Ui_TaskDlgPathCompound;
 

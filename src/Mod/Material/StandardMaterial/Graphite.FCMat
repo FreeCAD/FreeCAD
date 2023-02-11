@@ -1,7 +1,7 @@
 ; Graphite
 ; Uwe Stöhr, LGPL
 ; information about the content of such cards can be found on the wiki:
-; https://www.freecadweb.org/wiki/Material 
+; https://www.freecadweb.org/wiki/Material
 ; file created by FreeCAD 0.20.24516 (Git)
 
 [General]
@@ -24,9 +24,10 @@ SpecificHeat = 0,72 kJ/kg/K
 ThermalConductivity = 96,000 W/m/K
 ThermalExpansionCoefficient = 8e-6 1/K
 
-[Electrical]
+[Electromagnetic]
 RelativePermittivity = 0.7
 ElectricalConductivity = 2e4 S/m
+RelativePermeability = 1.0
 
 [UserDefined]
 MolarMass = 12

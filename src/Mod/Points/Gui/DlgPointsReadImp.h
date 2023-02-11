@@ -20,13 +20,12 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef POINTSGUI_DLGREADPOINTS_H
 #define POINTSGUI_DLGREADPOINTS_H
 
-#include <string>
 #include <memory>
 #include <QDialog>
+
 
 namespace PointsGui {
 class Ui_DlgPointsRead;

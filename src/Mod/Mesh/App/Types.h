@@ -20,12 +20,10 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef MESH_TYPES_H
 #define MESH_TYPES_H
 
 #include "Core/Definitions.h"
-
 
 namespace Mesh
 {

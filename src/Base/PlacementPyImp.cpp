@@ -275,9 +275,11 @@ PyObject* PlacementPy::slerp(PyObject* args)
 
 PyObject* PlacementPy::isIdentity(PyObject *args)
 {
-    if (!PyArg_ParseTuple(args, ""))
+    double tol = 0.0;
+    if (!PyArg_ParseTuple(args, "|d", &tol))
         return nullptr;
-    bool none = getPlacementPtr()->isIdentity();
+    bool none = tol > 0 ? getPlacementPtr()->isIdentity(tol)
+                        : getPlacementPtr()->isIdentity();
     return Py_BuildValue("O", (none ? Py_True : Py_False));
 }
 

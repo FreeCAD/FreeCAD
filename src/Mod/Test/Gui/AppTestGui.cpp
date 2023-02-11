@@ -22,13 +22,14 @@
 
 #include "PreCompiled.h"
 
-#include "UnitTestPy.h"
-#include "UnitTestImp.h"
-
-#include <Gui/Language/Translator.h>
 #include <Base/Console.h>
 #include <Base/ConsoleObserver.h>
 #include <Base/Interpreter.h>
+#include <Gui/Language/Translator.h>
+
+#include "UnitTestImp.h"
+#include "UnitTestPy.h"
+
 
 class ILoggerBlockerTest : public Base::ILogger
 {
@@ -120,6 +121,7 @@ public:
         add_varargs_method("UnitTest",&Module::new_UnitTest,"UnitTest");
         add_varargs_method("setTest",&Module::setTest,"setTest");
         add_varargs_method("addTest",&Module::addTest,"addTest");
+        add_varargs_method("runTest",&Module::runTest,"runTest");
         add_varargs_method("testILoggerBlocker",&Module::testILoggerBlocker,"testILoggerBlocker");
         initialize("This module is the QtUnitGui module"); // register with Python
     }
@@ -158,6 +160,15 @@ private:
         dlg->show();
         dlg->raise();
         return Py::None();
+    }
+    Py::Object runTest(const Py::Tuple& args)
+    {
+        if (!PyArg_ParseTuple(args.ptr(), ""))
+            throw Py::Exception();
+
+        TestGui::UnitTestDialog* dlg = TestGui::UnitTestDialog::instance();
+        bool success = dlg->runCurrentTest();
+        return Py::Boolean(success);
     }
     Py::Object testILoggerBlocker(const Py::Tuple& args) {
         (void) args;

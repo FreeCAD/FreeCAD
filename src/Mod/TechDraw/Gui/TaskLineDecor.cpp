@@ -21,39 +21,28 @@
  ***************************************************************************/
 
 #include "PreCompiled.h"
-
 #ifndef _PreComp_
-#include <cmath>
+# include <cmath>
 #endif // #ifndef _PreComp_
 
 #include <Base/Console.h>
 #include <Base/Tools.h>
-#include <Base/Vector3D.h>
-
 #include <Gui/Application.h>
 #include <Gui/BitmapFactory.h>
 #include <Gui/Command.h>
-#include <Gui/Document.h>
 #include <Gui/Selection.h>
 #include <Gui/ViewProvider.h>
-#include <Gui/FileDialog.h>
-
-#include <App/Application.h>
-#include <App/Document.h>
-#include <App/DocumentObject.h>
-
-#include <Mod/TechDraw/App/DrawView.h>
-#include <Mod/TechDraw/App/DrawViewPart.h>
 #include <Mod/TechDraw/App/DrawUtil.h>
-#include <Mod/TechDraw/App/Geometry.h>
+#include <Mod/TechDraw/App/DrawViewPart.h>
 #include <Mod/TechDraw/App/Cosmetic.h>
+#include <Mod/TechDraw/App/Geometry.h>
 
-#include <Mod/TechDraw/Gui/ui_TaskLineDecor.h>
-#include <Mod/TechDraw/Gui/ui_TaskRestoreLines.h>
-
+#include "TaskLineDecor.h"
+#include "ui_TaskLineDecor.h"
+#include "ui_TaskRestoreLines.h"
 #include "QGIView.h"
 #include "ViewProviderViewPart.h"
-#include "TaskLineDecor.h"
+
 
 using namespace Gui;
 using namespace TechDraw;
@@ -69,10 +58,10 @@ TaskLineDecor::TaskLineDecor(TechDraw::DrawViewPart* partFeat,
     getDefaults();
     ui->setupUi(this);
 
-    connect(ui->cb_Style, SIGNAL(currentIndexChanged(int)), this, SLOT(onStyleChanged(void)));
-    connect(ui->cc_Color, SIGNAL(changed()), this, SLOT(onColorChanged(void)));
-    connect(ui->dsb_Weight, SIGNAL(valueChanged(double)), this, SLOT(onWeightChanged(void)));
-    connect(ui->cb_Visible, SIGNAL(currentIndexChanged(int)), this, SLOT(onVisibleChanged(void)));
+    connect(ui->cb_Style, qOverload<int>(&QComboBox::currentIndexChanged), this, &TaskLineDecor::onStyleChanged);
+    connect(ui->cc_Color, &ColorButton::changed, this, &TaskLineDecor::onColorChanged);
+    connect(ui->dsb_Weight, qOverload<double>(&QuantitySpinBox::valueChanged), this, &TaskLineDecor::onWeightChanged);
+    connect(ui->cb_Visible, qOverload<int>(&QComboBox::currentIndexChanged), this, &TaskLineDecor::onVisibleChanged);
 
     initUi();
 }
@@ -271,10 +260,10 @@ TaskRestoreLines::TaskRestoreLines(TechDraw::DrawViewPart* partFeat,
 {
     ui->setupUi(this);
 
-    connect(ui->pb_All, SIGNAL(clicked( )), this, SLOT(onAllPressed(void)));
-    connect(ui->pb_Geometry, SIGNAL(clicked(  )), this, SLOT(onGeometryPressed(void)));
-    connect(ui->pb_Cosmetic, SIGNAL(clicked(   )), this, SLOT(onCosmeticPressed( void )));
-    connect(ui->pb_Center, SIGNAL(clicked(  )), this, SLOT(onCenterPressed( void )));
+    connect(ui->pb_All, &QPushButton::clicked, this, &TaskRestoreLines::onAllPressed);
+    connect(ui->pb_Geometry, &QPushButton::clicked, this, &TaskRestoreLines::onGeometryPressed);
+    connect(ui->pb_Cosmetic, &QPushButton::clicked, this, &TaskRestoreLines::onCosmeticPressed);
+    connect(ui->pb_Center, &QPushButton::clicked, this, &TaskRestoreLines::onCenterPressed);
 
     initUi();
 }

@@ -97,6 +97,18 @@ Return a list of mdi views of a given type.\n
 type : str\n    Type name.</UserDocu>
       </Documentation>
     </Methode>
+    <Methode Name="save">
+      <Documentation>
+        <UserDocu>save() -> bool\n
+Attempts to save the document</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="saveAs">
+      <Documentation>
+        <UserDocu>saveAs() -> bool\n
+Attempts to save the document under a new name</UserDocu>
+      </Documentation>
+    </Methode>
     <Methode Name="sendMsgToViews">
       <Documentation>
       <UserDocu>sendMsgToViews(msg) -> None\n

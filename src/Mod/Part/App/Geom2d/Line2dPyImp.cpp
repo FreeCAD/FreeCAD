@@ -101,7 +101,7 @@ int Line2dPy::PyInit(PyObject* args, PyObject* /*kwd*/)
             return 0;
         }
         catch (Standard_Failure& e) {
-    
+
             PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
             return -1;
         }
@@ -221,5 +221,5 @@ PyObject *Line2dPy::getCustomAttributes(const char* /*attr*/) const
 
 int Line2dPy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)
 {
-    return 0; 
+    return 0;
 }

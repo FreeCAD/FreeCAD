@@ -123,10 +123,10 @@ void PreferencePack::applyConfigChanges() const
 {
     auto configFile = _path / (_metadata.name() + ".cfg");
     if (fs::exists(configFile)) {
-        ParameterManager newParameters;
-        newParameters.LoadDocument(configFile.string().c_str());
+        auto newParameters = ParameterManager::Create();
+        newParameters->LoadDocument(configFile.string().c_str());
         auto baseAppGroup = App::GetApplication().GetUserParameter().GetGroup("BaseApp");
-        newParameters.GetGroup("BaseApp")->insertTo(baseAppGroup);
+        newParameters->GetGroup("BaseApp")->insertTo(baseAppGroup);
     }
 }
 
@@ -160,7 +160,72 @@ void PreferencePackManager::rescan()
     }
 }
 
-void Gui::PreferencePackManager::FindPreferencePacksInPackage(const fs::path& mod)
+void Gui::PreferencePackManager::AddPackToMetadata(const std::string &packName) const
+{
+    std::lock_guard<std::mutex> lock(_mutex);
+    auto savedPreferencePacksDirectory =
+        fs::path(App::Application::getUserAppDataDir()) / "SavedPreferencePacks";
+    fs::path preferencePackDirectory(savedPreferencePacksDirectory / packName);
+    if (fs::exists(preferencePackDirectory) && !fs::is_directory(preferencePackDirectory))
+        throw std::runtime_error("Cannot create " + savedPreferencePacksDirectory.string()
+                                 + ": file with that name exists already");
+
+    if (!fs::exists(preferencePackDirectory)) fs::create_directories(preferencePackDirectory);
+
+    // Create or update the saved user preferencePacks package.xml metadata file
+    std::unique_ptr<App::Metadata> metadata;
+    if (fs::exists(savedPreferencePacksDirectory / "package.xml")) {
+        metadata = std::make_unique<App::Metadata>(savedPreferencePacksDirectory / "package.xml");
+    }
+    else {
+        metadata = std::make_unique<App::Metadata>();
+        metadata->setName("User-Saved Preference Packs");
+        std::stringstream str;
+        str << "Generated automatically -- edits may be lost when saving new preference packs. To "
+            << "distribute one or more of these packs:\n"
+            << "    1) copy the entire SavedPreferencePacks directory to a convenient location,\n"
+            << "    2) rename the directory (usually to the name of the preference pack you are "
+            << "distributing),\n"
+            << "    3) delete any subfolders containing packs you don't want to distribute,\n"
+            << "    4) use git to initialize the directory as a git repository,\n"
+            << "    5) push it to a remote git host,\n"
+            << "    6) activate Developer Mode in the Addon Manager,\n"
+            << "    7) use Developer Tools in the Addon Manager to update the metadata file,\n"
+            << "    8) add, commit, and push the updated package.xml file,\n"
+            << "    9) add your remote host to the custom repositories list in the Addon Manager"
+            << " preferences,\n"
+            << "   10) use the Addon Manager to install your preference pack locally for testing.";
+        metadata->setDescription(str.str());
+        metadata->addLicense(App::Meta::License("All Rights Reserved", fs::path()));
+    }
+    for (const auto &item : metadata->content()) {
+        if (item.first == "preferencepack") {
+            if (item.second.name() == packName) {
+                // A pack with this name exists already, bail out
+                return;
+            }
+        }
+    }
+    App::Metadata newPreferencePackMetadata;
+    newPreferencePackMetadata.setName(packName);
+
+    metadata->addContentItem("preferencepack", newPreferencePackMetadata);
+    metadata->write(savedPreferencePacksDirectory / "package.xml");
+}
+
+void Gui::PreferencePackManager::importConfig(const std::string& packName,
+    const boost::filesystem::path& path)
+{
+    AddPackToMetadata(packName);
+
+    auto savedPreferencePacksDirectory =
+        fs::path(App::Application::getUserAppDataDir()) / "SavedPreferencePacks";
+    auto cfgFilename = savedPreferencePacksDirectory / packName / (packName + ".cfg");
+    fs::copy_file(path, cfgFilename, fs::copy_option::overwrite_if_exists);
+    rescan();
+}
+
+void Gui::PreferencePackManager::FindPreferencePacksInPackage(const fs::path &mod)
 {
     auto packageMetadataFile = mod / "package.xml";
     static const auto modDirectory = fs::path(App::Application::getUserAppDataDir()) / "Mod" / "SavedPreferencePacks";
@@ -366,48 +431,20 @@ void PreferencePackManager::save(const std::string& name, const std::vector<Temp
     if (templates.empty())
         return;
 
-    std::lock_guard<std::mutex> lock(_mutex);
-    auto savedPreferencePacksDirectory = fs::path(App::Application::getUserAppDataDir()) / "SavedPreferencePacks";
-    fs::path preferencePackDirectory(savedPreferencePacksDirectory / name);
-    if (fs::exists(preferencePackDirectory) && !fs::is_directory(preferencePackDirectory))
-        throw std::runtime_error("Cannot create " + savedPreferencePacksDirectory.string() + ": file with that name exists already");
-
-    if (!fs::exists(preferencePackDirectory))
-        fs::create_directories(preferencePackDirectory);
-
-    // Create or update the saved user preferencePacks package.xml metadata file
-    std::unique_ptr<App::Metadata> metadata;
-    if (fs::exists(savedPreferencePacksDirectory / "package.xml")) {
-        metadata = std::make_unique<App::Metadata>(savedPreferencePacksDirectory / "package.xml");
-    }
-    else {
-        // Create and set all of the required metadata to make it easier for PreferencePack authors to copy this
-        // file into their preferencePack distributions.
-        metadata = std::make_unique<App::Metadata>();
-        metadata->setName("User-Saved PreferencePacks");
-        metadata->setDescription("Generated automatically -- edits may be lost when saving new preferencePacks");
-        metadata->setVersion(static_cast<App::Meta::Version>(1));
-        metadata->addMaintainer(App::Meta::Contact("No Maintainer", "email@freecadweb.org"));
-        metadata->addLicense(App::Meta::License("(Unspecified)", "(Unspecified)"));
-        metadata->addUrl(App::Meta::Url("https://github.com/FreeCAD/FreeCAD", App::Meta::UrlType::repository));
-    }
-    App::Metadata newPreferencePackMetadata;
-    newPreferencePackMetadata.setName(name);
-    newPreferencePackMetadata.setVersion(static_cast<App::Meta::Version>(1));
-
-    metadata->addContentItem("preferencepack", newPreferencePackMetadata);
-    metadata->write(savedPreferencePacksDirectory / "package.xml");
+    AddPackToMetadata(name);
 
     // Create the config file
-    ParameterManager outputParameterManager;
-    outputParameterManager.CreateDocument();
+    auto outputParameterManager = ParameterManager::Create();
+    outputParameterManager->CreateDocument();
     for (const auto& t : templates) {
-        ParameterManager templateParameterManager;
-        templateParameterManager.LoadDocument(t.path.string().c_str());
-        copyTemplateParameters(templateParameterManager, outputParameterManager);
+        auto templateParameterManager = ParameterManager::Create();
+        templateParameterManager->LoadDocument(t.path.string().c_str());
+        copyTemplateParameters(*templateParameterManager, *outputParameterManager);
     }
+    auto savedPreferencePacksDirectory =
+        fs::path(App::Application::getUserAppDataDir()) / "SavedPreferencePacks";
     auto cfgFilename = savedPreferencePacksDirectory / name / (name + ".cfg");
-    outputParameterManager.SaveDocument(cfgFilename.string().c_str());
+    outputParameterManager->SaveDocument(cfgFilename.string().c_str());
 }
 
 // Needed until we support only C++20 and above and can use std::string's built-in ends_with()

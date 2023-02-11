@@ -1,4 +1,3 @@
-
 /***************************************************************************
  *   Copyright (c) 2022 Abdullah Tahiri <abdullah.tahiri.yo@gmail.com>     *
  *                                                                         *
@@ -21,13 +20,11 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef SKETCHERGUI_DrawSketchHandlerArc_H
 #define SKETCHERGUI_DrawSketchHandlerArc_H
 
-
 #include "GeometryCreationMode.h"
-#include "Utils.h"
+
 
 using namespace std;
 

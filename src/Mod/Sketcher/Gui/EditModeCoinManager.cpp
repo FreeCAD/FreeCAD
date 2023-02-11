@@ -20,85 +20,43 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
-
 #ifndef _PreComp_
-# include <Inventor/nodes/SoSeparator.h>
-# include <Inventor/nodes/SoGroup.h>
-# include <Inventor/nodes/SoSwitch.h>
-# include <Inventor/nodes/SoMaterial.h>
+# include <memory>
+
+# include <Inventor/SbVec3f.h>
+# include <Inventor/SoPickedPoint.h>
+# include <Inventor/details/SoDetail.h>
+# include <Inventor/details/SoLineDetail.h>
+# include <Inventor/details/SoPointDetail.h>
+# include <Inventor/nodes/SoDrawStyle.h>
 # include <Inventor/nodes/SoCoordinate3.h>
 # include <Inventor/nodes/SoLineSet.h>
 # include <Inventor/nodes/SoFont.h>
-
+# include <Inventor/nodes/SoGroup.h>
 # include <Inventor/nodes/SoMarkerSet.h>
-# include <Inventor/nodes/SoTranslation.h>
-# include <Inventor/nodes/SoText2.h>
+# include <Inventor/nodes/SoMaterial.h>
 # include <Inventor/nodes/SoPickStyle.h>
-# include <Inventor/nodes/SoDrawStyle.h>
-# include <Inventor/SoPickedPoint.h>
-# include <Inventor/details/SoPointDetail.h>
-# include <Inventor/details/SoDetail.h>
-# include <Inventor/details/SoLineDetail.h>
-
-# include <Inventor/nodes/SoAnnotation.h>
-# include <Inventor/nodes/SoImage.h>
-# include <Inventor/nodes/SoInfo.h>
-
-# include <Inventor/actions/SoRayPickAction.h>
-
-# include <Inventor/SbVec3f.h>
-# include <Inventor/SbImage.h>
-
-# include <memory>
+# include <Inventor/nodes/SoSeparator.h>
+# include <Inventor/nodes/SoText2.h>
+# include <Inventor/nodes/SoTranslation.h>
 #endif  // #ifndef _PreComp_
 
-#include <Gui/Inventor/SmSwitchboard.h>
-
-#include <Mod/Part/App/Geometry.h>
-#include <Mod/Sketcher/App/GeometryFacade.h>
-#include <Mod/Sketcher/App/SolverGeometryExtension.h>
-#include <Mod/Sketcher/App/GeoEnum.h>
+#include <Base/Exception.h>
+#include <Gui/SoFCBoundingBox.h>
+#include <Gui/Inventor/MarkerBitmaps.h>
 #include <Mod/Sketcher/App/Constraint.h>
 #include <Mod/Sketcher/App/GeoList.h>
 
-#include <Base/Exception.h>
-#include <Base/Tools2D.h>
-#include <Base/UnitsApi.h>
-#include <Gui/Tree.h>
-#include <Gui/Utilities.h>
-#include <Base/Converter.h>
-#include <Base/Tools.h>
-
-#include <Base/Vector3D.h>
-
-#include <App/ObjectIdentifier.h>
-
-#include <Gui/SoFCBoundingBox.h>
-#include <Gui/BitmapFactory.h>
-#include <Gui/Inventor/MarkerBitmaps.h>
-#include <Gui/Tools.h>
-
-#include <qpainter.h>
-
-#include "SoZoomTranslation.h"
-#include "SoDatumLabel.h"
-
-#include "EditModeInformationOverlayCoinConverter.h"
-
+#include "EditModeCoinManager.h"
+#include "EditModeConstraintCoinManager.h"
 #include "EditModeGeometryCoinConverter.h"
-
+#include "EditModeGeometryCoinManager.h"
+#include "EditModeInformationOverlayCoinConverter.h"
+#include "Utils.h"
 #include "ViewProviderSketch.h"
-
 #include "ViewProviderSketchCoinAttorney.h"
 
-#include "EditModeGeometryCoinManager.h"
-#include "EditModeConstraintCoinManager.h"
-
-#include "EditModeCoinManager.h"
-
-#include "Utils.h"
 
 using namespace SketcherGui;
 using namespace Sketcher;
@@ -424,7 +382,8 @@ void EditModeCoinManager::drawEditMarkers(const std::vector<Base::Vector2d> &Edi
 
     int i=0; // setting up the line set
     for (std::vector<Base::Vector2d>::const_iterator it = EditMarkers.begin(); it != EditMarkers.end(); ++it,i++) {
-        verts[i].setValue(it->x, it->y, drawingParameters.zEdit);
+        verts[i].setValue(it->x, it->y,
+                          ViewProviderSketchCoinAttorney::getViewOrientationFactor(viewProvider) * drawingParameters.zEdit);
         color[i] = drawingParameters.InformationColor;
     }
 
@@ -444,7 +403,8 @@ void EditModeCoinManager::drawEdit(const std::vector<Base::Vector2d> &EditCurve)
 
     int i=0; // setting up the line set
     for (std::vector<Base::Vector2d>::const_iterator it = EditCurve.begin(); it != EditCurve.end(); ++it,i++) {
-        verts[i].setValue(it->x,it->y, drawingParameters.zEdit);
+        verts[i].setValue(it->x,it->y,
+                          ViewProviderSketchCoinAttorney::getViewOrientationFactor(viewProvider) * drawingParameters.zEdit);
         color[i] = drawingParameters.CreateCurveColor;
     }
 
@@ -472,7 +432,8 @@ void EditModeCoinManager::drawEdit(const std::list<std::vector<Base::Vector2d>> 
     int indexindex=0;
     for(const auto & v : list) {
         for (const auto & p : v) {
-            verts[coordindex].setValue(p.x, p.y, drawingParameters.zEdit);
+            verts[coordindex].setValue(p.x, p.y,
+                                       ViewProviderSketchCoinAttorney::getViewOrientationFactor(viewProvider) * drawingParameters.zEdit);
             color[coordindex] = drawingParameters.CreateCurveColor;
             coordindex++;
         }
@@ -489,7 +450,8 @@ void EditModeCoinManager::drawEdit(const std::list<std::vector<Base::Vector2d>> 
 void EditModeCoinManager::setPositionText(const Base::Vector2d &Pos, const SbString &text)
 {
     editModeScenegraphNodes.textX->string = text;
-    editModeScenegraphNodes.textPos->translation = SbVec3f(Pos.x, Pos.y, drawingParameters.zText);
+    editModeScenegraphNodes.textPos->translation = SbVec3f(Pos.x, Pos.y,
+                                                           ViewProviderSketchCoinAttorney::getViewOrientationFactor(viewProvider) * drawingParameters.zText);
 }
 
 void EditModeCoinManager::setPositionText(const Base::Vector2d &Pos)
@@ -625,7 +587,7 @@ void EditModeCoinManager::processGeometryInformationOverlay(const GeoListFacade 
         Gui::coinRemoveAllChildren(editModeScenegraphNodes.infoGroup);
     }
 
-    auto ioconv = EditModeInformationOverlayCoinConverter(editModeScenegraphNodes.infoGroup, overlayParameters, drawingParameters);
+    auto ioconv = EditModeInformationOverlayCoinConverter(viewProvider, editModeScenegraphNodes.infoGroup, overlayParameters, drawingParameters);
 
     // geometry information layer for bsplines, as they need a second round now that max curvature is known
     for (auto geoid : analysisResults.bsplineGeoIds) {
@@ -639,10 +601,11 @@ void EditModeCoinManager::processGeometryInformationOverlay(const GeoListFacade 
 
 void EditModeCoinManager::updateAxesLength()
 {
-    editModeScenegraphNodes.RootCrossCoordinate->point.set1Value(0,SbVec3f(-analysisResults.boundingBoxMagnitudeOrder, 0.0f, drawingParameters.zCross));
-    editModeScenegraphNodes.RootCrossCoordinate->point.set1Value(1,SbVec3f(analysisResults.boundingBoxMagnitudeOrder, 0.0f, drawingParameters.zCross));
-    editModeScenegraphNodes.RootCrossCoordinate->point.set1Value(2,SbVec3f(0.0f, -analysisResults.boundingBoxMagnitudeOrder, drawingParameters.zCross));
-    editModeScenegraphNodes.RootCrossCoordinate->point.set1Value(3,SbVec3f(0.0f, analysisResults.boundingBoxMagnitudeOrder, drawingParameters.zCross));
+    auto zCrossH = ViewProviderSketchCoinAttorney::getViewOrientationFactor(viewProvider) * drawingParameters.zCross;
+    editModeScenegraphNodes.RootCrossCoordinate->point.set1Value(0,SbVec3f(-analysisResults.boundingBoxMagnitudeOrder, 0.0f, zCrossH));
+    editModeScenegraphNodes.RootCrossCoordinate->point.set1Value(1,SbVec3f(analysisResults.boundingBoxMagnitudeOrder, 0.0f, zCrossH));
+    editModeScenegraphNodes.RootCrossCoordinate->point.set1Value(2,SbVec3f(0.0f, -analysisResults.boundingBoxMagnitudeOrder, zCrossH));
+    editModeScenegraphNodes.RootCrossCoordinate->point.set1Value(3,SbVec3f(0.0f, analysisResults.boundingBoxMagnitudeOrder, zCrossH));
 }
 
 void EditModeCoinManager::updateGridExtent()

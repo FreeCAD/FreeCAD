@@ -460,17 +460,13 @@ PyObject *PropertyLink::getPyObject()
 
 void PropertyLink::setPyObject(PyObject *value)
 {
-    if (PyObject_TypeCheck(value, &(DocumentObjectPy::Type))) {
-        DocumentObjectPy  *pcObject = (DocumentObjectPy*)value;
+    Base::PyTypeCheck(&value, &DocumentObjectPy::Type);
+    if (value) {
+        DocumentObjectPy *pcObject = static_cast<DocumentObjectPy*>(value);
         setValue(pcObject->getDocumentObjectPtr());
     }
-    else if (Py_None == value) {
-        setValue(nullptr);
-    }
     else {
-        std::string error = std::string("type must be 'DocumentObject' or 'NoneType', not ");
-        error += value->ob_type->tp_name;
-        throw Base::TypeError(error);
+        setValue(nullptr);
     }
 }
 
@@ -708,16 +704,9 @@ PyObject *PropertyLinkList::getPyObject()
 
 DocumentObject *PropertyLinkList::getPyValue(PyObject *item) const
 {
-    if (item == Py_None) {
-        return nullptr;
-    }
-    else if (PyObject_TypeCheck(item, &(DocumentObjectPy::Type))) {
-        return static_cast<DocumentObjectPy*>(item)->getDocumentObjectPtr();
-    }
+    Base::PyTypeCheck(&item, &DocumentObjectPy::Type);
 
-    std::string error = std::string("type must be 'DocumentObject', list of 'DocumentObject', or NoneType, not ");
-    error += item->ob_type->tp_name;
-    throw Base::TypeError(error);
+    return item ? static_cast<DocumentObjectPy*>(item)->getDocumentObjectPtr() : nullptr;
 }
 
 void PropertyLinkList::Save(Base::Writer &writer) const
@@ -1010,7 +999,6 @@ PyObject *PropertyLinkSub::getPyObject()
     Py::Tuple tup(2);
     Py::List list(static_cast<int>(_cSubList.size()));
     if (_pcLinkSub) {
-        _pcLinkSub->getPyObject();
         tup[0] = Py::asObject(_pcLinkSub->getPyObject());
         for(unsigned int i = 0;i<_cSubList.size(); i++)
             list[i] = Py::String(_cSubList[i]);
@@ -1025,7 +1013,7 @@ PyObject *PropertyLinkSub::getPyObject()
 void PropertyLinkSub::setPyObject(PyObject *value)
 {
     if (PyObject_TypeCheck(value, &(DocumentObjectPy::Type))) {
-        DocumentObjectPy  *pcObject = (DocumentObjectPy*)value;
+        DocumentObjectPy  *pcObject = static_cast<DocumentObjectPy*>(value);
         setValue(pcObject->getDocumentObjectPtr());
     }
     else if (PyTuple_Check(value) || PyList_Check(value)) {
@@ -1035,7 +1023,7 @@ void PropertyLinkSub::setPyObject(PyObject *value)
         else if(seq.size()!=2)
             throw Base::ValueError("Expect input sequence of size 2");
         else if (PyObject_TypeCheck(seq[0].ptr(), &(DocumentObjectPy::Type))) {
-            DocumentObjectPy  *pcObj = (DocumentObjectPy*)seq[0].ptr();
+            DocumentObjectPy  *pcObj = static_cast<DocumentObjectPy*>(seq[0].ptr());
             static const char *errMsg = "type of second element in tuple must be str or sequence of str";
             PropertyString propString;
             if (seq[1].isString()) {
@@ -1754,7 +1742,7 @@ void PropertyLinkSubList::setValues(std::vector<DocumentObject*>&& lValue,
     hasSetValue();
 }
 
-void PropertyLinkSubList::setValue(DocumentObject* lValue, const std::vector<string> &SubList)
+void PropertyLinkSubList::setValue(DocumentObject* lValue, const std::vector<std::string> &SubList)
 {
     auto parent = dynamic_cast<App::DocumentObject*>(getContainer());
     verifyObject(lValue, parent);
@@ -3930,7 +3918,7 @@ void PropertyXLinkSubList::addValue(App::DocumentObject *obj,
     guard.tryInvoke();
 }
 
-void PropertyXLinkSubList::setValue(DocumentObject* lValue, const std::vector<string> &SubList)
+void PropertyXLinkSubList::setValue(DocumentObject *lValue, const std::vector<std::string> &SubList)
 {
     std::map<DocumentObject *, std::vector<std::string> > values;
     if(lValue)

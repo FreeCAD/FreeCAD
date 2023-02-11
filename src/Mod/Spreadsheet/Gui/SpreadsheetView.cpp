@@ -21,44 +21,35 @@
  ***************************************************************************/
 
 #include "PreCompiled.h"
+
 #ifndef _PreComp_
-# include <QAction>
-# include <QApplication>
-# include <QMenu>
-# include <QMouseEvent>
+# include <cmath>
+# include <QPalette>
 # include <QPrinter>
 # include <QPrintDialog>
 # include <QPrintPreviewDialog>
-# include <QSlider>
-# include <QStatusBar>
-# include <QToolBar>
-# include <QTableWidgetItem>
 # include <QTextDocument>
-# include <QMessageBox>
-# include <QPalette>
-# include <cmath>
 #endif
 
 #include <App/DocumentObject.h>
-#include <App/PropertyStandard.h>
 #include <App/Range.h>
 #include <Base/Tools.h>
-#include <Gui/MainWindow.h>
 #include <Gui/Application.h>
 #include <Gui/Command.h>
 #include <Gui/CommandT.h>
 #include <Gui/Document.h>
-#include <Gui/ExpressionCompleter.h>
 #include <Gui/FileDialog.h>
-#include <LineEdit.h>
+#include <Gui/MainWindow.h>
+
 #include <Mod/Spreadsheet/App/Sheet.h>
 #include <Mod/Spreadsheet/App/SheetPy.h>
-#include <Mod/Spreadsheet/App/Utils.h>
-#include "qtcolorpicker.h"
 
 #include "SpreadsheetView.h"
-#include "SpreadsheetDelegate.h"
 #include "ui_Sheet.h"
+#include "LineEdit.h"
+#include "qtcolorpicker.h"
+#include "SpreadsheetDelegate.h"
+
 
 using namespace SpreadsheetGui;
 using namespace Spreadsheet;
@@ -89,18 +80,18 @@ SheetView::SheetView(Gui::Document *pcDocument, App::DocumentObject *docObj, QWi
     ui->cells->setSheet(sheet);
 
     // Connect signals
-    connect(ui->cells->selectionModel(), SIGNAL( currentChanged( QModelIndex, QModelIndex ) ),
-            this,        SLOT( currentChanged( QModelIndex, QModelIndex ) ) );
+    connect(ui->cells->selectionModel(), &QItemSelectionModel::currentChanged,
+            this, &SheetView::currentChanged);
 
-    connect(ui->cells->horizontalHeader(), SIGNAL(resizeFinished()),
-            this, SLOT(columnResizeFinished()));
-    connect(ui->cells->horizontalHeader(), SIGNAL(sectionResized ( int, int, int ) ),
-            this, SLOT(columnResized(int, int, int)));
+    connect(dynamic_cast<SheetViewHeader*>(ui->cells->horizontalHeader()), &SheetViewHeader::resizeFinished,
+            this, &SheetView::columnResizeFinished);
+    connect(ui->cells->horizontalHeader(), &QHeaderView::sectionResized,
+            this, &SheetView::columnResized);
 
-    connect(ui->cells->verticalHeader(), SIGNAL(resizeFinished()),
-            this, SLOT(rowResizeFinished()));
-    connect(ui->cells->verticalHeader(), SIGNAL(sectionResized ( int, int, int ) ),
-            this, SLOT(rowResized(int, int, int)));
+    connect(dynamic_cast<SheetViewHeader*>(ui->cells->verticalHeader()), &SheetViewHeader::resizeFinished,
+            this, &SheetView::rowResizeFinished);
+    connect(ui->cells->verticalHeader(), &QHeaderView::sectionResized,
+            this, &SheetView::rowResized);
 
     connect(delegate, &SpreadsheetDelegate::finishedWithKey, this, &SheetView::editingFinishedWithKey);
     connect(ui->cellContent, &ExpressionLineEdit::returnPressed, this, [this]() {confirmContentChanged(ui->cellContent->text()); });
@@ -110,7 +101,7 @@ SheetView::SheetView(Gui::Document *pcDocument, App::DocumentObject *docObj, QWi
     columnWidthChangedConnection = sheet->columnWidthChanged.connect(bind(&SheetView::resizeColumn, this, bp::_1, bp::_2));
     rowHeightChangedConnection = sheet->rowHeightChanged.connect(bind(&SheetView::resizeRow, this, bp::_1, bp::_2));
 
-    connect( model, SIGNAL(dataChanged(const QModelIndex &, const QModelIndex &)), this, SLOT(modelUpdated(const QModelIndex &, const QModelIndex &)));
+    connect( model, &QAbstractItemModel::dataChanged, this, &SheetView::modelUpdated);
 
     QPalette palette = ui->cells->palette();
     palette.setColor(QPalette::Base, QColor(255, 255, 255));
@@ -240,8 +231,8 @@ void SheetView::printPreview()
     QPrinter printer(QPrinter::ScreenResolution);
     printer.setPageOrientation(QPageLayout::Landscape);
     QPrintPreviewDialog dlg(&printer, this);
-    connect(&dlg, SIGNAL(paintRequested (QPrinter *)),
-            this, SLOT(print(QPrinter *)));
+    connect(&dlg, &QPrintPreviewDialog::paintRequested,
+            this, qOverload<QPrinter*>(&SheetView::print));
     dlg.exec();
 }
 
@@ -388,7 +379,7 @@ void SheetView::confirmAliasChanged(const QString& text)
     }
 
     QModelIndex i = ui->cells->currentIndex();
-    if (const auto* cell = sheet->getCell(CellAddress(i.row(), i.column()))) {
+    if (const auto* cell = sheet->getNewCell(CellAddress(i.row(), i.column()))) {
         if (!aliasOkay) {
             //do not show error message if failure to set new alias is because it is already the same string
             std::string current_alias;
@@ -538,13 +529,13 @@ void SheetViewPy::init_type()
     behaviors().supportRepr();
     behaviors().supportGetattr();
     behaviors().supportSetattr();
-    
+
     add_varargs_method("selectedRanges", &SheetViewPy::selectedRanges, "selectedRanges(): Get a list of all selected ranges");
     add_varargs_method("selectedCells", &SheetViewPy::selectedCells, "selectedCells(): Get a list of all selected cells");
     add_varargs_method("select", &SheetViewPy::select, "select(cell,flags): Select (or deselect) the given cell, applying QItemSelectionModel.SelectionFlags\nselect(topLeft,bottomRight,flags): Select (or deselect) the given range, applying QItemSelectionModel.SelectionFlags");
     add_varargs_method("currentIndex", &SheetViewPy::currentIndex, "currentIndex(): Get the current index");
     add_varargs_method("setCurrentIndex", &SheetViewPy::setCurrentIndex, "setCurrentIndex(cell): Set the current index to the named cell (e.g. 'A1')");
-    
+
     add_varargs_method("getSheet", &SheetViewPy::getSheet, "getSheet()");
     add_varargs_method("cast_to_base", &SheetViewPy::cast_to_base, "cast_to_base() cast to MDIView class");
     behaviors().readyType();

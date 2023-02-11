@@ -186,7 +186,7 @@ DocumentRecovery::DocumentRecovery(const QList<QFileInfo>& dirs, QWidget* parent
         if (info.status == DocumentRecoveryPrivate::Created) {
             d_ptr->recoveryInfo << info;
 
-            QTreeWidgetItem* item = new QTreeWidgetItem(d_ptr->ui.treeWidget);
+            auto item = new QTreeWidgetItem(d_ptr->ui.treeWidget);
             item->setText(0, info.label);
             item->setToolTip(0, info.tooltip);
             item->setText(1, tr("Not yet recovered"));
@@ -331,7 +331,7 @@ void DocumentRecovery::accept()
                             << docs[i]->Label.getValue() << "'");
                 }
                 else {
-                    DocumentRecoveryCleaner().clearDirectory(xfi.absolutePath());
+                    DocumentRecoveryCleaner().clearDirectory(QFileInfo(xfi.absolutePath()));
                     QDir().rmdir(xfi.absolutePath());
                 }
 
@@ -355,7 +355,9 @@ void DocumentRecoveryPrivate::writeRecoveryInfo(const DocumentRecoveryPrivate::I
     QFile file(info.xmlFile);
     if (file.open(QFile::WriteOnly)) {
         QTextStream str(&file);
+#if QT_VERSION < QT_VERSION_CHECK(6,0,0)
         str.setCodec("UTF-8");
+#endif
         str << "<?xml version='1.0' encoding='utf-8'?>\n"
             << "<AutoRecovery SchemaVersion=\"1\">\n";
         switch (info.status) {
@@ -496,7 +498,7 @@ void DocumentRecovery::contextMenuEvent(QContextMenuEvent* ev)
     QList<QTreeWidgetItem*> items = d_ptr->ui.treeWidget->selectedItems();
     if (!items.isEmpty()) {
         QMenu menu;
-        menu.addAction(tr("Delete"), this, SLOT(onDeleteSection()));
+        menu.addAction(tr("Delete"), this, &DocumentRecovery::onDeleteSection);
         menu.exec(ev->globalPos());
     }
 }

@@ -27,7 +27,7 @@
 #include <FCConfig.h>
 
 
-/// here get the warnings of to long specifieres disabled (needet for VC6)
+/// point at which warnings of overly long specifiers disabled (needet for VC6)
 #ifdef _MSC_VER
 # pragma warning( disable : 4251 )
 # pragma warning( disable : 4275 )
@@ -51,7 +51,7 @@
 
 // OpenCasCade =====================================================================================
 // Base
-#include "OpenCascadeAll.h"
+#include <Mod/Part/App/OpenCascadeAll.h>
 
 #endif //_PreComp_
 

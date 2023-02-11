@@ -23,16 +23,21 @@
 #ifndef SURFACEGUI_TASKSECTIONS_H
 #define SURFACEGUI_TASKSECTIONS_H
 
-#include <Gui/TaskView/TaskDialog.h>
-#include <Gui/TaskView/TaskView.h>
-#include <Gui/SelectionFilter.h>
-#include <Gui/DocumentObserver.h>
-#include <Base/BoundBox.h>
-#include <Mod/Part/Gui/ViewProviderSpline.h>
-#include <Mod/Surface/App/FeatureSections.h>
 #include <memory>
 
+#include <Gui/DocumentObserver.h>
+#include <Gui/TaskView/TaskDialog.h>
+#include <Gui/TaskView/TaskView.h>
+#include <Mod/Part/Gui/ViewProviderSpline.h>
+#include <Mod/Surface/App/FeatureSections.h>
+
+
 class QListWidgetItem;
+
+namespace Gui
+{
+class ButtonGroup;
+}
 
 namespace SurfaceGui
 {
@@ -69,6 +74,7 @@ protected:
 private:
     std::unique_ptr<Ui_Sections> ui;
     ViewProviderSections* vp;
+    Gui::ButtonGroup *buttonGroup;
 
 public:
     SectionsPanel(ViewProviderSections* vp, Surface::Sections* obj);
@@ -91,8 +97,8 @@ protected:
     void slotDeletedObject(const Gui::ViewProviderDocumentObject& Obj) override;
 
 private Q_SLOTS:
-    void on_buttonEdgeAdd_clicked();
-    void on_buttonEdgeRemove_clicked();
+    void on_buttonEdgeAdd_toggled(bool checked);
+    void on_buttonEdgeRemove_toggled(bool checked);
     void onDeleteEdge();
     void clearSelection();
     void onIndexesMoved();
@@ -100,6 +106,9 @@ private Q_SLOTS:
 private:
     void appendCurve(App::DocumentObject*, const std::string& subname);
     void removeCurve(App::DocumentObject*, const std::string& subname);
+
+private:
+    void exitSelectionMode();
 };
 
 class TaskSections : public Gui::TaskView::TaskDialog

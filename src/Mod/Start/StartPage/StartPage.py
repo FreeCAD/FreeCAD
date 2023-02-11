@@ -36,6 +36,13 @@ import urllib.parse
 from . import TranslationTexts
 from PySide import QtCore, QtGui
 
+try:
+    from addonmanager_macro import Macro as AM_Macro
+    has_am_macro = True
+except ImportError:
+    has_am_macro = False
+
+
 FreeCADGui.addLanguagePath(":/translations")
 FreeCADGui.updateLocale()
 
@@ -175,16 +182,31 @@ def getInfo(filename):
                         thumb.close()
                         iconbank[filename] = image
 
-        # use image itself as icon if it's an image file
-        if os.path.splitext(filename)[1].lower() in [".jpg",".jpeg",".png",".svg"]:
+        elif filename.lower().endswith(".fcmacro"):
+            # For FreeCAD macros, use the Macro Editor icon (but we have to have it in a file for
+            # the web view to load it)
+            image = os.path.join(tempfolder,"fcmacro_icon.svg")
+            if not os.path.exists(image):
+                f = QtCore.QFile(":/icons/MacroEditor.svg")
+                f.copy(image)
+            iconbank[filename] = image
+
+            if has_am_macro:
+                macro = AM_Macro(os.path.basename(filename))
+                macro.fill_details_from_file(filename)
+                author = macro.author
+
+        elif QtGui.QImageReader.imageFormat(filename):
+            # use image itself as icon if it's an image file
             image = filename
             iconbank[filename] = image
 
-        # use freedesktop thumbnail if available
-        fdthumb = getFreeDesktopThumbnail(filename)
-        if fdthumb:
-            image = fdthumb
-            iconbank[filename] = fdthumb
+        else:
+            # use freedesktop thumbnail if available
+            fdthumb = getFreeDesktopThumbnail(filename)
+            if fdthumb:
+                image = fdthumb
+                iconbank[filename] = fdthumb
 
         # retrieve default mime icon if needed
         if not image:
@@ -343,7 +365,7 @@ def handle():
     # get FreeCAD version
 
     v = FreeCAD.Version()
-    VERSIONSTRING = TranslationTexts.T_VERSION + " " + v[0] + "." + v[1] + " " + TranslationTexts.T_BUILD + " " + v[2]
+    VERSIONSTRING = TranslationTexts.T_VERSION + " " + v[0] + "." + v[1] + "." + v[2] +" " + TranslationTexts.T_BUILD + " " + v[3]
     HTML = HTML.replace("VERSIONSTRING",VERSIONSTRING)
 
     # translate texts
@@ -474,6 +496,8 @@ def handle():
             wn = "FCGear"
         elif wn == "frame_":
             wn = "frame"
+        elif wn == "ReverseEngineering":
+            wn = "Reverse_Engineering"
         elif wn == "None":
             continue
         wblist.append(wn.lower())
@@ -499,7 +523,7 @@ def handle():
             iconbank[wb] = img
         UL_WORKBENCHES += '<li>'
         UL_WORKBENCHES += '<img src="file:///'+img.replace('\\','/')+'" alt="'+wn+'">&nbsp;'
-        UL_WORKBENCHES += '<a href="https://www.freecadweb.org/wiki/'+wn+'_Workbench">'+wn.replace("ReverseEngineering","ReverseEng")+'</a>'
+        UL_WORKBENCHES += '<a href="https://www.freecadweb.org/wiki/'+wn+'_Workbench">'+wn.replace("Reverse_Engineering","ReverseEng")+'</a>'
         UL_WORKBENCHES += '</li>'
     UL_WORKBENCHES += '</ul>'
     HTML = HTML.replace("UL_WORKBENCHES", UL_WORKBENCHES)
@@ -539,6 +563,7 @@ def handle():
     BOXCOLOR  = gethexcolor(p.GetUnsigned("BoxColor",3722305023))
     TEXTCOLOR = gethexcolor(p.GetUnsigned("PageTextColor",255))
     BGTCOLOR = gethexcolor(p.GetUnsigned("BackgroundTextColor",4294703103))
+    OVERFLOW = "" if p.GetBool("ShowScrollBars",True) else "body::-webkit-scrollbar {display: none;}"
     SHADOW = "#888888"
     if QtGui.QColor(BASECOLOR).valueF() < 0.5: # dark page - we need to make darker shadows
         SHADOW = "#000000"
@@ -555,6 +580,7 @@ def handle():
     HTML = HTML.replace("SHADOW",SHADOW)
     HTML = HTML.replace("FONTFAMILY",FONTFAMILY)
     HTML = HTML.replace("FONTSIZE",str(FONTSIZE)+"px")
+    HTML = HTML.replace("OVERFLOW",OVERFLOW)
 
     # enable web access if permitted
 
@@ -577,15 +603,6 @@ def handle():
 
     Start.iconbank = iconbank
     Start.tempfolder = tempfolder
-
-    # make sure we are always returning unicode
-    # HTML should be a str-object and therefore:
-    # - for py2 HTML is a bytes object and has to be decoded to unicode
-    # - for py3 HTML is already a unicode object and the next 2 lines can be removed
-    #    once py2-support is removed.
-
-    if isinstance(HTML, bytes):
-        HTML = HTML.decode("utf8")
 
     return HTML
 

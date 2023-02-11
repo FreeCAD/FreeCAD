@@ -1,5 +1,5 @@
-/***************************************************************************
-*   Copyright (c) Juergen Riegel         (juergen.riegel@web.de) 2014     *
+/**************************************************************************
+*   Copyright (c) 2014 Juergen Riegel <juergen.riegel@web.de>             *
 *                                                                         *
 *   This file is part of the FreeCAD CAx development system.              *
 *                                                                         *
@@ -31,28 +31,28 @@ using namespace std;
 
 struct U8
 {
-	U8(){};
+    U8(){};
 
-	U8(uint8_t ui) :_U8(ui){}
+    U8(uint8_t ui) :_U8(ui){}
 
-	U8(Context& cont)
-	{
-		read(cont);
-	}
+    U8(Context& cont)
+    {
+        read(cont);
+    }
 
-	inline void read(Context& cont)
-	{
-		cont.Strm.read((char*)&_U8, 1);
-	}
+    inline void read(Context& cont)
+    {
+        cont.Strm.read((char*)&_U8, 1);
+    }
 
-	inline operator uint8_t() const
-	{
-		return _U8;
-	}
+    inline operator uint8_t() const
+    {
+        return _U8;
+    }
 
 
 
-	uint8_t _U8;
+    uint8_t _U8;
 };
 
 

@@ -20,9 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
-
 #ifndef _PreComp_
 # include <cfloat>
 #endif
@@ -88,7 +86,6 @@ Base::Quantity PropertyQuantity::createQuantityFromPy(PyObject *value)
     return quant;
 }
 
-
 void PropertyQuantity::setPyObject(PyObject *value)
 {
     // Set the unit if Unit object supplied, else check the unit
@@ -140,7 +137,6 @@ const boost::any PropertyQuantity::getPathValue(const ObjectIdentifier & /*path*
 TYPESYSTEM_SOURCE(App::PropertyQuantityConstraint, App::PropertyQuantity)
 
 
-
 void PropertyQuantityConstraint::setConstraints(const Constraints* sConstrain)
 {
     _ConstStruct = sConstrain;
@@ -150,7 +146,6 @@ const char* PropertyQuantityConstraint::getEditorName() const
 {
     return "Gui::PropertyEditor::PropertyUnitConstraintItem";
 }
-
 
 const PropertyQuantityConstraint::Constraints*  PropertyQuantityConstraint::getConstraints() const
 {
@@ -255,6 +250,18 @@ PropertyDistance::PropertyDistance()
 
 //**************************************************************************
 //**************************************************************************
+// PropertyCurrentDensity
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+TYPESYSTEM_SOURCE(App::PropertyCurrentDensity, App::PropertyQuantity)
+
+PropertyCurrentDensity::PropertyCurrentDensity()
+{
+    setUnit(Base::Unit::CurrentDensity);
+}
+
+//**************************************************************************
+//**************************************************************************
 // PropertyElectricPotential
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
@@ -302,6 +309,17 @@ PropertyLength::PropertyLength()
     setConstraints(&LengthStandard);
 }
 
+//**************************************************************************
+//**************************************************************************
+// PropertyMagnetization
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+TYPESYSTEM_SOURCE(App::PropertyMagnetization, App::PropertyQuantity)
+
+PropertyMagnetization::PropertyMagnetization()
+{
+    setUnit(Base::Unit::Magnetization);
+}
 
 //**************************************************************************
 //**************************************************************************

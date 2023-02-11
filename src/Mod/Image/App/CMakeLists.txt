@@ -28,6 +28,12 @@ set(Image_SRCS
     AppImage.cpp
 )
 
+if(FREECAD_USE_PCH)
+    add_definitions(-D_PreComp_)
+    GET_MSVC_PRECOMPILED_SOURCE("PreCompiled.cpp" PCH_SRCS ${Image_SRCS})
+    ADD_MSVC_PRECOMPILED_HEADER(Image PreCompiled.h PreCompiled.cpp PCH_SRCS)
+endif(FREECAD_USE_PCH)
+
 add_library(Image SHARED ${Image_SRCS})
 target_link_libraries(Image ${Image_LIBS})
 

@@ -154,13 +154,13 @@ class TestImportCSG(unittest.TestCase):
         self.assertTrue (wire is not None)
         self.assertAlmostEqual (wire.Shape.Area, 5000.0)
         FreeCAD.closeDocument(doc.Name)
-    
+
     def test_import_polyhedron(self):
         doc = self.utility_create_scad(
 """
 polyhedron(
   points=[ [10,10,0],[10,-10,0],[-10,-10,0],[-10,10,0], // the four points at base
-           [0,0,10]  ],                                 // the apex point 
+           [0,0,10]  ],                                 // the apex point
   faces=[ [0,1,4],[1,2,4],[2,3,4],[3,0,4],              // each triangle side
               [1,0,3],[2,1,3] ]                         // two triangles for square base
  );
@@ -229,7 +229,7 @@ polyhedron(
         self.assertTrue (object is not None)
         self.assertAlmostEqual (object.Shape.Volume, 4.5*math.pi, 5)
         FreeCAD.closeDocument(doc.Name)
-       
+
     def test_import_linear_extrude(self):
         doc = self.utility_create_scad("linear_extrude(height = 20) square([20, 10], center = true);", "linear_extrude_simple")
         object = doc.ActiveObject
@@ -291,13 +291,13 @@ polyhedron(
         self.assertTrue (object is not None)
         self.assertAlmostEqual (object.Shape.Volume, 8.000000, 6)
         FreeCAD.closeDocument(doc.Name)
-        
+
         doc = self.utility_create_scad("resize([2,2,0]) cube();", "resize_with_zero")
         object = doc.ActiveObject
         self.assertTrue (object is not None)
         self.assertAlmostEqual (object.Shape.Volume, 4.000000, 6)
         FreeCAD.closeDocument(doc.Name)
-        
+
         doc = self.utility_create_scad("resize([2,0,0], auto=true) cube();", "resize_with_auto")
         object = doc.ActiveObject
         self.assertTrue (object is not None)
@@ -349,7 +349,7 @@ resize(newsize = [0,0,10], auto = [0,0,0]) {
             self.assertAlmostEqual (object.Shape.BoundBox.YMin, -4.5, 6)
             self.assertAlmostEqual (object.Shape.BoundBox.YMax, 4.5, 6)
             FreeCAD.closeDocument(doc.Name)
-        
+
             testfile = join(self.test_dir, "Surface.dat").replace('\\','/')
             doc = self.utility_create_scad(f"surface(file = \"{testfile}\", convexity = 5);", "surface_uncentered_dat")
             object = doc.ActiveObject
@@ -390,7 +390,7 @@ resize(newsize = [0,0,10], auto = [0,0,0]) {
         self.assertAlmostEqual (object.Shape.Area, 0.75*0.75 - 0.25*0.25, 3)
         FreeCAD.closeDocument(doc.Name)
 
-        # Unimplemented functionality: 
+        # Unimplemented functionality:
 
         # With cut=false, the twisted unit square projects to a circle of radius sqrt(0.5)
         #doc = self.utility_create_scad(f"projection(cut=false) {base_shape}", "projection_circle")
@@ -413,3 +413,125 @@ resize(newsize = [0,0,10], auto = [0,0,0]) {
 
     def test_import_offset(self):
         pass
+
+    def test_empty_union(self):
+        content = """union() {
+ color(c = [0.30, 0.50, 0.80, 0.50]) {
+  union() {
+   union() {
+    union() {
+     translate(v = [23.0, -9.50, 13.60]) {
+      union() {
+       difference() {
+        difference() {
+         difference() {
+          difference() {
+           difference() {
+            difference() {
+             difference() {
+              union() {
+               union() {
+                union() {
+                 union() {
+                  union() {
+                   union() {
+                    union() {
+                     union();
+                     translate(v = [2.50, 2.50, 9.50]) {
+                      cylinder(h = 19.0, r = 2.50, center = true, $fn = 100);
+                     }
+                    }
+                    translate(v = [11.50, 2.50, 9.50]) {
+                     cylinder(h = 19.0, r = 2.50, center = true, $fn = 100);
+                    }
+                   }
+                   translate(v = [11.50, 6.30, 9.50]) {
+                    cylinder(h = 19.0, r = 2.50, center = true, $fn = 100);
+                   }
+                  }
+                  translate(v = [2.50, 6.30, 9.50]) {
+                   cylinder(h = 19.0, r = 2.50, center = true, $fn = 100);
+                  }
+                 }
+                 translate(v = [2.50, 0.0, 0.0]) {
+                  cube(size = [9.0, 8.80, 19.0]);
+                 }
+                }
+                translate(v = [0.0, 2.50, 0.0]) {
+                 cube(size = [14.0, 3.80, 19.0]);
+                }
+               }
+              }
+              translate(v = [-1.0, 8.40, 3.50]) {
+               cube(size = [30.0, 10.0, 12.0]);
+              }
+             }
+             translate(v = [4.0, 4.0, -0.10]) {
+              cylinder($fn = 30, h = 20.0, r = 1.750, r1 = 1.80);
+             }
+            }
+            translate(v = [9.0, 4.40, -0.10]) {
+             cylinder($fn = 30, h = 20.0, r = 2.150, r1 = 2.20);
+            }
+           }
+           translate(v = [12.30, 2.10, -0.10]) {
+            cube(size = [5.0, 2.20, 20.0]);
+           }
+          }
+          translate(v = [1.90, 7.60, -0.10]) {
+           cube(size = [2.20, 5.0, 20.0]);
+          }
+         }
+         translate(v = [3.60, 7.20, 1.80]) {
+          cube(size = [30.0, 10.0, 2.0]);
+         }
+        }
+        translate(v = [0, 0, 13.40]) {
+         translate(v = [3.60, 7.20, 1.80]) {
+          cube(size = [30.0, 10.0, 2.0]);
+         }
+        }
+       }
+      }
+     }
+    }
+   }
+  }
+ }
+}"""
+        doc = self.utility_create_scad(content, "empty_union")
+        self.assertEqual (len(doc.RootObjects), 1)
+        FreeCAD.closeDocument(doc.Name)
+
+    def test_complex_fuse_no_placement(self):
+        # Issue #7878 - https://github.com/FreeCAD/FreeCAD/issues/7878
+
+        csg_data = """
+group() {
+    multmatrix([[1, 0, 0, 0], [0, 1, 0, -127], [0, 0, 1, -6], [0, 0, 0, 1]]) {
+        union() {
+            group() {
+                difference() {
+                    cube(size = [4, 106.538, 12], center = false);
+                    group() {
+                            polyhedron(points = [[0, 0, 0], [1, 0, 0], [0, 1, 0], [0, 0, 1], [1, 0, 1], [0, 1, 1]], faces = [[0, 1, 2], [5, 4, 3], [3, 1, 0], [1, 3, 4], [0, 2, 3], [5, 3, 2], [4, 2, 1], [2, 4, 5]], convexity = 1);
+                    }
+                }
+            }
+            polyhedron(points = [[0, 0, 0], [1, 0, 0], [0, 1, 0], [0, 0, 1], [1, 0, 1], [0, 1, 1]], faces = [[0, 1, 2], [5, 4, 3], [3, 1, 0], [1, 3, 4], [0, 2, 3], [5, 3, 2], [4, 2, 1], [2, 4, 5]], convexity = 1);
+            polyhedron(points = [[0, 0, 0], [1, 0, 0], [0, 1, 0], [0, 0, 1], [1, 0, 1], [0, 1, 1]], faces = [[0, 1, 2], [5, 4, 3], [3, 1, 0], [1, 3, 4], [0, 2, 3], [5, 3, 2], [4, 2, 1], [2, 4, 5]], convexity = 1);
+        }
+    }
+    multmatrix([[1, 0, 0, 6.4], [0, 1, 0, -125], [0, 0, 1, -40], [0, 0, 0, 1]]) {
+        difference() {
+            cylinder($fn = 0, $fa = 12, $fs = 2, h = 80, r1 = 8, r2 = 8, center = false);
+            multmatrix([[1, 0, 0, -14.4], [0, 1, 0, -8], [0, 0, 1, -5], [0, 0, 0, 1]]) {
+                cube(size = [8, 16, 90], center = false);
+            }
+        }
+    }
+}
+"""
+        doc = self.utility_create_scad(csg_data, "complex-fuse")
+        self.assertEqual (doc.RootObjects[0].Placement, FreeCAD.Placement())
+        FreeCAD.closeDocument(doc.Name)

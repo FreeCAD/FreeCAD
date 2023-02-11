@@ -13,6 +13,7 @@
         <file>icons/FEM_ConstraintBodyHeatSource.svg</file>
         <file>icons/FEM_ConstraintCentrif.svg</file>
         <file>icons/FEM_ConstraintContact.svg</file>
+        <file>icons/FEM_ConstraintCurrentDensity.svg</file>
         <file>icons/FEM_ConstraintDisplacement.svg</file>
         <file>icons/FEM_ConstraintElectrostaticPotential.svg</file>
         <file>icons/FEM_ConstraintFixed.svg</file>
@@ -24,6 +25,7 @@
         <file>icons/FEM_ConstraintInitialFlowVelocity.svg</file>
         <file>icons/FEM_ConstraintInitialPressure.svg</file>
         <file>icons/FEM_ConstraintInitialTemperature.svg</file>
+        <file>icons/FEM_ConstraintMagnetization.svg</file>
         <file>icons/FEM_ConstraintPlaneRotation.svg</file>
         <file>icons/FEM_ConstraintPressure.svg</file>
         <file>icons/FEM_ConstraintPulley.svg</file>
@@ -45,6 +47,8 @@
         <file>icons/FEM_EquationFlow.svg</file>
         <file>icons/FEM_EquationFlux.svg</file>
         <file>icons/FEM_EquationHeat.svg</file>
+        <file>icons/FEM_EquationMagnetodynamic.svg</file>
+        <file>icons/FEM_EquationMagnetodynamic2D.svg</file>
 
         <!-- gui command icons: meshes -->
         <file>icons/FEM_CreateNodesSet.svg</file>
@@ -150,12 +154,15 @@
         <file>translations/Fem_vi.qm</file>
         <file>translations/Fem_zh-CN.qm</file>
         <file>translations/Fem_zh-TW.qm</file>
+        <file>translations/Fem_sr-CS.qm</file>
+        <file>translations/Fem_be.qm</file>
 
         <!-- task panels -->
         <file>ui/BodyHeatSource.ui</file>
         <file>ui/ConstraintCentrif.ui</file>
         <file>ui/ConstraintSectionPrint.ui</file>
         <file>ui/ConstraintTie.ui</file>
+        <file>ui/CurrentDensity.ui</file>
         <file>ui/ElectrostaticPotential.ui</file>
         <file>ui/ElementFluid1D.ui</file>
         <file>ui/ElementGeometry1D.ui</file>
@@ -164,6 +171,7 @@
         <file>ui/FlowVelocity.ui</file>
         <file>ui/InitialFlowVelocity.ui</file>
         <file>ui/InitialPressure.ui</file>
+        <file>ui/Magnetization.ui</file>
         <file>ui/Material.ui</file>
         <file>ui/MaterialReinforcement.ui</file>
         <file>ui/MeshBoundaryLayer.ui</file>
@@ -175,4 +183,4 @@
         <file>ui/ResultShow.ui</file>
         <file>ui/SolverCalculix.ui</file>
     </qresource>
-</RCC> 
+</RCC>

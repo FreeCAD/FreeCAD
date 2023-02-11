@@ -20,16 +20,15 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef MESH_DEGENERATION_H
 #define MESH_DEGENERATION_H
 
-#include <bitset>
 #include <string>
 #include <vector>
 
-#include "Evaluation.h"
 #include "Definitions.h"
+#include "Evaluation.h"
+
 
 namespace MeshCore {
 

@@ -107,18 +107,19 @@ void DlgSettingsFemElmerImp::onfileNameChanged(QString FileName)
 
 void DlgSettingsFemElmerImp::onfileNameChangedMT(QString FileName)
 {
-    // reset in case it was prevoisly set to 1
-    ui->sb_elmer_num_cores->setMaximum(processor_count);
+    // reset in case it was previously set to 1
+    // (hardware check might fail and then returns 0)
+    if (processor_count > 0)
+        ui->sb_elmer_num_cores->setMaximum(processor_count);
 
     if (ui->sb_elmer_num_cores->value() == 1)
         return;
 
-    auto strName = FileName.toStdString();
 #if defined(FC_OS_WIN32)
     // name ends with "_mpi.exe"
-    if (strName.substr(strName.length() - 8) != "_mpi.exe") {
-        QMessageBox::warning(this, tr("Not suitable for mulithreading"),
-            tr("You use more than one CPU core.\n"
+    if (!FileName.endsWith(QLatin1String("_mpi.exe"))) {
+        QMessageBox::warning(this, tr("FEM Elmer: Not suitable for multithreading"),
+            tr("Wrong Elmer setting: You use more than one CPU core.\n"
                 "Therefore an executable with the suffix '_mpi.exe' is required."));
         ui->sb_elmer_num_cores->setValue(1);
         ui->sb_elmer_num_cores->setMaximum(1);
@@ -126,9 +127,9 @@ void DlgSettingsFemElmerImp::onfileNameChangedMT(QString FileName)
     }
 #elif defined(FC_OS_LINUX) || defined(FC_OS_CYGWIN) || defined(FC_OS_MACOSX) || defined(FC_OS_BSD)
     // name ends with "_mpi"
-    if (strName.substr(strName.length() - 4) != "_mpi") {
-        QMessageBox::warning(this, tr("Not suitable for mulithreading"),
-            tr("You use more than one CPU core.\n"
+    if (!FileName.endsWith(QLatin1String("_mpi"))) {
+        QMessageBox::warning(this, tr("FEM Elmer: Not suitable for multithreading"),
+            tr("Wrong Elmer setting: You use more than one CPU core.\n"
                 "Therefore an executable with the suffix '_mpi' is required."));
         ui->sb_elmer_num_cores->setValue(1);
         ui->sb_elmer_num_cores->setMaximum(1);

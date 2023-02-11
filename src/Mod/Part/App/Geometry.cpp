@@ -241,7 +241,7 @@ void Geometry::Restore(Base::XMLReader &reader)
             reader.readElement("GeoExtension");
             const char* TypeName = reader.getAttribute("type");
             Base::Type type = Base::Type::fromName(TypeName);
-            GeometryPersistenceExtension *newE = (GeometryPersistenceExtension *)type.createInstance();
+            GeometryPersistenceExtension *newE = static_cast<GeometryPersistenceExtension *>(type.createInstance());
             newE->Restore(reader);
 
             extensions.push_back(std::shared_ptr<GeometryExtension>(newE));
@@ -281,7 +281,7 @@ std::vector<std::weak_ptr<const GeometryExtension>> Geometry::getExtensions() co
     return wp;
 }
 
-bool Geometry::hasExtension(Base::Type type) const
+bool Geometry::hasExtension(const Base::Type & type) const
 {
     for(const auto& ext : extensions) {
         if(ext->getTypeId() == type)
@@ -301,7 +301,7 @@ bool Geometry::hasExtension(const std::string & name) const
     return false;
 }
 
-std::weak_ptr<GeometryExtension> Geometry::getExtension(Base::Type type)
+std::weak_ptr<GeometryExtension> Geometry::getExtension(const Base::Type & type)
 {
     for(const auto& ext : extensions) {
         if(ext->getTypeId() == type)
@@ -321,7 +321,7 @@ std::weak_ptr<GeometryExtension> Geometry::getExtension(const std::string & name
     throw Base::ValueError("No geometry extension with the requested name.");
 }
 
-std::weak_ptr<const GeometryExtension> Geometry::getExtension(Base::Type type) const
+std::weak_ptr<const GeometryExtension> Geometry::getExtension(const Base::Type & type) const
 {
     return const_cast<Geometry*>(this)->getExtension(type).lock();
 }
@@ -353,7 +353,7 @@ void Geometry::setExtension(std::unique_ptr<GeometryExtension> && geoext )
     }
 }
 
-void Geometry::deleteExtension(Base::Type type)
+void Geometry::deleteExtension(const Base::Type & type)
 {
     extensions.erase(
         std::remove_if( extensions.begin(),
@@ -1374,15 +1374,20 @@ bool GeomBSplineCurve::isPeriodic() const
     return myCurve->IsPeriodic()==Standard_True;
 }
 
+void GeomBSplineCurve::setPeriodic() const
+{
+    myCurve->SetPeriodic();
+}
+
 bool GeomBSplineCurve::isRational() const
 {
     return myCurve->IsRational()==Standard_True;
 }
 
-bool GeomBSplineCurve::join(const Handle(Geom_BSplineCurve)& spline)
+bool GeomBSplineCurve::join(const Handle(Geom_BoundedCurve)& other)
 {
     GeomConvert_CompCurveToBSplineCurve ccbc(this->myCurve);
-    if (!ccbc.Add(spline, Precision::Approximation()))
+    if (!ccbc.Add(other, Precision::Approximation()))
         return false;
     this->myCurve = ccbc.BSplineCurve();
     return true;
@@ -1597,19 +1602,9 @@ void GeomBSplineCurve::Trim(double u, double v)
     };
 
     try {
-        if(!isPeriodic()) {
-            splitUnwrappedBSpline(u, v);
-        }
-        else { // periodic
-            if( v < u ) { // wraps over origin
-                v = v + 1.0; // v needs one extra lap (1.0)
-
-                splitUnwrappedBSpline(u, v);
-            }
-            else {
-                splitUnwrappedBSpline(u, v);
-            }
-        }
+        if (isPeriodic() && (v < u))
+            v = v + myCurve->LastParameter() - myCurve->FirstParameter(); // v needs one extra lap
+        splitUnwrappedBSpline(u, v);
     }
     catch (Standard_Failure& e) {
         THROWM(Base::CADKernelError,e.GetMessageString())

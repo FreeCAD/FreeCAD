@@ -487,7 +487,7 @@ By using ";;" to separate paths, you can add several folders here</translation>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="647"/>
       <source>Close and switch on opening file</source>
-      <translation type="unfinished">Close and switch on opening file</translation>
+      <translation>Sluit en wissel bij het openen van bestand</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="654"/>

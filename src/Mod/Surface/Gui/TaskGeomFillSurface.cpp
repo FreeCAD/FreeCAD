@@ -22,22 +22,25 @@
  ***************************************************************************/
 
 #include "PreCompiled.h"
-#include <QAction>
-#include <QMenu>
-#include <QMessageBox>
-#include <QTimer>
-#include <TopExp.hxx>
-#include <TopTools_IndexedMapOfShape.hxx>
+#ifndef _PreComp_
+# include <QAction>
+# include <QMenu>
+# include <QMessageBox>
+# include <QTimer>
+
+# include <TopExp.hxx>
+# include <TopTools_IndexedMapOfShape.hxx>
+#endif
 
 #include <App/Document.h>
-#include <Gui/ViewProvider.h>
-#include <Gui/Application.h>
-#include <Gui/Document.h>
-#include <Gui/Command.h>
-#include <Gui/SelectionObject.h>
 #include <Base/Console.h>
-#include <Gui/Control.h>
+#include <Gui/Application.h>
 #include <Gui/BitmapFactory.h>
+#include <Gui/Command.h>
+#include <Gui/Control.h>
+#include <Gui/Document.h>
+#include <Gui/SelectionObject.h>
+#include <Gui/Widgets.h>
 #include <Mod/Part/Gui/ViewProvider.h>
 
 #include "TaskGeomFillSurface.h"
@@ -90,7 +93,7 @@ void ViewProviderGeomFillSurface::unsetEdit(int ModNum)
 {
     if (ModNum == ViewProvider::Default) {
         // when pressing ESC make sure to close the dialog
-        QTimer::singleShot(0, &Gui::Control(), SLOT(closeDialog()));
+        QTimer::singleShot(0, &Gui::Control(), &Gui::ControlSingleton::closeDialog);
     }
     else {
         PartGui::ViewProviderSpline::unsetEdit(ModNum);
@@ -194,15 +197,21 @@ GeomFillSurface::GeomFillSurface(ViewProviderGeomFillSurface* vp, Surface::GeomF
     checkCommand = true;
     setEditedObject(obj);
 
+    // Set up button group
+    buttonGroup = new Gui::ButtonGroup(this);
+    buttonGroup->setExclusive(true);
+    buttonGroup->addButton(ui->buttonEdgeAdd, (int)SelectionMode::Append);
+    buttonGroup->addButton(ui->buttonEdgeRemove, (int)SelectionMode::Remove);
+
     // Create context menu
     QAction* remove = new QAction(tr("Remove"), this);
     remove->setShortcut(QString::fromLatin1("Del"));
     ui->listWidget->addAction(remove);
-    connect(remove, SIGNAL(triggered()), this, SLOT(onDeleteEdge()));
+    connect(remove, &QAction::triggered, this, &GeomFillSurface::onDeleteEdge);
 
     QAction* orientation = new QAction(tr("Flip orientation"), this);
     ui->listWidget->addAction(orientation);
-    connect(orientation, SIGNAL(triggered()), this, SLOT(onFlipOrientation()));
+    connect(orientation, &QAction::triggered, this, &GeomFillSurface::onFlipOrientation);
 
     ui->listWidget->setContextMenuPolicy(Qt::ActionsContextMenu);
 }
@@ -398,16 +407,26 @@ void GeomFillSurface::changeFillType(GeomFill_FillingStyle fillType)
     }
 }
 
-void GeomFillSurface::on_buttonEdgeAdd_clicked()
+void GeomFillSurface::on_buttonEdgeAdd_toggled(bool checked)
 {
-    selectionMode = Append;
-    Gui::Selection().addSelectionGate(new EdgeSelection(true, editedObject));
+    if (checked) {
+        selectionMode = Append;
+        Gui::Selection().addSelectionGate(new EdgeSelection(true, editedObject));
+    }
+    else if (selectionMode == Append) {
+        exitSelectionMode();
+    }
 }
 
-void GeomFillSurface::on_buttonEdgeRemove_clicked()
+void GeomFillSurface::on_buttonEdgeRemove_toggled(bool checked)
 {
-    selectionMode = Remove;
-    Gui::Selection().addSelectionGate(new EdgeSelection(false, editedObject));
+    if (checked) {
+        selectionMode = Remove;
+        Gui::Selection().addSelectionGate(new EdgeSelection(false, editedObject));
+    }
+    else if (selectionMode == Remove) {
+        exitSelectionMode();
+    }
 }
 
 void GeomFillSurface::onSelectionChanged(const Gui::SelectionChanges& msg)
@@ -492,7 +511,7 @@ void GeomFillSurface::onSelectionChanged(const Gui::SelectionChanges& msg)
         }
 
         editedObject->recomputeFeature();
-        QTimer::singleShot(50, this, SLOT(clearSelection()));
+        QTimer::singleShot(50, this, &GeomFillSurface::clearSelection);
     }
 }
 
@@ -577,6 +596,13 @@ void GeomFillSurface::onFlipOrientation()
     if (item) {
         flipOrientation(item);
     }
+}
+
+void GeomFillSurface::exitSelectionMode()
+{
+    selectionMode = None;
+    Gui::Selection().clearSelection();
+    Gui::Selection().rmvSelectionGate();
 }
 
 // ----------------------------------------------------------------------------

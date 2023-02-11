@@ -1,4 +1,5 @@
 /***************************************************************************
+ *   Copyright (c) 2011 Werner Mayer <wmayer[at]users.sourceforge.net>     *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -22,8 +23,9 @@
 #ifndef SKETCHERGUI_EditDatumDialog_H
 #define SKETCHERGUI_EditDatumDialog_H
 
-#include <QObject>
 #include <memory>
+#include <QObject>
+
 
 namespace Sketcher {
 class Constraint;

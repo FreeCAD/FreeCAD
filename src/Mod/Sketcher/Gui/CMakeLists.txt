@@ -25,11 +25,7 @@ set(SketcherGui_LIBS
     FreeCADGui
 )
 
-if(BUILD_QT5)
-    qt5_add_resources(SketcherGui_SRCS Resources/Sketcher.qrc)
-else()
-    qt4_add_resources(SketcherGui_SRCS Resources/Sketcher.qrc)
-endif()
+qt_add_resources(SketcherGui_SRCS Resources/Sketcher.qrc)
 
 set(SketcherGui_UIC_SRCS
     TaskSketcherConstraints.ui
@@ -46,15 +42,7 @@ set(SketcherGui_UIC_SRCS
     SketcherSettingsDisplay.ui
     SketchRectangularArrayDialog.ui
     SketcherRegularPolygonDialog.ui
-    ConstraintMultiFilterDialog.ui
-    ConstraintSettingsDialog.ui
 )
-
-if(BUILD_QT5)
-    qt5_wrap_ui(SketcherGui_UIC_HDRS ${SketcherGui_UIC_SRCS})
-else()
-    qt4_wrap_ui(SketcherGui_UIC_HDRS ${SketcherGui_UIC_SRCS})
-endif()
 
 SET(SketcherGui_SRCS
     ${SketcherGui_SRCS}
@@ -155,10 +143,6 @@ SET(SketcherGui_SRCS
     SketchRectangularArrayDialog.cpp
     SketcherRegularPolygonDialog.h
     SketcherRegularPolygonDialog.cpp
-    ConstraintMultiFilterDialog.h
-    ConstraintMultiFilterDialog.cpp
-    ConstraintSettingsDialog.h
-    ConstraintSettingsDialog.cpp
     TaskDlgEditSketch.cpp
     TaskDlgEditSketch.h
     ViewProviderPython.cpp

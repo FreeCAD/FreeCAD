@@ -43,6 +43,11 @@ class Block(DraftObject):
         obj.addProperty("App::PropertyLinkList","Components", "Draft", _tip)
 
     def execute(self, obj):
+        if self.props_changed_placement_only():
+            obj.positionBySupport()
+            self.props_changed_clear()
+            return
+
         import Part
         plm = obj.Placement
         shps = []
@@ -53,6 +58,10 @@ class Block(DraftObject):
             obj.Shape = shape
         obj.Placement = plm
         obj.positionBySupport()
+        self.props_changed_clear()
+
+    def onChanged(self, obj, prop):
+        self.props_changed_store(prop)
 
 
 # Alias for compatibility with v0.18 and earlier

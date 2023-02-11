@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>440</width>
-    <height>368</height>
+    <height>400</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -49,60 +49,16 @@
      <layout class="QVBoxLayout" name="verticalLayout">
       <item>
        <layout class="QGridLayout" name="gridLayout">
-        <item row="0" column="0">
-         <widget class="QLabel" name="lbl_Normal">
-          <property name="font">
-           <font>
-            <italic>true</italic>
-           </font>
-          </property>
-          <property name="text">
-           <string>Normal</string>
-          </property>
-         </widget>
-        </item>
-        <item row="0" column="1">
-         <widget class="Gui::PrefColorButton" name="pcb_Normal">
+        <item row="10" column="1">
+         <widget class="Gui::PrefColorButton" name="pcbLightTextColor">
           <property name="toolTip">
-           <string>Normal line color</string>
-          </property>
-          <property name="color">
-           <color>
-            <red>0</red>
-            <green>0</green>
-            <blue>0</blue>
-           </color>
+           <string>Monochrome text color</string>
           </property>
           <property name="prefEntry" stdset="0">
-           <cstring>NormalColor</cstring>
+           <cstring>LightTextColor</cstring>
           </property>
           <property name="prefPath" stdset="0">
            <cstring>Mod/TechDraw/Colors</cstring>
-          </property>
-         </widget>
-        </item>
-        <item row="0" column="2">
-         <spacer name="horizontalSpacer_3">
-          <property name="orientation">
-           <enum>Qt::Horizontal</enum>
-          </property>
-          <property name="sizeHint" stdset="0">
-           <size>
-            <width>40</width>
-            <height>20</height>
-           </size>
-          </property>
-         </spacer>
-        </item>
-        <item row="0" column="3">
-         <widget class="QLabel" name="lbl_Hidden">
-          <property name="font">
-           <font>
-            <italic>true</italic>
-           </font>
-          </property>
-          <property name="text">
-           <string>Hidden Line</string>
           </property>
          </widget>
         </item>
@@ -126,114 +82,8 @@
           </property>
          </widget>
         </item>
-        <item row="1" column="0">
-         <widget class="QLabel" name="lbl_PreSelect">
-          <property name="font">
-           <font>
-            <italic>true</italic>
-           </font>
-          </property>
-          <property name="text">
-           <string>Preselected</string>
-          </property>
-         </widget>
-        </item>
-        <item row="1" column="1">
-         <widget class="Gui::PrefColorButton" name="pcb_PreSelect">
-          <property name="toolTip">
-           <string>Preselection color</string>
-          </property>
-          <property name="color">
-           <color>
-            <red>255</red>
-            <green>255</green>
-            <blue>0</blue>
-           </color>
-          </property>
-          <property name="prefEntry" stdset="0">
-           <cstring>PreSelectColor</cstring>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>Mod/TechDraw/Colors</cstring>
-          </property>
-         </widget>
-        </item>
-        <item row="1" column="3">
-         <widget class="QLabel" name="label_3">
-          <property name="font">
-           <font>
-            <italic>true</italic>
-           </font>
-          </property>
-          <property name="text">
-           <string>Section Face</string>
-          </property>
-         </widget>
-        </item>
-        <item row="1" column="4">
-         <widget class="Gui::PrefColorButton" name="pcb_Surface">
-          <property name="toolTip">
-           <string>Section face color</string>
-          </property>
-          <property name="color">
-           <color>
-            <red>211</red>
-            <green>211</green>
-            <blue>211</blue>
-           </color>
-          </property>
-          <property name="prefEntry" stdset="0">
-           <cstring>CutSurfaceColor</cstring>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>Mod/TechDraw/Colors</cstring>
-          </property>
-         </widget>
-        </item>
-        <item row="2" column="0">
-         <widget class="QLabel" name="lbl_Select">
-          <property name="font">
-           <font>
-            <italic>true</italic>
-           </font>
-          </property>
-          <property name="text">
-           <string>Selected</string>
-          </property>
-         </widget>
-        </item>
-        <item row="2" column="1">
-         <widget class="Gui::PrefColorButton" name="pcb_Select">
-          <property name="toolTip">
-           <string>Selected item color</string>
-          </property>
-          <property name="color">
-           <color>
-            <red>0</red>
-            <green>255</green>
-            <blue>0</blue>
-           </color>
-          </property>
-          <property name="prefEntry" stdset="0">
-           <cstring>SelectColor</cstring>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>Mod/TechDraw/Colors</cstring>
-          </property>
-         </widget>
-        </item>
-        <item row="2" column="3">
-         <widget class="QLabel" name="label_14">
-          <property name="text">
-           <string>Section Line</string>
-          </property>
-         </widget>
-        </item>
-        <item row="2" column="4">
-         <widget class="Gui::PrefColorButton" name="pcbSectionLine">
-          <property name="toolTip">
-           <string>Section line color</string>
-          </property>
+        <item row="6" column="1">
+         <widget class="Gui::PrefColorButton" name="pcbHighlight">
           <property name="color">
            <color>
             <red>0</red>
@@ -242,81 +92,10 @@
            </color>
           </property>
           <property name="prefEntry" stdset="0">
-           <cstring>SectionColor</cstring>
+           <cstring>HighlightColor</cstring>
           </property>
           <property name="prefPath" stdset="0">
            <cstring>/Mod/TechDraw/Decorations</cstring>
-          </property>
-         </widget>
-        </item>
-        <item row="3" column="0">
-         <widget class="QLabel" name="label_4">
-          <property name="font">
-           <font>
-            <italic>true</italic>
-           </font>
-          </property>
-          <property name="text">
-           <string>Background</string>
-          </property>
-         </widget>
-        </item>
-        <item row="3" column="1">
-         <widget class="Gui::PrefColorButton" name="pcb_Background">
-          <property name="toolTip">
-           <string>Background color around pages</string>
-          </property>
-          <property name="color">
-           <color>
-            <red>211</red>
-            <green>211</green>
-            <blue>211</blue>
-           </color>
-          </property>
-          <property name="prefEntry" stdset="0">
-           <cstring>Background</cstring>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>/Mod/TechDraw/Colors</cstring>
-          </property>
-         </widget>
-        </item>
-        <item row="3" column="3">
-         <widget class="QLabel" name="label_5">
-          <property name="font">
-           <font>
-            <italic>true</italic>
-           </font>
-          </property>
-          <property name="text">
-           <string>Hatch</string>
-          </property>
-         </widget>
-        </item>
-        <item row="3" column="4">
-         <widget class="Gui::PrefColorButton" name="pcb_Hatch">
-          <property name="toolTip">
-           <string>Hatch image color</string>
-          </property>
-          <property name="color">
-           <color>
-            <red>0</red>
-            <green>0</green>
-            <blue>0</blue>
-           </color>
-          </property>
-          <property name="prefEntry" stdset="0">
-           <cstring>Hatch</cstring>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>/Mod/TechDraw/Colors</cstring>
-          </property>
-         </widget>
-        </item>
-        <item row="4" column="0">
-         <widget class="QLabel" name="label_13">
-          <property name="text">
-           <string>Dimension</string>
           </property>
          </widget>
         </item>
@@ -340,6 +119,200 @@
           </property>
          </widget>
         </item>
+        <item row="3" column="0">
+         <widget class="QLabel" name="label_4">
+          <property name="font">
+           <font>
+            <italic>true</italic>
+           </font>
+          </property>
+          <property name="text">
+           <string>Background</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="0">
+         <widget class="QLabel" name="lbl_PreSelect">
+          <property name="font">
+           <font>
+            <italic>true</italic>
+           </font>
+          </property>
+          <property name="text">
+           <string>Preselected</string>
+          </property>
+         </widget>
+        </item>
+        <item row="7" column="0">
+         <widget class="QLabel" name="label">
+          <property name="text">
+           <string>Grid Color</string>
+          </property>
+         </widget>
+        </item>
+        <item row="6" column="0">
+         <widget class="QLabel" name="label_18">
+          <property name="font">
+           <font>
+            <italic>true</italic>
+           </font>
+          </property>
+          <property name="text">
+           <string>Detail Highlight</string>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="0">
+         <widget class="QLabel" name="lbl_Select">
+          <property name="font">
+           <font>
+            <italic>true</italic>
+           </font>
+          </property>
+          <property name="text">
+           <string>Selected</string>
+          </property>
+         </widget>
+        </item>
+        <item row="9" column="0">
+         <widget class="Gui::PrefCheckBox" name="pcbLightOnDark">
+          <property name="toolTip">
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Check this to use light text and lines on dark backgrounds.  Set Page Color to a dark color. Transparent or light color faces are recommended with this option.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+          </property>
+          <property name="text">
+           <string>Light on dark</string>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>LightOnDark</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>/Mod/TechDraw/Colors</cstring>
+          </property>
+         </widget>
+        </item>
+        <item row="3" column="4">
+         <widget class="Gui::PrefColorButton" name="pcb_Hatch">
+          <property name="toolTip">
+           <string>Hatch image color</string>
+          </property>
+          <property name="color">
+           <color>
+            <red>0</red>
+            <green>0</green>
+            <blue>0</blue>
+           </color>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>Hatch</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>/Mod/TechDraw/Colors</cstring>
+          </property>
+         </widget>
+        </item>
+        <item row="6" column="4">
+         <widget class="Gui::PrefColorButton" name="pcbMarkup">
+          <property name="toolTip">
+           <string>Default color for leader lines</string>
+          </property>
+          <property name="color">
+           <color>
+            <red>0</red>
+            <green>0</green>
+            <blue>0</blue>
+           </color>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>Color</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Mod/TechDraw/Markups</cstring>
+          </property>
+         </widget>
+        </item>
+        <item row="10" column="3">
+         <widget class="QLabel" name="label_2">
+          <property name="text">
+           <string>Page Color</string>
+          </property>
+         </widget>
+        </item>
+        <item row="3" column="1">
+         <widget class="Gui::PrefColorButton" name="pcb_Background">
+          <property name="toolTip">
+           <string>Background color around pages</string>
+          </property>
+          <property name="color">
+           <color>
+            <red>211</red>
+            <green>211</green>
+            <blue>211</blue>
+           </color>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>Background</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>/Mod/TechDraw/Colors</cstring>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="3">
+         <widget class="QLabel" name="label_3">
+          <property name="font">
+           <font>
+            <italic>true</italic>
+           </font>
+          </property>
+          <property name="text">
+           <string>Section Face</string>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="3">
+         <widget class="QLabel" name="label_14">
+          <property name="text">
+           <string>Section Line</string>
+          </property>
+         </widget>
+        </item>
+        <item row="5" column="0">
+         <widget class="QLabel" name="label_15">
+          <property name="text">
+           <string>Centerline</string>
+          </property>
+         </widget>
+        </item>
+        <item row="7" column="1">
+         <widget class="Gui::PrefColorButton" name="pcb_Grid">
+          <property name="color">
+           <color>
+            <red>0</red>
+            <green>0</green>
+            <blue>0</blue>
+           </color>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>gridColor</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>/Mod/TechDraw/Colors</cstring>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="2">
+         <spacer name="horizontalSpacer_3">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
         <item row="4" column="3">
          <widget class="QLabel" name="label_7">
           <property name="font">
@@ -352,10 +325,34 @@
           </property>
          </widget>
         </item>
-        <item row="4" column="4">
-         <widget class="Gui::PrefColorButton" name="pcb_GeomHatch">
+        <item row="6" column="3">
+         <widget class="QLabel" name="label_17">
+          <property name="font">
+           <font>
+            <italic>true</italic>
+           </font>
+          </property>
+          <property name="text">
+           <string>Leaderline</string>
+          </property>
+         </widget>
+        </item>
+        <item row="3" column="3">
+         <widget class="QLabel" name="label_5">
+          <property name="font">
+           <font>
+            <italic>true</italic>
+           </font>
+          </property>
+          <property name="text">
+           <string>Hatch</string>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="4">
+         <widget class="Gui::PrefColorButton" name="pcbSectionLine">
           <property name="toolTip">
-           <string>Geometric hatch pattern color</string>
+           <string>Section line color</string>
           </property>
           <property name="color">
            <color>
@@ -365,17 +362,102 @@
            </color>
           </property>
           <property name="prefEntry" stdset="0">
-           <cstring>GeomHatch</cstring>
+           <cstring>SectionColor</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>/Mod/TechDraw/Decorations</cstring>
+          </property>
+         </widget>
+        </item>
+        <item row="7" column="4">
+         <widget class="Gui::PrefColorButton" name="pcb_Face">
+          <property name="toolTip">
+           <string>Face color (if not transparent)</string>
+          </property>
+          <property name="color">
+           <color>
+            <red>255</red>
+            <green>255</green>
+            <blue>255</blue>
+           </color>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>FaceColor</cstring>
           </property>
           <property name="prefPath" stdset="0">
            <cstring>/Mod/TechDraw/Colors</cstring>
           </property>
          </widget>
         </item>
-        <item row="5" column="0">
-         <widget class="QLabel" name="label_15">
+        <item row="1" column="1">
+         <widget class="Gui::PrefColorButton" name="pcb_PreSelect">
+          <property name="toolTip">
+           <string>Preselection color</string>
+          </property>
+          <property name="color">
+           <color>
+            <red>255</red>
+            <green>255</green>
+            <blue>0</blue>
+           </color>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>PreSelectColor</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Mod/TechDraw/Colors</cstring>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="3">
+         <widget class="QLabel" name="lbl_Hidden">
+          <property name="font">
+           <font>
+            <italic>true</italic>
+           </font>
+          </property>
           <property name="text">
-           <string>Centerline</string>
+           <string>Hidden Line</string>
+          </property>
+         </widget>
+        </item>
+        <item row="10" column="4">
+         <widget class="Gui::PrefColorButton" name="pcbPageColor">
+          <property name="toolTip">
+           <string>Use a light color for dark text and dark color for light text.</string>
+          </property>
+          <property name="color">
+           <color>
+            <red>255</red>
+            <green>255</green>
+            <blue>255</blue>
+           </color>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>PageColor</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Mod/TechDraw/Colors</cstring>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="1">
+         <widget class="Gui::PrefColorButton" name="pcb_Select">
+          <property name="toolTip">
+           <string>Selected item color</string>
+          </property>
+          <property name="color">
+           <color>
+            <red>0</red>
+            <green>255</green>
+            <blue>0</blue>
+           </color>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>SelectColor</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Mod/TechDraw/Colors</cstring>
           </property>
          </widget>
         </item>
@@ -406,6 +488,46 @@
           </property>
          </widget>
         </item>
+        <item row="0" column="1">
+         <widget class="Gui::PrefColorButton" name="pcb_Normal">
+          <property name="toolTip">
+           <string>Normal line color</string>
+          </property>
+          <property name="color">
+           <color>
+            <red>0</red>
+            <green>0</green>
+            <blue>0</blue>
+           </color>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>NormalColor</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Mod/TechDraw/Colors</cstring>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="4">
+         <widget class="Gui::PrefColorButton" name="pcb_Surface">
+          <property name="toolTip">
+           <string>Section face color</string>
+          </property>
+          <property name="color">
+           <color>
+            <red>211</red>
+            <green>211</green>
+            <blue>211</blue>
+           </color>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>CutSurfaceColor</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Mod/TechDraw/Colors</cstring>
+          </property>
+         </widget>
+        </item>
         <item row="5" column="4">
          <widget class="Gui::PrefColorButton" name="pcbVertexColor">
           <property name="toolTip">
@@ -426,92 +548,7 @@
           </property>
          </widget>
         </item>
-        <item row="6" column="0">
-         <widget class="QLabel" name="label_18">
-          <property name="font">
-           <font>
-            <italic>true</italic>
-           </font>
-          </property>
-          <property name="text">
-           <string>Detail Highlight</string>
-          </property>
-         </widget>
-        </item>
-        <item row="6" column="1">
-         <widget class="Gui::PrefColorButton" name="pcbHighlight">
-          <property name="color">
-           <color>
-            <red>0</red>
-            <green>0</green>
-            <blue>0</blue>
-           </color>
-          </property>
-          <property name="prefEntry" stdset="0">
-           <cstring>HighlightColor</cstring>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>/Mod/TechDraw/Decorations</cstring>
-          </property>
-         </widget>
-        </item>
-        <item row="6" column="3">
-         <widget class="QLabel" name="label_17">
-          <property name="font">
-           <font>
-            <italic>true</italic>
-           </font>
-          </property>
-          <property name="text">
-           <string>Leaderline</string>
-          </property>
-         </widget>
-        </item>
-        <item row="6" column="4">
-         <widget class="Gui::PrefColorButton" name="pcbMarkup">
-          <property name="toolTip">
-           <string>Default color for leader lines</string>
-          </property>
-          <property name="color">
-           <color>
-            <red>0</red>
-            <green>0</green>
-            <blue>0</blue>
-           </color>
-          </property>
-          <property name="prefEntry" stdset="0">
-           <cstring>Color</cstring>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>Mod/TechDraw/Markups</cstring>
-          </property>
-         </widget>
-        </item>
-        <item row="7" column="0">
-         <widget class="QLabel" name="label">
-          <property name="text">
-           <string>Grid Color</string>
-          </property>
-         </widget>
-        </item>
-        <item row="7" column="1">
-         <widget class="Gui::PrefColorButton" name="pcb_Grid">
-          <property name="color">
-           <color>
-            <red>0</red>
-            <green>0</green>
-            <blue>0</blue>
-           </color>
-          </property>
-          <property name="prefEntry" stdset="0">
-           <cstring>gridColor</cstring>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>/Mod/TechDraw/Colors</cstring>
-          </property>
-         </widget>
-        </item>
-       <item row="8" column="0">
+        <item row="7" column="3">
          <widget class="Gui::PrefCheckBox" name="pcb_PaintFaces">
           <property name="minimumSize">
            <size>
@@ -538,27 +575,69 @@
           </property>
          </widget>
         </item>
-        <item row="8" column="1">
-         <widget class="Gui::PrefColorButton" name="pcb_Face">
+        <item row="4" column="4">
+         <widget class="Gui::PrefColorButton" name="pcb_GeomHatch">
           <property name="toolTip">
-           <string>Face color (if not transparent)</string>
+           <string>Geometric hatch pattern color</string>
           </property>
           <property name="color">
            <color>
-            <red>255</red>
-            <green>255</green>
-            <blue>255</blue>
+            <red>0</red>
+            <green>0</green>
+            <blue>0</blue>
            </color>
           </property>
           <property name="prefEntry" stdset="0">
-           <cstring>FaceColor</cstring>
+           <cstring>GeomHatch</cstring>
           </property>
           <property name="prefPath" stdset="0">
            <cstring>/Mod/TechDraw/Colors</cstring>
           </property>
          </widget>
         </item>
-        </layout>
+        <item row="0" column="0">
+         <widget class="QLabel" name="lbl_Normal">
+          <property name="font">
+           <font>
+            <italic>true</italic>
+           </font>
+          </property>
+          <property name="text">
+           <string>Normal</string>
+          </property>
+         </widget>
+        </item>
+        <item row="4" column="0">
+         <widget class="QLabel" name="label_13">
+          <property name="text">
+           <string>Dimension</string>
+          </property>
+         </widget>
+        </item>
+        <item row="10" column="0">
+         <widget class="Gui::PrefCheckBox" name="pcbMonochrome">
+          <property name="toolTip">
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If checked FreeCAD will use a single colour for all text and lines.  If unchecked FreeCAD will attempt to use lighter versions of preferred colours.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+          </property>
+          <property name="text">
+           <string>Monochrome</string>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>Monochrome</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>/Mod/TechDraw/Colors</cstring>
+          </property>
+         </widget>
+        </item>
+        <item row="8" column="0">
+         <widget class="QLabel" name="label_6">
+          <property name="text">
+           <string/>
+          </property>
+         </widget>
+        </item>
+       </layout>
       </item>
      </layout>
     </widget>
@@ -572,7 +651,7 @@
       </font>
      </property>
      <property name="text">
-      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Note:&lt;/span&gt; Items in &lt;span style=" font-style:italic;"&gt;italics&lt;/span&gt; are default values for new objects. They have no effect on existing objects.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Note:&lt;/span&gt; Items in &lt;span style=&quot; font-style:italic;&quot;&gt;italics&lt;/span&gt; are default values for new objects. They have no effect on existing objects.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
      </property>
      <property name="wordWrap">
       <bool>true</bool>

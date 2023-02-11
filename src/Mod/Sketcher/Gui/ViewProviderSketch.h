@@ -20,27 +20,26 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef SKETCHERGUI_VIEWPROVIDERSKETCH_H
 #define SKETCHERGUI_VIEWPROVIDERSKETCH_H
 
 #include <memory>
+#include <QCoreApplication>
+#include <boost_signals2.hpp>
+#include <Inventor/SoRenderManager.h>
+#include <Inventor/sensors/SoNodeSensor.h>
 
-#include <Mod/Part/Gui/ViewProvider2DObject.h>
-#include <Mod/Part/Gui/ViewProviderAttachExtension.h>
-#include <Mod/Part/App/BodyBase.h>
-#include <Base/Tools2D.h>
 #include <Base/Parameter.h>
 #include <Base/Placement.h>
-#include <Gui/Selection.h>
-#include <Gui/GLPainter.h>
-#include <App/Part.h>
-#include <boost_signals2.hpp>
-#include <QCoreApplication>
 #include <Gui/Document.h>
+#include <Gui/GLPainter.h>
+#include <Gui/Selection.h>
+#include <Mod/Part/Gui/ViewProvider2DObject.h>
+#include <Mod/Part/Gui/ViewProviderAttachExtension.h>
+#include <Mod/Sketcher/App/GeoList.h>
+
 #include "ShortcutListener.h"
 
-#include <Mod/Sketcher/App/GeoList.h>
 
 class TopoDS_Shape;
 class TopoDS_Face;
@@ -388,6 +387,13 @@ private:
         bool buttonPress = false;
     };
 
+    /** @brief Private struct grouping ViewProvider and RenderManager node, to be used as SoNode sensor data
+     */
+    struct VPRender {
+        ViewProviderSketch* vp;
+        SoRenderManager* renderMgr;
+    };
+
 public:
     /// constructor
     ViewProviderSketch();
@@ -490,6 +496,8 @@ public:
     void centerSelection();
     /// returns the scale factor
     float getScaleFactor() const;
+    /// returns view orientation factor
+    int getViewOrientationFactor() const;
     //@}
 
     /** @name constraint Virtual Space visibility management */
@@ -551,6 +559,7 @@ protected:
     void unsetEdit(int ModNum) override;
     void setEditViewer(Gui::View3DInventorViewer*, int ModNum) override;
     void unsetEditViewer(Gui::View3DInventorViewer*) override;
+    static void camSensCB(void *data, SoSensor *); // camera sensor callback
     //@}
 
     /** @name miscelanea editing functions */
@@ -763,6 +772,9 @@ private:
     std::unique_ptr<DrawSketchHandler> sketchHandler;
 
     ViewProviderParameters viewProviderParameters;
+
+    SoNodeSensor cameraSensor;
+    int viewOrientationFactor; // stores if sketch viewed from front or back
 };
 
 } // namespace PartGui

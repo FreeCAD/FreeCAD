@@ -36,7 +36,7 @@
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="73"/>
       <source>Page Up or Page Down key.</source>
-      <translation>Sivu ylös tai Sivu alas näppäin.</translation>
+      <translation>Page Up- tai Page Down -näppäin.</translation>
     </message>
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="74"/>
@@ -85,11 +85,16 @@
     </message>
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="336"/>
+      <source>Free Turntable</source>
+      <translation type="unfinished">Free Turntable</translation>
+    </message>
+    <message>
+      <location filename="../../NavigationIndicatorGui.py" line="337"/>
       <source>Trackball</source>
       <translation>Trackball</translation>
     </message>
     <message>
-      <location filename="../../NavigationIndicatorGui.py" line="337"/>
+      <location filename="../../NavigationIndicatorGui.py" line="338"/>
       <source>Undefined</source>
       <translation>Määrittelemätön</translation>
     </message>

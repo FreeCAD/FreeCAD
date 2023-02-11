@@ -23,11 +23,10 @@
 #ifndef TECHDRAWGUI_TASKRICHANNO_H
 #define TECHDRAWGUI_TASKRICHANNO_H
 
-#include <Mod/TechDraw/TechDrawGlobal.h>
-
 #include <Base/Vector3D.h>
 #include <Gui/TaskView/TaskDialog.h>
 #include <Gui/TaskView/TaskView.h>
+#include <Mod/TechDraw/TechDrawGlobal.h>
 
 
 class MRichTextEdit;
@@ -96,7 +95,6 @@ protected Q_SLOTS:
 
 private:
     std::unique_ptr<Ui_TaskRichAnno> ui;
-    bool blockUpdate;
 
     ViewProviderPage* m_vpp;
     ViewProviderRichAnno* m_annoVP;
@@ -109,12 +107,9 @@ private:
     Base::Vector3d m_attachPoint;
 
     bool m_createMode;
-    QGMText* m_text;
 
-    Qt::ContextMenuPolicy  m_saveContextPolicy;
     bool m_inProgressLock;
 
-    QGIRichAnno* m_qgAnno;
     QPushButton* m_btnOK;
     QPushButton* m_btnCancel;
 

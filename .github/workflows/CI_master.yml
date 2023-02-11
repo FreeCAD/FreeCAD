@@ -1,0 +1,66 @@
+# ***************************************************************************
+# *   Copyright (c) 2023 0penBrain                               *
+# *                                                                         *
+# *   This program is free software; you can redistribute it and/or modify  *
+# *   it under the terms of the GNU Lesser General Public License (LGPL)    *
+# *   as published by the Free Software Foundation; either version 2 of     *
+# *   the License, or (at your option) any later version.                   *
+# *   for detail see the LICENCE text file.                                 *
+# *                                                                         *
+# *   This program is distributed in the hope that it will be useful,       *
+# *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+# *   GNU Library General Public License for more details.                  *
+# *                                                                         *
+# *   You should have received a copy of the GNU Library General Public     *
+# *   License along with this program; if not, write to the Free Software   *
+# *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
+# *   USA                                                                   *
+# *                                                                         *
+# ***************************************************************************
+
+# This is the master workflow for CI of FreeCAD.
+# It (only) aims at properly organizing the sub-workflows.
+
+name: FreeCAD master CI
+
+on: [workflow_dispatch, push, pull_request]
+
+concurrency:
+  group: FC-CI-${{ github.head_ref || github.run_id }}
+  cancel-in-progress: true
+
+jobs:
+
+  Prepare:
+    uses: ./.github/workflows/sub_prepare.yml
+    with:
+      artifactBasename: Prepare-${{ github.run_id }}
+
+  Build2004:
+    needs: [Prepare]
+    uses: ./.github/workflows/sub_buildUbuntu2004.yml
+    with:
+      artifactBasename: Build2004-${{ github.run_id }}
+
+  Build2204:
+    needs: [Prepare]
+    uses: ./.github/workflows/sub_buildUbuntu2204.yml
+    with:
+      artifactBasename: Build2204-${{ github.run_id }}
+
+  Lint:
+    needs: [Prepare]
+    uses: ./.github/workflows/sub_lint.yml
+    with:
+      artifactBasename: Lint-${{ github.run_id }}
+      changedFiles: ${{ needs.Prepare.outputs.changedFiles }}
+      changedCppFiles: ${{ needs.Prepare.outputs.changedCppFiles }}
+      changedPythonFiles: ${{ needs.Prepare.outputs.changedPythonFiles }}
+
+  WrapUp:
+    needs: [Prepare, Build2004, Build2204, Lint]
+    if: always()
+    uses: ./.github/workflows/sub_wrapup.yml
+    with:
+      previousSteps: ${{ toJSON(needs) }}

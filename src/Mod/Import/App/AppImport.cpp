@@ -21,15 +21,14 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
-#ifndef _PreComp_
-#endif
 
 #include <Base/Console.h>
 #include <Base/Interpreter.h>
-#include "StepShapePy.h"
+
 #include "StepShape.h"
+#include "StepShapePy.h"
+
 
 namespace Import {
     extern PyObject* initModule();

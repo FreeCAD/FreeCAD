@@ -26,7 +26,7 @@
      <item>
       <widget class="QToolButton" name="buttonRefresh">
        <property name="text">
-        <string>...</string>
+        <string notr="true">...</string>
        </property>
       </widget>
      </item>

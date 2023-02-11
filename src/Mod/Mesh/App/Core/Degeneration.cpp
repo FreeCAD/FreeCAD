@@ -20,7 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
@@ -29,19 +28,14 @@
 # include <queue>
 #endif
 
+#include <boost/math/special_functions/fpclassify.hpp>
+
 #include "Degeneration.h"
-#include "Definitions.h"
-#include "Iterator.h"
-#include "Helpers.h"
-#include "MeshKernel.h"
-#include "Algorithm.h"
-#include "Info.h"
 #include "Grid.h"
+#include "Iterator.h"
 #include "TopoAlgorithm.h"
 #include "Triangulation.h"
 
-#include <boost/math/special_functions/fpclassify.hpp>
-#include <Base/Sequencer.h>
 
 using namespace MeshCore;
 
@@ -222,7 +216,7 @@ bool MeshFixDuplicatePoints::Fixup()
     // remove invalid indices
     _rclMesh.DeletePoints(pointIndices);
     _rclMesh.RebuildNeighbours();
-    
+
     return true;
 }
 
@@ -263,7 +257,7 @@ bool MeshFixNaNPoints::Fixup()
     // remove invalid indices
     _rclMesh.DeletePoints(aInds);
     _rclMesh.RebuildNeighbours();
-    
+
     return true;
 }
 
@@ -277,7 +271,7 @@ using FaceIterator = MeshFacetArray::_TConstIterator;
  */
 struct MeshFacet_Less
 {
-    bool operator()(const FaceIterator& x, 
+    bool operator()(const FaceIterator& x,
                     const FaceIterator& y) const
     {
         PointIndex tmp;
@@ -329,7 +323,7 @@ struct MeshFacet_EqualTo
     {
         for (int i=0; i<3; i++ ) {
             if (x->_aulPoints[0] == y->_aulPoints[i]) {
-                if (x->_aulPoints[1] == y->_aulPoints[(i+1)%3] && 
+                if (x->_aulPoints[1] == y->_aulPoints[(i+1)%3] &&
                     x->_aulPoints[2] == y->_aulPoints[(i+2)%3])
                     return true;
                 else if (x->_aulPoints[1] == y->_aulPoints[(i+2)%3] &&

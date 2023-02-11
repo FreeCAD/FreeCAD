@@ -189,7 +189,7 @@ SceneEventFilter::~SceneEventFilter()
 /*!
   Adds a device for event translation
  */
-void 
+void
 SceneEventFilter::registerInputDevice(SIM::Coin3D::Quarter::InputDevice * device)
 {
     PRIVATE(this)->devices += device;
@@ -198,7 +198,7 @@ SceneEventFilter::registerInputDevice(SIM::Coin3D::Quarter::InputDevice * device
 /*!
   Removes a device from event translation
  */
-void 
+void
 SceneEventFilter::unregisterInputDevice(SIM::Coin3D::Quarter::InputDevice * device)
 {
     int i = PRIVATE(this)->devices.indexOf(device);

@@ -22,53 +22,40 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-#include <cmath>
-#include <QAction>
-#include <QApplication>
-#include <QContextMenuEvent>
-#include <QGraphicsScene>
-#include <QGraphicsView>
-#include <QTransform>
-#include <QMouseEvent>
-#include <QPainterPathStroker>
-#include <QPainter>
-#include <QPainterPath>
-#include <QStyleOptionGraphicsItem>
-#include <QBitmap>
-#include <QFile>
-#include <QFileInfo>
-#include <QTextStream>
-#include <QRectF>
-#include <QPointF>
+# include <cmath>
+
+# include <QFileInfo>
+# include <QGraphicsView>
+# include <QPainter>
+# include <QPainterPath>
+# include <QPointF>
+# include <QRectF>
+# include <QTransform>
 #endif
 
 #include <App/Application.h>
-#include <App/Material.h>
 #include <Base/Console.h>
 #include <Base/Parameter.h>
-
 #include <Mod/TechDraw/App/DrawUtil.h>
 
-//debug
-#include "QGICMark.h"
-#include "ZVALUE.h"
-//
-#include "Rez.h"
-#include "DrawGuiUtil.h"
+#include "PreferencesGui.h"
+#include "QGIFace.h"
 #include <QByteArrayMatcher>
-#include "QGCustomSvg.h"
 #include "QGCustomImage.h"
 #include "QGCustomRect.h"
-#include "QGIViewPart.h"
+#include "QGCustomSvg.h"
+#include "QGICMark.h"
 #include "QGIPrimPath.h"
-#include "QGIFace.h"
+#include "Rez.h"
+#include "ZVALUE.h"
 
 using namespace TechDrawGui;
 using namespace TechDraw;
 
 QGIFace::QGIFace(int index) :
     projIndex(index),
-    m_hideSvgTiles(false)
+    m_hideSvgTiles(false),
+    m_hatchRotation(0.0)
 {
     m_segCount = 0;
 //    setFillMode(NoFill);
@@ -77,7 +64,7 @@ QGIFace::QGIFace(int index) :
 
     //setStyle(Qt::NoPen);    //don't draw face lines, just fill for debugging
     setStyle(Qt::DashLine);
-    m_geomColor = QColor(Qt::black);
+    m_geomColor = PreferencesGui::getAccessibleQColor(QColor(Qt::black));
     setLineWeight(0.5);                   //0 = cosmetic
 
     setPrettyNormal();
@@ -257,16 +244,17 @@ void QGIFace::lineSetToFillItems(LineSet& ls)
 {
     m_segCount = 0;
     QPen pen = setGeomPen();
-    for (auto& g: ls.getGeoms()) {
+    for (auto& geom : ls.getGeoms()) {
+        //geom is a tdGeometry representation of 1 line in the pattern
         if (ls.isDashed()) {
             double offset = 0.0;
-            Base::Vector3d pStart = ls.getPatternStartPoint(g, offset, m_fillScale);
+            Base::Vector3d pStart = ls.getPatternStartPoint(geom, offset, m_fillScale);
             offset = Rez::guiX(offset);
-            Base::Vector3d gStart(g->getStartPoint().x,
-                                  g->getStartPoint().y,
+            Base::Vector3d gStart(geom->getStartPoint().x,
+                                  geom->getStartPoint().y,
                                   0.0);
-            Base::Vector3d gEnd(g->getEndPoint().x,
-                                g->getEndPoint().y,
+            Base::Vector3d gEnd(geom->getEndPoint().x,
+                                geom->getEndPoint().y,
                                 0.0);
             if (DrawUtil::fpCompare(offset, 0.0, 0.00001)) {                              //no offset
                 QGraphicsPathItem* item1 = lineFromPoints(pStart, gEnd, ls.getDashSpec());
@@ -279,12 +267,12 @@ void QGIFace::lineSetToFillItems(LineSet& ls)
                 }
             } else {                                                                  //offset - pattern start not in g
                 double remain = dashRemain(decodeDashSpec(ls.getDashSpec()), offset);
-                QGraphicsPathItem* shortItem = geomToStubbyLine(g, remain, ls);
+                QGraphicsPathItem* shortItem = geomToStubbyLine(geom, remain, ls);
                 shortItem->setPen(pen);
                 m_fillItems.push_back(shortItem);
             }
         } else {                                                //not dashed
-            QGraphicsPathItem* fillItem = geomToLine(g, ls);
+            QGraphicsPathItem* fillItem = geomToLine(geom, ls);
             fillItem->setPen(pen);
             m_fillItems.push_back(fillItem);
         }
@@ -520,19 +508,20 @@ void QGIFace::makeMark(double x, double y)
 
 void QGIFace::buildSvgHatch()
 {
+//    Base::Console().Message("QGIF::buildSvgHatch() - offset: %s\n", DrawUtil::formatVector(getHatchOffset()).c_str());
     double wTile = SVGSIZEW * m_fillScale;
     double hTile = SVGSIZEH * m_fillScale;
     double w = m_outline.boundingRect().width();
     double h = m_outline.boundingRect().height();
-    QRectF r = m_outline.boundingRect();
-    QPointF fCenter = r.center();
-    double nw = ceil(w / wTile);
-    double nh = ceil(h / hTile);
+    //make the hatch tiled area big enough to handle rotations
+    double hatchOverlaySize = 2.0 * std::max(w, h);
+    QPointF faceCenter = m_outline.boundingRect().center();
+    double nw = ceil(hatchOverlaySize / wTile);
+    double nh = ceil(hatchOverlaySize / hTile);
     w = nw * wTile;
     h = nh * hTile;
     m_rect->setRect(0., 0., w,-h);
-    m_rect->centerAt(fCenter);
-    r = m_rect->rect();
+    m_rect->centerAt(faceCenter);
     QByteArray before, after;
     before = QString::fromStdString(SVGCOLPREFIX + SVGCOLDEFAULT).toUtf8();
     after = QString::fromStdString(SVGCOLPREFIX + m_svgCol).toUtf8();
@@ -544,7 +533,8 @@ void QGIFace::buildSvgHatch()
             tile->setScale(m_fillScale);
             if (tile->load(&colorXML)) {
                 tile->setParentItem(m_rect);
-                tile->setPos(iw*wTile, -h + ih*hTile);
+                tile->setPos(iw*wTile + getHatchOffset().x,
+                             -h + ih*hTile + getHatchOffset().y);
             }
             tileCount++;
             if (tileCount > m_maxTile) {
@@ -556,6 +546,9 @@ void QGIFace::buildSvgHatch()
             break;
         }
     }
+    QPointF faceCenterToMRect = mapToItem(m_rect, faceCenter);
+    m_rect->setTransformOriginPoint(faceCenterToMRect);
+    m_rect->setRotation(m_hatchRotation);
 }
 
 void QGIFace::clearSvg()
@@ -565,21 +558,22 @@ void QGIFace::clearSvg()
 
 void QGIFace::buildPixHatch()
 {
+//    Base::Console().Message("QGIF::buildPixHatch() - offset: %s\n", DrawUtil::formatVector(getHatchOffset()).c_str());
     double wTile = SVGSIZEW * m_fillScale;
     double hTile = SVGSIZEH * m_fillScale;
-    double w = m_outline.boundingRect().width();
-    double h = m_outline.boundingRect().height();
-    QRectF r = m_outline.boundingRect();
-    QPointF fCenter = r.center();
-    double nw = ceil(w / wTile);
-    double nh = ceil(h / hTile);
-    w = nw * wTile;
-    h = nh * hTile;
+    double faceWidth = m_outline.boundingRect().width();
+    double faceHeight = m_outline.boundingRect().height();
+    QRectF faceRect = m_outline.boundingRect();
+    QPointF faceCenter = faceRect.center();
+    double hatchOverlaySize = 2.0 * std::max(faceWidth, faceHeight);
+    double numberWide = ceil(hatchOverlaySize / wTile);
+    double numberHigh = ceil(hatchOverlaySize / hTile);
+    double overlayWidth = numberWide * wTile;
+    double overlayHeight= numberHigh * hTile;
 
-    m_rect->setRect(0., 0., w,-h);
-    m_rect->centerAt(fCenter);
+    m_rect->setRect(0., 0., overlayWidth, -overlayHeight);
+    m_rect->centerAt(faceCenter);
 
-    r = m_rect->rect();
     QByteArray before, after;
     before = QString::fromStdString(SVGCOLPREFIX + SVGCOLDEFAULT).toUtf8();
     after = QString::fromStdString(SVGCOLPREFIX + m_svgCol).toUtf8();
@@ -590,16 +584,16 @@ void QGIFace::buildPixHatch()
         Base::Console().Error("QGIF::buildPixHatch - renderer failed to load\n");
     }
 
+    //get the svg tile graphics as a QImage
     QImage imageIn(64, 64, QImage::Format_ARGB32);
     imageIn.fill(Qt::transparent);
     QPainter painter(&imageIn);
-
     renderer.render(&painter);
     if (imageIn.isNull()) {
         Base::Console().Error("QGIF::buildPixHatch - imageIn is null\n");
         return;
     }
-
+    //make a QPixmap tile of the QImage
     QPixmap pm(64, 64);
     pm  = QPixmap::fromImage(imageIn);
     pm = pm.scaled(wTile, hTile);
@@ -608,23 +602,26 @@ void QGIFace::buildPixHatch()
         return;
     }
 
-    QImage tileField(w, h, QImage::Format_ARGB32);
-    QPointF fieldCenter(w / 2.0, h / 2.0);
+    //layout a field of QPixmap tiles as a QImage
+    QImage tileField(overlayWidth, overlayHeight, QImage::Format_ARGB32);
+    QPointF fieldCenter(overlayWidth, overlayHeight);
 
+    //do we have to rotate the field before we clip it??
     tileField.fill(Qt::transparent);
     QPainter painter2(&tileField);
     QPainter::RenderHints hints = painter2.renderHints();
     hints = hints & QPainter::Antialiasing;
     painter2.setRenderHints(hints);
     QPainterPath clipper = path();
-    QPointF offset = (fieldCenter - fCenter);
+    QPointF offset = (fieldCenter - faceCenter);
     clipper.translate(offset);
     painter2.setClipPath(clipper);
 
     long int tileCount = 0;
-    for (int iw = 0; iw < int(nw); iw++) {
-        for (int ih = 0; ih < int(nh); ih++) {
-            painter2.drawPixmap(QRectF(iw*wTile, ih*hTile, wTile, hTile),   //target rect
+    for (int iw = 0; iw < int(numberWide); iw++) {
+        for (int ih = 0; ih < int(numberHigh); ih++) {
+            painter2.drawPixmap(QRectF(iw*wTile + getHatchOffset().x, ih*hTile + getHatchOffset().y,
+                                       wTile, hTile),   //target rect
                                pm,                                           //map
                                QRectF(0, 0, wTile, hTile));  //source rect
             tileCount++;
@@ -637,13 +634,14 @@ void QGIFace::buildPixHatch()
             break;
         }
     }
-    QPixmap bigMap(fabs(r.width()), fabs(r.height()));
+
+    QPixmap bigMap(fabs(faceRect.width()), fabs(faceRect.height()));
     bigMap = QPixmap::fromImage(tileField);
 
     QPixmap nothing;
     m_image->setPixmap(nothing);
     m_image->load(bigMap);
-    m_image->centerAt(fCenter);
+    m_image->centerAt(faceCenter);
 }
 
 //this isn't used currently
@@ -692,6 +690,11 @@ QPixmap QGIFace::textureFromBitmap(std::string fileSpec)
     }
     QByteArray bytes = f.readAll();
     pix.loadFromData(bytes);
+    if (m_hatchRotation != 0.0) {
+        QTransform rotator;
+        rotator.rotate(m_hatchRotation);
+        pix = pix.transformed(rotator);
+    }
     return pix;
 }
 

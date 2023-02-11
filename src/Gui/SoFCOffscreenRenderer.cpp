@@ -121,7 +121,7 @@ void SoFCOffscreenRenderer::writeToImageFile(const char* filename, const char* c
         QByteArray ba;
         QBuffer buffer(&ba);
         buffer.open(QIODevice::WriteOnly);
-        image.save(&buffer, "JPG");
+        image.save(&buffer, "JPG", 90);
         writeJPEGComment(com, ba);
 
         QFile file(QString::fromUtf8(filename));
@@ -897,7 +897,7 @@ Py::Object SoQtOffscreenRendererPy::render(const Py::Tuple& args)
     try {
         void* ptr = nullptr;
         Base::Interpreter().convertSWIGPointerObj("pivy.coin", "SoNode *", proxy, &ptr, 0);
-        SoNode* node = static_cast<SoNode*>(ptr);
+        auto node = static_cast<SoNode*>(ptr);
         bool ok = false;
         if (node) {
             ok = renderer.render(node);

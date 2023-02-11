@@ -21,7 +21,7 @@
 # ***************************************************************************
 
 import FreeCAD
-import PathScripts.PathUtil as PathUtil
+import Path.Base.Util as PathUtil
 import TestSketcherApp
 
 from PathTests.PathTestUtils import PathTestBase

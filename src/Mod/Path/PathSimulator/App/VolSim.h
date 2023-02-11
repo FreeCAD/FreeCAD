@@ -22,13 +22,14 @@
 *   Volumetric Path simulation engine                                     *
 ***************************************************************************/
 
-
 #ifndef PATHSIMULATOR_VolSim_H
 #define PATHSIMULATOR_VolSim_H
 
 #include <vector>
+
 #include <Mod/Mesh/App/Mesh.h>
 #include <Mod/Path/App/Command.h>
+
 
 #define SIM_EPSILON 0.00001
 #define SIM_TESSEL_TOP		1

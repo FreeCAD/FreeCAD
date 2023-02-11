@@ -21,25 +21,23 @@
  ***************************************************************************/
 
 #include "PreCompiled.h"
-#include <QAction>
-#include <QMenu>
-#include <QMessageBox>
-#include <QTimer>
-#include <GeomAbs_Shape.hxx>
-#include <TopExp.hxx>
-#include <TopTools_IndexedMapOfShape.hxx>
-#include <TopTools_IndexedDataMapOfShapeListOfShape.hxx>
-#include <TopTools_ListIteratorOfListOfShape.hxx>
+#ifndef _PreComp_
+# include <QAction>
+# include <QMenu>
+# include <QMessageBox>
+# include <QTimer>
+
+# include <TopExp.hxx>
+# include <TopTools_IndexedMapOfShape.hxx>
+#endif
 
 #include <App/Document.h>
-#include <Gui/ViewProvider.h>
 #include <Gui/Application.h>
-#include <Gui/Document.h>
-#include <Gui/Command.h>
-#include <Gui/SelectionObject.h>
-#include <Base/Console.h>
-#include <Gui/Control.h>
 #include <Gui/BitmapFactory.h>
+#include <Gui/Command.h>
+#include <Gui/Control.h>
+#include <Gui/SelectionObject.h>
+#include <Gui/Widgets.h>
 #include <Mod/Part/Gui/ViewProvider.h>
 
 #include "TaskSections.h"
@@ -92,7 +90,7 @@ void ViewProviderSections::unsetEdit(int ModNum)
 {
     if (ModNum == ViewProvider::Default) {
         // when pressing ESC make sure to close the dialog
-        QTimer::singleShot(0, &Gui::Control(), SLOT(closeDialog()));
+        QTimer::singleShot(0, &Gui::Control(), &Gui::ControlSingleton::closeDialog);
     }
     else {
         PartGui::ViewProviderSpline::unsetEdit(ModNum);
@@ -258,15 +256,20 @@ SectionsPanel::SectionsPanel(ViewProviderSections* vp, Surface::Sections* obj) :
     checkCommand = true;
     setEditedObject(obj);
 
+    // Set up button group
+    buttonGroup = new Gui::ButtonGroup(this);
+    buttonGroup->setExclusive(true);
+    buttonGroup->addButton(ui->buttonEdgeAdd, (int)SelectionMode::AppendEdge);
+    buttonGroup->addButton(ui->buttonEdgeRemove, (int)SelectionMode::RemoveEdge);
+
     // Create context menu
     QAction* action = new QAction(tr("Remove"), this);
     action->setShortcut(QKeySequence::Delete);
     ui->listSections->addAction(action);
-    connect(action, SIGNAL(triggered()), this, SLOT(onDeleteEdge()));
+    connect(action, &QAction::triggered, this, &SectionsPanel::onDeleteEdge);
     ui->listSections->setContextMenuPolicy(Qt::ActionsContextMenu);
 
-    connect(ui->listSections->model(),
-        SIGNAL(rowsMoved(QModelIndex, int, int, QModelIndex, int)), this, SLOT(onIndexesMoved()));
+    connect(ui->listSections->model(), &QAbstractItemModel::rowsMoved, this, &SectionsPanel::onIndexesMoved);
 }
 
 /*
@@ -401,18 +404,28 @@ bool SectionsPanel::reject()
     return true;
 }
 
-void SectionsPanel::on_buttonEdgeAdd_clicked()
+void SectionsPanel::on_buttonEdgeAdd_toggled(bool checked)
 {
-    // 'selectionMode' is passed by reference and changed when the filter is deleted
-    Gui::Selection().addSelectionGate(new ShapeSelection(selectionMode, editedObject));
-    selectionMode = AppendEdge;
+    if (checked) {
+        selectionMode = AppendEdge;
+        // 'selectionMode' is passed by reference and changed when the filter is deleted
+        Gui::Selection().addSelectionGate(new ShapeSelection(selectionMode, editedObject));
+    }
+    else if (selectionMode == AppendEdge) {
+        exitSelectionMode();
+    }
 }
 
-void SectionsPanel::on_buttonEdgeRemove_clicked()
+void SectionsPanel::on_buttonEdgeRemove_toggled(bool checked)
 {
-    // 'selectionMode' is passed by reference and changed when the filter is deleted
-    Gui::Selection().addSelectionGate(new ShapeSelection(selectionMode, editedObject));
-    selectionMode = RemoveEdge;
+    if (checked) {
+        selectionMode = RemoveEdge;
+        // 'selectionMode' is passed by reference and changed when the filter is deleted
+        Gui::Selection().addSelectionGate(new ShapeSelection(selectionMode, editedObject));
+    }
+    else if (selectionMode == RemoveEdge) {
+        exitSelectionMode();
+    }
 }
 
 void SectionsPanel::onSelectionChanged(const Gui::SelectionChanges& msg)
@@ -462,7 +475,7 @@ void SectionsPanel::onSelectionChanged(const Gui::SelectionChanges& msg)
         }
 
         editedObject->recomputeFeature();
-        QTimer::singleShot(50, this, SLOT(clearSelection()));
+        QTimer::singleShot(50, this, &SectionsPanel::clearSelection);
     }
 }
 
@@ -545,6 +558,13 @@ void SectionsPanel::removeCurve(App::DocumentObject* obj, const std::string& sub
     this->vp->highlightReferences(ViewProviderSections::Edge,
         editedObject->NSections.getSubListValues(), true);
 
+}
+
+void SectionsPanel::exitSelectionMode()
+{
+    // 'selectionMode' is passed by reference to the filter and changed when the filter is deleted
+    Gui::Selection().clearSelection();
+    Gui::Selection().rmvSelectionGate();
 }
 
 // ----------------------------------------------------------------------------

@@ -226,11 +226,11 @@ Body* Feature::getFeatureBody() const {
     for (auto in : list) {
         if(in->isDerivedFrom(Body::getClassTypeId()) && //is Body?
            static_cast<Body*>(in)->hasObject(this)) {    //is part of this Body?
-               
+
                return static_cast<Body*>(in);
         }
     }
-    
+
     return nullptr;
 }
 

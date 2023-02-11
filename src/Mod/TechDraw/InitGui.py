@@ -61,3 +61,6 @@ Gui.addWorkbench(TechDrawWorkbench())
 
 # Append the export handler
 FreeCAD.addExportType("Technical Drawing (*.svg *.dxf *.pdf)", "TechDrawGui")
+
+FreeCAD.__unit_test__ += ["TestTechDrawGui"]
+

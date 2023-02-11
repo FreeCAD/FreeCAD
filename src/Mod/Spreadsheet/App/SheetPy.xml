@@ -180,5 +180,53 @@ following dependency order.
         </UserDocu>
       </Documentation>
     </Methode>
+	  
+    <Methode Name="getUsedCells">
+      <Documentation>
+        <UserDocu>
+getUsedCells()
+
+Get a list of the names of all cells that are marked as used. These cells may
+or may not have a non-empty string content.
+        </UserDocu>
+      </Documentation>
+    </Methode>
+	  
+    <Methode Name="getNonEmptyCells">
+      <Documentation>
+        <UserDocu>
+getNonEmptyCells()
+
+Get a list of the names of all cells with data in them.
+        </UserDocu>
+      </Documentation>
+    </Methode>
+    
+    <Methode Name="getUsedRange">
+      <Documentation>
+        <UserDocu>
+getUsedRange()
+
+Get a the total range of the used cells in a sheet, as a pair of strings
+representing the lowest row and column that are used, and the highest row and
+column that are used (inclusive). Note that the actual first and last cell
+of the block are not necessarily used.
+        </UserDocu>
+      </Documentation>
+    </Methode>
+    
+    <Methode Name="getNonEmptyRange">
+      <Documentation>
+        <UserDocu>
+getNonEmptyRange()
+
+Get a the total range of the used cells in a sheet, as a pair of cell addresses
+representing the lowest row and column that contain data, and the highest row and
+column that contain data (inclusive). Note that the actual first and last cell
+of the block do not necessarily contain anything.
+        </UserDocu>
+      </Documentation>
+    </Methode>
+    
   </PythonExport>
 </GenerateModel>

@@ -26,9 +26,9 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <sstream>
 # include <QAction>
 # include <QMessageBox>
+# include <sstream>
 # include <TopoDS.hxx>
 #endif
 
@@ -59,12 +59,12 @@ TaskFemConstraintPlaneRotation::TaskFemConstraintPlaneRotation(ViewProviderFemCo
 
     // create a context menu for the listview of the references
     createDeleteAction(ui->lw_references);
-    deleteAction->connect(deleteAction, SIGNAL(triggered()), this, SLOT(onReferenceDeleted()));
+    connect(deleteAction, &QAction::triggered, this, &TaskFemConstraintPlaneRotation::onReferenceDeleted);
 
-    connect(ui->lw_references, SIGNAL(currentItemChanged(QListWidgetItem*, QListWidgetItem*)),
-        this, SLOT(setSelection(QListWidgetItem*)));
-    connect(ui->lw_references, SIGNAL(itemClicked(QListWidgetItem*)),
-        this, SLOT(setSelection(QListWidgetItem*)));
+    connect(ui->lw_references, &QListWidget::currentItemChanged,
+            this, &TaskFemConstraintPlaneRotation::setSelection);
+    connect(ui->lw_references, &QListWidget::itemClicked,
+            this, &TaskFemConstraintPlaneRotation::setSelection);
 
     this->groupLayout()->addWidget(proxy);
 
@@ -86,8 +86,8 @@ TaskFemConstraintPlaneRotation::TaskFemConstraintPlaneRotation(ViewProviderFemCo
     }
 
     //Selection buttons
-    connect(ui->btnAdd, SIGNAL(clicked()), this, SLOT(addToSelection()));
-    connect(ui->btnRemove, SIGNAL(clicked()), this, SLOT(removeFromSelection()));
+    connect(ui->btnAdd, &QToolButton::clicked, this, &TaskFemConstraintPlaneRotation::addToSelection);
+    connect(ui->btnRemove, &QToolButton::clicked, this, &TaskFemConstraintPlaneRotation::removeFromSelection);
 
     updateUI();
 }

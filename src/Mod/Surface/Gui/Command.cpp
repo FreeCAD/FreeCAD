@@ -23,46 +23,24 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-#include <sstream>
-#include <QApplication>
-#include <QString>
-#include <QDir>
-#include <QFileInfo>
-#include <QLineEdit>
-#include <QMessageBox>
-#include <QPointer>
-#include <Standard_math.hxx>
-#include <TopoDS_Shape.hxx>
-#include <TopoDS_Edge.hxx>
-#include <Geom_BezierCurve.hxx>
-#include <Geom_BSplineCurve.hxx>
-#include <TopExp_Explorer.hxx>
-#include <TopoDS.hxx>
-#include <Inventor/events/SoMouseButtonEvent.h>
+# include <sstream>
+# include <QApplication>
+# include <QMessageBox>
+
+# include <BRepAdaptor_Curve.hxx>
+# include <GeomAPI_ProjectPointOnCurve.hxx>
+# include <TopoDS_Edge.hxx>
+# include <TopoDS_Shape.hxx>
 #endif
 
-#include <Base/Console.h>
 #include <App/Document.h>
 #include <Gui/Application.h>
-#include <Gui/BitmapFactory.h>
 #include <Gui/Command.h>
 #include <Gui/Control.h>
-#include <Gui/Document.h>
-#include <Gui/FileDialog.h>
 #include <Gui/MainWindow.h>
-#include <Gui/Selection.h>
 #include <Gui/SelectionFilter.h>
 #include <Gui/SelectionObject.h>
-#include <Gui/View3DInventor.h>
-#include <Gui/View3DInventorViewer.h>
-#include <Gui/WaitCursor.h>
-
-#include <App/PropertyStandard.h>
-#include <App/PropertyUnits.h>
-#include <App/PropertyLinks.h>
 #include "Mod/Part/App/PartFeature.h"
-#include <BRepAdaptor_Curve.hxx>
-#include <GeomAPI_ProjectPointOnCurve.hxx>
 
 
 //===========================================================================

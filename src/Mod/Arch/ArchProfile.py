@@ -243,17 +243,18 @@ class _Profile(Draft._DraftObject):
     def __setstate__(self,state):
         if isinstance(state,list):
             self.Profile = state
-            
+        self.Type = "Profile"
+
     def cleanProperties(self, obj):
-    
+
         '''Remove all Profile properties'''
-        
+
         obj.removeProperty("Width")
         obj.removeProperty("Height")
         obj.removeProperty("WebThickness")
         obj.removeProperty("FlangeThickness")
         obj.removeProperty("OutDiameter")
-        obj.removeProperty("Thickness")    
+        obj.removeProperty("Thickness")
 
 
 class _ProfileC(_Profile):
@@ -400,8 +401,8 @@ class _ProfileU(_Profile):
         #p.reverse()
         obj.Shape = p
         obj.Placement = pl
-        
-        
+
+
 class _ProfileL(_Profile):
 
     '''A parametric L profile. Profile data: [width, height, thickness]'''
@@ -427,8 +428,8 @@ class _ProfileL(_Profile):
         #p.reverse()
         obj.Shape = p
         obj.Placement = pl
-        
-        
+
+
 class _ProfileT(_Profile):
 
     '''A parametric T profile. Profile data: [width, height, web thickness, flange thickness]'''
@@ -457,7 +458,7 @@ class _ProfileT(_Profile):
         #p.reverse()
         obj.Shape = p
         obj.Placement = pl
-        
+
 
 class ViewProviderProfile(Draft._ViewProviderDraft):
 
@@ -472,17 +473,20 @@ class ViewProviderProfile(Draft._ViewProviderDraft):
         import Arch_rc
         return ":/icons/Arch_Profile.svg"
 
-    def setEdit(self,vobj,mode):
+    def setEdit(self, vobj, mode):
+        if mode == 1 or mode == 2:
+            return None
 
         taskd = ProfileTaskPanel(vobj.Object)
         FreeCADGui.Control.showDialog(taskd)
         return True
 
-    def unsetEdit(self,vobj,mode):
+    def unsetEdit(self, vobj, mode):
+        if mode == 1 or mode == 2:
+            return None
 
         FreeCADGui.Control.closeDialog()
-        FreeCAD.ActiveDocument.recompute()
-        return
+        return True
 
 
 class ProfileTaskPanel:
@@ -570,7 +574,7 @@ class ProfileTaskPanel:
         self.Profile = self.currentpresets[idx]
 
     def accept(self):
-        
+
         self.obj.Label = self.Profile[2]
         if self.Profile:
             if self.Profile[3]=="C":
@@ -589,9 +593,14 @@ class ProfileTaskPanel:
                 _ProfileT(self.obj, self.Profile)
             else:
                 print("Profile not supported")
-                
+
             FreeCAD.ActiveDocument.recompute()
             FreeCADGui.ActiveDocument.resetEdit()
+        return True
+
+    def reject(self):
+
+        FreeCADGui.ActiveDocument.resetEdit()
         return True
 
     def retranslateUi(self, TaskPanel):

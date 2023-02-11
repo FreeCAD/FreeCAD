@@ -63,6 +63,10 @@ public:
 
     void apply() override;
 
+public Q_SLOTS:
+    /// User finished editing a subFeature
+    void onSubTaskButtonOK() override;
+
 private Q_SLOTS:
     void onTransformDelete();
     void onTransformEdit();
@@ -73,11 +77,9 @@ private Q_SLOTS:
     void onTransformAddScaled();
     void onMoveUp();
     void onMoveDown();
-    /// User finished editing a subFeature
-    void onSubTaskButtonOK() override;
     // Note: There is no Cancel button because I couldn't work out how to save the state of
     // a subFeature so as to revert the changes of an edit operation
-    virtual void onUpdateView(bool);
+    void onUpdateView(bool) override;
     void onFeatureDeleted() override;
     /** Notifies when the object is about to be removed. */
     void slotDeletedObject(const Gui::ViewProviderDocumentObject& Obj) override;

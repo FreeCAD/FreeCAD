@@ -26,6 +26,7 @@
 #include <Base/PyObjectBase.h>
 #include <Gui/Application.h>
 #include <Gui/Language/Translator.h>
+
 #include "Workbench.h"
 #include "ViewProviderPage.h"
 #include "ViewProviderView.h"

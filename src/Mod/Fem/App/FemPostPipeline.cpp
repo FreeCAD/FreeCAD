@@ -23,7 +23,7 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <SMESH_Mesh.hxx>
+# include <Python.h>
 # include <vtkAppendFilter.h>
 # include <vtkDataSetReader.h>
 # include <vtkImageData.h>
@@ -32,21 +32,19 @@
 # include <vtkUnstructuredGrid.h>
 # include <vtkXMLImageDataReader.h>
 # include <vtkXMLPolyDataReader.h>
+# include <vtkXMLPUnstructuredGridReader.h>
 # include <vtkXMLRectilinearGridReader.h>
 # include <vtkXMLStructuredGridReader.h>
-# include <vtkXMLPUnstructuredGridReader.h>
 # include <vtkXMLUnstructuredGridReader.h>
 #endif
 
+#include <Base/Console.h>
+
 #include "FemPostPipeline.h"
+#include "FemPostPipelinePy.h"
 #include "FemMesh.h"
 #include "FemMeshObject.h"
 #include "FemVTKTools.h"
-
-#include <App/DocumentObjectPy.h>
-#include <Base/Console.h>
-
-#include "FemPostPipelinePy.h"
 
 
 using namespace Fem;
@@ -57,12 +55,21 @@ const char* FemPostPipeline::ModeEnums[] = { "Serial", "Parallel", "Custom", nul
 
 FemPostPipeline::FemPostPipeline()
 {
-    ADD_PROPERTY_TYPE(Filter, (nullptr), "Pipeline", App::Prop_None, "The filter used in this pipeline");
-    ADD_PROPERTY_TYPE(Functions, (nullptr), "Pipeline", App::Prop_Hidden, "The function provider which groups all pipeline functions");
-    ADD_PROPERTY_TYPE(Mode, (long(2)), "Pipeline", App::Prop_None, "Selects the pipeline data transition mode.\n"
-        "In serial, every filter gets the output of the previous one as input.\n"
-        "In parallel, every filter gets the pipeline source as input.\n"
-        "In custom, every filter keeps its input set by the user.");
+    ADD_PROPERTY_TYPE(
+        Filter, (nullptr), "Pipeline", App::Prop_None, "The filter used in this pipeline");
+    ADD_PROPERTY_TYPE(Functions,
+                      (nullptr),
+                      "Pipeline",
+                      App::Prop_Hidden,
+                      "The function provider which groups all pipeline functions");
+    ADD_PROPERTY_TYPE(Mode,
+                      (long(2)),
+                      "Pipeline",
+                      App::Prop_None,
+                      "Selects the pipeline data transition mode.\n"
+                      "In serial, every filter gets the output of the previous one as input.\n"
+                      "In parallel, every filter gets the pipeline source as input.\n"
+                      "In custom, every filter keeps its input set by the user.");
     Mode.setEnums(ModeEnums);
 }
 
@@ -80,20 +87,21 @@ short FemPostPipeline::mustExecute() const
 
 DocumentObjectExecReturn* FemPostPipeline::execute() {
 
-    //if we are the toplevel pipeline our data object is not created by filters, we are the main source
+    // if we are the toplevel pipeline our data object is not created by filters,
+    // we are the main source
     if (!Input.getValue())
         return StdReturn;
 
-    //now if we are a filter than our data object is created by the filter we hold
+    // now if we are a filter than our data object is created by the filter we hold
 
-    //if we are in serial mode we just copy over the data of the last filter,
-    //but if we are in parallel we need to combine all filter results
+    // if we are in serial mode we just copy over the data of the last filter,
+    // but if we are in parallel we need to combine all filter results
     if (Mode.getValue() == 0) {
         //serial
         Data.setValue(getLastPostObject()->Data.getValue());
     }
     else if (Mode.getValue() == 1) {
-        //parallel, go through all filters and append the result
+        // parallel, go through all filters and append the result
         const std::vector<App::DocumentObject*>& filters = Filter.getValues();
         std::vector<App::DocumentObject*>::const_iterator it = filters.begin();
 
@@ -164,7 +172,7 @@ void FemPostPipeline::onChanged(const Property* prop)
         if (Mode.getValue() == 2) // custom
             return;
 
-        //we check if all connections are right and add new ones if needed
+        // we check if all connections are right and add new ones if needed
         std::vector<App::DocumentObject*> objs = Filter.getValues();
 
         if (objs.empty())
@@ -173,14 +181,15 @@ void FemPostPipeline::onChanged(const Property* prop)
         std::vector<App::DocumentObject*>::iterator it = objs.begin();
         FemPostFilter* filter = static_cast<FemPostFilter*>(*it);
 
-        //If we have a Input we need to ensure our filters are connected correctly
+        // If we have a Input we need to ensure our filters are connected correctly
         if (Input.getValue()) {
 
-            //the first filter is always connected to the input
+            // the first filter is always connected to the input
             if (filter->Input.getValue() != Input.getValue())
                 filter->Input.setValue(Input.getValue());
 
-            //all the others need to be connected to the previous filter or the source, dependent on the mode
+            // all the others need to be connected to the previous filter or the source,
+            // dependent on the mode
             ++it;
             for (; it != objs.end(); ++it) {
                 FemPostFilter* nextFilter = static_cast<FemPostFilter*>(*it);
@@ -197,13 +206,14 @@ void FemPostPipeline::onChanged(const Property* prop)
                 filter = nextFilter;
             };
         }
-        //if we have no input the filters are responsible of grabbing the pipeline data themself
+        // if we have no input the filters are responsible of grabbing the pipeline data themself
         else {
-            //the first filter must always grab the data
+            // the first filter must always grab the data
             if (filter->Input.getValue())
                 filter->Input.setValue(nullptr);
 
-            //all the others need to be connected to the previous filter or grab the data, dependent on mode
+            // all the others need to be connected to the previous filter or grab the data,
+            // dependent on mode
             ++it;
             for (; it != objs.end(); ++it) {
                 FemPostFilter* nextFilter = static_cast<FemPostFilter*>(*it);
@@ -261,13 +271,13 @@ void FemPostPipeline::load(FemResultObject* res) {
         return;
     }
 
-    //first copy the mesh over
+    // first copy the mesh over
     // ***************************
     const FemMesh& mesh = static_cast<FemMeshObject*>(res->Mesh.getValue())->FemMesh.getValue();
     vtkSmartPointer<vtkUnstructuredGrid> grid = vtkSmartPointer<vtkUnstructuredGrid>::New();
     FemVTKTools::exportVTKMesh(&mesh, grid);
 
-    //Now copy the point data over
+    // Now copy the point data over
     // ***************************
     FemVTKTools::exportFreeCADResult(res, grid);
 

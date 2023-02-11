@@ -91,7 +91,9 @@ from draftutils.utils import (string_encode_coin,
                               svg_patterns,
                               svgpatterns,
                               get_rgb,
-                              getrgb)
+                              getrgb,
+                              argb_to_rgba,
+                              rgba_to_argb)
 
 from draftfunctions.svg import (get_svg,
                                 getSVG)
@@ -104,6 +106,7 @@ from draftutils.gui_utils import (get3DView,
                                   autogroup,
                                   removeHidden,
                                   remove_hidden,
+                                  get_diffuse_color,
                                   formatObject,
                                   format_object,
                                   getSelection,

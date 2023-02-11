@@ -84,7 +84,7 @@ DlgSettingsColorGradientImp::~DlgSettingsColorGradientImp()
 
 void DlgSettingsColorGradientImp::setupConnections()
 {
-    QButtonGroup* group = new QButtonGroup(this);
+    auto group = new QButtonGroup(this);
     group->setExclusive(true);
     group->addButton(ui->radioButtonFlow);
     group->addButton(ui->radioButtonZero);

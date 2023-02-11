@@ -20,16 +20,14 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
-#ifndef _PreComp_
-#endif
+#include <Gui/Control.h>
+#include <Mod/Fem/App/FemSetNodesObject.h>
+#include <Mod/Fem/Gui/TaskDlgCreateNodeSet.h>
 
 #include "ViewProviderSetNodes.h"
-#include <Gui/Control.h>
-#include <Mod/Fem/Gui/TaskDlgCreateNodeSet.h>
-#include <Mod/Fem/App/FemSetNodesObject.h>
+
 
 using namespace FemGui;
 

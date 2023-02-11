@@ -94,13 +94,13 @@ float SoFCColorBarBase::getBoundingWidth(const SbVec2s& size)
     }
 
     // These are the same camera settings for front nodes as defined in the 3d view
-    SoOrthographicCamera* cam = new SoOrthographicCamera;
+    auto cam = new SoOrthographicCamera;
     cam->position = SbVec3f(0, 0, 5); // the 5 is just a value > 0
     cam->height = 10; // sets the coordinate range of the screen to [-5, +5]
     cam->nearDistance = 0;
     cam->farDistance = 10;
 
-    SoGroup* group = new SoGroup();
+    auto group = new SoGroup();
     group->ref();
     group->addChild(cam);
     group->addChild(this);
@@ -276,7 +276,7 @@ void SoFCColorBar::eventCallback(void * /*userdata*/, SoEventCallback * node)
 {
     const SoEvent * event = node->getEvent();
     if (event->getTypeId().isDerivedFrom(SoMouseButtonEvent::getClassTypeId())) {
-        const SoMouseButtonEvent*  e = static_cast<const SoMouseButtonEvent*>(event);
+        const auto e = static_cast<const SoMouseButtonEvent*>(event);
         if ((e->getButton() == SoMouseButtonEvent::BUTTON2)) {
             if (e->getState() == SoButtonEvent::UP) {
                 // do nothing here
@@ -291,7 +291,7 @@ void SoFCColorBar::handleEvent (SoHandleEventAction *action)
 
     // check for mouse button events
     if (event->getTypeId().isDerivedFrom(SoMouseButtonEvent::getClassTypeId())) {
-        const SoMouseButtonEvent*  e = static_cast<const SoMouseButtonEvent*>(event);
+        const auto e = static_cast<const SoMouseButtonEvent*>(event);
 
         // check if the cursor is near to the color bar
         if (!action->getPickedPoint())

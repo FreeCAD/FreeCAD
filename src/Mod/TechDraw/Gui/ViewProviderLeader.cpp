@@ -41,6 +41,7 @@
 #include <Mod/TechDraw/App/DrawWeldSymbol.h>
 
 #include "PreferencesGui.h"
+#include "ZVALUE.h"
 #include "QGIView.h"
 #include "TaskLeaderLine.h"
 #include "ViewProviderLeader.h"
@@ -71,6 +72,8 @@ ViewProviderLeader::ViewProviderLeader()
     LineStyle.setEnums(LineStyleEnums);
     ADD_PROPERTY_TYPE(LineStyle, (1), group, (App::PropertyType)(App::Prop_None), "Line style");
     ADD_PROPERTY_TYPE(Color, (getDefLineColor()), group, App::Prop_None, "Color of the Markup");
+
+    StackOrder.setValue(ZVALUE::DIMENSION);
 }
 
 ViewProviderLeader::~ViewProviderLeader()

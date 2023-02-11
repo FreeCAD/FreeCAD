@@ -35,28 +35,30 @@ class NaviCubeImplementation;
 
 class GuiExport NaviCube {
 public:
-	enum Corner {
-		TopLeftCorner,
-		TopRightCorner,
-		BottomLeftCorner,
-		BottomRightCorner
-	};
-	NaviCube(Gui::View3DInventorViewer* viewer) ;
-	virtual ~NaviCube();
-	void drawNaviCube();
-	void createContextMenu(const std::vector<std::string>& cmd);
-	bool processSoEvent(const SoEvent* ev);
-	void setCorner(Corner);
-	static void setNaviCubeCommands(const std::vector<std::string>& cmd);
-	static void setNaviCubeLabels(const std::vector<std::string>& labels);
-private:
-	NaviCubeImplementation* m_NaviCubeImplementation;
-};
+    enum Corner {
+        TopLeftCorner,
+        TopRightCorner,
+        BottomLeftCorner,
+        BottomRightCorner
+    };
+    NaviCube(Gui::View3DInventorViewer* viewer);
+    virtual ~NaviCube();
+    void drawNaviCube();
+    void createContextMenu(const std::vector<std::string>& cmd);
+    bool processSoEvent(const SoEvent* ev);
+    void setCorner(Corner);
+    void setSize(int size);
+    void setNaviRotateToNearest(bool toNearest);
+    void setNaviStepByTurn(int steps);
+    void setFont(std::string font);
+    void setFontSize(int size);
+    static QFont getDefaultSansserifFont();
+    int getDefaultFontSize();
+    static void setNaviCubeCommands(const std::vector<std::string>& cmd);
+    static void setNaviCubeLabels(const std::vector<std::string>& labels);
 
-class HuuhaaClassPy : public Py::PythonExtension<HuuhaaClassPy> {
-public:
-    Py::Object huuhaa(const Py::Tuple&);
-	static void init_type() ;
+private:
+    NaviCubeImplementation* m_NaviCubeImplementation;
 };
 
 #endif /* SRC_GUI_NAVICUBE_H_ */

@@ -68,17 +68,17 @@ FilterTyped::FilterTyped(const std::string &typeIn) : FilterBase(), type(typeIn)
 
 bool FilterTyped::goFilter(const Gui::DAG::Vertex& vertexIn, const Graph& graphIn, const GraphLinkContainer& linkIn) const
 {
-  Q_UNUSED(graphIn); 
+  Q_UNUSED(graphIn);
   if (type.empty())
     return false;
   Base::Type theType = Base::Type::fromName(type.c_str());
   if (theType == Base::Type::badType())
     return false;
-  
+
   const GraphLinkRecord &sourceRecord = findRecord(vertexIn, linkIn);
   if (sourceRecord.DObject->getTypeId() == theType)
     return true;
-  
+
   return false;
 }
 

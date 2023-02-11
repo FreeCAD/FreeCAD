@@ -254,7 +254,7 @@ class Stretch(gui_base_original.Modifier):
         point = App.Vector(numx, numy, numz)
         self.addPoint(point)
 
-    def finish(self, closed=False):
+    def finish(self, cont=False):
         """Terminate the operation of the command. and clean up."""
         if self.rectracker:
             self.rectracker.finalize()

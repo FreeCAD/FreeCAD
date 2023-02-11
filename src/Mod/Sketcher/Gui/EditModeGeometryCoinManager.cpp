@@ -20,81 +20,31 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
-
 #ifndef _PreComp_
-# include <Inventor/nodes/SoSeparator.h>
-# include <Inventor/nodes/SoGroup.h>
-# include <Inventor/nodes/SoSwitch.h>
-# include <Inventor/nodes/SoMaterial.h>
-# include <Inventor/nodes/SoCoordinate3.h>
-# include <Inventor/nodes/SoLineSet.h>
-# include <Inventor/nodes/SoFont.h>
-
-# include <Inventor/nodes/SoMarkerSet.h>
-# include <Inventor/nodes/SoTranslation.h>
-# include <Inventor/nodes/SoText2.h>
-# include <Inventor/nodes/SoPickStyle.h>
-# include <Inventor/nodes/SoDrawStyle.h>
-# include <Inventor/SoPickedPoint.h>
-# include <Inventor/details/SoPointDetail.h>
-# include <Inventor/details/SoDetail.h>
-# include <Inventor/details/SoLineDetail.h>
-
-# include <Inventor/nodes/SoAnnotation.h>
-# include <Inventor/nodes/SoImage.h>
-# include <Inventor/nodes/SoInfo.h>
-
-# include <Inventor/actions/SoRayPickAction.h>
+# include <memory>
 
 # include <Inventor/SbVec3f.h>
-# include <Inventor/SbImage.h>
-
-# include <memory>
+# include <Inventor/nodes/SoCoordinate3.h>
+# include <Inventor/nodes/SoDrawStyle.h>
+# include <Inventor/nodes/SoLineSet.h>
+# include <Inventor/nodes/SoMarkerSet.h>
+# include <Inventor/nodes/SoMaterial.h>
+# include <Inventor/nodes/SoSeparator.h>
 #endif  // #ifndef _PreComp_
 
+#include <Gui/Inventor/MarkerBitmaps.h>
 #include <Gui/Inventor/SmSwitchboard.h>
-
-#include <Mod/Part/App/Geometry.h>
+#include <Mod/Sketcher/App/Constraint.h>
+#include <Mod/Sketcher/App/GeoEnum.h>
+#include <Mod/Sketcher/App/GeoList.h>
 #include <Mod/Sketcher/App/GeometryFacade.h>
 #include <Mod/Sketcher/App/SolverGeometryExtension.h>
-#include <Mod/Sketcher/App/GeoEnum.h>
-#include <Mod/Sketcher/App/Constraint.h>
-#include <Mod/Sketcher/App/GeoList.h>
-
-#include <Base/Exception.h>
-#include <Base/Tools2D.h>
-#include <Base/UnitsApi.h>
-#include <Gui/Utilities.h>
-#include <Base/Converter.h>
-#include <Base/Tools.h>
-
-#include <Base/Vector3D.h>
-
-#include <App/ObjectIdentifier.h>
-
-#include <Gui/SoFCBoundingBox.h>
-#include <Gui/BitmapFactory.h>
-#include <Gui/Inventor/MarkerBitmaps.h>
-#include <Gui/Tools.h>
-
-#include <qpainter.h>
-
-#include "SoZoomTranslation.h"
-#include "SoDatumLabel.h"
-
-#include "EditModeInformationOverlayCoinConverter.h"
-
-#include "EditModeGeometryCoinConverter.h"
-
-#include "ViewProviderSketch.h"
-
-#include "ViewProviderSketchCoinAttorney.h"
-
-#include "EditModeConstraintCoinManager.h"
 
 #include "EditModeGeometryCoinManager.h"
+#include "EditModeGeometryCoinConverter.h"
+#include "ViewProviderSketchCoinAttorney.h"
+
 
 using namespace SketcherGui;
 using namespace Sketcher;
@@ -144,7 +94,7 @@ void EditModeGeometryCoinManager::processGeometry(const GeoListFacade & geolistf
     };
 
     // process geometry layers
-    EditModeGeometryCoinConverter gcconv(geometrylayernodes, drawingParameters, geometryLayerParameters, coinMapping);
+    EditModeGeometryCoinConverter gcconv(viewProvider, geometrylayernodes, drawingParameters, geometryLayerParameters, coinMapping);
 
     gcconv.convert(geolistfacade);
 
@@ -200,6 +150,7 @@ void EditModeGeometryCoinManager::updateGeometryColor(const GeoListFacade & geol
     // Update Colors
 
     SbColor *crosscolor = editModeScenegraphNodes.RootCrossMaterials->diffuseColor.startEditing();
+    auto viewOrientationFactor = ViewProviderSketchCoinAttorney::getViewOrientationFactor(viewProvider);
 
     for(int l=0; l<geometryLayerParameters.CoinLayers; l++) {
 
@@ -276,7 +227,7 @@ void EditModeGeometryCoinManager::updateGeometryColor(const GeoListFacade & geol
 
         for (int  i=0; i < PtNum; i++) { // 0 is the origin
             if( i == 0 && l == 0 ) { // reset root point to lowest
-                pverts[i].setValue(0, 0, drawingParameters.zRootPoint);
+                pverts[i].setValue(0, 0, viewOrientationFactor * drawingParameters.zRootPoint);
             }
             else {
                 pverts[i].getValue(x,y,z);
@@ -284,9 +235,9 @@ void EditModeGeometryCoinManager::updateGeometryColor(const GeoListFacade & geol
 
                 if(geom) {
                     if(geom->getConstruction())
-                        pverts[i].setValue(x,y,zConstrPoint);
+                        pverts[i].setValue(x,y,viewOrientationFactor * zConstrPoint);
                     else
-                        pverts[i].setValue(x,y,zNormPoint);
+                        pverts[i].setValue(x,y,viewOrientationFactor * zNormPoint);
                 }
             }
         }
@@ -352,35 +303,35 @@ void EditModeGeometryCoinManager::updateGeometryColor(const GeoListFacade & geol
                 color[i] = drawingParameters.PreselectSelectedColor;
                 for (int k=j; j<k+indexes; j++) {
                     verts[j].getValue(x,y,z);
-                    verts[j] = SbVec3f(x,y,drawingParameters.zHighLine);
+                    verts[j] = SbVec3f(x,y,viewOrientationFactor * drawingParameters.zHighLine);
                 }
             }
             else if (selected){
                 color[i] = drawingParameters.SelectColor;
                 for (int k=j; j<k+indexes; j++) {
                     verts[j].getValue(x,y,z);
-                    verts[j] = SbVec3f(x,y,drawingParameters.zHighLine);
+                    verts[j] = SbVec3f(x,y,viewOrientationFactor * drawingParameters.zHighLine);
                 }
             }
             else if (preselected){
                 color[i] = drawingParameters.PreselectColor;
                 for (int k=j; j<k+indexes; j++) {
                     verts[j].getValue(x,y,z);
-                    verts[j] = SbVec3f(x,y,drawingParameters.zHighLine);
+                    verts[j] = SbVec3f(x,y,viewOrientationFactor * drawingParameters.zHighLine);
                 }
             }
             else if (GeoId <= Sketcher::GeoEnum::RefExt) {  // external Geometry
                 color[i] = drawingParameters.CurveExternalColor;
                 for (int k=j; j<k+indexes; j++) {
                     verts[j].getValue(x,y,z);
-                    verts[j] = SbVec3f(x,y,zExtLine);
+                    verts[j] = SbVec3f(x,y,viewOrientationFactor * zExtLine);
                 }
             }
             else if ( issketchinvalid ) {
                 color[i] = drawingParameters.InvalidSketchColor;
                 for (int k=j; j<k+indexes; j++) {
                     verts[j].getValue(x,y,z);
-                    verts[j] = SbVec3f(x,y,zNormLine);
+                    verts[j] = SbVec3f(x,y,viewOrientationFactor * zNormLine);
                 }
             }
             else if (isConstructionGeom(GeoId)) {
@@ -399,28 +350,28 @@ void EditModeGeometryCoinManager::updateGeometryColor(const GeoListFacade & geol
 
                 for (int k=j; j<k+indexes; j++) {
                     verts[j].getValue(x,y,z);
-                    verts[j] = SbVec3f(x,y,zConstrLine);
+                    verts[j] = SbVec3f(x,y,viewOrientationFactor * zConstrLine);
                 }
             }
             else if (ViewProviderSketchCoinAttorney::isSketchFullyConstrained(viewProvider)) {
                 color[i] = drawingParameters.FullyConstrainedColor;
                 for (int k=j; j<k+indexes; j++) {
                     verts[j].getValue(x,y,z);
-                    verts[j] = SbVec3f(x,y,zNormLine);
+                    verts[j] = SbVec3f(x,y,viewOrientationFactor * zNormLine);
                 }
             }
             else if (isFullyConstraintElement(GeoId)) {
                 color[i] = drawingParameters.FullyConstraintElementColor;
                 for (int k=j; j<k+indexes; j++) {
                     verts[j].getValue(x,y,z);
-                    verts[j] = SbVec3f(x,y,zNormLine);
+                    verts[j] = SbVec3f(x,y,viewOrientationFactor * zNormLine);
                 }
             }
             else {
                 color[i] = drawingParameters.CurveColor;
                 for (int k=j; j<k+indexes; j++) {
                     verts[j].getValue(x,y,z);
-                    verts[j] = SbVec3f(x,y,zNormLine);
+                    verts[j] = SbVec3f(x,y,viewOrientationFactor * zNormLine);
                 }
             }
         }

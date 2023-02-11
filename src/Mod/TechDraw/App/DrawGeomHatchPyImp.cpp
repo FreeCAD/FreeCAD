@@ -21,10 +21,10 @@
 #include "PreCompiled.h"
 
 #include "DrawGeomHatch.h"
-
 // inclusion of the generated files (generated out of DrawGeomHatchPy.xml)
 #include <Mod/TechDraw/App/DrawGeomHatchPy.h>
 #include <Mod/TechDraw/App/DrawGeomHatchPy.cpp>
+
 
 using namespace TechDraw;
 

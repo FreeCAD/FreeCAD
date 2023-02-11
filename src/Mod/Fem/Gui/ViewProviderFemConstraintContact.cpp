@@ -23,30 +23,21 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <Standard_math.hxx>
-# include <Precision.hxx>
-
+# include <Inventor/nodes/SoCube.h>
+# include <Inventor/nodes/SoMaterial.h>
+# include <Inventor/nodes/SoRotation.h>
 # include <Inventor/nodes/SoSeparator.h>
 # include <Inventor/nodes/SoTranslation.h>
-# include <Inventor/nodes/SoRotation.h>
-# include <Inventor/nodes/SoMultipleCopy.h>
-# include <Inventor/nodes/SoCube.h>
-# include <Inventor/nodes/SoText3.h>
-# include <Inventor/nodes/SoFont.h>
-# include <Inventor/nodes/SoMaterial.h>
-# include <Inventor/nodes/SoMaterialBinding.h>
-# include <Inventor/nodes/SoScale.h>
 #endif
 
 #include "Mod/Fem/App/FemConstraintContact.h"
-#include "TaskFemConstraintContact.h"
-#include "ViewProviderFemConstraintContact.h"
-#include <Base/Console.h>
 #include <Gui/Control.h>
+#include "ViewProviderFemConstraintContact.h"
+#include "TaskFemConstraintContact.h"
+
 
 using namespace FemGui;
 
@@ -56,7 +47,7 @@ ViewProviderFemConstraintContact::ViewProviderFemConstraintContact()
 {
     sPixmap = "FEM_ConstraintContact";
     //Note change "Contact" in line above to new constraint name, make sure it is the same as in taskFem* cpp file
-    ADD_PROPERTY(FaceColor,(0.2f,0.3f,0.2f));
+    ADD_PROPERTY(FaceColor, (0.2f, 0.3f, 0.2f));
 }
 
 ViewProviderFemConstraintContact::~ViewProviderFemConstraintContact()
@@ -134,30 +125,30 @@ void ViewProviderFemConstraintContact::updateData(const App::Property* prop)
 
             //first move to correct position
             SoTranslation* trans = new SoTranslation();
-            SbVec3f newPos=base+scaledheight*dir*0.12f;
+            SbVec3f newPos = base + scaledheight * dir * 0.12f;
             trans->translation.setValue(newPos);
             sep->addChild(trans);
 
             //adjust orientation
-            SoRotation* rot = new SoRotation();
-            rot->rotation.setValue(SbRotation(SbVec3f(0,1,0),dir));
+            SoRotation *rot = new SoRotation();
+            rot->rotation.setValue(SbRotation(SbVec3f(0, 1, 0), dir));
             sep->addChild(rot);
 
             //define color of shape
-            SoMaterial* myMaterial = new SoMaterial;
-            myMaterial->diffuseColor.set1Value(0,SbColor(1,1,1));//RGB
+            SoMaterial *myMaterial = new SoMaterial;
+            myMaterial->diffuseColor.set1Value(0, SbColor(1, 1, 1));//RGB
             //myMaterial->diffuseColor.set1Value(1,SbColor(0,0,1));//possible to adjust sides separately
             sep->addChild(myMaterial);
 
             //draw a cube
-            SoCube* cbe = new SoCube();
-            cbe->depth.setValue(scaledlength*0.5);
-            cbe->height.setValue(scaledheight*0.25);
-            cbe->width.setValue(scaledwidth*0.75);
+            SoCube *cbe = new SoCube();
+            cbe->depth.setValue(scaledlength * 0.5);
+            cbe->height.setValue(scaledheight * 0.25);
+            cbe->width.setValue(scaledwidth * 0.75);
             sep->addChild(cbe);
             //translate position
-            SoTranslation* trans2 = new SoTranslation();
-            trans2->translation.setValue(SbVec3f(0,0,0));
+            SoTranslation *trans2 = new SoTranslation();
+            trans2->translation.setValue(SbVec3f(0, 0, 0));
             sep->addChild(trans2);
 
             pShapeSep->addChild(sep);

@@ -23,13 +23,12 @@
 #ifndef TechDraw_DrawGeomHatch_h_
 #define TechDraw_DrawGeomHatch_h_
 
-#include <Mod/TechDraw/TechDrawGlobal.h>
-#include <Mod/TechDraw/App/HatchLine.h>
-
 #include <App/DocumentObject.h>
 #include <App/FeaturePython.h>
 #include <App/PropertyFile.h>
-#include <App/PropertyLinks.h>
+#include <Mod/TechDraw/TechDrawGlobal.h>
+
+#include "HatchLine.h"
 
 
 class TopoDS_Edge;
@@ -62,32 +61,40 @@ public:
     App::PropertyFileIncluded PatIncluded;
     App::PropertyString      NamePattern;
     App::PropertyFloatConstraint ScalePattern;
+    App::PropertyFloat       PatternRotation;
+    App::PropertyVector      PatternOffset;
 
-    virtual short mustExecute() const override;
-    virtual App::DocumentObjectExecReturn *execute(void) override;
-    virtual void onChanged(const App::Property* prop) override;
-    virtual const char* getViewProviderName(void) const override {
+    App::DocumentObjectExecReturn *execute(void) override;
+    void onChanged(const App::Property* prop) override;
+    const char* getViewProviderName(void) const override {
         return "TechDrawGui::ViewProviderGeomHatch";
     }
-    virtual PyObject *getPyObject(void) override;
-    virtual void unsetupObject(void) override;
+    PyObject *getPyObject(void) override;
+    void setupObject() override;
+    void unsetupObject(void) override;
+    void onDocumentRestored() override;
 
 
     DrawViewPart* getSourceView(void) const;
 
     std::vector<LineSet> getFaceOverlay(int i = 0);
     std::vector<LineSet> getTrimmedLines(int i = 0);
-    static std::vector<LineSet> getTrimmedLines(DrawViewPart* dvp, std::vector<LineSet> lineSets, int iface, double scale);
+    static std::vector<LineSet> getTrimmedLines(DrawViewPart* dvp, std::vector<LineSet> lineSets, int iface,
+                                                double scale, double hatchRotation = 0.0,
+                                                Base::Vector3d hatchOffset = Base::Vector3d(0.0, 0.0, 0.0));
     static std::vector<LineSet> getTrimmedLines(DrawViewPart* source,
                                                 std::vector<LineSet> lineSets,
                                                 TopoDS_Face face,
-                                                double scale );
+                                                double scale , double hatchRotation = 0.0,
+                                                Base::Vector3d hatchOffset = Base::Vector3d(0.0, 0.0, 0.0));
     static std::vector<LineSet> getTrimmedLinesSection(DrawViewSection* source,
                                                                 std::vector<LineSet> lineSets,
                                                                 TopoDS_Face f,
-                                                                double scale );
+                                                                double scale , double hatchRotation = 0.0,
+                                                                Base::Vector3d hatchOffset = Base::Vector3d(0.0, 0.0, 0.0));
 
-    static std::vector<TopoDS_Edge> makeEdgeOverlay(PATLineSpec hl, Bnd_Box bBox, double scale);
+    static std::vector<TopoDS_Edge> makeEdgeOverlay(PATLineSpec hl, Bnd_Box bBox,
+                                    double scale);
     static TopoDS_Edge makeLine(Base::Vector3d s, Base::Vector3d e);
     static std::vector<PATLineSpec> getDecodedSpecsFromFile(std::string fileSpec, std::string myPattern);
     static TopoDS_Face extractFace(DrawViewPart* source, int iface );
@@ -97,19 +104,16 @@ public:
     static std::vector<LineSet> makeLineSets(std::string fileSpec, std::string myPattern);
 
 protected:
-    virtual void onDocumentRestored() override;
-    virtual void setupObject() override;
-    void setupPatIncluded(void);
-    void replacePatIncluded(std::string newPatFile);
+    void replacePatIncluded(std::string newHatchFileName);
 
     void makeLineSets(void);
 
     std::vector<PATLineSpec> getDecodedSpecsFromFile();
+
+private:
     std::vector<LineSet> m_lineSets;
     std::string m_saveFile;
     std::string m_saveName;
-
-private:
     static App::PropertyFloatConstraint::Constraints scaleRange;
 
 };

@@ -23,21 +23,21 @@
  ***************************************************************************/
 
 #include "PreCompiled.h"
+
 #ifndef _PreComp_
 # include <QLineEdit>
 # include <QPainter>
 #endif
 
+#include <App/DocumentObject.h>
 #include <Base/Console.h>
+#include <Mod/Spreadsheet/App/Sheet.h>
+
 #include "SpreadsheetDelegate.h"
 #include "LineEdit.h"
-#include <Base/Console.h>
-#include <App/DocumentObject.h>
-#include <Mod/Spreadsheet/App/Sheet.h>
-#include <Gui/ExpressionCompleter.h>
-#include "DlgBindSheet.h"
 
-FC_LOG_LEVEL_INIT("Spreadsheet",true,true)
+
+FC_LOG_LEVEL_INIT("Spreadsheet", true, true)
 
 using namespace Spreadsheet;
 using namespace SpreadsheetGui;
@@ -112,13 +112,13 @@ static inline void drawBorder(QPainter *painter, const QStyleOptionViewItem &opt
         painter->drawRect(rect.adjusted(0,0,-1,-1));
         return;
     }
-    if(flags & Sheet::BorderLeft) 
+    if(flags & Sheet::BorderLeft)
         painter->drawLine(rect.topLeft(), rect.bottomLeft());
-    if(flags & Sheet::BorderTop) 
+    if(flags & Sheet::BorderTop)
         painter->drawLine(rect.topLeft(), rect.topRight());
-    if(flags & Sheet::BorderRight) 
+    if(flags & Sheet::BorderRight)
         painter->drawLine(rect.topRight(), rect.bottomRight());
-    if(flags & Sheet::BorderBottom) 
+    if(flags & Sheet::BorderBottom)
         painter->drawLine(rect.bottomLeft(), rect.bottomRight());
 }
 

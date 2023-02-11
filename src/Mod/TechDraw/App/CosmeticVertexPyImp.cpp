@@ -20,24 +20,22 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
-#ifndef _PreComp_
 
+#ifndef _PreComp_
 # include <boost/uuid/uuid_io.hpp>
 #endif
 
 #include <Base/Console.h>
+#include <Base/GeometryPyCXX.h>
 #include <Base/Vector3D.h>
 #include <Base/VectorPy.h>
-#include <Base/GeometryPyCXX.h>
-
 
 #include "Cosmetic.h"
 #include "CosmeticVertexPy.h"
 #include "CosmeticVertexPy.cpp"
-
 #include "DrawUtil.h"
+
 
 using namespace TechDraw;
 

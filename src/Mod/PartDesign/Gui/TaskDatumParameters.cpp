@@ -86,7 +86,7 @@ TaskDlgDatumParameters::~TaskDlgDatumParameters()
 }
 
 bool TaskDlgDatumParameters::reject() {
-    
+
     return PartGui::TaskDlgAttacher::reject();
 }
 

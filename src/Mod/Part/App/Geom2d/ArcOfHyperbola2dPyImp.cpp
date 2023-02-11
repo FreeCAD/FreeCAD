@@ -70,7 +70,7 @@ int ArcOfHyperbola2dPy::PyInit(PyObject* args, PyObject* /*kwds*/)
             return 0;
         }
         catch (Standard_Failure& e) {
-    
+
             PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
             return -1;
         }
@@ -79,7 +79,7 @@ int ArcOfHyperbola2dPy::PyInit(PyObject* args, PyObject* /*kwds*/)
             return -1;
         }
     }
-    
+
     // All checks failed
     PyErr_SetString(PyExc_TypeError,
         "ArcOfHyperbola constructor expects an hyperbola curve and a parameter range");
@@ -121,5 +121,5 @@ PyObject *ArcOfHyperbola2dPy::getCustomAttributes(const char* ) const
 
 int ArcOfHyperbola2dPy::setCustomAttributes(const char* , PyObject *)
 {
-    return 0; 
+    return 0;
 }

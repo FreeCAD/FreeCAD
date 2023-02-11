@@ -22,19 +22,17 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
+#ifndef _PreComp_
+# include <vector>
+#endif
 
-#include <App/Application.h>
+#include <Mod/TechDraw/App/LineGroup.h>
 
-#include <Base/Parameter.h>
-#include <Base/Console.h>
-
-#include "DrawGuiUtil.h"
-#include "PreferencesGui.h"
 #include "DlgPrefsTechDrawAnnotationImp.h"
 #include "ui_DlgPrefsTechDrawAnnotation.h"
-#include <Mod/TechDraw/App/LineGroup.h>
+#include "DrawGuiUtil.h"
+#include "PreferencesGui.h"
 
 
 using namespace TechDrawGui;
@@ -50,8 +48,8 @@ DlgPrefsTechDrawAnnotationImp::DlgPrefsTechDrawAnnotationImp( QWidget* parent )
     ui->pdsbBalloonKink->setMinimum(0);
 
     // connect the LineGroup the update the tooltip if index changed
-    connect(ui->pcbLineGroup, SIGNAL(currentIndexChanged(int)),
-        this, SLOT(onLineGroupChanged(int)));
+    connect(ui->pcbLineGroup, qOverload<int>(&QComboBox::currentIndexChanged),
+            this, &DlgPrefsTechDrawAnnotationImp::onLineGroupChanged);
 }
 
 DlgPrefsTechDrawAnnotationImp::~DlgPrefsTechDrawAnnotationImp()
@@ -65,6 +63,7 @@ void DlgPrefsTechDrawAnnotationImp::saveSettings()
     ui->cbPrintCenterMarks->onSave();
     ui->cbPyramidOrtho->onSave();
     ui->cbSectionLineStd->onSave();
+    ui->cbComplexMarks->onSave();
     ui->cbShowCenterMarks->onSave();
     ui->pcbLineGroup->onSave();
     ui->pcbBalloonArrow->onSave();
@@ -103,6 +102,7 @@ void DlgPrefsTechDrawAnnotationImp::loadSettings()
     ui->cbPrintCenterMarks->onRestore();
     ui->cbPyramidOrtho->onRestore();
     ui->cbSectionLineStd->onRestore();
+    ui->cbComplexMarks->onRestore();
     ui->cbShowCenterMarks->onRestore();
     ui->pcbLineGroup->onRestore();
     ui->pcbBalloonArrow->onRestore();

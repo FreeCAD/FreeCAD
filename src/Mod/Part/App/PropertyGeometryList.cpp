@@ -109,7 +109,7 @@ void PropertyGeometryList::set1Value(int idx, std::unique_ptr<Geometry> &&lValue
     if(idx>=(int)_lValueList.size())
         throw Base::IndexError("Index out of bound");
     aboutToSetValue();
-    if(idx < 0) 
+    if(idx < 0)
         _lValueList.push_back(lValue.release());
     else {
         delete _lValueList[idx];
@@ -192,7 +192,7 @@ void PropertyGeometryList::Restore(Base::XMLReader &reader)
     for (int i = 0; i < count; i++) {
         reader.readElement("Geometry");
         const char* TypeName = reader.getAttribute("type");
-        Geometry *newG = (Geometry *)Base::Type::fromName(TypeName).createInstance();
+        Geometry *newG = static_cast<Geometry *>(Base::Type::fromName(TypeName).createInstance());
         newG->Restore(reader);
 
         if(reader.testStatus(Base::XMLReader::ReaderStatus::PartialRestoreInObject)) {

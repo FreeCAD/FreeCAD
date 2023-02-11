@@ -21,27 +21,18 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
+# include <iomanip>
 # include <sstream>
 #endif
 
-#include <iomanip>
-
-#include <App/Application.h>
-#include <Base/Console.h>
-#include <Base/Exception.h>
-#include <Base/FileInfo.h>
-#include <Base/Parameter.h>
-
-#include "Preferences.h"
 #include "DrawViewAnnotation.h"
+#include "Preferences.h"
+
 
 using namespace TechDraw;
-using namespace std;
-
 
 //===========================================================================
 // DrawViewAnnotation
@@ -62,7 +53,7 @@ DrawViewAnnotation::DrawViewAnnotation()
     ADD_PROPERTY_TYPE(Text ,("Default Text"), vgroup, App::Prop_None, "Annotation text");
     ADD_PROPERTY_TYPE(Font ,(Preferences::labelFont().c_str()),
                              vgroup, App::Prop_None, "Font name");
-    ADD_PROPERTY_TYPE(TextColor, (0.0f, 0.0f, 0.0f), vgroup, App::Prop_None, "Text color");
+    ADD_PROPERTY_TYPE(TextColor, (Preferences::normalColor()), vgroup, App::Prop_None, "Text color");
     ADD_PROPERTY_TYPE(TextSize, (Preferences::labelFontSizeMM()),
                                  vgroup, App::Prop_None, "Text size");
     ADD_PROPERTY_TYPE(MaxWidth, (-1.0), vgroup, App::Prop_None, "Maximum width of the annotation block.\n -1 means no maximum width.");

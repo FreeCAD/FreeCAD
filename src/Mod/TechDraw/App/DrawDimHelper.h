@@ -23,51 +23,50 @@
 #ifndef DrawDimHelper_h_
 #define DrawDimHelper_h_
 
+#include <string>
+#include <vector>
+
+#include <gp_Pnt.hxx>
+#include <TopoDS_Edge.hxx>
+
+#include <Base/Vector3D.h>
 #include <Mod/TechDraw/TechDrawGlobal.h>
 
-#include <Geom2d_Curve.hxx>
+#include "DimensionReferences.h"
 
-#include <string>
-#include <Base/Vector3D.h>
-
-class gp_Pnt2d;
 
 namespace TechDraw
 {
 class BaseGeom;
 class DrawViewPart;
-
-class TechDrawExport hTrimCurve {
-    public:
-    hTrimCurve() : first(0.0), last(0.0) {}
-    hTrimCurve(Handle(Geom2d_Curve) hCurveIn,
-               double parm1,
-               double parm2);
-    ~hTrimCurve() = default;
-
-    Handle(Geom2d_Curve) hCurve;
-    double first;
-    double last;
-};
-
+class DrawViewDimension;
 
 /// Additional functions for working with Dimensions
 class TechDrawExport DrawDimHelper {
     public:
     static void makeExtentDim(DrawViewPart* dvp,
-//                              std::vector<TechDraw::BaseGeomPtr> selEdges,
                               std::vector<std::string> edgeNames,
                               int direction);
-    static gp_Pnt2d findClosestPoint(std::vector<hTrimCurve> hCurve2dList,
-                                   Handle(Geom2d_Curve) boundary);
+    static void makeExtentDim3d(DrawViewPart* dvp,
+                                ReferenceVector references,
+                                int direction);
+
+    static gp_Pnt findClosestPoint(std::vector<TopoDS_Edge> inEdges,
+                                   TopoDS_Edge& boundary);
+
+
     static TechDraw::DrawViewDimension* makeDistDim(DrawViewPart* dvp,
                                                     std::string dimType,
                                                     Base::Vector3d refMin,
                                                     Base::Vector3d refMax,
                                                     bool extent = false);
+
     static std::pair<Base::Vector3d, Base::Vector3d> minMax(DrawViewPart* dvp,
                                                             std::vector<std::string> edgeNames,
                                                             int direction);
+    static std::pair<Base::Vector3d, Base::Vector3d> minMax3d(DrawViewPart* dvp,
+                                                      ReferenceVector references,
+                                                       int direction);
 };
 
 } //end namespace TechDraw

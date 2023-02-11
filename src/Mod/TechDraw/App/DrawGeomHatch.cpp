@@ -20,145 +20,110 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
+# include <iomanip>
 # include <sstream>
-#include <iomanip>
-#include <cmath>
 
-# include <QFile>
-# include <QFileInfo>
-
+#include <Bnd_Box.hxx>
+#include <BRep_Builder.hxx>
+#include <BRepAlgoAPI_Common.hxx>
+#include <BRepBndLib.hxx>
+#include <BRepBuilderAPI_MakeEdge.hxx>
+#include <BRepBuilderAPI_MakeFace.hxx>
+#include <BRepBuilderAPI_MakeVertex.hxx>
+#include <BRepBuilderAPI_Transform.hxx>
 #include <gp_Pln.hxx>
 #include <gp_Pnt.hxx>
-#include <Bnd_Box.hxx>
-#include <BRepBndLib.hxx>
-#include <BRep_Builder.hxx>
-
-#include <BRepAlgoAPI_Common.hxx>
-#include <BRepBuilderAPI_MakeVertex.hxx>
-#include <BRepBuilderAPI_MakeEdge.hxx>
-#include <BRepBuilderAPI_MakeWire.hxx>
-#include <BRepBuilderAPI_MakeFace.hxx>
-#include <BRepBuilderAPI_Transform.hxx>
-#include <BRepTools.hxx>
-#include <Standard_PrimitiveTypes.hxx>
+#include <Precision.hxx>
+#include <TopExp.hxx>
 #include <TopoDS_Vertex.hxx>
 #include <TopoDS_Wire.hxx>
 #include <TopoDS_Edge.hxx>
 #include <TopoDS_Face.hxx>
 #include <TopoDS_Compound.hxx>
-#include <TopExp_Explorer.hxx>
-#include <TopTools.hxx>
 #include <TopTools_IndexedMapOfShape.hxx>
-#include <TopExp.hxx>
-#include <Precision.hxx>
-
-#include <cmath>
-
 #endif
 
 #include <App/Application.h>
 #include <App/Document.h>
 #include <Base/Console.h>
-#include <Base/Exception.h>
 #include <Base/FileInfo.h>
 #include <Base/Parameter.h>
-#include <Base/UnitsApi.h>
 
-#include "HatchLine.h"
+#include "DrawGeomHatch.h"
+#include "DrawGeomHatchPy.h" // generated from DrawGeomHatchPy.xml
 #include "DrawUtil.h"
-#include "Preferences.h"
-#include "Geometry.h"
-#include "DrawPage.h"
 #include "DrawViewPart.h"
 #include "DrawViewSection.h"
-#include "DrawViewDetail.h"
-#include "DrawGeomHatch.h"
+#include "Geometry.h"
 #include "GeometryObject.h"
+#include "HatchLine.h"
+#include "Preferences.h"
 
-#include <Mod/TechDraw/App/DrawGeomHatchPy.h>  // generated from DrawGeomHatchPy.xml
 
 using namespace TechDraw;
-using namespace std;
 
-App::PropertyFloatConstraint::Constraints DrawGeomHatch::scaleRange = {Precision::Confusion(),
-                                                                       std::numeric_limits<double>::max(),
-                                                                       (0.1)}; // increment by 0.1
+App::PropertyFloatConstraint::Constraints DrawGeomHatch::scaleRange = {
+    Precision::Confusion(), std::numeric_limits<double>::max(), (0.1)}; // increment by 0.1
 
 PROPERTY_SOURCE(TechDraw::DrawGeomHatch, App::DocumentObject)
-
 
 DrawGeomHatch::DrawGeomHatch()
 {
     static const char *vgroup = "GeomHatch";
 
-    ADD_PROPERTY_TYPE(Source, (nullptr), vgroup, (App::PropertyType)(App::Prop_None), "The View + Face to be crosshatched");
+    ADD_PROPERTY_TYPE(Source, (nullptr), vgroup, App::PropertyType::Prop_None,
+                      "The View + Face to be crosshatched");
     Source.setScope(App::LinkScope::Global);
-    ADD_PROPERTY_TYPE(FilePattern ,(prefGeomHatchFile()), vgroup, App::Prop_None, "The crosshatch pattern file for this area");
+    ADD_PROPERTY_TYPE(FilePattern, (prefGeomHatchFile()), vgroup, App::Prop_None,
+                      "The crosshatch pattern file for this area");
     ADD_PROPERTY_TYPE(PatIncluded, (""), vgroup, App::Prop_None,
-                                            "Embedded Pat hatch file. System use only.");   // n/a to end users
-    ADD_PROPERTY_TYPE(NamePattern, (prefGeomHatchName()), vgroup, App::Prop_None, "The name of the pattern");
-    ADD_PROPERTY_TYPE(ScalePattern, (1.0), vgroup, App::Prop_None, "GeomHatch pattern size adjustment");
+                      "Embedded Pat hatch file. System use only.");// n/a to end users
+    ADD_PROPERTY_TYPE(NamePattern, (prefGeomHatchName()), vgroup, App::Prop_None,
+                      "The name of the pattern");
+    ADD_PROPERTY_TYPE(ScalePattern, (1.0), vgroup, App::Prop_None,
+                      "GeomHatch pattern size adjustment");
     ScalePattern.setConstraints(&scaleRange);
+    ADD_PROPERTY_TYPE(PatternRotation, (0.0), vgroup, App::Prop_None,
+                      "Pattern rotation in degrees anticlockwise");
+    ADD_PROPERTY_TYPE(PatternOffset, (0.0, 0.0, 0.0), vgroup, App::Prop_None,
+                      "Pattern offset");
 
     m_saveFile = "";
     m_saveName = "";
 
     std::string patFilter("pat files (*.pat *.PAT);;All files (*)");
     FilePattern.setFilter(patFilter);
-
 }
 
 void DrawGeomHatch::onChanged(const App::Property* prop)
 {
-    if (!isRestoring()) {
-        if (prop == &Source) {
-            DrawGeomHatch::execute();
-        }
-        App::Document* doc = getDocument();
-        if ((prop == &FilePattern) && doc) {
-            if (!FilePattern.isEmpty()) {
-                replacePatIncluded(FilePattern.getValue());
-                DrawGeomHatch::execute();         //remake the line sets
-            }
-        }
-        if ((prop == &NamePattern) && doc) {
-            DrawGeomHatch::execute();            //remake the line sets
-        }
-    } else {
-        if ((prop == &FilePattern) ||                //make sure right pattern gets loaded at start up
-            (prop == &NamePattern))   {
-            DrawGeomHatch::execute();
-        }
+    if (isRestoring()) {
+        App::DocumentObject::onChanged(prop);
+        return;
+    }
+
+    if (prop == &Source) {
+        //rebuild the linesets
+        makeLineSets();
+    }
+    if (prop == &FilePattern) {
+        replacePatIncluded(FilePattern.getValue());
+        makeLineSets();
+    }
+    if (prop == &NamePattern) {
+        makeLineSets();
     }
 
     App::DocumentObject::onChanged(prop);
 }
 
-short DrawGeomHatch::mustExecute() const
-{
-    short result = 0;
-    if (!isRestoring()) {
-        result  =  (Source.isTouched()  ||
-                    FilePattern.isTouched() ||
-                    NamePattern.isTouched() ||
-                    ScalePattern.isTouched());
-    }
-
-    if (result) {
-        return result;
-    }
-    return App::DocumentObject::mustExecute();
-}
-
-
 App::DocumentObjectExecReturn *DrawGeomHatch::execute()
 {
 //    Base::Console().Message("DGH::execute()\n");
-    makeLineSets();
+    //does execute even need to exist? Its all about the property value changes
     DrawViewPart* parent = getSourceView();
     if (parent) {
         parent->requestPaint();
@@ -166,6 +131,47 @@ App::DocumentObjectExecReturn *DrawGeomHatch::execute()
     return App::DocumentObject::StdReturn;
 }
 
+void DrawGeomHatch::onDocumentRestored()
+{
+    //rebuild the linesets
+    makeLineSets();
+
+    App::DocumentObject::onDocumentRestored();
+}
+
+void DrawGeomHatch::replacePatIncluded(std::string newHatchFileName)
+{
+//    Base::Console().Message("DGH::replaceFileIncluded(%s)\n", newHatchFileName.c_str());
+    if (newHatchFileName.empty()) {
+        return;
+    }
+
+    Base::FileInfo tfi(newHatchFileName);
+    if (tfi.isReadable()) {
+        PatIncluded.setValue(newHatchFileName.c_str());
+    } else {
+        throw Base::RuntimeError("Could not read the new PAT file");
+    }
+}
+
+void DrawGeomHatch::setupObject()
+{
+//    Base::Console().Message("DGH::setupObject()\n");
+    replacePatIncluded(FilePattern.getValue());
+}
+
+void DrawGeomHatch::unsetupObject()
+{
+//    Base::Console().Message("DGH::unsetupObject() - status: %lu  removing: %d \n", getStatus(), isRemoving());
+    App::DocumentObject* source = Source.getValue();
+    DrawView* dv = dynamic_cast<DrawView*>(source);
+    if (dv) {
+        dv->requestPaint();
+    }
+    App::DocumentObject::unsetupObject();
+}
+
+//-----------------------------------------------------------------------------------
 
 void DrawGeomHatch::makeLineSets()
 {
@@ -229,21 +235,27 @@ std::vector<PATLineSpec> DrawGeomHatch::getDecodedSpecsFromFile(std::string file
 
 std::vector<LineSet>  DrawGeomHatch::getTrimmedLines(int i)   //get the trimmed hatch lines for face i
 {
+    if (m_lineSets.empty()) {
+        makeLineSets();
+    }
+
     std::vector<LineSet> result;
     DrawViewPart* source = getSourceView();
     if (!source ||
         !source->hasGeometry()) {
-        Base::Console().Log("DGH::getTrimmedLines - no source geometry\n");
         return result;
     }
-    return getTrimmedLines(source, m_lineSets, i, ScalePattern.getValue());
+    return getTrimmedLines(source, m_lineSets, i, ScalePattern.getValue(),
+                           PatternRotation.getValue(), PatternOffset.getValue());
 }
 
 /* static */
 std::vector<LineSet>  DrawGeomHatch::getTrimmedLinesSection(DrawViewSection* source,
                                                             std::vector<LineSet> lineSets,
                                                             TopoDS_Face f,
-                                                            double scale )
+                                                            double scale,
+                                                            double hatchRotation,
+                                                            Base::Vector3d hatchOffset)
 {
     std::vector<LineSet> result;
     gp_Pln p;
@@ -264,31 +276,39 @@ std::vector<LineSet>  DrawGeomHatch::getTrimmedLinesSection(DrawViewSection* sou
     result = getTrimmedLines(source,
                              lineSets,
                              fMoved,
-                             scale );
+                             scale,
+                             hatchRotation,
+                             hatchOffset );
     return result;
 }
 
 //! get hatch lines trimmed to face outline
-std::vector<LineSet> DrawGeomHatch::getTrimmedLines(DrawViewPart* source, std::vector<LineSet> lineSets, int iface, double scale )
+std::vector<LineSet> DrawGeomHatch::getTrimmedLines(DrawViewPart* source, std::vector<LineSet> lineSets,
+                                                    int iface, double scale, double hatchRotation ,
+                                                    Base::Vector3d hatchOffset)
 {
     TopoDS_Face face = extractFace(source, iface);
     std::vector<LineSet> result = getTrimmedLines(source,
                                                lineSets,
                                                face,
-                                               scale );
+                                               scale,
+                                               hatchRotation,
+                                               hatchOffset );
     return result;
 }
 
 std::vector<LineSet> DrawGeomHatch::getTrimmedLines(DrawViewPart* source,
                                                     std::vector<LineSet> lineSets,
                                                     TopoDS_Face f,
-                                                    double scale )
+                                                    double scale,
+                                                    double hatchRotation,
+                                                    Base::Vector3d hatchOffset)
 {
+//    Base::Console().Message("DGH::getTrimmedLines() - rotation: %.3f hatchOffset: %s\n", hatchRotation, DrawUtil::formatVector(hatchOffset).c_str());
     (void)source;
     std::vector<LineSet> result;
 
     if (lineSets.empty()) {
-        Base::Console().Log("DGH::getTrimmedLines - no LineSets!\n");
         return result;
     }
 
@@ -304,17 +324,30 @@ std::vector<LineSet> DrawGeomHatch::getTrimmedLines(DrawViewPart* source,
 
         //make Compound for this linespec
         BRep_Builder builder;
-        TopoDS_Compound grid;
-        builder.MakeCompound(grid);
+        TopoDS_Compound gridComp;
+        builder.MakeCompound(gridComp);
         for (auto& c: candidates) {
-           builder.Add(grid, c);
+           builder.Add(gridComp, c);
         }
+
+        TopoDS_Shape grid = gridComp;
+        if (hatchRotation != 0.0) {
+            double hatchRotationRad = hatchRotation * M_PI / 180.0;
+            gp_Ax1 gridAxis(gp_Pnt(0.0, 0.0, 0.0), gp_Vec(gp::OZ().Direction()));
+            gp_Trsf xGridRotate;
+            xGridRotate.SetRotation(gridAxis, hatchRotationRad);
+            BRepBuilderAPI_Transform mkTransRotate(grid, xGridRotate, true);
+            grid = mkTransRotate.Shape();
+        }
+        gp_Trsf xGridTranslate;
+        xGridTranslate.SetTranslation(DrawUtil::togp_Vec(hatchOffset));
+        BRepBuilderAPI_Transform mkTransTranslate(grid, xGridTranslate, true);
+        grid = mkTransTranslate.Shape();
 
         //Common(Compound, Face)
         BRepAlgoAPI_Common mkCommon(face, grid);
         if ((!mkCommon.IsDone())  ||
             (mkCommon.Shape().IsNull()) ) {
-            Base::Console().Log("INFO - DGH::getTrimmedLines - Common creation failed\n");
             return result;
         }
         TopoDS_Shape common = mkCommon.Shape();
@@ -332,7 +365,6 @@ std::vector<LineSet> DrawGeomHatch::getTrimmedLines(DrawViewPart* source,
         for ( int i = 1 ; i <= mapOfEdges.Extent() ; i++ ) {           //remember, TopExp makes no promises about the order it finds edges
             const TopoDS_Edge& edge = TopoDS::Edge(mapOfEdges(i));
             if (edge.IsNull()) {
-                Base::Console().Log("INFO - DGH::getTrimmedLines - edge: %d is NULL\n", i);
                 continue;
             }
             resultEdges.push_back(edge);
@@ -343,7 +375,6 @@ std::vector<LineSet> DrawGeomHatch::getTrimmedLines(DrawViewPart* source,
         for (auto& e: resultEdges) {
             TechDraw::BaseGeomPtr base = BaseGeom::baseFactory(e);
             if (!base) {
-                Base::Console().Log("FAIL - DGH::getTrimmedLines - baseFactory failed for edge: %d\n", i);
                 throw Base::ValueError("DGH::getTrimmedLines - baseFactory failed");
             }
             resultGeoms.push_back(base);
@@ -363,6 +394,15 @@ std::vector<TopoDS_Edge> DrawGeomHatch::makeEdgeOverlay(PATLineSpec hl, Bnd_Box 
 
     double minX, maxX, minY, maxY, minZ, maxZ;
     b.Get(minX, minY, minZ, maxX, maxY, maxZ);
+    //make the overlay bigger to cover rotations. might need to be bigger than 2x.
+    double centerX = (minX + maxX) / 2.0;
+    double widthX = maxX - minX;
+    minX = centerX - widthX;
+    maxX = centerX + widthX;
+    double centerY = (minY + maxY) / 2.0;
+    double widthY = maxY - minY;
+    minY = centerY - widthY;
+    maxY = centerY + widthY;
 
     Base::Vector3d start;
     Base::Vector3d end;
@@ -474,7 +514,6 @@ std::vector<LineSet> DrawGeomHatch::getFaceOverlay(int fdx)
     DrawViewPart* source = getSourceView();
     if (!source ||
         !source->hasGeometry()) {
-        Base::Console().Log("DGH::getFaceOverlay - no source geometry\n");
         return result;
     }
 
@@ -484,6 +523,10 @@ std::vector<LineSet> DrawGeomHatch::getFaceOverlay(int fdx)
     BRepBndLib::AddOptimal(face, bBox);
     bBox.SetGap(0.0);
 
+    if (m_lineSets.empty()) {
+        makeLineSets();
+    }
+
     for (auto& ls: m_lineSets) {
         PATLineSpec hl = ls.getPATLineSpec();
         std::vector<TopoDS_Edge> candidates = DrawGeomHatch::makeEdgeOverlay(hl, bBox, ScalePattern.getValue());
@@ -492,7 +535,6 @@ std::vector<LineSet> DrawGeomHatch::getFaceOverlay(int fdx)
         for (auto& e: candidates) {
             TechDraw::BaseGeomPtr base = BaseGeom::baseFactory(e);
             if (!base) {
-                Base::Console().Log("FAIL - DGH::getFaceOverlay - baseFactory failed for edge: %d\n", i);
                 throw Base::ValueError("DGH::getFaceOverlay - baseFactory failed");
             }
             resultGeoms.push_back(base);
@@ -508,6 +550,7 @@ std::vector<LineSet> DrawGeomHatch::getFaceOverlay(int fdx)
 
 /* static */
 //! get TopoDS_Face(iface) from DVP
+//! TODO: DVP can serve these up ready to use
 TopoDS_Face DrawGeomHatch::extractFace(DrawViewPart* source, int iface )
 {
     TopoDS_Face result;
@@ -525,7 +568,6 @@ TopoDS_Face DrawGeomHatch::extractFace(DrawViewPart* source, int iface )
         mkFace.Add(*itWire);
     }
     if (!mkFace.IsDone()) {
-         Base::Console().Log("INFO - DGH::extractFace - face creation failed\n");
          return result;
     }
     TopoDS_Face face = mkFace.Face();
@@ -539,12 +581,13 @@ TopoDS_Face DrawGeomHatch::extractFace(DrawViewPart* source, int iface )
         temp = mkTrf.Shape();
     }
     catch (...) {
-        Base::Console().Log("DGH::extractFace - mirror failed.\n");
         return result;
     }
     result = TopoDS::Face(temp);
     return result;
 }
+
+//--------------------------------------------------------------------------------------------------
 
 PyObject *DrawGeomHatch::getPyObject()
 {
@@ -552,74 +595,6 @@ PyObject *DrawGeomHatch::getPyObject()
         PythonObject = Py::Object(new DrawGeomHatchPy(this), true);
     }
     return Py::new_reference_to(PythonObject);
-}
-
-void DrawGeomHatch::replacePatIncluded(std::string newPatFile)
-{
-//    Base::Console().Message("DGH::replacePatHatch(%s)\n", newPatFile.c_str());
-    if (PatIncluded.isEmpty()) {
-        setupPatIncluded();
-    } else {
-        std::string tempName = PatIncluded.getExchangeTempFile();
-        DrawUtil::copyFile(newPatFile, tempName);
-        PatIncluded.setValue(tempName.c_str());
-    }
-}
-
-void DrawGeomHatch::onDocumentRestored()
-{
-//    Base::Console().Message("DGH::onDocumentRestored()\n");
-    if (PatIncluded.isEmpty()) {
-        if (!FilePattern.isEmpty()) {
-            std::string patFileName = FilePattern.getValue();
-            Base::FileInfo tfi(patFileName);
-            if (tfi.isReadable()) {
-                setupPatIncluded();
-            }
-        }
-    }
-    execute();
-    App::DocumentObject::onDocumentRestored();
-}
-
-void DrawGeomHatch::setupObject()
-{
-    //by this point DGH should have a name and belong to a document
-    setupPatIncluded();
-
-    App::DocumentObject::setupObject();
-}
-
-void DrawGeomHatch::setupPatIncluded()
-{
-//    Base::Console().Message("DGH::setupPatIncluded()\n");
-    App::Document* doc = getDocument();
-    std::string special = getNameInDocument();
-    special += "PatHatch.pat";
-    std::string dir = doc->TransientDir.getValue();
-    std::string patName = dir + special;
-
-    if (PatIncluded.isEmpty()) {
-        DrawUtil::copyFile(std::string(), patName);
-        PatIncluded.setValue(patName.c_str());
-    }
-
-    if (!FilePattern.isEmpty()) {
-        std::string exchName = PatIncluded.getExchangeTempFile();
-        DrawUtil::copyFile(FilePattern.getValue(), exchName);
-        PatIncluded.setValue(exchName.c_str(), special.c_str());
-    }
-}
-
-void DrawGeomHatch::unsetupObject()
-{
-//    Base::Console().Message("DGH::unsetupObject() - status: %lu  removing: %d \n", getStatus(), isRemoving());
-    App::DocumentObject* source = Source.getValue();
-    DrawView* dv = dynamic_cast<DrawView*>(source);
-    if (dv) {
-        dv->requestPaint();
-    }
-    App::DocumentObject::unsetupObject();
 }
 
 std::string DrawGeomHatch::prefGeomHatchFile()

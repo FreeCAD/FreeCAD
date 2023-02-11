@@ -144,6 +144,7 @@ void PrefWidget::onRestore()
     qWarning( "No parameter group specified!" );
 #endif
   restorePreferences();
+  m_Restored = true;
 }
 
 void PrefWidget::failedToSave(const QString& name) const
@@ -346,6 +347,11 @@ PrefComboBox::~PrefComboBox()
 {
 }
 
+QMetaType::Type PrefComboBox::getParamType() const
+{
+  return static_cast<QMetaType::Type>(property("prefType").userType());
+}
+
 void PrefComboBox::restorePreferences()
 {
   if (getWindowParameter().isNull())
@@ -353,9 +359,41 @@ void PrefComboBox::restorePreferences()
     failedToRestore(objectName());
     return;
   }
-
-  int index = getWindowParameter()->GetInt(entryName(), currentIndex());
-  setCurrentIndex(index);
+  if (!m_Restored) {
+    m_Default = currentData();
+    m_DefaultText = currentText();
+    m_DefaultIndex = currentIndex();
+  }
+  int index = -1;
+  switch(static_cast<int>(getParamType())) {
+  case QMetaType::Int:
+  case QMetaType::LongLong:
+    index = findData(static_cast<int>(getWindowParameter()->GetInt(entryName(), m_Default.toInt())));
+    break;
+  case QMetaType::UInt:
+  case QMetaType::ULongLong:
+    index = findData(static_cast<uint>(getWindowParameter()->GetUnsigned(entryName(), m_Default.toUInt())));
+    break;
+  case QMetaType::Bool:
+    index = findData(getWindowParameter()->GetBool(entryName(), m_Default.toBool()));
+    break;
+  case QMetaType::Double:
+    index = findData(getWindowParameter()->GetFloat(entryName(), m_Default.toDouble()));
+    break;
+  case QMetaType::QString:
+    index = findText(QString::fromUtf8(
+          getWindowParameter()->GetASCII(entryName(), m_DefaultText.toUtf8().constData()).c_str()));
+    break;
+  case QMetaType::QByteArray:
+    index = findData(QByteArray(getWindowParameter()->GetASCII(entryName(),
+          m_Default.toByteArray().constData()).c_str()));
+    break;
+  default:
+    index = getWindowParameter()->GetInt(entryName(), m_DefaultIndex);
+    break;
+  }
+  if (index >= 0 && index < count())
+    setCurrentIndex(index);
 }
 
 void PrefComboBox::savePreferences()
@@ -366,7 +404,31 @@ void PrefComboBox::savePreferences()
     return;
   }
 
-  getWindowParameter()->SetInt(entryName() , currentIndex());
+  switch(static_cast<int>(getParamType())) {
+  case QMetaType::Int:
+  case QMetaType::LongLong:
+    getWindowParameter()->SetInt(entryName(), currentData().toInt());
+    break;
+  case QMetaType::UInt:
+  case QMetaType::ULongLong:
+    getWindowParameter()->SetUnsigned(entryName(), currentData().toUInt());
+    break;
+  case QMetaType::Bool:
+    getWindowParameter()->SetBool(entryName(), currentData().toBool());
+    break;
+  case QMetaType::Double:
+    getWindowParameter()->SetFloat(entryName(), currentData().toDouble());
+    break;
+  case QMetaType::QString:
+    getWindowParameter()->SetASCII(entryName(), currentText().toUtf8().constData());
+    break;
+  case QMetaType::QByteArray:
+    getWindowParameter()->SetASCII(entryName(), currentData().toByteArray().constData());
+    break;
+  default:
+    getWindowParameter()->SetInt(entryName(), currentIndex());
+    break;
+  }
 }
 
 // --------------------------------------------------------------------
@@ -490,9 +552,12 @@ void PrefColorButton::restorePreferences()
     return;
   }
 
-  QColor col = color();
+  if (!m_Restored)
+    m_Default = color();
 
-  unsigned int icol = (col.red() << 24) | (col.green() << 16) | (col.blue() << 8);
+  const QColor &col = m_Default;
+
+  unsigned int icol = (col.red() << 24) | (col.green() << 16) | (col.blue() << 8) | col.alpha();
 
   unsigned long lcol = static_cast<unsigned long>(icol);
   lcol = getWindowParameter()->GetUnsigned( entryName(), lcol );
@@ -500,8 +565,10 @@ void PrefColorButton::restorePreferences()
   int r = (icol >> 24)&0xff;
   int g = (icol >> 16)&0xff;
   int b = (icol >>  8)&0xff;
-
-  setColor(QColor(r,g,b));
+  int a = (icol      )&0xff;
+  if (!this->allowTransparency())
+      a = 0xff;
+  setColor(QColor(r,g,b,a));
 }
 
 void PrefColorButton::savePreferences()
@@ -514,7 +581,7 @@ void PrefColorButton::savePreferences()
 
   QColor col = color();
   // (r,g,b,a) with a = 255 (opaque)
-  unsigned int icol = (col.red() << 24) | (col.green() << 16) | (col.blue() << 8) | 255;
+  unsigned int icol = (col.red() << 24) | (col.green() << 16) | (col.blue() << 8) | col.alpha();
   unsigned long lcol = static_cast<unsigned long>(icol);
   getWindowParameter()->SetUnsigned( entryName(), lcol );
 }

@@ -39,13 +39,7 @@ set(MeshPartGui_UIC_SRCS
     Tessellation.ui
 )
 
-if(BUILD_QT5)
-    qt5_add_resources(MeshPartGui_QRC_SRCS Resources/MeshPart.qrc)
-    qt5_wrap_ui(MeshPartGui_UIC_HDRS ${MeshPartGui_UIC_SRCS})
-else()
-    qt4_add_resources(MeshPartGui_QRC_SRCS Resources/MeshPart.qrc)
-    qt4_wrap_ui(MeshPartGui_UIC_HDRS ${MeshPartGui_UIC_SRCS})
-endif()
+qt_add_resources(MeshPartGui_QRC_SRCS Resources/MeshPart.qrc)
 
 SET(MeshPartGui_SRCS
     ${MeshPartGui_QRC_SRCS}
@@ -77,6 +71,12 @@ set(MeshPartGui_Scripts
 set(FLATMESH_PY_SRCS
     MeshFlatteningCommand.py
 )
+
+if(FREECAD_USE_PCH)
+    add_definitions(-D_PreComp_)
+    GET_MSVC_PRECOMPILED_SOURCE("PreCompiled.cpp" PCH_SRCS ${MeshPartGui_SRCS})
+    ADD_MSVC_PRECOMPILED_HEADER(MeshPartGui PreCompiled.h PreCompiled.cpp PCH_SRCS)
+endif(FREECAD_USE_PCH)
 
 add_library(MeshPartGui SHARED ${MeshPartGui_SRCS} ${MeshPartGui_Scripts} ${FLATMESH_PY_SRCS})
 target_link_libraries(MeshPartGui ${MeshPartGui_LIBS})

@@ -23,10 +23,9 @@
 #ifndef TECHDRAWGUI_TASKACTIVEVIEW_H
 #define TECHDRAWGUI_TASKACTIVEVIEW_H
 
-#include <Mod/TechDraw/TechDrawGlobal.h>
-
 #include <Gui/TaskView/TaskDialog.h>
 #include <Gui/TaskView/TaskView.h>
+#include <Mod/TechDraw/TechDrawGlobal.h>
 
 
 class QPushButton;
@@ -36,7 +35,7 @@ namespace TechDraw
 {
 class DrawPage;
 class DrawView;
-class DrawViewSymbol;
+class DrawViewImage;
 }
 
 namespace TechDrawGui
@@ -70,13 +69,13 @@ protected:
     void blockButtons(bool b);
     void setUiPrimary(void);
 
-    TechDraw::DrawViewSymbol* createActiveView(void);
+    TechDraw::DrawViewImage* createActiveView();
 
 private:
     std::unique_ptr<Ui_TaskActiveView> ui;
 
     TechDraw::DrawPage*       m_pageFeat;
-    TechDraw::DrawViewSymbol* m_symbolFeat;
+    TechDraw::DrawViewImage*  m_imageFeat;
 
     QPushButton* m_btnOK;
     QPushButton* m_btnCancel;

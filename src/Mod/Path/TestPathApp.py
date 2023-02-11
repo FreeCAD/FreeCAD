@@ -24,19 +24,22 @@ import TestApp
 
 from PathTests.TestPathAdaptive import TestPathAdaptive
 from PathTests.TestPathCore import TestPathCore
-from PathTests.TestPathDeburr import TestPathDeburr
 from PathTests.TestPathDepthParams import depthTestCases
 from PathTests.TestPathDressupDogbone import TestDressupDogbone
+from PathTests.TestPathDressupDogboneII import TestDressupDogboneII
 from PathTests.TestPathDressupHoldingTags import TestHoldingTags
 from PathTests.TestPathDrillable import TestPathDrillable
 from PathTests.TestPathDrillGenerator import TestPathDrillGenerator
+from PathTests.TestPathGeneratorDogboneII import TestGeneratorDogboneII
 from PathTests.TestPathGeom import TestPathGeom
+from PathTests.TestPathLanguage import TestPathLanguage
+from PathTests.TestPathOpDeburr import TestPathOpDeburr
 
 # from PathTests.TestPathHelix import TestPathHelix
 from PathTests.TestPathHelpers import TestPathHelpers
 from PathTests.TestPathHelixGenerator import TestPathHelixGenerator
 from PathTests.TestPathLog import TestPathLog
-from PathTests.TestPathOpTools import TestPathOpTools
+from PathTests.TestPathOpUtil import TestPathOpUtil
 
 # from PathTests.TestPathPost import TestPathPost
 from PathTests.TestPathPost import TestPathPostUtils
@@ -50,11 +53,9 @@ from PathTests.TestPathSetupSheet import TestPathSetupSheet
 from PathTests.TestPathStock import TestPathStock
 from PathTests.TestPathThreadMilling import TestPathThreadMilling
 from PathTests.TestPathThreadMillingGenerator import TestPathThreadMillingGenerator
-from PathTests.TestPathTool import TestPathTool
 from PathTests.TestPathToolBit import TestPathToolBit
 from PathTests.TestPathToolChangeGenerator import TestPathToolChangeGenerator
 from PathTests.TestPathToolController import TestPathToolController
-from PathTests.TestPathTooltable import TestPathTooltable
 from PathTests.TestPathUtil import TestPathUtil
 from PathTests.TestPathVcarve import TestPathVcarve
 from PathTests.TestPathVoronoi import TestPathVoronoi
@@ -74,17 +75,20 @@ False if depthTestCases.__name__ else True
 False if TestApp.__name__ else True
 False if TestBuildPostList.__name__ else True
 False if TestDressupDogbone.__name__ else True
+False if TestDressupDogboneII.__name__ else True
+False if TestGeneratorDogboneII.__name__ else True
 False if TestHoldingTags.__name__ else True
+False if TestPathLanguage.__name__ else True
 False if TestOutputNameSubstitution.__name__ else True
 False if TestPathAdaptive.__name__ else True
 False if TestPathCore.__name__ else True
-False if TestPathDeburr.__name__ else True
+False if TestPathOpDeburr.__name__ else True
 False if TestPathDrillable.__name__ else True
 False if TestPathGeom.__name__ else True
 False if TestPathHelpers.__name__ else True
 # False if TestPathHelix.__name__ else True
 False if TestPathLog.__name__ else True
-False if TestPathOpTools.__name__ else True
+False if TestPathOpUtil.__name__ else True
 # False if TestPathPost.__name__ else True
 False if TestPathPostUtils.__name__ else True
 False if TestPathPreferences.__name__ else True
@@ -94,11 +98,9 @@ False if TestPathSetupSheet.__name__ else True
 False if TestPathStock.__name__ else True
 False if TestPathThreadMilling.__name__ else True
 False if TestPathThreadMillingGenerator.__name__ else True
-False if TestPathTool.__name__ else True
 False if TestPathToolBit.__name__ else True
 False if TestPathToolChangeGenerator.__name__ else True
 False if TestPathToolController.__name__ else True
-False if TestPathTooltable.__name__ else True
 False if TestPathUtil.__name__ else True
 False if TestPathVcarve.__name__ else True
 False if TestPathVoronoi.__name__ else True

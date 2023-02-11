@@ -20,15 +20,11 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef GUI_TASKVIEW_TaskRobotMessages_H
 #define GUI_TASKVIEW_TaskRobotMessages_H
 
 #include <Gui/TaskView/TaskView.h>
-#include <Gui/Selection.h>
-
 #include <Mod/Robot/App/RobotObject.h>
-#include <Mod/Robot/App/TrajectoryObject.h>
 
 
 class Ui_TaskRobotMessages;

@@ -153,6 +153,7 @@ class ArchWorkbench(FreeCADGui.Workbench):
         self.draft_modification_commands = it.get_draft_modification_commands()
         self.draft_utility_commands = it.get_draft_utility_commands_menu()
         self.draft_context_commands = it.get_draft_context_commands()
+        self.draft_snap_commands = it.get_draft_snap_commands()
 
         # Set up toolbars
         it.init_toolbar(self,
@@ -167,6 +168,9 @@ class ArchWorkbench(FreeCADGui.Workbench):
         it.init_toolbar(self,
                         QT_TRANSLATE_NOOP("Workbench", "Draft modification tools"),
                         self.draft_modification_commands)
+        it.init_toolbar(self,
+                        QT_TRANSLATE_NOOP("Workbench", "Draft snap"),
+                        self.draft_snap_commands)
 
         # Set up menus
         it.init_menu(self,

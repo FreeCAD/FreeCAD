@@ -21,24 +21,21 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <Standard_math.hxx>
-# include <Precision.hxx>
-
-# include <Inventor/nodes/SoSeparator.h>
-# include <Inventor/nodes/SoTranslation.h>
-# include <Inventor/nodes/SoRotation.h>
+# include <Inventor/SbRotation.h>
+# include <Inventor/SbVec3f.h>
 # include <Inventor/nodes/SoMultipleCopy.h>
+# include <Inventor/nodes/SoSeparator.h>
 #endif
 
-#include "Mod/Fem/App/FemConstraintPressure.h"
-#include "TaskFemConstraintPressure.h"
-#include "ViewProviderFemConstraintPressure.h"
-#include <Base/Console.h>
 #include <Gui/Control.h>
+#include "Mod/Fem/App/FemConstraintPressure.h"
+
+#include "ViewProviderFemConstraintPressure.h"
+#include "TaskFemConstraintPressure.h"
+
 
 using namespace FemGui;
 
@@ -47,7 +44,7 @@ PROPERTY_SOURCE(FemGui::ViewProviderFemConstraintPressure, FemGui::ViewProviderF
 ViewProviderFemConstraintPressure::ViewProviderFemConstraintPressure()
 {
     sPixmap = "FEM_ConstraintPressure";
-    ADD_PROPERTY(FaceColor,(0.0f,0.2f,0.8f));
+    ADD_PROPERTY(FaceColor, (0.0f, 0.2f, 0.8f));
 }
 
 ViewProviderFemConstraintPressure::~ViewProviderFemConstraintPressure()
@@ -97,7 +94,8 @@ bool ViewProviderFemConstraintPressure::setEdit(int ModNum)
 void ViewProviderFemConstraintPressure::updateData(const App::Property* prop)
 {
     // Gets called whenever a property of the attached object changes
-    Fem::ConstraintPressure* pcConstraint = static_cast<Fem::ConstraintPressure*>(this->getObject());
+    Fem::ConstraintPressure *pcConstraint =
+        static_cast<Fem::ConstraintPressure *>(this->getObject());
     float scaledheadradius = ARROWHEADRADIUS * pcConstraint->Scale.getValue(); //OvG: Calculate scaled values once only
     float scaledlength = ARROWLENGTH * pcConstraint->Scale.getValue();
 
@@ -143,7 +141,7 @@ void ViewProviderFemConstraintPressure::updateData(const App::Property* prop)
             SbRotation rot(SbVec3f(0, rev, 0), dir);
 #ifdef USE_MULTIPLE_COPY
             SbMatrix m;
-            m.setTransform(base, rot, SbVec3f(1,1,1));
+            m.setTransform(base, rot, SbVec3f(1, 1, 1));
             matrices[idx] = m;
             idx++;
 #else

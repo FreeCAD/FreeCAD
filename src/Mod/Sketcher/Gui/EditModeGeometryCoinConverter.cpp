@@ -20,41 +20,24 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <Inventor/nodes/SoSeparator.h>
-# include <Inventor/nodes/SoGroup.h>
-# include <Inventor/nodes/SoSwitch.h>
-# include <Inventor/nodes/SoMaterial.h>
-# include <Inventor/nodes/SoCoordinate3.h>
-# include <Inventor/nodes/SoLineSet.h>
-# include <Inventor/nodes/SoFont.h>
-
-# include <Inventor/nodes/SoTranslation.h>
-# include <Inventor/nodes/SoText2.h>
-#endif  // #ifndef _PreComp_
-
-#include <Mod/Part/App/Geometry.h>
 #include <Base/Console.h>
 #include <Base/Exception.h>
 
-#include <Base/UnitsApi.h>
-
-#include "EditModeCoinManagerParameters.h"
-
-#include "Mod/Sketcher/App/Constraint.h"
-
 #include "EditModeGeometryCoinConverter.h"
+#include "EditModeCoinManagerParameters.h"
+#include "ViewProviderSketchCoinAttorney.h"
 
 
 using namespace SketcherGui;
 
-EditModeGeometryCoinConverter::EditModeGeometryCoinConverter(   GeometryLayerNodes & geometrylayernodes,
+EditModeGeometryCoinConverter::EditModeGeometryCoinConverter(   ViewProviderSketch & vp,
+                                                                GeometryLayerNodes & geometrylayernodes,
                                                                 DrawingParameters & drawingparameters,
                                                                 GeometryLayerParameters& geometryLayerParams,
                                                                 CoinMapping & coinMap ):
+    viewProvider(vp),
     geometryLayerNodes(geometrylayernodes),
     drawingParameters(drawingparameters),
     geometryLayerParameters(geometryLayerParams),
@@ -224,7 +207,8 @@ void EditModeGeometryCoinConverter::convert(const Sketcher::GeoListFacade & geol
 
         int i=0; // setting up the line set
         for (std::vector<Base::Vector3d>::const_iterator it = Coords[l].begin(); it != Coords[l].end(); ++it,i++)
-            verts[i].setValue(it->x,it->y,drawingParameters.zLowLines);
+            verts[i].setValue(it->x,it->y,
+                              ViewProviderSketchCoinAttorney::getViewOrientationFactor(viewProvider) * drawingParameters.zLowLines);
 
         i=0; // setting up the indexes of the line set
         for (std::vector<unsigned int>::const_iterator it = Index[l].begin(); it != Index[l].end(); ++it,i++)
@@ -232,7 +216,8 @@ void EditModeGeometryCoinConverter::convert(const Sketcher::GeoListFacade & geol
 
         i=0; // setting up the point set
         for (std::vector<Base::Vector3d>::const_iterator it = Points[l].begin(); it != Points[l].end(); ++it,i++)
-            pverts[i].setValue(it->x,it->y,drawingParameters.zLowPoints);
+            pverts[i].setValue(it->x,it->y,
+                               ViewProviderSketchCoinAttorney::getViewOrientationFactor(viewProvider) * drawingParameters.zLowPoints);
 
         geometryLayerNodes.CurvesCoordinate[l]->point.finishEditing();
         geometryLayerNodes.CurveSet[l]->numVertices.finishEditing();

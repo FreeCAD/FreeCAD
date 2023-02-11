@@ -20,23 +20,15 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
-
 #ifndef _PreComp_
 # include <sstream>
 #endif
 
-
-#include <Base/Writer.h>
-#include <Base/Reader.h>
-#include <Base/Exception.h>
-#include <Base/FileInfo.h>
-
 #include "RaySegment.h"
 
-using namespace Raytracing;
 
+using namespace Raytracing;
 
 //===========================================================================
 // RaySegment
@@ -44,11 +36,9 @@ using namespace Raytracing;
 
 PROPERTY_SOURCE(Raytracing::RaySegment, App::DocumentObject)
 
-
-
 RaySegment::RaySegment(void) 
 {
-    App::PropertyType type = (App::PropertyType)(App::Prop_Output|App::Prop_Hidden);
+    App::PropertyType type = static_cast<App::PropertyType>((App::Prop_Output|App::Prop_Hidden));
     ADD_PROPERTY_TYPE(Result ,(nullptr),0,type,"Resulting SVG fragment of that view");
 }
 

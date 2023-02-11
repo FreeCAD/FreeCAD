@@ -25,7 +25,7 @@
 
 #include <CXX/Extensions.hxx>
 #include <memory>
-#include <SMESH_Version.h>
+#include <SMESH_Version.h> // needed for SMESH_VERSION_MAJOR
 
 class SMESH_Hypothesis;
 class SMESH_Gen;

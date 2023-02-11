@@ -20,13 +20,14 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef _PointsAlgos_h_
 #define _PointsAlgos_h_
 
+#include <Eigen/Core>
+
 #include "Points.h"
 #include "Properties.h"
-#include <Eigen/Core>
+
 
 namespace Points
 {

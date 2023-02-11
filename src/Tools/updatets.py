@@ -57,6 +57,7 @@ import re
 import pathlib
 
 directories = [
+        {"tsname":"App", "workingdir":"./src/App", "tsdir":"Resources/translations"},
         {"tsname":"FreeCAD", "workingdir":"./src/Gui", "tsdir":"Language"},
         {"tsname":"AddonManager", "workingdir":"./src/Mod/AddonManager/", "tsdir":"Resources/translations"},
         {"tsname":"Arch", "workingdir":"./src/Mod/Arch/", "tsdir":"Resources/translations"},
@@ -96,7 +97,7 @@ def find_tools(noobsolete=True):
 
     print(Usage + "\nFirst, lets find all necessary tools on your system")
     global QMAKE, LUPDATE, PYLUPDATE, LCONVERT, QT_VERSION_MAJOR
-    
+
     p = subprocess.run(["lupdate","-version"],check=True,stdout=subprocess.PIPE)
     lupdate_version = p.stdout.decode()
     result = re.search(r'.* ([456])\.([\d]+)\.([\d]+)', lupdate_version)
@@ -122,7 +123,7 @@ def find_tools(noobsolete=True):
             raise Exception("Cannot find lupdate")
     else:
         LUPDATE = "lupdate"
-    
+
     if QT_VERSION_MAJOR < 6:
         if (os.system("qmake -version") == 0):
             QMAKE = "qmake"
@@ -132,6 +133,10 @@ def find_tools(noobsolete=True):
             raise Exception("Cannot find qmake")
         if (os.system("pylupdate -version") == 0):
             PYLUPDATE = "pylupdate"
+        elif (os.system("pylupdate6 --version") == 0):
+            PYLUPDATE = "pylupdate6"
+            if noobsolete:
+                PYLUPDATE += " -no-obsolete"
         elif (os.system("pylupdate5 -version") == 0):
             PYLUPDATE = "pylupdate5"
             if noobsolete:
@@ -142,7 +147,7 @@ def find_tools(noobsolete=True):
                 PYLUPDATE += " -noobsolete"
         elif (os.system("pyside2-lupdate -version") == 0):
             PYLUPDATE = "pyside2-lupdate"
-            raise Exception("Please do not use pyside2-lupdate at the moment, as it shows encoding problems. Please use pylupdate5 instead.")
+            raise Exception("Please do not use pyside2-lupdate at the moment, as it shows encoding problems. Please use pylupdate5 or 6 instead.")
         else:
             raise Exception("Cannot find pylupdate")
     else:
@@ -177,11 +182,12 @@ def update_translation(entry):
         print ("=============================================",flush=True)
         execline = []
         execline.append (f"touch dummy_cpp_file_for_lupdate.cpp") #lupdate 5.x requires at least one source file to process the UI files
+        execline.append (f"touch {tsBasename}py.ts")
+        execline.append (f"{PYLUPDATE} `find ./ -name \"*.py\"` -ts {tsBasename}py.ts {log_redirect}")
         execline.append (f"{QMAKE} -project -o {project_filename} -r")
         execline.append (f"{LUPDATE} {project_filename} -ts {tsBasename}.ts {log_redirect}")
         execline.append (f"sed 's/<translation.*>.*<\/translation>/<translation type=\"unfinished\"><\/translation>/g' {tsBasename}.ts > {tsBasename}.ts.temp")
         execline.append (f"mv {tsBasename}.ts.temp {tsBasename}.ts")
-        execline.append (f"{PYLUPDATE} `find ./ -name \"*.py\"` -ts {tsBasename}py.ts {log_redirect}")
         execline.append (f"{LCONVERT} -i {tsBasename}py.ts {tsBasename}.ts -o {tsBasename}.ts {log_redirect}")
         execline.append (f"rm {tsBasename}py.ts")
         execline.append (f"rm dummy_cpp_file_for_lupdate.cpp")
@@ -216,7 +222,7 @@ def update_translation(entry):
             print(str(e))
             os.chdir(cur)
             return
-         
+
         with open (f"{cur}/tsupdate_stdout.log","a") as f:
             f.write(p.stdout.decode())
             print(p.stdout.decode())

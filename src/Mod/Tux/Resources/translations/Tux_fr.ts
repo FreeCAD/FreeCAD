@@ -46,7 +46,7 @@
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="75"/>
       <source>Middle mouse button or H key.</source>
-      <translation>Bouton central de la souris ou touche H.</translation>
+      <translation>Roulette de la souris ou touche H.</translation>
     </message>
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="77"/>
@@ -85,11 +85,16 @@
     </message>
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="336"/>
+      <source>Free Turntable</source>
+      <translation>Vue en rotation libre</translation>
+    </message>
+    <message>
+      <location filename="../../NavigationIndicatorGui.py" line="337"/>
       <source>Trackball</source>
       <translation>Trackball</translation>
     </message>
     <message>
-      <location filename="../../NavigationIndicatorGui.py" line="337"/>
+      <location filename="../../NavigationIndicatorGui.py" line="338"/>
       <source>Undefined</source>
       <translation>Non défini</translation>
     </message>

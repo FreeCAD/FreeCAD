@@ -28,7 +28,7 @@
 #include <App/Origin.h>
 #include <Base/Console.h>
 #include <Gui/Application.h>
-#include <Gui/Command.h>
+#include <Gui/CommandT.h>
 #include <Gui/Document.h>
 #include <Gui/Selection.h>
 #include <Gui/WaitCursor.h>
@@ -134,28 +134,28 @@ void TaskHelixParameters::connectSlots()
 {
     QMetaObject::connectSlotsByName(this);
 
-    connect(ui->pitch, SIGNAL(valueChanged(double)),
-        this, SLOT(onPitchChanged(double)));
-    connect(ui->height, SIGNAL(valueChanged(double)),
-        this, SLOT(onHeightChanged(double)));
-    connect(ui->turns, SIGNAL(valueChanged(double)),
-        this, SLOT(onTurnsChanged(double)));
-    connect(ui->coneAngle, SIGNAL(valueChanged(double)),
-        this, SLOT(onAngleChanged(double)));
-    connect(ui->growth, SIGNAL(valueChanged(double)),
-        this, SLOT(onGrowthChanged(double)));
-    connect(ui->axis, SIGNAL(activated(int)),
-        this, SLOT(onAxisChanged(int)));
-    connect(ui->checkBoxLeftHanded, SIGNAL(toggled(bool)),
-        this, SLOT(onLeftHandedChanged(bool)));
-    connect(ui->checkBoxReversed, SIGNAL(toggled(bool)),
-        this, SLOT(onReversedChanged(bool)));
-    connect(ui->checkBoxUpdateView, SIGNAL(toggled(bool)),
-        this, SLOT(onUpdateView(bool)));
-    connect(ui->inputMode, SIGNAL(activated(int)),
-        this, SLOT(onModeChanged(int)));
-    connect(ui->checkBoxOutside, SIGNAL(toggled(bool)),
-        this, SLOT(onOutsideChanged(bool)));
+    connect(ui->pitch, qOverload<double>(&QuantitySpinBox::valueChanged), this,
+            &TaskHelixParameters::onPitchChanged);
+    connect(ui->height, qOverload<double>(&QuantitySpinBox::valueChanged), this,
+            &TaskHelixParameters::onHeightChanged);
+    connect(ui->turns, qOverload<double>(&QuantitySpinBox::valueChanged), this,
+            &TaskHelixParameters::onTurnsChanged);
+    connect(ui->coneAngle, qOverload<double>(&QuantitySpinBox::valueChanged), this,
+            &TaskHelixParameters::onAngleChanged);
+    connect(ui->growth, qOverload<double>(&QuantitySpinBox::valueChanged), this,
+            &TaskHelixParameters::onGrowthChanged);
+    connect(ui->axis, qOverload<int>(&QComboBox::activated), this,
+            &TaskHelixParameters::onAxisChanged);
+    connect(ui->checkBoxLeftHanded, &QCheckBox::toggled, this,
+            &TaskHelixParameters::onLeftHandedChanged);
+    connect(ui->checkBoxReversed, &QCheckBox::toggled, this,
+            &TaskHelixParameters::onReversedChanged);
+    connect(ui->checkBoxUpdateView, &QCheckBox::toggled, this,
+        &TaskHelixParameters::onUpdateView);
+    connect(ui->inputMode, qOverload<int>(&QComboBox::activated), this,
+            &TaskHelixParameters::onModeChanged);
+    connect(ui->checkBoxOutside, &QCheckBox::toggled, this,
+            &TaskHelixParameters::onOutsideChanged);
 }
 
 void TaskHelixParameters::showCoordinateAxes()
@@ -462,6 +462,10 @@ void TaskHelixParameters::onAxisChanged(int num)
     App::PropertyLinkSub& lnk = *(axesInList[num]);
     if (!lnk.getValue()) {
         // enter reference selection mode
+        // assure the sketch is visible
+        if (auto sketch = dynamic_cast<Part::Part2DObject *>(pcHelix->Profile.getValue())) {
+            Gui::cmdAppObjectShow(sketch);
+        }
         TaskSketchBasedParameters::onSelectReference(
             AllowSelection::EDGE |
             AllowSelection::PLANAR |

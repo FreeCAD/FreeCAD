@@ -72,22 +72,19 @@ PythonEditor::PythonEditor(QWidget* parent)
     this->setSyntaxHighlighter(new PythonSyntaxHighlighter(this));
 
     // set acelerators
-    QShortcut* comment = new QShortcut(this);
+    auto comment = new QShortcut(this);
     comment->setKey(QKeySequence(QString::fromLatin1("ALT+C")));
 
-    QShortcut* uncomment = new QShortcut(this);
+    auto uncomment = new QShortcut(this);
     uncomment->setKey(QKeySequence(QString::fromLatin1("ALT+U")));
 
-    connect(comment, SIGNAL(activated()),
-            this, SLOT(onComment()));
-    connect(uncomment, SIGNAL(activated()),
-            this, SLOT(onUncomment()));
+    connect(comment, &QShortcut::activated, this, &PythonEditor::onComment);
+    connect(uncomment, &QShortcut::activated, this, &PythonEditor::onUncomment);
 }
 
 /** Destroys the object and frees any allocated resources */
 PythonEditor::~PythonEditor()
 {
-    getWindowParameter()->Detach( this );
     delete d;
 }
 
@@ -153,8 +150,8 @@ void PythonEditor::contextMenuEvent ( QContextMenuEvent * e )
     QMenu* menu = createStandardContextMenu();
     if (!isReadOnly()) {
         menu->addSeparator();
-        menu->addAction( tr("Comment"), this, SLOT( onComment() ), QKeySequence(QString::fromLatin1("ALT+C")));
-        menu->addAction( tr("Uncomment"), this, SLOT( onUncomment() ), QKeySequence(QString::fromLatin1("ALT+U")));
+        menu->addAction( tr("Comment"), this, &PythonEditor::onComment, QKeySequence(QString::fromLatin1("ALT+C")));
+        menu->addAction( tr("Uncomment"), this, &PythonEditor::onUncomment, QKeySequence(QString::fromLatin1("ALT+U")));
     }
 
     menu->exec(e->globalPos());

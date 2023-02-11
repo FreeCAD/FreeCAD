@@ -20,15 +20,12 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef GUI_TASKVIEW_TaskRobotControl_H
 #define GUI_TASKVIEW_TaskRobotControl_H
 
 #include <Gui/TaskView/TaskView.h>
-#include <Gui/Selection.h>
 
 #include <Mod/Robot/App/RobotObject.h>
-#include <Mod/Robot/App/TrajectoryObject.h>
 
 
 class Ui_TaskRobotControl;
@@ -42,8 +39,6 @@ class ViewProvider;
 }
 
 namespace RobotGui { 
-
-
 
 class TaskRobotControl : public Gui::TaskView::TaskBox
 {

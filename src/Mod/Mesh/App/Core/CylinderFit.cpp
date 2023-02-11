@@ -61,9 +61,11 @@
 # include <iterator>
 #endif
 
-#include "CylinderFit.h"
 #include <Base/Console.h>
 #include <Mod/Mesh/App/WildMagic4/Wm4ApprLineFit3.h>
+
+#include "CylinderFit.h"
+
 
 using namespace MeshCoreFit;
 

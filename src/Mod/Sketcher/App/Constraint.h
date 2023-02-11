@@ -20,7 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef SKETCHER_CONSTRAINT_H
 #define SKETCHER_CONSTRAINT_H
 
@@ -32,6 +31,7 @@
 #include <boost/uuid/uuid_generators.hpp>
 
 #include "GeoEnum.h"
+
 
 namespace Sketcher
 {
@@ -76,6 +76,7 @@ enum InternalAlignmentType {
     ParabolaFocus           = 8,
     BSplineControlPoint     = 9,
     BSplineKnotPoint        = 10,
+    ParabolaFocalAxis       = 11,
     NumInternalAlignmentType // must be the last item!
 };
 
@@ -144,7 +145,7 @@ private:
 
     constexpr static std::array<const char *,InternalAlignmentType::NumInternalAlignmentType> internalAlignmentType2str {
         {   "Undef", "EllipseMajorDiameter", "EllipseMinorDiameter", "EllipseFocus1", "EllipseFocus2", "HyperbolaMajor", "HyperbolaMinor",
-            "HyperbolaFocus", "ParabolaFocus", "BSplineControlPoint", "BSplineKnotPoint"}
+            "HyperbolaFocus", "ParabolaFocus", "BSplineControlPoint", "BSplineKnotPoint", "ParabolaFocalAxis"}
     };
 
 public:

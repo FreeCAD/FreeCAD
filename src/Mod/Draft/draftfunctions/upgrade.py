@@ -486,6 +486,7 @@ def upgrade(objects, delete=False, force=None):
                   and not objects[0].isDerivedFrom("Part::Part2DObjectPython")):
                 result = ext_draftify.draftify(objects[0])
                 if result:
+                    add_list.append(result)
                     _msg(translate("draft","Found 1 non-parametric objects: draftifying it"))
 
         # in the following cases there are no faces
@@ -533,6 +534,7 @@ def upgrade(objects, delete=False, force=None):
                 if edge_type in ("Line", "Circle"):
                     result = ext_draftify.draftify(objects[0])
                     if result:
+                        add_list.append(result)
                         _msg(translate("draft","Found 1 object: draftifying it"))
             # only points, no edges
             elif not edges and len(objects) > 1:

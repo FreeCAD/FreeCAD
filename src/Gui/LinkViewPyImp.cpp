@@ -194,7 +194,7 @@ PyObject*  LinkViewPy::setChildren(PyObject *args) {
             links.setPyObject(pyObj);
         if(pyVis!=Py_None)
             vis.setPyObject(pyVis);
-        getLinkViewPtr()->setChildren(links.getValue(),vis.getValue(),(LinkView::SnapshotType)type);
+        getLinkViewPtr()->setChildren(links.getValue(),vis.getValue(),static_cast<LinkView::SnapshotType>(type));
         Py_Return;
     } PY_CATCH;
 }
@@ -277,7 +277,7 @@ PyObject* LinkViewPy::getElementPicked(PyObject* args)
         return nullptr;
     void *ptr = nullptr;
     Base::Interpreter().convertSWIGPointerObj("pivy.coin", "SoPickedPoint *", obj, &ptr, 0);
-    SoPickedPoint *pp = static_cast<SoPickedPoint*>(ptr);
+    auto pp = static_cast<SoPickedPoint*>(ptr);
     if(!pp)
         throw Py::TypeError("type must be of coin.SoPickedPoint");
     PY_TRY{
@@ -296,7 +296,7 @@ PyObject* LinkViewPy::getDetailPath(PyObject* args)
         return nullptr;
     void *ptr = nullptr;
     Base::Interpreter().convertSWIGPointerObj("pivy.coin", "SoPath *", path, &ptr, 0);
-    SoPath *pPath = static_cast<SoPath*>(ptr);
+    auto pPath = static_cast<SoPath*>(ptr);
     if(!pPath)
         throw Py::TypeError("type must be of coin.SoPath");
     PY_TRY{
@@ -304,27 +304,27 @@ PyObject* LinkViewPy::getDetailPath(PyObject* args)
         getLinkViewPtr()->linkGetDetailPath(sub,static_cast<SoFullPath*>(pPath),det);
         if(!det)
             Py_Return;
-        return Base::Interpreter().createSWIGPointerObj("pivy.coin", "SoDetail *", (void*)det, 0);
+        return Base::Interpreter().createSWIGPointerObj("pivy.coin", "SoDetail *", static_cast<void*>(det), 0);
     }PY_CATCH
 }
 
-PyObject* LinkViewPy::getBoundBox(PyObject* args) {
+PyObject* LinkViewPy::getBoundBox(PyObject* args)
+{
     PyObject *vobj = Py_None;
     if (!PyArg_ParseTuple(args, "O",&vobj))
         return nullptr;
-    ViewProviderDocumentObject *vpd = nullptr;
-    if(vobj!=Py_None) {
-        if(!PyObject_TypeCheck(vobj,&ViewProviderDocumentObjectPy::Type)) {
-            PyErr_SetString(PyExc_TypeError, "exepcting a type of ViewProviderDocumentObject");
-            return nullptr;
-        }
-        vpd = static_cast<ViewProviderDocumentObjectPy*>(vobj)->getViewProviderDocumentObjectPtr();
-    }
+
     PY_TRY {
+        Base::PyTypeCheck(&vobj, &ViewProviderDocumentObjectPy::Type);
+        ViewProviderDocumentObject *vpd = nullptr;
+        if (vobj)
+            vpd = static_cast<ViewProviderDocumentObjectPy*>(vobj)->getViewProviderDocumentObjectPtr();
+
         auto bbox = getLinkViewPtr()->getBoundBox(vpd);
         Py::Object ret(new Base::BoundBoxPy(new Base::BoundBox3d(bbox)));
         return Py::new_reference_to(ret);
-    }PY_CATCH
+    }
+    PY_CATCH
 }
 
 PyObject *LinkViewPy::getCustomAttributes(const char*) const

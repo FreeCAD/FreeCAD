@@ -28,9 +28,9 @@
 using namespace Gui;
 using namespace DAG;
 
-VertexProperty::VertexProperty() : 
+VertexProperty::VertexProperty() :
   rectangle(new RectItem()),
-  point(new QGraphicsEllipseItem()), 
+  point(new QGraphicsEllipseItem()),
   visibleIcon(new QGraphicsPixmapItem()),
   stateIcon(new QGraphicsPixmapItem()),
   icon(new QGraphicsPixmapItem()),

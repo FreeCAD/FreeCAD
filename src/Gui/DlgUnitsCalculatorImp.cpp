@@ -57,15 +57,15 @@ DlgUnitsCalculator::DlgUnitsCalculator( QWidget* parent, Qt::WindowFlags fl )
         ui->comboBoxScheme->addItem(item, i);
     }
 
-    connect(ui->ValueInput, SIGNAL(valueChanged(Base::Quantity)), this, SLOT(valueChanged(Base::Quantity)));
-    connect(ui->ValueInput, SIGNAL(returnPressed()), this, SLOT(returnPressed()));
-    connect(ui->UnitInput, SIGNAL(textChanged(QString)), this, SLOT(textChanged(QString)));
-    connect(ui->UnitInput, SIGNAL(returnPressed()), this, SLOT(returnPressed()));
-
-    connect(ui->pushButton_Close, SIGNAL(clicked()), this, SLOT(accept()));
-    connect(ui->pushButton_Copy, SIGNAL(clicked()), this, SLOT(copy()));
-
-    connect(ui->ValueInput, SIGNAL(parseError(QString)), this, SLOT(parseError(QString)));
+    connect(ui->ValueInput, qOverload<const Base::Quantity&>(&InputField::valueChanged),
+            this, &DlgUnitsCalculator::valueChanged);
+    connect(ui->ValueInput, &InputField::returnPressed,
+            this, &DlgUnitsCalculator::returnPressed);
+    connect(ui->ValueInput, &InputField::parseError, this, &DlgUnitsCalculator::parseError);
+    connect(ui->UnitInput, &QLineEdit::textChanged, this, &DlgUnitsCalculator::textChanged);
+    connect(ui->UnitInput, &QLineEdit::returnPressed, this, &DlgUnitsCalculator::returnPressed);
+    connect(ui->pushButton_Close, &QPushButton::clicked, this, &DlgUnitsCalculator::accept);
+    connect(ui->pushButton_Copy, &QPushButton::clicked, this, &DlgUnitsCalculator::copy);
 
     ui->ValueInput->setParamGrpPath(QByteArray("User parameter:BaseApp/History/UnitsCalculator"));
     // set a default that also illustrates how the dialog works
@@ -77,6 +77,7 @@ DlgUnitsCalculator::DlgUnitsCalculator( QWidget* parent, Qt::WindowFlags fl )
           << Base::Unit::Angle
           << Base::Unit::Area
           << Base::Unit::Density
+          << Base::Unit::CurrentDensity
           << Base::Unit::ElectricalCapacitance
           << Base::Unit::ElectricalInductance
           << Base::Unit::ElectricalConductance
@@ -95,6 +96,7 @@ DlgUnitsCalculator::DlgUnitsCalculator( QWidget* parent, Qt::WindowFlags fl )
           << Base::Unit::MagneticFieldStrength
           << Base::Unit::MagneticFlux
           << Base::Unit::MagneticFluxDensity
+          << Base::Unit::Magnetization
           << Base::Unit::Pressure
           << Base::Unit::Power
           << Base::Unit::SpecificHeat

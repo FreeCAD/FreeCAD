@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2013      Luke Parry <l.parry@warwick.ac.uk>            *
+ *   Copyright (c) 2013 Luke Parry <l.parry@warwick.ac.uk>                 *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -36,7 +36,6 @@
 
 #include <Base/Console.h>
 #include <Base/Exception.h>
-
 #include <Mod/Part/App/PartFeature.h>
 #include <Mod/Part/App/TopoShape.h>
 
@@ -45,8 +44,9 @@
 
 
 #ifndef M_PI
-    #define M_PI    3.14159265358979323846 /* pi */
+# define M_PI 3.14159265358979323846
 #endif
+
 using namespace Measure;
 using namespace Base;
 using namespace Part;
@@ -106,11 +106,8 @@ MeasureType Measurement::getType()
     std::vector<App::DocumentObject*>::const_iterator obj = objects.begin();
     std::vector<std::string>::const_iterator subEl = subElements.begin();
 
-    //
-    //int dims = -1;
     MeasureType mode;
 
-    // Type of References3D
     int verts = 0;
     int edges = 0;
     int faces = 0;
@@ -131,7 +128,7 @@ MeasureType Measurement::getType()
             }
             catch (Standard_Failure& e) {
                 std::stringstream errorMsg;
-        
+
                 errorMsg << "Measurement - getType - " << e.GetMessageString() << std::endl;
                 throw Base::CADKernelError(e.GetMessageString());
             }
@@ -183,11 +180,7 @@ MeasureType Measurement::getType()
                 mode = PointToEdge;
             }
         } else {
-//             if(edges == 2) {
-//                 mode = EdgeToEdge;
-//             } else {
-                mode = Edges;
-//             }
+            mode = Edges;
         }
     } else if (verts > 0) {
         mode = Points;
@@ -200,14 +193,35 @@ MeasureType Measurement::getType()
 
 TopoDS_Shape Measurement::getShape(App::DocumentObject *obj , const char *subName) const
 {
+//    Base::Console().Message("Meas::getShape(%s, %s)\n", obj->getNameInDocument(), subName);
+    //temporary fix to get "Vertex7" from "Body003.Pocket020.Vertex7"
+    //when selected, Body features are provided as featureName and subNameAndIndex
+    //other sources provide the full extended name with index
+    std::string workingSubName(subName);
+    size_t lastDot = workingSubName.rfind('.');
+    if (lastDot != std::string::npos) {
+        workingSubName = workingSubName.substr(lastDot + 1);
+    }
+
     try {
-        auto shape = Part::Feature::getShape(obj,subName,true);
-        if(shape.IsNull())
-            throw Part::NullShapeException("null shape");
+        Part::TopoShape partShape = Part::Feature::getTopoShape(obj);
+        App::GeoFeature* geoFeat = dynamic_cast<App::GeoFeature*>(obj);
+        if (geoFeat) {
+            partShape.setPlacement(geoFeat->globalPlacement());
+        }
+        TopoDS_Shape shape = partShape.getSubShape(workingSubName.c_str());
+        if(shape.IsNull()) {
+            throw Part::NullShapeException("null shape in measurement");
+        }
         return shape;
-    } catch (Standard_Failure& e) {
+    }
+    catch (Standard_Failure& e) {
         throw Base::CADKernelError(e.GetMessageString());
     }
+    catch (...) {
+        throw Base::RuntimeError("Measurement: Unknown error retrieving shape");
+    }
+
 }
 
 //TODO:: add lengthX, lengthY (and lengthZ??) support
@@ -272,8 +286,7 @@ double Measurement::length() const
                         break;
                     }
                     default: {
-                        Base::Console().Error("Measurement::length - curve type: %d not implemented\n");
-//                    throw Base::ValueError("Measurement - length - Curve type not currently handled");
+                    throw Base::RuntimeError("Measurement - length - Curve type not currently handled");
                     }
                 }  //end switch
             }  //end for
@@ -284,20 +297,22 @@ double Measurement::length() const
 
 double Measurement::angle(const Base::Vector3d & /*param*/) const
 {
-    double result = 0;
-    int numRefs = References3D.getSize();
+    //TODO: do these references arrive as obj+sub pairs or as a struct of obj + [subs]?
+    const std::vector<App::DocumentObject*> &objects = References3D.getValues();
+    const std::vector<std::string> &subElements = References3D.getSubValues();
+    int numRefs = objects.size();
     if(numRefs == 0) {
-        Base::Console().Error("Measurement::angle - No 3D references available\n");
+        throw Base::RuntimeError("No references available for angle measurement");
     } else if (measureType == Invalid) {
-        Base::Console().Error("Measurement::angle - measureType is Invalid\n");
+        throw Base::RuntimeError("MeasureType is Invalid for angle measurement");
     } else {
         if(measureType == Edges) {
-            // Only case that is supported is edge to edge
-            // TODO: handle 3 pt angle
+            //Only case that is supported is edge to edge
+            //The angle between two skew lines is measured by the angle between one line (A)
+            //and a line (B) with the direction of the second through a point on the first line.
+            //Since we don't know if the directions of the lines point in the same general direction
+            //we could get the angle we want or the supplementary angle.
             if(numRefs == 2) {
-                const std::vector<App::DocumentObject*> &objects = References3D.getValues();
-                const std::vector<std::string> &subElements = References3D.getSubValues();
-
                 TopoDS_Shape shape1 = getShape(objects.at(0), subElements.at(0).c_str());
                 TopoDS_Shape shape2 = getShape(objects.at(1), subElements.at(1).c_str());
 
@@ -307,42 +322,55 @@ double Measurement::angle(const Base::Vector3d & /*param*/) const
                 if(curve1.GetType() == GeomAbs_Line &&
                    curve2.GetType() == GeomAbs_Line) {
 
-                    gp_Pnt pnt1 = curve1.Value(curve1.FirstParameter());
-                    gp_Pnt pnt2 = curve1.Value(curve1.LastParameter());
+                    gp_Pnt pnt1First = curve1.Value(curve1.FirstParameter());
                     gp_Dir dir1 = curve1.Line().Direction();
                     gp_Dir dir2 = curve2.Line().Direction();
+                    gp_Dir dir2r = curve2.Line().Direction().Reversed();
 
-                    gp_Lin l1 = gp_Lin(pnt1,dir1);
-                    gp_Lin l2 = gp_Lin(pnt2,dir2);
+                    gp_Lin l1 = gp_Lin(pnt1First, dir1); // (A)
+                    gp_Lin l2 = gp_Lin(pnt1First, dir2); // (B)
+                    gp_Lin l2r = gp_Lin(pnt1First, dir2r);  // (B')
                     Standard_Real aRad = l1.Angle(l2);
-                    result = aRad * 180  / M_PI;
-//                    return aRad * 180  / M_PI;
+                    double aRadr = l1.Angle(l2r);
+                    return std::min(aRad, aRadr) * 180  / M_PI;
                 } else {
-                    Base::Console().Error("Measurement::angle - Need 2 lines to make angle measure\n");
-//                    throw Base::ValueError("Objects must both be lines");
+                    throw Base::RuntimeError("Measurement references must both be lines");
                 }
             } else {
-                Base::Console().Error("Measurement::angle - Can not compute angle. Too many lines referenced\n");
-//                throw Base::ValueError("Can not compute angle. Too many References3D");
+                throw Base::RuntimeError("Can not compute angle measurement - too many references");
             }
         } else if (measureType == Points) {
+            //NOTE: we are calculating the 3d angle here, not the projected angle
+            //ASSUMPTION: the references are in end-apex-end order
             if(numRefs == 3) {
-                Base::Console().Error("Measurement::angle - 3 point angle not implemented yet\n");
-            //TODO: 3 point angle
+                TopoDS_Shape shape0 = getShape(objects.at(0), subElements.at(0).c_str());
+                TopoDS_Shape shape1 = getShape(objects.at(1), subElements.at(1).c_str());
+                TopoDS_Shape shape2 = getShape(objects.at(1), subElements.at(2).c_str());
+                if (shape0.ShapeType() != TopAbs_VERTEX ||
+                    shape1.ShapeType() != TopAbs_VERTEX ||
+                    shape2.ShapeType() != TopAbs_VERTEX) {
+                    throw Base::RuntimeError("Measurement references for 3 point angle are not Vertex");
+                }
+                gp_Pnt gEnd0 = BRep_Tool::Pnt(TopoDS::Vertex(shape0));
+                gp_Pnt gApex = BRep_Tool::Pnt(TopoDS::Vertex(shape1));
+                gp_Pnt gEnd1 = BRep_Tool::Pnt(TopoDS::Vertex(shape2));
+                gp_Dir gDir0 = gp_Dir(gEnd0.XYZ() - gApex.XYZ());
+                gp_Dir gDir1 = gp_Dir(gEnd1.XYZ() - gApex.XYZ());
+                gp_Lin line0 = gp_Lin(gEnd0, gDir0);
+                gp_Lin line1 = gp_Lin(gEnd1, gDir1);
+                double radians = line0.Angle(line1);
+                return radians * 180  / M_PI;
             }
         }
     }
-    return result;
-//    throw Base::ValueError("References3D are not Edges");
+    throw Base::RuntimeError("Unexpected error for angle measurement");
 }
 
 double Measurement::radius() const
 {
-    double result = 0.0;
     int numRefs = References3D.getSize();
     if(numRefs == 0) {
-        Base::Console().Error("Measurement::radius - No 3D references available\n");
-//        throw Base::ValueError("Measurement - radius - No References3D provided");
+        throw Base::RuntimeError("Measurement - radius - No References3D provided");
     } else {
         if(numRefs == 1 || measureType == Edges) {
             const std::vector<App::DocumentObject*> &objects = References3D.getValues();
@@ -353,13 +381,11 @@ double Measurement::radius() const
 
             BRepAdaptor_Curve curve(edge);
             if(curve.GetType() == GeomAbs_Circle) {
-                result = (double) curve.Circle().Radius();
-//                return (double) curve.Circle().Radius();
+                return (double) curve.Circle().Radius();
             }
         }
     }
-//    throw Base::ValueError("Measurement - radius - Invalid References3D Provided");
-    return result;
+    throw Base::RuntimeError("Measurement - radius - Invalid References3D Provided");
 }
 
 Base::Vector3d Measurement::delta() const
@@ -386,8 +412,7 @@ Base::Vector3d Measurement::delta() const
                 gp_Pnt P1 = BRep_Tool::Pnt(vert1);
                 gp_Pnt P2 = BRep_Tool::Pnt(vert2);
                 gp_XYZ diff = P2.XYZ() - P1.XYZ();
-                result = Base::Vector3d(diff.X(), diff.Y(), diff.Z());
-//                return Base::Vector3d(diff.X(), diff.Y(), diff.Z());
+                return Base::Vector3d(diff.X(), diff.Y(), diff.Z());
             }
         } else if(measureType == PointToEdge ||
                   measureType == PointToSurface) {

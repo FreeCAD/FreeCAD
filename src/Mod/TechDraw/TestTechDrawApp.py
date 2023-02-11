@@ -20,12 +20,12 @@
 #   USA                                                                   *
 # **************************************************************************
 
+#tests that do not require Gui
 from TDTest.DrawHatchTest import DrawHatchTest  # noqa: F401
 from TDTest.DrawViewAnnotationTest import DrawViewAnnotationTest  # noqa: F401
 from TDTest.DrawViewBalloonTest import DrawViewBalloonTest  # noqa: F401
 from TDTest.DrawViewDimensionTest import DrawViewDimensionTest  # noqa: F401
 from TDTest.DrawViewImageTest import DrawViewImageTest  # noqa: F401
-from TDTest.DrawViewSectionTest import DrawViewSectionTest  # noqa: F401
 from TDTest.DrawViewSymbolTest import DrawViewSymbolTest  # noqa: F401
-from TDTest.DrawViewPartTest import DrawViewPartTest  # noqa: F401
 from TDTest.DrawProjectionGroupTest import DrawProjectionGroupTest  # noqa: F401
+

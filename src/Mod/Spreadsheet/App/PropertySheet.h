@@ -24,12 +24,12 @@
 #define PROPERTYSHEET_H
 
 #include <map>
-#include <App/DocumentObserver.h>
+
 #include <App/DocumentObject.h>
 #include <App/PropertyLinks.h>
-#include <App/PropertyLinks.h>
-#include <Base/SmartPtrPy.h>
+
 #include "Cell.h"
+
 
 namespace Spreadsheet
 {
@@ -115,7 +115,11 @@ public:
 
     std::vector<App::CellAddress> getUsedCells() const;
 
+    std::tuple<App::CellAddress, App::CellAddress> getUsedRange() const;
+
     std::vector<App::CellAddress> getNonEmptyCells() const;
+
+    std::tuple<App::CellAddress, App::CellAddress> getNonEmptyRange() const;
 
     Sheet * sheet() const { return owner; }
 
