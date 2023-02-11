@@ -71,7 +71,6 @@ def make_clone(obj, delta=None, forcedraft=False):
     if (len(obj) == 1) and obj[0].isDerivedFrom("Part::Part2DObject"):
         cl = App.ActiveDocument.addObject("Part::Part2DObjectPython","Clone2D")
         cl.Label = prefix + obj[0].Label + " (2D)"
-
     elif (len(obj) == 1) and (hasattr(obj[0],"CloneOf") or (utils.get_type(obj[0]) == "BuildingPart")) and (not forcedraft):
         # arch objects can be clones
         import Arch
@@ -102,10 +101,10 @@ def make_clone(obj, delta=None, forcedraft=False):
             if App.GuiUp:
                 gui_utils.format_object(cl, base)
                 # Workaround to trigger update of DiffuseColor:
-                ToDo.delay(lambda col: setattr(cl.ViewObject, "DiffuseColor", col),
-                           cl.ViewObject.DiffuseColor)
+                ToDo.delay(reapply_diffuse_color, cl.ViewObject)
                 gui_utils.select(cl)
             return cl
+
     # fall back to Draft clone mode
     if not cl:
         cl = App.ActiveDocument.addObject("Part::FeaturePython","Clone")
@@ -122,15 +121,13 @@ def make_clone(obj, delta=None, forcedraft=False):
     if App.GuiUp:
         ViewProviderClone(cl.ViewObject)
         gui_utils.format_object(cl, obj[0])
-        if len(obj) > 1 or hasattr(obj[0], "Group"):
-            cl.ViewObject.Proxy.resetColors(cl.ViewObject)
         # Workaround to trigger update of DiffuseColor:
-        # Note: only works if obj contains 1 object.
-        ToDo.delay(reapply_DiffuseColor, cl.ViewObject)
+        ToDo.delay(reapply_diffuse_color, cl.ViewObject)
         gui_utils.select(cl)
     return cl
 
-def reapply_DiffuseColor(vobj):
+
+def reapply_diffuse_color(vobj):
     try:
         vobj.DiffuseColor = vobj.DiffuseColor
     except:
