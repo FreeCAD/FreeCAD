@@ -108,6 +108,20 @@ protected:
     void setupTaskDialog(TaskDlgPost* dlg) override;
 };
 
+class FemGuiExport ViewProviderFemPostContours: public ViewProviderFemPostObject
+{
+
+    PROPERTY_HEADER_WITH_OVERRIDE(FemGui::ViewProviderFemPostContours);
+
+public:
+    /// constructor.
+    ViewProviderFemPostContours();
+    ~ViewProviderFemPostContours() override;
+
+protected:
+    void setupTaskDialog(TaskDlgPost* dlg) override;
+};
+
 } //namespace FemGui
 
 

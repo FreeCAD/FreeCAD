@@ -99,7 +99,6 @@ void ViewProviderFemPostDataAtPoint::setupTaskDialog(TaskDlgPost* dlg) {
 
 }
 
-
 PROPERTY_SOURCE(FemGui::ViewProviderFemPostScalarClip, FemGui::ViewProviderFemPostObject)
 
 ViewProviderFemPostScalarClip::ViewProviderFemPostScalarClip() {
@@ -140,7 +139,6 @@ void ViewProviderFemPostWarpVector::setupTaskDialog(TaskDlgPost* dlg) {
     FemGui::ViewProviderFemPostObject::setupTaskDialog(dlg);
 }
 
-
 PROPERTY_SOURCE(FemGui::ViewProviderFemPostCut, FemGui::ViewProviderFemPostObject)
 
 ViewProviderFemPostCut::ViewProviderFemPostCut() {
@@ -160,4 +158,20 @@ void ViewProviderFemPostCut::setupTaskDialog(TaskDlgPost* dlg) {
 
     //add the display options
     FemGui::ViewProviderFemPostObject::setupTaskDialog(dlg);
+}
+
+PROPERTY_SOURCE(FemGui::ViewProviderFemPostContours, FemGui::ViewProviderFemPostObject)
+
+ViewProviderFemPostContours::ViewProviderFemPostContours()
+{
+    sPixmap = "FEM_PostFilterContours";
+}
+
+ViewProviderFemPostContours::~ViewProviderFemPostContours()
+{}
+
+void ViewProviderFemPostContours::setupTaskDialog(TaskDlgPost* dlg)
+{
+    // the filter-specific task panel
+    dlg->appendBox(new TaskPostContours(dlg->getView()));
 }

@@ -56,6 +56,7 @@
 #include "ui_TaskPostDataAtPoint.h"
 #include "ui_TaskPostDisplay.h"
 #include "ui_TaskPostScalarClip.h"
+#include "ui_TaskPostContours.h"
 #include "ui_TaskPostWarpVector.h"
 
 #include "TaskPostBoxes.h"
@@ -1700,5 +1701,138 @@ void TaskPostCut::on_FunctionBox_currentIndexChanged(int idx) {
     }
     recompute();
 }
+
+
+// ***************************************************************************
+// contours filter
+TaskPostContours::TaskPostContours(ViewProviderDocumentObject* view, QWidget* parent)
+    : TaskPostBox(view, Gui::BitmapFactory().pixmap("FEM_PostFilterContours"),
+                  tr("Contours filter options"), parent),
+      ui(new Ui_TaskPostContours)
+{
+    assert(view->isDerivedFrom(ViewProviderFemPostContours::getClassTypeId()));
+
+    // load the views widget
+    proxy = new QWidget(this);
+    ui->setupUi(proxy);
+    QMetaObject::connectSlotsByName(this);
+    this->groupLayout()->addWidget(proxy);
+
+    // load filter settings
+    updateEnumerationList(getTypedObject<Fem::FemPostContoursFilter>()->Field, ui->fieldsCB);
+    updateEnumerationList(getTypedObject<Fem::FemPostContoursFilter>()->VectorMode, ui->vectorsCB);
+    // for a new filter, initialize the coloring
+    auto colorState = static_cast<Fem::FemPostContoursFilter*>(getObject())->NoColor.getValue();
+    if (!colorState && getTypedView<ViewProviderFemPostObject>()->Field.getValue() == 0) {
+        getTypedView<ViewProviderFemPostObject>()->Field.setValue(1);
+    }
+
+    ui->numberContoursSB->setValue(
+        static_cast<Fem::FemPostContoursFilter*>(getObject())->NumberOfContours.getValue());
+    ui->noColorCB->setChecked(colorState);
+
+    // connect
+    connect(ui->fieldsCB, qOverload<int>(&QComboBox::currentIndexChanged),
+            this, &TaskPostContours::onFieldsChanged);
+    connect(ui->vectorsCB, qOverload<int>(&QComboBox::currentIndexChanged),
+            this, &TaskPostContours::onVectorModeChanged);
+    connect(ui->numberContoursSB, qOverload<int>(&QSpinBox::valueChanged),
+            this, &TaskPostContours::onNumberOfContoursChanged);
+    connect(ui->noColorCB, &QCheckBox::toggled,
+            this, &TaskPostContours::onNoColorChanged);
+}
+
+TaskPostContours::~TaskPostContours()
+{}
+
+void TaskPostContours::applyPythonCode()
+{}
+
+void TaskPostContours::updateFields(int idx)
+{
+    std::vector<std::string> fieldArray;
+    std::vector<std::string> vec =
+        getTypedObject<Fem::FemPostContoursFilter>()->Field.getEnumVector();
+    for (std::vector<std::string>::iterator it = vec.begin(); it != vec.end(); ++it) {
+        fieldArray.emplace_back(*it);
+    }
+    // update the ViewProvider Field enums
+    App::Enumeration anEnum;
+    getTypedView<ViewProviderFemPostObject>()->Field.setValue(anEnum);
+    anEnum.setEnums(fieldArray);
+    getTypedView<ViewProviderFemPostObject>()->Field.setValue(anEnum);
+    // set new Field index to ViewProvider Field
+    // the ViewProvider field starts with an additional entry "None",
+    // therefore the desired new setting is idx + 1
+    if (!static_cast<Fem::FemPostContoursFilter*>(getObject())->NoColor.getValue())
+        getTypedView<ViewProviderFemPostObject>()->Field.setValue(idx + 1);
+    else
+        getTypedView<ViewProviderFemPostObject>()->Field.setValue(long(0));
+}
+
+void TaskPostContours::onFieldsChanged(int idx)
+{
+    static_cast<Fem::FemPostContoursFilter*>(getObject())->Field.setValue(idx);
+
+    blockVectorUpdate = true;
+    updateEnumerationList(getTypedObject<Fem::FemPostContoursFilter>()->VectorMode, ui->vectorsCB);
+    blockVectorUpdate = false;
+
+    // In > 99 % of the cases the coloring should be equal to the field,
+    // thus change the coloring field too. Users can override this be resetting only the coloring
+    // field afterwards in the properties if really necessary.
+    updateFields(idx);
+
+    // since a new field can be e.g. no vector while the previous one was,
+    // we must also update the VectorMode
+    if (!static_cast<Fem::FemPostContoursFilter*>(getObject())->NoColor.getValue()) {
+        auto newMode = getTypedObject<Fem::FemPostContoursFilter>()->VectorMode.getValue();
+        getTypedView<ViewProviderFemPostObject>()->VectorMode.setValue(newMode);
+    }
+}
+
+void TaskPostContours::onVectorModeChanged(int idx)
+{
+    static_cast<Fem::FemPostContoursFilter*>(getObject())->VectorMode.setValue(idx);
+    recompute();
+    if (!blockVectorUpdate) {
+        // we can have the case that the previous field had VectorMode "Z" but
+        // since it is a 2D field, Z is eompty thus no field is available to color
+        // when the user noch goes back to e.g. "Y" we must set the Field
+        // first to get the possible VectorModes of that field
+        auto currentField = getTypedObject<Fem::FemPostContoursFilter>()->Field.getValue();
+        updateFields(currentField);
+        // now we can set the VectorMode
+        if (!static_cast<Fem::FemPostContoursFilter*>(getObject())->NoColor.getValue())
+            getTypedView<ViewProviderFemPostObject>()->VectorMode.setValue(idx);
+    }
+}
+
+void TaskPostContours::onNumberOfContoursChanged(int number)
+{
+    static_cast<Fem::FemPostContoursFilter*>(getObject())->NumberOfContours.setValue(number);
+    recompute();
+}
+
+void TaskPostContours::onNoColorChanged(bool state)
+{
+    static_cast<Fem::FemPostContoursFilter*>(getObject())->NoColor.setValue(state);
+    if (state) {
+        // no color
+        getTypedView<ViewProviderFemPostObject>()->Field.setValue(long(0));
+    }
+    else {
+        // set same field
+        auto currentField = getTypedObject<Fem::FemPostContoursFilter>()->Field.getValue();
+        // the ViewProvider field starts with an additional entry "None",
+        // therefore the desired new setting is idx + 1
+        getTypedView<ViewProviderFemPostObject>()->Field.setValue(currentField + 1);
+        // set the VectorMode too
+        auto currentMode = getTypedObject<Fem::FemPostContoursFilter>()->VectorMode.getValue();
+        getTypedView<ViewProviderFemPostObject>()->VectorMode.setValue(currentMode);
+    }
+    recompute();
+}
+
 
 #include "moc_TaskPostBoxes.cpp"
