@@ -78,9 +78,6 @@ public:
 
     void handleXYLock() override;
 
-    double prefKinkLength() const;
-    int prefShape() const;
-    int prefEnd() const;
     void setOrigin(Base::Vector3d newOrigin);
 
     Base::Vector3d getOriginOffset() const;

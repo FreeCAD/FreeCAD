@@ -70,7 +70,7 @@ DrawViewBalloon::DrawViewBalloon()
     ADD_PROPERTY_TYPE(OriginY, (0), "", (App::PropertyType)(App::Prop_None), "Balloon origin y");
 
     EndType.setEnums(ArrowPropEnum::ArrowTypeEnums);
-    ADD_PROPERTY_TYPE(EndType, (prefEnd()), "", (App::PropertyType)(App::Prop_None),
+    ADD_PROPERTY_TYPE(EndType, (Preferences::balloonArrow()), "", (App::PropertyType)(App::Prop_None),
                       "End symbol for the balloon line");
 
     ADD_PROPERTY_TYPE(EndTypeScale, (1.0), "", (App::PropertyType)(App::Prop_None),
@@ -78,7 +78,7 @@ DrawViewBalloon::DrawViewBalloon()
     EndTypeScale.setConstraints(&SymbolScaleRange);
 
     BubbleShape.setEnums(balloonTypeEnums);
-    ADD_PROPERTY_TYPE(BubbleShape, (prefShape()), "", (App::PropertyType)(App::Prop_None),
+    ADD_PROPERTY_TYPE(BubbleShape, (Preferences::balloonShape()), "", (App::PropertyType)(App::Prop_None),
                       "Shape of the balloon bubble");
 
     ADD_PROPERTY_TYPE(ShapeScale, (1.0), "", (App::PropertyType)(App::Prop_None),
@@ -88,7 +88,7 @@ DrawViewBalloon::DrawViewBalloon()
     ADD_PROPERTY_TYPE(TextWrapLen, (-1), "", (App::PropertyType)(App::Prop_None),
                       "Text wrap length; -1 means no wrap");
 
-    ADD_PROPERTY_TYPE(KinkLength, (prefKinkLength()), "", (App::PropertyType)(App::Prop_None),
+    ADD_PROPERTY_TYPE(KinkLength, (Preferences::balloonKinkLength()), "", (App::PropertyType)(App::Prop_None),
                       "Distance from symbol to leader kink");
 
     SourceView.setScope(App::LinkScope::Global);
@@ -221,28 +221,6 @@ void DrawViewBalloon::setOrigin(Base::Vector3d newOrigin)
     OriginY.setValue(newOrigin.y);
     origin = QPointF(newOrigin.x, newOrigin.y);
 }
-
-double DrawViewBalloon::prefKinkLength() const
-{
-    Base::Reference<ParameterGrp> hGrp = App::GetApplication()
-                                             .GetUserParameter()
-                                             .GetGroup("BaseApp")
-                                             ->GetGroup("Preferences")
-                                             ->GetGroup("Mod/TechDraw/Dimensions");
-    return hGrp->GetFloat("BalloonKink", 5.0);
-}
-
-int DrawViewBalloon::prefShape() const
-{
-    Base::Reference<ParameterGrp> hGrp = App::GetApplication()
-                                             .GetUserParameter()
-                                             .GetGroup("BaseApp")
-                                             ->GetGroup("Preferences")
-                                             ->GetGroup("Mod/TechDraw/Decorations");
-    return hGrp->GetInt("BalloonShape", 0);
-}
-
-int DrawViewBalloon::prefEnd() const { return Preferences::balloonArrow(); }
 
 QPointF DrawViewBalloon::getOrigin()
 {

@@ -242,6 +242,26 @@ int Preferences::balloonArrow()
     return end;
 }
 
+double Preferences::balloonKinkLength()
+{
+    Base::Reference<ParameterGrp> hGrp = App::GetApplication()
+                                             .GetUserParameter()
+                                             .GetGroup("BaseApp")
+                                             ->GetGroup("Preferences")
+                                             ->GetGroup("Mod/TechDraw/Dimensions");
+    return hGrp->GetFloat("BalloonKink", 5.0);
+}
+
+int Preferences::balloonShape()
+{
+    Base::Reference<ParameterGrp> hGrp = App::GetApplication()
+                                             .GetUserParameter()
+                                             .GetGroup("BaseApp")
+                                             ->GetGroup("Preferences")
+                                             ->GetGroup("Mod/TechDraw/Decorations");
+    return hGrp->GetInt("BalloonShape", 0);
+}
+
 QString Preferences::defaultTemplate()
 {
     Base::Reference<ParameterGrp> hGrp = App::GetApplication()
