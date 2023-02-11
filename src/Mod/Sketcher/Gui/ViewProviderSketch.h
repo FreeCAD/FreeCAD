@@ -35,6 +35,7 @@
 #include <Gui/GLPainter.h>
 #include <Gui/Selection.h>
 #include <Mod/Part/Gui/ViewProvider2DObject.h>
+#include <Mod/Part/Gui/ViewProviderGridExtension.h>
 #include <Mod/Part/Gui/ViewProviderAttachExtension.h>
 #include <Mod/Sketcher/App/GeoList.h>
 
@@ -136,6 +137,7 @@ using GeoListFacade = Sketcher::GeoListFacade;
  *
  */
 class SketcherGuiExport ViewProviderSketch : public PartGui::ViewProvider2DObject
+                                           , public PartGui::ViewProviderGridExtension
                                            , public PartGui::ViewProviderAttachExtension
                                            , public Gui::SelectionObserver
 {
@@ -412,11 +414,6 @@ public:
     App::PropertyBool ForceOrtho;
     App::PropertyBool SectionView;
     App::PropertyString EditingWorkbench;
-    App::PropertyBool ShowGrid;
-    App::PropertyLength GridSize;
-    App::PropertyEnumeration GridStyle;
-    App::PropertyBool GridSnap;
-    App::PropertyBool GridAuto;
     //@}
 
     // TODO: It is difficult to imagine that these functions are necessary in the public interface. This requires review at a second stage and possibly
@@ -537,7 +534,7 @@ public:
     bool mouseButtonPressed(int Button, bool pressed, const SbVec2s& cursorPos, const Gui::View3DInventorViewer* viewer) override;
     bool mouseWheelEvent(int delta, const SbVec2s &cursorPos, const Gui::View3DInventorViewer* viewer) override;
     //@}
-    
+
 
     /// Control the overlays appearing on the Tree and reflecting different sketcher states
     QIcon mergeColorfulOverlayIcons (const QIcon & orig) const override;
@@ -782,12 +779,6 @@ private:
 
     SoNodeSensor cameraSensor;
     int viewOrientationFactor; // stores if sketch viewed from front or back
-
-    void Restore(Base::XMLReader& reader) override;
-    void handleChangedPropertyType(Base::XMLReader& reader, const char* TypeName, App::Property* prop) override;
-
-    static const char* GridStyleEnums[];
-    static App::PropertyQuantityConstraint::Constraints GridSizeRange;
 };
 
 } // namespace PartGui
