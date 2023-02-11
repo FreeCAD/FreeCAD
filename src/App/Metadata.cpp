@@ -126,7 +126,7 @@ App::Metadata::Metadata(const std::string& rawData)
     : _dom(nullptr)
 {
     MemBufInputSource buffer(
-        reinterpret_cast<const XMLByte* const>(rawData.c_str()),
+        reinterpret_cast<const XMLByte*>(rawData.c_str()),
         rawData.size(),
         "raw data (in memory)");
     loadFromInputSource(buffer);
