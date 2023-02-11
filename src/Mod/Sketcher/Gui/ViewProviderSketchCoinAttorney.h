@@ -113,7 +113,6 @@ private:
     friend class EditModeCoinManager;
     friend class EditModeConstraintCoinManager;
     friend class EditModeGeometryCoinManager;
-    friend class EditModeGridCoinManager;
     friend class EditModeInformationOverlayCoinConverter;
     friend class EditModeGeometryCoinConverter;
 };

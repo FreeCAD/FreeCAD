@@ -57,15 +57,6 @@
 #include "ViewProviderSketch.h"
 #include "ViewProviderSketchCoinAttorney.h"
 
-#include "EditModeGridCoinManager.h"
-
-#include "EditModeGeometryCoinManager.h"
-#include "EditModeConstraintCoinManager.h"
-
-#include "EditModeCoinManager.h"
-
-#include "Utils.h"
-
 using namespace SketcherGui;
 using namespace Sketcher;
 
@@ -350,9 +341,6 @@ EditModeCoinManager::EditModeCoinManager(ViewProviderSketch &vp):viewProvider(vp
                                                                                     analysisResults,
                                                                                     editModeScenegraphNodes,
                                                                                     coinMapping);
-
-    pEditModeGridCoinManager = std::make_unique<EditModeGridCoinManager>(           viewProvider,
-                                                                                    editModeScenegraphNodes);
     // Create Edit Mode Scenograph
     createEditModeInventorNodes();
 
@@ -659,14 +647,6 @@ void EditModeCoinManager::createEditModeInventorNodes()
     ViewProviderSketchCoinAttorney::addNodeToRoot(viewProvider, editModeScenegraphNodes.EditRoot);
     editModeScenegraphNodes.EditRoot->renderCaching = SoSeparator::OFF ;
 
-    // Create Grid Coin nodes ++++++++++++++++++++++++++++++++++++++++++
-    editModeScenegraphNodes.GridRoot = new SoSeparator();
-    editModeScenegraphNodes.GridRoot->ref();
-    editModeScenegraphNodes.GridRoot->setName("GridRoot");
-    editModeScenegraphNodes.EditRoot->addChild(editModeScenegraphNodes.GridRoot);
-    if (viewProvider.ShowGrid.getValue())
-        pEditModeGridCoinManager->createGrid();
-
     // Create Geometry Coin nodes ++++++++++++++++++++++++++++++++++++++
     pEditModeGeometryCoinManager->createEditModeInventorNodes();
 
@@ -812,13 +792,6 @@ void EditModeCoinManager::drawConstraintIcons(const GeoListFacade & geolistfacad
 void EditModeCoinManager::updateVirtualSpace()
 {
     pEditModeConstraintCoinManager->updateVirtualSpace();
-}
-
-void EditModeCoinManager::drawGrid(bool cameraUpdate) {
-    if (viewProvider.ShowGrid.getValue())
-        pEditModeGridCoinManager->createGrid(cameraUpdate);
-    else
-        Gui::coinRemoveAllChildren(editModeScenegraphNodes.GridRoot);
 }
 
 /************************ Resizing of coin nodes ************************/
