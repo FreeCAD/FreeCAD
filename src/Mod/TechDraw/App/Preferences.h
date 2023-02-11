@@ -63,6 +63,8 @@ public:
     static int lineGroup();
 
     static int balloonArrow();
+    static double balloonKinkLength();
+    static int balloonShape();
 
     static QString defaultTemplate();
     static QString defaultTemplateDir();
