@@ -436,7 +436,7 @@ class Component(ArchIFC.IfcProduct):
             if obj.CloneOf:
                 if (Draft.getType(obj.CloneOf) == Draft.getType(obj)) or (Draft.getType(obj) in ["Component","BuildingPart"]):
                     pl = obj.Placement
-                    ## TODO use Part.Shape() instead ?
+                    ## TODO use Part.Shape() instead?
                     obj.Shape = obj.CloneOf.Shape.copy()
                     obj.Placement = pl
                     for prop in ["Length","Width","Height","Thickness","Area","PerimeterLength","HorizontalArea","VerticalArea"]:
@@ -634,7 +634,7 @@ class Component(ArchIFC.IfcProduct):
 
         shapes = []
         for s in shape:
-            ## TODO use Part.Shape() instead ?
+            ## TODO use Part.Shape() instead?
             s = s.copy()
             s.translate(v.negative())
             s.rotate(FreeCAD.Vector(0, 0, 0),
@@ -745,7 +745,7 @@ class Component(ArchIFC.IfcProduct):
                         base = base.fuse(add)
                     elif hasattr(o,'Shape'):
                         if o.Shape and not o.Shape.isNull() and o.Shape.Solids:
-                            ## TODO use Part.Shape() instead ?
+                            ## TODO use Part.Shape() instead?
                             s = o.Shape.copy()
                             if placement:
                                 # see https://forum.freecadweb.org/viewtopic.php?p=579754#p579754
@@ -790,6 +790,7 @@ class Component(ArchIFC.IfcProduct):
                     if hasattr(o,"Placement"):
                         # see https://forum.freecadweb.org/viewtopic.php?p=579754#p579754
                         subvolume.Placement = o.Placement.multiply(subvolume.Placement)
+
                 if subvolume:
                     if base.Solids and subvolume.Solids:
                         if placement:
@@ -804,7 +805,7 @@ class Component(ArchIFC.IfcProduct):
                     if o.Shape:
                         if not o.Shape.isNull():
                             if o.Shape.Solids and base.Solids:
-                                    ## TODO
+                                    ## TODO use Part.Shape() instead?
                                     s = o.Shape.copy()
                                     if placement:
                                         # see https://forum.freecadweb.org/viewtopic.php?p=579754#p579754
@@ -856,7 +857,7 @@ class Component(ArchIFC.IfcProduct):
         if points:
             shps = []
             for p in points:
-                ## TODO use Part.Shape() instead ?
+                ## TODO use Part.Shape() instead?
                 sh = shape.copy()
                 sh.translate(p)
                 shps.append(sh)
