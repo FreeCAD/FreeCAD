@@ -569,7 +569,7 @@ void DrawViewPart::extractFaces()
         bool copyGeometry = true;
         bool copyMesh = false;
         for (const auto& e : goEdges) {
-            BRepBuilderAPI_Copy copier(e->occEdge, copyGeometry, copyMesh);
+            BRepBuilderAPI_Copy copier(e->getOCCEdge(), copyGeometry, copyMesh);
             copyEdges.push_back(TopoDS::Edge(copier.Shape()));
         }
         std::vector<TopoDS_Edge> nonZero;
@@ -865,7 +865,7 @@ TechDraw::VertexPtr DrawViewPart::getProjVertexByCosTag(std::string cosTag)
     }
 
     for (auto& gv : gVerts) {
-        if (gv->cosmeticTag == cosTag) {
+        if (gv->getCosmeticTag() == cosTag) {
             result = gv;
             break;
         }
@@ -883,7 +883,7 @@ std::vector<TechDraw::BaseGeomPtr> DrawViewPart::getFaceEdgesByIndex(int idx) co
         TechDraw::FacePtr projFace = faces.at(idx);
         for (auto& w : projFace->wires) {
             for (auto& g : w->geoms) {
-                if (g->cosmetic) {
+                if (g->getCosmetic()) {
                     //if g is cosmetic, we should skip it
                     continue;
                 }
@@ -904,10 +904,8 @@ std::vector<TopoDS_Wire> DrawViewPart::getWireForFace(int idx) const
     TechDraw::FacePtr ourFace = faces.at(idx);
     for (auto& w : ourFace->wires) {
         edges.clear();
-        int i = 0;
         for (auto& g : w->geoms) {
-            edges.push_back(g->occEdge);
-            i++;
+            edges.push_back(g->getOCCEdge());
         }
         TopoDS_Wire occwire = EdgeWalker::makeCleanWire(edges);
         result.push_back(occwire);
@@ -1279,9 +1277,6 @@ bool DrawViewPart::checkXDirection() const
     //    Base::Console().Message("DVP::checkXDirection()\n");
     Base::Vector3d xDir = XDirection.getValue();
     if (DrawUtil::fpCompare(xDir.Length(), 0.0)) {
-        Base::Vector3d dir = Direction.getValue();
-        Base::Vector3d origin(0.0, 0.0, 0.0);
-        xDir = getLegacyX(origin, dir);
         return false;
     }
     return true;
@@ -1326,7 +1321,7 @@ void DrawViewPart::updateReferenceVert(std::string tag, Base::Vector3d loc2d)
 {
     for (auto& v : m_referenceVerts) {
         if (v->getTagAsString() == tag) {
-            v->pnt = loc2d;
+            v->point(loc2d);
             break;
         }
     }
@@ -1351,7 +1346,7 @@ std::string DrawViewPart::addReferenceVertex(Base::Vector3d v)
     //    TechDraw::Vertex* ref = new TechDraw::Vertex(scaledV);
     Base::Vector3d scaledV = v;
     TechDraw::VertexPtr ref(std::make_shared<TechDraw::Vertex>(scaledV));
-    ref->reference = true;
+    ref->isReference(true);
     refTag = ref->getTagAsString();
     m_referenceVerts.push_back(ref);
     return refTag;
@@ -1379,7 +1374,7 @@ void DrawViewPart::removeAllReferencesFromGeom()
         std::vector<TechDraw::VertexPtr> gVerts = getVertexGeometry();
         std::vector<TechDraw::VertexPtr> newVerts;
         for (auto& gv : gVerts) {
-            if (!gv->reference) {
+            if (!gv->isReference()) {
                 newVerts.push_back(gv);
             }
         }
@@ -1436,7 +1431,7 @@ void DrawViewPart::refreshCVGeoms()
     std::vector<TechDraw::VertexPtr> gVerts = getVertexGeometry();
     std::vector<TechDraw::VertexPtr> newGVerts;
     for (auto& gv : gVerts) {
-        if (gv->cosmeticTag.empty()) {//keep only non-cv vertices
+        if (gv->getCosmeticTag().empty()) {//keep only non-cv vertices
             newGVerts.push_back(gv);
         }
     }
@@ -1455,7 +1450,7 @@ int DrawViewPart::getCVIndex(std::string tag)
     int i = 0;
     bool found = false;
     for (auto& gv : gVerts) {
-        if (gv->cosmeticTag == tag) {
+        if (gv->getCosmeticTag() == tag) {
             result = i;
             found = true;
             break;

@@ -365,8 +365,8 @@ CosmeticEdge::CosmeticEdge(TechDraw::BaseGeomPtr g)
     //we assume input edge is already in Yinverted coordinates
     permaStart = m_geometry->getStartPoint();
     permaEnd   = m_geometry->getEndPoint();
-    if ((g->geomType == TechDraw::GeomType::CIRCLE) ||
-       (g->geomType == TechDraw::GeomType::ARCOFCIRCLE)) {
+    if ((g->getGeomType() == TechDraw::GeomType::CIRCLE) ||
+       (g->getGeomType() == TechDraw::GeomType::ARCOFCIRCLE)) {
        TechDraw::CirclePtr circ = std::static_pointer_cast<TechDraw::Circle>(g);
        permaStart  = circ->center;
        permaEnd    = circ->center;
@@ -382,9 +382,9 @@ CosmeticEdge::~CosmeticEdge()
 
 void CosmeticEdge::initialize()
 {
-    m_geometry->classOfEdge = ecHARD;
-    m_geometry->hlrVisible = true;
-    m_geometry->cosmetic = true;
+    m_geometry->setClassOfEdge(ecHARD);
+    m_geometry->setHlrVisible( true);
+    m_geometry->setCosmetic(true);
     m_geometry->source(COSMETICEDGE);
 
     createNewTag();
@@ -404,13 +404,13 @@ TopoDS_Edge CosmeticEdge::TopoDS_EdgeFromVectors(Base::Vector3d pt1, Base::Vecto
 
 TechDraw::BaseGeomPtr CosmeticEdge::scaledGeometry(double scale)
 {
-    TopoDS_Edge e = m_geometry->occEdge;
+    TopoDS_Edge e = m_geometry->getOCCEdge();
     TopoDS_Shape s = TechDraw::scaleShape(e, scale);
     TopoDS_Edge newEdge = TopoDS::Edge(s);
     TechDraw::BaseGeomPtr newGeom = TechDraw::BaseGeom::baseFactory(newEdge);
-    newGeom->classOfEdge = ecHARD;
-    newGeom->hlrVisible = true;
-    newGeom->cosmetic = true;
+    newGeom->setClassOfEdge(ecHARD);
+    newGeom->setHlrVisible( true);
+    newGeom->setCosmetic(true);
     newGeom->source(COSMETICEDGE);
     newGeom->setCosmeticTag(getTagAsString());
     return newGeom;
@@ -421,7 +421,7 @@ std::string CosmeticEdge::toString() const
     std::stringstream ss;
     ss << getTagAsString() << ", $$$, ";
     if (m_geometry) {
-        ss << m_geometry->geomType <<
+        ss << m_geometry->getGeomType() <<
             ", $$$, " <<
             m_geometry->toString() <<
             ", $$$, " <<
@@ -450,18 +450,18 @@ void CosmeticEdge::Save(Base::Writer &writer) const
     const char v = m_format.m_visible?'1':'0';
     writer.Stream() << writer.ind() << "<Visible value=\"" <<  v << "\"/>" << endl;
 
-    writer.Stream() << writer.ind() << "<GeometryType value=\"" << m_geometry->geomType <<"\"/>" << endl;
-    if (m_geometry->geomType == TechDraw::GeomType::GENERIC) {
+    writer.Stream() << writer.ind() << "<GeometryType value=\"" << m_geometry->getGeomType() <<"\"/>" << endl;
+    if (m_geometry->getGeomType() == TechDraw::GeomType::GENERIC) {
         GenericPtr gen = std::static_pointer_cast<Generic>(m_geometry);
         gen->Save(writer);
-    } else if (m_geometry->geomType == TechDraw::GeomType::CIRCLE) {
+    } else if (m_geometry->getGeomType() == TechDraw::GeomType::CIRCLE) {
         TechDraw::CirclePtr circ = std::static_pointer_cast<TechDraw::Circle>(m_geometry);
         circ->Save(writer);
-    } else if (m_geometry->geomType == TechDraw::GeomType::ARCOFCIRCLE) {
+    } else if (m_geometry->getGeomType() == TechDraw::GeomType::ARCOFCIRCLE) {
         TechDraw::AOCPtr aoc = std::static_pointer_cast<TechDraw::AOC>(m_geometry);
         aoc->Save(writer);
     } else {
-        Base::Console().Warning("CE::Save - unimplemented geomType: %d\n", m_geometry->geomType);
+        Base::Console().Warning("CE::Save - unimplemented geomType: %d\n", m_geometry->getGeomType());
     }
 }
 
@@ -486,14 +486,14 @@ void CosmeticEdge::Restore(Base::XMLReader &reader)
     if (gType == TechDraw::GeomType::GENERIC) {
         TechDraw::GenericPtr gen = std::make_shared<TechDraw::Generic> ();
         gen->Restore(reader);
-        gen->occEdge = GeometryUtils::edgeFromGeneric(gen);
+        gen->setOCCEdge(GeometryUtils::edgeFromGeneric(gen));
         m_geometry = gen;
         permaStart = gen->getStartPoint();
         permaEnd   = gen->getEndPoint();
     } else if (gType == TechDraw::GeomType::CIRCLE) {
         TechDraw::CirclePtr circ = std::make_shared<TechDraw::Circle> ();
         circ->Restore(reader);
-        circ->occEdge = GeometryUtils::edgeFromCircle(circ);
+        circ->setOCCEdge(GeometryUtils::edgeFromCircle(circ));
         m_geometry = circ;
         permaRadius = circ->radius;
         permaStart  = circ->center;
@@ -501,7 +501,7 @@ void CosmeticEdge::Restore(Base::XMLReader &reader)
     } else if (gType == TechDraw::GeomType::ARCOFCIRCLE) {
         TechDraw::AOCPtr aoc = std::make_shared<TechDraw::AOC> ();
         aoc->Restore(reader);
-        aoc->occEdge = GeometryUtils::edgeFromCircleArc(aoc);
+        aoc->setOCCEdge(GeometryUtils::edgeFromCircleArc(aoc));
         m_geometry = aoc;
         permaStart = aoc->startPnt;
         permaEnd   = aoc->endPnt;
@@ -648,9 +648,9 @@ CenterLine::~CenterLine()
 
 void CenterLine::initialize()
 {
-    m_geometry->classOfEdge = ecHARD;
-    m_geometry->hlrVisible = true;
-    m_geometry->cosmetic = true;
+    m_geometry->setClassOfEdge(ecHARD);
+    m_geometry->setHlrVisible( true);
+    m_geometry->setCosmetic(true);
     m_geometry->source(CENTERLINE);
 
     createNewTag();
@@ -777,9 +777,9 @@ TechDraw::BaseGeomPtr CenterLine::scaledGeometry(TechDraw::DrawViewPart* partFea
     TopoDS_Shape s = TechDraw::scaleShape(e, scale);
     TopoDS_Edge newEdge = TopoDS::Edge(s);
     TechDraw::BaseGeomPtr newGeom = TechDraw::BaseGeom::baseFactory(newEdge);
-    newGeom->classOfEdge = ecHARD;
-    newGeom->hlrVisible = true;
-    newGeom->cosmetic = true;
+    newGeom->setClassOfEdge(ecHARD);
+    newGeom->setHlrVisible( true);
+    newGeom->setCosmetic(true);
     newGeom->source(CENTERLINE);
     newGeom->setCosmeticTag(getTagAsString());
 
@@ -911,8 +911,8 @@ std::pair<Base::Vector3d, Base::Vector3d> CenterLine::calcEndPoints(DrawViewPart
                                                 partFeat->getFaceEdgesByIndex(idx);
         if (!faceEdges.empty()) {
             for (auto& fe: faceEdges) {
-                if (!fe->cosmetic) {
-                    BRepBndLib::AddOptimal(fe->occEdge, faceBox);
+                if (!fe->getCosmetic()) {
+                    BRepBndLib::AddOptimal(fe->getOCCEdge(), faceBox);
                 }
             }
         }
@@ -1251,18 +1251,18 @@ void CenterLine::Save(Base::Writer &writer) const
         return Base::Console().Error("CL::Save - m_geometry is null\n");
     }
 
-    writer.Stream() << writer.ind() << "<GeometryType value=\"" << m_geometry->geomType <<"\"/>" << endl;
-    if (m_geometry->geomType == TechDraw::GeomType::GENERIC) {
+    writer.Stream() << writer.ind() << "<GeometryType value=\"" << m_geometry->getGeomType() <<"\"/>" << endl;
+    if (m_geometry->getGeomType() == TechDraw::GeomType::GENERIC) {
         GenericPtr gen = std::static_pointer_cast<Generic>(m_geometry);
         gen->Save(writer);
-    } else if (m_geometry->geomType == TechDraw::GeomType::CIRCLE) {
+    } else if (m_geometry->getGeomType() == TechDraw::GeomType::CIRCLE) {
         TechDraw::CirclePtr circ = std::static_pointer_cast<TechDraw::Circle>(m_geometry);
         circ->Save(writer);
-    } else if (m_geometry->geomType == TechDraw::GeomType::ARCOFCIRCLE) {
+    } else if (m_geometry->getGeomType() == TechDraw::GeomType::ARCOFCIRCLE) {
         TechDraw::AOCPtr aoc = std::static_pointer_cast<TechDraw::AOC>(m_geometry);
         aoc->Save(writer);
     } else {
-        Base::Console().Message("CL::Save - unimplemented geomType: %d\n", m_geometry->geomType);
+        Base::Console().Message("CL::Save - unimplemented geomType: %d\n", m_geometry->getGeomType());
     }
 }
 
@@ -1349,17 +1349,17 @@ void CenterLine::Restore(Base::XMLReader &reader)
     if (gType == TechDraw::GeomType::GENERIC) {
         TechDraw::GenericPtr gen = std::make_shared<TechDraw::Generic> ();
         gen->Restore(reader);
-        gen->occEdge = GeometryUtils::edgeFromGeneric(gen);
+        gen->setOCCEdge(GeometryUtils::edgeFromGeneric(gen));
         m_geometry = gen;
     } else if (gType == TechDraw::GeomType::CIRCLE) {
         TechDraw::CirclePtr circ = std::make_shared<TechDraw::Circle> ();
         circ->Restore(reader);
-        circ->occEdge = GeometryUtils::edgeFromCircle(circ);
+        circ->setOCCEdge(GeometryUtils::edgeFromCircle(circ));
         m_geometry = circ;
     } else if (gType == TechDraw::GeomType::ARCOFCIRCLE) {
         TechDraw::AOCPtr aoc = std::make_shared<TechDraw::AOC> ();
         aoc->Restore(reader);
-        aoc->occEdge = GeometryUtils::edgeFromCircleArc(aoc);
+        aoc->setOCCEdge(GeometryUtils::edgeFromCircleArc(aoc));
         m_geometry = aoc;
     } else {
         Base::Console().Warning("CL::Restore - unimplemented geomType: %d\n", gType);

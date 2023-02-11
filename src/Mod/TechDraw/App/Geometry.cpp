@@ -75,6 +75,7 @@
 #include <Base/Writer.h>
 
 #include "Geometry.h"
+#include "GeometryObject.h"
 #include "DrawUtil.h"
 
 
@@ -116,7 +117,7 @@ TopoDS_Wire Wire::toOccWire() const
 {
     BRepBuilderAPI_MakeWire mkWire;
     for (auto& g: geoms) {
-        TopoDS_Edge e = g->occEdge;
+        TopoDS_Edge e = g->getOCCEdge();
         mkWire.Add(e);
     }
     if (mkWire.IsDone())  {
@@ -187,7 +188,7 @@ BaseGeomPtr BaseGeom::copy()
 
     result->extractType = extractType;
     result->classOfEdge = classOfEdge;
-    result->hlrVisible = hlrVisible;
+    result->setHlrVisible( hlrVisible);
     result->reversed = reversed;
     result->ref3D = ref3D;
     result->cosmetic = cosmetic;
@@ -367,7 +368,7 @@ double BaseGeom::minDist(Base::Vector3d p)
 //!find point on me nearest to p
 Base::Vector3d BaseGeom::nearPoint(const BaseGeomPtr p)
 {
-    TopoDS_Edge pEdge = p->occEdge;
+    TopoDS_Edge pEdge = p->getOCCEdge();
     BRepExtrema_DistShapeShape extss(occEdge, pEdge);
     if (!extss.IsDone() || extss.NbSolution() == 0) {
         return Base::Vector3d(0.0, 0.0, 0.0);
@@ -411,6 +412,15 @@ bool BaseGeom::closed()
         return true;
     }
     return false;
+}
+
+// return a BaseGeom similar to this, but inverted with respect to Y axis
+BaseGeomPtr BaseGeom::inverted()
+{
+    Base::Console().Message("BG::inverted()\n");
+    TopoDS_Shape invertedShape = GeometryObject::invertGeometry(occEdge);
+    TopoDS_Edge invertedEdge = TopoDS::Edge(invertedShape);
+    return baseFactory(invertedEdge);
 }
 
 //keep this in sync with enum GeomType
@@ -539,15 +549,15 @@ std::vector<Base::Vector3d> BaseGeom::intersection(TechDraw::BaseGeomPtr geom2)
     # define isArcOrCircle 2
     // we check the type of the two objects
     int edge1(unknown), edge2(unknown);
-    if (this->geomType == TechDraw::CIRCLE ||
-        this->geomType == TechDraw::ARCOFCIRCLE)
+    if (this->getGeomType() == TechDraw::CIRCLE ||
+        this->getGeomType() == TechDraw::ARCOFCIRCLE)
         edge1 = isArcOrCircle;
-    else if (this->geomType == TechDraw::GENERIC)
+    else if (this->getGeomType() == TechDraw::GENERIC)
         edge1 = isGeneric;
-    if (geom2->geomType == TechDraw::CIRCLE ||
-        geom2->geomType == TechDraw::ARCOFCIRCLE)
+    if (geom2->getGeomType() == TechDraw::CIRCLE ||
+        geom2->getGeomType() == TechDraw::ARCOFCIRCLE)
         edge2 = isArcOrCircle;
-    else if (geom2->geomType == TechDraw::GENERIC)
+    else if (geom2->getGeomType() == TechDraw::GENERIC)
         edge2 = isGeneric;
     // we calculate the intersections
     std::vector<Base::Vector3d> interPoints;
@@ -1334,28 +1344,28 @@ Vertex::Vertex()
     extractType = ExtractionType::Plain;       //obs?
     hlrVisible = false;
     ref3D = -1;                        //obs. never used.
-    isCenter = false;
+    m_center = false;
     BRepBuilderAPI_MakeVertex mkVert(gp_Pnt(0.0, 0.0, 0.0));
     occVertex = mkVert.Vertex();
     cosmetic = false;
     cosmeticLink = -1;
     cosmeticTag = std::string();
-    reference = false;
+    m_reference = false;
     createNewTag();
 }
 
 Vertex::Vertex(const Vertex* v)
 {
-    pnt = v->pnt;
+    pnt = v->point();
     extractType = v->extractType;       //obs?
     hlrVisible = v->hlrVisible;
     ref3D = v->ref3D;                  //obs. never used.
-    isCenter = v->isCenter;
+    m_center = v->m_center;
     occVertex = v->occVertex;
     cosmetic = v->cosmetic;
     cosmeticLink = v->cosmeticLink;
     cosmeticTag = v->cosmeticTag;
-    reference = false;
+    m_reference = false;
     createNewTag();
 }
 
@@ -1365,13 +1375,13 @@ Vertex::Vertex(double x, double y)
     extractType = ExtractionType::Plain;       //obs?
     hlrVisible = false;
     ref3D = -1;                        //obs. never used.
-    isCenter = false;
+    m_center = false;
     BRepBuilderAPI_MakeVertex mkVert(gp_Pnt(x, y, 0.0));
     occVertex = mkVert.Vertex();
     cosmetic = false;
     cosmeticLink = -1;
     cosmeticTag = std::string();
-    reference = false;
+    m_reference = false;
     createNewTag();
 }
 
@@ -1400,10 +1410,10 @@ void Vertex::Save(Base::Writer &writer) const
                  "\"/>" << endl;
 
     writer.Stream() << writer.ind() << "<Extract value=\"" <<  extractType << "\"/>" << endl;
-    const char v = hlrVisible?'1':'0';
+    const char v = hlrVisible ? '1':'0';
     writer.Stream() << writer.ind() << "<HLRVisible value=\"" <<  v << "\"/>" << endl;
     writer.Stream() << writer.ind() << "<Ref3D value=\"" <<  ref3D << "\"/>" << endl;
-    const char c = isCenter?'1':'0';
+    const char c = m_center ?'1':'0';
     writer.Stream() << writer.ind() << "<IsCenter value=\"" <<  c << "\"/>" << endl;
     const char c2 = cosmetic?'1':'0';
     writer.Stream() << writer.ind() << "<Cosmetic value=\"" <<  c2 << "\"/>" << endl;
@@ -1441,7 +1451,7 @@ void Vertex::Restore(Base::XMLReader &reader)
 
     //will restore read to eof looking for "Reference" in old docs??  YES!!
 //    reader.readElement("Reference");
-//    reference = (bool)reader.getAttributeAsInteger("value")==0?false:true;
+//    m_reference = (bool)reader.getAttributeAsInteger("value")==0?false:true;
 
     reader.readElement("VertexTag");
     std::string temp = reader.getAttribute("value");
@@ -1510,7 +1520,7 @@ BaseGeomPtrVector GeometryUtils::chainGeoms(BaseGeomPtrVector geoms)
             if (next.index) { //found an unused edge with vertex == atPoint
                 BaseGeomPtr nextEdge = geoms.at(next.index);
                 used[next.index] = true;
-                nextEdge->reversed = next.reversed;
+                nextEdge->setReversed(next.reversed);
                 result.push_back(nextEdge);
                 if (next.reversed) {
                     atPoint = nextEdge->getStartPoint();
