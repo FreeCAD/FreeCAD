@@ -66,7 +66,7 @@ jobs:
           for step in $(jq -r "keys_unsorted | .[]" data)
           do
             echo "Processing step $step"
-            result=$(jq -r ".$step.result" data)
+            result=$(jq -r ".\"$step\".result" data)
             icon=":heavy_check_mark:"
             if [ $result == 'failure' ]
             then
@@ -87,7 +87,7 @@ jobs:
             then
               echo "Step was cancelled when executing, report may be incomplete" | tee -a report.md
             fi
-            report=$(jq -r ".$step.outputs.reportFile" data)
+            report=$(jq -r ".\"$step\".outputs.reportFile" data)
             if [ $report ]
             then
               echo "Report for step $step is $report"
