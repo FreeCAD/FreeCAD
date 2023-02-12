@@ -46,7 +46,8 @@ runs:
       id: install
       shell: bash
       run: |
-        sudo cmake --install ${{ inputs.builddir }} ${{ inputs.extraParameters }} >> ${{ inputs.logFile }} 2>> ${{ inputs.errorFile }}
+        (stdbuf -oL -eL sudo cmake --install ${{ inputs.builddir }} ${{ inputs.extraParameters }}) \
+        2> >(tee -a ${{ inputs.errorFile }}) | tee -a ${{ inputs.logFile }}
     - name: Write report
       shell: bash
       if: always()
@@ -68,8 +69,3 @@ runs:
         echo '```' >> ${{ inputs.reportFile }}
         echo "</details>">> ${{ inputs.reportFile }}
         echo "" >> ${{ inputs.reportFile }}
-        # Print the Log to the console
-        cat ${{ inputs.errorFile }}
-        echo "::group::Install Log"
-        cat ${{ inputs.logFile }}
-        echo "::endgroup::"
