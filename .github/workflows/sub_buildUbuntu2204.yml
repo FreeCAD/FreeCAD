@@ -182,35 +182,12 @@ jobs:
           errorFile: ${{ env.logdir }}CmakeErrors.log
           reportFile: ${{env.reportdir}}${{ env.reportfilename }}
       - name: CMake Build
-        run: |
-          set +e
-          cmake --build ${{ env.builddir}} -j$(nproc) > ${{ env.logdir }}Build.log 2> ${{ env.logdir }}BuildErrors.log
-          exitCode=$?
-          # Write the build report
-          if [ $exitCode -eq 0 ]
-          then
-            echo "<details><summary>:heavy_check_mark: CMake build succeeded</summary>" >> ${{env.reportdir}}${{ env.reportfilename }}
-          else
-            echo "<details><summary>:fire: CMake build failed</summary>" >> ${{env.reportdir}}${{ env.reportfilename }}
-          fi
-          echo "" >> ${{env.reportdir}}${{ env.reportfilename }}
-          echo "Build Error Log (stderr output):" >> ${{env.reportdir}}${{ env.reportfilename }}
-          echo '```' >> ${{env.reportdir}}${{ env.reportfilename }}
-          cat ${{ env.logdir }}BuildErrors.log >> ${{env.reportdir}}${{ env.reportfilename }}
-          echo '```' >> ${{env.reportdir}}${{ env.reportfilename }}
-          echo "Build Log (stdout output trimmed to the last 100 Lines):" >> ${{env.reportdir}}${{ env.reportfilename }}
-          echo '```' >> ${{env.reportdir}}${{ env.reportfilename }}
-          tail -n 50 ${{ env.logdir }}Build.log >> ${{env.reportdir}}${{ env.reportfilename }}
-          echo '```' >> ${{env.reportdir}}${{ env.reportfilename }}
-          echo "</details>">> ${{env.reportdir}}${{ env.reportfilename }}
-          echo "" >> ${{env.reportdir}}${{ env.reportfilename }}
-          # Print the Log to the console
-          cat ${{ env.logdir }}BuildErrors.log
-          echo "::group::Build Log"
-          cat ${{ env.logdir }}Build.log
-          echo "::endgroup::"
-          # Exit the step with the exit code of the build
-          exit $exitCode
+        uses: ./.github/workflows/actions/linux/build
+        with:
+          builddir: ${{ env.builddir }}
+          logFile: ${{ env.logdir }}Build.log
+          errorFile: ${{ env.logdir }}BuildErrors.log
+          reportFile: ${{env.reportdir}}${{ env.reportfilename }}
       - name: Print ccache statistics after Build
         run: |
           ccache -s
