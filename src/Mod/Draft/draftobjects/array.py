@@ -64,6 +64,7 @@ class Array(DraftLink):
         super(Array, self).attach(obj)
 
     def onDocumentRestored(self, obj):
+        super(Array, self).onDocumentRestored(obj)
         if hasattr(obj, "Count"):
             return
         self.update_properties_0v21(obj)
