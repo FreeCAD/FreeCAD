@@ -1594,6 +1594,18 @@ Document::Document(const char *name)
             license = "FreeArt";
             licenseUrl = "https://artlibre.org/licence/lal";
             break;
+        case 9:
+            license = "CERN Open Hardware Licence strongly-reciprocal";
+            licenseUrl = "https://cern-ohl.web.cern.ch/";
+            break;
+        case 10:
+            license = "CERN Open Hardware Licence weakly-reciprocal";
+            licenseUrl = "https://cern-ohl.web.cern.ch/";
+            break;
+        case 11:
+            license = "CERN Open Hardware Licence permissive";
+            licenseUrl = "https://cern-ohl.web.cern.ch/";
+            break;
         default:
             license = "Other";
             break;

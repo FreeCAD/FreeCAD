@@ -69,6 +69,9 @@ DlgProjectInformationImp::DlgProjectInformationImp(App::Document* doc, QWidget* 
         << "Creative Commons Attribution-NonCommercial-NoDerivatives"
         << "Public Domain"
         << "FreeArt"
+        << "CERN Open Hardware Licence strongly-reciprocal"
+        << "CERN Open Hardware Licence weakly-reciprocal"
+        << "CERN Open Hardware Licence permissive"
         << "Other";
     for (QList<QByteArray>::iterator it = rawLicenses.begin(); it != rawLicenses.end(); ++it) {
         QString text = QApplication::translate("Gui::Dialog::DlgSettingsDocument", it->constData());
@@ -169,6 +172,9 @@ void DlgProjectInformationImp::onLicenseTypeChanged(int index)
             break;
         case 8:
             ui->lineEditLicenseURL->setText(QString::fromLatin1("http://artlibre.org/licence/lal"));
+            break;
+        case 9: case 10: case 11:
+            ui->lineEditLicenseURL->setText(QString::fromLatin1("https://cern-ohl.web.cern.ch/"));
             break;
         default:
             ui->lineEditLicenseURL->setText(QString::fromUtf8(_doc->LicenseURL.getValue()));

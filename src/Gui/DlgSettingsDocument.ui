@@ -727,6 +727,21 @@ You can also use the form: John Doe &lt;john@doe.com&gt;</string>
         </item>
         <item>
          <property name="text">
+          <string>CERN Open Hardware Licence strongly-reciprocal</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>CERN Open Hardware Licence weakly-reciprocal</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>CERN Open Hardware Licence permissive</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
           <string>Other</string>
          </property>
         </item>
