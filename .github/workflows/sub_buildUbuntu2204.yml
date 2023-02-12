@@ -208,35 +208,12 @@ jobs:
           logFile: ${{ env.logdir }}TestGUIBuild.log
           reportFile: ${{env.reportdir}}${{ env.reportfilename }}
       - name: CMake Install
-        run: |
-          set +e
-          sudo cmake --install ${{ env.builddir }} >> ${{ env.logdir }}Install.log 2>> ${{ env.logdir }}InstallErrors.log
-          exitCode=$?
-          # Write the install report
-          if [ $exitCode -eq 0 ]
-          then
-            echo "<details><summary>:heavy_check_mark: CMake install succeeded</summary>" >> ${{env.reportdir}}${{ env.reportfilename }}
-          else
-            echo "<details><summary>:fire: CMake install failed</summary>" >> ${{env.reportdir}}${{ env.reportfilename }}
-          fi
-          echo "" >> ${{env.reportdir}}${{ env.reportfilename }}
-          echo "Install Error Log (stderr output):" >> ${{env.reportdir}}${{ env.reportfilename }}
-          echo '```' >> ${{env.reportdir}}${{ env.reportfilename }}
-          cat ${{ env.logdir }}InstallErrors.log >> ${{env.reportdir}}${{ env.reportfilename }}
-          echo '```' >> ${{env.reportdir}}${{ env.reportfilename }}
-          echo "Install Error Log (stdout output trimmed to the last 100 Lines):" >> ${{env.reportdir}}${{ env.reportfilename }}
-          echo '```' >> ${{env.reportdir}}${{ env.reportfilename }}
-          tail -n 100 ${{ env.logdir }}Install.log >> ${{env.reportdir}}${{ env.reportfilename }}
-          echo '```' >> ${{env.reportdir}}${{ env.reportfilename }}
-          echo "</details>">> ${{env.reportdir}}${{ env.reportfilename }}
-          echo "" >> ${{env.reportdir}}${{ env.reportfilename }}
-          # Print the Log to the console
-          cat ${{ env.logdir }}InstallErrors.log
-          echo "::group::Install Log"
-          cat ${{ env.logdir }}Install.log
-          echo "::endgroup::"
-          # Exit the step with the exit code of the install
-          exit $exitCode
+        uses: ./.github/workflows/actions/linux/install
+        with:
+          builddir: ${{ env.builddir }}
+          logFile: ${{ env.logdir }}Install.log
+          errorFile: ${{ env.logdir }}InstallErrors.log
+          reportFile: ${{env.reportdir}}${{ env.reportfilename }}
       - name: FreeCAD CLI tests on install
         uses: ./.github/workflows/actions/runTests
         with:
