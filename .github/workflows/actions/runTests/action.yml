@@ -19,7 +19,7 @@
 # *                                                                         *
 # ***************************************************************************
 
-name: generateCacheKey
+name: runTests
 description: "Linux: run unit tests, generate log and report"
 
 inputs:
