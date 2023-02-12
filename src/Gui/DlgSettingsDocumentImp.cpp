@@ -178,6 +178,9 @@ void DlgSettingsDocumentImp::onLicenseTypeChanged(int index)
         case 8:
             ui->prefLicenseUrl->setText(QString::fromLatin1("http://artlibre.org/licence/lal"));
             break;
+        case 9: case 10: case 11:
+            ui->prefLicenseUrl->setText(QString::fromLatin1("https://cern-ohl.web.cern.ch/"));
+            break;
         default:
             ui->prefLicenseUrl->clear();
             ui->prefLicenseUrl->setReadOnly(false);
