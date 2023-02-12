@@ -267,7 +267,7 @@ private:
             exporter.reset( new MergeExporter(outputFileName, exportFormat) );
         }
         else {
-            std::string exStr("Can't determine mesh format from file name: '");
+            std::string exStr("Can't determine mesh format from file name.\nPlease specify mesh format file extension: '");
             exStr += outputFileName + "'";
             throw Py::ValueError(exStr.c_str());
         }
