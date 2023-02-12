@@ -36,7 +36,6 @@ import FemGui
 from PySide import QtGui
 from femtaskpanels import task_mesh_gmsh
 from femtools.femutils import is_of_type
-# from . import view_base_femobject
 
 
 # TODO use VPBaseFemObject from view_base_femobject
