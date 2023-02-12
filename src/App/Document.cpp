@@ -102,6 +102,7 @@ recompute path. Also, it enables more complicated dependencies beyond trees.
 #include "ExpressionParser.h"
 #include "GeoFeature.h"
 #include "GeoFeatureGroupExtension.h"
+#include "License.h"
 #include "Link.h"
 #include "MergeDocuments.h"
 #include "Origin.h"
@@ -1550,67 +1551,10 @@ Document::Document(const char *name)
     ADD_PROPERTY_TYPE(Uid, (id), 0, Prop_ReadOnly, "UUID of the document");
 
     // license stuff
-    ADD_PROPERTY_TYPE(License, ("CC-BY 3.0"), 0, Prop_None, "License string of the Item");
-    ADD_PROPERTY_TYPE(LicenseURL, ("https://creativecommons.org/licenses/by/3.0/"), 0, Prop_None, "URL to the license text/contract");
-
-    // license stuff
-    int licenseId = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Document")->GetInt("prefLicenseType", 0);
-    std::string license;
-    std::string licenseUrl;
-    switch (licenseId) {
-        case 0:
-            license = "All rights reserved";
-            licenseUrl = "https://en.wikipedia.org/wiki/All_rights_reserved";
-            break;
-        case 1:
-            license = "Creative Commons Attribution";
-            licenseUrl = "https://creativecommons.org/licenses/by/4.0/";
-            break;
-        case 2:
-            license = "Creative Commons Attribution-ShareAlike";
-            licenseUrl = "https://creativecommons.org/licenses/by-sa/4.0/";
-            break;
-        case 3:
-            license = "Creative Commons Attribution-NoDerivatives";
-            licenseUrl = "https://creativecommons.org/licenses/by-nd/4.0/";
-            break;
-        case 4:
-            license = "Creative Commons Attribution-NonCommercial";
-            licenseUrl = "https://creativecommons.org/licenses/by-nc/4.0/";
-            break;
-        case 5:
-            license = "Creative Commons Attribution-NonCommercial-ShareAlike";
-            licenseUrl = "https://creativecommons.org/licenses/by-nc-sa/4.0/";
-            break;
-        case 6:
-            license = "Creative Commons Attribution-NonCommercial-NoDerivatives";
-            licenseUrl = "https://creativecommons.org/licenses/by-nc-nd/4.0/";
-            break;
-        case 7:
-            license = "Public Domain";
-            licenseUrl = "https://en.wikipedia.org/wiki/Public_domain";
-            break;
-        case 8:
-            license = "FreeArt";
-            licenseUrl = "https://artlibre.org/licence/lal";
-            break;
-        case 9:
-            license = "CERN Open Hardware Licence strongly-reciprocal";
-            licenseUrl = "https://cern-ohl.web.cern.ch/";
-            break;
-        case 10:
-            license = "CERN Open Hardware Licence weakly-reciprocal";
-            licenseUrl = "https://cern-ohl.web.cern.ch/";
-            break;
-        case 11:
-            license = "CERN Open Hardware Licence permissive";
-            licenseUrl = "https://cern-ohl.web.cern.ch/";
-            break;
-        default:
-            license = "Other";
-            break;
-    }
-
+    long licenseId = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Document")->GetInt("prefLicenseType", 0);
+    App::License licenseType{licenseId};
+    std::string license = licenseType.getLicense();
+    std::string licenseUrl = licenseType.getUrl();
     licenseUrl = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Document")->GetASCII("prefLicenseUrl", licenseUrl.c_str());
 
     ADD_PROPERTY_TYPE(License, (license.c_str()), 0, Prop_None, "License string of the Item");
