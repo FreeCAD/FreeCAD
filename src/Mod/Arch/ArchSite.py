@@ -657,14 +657,18 @@ class _Site(ArchIFC.IfcProduct):
         if not hasattr(obj,'Shape'): # old-style Site
             return
 
+        import Part
         pl = FreeCAD.Placement(obj.Placement)
         shape = None
         if obj.Terrain is not None \
                 and hasattr(obj.Terrain,'Shape') \
                 and not obj.Terrain.Shape.isNull() \
                 and obj.Terrain.Shape.isValid():
-            shape = obj.Terrain.Shape.copy()
-            shape = shape.transformGeometry(shape.Placement.Matrix)
+            shape = Part.Shape(obj.Terrain.Shape)
+            # Fuse and cut operations return a shape with a default placement.
+            # We need to transform our shape accordingly to get a consistent
+            # result with or without fuse or cut operations:
+            shape = shape.transformGeometry((shape.Placement * pl).Matrix)
             shape.Placement = FreeCAD.Placement()
 
             if shape.Solids:
@@ -696,13 +700,14 @@ class _Site(ArchIFC.IfcProduct):
             if not shape.isNull() and shape.isValid():
                 if obj.RemoveSplitter:
                     shape = shape.removeSplitter()
+                # Transform the shape to counteract the effect of placement pl
+                # and then apply that placement:
                 obj.Shape = shape.transformGeometry(pl.inverse().Matrix)
                 obj.Placement = pl
             else:
                 shape = None
 
         if shape is None:
-            import Part
             obj.Shape = Part.Shape()
             obj.Placement = pl
 
@@ -783,14 +788,14 @@ class _Site(ArchIFC.IfcProduct):
         perim = outer.Length
 
         # compute volumes
-        if obj.Terrain.Shape.Solids:
-            shapesolid = obj.Terrain.Shape.copy()
-        else:
-            shapesolid = obj.Terrain.Shape.extrude(obj.ExtrusionVector)
+        shape = Part.Shape(obj.Terrain.Shape)
+        shape.Placement = obj.Placement * shape.Placement
+        if not obj.Terrain.Shape.Solids:
+            shape = shape.extrude(obj.ExtrusionVector)
         for sub in obj.Additions:
-            addvol += sub.Shape.cut(shapesolid).Volume
+            addvol += sub.Shape.cut(shape).Volume
         for sub in obj.Subtractions:
-            subvol += sub.Shape.common(shapesolid).Volume
+            subvol += sub.Shape.common(shape).Volume
 
         # update properties
         if obj.ProjectedArea.Value != area:
