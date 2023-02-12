@@ -166,37 +166,12 @@ jobs:
           ccache -z
           ccache -p
       - name: CMake Configure
-        run: |
-          set +e
-          cmake \
-          -D CMAKE_EXPORT_COMPILE_COMMANDS:BOOL=TRUE \
-          -B ${{ env.builddir }} > ${{ env.logdir }}Cmake.log 2> ${{ env.logdir }}CmakeErrors.log
-          exitCode=$?
-          # Write the configure report
-          if [ $exitCode -eq 0 ]
-          then
-            echo "<details><summary>:heavy_check_mark: CMake configure succeeded</summary>" >> ${{env.reportdir}}${{ env.reportfilename }}
-          else
-            echo "<details><summary>:fire: CMake configure failed</summary>" >> ${{env.reportdir}}${{ env.reportfilename }}
-          fi
-          echo "" >> ${{env.reportdir}}${{ env.reportfilename }}
-          echo "Configure Error Log (stderr output):" >> ${{env.reportdir}}${{ env.reportfilename }}
-          echo '```' >> ${{env.reportdir}}${{ env.reportfilename }}
-          cat ${{ env.logdir }}CmakeErrors.log >> ${{env.reportdir}}${{ env.reportfilename }}
-          echo '```' >> ${{env.reportdir}}${{ env.reportfilename }}
-          echo "Configure Log (stdout output):" >> ${{env.reportdir}}${{ env.reportfilename }}
-          echo '```' >> ${{env.reportdir}}${{ env.reportfilename }}
-          tail -n 60 ${{ env.logdir }}Cmake.log >> ${{env.reportdir}}${{ env.reportfilename }}
-          echo '```' >> ${{env.reportdir}}${{ env.reportfilename }}
-          echo "</details>">> ${{env.reportdir}}${{ env.reportfilename }}
-          echo "" >> ${{env.reportdir}}${{ env.reportfilename }}
-          # Print the Log to the console
-          cat ${{ env.logdir }}CmakeErrors.log
-          echo "::group::Configure Log"
-          cat ${{ env.logdir }}Cmake.log
-          echo "::endgroup::"
-          # Exit the step with the exit code of the configure
-          exit $exitCode
+        uses: ./.github/workflows/actions/linux/configure
+        with:
+          builddir: ${{ env.builddir }}
+          logFile: ${{ env.logdir }}Cmake.log
+          errorFile: ${{ env.logdir }}CmakeErrors.log
+          reportFile: ${{env.reportdir}}${{ env.reportfilename }}
       - name: CMake Build
         run: |
           set +e
