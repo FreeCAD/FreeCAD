@@ -22,7 +22,8 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-#include <algorithm>
+# include <algorithm>
+# include <iterator>
 #endif
 
 #include "License.h"
