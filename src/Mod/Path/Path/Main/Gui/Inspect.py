@@ -182,7 +182,7 @@ class GCodeEditorDialog(QtGui.QDialog):
         cursor.setPosition(ep)
         endrow = cursor.blockNumber()
 
-        commands = self.PathObj.Commands
+        commands = PathUtils.getPathWithPlacement(self.PathObj).Commands
 
         # Derive the starting position for the first selected command
         prevX = prevY = prevZ = None

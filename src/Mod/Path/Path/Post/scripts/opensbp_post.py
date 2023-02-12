@@ -24,6 +24,7 @@
 from __future__ import print_function
 import datetime
 import Path.Post.Utils as PostUtils
+import PathScripts.PathUtils as PathUtils
 
 
 TOOLTIP = """
@@ -352,7 +353,7 @@ def parse(pathobj):
             return output
         if OUTPUT_COMMENTS:
             output += linenumber() + "'(Path: " + pathobj.Label + ")\n"
-        for c in pathobj.Path.Commands:
+        for c in PathUtils.getPathWithPlacement(pathobj).Commands:
             command = c.Name
             if command in scommands:
                 output += scommands[command](c)

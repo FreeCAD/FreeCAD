@@ -24,6 +24,7 @@ import FreeCAD
 import Path
 import Path.Base.Util as PathUtil
 import Path.Dressup.Utils as PathDressup
+import PathScripts.PathUtils as PathUtils
 import Path.Main.Job as PathJob
 import PathGui
 import PathSimulator
@@ -202,7 +203,7 @@ class PathSimulation:
         self.icmd = 0
         self.curpos = FreeCAD.Placement(self.initialPos, self.stdrot)
         self.cutTool.Placement = self.curpos
-        self.opCommands = self.operation.Path.Commands
+        self.opCommands = PathUtils.getPathWithPlacement(self.operation).Commands
 
     def SimulateMill(self):
         self.job = self.jobs[self.taskForm.form.comboJobs.currentIndex()]
@@ -258,7 +259,7 @@ class PathSimulation:
             return
         self.busy = True
 
-        cmd = self.operation.Path.Commands[self.icmd]
+        cmd = self.opCommands[self.icmd]
         pathSolid = None
 
         if cmd.Name in ["G0"]:
@@ -302,7 +303,7 @@ class PathSimulation:
         self.icmd += 1
         self.iprogress += 1
         self.UpdateProgress()
-        if self.icmd >= len(self.operation.Path.Commands):
+        if self.icmd >= len(self.opCommands):
             self.ioperation += 1
             if self.ioperation >= len(self.activeOps):
                 self.EndSimulation()

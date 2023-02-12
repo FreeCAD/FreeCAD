@@ -33,6 +33,7 @@ import argparse
 import datetime
 import shlex
 import Path.Post.Utils as PostUtils
+import PathScripts.PathUtils as PathUtils
 
 TOOLTIP = """
 This is a post processor file for the FreeCAD Path workbench. It is used to
@@ -421,7 +422,7 @@ def parse(pathobj):
         if not hasattr(pathobj, "Path"):
             return out
 
-        for c in pathobj.Path.Commands:
+        for c in PathUtils.getPathWithPlacement(pathobj).Commands:
             outstring = []
             command = c.Name
             # Convert G54-G59 Fixture offsets to E01-E06 for Dynapath Delta Control

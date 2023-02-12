@@ -838,3 +838,92 @@ def RtoIJ(startpoint, command):
     newcommand.Parameters = params
 
     return newcommand
+
+def rotatePath(path, angle, centre):
+    """
+    Rotates Path around given centre vector
+    Only X and Y is considered
+    """
+    CmdMoveRapid = ["G0", "G00"]
+    CmdMoveStraight = ["G1", "G01"]
+    CmdMoveCW = ["G2", "G02"]
+    CmdMoveCCW = ["G3", "G03"]
+    CmdDrill = ["G73", "G81", "G82", "G83"]
+    CmdMoveArc = CmdMoveCW + CmdMoveCCW
+    CmdMove = CmdMoveStraight + CmdMoveArc
+
+    commands = []
+    ang = angle / 180 * math.pi
+    currX = 0
+    currY = 0
+    for cmd in path.Commands:
+        if (
+            (cmd.Name in CmdMoveRapid)
+            or (cmd.Name in CmdMove)
+            or (cmd.Name in CmdDrill)
+        ):
+            params = cmd.Parameters
+            x = params.get("X")
+            if x is None:
+                x = currX
+            currX = x
+            y = params.get("Y")
+            if y is None:
+                y = currY
+            currY = y
+
+            # "move" the centre to origin
+            x = x - centre.x
+            y = y - centre.y
+
+            # rotation around origin:
+            nx = x * math.cos(ang) - y * math.sin(ang)
+            ny = y * math.cos(ang) + x * math.sin(ang)
+
+            # "move" the centre back and update
+            nx += centre.x
+            ny += centre.y
+
+            if nx != currX:
+                params.update({"X": nx})
+            if ny != currY:
+                params.update({"Y": ny})
+
+            # Arcs need to have the I and J params rotated as well
+            if cmd.Name in CmdMoveArc:
+                i = params.get("I")
+                if i is None:
+                    i = 0
+                j = params.get("J")
+                if j is None:
+                    j = 0
+
+                ni = i * math.cos(ang) - j * math.sin(ang)
+                nj = j * math.cos(ang) + i * math.sin(ang)
+
+                if ni != i:
+                    params.update({"I": ni})
+                if nj != j:
+                    params.update({"J": nj})
+
+            cmd.Parameters = params
+        commands.append(cmd)
+    newPath = Path.Path(commands)
+
+    return newPath
+
+def getPathWithPlacement(pathobj):
+    """
+    This function takes the pathobj's Placement Position, along with
+    the Z rotation and computes a new path.
+
+    A more "complete" version of this function would take the X and Y axis into
+    account for the rotation.  Currently it is limited by the rotatePath
+    function that was refactored out of the Array Operation.
+    """
+    placement = pathobj.Placement
+    xAngle, yAngle, zAngle = placement.Rotation.toEulerAngles('XYZ')
+    if xAngle != 0 or yAngle != 0:
+        Path.Log.warning("Invalid Path Placement: Rotations about X and Y axes are not currently supported and will be ignored")
+    commands = rotatePath(pathobj.Path, zAngle, FreeCAD.Vector(0, 0, 0)).Commands
+    return Path.Path([cm.transform(placement) for cm in commands])
