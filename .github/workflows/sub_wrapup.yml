@@ -108,6 +108,7 @@ jobs:
           echo "EOD" >> $GITHUB_ENV
           cat report.md >> $GITHUB_STEP_SUMMARY
       - name: Delete used artifacts
+        continue-on-error: true
         uses: geekyeggo/delete-artifact@v2
         with:
           name: |
