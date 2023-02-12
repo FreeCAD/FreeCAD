@@ -1878,6 +1878,27 @@ bool GeomConic::isReversed() const
     return conic->Axis().Direction().Z() < 0;
 }
 
+GeomBSplineCurve* GeomConic::toNurbs(double first, double last) const
+{
+    Handle(Geom_Conic) conic =  Handle(Geom_Conic)::DownCast(handle());
+    Handle(Geom_Curve) curve = new Geom_TrimmedCurve(conic, first, last);
+
+    // pass the trimmed conic
+    Handle(Geom_BSplineCurve) bspline = GeomConvert::CurveToBSplineCurve(curve);
+    Standard_Real fnew = bspline->FirstParameter(), lnew = bspline->LastParameter(), UTol;
+    if (!bspline->IsPeriodic()) {
+        bspline->Resolution(Precision::Confusion(), UTol);
+        if (Abs(first - fnew) > UTol || Abs(last - lnew) > UTol) {
+            TColStd_Array1OfReal knots(1,bspline->NbKnots());
+            bspline->Knots(knots);
+            BSplCLib::Reparametrize(first, last, knots);
+            bspline->SetKnots(knots);
+        }
+    }
+
+    return new GeomBSplineCurve(bspline);
+}
+
 // -------------------------------------------------
 
 TYPESYSTEM_SOURCE(Part::GeomTrimmedCurve,Part::GeomBoundedCurve)
@@ -2218,6 +2239,11 @@ Geometry *GeomCircle::copy() const
 
 GeomBSplineCurve* GeomCircle::toNurbs(double first, double last) const
 {
+    // for an arc of circle use the generic method
+    if (first != 0 || last != 2*M_PI) {
+        return GeomConic::toNurbs(first, last);
+    }
+
     double radius = getRadius();
     Handle(Geom_Conic) conic =  Handle(Geom_Conic)::DownCast(handle());
     gp_Ax1 axis = conic->Axis();
@@ -2641,7 +2667,7 @@ GeomBSplineCurve* GeomEllipse::toNurbs(double first, double last) const
 {
     // for an arc of ellipse use the generic method
     if (first != 0 || last != 2*M_PI) {
-        return GeomCurve::toNurbs(first, last);
+        return GeomConic::toNurbs(first, last);
     }
 
     Handle(Geom_Ellipse) conic =  Handle(Geom_Ellipse)::DownCast(handle());
@@ -3167,7 +3193,7 @@ Geometry *GeomHyperbola::copy() const
 
 GeomBSplineCurve* GeomHyperbola::toNurbs(double first, double last) const
 {
-    return GeomCurve::toNurbs(first, last);
+    return GeomConic::toNurbs(first, last);
 }
 
 double GeomHyperbola::getMajorRadius() const

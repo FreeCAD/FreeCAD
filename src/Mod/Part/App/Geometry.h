@@ -375,6 +375,7 @@ public:
 
     unsigned int getMemSize() const override = 0;
     PyObject *getPyObject() override = 0;
+    GeomBSplineCurve* toNurbs(double first, double last) const override;
 
     const Handle(Geom_Geometry)& handle() const override = 0;
 };
