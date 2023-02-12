@@ -332,9 +332,9 @@ class _Stairs(ArchComponent.Component):
             self.OutlineRailArcRight = []
 
         if not hasattr(obj,"RailingLeft"):
-            obj.addProperty("App::PropertyLinkHidden","RailingLeft","Segment and Parts","Name of Railing object (left) created")
+            obj.addProperty("App::PropertyLinkHidden","RailingLeft","Segment and Parts","The left railing object")
         if not hasattr(obj,"RailingRight"):
-            obj.addProperty("App::PropertyLinkHidden","RailingRight","Segment and Parts","Name of Railing object (right) created")
+            obj.addProperty("App::PropertyLinkHidden","RailingRight","Segment and Parts","The right railing object")
 
         if not hasattr(obj,"OutlineLeftAll"):
             obj.addProperty("App::PropertyVectorList","OutlineLeftAll","Segment and Parts",QT_TRANSLATE_NOOP("App::Property","The 'left outline' of all segments of stairs"))
