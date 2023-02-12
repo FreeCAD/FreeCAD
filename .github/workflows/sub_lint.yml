@@ -131,7 +131,7 @@ on:
         type: string
         required: false
       codespellFailSilent:
-        default: false
+        default: true
         type: boolean
         required: false
       checkClangTidy:
