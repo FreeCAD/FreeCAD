@@ -37,13 +37,13 @@ jobs:
     with:
       artifactBasename: Prepare-${{ github.run_id }}
 
-  Build2004:
+  Ubuntu_20-04:
     needs: [Prepare]
     uses: ./.github/workflows/sub_buildUbuntu2004.yml
     with:
       artifactBasename: Build2004-${{ github.run_id }}
 
-  Build2204:
+  Ubuntu_22-04:
     needs: [Prepare]
     uses: ./.github/workflows/sub_buildUbuntu2204.yml
     with:
@@ -59,7 +59,7 @@ jobs:
       changedPythonFiles: ${{ needs.Prepare.outputs.changedPythonFiles }}
 
   WrapUp:
-    needs: [Prepare, Build2004, Build2204, Lint]
+    needs: [Prepare, Ubuntu_20-04, Ubuntu_22-04, Lint]
     if: always()
     uses: ./.github/workflows/sub_wrapup.yml
     with:
