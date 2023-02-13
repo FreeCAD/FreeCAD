@@ -735,7 +735,7 @@
     <message>
       <location filename="../../TaskEdge2TracParameter.ui" line="29"/>
       <source>Hide / Show</source>
-      <translation>Схаваць / Адлюстраваць</translation>
+      <translation>Схаваць / Паказаць</translation>
     </message>
     <message>
       <location filename="../../TaskEdge2TracParameter.ui" line="47"/>
@@ -838,12 +838,12 @@
     <message>
       <location filename="../../TaskRobotControl.ui" line="268"/>
       <source>Base 0</source>
-      <translation>База 0</translation>
+      <translation>Аснова 0</translation>
     </message>
     <message>
       <location filename="../../TaskRobotControl.ui" line="273"/>
       <source>Base</source>
-      <translation>База</translation>
+      <translation>Асноўныя</translation>
     </message>
     <message>
       <location filename="../../TaskRobotControl.ui" line="278"/>

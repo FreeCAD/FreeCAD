@@ -1370,7 +1370,7 @@ Please run the command to repair folds first</source>
     <message>
       <location filename="../../DlgRegularSolid.ui" line="809"/>
       <source>&amp;Create</source>
-      <translation>&amp;Crear</translation>
+      <translation>&amp;Crea</translation>
     </message>
     <message>
       <location filename="../../DlgRegularSolid.ui" line="812"/>

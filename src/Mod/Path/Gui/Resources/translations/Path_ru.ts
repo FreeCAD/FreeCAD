@@ -34,7 +34,7 @@
     <message>
       <location filename="../../Command.cpp" line="130"/>
       <source>Select a workplane for a FeatureArea</source>
-      <translation type="unfinished">Select a workplane for a FeatureArea</translation>
+      <translation>Выберите рабочую плоскость для функционального пространства</translation>
     </message>
   </context>
   <context>
@@ -78,22 +78,22 @@
     <message>
       <location filename="../../Command.cpp" line="97"/>
       <source>Create Path Area View</source>
-      <translation type="unfinished">Create Path Area View</translation>
+      <translation>Создать просмотр области пути</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="106"/>
       <source>Create Path Area</source>
-      <translation type="unfinished">Create Path Area</translation>
+      <translation>Создать область пути</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="194"/>
       <source>Select Workplane for Path Area</source>
-      <translation type="unfinished">Select Workplane for Path Area</translation>
+      <translation>Выберите рабочую плоскость для области пути</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="245"/>
       <source>Create Path Compound</source>
-      <translation type="unfinished">Create Path Compound</translation>
+      <translation>Создать объединение пути</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="315"/>
@@ -106,7 +106,7 @@
     <message>
       <location filename="../panels/DlgJobCreate.ui" line="14"/>
       <source>Create Job</source>
-      <translation>Создать Задание</translation>
+      <translation>Создать задание</translation>
     </message>
     <message>
       <location filename="../panels/DlgJobCreate.ui" line="23"/>
@@ -126,7 +126,7 @@
     <message>
       <location filename="../panels/DlgJobModelSelect.ui" line="14"/>
       <source>Select Base Models</source>
-      <translation>Выберите Базовые Модели</translation>
+      <translation>Выберите базовые модели</translation>
     </message>
     <message>
       <location filename="../panels/DlgJobModelSelect.ui" line="24"/>
@@ -141,12 +141,12 @@
     <message>
       <location filename="../panels/DlgJobModelSelect.ui" line="44"/>
       <source>Base Models</source>
-      <translation>Базовые Модели</translation>
+      <translation>Базовые модели</translation>
     </message>
     <message>
       <location filename="../panels/DlgJobTemplateExport.ui" line="14"/>
       <source>Job Template Export</source>
-      <translation>Экспорт Шаблона Работы</translation>
+      <translation>Экспорт шаблона задания</translation>
     </message>
     <message>
       <location filename="../panels/DlgJobTemplateExport.ui" line="20"/>
@@ -166,7 +166,7 @@
     <message>
       <location filename="../panels/DlgJobTemplateExport.ui" line="48"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If enabled tool controller definitions are stored in the template.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If enabled tool controller definitions are stored in the template.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Если включенные определения контроллера инструментов хранятся в шаблоне.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/DlgJobTemplateExport.ui" line="51"/>
@@ -176,7 +176,7 @@
     <message>
       <location filename="../panels/DlgJobTemplateExport.ui" line="60"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Check all tool controllers which should be included in the template.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Check all tool controllers which should be included in the template.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Проверьте все контроллеры инструментов, которые должны быть включены в шаблон.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/DlgJobTemplateExport.ui" line="70"/>
@@ -196,52 +196,52 @@
     <message>
       <location filename="../panels/DlgJobTemplateExport.ui" line="85"/>
       <source>Operation Heights</source>
-      <translation type="unfinished">Operation Heights</translation>
+      <translation>Высоты операции</translation>
     </message>
     <message>
       <location filename="../panels/DlgJobTemplateExport.ui" line="95"/>
       <source>Operation Depths</source>
-      <translation type="unfinished">Operation Depths</translation>
+      <translation>Глубины операции</translation>
     </message>
     <message>
       <location filename="../panels/DlgJobTemplateExport.ui" line="105"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Enable to include the default rapid tool speeds in the template.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Enable to include the default rapid tool speeds in the template.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Включите, чтобы добавить в шаблон стандартные скорости быстрого хода инструмента.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/DlgJobTemplateExport.ui" line="108"/>
       <source>Tool Rapid Speeds</source>
-      <translation type="unfinished">Tool Rapid Speeds</translation>
+      <translation>Скорости быстрого хода инструмента</translation>
     </message>
     <message>
       <location filename="../panels/DlgJobTemplateExport.ui" line="118"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Enable to include the default coolant mode in the template.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Enable to include the default coolant mode in the template.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Включите, чтобы добавить в шаблон стандартный режим охлаждения.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/DlgJobTemplateExport.ui" line="121"/>
       <source>Coolant Mode</source>
-      <translation type="unfinished">Coolant Mode</translation>
+      <translation>Режим охлаждения</translation>
     </message>
     <message>
       <location filename="../panels/DlgJobTemplateExport.ui" line="131"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Enable all Operations for which the configuration values should be exported.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Note that only operations are listed which currently have configuration values setup.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Enable all Operations for which the configuration values should be exported.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Note that only operations are listed which currently have configuration values setup.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Включить все операции, для которых значения конфигурации должны быть экспортированы.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Обратите внимание, что перечислены только операции, которые в настоящее время имеют значения конфигурации.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/DlgJobTemplateExport.ui" line="141"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If enabled the creation of stock is included in the template. If a template does not include a stock definition the default stock creation algorithm will be used (creation from the Base object's bound box).&lt;/p&gt;&lt;p&gt;This option is most useful if stock is a box or cylinder, or if the machine has a standard placement for machining.&lt;/p&gt;&lt;p&gt;Note that this option is disabled if a stock object from an existing solid is used in the job - they cannot be stored in a template.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If enabled the creation of stock is included in the template. If a template does not include a stock definition the default stock creation algorithm will be used (creation from the Base object's bound box).&lt;/p&gt;&lt;p&gt;This option is most useful if stock is a box or cylinder, or if the machine has a standard placement for machining.&lt;/p&gt;&lt;p&gt;Note that this option is disabled if a stock object from an existing solid is used in the job - they cannot be stored in a template.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Если включено создание запасов включено в шаблон. Если шаблон не включает в себя складское определение, то будет использоваться алгоритм создания запасов по умолчанию (создание из связанного окна базового объекта).&lt;/p&gt;&lt;p&gt;Этот вариант наиболее полезен, если на складе есть коробка или цилиндр, или если машина имеет стандартное расположение для обработки.&lt;/p&gt;&lt;p&gt;Заметим, что этот параметр отключен, если в работе используется объект склада из существующего твердого - они не могут храниться в шаблоне.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/DlgJobTemplateExport.ui" line="144"/>
       <source>Stock</source>
-      <translation type="unfinished">Stock</translation>
+      <translation>Заготовка</translation>
     </message>
     <message>
       <location filename="../panels/DlgJobTemplateExport.ui" line="153"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If enabled the current size settings for the stock object are included in the template.&lt;/p&gt;&lt;p&gt;For Box and Cylinder stocks this means the actual size of the stock solid being created.&lt;/p&gt;&lt;p&gt;For stock from the Base object's bound box it means the extra material in all directions. A stock object created from such a template will get its basic size from the new job's Base object and apply the stored extra settings.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If enabled the current size settings for the stock object are included in the template.&lt;/p&gt;&lt;p&gt;For Box and Cylinder stocks this means the actual size of the stock solid being created.&lt;/p&gt;&lt;p&gt;For stock from the Base object's bound box it means the extra material in all directions. A stock object created from such a template will get its basic size from the new job's Base object and apply the stored extra settings.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Если включено, текущие настройки размера для объекта по умолчанию включены в шаблон.&lt;/p&gt;&lt;p&gt;Для Box и Cylinder это означает фактический размер создаваемого твердого материала.&lt;/p&gt;&lt;p&gt;Для запаса из связанного поля базового объекта это означает дополнительный материал во всех направлениях. Складский объект, созданный из такого шаблона, получит базовый размер из базового объекта новой задачи и применит дополнительные настройки сохранения.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/DlgJobTemplateExport.ui" line="156"/>
@@ -276,7 +276,7 @@
     <message>
       <location filename="../panels/DlgSelectPostProcessor.ui" line="14"/>
       <source>Post Processor</source>
-      <translation type="unfinished">Post Processor</translation>
+      <translation>Пост-процессор</translation>
     </message>
     <message>
       <location filename="../panels/DlgSelectPostProcessor.ui" line="42"/>
@@ -286,7 +286,7 @@
     <message>
       <location filename="../panels/DlgToolControllerEdit.ui" line="14"/>
       <source>Tool Controller Editor</source>
-      <translation type="unfinished">Tool Controller Editor</translation>
+      <translation>Редактор инструментов</translation>
     </message>
     <message>
       <location filename="../panels/DlgToolControllerEdit.ui" line="29"/>
@@ -296,37 +296,37 @@
     <message>
       <location filename="../panels/DlgToolControllerEdit.ui" line="35"/>
       <source>Controller Name /  Tool Number</source>
-      <translation type="unfinished">Controller Name /  Tool Number</translation>
+      <translation>Название контроллера / Номер инструмента</translation>
     </message>
     <message>
       <location filename="../panels/DlgToolControllerEdit.ui" line="67"/>
       <source>Horiz. Feed</source>
-      <translation type="unfinished">Horiz. Feed</translation>
+      <translation>Горизонтальная подача</translation>
     </message>
     <message>
       <location filename="../panels/DlgToolControllerEdit.ui" line="96"/>
       <source>Vert. Feed</source>
-      <translation type="unfinished">Vert. Feed</translation>
+      <translation>Вертикальная подача</translation>
     </message>
     <message>
       <location filename="../panels/DlgToolControllerEdit.ui" line="125"/>
       <source>Horiz Rapid</source>
-      <translation type="unfinished">Horiz Rapid</translation>
+      <translation>Горизонтальная скорость</translation>
     </message>
     <message>
       <location filename="../panels/DlgToolControllerEdit.ui" line="154"/>
       <source>Vert Rapid</source>
-      <translation type="unfinished">Vert Rapid</translation>
+      <translation>Вертикальная скорость</translation>
     </message>
     <message>
       <location filename="../panels/DlgToolControllerEdit.ui" line="186"/>
       <source>Spindle</source>
-      <translation type="unfinished">Spindle</translation>
+      <translation>Обороты</translation>
     </message>
     <message>
       <location filename="../panels/DlgToolControllerEdit.ui" line="196"/>
       <source>Forward</source>
-      <translation type="unfinished">Forward</translation>
+      <translation>Вперёд</translation>
     </message>
     <message>
       <location filename="../panels/DlgToolControllerEdit.ui" line="201"/>
@@ -386,7 +386,7 @@
     <message>
       <location filename="../panels/PropertyCreate.ui" line="65"/>
       <source>val1,val2,val3,...</source>
-      <translation type="unfinished">val1,val2,val3,...</translation>
+      <translation>val1,val2,val3,...</translation>
     </message>
     <message>
       <location filename="../panels/PropertyCreate.ui" line="72"/>
@@ -396,7 +396,7 @@
     <message>
       <location filename="../panels/PropertyCreate.ui" line="82"/>
       <source>Enums</source>
-      <translation type="unfinished">Enums</translation>
+      <translation>Перечисления</translation>
     </message>
     <message>
       <location filename="../panels/PropertyCreate.ui" line="89"/>
@@ -411,17 +411,17 @@
     <message>
       <location filename="../panels/PropertyCreate.ui" line="120"/>
       <source>Create another</source>
-      <translation type="unfinished">Create another</translation>
+      <translation>Создать другое</translation>
     </message>
     <message>
       <location filename="../panels/ToolBitLibraryEdit.ui" line="14"/>
       <source>Library Manager</source>
-      <translation type="unfinished">Library Manager</translation>
+      <translation>Менеджер библиотеки</translation>
     </message>
     <message>
       <location filename="../panels/ToolBitLibraryEdit.ui" line="35"/>
       <source>Create Toolbit</source>
-      <translation type="unfinished">Create Toolbit</translation>
+      <translation>Создать Наборный инструмент</translation>
     </message>
     <message>
       <location filename="../panels/ToolBitLibraryEdit.ui" line="52"/>
@@ -431,7 +431,7 @@
     <message>
       <location filename="../panels/ToolBitLibraryEdit.ui" line="55"/>
       <source>Add Existing</source>
-      <translation type="unfinished">Add Existing</translation>
+      <translation>Добавить существующий</translation>
     </message>
     <message>
       <location filename="../panels/ToolBitLibraryEdit.ui" line="72"/>
@@ -479,22 +479,22 @@
     <message>
       <location filename="../../DlgJobChooser.ui" line="17"/>
       <source>Choose a Path Job</source>
-      <translation type="unfinished">Choose a Path Job</translation>
+      <translation>Выбрать задание Path</translation>
     </message>
     <message>
       <location filename="../panels/DlgTCChooser.ui" line="23"/>
       <source>Choose a Tool Controller</source>
-      <translation type="unfinished">Choose a Tool Controller</translation>
+      <translation>Выберите контроллер инструмента</translation>
     </message>
     <message>
       <location filename="../panels/DlgTCChooser.ui" line="29"/>
       <source>Tool Controller</source>
-      <translation type="unfinished">Tool Controller</translation>
+      <translation>Контроллер инструмента</translation>
     </message>
     <message>
       <location filename="../panels/DlgToolCopy.ui" line="23"/>
       <source>Copy Selected Tools</source>
-      <translation type="unfinished">Copy Selected Tools</translation>
+      <translation>Скопировать выбранные инструменты</translation>
     </message>
     <message>
       <location filename="../panels/DlgToolCopy.ui" line="29"/>
@@ -512,7 +512,7 @@
     <message>
       <location filename="../../DlgProcessorChooser.ui" line="20"/>
       <source>Processor</source>
-      <translation type="unfinished">Processor</translation>
+      <translation>Процессор</translation>
     </message>
     <message>
       <location filename="../../DlgProcessorChooser.ui" line="33"/>
@@ -574,12 +574,12 @@
     <message>
       <location filename="../panels/DressupPathBoundary.ui" line="55"/>
       <source>Extend Model's Bound Box</source>
-      <translation type="unfinished">Extend Model's Bound Box</translation>
+      <translation>Расширить область модели</translation>
     </message>
     <message>
       <location filename="../panels/DressupPathBoundary.ui" line="60"/>
       <source>Use Existing Solid</source>
-      <translation type="unfinished">Use Existing Solid</translation>
+      <translation>Использовать существующий твердый</translation>
     </message>
     <message>
       <location filename="../panels/DressupPathBoundary.ui" line="87"/>
@@ -690,7 +690,7 @@
     <message>
       <location filename="../panels/PageBaseGeometryEdit.ui" line="36"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;List of operations with Base Geometry in current Job.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;List of operations with Base Geometry in current Job.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Список операций с базовой геометрией в текущем задании.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PageBaseGeometryEdit.ui" line="43"/>
@@ -751,7 +751,7 @@
     <message>
       <location filename="../panels/PageBaseHoleGeometryEdit.ui" line="29"/>
       <source>Feature</source>
-      <translation type="unfinished">Feature</translation>
+      <translation>Характеристика</translation>
     </message>
     <message>
       <location filename="../panels/PageBaseHoleGeometryEdit.ui" line="34"/>
@@ -772,7 +772,7 @@
     <message>
       <location filename="../panels/PageBaseHoleGeometryEdit.ui" line="62"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Remove all list items and fill list with all eligible features from the job's base object.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Remove all list items and fill list with all eligible features from the job's base object.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Очистить список и заполнить всеми подходящими функциями из базового объекта задания.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PageBaseHoleGeometryEdit.ui" line="65"/>
@@ -822,13 +822,13 @@
     <message>
       <location filename="../panels/PageBaseLocationEdit.ui" line="70"/>
       <source>All locations will be processed using the same operation properties.</source>
-      <translation type="unfinished">All locations will be processed using the same operation properties.</translation>
+      <translation>Все места будут обработаны с использованием одинаковых операционных свойств.</translation>
     </message>
     <message>
       <location filename="../panels/PageDepthsEdit.ui" line="39"/>
       <location filename="../panels/SetupGlobal.ui" line="36"/>
       <source>Start Depth</source>
-      <translation type="unfinished">Start Depth</translation>
+      <translation>Начальная глубина</translation>
     </message>
     <message>
       <location filename="../panels/PageDepthsEdit.ui" line="46"/>
@@ -846,7 +846,7 @@
       <location filename="../panels/PageDepthsEdit.ui" line="85"/>
       <location filename="../panels/SetupGlobal.ui" line="50"/>
       <source>Final Depth</source>
-      <translation type="unfinished">Final Depth</translation>
+      <translation>Конечная глубина</translation>
     </message>
     <message>
       <location filename="../panels/PageDepthsEdit.ui" line="92"/>
@@ -864,7 +864,7 @@
       <location filename="../panels/PageDepthsEdit.ui" line="131"/>
       <location filename="../panels/SetupGlobal.ui" line="64"/>
       <source>Step Down</source>
-      <translation type="unfinished">Step Down</translation>
+      <translation>Шаг вниз</translation>
     </message>
     <message>
       <location filename="../panels/PageDepthsEdit.ui" line="138"/>
@@ -874,7 +874,7 @@
     <message>
       <location filename="../panels/PageDepthsEdit.ui" line="163"/>
       <source>Finish Step Down</source>
-      <translation type="unfinished">Finish Step Down</translation>
+      <translation>Завершить шаг вниз</translation>
     </message>
     <message>
       <location filename="../panels/PageDepthsEdit.ui" line="170"/>
@@ -884,17 +884,17 @@
     <message>
       <location filename="../panels/PageDiametersEdit.ui" line="20"/>
       <source>Min Diameter</source>
-      <translation type="unfinished">Min Diameter</translation>
+      <translation>Мин. диаметр</translation>
     </message>
     <message>
       <location filename="../panels/PageDiametersEdit.ui" line="57"/>
       <source>Max Diameter</source>
-      <translation type="unfinished">Max Diameter</translation>
+      <translation>Макс. диаметр</translation>
     </message>
     <message>
       <location filename="../panels/PageHeightsEdit.ui" line="24"/>
       <source>Safe Height</source>
-      <translation type="unfinished">Safe Height</translation>
+      <translation>Безопасная высота</translation>
     </message>
     <message>
       <location filename="../panels/PageHeightsEdit.ui" line="31"/>
@@ -904,7 +904,7 @@
     <message>
       <location filename="../panels/PageHeightsEdit.ui" line="47"/>
       <source>Clearance Height</source>
-      <translation type="unfinished">Clearance Height</translation>
+      <translation>Высота зазора</translation>
     </message>
     <message>
       <location filename="../panels/PageHeightsEdit.ui" line="54"/>
@@ -921,7 +921,7 @@
       <location filename="../panels/PageOpVcarveEdit.ui" line="29"/>
       <location filename="../panels/PageOpWaterlineEdit.ui" line="29"/>
       <source>ToolController</source>
-      <translation type="unfinished">ToolController</translation>
+      <translation>Контроллер инструментов</translation>
     </message>
     <message>
       <location filename="../panels/PageOpCustomEdit.ui" line="42"/>
@@ -961,7 +961,7 @@
       <location filename="../panels/SetupGlobal.ui" line="241"/>
       <location filename="../panels/SetupGlobal.ui" line="247"/>
       <source>Coolant Mode</source>
-      <translation type="unfinished">Coolant Mode</translation>
+      <translation>Режим охлаждения</translation>
     </message>
     <message>
       <location filename="../panels/PageOpCustomEdit.ui" line="62"/>
@@ -977,19 +977,19 @@
       <location filename="../panels/PageOpThreadMillingEdit.ui" line="20"/>
       <location filename="../panels/SetupGlobal.ui" line="166"/>
       <source>Tool Controller</source>
-      <translation type="unfinished">Tool Controller</translation>
+      <translation>Контроллер инструмента</translation>
     </message>
     <message>
       <location filename="../panels/PageOpAdaptiveEdit.ui" line="33"/>
       <location filename="../panels/PageOpHelixEdit.ui" line="43"/>
       <location filename="../panels/SetupGlobal.ui" line="235"/>
       <source>Coolant</source>
-      <translation type="unfinished">Coolant</translation>
+      <translation>Охлаждающая жидкость</translation>
     </message>
     <message>
       <location filename="../panels/PageOpAdaptiveEdit.ui" line="55"/>
       <source>Cut Region</source>
-      <translation type="unfinished">Cut Region</translation>
+      <translation>Вырезать область</translation>
     </message>
     <message>
       <location filename="../panels/PageOpAdaptiveEdit.ui" line="62"/>
@@ -999,7 +999,7 @@
     <message>
       <location filename="../panels/PageOpAdaptiveEdit.ui" line="69"/>
       <source>Operation Type</source>
-      <translation type="unfinished">Operation Type</translation>
+      <translation>Тип операции</translation>
     </message>
     <message>
       <location filename="../panels/PageOpAdaptiveEdit.ui" line="76"/>
@@ -1101,7 +1101,7 @@
       <location filename="../panels/PageOpAdaptiveEdit.ui" line="245"/>
       <location filename="../panels/PageOpPocketFullEdit.ui" line="235"/>
       <source>Use Outline</source>
-      <translation type="unfinished">Use Outline</translation>
+      <translation>Использовать контур</translation>
     </message>
     <message>
       <location filename="../panels/PageOpAdaptiveEdit.ui" line="255"/>
@@ -1137,7 +1137,7 @@
     <message>
       <location filename="../panels/PageOpDeburrEdit.ui" line="188"/>
       <source>W =</source>
-      <translation type="unfinished">W =</translation>
+      <translation>W =</translation>
     </message>
     <message>
       <location filename="../panels/PageOpDeburrEdit.ui" line="195"/>
@@ -1162,7 +1162,7 @@
     <message>
       <location filename="../panels/PageOpDeburrEdit.ui" line="215"/>
       <source>h = </source>
-      <translation type="unfinished">h = </translation>
+      <translation>h = </translation>
     </message>
     <message>
       <location filename="../panels/PageOpDeburrEdit.ui" line="222"/>
@@ -1262,12 +1262,12 @@
     <message>
       <location filename="../panels/PageOpHelixEdit.ui" line="74"/>
       <source>Inside</source>
-      <translation type="unfinished">Inside</translation>
+      <translation>Внутри</translation>
     </message>
     <message>
       <location filename="../panels/PageOpHelixEdit.ui" line="79"/>
       <source>Outside</source>
-      <translation type="unfinished">Outside</translation>
+      <translation>Снаружи</translation>
     </message>
     <message>
       <location filename="../panels/PageOpHelixEdit.ui" line="94"/>
@@ -1277,7 +1277,7 @@
     <message>
       <location filename="../panels/PageOpHelixEdit.ui" line="111"/>
       <source>Step over percent</source>
-      <translation type="unfinished">Step over percent</translation>
+      <translation>Шаг с обходом в процентах</translation>
     </message>
     <message>
       <location filename="../panels/PageOpHelixEdit.ui" line="118"/>
@@ -1293,7 +1293,7 @@
     <message>
       <location filename="../panels/PageOpPocketExtEdit.ui" line="22"/>
       <source>Enable Extensions</source>
-      <translation type="unfinished">Enable Extensions</translation>
+      <translation>Включить расширения</translation>
     </message>
     <message>
       <location filename="../panels/PageOpPocketExtEdit.ui" line="55"/>
@@ -1318,7 +1318,7 @@
     <message>
       <location filename="../panels/PageOpPocketExtEdit.ui" line="78"/>
       <source>Default Length</source>
-      <translation type="unfinished">Default Length</translation>
+      <translation>Длина по умолчанию</translation>
     </message>
     <message>
       <location filename="../panels/PageOpPocketExtEdit.ui" line="85"/>
@@ -1368,7 +1368,7 @@
     <message>
       <location filename="../panels/PageOpPocketFullEdit.ui" line="86"/>
       <source>Cut Mode</source>
-      <translation type="unfinished">Cut Mode</translation>
+      <translation>Режим резки</translation>
     </message>
     <message>
       <location filename="../panels/PageOpPocketFullEdit.ui" line="93"/>
@@ -1388,7 +1388,7 @@
     <message>
       <location filename="../panels/PageOpPocketFullEdit.ui" line="110"/>
       <source>Pattern</source>
-      <translation type="unfinished">Pattern</translation>
+      <translation>Шаблон</translation>
     </message>
     <message>
       <location filename="../panels/PageOpPocketFullEdit.ui" line="117"/>
@@ -1398,7 +1398,7 @@
     <message>
       <location filename="../panels/PageOpPocketFullEdit.ui" line="124"/>
       <source>ZigZag</source>
-      <translation type="unfinished">ZigZag</translation>
+      <translation>ZigZag</translation>
     </message>
     <message>
       <location filename="../panels/PageOpPocketFullEdit.ui" line="134"/>
@@ -1408,7 +1408,7 @@
     <message>
       <location filename="../panels/PageOpPocketFullEdit.ui" line="139"/>
       <source>ZigZagOffset</source>
-      <translation type="unfinished">ZigZagOffset</translation>
+      <translation>ZigZag смещение</translation>
     </message>
     <message>
       <location filename="../panels/PageOpPocketFullEdit.ui" line="144"/>
@@ -1462,7 +1462,7 @@
       <location filename="../panels/PageOpProfileFullEdit.ui" line="130"/>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="255"/>
       <source>Use Start Point</source>
-      <translation type="unfinished">Use Start Point</translation>
+      <translation>Использовать начальную точку</translation>
     </message>
     <message>
       <location filename="../panels/PageOpPocketFullEdit.ui" line="232"/>
@@ -1502,12 +1502,12 @@
     <message>
       <location filename="../panels/PageOpProbeEdit.ui" line="101"/>
       <source>X Offset</source>
-      <translation type="unfinished">X Offset</translation>
+      <translation>Смещение по X</translation>
     </message>
     <message>
       <location filename="../panels/PageOpProbeEdit.ui" line="115"/>
       <source>Y Offset</source>
-      <translation type="unfinished">Y Offset</translation>
+      <translation>Смещение по Y</translation>
     </message>
     <message>
       <location filename="../panels/PageOpProbeEdit.ui" line="132"/>
@@ -1532,13 +1532,13 @@
     <message>
       <location filename="../panels/PageOpProfileFullEdit.ui" line="63"/>
       <source>Cut Side</source>
-      <translation type="unfinished">Cut Side</translation>
+      <translation>Вырезать грань</translation>
     </message>
     <message>
       <location filename="../panels/PageOpProfileFullEdit.ui" line="74"/>
       <location filename="../panels/PageOpProfileFullEdit.ui" line="93"/>
       <source>PLACEHOLDER</source>
-      <translation type="unfinished">PLACEHOLDER</translation>
+      <translation>МЕСТО</translation>
     </message>
     <message>
       <location filename="../panels/PageOpProfileFullEdit.ui" line="114"/>
@@ -1558,7 +1558,7 @@
     <message>
       <location filename="../panels/PageOpProfileFullEdit.ui" line="140"/>
       <source>Process Holes</source>
-      <translation type="unfinished">Process Holes</translation>
+      <translation>Делать отверстие</translation>
     </message>
     <message>
       <location filename="../panels/PageOpProfileFullEdit.ui" line="147"/>
@@ -1568,7 +1568,7 @@
     <message>
       <location filename="../panels/PageOpProfileFullEdit.ui" line="150"/>
       <source>Use Compensation</source>
-      <translation type="unfinished">Use Compensation</translation>
+      <translation>Использовать Компенсацию</translation>
     </message>
     <message>
       <location filename="../panels/PageOpProfileFullEdit.ui" line="157"/>
@@ -1578,7 +1578,7 @@
     <message>
       <location filename="../panels/PageOpProfileFullEdit.ui" line="160"/>
       <source>Process Circles</source>
-      <translation type="unfinished">Process Circles</translation>
+      <translation>Делать круги</translation>
     </message>
     <message>
       <location filename="../panels/PageOpProfileFullEdit.ui" line="167"/>
@@ -1588,7 +1588,7 @@
     <message>
       <location filename="../panels/PageOpProfileFullEdit.ui" line="170"/>
       <source>Process Perimeter</source>
-      <translation type="unfinished">Process Perimeter</translation>
+      <translation>Делать периметр</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSlotEdit.ui" line="71"/>
@@ -1616,13 +1616,13 @@
       <location filename="../panels/PageOpSlotEdit.ui" line="107"/>
       <location filename="../panels/PageOpSlotEdit.ui" line="179"/>
       <source>Lowest Point</source>
-      <translation type="unfinished">Lowest Point</translation>
+      <translation>Низшая точка</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSlotEdit.ui" line="112"/>
       <location filename="../panels/PageOpSlotEdit.ui" line="184"/>
       <source>Highest Point</source>
-      <translation type="unfinished">Highest Point</translation>
+      <translation>Высшая точка</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSlotEdit.ui" line="117"/>
@@ -1707,7 +1707,7 @@
     <message>
       <location filename="../panels/PageOpSlotEdit.ui" line="361"/>
       <source>Single-pass</source>
-      <translation type="unfinished">Single-pass</translation>
+      <translation>Одноразовый переход</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSlotEdit.ui" line="366"/>
@@ -1717,7 +1717,7 @@
     <message>
       <location filename="../panels/PageOpSlotEdit.ui" line="374"/>
       <source>Path Orientation</source>
-      <translation type="unfinished">Path Orientation</translation>
+      <translation>Расположение пути</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSlotEdit.ui" line="381"/>
@@ -1727,7 +1727,7 @@
     <message>
       <location filename="../panels/PageOpSlotEdit.ui" line="385"/>
       <source>Start to End</source>
-      <translation type="unfinished">Start to End</translation>
+      <translation>Начать до конца</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSlotEdit.ui" line="390"/>
@@ -1742,13 +1742,13 @@
     <message>
       <location filename="../panels/PageOpSlotEdit.ui" line="401"/>
       <source>Reverse cut direction</source>
-      <translation type="unfinished">Reverse cut direction</translation>
+      <translation>Поменять направление обработки</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="63"/>
       <location filename="../panels/PageOpWaterlineEdit.ui" line="79"/>
       <source>BoundBox</source>
-      <translation type="unfinished">BoundBox</translation>
+      <translation>Габариты</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="70"/>
@@ -1770,7 +1770,7 @@
       <location filename="../panels/PageOpSurfaceEdit.ui" line="105"/>
       <location filename="../panels/PageOpWaterlineEdit.ui" line="117"/>
       <source>Cut Pattern</source>
-      <translation type="unfinished">Cut Pattern</translation>
+      <translation>Вырезать шаблон</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="112"/>
@@ -1816,7 +1816,7 @@
     <message>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="184"/>
       <source>Drop Cutter Direction</source>
-      <translation type="unfinished">Drop Cutter Direction</translation>
+      <translation>Направление вырезания</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="191"/>
@@ -1826,7 +1826,7 @@
     <message>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="198"/>
       <source>Depth offset</source>
-      <translation type="unfinished">Depth offset</translation>
+      <translation>Смещение Глубины</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="205"/>
@@ -1867,7 +1867,7 @@
       <location filename="../panels/PageOpSurfaceEdit.ui" line="265"/>
       <location filename="../panels/PageOpWaterlineEdit.ui" line="205"/>
       <source>Optimize Linear Paths</source>
-      <translation type="unfinished">Optimize Linear Paths</translation>
+      <translation>Оптимизация Линейных путей</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="272"/>
@@ -1877,7 +1877,7 @@
     <message>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="275"/>
       <source>Boundary Enforcement</source>
-      <translation type="unfinished">Boundary Enforcement</translation>
+      <translation>Граница применения</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="285"/>
@@ -1887,12 +1887,12 @@
     <message>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="288"/>
       <source>Optimize StepOver Transitions</source>
-      <translation type="unfinished">Optimize StepOver Transitions</translation>
+      <translation>Оптимизировать шаг переходов</translation>
     </message>
     <message>
       <location filename="../panels/SetupGlobal.ui" line="14"/>
       <source>Setup Global</source>
-      <translation type="unfinished">Setup Global</translation>
+      <translation>Настройка глобальных</translation>
     </message>
     <message>
       <location filename="../panels/SetupGlobal.ui" line="30"/>
@@ -1922,7 +1922,7 @@
     <message>
       <location filename="../panels/SetupGlobal.ui" line="87"/>
       <source>Expression</source>
-      <translation type="unfinished">Expression</translation>
+      <translation>Выражение</translation>
     </message>
     <message>
       <location filename="../panels/SetupGlobal.ui" line="97"/>
@@ -1962,7 +1962,7 @@
     <message>
       <location filename="../panels/SetupGlobal.ui" line="172"/>
       <source>Rapid Speeds</source>
-      <translation type="unfinished">Rapid Speeds</translation>
+      <translation>Большая скорость</translation>
     </message>
     <message>
       <location filename="../panels/SetupGlobal.ui" line="178"/>
@@ -2008,7 +2008,7 @@
     <message>
       <location filename="../panels/PageOpThreadMillingEdit.ui" line="85"/>
       <source>Major Diameter</source>
-      <translation type="unfinished">Major Diameter</translation>
+      <translation>Основной диаметр</translation>
     </message>
     <message>
       <location filename="../panels/PageOpThreadMillingEdit.ui" line="99"/>
@@ -2140,23 +2140,23 @@
     <message>
       <location filename="../panels/ToolEditor.ui" line="67"/>
       <source>Length Offset</source>
-      <translation type="unfinished">Length Offset</translation>
+      <translation>Длина смещения</translation>
     </message>
     <message>
       <location filename="../panels/ToolEditor.ui" line="87"/>
       <location filename="../panels/ToolEditor.ui" line="184"/>
       <source>Tool Parameter</source>
-      <translation type="unfinished">Tool Parameter</translation>
+      <translation>Параметр инструмента</translation>
     </message>
     <message>
       <location filename="../panels/ToolEditor.ui" line="103"/>
       <source>Flat Radius</source>
-      <translation type="unfinished">Flat Radius</translation>
+      <translation>Плоский радиус</translation>
     </message>
     <message>
       <location filename="../panels/ToolEditor.ui" line="110"/>
       <source>Corner Radius</source>
-      <translation type="unfinished">Corner Radius</translation>
+      <translation>Радиус углов</translation>
     </message>
     <message>
       <location filename="../panels/ToolEditor.ui" line="117"/>
@@ -2166,27 +2166,27 @@
     <message>
       <location filename="../panels/ToolEditor.ui" line="124"/>
       <source>Cutting Edge Height</source>
-      <translation type="unfinished">Cutting Edge Height</translation>
+      <translation>Высота режущего ребра</translation>
     </message>
     <message>
       <location filename="../panels/ToolEditor.ui" line="196"/>
       <source>D = </source>
-      <translation type="unfinished">D = </translation>
+      <translation>D = </translation>
     </message>
     <message>
       <location filename="../panels/ToolEditor.ui" line="213"/>
       <source>d =</source>
-      <translation type="unfinished">d =</translation>
+      <translation>d =</translation>
     </message>
     <message>
       <location filename="../panels/ToolEditor.ui" line="230"/>
       <source>H =</source>
-      <translation type="unfinished">H =</translation>
+      <translation>H =</translation>
     </message>
     <message>
       <location filename="../panels/ToolEditor.ui" line="267"/>
       <source>S = </source>
-      <translation type="unfinished">S = </translation>
+      <translation>S = </translation>
     </message>
     <message>
       <location filename="../panels/ToolEditor.ui" line="308"/>
@@ -2201,7 +2201,7 @@
     <message>
       <location filename="../preferences/PathDressupHoldingTags.ui" line="26"/>
       <source>Default Width</source>
-      <translation type="unfinished">Default Width</translation>
+      <translation>Ширина по умолчанию</translation>
     </message>
     <message>
       <location filename="../preferences/PathDressupHoldingTags.ui" line="33"/>
@@ -2211,7 +2211,7 @@
     <message>
       <location filename="../preferences/PathDressupHoldingTags.ui" line="40"/>
       <source>Default Height</source>
-      <translation type="unfinished">Default Height</translation>
+      <translation>Высота по умолчанию</translation>
     </message>
     <message>
       <location filename="../preferences/PathDressupHoldingTags.ui" line="47"/>
@@ -2221,7 +2221,7 @@
     <message>
       <location filename="../preferences/PathDressupHoldingTags.ui" line="54"/>
       <source>Default Angle</source>
-      <translation type="unfinished">Default Angle</translation>
+      <translation>Угол по умолчанию</translation>
     </message>
     <message>
       <location filename="../preferences/PathDressupHoldingTags.ui" line="61"/>
@@ -2231,7 +2231,7 @@
     <message>
       <location filename="../preferences/PathDressupHoldingTags.ui" line="80"/>
       <source>Default Radius</source>
-      <translation type="unfinished">Default Radius</translation>
+      <translation>Радиус по умолчанию</translation>
     </message>
     <message>
       <location filename="../preferences/PathDressupHoldingTags.ui" line="87"/>
@@ -2259,7 +2259,7 @@
     <message>
       <location filename="../preferences/PathJob.ui" line="14"/>
       <source>Job Preferences</source>
-      <translation type="unfinished">Job Preferences</translation>
+      <translation>Настройки задания</translation>
     </message>
     <message>
       <location filename="../preferences/PathJob.ui" line="32"/>
@@ -2289,7 +2289,7 @@
     <message>
       <location filename="../preferences/PathJob.ui" line="72"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The default template to be selected when creating a new Job. &lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;This can be helpful when almost all jobs will be processed by the same machine with a similar setup.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;If left empty no template will be preselected.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The default template to be selected when creating a new Job. &lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;This can be helpful when almost all jobs will be processed by the same machine with a similar setup.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;If left empty no template will be preselected.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Шаблон по умолчанию будет выделен при создании нового задания. &lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Полезно, когда почти все задания будут обрабатываться на одном станке с одной юстировкой.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Если оставить пустым, ни один шаблон выделен не будет.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../preferences/PathJob.ui" line="89"/>
@@ -2299,33 +2299,33 @@
     <message>
       <location filename="../preferences/PathJob.ui" line="97"/>
       <source>Default Geometry Tolerance</source>
-      <translation type="unfinished">Default Geometry Tolerance</translation>
+      <translation>Допуск на геометрию по умолчанию</translation>
     </message>
     <message>
       <location filename="../preferences/PathJob.ui" line="104"/>
       <source>Default value for new Jobs, used for computing Paths.  Smaller increases accuracy, but slows down computation</source>
-      <translation type="unfinished">Default value for new Jobs, used for computing Paths.  Smaller increases accuracy, but slows down computation</translation>
+      <translation>Значение по умолчанию для новых заданий, используемых для вычисления пути. Меньше повышает точность, но замедляет вычисления</translation>
     </message>
     <message>
       <location filename="../preferences/PathJob.ui" line="111"/>
       <source>Default Curve Accuracy</source>
-      <translation type="unfinished">Default Curve Accuracy</translation>
+      <translation>Точность кривой по умолчанию</translation>
     </message>
     <message>
       <location filename="../preferences/PathJob.ui" line="148"/>
       <location filename="../preferences/PathJob.ui" line="249"/>
       <source>Post Processor</source>
-      <translation type="unfinished">Post Processor</translation>
+      <translation>Пост-процессор</translation>
     </message>
     <message>
       <location filename="../preferences/PathJob.ui" line="160"/>
       <source>Output File</source>
-      <translation type="unfinished">Output File</translation>
+      <translation>Выходной файл</translation>
     </message>
     <message>
       <location filename="../preferences/PathJob.ui" line="171"/>
       <source>Default Path</source>
-      <translation type="unfinished">Default Path</translation>
+      <translation>Путь по умолчанию</translation>
     </message>
     <message>
       <location filename="../preferences/PathJob.ui" line="182"/>
@@ -2335,7 +2335,7 @@
     <message>
       <location filename="../preferences/PathJob.ui" line="200"/>
       <source>File Save Policy</source>
-      <translation type="unfinished">File Save Policy</translation>
+      <translation>Политика сохранения файлов</translation>
     </message>
     <message>
       <location filename="../preferences/PathJob.ui" line="217"/>
@@ -2345,27 +2345,27 @@
     <message>
       <location filename="../preferences/PathJob.ui" line="221"/>
       <source>Open File Dialog</source>
-      <translation type="unfinished">Open File Dialog</translation>
+      <translation>Открыть диалоговое окно</translation>
     </message>
     <message>
       <location filename="../preferences/PathJob.ui" line="226"/>
       <source>Open File Dialog on conflict</source>
-      <translation type="unfinished">Open File Dialog on conflict</translation>
+      <translation>Открыть диалоговое окно файла при конфликте</translation>
     </message>
     <message>
       <location filename="../preferences/PathJob.ui" line="231"/>
       <source>Overwrite existing file</source>
-      <translation type="unfinished">Overwrite existing file</translation>
+      <translation>Переписать существующий файл?</translation>
     </message>
     <message>
       <location filename="../preferences/PathJob.ui" line="236"/>
       <source>Append Unique ID on conflict</source>
-      <translation type="unfinished">Append Unique ID on conflict</translation>
+      <translation>Добавить уникальный ID при конфликте</translation>
     </message>
     <message>
       <location filename="../preferences/PathJob.ui" line="258"/>
       <source>Post Processors Selection </source>
-      <translation type="unfinished">Post Processors Selection </translation>
+      <translation>Выбор пост-процессоров </translation>
     </message>
     <message>
       <location filename="../preferences/PathJob.ui" line="268"/>
@@ -2375,7 +2375,7 @@
     <message>
       <location filename="../preferences/PathJob.ui" line="275"/>
       <source>Default Post Processor</source>
-      <translation type="unfinished">Default Post Processor</translation>
+      <translation>Пост-процессор по умолчанию</translation>
     </message>
     <message>
       <location filename="../preferences/PathJob.ui" line="282"/>
@@ -2385,7 +2385,7 @@
     <message>
       <location filename="../preferences/PathJob.ui" line="285"/>
       <source>DefaultPostProcessor</source>
-      <translation type="unfinished">DefaultPostProcessor</translation>
+      <translation>Постпроцессор по умолчанию</translation>
     </message>
     <message>
       <location filename="../preferences/PathJob.ui" line="288"/>
@@ -2395,7 +2395,7 @@
     <message>
       <location filename="../preferences/PathJob.ui" line="295"/>
       <source>Default Arguments</source>
-      <translation type="unfinished">Default Arguments</translation>
+      <translation>Аргументы по умолчанию</translation>
     </message>
     <message>
       <location filename="../preferences/PathJob.ui" line="302"/>
@@ -2405,12 +2405,12 @@
     <message>
       <location filename="../preferences/PathJob.ui" line="340"/>
       <source>Setup</source>
-      <translation type="unfinished">Setup</translation>
+      <translation>Конфигурация</translation>
     </message>
     <message>
       <location filename="../preferences/PathJob.ui" line="346"/>
       <source>Stock</source>
-      <translation type="unfinished">Stock</translation>
+      <translation>Заготовка</translation>
     </message>
     <message>
       <location filename="../preferences/PathJob.ui" line="365"/>
@@ -2425,7 +2425,7 @@
     <message>
       <location filename="../preferences/PathJob.ui" line="375"/>
       <source>Extend Model's Bound Box</source>
-      <translation type="unfinished">Extend Model's Bound Box</translation>
+      <translation>Расширить область модели</translation>
     </message>
     <message>
       <location filename="../preferences/PathJob.ui" line="399"/>
@@ -2496,7 +2496,7 @@
     <message>
       <location filename="../preferences/PathJob.ui" line="626"/>
       <source>Store Absolute Paths</source>
-      <translation type="unfinished">Store Absolute Paths</translation>
+      <translation>Сохранять абсолютные пути</translation>
     </message>
   </context>
   <context>
@@ -2513,7 +2513,7 @@
     <message>
       <location filename="../../DlgSettingsPathColor.ui" line="14"/>
       <source>GUI</source>
-      <translation type="unfinished">GUI</translation>
+      <translation>Графический Интерфейс</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsPathColor.ui" line="23"/>
@@ -2593,7 +2593,7 @@
     <message>
       <location filename="../../DlgSettingsPathColor.ui" line="352"/>
       <source>UI Settings</source>
-      <translation type="unfinished">UI Settings</translation>
+      <translation>Настройки интерфейса</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsPathColor.ui" line="361"/>
@@ -2790,7 +2790,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/DressUpLeadInOutEdit.ui" line="269"/>
       <source>Radius / Center:</source>
-      <translation type="unfinished">Radius / Center:</translation>
+      <translation>Радиус / центр:</translation>
     </message>
     <message>
       <location filename="../panels/DressUpLeadInOutEdit.ui" line="296"/>
@@ -2810,7 +2810,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/DressUpLeadInOutEdit.ui" line="317"/>
       <source>Include Layers</source>
-      <translation type="unfinished">Include Layers</translation>
+      <translation>Включить слои</translation>
     </message>
     <message>
       <location filename="../panels/DressUpLeadInOutEdit.ui" line="324"/>
@@ -2852,7 +2852,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/AxisMapEdit.ui" line="37"/>
       <source>Axis Mapping</source>
-      <translation type="unfinished">Axis Mapping</translation>
+      <translation>Сопоставление Оси</translation>
     </message>
     <message>
       <location filename="../panels/AxisMapEdit.ui" line="44"/>
@@ -2862,32 +2862,32 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/AxisMapEdit.ui" line="51"/>
       <source>X-&gt;A</source>
-      <translation type="unfinished">X-&gt;A</translation>
+      <translation>X-&gt;А</translation>
     </message>
     <message>
       <location filename="../panels/AxisMapEdit.ui" line="56"/>
       <source>Y-&gt;A</source>
-      <translation type="unfinished">Y-&gt;A</translation>
+      <translation>Y-&gt;A</translation>
     </message>
     <message>
       <location filename="../panels/AxisMapEdit.ui" line="61"/>
       <source>X-&gt;B</source>
-      <translation type="unfinished">X-&gt;B</translation>
+      <translation>X-&gt;B</translation>
     </message>
     <message>
       <location filename="../panels/AxisMapEdit.ui" line="66"/>
       <source>Y-&gt;B</source>
-      <translation type="unfinished">Y-&gt;B</translation>
+      <translation>Y-&gt;B</translation>
     </message>
     <message>
       <location filename="../panels/AxisMapEdit.ui" line="71"/>
       <source>X-&gt;C</source>
-      <translation type="unfinished">X-&gt;C</translation>
+      <translation>X-&gt;C</translation>
     </message>
     <message>
       <location filename="../panels/AxisMapEdit.ui" line="76"/>
       <source>Y-&gt;C</source>
-      <translation type="unfinished">Y-&gt;C</translation>
+      <translation>Y-&gt;C</translation>
     </message>
     <message>
       <location filename="../panels/DogboneEdit.ui" line="14"/>
@@ -2968,7 +2968,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/DogboneEdit.ui" line="121"/>
       <source>adaptive</source>
-      <translation type="unfinished">adaptive</translation>
+      <translation>адаптивный</translation>
     </message>
     <message>
       <location filename="../panels/DogboneEdit.ui" line="126"/>
@@ -3013,7 +3013,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/DragKnifeEdit.ui" line="37"/>
       <source>Offset Distance</source>
-      <translation type="unfinished">Offset Distance</translation>
+      <translation>Расстояние смещения</translation>
     </message>
     <message>
       <location filename="../panels/DragKnifeEdit.ui" line="44"/>
@@ -3048,7 +3048,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/HoldingTagsEdit.ui" line="40"/>
       <source>Angle            </source>
-      <translation type="unfinished">Angle            </translation>
+      <translation>Угол            </translation>
     </message>
     <message>
       <location filename="../panels/HoldingTagsEdit.ui" line="47"/>
@@ -3083,7 +3083,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/HoldingTagsEdit.ui" line="126"/>
       <source>Edit...</source>
-      <translation type="unfinished">Edit...</translation>
+      <translation>Изменить...</translation>
     </message>
     <message>
       <location filename="../panels/HoldingTagsEdit.ui" line="133"/>
@@ -3093,18 +3093,18 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/HoldingTagsEdit.ui" line="143"/>
       <source>Auto Generate</source>
-      <translation type="unfinished">Auto Generate</translation>
+      <translation>Создать автоматически</translation>
     </message>
     <message>
       <location filename="../panels/HoldingTagsEdit.ui" line="159"/>
       <location filename="../panels/HoldingTagsEdit.ui" line="181"/>
       <source>Replace All</source>
-      <translation type="unfinished">Replace All</translation>
+      <translation>Заменить всё</translation>
     </message>
     <message>
       <location filename="../panels/HoldingTagsEdit.ui" line="172"/>
       <source>Copy From</source>
-      <translation type="unfinished">Copy From</translation>
+      <translation>Копировать из</translation>
     </message>
     <message>
       <location filename="../panels/SurfaceEdit.ui" line="20"/>
@@ -3119,22 +3119,22 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/SurfaceEdit.ui" line="51"/>
       <source>Drag to reorder, then update.</source>
-      <translation type="unfinished">Drag to reorder, then update.</translation>
+      <translation>Перетащите для изменения порядка, затем обновите.</translation>
     </message>
     <message>
       <location filename="../panels/SurfaceEdit.ui" line="67"/>
       <source>Add item selected in window.</source>
-      <translation type="unfinished">Add item selected in window.</translation>
+      <translation>Добавить элемент выбранный в окне.</translation>
     </message>
     <message>
       <location filename="../panels/SurfaceEdit.ui" line="70"/>
       <source>add</source>
-      <translation type="unfinished">add</translation>
+      <translation>добавить</translation>
     </message>
     <message>
       <location filename="../panels/SurfaceEdit.ui" line="77"/>
       <source>Remove Item selected in list, then update.</source>
-      <translation type="unfinished">Remove Item selected in list, then update.</translation>
+      <translation>Удалить элемент из списка, а затем обновить.</translation>
     </message>
     <message>
       <location filename="../panels/SurfaceEdit.ui" line="80"/>
@@ -3164,22 +3164,22 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/SurfaceEdit.ui" line="136"/>
       <source>Start Depth</source>
-      <translation type="unfinished">Start Depth</translation>
+      <translation>Начальная глубина</translation>
     </message>
     <message>
       <location filename="../panels/SurfaceEdit.ui" line="150"/>
       <source>Final Depth</source>
-      <translation type="unfinished">Final Depth</translation>
+      <translation>Конечная глубина</translation>
     </message>
     <message>
       <location filename="../panels/SurfaceEdit.ui" line="164"/>
       <source>Step Down</source>
-      <translation type="unfinished">Step Down</translation>
+      <translation>Шаг вниз</translation>
     </message>
     <message>
       <location filename="../panels/SurfaceEdit.ui" line="178"/>
       <source>Finish Step Down</source>
-      <translation type="unfinished">Finish Step Down</translation>
+      <translation>Завершить шаг вниз</translation>
     </message>
     <message>
       <location filename="../panels/SurfaceEdit.ui" line="198"/>
@@ -3189,12 +3189,12 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/SurfaceEdit.ui" line="214"/>
       <source>Safe Height</source>
-      <translation type="unfinished">Safe Height</translation>
+      <translation>Безопасная высота</translation>
     </message>
     <message>
       <location filename="../panels/SurfaceEdit.ui" line="228"/>
       <source>Clearance Height</source>
-      <translation type="unfinished">Clearance Height</translation>
+      <translation>Высота зазора</translation>
     </message>
     <message>
       <location filename="../panels/SurfaceEdit.ui" line="248"/>
@@ -3204,12 +3204,12 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/SurfaceEdit.ui" line="263"/>
       <source>ToolController</source>
-      <translation type="unfinished">ToolController</translation>
+      <translation>Контроллер инструментов</translation>
     </message>
     <message>
       <location filename="../panels/SurfaceEdit.ui" line="273"/>
       <source>Coolant Mode</source>
-      <translation type="unfinished">Coolant Mode</translation>
+      <translation>Режим охлаждения</translation>
     </message>
     <message>
       <location filename="../panels/SurfaceEdit.ui" line="280"/>
@@ -3323,12 +3323,12 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/TaskPathSimulator.ui" line="229"/>
       <source>Accuracy:</source>
-      <translation type="unfinished">Accuracy:</translation>
+      <translation>Точность:</translation>
     </message>
     <message>
       <location filename="../panels/TaskPathSimulator.ui" line="278"/>
       <source>Job:</source>
-      <translation type="unfinished">Job:</translation>
+      <translation>Задание:</translation>
     </message>
     <message>
       <location filename="../panels/TaskPathSimulator.ui" line="300"/>
@@ -3356,7 +3356,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/ToolBitEditor.ui" line="14"/>
       <source>Tool Bit Attributes</source>
-      <translation type="unfinished">Tool Bit Attributes</translation>
+      <translation>Свойства инструмента</translation>
     </message>
     <message>
       <location filename="../panels/ToolBitEditor.ui" line="30"/>
@@ -3366,7 +3366,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/ToolBitEditor.ui" line="42"/>
       <source>Tool Bit</source>
-      <translation type="unfinished">Tool Bit</translation>
+      <translation>Инструмент</translation>
     </message>
     <message>
       <location filename="../panels/ToolBitEditor.ui" line="48"/>
@@ -3416,7 +3416,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/ToolBitEditor.ui" line="148"/>
       <source>Cutting Edge Height</source>
-      <translation type="unfinished">Cutting Edge Height</translation>
+      <translation>Высота режущего ребра</translation>
     </message>
     <message>
       <location filename="../panels/ToolBitEditor.ui" line="155"/>
@@ -3436,7 +3436,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/ToolBitEditor.ui" line="198"/>
       <source>Attributes</source>
-      <translation type="unfinished">Attributes</translation>
+      <translation>Атрибуты</translation>
     </message>
   </context>
   <context>
@@ -3444,7 +3444,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/ToolBitSelector.ui" line="20"/>
       <source>Tool Selector</source>
-      <translation type="unfinished">Tool Selector</translation>
+      <translation>Выбор инструментов</translation>
     </message>
     <message>
       <location filename="../panels/ToolBitSelector.ui" line="30"/>
@@ -3464,7 +3464,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/ToolBitSelector.ui" line="104"/>
       <source>Add To Job</source>
-      <translation type="unfinished">Add To Job</translation>
+      <translation>Добавить к заданию</translation>
     </message>
   </context>
   <context>
@@ -3472,7 +3472,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/PathEdit.ui" line="14"/>
       <source>Job Edit</source>
-      <translation type="unfinished">Job Edit</translation>
+      <translation>Редактировать задание</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="21"/>
@@ -3509,7 +3509,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/PathEdit.ui" line="118"/>
       <source>Template Export</source>
-      <translation type="unfinished">Template Export</translation>
+      <translation>Экспорт шаблона</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="128"/>
@@ -3519,12 +3519,12 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/PathEdit.ui" line="134"/>
       <source>Output File</source>
-      <translation type="unfinished">Output File</translation>
+      <translation>Выходной файл</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="155"/>
       <source>Processor</source>
-      <translation type="unfinished">Processor</translation>
+      <translation>Процессор</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="165"/>
@@ -3539,7 +3539,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/PathEdit.ui" line="185"/>
       <source>Work Coordinate Systems</source>
-      <translation type="unfinished">Work Coordinate Systems</translation>
+      <translation>Рабочая система координат WCS</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="191"/>
@@ -3549,7 +3549,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/PathEdit.ui" line="198"/>
       <source>Systems</source>
-      <translation type="unfinished">Systems</translation>
+      <translation>Системы</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="205"/>
@@ -3584,7 +3584,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/PathEdit.ui" line="396"/>
       <source>Setup</source>
-      <translation type="unfinished">Setup</translation>
+      <translation>Конфигурация</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="414"/>
@@ -3594,7 +3594,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/PathEdit.ui" line="420"/>
       <source>Stock</source>
-      <translation type="unfinished">Stock</translation>
+      <translation>Заготовка</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="441"/>
@@ -3609,12 +3609,12 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/PathEdit.ui" line="451"/>
       <source>Extend Model's Bound Box</source>
-      <translation type="unfinished">Extend Model's Bound Box</translation>
+      <translation>Расширить область модели</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="456"/>
       <source>Use Existing Solid</source>
-      <translation type="unfinished">Use Existing Solid</translation>
+      <translation>Использовать существующий твердый</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="464"/>
@@ -3725,12 +3725,12 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/PathEdit.ui" line="707"/>
       <source>Move - XY</source>
-      <translation type="unfinished">Move - XY</translation>
+      <translation>Переместить - XY</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="865"/>
       <source>Rotate - XY</source>
-      <translation type="unfinished">Rotate - XY</translation>
+      <translation>Поворот - XY</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="921"/>
@@ -3741,7 +3741,7 @@ p, li { white-space: pre-wrap; }
       <location filename="../panels/PathEdit.ui" line="981"/>
       <location filename="../panels/PathEdit.ui" line="1268"/>
       <source>Default Values</source>
-      <translation type="unfinished">Default Values</translation>
+      <translation>Значение по Умолчанию</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="987"/>
@@ -3751,7 +3751,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/PathEdit.ui" line="993"/>
       <source>Start Depth</source>
-      <translation type="unfinished">Start Depth</translation>
+      <translation>Начальная глубина</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="1000"/>
@@ -3761,7 +3761,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/PathEdit.ui" line="1007"/>
       <source>Final Depth</source>
-      <translation type="unfinished">Final Depth</translation>
+      <translation>Конечная глубина</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="1014"/>
@@ -3771,7 +3771,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/PathEdit.ui" line="1021"/>
       <source>Step Down</source>
-      <translation type="unfinished">Step Down</translation>
+      <translation>Шаг вниз</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="1028"/>
@@ -3786,7 +3786,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/PathEdit.ui" line="1044"/>
       <source>Expression</source>
-      <translation type="unfinished">Expression</translation>
+      <translation>Выражение</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="1054"/>
@@ -3826,12 +3826,12 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/PathEdit.ui" line="1109"/>
       <source>Coolant</source>
-      <translation type="unfinished">Coolant</translation>
+      <translation>Охлаждающая жидкость</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="1115"/>
       <source>Coolant Mode</source>
-      <translation type="unfinished">Coolant Mode</translation>
+      <translation>Режим охлаждения</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="1146"/>
@@ -3868,7 +3868,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/PathEdit.ui" line="1217"/>
       <source>Spindle</source>
-      <translation type="unfinished">Spindle</translation>
+      <translation>Обороты</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="1237"/>
@@ -3883,7 +3883,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/PathEdit.ui" line="1274"/>
       <source>Rapid Speeds</source>
-      <translation type="unfinished">Rapid Speeds</translation>
+      <translation>Большая скорость</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="1283"/>
@@ -3908,12 +3908,12 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/PathEdit.ui" line="1344"/>
       <source>Workplan</source>
-      <translation type="unfinished">Workplan</translation>
+      <translation>План работы</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="1356"/>
       <source>Active Tool </source>
-      <translation type="unfinished">Active Tool </translation>
+      <translation>Активный инструмент </translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="1469"/>

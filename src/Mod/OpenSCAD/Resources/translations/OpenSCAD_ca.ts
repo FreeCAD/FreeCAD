@@ -212,7 +212,7 @@
       <location filename="../../OpenSCADCommands.py" line="342"/>
       <location filename="../../OpenSCADCommands.py" line="364"/>
       <source>Load</source>
-      <translation type="unfinished">Load</translation>
+      <translation>Carrega</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="343"/>
@@ -387,7 +387,7 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="293"/>
       <source>Expand all placements downwards in the Tree view</source>
-      <translation type="unfinished">Expand all placements downwards in the Tree view</translation>
+      <translation>Expandeix totes les col·locacions cap avall a la vista en arbre</translation>
     </message>
   </context>
   <context>
@@ -400,7 +400,7 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="314"/>
       <source>Replace an object in the Tree view. Please select old, new, and parent object</source>
-      <translation type="unfinished">Replace an object in the Tree view. Please select old, new, and parent object</translation>
+      <translation>Substitueix un objecte a la vista en arbre. Seleccioneu un objecte antic, un de nou i un de primari</translation>
     </message>
   </context>
   <context>

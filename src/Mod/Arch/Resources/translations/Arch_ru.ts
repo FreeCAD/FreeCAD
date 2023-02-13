@@ -106,7 +106,7 @@
     <message>
       <location filename="../ui/ArchMaterial.ui" line="268"/>
       <source>Father</source>
-      <translation>Отец</translation>
+      <translation>Родитель</translation>
     </message>
   </context>
   <context>
@@ -1734,7 +1734,7 @@ unit to work with when opening the file.</source>
     <message>
       <location filename="../../ArchStructure.py" line="205"/>
       <source>Create Structures From Selection</source>
-      <translation type="unfinished">Create Structures From Selection</translation>
+      <translation>Создать структуры из выделенного</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="222"/>
@@ -1744,18 +1744,18 @@ unit to work with when opening the file.</source>
     <message>
       <location filename="../../ArchStructure.py" line="245"/>
       <source>Create Structural System</source>
-      <translation type="unfinished">Create Structural System</translation>
+      <translation>Создать структурную систему</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="256"/>
       <source>Please select at least an axis object</source>
-      <translation type="unfinished">Please select at least an axis object</translation>
+      <translation>Пожалуйста, выберите хотя бы ось</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="301"/>
       <location filename="../../ArchStructure.py" line="345"/>
       <source>Create Structure</source>
-      <translation type="unfinished">Create Structure</translation>
+      <translation>Создать структуру</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="326"/>
@@ -1765,7 +1765,7 @@ unit to work with when opening the file.</source>
     <message>
       <location filename="../../ArchStructure.py" line="328"/>
       <source>Base point of column</source>
-      <translation type="unfinished">Base point of column</translation>
+      <translation>Точка основания колонны</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="341"/>
@@ -1781,7 +1781,7 @@ unit to work with when opening the file.</source>
     <message>
       <location filename="../../ArchStructure.py" line="432"/>
       <source>Drawing mode</source>
-      <translation type="unfinished">Drawing mode</translation>
+      <translation>Режим рисования</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="444"/>
@@ -1795,7 +1795,7 @@ unit to work with when opening the file.</source>
       <location filename="../../ArchProfile.py" line="157"/>
       <location filename="../../ArchWindow.py" line="404"/>
       <source>Preset</source>
-      <translation type="unfinished">Preset</translation>
+      <translation>Предустановка</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="460"/>
@@ -1833,7 +1833,7 @@ unit to work with when opening the file.</source>
       <location filename="../../ArchStructure.py" line="493"/>
       <location filename="../../ArchWall.py" line="534"/>
       <source>Con&amp;tinue</source>
-      <translation type="unfinished">Con&amp;tinue</translation>
+      <translation>&amp;Продолжить</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="775"/>
@@ -1855,12 +1855,12 @@ unit to work with when opening the file.</source>
     <message>
       <location filename="../../ArchStructure.py" line="1180"/>
       <source>Node Tools</source>
-      <translation type="unfinished">Node Tools</translation>
+      <translation>Инструменты узлов</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="1185"/>
       <source>Reset nodes</source>
-      <translation type="unfinished">Reset nodes</translation>
+      <translation>Сбросить узлы</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="1192"/>
@@ -1880,27 +1880,27 @@ unit to work with when opening the file.</source>
     <message>
       <location filename="../../ArchStructure.py" line="1205"/>
       <source>Connect nodes</source>
-      <translation type="unfinished">Connect nodes</translation>
+      <translation>Соединить узлы</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="1206"/>
       <source>Connects nodes of this element with the nodes of another element</source>
-      <translation type="unfinished">Connects nodes of this element with the nodes of another element</translation>
+      <translation>Соединяет узлы элемента с узлами другого элемента</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="1212"/>
       <source>Toggle all nodes</source>
-      <translation type="unfinished">Toggle all nodes</translation>
+      <translation>Переключить все узлы</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="1213"/>
       <source>Toggles all structural nodes of the document on/off</source>
-      <translation type="unfinished">Toggles all structural nodes of the document on/off</translation>
+      <translation>Включает/выключает все структурные узлы документа</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="1218"/>
       <source>Extrusion Tools</source>
-      <translation type="unfinished">Extrusion Tools</translation>
+      <translation>Инструменты выдавливания</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="1223"/>
@@ -1917,43 +1917,43 @@ unit to work with when opening the file.</source>
       <location filename="../../ArchStructure.py" line="1247"/>
       <location filename="../../ArchStructure.py" line="1279"/>
       <source>Choose another Structure object:</source>
-      <translation type="unfinished">Choose another Structure object:</translation>
+      <translation>Выберите другой объект структуры:</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="1252"/>
       <location filename="../../ArchStructure.py" line="1284"/>
       <source>The chosen object is not a Structure</source>
-      <translation type="unfinished">The chosen object is not a Structure</translation>
+      <translation>Выбранный объект не является структурой</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="1255"/>
       <location filename="../../ArchStructure.py" line="1287"/>
       <source>The chosen object has no structural nodes</source>
-      <translation type="unfinished">The chosen object has no structural nodes</translation>
+      <translation>Выбранный объект не имеет структурных узлов</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="1258"/>
       <location filename="../../ArchStructure.py" line="1290"/>
       <source>One of these objects has more than 2 nodes</source>
-      <translation type="unfinished">One of these objects has more than 2 nodes</translation>
+      <translation>Один из объектов имеет более 2-х узлов</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="1265"/>
       <location filename="../../ArchStructure.py" line="1297"/>
       <source>Unable to find a suitable intersection point</source>
-      <translation type="unfinished">Unable to find a suitable intersection point</translation>
+      <translation>Не удаётся найти подходящую точку пересечения</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="1268"/>
       <source>Intersection found.
 </source>
-      <translation type="unfinished">Intersection found.
+      <translation>Пересечение найдено.
 </translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="1300"/>
       <source>Intersection found.</source>
-      <translation type="unfinished">Intersection found.</translation>
+      <translation>Пересечение найдено.</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="1336"/>
@@ -1964,7 +1964,7 @@ unit to work with when opening the file.</source>
       <location filename="../../ArchStructure.py" line="1441"/>
       <location filename="../../ArchPanel.py" line="770"/>
       <source>Couldn't compute a shape</source>
-      <translation type="unfinished">Couldn't compute a shape</translation>
+      <translation>Не удалось вычислить форму</translation>
     </message>
     <message>
       <location filename="../../ArchEquipment.py" line="180"/>
@@ -1979,32 +1979,32 @@ unit to work with when opening the file.</source>
     <message>
       <location filename="../../ArchEquipment.py" line="235"/>
       <source>You must select exactly one base object</source>
-      <translation type="unfinished">You must select exactly one base object</translation>
+      <translation>Необходимо выбрать только один базовый объект</translation>
     </message>
     <message>
       <location filename="../../ArchEquipment.py" line="239"/>
       <source>The selected object must be a mesh</source>
-      <translation type="unfinished">The selected object must be a mesh</translation>
+      <translation>Выбранный объект должен быть полигональной сеткой</translation>
     </message>
     <message>
       <location filename="../../ArchEquipment.py" line="243"/>
       <source>This mesh has more than 1000 facets.</source>
-      <translation type="unfinished">This mesh has more than 1000 facets.</translation>
+      <translation>Эта сетка имеет более 1000 граней.</translation>
     </message>
     <message>
       <location filename="../../ArchEquipment.py" line="244"/>
       <source>This operation can take a long time. Proceed?</source>
-      <translation type="unfinished">This operation can take a long time. Proceed?</translation>
+      <translation>Эта операция может занять много времени. Продолжить?</translation>
     </message>
     <message>
       <location filename="../../ArchEquipment.py" line="251"/>
       <source>The mesh has more than 500 facets. This will take a couple of minutes...</source>
-      <translation type="unfinished">The mesh has more than 500 facets. This will take a couple of minutes...</translation>
+      <translation>Эта сетка имеет более 500 граней. Это займёт пару минут...</translation>
     </message>
     <message>
       <location filename="../../ArchEquipment.py" line="252"/>
       <source>Create 3 views</source>
-      <translation type="unfinished">Create 3 views</translation>
+      <translation>Создать три вида</translation>
     </message>
     <message>
       <location filename="../../ArchBuildingPart.py" line="206"/>
@@ -2014,7 +2014,7 @@ unit to work with when opening the file.</source>
     <message>
       <location filename="../../ArchBuildingPart.py" line="305"/>
       <source>Create BuildingPart</source>
-      <translation type="unfinished">Create BuildingPart</translation>
+      <translation>Создать строительную деталь</translation>
     </message>
     <message>
       <location filename="../../ArchBuildingPart.py" line="907"/>
@@ -2034,7 +2034,7 @@ unit to work with when opening the file.</source>
     <message>
       <location filename="../../ArchBuildingPart.py" line="925"/>
       <source>Write camera position</source>
-      <translation type="unfinished">Write camera position</translation>
+      <translation>Записать положение камеры</translation>
     </message>
     <message>
       <location filename="../../ArchBuildingPart.py" line="932"/>
@@ -2114,25 +2114,25 @@ Site creation aborted.</translation>
       <location filename="../../ArchRoof.py" line="222"/>
       <location filename="../../ArchRoof.py" line="232"/>
       <source>Create Roof</source>
-      <translation type="unfinished">Create Roof</translation>
+      <translation>Создать крышу</translation>
     </message>
     <message>
       <location filename="../../ArchRoof.py" line="241"/>
       <location filename="../../ArchRoof.py" line="824"/>
       <source>Unable to create a roof</source>
-      <translation type="unfinished">Unable to create a roof</translation>
+      <translation>Невозможно создать крышу</translation>
     </message>
     <message>
       <location filename="../../ArchRoof.py" line="243"/>
-      <location filename="../../ArchComponent.py" line="1645"/>
+      <location filename="../../ArchComponent.py" line="1654"/>
       <location filename="../../ArchSpace.py" line="250"/>
       <source>Please select a base object</source>
-      <translation type="unfinished">Please select a base object</translation>
+      <translation>Пожалуйста, выберите базовый объект</translation>
     </message>
     <message>
       <location filename="../../ArchRoof.py" line="1010"/>
       <source>Roof</source>
-      <translation type="unfinished">Roof</translation>
+      <translation>Крыша</translation>
     </message>
     <message>
       <location filename="../../ArchRoof.py" line="1011"/>
@@ -2167,7 +2167,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../ArchRoof.py" line="1013"/>
       <source>Angle (deg)</source>
-      <translation type="unfinished">Angle (deg)</translation>
+      <translation>Угол (градусы)</translation>
     </message>
     <message>
       <location filename="../../ArchRoof.py" line="1014"/>
@@ -2182,7 +2182,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../ArchRoof.py" line="1016"/>
       <source>Thickness (mm)</source>
-      <translation type="unfinished">Thickness (mm)</translation>
+      <translation>Толщина (мм)</translation>
     </message>
     <message>
       <location filename="../../ArchRoof.py" line="1017"/>
@@ -2192,12 +2192,12 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../ArchRoof.py" line="1018"/>
       <source>Height (mm)</source>
-      <translation type="unfinished">Height (mm)</translation>
+      <translation>Высота (мм)</translation>
     </message>
     <message>
       <location filename="../../ArchWindowPresets.py" line="504"/>
       <source>Door</source>
-      <translation type="unfinished">Door</translation>
+      <translation>Дверь</translation>
     </message>
     <message>
       <location filename="../../ArchCutPlane.py" line="151"/>
@@ -2295,7 +2295,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../importSHP.py" line="143"/>
       <source>Error: Unable to download from:</source>
-      <translation type="unfinished">Error: Unable to download from:</translation>
+      <translation>Ошибка: Не удалось загрузить:</translation>
     </message>
     <message>
       <location filename="../../importSHP.py" line="155"/>
@@ -2327,7 +2327,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <location filename="../../ArchWindow.py" line="226"/>
       <location filename="../../ArchWindow.py" line="271"/>
       <source>Create Window</source>
-      <translation type="unfinished">Create Window</translation>
+      <translation>Добавить окно</translation>
     </message>
     <message>
       <location filename="../../ArchWindow.py" line="242"/>
@@ -2352,7 +2352,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../ArchWindow.py" line="363"/>
       <source>Window options</source>
-      <translation type="unfinished">Window options</translation>
+      <translation>Параметры окна</translation>
     </message>
     <message>
       <location filename="../../ArchWindow.py" line="367"/>
@@ -2379,12 +2379,12 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../ArchWindow.py" line="1738"/>
       <source>Unable to create component</source>
-      <translation type="unfinished">Unable to create component</translation>
+      <translation>Невозможно создать компонент</translation>
     </message>
     <message>
       <location filename="../../ArchWindow.py" line="1776"/>
       <source>Window elements</source>
-      <translation type="unfinished">Window elements</translation>
+      <translation>Элементы окна</translation>
     </message>
     <message>
       <location filename="../../ArchWindow.py" line="1777"/>
@@ -2405,7 +2405,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <location filename="../../ArchWindow.py" line="1780"/>
       <location filename="../../ArchAxisSystem.py" line="370"/>
       <location filename="../../ArchAxis.py" line="802"/>
-      <location filename="../../ArchComponent.py" line="1931"/>
+      <location filename="../../ArchComponent.py" line="1940"/>
       <location filename="../../ArchSectionPlane.py" line="1506"/>
       <location filename="../../ArchSpace.py" line="793"/>
       <source>Remove</source>
@@ -2415,7 +2415,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <location filename="../../ArchWindow.py" line="1781"/>
       <location filename="../../ArchAxisSystem.py" line="371"/>
       <location filename="../../ArchAxis.py" line="803"/>
-      <location filename="../../ArchComponent.py" line="1932"/>
+      <location filename="../../ArchComponent.py" line="1941"/>
       <location filename="../../ArchSpace.py" line="787"/>
       <source>Add</source>
       <translation>Добавить</translation>
@@ -2431,7 +2431,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <location filename="../../ArchGrid.py" line="320"/>
       <location filename="../../ArchSchedule.py" line="378"/>
       <location filename="../../ArchAxis.py" line="631"/>
-      <location filename="../../ArchComponent.py" line="1487"/>
+      <location filename="../../ArchComponent.py" line="1496"/>
       <location filename="../../ArchSectionPlane.py" line="1237"/>
       <source>Edit</source>
       <translation>Редактировать</translation>
@@ -2454,7 +2454,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     </message>
     <message>
       <location filename="../../ArchWindow.py" line="1786"/>
-      <location filename="../../ArchComponent.py" line="1939"/>
+      <location filename="../../ArchComponent.py" line="1948"/>
       <source>Components</source>
       <translation>Компоненты</translation>
     </message>
@@ -2472,7 +2472,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     </message>
     <message>
       <location filename="../../ArchWindow.py" line="1789"/>
-      <location filename="../../ArchComponent.py" line="1991"/>
+      <location filename="../../ArchComponent.py" line="2000"/>
       <location filename="../../ArchCommands.py" line="1628"/>
       <source>Type</source>
       <translation>Тип</translation>
@@ -2546,14 +2546,14 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../ArchAxisSystem.py" line="91"/>
       <source>Please select at least one axis</source>
-      <translation type="unfinished">Please select at least one axis</translation>
+      <translation>Пожалуйста, выберите по крайней мере одну ось</translation>
     </message>
     <message>
       <location filename="../../ArchAxisSystem.py" line="369"/>
       <location filename="../../ArchAxis.py" line="801"/>
-      <location filename="../../ArchComponent.py" line="1938"/>
+      <location filename="../../ArchComponent.py" line="1947"/>
       <source>Axes</source>
-      <translation type="unfinished">Axes</translation>
+      <translation>Оси</translation>
     </message>
     <message>
       <location filename="../../ArchAxisSystem.py" line="372"/>
@@ -2566,12 +2566,12 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <location filename="../../importOBJ.py" line="245"/>
       <location filename="../../importOBJ.py" line="269"/>
       <source>Successfully written</source>
-      <translation type="unfinished">Successfully written</translation>
+      <translation>Успешно записано</translation>
     </message>
     <message>
       <location filename="../../ArchTruss.py" line="65"/>
       <source>Truss</source>
-      <translation type="unfinished">Truss</translation>
+      <translation>Ферма</translation>
     </message>
     <message>
       <location filename="../../ArchTruss.py" line="94"/>
@@ -2583,7 +2583,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <location filename="../../ArchTruss.py" line="98"/>
       <location filename="../../ArchTruss.py" line="125"/>
       <source>Create Truss</source>
-      <translation type="unfinished">Create Truss</translation>
+      <translation>Добавить ферму</translation>
     </message>
     <message>
       <location filename="../../importIFClegacy.py" line="113"/>
@@ -2618,22 +2618,22 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../ArchStairs.py" line="227"/>
       <source>Create Stairs</source>
-      <translation type="unfinished">Create Stairs</translation>
+      <translation>Добавить лестницу</translation>
     </message>
     <message>
       <location filename="../../ArchMaterial.py" line="123"/>
       <source>Create material</source>
-      <translation type="unfinished">Create material</translation>
+      <translation>Создать материал</translation>
     </message>
     <message>
       <location filename="../../ArchMaterial.py" line="157"/>
       <source>Create multi-material</source>
-      <translation type="unfinished">Create multi-material</translation>
+      <translation>Создать многокомпонентный материал</translation>
     </message>
     <message>
       <location filename="../../ArchMaterial.py" line="214"/>
       <source>Merge duplicates</source>
-      <translation type="unfinished">Merge duplicates</translation>
+      <translation>Объединить дубликаты</translation>
     </message>
     <message>
       <location filename="../../ArchMaterial.py" line="869"/>
@@ -2644,7 +2644,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../ArchMaterial.py" line="920"/>
       <source>New layer</source>
-      <translation type="unfinished">New layer</translation>
+      <translation>Новый слой</translation>
     </message>
     <message>
       <location filename="../../ArchMaterial.py" line="957"/>
@@ -2654,7 +2654,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../ArchMaterial.py" line="971"/>
       <source>depends on the object</source>
-      <translation type="unfinished">depends on the object</translation>
+      <translation>зависит от объекта</translation>
     </message>
     <message>
       <location filename="../../importGBXML.py" line="45"/>
@@ -2710,12 +2710,12 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../ArchGrid.py" line="421"/>
       <source>Total width</source>
-      <translation type="unfinished">Total width</translation>
+      <translation>Общая ширина</translation>
     </message>
     <message>
       <location filename="../../ArchGrid.py" line="422"/>
       <source>Total height</source>
-      <translation type="unfinished">Total height</translation>
+      <translation>Общая высота</translation>
     </message>
     <message>
       <location filename="../../ArchGrid.py" line="423"/>
@@ -2880,7 +2880,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../ArchPrecast.py" line="1415"/>
       <source>Level</source>
-      <translation type="unfinished">Level</translation>
+      <translation>Уровень</translation>
     </message>
     <message>
       <location filename="../../ArchPrecast.py" line="1416"/>
@@ -2903,7 +2903,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <location filename="../../ArchPanel.py" line="170"/>
       <location filename="../../ArchPanel.py" line="199"/>
       <source>Create Panel</source>
-      <translation type="unfinished">Create Panel</translation>
+      <translation>Добавить панель</translation>
     </message>
     <message>
       <location filename="../../ArchPanel.py" line="346"/>
@@ -2938,13 +2938,13 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../ArchCurtainWall.py" line="83"/>
       <source>Curtain Wall</source>
-      <translation type="unfinished">Curtain Wall</translation>
+      <translation>Фасад</translation>
     </message>
     <message>
       <location filename="../../ArchCurtainWall.py" line="117"/>
       <location filename="../../ArchCurtainWall.py" line="144"/>
       <source>Create Curtain Wall</source>
-      <translation type="unfinished">Create Curtain Wall</translation>
+      <translation>Добавить фасад</translation>
     </message>
     <message>
       <location filename="../../ArchPipe.py" line="121"/>
@@ -3041,18 +3041,18 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../ArchSchedule.py" line="511"/>
       <source>Import CSV File</source>
-      <translation type="unfinished">Import CSV File</translation>
+      <translation>Импортировать файл CSV</translation>
     </message>
     <message>
       <location filename="../../ArchSchedule.py" line="544"/>
       <location filename="../../ArchCommands.py" line="1099"/>
       <source>Export CSV File</source>
-      <translation type="unfinished">Export CSV File</translation>
+      <translation>Экспортировать файл CSV</translation>
     </message>
     <message>
       <location filename="../../ArchSchedule.py" line="565"/>
       <source>Unable to recognize that file type</source>
-      <translation type="unfinished">Unable to recognize that file type</translation>
+      <translation>Не удается определить тип файла</translation>
     </message>
     <message>
       <location filename="../../ArchSchedule.py" line="587"/>
@@ -3064,7 +3064,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../ArchSchedule.py" line="587"/>
       <location filename="../../ArchSchedule.py" line="605"/>
-      <location filename="../../ArchComponent.py" line="1992"/>
+      <location filename="../../ArchComponent.py" line="2001"/>
       <location filename="../../ArchCommands.py" line="1629"/>
       <source>Value</source>
       <translation>Значение</translation>
@@ -3110,7 +3110,7 @@ Floor creation aborted.</translation>
     <message>
       <location filename="../../ArchFloor.py" line="161"/>
       <source>Create Floor</source>
-      <translation type="unfinished">Create Floor</translation>
+      <translation>Добавить этаж</translation>
     </message>
     <message>
       <location filename="../../ArchAxis.py" line="96"/>
@@ -3154,17 +3154,17 @@ Floor creation aborted.</translation>
       <translation type="unfinished">Successfully imported</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="915"/>
+      <location filename="../../ArchComponent.py" line="924"/>
       <source>Error computing the shape of this object</source>
       <translation type="unfinished">Error computing the shape of this object</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="936"/>
+      <location filename="../../ArchComponent.py" line="945"/>
       <source>has no solid</source>
       <translation type="unfinished">has no solid</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="943"/>
+      <location filename="../../ArchComponent.py" line="952"/>
       <source>has an invalid shape</source>
       <translation type="unfinished">has an invalid shape</translation>
     </message>
@@ -3175,111 +3175,111 @@ Floor creation aborted.</translation>
       <location filename="../../ArchPrecast.py" line="454"/>
       <location filename="../../ArchPrecast.py" line="582"/>
       <location filename="../../ArchPrecast.py" line="679"/>
-      <location filename="../../ArchComponent.py" line="945"/>
+      <location filename="../../ArchComponent.py" line="954"/>
       <source>has a null shape</source>
       <translation type="unfinished">has a null shape</translation>
     </message>
     <message>
       <location filename="../../ArchSite.py" line="928"/>
-      <location filename="../../ArchComponent.py" line="1496"/>
+      <location filename="../../ArchComponent.py" line="1505"/>
       <source>Toggle subcomponents</source>
       <translation type="unfinished">Toggle subcomponents</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1622"/>
+      <location filename="../../ArchComponent.py" line="1631"/>
       <source>Closing Sketch edit</source>
       <translation type="unfinished">Closing Sketch edit</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1930"/>
+      <location filename="../../ArchComponent.py" line="1939"/>
       <source>Component</source>
       <translation type="unfinished">Component</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1933"/>
+      <location filename="../../ArchComponent.py" line="1942"/>
       <source>Components of this object</source>
       <translation type="unfinished">Components of this object</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1934"/>
+      <location filename="../../ArchComponent.py" line="1943"/>
       <source>Base component</source>
       <translation type="unfinished">Base component</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1935"/>
+      <location filename="../../ArchComponent.py" line="1944"/>
       <source>Additions</source>
       <translation type="unfinished">Additions</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1936"/>
+      <location filename="../../ArchComponent.py" line="1945"/>
       <source>Subtractions</source>
       <translation type="unfinished">Subtractions</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1937"/>
+      <location filename="../../ArchComponent.py" line="1946"/>
       <source>Objects</source>
       <translation>Объекты</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1940"/>
+      <location filename="../../ArchComponent.py" line="1949"/>
       <source>Fixtures</source>
       <translation type="unfinished">Fixtures</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1941"/>
+      <location filename="../../ArchComponent.py" line="1950"/>
       <source>Group</source>
       <translation>Группа</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1942"/>
+      <location filename="../../ArchComponent.py" line="1951"/>
       <source>Hosts</source>
       <translation>Источники</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1943"/>
+      <location filename="../../ArchComponent.py" line="1952"/>
       <source>Edit IFC properties</source>
       <translation type="unfinished">Edit IFC properties</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1944"/>
+      <location filename="../../ArchComponent.py" line="1953"/>
       <source>Edit standard code</source>
       <translation type="unfinished">Edit standard code</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1990"/>
+      <location filename="../../ArchComponent.py" line="1999"/>
       <source>Property</source>
       <translation>Свойство</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1995"/>
+      <location filename="../../ArchComponent.py" line="2004"/>
       <source>Add property...</source>
-      <translation type="unfinished">Add property...</translation>
+      <translation>Добавить свойство...</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1996"/>
+      <location filename="../../ArchComponent.py" line="2005"/>
       <source>Add property set...</source>
-      <translation type="unfinished">Add property set...</translation>
+      <translation>Добавить набор свойств...</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1997"/>
+      <location filename="../../ArchComponent.py" line="2006"/>
       <source>New...</source>
       <translation>Создать...</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="2135"/>
+      <location filename="../../ArchComponent.py" line="2144"/>
       <source>New property</source>
-      <translation type="unfinished">New property</translation>
+      <translation>Новое свойство</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="2170"/>
+      <location filename="../../ArchComponent.py" line="2179"/>
       <source>New property set</source>
-      <translation type="unfinished">New property set</translation>
+      <translation>Новый набор свойств</translation>
     </message>
     <message>
       <location filename="../../ArchRebar.py" line="126"/>
       <location filename="../../ArchRebar.py" line="147"/>
       <source>Create Rebar</source>
-      <translation type="unfinished">Create Rebar</translation>
+      <translation>Задать армирование</translation>
     </message>
     <message>
       <location filename="../../ArchRebar.py" line="154"/>
@@ -3359,7 +3359,7 @@ Floor creation aborted.</translation>
     <message>
       <location filename="../../ArchSectionPlane.py" line="1518"/>
       <source>Resize</source>
-      <translation type="unfinished">Resize</translation>
+      <translation>Изменить размер</translation>
     </message>
     <message>
       <location filename="../../ArchSectionPlane.py" line="1519"/>
@@ -3416,7 +3416,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchSpace.py" line="776"/>
       <source>Set text position</source>
-      <translation type="unfinished">Set text position</translation>
+      <translation>Задать положение текста</translation>
     </message>
     <message>
       <location filename="../../ArchSpace.py" line="780"/>
@@ -3426,34 +3426,34 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchWall.py" line="111"/>
       <source>Wall</source>
-      <translation type="unfinished">Wall</translation>
+      <translation>Стена</translation>
     </message>
     <message>
       <location filename="../../ArchWall.py" line="118"/>
       <source>Walls can only be based on Part or Mesh objects</source>
-      <translation type="unfinished">Walls can only be based on Part or Mesh objects</translation>
+      <translation>Стены могут основываться только на объектах Part или Mesh</translation>
     </message>
     <message>
       <location filename="../../ArchWall.py" line="324"/>
       <location filename="../../ArchWall.py" line="392"/>
       <location filename="../../ArchWall.py" line="622"/>
       <source>Create Wall</source>
-      <translation type="unfinished">Create Wall</translation>
+      <translation>Добавить стену</translation>
     </message>
     <message>
       <location filename="../../ArchWall.py" line="353"/>
       <source>First point of wall</source>
-      <translation type="unfinished">First point of wall</translation>
+      <translation>Первая точка стены</translation>
     </message>
     <message>
       <location filename="../../ArchWall.py" line="489"/>
       <source>Wall options</source>
-      <translation type="unfinished">Wall options</translation>
+      <translation>Параметры стены</translation>
     </message>
     <message>
       <location filename="../../ArchWall.py" line="493"/>
       <source>Wall Presets...</source>
-      <translation type="unfinished">Wall Presets...</translation>
+      <translation>Преднастройки стен...</translation>
     </message>
     <message>
       <location filename="../../ArchWall.py" line="494"/>
@@ -3494,7 +3494,7 @@ Building creation aborted.</translation>
       <location filename="../../ArchWall.py" line="688"/>
       <location filename="../../ArchWall.py" line="692"/>
       <source>Please select only wall objects</source>
-      <translation type="unfinished">Please select only wall objects</translation>
+      <translation>Пожалуйста, выберите только стены</translation>
     </message>
     <message>
       <location filename="../../ArchWall.py" line="694"/>
@@ -3574,7 +3574,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchCommands.py" line="1009"/>
       <source>Export CSV</source>
-      <translation type="unfinished">Export CSV</translation>
+      <translation>Экспортировать в CSV</translation>
     </message>
     <message>
       <location filename="../../ArchCommands.py" line="1012"/>
@@ -3869,13 +3869,13 @@ Building creation aborted.</translation>
       <location filename="../../ArchBuildingPart.py" line="259"/>
       <location filename="../../ArchBuilding.py" line="276"/>
       <source>The type of this building</source>
-      <translation type="unfinished">The type of this building</translation>
+      <translation>Тип здания</translation>
     </message>
     <message>
       <location filename="../../ArchBuildingPart.py" line="333"/>
       <location filename="../../ArchFloor.py" line="204"/>
       <source>The height of this object</source>
-      <translation type="unfinished">The height of this object</translation>
+      <translation>Высота объекта</translation>
     </message>
     <message>
       <location filename="../../ArchBuildingPart.py" line="335"/>
@@ -3970,7 +3970,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchBuildingPart.py" line="573"/>
       <source>The font size of texts</source>
-      <translation type="unfinished">The font size of texts</translation>
+      <translation>Размер шрифта текста</translation>
     </message>
     <message>
       <location filename="../../ArchBuildingPart.py" line="576"/>
@@ -4075,12 +4075,12 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchProfile.py" line="266"/>
       <source>Outside Diameter</source>
-      <translation type="unfinished">Outside Diameter</translation>
+      <translation>Наружный диаметр</translation>
     </message>
     <message>
       <location filename="../../ArchProfile.py" line="267"/>
       <source>Wall thickness</source>
-      <translation type="unfinished">Wall thickness</translation>
+      <translation>Толщина стен</translation>
     </message>
     <message>
       <location filename="../../ArchProfile.py" line="291"/>
@@ -4090,7 +4090,7 @@ Building creation aborted.</translation>
       <location filename="../../ArchProfile.py" line="412"/>
       <location filename="../../ArchProfile.py" line="439"/>
       <source>Width of the beam</source>
-      <translation type="unfinished">Width of the beam</translation>
+      <translation>Ширина балки</translation>
     </message>
     <message>
       <location filename="../../ArchProfile.py" line="292"/>
@@ -4100,7 +4100,7 @@ Building creation aborted.</translation>
       <location filename="../../ArchProfile.py" line="413"/>
       <location filename="../../ArchProfile.py" line="440"/>
       <source>Height of the beam</source>
-      <translation type="unfinished">Height of the beam</translation>
+      <translation>Высота балки</translation>
     </message>
     <message>
       <location filename="../../ArchProfile.py" line="293"/>
@@ -4147,12 +4147,12 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchSite.py" line="594"/>
       <source>The postal or zip code of this site</source>
-      <translation type="unfinished">The postal or zip code of this site</translation>
+      <translation>Почтовый индекс данной строительной площадки</translation>
     </message>
     <message>
       <location filename="../../ArchSite.py" line="596"/>
       <source>The city of this site</source>
-      <translation type="unfinished">The city of this site</translation>
+      <translation>Название города данной строительной площадки</translation>
     </message>
     <message>
       <location filename="../../ArchSite.py" line="598"/>
@@ -4206,7 +4206,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchSite.py" line="621"/>
       <source>The perimeter length of this terrain</source>
-      <translation type="unfinished">The perimeter length of this terrain</translation>
+      <translation>Длина периметра рельефа</translation>
     </message>
     <message>
       <location filename="../../ArchSite.py" line="623"/>
@@ -4237,12 +4237,12 @@ Building creation aborted.</translation>
       <location filename="../../ArchSite.py" line="636"/>
       <location filename="../../ArchIFC.py" line="69"/>
       <source>The type of this object</source>
-      <translation type="unfinished">The type of this object</translation>
+      <translation>Тип данного объекта</translation>
     </message>
     <message>
       <location filename="../../ArchSite.py" line="640"/>
       <source>The time zone where this site is located</source>
-      <translation type="unfinished">The time zone where this site is located</translation>
+      <translation>Часовой пояс данной строительной площадки</translation>
     </message>
     <message>
       <location filename="../../ArchSite.py" line="642"/>
@@ -4367,7 +4367,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchReference.py" line="105"/>
       <source>Fuse objects of same material</source>
-      <translation type="unfinished">Fuse objects of same material</translation>
+      <translation>Объединять объекты из одного материала</translation>
     </message>
     <message>
       <location filename="../../ArchReference.py" line="378"/>
@@ -4442,7 +4442,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchWindow.py" line="600"/>
       <source>The width of this window</source>
-      <translation type="unfinished">The width of this window</translation>
+      <translation>Ширина окна</translation>
     </message>
     <message>
       <location filename="../../ArchWindow.py" line="602"/>
@@ -4472,7 +4472,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchWindow.py" line="613"/>
       <source>The area of this window</source>
-      <translation type="unfinished">The area of this window</translation>
+      <translation>Площадь окна</translation>
     </message>
     <message>
       <location filename="../../ArchWindow.py" line="615"/>
@@ -4522,7 +4522,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchTruss.py" line="150"/>
       <source>The angle of the truss</source>
-      <translation type="unfinished">The angle of the truss</translation>
+      <translation>Угол фермы</translation>
     </message>
     <message>
       <location filename="../../ArchTruss.py" line="154"/>
@@ -4532,7 +4532,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchTruss.py" line="158"/>
       <source>The normal direction of this truss</source>
-      <translation type="unfinished">The normal direction of this truss</translation>
+      <translation>Направление нормали фермы</translation>
     </message>
     <message>
       <location filename="../../ArchTruss.py" line="162"/>
@@ -4785,17 +4785,17 @@ Building creation aborted.</translation>
       <location filename="../../ArchMaterial.py" line="294"/>
       <location filename="../../ArchMaterial.py" line="742"/>
       <source>A description for this material</source>
-      <translation type="unfinished">A description for this material</translation>
+      <translation>Описание материала</translation>
     </message>
     <message>
       <location filename="../../ArchMaterial.py" line="298"/>
       <source>A URL where to find information about this material</source>
-      <translation type="unfinished">A URL where to find information about this material</translation>
+      <translation>URL-адрес, где можно найти информацию об этом материале</translation>
     </message>
     <message>
       <location filename="../../ArchMaterial.py" line="300"/>
       <source>The transparency value of this material</source>
-      <translation type="unfinished">The transparency value of this material</translation>
+      <translation>Прозрачность материала</translation>
     </message>
     <message>
       <location filename="../../ArchMaterial.py" line="302"/>
@@ -4805,7 +4805,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchMaterial.py" line="304"/>
       <source>The color of this material when cut</source>
-      <translation type="unfinished">The color of this material when cut</translation>
+      <translation>Цвет разреза этого материала</translation>
     </message>
     <message>
       <location filename="../../ArchMaterial.py" line="743"/>
@@ -5023,12 +5023,12 @@ Building creation aborted.</translation>
       <location filename="../../ArchPanel.py" line="841"/>
       <location filename="../../ArchSectionPlane.py" line="1278"/>
       <source>The line width of the rendered objects</source>
-      <translation type="unfinished">The line width of the rendered objects</translation>
+      <translation>Толщина линии отрисованных объектов</translation>
     </message>
     <message>
       <location filename="../../ArchPanel.py" line="844"/>
       <source>The color of the panel outline</source>
-      <translation type="unfinished">The color of the panel outline</translation>
+      <translation>Цвет контура панели</translation>
     </message>
     <message>
       <location filename="../../ArchPanel.py" line="847"/>
@@ -5096,13 +5096,13 @@ Building creation aborted.</translation>
       <location filename="../../ArchPanel.py" line="1133"/>
       <location filename="../../ArchPanel.py" line="1392"/>
       <source>A margin inside the boundary</source>
-      <translation type="unfinished">A margin inside the boundary</translation>
+      <translation>Внутренний отступ от границы</translation>
     </message>
     <message>
       <location filename="../../ArchPanel.py" line="1135"/>
       <location filename="../../ArchPanel.py" line="1394"/>
       <source>Turns the display of the margin on/off</source>
-      <translation type="unfinished">Turns the display of the margin on/off</translation>
+      <translation>Включает / выключает отображение отступа</translation>
     </message>
     <message>
       <location filename="../../ArchPanel.py" line="1217"/>
@@ -5117,22 +5117,22 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchPanel.py" line="1229"/>
       <source>The font file</source>
-      <translation type="unfinished">The font file</translation>
+      <translation>Файл шрифта</translation>
     </message>
     <message>
       <location filename="../../ArchPanel.py" line="1231"/>
       <source>The width of the sheet</source>
-      <translation type="unfinished">The width of the sheet</translation>
+      <translation>Ширина листа</translation>
     </message>
     <message>
       <location filename="../../ArchPanel.py" line="1234"/>
       <source>The height of the sheet</source>
-      <translation type="unfinished">The height of the sheet</translation>
+      <translation>Высота листа</translation>
     </message>
     <message>
       <location filename="../../ArchPanel.py" line="1237"/>
       <source>The fill ratio of this sheet</source>
-      <translation type="unfinished">The fill ratio of this sheet</translation>
+      <translation>Коэффициент заполнения листа</translation>
     </message>
     <message>
       <location filename="../../ArchPanel.py" line="1242"/>
@@ -5242,17 +5242,17 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchCurtainWall.py" line="242"/>
       <source>The number of panels</source>
-      <translation type="unfinished">The number of panels</translation>
+      <translation>Количество панелей</translation>
     </message>
     <message>
       <location filename="../../ArchCurtainWall.py" line="246"/>
       <source>The thickness of the panels</source>
-      <translation type="unfinished">The thickness of the panels</translation>
+      <translation>Толщина панелей</translation>
     </message>
     <message>
       <location filename="../../ArchCurtainWall.py" line="250"/>
       <source>Swaps horizontal and vertical lines</source>
-      <translation type="unfinished">Swaps horizontal and vertical lines</translation>
+      <translation>Поменять местами горизонтальные и вертикальные линии</translation>
     </message>
     <message>
       <location filename="../../ArchCurtainWall.py" line="253"/>
@@ -5358,7 +5358,7 @@ Building creation aborted.</translation>
       <location filename="../../ArchFloor.py" line="209"/>
       <location filename="../../ArchSectionPlane.py" line="911"/>
       <source>The placement of this object</source>
-      <translation type="unfinished">The placement of this object</translation>
+      <translation>Размещение объекта</translation>
     </message>
     <message>
       <location filename="../../ArchAxis.py" line="120"/>
@@ -5418,7 +5418,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchAxis.py" line="244"/>
       <source>The color of this axis</source>
-      <translation type="unfinished">The color of this axis</translation>
+      <translation>Цвет оси</translation>
     </message>
     <message>
       <location filename="../../ArchAxis.py" line="247"/>
@@ -5428,12 +5428,12 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchAxis.py" line="250"/>
       <source>The font to use for texts</source>
-      <translation type="unfinished">The font to use for texts</translation>
+      <translation>Шрифт, используемый для текста</translation>
     </message>
     <message>
       <location filename="../../ArchAxis.py" line="253"/>
       <source>The font size</source>
-      <translation type="unfinished">The font size</translation>
+      <translation>Размер шрифта</translation>
     </message>
     <message>
       <location filename="../../ArchAxis.py" line="256"/>
@@ -5463,7 +5463,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchComponent.py" line="206"/>
       <source>A material for this object</source>
-      <translation type="unfinished">A material for this object</translation>
+      <translation>Материал объекта</translation>
     </message>
     <message>
       <location filename="../../ArchComponent.py" line="212"/>
@@ -5483,7 +5483,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchComponent.py" line="224"/>
       <source>The perimeter length of the horizontal area</source>
-      <translation type="unfinished">The perimeter length of the horizontal area</translation>
+      <translation>Длина периметра горизонтальной области</translation>
     </message>
     <message>
       <location filename="../../ArchComponent.py" line="227"/>
@@ -5496,7 +5496,7 @@ Building creation aborted.</translation>
       <translation type="unfinished">An optional axis or axis system on which this object should be duplicated</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1162"/>
+      <location filename="../../ArchComponent.py" line="1171"/>
       <source>Use the material color as this object's shape color, if available</source>
       <translation type="unfinished">Use the material color as this object's shape color, if available</translation>
     </message>
@@ -5618,18 +5618,18 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchSectionPlane.py" line="999"/>
       <source>The transparency of this object</source>
-      <translation type="unfinished">The transparency of this object</translation>
+      <translation>Прозрачность объекта</translation>
     </message>
     <message>
       <location filename="../../ArchSectionPlane.py" line="1005"/>
       <location filename="../../ArchSectionPlane.py" line="1010"/>
       <source>Show the cut in the 3D view</source>
-      <translation type="unfinished">Show the cut in the 3D view</translation>
+      <translation>Показать сечение в окне 3D-просмотра</translation>
     </message>
     <message>
       <location filename="../../ArchSectionPlane.py" line="1007"/>
       <source>The color of this object</source>
-      <translation type="unfinished">The color of this object</translation>
+      <translation>Цвет объекта</translation>
     </message>
     <message>
       <location filename="../../ArchSectionPlane.py" line="1012"/>
@@ -5645,13 +5645,13 @@ Building creation aborted.</translation>
       <location filename="../../ArchSectionPlane.py" line="1017"/>
       <location filename="../../ArchSpace.py" line="509"/>
       <source>The name of the font</source>
-      <translation type="unfinished">The name of the font</translation>
+      <translation>Название шрифта</translation>
     </message>
     <message>
       <location filename="../../ArchSectionPlane.py" line="1020"/>
       <location filename="../../ArchSpace.py" line="515"/>
       <source>The size of the text font</source>
-      <translation type="unfinished">The size of the text font</translation>
+      <translation>Размер шрифта текста</translation>
     </message>
     <message>
       <location filename="../../ArchSectionPlane.py" line="1270"/>
@@ -6092,7 +6092,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchRoof.py" line="206"/>
       <source>Roof</source>
-      <translation type="unfinished">Roof</translation>
+      <translation>Крыша</translation>
     </message>
     <message>
       <location filename="../../ArchRoof.py" line="210"/>
@@ -6183,7 +6183,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchTruss.py" line="82"/>
       <source>Truss</source>
-      <translation type="unfinished">Truss</translation>
+      <translation>Ферма</translation>
     </message>
     <message>
       <location filename="../../ArchTruss.py" line="86"/>
@@ -6217,7 +6217,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchStairs.py" line="220"/>
       <source>Creates a stairs object</source>
-      <translation type="unfinished">Creates a stairs object</translation>
+      <translation>Создаёт объект лестницы</translation>
     </message>
     <message>
       <location filename="../../ArchSpace.py" line="226"/>
@@ -6417,7 +6417,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchCurtainWall.py" line="101"/>
       <source>Curtain Wall</source>
-      <translation type="unfinished">Curtain Wall</translation>
+      <translation>Фасад</translation>
     </message>
     <message>
       <location filename="../../ArchCurtainWall.py" line="105"/>
@@ -6478,7 +6478,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchFloor.py" line="112"/>
       <source>Level</source>
-      <translation type="unfinished">Level</translation>
+      <translation>Уровень</translation>
     </message>
     <message>
       <location filename="../../ArchFloor.py" line="116"/>
@@ -6513,12 +6513,12 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchRebar.py" line="106"/>
       <source>Custom Rebar</source>
-      <translation type="unfinished">Custom Rebar</translation>
+      <translation>Пользовательская арматура</translation>
     </message>
     <message>
       <location filename="../../ArchRebar.py" line="110"/>
       <source>Creates a Reinforcement bar from the selected face of solid object and/or a sketch</source>
-      <translation type="unfinished">Creates a Reinforcement bar from the selected face of solid object and/or a sketch</translation>
+      <translation>Создает арматурный стержень из выбранной грани твёрдого объекта и/или эскиза</translation>
     </message>
   </context>
   <context>
@@ -6552,7 +6552,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchWall.py" line="285"/>
       <source>Wall</source>
-      <translation type="unfinished">Wall</translation>
+      <translation>Стена</translation>
     </message>
     <message>
       <location filename="../../ArchWall.py" line="289"/>
@@ -6578,7 +6578,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchCommands.py" line="1332"/>
       <source>Add component</source>
-      <translation type="unfinished">Add component</translation>
+      <translation>Добавить компонент</translation>
     </message>
     <message>
       <location filename="../../ArchCommands.py" line="1335"/>
@@ -6591,7 +6591,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchCommands.py" line="1364"/>
       <source>Remove component</source>
-      <translation type="unfinished">Remove component</translation>
+      <translation>Удалить компонент</translation>
     </message>
     <message>
       <location filename="../../ArchCommands.py" line="1367"/>
@@ -6721,7 +6721,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchCommands.py" line="1596"/>
       <source>Clone component</source>
-      <translation type="unfinished">Clone component</translation>
+      <translation>Клонировать компонент</translation>
     </message>
     <message>
       <location filename="../../ArchCommands.py" line="1600"/>

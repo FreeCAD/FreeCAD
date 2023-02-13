@@ -421,7 +421,7 @@
     <message>
       <location filename="../../CommandConstraints.cpp" line="1899"/>
       <source>Create a coincident constraint between points, or a concentric constraint between circles, arcs, and ellipses</source>
-      <translation type="unfinished">Create a coincident constraint between points, or a concentric constraint between circles, arcs, and ellipses</translation>
+      <translation>Crea una restricció coincident entre punts o una restricció concèntrica entre cercles, arcs i el·lipses</translation>
     </message>
   </context>
   <context>
@@ -4926,7 +4926,7 @@ Això es basa exclusivament en la forma topològica de l'esbós i no en la seva 
     <message>
       <location filename="../../TaskSketcherValidation.ui" line="68"/>
       <source>Defines the X/Y tolerance inside which missing coincidences are searched.</source>
-      <translation>Defineix la tolerància X/Y dins de la qual es cerquen les coincidències que falten.</translation>
+      <translation>Defineix la tolerància X/Y dins de la qual se cerquen les coincidències que falten.</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherValidation.ui" line="75"/>

@@ -2162,7 +2162,7 @@ Stvaranje Parcele prekinuto.</translation>
     </message>
     <message>
       <location filename="../../ArchRoof.py" line="243"/>
-      <location filename="../../ArchComponent.py" line="1645"/>
+      <location filename="../../ArchComponent.py" line="1654"/>
       <location filename="../../ArchSpace.py" line="250"/>
       <source>Please select a base object</source>
       <translation>Odaberite osnovni objekt</translation>
@@ -2455,7 +2455,7 @@ Ako je Run = 0, tada se proračun izračunava tako da je visina jednaka relativn
       <location filename="../../ArchWindow.py" line="1780"/>
       <location filename="../../ArchAxisSystem.py" line="370"/>
       <location filename="../../ArchAxis.py" line="802"/>
-      <location filename="../../ArchComponent.py" line="1931"/>
+      <location filename="../../ArchComponent.py" line="1940"/>
       <location filename="../../ArchSectionPlane.py" line="1506"/>
       <location filename="../../ArchSpace.py" line="793"/>
       <source>Remove</source>
@@ -2465,7 +2465,7 @@ Ako je Run = 0, tada se proračun izračunava tako da je visina jednaka relativn
       <location filename="../../ArchWindow.py" line="1781"/>
       <location filename="../../ArchAxisSystem.py" line="371"/>
       <location filename="../../ArchAxis.py" line="803"/>
-      <location filename="../../ArchComponent.py" line="1932"/>
+      <location filename="../../ArchComponent.py" line="1941"/>
       <location filename="../../ArchSpace.py" line="787"/>
       <source>Add</source>
       <translation>Dodaj</translation>
@@ -2481,7 +2481,7 @@ Ako je Run = 0, tada se proračun izračunava tako da je visina jednaka relativn
       <location filename="../../ArchGrid.py" line="320"/>
       <location filename="../../ArchSchedule.py" line="378"/>
       <location filename="../../ArchAxis.py" line="631"/>
-      <location filename="../../ArchComponent.py" line="1487"/>
+      <location filename="../../ArchComponent.py" line="1496"/>
       <location filename="../../ArchSectionPlane.py" line="1237"/>
       <source>Edit</source>
       <translation>Uredi</translation>
@@ -2504,7 +2504,7 @@ Ako je Run = 0, tada se proračun izračunava tako da je visina jednaka relativn
     </message>
     <message>
       <location filename="../../ArchWindow.py" line="1786"/>
-      <location filename="../../ArchComponent.py" line="1939"/>
+      <location filename="../../ArchComponent.py" line="1948"/>
       <source>Components</source>
       <translation>Komponente</translation>
     </message>
@@ -2522,7 +2522,7 @@ Ako je Run = 0, tada se proračun izračunava tako da je visina jednaka relativn
     </message>
     <message>
       <location filename="../../ArchWindow.py" line="1789"/>
-      <location filename="../../ArchComponent.py" line="1991"/>
+      <location filename="../../ArchComponent.py" line="2000"/>
       <location filename="../../ArchCommands.py" line="1628"/>
       <source>Type</source>
       <translation>Tip</translation>
@@ -2605,7 +2605,7 @@ Ako je Run = 0, tada se proračun izračunava tako da je visina jednaka relativn
     <message>
       <location filename="../../ArchAxisSystem.py" line="369"/>
       <location filename="../../ArchAxis.py" line="801"/>
-      <location filename="../../ArchComponent.py" line="1938"/>
+      <location filename="../../ArchComponent.py" line="1947"/>
       <source>Axes</source>
       <translation>Osi</translation>
     </message>
@@ -3118,7 +3118,7 @@ Ako je Run = 0, tada se proračun izračunava tako da je visina jednaka relativn
     <message>
       <location filename="../../ArchSchedule.py" line="587"/>
       <location filename="../../ArchSchedule.py" line="605"/>
-      <location filename="../../ArchComponent.py" line="1992"/>
+      <location filename="../../ArchComponent.py" line="2001"/>
       <location filename="../../ArchCommands.py" line="1629"/>
       <source>Value</source>
       <translation>Vrijednost</translation>
@@ -3208,17 +3208,17 @@ Stvaranje etaže prekinuto.</translation>
       <translation>Uspješno uvezen</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="915"/>
+      <location filename="../../ArchComponent.py" line="924"/>
       <source>Error computing the shape of this object</source>
       <translation>Pogreška u proračunu oblika ovog objekta</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="936"/>
+      <location filename="../../ArchComponent.py" line="945"/>
       <source>has no solid</source>
       <translation>ovo je bez čvrstog tijela</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="943"/>
+      <location filename="../../ArchComponent.py" line="952"/>
       <source>has an invalid shape</source>
       <translation>ima jedan neispravan oblik</translation>
     </message>
@@ -3229,103 +3229,103 @@ Stvaranje etaže prekinuto.</translation>
       <location filename="../../ArchPrecast.py" line="454"/>
       <location filename="../../ArchPrecast.py" line="582"/>
       <location filename="../../ArchPrecast.py" line="679"/>
-      <location filename="../../ArchComponent.py" line="945"/>
+      <location filename="../../ArchComponent.py" line="954"/>
       <source>has a null shape</source>
       <translation>ima jedan ništavni oblik</translation>
     </message>
     <message>
       <location filename="../../ArchSite.py" line="928"/>
-      <location filename="../../ArchComponent.py" line="1496"/>
+      <location filename="../../ArchComponent.py" line="1505"/>
       <source>Toggle subcomponents</source>
       <translation>Uključivanje/isključivanje podsastavnice</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1622"/>
+      <location filename="../../ArchComponent.py" line="1631"/>
       <source>Closing Sketch edit</source>
       <translation>Zatvori uređivanje Skice</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1930"/>
+      <location filename="../../ArchComponent.py" line="1939"/>
       <source>Component</source>
       <translation>Komponenta</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1933"/>
+      <location filename="../../ArchComponent.py" line="1942"/>
       <source>Components of this object</source>
       <translation>Komponenta ovog objekta</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1934"/>
+      <location filename="../../ArchComponent.py" line="1943"/>
       <source>Base component</source>
       <translation>Osnovna Komponenta</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1935"/>
+      <location filename="../../ArchComponent.py" line="1944"/>
       <source>Additions</source>
       <translation>Sabiranje</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1936"/>
+      <location filename="../../ArchComponent.py" line="1945"/>
       <source>Subtractions</source>
       <translation>Oduzimanje</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1937"/>
+      <location filename="../../ArchComponent.py" line="1946"/>
       <source>Objects</source>
       <translation>Objekti</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1940"/>
+      <location filename="../../ArchComponent.py" line="1949"/>
       <source>Fixtures</source>
       <translation>Armatura</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1941"/>
+      <location filename="../../ArchComponent.py" line="1950"/>
       <source>Group</source>
       <translation>Grupa</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1942"/>
+      <location filename="../../ArchComponent.py" line="1951"/>
       <source>Hosts</source>
       <translation>Domaćini</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1943"/>
+      <location filename="../../ArchComponent.py" line="1952"/>
       <source>Edit IFC properties</source>
       <translation>Uredi IFC osobine</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1944"/>
+      <location filename="../../ArchComponent.py" line="1953"/>
       <source>Edit standard code</source>
       <translation>Uredi standardni kod</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1990"/>
+      <location filename="../../ArchComponent.py" line="1999"/>
       <source>Property</source>
       <translation>Svojstva</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1995"/>
+      <location filename="../../ArchComponent.py" line="2004"/>
       <source>Add property...</source>
       <translation>Dodaj svojstvo...</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1996"/>
+      <location filename="../../ArchComponent.py" line="2005"/>
       <source>Add property set...</source>
       <translation>Dodaj skup svojstava...</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1997"/>
+      <location filename="../../ArchComponent.py" line="2006"/>
       <source>New...</source>
       <translation>Novi ...</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="2135"/>
+      <location filename="../../ArchComponent.py" line="2144"/>
       <source>New property</source>
       <translation>Novo svojstvo</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="2170"/>
+      <location filename="../../ArchComponent.py" line="2179"/>
       <source>New property set</source>
       <translation>Skup novih svojstava</translation>
     </message>
@@ -5579,7 +5579,7 @@ Stvaranje zgrade prekinuto.</translation>
       <translation>Opcionalna Os ili sustav Osi na kojem će objekt biti dupliciran</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1162"/>
+      <location filename="../../ArchComponent.py" line="1171"/>
       <source>Use the material color as this object's shape color, if available</source>
       <translation>Koristite boju materijala kao boju oblika ovog objekta, ako je dostupna</translation>
     </message>

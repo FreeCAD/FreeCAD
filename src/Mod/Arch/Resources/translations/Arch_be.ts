@@ -91,17 +91,17 @@
     <message>
       <location filename="../ui/ArchMaterial.ui" line="223"/>
       <source>URL</source>
-      <translation>Спасылак</translation>
+      <translation>URL-адрас</translation>
     </message>
     <message>
       <location filename="../ui/ArchMaterial.ui" line="236"/>
       <source>A URL describing this material</source>
-      <translation>Спасылак, які апісвае гэты матэрыял</translation>
+      <translation>URL-адрас, які апісвае гэты матэрыял</translation>
     </message>
     <message>
       <location filename="../ui/ArchMaterial.ui" line="249"/>
       <source>Opens the URL in a browser</source>
-      <translation>Адчыніць спасылак у аглядальніку</translation>
+      <translation>Адчыніць URL-адрас у аглядальніку</translation>
     </message>
     <message>
       <location filename="../ui/ArchMaterial.ui" line="268"/>
@@ -335,7 +335,7 @@ Leave blank to use all objects from the document</source>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="193"/>
       <source>Import</source>
-      <translation type="unfinished">Import</translation>
+      <translation>Імпарт</translation>
     </message>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="205"/>
@@ -355,7 +355,7 @@ Leave blank to use all objects from the document</source>
     <message>
       <location filename="../ui/DialogBimServerLogin.ui" line="22"/>
       <source>BimServer URL:</source>
-      <translation>Адрас сервера BIM:</translation>
+      <translation>URL-адрас сервера BIM:</translation>
     </message>
     <message>
       <location filename="../ui/DialogBimServerLogin.ui" line="36"/>
@@ -647,17 +647,17 @@ Leave blank to use all objects from the document</source>
     <message>
       <location filename="../ui/preferences-arch.ui" line="51"/>
       <source>Join walls base sketches when possible</source>
-      <translation>Злучыць базавыя эскізы сцен, калі гэтае магчыма</translation>
+      <translation>Злучыць асноўныя эскізы сцен, калі гэтае магчыма</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="64"/>
       <source>Two possible strategies to avoid circular dependencies: Create one more object (unchecked) or remove external geometry of base sketch (checked)</source>
-      <translation>Дзве магчымыя стратэгіі, якія дазваляюць пазбегнуць цыклічных залежнасцяў: стварыць яшчэ адзін аб'ект (калі не птушка), альбо выдаліць вонкавую геаметрыю базавага эскіза (калі птушка)</translation>
+      <translation>Дзве магчымыя стратэгіі, якія дазваляюць пазбегнуць цыклічных залежнасцяў: стварыць яшчэ адзін аб'ект (калі не птушка), альбо выдаліць вонкавую геаметрыю асноўнага эскізу (калі птушка)</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="67"/>
       <source>Remove external geometry of base sketches when needed</source>
-      <translation>Пры неабходнасці выдаліць вонкавую геаметрыю базавых эскізаў</translation>
+      <translation>Пры неабходнасці выдаліць вонкавую геаметрыю асноўных эскізаў</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="80"/>
@@ -846,7 +846,7 @@ a Footprint display mode</source>
     <message>
       <location filename="../ui/preferences-arch.ui" line="688"/>
       <source>The URL of a bim server instance (www.bimserver.org) to connect to.</source>
-      <translation>Спасылак для злучэння з серверам BIM (www.bimserver.org).</translation>
+      <translation>URL-адрас для злучэння з серверам BIM (www.bimserver.org).</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="691"/>
@@ -858,9 +858,7 @@ a Footprint display mode</source>
       <source>If this is selected, the "Open BimServer in browser"
 button will open the Bim Server interface in an external browser
 instead of the FreeCAD web workbench</source>
-      <translation>Калі птушка, кнопка "Адчыніць сервер BIM у аглядальніку" 
-сервера інтэрфейс сервера BIM у вонкавым аглядальніку
-замест варштату Аглядальнік у FreeCAD</translation>
+      <translation>Калі птушка, кнопка "Адчыніць сервер BIM у аглядальніку" інтэрфейса сервера BIM у вонкавым аглядальніку замест варштату Аглядальнік у FreeCAD</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="713"/>
@@ -1049,7 +1047,7 @@ instead of the FreeCAD web workbench</source>
     <message>
       <location filename="../ui/preferences-archdefaults.ui" line="970"/>
       <source>Pipes</source>
-      <translation>Трубы</translation>
+      <translation>Трубаправоды</translation>
     </message>
     <message>
       <location filename="../ui/preferences-archdefaults.ui" line="978"/>
@@ -1123,7 +1121,7 @@ of IFC files in the Report view panel</source>
       <source>Clones are used when objects have shared geometry
 One object is the base object, the others are clones.</source>
       <translation>Дублікаты ўжываюцца, калі аб'екты маюць агульную геаметрыю
-Адзін аб'ект з'яўляецца базавым аб'ектам, астатнія - дублікатамі.</translation>
+Адзін аб'ект з'яўляецца асноўным аб'ектам, астатнія - дублікатамі.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc.ui" line="75"/>
@@ -1299,7 +1297,7 @@ they will be treated as one.</source>
     <message>
       <location filename="../ui/preferences-ifc.ui" line="386"/>
       <source>Allow invalid shapes</source>
-      <translation>Дазволіць недапушчальныя фігуры</translation>
+      <translation>Дазволіць хібныя фігуры</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc.ui" line="401"/>
@@ -1508,7 +1506,7 @@ The gradient of the local mesh size h(x) is bound by |Δh(x)| ≤ 1/value.</sour
 - Standard + structural: both types of models.</source>
       <translation>Тып аб'ектаў, якія вы жадаеце экспартаваць:
 - Стандартная мадэль: суцэльныя аб'екты.
-- Структурны аналіз: каркасная мадэль для структурных разлікаў.
+- Структурны дослед: каркасная мадэль для структурных разлікаў.
 - Стандартны + структурны: абодва тыпы мадэляў.</translation>
     </message>
     <message>
@@ -1524,7 +1522,7 @@ The gradient of the local mesh size h(x) is bound by |Δh(x)| ≤ 1/value.</sour
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="96"/>
       <source>Structural analysis</source>
-      <translation>Структурны аналіз</translation>
+      <translation>Структурны дослед</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="101"/>
@@ -1758,7 +1756,7 @@ unit to work with when opening the file.</source>
     <message>
       <location filename="../../ArchStructure.py" line="222"/>
       <source>Please select the base object first and then the edges to use as extrusion paths</source>
-      <translation>Калі ласка, спачатку абярыце базавы аб'ект, а потым рэбры, якія будуць ужывацца ў якасці шляхоў выдушвання</translation>
+      <translation>Калі ласка, спачатку абярыце асноўны аб'ект, а потым рэбры, якія будуць ужывацца ў якасці шляхоў выдушвання</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="245"/>
@@ -1784,7 +1782,7 @@ unit to work with when opening the file.</source>
     <message>
       <location filename="../../ArchStructure.py" line="328"/>
       <source>Base point of column</source>
-      <translation>Базавая кропка слупка</translation>
+      <translation>Асноўная кропка слупка</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="341"/>
@@ -1857,13 +1855,13 @@ unit to work with when opening the file.</source>
     <message>
       <location filename="../../ArchStructure.py" line="775"/>
       <source>Error: The base shape couldn't be extruded along this tool object</source>
-      <translation>Памылка: не атрымалася выдушыць базавую фігура наўздоўж гэтага аб'екта інструмента</translation>
+      <translation>Памылка: не атрымалася выдушыць асноўную фігура наўздоўж гэтага аб'екта інструмента</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="801"/>
       <location filename="../../ArchWall.py" line="959"/>
       <source>This mesh is an invalid solid</source>
-      <translation>Гэтая паліганальная сетка з'яўляецца недапушчальным суцэльным целам</translation>
+      <translation>Гэтая паліганальная сетка з'яўляецца хібным суцэльным целам</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="865"/>
@@ -1914,7 +1912,7 @@ unit to work with when opening the file.</source>
     <message>
       <location filename="../../ArchStructure.py" line="1213"/>
       <source>Toggles all structural nodes of the document on/off</source>
-      <translation>Уключае/выключае ўсе канструкцыйныя вузлы дакумента</translation>
+      <translation>Пераключае ўсе канструкцыйныя вузлы дакумента</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="1218"/>
@@ -1942,37 +1940,37 @@ unit to work with when opening the file.</source>
       <location filename="../../ArchStructure.py" line="1252"/>
       <location filename="../../ArchStructure.py" line="1284"/>
       <source>The chosen object is not a Structure</source>
-      <translation type="unfinished">The chosen object is not a Structure</translation>
+      <translation>Абраны аб'ект не з'яўляецца структурай</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="1255"/>
       <location filename="../../ArchStructure.py" line="1287"/>
       <source>The chosen object has no structural nodes</source>
-      <translation type="unfinished">The chosen object has no structural nodes</translation>
+      <translation>Абраны аб'ект не мае структурных вузлоў</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="1258"/>
       <location filename="../../ArchStructure.py" line="1290"/>
       <source>One of these objects has more than 2 nodes</source>
-      <translation type="unfinished">One of these objects has more than 2 nodes</translation>
+      <translation>Адзін з гэтых аб'ектаў мае больш за два вузла</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="1265"/>
       <location filename="../../ArchStructure.py" line="1297"/>
       <source>Unable to find a suitable intersection point</source>
-      <translation type="unfinished">Unable to find a suitable intersection point</translation>
+      <translation>Не атрымалася знайсці прыдатную кропку скрыжавання</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="1268"/>
       <source>Intersection found.
 </source>
-      <translation type="unfinished">Intersection found.
+      <translation>Перасячэнне знойдзена.
 </translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="1300"/>
       <source>Intersection found.</source>
-      <translation type="unfinished">Intersection found.</translation>
+      <translation>Перасячэнне знойдзена.</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="1336"/>
@@ -1983,77 +1981,77 @@ unit to work with when opening the file.</source>
       <location filename="../../ArchStructure.py" line="1441"/>
       <location filename="../../ArchPanel.py" line="770"/>
       <source>Couldn't compute a shape</source>
-      <translation type="unfinished">Couldn't compute a shape</translation>
+      <translation>Не атрымалася вылічыць фігуру</translation>
     </message>
     <message>
       <location filename="../../ArchEquipment.py" line="180"/>
       <source>You must select a base shape object and optionally a mesh object</source>
-      <translation type="unfinished">You must select a base shape object and optionally a mesh object</translation>
+      <translation>Вы павінны абраць аб'ект асноўнай фігуры і неабавязковы аб'ект паліганальнай сеткі</translation>
     </message>
     <message>
       <location filename="../../ArchEquipment.py" line="200"/>
       <source>Create Equipment</source>
-      <translation type="unfinished">Create Equipment</translation>
+      <translation>Стварыць абсталяванне</translation>
     </message>
     <message>
       <location filename="../../ArchEquipment.py" line="235"/>
       <source>You must select exactly one base object</source>
-      <translation type="unfinished">You must select exactly one base object</translation>
+      <translation>Вы павінны абраць толькі адзін асноўны аб'ект</translation>
     </message>
     <message>
       <location filename="../../ArchEquipment.py" line="239"/>
       <source>The selected object must be a mesh</source>
-      <translation type="unfinished">The selected object must be a mesh</translation>
+      <translation>Абраны аб'ект павінен быць паліганальнай сеткай</translation>
     </message>
     <message>
       <location filename="../../ArchEquipment.py" line="243"/>
       <source>This mesh has more than 1000 facets.</source>
-      <translation type="unfinished">This mesh has more than 1000 facets.</translation>
+      <translation>Гэтая паліганальная сетка мае больш за 1000 граняў.</translation>
     </message>
     <message>
       <location filename="../../ArchEquipment.py" line="244"/>
       <source>This operation can take a long time. Proceed?</source>
-      <translation type="unfinished">This operation can take a long time. Proceed?</translation>
+      <translation>Гэтая аперацыя можа заняць шмат часу. Ці працягнуць?</translation>
     </message>
     <message>
       <location filename="../../ArchEquipment.py" line="251"/>
       <source>The mesh has more than 500 facets. This will take a couple of minutes...</source>
-      <translation type="unfinished">The mesh has more than 500 facets. This will take a couple of minutes...</translation>
+      <translation>Паліганальная сетка мае больш за 500 граняў. Гэта зойме некалькі хвілін...</translation>
     </message>
     <message>
       <location filename="../../ArchEquipment.py" line="252"/>
       <source>Create 3 views</source>
-      <translation type="unfinished">Create 3 views</translation>
+      <translation>Стварыць тры выгляду</translation>
     </message>
     <message>
       <location filename="../../ArchBuildingPart.py" line="206"/>
       <source>BuildingPart</source>
-      <translation type="unfinished">BuildingPart</translation>
+      <translation>Будаўнічая дэталь</translation>
     </message>
     <message>
       <location filename="../../ArchBuildingPart.py" line="305"/>
       <source>Create BuildingPart</source>
-      <translation type="unfinished">Create BuildingPart</translation>
+      <translation>Стварыць будаўнічую дэталь</translation>
     </message>
     <message>
       <location filename="../../ArchBuildingPart.py" line="907"/>
       <source>Deactivate</source>
-      <translation>Дэактываваць</translation>
+      <translation>Адключыць</translation>
     </message>
     <message>
       <location filename="../../ArchBuildingPart.py" line="909"/>
       <source>Activate</source>
-      <translation>Актываваць</translation>
+      <translation>Задзейнічаць</translation>
     </message>
     <message>
       <location filename="../../ArchBuildingPart.py" line="917"/>
       <source>Set working plane</source>
-      <translation type="unfinished">Set working plane</translation>
+      <translation>Задаць працоўную плоскасць</translation>
     </message>
     <message>
       <location filename="../../ArchBuildingPart.py" line="925"/>
       <source>Write camera position</source>
-      <translation type="unfinished">Write camera position</translation>
+      <translation>Запісаць становішча камеры</translation>
     </message>
     <message>
       <location filename="../../ArchBuildingPart.py" line="932"/>
@@ -2064,12 +2062,12 @@ unit to work with when opening the file.</source>
       <location filename="../../ArchBuildingPart.py" line="939"/>
       <location filename="../../ArchMaterial.py" line="221"/>
       <source>Reorder children alphabetically</source>
-      <translation type="unfinished">Reorder children alphabetically</translation>
+      <translation>Змяніць парадак размяшчэння спадчыннікаў у алфавітным парадку</translation>
     </message>
     <message>
       <location filename="../../ArchBuildingPart.py" line="946"/>
       <source>Clone level up</source>
-      <translation type="unfinished">Clone level up</translation>
+      <translation>Дубліраваць узровень уверх</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="43"/>
@@ -2081,17 +2079,17 @@ unit to work with when opening the file.</source>
     <message>
       <location filename="../../ArchProfile.py" line="138"/>
       <source>Create profile</source>
-      <translation type="unfinished">Create profile</translation>
+      <translation>Стварыць профіль</translation>
     </message>
     <message>
       <location filename="../../ArchProfile.py" line="146"/>
       <source>Profile settings</source>
-      <translation type="unfinished">Profile settings</translation>
+      <translation>Налады профілю</translation>
     </message>
     <message>
       <location filename="../../ArchProfile.py" line="192"/>
       <source>Create Profile</source>
-      <translation type="unfinished">Create Profile</translation>
+      <translation>Стварыць профіль</translation>
     </message>
     <message>
       <location filename="../../ArchProfile.py" line="608"/>
@@ -2107,22 +2105,22 @@ Site is not allowed to accept any other object besides Building.
 Other objects will be removed from the selection.
 
 Note: You can change that in the preferences.</source>
-      <translation type="unfinished">Please either select only Building objects or nothing at all!
+      <translation>Калі ласка, абярыце толькі будаўнічыя аб'екты, альбо наогул нічога!
 
-Site is not allowed to accept any other object besides Building.
+Мясцовасці не дазваляецца прымаць якія-небудзь іншыя аб'екты, акрамя будынка.
 
-Other objects will be removed from the selection.
+Іншыя аб'екты будуць выдаленыя з абранага.
 
-Note: You can change that in the preferences.</translation>
+Заўвага: Вы можаце змяніць гэта ў перавагах.</translation>
     </message>
     <message>
       <location filename="../../ArchSite.py" line="536"/>
       <source>There is no valid object in the selection.
 
 Site creation aborted.</source>
-      <translation type="unfinished">There is no valid object in the selection.
+      <translation>У абраным аб'екце няма дапушчальнага аб'екта.
 
-Site creation aborted.</translation>
+Стварэнне мясцовасці перапынена.</translation>
     </message>
     <message>
       <location filename="../../ArchSite.py" line="543"/>
@@ -2133,25 +2131,25 @@ Site creation aborted.</translation>
       <location filename="../../ArchRoof.py" line="222"/>
       <location filename="../../ArchRoof.py" line="232"/>
       <source>Create Roof</source>
-      <translation type="unfinished">Create Roof</translation>
+      <translation>Стварыць дах</translation>
     </message>
     <message>
       <location filename="../../ArchRoof.py" line="241"/>
       <location filename="../../ArchRoof.py" line="824"/>
       <source>Unable to create a roof</source>
-      <translation type="unfinished">Unable to create a roof</translation>
+      <translation>Немагчыма стварыць дах</translation>
     </message>
     <message>
       <location filename="../../ArchRoof.py" line="243"/>
-      <location filename="../../ArchComponent.py" line="1645"/>
+      <location filename="../../ArchComponent.py" line="1654"/>
       <location filename="../../ArchSpace.py" line="250"/>
       <source>Please select a base object</source>
-      <translation type="unfinished">Please select a base object</translation>
+      <translation>Калі ласка, абярыце асноўны аб'ект</translation>
     </message>
     <message>
       <location filename="../../ArchRoof.py" line="1010"/>
       <source>Roof</source>
-      <translation type="unfinished">Roof</translation>
+      <translation>Дах</translation>
     </message>
     <message>
       <location filename="../../ArchRoof.py" line="1011"/>
@@ -2166,17 +2164,17 @@ Site creation aborted.</translation>
 If Angle = 0 and Run = 0 then the profile is identical to the relative profile.
 If Angle = 0 then the angle is calculated so that the height is the same as the relative profile.
 If Run = 0 then the run is calculated so that the height is the same as the relative profile.</source>
-      <translation type="unfinished">Parameters of the roof profiles :
-* Angle : slope in degrees relative to the horizontal.
-* Run : horizontal distance between the wall and the ridge.
-* Thickness : thickness of the roof.
-* Overhang : horizontal distance between the eave and the wall.
-* Height : height of the ridge above the base (calculated automatically).
-* IdRel : Id of the relative profile used for automatic calculations.
+      <translation>Налады профіляў даху :
+* Вугал: ухіл у градусах адносна гарызанталі.
+* Прагон: гарызантальная адлегласць паміж сцяной і каньком.
+* Таўшчыня: таўшчыня даху.
+* Навісь: гарызантальная адлегласць паміж карнізам і сцяной.
+* Вышыня: Вышыня канька над асновай (разлічваецца аўтаматычна).
+* IdRel: ідэнтыфікатар адноснага профілю, які ўжываецца для аўтаматычных вылічэнняў.
 ---
-If Angle = 0 and Run = 0 then the profile is identical to the relative profile.
-If Angle = 0 then the angle is calculated so that the height is the same as the relative profile.
-If Run = 0 then the run is calculated so that the height is the same as the relative profile.</translation>
+Калі вугал = 0 і прагон = 0, то профіль ідэнтычны адноснаму профілі.
+Калі вугал = 0, то вугал вылічаецца такім чынам, каб вышыня супадала з адносным профілем.
+Калі прагон = 0, то прагон разлічваецца такім чынам, каб вышыня супадала з адносным профілем.</translation>
     </message>
     <message>
       <location filename="../../ArchRoof.py" line="1012"/>
@@ -2186,37 +2184,37 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../ArchRoof.py" line="1013"/>
       <source>Angle (deg)</source>
-      <translation type="unfinished">Angle (deg)</translation>
+      <translation>Вугал (градус)</translation>
     </message>
     <message>
       <location filename="../../ArchRoof.py" line="1014"/>
       <source>Run (mm)</source>
-      <translation type="unfinished">Run (mm)</translation>
+      <translation>Прагон (мм)</translation>
     </message>
     <message>
       <location filename="../../ArchRoof.py" line="1015"/>
       <source>IdRel</source>
-      <translation type="unfinished">IdRel</translation>
+      <translation>IdRel</translation>
     </message>
     <message>
       <location filename="../../ArchRoof.py" line="1016"/>
       <source>Thickness (mm)</source>
-      <translation type="unfinished">Thickness (mm)</translation>
+      <translation>Таўшчыня (мм)</translation>
     </message>
     <message>
       <location filename="../../ArchRoof.py" line="1017"/>
       <source>Overhang (mm)</source>
-      <translation type="unfinished">Overhang (mm)</translation>
+      <translation>Навісь (мм)</translation>
     </message>
     <message>
       <location filename="../../ArchRoof.py" line="1018"/>
       <source>Height (mm)</source>
-      <translation type="unfinished">Height (mm)</translation>
+      <translation>Вышыня (мм)</translation>
     </message>
     <message>
       <location filename="../../ArchWindowPresets.py" line="504"/>
       <source>Door</source>
-      <translation type="unfinished">Door</translation>
+      <translation>Дзверы</translation>
     </message>
     <message>
       <location filename="../../ArchCutPlane.py" line="151"/>
@@ -2226,22 +2224,22 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../ArchCutPlane.py" line="185"/>
       <source>Cut Plane</source>
-      <translation type="unfinished">Cut Plane</translation>
+      <translation>Плоскасць разрэзу</translation>
     </message>
     <message>
       <location filename="../../ArchCutPlane.py" line="186"/>
       <source>Cut Plane options</source>
-      <translation type="unfinished">Cut Plane options</translation>
+      <translation>Налады плоскасці разрэзу</translation>
     </message>
     <message>
       <location filename="../../ArchCutPlane.py" line="187"/>
       <source>Which side to cut</source>
-      <translation type="unfinished">Which side to cut</translation>
+      <translation>З якога боку рэзаць</translation>
     </message>
     <message>
       <location filename="../../ArchCutPlane.py" line="188"/>
       <source>Behind</source>
-      <translation type="unfinished">Behind</translation>
+      <translation>Ззаду</translation>
     </message>
     <message>
       <location filename="../../ArchCutPlane.py" line="189"/>
@@ -2251,17 +2249,17 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../ArchReference.py" line="498"/>
       <source>Reload reference</source>
-      <translation type="unfinished">Reload reference</translation>
+      <translation>Перагрузіць апорны элемент</translation>
     </message>
     <message>
       <location filename="../../ArchReference.py" line="506"/>
       <source>Open reference</source>
-      <translation type="unfinished">Open reference</translation>
+      <translation>Адчыніць апорны элемент</translation>
     </message>
     <message>
       <location filename="../../ArchReference.py" line="758"/>
       <source>Create external reference</source>
-      <translation type="unfinished">Create external reference</translation>
+      <translation>Стварыць вонкавы апорны элемент</translation>
     </message>
     <message>
       <location filename="../../importSH3D.py" line="70"/>
@@ -2269,27 +2267,27 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <location filename="../../importDAE.py" line="126"/>
       <location filename="../../import3DS.py" line="83"/>
       <source>Error: Couldn't determine character encoding</source>
-      <translation type="unfinished">Error: Couldn't determine character encoding</translation>
+      <translation>Памылка: Не атрымалася вызначыць кадыроўку знакаў</translation>
     </message>
     <message>
       <location filename="../../ArchFrame.py" line="48"/>
       <source>Frame</source>
-      <translation type="unfinished">Frame</translation>
+      <translation>Каркас</translation>
     </message>
     <message>
       <location filename="../../ArchFrame.py" line="89"/>
       <source>Create Frame</source>
-      <translation type="unfinished">Create Frame</translation>
+      <translation>Стварыць каркас</translation>
     </message>
     <message>
       <location filename="../../ArchFrame.py" line="224"/>
       <source>Crossing point not found in profile.</source>
-      <translation type="unfinished">Crossing point not found in profile.</translation>
+      <translation>Кропка перакрыжавання ў профілі не знойдзена.</translation>
     </message>
     <message>
       <location filename="../../importSHP.py" line="69"/>
       <source>Shapes elevation</source>
-      <translation type="unfinished">Shapes elevation</translation>
+      <translation>Узвышэнне фігур</translation>
     </message>
     <message>
       <location filename="../../importSHP.py" line="70"/>
@@ -2424,7 +2422,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <location filename="../../ArchWindow.py" line="1780"/>
       <location filename="../../ArchAxisSystem.py" line="370"/>
       <location filename="../../ArchAxis.py" line="802"/>
-      <location filename="../../ArchComponent.py" line="1931"/>
+      <location filename="../../ArchComponent.py" line="1940"/>
       <location filename="../../ArchSectionPlane.py" line="1506"/>
       <location filename="../../ArchSpace.py" line="793"/>
       <source>Remove</source>
@@ -2434,7 +2432,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <location filename="../../ArchWindow.py" line="1781"/>
       <location filename="../../ArchAxisSystem.py" line="371"/>
       <location filename="../../ArchAxis.py" line="803"/>
-      <location filename="../../ArchComponent.py" line="1932"/>
+      <location filename="../../ArchComponent.py" line="1941"/>
       <location filename="../../ArchSpace.py" line="787"/>
       <source>Add</source>
       <translation>Дадаць</translation>
@@ -2450,7 +2448,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <location filename="../../ArchGrid.py" line="320"/>
       <location filename="../../ArchSchedule.py" line="378"/>
       <location filename="../../ArchAxis.py" line="631"/>
-      <location filename="../../ArchComponent.py" line="1487"/>
+      <location filename="../../ArchComponent.py" line="1496"/>
       <location filename="../../ArchSectionPlane.py" line="1237"/>
       <source>Edit</source>
       <translation>Змяніць</translation>
@@ -2473,7 +2471,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     </message>
     <message>
       <location filename="../../ArchWindow.py" line="1786"/>
-      <location filename="../../ArchComponent.py" line="1939"/>
+      <location filename="../../ArchComponent.py" line="1948"/>
       <source>Components</source>
       <translation>Кампаненты</translation>
     </message>
@@ -2491,7 +2489,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     </message>
     <message>
       <location filename="../../ArchWindow.py" line="1789"/>
-      <location filename="../../ArchComponent.py" line="1991"/>
+      <location filename="../../ArchComponent.py" line="2000"/>
       <location filename="../../ArchCommands.py" line="1628"/>
       <source>Type</source>
       <translation>Тып</translation>
@@ -2570,7 +2568,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../ArchAxisSystem.py" line="369"/>
       <location filename="../../ArchAxis.py" line="801"/>
-      <location filename="../../ArchComponent.py" line="1938"/>
+      <location filename="../../ArchComponent.py" line="1947"/>
       <source>Axes</source>
       <translation type="unfinished">Axes</translation>
     </message>
@@ -2585,7 +2583,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <location filename="../../importOBJ.py" line="245"/>
       <location filename="../../importOBJ.py" line="269"/>
       <source>Successfully written</source>
-      <translation type="unfinished">Successfully written</translation>
+      <translation>Паспяхова запісана</translation>
     </message>
     <message>
       <location filename="../../ArchTruss.py" line="65"/>
@@ -2724,7 +2722,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../ArchGrid.py" line="420"/>
       <source>Grid</source>
-      <translation type="unfinished">Grid</translation>
+      <translation>Сетка</translation>
     </message>
     <message>
       <location filename="../../ArchGrid.py" line="421"/>
@@ -2969,17 +2967,17 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <location filename="../../ArchPipe.py" line="121"/>
       <location filename="../../ArchPipe.py" line="128"/>
       <source>Create Pipe</source>
-      <translation type="unfinished">Create Pipe</translation>
+      <translation>Стварыць трубаправод</translation>
     </message>
     <message>
       <location filename="../../ArchPipe.py" line="158"/>
       <source>Please select exactly 2 or 3 Pipe objects</source>
-      <translation type="unfinished">Please select exactly 2 or 3 Pipe objects</translation>
+      <translation>Калі ласка, абярыце роўна два ці тры аб'екта трубаправода</translation>
     </message>
     <message>
       <location filename="../../ArchPipe.py" line="163"/>
       <source>Please select only Pipe objects</source>
-      <translation type="unfinished">Please select only Pipe objects</translation>
+      <translation>Калі ласка, абярыце толькі аб'ект трубаправода</translation>
     </message>
     <message>
       <location filename="../../ArchPipe.py" line="167"/>
@@ -2999,7 +2997,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../ArchPipe.py" line="269"/>
       <source>Unable to build the pipe</source>
-      <translation type="unfinished">Unable to build the pipe</translation>
+      <translation>Немагчыма пабудаваць трубаправод</translation>
     </message>
     <message>
       <location filename="../../ArchPipe.py" line="288"/>
@@ -3014,7 +3012,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../ArchPipe.py" line="294"/>
       <source>The base wire is closed</source>
-      <translation type="unfinished">The base wire is closed</translation>
+      <translation>Асноўная ломаная лінія замкнутая</translation>
     </message>
     <message>
       <location filename="../../ArchPipe.py" line="308"/>
@@ -3024,7 +3022,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../ArchPipe.py" line="311"/>
       <source>The profile is not closed</source>
-      <translation type="unfinished">The profile is not closed</translation>
+      <translation>Профіль не замкнуты</translation>
     </message>
     <message>
       <location filename="../../ArchPipe.py" line="379"/>
@@ -3040,12 +3038,12 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../ArchPipe.py" line="418"/>
       <source>Pipes are already aligned</source>
-      <translation type="unfinished">Pipes are already aligned</translation>
+      <translation>Трубаправоды ўжо выраўнаваныя</translation>
     </message>
     <message>
       <location filename="../../ArchPipe.py" line="458"/>
       <source>At least 2 pipes must align</source>
-      <translation type="unfinished">At least 2 pipes must align</translation>
+      <translation>Прынамсі, два трубаправоды павінны быць выраўнаваныя</translation>
     </message>
     <message>
       <location filename="../../ArchSchedule.py" line="286"/>
@@ -3083,7 +3081,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../ArchSchedule.py" line="587"/>
       <location filename="../../ArchSchedule.py" line="605"/>
-      <location filename="../../ArchComponent.py" line="1992"/>
+      <location filename="../../ArchComponent.py" line="2001"/>
       <location filename="../../ArchCommands.py" line="1629"/>
       <source>Value</source>
       <translation>Значэнне</translation>
@@ -3173,19 +3171,19 @@ Floor creation aborted.</translation>
       <translation type="unfinished">Successfully imported</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="915"/>
+      <location filename="../../ArchComponent.py" line="924"/>
       <source>Error computing the shape of this object</source>
       <translation type="unfinished">Error computing the shape of this object</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="936"/>
+      <location filename="../../ArchComponent.py" line="945"/>
       <source>has no solid</source>
       <translation type="unfinished">has no solid</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="943"/>
+      <location filename="../../ArchComponent.py" line="952"/>
       <source>has an invalid shape</source>
-      <translation type="unfinished">has an invalid shape</translation>
+      <translation>мае хібную фігуру</translation>
     </message>
     <message>
       <location filename="../../ArchPrecast.py" line="128"/>
@@ -3194,103 +3192,103 @@ Floor creation aborted.</translation>
       <location filename="../../ArchPrecast.py" line="454"/>
       <location filename="../../ArchPrecast.py" line="582"/>
       <location filename="../../ArchPrecast.py" line="679"/>
-      <location filename="../../ArchComponent.py" line="945"/>
+      <location filename="../../ArchComponent.py" line="954"/>
       <source>has a null shape</source>
       <translation type="unfinished">has a null shape</translation>
     </message>
     <message>
       <location filename="../../ArchSite.py" line="928"/>
-      <location filename="../../ArchComponent.py" line="1496"/>
+      <location filename="../../ArchComponent.py" line="1505"/>
       <source>Toggle subcomponents</source>
-      <translation type="unfinished">Toggle subcomponents</translation>
+      <translation>Пераключыць укладзеныя кампаненты</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1622"/>
+      <location filename="../../ArchComponent.py" line="1631"/>
       <source>Closing Sketch edit</source>
       <translation type="unfinished">Closing Sketch edit</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1930"/>
+      <location filename="../../ArchComponent.py" line="1939"/>
       <source>Component</source>
       <translation type="unfinished">Component</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1933"/>
+      <location filename="../../ArchComponent.py" line="1942"/>
       <source>Components of this object</source>
       <translation type="unfinished">Components of this object</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1934"/>
+      <location filename="../../ArchComponent.py" line="1943"/>
       <source>Base component</source>
       <translation type="unfinished">Base component</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1935"/>
+      <location filename="../../ArchComponent.py" line="1944"/>
       <source>Additions</source>
       <translation type="unfinished">Additions</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1936"/>
+      <location filename="../../ArchComponent.py" line="1945"/>
       <source>Subtractions</source>
       <translation type="unfinished">Subtractions</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1937"/>
+      <location filename="../../ArchComponent.py" line="1946"/>
       <source>Objects</source>
       <translation>Аб'екты</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1940"/>
+      <location filename="../../ArchComponent.py" line="1949"/>
       <source>Fixtures</source>
       <translation type="unfinished">Fixtures</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1941"/>
+      <location filename="../../ArchComponent.py" line="1950"/>
       <source>Group</source>
       <translation>Суполка</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1942"/>
+      <location filename="../../ArchComponent.py" line="1951"/>
       <source>Hosts</source>
       <translation type="unfinished">Hosts</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1943"/>
+      <location filename="../../ArchComponent.py" line="1952"/>
       <source>Edit IFC properties</source>
       <translation type="unfinished">Edit IFC properties</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1944"/>
+      <location filename="../../ArchComponent.py" line="1953"/>
       <source>Edit standard code</source>
       <translation type="unfinished">Edit standard code</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1990"/>
+      <location filename="../../ArchComponent.py" line="1999"/>
       <source>Property</source>
       <translation>Уласцівасць</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1995"/>
+      <location filename="../../ArchComponent.py" line="2004"/>
       <source>Add property...</source>
       <translation type="unfinished">Add property...</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1996"/>
+      <location filename="../../ArchComponent.py" line="2005"/>
       <source>Add property set...</source>
       <translation type="unfinished">Add property set...</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1997"/>
+      <location filename="../../ArchComponent.py" line="2006"/>
       <source>New...</source>
       <translation>Новы...</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="2135"/>
+      <location filename="../../ArchComponent.py" line="2144"/>
       <source>New property</source>
       <translation type="unfinished">New property</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="2170"/>
+      <location filename="../../ArchComponent.py" line="2179"/>
       <source>New property set</source>
       <translation type="unfinished">New property set</translation>
     </message>
@@ -3313,7 +3311,7 @@ Floor creation aborted.</translation>
     <message>
       <location filename="../../ArchSectionPlane.py" line="1245"/>
       <source>Toggle Cutview</source>
-      <translation type="unfinished">Toggle Cutview</translation>
+      <translation>Пераключыць плоскасць перасеку</translation>
     </message>
     <message>
       <location filename="../../ArchSectionPlane.py" line="1505"/>
@@ -3538,12 +3536,12 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchCommands.py" line="407"/>
       <source>Invalid cutplane</source>
-      <translation type="unfinished">Invalid cutplane</translation>
+      <translation>Хібная плоскасць разрэзу</translation>
     </message>
     <message>
       <location filename="../../ArchCommands.py" line="691"/>
       <source>is not closed</source>
-      <translation type="unfinished">is not closed</translation>
+      <translation>не замкнуты</translation>
     </message>
     <message>
       <location filename="../../ArchCommands.py" line="693"/>
@@ -3558,7 +3556,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchCommands.py" line="701"/>
       <source>contains a non-closed solid</source>
-      <translation type="unfinished">contains a non-closed solid</translation>
+      <translation>змяшчае незамкнутыя суцэльныя целы</translation>
     </message>
     <message>
       <location filename="../../ArchCommands.py" line="703"/>
@@ -3943,7 +3941,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchBuildingPart.py" line="354"/>
       <source>A MaterialName:SolidIndexesList map that relates material names with solid indexes to be used when referencing this object from other files</source>
-      <translation type="unfinished">A MaterialName:SolidIndexesList map that relates material names with solid indexes to be used when referencing this object from other files</translation>
+      <translation>Супастаўленне MaterialName:SolidIndexesList, якое звязвае назвы матэрыялаў з індэксамі суцэльных цел, якія будуць ужывацца, калі на гэты аб'ект спасылаюцца ў іншых файлах</translation>
     </message>
     <message>
       <location filename="../../ArchBuildingPart.py" line="552"/>
@@ -3999,7 +3997,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchBuildingPart.py" line="580"/>
       <source>If true, when activated, the working plane will automatically adapt to this level</source>
-      <translation type="unfinished">If true, when activated, the working plane will automatically adapt to this level</translation>
+      <translation>Калі птушка, калі задзейнічае працоўная плоскасць, яна аўтаматычна адаптуецца да гэтага ўзроўню</translation>
     </message>
     <message>
       <location filename="../../ArchBuildingPart.py" line="583"/>
@@ -4019,7 +4017,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchBuildingPart.py" line="590"/>
       <source>If True, double-clicking this object in the tree activates it</source>
-      <translation type="unfinished">If True, double-clicking this object in the tree activates it</translation>
+      <translation>Калі птушка, падвоеная пстрычка па гэтым аб'екце ў дрэве задзейнічае яго</translation>
     </message>
     <message>
       <location filename="../../ArchBuildingPart.py" line="594"/>
@@ -4069,7 +4067,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchBuildingPart.py" line="623"/>
       <source>Turn cutting on when activating this level</source>
-      <translation type="unfinished">Turn cutting on when activating this level</translation>
+      <translation>Уключае абрэзку, калі задзейнічалі гэты ўзровень</translation>
     </message>
     <message>
       <location filename="../../ArchBuildingPart.py" line="627"/>
@@ -4125,7 +4123,7 @@ Building creation aborted.</translation>
       <location filename="../../ArchProfile.py" line="293"/>
       <location filename="../../ArchProfile.py" line="441"/>
       <source>Thickness of the web</source>
-      <translation type="unfinished">Thickness of the web</translation>
+      <translation>Таўшчыня стрыжня</translation>
     </message>
     <message>
       <location filename="../../ArchProfile.py" line="294"/>
@@ -4141,7 +4139,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchProfile.py" line="384"/>
       <source>Thickness of the webs</source>
-      <translation type="unfinished">Thickness of the webs</translation>
+      <translation>Таўшчыня стрыжняў</translation>
     </message>
     <message>
       <location filename="../../ArchProfile.py" line="385"/>
@@ -4202,7 +4200,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchSite.py" line="613"/>
       <source>A URL that shows this site in a mapping website</source>
-      <translation type="unfinished">A URL that shows this site in a mapping website</translation>
+      <translation>URL-адрас, які паказвае гэтую мясцовасць на супастаўленым інтэрнэт-сайце</translation>
     </message>
     <message>
       <location filename="../../ArchSite.py" line="615"/>
@@ -4240,7 +4238,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchSite.py" line="627"/>
       <source>An extrusion vector to use when performing boolean operations</source>
-      <translation type="unfinished">An extrusion vector to use when performing boolean operations</translation>
+      <translation>Вектар выдушвання, які ўжываецца пры выкананні лагічных аперацый</translation>
     </message>
     <message>
       <location filename="../../ArchSite.py" line="630"/>
@@ -4391,12 +4389,12 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchReference.py" line="378"/>
       <source>The latest time stamp of the linked file</source>
-      <translation type="unfinished">The latest time stamp of the linked file</translation>
+      <translation>Апошняя пазнака часу звязанага файла</translation>
     </message>
     <message>
       <location filename="../../ArchReference.py" line="381"/>
       <source>If true, the colors from the linked file will be kept updated</source>
-      <translation type="unfinished">If true, the colors from the linked file will be kept updated</translation>
+      <translation>Калі птушка, колер з звязанага файла будзе заўсёды абнаўляцца</translation>
     </message>
     <message>
       <location filename="../../ArchFrame.py" line="111"/>
@@ -5036,7 +5034,7 @@ Building creation aborted.</translation>
       <location filename="../../ArchPanel.py" line="941"/>
       <location filename="../../ArchSectionPlane.py" line="1268"/>
       <source>The linked object</source>
-      <translation type="unfinished">The linked object</translation>
+      <translation>Звязаны аб'ект</translation>
     </message>
     <message>
       <location filename="../../ArchPanel.py" line="841"/>
@@ -5126,7 +5124,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchPanel.py" line="1217"/>
       <source>The linked Panel cuts</source>
-      <translation type="unfinished">The linked Panel cuts</translation>
+      <translation>Звязаныя выразы панэляў</translation>
     </message>
     <message>
       <location filename="../../ArchPanel.py" line="1219"/>
@@ -5291,17 +5289,17 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchPipe.py" line="197"/>
       <source>The diameter of this pipe, if not based on a profile</source>
-      <translation type="unfinished">The diameter of this pipe, if not based on a profile</translation>
+      <translation>Дыяметр гэтага трубаправода, калі не заснаваны на профілі</translation>
     </message>
     <message>
       <location filename="../../ArchPipe.py" line="199"/>
       <source>The length of this pipe, if not based on an edge</source>
-      <translation type="unfinished">The length of this pipe, if not based on an edge</translation>
+      <translation>Даўжыня гэтага трубаправода, калі не заснаваны на рабры</translation>
     </message>
     <message>
       <location filename="../../ArchPipe.py" line="201"/>
       <source>An optional closed profile to base this pipe on</source>
-      <translation type="unfinished">An optional closed profile to base this pipe on</translation>
+      <translation>Неабавязковы замкнуты профіль для асновы гэтага трубаправода</translation>
     </message>
     <message>
       <location filename="../../ArchPipe.py" line="203"/>
@@ -5316,7 +5314,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchPipe.py" line="207"/>
       <source>The wall thickness of this pipe, if not based on a profile</source>
-      <translation type="unfinished">The wall thickness of this pipe, if not based on a profile</translation>
+      <translation>Таўшчыня сценкі гэтага трубаправода, калі не заснаваны на профілі</translation>
     </message>
     <message>
       <location filename="../../ArchPipe.py" line="356"/>
@@ -5326,7 +5324,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchPipe.py" line="358"/>
       <source>The pipes linked by this connector</source>
-      <translation type="unfinished">The pipes linked by this connector</translation>
+      <translation>Трубаправоды, якія звязаныя гэтым злучэннем</translation>
     </message>
     <message>
       <location filename="../../ArchPipe.py" line="360"/>
@@ -5515,7 +5513,7 @@ Building creation aborted.</translation>
       <translation type="unfinished">An optional axis or axis system on which this object should be duplicated</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1162"/>
+      <location filename="../../ArchComponent.py" line="1171"/>
       <source>Use the material color as this object's shape color, if available</source>
       <translation type="unfinished">Use the material color as this object's shape color, if available</translation>
     </message>
@@ -5643,7 +5641,7 @@ Building creation aborted.</translation>
       <location filename="../../ArchSectionPlane.py" line="1005"/>
       <location filename="../../ArchSectionPlane.py" line="1010"/>
       <source>Show the cut in the 3D view</source>
-      <translation type="unfinished">Show the cut in the 3D view</translation>
+      <translation>Паказаць перасек у трохмерным прадстаўленні</translation>
     </message>
     <message>
       <location filename="../../ArchSectionPlane.py" line="1007"/>
@@ -5658,7 +5656,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchSectionPlane.py" line="1015"/>
       <source>Show the label in the 3D view</source>
-      <translation type="unfinished">Show the label in the 3D view</translation>
+      <translation>Паказаць метку ў трохмерным прадстаўленні</translation>
     </message>
     <message>
       <location filename="../../ArchSectionPlane.py" line="1017"/>
@@ -5695,7 +5693,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchSectionPlane.py" line="1284"/>
       <source>If checked, source objects are displayed regardless of being visible in the 3D model</source>
-      <translation type="unfinished">If checked, source objects are displayed regardless of being visible in the 3D model</translation>
+      <translation>Калі птушка, зыходныя аб'екты адлюстроўваюцца незалежна ад таго, ці бачныя яны ў трохмернай мадэлі</translation>
     </message>
     <message>
       <location filename="../../ArchSectionPlane.py" line="1286"/>
@@ -5943,7 +5941,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchBuildingPart.py" line="290"/>
       <source>BuildingPart</source>
-      <translation type="unfinished">BuildingPart</translation>
+      <translation>Будаўнічая дэталь</translation>
     </message>
     <message>
       <location filename="../../ArchBuildingPart.py" line="294"/>
@@ -5999,7 +5997,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../InitGui.py" line="103"/>
       <source>Pipe tools</source>
-      <translation type="unfinished">Pipe tools</translation>
+      <translation>Інструменты трубаправода</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="145"/>
@@ -6059,7 +6057,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../InitGui.py" line="189"/>
       <source>Annotation</source>
-      <translation type="unfinished">Annotation</translation>
+      <translation>Заметка</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="193"/>
@@ -6111,7 +6109,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchRoof.py" line="206"/>
       <source>Roof</source>
-      <translation type="unfinished">Roof</translation>
+      <translation>Дах</translation>
     </message>
     <message>
       <location filename="../../ArchRoof.py" line="210"/>
@@ -6163,7 +6161,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchFrame.py" line="77"/>
       <source>Frame</source>
-      <translation type="unfinished">Frame</translation>
+      <translation>Каркас</translation>
     </message>
     <message>
       <location filename="../../ArchFrame.py" line="81"/>
@@ -6302,7 +6300,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchGrid.py" line="68"/>
       <source>Grid</source>
-      <translation type="unfinished">Grid</translation>
+      <translation>Сетка</translation>
     </message>
     <message>
       <location filename="../../ArchGrid.py" line="72"/>
@@ -6337,7 +6335,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchGrid.py" line="108"/>
       <source>The type of 3D points produced by this grid object</source>
-      <translation type="unfinished">The type of 3D points produced by this grid object</translation>
+      <translation>Тыпы трохмерных кропак, якія ствараюцца гэтым аб'ектам сеткі</translation>
     </message>
     <message>
       <location filename="../../ArchGrid.py" line="111"/>
@@ -6388,7 +6386,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchPanel.py" line="335"/>
       <source>Panel Cut</source>
-      <translation type="unfinished">Panel Cut</translation>
+      <translation>Выраз панэлі</translation>
     </message>
     <message>
       <location filename="../../ArchPanel.py" line="339"/>
@@ -6454,7 +6452,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchPipe.py" line="110"/>
       <source>Creates a pipe object from a given Wire or Line</source>
-      <translation type="unfinished">Creates a pipe object from a given Wire or Line</translation>
+      <translation>Стварае аб'ект трубаправода з зададзенай ломанай лінія ці лініі</translation>
     </message>
   </context>
   <context>
@@ -6467,7 +6465,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchPipe.py" line="149"/>
       <source>Creates a connector between 2 or 3 selected pipes</source>
-      <translation type="unfinished">Creates a connector between 2 or 3 selected pipes</translation>
+      <translation>Стварае злучэнне паміж двума ці трыма абранымі трубаправодамі</translation>
     </message>
   </context>
   <context>
@@ -6476,7 +6474,7 @@ Building creation aborted.</translation>
       <location filename="../../ArchPipe.py" line="513"/>
       <location filename="../../ArchPipe.py" line="516"/>
       <source>Pipe tools</source>
-      <translation type="unfinished">Pipe tools</translation>
+      <translation>Інструменты трубаправода</translation>
     </message>
   </context>
   <context>
@@ -6714,12 +6712,12 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchCommands.py" line="1556"/>
       <source>Toggle IFC Brep flag</source>
-      <translation type="unfinished">Toggle IFC Brep flag</translation>
+      <translation>Пераключыць флаг IFC B-Rep</translation>
     </message>
     <message>
       <location filename="../../ArchCommands.py" line="1559"/>
       <source>Force an object to be exported as Brep or not</source>
-      <translation type="unfinished">Force an object to be exported as Brep or not</translation>
+      <translation>Прымусова экспартаваць аб'ект як B-Rep, ці не</translation>
     </message>
   </context>
   <context>
@@ -6766,12 +6764,12 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchCommands.py" line="1672"/>
       <source>Toggle subcomponents</source>
-      <translation type="unfinished">Toggle subcomponents</translation>
+      <translation>Пераключыць укладзеныя кампаненты</translation>
     </message>
     <message>
       <location filename="../../ArchCommands.py" line="1675"/>
       <source>Shows or hides the subcomponents of this object</source>
-      <translation type="unfinished">Shows or hides the subcomponents of this object</translation>
+      <translation>Паказвае ці хавае ўкладзеныя кампаненты гэтага аб'екта</translation>
     </message>
   </context>
   <context>

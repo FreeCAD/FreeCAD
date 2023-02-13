@@ -8281,7 +8281,7 @@ using the given X/Y Spacing</source>
     <message>
       <location filename="../../../TechDrawTools/CommandAxoLengthDimension.py" line="50"/>
       <source>Axonometric length dimension</source>
-      <translation type="unfinished">Axonometric length dimension</translation>
+      <translation>Aksonometrijska dužinska kota</translation>
     </message>
     <message>
       <location filename="../../../TechDrawTools/CommandAxoLengthDimension.py" line="57"/>
@@ -8290,11 +8290,11 @@ using the given X/Y Spacing</source>
                 - select second edge to define the direction of the extension lines&lt;br&gt;
                 - optional: select two more vertexes which define the measurement instead of the length&lt;br&gt;
                   of the first selected edge</source>
-      <translation type="unfinished">Create an axonometric length dimension&lt;br&gt;
-                - select first edge to define direction and length of the dimension line&lt;br&gt;
-                - select second edge to define the direction of the extension lines&lt;br&gt;
-                - optional: select two more vertexes which define the measurement instead of the length&lt;br&gt;
-                  of the first selected edge</translation>
+      <translation>Napravi aksonometrijsku dužinsku kotu&lt;br&gt;
+ - izaberi prvu ivicu da bi definisao pravac i dužinu kotne linije&lt;br&gt;
+ - izaberi drugu ivicu da bi definisao pravac pomoćnih kotnih linija&lt;br&gt;
+ - neobavezno: izaberi još dva temena koji će definisati merenje prve izabrane ivice&lt;br&gt;
+umesto dužine</translation>
     </message>
   </context>
 </TS>

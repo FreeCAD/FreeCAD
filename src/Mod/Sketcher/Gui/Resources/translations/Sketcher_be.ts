@@ -6,12 +6,12 @@
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="196"/>
       <source>Show/hide B-spline curvature comb</source>
-      <translation>Адлюстраваць/схаваць грабянец крывізны B-сплайна</translation>
+      <translation>Паказаць/схаваць грабянец крывізні B-сплайна</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="197"/>
       <source>Switches between showing and hiding the curvature comb for all B-splines</source>
-      <translation>Пераключэнне паміж адлюстраваннем і хаваннем грабянца крывізны для ўсіх B-сплайнаў</translation>
+      <translation>Пераключэнне паміж паказваннем і хаваннем грабянца крывізны для ўсіх B-сплайнаў</translation>
     </message>
   </context>
   <context>
@@ -19,12 +19,12 @@
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="138"/>
       <source>Show/hide B-spline degree</source>
-      <translation>Адлюстраўваць/схаваць ступень B-сплайна</translation>
+      <translation>Паказаць/схаваць ступень B-сплайна</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="139"/>
       <source>Switches between showing and hiding the degree for all B-splines</source>
-      <translation>Пераключэнне паміж адлюстраваннем і хаваннем ступеняў для ўсіх B-сплайнаў</translation>
+      <translation>Пераключэнне паміж паказваннем і хаваннем ступеняў для ўсіх B-сплайнаў</translation>
     </message>
   </context>
   <context>
@@ -32,12 +32,12 @@
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="225"/>
       <source>Show/hide B-spline knot multiplicity</source>
-      <translation>Адлюстраўваць/схаваць кратнасць вузлоў B-сплайна</translation>
+      <translation>Паказаць/схаваць кратнасць вузлоў B-сплайна</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="226"/>
       <source>Switches between showing and hiding the knot multiplicity for all B-splines</source>
-      <translation>Пераключэнне паміж адлюстраваннем і хаваннем кратнасці вузлоў для ўсіх B-сплайнаў</translation>
+      <translation>Пераключэнне паміж паказваннем і хаваннем кратнасці вузлоў для ўсіх B-сплайнаў</translation>
     </message>
   </context>
   <context>
@@ -45,12 +45,12 @@
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="254"/>
       <source>Show/hide B-spline control point weight</source>
-      <translation>Адлюстроўвае/хавае вагу кантрольнай кропкі B-сплайна</translation>
+      <translation>Паказаць/схаваць вагу кантрольнай кропкі B-сплайна</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="255"/>
       <source>Switches between showing and hiding the control point weight for all B-splines</source>
-      <translation>Пераключэнне паміж адлюстраваннем і хаваннем вагі кантрольнай кропкі для ўсіх B-сплайнаў</translation>
+      <translation>Пераключэнне паміж адлюстраваннем і хаваннем вагі кантрольнай кропкі для ўсіх B-сплайнаўпаказваннем </translation>
     </message>
   </context>
   <context>
@@ -58,12 +58,12 @@
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="167"/>
       <source>Show/hide B-spline control polygon</source>
-      <translation>Адлюстраваць/схаваць палігон кіравання B-сплайна</translation>
+      <translation>Паказаць/схаваць палігон кіравання B-сплайна</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="168"/>
       <source>Switches between showing and hiding the control polygons for all B-splines</source>
-      <translation>Пераключэнне паміж адлюстраваннем і хаваннем палігона кіравання для ўсіх B-сплайнаў</translation>
+      <translation>Пераключэнне паміж паказваннем і хаваннем палігона кіравання для ўсіх B-сплайнаў</translation>
     </message>
   </context>
   <context>
@@ -97,32 +97,32 @@
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="283"/>
       <source>Show/hide B-spline information layer</source>
-      <translation>Адлюстраваць/схаваць інфармацыйны пласт B-сплайна</translation>
+      <translation>Паказаць/схаваць інфармацыйны пласт B-сплайна</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="358"/>
       <source>Show/hide B-spline degree</source>
-      <translation>Адлюстраўваць/схаваць ступень B-сплайна</translation>
+      <translation>Паказаць/схаваць ступень B-сплайна</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="365"/>
       <source>Show/hide B-spline control polygon</source>
-      <translation>Адлюстраваць/схаваць палігон кіравання B-сплайна</translation>
+      <translation>Паказаць/схаваць палігон кіравання B-сплайна</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="372"/>
       <source>Show/hide B-spline curvature comb</source>
-      <translation>Адлюстраваць/схаваць грабянец крывізны B-сплайна</translation>
+      <translation>Паказаць/схаваць грабянец крывізні B-сплайна</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="379"/>
       <source>Show/hide B-spline knot multiplicity</source>
-      <translation>Адлюстраўваць/схаваць кратнасць вузлоў B-сплайна</translation>
+      <translation>Паказаць/схаваць кратнасць вузлоў B-сплайна</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="387"/>
       <source>Show/hide B-spline control point weight</source>
-      <translation>Адлюстроўвае/хавае вагу кантрольнай кропкі B-сплайна</translation>
+      <translation>Паказаць/схаваць вагу кантрольнай кропкі B-сплайна</translation>
     </message>
   </context>
   <context>
@@ -1193,17 +1193,14 @@ with respect to a line or a third point</source>
       <source>Set the 'Support' of a sketch.
 First select the supporting geometry, for example, a face or an edge of a solid object,
 then call this command, then choose the desired sketch.</source>
-      <translation>Усталюйце 'Падтрымку ' эскізу.
+      <translation>Усталюйце 'Падтрымку' эскізу.
 Спачатку абярыце апорную геаметрыю, напрыклад, грань ці рабро суцэльнага аб'екту,
-выклікайце гэтую каманду, потым абярыце патрэбны эскіз.
-
-Спачатку абярыце апорную геаметрыю, напрыклад, грань або рабро суцэльнага аб'екта,
-затым выклічце гэту каманду, затым выберыце патрэбны эскіз.</translation>
+выклікайце гэтую каманду, потым абярыце патрэбны эскіз.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="555"/>
       <source>Some of the selected objects depend on the sketch to be mapped. Circular dependencies are not allowed.</source>
-      <translation>Некаторыя з абраных аб'ектаў залежаць ад эскізу, які будзе адлюстраваны. Цыклічныя залежнасці не дазваляюцца.</translation>
+      <translation>Некаторыя з абраных аб'ектаў залежаць ад эскізу, якія будзе супастаўленыя. Цыклічныя залежнасці не дазваляюцца.</translation>
     </message>
   </context>
   <context>
@@ -1326,12 +1323,12 @@ This will clear the 'Support' property, if any.</source>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="746"/>
       <source>Show/hide internal geometry</source>
-      <translation>Адлюстраваць/схаваць унутраную геаметрыю</translation>
+      <translation>Паказаць/схаваць унутраную геаметрыю</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="747"/>
       <source>Show all internal geometry or hide unused internal geometry</source>
-      <translation>Адлюстраваць усю ўнутраную геаметрыю ці схаваць не ўжытую ўнутраную геаметрыю</translation>
+      <translation>Паказвае ўсю ўнутраную геаметрыю, ці хавае не ўжытую ўнутраную геаметрыю</translation>
     </message>
   </context>
   <context>
@@ -1505,12 +1502,12 @@ This will clear the 'Support' property, if any.</source>
     <message>
       <location filename="../../CommandConstraints.cpp" line="7578"/>
       <source>Activate/deactivate constraint</source>
-      <translation>Уключыць/адключыць абмежаванні</translation>
+      <translation>Задзейнічаць/адключыць абмежаванні</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="7579"/>
       <source>Activates or deactivates the selected constraints</source>
-      <translation>Уключае альбо адключае абраныя абмежаванні</translation>
+      <translation>Задзейнічае ці адключае абраныя абмежаванні</translation>
     </message>
   </context>
   <context>
@@ -1523,7 +1520,7 @@ This will clear the 'Support' property, if any.</source>
     <message>
       <location filename="../../CommandAlterGeometry.cpp" line="72"/>
       <source>Toggles the toolbar or selected geometry to/from construction mode</source>
-      <translation>Пераключае панэль інструментаў альбо абраную геаметрыю ў/з будаўнічы рэжым</translation>
+      <translation>Пераключае панэль інструментаў альбо абраную геаметрыю ў будаўнічы рэжым і наадварот</translation>
     </message>
   </context>
   <context>
@@ -1531,7 +1528,7 @@ This will clear the 'Support' property, if any.</source>
     <message>
       <location filename="../../CommandConstraints.cpp" line="7451"/>
       <source>Toggle driving/reference constraint</source>
-      <translation>Пераключае кіруючае/апорнае абмежаванне</translation>
+      <translation>Пераключыць кіруючае/апорнае абмежаванне</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="7452"/>
@@ -1565,7 +1562,7 @@ into driving or reference mode</source>
       <location filename="../../Command.cpp" line="718"/>
       <source>Validate a sketch by looking at missing coincidences,
 invalid constraints, degenerated geometry, etc.</source>
-      <translation>Паверыць эскіз, праглядзеўшы супадзенні, якія адсутнічаюць, недапушчальныя абмежаванні, выраджаную геаметрыяю і г. д.</translation>
+      <translation>Паверыць эскіз, праглядзеўшы супадзенні, якія адсутнічаюць, хібныя абмежаванні, выраджаную геаметрыяю і г. д.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="732"/>
@@ -1844,12 +1841,12 @@ invalid constraints, degenerated geometry, etc.</source>
     <message>
       <location filename="../../CommandConstraints.cpp" line="7536"/>
       <source>Toggle constraint to driving/reference</source>
-      <translation>Пераключае абмежаванне паміж кіруючае/апорнае</translation>
+      <translation>Пераключае абмежаванне паміж кіруючым і апорным</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="7620"/>
       <source>Activate/Deactivate constraint</source>
-      <translation>Уключыць/Адключыць абмежаванне</translation>
+      <translation>Задзейнічаць/Адключыць абмежаванне</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="201"/>
@@ -1889,7 +1886,7 @@ invalid constraints, degenerated geometry, etc.</source>
     <message>
       <location filename="../../CommandAlterGeometry.cpp" line="155"/>
       <source>Toggle draft from/to draft</source>
-      <translation>Пераключыць чарнавік з/на чарнавік</translation>
+      <translation>Пераключыць чарнавік з чарнавіка і наадварот</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerLine.h" line="97"/>
@@ -3468,22 +3465,22 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
     <message>
       <location filename="../../TaskSketcherConstraints.cpp" line="492"/>
       <source>Toggle to/from reference</source>
-      <translation>Пераключэнне з/на эталон</translation>
+      <translation>Пераключэнне з апорнага і наадварот</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherConstraints.cpp" line="495"/>
       <source>Deactivate</source>
-      <translation>Дэактываваць</translation>
+      <translation>Адключыць</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherConstraints.cpp" line="495"/>
       <source>Activate</source>
-      <translation>Актываваць</translation>
+      <translation>Задзейнічаць</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherConstraints.cpp" line="499"/>
       <source>Show constraints</source>
-      <translation>Адлюстраваць абмежаванні</translation>
+      <translation>Паказаць абмежаванні</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherConstraints.cpp" line="501"/>
@@ -3858,9 +3855,7 @@ with respect to the others using construction lines</source>
       <source>If selected, it substitutes dimensional constraints by geometric constraints
 in the copies, so that a change in the original element is directly
 reflected on copies</source>
-      <translation>Калі абрана, ён замяняе памерныя абмежаванні на геаметрычныя абмежаванні
-у копіях, так што змена зыходнага элемента непасрэдна
-адлюстроўваецца на копіях</translation>
+      <translation>Калі абрана, ён замяняе памерныя абмежаванні на геаметрычныя абмежаванні ў копіях, так што змена зыходнага элемента непасрэдна адлюстроўваецца на копіях</translation>
     </message>
     <message>
       <location filename="../../SketchRectangularArrayDialog.ui" line="121"/>
@@ -3938,7 +3933,7 @@ reflected on copies</source>
     <message>
       <location filename="../../SketcherSettings.ui" line="37"/>
       <source>Show section 'Advanced solver control'</source>
-      <translation>Адлюстраваць падзел 'Пашыранае кіраванне рашальнікам'</translation>
+      <translation>Паказаць падзел 'Пашыранае кіраванне рашальнікам'</translation>
     </message>
     <message>
       <location filename="../../SketcherSettings.ui" line="50"/>
@@ -3950,7 +3945,7 @@ reflected on copies</source>
     <message>
       <location filename="../../SketcherSettings.ui" line="54"/>
       <source>Show section 'Edit controls'</source>
-      <translation>Адлюстраваць падзел 'Кіраванне элементамі змены'</translation>
+      <translation>Паказаць падзел 'Кіраванне элементамі змены'</translation>
     </message>
     <message>
       <location filename="../../SketcherSettings.ui" line="73"/>
@@ -4144,12 +4139,12 @@ Requires to re-enter edit mode to take effect.</source>
     <message>
       <location filename="../../SketcherSettingsColors.ui" line="518"/>
       <source>Invalid Sketch</source>
-      <translation>Недапушчальны Эскіз</translation>
+      <translation>Хібны Эскіз</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsColors.ui" line="531"/>
       <source>Color of geometry indicating an invalid sketch</source>
-      <translation>Колер геаметрыі, які паказвае на недапушчальны эскіз</translation>
+      <translation>Колер геаметрыі, які паказвае на хібны эскіз</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsColors.ui" line="556"/>
@@ -4257,13 +4252,13 @@ Requires to re-enter edit mode to take effect.</source>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="42"/>
       <source>The 3D view is scaled based on this factor.</source>
-      <translation>Маштаб трохмернага выгляду на аснове гэтага фактару.</translation>
+      <translation>Маштаб трохмернага прадстаўлення, які заснаваны на гэтым каэфіцыенце.</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="185"/>
       <source>Base length units will not be displayed in constraints or cursor coordinates.
 Supports all unit systems except 'US customary' and 'Building US/Euro'.</source>
-      <translation>Адзінкі вымярэння базавай даўжыні не будуць адлюстроўвацца ў абмежаваннях ці або каардынатах паказальніка.
+      <translation>Адзінкі вымярэння асноўнай даўжыні не будуць адлюстроўвацца ў абмежаваннях ці каардынатах паказальніка.
 Падтрымліваюцца ўсе сістэмы адзінак вымярэння, акрамя 'US customary' і 'Building US/Euro'.</translation>
     </message>
     <message>
@@ -4309,7 +4304,7 @@ Supports all unit systems except 'US customary' and 'Building US/Euro'.</source>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="144"/>
       <source>Geometry creation "Continue Mode"</source>
-      <translation>Стварэнне геаметрыі "Рэжым працягу"</translation>
+      <translation>Стварэнне геаметрыі "Бесперапынны рэжым"</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="238"/>
@@ -4319,12 +4314,12 @@ Supports all unit systems except 'US customary' and 'Building US/Euro'.</source>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="241"/>
       <source>Constraint creation "Continue Mode"</source>
-      <translation>Стварэнне абмежавання "Рэжым працягу"</translation>
+      <translation>Стварэнне абмежавання "Бесперапынны рэжым"</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="189"/>
       <source>Hide base length units for supported unit systems</source>
-      <translation>Схаваць базавай адзінкі вымярэння даўжыні для сістэм адзінак вымярэння, якія падтрымліваюцца</translation>
+      <translation>Схаваць асноўныя адзінкі вымярэння даўжыні для сістэм адзінак вымярэння, якія падтрымліваюцца</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="92"/>
@@ -4334,7 +4329,7 @@ Supports all unit systems except 'US customary' and 'Building US/Euro'.</source>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="95"/>
       <source>Show dimensional constraint name with format</source>
-      <translation>Адлюстраваць імя памернага абмежавання ў фармаце</translation>
+      <translation>Паказаць імя памернага абмежавання ў фармаце</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="118"/>
@@ -4357,7 +4352,7 @@ Defaults to: %N = %V
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="260"/>
       <source>Show coordinates beside cursor while editing</source>
-      <translation>Адлюстраваць каардынаты побач з паказальнікам падчас змены</translation>
+      <translation>Паказаць каардынаты побач з паказальнікам падчас змены</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="295"/>
@@ -4387,22 +4382,22 @@ Defaults to: %N = %V
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="366"/>
       <source>When opening a sketch, show sources for external geometry links.</source>
-      <translation>Пры адкрыцці эскіза адлюстраваць крыніцы спасылак вонкавай геаметрыі.</translation>
+      <translation>Пры адкрыцці эскіза паказваць крыніцы сувязяў вонкавай геаметрыі.</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="369"/>
       <source>Show objects used for external geometry</source>
-      <translation>Адлюстраваць аб'екты, якія ўжываюцца для вонкавай геаметрыі</translation>
+      <translation>Паказаць аб'екты, якія ўжываюцца для вонкавай геаметрыі</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="385"/>
       <source>When opening a sketch, show objects the sketch is attached to.</source>
-      <translation>Пры адкрыцці эскіза адлюстраваць аб'екты, да якіх прымацаваны эскіз.</translation>
+      <translation>Пры адкрыцці эскіза паказваць аб'екты, да якіх прымацаваны эскіз.</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="388"/>
       <source>Show objects that the sketch is attached to</source>
-      <translation>Адлюстраваць аб'екты, да якіх прымацаваны эскіз</translation>
+      <translation>Паказаць аб'екты, да якіх прымацаваны эскіз</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="404"/>
@@ -4489,22 +4484,22 @@ Then objects are only visible behind the sketch plane.</source>
     <message>
       <location filename="../../TaskSketcherValidation.cpp" line="183"/>
       <source>No invalid constraints</source>
-      <translation>Недапушчальныя абмежаванні адсутнічаюць</translation>
+      <translation>Хібныя абмежаванні адсутнічаюць</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherValidation.cpp" line="184"/>
       <source>No invalid constraints found</source>
-      <translation>Недапушчальныя абмежаванні не выяўлены</translation>
+      <translation>Хібныя абмежаванні не выяўлены</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherValidation.cpp" line="188"/>
       <source>Invalid constraints</source>
-      <translation>Недапушчальны абмежаванні</translation>
+      <translation>Хібныя абмежаванні</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherValidation.cpp" line="189"/>
       <source>Invalid constraints found</source>
-      <translation>Выяўлены недапушчальныя абмежаванні</translation>
+      <translation>Выяўлены хібныя абмежаванні</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherValidation.cpp" line="226"/>
@@ -4521,7 +4516,7 @@ Then objects are only visible behind the sketch plane.</source>
 %2 constraints are linking to the endpoints. The constraints have been listed in Report view (menu View -&gt; Panels -&gt; Report view).
 
 Click "Swap endpoints in constraints" button to reassign endpoints. Do this only once to sketches created in FreeCAD older than v0.15</source>
-      <translation>Выяўлена %1 зваротныя дугі вонкавай геаметрыі. Іх канчатковыя кропкі абведзеныя ў трохмерным выглядзе.
+      <translation>Выяўлена %1 зваротныя дугі вонкавай геаметрыі. Іх канчатковыя кропкі абведзеныя ў трохмерным прадстаўленні.
 
 %2 абмежаванняў звязана з канчатковымі кропкамі. Гэтыя абмежаванні пералічаныя ў Праглядзе справаздачы (меню Від -&gt; Панэлі -&gt; Прагляд справаздачы).
 
@@ -4532,7 +4527,7 @@ Click "Swap endpoints in constraints" button to reassign endpoints. Do this only
       <source>%1 reversed external-geometry arcs were found. Their endpoints are encircled in 3d view.
 
 However, no constraints linking to the endpoints were found.</source>
-      <translation>Выяўлена %1 зваротныя дугі вонкавай геаметрыі. Іх канчатковыя кропкі абведзеныя ў трохмерным выглядзе.
+      <translation>Выяўлена %1 зваротныя дугі вонкавай геаметрыі. Іх канчатковыя кропкі абведзеныя ў трохмерным прадстаўленні.
 
 Аднак ніякіх абмежаванняў, якія звязаныя з канчатковымі кропкамі, выяўлена не было.</translation>
     </message>
@@ -4544,7 +4539,7 @@ However, no constraints linking to the endpoints were found.</source>
     <message>
       <location filename="../../TaskSketcherValidation.cpp" line="259"/>
       <source>%1 changes were made to constraints linking to endpoints of reversed arcs.</source>
-      <translation>Было зроблена %1 змен у абмежаванні, якія прывязаны да канчатковых кропках зваротных дуг.</translation>
+      <translation>Было зроблена %1 змен у абмежаванні, якія прывязаныя да канчатковых кропак зваротных дуг.</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherValidation.cpp" line="275"/>
@@ -4571,7 +4566,7 @@ However, no constraints linking to the endpoints were found.</source>
     <message>
       <location filename="../../TaskSketcherValidation.cpp" line="309"/>
       <source>You are about to delete ALL constraints that deal with external geometry. This is useful to rescue a sketch with broken/changed links to external geometry. Are you sure you want to delete the constraints?</source>
-      <translation>Вы збіраецеся выдаліць УСЕ абмежаванні, якія звязаныя з вонкавай геаметрыяй. Гэта карысна для аднаўлення эскіза з пашкоджанымі/змененымі спасылкамі на вонкавую геаметрыю. Вы сапраўды жадаеце выдаліць абмежаванні?</translation>
+      <translation>Вы збіраецеся выдаліць УСЕ абмежаванні, якія звязаныя з вонкавай геаметрыяй. Гэта карысна для аднаўлення эскіза з пашкоджанымі/змененымі сувязямі на вонкавую геаметрыю. Вы сапраўды жадаеце выдаліць абмежаванні?</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherValidation.cpp" line="322"/>
@@ -4624,7 +4619,7 @@ However, no constraints linking to the endpoints were found.</source>
     <message>
       <location filename="../../TaskSketcherConstraints.ui" line="87"/>
       <source>Show/hide all listed constraints from 3D view. (same as ticking/unticking all listed constraints in list below)</source>
-      <translation>Адлюстраваць/схаваць усе пералічаныя абмежаванні з трохмерным выглядам. (тое ж самае, што ставіць/здымаць птушкі з усіх пералічаных абмежаванняў у спісе ніжэй)</translation>
+      <translation>Паказаць/схаваць усе пералічаныя абмежаванні з трохмерным прадстаўленнем. (тое ж самае, што ставіць/здымаць птушкі з усіх пералічаных абмежаванняў у спісе ніжэй)</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherConstraints.ui" line="107"/>
@@ -4649,7 +4644,7 @@ However, no constraints linking to the endpoints were found.</source>
     <message>
       <location filename="../../TaskSketcherConstraints.cpp" line="755"/>
       <source>Show only filtered Constraints</source>
-      <translation>Адлюстраваць толькі фільтраваныя абмежаванні</translation>
+      <translation>Паказаць толькі фільтраваныя абмежаванні</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherConstraints.cpp" line="756"/>
@@ -4826,12 +4821,12 @@ However, no constraints linking to the endpoints were found.</source>
     <message>
       <location filename="../../TaskSketcherGeneral.ui" line="25"/>
       <source>A grid will be shown</source>
-      <translation>Будзе адлюстравана сетка</translation>
+      <translation>Будзе паказаная сетка</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherGeneral.ui" line="28"/>
       <source>Grid</source>
-      <translation type="unfinished">Grid</translation>
+      <translation>Сетка</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherGeneral.ui" line="44"/>
@@ -4918,7 +4913,7 @@ Points must be set closer than a fifth of the grid size to a grid line to snap.<
       <location filename="../../TaskSketcherValidation.ui" line="38"/>
       <source>Highlights open and non-manifold vertexes that could lead to error if sketch is used to generate solids
 This is purely based on topological shape of the sketch and not on its geometry/constrain set.</source>
-      <translation>Вылучае адкрытыя і аднастайныя вяршыні, якія могуць прывесці да памылкі, калі эскіз ужываецца для стварэння цвёрдых цел.
+      <translation>Вылучае адкрытыя і аднастайныя вяршыні, якія могуць прывесці да памылкі, калі эскіз ужываецца для стварэння суцэльных цел.
 Гэта заснавана выключна на тапалагічнай форме эскіза, а не на яго геаметрыі/наборы абмежаванняў.</translation>
     </message>
     <message>
@@ -4944,7 +4939,7 @@ This is purely based on topological shape of the sketch and not on its geometry/
     <message>
       <location filename="../../TaskSketcherValidation.ui" line="68"/>
       <source>Defines the X/Y tolerance inside which missing coincidences are searched.</source>
-      <translation>Вызначае допуск X/Y, унутры якога выконваецца пошук супадзенняў, якія адсутнічаюць.</translation>
+      <translation>Вызначае дакладнасць X/Y, унутры якога выконваецца пошук супадзенняў, якія адсутнічаюць.</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherValidation.ui" line="75"/>
@@ -4961,7 +4956,7 @@ This is purely based on topological shape of the sketch and not on its geometry/
       <source>Finds and displays missing coincidences in the sketch.
 This is done by analyzing the sketch geometries and constraints.</source>
       <translation>Знайсці і адлюстраваць супадзенні ў эскізе, якія адсутнічаюць.
-Гэта робіцца шляхам аналізу геаметрыі эскіза і абмежаванняў.</translation>
+Гэта робіцца шляхам даследавання геаметрыі эскіза і абмежаванняў.</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherValidation.ui" line="92"/>
@@ -4981,17 +4976,17 @@ This is done by analyzing the sketch geometries and constraints.</source>
     <message>
       <location filename="../../TaskSketcherValidation.ui" line="109"/>
       <source>Invalid constraints</source>
-      <translation>Недапушчальны абмежаванні</translation>
+      <translation>Хібныя абмежаванні</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherValidation.ui" line="115"/>
       <source>Finds invalid/malformed constrains in the sketch</source>
-      <translation>Знайсці недапушчальныя/скажоныя абмежаванні ў эскізе</translation>
+      <translation>Знайсці хібныя/скажоныя абмежаванні ў эскізе</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherValidation.ui" line="125"/>
       <source>Tries to fix found invalid constraints</source>
-      <translation>Паспрабаваць выправіць выяўленыя недапушчальныя абмежаванні</translation>
+      <translation>Паспрабаваць выправіць выяўленыя хібныя абмежаванні</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherValidation.ui" line="135"/>
@@ -5084,7 +5079,7 @@ This is done by analyzing the sketch geometries and constraints.</source>
     <message>
       <location filename="../../ViewProviderSketch.cpp" line="2784"/>
       <source>Invalid sketch</source>
-      <translation>Недапушчальны эскіз</translation>
+      <translation>Хібны эскіз</translation>
     </message>
     <message>
       <location filename="../../ViewProviderSketch.cpp" line="2785"/>
@@ -5094,7 +5089,7 @@ This is done by analyzing the sketch geometries and constraints.</source>
     <message>
       <location filename="../../ViewProviderSketch.cpp" line="2786"/>
       <source>The sketch is invalid and cannot be edited.</source>
-      <translation>Эскіз несапраўдны і не можа быць зменены.</translation>
+      <translation>Эскіз хібны і не можа быць зменены.</translation>
     </message>
     <message>
       <location filename="../../ViewProviderSketch.cpp" line="2913"/>
@@ -5193,7 +5188,7 @@ This is done by analyzing the sketch geometries and constraints.</source>
       <location filename="../../CommandSketcherBSpline.cpp" line="374"/>
       <location filename="../../CommandSketcherBSpline.cpp" line="376"/>
       <source>Switches between showing and hiding the curvature comb for all B-splines</source>
-      <translation>Пераключэнне паміж адлюстраваннем і хаваннем грабянца крывізны для ўсіх B-сплайнаў</translation>
+      <translation>Пераключэнне паміж паказваннем і хаваннем грабянца крывізны для ўсіх B-сплайнаў</translation>
     </message>
   </context>
   <context>
@@ -5211,7 +5206,7 @@ This is done by analyzing the sketch geometries and constraints.</source>
       <location filename="../../CommandSketcherBSpline.cpp" line="360"/>
       <location filename="../../CommandSketcherBSpline.cpp" line="362"/>
       <source>Switches between showing and hiding the degree for all B-splines</source>
-      <translation>Пераключэнне паміж адлюстраваннем і хаваннем ступеняў для ўсіх B-сплайнаў</translation>
+      <translation>Пераключэнне паміж паказваннем і хаваннем ступеняў для ўсіх B-сплайнаў</translation>
     </message>
   </context>
   <context>
@@ -5229,7 +5224,7 @@ This is done by analyzing the sketch geometries and constraints.</source>
       <location filename="../../CommandSketcherBSpline.cpp" line="381"/>
       <location filename="../../CommandSketcherBSpline.cpp" line="383"/>
       <source>Switches between showing and hiding the knot multiplicity for all B-splines</source>
-      <translation>Пераключэнне паміж адлюстраваннем і хаваннем кратнасці вузлоў для ўсіх B-сплайнаў</translation>
+      <translation>Пераключэнне паміж паказваннем і хаваннем кратнасці вузлоў для ўсіх B-сплайнаў</translation>
     </message>
   </context>
   <context>
@@ -5238,7 +5233,7 @@ This is done by analyzing the sketch geometries and constraints.</source>
       <location filename="../../CommandSketcherBSpline.cpp" line="389"/>
       <location filename="../../CommandSketcherBSpline.cpp" line="391"/>
       <source>Switches between showing and hiding the control point weight for all B-splines</source>
-      <translation>Пераключэнне паміж адлюстраваннем і хаваннем вагі кантрольнай кропкі для ўсіх B-сплайнаў</translation>
+      <translation>Пераключэнне паміж адлюстраваннем і хаваннем вагі кантрольнай кропкі для ўсіх B-сплайнаўпаказваннем </translation>
     </message>
   </context>
   <context>
@@ -5247,7 +5242,7 @@ This is done by analyzing the sketch geometries and constraints.</source>
       <location filename="../../CommandSketcherBSpline.cpp" line="367"/>
       <location filename="../../CommandSketcherBSpline.cpp" line="369"/>
       <source>Switches between showing and hiding the control polygons for all B-splines</source>
-      <translation>Пераключэнне паміж адлюстраваннем і хаваннем палігона кіравання для ўсіх B-сплайнаў</translation>
+      <translation>Пераключэнне паміж паказваннем і хаваннем палігона кіравання для ўсіх B-сплайнаў</translation>
     </message>
   </context>
   <context>
@@ -5594,7 +5589,7 @@ Select the method to attach this sketch to selected objects.</source>
       <location filename="../../Command.cpp" line="653"/>
       <source>Can't map a sketch to support:
 %1</source>
-      <translation>Немагчыма адлюстраваць эскіз для падтрымкі:
+      <translation>Немагчыма супаставіць эскіз для падтрымкі:
 %1</translation>
     </message>
   </context>
@@ -5931,7 +5926,7 @@ Eigen Sparse QR - аптымізаваны для разрэджаных мат�
     <message>
       <location filename="../../TaskSketcherSolverAdvanced.ui" line="612"/>
       <source>None</source>
-      <translation type="unfinished">None</translation>
+      <translation>Нічога</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherSolverAdvanced.ui" line="617"/>

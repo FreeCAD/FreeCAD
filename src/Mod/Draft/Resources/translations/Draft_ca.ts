@@ -16,7 +16,7 @@
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="38"/>
       <source>The name of your style. Existing style names can be edited.</source>
-      <translation>El nom del vostre estil. Els noms d'estil existent poden ser editats.</translation>
+      <translation>El nom del vostre estil. Els noms d'estil existent es poden editar.</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="50"/>
@@ -26,7 +26,7 @@
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="79"/>
       <source>Renames the selected style</source>
-      <translation>Canvia el nom als elements seleccionats</translation>
+      <translation>Canvia el nom dels elements seleccionats</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="82"/>
@@ -67,35 +67,35 @@
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="173"/>
       <source>Font name</source>
-      <translation>Nom de la font</translation>
+      <translation>Nom del tipus de lletra</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="199"/>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="209"/>
       <source>The font size in system units</source>
-      <translation type="unfinished">The font size in system units</translation>
+      <translation>La mida de lletra en unitats del sistema</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="219"/>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="229"/>
       <source>The line spacing (relative to the font size)</source>
-      <translation type="unfinished">The line spacing (relative to the font size)</translation>
+      <translation>Interlineat (relatiu a la mida de lletra)</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="339"/>
       <source>Lines and arrows</source>
-      <translation type="unfinished">Lines and arrows</translation>
+      <translation>Línies i fletxes</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="348"/>
       <source>Show line</source>
-      <translation type="unfinished">Show line</translation>
+      <translation>Mostra la línia</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="371"/>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="381"/>
       <source>The width of the lines</source>
-      <translation type="unfinished">The width of the lines</translation>
+      <translation>L'amplada de les línies</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="384"/>
@@ -112,18 +112,18 @@
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="445"/>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="455"/>
       <source>The size of the arrows or markers in system units</source>
-      <translation type="unfinished">The size of the arrows or markers in system units</translation>
+      <translation>La mida de les fletxes o els marcadors en unitats del sistema</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="465"/>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="475"/>
       <source>The color of lines and arrows</source>
-      <translation type="unfinished">The color of lines and arrows</translation>
+      <translation>El color de les línies i les fletxes</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="468"/>
       <source>Line and arrow color</source>
-      <translation type="unfinished">Line and arrow color</translation>
+      <translation>Color de la línia i la fletxa</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="482"/>
@@ -1381,7 +1381,7 @@ Tingueu en compte que això no és totalment compatible i que molts objectes no 
     <message>
       <location filename="../ui/preferences-draftvisual.ui" line="114"/>
       <source>Save current color and linewidth across sessions</source>
-      <translation>Guardar color actual i linewidth a través de les sessions</translation>
+      <translation>Desa el color i l'amplada de línia actuals a través de les sessions</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftvisual.ui" line="131"/>
@@ -1739,7 +1739,7 @@ One unit in the SVG file will translate as one millimeter. </source>
     <message>
       <location filename="../ui/preferences-svg.ui" line="141"/>
       <source>Translated (for print &amp; display)</source>
-      <translation>Traduit (per impressió i pantalla)</translation>
+      <translation>Traduït (per impressió i pantalla)</translation>
     </message>
     <message>
       <location filename="../ui/preferences-svg.ui" line="146"/>
@@ -3287,19 +3287,19 @@ To enabled FreeCAD to download these libraries, answer Yes.</translation>
     </message>
     <message>
       <location filename="../../draftutils/groups.py" line="95"/>
-      <location filename="../../draftutils/gui_utils.py" line="713"/>
+      <location filename="../../draftutils/gui_utils.py" line="773"/>
       <location filename="../../draftutils/utils.py" line="1051"/>
-      <location filename="../../draftmake/make_patharray.py" line="161"/>
-      <location filename="../../draftmake/make_patharray.py" line="330"/>
+      <location filename="../../draftmake/make_patharray.py" line="162"/>
+      <location filename="../../draftmake/make_patharray.py" line="329"/>
       <location filename="../../draftmake/make_label.py" line="195"/>
-      <location filename="../../draftmake/make_pointarray.py" line="90"/>
+      <location filename="../../draftmake/make_pointarray.py" line="91"/>
       <location filename="../../draftmake/make_text.py" line="84"/>
       <location filename="../../draftmake/make_text.py" line="172"/>
       <location filename="../../draftmake/make_dimension.py" line="215"/>
       <location filename="../../draftmake/make_dimension.py" line="308"/>
       <location filename="../../draftmake/make_dimension.py" line="438"/>
       <location filename="../../draftmake/make_dimension.py" line="564"/>
-      <location filename="../../draftmake/make_array.py" line="85"/>
+      <location filename="../../draftmake/make_array.py" line="86"/>
       <location filename="../../draftmake/make_layer.py" line="58"/>
       <location filename="../../draftmake/make_layer.py" line="149"/>
       <location filename="../../draftfunctions/cut.py" line="57"/>
@@ -3308,15 +3308,15 @@ To enabled FreeCAD to download these libraries, answer Yes.</translation>
     </message>
     <message>
       <location filename="../../draftutils/groups.py" line="132"/>
-      <location filename="../../draftutils/gui_utils.py" line="722"/>
-      <location filename="../../draftmake/make_patharray.py" line="170"/>
-      <location filename="../../draftmake/make_patharray.py" line="181"/>
-      <location filename="../../draftmake/make_patharray.py" line="339"/>
-      <location filename="../../draftmake/make_patharray.py" line="350"/>
+      <location filename="../../draftutils/gui_utils.py" line="782"/>
+      <location filename="../../draftmake/make_patharray.py" line="171"/>
+      <location filename="../../draftmake/make_patharray.py" line="182"/>
+      <location filename="../../draftmake/make_patharray.py" line="338"/>
+      <location filename="../../draftmake/make_patharray.py" line="349"/>
       <location filename="../../draftmake/make_orthoarray.py" line="167"/>
       <location filename="../../draftmake/make_label.py" line="236"/>
-      <location filename="../../draftmake/make_pointarray.py" line="99"/>
-      <location filename="../../draftmake/make_pointarray.py" line="110"/>
+      <location filename="../../draftmake/make_pointarray.py" line="100"/>
+      <location filename="../../draftmake/make_pointarray.py" line="111"/>
       <location filename="../../draftmake/make_dimension.py" line="322"/>
       <location filename="../../draftmake/make_dimension.py" line="447"/>
       <location filename="../../draftmake/make_circulararray.py" line="131"/>
@@ -3345,22 +3345,22 @@ To enabled FreeCAD to download these libraries, answer Yes.</translation>
       <translation type="unfinished">Visibility off; removed from list: </translation>
     </message>
     <message>
-      <location filename="../../draftutils/gui_utils.py" line="596"/>
+      <location filename="../../draftutils/gui_utils.py" line="656"/>
       <source>image is Null</source>
       <translation type="unfinished">image is Null</translation>
     </message>
     <message>
-      <location filename="../../draftutils/gui_utils.py" line="602"/>
+      <location filename="../../draftutils/gui_utils.py" line="662"/>
       <source>filename does not exist on the system or in the resource file</source>
       <translation type="unfinished">filename does not exist on the system or in the resource file</translation>
     </message>
     <message>
-      <location filename="../../draftutils/gui_utils.py" line="661"/>
+      <location filename="../../draftutils/gui_utils.py" line="721"/>
       <source>unable to load texture</source>
       <translation type="unfinished">unable to load texture</translation>
     </message>
     <message>
-      <location filename="../../draftutils/gui_utils.py" line="731"/>
+      <location filename="../../draftutils/gui_utils.py" line="791"/>
       <source>Does not have 'ViewObject.RootNode'.</source>
       <translation type="unfinished">Does not have 'ViewObject.RootNode'.</translation>
     </message>
@@ -4802,8 +4802,8 @@ The final angle will be the base angle plus this amount.</translation>
       <translation type="unfinished">Map mode:</translation>
     </message>
     <message>
-      <location filename="../../draftmake/make_patharray.py" line="191"/>
-      <location filename="../../draftmake/make_patharray.py" line="360"/>
+      <location filename="../../draftmake/make_patharray.py" line="192"/>
+      <location filename="../../draftmake/make_patharray.py" line="359"/>
       <location filename="../../draftmake/make_orthoarray.py" line="151"/>
       <location filename="../../draftmake/make_label.py" line="313"/>
       <location filename="../../draftmake/make_polararray.py" line="119"/>
@@ -4812,9 +4812,9 @@ The final angle will be the base angle plus this amount.</translation>
       <translation type="unfinished">Wrong input: must be a number.</translation>
     </message>
     <message>
-      <location filename="../../draftmake/make_patharray.py" line="200"/>
-      <location filename="../../draftmake/make_patharray.py" line="254"/>
-      <location filename="../../draftmake/make_patharray.py" line="265"/>
+      <location filename="../../draftmake/make_patharray.py" line="201"/>
+      <location filename="../../draftmake/make_patharray.py" line="255"/>
+      <location filename="../../draftmake/make_patharray.py" line="266"/>
       <location filename="../../draftmake/make_label.py" line="204"/>
       <location filename="../../draftmake/make_dimension.py" line="222"/>
       <location filename="../../draftmake/make_dimension.py" line="229"/>
@@ -4831,13 +4831,13 @@ The final angle will be the base angle plus this amount.</translation>
       <translation type="unfinished">Wrong input: must be a vector.</translation>
     </message>
     <message>
-      <location filename="../../draftmake/make_patharray.py" line="213"/>
+      <location filename="../../draftmake/make_patharray.py" line="214"/>
       <location filename="../../draftmake/make_label.py" line="251"/>
       <source>Wrong input: must be a list or tuple of strings, or a single string.</source>
       <translation type="unfinished">Wrong input: must be a list or tuple of strings, or a single string.</translation>
     </message>
     <message>
-      <location filename="../../draftmake/make_patharray.py" line="246"/>
+      <location filename="../../draftmake/make_patharray.py" line="247"/>
       <source>Wrong input: must be 'Original', 'Frenet', or 'Tangent'.</source>
       <translation type="unfinished">Wrong input: must be 'Original', 'Frenet', or 'Tangent'.</translation>
     </message>
@@ -4889,7 +4889,7 @@ The final angle will be the base angle plus this amount.</translation>
     </message>
     <message>
       <location filename="../../draftmake/make_label.py" line="215"/>
-      <location filename="../../draftmake/make_pointarray.py" line="129"/>
+      <location filename="../../draftmake/make_pointarray.py" line="130"/>
       <location filename="../../draftmake/make_text.py" line="107"/>
       <source>Wrong input: must be a placement, a vector, or a rotation.</source>
       <translation type="unfinished">Wrong input: must be a placement, a vector, or a rotation.</translation>
@@ -4945,7 +4945,7 @@ The final angle will be the base angle plus this amount.</translation>
       <translation type="unfinished">Wrong input: must be a list of two elements. For example, [object, 'Edge1'].</translation>
     </message>
     <message>
-      <location filename="../../draftmake/make_pointarray.py" line="117"/>
+      <location filename="../../draftmake/make_pointarray.py" line="118"/>
       <source>Wrong input: object has the wrong type.</source>
       <translation type="unfinished">Wrong input: object has the wrong type.</translation>
     </message>
@@ -5292,6 +5292,11 @@ The final angle will be the base angle plus this amount.</translation>
       <source>added missing view properties</source>
       <translation>propietats de vista no trobades afegides</translation>
     </message>
+    <message>
+      <location filename="../../draftobjects/array.py" line="76"/>
+      <source>added property 'Count'</source>
+      <translation type="unfinished">added property 'Count'</translation>
+    </message>
   </context>
   <context>
     <name>Workbench</name>
@@ -5413,7 +5418,7 @@ from menu Tools -&gt; Addon Manager</translation>
     <message>
       <location filename="../../draftguitools/gui_setstyle.py" line="274"/>
       <source>Warning</source>
-      <translation type="unfinished">Warning</translation>
+      <translation>Avís</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_setstyle.py" line="275"/>
@@ -6259,9 +6264,9 @@ It creates a construction group if it doesn't exist.</translation>
       <source>Creates a proxy object from the current working plane.
 Once the object is created double click it in the tree view to restore the camera position and objects' visibilities.
 Then you can use it to save a different camera position and objects' states any time you need.</source>
-      <translation type="unfinished">Creates a proxy object from the current working plane.
-Once the object is created double click it in the tree view to restore the camera position and objects' visibilities.
-Then you can use it to save a different camera position and objects' states any time you need.</translation>
+      <translation>Crea un objecte intermediari a partir del pla de treball actual.
+Un cop s'ha creat l'objecte, feu-hi doble clic a la vista en arbre per restaurar la posició de la càmera i les visibilitats dels objectes.
+El podeu utilitzar per a desar una posició de la càmera i els estats dels objectes en qualsevol moment que necessiteu.</translation>
     </message>
   </context>
   <context>
@@ -7100,7 +7105,7 @@ set True for fusion or False for compound</translation>
     <message>
       <location filename="../../draftobjects/pathtwistedarray.py" line="114"/>
       <location filename="../../draftobjects/patharray.py" line="208"/>
-      <location filename="../../draftobjects/array.py" line="320"/>
+      <location filename="../../draftobjects/array.py" line="335"/>
       <location filename="../../draftobjects/pointarray.py" line="100"/>
       <source>Show the individual array elements (only for Link arrays)</source>
       <translation type="unfinished">Show the individual array elements (only for Link arrays)</translation>
@@ -7230,7 +7235,7 @@ they will only be editable by changing the style through the 'Annotation style e
     </message>
     <message>
       <location filename="../../draftobjects/patharray.py" line="169"/>
-      <location filename="../../draftobjects/array.py" line="82"/>
+      <location filename="../../draftobjects/array.py" line="97"/>
       <source>The base object that will be duplicated</source>
       <translation type="unfinished">The base object that will be duplicated</translation>
     </message>
@@ -7293,7 +7298,7 @@ Otherwise the copies will have the same orientation as the original Base object.
 Otherwise the copies will have the same orientation as the original Base object.</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/array.py" line="98"/>
+      <location filename="../../draftobjects/array.py" line="113"/>
       <source>The type of array to create.
 - Ortho: places the copies in the direction of the global X, Y, Z axes.
 - Polar: places the copies along a circular arc, up to a specified angle, and with certain orientation defined by a center and an axis.
@@ -7304,54 +7309,54 @@ Otherwise the copies will have the same orientation as the original Base object.
 - Circular: places the copies in concentric circular layers around the base object.</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/array.py" line="109"/>
+      <location filename="../../draftobjects/array.py" line="124"/>
       <source>Specifies if the copies should be fused together if they touch each other (slower)</source>
       <translation type="unfinished">Specifies if the copies should be fused together if they touch each other (slower)</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/array.py" line="122"/>
+      <location filename="../../draftobjects/array.py" line="151"/>
       <source>Number of copies in X direction</source>
       <translation type="unfinished">Number of copies in X direction</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/array.py" line="131"/>
+      <location filename="../../draftobjects/array.py" line="160"/>
       <source>Number of copies in Y direction</source>
       <translation type="unfinished">Number of copies in Y direction</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/array.py" line="140"/>
+      <location filename="../../draftobjects/array.py" line="169"/>
       <source>Number of copies in Z direction</source>
       <translation type="unfinished">Number of copies in Z direction</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/array.py" line="150"/>
+      <location filename="../../draftobjects/array.py" line="179"/>
       <source>Distance and orientation of intervals in X direction</source>
       <translation type="unfinished">Distance and orientation of intervals in X direction</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/array.py" line="160"/>
+      <location filename="../../draftobjects/array.py" line="189"/>
       <source>Distance and orientation of intervals in Y direction</source>
       <translation type="unfinished">Distance and orientation of intervals in Y direction</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/array.py" line="170"/>
+      <location filename="../../draftobjects/array.py" line="199"/>
       <source>Distance and orientation of intervals in Z direction</source>
       <translation type="unfinished">Distance and orientation of intervals in Z direction</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/array.py" line="185"/>
+      <location filename="../../draftobjects/array.py" line="214"/>
       <source>The axis direction around which the elements in a polar or a circular array will be created</source>
       <translation type="unfinished">The axis direction around which the elements in a polar or a circular array will be created</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/array.py" line="196"/>
+      <location filename="../../draftobjects/array.py" line="225"/>
       <source>Center point for polar and circular arrays.
 The 'Axis' passes through this point.</source>
       <translation type="unfinished">Center point for polar and circular arrays.
 The 'Axis' passes through this point.</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/array.py" line="215"/>
+      <location filename="../../draftobjects/array.py" line="244"/>
       <source>The axis object that overrides the value of 'Axis' and 'Center', for example, a datum line.
 Its placement, position and rotation, will be used when creating polar and circular arrays.
 Leave this property empty to be able to set 'Axis' and 'Center' manually.</source>
@@ -7360,42 +7365,42 @@ Its placement, position and rotation, will be used when creating polar and circu
 Leave this property empty to be able to set 'Axis' and 'Center' manually.</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/array.py" line="228"/>
+      <location filename="../../draftobjects/array.py" line="257"/>
       <source>Number of copies in the polar direction</source>
       <translation type="unfinished">Number of copies in the polar direction</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/array.py" line="238"/>
+      <location filename="../../draftobjects/array.py" line="267"/>
       <source>Distance and orientation of intervals in 'Axis' direction</source>
       <translation type="unfinished">Distance and orientation of intervals in 'Axis' direction</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/array.py" line="247"/>
+      <location filename="../../draftobjects/array.py" line="276"/>
       <source>Angle to cover with copies</source>
       <translation type="unfinished">Angle to cover with copies</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/array.py" line="260"/>
+      <location filename="../../draftobjects/array.py" line="289"/>
       <source>Distance between circular layers</source>
       <translation type="unfinished">Distance between circular layers</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/array.py" line="270"/>
+      <location filename="../../draftobjects/array.py" line="299"/>
       <source>Distance between copies in the same circular layer</source>
       <translation type="unfinished">Distance between copies in the same circular layer</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/array.py" line="280"/>
+      <location filename="../../draftobjects/array.py" line="309"/>
       <source>Number of circular layers. The 'Base' object counts as one layer.</source>
       <translation type="unfinished">Number of circular layers. The 'Base' object counts as one layer.</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/array.py" line="291"/>
+      <location filename="../../draftobjects/array.py" line="320"/>
       <source>A parameter that determines how many symmetry planes the circular array will have.</source>
       <translation type="unfinished">A parameter that determines how many symmetry planes the circular array will have.</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/array.py" line="309"/>
+      <location filename="../../draftobjects/array.py" line="137"/>
       <source>Total number of elements in the array.
 This property is read-only, as the number depends on the parameters of the array.</source>
       <translation type="unfinished">Total number of elements in the array.
@@ -8017,7 +8022,7 @@ the 'First Angle' and 'Last Angle' properties.</translation>
     <message>
       <location filename="../../draftviewproviders/view_draft_annotation.py" line="123"/>
       <source>Font name</source>
-      <translation>Nom de la font</translation>
+      <translation>Nom del tipus de lletra</translation>
     </message>
     <message>
       <location filename="../../draftviewproviders/view_draft_annotation.py" line="132"/>

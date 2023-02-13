@@ -11,7 +11,7 @@
     <message>
       <location filename="../../AddonManagerOptions_AddCustomRepository.ui" line="20"/>
       <source>Repository URL</source>
-      <translation>Спасылак сховішча</translation>
+      <translation>URL-адрас сховішча</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions_AddCustomRepository.ui" line="30"/>
@@ -150,7 +150,7 @@ Do you want the Addon Manager to install them automatically? Choose &quot;Ignore
     <message>
       <location filename="../../developer_mode.ui" line="90"/>
       <source>Discussion URL</source>
-      <translation>Спасылак абмеркавання</translation>
+      <translation>URL-адрас абмеркавання</translation>
     </message>
     <message>
       <location filename="../../developer_mode.ui" line="97"/>
@@ -160,7 +160,7 @@ Do you want the Addon Manager to install them automatically? Choose &quot;Ignore
     <message>
       <location filename="../../developer_mode.ui" line="104"/>
       <source>Bugtracker URL</source>
-      <translation>Спасылак рэгістрацыі памылак (bugtracker)</translation>
+      <translation>URL-адрас рэгістрацыі памылак (bugtracker)</translation>
     </message>
     <message>
       <location filename="../../developer_mode.ui" line="113"/>
@@ -189,7 +189,7 @@ Do you want the Addon Manager to install them automatically? Choose &quot;Ignore
     <message>
       <location filename="../../developer_mode.ui" line="153"/>
       <source>README URL</source>
-      <translation>Спасылак README</translation>
+      <translation>URL-адрас README</translation>
     </message>
     <message>
       <location filename="../../developer_mode.ui" line="166"/>
@@ -199,17 +199,17 @@ Do you want the Addon Manager to install them automatically? Choose &quot;Ignore
     <message>
       <location filename="../../developer_mode.ui" line="173"/>
       <source>Repository URL</source>
-      <translation>Спасылак сховішча</translation>
+      <translation>URL-адрас сховішча</translation>
     </message>
     <message>
       <location filename="../../developer_mode.ui" line="204"/>
       <source>Website URL</source>
-      <translation>Спасылак на сайт</translation>
+      <translation>URL-адрас на інтэрнет-сайт</translation>
     </message>
     <message>
       <location filename="../../developer_mode.ui" line="211"/>
       <source>Documentation URL</source>
-      <translation>Спасылак на дакументацыю</translation>
+      <translation>URL-адрас на дакументацыю</translation>
     </message>
     <message>
       <location filename="../../developer_mode.ui" line="228"/>
@@ -661,7 +661,7 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../AddonManagerOptions.ui" line="354"/>
       <source>Show option to change branches (requires git)</source>
-      <translation>Адлюстраваць наладу змены галіны (патрабуецца git)</translation>
+      <translation>Паказаць наладу змены галіны (патрабуецца git)</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="367"/>
@@ -671,7 +671,7 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../AddonManagerOptions.ui" line="380"/>
       <source>Activate Addon Manager options intended for developers of new Addons.</source>
-      <translation>Актываваць налады Кіравання дадаткамі, якія прызначаныя для распрацоўкі новых дадаткаў.</translation>
+      <translation>Задзейнічаць налады Кіравання дадаткамі, якія прызначаныя для распрацоўкі новых дадаткаў.</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="383"/>
@@ -1289,7 +1289,7 @@ installed addons will be checked for available updates
     </message>
     <message>
       <location filename="../../manage_python_dependencies.py" line="252"/>
-      <location filename="../../package_details.py" line="905"/>
+      <location filename="../../package_details.py" line="912"/>
       <source>Update</source>
       <translation>Абнавіць</translation>
     </message>
@@ -1370,22 +1370,22 @@ installed addons will be checked for available updates
       <translation>Папярэджанне Кіравання дадаткамі: Не атрымалася імпартаваць QtWebEngineWidgets. Кіраванне пакетамі вашай сістэмы можа даць пакет для гэтай залежнасці, знайдзіце ў кіраўніку пакетаў магчымыя дазволы. Адлюстраванне README пакету будзе абмежаваны, пакуль гэтая залежнасць не будзе ліквідаваная.</translation>
     </message>
     <message>
-      <location filename="../../package_details.py" line="190"/>
+      <location filename="../../package_details.py" line="189"/>
       <source>Version {version} installed on {date}</source>
       <translation>Версія {version} усталяваная {date}</translation>
     </message>
     <message>
-      <location filename="../../package_details.py" line="195"/>
+      <location filename="../../package_details.py" line="194"/>
       <source>Version {version} installed</source>
       <translation>Версія {version} усталяваная</translation>
     </message>
     <message>
-      <location filename="../../package_details.py" line="199"/>
+      <location filename="../../package_details.py" line="198"/>
       <source>Installed on {date}</source>
       <translation>Дата ўсталявання {date}</translation>
     </message>
     <message>
-      <location filename="../../package_details.py" line="203"/>
+      <location filename="../../package_details.py" line="202"/>
       <location filename="../../package_list.py" line="440"/>
       <location filename="../../package_list.py" line="496"/>
       <location filename="../../package_list.py" line="797"/>
@@ -1393,162 +1393,162 @@ installed addons will be checked for available updates
       <translation>Усталявана</translation>
     </message>
     <message>
-      <location filename="../../package_details.py" line="213"/>
+      <location filename="../../package_details.py" line="212"/>
       <source>On branch {}, update available to version</source>
       <translation>У галіне {}, даступна абнаўленне да версіі</translation>
     </message>
     <message>
-      <location filename="../../package_details.py" line="222"/>
+      <location filename="../../package_details.py" line="221"/>
       <source>Update available to version</source>
       <translation>Абнаўленне даступна да версіі</translation>
     </message>
     <message>
-      <location filename="../../package_details.py" line="233"/>
+      <location filename="../../package_details.py" line="232"/>
       <source>An update is available</source>
       <translation>Даступна абнаўленне</translation>
     </message>
     <message>
-      <location filename="../../package_details.py" line="251"/>
+      <location filename="../../package_details.py" line="250"/>
       <source>Git tag &apos;{}&apos; checked out, no updates possible</source>
       <translation>Метка Git&apos;{}&apos; праверана, абнаўленняў няма</translation>
     </message>
     <message>
-      <location filename="../../package_details.py" line="259"/>
+      <location filename="../../package_details.py" line="258"/>
       <source>This is the latest version available for branch {}</source>
       <translation>Гэта апошняя даступная версія для галіны {}</translation>
     </message>
     <message>
-      <location filename="../../package_details.py" line="267"/>
+      <location filename="../../package_details.py" line="266"/>
       <source>Updated, please restart FreeCAD to use</source>
       <translation>Абноўлена, калі ласка перазапусціце FreeCAD, каб ужыць</translation>
     </message>
     <message>
-      <location filename="../../package_details.py" line="275"/>
+      <location filename="../../package_details.py" line="273"/>
       <source>Update check in progress</source>
       <translation>Выконваецца праверка абнаўленняў</translation>
     </message>
     <message>
-      <location filename="../../package_details.py" line="280"/>
+      <location filename="../../package_details.py" line="278"/>
       <source>Automatic update checks disabled</source>
       <translation>Аўтаматычная праверка абнаўленняў адключана</translation>
     </message>
     <message>
-      <location filename="../../package_details.py" line="302"/>
+      <location filename="../../package_details.py" line="300"/>
       <source>Installation location</source>
       <translation>Месцазнаходжанне ўстаноўкі</translation>
     </message>
     <message>
-      <location filename="../../package_details.py" line="349"/>
+      <location filename="../../package_details.py" line="347"/>
       <source>WARNING: This addon is obsolete</source>
       <translation>УВАГА: Гэта дадатак састарэлы</translation>
     </message>
     <message>
-      <location filename="../../package_details.py" line="359"/>
+      <location filename="../../package_details.py" line="357"/>
       <source>WARNING: This addon is Python 2 Only</source>
       <translation>УВАГА: Гэты дадатак толькі для Python 2</translation>
     </message>
     <message>
-      <location filename="../../package_details.py" line="369"/>
+      <location filename="../../package_details.py" line="367"/>
       <source>WARNING: This addon requires FreeCAD </source>
       <translation>УВАГА: Гэты дадатак патрабуе FreeCAD </translation>
     </message>
     <message>
-      <location filename="../../package_details.py" line="383"/>
+      <location filename="../../package_details.py" line="381"/>
       <source>WARNING: This addon is currently installed, but disabled. Use the &apos;enable&apos; button to re-enable.</source>
       <translation>УВАГА: Гэты дадатак у бягучы час усталяваны, але адключаны. Націснуць кнопку &apos;Уключыць&apos;, каб зноў уключыць яго.</translation>
     </message>
     <message>
-      <location filename="../../package_details.py" line="521"/>
-      <location filename="../../package_details.py" line="534"/>
+      <location filename="../../package_details.py" line="519"/>
+      <location filename="../../package_details.py" line="532"/>
       <source>No URL or wiki page provided by this macro</source>
-      <translation>Гэты макрас не дае спасылкі URL ці вікі-старонкі</translation>
+      <translation>Гэты макрас не дае URL-адрас ці вікі-старонкі</translation>
     </message>
     <message>
-      <location filename="../../package_details.py" line="637"/>
+      <location filename="../../package_details.py" line="635"/>
       <source>Could not load README data from URL {}</source>
-      <translation>Не атрымалася загрузіць дадзеныя README з спасылка URL {}</translation>
+      <translation>Не атрымалася загрузіць дадзеныя README з URL-адрасам {}</translation>
     </message>
     <message>
-      <location filename="../../package_details.py" line="662"/>
+      <location filename="../../package_details.py" line="660"/>
       <source>This Addon will be enabled next time you restart FreeCAD.</source>
       <translation>Гэты Дадатак будзе ўключаны пры наступным перазапуску FreeCAD.</translation>
     </message>
     <message>
-      <location filename="../../package_details.py" line="679"/>
+      <location filename="../../package_details.py" line="677"/>
       <source>This Addon will be disabled next time you restart FreeCAD.</source>
       <translation>Гэты Дадатак будзе адключаны пры наступным перазапуску FreeCAD.</translation>
     </message>
     <message>
-      <location filename="../../package_details.py" line="689"/>
+      <location filename="../../package_details.py" line="687"/>
       <location filename="../../addonmanager_installer_gui.py" line="484"/>
       <location filename="../../AddonManagerTest/gui/test_installer_gui.py" line="54"/>
       <source>Success</source>
       <translation>Паспяхова завершана</translation>
     </message>
     <message>
-      <location filename="../../package_details.py" line="693"/>
+      <location filename="../../package_details.py" line="691"/>
       <source>Branch change succeeded, please restart to use the new version.</source>
       <translation>Змена галіны прайшло паспяхова, калі ласка, перазапусціце, каб ужыць новую версію.</translation>
     </message>
     <message>
-      <location filename="../../package_details.py" line="712"/>
+      <location filename="../../package_details.py" line="710"/>
       <source>Changed to git ref &apos;{}&apos; -- please restart to use Addon.</source>
       <translation>Зменены на git ref &apos;{}&apos; -- калі ласка, перазапусціце, каб ужыць Дадатак.</translation>
     </message>
     <message>
-      <location filename="../../package_details.py" line="752"/>
+      <location filename="../../package_details.py" line="755"/>
       <source>Page JavaScript reported</source>
       <translation>Заяўленая старонка JavaScript</translation>
     </message>
     <message>
-      <location filename="../../package_details.py" line="899"/>
+      <location filename="../../package_details.py" line="906"/>
       <source>Install</source>
       <translation>Усталяваць</translation>
     </message>
     <message>
-      <location filename="../../package_details.py" line="902"/>
+      <location filename="../../package_details.py" line="909"/>
       <source>Uninstall</source>
       <translation>Выдаліць</translation>
     </message>
     <message>
-      <location filename="../../package_details.py" line="908"/>
+      <location filename="../../package_details.py" line="915"/>
       <source>Check for Update</source>
       <translation>Праверыць наяўнасць абнаўлення</translation>
     </message>
     <message>
-      <location filename="../../package_details.py" line="911"/>
+      <location filename="../../package_details.py" line="918"/>
       <source>Run Macro</source>
       <translation>Выканаць макрас</translation>
     </message>
     <message>
-      <location filename="../../package_details.py" line="914"/>
+      <location filename="../../package_details.py" line="921"/>
       <source>Change Branch</source>
       <translation>Змяніць галіну</translation>
     </message>
     <message>
-      <location filename="../../package_details.py" line="917"/>
+      <location filename="../../package_details.py" line="924"/>
       <source>Enable</source>
       <translation>Уключыць</translation>
     </message>
     <message>
-      <location filename="../../package_details.py" line="920"/>
+      <location filename="../../package_details.py" line="927"/>
       <source>Disable</source>
       <translation>Адключыць</translation>
     </message>
     <message>
-      <location filename="../../package_details.py" line="925"/>
+      <location filename="../../package_details.py" line="932"/>
       <source>Return to package list</source>
       <translation>Вярнуцца да спісу пакетаў</translation>
     </message>
     <message>
-      <location filename="../../package_details.py" line="934"/>
+      <location filename="../../package_details.py" line="941"/>
       <source>QtWebEngine Python bindings not installed -- using fallback README display. See Report View for details and installation instructions.</source>
       <translation>Прывязкі QtWebEngine Python не ўстаноўленыя - ужываецца рэзервовае адлюстраванне README. Падрабязныя звесткі і інструкцыі па ўсталёўцы, глядзіце ў Праглядзе справаздачы.</translation>
     </message>
     <message>
-      <location filename="../../package_details.py" line="942"/>
+      <location filename="../../package_details.py" line="949"/>
       <source>The page is taking a long time to load... showing the data we have so far...</source>
-      <translation>Загрузка старонкі займае шмат часу... адлюстроўваюцца дадзеныя, якія ёсць на дадзены момант...</translation>
+      <translation>Загрузка старонкі займае шмат часу... паказваюцца дадзеныя, якія ёсць на дадзены момант...</translation>
     </message>
     <message>
       <location filename="../../addonmanager_connection_checker.py" line="67"/>
@@ -1843,7 +1843,7 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../addonmanager_devmode.py" line="204"/>
       <source>Invalid metadata in file {}</source>
-      <translation>Недапушчальныя метададзеныя ў файле {}</translation>
+      <translation>Хібныя метададзеныя ў файле {}</translation>
     </message>
     <message>
       <location filename="../../addonmanager_devmode.py" line="246"/>
@@ -1858,7 +1858,7 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../addonmanager_devmode.py" line="271"/>
       <source>Class</source>
-      <translation>Поле допуску</translation>
+      <translation>Поле дакладнасці</translation>
     </message>
     <message>
       <location filename="../../addonmanager_devmode.py" line="276"/>
@@ -1947,7 +1947,7 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../package_list.py" line="167"/>
       <source>Filter regular expression is invalid</source>
-      <translation>Рэгулярны выраз фільтра недапушчальны</translation>
+      <translation>Хібны рэгулярны выраз фільтра</translation>
     </message>
     <message>
       <location filename="../../package_list.py" line="224"/>
@@ -2212,7 +2212,7 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../addonmanager_macro.py" line="341"/>
       <source>Unable to open macro code URL {}</source>
-      <translation>Не атрымалася адчыніць спасылак URL {} коду макраса</translation>
+      <translation>Не атрымалася адчыніць URL-адрас {} коду макраса</translation>
     </message>
     <message>
       <location filename="../../addonmanager_macro.py" line="502"/>
@@ -2225,17 +2225,17 @@ installed addons will be checked for available updates
       <translation>Не атрымалася знайсці паказаны файл макраса {} (павінен знаходзіцца ў {})</translation>
     </message>
     <message>
-      <location filename="../../Addon.py" line="365"/>
+      <location filename="../../Addon.py" line="391"/>
       <source>{}: Unrecognized internal workbench &apos;{}&apos;</source>
       <translation>{}: Непрызнаны ўнутраны варштат &apos;{}&apos;</translation>
     </message>
     <message>
-      <location filename="../../Addon.py" line="400"/>
+      <location filename="../../Addon.py" line="426"/>
       <source>Addon Developer Warning: Repository URL set in package.xml file for addon {} ({}) does not match the URL it was fetched from ({})</source>
-      <translation>Папярэджанне распрацоўкі дадатку: спасылак сховішча, які ўсталяваны ў файле package.xml для дадатку {} ({}) не адпавядае спасылку, з якога ён быў выняты ({})</translation>
+      <translation>Папярэджанне распрацоўкі дадатку: URL-адрас сховішча, які ўсталяваны ў файле package.xml для дадатку {} ({}) не адпавядае спасылку, з якога ён быў выняты ({})</translation>
     </message>
     <message>
-      <location filename="../../Addon.py" line="408"/>
+      <location filename="../../Addon.py" line="434"/>
       <source>Addon Developer Warning: Repository branch set in package.xml file for addon {} ({}) does not match the branch it was fetched from ({})</source>
       <translation>Папярэджанне распрацоўкі дадатку: галіна сховішча, якая ўсталявана ў файле package.xml для дадатку {} ({}) не адпавядае галіне, з якой яна была вынята ({})</translation>
     </message>
@@ -2397,7 +2397,7 @@ installed addons will be checked for available updates
       <location filename="../../AddonManagerOptions.py" line="273"/>
       <source>Repository URL</source>
       <comment>Preferences header for custom repositories</comment>
-      <translation>Спасылак сховішча</translation>
+      <translation>URL-адрас сховішча</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.py" line="279"/>

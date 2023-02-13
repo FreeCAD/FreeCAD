@@ -130,7 +130,7 @@
       <location filename="../../AttacherTexts.cpp" line="271"/>
       <source>Deactivated</source>
       <comment>AttachmentPoint mode caption</comment>
-      <translation>Дэактываваны</translation>
+      <translation>Адключаны</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="272"/>
@@ -184,7 +184,7 @@
       <location filename="../../AttacherTexts.cpp" line="284"/>
       <source>Point is put on edge, MapPathParameter controls where. Additionally, vertex can be linked in for making a projection.</source>
       <comment>AttachmentPoint mode tooltip</comment>
-      <translation>Кропка ставіцца на рабро, налада MapPath вызначае менавіта дзе. Акрамя таго, вяршыня можа быць звязана для стварэння праекцыі.</translation>
+      <translation>Кропка ставіцца на рабро, налада MapPathParameter вызначае менавіта дзе. Акрамя таго, вяршыня можа быць звязана для стварэння праекцыі.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="286"/>
@@ -265,7 +265,7 @@
       <location filename="../../AttacherTexts.cpp" line="202"/>
       <source>Deactivated</source>
       <comment>AttachmentLine mode caption</comment>
-      <translation>Дэактываваны</translation>
+      <translation>Адключаны</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="203"/>
@@ -386,7 +386,7 @@
       <location filename="../../AttacherTexts.cpp" line="233"/>
       <source>Align to N vector of Frenet-Serret coordinate system of curved edge. Optional vertex link defines where.</source>
       <comment>AttachmentLine mode tooltip</comment>
-      <translation>Выраўнаваць па N вектару сістэмы каардынатаў Френе-Серра рабра крывізны. Неабавязковая сувязь на вяршыню вызначае, дзе кропка дотыку.</translation>
+      <translation>Выраўнаваць па N вектару сістэмы каардынат Френе-Серра рабра крывізны. Неабавязковая сувязь на вяршыню вызначае, дзе кропка дотыку.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="235"/>
@@ -398,7 +398,7 @@
       <location filename="../../AttacherTexts.cpp" line="236"/>
       <source>Align to B vector of Frenet-Serret coordinate system of curved edge. Optional vertex link defines where.</source>
       <comment>AttachmentLine mode tooltip</comment>
-      <translation>Выраўнаваць па B вектару сістэмы каардынатаў Френе-Серра рабра крывізны. Неабавязковая сувязь на вяршыню вызначае, дзе кропка дотыку.</translation>
+      <translation>Выраўнаваць па B вектару сістэмы каардынат Френе-Серра рабра крывізны. Неабавязковая сувязь на вяршыню вызначае, дзе кропка дотыку.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="238"/>
@@ -411,7 +411,7 @@
       <location filename="../../AttacherTexts.cpp" line="242"/>
       <source>Tangent to surface, along U parameter. Vertex link defines where.</source>
       <comment>AttachmentLine mode tooltip</comment>
-      <translation>Датычная да паверхня, наўздоўж параметра U. Сувязь вяршыні вызначае дзе дотык.</translation>
+      <translation>Датычная да паверхні, наўздоўж параметра U. Сувязь вяршыні вызначае дзе дотык.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="241"/>
@@ -510,7 +510,7 @@
       <location filename="../../AttacherTexts.cpp" line="127"/>
       <source>Deactivated</source>
       <comment>AttachmentPlane mode caption</comment>
-      <translation>Дэактываваны</translation>
+      <translation>Адключаны</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="128"/>
@@ -614,7 +614,7 @@
       <location filename="../../AttacherTexts.cpp" line="158"/>
       <source>Align to Frenet-Serret coordinate system of curved edge. Optional vertex link defines where.</source>
       <comment>AttachmentPlane mode tooltip</comment>
-      <translation>Выраўнаваць па сістэмы каардынатаў Френе-Серра рабра крывізны. Неабавязковая сувязь на вяршыню вызначае, дзе кропка дотыку.</translation>
+      <translation>Выраўнаваць па сістэмы каардынат Френе-Серра рабра крывізны. Неабавязковая сувязь на вяршыню вызначае, дзе кропка дотыку.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="154"/>
@@ -650,7 +650,7 @@
       <location filename="../../AttacherTexts.cpp" line="164"/>
       <source>Plane is perpendicular to edge, and Y axis is matched with axis of osculating circle. Optional vertex link defines where.</source>
       <comment>AttachmentPlane mode tooltip</comment>
-      <translation>Плоскасць перпендыкулярная рабру, і вось Y супадае з воссю датыкальная акружнасць. Неабавязковая сувязь на вяршыню вызначае, дзе кропка дотыку.</translation>
+      <translation>Плоскасць перпендыкулярная рабру, і вось Y супадае з воссю датыкальнай акружнасці. Неабавязковая сувязь на вяршыню вызначае, дзе кропка дотыку.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="166"/>
@@ -707,7 +707,7 @@
       <location filename="../../AttacherTexts.cpp" line="52"/>
       <source>Deactivated</source>
       <comment>Attachment3D mode caption</comment>
-      <translation>Дэактываваны</translation>
+      <translation>Адключаны</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="53"/>
@@ -731,7 +731,7 @@
       <location filename="../../AttacherTexts.cpp" line="58"/>
       <source>Object's X Y Z</source>
       <comment>Attachment3D mode caption</comment>
-      <translation>X Y Z аб'екта</translation>
+      <translation>X Y Z аб'екту</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="59"/>
@@ -743,25 +743,25 @@
       <location filename="../../AttacherTexts.cpp" line="61"/>
       <source>Object's X Z Y</source>
       <comment>Attachment3D mode caption</comment>
-      <translation>X Z Y аб'екта</translation>
+      <translation>X Z Y аб'екту</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="62"/>
       <source>X', Y', Z' axes are matched with object's local X, Z, -Y, respectively.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation>Восі X', Y', Z ' супастаўляюцца адпаведна з лакальнымі восямі X, Z,- Y аб'екта.</translation>
+      <translation>Восі X', Y', Z' супастаўляюцца адпаведна з лакальнымі восямі X, Z, -Y аб'екта.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="64"/>
       <source>Object's Y Z X</source>
       <comment>Attachment3D mode caption</comment>
-      <translation>Y Z X аб'екта</translation>
+      <translation>Y Z X аб'екту</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="65"/>
       <source>X', Y', Z' axes are matched with object's local Y, Z, X, respectively.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation>Восі X', Y', Z ' супастаўляюцца адпаведна з лакальнымі восямі Y, Z, X аб'екта.</translation>
+      <translation>Восі X', Y', Z' супастаўляюцца адпаведна з лакальнымі восямі Y, Z, X аб'екта.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="67"/>
@@ -811,7 +811,7 @@
       <location filename="../../AttacherTexts.cpp" line="83"/>
       <source>Align to Frenet-Serret coordinate system of curved edge. Optional vertex link defines where.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation>Выраўнаваць па сістэмы каардынатаў Френе-Серра рабра крывізны. Неабавязковая сувязь на вяршыню вызначае, дзе кропка дотыку.</translation>
+      <translation>Выраўнаваць па сістэмы каардынат Френе-Серра рабра крывізны. Неабавязковая сувязь на вяршыню вызначае, дзе кропка дотыку.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="79"/>
@@ -1159,7 +1159,7 @@
       <location filename="../../Command.cpp" line="2473"/>
       <location filename="../../Command.cpp" line="2475"/>
       <source>Box selection</source>
-      <translation type="unfinished">Box selection</translation>
+      <translation>Вылучыць вобласць</translation>
     </message>
   </context>
   <context>
@@ -1177,7 +1177,7 @@
     <message>
       <location filename="../../Command.cpp" line="2182"/>
       <source>Analyzes Geometry For Errors</source>
-      <translation>Аналізуе Геаметрыю на памылкі</translation>
+      <translation>Даследуе геаметрыю на памылкі</translation>
     </message>
   </context>
   <context>
@@ -1286,14 +1286,13 @@ if the measured points have moved.</source>
     <message>
       <location filename="../../Command.cpp" line="2409"/>
       <source>Toggle 3D</source>
-      <translation>Пераключыць трохмерны выгляд</translation>
+      <translation>Пераключыць трохмернае прадстаўленне</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2410"/>
       <source>Toggle on and off all direct dimensions,
 including angular.</source>
-      <translation>Уключыць і выключыць усе прамыя вымярэнні,
-у тым ліку вуглавыя.</translation>
+      <translation>Уключае і выключае ўсе прамыя вымярэнні, у тым ліку вуглавыя.</translation>
     </message>
   </context>
   <context>
@@ -1312,7 +1311,7 @@ including angular.</source>
       <location filename="../../Command.cpp" line="2373"/>
       <source>Toggle on and off all currently visible dimensions,
 direct, orthogonal, and angular.</source>
-      <translation>Уключыць і выключыць усе бачныя ў дадзены момант вымярэнні:
+      <translation>Уключае і выключае ўсе бачныя ў дадзены момант вымярэнні:
 прамыя, артаганальныя і вуглавыя.</translation>
     </message>
   </context>
@@ -1326,16 +1325,15 @@ direct, orthogonal, and angular.</source>
     <message>
       <location filename="../../Command.cpp" line="2440"/>
       <source>Toggle Delta</source>
-      <translation>Пераключыць дэльту</translation>
+      <translation>Пераключыць рэжым дэльты</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2441"/>
       <source>Toggle on and off all orthogonal dimensions,
 meaning that a direct dimension will be decomposed
 into its X, Y, and Z components.</source>
-      <translation>Уключыць і выключыць усе артаганальныя вымярэнні,
-гэта азначае, што прамое вымярэнне будзе падзелена
-на яго складнікі X, Y і Z.</translation>
+      <translation>Уключае і выключае ўсе артаганальныя вымярэнні,
+гэта азначае, што прамое вымярэнне будзе падзелена на яго складнікі X, Y і Z.</translation>
     </message>
   </context>
   <context>
@@ -1348,12 +1346,12 @@ into its X, Y, and Z components.</source>
     <message>
       <location filename="../../Command.cpp" line="1315"/>
       <source>Boolean...</source>
-      <translation>Лагічнае значэнне...</translation>
+      <translation>Лагічная аперацыя...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1316"/>
       <source>Run a boolean operation with two shapes selected</source>
-      <translation>Запусціць аперацыю лагічнага значэння з дзвюма абранымі фігурамі</translation>
+      <translation>Запусціць лагічную аперацыю з дзвюма абранымі фігурамі</translation>
     </message>
   </context>
   <context>
@@ -1535,7 +1533,7 @@ into its X, Y, and Z components.</source>
     <message>
       <location filename="../../Command.cpp" line="686"/>
       <source>Shape splitting and Compsolid creation tools.</source>
-      <translation type="unfinished">Shape splitting and Compsolid creation tools.</translation>
+      <translation>Інструменты для падзелу фігур і стварэння складаных цел.</translation>
     </message>
   </context>
   <context>
@@ -2537,12 +2535,12 @@ Note: The placement is expressed in local space of object being attached.</sourc
     <message>
       <location filename="../../DlgBooleanOperation.ui" line="14"/>
       <source>Boolean Operation</source>
-      <translation>Аперацыя лагічнага значэння</translation>
+      <translation>Лагічная аперацыя</translation>
     </message>
     <message>
       <location filename="../../DlgBooleanOperation.ui" line="20"/>
       <source>Boolean operation</source>
-      <translation>Аперацыя лагічнага значэння</translation>
+      <translation>Лагічная аперацыя</translation>
     </message>
     <message>
       <location filename="../../DlgBooleanOperation.ui" line="32"/>
@@ -2616,7 +2614,7 @@ Note: The placement is expressed in local space of object being attached.</sourc
     <message>
       <location filename="../../DlgBooleanOperation.cpp" line="392"/>
       <source>Cannot perform a boolean operation with the same shape</source>
-      <translation>Немагчыма выканаць аперацыя лагічнага значэння з той жа фігурай</translation>
+      <translation>Немагчыма выканаць лагічную аперацыю з той жа фігурай</translation>
     </message>
     <message>
       <location filename="../../DlgBooleanOperation.cpp" line="402"/>
@@ -2763,9 +2761,7 @@ it inside the Placement property.</source>
       <source>This parameter indicates whether parametric curves (curves in parametric space of surface)
 should be written into the STEP file. This parameter can be set to off in order to minimize
 the size of the resulting STEP file.</source>
-      <translation>Гэтая налада паказвае, ці варта запісваць параметрычныя крывыя (крывыя ў параметрычнай прасторы паверхні)
-у файл STEP. Гэтую наладу можна задаць у значэнні Выключана, каб паменшыць
-памер атрыманага файла STEP.</translation>
+      <translation>Гэтая налада паказвае, ці варта запісваць параметрычныя крывыя (крывыя ў параметрычнай прасторы паверхні) у файл STEP. Гэтую наладу можна задаць у значэнні Выключана, каб паменшыць памер атрыманага файла STEP.</translation>
     </message>
   </context>
   <context>
@@ -2813,7 +2809,7 @@ the size of the resulting STEP file.</source>
     <message>
       <location filename="../../DlgExtrusion.ui" line="68"/>
       <source>Click to start selecting an edge in 3d view.</source>
-      <translation>Пстрыкнуць, каб пачаць выбар рабра ў акне трохмернага выгляду.</translation>
+      <translation>Пстрыкнуць, каб пачаць выбар рабра ў акне трохмернага прадстаўлення.</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.ui" line="71"/>
@@ -2906,7 +2902,7 @@ If both lengths are zero, magnitude of direction is used.</source>
     <message>
       <location filename="../../DlgExtrusion.ui" line="337"/>
       <source>If checked, extruding closed wires will give solids, not shells.</source>
-      <translation>Калі птушка, выдушыць замкнёныя ломаныя лініі прывядзе да суцэльнага цела, а не абалонкі.</translation>
+      <translation>Калі птушка, выдушыць замкнутыя ломаныя лініі прывядзе да суцэльнага цела, а не абалонкі.</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.ui" line="340"/>
@@ -2916,7 +2912,7 @@ If both lengths are zero, magnitude of direction is used.</source>
     <message>
       <location filename="../../DlgExtrusion.ui" line="360"/>
       <source>Select shape(s) that should be extruded</source>
-      <translation>Абраць фігуру(ы), якія неабходна выдушыць</translation>
+      <translation>Абраць фігуры, якія неабходна выдушыць</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.ui" line="373"/>
@@ -2956,7 +2952,7 @@ If both lengths are zero, magnitude of direction is used.</source>
       <source>Extrusion direction link is invalid.
 
 %1</source>
-      <translation>Недапушчальны спасылак напрамку выдушвання.
+      <translation>Хібная сувязь напрамку выдушвання.
 
 %1</translation>
     </message>
@@ -3036,7 +3032,7 @@ If both lengths are zero, magnitude of direction is used.</source>
     <message>
       <location filename="../../DlgFilletEdges.ui" line="87"/>
       <source>None</source>
-      <translation type="unfinished">None</translation>
+      <translation>Нічога</translation>
     </message>
     <message>
       <location filename="../../DlgFilletEdges.ui" line="110"/>
@@ -3225,7 +3221,7 @@ Please check one or more edge entities first.</source>
     <message>
       <location filename="../../DlgImportExportIges.ui" line="100"/>
       <source>Import</source>
-      <translation type="unfinished">Import</translation>
+      <translation>Імпарт</translation>
     </message>
     <message>
       <location filename="../../DlgImportExportIges.ui" line="106"/>
@@ -3281,14 +3277,13 @@ Please check one or more edge entities first.</source>
     <message>
       <location filename="../../DlgImportStep.ui" line="20"/>
       <source>Import</source>
-      <translation type="unfinished">Import</translation>
+      <translation>Імпарт</translation>
     </message>
     <message>
       <location filename="../../DlgImportStep.ui" line="26"/>
       <source>If checked, no Compound merge will be done
 during file reading (slower but higher details).</source>
-      <translation>Калі Птушка, зліццё Злучэння не будзе выконвацца
-падчас чытання файла (павольней, але дакладней).</translation>
+      <translation>Калі Птушка, зліццё Злучэння не будзе выконвацца падчас чытання файла (павольней, але дакладней).</translation>
     </message>
     <message>
       <location filename="../../DlgImportStep.ui" line="30"/>
@@ -3303,7 +3298,7 @@ during file reading (slower but higher details).</source>
     <message>
       <location filename="../../DlgImportStep.ui" line="46"/>
       <source>Use LinkGroup</source>
-      <translation>Ужыць суполку спасылак</translation>
+      <translation>Ужыць суполку сувязяў</translation>
     </message>
     <message>
       <location filename="../../DlgImportStep.ui" line="59"/>
@@ -3318,7 +3313,7 @@ during file reading (slower but higher details).</source>
     <message>
       <location filename="../../DlgImportStep.ui" line="75"/>
       <source>Reduce number of objects using Link array</source>
-      <translation>Паменшыць колькасць аб'ектаў, ужываючы Масіў спасылак</translation>
+      <translation>Паменшыць колькасць аб'ектаў, пры ўжыванні артаганальнай сеткі</translation>
     </message>
     <message>
       <location filename="../../DlgImportStep.ui" line="78"/>
@@ -3339,7 +3334,7 @@ during file reading (slower but higher details).</source>
       <location filename="../../DlgImportStep.ui" line="107"/>
       <location filename="../../DlgImportStep.ui" line="110"/>
       <source>Show progress bar when importing</source>
-      <translation>Адлюстроўваць індыкатар пры імпартаванні</translation>
+      <translation>Паказаць індыкатар пры імпартаванні</translation>
     </message>
     <message>
       <location filename="../../DlgImportStep.ui" line="123"/>
@@ -3929,12 +3924,12 @@ during file reading (slower but higher details).</source>
     <message>
       <location filename="../../DlgProjectionOnSurface.ui" line="66"/>
       <source>Show faces</source>
-      <translation>Адлюстраваць грані</translation>
+      <translation>Паказаць грані</translation>
     </message>
     <message>
       <location filename="../../DlgProjectionOnSurface.ui" line="76"/>
       <source>Show Edges</source>
-      <translation>Адлюстраваць рэбры</translation>
+      <translation>Паказаць рэбры</translation>
     </message>
     <message>
       <location filename="../../DlgProjectionOnSurface.ui" line="92"/>
@@ -4088,7 +4083,7 @@ during file reading (slower but higher details).</source>
       <source>Revolution axis link is invalid.
 
 %1</source>
-      <translation>Сувязь восі вярчэння няправільная.
+      <translation>Хібная сувязь восі вярчэння.
 
 %1</translation>
     </message>
@@ -4143,7 +4138,7 @@ during file reading (slower but higher details).</source>
     <message>
       <location filename="../../DlgSettings3DViewPart.ui" line="52"/>
       <source>Maximum deviation depending on the model bounding box</source>
-      <translation>Найбольшае адхіленне ў залежнасці ад абмежаванага прастакутніка мадэлі</translation>
+      <translation>Найбольшае адхіленне ў залежнасці ад габарытаў мадэлі</translation>
     </message>
     <message>
       <location filename="../../DlgSettings3DViewPart.ui" line="87"/>
@@ -4176,12 +4171,12 @@ during file reading (slower but higher details).</source>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="26"/>
       <source>Automatically check model after boolean operation</source>
-      <translation>Аўтаматычна праверыць мадэль пасля аперацыі лагічнага значэння</translation>
+      <translation>Аўтаматычна праверыць мадэль пасля лагічнай аперацыі</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="39"/>
       <source>Automatically refine model after boolean operation</source>
-      <translation>Аўтаматычна ўдасканаліць мадэль пасля аперацыі лагічнага значэння</translation>
+      <translation>Аўтаматычна ўдасканаліць мадэль пасля лагічнай аперацыі</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="52"/>
@@ -4196,7 +4191,7 @@ during file reading (slower but higher details).</source>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="77"/>
       <source>Add name of base object</source>
-      <translation>Дадаць назву базаваму аб'екту</translation>
+      <translation>Дадаць назву асноўнаму аб'екту</translation>
     </message>
   </context>
   <context>
@@ -4348,22 +4343,22 @@ during file reading (slower but higher details).</source>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="254"/>
       <source>Bounding box color</source>
-      <translation>Колер абмежаванага прастакутніка</translation>
+      <translation>Колер габарытаў</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="261"/>
       <source>The color of bounding boxes in the 3D view</source>
-      <translation>Колер абмежаванага прастакутніка ў трохмерным выглядзе</translation>
+      <translation>Колер габарытаў у трохмерным прадстаўленні</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="287"/>
       <source>Bounding box font size</source>
-      <translation>Памер шрыфту абмежаванага прастакутніка</translation>
+      <translation>Памер шрыфту габарытаў</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="294"/>
       <source>The font size of bounding boxes in the 3D view</source>
-      <translation>Памер шрыфту абмежаванага прастакутніка ў трохмерным выглядзе</translation>
+      <translation>Памер шрыфту габарытаў у трохмерным прадстаўленні</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="328"/>
@@ -4372,9 +4367,7 @@ If not checked, it depends on the option "Backlight color"
 (preferences section Display -&gt; 3D View); either the backlight color
 will be used or black.</source>
       <translation>Ніжні бок паверхні будзе адлюстроўвацца так жа, як і верхні.
-Калі не птушка, гэта залежыць ад налады "Колер асвятлення".
-(падзел пераваг Праецыраванне - &gt; Трохмерны выгляд);
-будзе ўжывацца альбо колер асвятлення, альбо чорны.</translation>
+Калі не птушка, гэта залежыць ад налады "Колер асвятлення" (падзел пераваг Праецыраванне - &gt; Трохмернае прадстаўленне); будзе ўжывацца альбо колер асвятлення, альбо чорны.</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="334"/>
@@ -4427,7 +4420,7 @@ will be used or black.</source>
     <message>
       <location filename="../../Location.ui" line="90"/>
       <source>3D view</source>
-      <translation>трохмерны выгляд</translation>
+      <translation>трохмернае прадстаўленне</translation>
     </message>
     <message>
       <location filename="../../Location.ui" line="106"/>
@@ -4550,7 +4543,7 @@ the sketch plane's normal vector will be used</source>
     <message>
       <location filename="../../Mirroring.ui" line="67"/>
       <source>Base point</source>
-      <translation>Базавая кропка</translation>
+      <translation>Асноўная кропка</translation>
     </message>
     <message>
       <location filename="../../Mirroring.ui" line="73"/>
@@ -4647,62 +4640,88 @@ the sketch plane's normal vector will be used</source>
     </message>
     <message>
       <location filename="../../SectionCutting.ui" line="254"/>
+      <location filename="../../SectionCutting.ui" line="394"/>
       <source>Color of cut face</source>
       <translation>Колер грані зрэзу</translation>
     </message>
     <message>
       <location filename="../../SectionCutting.ui" line="257"/>
+      <location filename="../../SectionCutting.ui" line="397"/>
       <source>Color</source>
       <translation>Колер</translation>
     </message>
     <message>
       <location filename="../../SectionCutting.ui" line="302"/>
+      <location filename="../../SectionCutting.ui" line="445"/>
       <source>If checked, the color and transparency
 will be taken from the cut objects.
-Works only if all objects have the same values.</source>
-      <translation>Калі птушка, колер і празрыстасць
-будуць узятыя з выразаных аб'ектаў.
-Працуе толькі калі ўсе аб'екты маюць аднолькавыя значэнні.</translation>
+Works only properly if all objects
+have the same values.</source>
+      <translation type="unfinished">If checked, the color and transparency
+will be taken from the cut objects.
+Works only properly if all objects
+have the same values.</translation>
     </message>
     <message>
-      <location filename="../../SectionCutting.ui" line="307"/>
+      <location filename="../../SectionCutting.ui" line="308"/>
+      <location filename="../../SectionCutting.ui" line="451"/>
       <source>Auto</source>
       <translation>Аўтаматычнае</translation>
     </message>
     <message>
-      <location filename="../../SectionCutting.ui" line="329"/>
+      <location filename="../../SectionCutting.ui" line="330"/>
+      <location filename="../../SectionCutting.ui" line="473"/>
       <source>Transparency of cut face</source>
       <translation>Празрыстасць грані зрэзу</translation>
     </message>
     <message>
-      <location filename="../../SectionCutting.ui" line="332"/>
+      <location filename="../../SectionCutting.ui" line="333"/>
+      <location filename="../../SectionCutting.ui" line="476"/>
       <source>Transparency</source>
       <translation>Празрыстасць</translation>
     </message>
     <message>
-      <location filename="../../SectionCutting.ui" line="367"/>
+      <location filename="../../SectionCutting.ui" line="371"/>
+      <source>Allows to cut objects intersecting each other
+for the price that all cut objects
+will get the same color</source>
+      <translation type="unfinished">Allows to cut objects intersecting each other
+for the price that all cut objects
+will get the same color</translation>
+    </message>
+    <message>
+      <location filename="../../SectionCutting.ui" line="376"/>
+      <source>Cut intersecting objects</source>
+      <translation type="unfinished">Cut intersecting objects</translation>
+    </message>
+    <message>
+      <location filename="../../SectionCutting.ui" line="419"/>
+      <source>Color for all objects</source>
+      <translation type="unfinished">Color for all objects</translation>
+    </message>
+    <message>
+      <location filename="../../SectionCutting.ui" line="511"/>
       <source>Refreshes the list of visible objects</source>
       <translation>Абнаўляе спіс бачных аб'ектаў</translation>
     </message>
     <message>
-      <location filename="../../SectionCutting.ui" line="370"/>
+      <location filename="../../SectionCutting.ui" line="514"/>
       <source>Refresh view</source>
       <translation>Абнавіць выгляд</translation>
     </message>
     <message>
-      <location filename="../../SectionCutting.ui" line="400"/>
+      <location filename="../../SectionCutting.ui" line="544"/>
       <source>When the dialog is closed,
 only created cuts will be visible</source>
-      <translation>Калі зачыняецца дыялогавае акно,
-бачныя толькі створаныя зрэзы</translation>
+      <translation>Калі дыялогавае акно зачыніць, будуць бачныя толькі створаныя зрэзы</translation>
     </message>
     <message>
-      <location filename="../../SectionCutting.ui" line="404"/>
+      <location filename="../../SectionCutting.ui" line="548"/>
       <source>Keep only cuts visible when closing</source>
       <translation>Калі зачыніць, павінны быць бачныя толькі зрэзы</translation>
     </message>
     <message>
-      <location filename="../../SectionCutting.cpp" line="466"/>
+      <location filename="../../SectionCutting.cpp" line="520"/>
       <source>Sliders are disabled for assemblies</source>
       <translation>Паўзункі адключаныя для зборак</translation>
     </message>
@@ -4775,7 +4794,7 @@ only created cuts will be visible</source>
     <message>
       <location filename="../../TaskShapeBuilder.cpp" line="557"/>
       <source>Select a closed set of edges</source>
-      <translation>Абраць замкнёны набор рэбраў</translation>
+      <translation>Абраць замкнуты набор рэбраў</translation>
     </message>
     <message>
       <location filename="../../TaskShapeBuilder.cpp" line="564"/>
@@ -4803,7 +4822,7 @@ only created cuts will be visible</source>
     <message>
       <location filename="../../ShapeFromMesh.ui" line="32"/>
       <source>Enter tolerance for sewing shape:</source>
-      <translation>Увядзіце допуск для сшывання фігуры:</translation>
+      <translation>Увядзіце дакладнасць для сшывання фігуры:</translation>
     </message>
   </context>
   <context>
@@ -4831,7 +4850,7 @@ only created cuts will be visible</source>
     <message>
       <location filename="../../TaskSweep.cpp" line="334"/>
       <source>Invalid selection</source>
-      <translation>Недапушчальны выбар</translation>
+      <translation>Хібны выбар</translation>
     </message>
     <message>
       <location filename="../../TaskSweep.cpp" line="334"/>
@@ -4861,7 +4880,7 @@ only created cuts will be visible</source>
     <message>
       <location filename="../../TaskSweep.cpp" line="414"/>
       <source>Select one or more connected edges in the 3d view and press 'Done'</source>
-      <translation>Абярыце адно ці некалькі злучаных рэбраў у трохмерным выглядзе і націсніце 'Гатова'</translation>
+      <translation>Абярыце адно ці некалькі злучаных рэбраў у трохмерным прадстаўленні, і націсніце 'Гатова'</translation>
     </message>
     <message>
       <location filename="../../TaskSweep.cpp" line="436"/>
@@ -4873,7 +4892,7 @@ only created cuts will be visible</source>
       <location filename="../../TaskSweep.cpp" line="436"/>
       <location filename="../../TaskSweep.cpp" line="444"/>
       <source>The selected sweep path is invalid.</source>
-      <translation>Абраны шлях выцягвання недапушчальны.</translation>
+      <translation>Хібны абраны шлях выцягвання.</translation>
     </message>
     <message>
       <location filename="../../TaskSweep.cpp" line="456"/>
@@ -5116,7 +5135,7 @@ Default: false</source>
       <source>Extra boolean operations check that can sometimes find errors that
 the standard BRep geometry check misses. These errors do not always 
 mean the checked object is unusable.  Default: false</source>
-      <translation>Дадатковая праверка аперацыі лагічных значэнняў, якая часам можа выяўляць памылкі,
+      <translation>Дадатковая праверка лагічнай аперацыі, якая часам можа выяўляць памылкі,
 якія прапускае стандартная праверка геаметрыі B-Rep. Гэтыя памылкі не заўсёды
 азначаюць, што правераны аб'ект непрыдатны для ўжывання. Першапачаткова: false</translation>
     </message>
@@ -5163,8 +5182,9 @@ the check geometry tool.  Default: false</source>
       <location filename="../../TaskCheckGeometry.cpp" line="1060"/>
       <source>Show advanced shape content.  Changes will take effect next time you use 
 the check geometry tool.  Default: false</source>
-      <translation>Адлюстраваць пашыраны змест фігуры. Змены ўступяць у сілу пры наступным ужыванні
-інструмента праверкі геаметрыі. Першапачаткова: false</translation>
+      <translation>Паказаць пашыраны змест фігуры.
+Змены ўступяць у сілу пры наступным ужыванні інструмента праверкі геаметрыі.
+Першапачаткова: false</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1068"/>
@@ -5256,12 +5276,12 @@ Individual BOP Checks:</source>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1135"/>
       <source>  Invalid curve on surface</source>
-      <translation>  Недапушчальная крывая на паверхні</translation>
+      <translation>  Хібная крывая на паверхні</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1136"/>
       <source>Check for invalid curves on surfaces.  Default: true</source>
-      <translation>Праверыць на недапушчальныя крывая на паверхні. Першапачаткова: true</translation>
+      <translation>Праверыць на хібныя крывая на паверхні. Першапачаткова: true</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1199"/>
@@ -5319,7 +5339,7 @@ Individual BOP Checks:</source>
     <message>
       <location filename="../../TaskFaceColors.ui" line="20"/>
       <source>Click on the faces in the 3D view to select them</source>
-      <translation>Націснуць на грань, каб абраць яе ў трохмерным выглядзе</translation>
+      <translation>Націснуць на грань, каб абраць яе ў трохмерным прадстаўленні</translation>
     </message>
     <message>
       <location filename="../../TaskFaceColors.ui" line="39"/>
@@ -5341,12 +5361,12 @@ Individual BOP Checks:</source>
       <source>When checked, the you can select multiple faces
 by dragging a selection rectangle in the 3D view</source>
       <translation>Калі птушка, вы можаце абраць некалькі граняў,
-калі перацягнеце прастакутнік вылучэння ў трохмерным выглядзе</translation>
+калі перацягнеце прастакутнік вылучэння ў трохмерным прадстаўленні</translation>
     </message>
     <message>
       <location filename="../../TaskFaceColors.ui" line="101"/>
       <source>Box selection</source>
-      <translation type="unfinished">Box selection</translation>
+      <translation>Вылучыць вобласць</translation>
     </message>
   </context>
   <context>
@@ -5369,7 +5389,7 @@ by dragging a selection rectangle in the 3D view</source>
     <message>
       <location filename="../../TaskLoft.ui" line="37"/>
       <source>Closed</source>
-      <translation>Зачынены</translation>
+      <translation>Замкнуты</translation>
     </message>
   </context>
   <context>
@@ -5532,8 +5552,7 @@ by dragging a selection rectangle in the 3D view</source>
       <location filename="../../TaskSweep.cpp" line="486"/>
       <source>Select one or more profiles and select an edge or wire
 in the 3D view for the sweep path.</source>
-      <translation>Абярыце адзін ці некалькі профіляў і абярыце рабро ці ломаную лінію
-ў трохмерным выглядзе для шляху выцягвання.</translation>
+      <translation>Абярыце адзін ці некалькі профіляў, і абярыце рабро ці ломаную лінію ў трохмерным прадстаўленні для шляху выцягвання.</translation>
     </message>
   </context>
   <context>
@@ -5690,7 +5709,7 @@ in the 3D view for the sweep path.</source>
       <location filename="../../Command.cpp" line="524"/>
       <source>The use of non-solids for boolean operations may lead to unexpected results.
 Do you want to continue?</source>
-      <translation>Выкарыстанне несуцэльных цел для аперацый лагічнага значэння можа прывесці да нечаканых вынікаў.
+      <translation>Выкарыстанне несуцэльных цел для лагічных аперацый можа прывесці да нечаканых вынікаў.
 Ці хочаце вы працягнуць?</translation>
     </message>
     <message>
@@ -5785,17 +5804,17 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="101"/>
       <source>Invalid Point On Curve</source>
-      <translation>Недапушчальная кропка на крывой</translation>
+      <translation>Хібная кропка на крывой</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="102"/>
       <source>Invalid Point On Curve On Surface</source>
-      <translation>Недапушчальнай кропка на крывой паверхні</translation>
+      <translation>Хібная кропка на крывой паверхні</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="103"/>
       <source>Invalid Point On Surface</source>
-      <translation>Недапушчальная кропка на паверхні</translation>
+      <translation>Хібная кропка на паверхні</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="104"/>
@@ -5810,7 +5829,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="106"/>
       <source>Invalid 3D Curve</source>
-      <translation>Недапушчальная трохмерная крывая</translation>
+      <translation>Хібная трохмерная крывая</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="107"/>
@@ -5820,27 +5839,27 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="108"/>
       <source>Invalid Curve On Surface</source>
-      <translation>Недапушчальная крывая на паверхні</translation>
+      <translation>Хібная крывая на паверхні</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="109"/>
       <source>Invalid Curve On Closed Surface</source>
-      <translation>Недапушчальная крывая на замкнутай паверхні</translation>
+      <translation>Хібная крывая на замкнутай паверхні</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="110"/>
       <source>Invalid Same Range Flag</source>
-      <translation>Недапушчальны дыяпазон разметкі</translation>
+      <translation>Хібны дыяпазон разметкі</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="111"/>
       <source>Invalid Same Parameter Flag</source>
-      <translation>Недапушчальная налада разметкі</translation>
+      <translation>Хібная налада разметкі</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="112"/>
       <source>Invalid Degenerated Flag</source>
-      <translation>Недапушчальнае памяншэнне разметкі</translation>
+      <translation>Хібнае памяншэнне разметкі</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="113"/>
@@ -5850,12 +5869,12 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="114"/>
       <source>Invalid MultiConnexity</source>
-      <translation>Недапушчальны шматсувязь</translation>
+      <translation>Хібная шматсувязь</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="115"/>
       <source>Invalid Range</source>
-      <translation>Недапушчальны дыяпазон</translation>
+      <translation>Хібны дыяпазон</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="116"/>
@@ -5880,7 +5899,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="120"/>
       <source>Invalid Wire</source>
-      <translation>Недапушчальная ломаная лінія</translation>
+      <translation>Хібная ломаная лінія</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="121"/>
@@ -5895,7 +5914,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="123"/>
       <source>Invalid Imbrication Of Wires</source>
-      <translation>Недапушчальнае перакрыццё ломаных ліній</translation>
+      <translation>Хібнае перакрыццё ломаных ліній</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="124"/>
@@ -5940,7 +5959,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="132"/>
       <source>Invalid Tolerance Value</source>
-      <translation>Недапушчальнае значэнне дакладнасці</translation>
+      <translation>Хібнае значэнне дакладнасці</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="133"/>
@@ -6010,7 +6029,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="169"/>
       <source>BOPAlgo_InvalidCurveOnSurface</source>
-      <translation>BOPAlgo Недапушчальная крывая на паверхні</translation>
+      <translation>BOPAlgo Хібная крывая на паверхні</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="170"/>
@@ -6021,7 +6040,7 @@ Do you want to continue?</source>
       <location filename="../../TaskCheckGeometry.cpp" line="454"/>
       <location filename="../../TaskCheckGeometry.cpp" line="696"/>
       <source>Invalid</source>
-      <translation>Недапушчальны</translation>
+      <translation>Хібны</translation>
     </message>
     <message>
       <location filename="../../TaskDimension.cpp" line="656"/>
@@ -6093,7 +6112,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../ViewProviderSpline.cpp" line="97"/>
       <source>Show control points</source>
-      <translation>Адлюстраваць кантрольныя кропкі</translation>
+      <translation>Паказаць кантрольныя кропкі</translation>
     </message>
     <message>
       <location filename="../../ViewProviderAttachExtension.cpp" line="118"/>
@@ -6136,7 +6155,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../Workbench.cpp" line="38"/>
       <source>Boolean</source>
-      <translation>Лагічнае значэнне</translation>
+      <translation>Лагічная аперацыя</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="39"/>
@@ -6215,7 +6234,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../../BOPTools/JoinFeatures.py" line="294"/>
       <source>Select base object, then the object to embed, and then invoke this tool.</source>
-      <translation>Абярыце базавы аб'ект, потым аб'ект для ўбудавання, а затым запусціце гэты інструмент.</translation>
+      <translation>Абярыце асноўны аб'ект, далей аб'ект для ўбудавання, а потым запусціце гэты інструмент.</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/JoinFeatures.py" line="388"/>
@@ -6300,7 +6319,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="180"/>
       <source>Boolean fragments</source>
-      <translation>Фрагменты лагічнага значэння</translation>
+      <translation>Фрагменты лагічнай аперацыі</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="189"/>
@@ -6309,7 +6328,7 @@ or from the shapes inside a compound.
 This is a boolean union which is then sliced at the intersections
 of the original shapes.
 A 'Compound Filter' can be used to extract the individual slices.</source>
-      <translation>Стварыце аб'ект 'Фрагменты лагічнага значэння' з двух ці болей абраных аб'ектаў,
+      <translation>Стварыце аб'ект 'Фрагменты лагічнай аперацыі' з двух ці болей абраных аб'ектаў,
 альбо з фігур унутры злучэння.
 Гэта лагічнае аб'яднанне, якое потым разразаецца на скрыжаваннях
 зыходных фігур.
@@ -6319,7 +6338,7 @@ A 'Compound Filter' can be used to extract the individual slices.</source>
       <location filename="../../../BOPTools/SplitFeatures.py" line="198"/>
       <location filename="../../../BOPTools/SplitFeatures.py" line="534"/>
       <source>Select at least two objects, or one or more compounds. If only one compound is selected, the compounded shapes will be intersected between each other (otherwise, compounds with self-intersections are invalid).</source>
-      <translation>Абярыце па меншай меры два аб'екты, альбо адно ці некалькі злучэнняў. Калі абрана толькі адное злучэнне, складовыя фігуры будуць перасякацца адзін з адным (у адваротным выпадку злучэнні з самаперакрыжаванямі недапушчальныя).</translation>
+      <translation>Абярыце па меншай меры два аб'екты, альбо адно ці некалькі злучэнняў. Калі абрана толькі адное злучэнне, складовыя фігуры будуць перасякацца адзін з адным (у адваротным выпадку злучэнні з самаперакрыжаванямі хібныя).</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="337"/>
@@ -6445,7 +6464,7 @@ It will create a 'Compound Filter' for each shape.</source>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="91"/>
       <source>Failed to parse link (more than one colon encountered)</source>
-      <translation>Не атрымалася ўдалося апрацаваць спасылак (сустракаецца больш, чым аднаго двукроп'е)</translation>
+      <translation>Не атрымалася апрацаваць сувязь(сустракаецца больш, чым адно двукроп'е)</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="204"/>
@@ -6512,7 +6531,7 @@ It will create a 'Compound Filter' for each shape.</source>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="582"/>
       <source>Failed to resolve links. {}</source>
-      <translation>Не атрымалася дазволіць спасылкі. {}</translation>
+      <translation>Не атрымалася дазволіць сувязі. {}</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="590"/>
