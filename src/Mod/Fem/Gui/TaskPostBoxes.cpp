@@ -1174,39 +1174,68 @@ void TaskPostDataAtPoint::on_Field_activated(int i) {
         || (FieldName == "Stress yz component") || (FieldName == "Stress zz component") ) {
         static_cast<Fem::FemPostDataAtPointFilter*>(getObject())->Unit.setValue("Pa");
     }
-    // The elmer names are different. If there are EigenModes, the names are unique for
+    // The Elmer names are different. If there are EigenModes, the names are unique for
     // every mode. Therefore we only check for the beginning of the name.
     else if ( (FieldName.find("tresca", 0) == 0) || (FieldName.find("vonmises", 0) == 0)
         || (FieldName.find("stress_", 0) == 0) || (FieldName.find("principal stress", 0) == 0) ) {
         static_cast<Fem::FemPostDataAtPointFilter *>(getObject())->Unit.setValue("Pa");
     }
-    else if ( (FieldName == "Displacement") || (FieldName == "Displacement Magnitude")
-        || (FieldName.find("displacement", 0) == 0) // Elmer name
-        ) {
+    else if ((FieldName == "current density") || (FieldName == "current density re")
+             || (FieldName == "current density im") || (FieldName == "current density abs")) {
+        static_cast<Fem::FemPostDataAtPointFilter*>(getObject())->Unit.setValue("A/m^2");
+    }
+    else if ((FieldName == "Displacement") || (FieldName == "Displacement Magnitude")
+             || (FieldName.find("displacement", 0) == 0)) {// Elmer name
         static_cast<Fem::FemPostDataAtPointFilter*>(getObject())->Unit.setValue("m");
-    }
-    else if (
-        // CalculiX name
-        FieldName == "Temperature" ||
-        // Elmer name
-        ((FieldName.find("temperature", 0) == 0) && (FieldName != "temperature flux"))
-        ) {
-        static_cast<Fem::FemPostDataAtPointFilter*>(getObject())->Unit.setValue("K");
-    }
-    else if (FieldName == "electric field") {
-        static_cast<Fem::FemPostDataAtPointFilter*>(getObject())->Unit.setValue("V/m");
-    }
-    else if (FieldName == "electric force density") {
-        static_cast<Fem::FemPostDataAtPointFilter *>(getObject())->Unit.setValue("N/m^2");
-    }
-    else if (FieldName == "potential") {
-        static_cast<Fem::FemPostDataAtPointFilter*>(getObject())->Unit.setValue("V");
     }
     else if (FieldName == "electric energy density") {
         static_cast<Fem::FemPostDataAtPointFilter*>(getObject())->Unit.setValue("J/m^3");
     }
+    else if ((FieldName == "electric field") || (FieldName == "electric field re")
+             || (FieldName == "electric field im") || (FieldName == "electric field abs")) {
+        static_cast<Fem::FemPostDataAtPointFilter*>(getObject())->Unit.setValue("V/m");
+    }
     else if (FieldName == "electric flux") {
         static_cast<Fem::FemPostDataAtPointFilter *>(getObject())->Unit.setValue("A*s/m^2");
+    }
+    else if (FieldName == "electric force density") {
+        static_cast<Fem::FemPostDataAtPointFilter*>(getObject())->Unit.setValue("N/m^2");
+    }
+    else if ((FieldName == "harmonic loss linear") || (FieldName == "harmonic loss quadratic")) {
+        static_cast<Fem::FemPostDataAtPointFilter*>(getObject())->Unit.setValue("W");
+    }
+    else if ((FieldName == "joule heating") || (FieldName == "nodal joule heating")) {
+        static_cast<Fem::FemPostDataAtPointFilter*>(getObject())->Unit.setValue("J");
+    }
+    else if ((FieldName == "magnetic field strength") || (FieldName == "magnetic field strength re")
+             || (FieldName == "magnetic field strength im")
+             || (FieldName == "magnetic field strength abs")) {
+        static_cast<Fem::FemPostDataAtPointFilter*>(getObject())->Unit.setValue("A/m");
+    }
+    else if ((FieldName == "magnetic flux density") || (FieldName == "magnetic flux density re")
+             || (FieldName == "magnetic flux density im")
+             || (FieldName == "magnetic flux density abs")) {
+        static_cast<Fem::FemPostDataAtPointFilter*>(getObject())->Unit.setValue("T");
+    }
+    else if ((FieldName == "maxwell stress 1") || (FieldName == "maxwell stress 2")
+             || (FieldName == "maxwell stress 3") || (FieldName == "maxwell stress 4")
+             || (FieldName == "maxwell stress 5") || (FieldName == "maxwell stress 6")
+             || (FieldName == "maxwell stress re 1") || (FieldName == "maxwell stress re 2")
+             || (FieldName == "maxwell stress re 3") || (FieldName == "maxwell stress re 4")
+             || (FieldName == "maxwell stress re 5") || (FieldName == "maxwell stress re 6")
+             || (FieldName == "maxwell stress im 1") || (FieldName == "maxwell stress im 2")
+             || (FieldName == "maxwell stress im 3") || (FieldName == "maxwell stress im 4")
+             || (FieldName == "maxwell stress im 5") || (FieldName == "maxwell stress im 6")) {
+        static_cast<Fem::FemPostDataAtPointFilter*>(getObject())->Unit.setValue("As/m^3");
+    }
+    else if (FieldName == "nodal force") {
+        static_cast<Fem::FemPostDataAtPointFilter*>(getObject())->Unit.setValue("N");
+    }
+    else if ((FieldName == "potential") || (FieldName == "potential re")
+             || (FieldName == "potential im") || (FieldName == "potential abs")
+             || (FieldName == "av") || (FieldName == "av re") || (FieldName == "av im")
+             || (FieldName == "av abs")) {
+        static_cast<Fem::FemPostDataAtPointFilter*>(getObject())->Unit.setValue("V");
     }
     else if (FieldName == "potential flux") {
         static_cast<Fem::FemPostDataAtPointFilter *>(getObject())->Unit.setValue("W/m^2");
@@ -1214,6 +1243,13 @@ void TaskPostDataAtPoint::on_Field_activated(int i) {
     // potential loads are in Coulomb: https://www.elmerfem.org/forum/viewtopic.php?t=7780
     else if (FieldName == "potential loads") {
         static_cast<Fem::FemPostDataAtPointFilter*>(getObject())->Unit.setValue("C");
+    }
+    else if (
+        // CalculiX name
+        FieldName == "Temperature" ||
+        // Elmer name
+        ((FieldName.find("temperature", 0) == 0) && (FieldName != "temperature flux"))) {
+        static_cast<Fem::FemPostDataAtPointFilter*>(getObject())->Unit.setValue("K");
     }
     else if (FieldName == "temperature flux") {
         static_cast<Fem::FemPostDataAtPointFilter *>(getObject())->Unit.setValue("W/m^2");
