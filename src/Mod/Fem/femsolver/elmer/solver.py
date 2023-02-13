@@ -40,6 +40,7 @@ from .equations import electrostatic
 from .equations import flow
 from .equations import flux
 from .equations import heat
+from .equations import magnetodynamic
 from .equations import magnetodynamic2D
 from .. import run
 from .. import solverbase
@@ -72,6 +73,7 @@ class Proxy(solverbase.Proxy):
         "Flux": flux,
         "Electricforce": electricforce,
         "Flow": flow,
+        "Magnetodynamic": magnetodynamic,
         "Magnetodynamic2D": magnetodynamic2D,
     }
 
