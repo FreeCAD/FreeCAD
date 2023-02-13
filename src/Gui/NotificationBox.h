@@ -33,11 +33,11 @@ namespace Gui {
      * The notification is shown during minShowTime, unless pop out
      * (i.e. clicked inside the notification).
      *
-     * The notification will show up to a maximum of msecShowTime. The
+     * The notification will show up to a maximum of displayTime. The
      * only event that closes the notification between minShowTime and
-     * msecShowTime is a mouse button click (anywhere of the screen).
+     * displayTime is a mouse button click (anywhere of the screen).
      *
-     * When msecShowTime is not provided, it is calculated based on the length
+     * When displayTime is not provided, it is calculated based on the length
      * of the text.
      *
      * This class interface and its implementation are based on QT's
@@ -49,10 +49,10 @@ namespace Gui {
     public:
         /** Shows a non-intrusive notification.
          * @param pos Position at which the notification will be shown
-         * @param msecShowTime Time after which the notification will auto-close (unless it is closed by an event, see class documentation above)
+         * @param displayTime Time after which the notification will auto-close (unless it is closed by an event, see class documentation above)
          * @param minShowTime  Time during which the notification can only be made disappear by popping it out (clicking inside it).
          */
-        static void showText(const QPoint &pos, const QString &text, int msecShowTime = -1, unsigned int minShowTime = 0);
+        static void showText(const QPoint &pos, const QString &text, int displayTime = -1, unsigned int minShowTime = 0);
         /// Hides a notification.
         static inline void hideText() { showText(QPoint(), QString()); }
         /// Returns whether a notification is being shown or not.
