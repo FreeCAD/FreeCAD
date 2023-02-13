@@ -36,7 +36,7 @@
     <message>
       <location filename="TranslationTexts.py" line="48"/>
       <source>Adjust the number of recent files to be shown here in menu Edit -&gt; Preferences -&gt; General -&gt; Size of recent file list</source>
-      <translation>Адрэгуляваць колькасць апошніх файлаў, якія будуць адлюстраваныя тут, у меню Праўка -&gt; Перавагі -&gt; Агульныя -&gt; Памер спісу апошніх файлаў</translation>
+      <translation>Адрэгуляваць колькасць апошніх файлаў, якія будуць паказаныя тут, у меню Праўка -&gt; Перавагі -&gt; Агульныя -&gt; Памер спісу апошніх файлаў</translation>
     </message>
     <message>
       <location filename="TranslationTexts.py" line="49"/>
@@ -270,17 +270,17 @@
     <message>
       <location filename="../../DlgStartPreferences.ui" line="55"/>
       <source>Show examples folder contents</source>
-      <translation>Адлюстраваць змест каталогу з прыкладамі</translation>
+      <translation>Паказаць змест каталогу з прыкладамі</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="62"/>
       <source>Show additional folder</source>
-      <translation>Адлюстраваць дадатковы каталог</translation>
+      <translation>Паказаць дадатковы каталог</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="69"/>
       <source>If you want the examples to show on the first page</source>
-      <translation>Калі вы жадаеце, каб прыклады былі адлюстраваныя на першай старонцы</translation>
+      <translation>Калі вы жадаеце, каб прыклады былі паказаныя на першай старонцы</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="91"/>
@@ -297,17 +297,17 @@ By using ";;" to separate paths, you can add several folders here</source>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="127"/>
       <source>Show notepad</source>
-      <translation>Адлюстраваць нататнік</translation>
+      <translation>Паказаць нататнік</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="134"/>
       <source>Shows a notepad next to the file thumbnails, where you can keep notes across sessions</source>
-      <translation>Адлюстроўвае нататнік побач з файламі мініяцюры, дзе вы можаце захоўваць нататкі паміж сеансамі</translation>
+      <translation>Паказвае нататнік побач з файламі мініяцюры, дзе вы можаце захоўваць нататкі паміж сеансамі</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="153"/>
       <source>Show tips</source>
-      <translation>Адлюстраваць парады</translation>
+      <translation>Паказаць парады</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="163"/>
@@ -442,7 +442,7 @@ By using ";;" to separate paths, you can add several folders here</source>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="551"/>
       <source>The base font size to use for all texts of the Start page</source>
-      <translation>Базавы памер шрыфту, які будзе ўжыты для ўсіх тэкстаў пачатковай старонкі</translation>
+      <translation>Асноўны памер шрыфту, які будзе ўжыты для ўсіх тэкстаў пачатковай старонкі</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="554"/>
@@ -457,7 +457,7 @@ By using ";;" to separate paths, you can add several folders here</source>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="579"/>
       <source>If this is selected, the 'New File' icon shows a gradient icon instead of the normal icon</source>
-      <translation>Калі птушка, на гузіку 'Новы файл' будзе адлюстраваны гузік градыенту замест звычайнага гузіка</translation>
+      <translation>Калі птушка, на гузіку 'Новы файл' будзе паказаны гузік градыенту замест звычайнага гузіка</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="601"/>

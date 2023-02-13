@@ -196,7 +196,7 @@
     <message>
       <location filename="../../CommandTrajectory.cpp" line="90"/>
       <source>Insert robot Tool location into trajectory</source>
-      <translation>Вставить местоположение робота на траектории</translation>
+      <translation>Вставьте местоположение робота на траектории</translation>
     </message>
   </context>
   <context>
@@ -246,7 +246,7 @@
     <message>
       <location filename="../../CommandTrajectory.cpp" line="211"/>
       <source>Set the default orientation for subsequent commands for waypoint creation</source>
-      <translation>Задать ориентацию по умолчанию для последующих команд для создания маршрутной точки</translation>
+      <translation>Задать ориентацию по умолчанию для последующих команд для создания путевых точек</translation>
     </message>
   </context>
   <context>
@@ -291,7 +291,7 @@
     <message>
       <location filename="../../Command.cpp" line="196"/>
       <source>Simulate a trajectory</source>
-      <translation>Моделирование траектории</translation>
+      <translation>Имитация траектории</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="197"/>
@@ -392,7 +392,7 @@
     <message>
       <location filename="../../Command.cpp" line="226"/>
       <source>Trajectory not valid</source>
-      <translation>Траектория неправильная</translation>
+      <translation>Траектория не действительна</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="227"/>
@@ -415,7 +415,7 @@
       <location filename="../../CommandExport.cpp" line="86"/>
       <location filename="../../CommandExport.cpp" line="148"/>
       <source>Export program</source>
-      <translation>Экспортная программа</translation>
+      <translation>Экспорт программы</translation>
     </message>
     <message>
       <location filename="../../CommandInsertRobot.cpp" line="230"/>
@@ -456,7 +456,7 @@
     <message>
       <location filename="../../CommandTrajectory.cpp" line="273"/>
       <source>continuous ?</source>
-      <translation>продолжительность ?</translation>
+      <translation>непрерывно ?</translation>
     </message>
     <message>
       <location filename="../../CommandTrajectory.cpp" line="279"/>
@@ -481,7 +481,7 @@
     <message>
       <location filename="../../Workbench.cpp" line="79"/>
       <source>No robot files installed</source>
-      <translation>Нет установленных файлов робота</translation>
+      <translation>Файлы роботов не установлены</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="80"/>
@@ -570,22 +570,22 @@
     <message>
       <location filename="../../TaskRobot6Axis.ui" line="69"/>
       <source>A2</source>
-      <translation>А2</translation>
+      <translation>A2</translation>
     </message>
     <message>
       <location filename="../../TaskRobot6Axis.ui" line="116"/>
       <source>A3</source>
-      <translation>А3</translation>
+      <translation>A3</translation>
     </message>
     <message>
       <location filename="../../TaskRobot6Axis.ui" line="163"/>
       <source>A4</source>
-      <translation>А4</translation>
+      <translation>A4</translation>
     </message>
     <message>
       <location filename="../../TaskRobot6Axis.ui" line="210"/>
       <source>A5</source>
-      <translation>А5</translation>
+      <translation>A5</translation>
     </message>
     <message>
       <location filename="../../TaskRobot6Axis.ui" line="257"/>
@@ -910,7 +910,7 @@
       <location filename="../../TaskTrajectoryDressUpParameter.ui" line="55"/>
       <location filename="../../TaskTrajectoryDressUpParameter.ui" line="92"/>
       <source>Use</source>
-      <translation>Используйте</translation>
+      <translation>Использовать</translation>
     </message>
     <message>
       <location filename="../../TaskTrajectoryDressUpParameter.ui" line="66"/>
@@ -925,12 +925,12 @@
     <message>
       <location filename="../../TaskTrajectoryDressUpParameter.ui" line="107"/>
       <source>Continues</source>
-      <translation>Продолжается</translation>
+      <translation>Продолжить</translation>
     </message>
     <message>
       <location filename="../../TaskTrajectoryDressUpParameter.ui" line="112"/>
       <source>Discontinues</source>
-      <translation>Прекращает</translation>
+      <translation>Прекращено</translation>
     </message>
     <message>
       <location filename="../../TaskTrajectoryDressUpParameter.ui" line="127"/>
@@ -968,7 +968,7 @@
     <message>
       <location filename="../../Workbench.cpp" line="48"/>
       <source>Insert Robots</source>
-      <translation>Вставить робота</translation>
+      <translation>Вставить роботов</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="49"/>

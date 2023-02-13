@@ -8283,7 +8283,7 @@ przy użyciu podanego odstępu X/Y</translation>
     <message>
       <location filename="../../../TechDrawTools/CommandAxoLengthDimension.py" line="50"/>
       <source>Axonometric length dimension</source>
-      <translation type="unfinished">Axonometric length dimension</translation>
+      <translation>Wymiar długości aksonometrycznej</translation>
     </message>
     <message>
       <location filename="../../../TechDrawTools/CommandAxoLengthDimension.py" line="57"/>
@@ -8292,11 +8292,11 @@ przy użyciu podanego odstępu X/Y</translation>
                 - select second edge to define the direction of the extension lines&lt;br&gt;
                 - optional: select two more vertexes which define the measurement instead of the length&lt;br&gt;
                   of the first selected edge</source>
-      <translation type="unfinished">Create an axonometric length dimension&lt;br&gt;
-                - select first edge to define direction and length of the dimension line&lt;br&gt;
-                - select second edge to define the direction of the extension lines&lt;br&gt;
-                - optional: select two more vertexes which define the measurement instead of the length&lt;br&gt;
-                  of the first selected edge</translation>
+      <translation>Utwórz wymiar długości aksonometrycznej&lt;br&gt;
+                - wybierz pierwszą krawędź, aby zdefiniować kierunek i długość linii wymiaru&lt;br&gt;
+                - wybierz drugą krawędź, aby zdefiniować kierunek linii pomocniczej&lt;br&gt;
+                - opcjonalnie: wybierz dwa wierzchołki definiujące rozpiętość zamiast długości&lt;br&gt;
+                  pierwszej wybranej krawędzi</translation>
     </message>
   </context>
 </TS>

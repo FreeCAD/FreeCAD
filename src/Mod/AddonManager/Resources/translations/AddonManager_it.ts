@@ -1289,7 +1289,7 @@ gli addons installati verranno controllati per gli aggiornamenti disponibili
     </message>
     <message>
       <location filename="../../manage_python_dependencies.py" line="252"/>
-      <location filename="../../package_details.py" line="905"/>
+      <location filename="../../package_details.py" line="912"/>
       <source>Update</source>
       <translation>Aggiorna</translation>
     </message>
@@ -1370,22 +1370,22 @@ gli addons installati verranno controllati per gli aggiornamenti disponibili
       <translation>Avviso Addon Manager: impossibile importare QtWebEngineWidgets. Il gestore dei pacchetti di sistema&apos;s può fornire un pacchetto per questa dipendenza, cercare nel gestore dei pacchetti possibili risoluzioni. La visualizzazione del pacchetto README sarà limitata fino a quando questa dipendenza non sarà risolta.</translation>
     </message>
     <message>
-      <location filename="../../package_details.py" line="190"/>
+      <location filename="../../package_details.py" line="189"/>
       <source>Version {version} installed on {date}</source>
       <translation>Versione {version} installata in {date}</translation>
     </message>
     <message>
-      <location filename="../../package_details.py" line="195"/>
+      <location filename="../../package_details.py" line="194"/>
       <source>Version {version} installed</source>
       <translation>Versione {version} installata</translation>
     </message>
     <message>
-      <location filename="../../package_details.py" line="199"/>
+      <location filename="../../package_details.py" line="198"/>
       <source>Installed on {date}</source>
       <translation>Installato il {date}</translation>
     </message>
     <message>
-      <location filename="../../package_details.py" line="203"/>
+      <location filename="../../package_details.py" line="202"/>
       <location filename="../../package_list.py" line="440"/>
       <location filename="../../package_list.py" line="496"/>
       <location filename="../../package_list.py" line="797"/>
@@ -1393,160 +1393,160 @@ gli addons installati verranno controllati per gli aggiornamenti disponibili
       <translation>Installato</translation>
     </message>
     <message>
-      <location filename="../../package_details.py" line="213"/>
+      <location filename="../../package_details.py" line="212"/>
       <source>On branch {}, update available to version</source>
       <translation>Sul ramo {}, aggiornamento disponibile alla versione</translation>
     </message>
     <message>
-      <location filename="../../package_details.py" line="222"/>
+      <location filename="../../package_details.py" line="221"/>
       <source>Update available to version</source>
       <translation>Aggiornamento disponibile alla versione</translation>
     </message>
     <message>
-      <location filename="../../package_details.py" line="233"/>
+      <location filename="../../package_details.py" line="232"/>
       <source>An update is available</source>
       <translation>Un aggiornamento è disponibile</translation>
     </message>
     <message>
-      <location filename="../../package_details.py" line="251"/>
+      <location filename="../../package_details.py" line="250"/>
       <source>Git tag &apos;{}&apos; checked out, no updates possible</source>
       <translation>Git tag &apos;{}&apos; check out, nessun aggiornamento possibile</translation>
     </message>
     <message>
-      <location filename="../../package_details.py" line="259"/>
+      <location filename="../../package_details.py" line="258"/>
       <source>This is the latest version available for branch {}</source>
       <translation>Questa è l'ultima versione disponibile per il ramo {}</translation>
     </message>
     <message>
-      <location filename="../../package_details.py" line="267"/>
+      <location filename="../../package_details.py" line="266"/>
       <source>Updated, please restart FreeCAD to use</source>
       <translation>Aggiornato, riavviare FreeCAD per usare</translation>
     </message>
     <message>
-      <location filename="../../package_details.py" line="275"/>
+      <location filename="../../package_details.py" line="273"/>
       <source>Update check in progress</source>
       <translation>Controllo aggiornamento in corso</translation>
     </message>
     <message>
-      <location filename="../../package_details.py" line="280"/>
+      <location filename="../../package_details.py" line="278"/>
       <source>Automatic update checks disabled</source>
       <translation>Controllo automatico degli aggiornamenti disabilitato</translation>
     </message>
     <message>
-      <location filename="../../package_details.py" line="302"/>
+      <location filename="../../package_details.py" line="300"/>
       <source>Installation location</source>
       <translation>Percorso di installazione</translation>
     </message>
     <message>
-      <location filename="../../package_details.py" line="349"/>
+      <location filename="../../package_details.py" line="347"/>
       <source>WARNING: This addon is obsolete</source>
       <translation>ATTENZIONE: Questo addon è obsoleto</translation>
     </message>
     <message>
-      <location filename="../../package_details.py" line="359"/>
+      <location filename="../../package_details.py" line="357"/>
       <source>WARNING: This addon is Python 2 Only</source>
       <translation>ATTENZIONE: Questo addon funziona solo con Python 2</translation>
     </message>
     <message>
-      <location filename="../../package_details.py" line="369"/>
+      <location filename="../../package_details.py" line="367"/>
       <source>WARNING: This addon requires FreeCAD </source>
       <translation>ATTENZIONE: Questo addon richiede FreeCAD </translation>
     </message>
     <message>
-      <location filename="../../package_details.py" line="383"/>
+      <location filename="../../package_details.py" line="381"/>
       <source>WARNING: This addon is currently installed, but disabled. Use the &apos;enable&apos; button to re-enable.</source>
       <translation>ATTENZIONE: Questo addon è attualmente installato, ma disabilitato. Usa il pulsante &apos;abilita&apos; per riabilitare.</translation>
     </message>
     <message>
-      <location filename="../../package_details.py" line="521"/>
-      <location filename="../../package_details.py" line="534"/>
+      <location filename="../../package_details.py" line="519"/>
+      <location filename="../../package_details.py" line="532"/>
       <source>No URL or wiki page provided by this macro</source>
       <translation>Nessuna pagina URL o wiki fornita da questa macro</translation>
     </message>
     <message>
-      <location filename="../../package_details.py" line="637"/>
+      <location filename="../../package_details.py" line="635"/>
       <source>Could not load README data from URL {}</source>
       <translation>Impossibile caricare i dati README dall'URL {}</translation>
     </message>
     <message>
-      <location filename="../../package_details.py" line="662"/>
+      <location filename="../../package_details.py" line="660"/>
       <source>This Addon will be enabled next time you restart FreeCAD.</source>
       <translation>Questo Addon sarà abilitato la prossima volta che riavvii FreeCAD.</translation>
     </message>
     <message>
-      <location filename="../../package_details.py" line="679"/>
+      <location filename="../../package_details.py" line="677"/>
       <source>This Addon will be disabled next time you restart FreeCAD.</source>
       <translation>Questo Addon sarà disabilitato al prossimo riavvio di FreeCAD.</translation>
     </message>
     <message>
-      <location filename="../../package_details.py" line="689"/>
+      <location filename="../../package_details.py" line="687"/>
       <location filename="../../addonmanager_installer_gui.py" line="484"/>
       <location filename="../../AddonManagerTest/gui/test_installer_gui.py" line="54"/>
       <source>Success</source>
       <translation>Operazione riuscita</translation>
     </message>
     <message>
-      <location filename="../../package_details.py" line="693"/>
+      <location filename="../../package_details.py" line="691"/>
       <source>Branch change succeeded, please restart to use the new version.</source>
       <translation>Cambio branch effettuato, riavvia l'applicazione per utilizzare la nuova versione.</translation>
     </message>
     <message>
-      <location filename="../../package_details.py" line="712"/>
+      <location filename="../../package_details.py" line="710"/>
       <source>Changed to git ref &apos;{}&apos; -- please restart to use Addon.</source>
       <translation>Cambiato in git ref &apos;{}&apos; -- si prega di riavviare per utilizzare Addon.</translation>
     </message>
     <message>
-      <location filename="../../package_details.py" line="752"/>
+      <location filename="../../package_details.py" line="755"/>
       <source>Page JavaScript reported</source>
       <translation>JavaScript della pagina segnalato</translation>
     </message>
     <message>
-      <location filename="../../package_details.py" line="899"/>
+      <location filename="../../package_details.py" line="906"/>
       <source>Install</source>
       <translation>Installa</translation>
     </message>
     <message>
-      <location filename="../../package_details.py" line="902"/>
+      <location filename="../../package_details.py" line="909"/>
       <source>Uninstall</source>
       <translation>Disinstalla</translation>
     </message>
     <message>
-      <location filename="../../package_details.py" line="908"/>
+      <location filename="../../package_details.py" line="915"/>
       <source>Check for Update</source>
       <translation>Controlla aggiornamenti</translation>
     </message>
     <message>
-      <location filename="../../package_details.py" line="911"/>
+      <location filename="../../package_details.py" line="918"/>
       <source>Run Macro</source>
       <translation>Esegui macro</translation>
     </message>
     <message>
-      <location filename="../../package_details.py" line="914"/>
+      <location filename="../../package_details.py" line="921"/>
       <source>Change Branch</source>
       <translation>Cambia Ramo</translation>
     </message>
     <message>
-      <location filename="../../package_details.py" line="917"/>
+      <location filename="../../package_details.py" line="924"/>
       <source>Enable</source>
       <translation>Abilita</translation>
     </message>
     <message>
-      <location filename="../../package_details.py" line="920"/>
+      <location filename="../../package_details.py" line="927"/>
       <source>Disable</source>
       <translation>Disabilita</translation>
     </message>
     <message>
-      <location filename="../../package_details.py" line="925"/>
+      <location filename="../../package_details.py" line="932"/>
       <source>Return to package list</source>
       <translation>Ritorna alla lista dei pacchetti</translation>
     </message>
     <message>
-      <location filename="../../package_details.py" line="934"/>
+      <location filename="../../package_details.py" line="941"/>
       <source>QtWebEngine Python bindings not installed -- using fallback README display. See Report View for details and installation instructions.</source>
       <translation>QtWebEngine Python bindings non installato -- si utilizza il display README di riserva. Vedere Report View per dettagli ed istruzioni di installazione.</translation>
     </message>
     <message>
-      <location filename="../../package_details.py" line="942"/>
+      <location filename="../../package_details.py" line="949"/>
       <source>The page is taking a long time to load... showing the data we have so far...</source>
       <translation>La pagina sta impiegando molto tempo per caricare... si visualizzano i dati che abbiamo finora...</translation>
     </message>
@@ -2225,17 +2225,17 @@ gli addons installati verranno controllati per gli aggiornamenti disponibili
       <translation>Impossibile individuare il file macro specificato {} (dovrebbe trovarsi a {})</translation>
     </message>
     <message>
-      <location filename="../../Addon.py" line="365"/>
+      <location filename="../../Addon.py" line="391"/>
       <source>{}: Unrecognized internal workbench &apos;{}&apos;</source>
       <translation>{}: ambiente di lavoro interno non riconosciuto &apos;{}&apos;</translation>
     </message>
     <message>
-      <location filename="../../Addon.py" line="400"/>
+      <location filename="../../Addon.py" line="426"/>
       <source>Addon Developer Warning: Repository URL set in package.xml file for addon {} ({}) does not match the URL it was fetched from ({})</source>
       <translation type="unfinished">Addon Developer Warning: Repository URL set in package.xml file for addon {} ({}) does not match the URL it was fetched from ({})</translation>
     </message>
     <message>
-      <location filename="../../Addon.py" line="408"/>
+      <location filename="../../Addon.py" line="434"/>
       <source>Addon Developer Warning: Repository branch set in package.xml file for addon {} ({}) does not match the branch it was fetched from ({})</source>
       <translation type="unfinished">Addon Developer Warning: Repository branch set in package.xml file for addon {} ({}) does not match the branch it was fetched from ({})</translation>
     </message>

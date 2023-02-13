@@ -174,27 +174,27 @@
       <location filename="../../InitGui.py" line="135"/>
       <location filename="../../InitGui.py" line="148"/>
       <source>If OpenSCAD execution fails to load the temporary file, use FreeCAD's OpenSCAD Workbench Preferences to change the transfer mechanism.</source>
-      <translation type="unfinished">If OpenSCAD execution fails to load the temporary file, use FreeCAD's OpenSCAD Workbench Preferences to change the transfer mechanism.</translation>
+      <translation>Ha az OpenSCAD végrehajtása nem tölt be ideiglenes fájlt, a FreeCAD OpenSCAD munkapad beállításaival módosítsa az átviteli mechanizmust.</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="143"/>
       <source>It looks like you may be using a sandboxed version of FreeCAD.</source>
-      <translation type="unfinished">It looks like you may be using a sandboxed version of FreeCAD.</translation>
+      <translation>Úgy néz ki, mintha a FreeCAD sandbox verzióját használná.</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="101"/>
       <source>Unable to explode %s</source>
-      <translation type="unfinished">Unable to explode %s</translation>
+      <translation>Képtelen szétrobbantani ezt %s</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="148"/>
       <source>Convert Edges to Faces</source>
-      <translation type="unfinished">Convert Edges to Faces</translation>
+      <translation>Élek felületté konvertálása</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="308"/>
       <source>Please select 3 objects first</source>
-      <translation type="unfinished">Please select 3 objects first</translation>
+      <translation>Kérem válasszon ki először 3 tárgyat</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="340"/>
@@ -230,7 +230,7 @@
       <location filename="../../OpenSCADCommands.py" line="345"/>
       <location filename="../../OpenSCADCommands.py" line="368"/>
       <source>as Mesh</source>
-      <translation type="unfinished">as Mesh</translation>
+      <translation>mint háló</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="358"/>
@@ -242,13 +242,13 @@
       <location filename="../../OpenSCADCommands.py" line="443"/>
       <location filename="../../OpenSCADCommands.py" line="472"/>
       <source>Perform</source>
-      <translation type="unfinished">Perform</translation>
+      <translation>Végrehajt</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="469"/>
       <location filename="../../OpenSCADCommands.py" line="473"/>
       <source>Mesh Boolean</source>
-      <translation type="unfinished">Mesh Boolean</translation>
+      <translation>Logikai háló</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="474"/>
@@ -258,7 +258,7 @@
     <message>
       <location filename="../../OpenSCADUtils.py" line="709"/>
       <source>OpenSCAD file contains both 2D and 3D shapes. That is not supported in this importer, all shapes must have the same dimensionality.</source>
-      <translation type="unfinished">OpenSCAD file contains both 2D and 3D shapes. That is not supported in this importer, all shapes must have the same dimensionality.</translation>
+      <translation>OpenSCAD fájl tartalmaz mind a 2D és 3D alakzatokat. Ezt ebben az importőrben nem támogatják, minden formának azonos dimenzióval kell rendelkeznie.</translation>
     </message>
     <message>
       <location filename="../../OpenSCADUtils.py" line="721"/>
@@ -269,7 +269,7 @@
       <location filename="../../importCSG.py" line="557"/>
       <location filename="../../importCSG.py" line="1436"/>
       <source>Unsupported Function</source>
-      <translation type="unfinished">Unsupported Function</translation>
+      <translation>Nem támogatott funkció</translation>
     </message>
     <message>
       <location filename="../../importCSG.py" line="557"/>
@@ -283,12 +283,12 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="109"/>
       <source>Explode Group</source>
-      <translation type="unfinished">Explode Group</translation>
+      <translation>Csoport szétrobbantása</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="112"/>
       <source>Remove fusion, apply placement to children, and color randomly</source>
-      <translation type="unfinished">Remove fusion, apply placement to children, and color randomly</translation>
+      <translation>Távolítsa el a fúziót, alkalmazzon véletlenszerű elhelyezést az alárendeltekre és a színre</translation>
     </message>
   </context>
   <context>
@@ -296,12 +296,12 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="125"/>
       <source>Color Shapes</source>
-      <translation type="unfinished">Color Shapes</translation>
+      <translation>Alakzatok színezése</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="128"/>
       <source>Color Shapes by validity and type</source>
-      <translation type="unfinished">Color Shapes by validity and type</translation>
+      <translation>Alakzatok színezése az érvényesség és típus szerint</translation>
     </message>
   </context>
   <context>
@@ -309,7 +309,7 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="145"/>
       <source>Convert Edges To Faces</source>
-      <translation type="unfinished">Convert Edges To Faces</translation>
+      <translation>Élek konvertálása felületekké</translation>
     </message>
   </context>
   <context>
@@ -317,12 +317,12 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="164"/>
       <source>Refine Shape Feature</source>
-      <translation type="unfinished">Refine Shape Feature</translation>
+      <translation>Alakzat tulajdonság finomítása</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="167"/>
       <source>Create Refine Shape Feature</source>
-      <translation type="unfinished">Create Refine Shape Feature</translation>
+      <translation>Alakzat tulajdonság finomítás létrehozása</translation>
     </message>
   </context>
   <context>
@@ -330,12 +330,12 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="194"/>
       <source>Mirror Mesh Feature...</source>
-      <translation type="unfinished">Mirror Mesh Feature...</translation>
+      <translation>Tükrözött Háló Funkció...</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="197"/>
       <source>Create Mirror Mesh Feature</source>
-      <translation type="unfinished">Create Mirror Mesh Feature</translation>
+      <translation>Tükrözött Háló Funkció Létrehozása</translation>
     </message>
   </context>
   <context>
@@ -343,7 +343,7 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="223"/>
       <source>Scale Mesh Feature...</source>
-      <translation type="unfinished">Scale Mesh Feature...</translation>
+      <translation>Hálótulajdonság méretező...</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="227"/>

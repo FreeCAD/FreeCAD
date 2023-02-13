@@ -373,7 +373,7 @@
       <location filename="../../SheetTableView.cpp" line="632"/>
       <location filename="../../SpreadsheetView.cpp" line="159"/>
       <source>Clear cell(s)</source>
-      <translation>Ачысціць клетку(і)</translation>
+      <translation>Ачысціць клеткі</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="132"/>
@@ -697,29 +697,29 @@ switch the design configuration. The property will be created if not exist.</sou
     <message>
       <location filename="../../ViewProviderSpreadsheet.cpp" line="129"/>
       <source>Show spreadsheet</source>
-      <translation>Адлюстраваць аркуш</translation>
+      <translation>Паказаць аркуш</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="91"/>
       <location filename="../../Workbench.cpp" line="93"/>
       <source>Set cell(s) foreground color</source>
-      <translation>Задаць колер зместу клеткі(ак)</translation>
+      <translation>Задаць колер зместу клетак</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="92"/>
       <source>Sets the Spreadsheet cell(s) foreground color</source>
-      <translation>Задаць колер зместу клеткі(ак) аркуша</translation>
+      <translation>Задаць колер зместу клетак аркуша</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="106"/>
       <location filename="../../Workbench.cpp" line="108"/>
       <source>Set cell(s) background color</source>
-      <translation>Задаць колер фону клеткі(ак)</translation>
+      <translation>Задаць колер фону клетак</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="107"/>
       <source>Sets the Spreadsheet cell(s) background color</source>
-      <translation>Задаць колер фону клеткі(ак) аркуша</translation>
+      <translation>Задаць колер фону клетак аркуша</translation>
     </message>
     <message>
       <location filename="../../SheetTableView.cpp" line="752"/>
@@ -929,7 +929,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../DlgSettings.ui" line="35"/>
       <source>Show alias in cell with format</source>
-      <translation>Адлюстраваць псеўданім у клетцы з фарматам</translation>
+      <translation>Паказаць псеўданім у клетцы з фарматам</translation>
     </message>
     <message>
       <location filename="../../DlgSettings.ui" line="64"/>

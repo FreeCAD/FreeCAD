@@ -77,8 +77,7 @@ i.e. counter-clockwise when moving along its axis.</source>
       <location filename="../../../App/FeatureHelix.cpp" line="104"/>
       <source>If false, the tool will propose an initial value for the pitch based on the profile bounding box,
 so that self intersection is avoided.</source>
-      <translation>Калі адключана, інструмент прапануе пачатковае значэнне кроку на аснове профілю абмежаванага прастакутніка,
-каб пазбегнуць самаперакрыжавання.</translation>
+      <translation>Калі адключана, інструмент прапануе пачатковае значэнне кроку на аснове профілю габарытаў, каб пазбегнуць самаперакрыжавання.</translation>
     </message>
   </context>
   <context>
@@ -163,7 +162,7 @@ so that self intersection is avoided.</source>
     <message>
       <location filename="../../Command.cpp" line="2308"/>
       <source>Boolean operation</source>
-      <translation>Аперацыя лагічнага значэння</translation>
+      <translation>Лагічная аперацыя</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2309"/>
@@ -632,7 +631,7 @@ so that self intersection is avoided.</source>
       <location filename="../../Command.cpp" line="345"/>
       <location filename="../../Command.cpp" line="346"/>
       <source>Create a sub-object(s) shape binder</source>
-      <translation>Стварыць укладзены аб'ект(ы) злучнай фігуры</translation>
+      <translation>Стварыць укладзеныя аб'екты злучнай фігуры</translation>
     </message>
   </context>
   <context>
@@ -861,7 +860,7 @@ so that self intersection is avoided.</source>
     <message>
       <location filename="../../Command.cpp" line="2325"/>
       <source>Create Boolean</source>
-      <translation>Стварыць лагічнае значэнне</translation>
+      <translation>Стварыць лагічную аперацыю</translation>
     </message>
     <message>
       <location filename="../../DlgActiveBody.cpp" line="104"/>
@@ -925,7 +924,7 @@ so that self intersection is avoided.</source>
     <message>
       <location filename="../../FeaturePickDialog.cpp" line="43"/>
       <source>Invalid shape</source>
-      <translation>Недапушчальная фігура</translation>
+      <translation>Хібная фігура</translation>
     </message>
     <message>
       <location filename="../../FeaturePickDialog.cpp" line="44"/>
@@ -945,7 +944,7 @@ so that self intersection is avoided.</source>
     <message>
       <location filename="../../FeaturePickDialog.cpp" line="47"/>
       <source>Base plane</source>
-      <translation>Базавая плоскасць</translation>
+      <translation>Асноўная плоскасць</translation>
     </message>
     <message>
       <location filename="../../FeaturePickDialog.cpp" line="48"/>
@@ -1040,8 +1039,7 @@ so that self intersection is avoided.</source>
   material to be removed;
   - the selected sketch does not belong to the active Body.</source>
       <translation>Запытаны элемент не можа быць створаны. Прычынаю можа быць:
-- бягучае Цела не ўтрымлівае базавай фігуры, таму няма
-матэрыялу для выдалення;
+- бягучае Цела не ўтрымлівае асноўнай фігуры, таму няма матэрыялу для выдалення;
 - абраны эскіз не належыць да бягучага Цела.</translation>
     </message>
   </context>
@@ -1054,8 +1052,7 @@ so that self intersection is avoided.</source>
   material to be removed;
   - the selected sketch does not belong to the active Body.</source>
       <translation>Запытаны элемент не можа быць створаны. Прычынаю можа быць:
-- бягучае Цела не ўтрымлівае базавай фігуры, таму няма
-матэрыялу для выдалення;
+- бягучае Цела не ўтрымлівае асноўнай фігуры, таму няма матэрыялу для выдалення;
 - абраны эскіз не належыць да бягучага Цела.</translation>
     </message>
   </context>
@@ -1068,8 +1065,7 @@ so that self intersection is avoided.</source>
   material to be removed;
   - the selected sketch does not belong to the active Body.</source>
       <translation>Запытаны элемент не можа быць створаны. Прычынаю можа быць:
-- бягучае Цела не ўтрымлівае базавай фігуры, таму няма
-матэрыялу для выдалення;
+- бягучае Цела не ўтрымлівае асноўнай фігуры, таму няма матэрыялу для выдалення;
 - абраны эскіз не належыць да бягучага Цела.</translation>
     </message>
   </context>
@@ -1437,7 +1433,7 @@ If zero, it is equal to Radius2</source>
     <message>
       <location filename="../../TaskBooleanParameters.cpp" line="52"/>
       <source>Boolean parameters</source>
-      <translation>Налады лагічнага значэння</translation>
+      <translation>Налады лагічнай аперацыі</translation>
     </message>
     <message>
       <location filename="../../TaskBooleanParameters.cpp" line="81"/>
@@ -1467,7 +1463,7 @@ If zero, it is equal to Radius2</source>
       <location filename="../../TaskPrimitiveParameters.cpp" line="841"/>
       <location filename="../../TaskPrimitiveParameters.cpp" line="846"/>
       <source>Invalid wedge parameters</source>
-      <translation>Недапушчальныя налады кліну</translation>
+      <translation>Хібныя налады кліну</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.cpp" line="837"/>
@@ -1602,7 +1598,7 @@ click again to end selection</source>
     <message>
       <location filename="../../TaskBooleanParameters.cpp" line="364"/>
       <source>Boolean: Accept: Input error</source>
-      <translation>Лагічнае значэнне: Прыняць: Памылка ўводу</translation>
+      <translation>Лагічная аперацыя: Прыняць: Памылка ўводу</translation>
     </message>
   </context>
   <context>
@@ -1820,7 +1816,7 @@ click again to end selection</source>
     <message>
       <location filename="../../TaskFeaturePick.cpp" line="62"/>
       <source>Invalid shape</source>
-      <translation>Недапушчальная фігура</translation>
+      <translation>Хібная фігура</translation>
     </message>
     <message>
       <location filename="../../TaskFeaturePick.cpp" line="63"/>
@@ -1850,7 +1846,7 @@ click again to end selection</source>
     <message>
       <location filename="../../TaskFeaturePick.cpp" line="68"/>
       <source>Base plane</source>
-      <translation>Базавая плоскасць</translation>
+      <translation>Асноўная плоскасць</translation>
     </message>
     <message>
       <location filename="../../TaskFeaturePick.cpp" line="69"/>
@@ -1951,19 +1947,19 @@ click again to end selection</source>
       <location filename="../../TaskHelixParameters.ui" line="48"/>
       <location filename="../../TaskHelixParameters.cpp" line="232"/>
       <source>Base X axis</source>
-      <translation>Базавая вось X</translation>
+      <translation>Асноўная вось X</translation>
     </message>
     <message>
       <location filename="../../TaskHelixParameters.ui" line="53"/>
       <location filename="../../TaskHelixParameters.cpp" line="233"/>
       <source>Base Y axis</source>
-      <translation>Базавая вось Y</translation>
+      <translation>Асноўная вось Y</translation>
     </message>
     <message>
       <location filename="../../TaskHelixParameters.ui" line="58"/>
       <location filename="../../TaskHelixParameters.cpp" line="234"/>
       <source>Base Z axis</source>
-      <translation>Базавая вось Z</translation>
+      <translation>Асноўная вось Z</translation>
     </message>
     <message>
       <location filename="../../TaskHelixParameters.ui" line="63"/>
@@ -2100,7 +2096,7 @@ click again to end selection</source>
     <message>
       <location filename="../../TaskHoleParameters.cpp" line="63"/>
       <source>None</source>
-      <translation type="unfinished">None</translation>
+      <translation>Нічога</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.cpp" line="64"/>
@@ -2206,7 +2202,7 @@ click again to end selection</source>
     <message>
       <location filename="../../TaskLoftParameters.ui" line="27"/>
       <source>Closed</source>
-      <translation>Зачынены</translation>
+      <translation>Замкнуты</translation>
     </message>
     <message>
       <location filename="../../TaskLoftParameters.ui" line="34"/>
@@ -2485,7 +2481,7 @@ from the model as reference</source>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="117"/>
       <source>Show direction</source>
-      <translation>Адлюстраваць напрамак</translation>
+      <translation>Паказаць напрамак</translation>
     </message>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="127"/>
@@ -2929,19 +2925,19 @@ measured along the specified direction</source>
       <location filename="../../TaskRevolutionParameters.ui" line="30"/>
       <location filename="../../TaskRevolutionParameters.cpp" line="137"/>
       <source>Base X axis</source>
-      <translation>Базавая вось X</translation>
+      <translation>Асноўная вось X</translation>
     </message>
     <message>
       <location filename="../../TaskRevolutionParameters.ui" line="35"/>
       <location filename="../../TaskRevolutionParameters.cpp" line="138"/>
       <source>Base Y axis</source>
-      <translation>Базавая вось Y</translation>
+      <translation>Асноўная вось Y</translation>
     </message>
     <message>
       <location filename="../../TaskRevolutionParameters.ui" line="40"/>
       <location filename="../../TaskRevolutionParameters.cpp" line="139"/>
       <source>Base Z axis</source>
-      <translation>Базавая вось Z</translation>
+      <translation>Асноўная вось Z</translation>
     </message>
     <message>
       <location filename="../../TaskRevolutionParameters.ui" line="45"/>
@@ -3201,17 +3197,17 @@ click again to end selection</source>
     <message>
       <location filename="../../TaskTransformedParameters.cpp" line="268"/>
       <source>Base X axis</source>
-      <translation>Базавая вось X</translation>
+      <translation>Асноўная вось X</translation>
     </message>
     <message>
       <location filename="../../TaskTransformedParameters.cpp" line="269"/>
       <source>Base Y axis</source>
-      <translation>Базавая вось Y</translation>
+      <translation>Асноўная вось Y</translation>
     </message>
     <message>
       <location filename="../../TaskTransformedParameters.cpp" line="270"/>
       <source>Base Z axis</source>
-      <translation>Базавая вось Z</translation>
+      <translation>Асноўная вось Z</translation>
     </message>
     <message>
       <location filename="../../TaskTransformedParameters.cpp" line="277"/>
@@ -3222,17 +3218,17 @@ click again to end selection</source>
     <message>
       <location filename="../../TaskTransformedParameters.cpp" line="304"/>
       <source>Base XY plane</source>
-      <translation>Базавая плоскасць XY</translation>
+      <translation>Асноўная плоскасць XY</translation>
     </message>
     <message>
       <location filename="../../TaskTransformedParameters.cpp" line="305"/>
       <source>Base YZ plane</source>
-      <translation>Базавая плоскасць YZ</translation>
+      <translation>Асноўная плоскасць YZ</translation>
     </message>
     <message>
       <location filename="../../TaskTransformedParameters.cpp" line="306"/>
       <source>Base XZ plane</source>
-      <translation>Базавая плоскасць XZ</translation>
+      <translation>Асноўная плоскасць XZ</translation>
     </message>
   </context>
   <context>
@@ -3470,7 +3466,7 @@ click again to end selection</source>
     <message>
       <location filename="../../Command.cpp" line="139"/>
       <source>Invalid selection</source>
-      <translation>Недапушчальны выбар</translation>
+      <translation>Хібны выбар</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="139"/>
@@ -3578,7 +3574,7 @@ click again to end selection</source>
     <message>
       <location filename="../../Command.cpp" line="798"/>
       <source>Consider using a ShapeBinder or a BaseFeature to reference external geometry in a body.</source>
-      <translation>Разглядзіце магчымасць ужыць ЗлучокФормы ці БазавыЭлемент для спасылкі на вонкавую геаметрыю ў целе.</translation>
+      <translation>Разглядзіце магчымасць ужыць ЗлучокФормы ці АсноўныЭлемент для спасылкі на вонкавую геаметрыю ў целе.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="820"/>
@@ -3670,7 +3666,7 @@ click again to end selection</source>
       <location filename="../../CommandBody.cpp" line="133"/>
       <location filename="../../CommandBody.cpp" line="182"/>
       <source>Bad base feature</source>
-      <translation>Дрэнны базавы элемент</translation>
+      <translation>Дрэнны асноўны элемент</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="116"/>
@@ -3680,12 +3676,12 @@ click again to end selection</source>
     <message>
       <location filename="../../CommandBody.cpp" line="121"/>
       <source>%1 already belongs to a body, can't use it as base feature for another body.</source>
-      <translation>%1 ужо належыць да цела, не можа ўжывацца ў якасці базавага элемент для іншага цела.</translation>
+      <translation>%1 ужо належыць да цела, не можа ўжывацца як асноўны элемент для іншага цела.</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="134"/>
       <source>Base feature (%1) belongs to other part.</source>
-      <translation>Базавы элемент (%1) належыць да іншай дэталі.</translation>
+      <translation>Асноўны элемент (%1) належыць да іншай дэталі.</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="158"/>
@@ -3718,7 +3714,7 @@ This may lead to unexpected results.</source>
     <message>
       <location filename="../../CommandBody.cpp" line="175"/>
       <source>Base feature</source>
-      <translation>Базавы элемент</translation>
+      <translation>Асноўны элемент</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="183"/>
@@ -3743,7 +3739,7 @@ This may lead to unexpected results.</source>
     <message>
       <location filename="../../CommandBody.cpp" line="489"/>
       <source>Please edit '%1' and redefine it to use a Base or Datum plane as the sketch plane.</source>
-      <translation>Калі ласка, змяніце '%1' і перавызначыце яго, каб ужыць базавую ці апорную плоскасць у якасці плоскасці эскізу.</translation>
+      <translation>Калі ласка, змяніце '%1' і перавызначыце яго, каб ужыць асноўную ці апорную плоскасць у якасці плоскасці эскізу.</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="551"/>
@@ -3794,7 +3790,7 @@ This may lead to unexpected results.</source>
     <message>
       <location filename="../../CommandBody.cpp" line="854"/>
       <source>Impossible to move the base feature of a body.</source>
-      <translation>Немагчыма рухаць базавы элемент цела.</translation>
+      <translation>Немагчыма рухаць асноўны элемент цела.</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="861"/>
@@ -3828,7 +3824,7 @@ This may lead to unexpected results.</source>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="270"/>
       <source>It is not possible to create a subtractive feature without a base feature available</source>
-      <translation>Немагчыма стварыць элемент адымання без даступнага базавага элемента</translation>
+      <translation>Немагчыма стварыць элемент адымання без даступнага асноўнага элементу</translation>
     </message>
     <message>
       <location filename="../../TaskTransformedParameters.cpp" line="287"/>
@@ -3908,7 +3904,7 @@ If you have a legacy document with PartDesign objects without Body, use the migr
     <message>
       <location filename="../../ViewProviderBoolean.cpp" line="64"/>
       <source>Edit boolean</source>
-      <translation>Змяніць лагічнае значэнне</translation>
+      <translation>Змяніць лагічную аперацыю</translation>
     </message>
     <message>
       <location filename="../../ViewProviderDatum.cpp" line="110"/>
@@ -3947,7 +3943,7 @@ If you have a legacy document with PartDesign objects without Body, use the migr
       <location filename="../../ViewProviderDressUp.cpp" line="72"/>
       <source>%1 misses a base feature.
 This feature is broken and can't be edited.</source>
-      <translation>%1 не мае базавага элементу.
+      <translation>%1 не мае асноўнага элементу.
 Гэты элемент не працуе, і не можа быць зменены.</translation>
     </message>
     <message>
@@ -4496,7 +4492,7 @@ Only available for holes without thread</source>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="275"/>
       <source>Class</source>
-      <translation>Поле допуску</translation>
+      <translation>Поле дакладнасці</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="288"/>
@@ -4643,7 +4639,7 @@ over 90: larger hole radius at the bottom</source>
     <message>
       <location filename="../../TaskHoleParameters.cpp" line="631"/>
       <source>Loose</source>
-      <translation>Свабодны (найбольшы допуск)</translation>
+      <translation>Свабодны (найбольшая дакладнасць)</translation>
     </message>
   </context>
   <context>
@@ -4724,7 +4720,7 @@ over 90: larger hole radius at the bottom</source>
     <message>
       <location filename="../../Workbench.cpp" line="60"/>
       <source>Toggle 3D</source>
-      <translation>Пераключыць трохмерны выгляд</translation>
+      <translation>Пераключыць трохмернае прадстаўленне</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="61"/>

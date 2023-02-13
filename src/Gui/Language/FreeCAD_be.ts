@@ -71,7 +71,7 @@
     <message>
       <location filename="../propertyeditor/PropertyModel.cpp" line="250"/>
       <source>Base</source>
-      <translation>База</translation>
+      <translation>Асноўныя</translation>
     </message>
   </context>
   <context>
@@ -99,7 +99,7 @@
       <location filename="../CommandView.cpp" line="3295"/>
       <location filename="../CommandView.cpp" line="3296"/>
       <source>Toggle measurement</source>
-      <translation>Пераключыць замер</translation>
+      <translation>Пераключыць вымярэнне</translation>
     </message>
   </context>
   <context>
@@ -112,7 +112,7 @@
     <message>
       <location filename="../Application.cpp" line="618"/>
       <source>Import</source>
-      <translation type="unfinished">Import</translation>
+      <translation>Імпарт</translation>
     </message>
     <message>
       <location filename="../CommandDoc.cpp" line="1289"/>
@@ -758,37 +758,37 @@ while doing a left or right click and move the mouse up or down</source>
   <context>
     <name>Gui::Dialog::CameraDialog</name>
     <message>
-      <location filename="../DlgSettingsNavigation.cpp" line="277"/>
+      <location filename="../DlgSettingsNavigation.cpp" line="285"/>
       <source>Camera settings</source>
       <translation>Налады камеры</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsNavigation.cpp" line="284"/>
+      <location filename="../DlgSettingsNavigation.cpp" line="292"/>
       <source>Orientation</source>
       <translation>Арыентацыя</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsNavigation.cpp" line="298"/>
+      <location filename="../DlgSettingsNavigation.cpp" line="306"/>
       <source>Q0</source>
       <translation>Q0</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsNavigation.cpp" line="308"/>
+      <location filename="../DlgSettingsNavigation.cpp" line="316"/>
       <source>Q1</source>
       <translation>Q1</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsNavigation.cpp" line="318"/>
+      <location filename="../DlgSettingsNavigation.cpp" line="326"/>
       <source>Q2</source>
       <translation>Q2</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsNavigation.cpp" line="328"/>
+      <location filename="../DlgSettingsNavigation.cpp" line="336"/>
       <source>Q3</source>
       <translation>Q3</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsNavigation.cpp" line="337"/>
+      <location filename="../DlgSettingsNavigation.cpp" line="345"/>
       <source>Current view</source>
       <translation>Бягучы выгляд</translation>
     </message>
@@ -928,7 +928,7 @@ while doing a left or right click and move the mouse up or down</source>
     <message>
       <location filename="../DlgActivateWindowImp.cpp" line="52"/>
       <source>&amp;Activate</source>
-      <translation>&amp;Актываваць</translation>
+      <translation>&amp;Задзейнічаць</translation>
     </message>
     <message>
       <source/>
@@ -1279,7 +1279,7 @@ be treated as shorctcut key sequence 'F, F'.</source>
       <source>This list shows commands having the same shortcut in the priority from high
 to low. If more than one command with the same shortcut are active at the
 same time. The one with the highest priority will be triggered.</source>
-      <translation>У гэтым спісе адлюстраваны каманды з аднолькавым спалучэннем клавішаў у парадку прыярытэту ад высокага да нізкага. Калі адначасова актыўныя больш адной каманды з адным і тым жа спалучэннем клавішаў. Будзе запушчаны той, у якога самы высокі прыярытэт.</translation>
+      <translation>У гэтым спісе паказаны каманды з аднолькавым спалучэннем клавішаў у парадку прыярытэту ад высокага да нізкага. Калі адначасова актыўныя больш адной каманды з адным і тым жа спалучэннем клавішаў. Будзе запушчаны той, у якога самы высокі прыярытэт.</translation>
     </message>
     <message>
       <location filename="../DlgKeyboard.ui" line="188"/>
@@ -2109,16 +2109,15 @@ this according to your screen size or personal taste</source>
       <location filename="../DlgGeneral.ui" line="599"/>
       <source>Choose which workbench will be activated and shown
 after FreeCAD launches</source>
-      <translation>Абраць, які варштат будзе актываваны і адлюстраваны пасля запуску FreeCAD</translation>
+      <translation>Абраць, які варштат будзе задзейнічаны і паказаны пасля запуску FreeCAD</translation>
     </message>
     <message>
       <location filename="../DlgGeneral.ui" line="609"/>
       <source>A Splash screen is a small loading window that is shown
 when FreeCAD is launching. If this option is checked, FreeCAD will
 display the splash screen</source>
-      <translation>Экран застаўкі - гэта невялікае акно загрузкі, якое адлюстроўваецца
-пры запуску FreeCAD. Калі гэты параметр уключаны, FreeCAD будзе
-адлюстроўваць застаўку</translation>
+      <translation>Экран застаўкі - гэта невялікае акно загрузкі, якое паказваецца пры запуску FreeCAD.
+Калі гэты параметр уключаны, FreeCAD будзе адлюстроўваць застаўку</translation>
     </message>
     <message>
       <location filename="../DlgGeneral.ui" line="614"/>
@@ -2791,12 +2790,12 @@ Specify another directory, please.</source>
     <message>
       <location filename="../DlgParameterImp.cpp" line="438"/>
       <source>Invalid input</source>
-      <translation>Недапушчальны ўвод</translation>
+      <translation>Хібны ўвод</translation>
     </message>
     <message>
       <location filename="../DlgParameterImp.cpp" line="439"/>
       <source>Invalid key name '%1'</source>
-      <translation>Недапушчальнае імя ключа '%1'</translation>
+      <translation>Хібнае імя ключа '%1'</translation>
     </message>
   </context>
   <context>
@@ -2950,7 +2949,7 @@ Specify another directory, please.</source>
     <message>
       <location filename="../DlgProjectInformation.ui" line="276"/>
       <source>License URL</source>
-      <translation>Спасылак ліцэнзіі</translation>
+      <translation>URL-адрас ліцэнзіі</translation>
     </message>
     <message>
       <location filename="../DlgProjectInformation.ui" line="291"/>
@@ -3056,7 +3055,7 @@ Specify another directory, please.</source>
     <message>
       <location filename="../DlgPropertyLink.ui" line="53"/>
       <source>If enabled, then 3D view selection will be synchronized with full object hierarchy.</source>
-      <translation>Калі ўключана, то трохмерны выгляд будзе сінхранізаваны з поўнай іерархіяй аб'ектаў.</translation>
+      <translation>Калі ўключана, то трохмернае прадстаўленне будзе сінхранізавана з поўнай іерархіяй аб'ектаў.</translation>
     </message>
     <message>
       <location filename="../DlgPropertyLink.ui" line="56"/>
@@ -3146,7 +3145,7 @@ on-screen while displaying the error</source>
     <message>
       <location filename="../DlgReportView.ui" line="115"/>
       <source>Show report view on error</source>
-      <translation>Адлюстраваць прагляд справаздачы пры памылцы</translation>
+      <translation>Паказаць прагляд справаздачы пры памылцы</translation>
     </message>
     <message>
       <location filename="../DlgReportView.ui" line="131"/>
@@ -3158,31 +3157,29 @@ on-screen while displaying the warning</source>
     <message>
       <location filename="../DlgReportView.ui" line="135"/>
       <source>Show report view on warning</source>
-      <translation>Адлюстраваць прагляд справаздачы пры папярэджанні</translation>
+      <translation>Паказаць прагляд справаздачы пры папярэджанні</translation>
     </message>
     <message>
       <location filename="../DlgReportView.ui" line="148"/>
       <source>When a normal message has occurred, the Report View dialog becomes visible
 on-screen while displaying the message</source>
-      <translation>Калі адбылося звычайнае паведамленне, дыялогавае акно Прагляду справаздачы становіцца бачным
-на экране, каб адлюстраваць звычайнае паведамленне</translation>
+      <translation>Калі адбылося звычайнае паведамленне, дыялогавае акно Прагляду справаздачы становіцца бачным на экране, каб адлюстраваць звычайнае паведамленне</translation>
     </message>
     <message>
       <location filename="../DlgReportView.ui" line="152"/>
       <source>Show report view on normal message</source>
-      <translation>Адлюстраваць прагляд справаздачы пры звычайным паведамленні</translation>
+      <translation>Паказаць прагляд справаздачы пры звычайным паведамленні</translation>
     </message>
     <message>
       <location filename="../DlgReportView.ui" line="168"/>
       <source>When a log message has occurred, the Report View dialog becomes visible
 on-screen while displaying the log message</source>
-      <translation>Калі адбылося паведамленне справаздачы, дыялогавае акно Прагляду справаздачы становіцца бачным
-на экране, каб адлюстраваць паведамленне справаздачы</translation>
+      <translation>Калі адбылося паведамленне справаздачы, дыялогавае акно Прагляду справаздачы становіцца бачным на экране, каб адлюстраваць паведамленне справаздачы</translation>
     </message>
     <message>
       <location filename="../DlgReportView.ui" line="172"/>
       <source>Show report view on log message</source>
-      <translation>Адлюстраваць прагляд справаздачы пры паведамленні справаздачы</translation>
+      <translation>Паказаць прагляд справаздачы пры паведамленні справаздачы</translation>
     </message>
     <message>
       <location filename="../DlgReportView.ui" line="188"/>
@@ -3347,7 +3344,7 @@ from Python console to Report view panel</source>
     <message>
       <location filename="../DlgSettings3DView.ui" line="14"/>
       <source>3D View</source>
-      <translation>Трохмерны выгляд</translation>
+      <translation>Трохмернае прадстаўленне</translation>
     </message>
     <message>
       <location filename="../DlgSettings3DView.ui" line="23"/>
@@ -3358,54 +3355,50 @@ from Python console to Report view panel</source>
       <location filename="../DlgSettings3DView.ui" line="31"/>
       <source>Main coordinate system will always be shown in
 lower right corner within opened files</source>
-      <translation>Асноўная сістэма каардынат заўсёды будзе адлюстроўвацца ў
-правым ніжнім куце ў адчыненых файлах</translation>
+      <translation>Асноўная сістэма каардынат заўсёды будзе паказвацца ў правым ніжнім куце ў адчыненых файлах</translation>
     </message>
     <message>
       <location filename="../DlgSettings3DView.ui" line="35"/>
       <source>Show coordinate system in the corner</source>
-      <translation>Адлюстраваць сістэму каардынат у куце</translation>
+      <translation>Паказаць сістэму каардынат у куце</translation>
     </message>
     <message>
       <location filename="../DlgSettings3DView.ui" line="63"/>
       <source>Relative size :   </source>
-      <translation>Адносны памер :   </translation>
+      <translation>Адносны памер:   </translation>
     </message>
     <message>
       <location filename="../DlgSettings3DView.ui" line="73"/>
       <source>Size of main coordinate system representation
 in the corner -- in % of height/width of viewport</source>
-      <translation>Памер прадстаўлення асноўнай сістэмы каардынат
-у куце -- у % ад вышыні/шырыні вобласці прагляду</translation>
+      <translation>Памер прадстаўлення асноўнай сістэмы каардынат у куце - у % ад вышыні/шырыні вобласці прагляду</translation>
     </message>
     <message>
       <location filename="../DlgSettings3DView.ui" line="101"/>
       <source>Axis cross will be shown by default at file
 opening or creation</source>
-      <translation>Скрыжаванне восей будзе адлюстроўвацца першапачаткова пры
-адкрыцці ці стварэнні файла</translation>
+      <translation>Скрыжаванне восей будзе паказвацца першапачаткова пры адкрыцці ці стварэнні файла</translation>
     </message>
     <message>
       <location filename="../DlgSettings3DView.ui" line="105"/>
       <source>Show axis cross by default</source>
-      <translation>Першапачаткова адлюстроўваць скрыжаванне восей</translation>
+      <translation>Першапачаткова паказаць скрыжаванне восей</translation>
     </message>
     <message>
       <location filename="../DlgSettings3DView.ui" line="118"/>
       <source>Time needed for last operation and resulting frame rate
 will be shown at the lower left corner in opened files</source>
-      <translation>Час, які неабходны для апошняй аперацыі, і выніковая частата кадраў
-будуць паказаныя ў левым ніжнім куце адчыненых файлаў</translation>
+      <translation>Час, які неабходны для апошняй аперацыі, і выніковая частата кадраў будуць паказаныя ў левым ніжнім куце адчыненых файлаў</translation>
     </message>
     <message>
       <location filename="../DlgSettings3DView.ui" line="122"/>
       <source>Show counter of frames per second</source>
-      <translation>Адлюстраваць лічыльнік кадраў у секунду</translation>
+      <translation>Паказаць лічыльнік кадраў у секунду</translation>
     </message>
     <message>
       <location filename="../DlgSettings3DView.ui" line="135"/>
       <source>If checked, application will remember which workbench is active for each tab of the viewport</source>
-      <translation>Калі птушка, праграма запомніць, які бягучы варштат для кожнай укладкі вобласці прагляду</translation>
+      <translation>Калі птушка, праграма запомніць, які варштат бягучы для кожнай укладкі вобласці прагляду</translation>
     </message>
     <message>
       <location filename="../DlgSettings3DView.ui" line="138"/>
@@ -3454,14 +3447,10 @@ Note: Sometimes this feature may lead to a host of different
 issues ranging from graphical anomalies to GPU crash bugs. Remember to
 report this setting as enabled when seeking support on the FreeCAD forums</source>
       <translation>Калі птушка, будуць ужывацца аб'екты буфера вяршыняў (VBO).
-VBO - гэта функцыя OpenGL, якая забяспечвае метады загрузкі
-дадзеных вяршыняў (становішча, вектар нармалі, колер і г. д.) на графічную карту.
-VBO забяспечваюць значны прырост прадукцыйнасці, паколькі дадзеныя захоўваюцца
-у графічнай памяці, а не ў сістэмнай, і таму яны
-могуць быць візуалізаваныя непасрэдна графічным працэсарам.
+VBO - гэта функцыя OpenGL, якая забяспечвае метады загрузкі дадзеных вяршыняў (становішча, вектар нармалі, колер і г. д.) на графічную карту.
+VBO забяспечваюць значны прырост прадукцыйнасці, паколькі дадзеныя захоўваюцца ў графічнай памяці, а не ў сістэмнай, і таму яны могуць быць візуалізаваныя непасрэдна графічным працэсарам.
 
-Заўвага: часам гэтая функцыя можа прывесці да мноства розных
-праблем, пачынаючы ад графічных анамалій і заканчваючы збоямі графічнага працэсара.
+Заўвага: часам гэтая функцыя можа прывесці да мноства розных праблем, пачынаючы ад графічных анамалій і заканчваючы збоямі графічнага працэсара.
 Не забудзьцеся паведаміць аб гэтай уключанай наладзе пры звароце па падтрымку на форумах FreeCAD</translation>
     </message>
     <message>
@@ -3507,7 +3496,7 @@ but slower response to any scene changes.</source>
     <message>
       <location filename="../DlgSettings3DView.ui" line="278"/>
       <source>None</source>
-      <translation type="unfinished">None</translation>
+      <translation>Нічога</translation>
     </message>
     <message>
       <location filename="../DlgSettings3DView.ui" line="283"/>
@@ -3569,7 +3558,7 @@ but slower response to any scene changes.</source>
       <source>Area for picking elements in 3D view.
 Larger value eases to pick things, but can make small features impossible to select.
                </source>
-      <translation>Вобласць для выбару элементаў у трохмерным выглядзе.
+      <translation>Вобласць для выбару элементаў у трохмерным прадстаўленні.
 Большае значэнне палягчае выбар аб'ектаў, але можа зрабіць немагчымым выбар невялікіх аб'ектаў.
                </translation>
     </message>
@@ -3584,8 +3573,7 @@ Larger value eases to pick things, but can make small features impossible to sel
 The specified value is a factor that will be multiplied with the
 bounding box size of the 3D object that is currently displayed.</source>
       <translation>Адлегласць паміж вачамі, якая ўжываецца для стэрэа праекцыі.
-Азначанае значэнне з'яўляецца каэфіцыентам, якое будзе памнажацца на памер
-абмежавальнага прастакутніка трохмернага аб'екта, які ў бягучы час адлюстроўваецца.</translation>
+Азначанае значэнне з'яўляецца каэфіцыентам, якое будзе памнажацца на памер габарытаў трохмернага аб'екта, які ў бягучы час адлюстроўваецца.</translation>
     </message>
     <message>
       <location filename="../DlgSettings3DView.ui" line="454"/>
@@ -3840,8 +3828,7 @@ bounding box size of the 3D object that is currently displayed.</source>
       <location filename="../DlgSettingsColorGradient.ui" line="159"/>
       <source>Data outside the specified min-max range
 will be displayed in gray</source>
-      <translation>Дадзеныя за межамі паказанага найменшага-найбольшага дыяпазону
-будуць адлюстраваныя шэрым колерам</translation>
+      <translation>Дадзеныя за межамі паказанага найменшага-найбольшага дыяпазону будуць адлюстраваныя шэрым колерам</translation>
     </message>
     <message>
       <location filename="../DlgSettingsColorGradient.ui" line="163"/>
@@ -3857,8 +3844,7 @@ will be displayed in gray</source>
       <location filename="../DlgSettingsColorGradient.ui" line="173"/>
       <source>Data outside the specified min-max range
 will be displayed with transparency</source>
-      <translation>Дадзеныя за межамі паказанага найменшага-найбольшага дыяпазону
-будуць адлюстраваныя з празрыстасцю</translation>
+      <translation>Дадзеныя за межамі паказанага найменшага-найбольшага дыяпазону будуць адлюстраваныя з празрыстасцю</translation>
     </message>
     <message>
       <location filename="../DlgSettingsColorGradient.ui" line="177"/>
@@ -4168,80 +4154,95 @@ You can also use the form: John Doe &lt;john@doe.com&gt;</source>
       <translation>Першапачатковая ліцэнзія для новых дакументаў</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsDocument.ui" line="685"/>
+      <location filename="../DlgProjectInformationImp.cpp" line="39"/>
       <source>All rights reserved</source>
       <translation>Усе правы абаронены</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsDocument.ui" line="690"/>
+      <location filename="../DlgProjectInformationImp.cpp" line="40"/>
       <source>Creative Commons Attribution</source>
       <translation>Creative Commons з пазначэннем аўтарства (CC BY)</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsDocument.ui" line="695"/>
+      <location filename="../DlgProjectInformationImp.cpp" line="41"/>
       <source>Creative Commons Attribution-ShareAlike</source>
       <translation>Creative Commons з пазначэннем аўтарства - з захаваннем умоў (CC BY-SA)</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsDocument.ui" line="700"/>
+      <location filename="../DlgProjectInformationImp.cpp" line="42"/>
       <source>Creative Commons Attribution-NoDerivatives</source>
       <translation>Creative Commons з пазначэннем аўтарства - без вытворных (CC BY-ND)</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsDocument.ui" line="705"/>
+      <location filename="../DlgProjectInformationImp.cpp" line="43"/>
       <source>Creative Commons Attribution-NonCommercial</source>
       <translation>Creative Commons з пазначэннем аўтарства - некамерцыйная (CC BY-NC)</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsDocument.ui" line="710"/>
+      <location filename="../DlgProjectInformationImp.cpp" line="44"/>
       <source>Creative Commons Attribution-NonCommercial-ShareAlike</source>
       <translation>Creative Commons з пазначэннем аўтарства - некамерцыйная - з захаваннем умоў (CC BY-NC-SA)</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsDocument.ui" line="715"/>
+      <location filename="../DlgProjectInformationImp.cpp" line="45"/>
       <source>Creative Commons Attribution-NonCommercial-NoDerivatives</source>
       <translation>Creative Commons з пазначэннем аўтарства - некамерцыйная - без вытворных (CC BY-NC-ND)</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsDocument.ui" line="720"/>
+      <location filename="../DlgProjectInformationImp.cpp" line="46"/>
       <source>Public Domain</source>
       <translation>Грамадскі набытак</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsDocument.ui" line="725"/>
+      <location filename="../DlgProjectInformationImp.cpp" line="47"/>
       <source>FreeArt</source>
       <translation>Бясплатная графіка</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsDocument.ui" line="730"/>
+      <location filename="../DlgProjectInformationImp.cpp" line="48"/>
+      <source>CERN Open Hardware Licence strongly-reciprocal</source>
+      <translation type="unfinished">CERN Open Hardware Licence strongly-reciprocal</translation>
+    </message>
+    <message>
+      <location filename="../DlgProjectInformationImp.cpp" line="49"/>
+      <source>CERN Open Hardware Licence weakly-reciprocal</source>
+      <translation type="unfinished">CERN Open Hardware Licence weakly-reciprocal</translation>
+    </message>
+    <message>
+      <location filename="../DlgProjectInformationImp.cpp" line="50"/>
+      <source>CERN Open Hardware Licence permissive</source>
+      <translation type="unfinished">CERN Open Hardware Licence permissive</translation>
+    </message>
+    <message>
+      <location filename="../DlgProjectInformationImp.cpp" line="51"/>
       <source>Other</source>
       <translation>Іншы</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsDocument.ui" line="738"/>
+      <location filename="../DlgSettingsDocument.ui" line="688"/>
       <source>License URL</source>
-      <translation>Спасылак ліцэнзіі</translation>
+      <translation>URL-адрас ліцэнзіі</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsDocument.ui" line="745"/>
+      <location filename="../DlgSettingsDocument.ui" line="695"/>
       <source>URL describing more about the license</source>
-      <translation>Спасылак, які апісвае дадатковую інфармацыю аб ліцэнзіі</translation>
+      <translation>URL-адрас, які апісвае дадатковую інфармацыю аб ліцэнзіі</translation>
     </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgSettingsDocumentImp</name>
     <message>
-      <location filename="../DlgSettingsDocumentImp.cpp" line="51"/>
+      <location filename="../DlgSettingsDocumentImp.cpp" line="54"/>
       <source>The format of the date to use.</source>
       <translation>Фармат даты, які ўжываецца.</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsDocumentImp.cpp" line="51"/>
+      <location filename="../DlgSettingsDocumentImp.cpp" line="54"/>
       <source>Default</source>
       <translation>Першапачаткова</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsDocumentImp.cpp" line="51"/>
+      <location filename="../DlgSettingsDocumentImp.cpp" line="54"/>
       <source>Format</source>
       <translation>Фармат</translation>
     </message>
@@ -4642,12 +4643,12 @@ You can also use the form: John Doe &lt;john@doe.com&gt;</source>
     <message>
       <location filename="../DlgSettingsMacro.ui" line="192"/>
       <source>Commands executed by macro scripts are shown in Python console</source>
-      <translation>Каманды, якія выконваюцца сцэнарам макраса, адлюстроўваюцца ў кансолі Python</translation>
+      <translation>Каманды, якія выконваюцца сцэнарам макраса, паказваюцца ў кансолі Python</translation>
     </message>
     <message>
       <location filename="../DlgSettingsMacro.ui" line="195"/>
       <source>Show script commands in python console</source>
-      <translation>Адлюстроўваць каманды сцэнара ў кансолі Python</translation>
+      <translation>Паказаць каманды сцэнара ў кансолі Python</translation>
     </message>
     <message>
       <location filename="../DlgSettingsMacro.ui" line="211"/>
@@ -4725,7 +4726,6 @@ You can also use the form: John Doe &lt;john@doe.com&gt;</source>
     </message>
     <message>
       <location filename="../DlgSettingsNavigation.ui" line="87"/>
-      <location filename="../DlgSettingsNavigation.ui" line="149"/>
       <source>Corner where navigation cube is shown</source>
       <translation>Кут, у якім паказаны куб навігацыі</translation>
     </message>
@@ -4765,6 +4765,11 @@ You can also use the form: John Doe &lt;john@doe.com&gt;</source>
       <translation>Назва шрыфту:</translation>
     </message>
     <message>
+      <location filename="../DlgSettingsNavigation.ui" line="149"/>
+      <source>Font name of the navigation cube</source>
+      <translation type="unfinished">Font name of the navigation cube</translation>
+    </message>
+    <message>
       <location filename="../DlgSettingsNavigation.ui" line="165"/>
       <source>Cube size</source>
       <translation>Памер куба</translation>
@@ -4781,8 +4786,8 @@ You can also use the form: John Doe &lt;john@doe.com&gt;</source>
     </message>
     <message>
       <location filename="../DlgSettingsNavigation.ui" line="213"/>
-      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Font size for the NaviCube text&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Памер шрыфту для тэксту куба навігацыі.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <source>Font size of the navigation cube</source>
+      <translation type="unfinished">Font size of the navigation cube</translation>
     </message>
     <message>
       <location filename="../DlgSettingsNavigation.ui" line="250"/>
@@ -4845,7 +4850,7 @@ Free Turntable: the part will be rotated around the z-axis.</source>
     <message>
       <location filename="../DlgSettingsNavigation.ui" line="388"/>
       <source>Rotations in 3D will use current cursor position as center for rotation</source>
-      <translation>Вярчэнне ў 3D будзе ўжываць бягучае становішча курсора ў якасці цэнтру для вярчэння</translation>
+      <translation>Вярчэнне ў трохмерным прадстаўленні будзе ўжываць бягучае становішча курсора ў якасці цэнтру для вярчэння</translation>
     </message>
     <message>
       <location filename="../DlgSettingsNavigation.ui" line="395"/>
@@ -4946,52 +4951,52 @@ Mouse tilting is not disabled by this setting.</source>
       <translation>Адключыць жэст нахілу для сэнсарнага экрану</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsNavigation.cpp" line="155"/>
+      <location filename="../DlgSettingsNavigation.cpp" line="161"/>
       <source>Isometric</source>
       <translation>Ізаметрычны</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsNavigation.cpp" line="156"/>
+      <location filename="../DlgSettingsNavigation.cpp" line="162"/>
       <source>Dimetric</source>
       <translation>Дзіметрычны</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsNavigation.cpp" line="157"/>
+      <location filename="../DlgSettingsNavigation.cpp" line="163"/>
       <source>Trimetric</source>
       <translation>Трыметрычны</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsNavigation.cpp" line="158"/>
+      <location filename="../DlgSettingsNavigation.cpp" line="164"/>
       <source>Top</source>
       <translation>Зверху</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsNavigation.cpp" line="159"/>
+      <location filename="../DlgSettingsNavigation.cpp" line="165"/>
       <source>Front</source>
       <translation>Спераду</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsNavigation.cpp" line="160"/>
+      <location filename="../DlgSettingsNavigation.cpp" line="166"/>
       <source>Left</source>
       <translation>Злева</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsNavigation.cpp" line="161"/>
+      <location filename="../DlgSettingsNavigation.cpp" line="167"/>
       <source>Right</source>
       <translation>Справа</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsNavigation.cpp" line="162"/>
+      <location filename="../DlgSettingsNavigation.cpp" line="168"/>
       <source>Rear</source>
       <translation>Ззаду</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsNavigation.cpp" line="163"/>
+      <location filename="../DlgSettingsNavigation.cpp" line="169"/>
       <source>Bottom</source>
       <translation>Знізу</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsNavigation.cpp" line="164"/>
+      <location filename="../DlgSettingsNavigation.cpp" line="170"/>
       <source>Custom</source>
       <translation type="unfinished">Custom</translation>
     </message>
@@ -5051,17 +5056,17 @@ horizontal space in Python console</source>
     <message>
       <location filename="../DlgSettingsSelection.ui" line="20"/>
       <source>Auto switch to the 3D view containing the selected item</source>
-      <translation>Аўтаматычнае пераключэнне на трохмерны выгляд, які змяшчае абраны элемент</translation>
+      <translation>Аўтаматычнае пераключэнне на трохмернае прадстаўленне, якое змяшчае абраны элемент</translation>
     </message>
     <message>
       <location filename="../DlgSettingsSelection.ui" line="27"/>
       <source>Auto expand tree item when the corresponding object is selected in 3D view</source>
-      <translation>Аўтаматычнае разгортванне элемента дрэва, калі абраны адпаведны аб'ект у трохмерным выглядзе</translation>
+      <translation>Аўтаматычнае разгортванне элемента дрэва, калі абраны адпаведны аб'ект у трохмерным прадстаўленні</translation>
     </message>
     <message>
       <location filename="../DlgSettingsSelection.ui" line="34"/>
       <source>Preselect the object in 3D view when mouse over the tree item</source>
-      <translation>Папярэдне абраць аб'ект у трохмерным выглядзе, калі паказальнік мышы наведзены на элемент дрэва</translation>
+      <translation>Папярэдне абраць аб'ект у трохмерным прадстаўленні, калі паказальнік мышы наведзены на элемент дрэва</translation>
     </message>
     <message>
       <location filename="../DlgSettingsSelection.ui" line="41"/>
@@ -5104,7 +5109,7 @@ horizontal space in Python console</source>
     <message>
       <location filename="../DlgSettingsUnits.ui" line="53"/>
       <source>Number of decimals that should be shown for numbers and dimensions</source>
-      <translation>Колькасць дзесятковых знакаў, якая павінна быць адлюстравана для лікаў і вымярэнняў</translation>
+      <translation>Колькасць дзесятковых знакаў, якая павінна быць паказаныя для лікаў і вымярэнняў</translation>
     </message>
     <message>
       <location filename="../DlgSettingsUnits.ui" line="70"/>
@@ -5399,12 +5404,12 @@ The preference system is the one set in the general preferences.</source>
   <context>
     <name>Gui::Dialog::DlgUnitsCalculator</name>
     <message>
-      <location filename="../DlgUnitsCalculatorImp.cpp" line="148"/>
+      <location filename="../DlgUnitsCalculatorImp.cpp" line="149"/>
       <source>unknown unit:</source>
       <translation>невядомая адзінка вымярэння:</translation>
     </message>
     <message>
-      <location filename="../DlgUnitsCalculatorImp.cpp" line="153"/>
+      <location filename="../DlgUnitsCalculatorImp.cpp" line="154"/>
       <source>unit mismatch</source>
       <translation>неадпаведная адзінка вымярэння</translation>
     </message>
@@ -6208,7 +6213,7 @@ The 'Status' column shows whether the document could be recovered.</source>
     <message>
       <location filename="../TextureMapping.ui" line="20"/>
       <source>Texture mapping</source>
-      <translation>Адлюстраванне тэкстуры</translation>
+      <translation>Супастаўленне тэкстуры</translation>
     </message>
     <message>
       <location filename="../TextureMapping.ui" line="26"/>
@@ -6238,12 +6243,12 @@ The 'Status' column shows whether the document could be recovered.</source>
     <message>
       <location filename="../TextureMapping.cpp" line="153"/>
       <source>No 3d view</source>
-      <translation>Без трохмернага выгляду</translation>
+      <translation>Без трохмернага прадстаўлення</translation>
     </message>
     <message>
       <location filename="../TextureMapping.cpp" line="153"/>
       <source>No active 3d view found.</source>
-      <translation>Без бягучага трохмернага выгляду.</translation>
+      <translation>Без бягучага трохмернага прадстаўлення.</translation>
     </message>
   </context>
   <context>
@@ -6281,7 +6286,7 @@ The 'Status' column shows whether the document could be recovered.</source>
     <message>
       <location filename="../DlgObjectSelection.ui" line="164"/>
       <source>Show dependencies</source>
-      <translation>Адлюстраваць залежнасці</translation>
+      <translation>Паказаць залежнасці</translation>
     </message>
     <message>
       <location filename="../DlgObjectSelection.cpp" line="115"/>
@@ -6412,7 +6417,7 @@ originally selected prior to opening this dialog</source>
     <message>
       <location filename="../ReportView.cpp" line="574"/>
       <source>Show Report view on</source>
-      <translation>Адлюстраваць прагляд справаздачы на</translation>
+      <translation>Паказаць прагляд справаздачы на</translation>
     </message>
     <message>
       <location filename="../ReportView.cpp" line="595"/>
@@ -7024,14 +7029,14 @@ Do you want to save your changes?</source>
       <location filename="../MainWindow.cpp" line="1163"/>
       <location filename="../MainWindow.cpp" line="1164"/>
       <source>Toggles this toolbar</source>
-      <translation>Пераключыць гэтую панэль інструментаў</translation>
+      <translation>Пераключае гэтую панэль інструментаў</translation>
     </message>
     <message>
       <location filename="../MainWindow.cpp" line="1177"/>
       <location filename="../MainWindow.cpp" line="1178"/>
       <location filename="../MainWindow.cpp" line="1179"/>
       <source>Toggles this dockable window</source>
-      <translation>Пераключыць гэтае ўбудаванае акно</translation>
+      <translation>Пераключае гэтае ўбудаванае акно</translation>
     </message>
     <message>
       <location filename="../MainWindow.cpp" line="1743"/>
@@ -7294,20 +7299,20 @@ How do you want to proceed?</source>
   <context>
     <name>Gui::PropertyEditor::LinkLabel</name>
     <message>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="4314"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="4313"/>
       <source>Change the linked object</source>
-      <translation>Змяніць злучаны аб'ект</translation>
+      <translation>Змяніць звязаны аб'ект</translation>
     </message>
   </context>
   <context>
     <name>Gui::PropertyEditor::LinkSelection</name>
     <message>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="4283"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="4282"/>
       <source>Error</source>
       <translation>Памылка</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="4283"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="4282"/>
       <source>Object not found</source>
       <translation>Аб'ект не знойдзены</translation>
     </message>
@@ -7697,7 +7702,7 @@ Do you want to specify another directory?</source>
       <location filename="../OnlineDocumentation.cpp" line="361"/>
       <location filename="../OnlineDocumentation.cpp" line="363"/>
       <source>Opens a browser to show the Python modules documentation</source>
-      <translation>Адчыняе аглядальнік, каб адлюстраваць дакументацыю модуляў Python</translation>
+      <translation>Адчыняе аглядальнік, каб паказаць дакументацыю модуляў Python</translation>
     </message>
   </context>
   <context>
@@ -8179,12 +8184,12 @@ Do you want to specify another directory?</source>
     <message>
       <location filename="../Tree.cpp" line="883"/>
       <source>Activate document</source>
-      <translation>Актываваць дакумент</translation>
+      <translation>Задзейнічаць дакумент</translation>
     </message>
     <message>
       <location filename="../Tree.cpp" line="890"/>
       <source>Activate document %1</source>
-      <translation>Актываваць дакумент %1</translation>
+      <translation>Задзейнічаць дакумент %1</translation>
     </message>
     <message>
       <location filename="../Tree.cpp" line="927"/>
@@ -8209,12 +8214,12 @@ Do you want to specify another directory?</source>
     <message>
       <location filename="../Tree.cpp" line="2769"/>
       <source>Show hidden items</source>
-      <translation>Адлюстраваць схаваныя элементы</translation>
+      <translation>Паказаць схаваныя элементы</translation>
     </message>
     <message>
       <location filename="../Tree.cpp" line="2770"/>
       <source>Show hidden tree view items</source>
-      <translation>Адлюстраваць схаваныя элементы дрэва</translation>
+      <translation>Паказаць схаваныя элементы дрэва</translation>
     </message>
     <message>
       <location filename="../Tree.cpp" line="2772"/>
@@ -8354,22 +8359,22 @@ Do you want to specify another directory?</source>
   <context>
     <name>Gui::View3DInventor</name>
     <message>
-      <location filename="../View3DInventor.cpp" line="505"/>
+      <location filename="../View3DInventor.cpp" line="511"/>
       <source>Export PDF</source>
       <translation>Экспартаваць у PDF</translation>
     </message>
     <message>
-      <location filename="../View3DInventor.cpp" line="506"/>
+      <location filename="../View3DInventor.cpp" line="512"/>
       <source>PDF file</source>
       <translation>Файл PDF</translation>
     </message>
     <message>
-      <location filename="../View3DInventor.cpp" line="536"/>
+      <location filename="../View3DInventor.cpp" line="542"/>
       <source>Opening file failed</source>
       <translation>Немагчыма адчыніць файл</translation>
     </message>
     <message>
-      <location filename="../View3DInventor.cpp" line="537"/>
+      <location filename="../View3DInventor.cpp" line="543"/>
       <source>Can't open file '%1' for writing.</source>
       <translation>Немагчыма адчыніць файл '%1' для запісу.</translation>
     </message>
@@ -8538,7 +8543,7 @@ Do you want to specify another directory?</source>
       <location filename="../Widgets.cpp" line="1420"/>
       <location filename="../Widgets.cpp" line="1431"/>
       <source>Invalid input</source>
-      <translation>Недапушчальны ўвод</translation>
+      <translation>Хібны ўвод</translation>
     </message>
     <message>
       <location filename="../Widgets.cpp" line="1420"/>
@@ -8875,19 +8880,19 @@ Do you want to continue?</source>
       <location filename="../DlgParameterImp.cpp" line="858"/>
       <location filename="../DlgParameterImp.cpp" line="887"/>
       <source>Enter the name:</source>
-      <translation type="unfinished">Enter the name:</translation>
+      <translation>Увядзіце назву:</translation>
     </message>
     <message>
       <location filename="../DlgParameterImp.cpp" line="763"/>
       <location filename="../DlgParameterImp.cpp" line="779"/>
       <source>New text item</source>
-      <translation type="unfinished">New text item</translation>
+      <translation>Новы тэкставы элемент</translation>
     </message>
     <message>
       <location filename="../DlgParameterImp.cpp" line="779"/>
       <location filename="../DlgParameterImp.cpp" line="1046"/>
       <source>Enter your text:</source>
-      <translation type="unfinished">Enter your text:</translation>
+      <translation>Увядзіце тэкст:</translation>
     </message>
     <message>
       <location filename="../DlgParameterImp.cpp" line="792"/>
@@ -8903,7 +8908,7 @@ Do you want to continue?</source>
       <location filename="../DlgParameterImp.cpp" line="1134"/>
       <location filename="../DlgParameterImp.cpp" line="1187"/>
       <source>Enter your number:</source>
-      <translation type="unfinished">Enter your number:</translation>
+      <translation>Увядзіце лік:</translation>
     </message>
     <message>
       <location filename="../DlgParameterImp.cpp" line="822"/>
@@ -8926,12 +8931,12 @@ Do you want to continue?</source>
       <location filename="../DlgParameterImp.cpp" line="905"/>
       <location filename="../DlgParameterImp.cpp" line="1235"/>
       <source>Choose an item:</source>
-      <translation type="unfinished">Choose an item:</translation>
+      <translation>Абярыце элемент:</translation>
     </message>
     <message>
       <location filename="../DlgParameterImp.cpp" line="905"/>
       <source>New boolean item</source>
-      <translation type="unfinished">New boolean item</translation>
+      <translation>Новы лагічны элемент</translation>
     </message>
     <message>
       <location filename="../DlgParameterImp.cpp" line="964"/>
@@ -8941,17 +8946,17 @@ Do you want to continue?</source>
     <message>
       <location filename="../DlgParameterImp.cpp" line="965"/>
       <source>The group '%1' cannot be renamed.</source>
-      <translation type="unfinished">The group '%1' cannot be renamed.</translation>
+      <translation>Суполка '%1' не можа быць пераназваная.</translation>
     </message>
     <message>
       <location filename="../DlgParameterImp.cpp" line="970"/>
       <source>Existing group</source>
-      <translation type="unfinished">Existing group</translation>
+      <translation>Суполка, якая існуе</translation>
     </message>
     <message>
       <location filename="../DlgParameterImp.cpp" line="971"/>
       <source>The group '%1' already exists.</source>
-      <translation type="unfinished">The group '%1' already exists.</translation>
+      <translation>Суполка '%1' ужо існуе.</translation>
     </message>
     <message>
       <location filename="../DlgParameterImp.cpp" line="1046"/>
@@ -8965,22 +8970,22 @@ Do you want to continue?</source>
     <message>
       <location filename="../Document.cpp" line="131"/>
       <source>Do you want to skip confirmation of further critical message notifications while loading the file?</source>
-      <translation type="unfinished">Do you want to skip confirmation of further critical message notifications while loading the file?</translation>
+      <translation>Ці жадаеце вы прапускаць пацверджанні далейшых апавяшчэнняў аб крытычных паведамленнях пры загрузцы файла?</translation>
     </message>
     <message>
       <location filename="../Document.cpp" line="132"/>
       <source>Critical Message</source>
-      <translation type="unfinished">Critical Message</translation>
+      <translation>Крытычнае паведамленне</translation>
     </message>
     <message>
       <location filename="../Document.cpp" line="190"/>
       <source>Too many message notifications. Notification temporarily stopped. Look at the report view for more information.</source>
-      <translation type="unfinished">Too many message notifications. Notification temporarily stopped. Look at the report view for more information.</translation>
+      <translation>Заншмат апавяшчэнняў аб паведамленнях. Апавяшчэнне часова спынена. Паглядзіце справаздачу для атрымання дадатковай інфармацыі.</translation>
     </message>
     <message>
       <location filename="../Document.cpp" line="209"/>
       <source>Warning</source>
-      <translation type="unfinished">Warning</translation>
+      <translation>Папярэджанне</translation>
     </message>
     <message>
       <location filename="../Document.cpp" line="213"/>
@@ -8990,14 +8995,14 @@ Do you want to continue?</source>
     <message>
       <location filename="../Document.cpp" line="217"/>
       <source>Critical</source>
-      <translation type="unfinished">Critical</translation>
+      <translation>Крытычна</translation>
     </message>
     <message>
       <location filename="../Document.cpp" line="1221"/>
       <source>Identical physical path detected. It may cause unwanted overwrite of existing document!
 
 </source>
-      <translation type="unfinished">Identical physical path detected. It may cause unwanted overwrite of existing document!
+      <translation>Выяўлены ідэнтычны фізічны шлях. Гэта можа прывесці да непажаданага перазапісу дакумента, які ўжо існуе!
 
 </translation>
     </message>
@@ -9009,18 +9014,18 @@ Do you want to continue?</source>
     <message>
       <location filename="../Document.cpp" line="1241"/>
       <source>Please check report view for more...</source>
-      <translation type="unfinished">Please check report view for more...</translation>
+      <translation>Калі ласка, праверце прагляд справаздачы, каб атрымаць дадатковую інфармацыю...</translation>
     </message>
     <message>
       <location filename="../Document.cpp" line="1244"/>
       <source>Physical path:</source>
-      <translation type="unfinished">Physical path:</translation>
+      <translation>Фізічны шлях:</translation>
     </message>
     <message>
       <location filename="../Document.cpp" line="1246"/>
       <location filename="../Document.cpp" line="1252"/>
       <source>Document:</source>
-      <translation type="unfinished">Document:</translation>
+      <translation>Дакумент:</translation>
     </message>
     <message>
       <location filename="../Document.cpp" line="1248"/>
@@ -9031,12 +9036,12 @@ Do you want to continue?</source>
     <message>
       <location filename="../Document.cpp" line="1263"/>
       <source>Identical physical path</source>
-      <translation type="unfinished">Identical physical path</translation>
+      <translation>Ідэнтычны фізічны шлях</translation>
     </message>
     <message>
       <location filename="../Document.cpp" line="1271"/>
       <source>Could not save document</source>
-      <translation type="unfinished">Could not save document</translation>
+      <translation>Не атрымалася захаваць дакумент</translation>
     </message>
     <message>
       <location filename="../Document.cpp" line="1272"/>
@@ -9045,45 +9050,45 @@ Do you want to continue?</source>
 "%1"
 
 Would you like to save the file with a different name?</source>
-      <translation type="unfinished">There was an issue trying to save the file. This may be because some of the parent folders do not exist, or you do not have sufficient permissions, or for other reasons. Error details:
+      <translation>Пры спробе захаваць файл паўстала праблема. Гэта можа быць звязана з тым, што некаторыя бацькоўскія каталогі не існуюць, альбо ў вас недастаткова дазволаў, ці па іншых прычынах. Звесткі пра памылку:
 
 "%1"
 
-Would you like to save the file with a different name?</translation>
+Ці жадаеце вы захаваць файл з іншым іменем?</translation>
     </message>
     <message>
       <location filename="../Document.cpp" line="1282"/>
       <location filename="../Document.cpp" line="1414"/>
       <location filename="../Document.cpp" line="1497"/>
       <source>Saving aborted</source>
-      <translation type="unfinished">Saving aborted</translation>
+      <translation>Захаванне перапынена</translation>
     </message>
     <message>
       <location filename="../Document.cpp" line="1329"/>
       <source>Save dependent files</source>
-      <translation type="unfinished">Save dependent files</translation>
+      <translation>Захаваць залежныя файлы</translation>
     </message>
     <message>
       <location filename="../Document.cpp" line="1330"/>
       <source>The file contains external dependencies. Do you want to save the dependent files, too?</source>
-      <translation type="unfinished">The file contains external dependencies. Do you want to save the dependent files, too?</translation>
+      <translation>Файл утрымлівае знешнія залежнасці. Ці жадаеце вы таксама захаваць залежныя файлы?</translation>
     </message>
     <message>
       <location filename="../Document.cpp" line="1364"/>
       <location filename="../Document.cpp" line="1408"/>
       <source>Saving document failed</source>
-      <translation type="unfinished">Saving document failed</translation>
+      <translation>Не атрымалася захаваць дакумент</translation>
     </message>
     <message>
       <location filename="../Document.cpp" line="1378"/>
       <source>Save document under new filename...</source>
-      <translation type="unfinished">Save document under new filename...</translation>
+      <translation>Захаваць дакумент з новым іменем файла...</translation>
     </message>
     <message>
       <location filename="../Document.cpp" line="1381"/>
       <location filename="../Document.cpp" line="1482"/>
       <source>Save %1 Document</source>
-      <translation type="unfinished">Save %1 Document</translation>
+      <translation>Захаваць дакумент %1</translation>
     </message>
     <message>
       <location filename="../Document.cpp" line="1383"/>
@@ -9094,42 +9099,42 @@ Would you like to save the file with a different name?</translation>
       <location filename="../Document.cpp" line="1427"/>
       <location filename="../Document.cpp" line="1468"/>
       <source>Failed to save document</source>
-      <translation type="unfinished">Failed to save document</translation>
+      <translation>Не атрымалася захаваць дакумент</translation>
     </message>
     <message>
       <location filename="../Document.cpp" line="1428"/>
       <source>Documents contains cyclic dependencies. Do you still want to save them?</source>
-      <translation type="unfinished">Documents contains cyclic dependencies. Do you still want to save them?</translation>
+      <translation>Дакументы ўтрымлівае цыклічныя залежнасці. Ці жадаеце вы яшчэ іх захаваць?</translation>
     </message>
     <message>
       <location filename="../Document.cpp" line="1479"/>
       <source>Save a copy of the document under new filename...</source>
-      <translation type="unfinished">Save a copy of the document under new filename...</translation>
+      <translation>Захаваць копію дакумента з новым іменем файла...</translation>
     </message>
     <message>
       <location filename="../Document.cpp" line="1484"/>
       <source>%1 document (*.FCStd)</source>
-      <translation type="unfinished">%1 document (*.FCStd)</translation>
+      <translation>Дакумент %1 (*.FCStd)</translation>
     </message>
     <message>
       <location filename="../Document.cpp" line="2133"/>
       <source>Document not closable</source>
-      <translation type="unfinished">Document not closable</translation>
+      <translation>Дакумент не можа быць зачынены</translation>
     </message>
     <message>
       <location filename="../Document.cpp" line="2134"/>
       <source>The document is not closable for the moment.</source>
-      <translation type="unfinished">The document is not closable for the moment.</translation>
+      <translation>На дадзены момант дакумент нельга зачыніць.</translation>
     </message>
     <message>
       <location filename="../Document.cpp" line="2171"/>
       <source>Document not saved</source>
-      <translation type="unfinished">Document not saved</translation>
+      <translation>Дакумент не захаваны</translation>
     </message>
     <message>
       <location filename="../Document.cpp" line="2172"/>
       <source>The document%1 could not be saved. Do you want to cancel closing it?</source>
-      <translation type="unfinished">The document%1 could not be saved. Do you want to cancel closing it?</translation>
+      <translation>Дакумент %1 не атрымалася захаваць. Ці жадаеце вы адмяніць яго закрыццё?</translation>
     </message>
     <message>
       <location filename="../Document.cpp" line="2500"/>
@@ -9144,21 +9149,21 @@ Would you like to save the file with a different name?</translation>
     <message>
       <location filename="../Document.cpp" line="2502"/>
       <source>There are grouped transactions in the following documents with other preceding transactions</source>
-      <translation type="unfinished">There are grouped transactions in the following documents with other preceding transactions</translation>
+      <translation>У наступных дакументах згрупаваныя аперацыі з іншымі папярэднімі аперацыямі</translation>
     </message>
     <message>
       <location filename="../Document.cpp" line="2505"/>
       <source>Choose 'Yes' to roll back all preceding transactions.
 Choose 'No' to roll back in the active document only.
 Choose 'Abort' to abort</source>
-      <translation type="unfinished">Choose 'Yes' to roll back all preceding transactions.
-Choose 'No' to roll back in the active document only.
-Choose 'Abort' to abort</translation>
+      <translation>Абярыце 'Так', каб адкаціць усе папярэднія аперацыі.
+Абярыце 'Не', каб выканаць адкат толькі ў бягучым дакуменце.
+Абярыце 'Перапыніць', каб перапыніць</translation>
     </message>
     <message>
       <location filename="../EditorView.cpp" line="347"/>
       <source>Save Macro</source>
-      <translation type="unfinished">Save Macro</translation>
+      <translation>Захаваць макрас</translation>
     </message>
     <message>
       <location filename="../MouseSelection.cpp" line="214"/>
@@ -9182,12 +9187,12 @@ Choose 'Abort' to abort</translation>
     <message>
       <location filename="../MouseSelection.cpp" line="367"/>
       <source>Inner</source>
-      <translation type="unfinished">Inner</translation>
+      <translation>Унутры</translation>
     </message>
     <message>
       <location filename="../MouseSelection.cpp" line="368"/>
       <source>Outer</source>
-      <translation type="unfinished">Outer</translation>
+      <translation>Звонку</translation>
     </message>
     <message>
       <location filename="../MouseSelection.cpp" line="369"/>
@@ -9198,67 +9203,67 @@ Choose 'Abort' to abort</translation>
       <location filename="../OnlineDocumentation.cpp" line="418"/>
       <location filename="../OnlineDocumentation.cpp" line="458"/>
       <source>No Browser</source>
-      <translation type="unfinished">No Browser</translation>
+      <translation>Без аглядальніку</translation>
     </message>
     <message>
       <location filename="../OnlineDocumentation.cpp" line="419"/>
       <source>Unable to open your browser.
 
 Please open a browser window and type in: http://localhost:%1.</source>
-      <translation type="unfinished">Unable to open your browser.
+      <translation>Не атрымалася адчыніць ваш аглядальнік.
 
-Please open a browser window and type in: http://localhost:%1.</translation>
+Калі ласка, адчыніце акно аглядальніку і ўвядзіце: http://localhost:%1.</translation>
     </message>
     <message>
       <location filename="../OnlineDocumentation.cpp" line="424"/>
       <source>No Server</source>
-      <translation type="unfinished">No Server</translation>
+      <translation>Без сервера</translation>
     </message>
     <message>
       <location filename="../OnlineDocumentation.cpp" line="425"/>
       <source>Unable to start the server to port %1: %2.</source>
-      <translation type="unfinished">Unable to start the server to port %1: %2.</translation>
+      <translation>Не атрымалася запусціць сервер на порт %1: %2.</translation>
     </message>
     <message>
       <location filename="../OnlineDocumentation.cpp" line="459"/>
       <source>Unable to open your system browser.</source>
-      <translation type="unfinished">Unable to open your system browser.</translation>
+      <translation>Не атрымалася запусціць сістэмны аглядальнік.</translation>
     </message>
     <message>
       <location filename="../SoFCColorBar.cpp" line="329"/>
       <source>Options...</source>
-      <translation type="unfinished">Options...</translation>
+      <translation>Налады...</translation>
     </message>
     <message>
-      <location filename="../View3DInventorViewer.cpp" line="2119"/>
+      <location filename="../View3DInventorViewer.cpp" line="2110"/>
       <source>Out of memory</source>
-      <translation type="unfinished">Out of memory</translation>
+      <translation>Не хапае памяці</translation>
     </message>
     <message>
-      <location filename="../View3DInventorViewer.cpp" line="2120"/>
+      <location filename="../View3DInventorViewer.cpp" line="2111"/>
       <source>Not enough memory available to display the data.</source>
-      <translation type="unfinished">Not enough memory available to display the data.</translation>
+      <translation>Недастаткова памяці для адлюстравання дадзеных.</translation>
     </message>
     <message>
       <location filename="../WidgetFactory.cpp" line="438"/>
       <location filename="../WidgetFactory.cpp" line="457"/>
       <source>Cannot find file %1</source>
-      <translation type="unfinished">Cannot find file %1</translation>
+      <translation>Немагчыма знайсці файл %1</translation>
     </message>
     <message>
       <location filename="../WidgetFactory.cpp" line="445"/>
       <source>Cannot find file %1 neither in %2 nor in %3</source>
-      <translation type="unfinished">Cannot find file %1 neither in %2 nor in %3</translation>
+      <translation>Немагчыма знайсці файл %1 ні ў %2, ні ў %3</translation>
     </message>
     <message>
       <location filename="../NavigationStyle.cpp" line="1729"/>
       <source>Navigation styles</source>
-      <translation type="unfinished">Navigation styles</translation>
+      <translation>Стылі навігацыі</translation>
     </message>
     <message>
       <location filename="../ViewProviderAnnotation.cpp" line="410"/>
       <source>Move annotation</source>
-      <translation type="unfinished">Move annotation</translation>
+      <translation>Рухаць заметку</translation>
     </message>
     <message>
       <location filename="../ViewProviderDragger.cpp" line="88"/>
@@ -9274,12 +9279,12 @@ Please open a browser window and type in: http://localhost:%1.</translation>
     <message>
       <location filename="../MainWindow.cpp" line="593"/>
       <source>Do you want to save your changes to document '%1' before closing?</source>
-      <translation type="unfinished">Do you want to save your changes to document '%1' before closing?</translation>
+      <translation>Ці жадаеце вы захаваць свае змены ў дакуменце '%1' перад закрыццём?</translation>
     </message>
     <message>
       <location filename="../MainWindow.cpp" line="596"/>
       <source>Do you want to save your changes to document before closing?</source>
-      <translation type="unfinished">Do you want to save your changes to document before closing?</translation>
+      <translation>Ці жадаеце вы захаваць свае змены ў дакуменце перад закрыццём?</translation>
     </message>
     <message>
       <location filename="../MainWindow.cpp" line="598"/>
@@ -9289,17 +9294,17 @@ Please open a browser window and type in: http://localhost:%1.</translation>
     <message>
       <location filename="../MainWindow.cpp" line="603"/>
       <source>Apply answer to all</source>
-      <translation type="unfinished">Apply answer to all</translation>
+      <translation>Прымяніць адказ да ўсіх</translation>
     </message>
     <message>
       <location filename="../MainWindow.cpp" line="693"/>
       <source>%1 Document(s) not saved</source>
-      <translation type="unfinished">%1 Document(s) not saved</translation>
+      <translation>%1 дакументы не захаваныя</translation>
     </message>
     <message>
       <location filename="../MainWindow.cpp" line="694"/>
       <source>Some documents could not be saved. Do you want to cancel closing?</source>
-      <translation type="unfinished">Some documents could not be saved. Do you want to cancel closing?</translation>
+      <translation>Некаторыя дакументы не атрымалася захаваць. Ці жадаеце вы адмяніць закрыццё?</translation>
     </message>
     <message>
       <location filename="../DlgMacroExecuteImp.cpp" line="412"/>
@@ -9309,7 +9314,7 @@ Please open a browser window and type in: http://localhost:%1.</translation>
     <message>
       <location filename="../DlgMacroExecuteImp.cpp" line="413"/>
       <source>Not allowed to delete system-wide macros</source>
-      <translation type="unfinished">Not allowed to delete system-wide macros</translation>
+      <translation>Не дазваляецца выдаляць агульнасістэмныя макрасы</translation>
     </message>
     <message>
       <location filename="../DAGView/DAGFilter.cpp" line="41"/>
@@ -9319,12 +9324,12 @@ Please open a browser window and type in: http://localhost:%1.</translation>
     <message>
       <location filename="../ViewProviderGroupExtension.cpp" line="167"/>
       <source>Delete group content?</source>
-      <translation type="unfinished">Delete group content?</translation>
+      <translation>Выдаліць змест суполкі?</translation>
     </message>
     <message>
       <location filename="../ViewProviderGroupExtension.cpp" line="168"/>
       <source>The %1 is not empty, delete its content as well?</source>
-      <translation type="unfinished">The %1 is not empty, delete its content as well?</translation>
+      <translation>%1 не пусты, ці выдаліць таксама і яго змест?</translation>
     </message>
     <message>
       <location filename="../SoFCCSysDragger.cpp" line="294"/>
@@ -9339,7 +9344,7 @@ Please open a browser window and type in: http://localhost:%1.</translation>
     <message>
       <location filename="../ViewProviderPart.cpp" line="73"/>
       <source>Toggle active part</source>
-      <translation type="unfinished">Toggle active part</translation>
+      <translation>Пераключыць бягучую дэталь</translation>
     </message>
     <message>
       <location filename="../ViewProviderTextDocument.cpp" line="76"/>
@@ -9350,72 +9355,71 @@ Please open a browser window and type in: http://localhost:%1.</translation>
       <location filename="../CommandLink.cpp" line="97"/>
       <location filename="../CommandLink.cpp" line="114"/>
       <source>Simple group</source>
-      <translation type="unfinished">Simple group</translation>
+      <translation>Простая суполка</translation>
     </message>
     <message>
       <location filename="../CommandLink.cpp" line="99"/>
       <location filename="../CommandLink.cpp" line="115"/>
       <source>Group with links</source>
-      <translation type="unfinished">Group with links</translation>
+      <translation>Суполка з сувязямі</translation>
     </message>
     <message>
       <location filename="../CommandLink.cpp" line="101"/>
       <location filename="../CommandLink.cpp" line="116"/>
       <source>Group with transform links</source>
-      <translation type="unfinished">Group with transform links</translation>
+      <translation>Суполка з сувязямі пераўтварэння</translation>
     </message>
     <message>
       <location filename="../CommandLink.cpp" line="193"/>
       <source>Create link group failed</source>
-      <translation type="unfinished">Create link group failed</translation>
+      <translation>Не атрымалася стварыць суполку сувязяў</translation>
     </message>
     <message>
       <location filename="../CommandLink.cpp" line="257"/>
       <source>Create link failed</source>
-      <translation type="unfinished">Create link failed</translation>
+      <translation>Не атрымалася стварыць сувязь</translation>
     </message>
     <message>
       <location filename="../CommandLink.cpp" line="332"/>
       <source>Failed to create relative link</source>
-      <translation type="unfinished">Failed to create relative link</translation>
+      <translation>Не атрымалася стварыць адносную сувязь</translation>
     </message>
     <message>
       <location filename="../CommandLink.cpp" line="460"/>
       <source>Unlink failed</source>
-      <translation type="unfinished">Unlink failed</translation>
+      <translation>Не атрымалася разарваць сувязь</translation>
     </message>
     <message>
       <location filename="../CommandLink.cpp" line="460"/>
       <source>Replace link failed</source>
-      <translation type="unfinished">Replace link failed</translation>
+      <translation>Не атрымалася замяніць сувязь</translation>
     </message>
     <message>
       <location filename="../CommandLink.cpp" line="590"/>
       <source>Failed to import links</source>
-      <translation type="unfinished">Failed to import links</translation>
+      <translation>Не атрымалася імпартаваць сувязі</translation>
     </message>
     <message>
       <location filename="../CommandLink.cpp" line="629"/>
       <source>Failed to import all links</source>
-      <translation type="unfinished">Failed to import all links</translation>
+      <translation>Не атрымалася імпартаваць усе сувязі</translation>
     </message>
     <message>
       <location filename="../DlgAddProperty.cpp" line="100"/>
       <location filename="../DlgAddProperty.cpp" line="113"/>
       <source>Invalid name</source>
-      <translation type="unfinished">Invalid name</translation>
+      <translation>Хібная назва</translation>
     </message>
     <message>
       <location filename="../DlgAddProperty.cpp" line="101"/>
       <source>The property name or group name must only contain alpha numericals,
 underscore, and must not start with a digit.</source>
-      <translation type="unfinished">The property name or group name must only contain alpha numericals,
-underscore, and must not start with a digit.</translation>
+      <translation>Назва ўласцівасці ці назва суполкі павінна ўтрымліваць толькі літарна-лічбавыя абазначэнні, знак падкрэслівання, і не павінна пачынацца з лічбы.</translation>
     </message>
     <message>
       <location filename="../DlgAddProperty.cpp" line="114"/>
       <source>The property '%1' already exists in '%2'</source>
-      <translation type="unfinished">The property '%1' already exists in '%2'</translation>
+      <translation>Уласцівасць '%1' ужо існуе ў '%2'</translation>
     </message>
     <message>
       <location filename="../DlgAddProperty.cpp" line="137"/>
@@ -9425,45 +9429,44 @@ underscore, and must not start with a digit.</translation>
     <message>
       <location filename="../DlgAddProperty.cpp" line="138"/>
       <source>Failed to add property to '%1': %2</source>
-      <translation type="unfinished">Failed to add property to '%1': %2</translation>
+      <translation>Не атрымалася дадаць уласцівасць да '%1': %2</translation>
     </message>
     <message>
       <location filename="../Tree.cpp" line="2054"/>
       <location filename="../Tree.cpp" line="2250"/>
       <source>Drag &amp; drop failed</source>
-      <translation type="unfinished">Drag &amp; drop failed</translation>
+      <translation>Не атрымалася перамясціць</translation>
     </message>
     <message>
       <location filename="../ViewProviderLink.cpp" line="2421"/>
       <source>Setup configurable object</source>
-      <translation type="unfinished">Setup configurable object</translation>
+      <translation>Налада карыстальніцкага аб'екту</translation>
     </message>
     <message>
       <location filename="../ViewProviderLink.cpp" line="2422"/>
       <source>Select which object to copy or exclude when configuration changes. All external linked objects are excluded by default.</source>
-      <translation type="unfinished">Select which object to copy or exclude when configuration changes. All external linked objects are excluded by default.</translation>
+      <translation>Абярыце, які аб'ект капіраваць ці выключаць пры змене налад. Усе вонкавыя звязаныя аб'екты першапачаткова выключаныя.</translation>
     </message>
     <message>
       <location filename="../ViewProviderLink.cpp" line="2437"/>
       <source>Please select which objects to copy when the configuration is changed</source>
-      <translation type="unfinished">Please select which objects to copy when the configuration is changed</translation>
+      <translation>Калі ласка, абярыце, якія аб'екты капіраваць пры змене налад</translation>
     </message>
     <message>
       <location filename="../ViewProviderLink.cpp" line="2439"/>
       <source>Apply to all</source>
-      <translation type="unfinished">Apply to all</translation>
+      <translation>Ужыць да ўсіх</translation>
     </message>
     <message>
       <location filename="../ViewProviderLink.cpp" line="2440"/>
       <source>Apply the setting to all links. Or, uncheck this
 option to apply only to this link.</source>
-      <translation type="unfinished">Apply the setting to all links. Or, uncheck this
-option to apply only to this link.</translation>
+      <translation>Прымяніць наладу да ўсіх сувязяў. Не птушка, каб прымяніць толькі да гэтай сувязі.</translation>
     </message>
     <message>
       <location filename="../ViewProviderLink.cpp" line="2485"/>
       <source>Copy on change</source>
-      <translation type="unfinished">Copy on change</translation>
+      <translation>Капіраваць пры зменах</translation>
     </message>
     <message>
       <location filename="../ViewProviderLink.cpp" line="2486"/>
@@ -9473,7 +9476,7 @@ option to apply only to this link.</translation>
     <message>
       <location filename="../ViewProviderLink.cpp" line="2487"/>
       <source>Enable auto copy of linked object when its configuration is changed</source>
-      <translation type="unfinished">Enable auto copy of linked object when its configuration is changed</translation>
+      <translation>Уключае аўтаматычнае капіраванне звязанага аб'екта пры змене яго налад</translation>
     </message>
     <message>
       <location filename="../ViewProviderLink.cpp" line="2500"/>
@@ -9485,19 +9488,19 @@ option to apply only to this link.</translation>
       <source>Copy the linked object when its configuration is changed.
 Also auto redo the copy if the original linked object is changed.
 </source>
-      <translation type="unfinished">Copy the linked object when its configuration is changed.
-Also auto redo the copy if the original linked object is changed.
+      <translation>Скапіраваць звязаны аб'ект пры змене яго налад.
+Таксама аўтаматычна паўтарыць копіі, калі зыходны звязаны аб'ект быў зменены.
 </translation>
     </message>
     <message>
       <location filename="../ViewProviderLink.cpp" line="2520"/>
       <source>Disable copy on change</source>
-      <translation type="unfinished">Disable copy on change</translation>
+      <translation>Адключыць капіраванне пры зменах</translation>
     </message>
     <message>
       <location filename="../ViewProviderLink.cpp" line="2535"/>
       <source>Refresh configurable object</source>
-      <translation type="unfinished">Refresh configurable object</translation>
+      <translation>Перачытаць карыстальніцкі аб'ект</translation>
     </message>
     <message>
       <location filename="../ViewProviderLink.cpp" line="2536"/>
@@ -9505,9 +9508,8 @@ Also auto redo the copy if the original linked object is changed.
 creating a new deep copy. Note that any changes made to
 the current copy will be lost.
 </source>
-      <translation type="unfinished">Synchronize the original configurable source object by
-creating a new deep copy. Note that any changes made to
-the current copy will be lost.
+      <translation>Сінхранізуе зыходны зыходны аб'ект, які наладжваецца, з дапамогай стварэння новай глыбокай копіі.
+Звярніце ўвагу, што любыя змены, якія ўнесеныя ў бягучую копію, будуць страчаныя.
 </translation>
     </message>
     <message>
@@ -9518,18 +9520,18 @@ the current copy will be lost.
     <message>
       <location filename="../ViewProviderLink.cpp" line="2577"/>
       <source>Change whether show each link array element as individual objects</source>
-      <translation type="unfinished">Change whether show each link array element as individual objects</translation>
+      <translation>Зменіць, ці паказваць кожны элемент артаганальная сеткі як асобныя аб'екты</translation>
     </message>
     <message>
       <location filename="../ViewProviderLink.cpp" line="2595"/>
       <source>Transform at the origin of the placement</source>
-      <translation type="unfinished">Transform at the origin of the placement</translation>
+      <translation>Пераўтварыць размяшчэнне ў пачатку каардынат</translation>
     </message>
     <message>
       <location filename="../ViewProviderLink.cpp" line="2605"/>
       <location filename="../ViewProviderLink.cpp" line="2611"/>
       <source>Override colors...</source>
-      <translation type="unfinished">Override colors...</translation>
+      <translation>Пераназначыць колеры...</translation>
     </message>
     <message>
       <location filename="../ViewProviderDocumentObject.cpp" line="261"/>
@@ -9542,12 +9544,12 @@ the current copy will be lost.
     <message>
       <location filename="../Selection.cpp" line="637"/>
       <source>Not allowed:</source>
-      <translation type="unfinished">Not allowed:</translation>
+      <translation>Не дазволена:</translation>
     </message>
     <message>
       <location filename="../Selection.cpp" line="904"/>
       <source>Selection not allowed by filter</source>
-      <translation type="unfinished">Selection not allowed by filter</translation>
+      <translation>Выбар, які не дазволены фільтрам</translation>
     </message>
   </context>
   <context>
@@ -9557,7 +9559,7 @@ the current copy will be lost.
       <location filename="../CommandView.cpp" line="2920"/>
       <location filename="../CommandView.cpp" line="2922"/>
       <source>Box element selection</source>
-      <translation type="unfinished">Box element selection</translation>
+      <translation>Вобласць выбару элементаў</translation>
     </message>
   </context>
   <context>
@@ -9567,7 +9569,7 @@ the current copy will be lost.
       <location filename="../CommandView.cpp" line="2657"/>
       <location filename="../CommandView.cpp" line="2659"/>
       <source>Box selection</source>
-      <translation type="unfinished">Box selection</translation>
+      <translation>Вылучыць вобласць</translation>
     </message>
   </context>
   <context>
@@ -9575,7 +9577,7 @@ the current copy will be lost.
     <message>
       <location filename="../CommandStd.cpp" line="216"/>
       <source>&amp;About %1</source>
-      <translation type="unfinished">&amp;About %1</translation>
+      <translation>&amp;Аб %1</translation>
     </message>
     <message>
       <location filename="../CommandStd.cpp" line="217"/>
@@ -9589,13 +9591,13 @@ the current copy will be lost.
     <message>
       <location filename="../CommandStd.cpp" line="282"/>
       <source>About &amp;Qt</source>
-      <translation type="unfinished">About &amp;Qt</translation>
+      <translation>Аб &amp;Qt</translation>
     </message>
     <message>
       <location filename="../CommandStd.cpp" line="283"/>
       <location filename="../CommandStd.cpp" line="285"/>
       <source>About Qt</source>
-      <translation type="unfinished">About Qt</translation>
+      <translation>Аб Qt</translation>
     </message>
   </context>
   <context>
@@ -9603,13 +9605,13 @@ the current copy will be lost.
     <message>
       <location filename="../CommandWindow.cpp" line="171"/>
       <source>Ne&amp;xt</source>
-      <translation type="unfinished">Ne&amp;xt</translation>
+      <translation>&amp;Наступны</translation>
     </message>
     <message>
       <location filename="../CommandWindow.cpp" line="172"/>
       <location filename="../CommandWindow.cpp" line="174"/>
       <source>Activate next window</source>
-      <translation type="unfinished">Activate next window</translation>
+      <translation>Задзейнічаць наступнае акно</translation>
     </message>
   </context>
   <context>
@@ -9617,13 +9619,13 @@ the current copy will be lost.
     <message>
       <location filename="../CommandWindow.cpp" line="200"/>
       <source>Pre&amp;vious</source>
-      <translation type="unfinished">Pre&amp;vious</translation>
+      <translation>&amp;Папярэдні</translation>
     </message>
     <message>
       <location filename="../CommandWindow.cpp" line="201"/>
       <location filename="../CommandWindow.cpp" line="203"/>
       <source>Activate previous window</source>
-      <translation type="unfinished">Activate previous window</translation>
+      <translation>Задзейнічаць папярэдняе акно</translation>
     </message>
   </context>
   <context>
@@ -9631,13 +9633,13 @@ the current copy will be lost.
     <message>
       <location filename="../CommandDoc.cpp" line="1576"/>
       <source>Alignment...</source>
-      <translation type="unfinished">Alignment...</translation>
+      <translation>Выраўноўванне...</translation>
     </message>
     <message>
       <location filename="../CommandDoc.cpp" line="1577"/>
       <location filename="../CommandDoc.cpp" line="1578"/>
       <source>Align the selected objects</source>
-      <translation type="unfinished">Align the selected objects</translation>
+      <translation>Выраўнаваць абраныя аб'екты</translation>
     </message>
   </context>
   <context>
@@ -9647,7 +9649,7 @@ the current copy will be lost.
       <location filename="../CommandView.cpp" line="2061"/>
       <location filename="../CommandView.cpp" line="2062"/>
       <source>Toggle axis cross</source>
-      <translation type="unfinished">Toggle axis cross</translation>
+      <translation>Пераключыць бачнасць восей каардынат</translation>
     </message>
   </context>
   <context>
@@ -9655,13 +9657,13 @@ the current copy will be lost.
     <message>
       <location filename="../CommandWindow.cpp" line="83"/>
       <source>&amp;Cascade</source>
-      <translation type="unfinished">&amp;Cascade</translation>
+      <translation>&amp;Каскадам</translation>
     </message>
     <message>
       <location filename="../CommandWindow.cpp" line="84"/>
       <location filename="../CommandWindow.cpp" line="86"/>
       <source>Tile pragmatic</source>
-      <translation type="unfinished">Tile pragmatic</translation>
+      <translation>Размясціць вокны каскадам</translation>
     </message>
   </context>
   <context>
@@ -9697,13 +9699,13 @@ the current copy will be lost.
     <message>
       <location filename="../CommandStd.cpp" line="412"/>
       <source>Start command &amp;line...</source>
-      <translation type="unfinished">Start command &amp;line...</translation>
+      <translation>Запусціць камандны &amp;радок...</translation>
     </message>
     <message>
       <location filename="../CommandStd.cpp" line="413"/>
       <location filename="../CommandStd.cpp" line="415"/>
       <source>Opens the command line in the console</source>
-      <translation type="unfinished">Opens the command line in the console</translation>
+      <translation>Адчыняе камандны радок у кансолі</translation>
     </message>
   </context>
   <context>
@@ -9711,13 +9713,13 @@ the current copy will be lost.
     <message>
       <location filename="../CommandDoc.cpp" line="1080"/>
       <source>C&amp;opy</source>
-      <translation type="unfinished">C&amp;opy</translation>
+      <translation>&amp;Капіраваць</translation>
     </message>
     <message>
       <location filename="../CommandDoc.cpp" line="1081"/>
       <location filename="../CommandDoc.cpp" line="1083"/>
       <source>Copy operation</source>
-      <translation type="unfinished">Copy operation</translation>
+      <translation>Аперацыя капіравання</translation>
     </message>
   </context>
   <context>
@@ -9725,13 +9727,13 @@ the current copy will be lost.
     <message>
       <location filename="../CommandDoc.cpp" line="1052"/>
       <source>&amp;Cut</source>
-      <translation type="unfinished">&amp;Cut</translation>
+      <translation>&amp;Выразаць</translation>
     </message>
     <message>
       <location filename="../CommandDoc.cpp" line="1053"/>
       <location filename="../CommandDoc.cpp" line="1055"/>
       <source>Cut out</source>
-      <translation type="unfinished">Cut out</translation>
+      <translation>Аперацыя выразання</translation>
     </message>
   </context>
   <context>
@@ -9739,13 +9741,13 @@ the current copy will be lost.
     <message>
       <location filename="../CommandDoc.cpp" line="1274"/>
       <source>&amp;Delete</source>
-      <translation type="unfinished">&amp;Delete</translation>
+      <translation>&amp;Выдаліць</translation>
     </message>
     <message>
       <location filename="../CommandDoc.cpp" line="1275"/>
       <location filename="../CommandDoc.cpp" line="1277"/>
       <source>Deletes the selected objects</source>
-      <translation type="unfinished">Deletes the selected objects</translation>
+      <translation>Выдаляе абраныя аб'екты</translation>
     </message>
   </context>
   <context>
@@ -9753,13 +9755,13 @@ the current copy will be lost.
     <message>
       <location filename="../CommandView.cpp" line="3237"/>
       <source>View turntable...</source>
-      <translation type="unfinished">View turntable...</translation>
+      <translation>Паваротны выгляд...</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="3238"/>
       <location filename="../CommandView.cpp" line="3240"/>
       <source>View turntable</source>
-      <translation type="unfinished">View turntable</translation>
+      <translation>Паваротны выгляд</translation>
     </message>
   </context>
   <context>
@@ -9767,13 +9769,13 @@ the current copy will be lost.
     <message>
       <location filename="../CommandDoc.cpp" line="573"/>
       <source>Dependency graph...</source>
-      <translation type="unfinished">Dependency graph...</translation>
+      <translation>Граф залежнасці...</translation>
     </message>
     <message>
       <location filename="../CommandDoc.cpp" line="574"/>
       <location filename="../CommandDoc.cpp" line="575"/>
       <source>Show the dependency graph of the objects in the active document</source>
-      <translation type="unfinished">Show the dependency graph of the objects in the active document</translation>
+      <translation>Паказвае граф залежнасці аб'ектаў у бягучым дакуменце</translation>
     </message>
   </context>
   <context>
@@ -9781,13 +9783,13 @@ the current copy will be lost.
     <message>
       <location filename="../CommandStd.cpp" line="385"/>
       <source>Cu&amp;stomize...</source>
-      <translation type="unfinished">Cu&amp;stomize...</translation>
+      <translation>&amp;Наладзіць...</translation>
     </message>
     <message>
       <location filename="../CommandStd.cpp" line="386"/>
       <location filename="../CommandStd.cpp" line="388"/>
       <source>Customize toolbars and command bars</source>
-      <translation type="unfinished">Customize toolbars and command bars</translation>
+      <translation>Наладжвае панэль інструментаў і панэль камандаў</translation>
     </message>
   </context>
   <context>
@@ -9795,13 +9797,13 @@ the current copy will be lost.
     <message>
       <location filename="../CommandMacro.cpp" line="103"/>
       <source>Macros ...</source>
-      <translation type="unfinished">Macros ...</translation>
+      <translation>Макрас ...</translation>
     </message>
     <message>
       <location filename="../CommandMacro.cpp" line="104"/>
       <location filename="../CommandMacro.cpp" line="106"/>
       <source>Opens a dialog to let you execute a recorded macro</source>
-      <translation type="unfinished">Opens a dialog to let you execute a recorded macro</translation>
+      <translation>Адчыняе дыялогавае акно, якое дазваляе выканаць раней запісаны макрас</translation>
     </message>
   </context>
   <context>
@@ -9815,7 +9817,7 @@ the current copy will be lost.
       <location filename="../CommandMacro.cpp" line="133"/>
       <location filename="../CommandMacro.cpp" line="135"/>
       <source>Execute the macro in the editor</source>
-      <translation type="unfinished">Execute the macro in the editor</translation>
+      <translation>Выканаць макрас у рэдактары</translation>
     </message>
   </context>
   <context>
@@ -9823,13 +9825,13 @@ the current copy will be lost.
     <message>
       <location filename="../CommandMacro.cpp" line="46"/>
       <source>&amp;Macro recording ...</source>
-      <translation type="unfinished">&amp;Macro recording ...</translation>
+      <translation>&amp;Запісаць макрас...</translation>
     </message>
     <message>
       <location filename="../CommandMacro.cpp" line="47"/>
       <location filename="../CommandMacro.cpp" line="49"/>
       <source>Opens a dialog to record a macro</source>
-      <translation type="unfinished">Opens a dialog to record a macro</translation>
+      <translation>Адчыняе дыялогавае акно для запісу макраса</translation>
     </message>
   </context>
   <context>
@@ -9837,13 +9839,13 @@ the current copy will be lost.
     <message>
       <location filename="../CommandStd.cpp" line="328"/>
       <source>E&amp;dit parameters ...</source>
-      <translation type="unfinished">E&amp;dit parameters ...</translation>
+      <translation>&amp;Змяніць налады...</translation>
     </message>
     <message>
       <location filename="../CommandStd.cpp" line="329"/>
       <location filename="../CommandStd.cpp" line="331"/>
       <source>Opens a Dialog to edit the parameters</source>
-      <translation type="unfinished">Opens a Dialog to edit the parameters</translation>
+      <translation>Адчыняе дыялогавае акно для змены налад</translation>
     </message>
   </context>
   <context>
@@ -9851,13 +9853,13 @@ the current copy will be lost.
     <message>
       <location filename="../CommandStd.cpp" line="353"/>
       <source>&amp;Preferences ...</source>
-      <translation type="unfinished">&amp;Preferences ...</translation>
+      <translation>&amp;Перавагі...</translation>
     </message>
     <message>
       <location filename="../CommandStd.cpp" line="354"/>
       <location filename="../CommandStd.cpp" line="356"/>
       <source>Opens a Dialog to edit the preferences</source>
-      <translation type="unfinished">Opens a Dialog to edit the preferences</translation>
+      <translation>Адчыняе дыялогавае акно для змены пераваг</translation>
     </message>
   </context>
   <context>
@@ -9871,7 +9873,7 @@ the current copy will be lost.
       <location filename="../CommandWindow.cpp" line="281"/>
       <location filename="../CommandWindow.cpp" line="283"/>
       <source>List of available dock panels</source>
-      <translation type="unfinished">List of available dock panels</translation>
+      <translation>Спіс даступных замацаваных панэляў</translation>
     </message>
   </context>
   <context>
@@ -9879,13 +9881,13 @@ the current copy will be lost.
     <message>
       <location filename="../CommandView.cpp" line="652"/>
       <source>Draw style</source>
-      <translation type="unfinished">Draw style</translation>
+      <translation>Стыль прадстаўлення</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="653"/>
       <location filename="../CommandView.cpp" line="654"/>
       <source>Change the draw style of the objects</source>
-      <translation type="unfinished">Change the draw style of the objects</translation>
+      <translation>Змяняе стыль прадстаўлення аб'ектаў</translation>
     </message>
   </context>
   <context>
@@ -9893,13 +9895,13 @@ the current copy will be lost.
     <message>
       <location filename="../CommandDoc.cpp" line="1155"/>
       <source>Duplicate selection</source>
-      <translation type="unfinished">Duplicate selection</translation>
+      <translation>Паўтарыць выбар</translation>
     </message>
     <message>
       <location filename="../CommandDoc.cpp" line="1156"/>
       <location filename="../CommandDoc.cpp" line="1158"/>
       <source>Put duplicates of the selected objects to the active document</source>
-      <translation type="unfinished">Put duplicates of the selected objects to the active document</translation>
+      <translation>Размяшчае паўторны выбар аб'ектаў у бягучы дакумент</translation>
     </message>
   </context>
   <context>
@@ -9907,17 +9909,17 @@ the current copy will be lost.
     <message>
       <location filename="../CommandDoc.cpp" line="1646"/>
       <source>Toggle &amp;Edit mode</source>
-      <translation type="unfinished">Toggle &amp;Edit mode</translation>
+      <translation>Пераключыць рэжым &amp;змены</translation>
     </message>
     <message>
       <location filename="../CommandDoc.cpp" line="1647"/>
       <source>Toggles the selected object's edit mode</source>
-      <translation type="unfinished">Toggles the selected object's edit mode</translation>
+      <translation>Пераключае абраныя аб'екты ў рэжым змены</translation>
     </message>
     <message>
       <location filename="../CommandDoc.cpp" line="1649"/>
       <source>Activates or Deactivates the selected object's edit mode</source>
-      <translation type="unfinished">Activates or Deactivates the selected object's edit mode</translation>
+      <translation>Уключае ці адключае рэжым змены абраных аб'ектаў</translation>
     </message>
   </context>
   <context>
@@ -9925,13 +9927,13 @@ the current copy will be lost.
     <message>
       <location filename="../CommandDoc.cpp" line="273"/>
       <source>&amp;Export...</source>
-      <translation type="unfinished">&amp;Export...</translation>
+      <translation>&amp;Экспартаваць...</translation>
     </message>
     <message>
       <location filename="../CommandDoc.cpp" line="274"/>
       <location filename="../CommandDoc.cpp" line="276"/>
       <source>Export an object in the active document</source>
-      <translation type="unfinished">Export an object in the active document</translation>
+      <translation>Экспартуе аб'ект у бягучы дакумент</translation>
     </message>
     <message>
       <location filename="../CommandDoc.cpp" line="414"/>
@@ -9941,7 +9943,7 @@ the current copy will be lost.
     <message>
       <location filename="../CommandDoc.cpp" line="415"/>
       <source>Select the objects to export before choosing Export.</source>
-      <translation type="unfinished">Select the objects to export before choosing Export.</translation>
+      <translation>Абярыце аб'екты для экспартавання, перш чым абраць каманду Экспартавання.</translation>
     </message>
   </context>
   <context>
@@ -9951,7 +9953,7 @@ the current copy will be lost.
       <location filename="../CommandDoc.cpp" line="1691"/>
       <location filename="../CommandDoc.cpp" line="1693"/>
       <source>Expression actions</source>
-      <translation type="unfinished">Expression actions</translation>
+      <translation>Дзеянні з выразам</translation>
     </message>
   </context>
   <context>
@@ -9959,13 +9961,13 @@ the current copy will be lost.
     <message>
       <location filename="../CommandFeat.cpp" line="55"/>
       <source>&amp;Recompute</source>
-      <translation type="unfinished">&amp;Recompute</translation>
+      <translation>&amp;Пералічыць</translation>
     </message>
     <message>
       <location filename="../CommandFeat.cpp" line="56"/>
       <location filename="../CommandFeat.cpp" line="58"/>
       <source>Recompute feature or document</source>
-      <translation type="unfinished">Recompute feature or document</translation>
+      <translation>Пералічае элементы ці дакументы</translation>
     </message>
   </context>
   <context>
@@ -9973,12 +9975,12 @@ the current copy will be lost.
     <message>
       <location filename="../CommandStd.cpp" line="512"/>
       <source>Donate</source>
-      <translation type="unfinished">Donate</translation>
+      <translation>Ахвяраваць</translation>
     </message>
     <message>
       <location filename="../CommandStd.cpp" line="513"/>
       <source>Donate to FreeCAD development</source>
-      <translation type="unfinished">Donate to FreeCAD development</translation>
+      <translation>Ахвяраваць на падтрымку FreeCAD</translation>
     </message>
   </context>
   <context>
@@ -9986,17 +9988,17 @@ the current copy will be lost.
     <message>
       <location filename="../CommandStd.cpp" line="651"/>
       <source>FreeCAD FAQ</source>
-      <translation type="unfinished">FreeCAD FAQ</translation>
+      <translation>Частыя пытанні FreeCAD</translation>
     </message>
     <message>
       <location filename="../CommandStd.cpp" line="652"/>
       <source>Frequently Asked Questions on the FreeCAD website</source>
-      <translation type="unfinished">Frequently Asked Questions on the FreeCAD website</translation>
+      <translation>Пытанні, якія часта задаюць на інтэрнэт-сайце FreeCAD</translation>
     </message>
     <message>
       <location filename="../CommandStd.cpp" line="654"/>
       <source>Frequently Asked Questions</source>
-      <translation type="unfinished">Frequently Asked Questions</translation>
+      <translation>Частыя пытанні</translation>
     </message>
   </context>
   <context>
@@ -10004,17 +10006,17 @@ the current copy will be lost.
     <message>
       <location filename="../CommandStd.cpp" line="623"/>
       <source>FreeCAD Forum</source>
-      <translation type="unfinished">FreeCAD Forum</translation>
+      <translation>Форум FreeCAD</translation>
     </message>
     <message>
       <location filename="../CommandStd.cpp" line="624"/>
       <source>The FreeCAD forum, where you can find help from other users</source>
-      <translation type="unfinished">The FreeCAD forum, where you can find help from other users</translation>
+      <translation>Форум FreeCAD, дзе вы можаце знайсці дапамогу ад іншых карыстальнікаў</translation>
     </message>
     <message>
       <location filename="../CommandStd.cpp" line="626"/>
       <source>The FreeCAD Forum</source>
-      <translation type="unfinished">The FreeCAD Forum</translation>
+      <translation>Форум FreeCAD</translation>
     </message>
   </context>
   <context>
@@ -10022,17 +10024,17 @@ the current copy will be lost.
     <message>
       <location filename="../CommandStd.cpp" line="595"/>
       <source>Python scripting documentation</source>
-      <translation type="unfinished">Python scripting documentation</translation>
+      <translation>Дакументацыя па стварэнню сцэнараў на Python</translation>
     </message>
     <message>
       <location filename="../CommandStd.cpp" line="596"/>
       <source>Python scripting documentation on the FreeCAD website</source>
-      <translation type="unfinished">Python scripting documentation on the FreeCAD website</translation>
+      <translation>Дакументацыя па напісанню сцэнараў на Python на інтэрнэт-сайце FreeCAD</translation>
     </message>
     <message>
       <location filename="../CommandStd.cpp" line="598"/>
       <source>PowerUsers documentation</source>
-      <translation type="unfinished">PowerUsers documentation</translation>
+      <translation>Дакументацыя для прасунутых карыстальнікаў</translation>
     </message>
   </context>
   <context>
@@ -10041,12 +10043,12 @@ the current copy will be lost.
       <location filename="../CommandStd.cpp" line="567"/>
       <location filename="../CommandStd.cpp" line="570"/>
       <source>Users documentation</source>
-      <translation type="unfinished">Users documentation</translation>
+      <translation>Карыстальніцкая дакументацыя</translation>
     </message>
     <message>
       <location filename="../CommandStd.cpp" line="568"/>
       <source>Documentation for users on the FreeCAD website</source>
-      <translation type="unfinished">Documentation for users on the FreeCAD website</translation>
+      <translation>Дакументацыя для карыстальнікаў на інтэрнэт-сайце FreeCAD</translation>
     </message>
   </context>
   <context>
@@ -10055,12 +10057,12 @@ the current copy will be lost.
       <location filename="../CommandStd.cpp" line="539"/>
       <location filename="../CommandStd.cpp" line="542"/>
       <source>FreeCAD Website</source>
-      <translation type="unfinished">FreeCAD Website</translation>
+      <translation>Інтэрнэт-сайт FreeCAD</translation>
     </message>
     <message>
       <location filename="../CommandStd.cpp" line="540"/>
       <source>The FreeCAD website</source>
-      <translation type="unfinished">The FreeCAD website</translation>
+      <translation>Інтэрнэт-сайт FreeCAD</translation>
     </message>
   </context>
   <context>
@@ -10068,13 +10070,13 @@ the current copy will be lost.
     <message>
       <location filename="../CommandView.cpp" line="327"/>
       <source>Freeze display</source>
-      <translation type="unfinished">Freeze display</translation>
+      <translation>Запомніць выгляд</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="328"/>
       <location filename="../CommandView.cpp" line="330"/>
       <source>Freezes the current view position</source>
-      <translation type="unfinished">Freezes the current view position</translation>
+      <translation>Запомніць бягучае становішча выгляду</translation>
     </message>
   </context>
   <context>
@@ -10082,12 +10084,12 @@ the current copy will be lost.
     <message>
       <location filename="../CommandStructure.cpp" line="92"/>
       <source>Create group</source>
-      <translation type="unfinished">Create group</translation>
+      <translation>Стварыць суполку</translation>
     </message>
     <message>
       <location filename="../CommandStructure.cpp" line="93"/>
       <source>Create a new group for ordering objects</source>
-      <translation type="unfinished">Create a new group for ordering objects</translation>
+      <translation>Стварыць новую суполка для ўпарадкаваных аб'ектаў</translation>
     </message>
   </context>
   <context>
@@ -10095,13 +10097,13 @@ the current copy will be lost.
     <message>
       <location filename="../CommandView.cpp" line="1129"/>
       <source>Hide all objects</source>
-      <translation type="unfinished">Hide all objects</translation>
+      <translation>Схаваць усе аб'екты</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="1130"/>
       <location filename="../CommandView.cpp" line="1131"/>
       <source>Hide all objects in the document</source>
-      <translation type="unfinished">Hide all objects in the document</translation>
+      <translation>Хавае ўсе аб'екты ў дакуменце</translation>
     </message>
   </context>
   <context>
@@ -10109,13 +10111,13 @@ the current copy will be lost.
     <message>
       <location filename="../CommandView.cpp" line="981"/>
       <source>Hide selection</source>
-      <translation type="unfinished">Hide selection</translation>
+      <translation>Схаваць абранае</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="982"/>
       <location filename="../CommandView.cpp" line="983"/>
       <source>Hide all selected objects</source>
-      <translation type="unfinished">Hide all selected objects</translation>
+      <translation>Хавае ўсе абраныя аб'екты</translation>
     </message>
   </context>
   <context>
@@ -10123,13 +10125,13 @@ the current copy will be lost.
     <message>
       <location filename="../CommandDoc.cpp" line="187"/>
       <source>&amp;Import...</source>
-      <translation type="unfinished">&amp;Import...</translation>
+      <translation>&amp;Імпартаваць...</translation>
     </message>
     <message>
       <location filename="../CommandDoc.cpp" line="188"/>
       <location filename="../CommandDoc.cpp" line="190"/>
       <source>Import a file in the active document</source>
-      <translation type="unfinished">Import a file in the active document</translation>
+      <translation>Імпартуе файл у бягучы дакумент</translation>
     </message>
     <message>
       <location filename="../CommandDoc.cpp" line="201"/>
@@ -10162,7 +10164,7 @@ the current copy will be lost.
     <message>
       <location filename="../CommandLink.cpp" line="541"/>
       <source>Import selected external link(s)</source>
-      <translation type="unfinished">Import selected external link(s)</translation>
+      <translation>Імпартуе абраныя вонкавыя сувязі</translation>
     </message>
   </context>
   <context>
@@ -10175,7 +10177,7 @@ the current copy will be lost.
     <message>
       <location filename="../CommandLink.cpp" line="605"/>
       <source>Import all links of the active document</source>
-      <translation type="unfinished">Import all links of the active document</translation>
+      <translation>Імпартуе ўсе сувязі бягучага дакумента</translation>
     </message>
   </context>
   <context>
@@ -10188,7 +10190,7 @@ the current copy will be lost.
     <message>
       <location filename="../CommandLink.cpp" line="209"/>
       <source>Create a link to the selected object(s)</source>
-      <translation type="unfinished">Create a link to the selected object(s)</translation>
+      <translation>Стварае сувязі на абраныя аб'екты</translation>
     </message>
   </context>
   <context>
@@ -10227,7 +10229,7 @@ the current copy will be lost.
     <message>
       <location filename="../CommandLink.cpp" line="493"/>
       <source>Replace the selected object(s) with link</source>
-      <translation type="unfinished">Replace the selected object(s) with link</translation>
+      <translation>Замяняе абраныя аб'екты на сувязі</translation>
     </message>
   </context>
   <context>
@@ -10414,7 +10416,7 @@ the current copy will be lost.
     <message>
       <location filename="../CommandDoc.cpp" line="534"/>
       <source>%1 document (*.FCStd)</source>
-      <translation type="unfinished">%1 document (*.FCStd)</translation>
+      <translation>Дакумент %1 (*.FCStd)</translation>
     </message>
     <message>
       <location filename="../CommandDoc.cpp" line="543"/>
@@ -10462,12 +10464,12 @@ the current copy will be lost.
       <location filename="../CommandStd.cpp" line="485"/>
       <location filename="../CommandStd.cpp" line="488"/>
       <source>Help Website</source>
-      <translation type="unfinished">Help Website</translation>
+      <translation>Інтэрнэт-сайт дапамогі</translation>
     </message>
     <message>
       <location filename="../CommandStd.cpp" line="486"/>
       <source>The website where the help is maintained</source>
-      <translation type="unfinished">The website where the help is maintained</translation>
+      <translation>Інтэрнэт-сайт, на якім знаходзіцца дапамога</translation>
     </message>
   </context>
   <context>
@@ -10625,12 +10627,12 @@ the current copy will be lost.
       <location filename="../CommandStd.cpp" line="679"/>
       <location filename="../CommandStd.cpp" line="682"/>
       <source>Python Website</source>
-      <translation type="unfinished">Python Website</translation>
+      <translation>Інтэрнэт-сайт Python</translation>
     </message>
     <message>
       <location filename="../CommandStd.cpp" line="680"/>
       <source>The official Python website</source>
-      <translation type="unfinished">The official Python website</translation>
+      <translation>Афіцыйны інтэрнэт-сайт Python</translation>
     </message>
   </context>
   <context>
@@ -10830,13 +10832,13 @@ the current copy will be lost.
     <message>
       <location filename="../CommandView.cpp" line="3637"/>
       <source>&amp;Bounding box</source>
-      <translation type="unfinished">&amp;Bounding box</translation>
+      <translation>&amp;Габарыты</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="3638"/>
       <location filename="../CommandView.cpp" line="3640"/>
       <source>Show selection bounding box</source>
-      <translation type="unfinished">Show selection bounding box</translation>
+      <translation>Паказаць габарыты абранага</translation>
     </message>
   </context>
   <context>
@@ -10970,13 +10972,13 @@ the current copy will be lost.
     <message>
       <location filename="../CommandView.cpp" line="3210"/>
       <source>Texture mapping...</source>
-      <translation type="unfinished">Texture mapping...</translation>
+      <translation>Супастаўленне тэкстуры...</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="3211"/>
       <location filename="../CommandView.cpp" line="3213"/>
       <source>Texture mapping</source>
-      <translation>Адлюстраванне тэкстуры</translation>
+      <translation>Супастаўленне тэкстуры</translation>
     </message>
   </context>
   <context>
@@ -11000,7 +11002,7 @@ the current copy will be lost.
       <location filename="../CommandMacro.cpp" line="295"/>
       <location filename="../CommandMacro.cpp" line="297"/>
       <source>Toggle breakpoint</source>
-      <translation type="unfinished">Toggle breakpoint</translation>
+      <translation>Пераключыць кропку прыпынку</translation>
     </message>
   </context>
   <context>
@@ -11008,13 +11010,13 @@ the current copy will be lost.
     <message>
       <location filename="../CommandView.cpp" line="599"/>
       <source>Clipping plane</source>
-      <translation type="unfinished">Clipping plane</translation>
+      <translation>Плоскасць перасеку</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="600"/>
       <location filename="../CommandView.cpp" line="602"/>
       <source>Toggles clipping plane for active view</source>
-      <translation type="unfinished">Toggles clipping plane for active view</translation>
+      <translation>Пераключыць плоскасць перасеку для бягучага выгляду</translation>
     </message>
   </context>
   <context>
@@ -11022,13 +11024,13 @@ the current copy will be lost.
     <message>
       <location filename="../CommandView.cpp" line="2011"/>
       <source>Toggle navigation/Edit mode</source>
-      <translation type="unfinished">Toggle navigation/Edit mode</translation>
+      <translation>Пераключыць навігацыю/рэжым змены</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="2012"/>
       <location filename="../CommandView.cpp" line="2013"/>
       <source>Toggle between navigation and edit mode</source>
-      <translation type="unfinished">Toggle between navigation and edit mode</translation>
+      <translation>Пераключае паміж навігацыяй і рэжымам змены</translation>
     </message>
   </context>
   <context>
@@ -11036,13 +11038,13 @@ the current copy will be lost.
     <message>
       <location filename="../CommandView.cpp" line="1051"/>
       <source>Toggle all objects</source>
-      <translation type="unfinished">Toggle all objects</translation>
+      <translation>Пераключыць усе аб'екты</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="1052"/>
       <location filename="../CommandView.cpp" line="1053"/>
       <source>Toggles visibility of all objects in the active document</source>
-      <translation type="unfinished">Toggles visibility of all objects in the active document</translation>
+      <translation>Пераключае бачнасць усіх аб'ектаў у бягучым дакуменце</translation>
     </message>
   </context>
   <context>
@@ -11056,7 +11058,7 @@ the current copy will be lost.
       <location filename="../CommandView.cpp" line="902"/>
       <location filename="../CommandView.cpp" line="903"/>
       <source>Toggles the property of the objects to get selected in the 3D-View</source>
-      <translation type="unfinished">Toggles the property of the objects to get selected in the 3D-View</translation>
+      <translation>Пераключае ўласцівасць аб'ектаў, якія будуць абраныя ў трохмерным прадстаўленні</translation>
     </message>
   </context>
   <context>
@@ -11070,7 +11072,7 @@ the current copy will be lost.
       <location filename="../CommandView.cpp" line="871"/>
       <location filename="../CommandView.cpp" line="872"/>
       <source>Toggles visibility</source>
-      <translation type="unfinished">Toggles visibility</translation>
+      <translation>Пераключае бачнасць</translation>
     </message>
   </context>
   <context>
@@ -11084,7 +11086,7 @@ the current copy will be lost.
       <location filename="../CommandWindow.cpp" line="317"/>
       <location filename="../CommandWindow.cpp" line="319"/>
       <source>Toggles this window</source>
-      <translation type="unfinished">Toggles this window</translation>
+      <translation>Пераключае бачнасць гэтага акна</translation>
     </message>
   </context>
   <context>
@@ -11112,7 +11114,7 @@ the current copy will be lost.
       <location filename="../CommandDoc.cpp" line="1543"/>
       <location filename="../CommandDoc.cpp" line="1544"/>
       <source>Transform the selected object in the 3d view</source>
-      <translation type="unfinished">Transform the selected object in the 3d view</translation>
+      <translation>Пераўтварае абраны аб'ект у трохмерным прадстаўленні</translation>
     </message>
   </context>
   <context>
@@ -11280,7 +11282,7 @@ the current copy will be lost.
       <location filename="../CommandView.cpp" line="2107"/>
       <location filename="../CommandView.cpp" line="2109"/>
       <source>Shows a 3D texture with manipulator</source>
-      <translation type="unfinished">Shows a 3D texture with manipulator</translation>
+      <translation>Паказвае трохмерную тэкстуру з дапамогай маніпулятара</translation>
     </message>
   </context>
   <context>
@@ -11602,7 +11604,7 @@ the current copy will be lost.
       <location filename="../CommandView.cpp" line="1782"/>
       <location filename="../CommandView.cpp" line="1784"/>
       <source>Extend the FreeCAD 3D Window to a Oculus Rift</source>
-      <translation type="unfinished">Extend the FreeCAD 3D Window to a Oculus Rift</translation>
+      <translation>Пашырае трохмернае акно FreeCAD у Oculus Rift</translation>
     </message>
   </context>
   <context>
@@ -11640,7 +11642,7 @@ the current copy will be lost.
       <location filename="../CommandWindow.cpp" line="418"/>
       <location filename="../CommandWindow.cpp" line="420"/>
       <source>Activates this window</source>
-      <translation type="unfinished">Activates this window</translation>
+      <translation>Задзейнічаць гэтае акно</translation>
     </message>
   </context>
   <context>
@@ -11778,7 +11780,7 @@ the current copy will be lost.
     <message>
       <location filename="../CommandView.cpp" line="3532"/>
       <source>Preselect the object in 3D view when mouse over the tree item</source>
-      <translation>Папярэдне абраць аб'ект у трохмерным выглядзе, калі паказальнік мышы наведзены на элемент дрэва</translation>
+      <translation>Папярэдне абраць аб'ект у трохмерным прадстаўленні, калі паказальнік мышы наведзены на элемент дрэва</translation>
     </message>
   </context>
   <context>
@@ -11845,7 +11847,7 @@ the current copy will be lost.
     <message>
       <location filename="../CommandView.cpp" line="3496"/>
       <source>Auto expand tree item when the corresponding object is selected in 3D view</source>
-      <translation>Аўтаматычнае разгортванне элемента дрэва, калі абраны адпаведны аб'ект у трохмерным выглядзе</translation>
+      <translation>Аўтаматычнае разгортванне элемента дрэва, калі абраны адпаведны аб'ект у трохмерным прадстаўленні</translation>
     </message>
   </context>
   <context>
@@ -11858,7 +11860,7 @@ the current copy will be lost.
     <message>
       <location filename="../CommandView.cpp" line="3478"/>
       <source>Auto switch to the 3D view containing the selected item</source>
-      <translation>Аўтаматычнае пераключэнне на трохмерны выгляд, які змяшчае абраны элемент</translation>
+      <translation>Аўтаматычнае пераключэнне на трохмернае прадстаўленне, якое змяшчае абраны элемент</translation>
     </message>
   </context>
   <context>
@@ -12152,12 +12154,12 @@ Do you still want to proceed?</translation>
   <context>
     <name>ViewIsometricCmd</name>
     <message>
-      <location filename="../NaviCube.cpp" line="1842"/>
+      <location filename="../NaviCube.cpp" line="1848"/>
       <source>Isometric</source>
       <translation>Ізаметрычны</translation>
     </message>
     <message>
-      <location filename="../NaviCube.cpp" line="1843"/>
+      <location filename="../NaviCube.cpp" line="1849"/>
       <source>Set NaviCube to Isometric mode</source>
       <translation type="unfinished">Set NaviCube to Isometric mode</translation>
     </message>
@@ -12165,12 +12167,12 @@ Do you still want to proceed?</translation>
   <context>
     <name>ViewOrthographicCmd</name>
     <message>
-      <location filename="../NaviCube.cpp" line="1862"/>
+      <location filename="../NaviCube.cpp" line="1868"/>
       <source>Orthographic</source>
       <translation type="unfinished">Orthographic</translation>
     </message>
     <message>
-      <location filename="../NaviCube.cpp" line="1863"/>
+      <location filename="../NaviCube.cpp" line="1869"/>
       <source>Set View to Orthographic mode</source>
       <translation type="unfinished">Set View to Orthographic mode</translation>
     </message>
@@ -12178,12 +12180,12 @@ Do you still want to proceed?</translation>
   <context>
     <name>ViewPerspectiveCmd</name>
     <message>
-      <location filename="../NaviCube.cpp" line="1883"/>
+      <location filename="../NaviCube.cpp" line="1889"/>
       <source>Perspective</source>
       <translation type="unfinished">Perspective</translation>
     </message>
     <message>
-      <location filename="../NaviCube.cpp" line="1884"/>
+      <location filename="../NaviCube.cpp" line="1890"/>
       <source>Set View to Perspective mode</source>
       <translation type="unfinished">Set View to Perspective mode</translation>
     </message>
@@ -12191,12 +12193,12 @@ Do you still want to proceed?</translation>
   <context>
     <name>ViewZoomToFitCmd</name>
     <message>
-      <location filename="../NaviCube.cpp" line="1904"/>
+      <location filename="../NaviCube.cpp" line="1910"/>
       <source>Zoom to fit</source>
       <translation type="unfinished">Zoom to fit</translation>
     </message>
     <message>
-      <location filename="../NaviCube.cpp" line="1905"/>
+      <location filename="../NaviCube.cpp" line="1911"/>
       <source>Zoom so that model fills the view</source>
       <translation type="unfinished">Zoom so that model fills the view</translation>
     </message>

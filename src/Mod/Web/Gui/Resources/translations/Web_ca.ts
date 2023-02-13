@@ -16,7 +16,7 @@
     <message>
       <location filename="../../Command.cpp" line="74"/>
       <source>Go back to the previous page</source>
-      <translation>Tornar a la pàgina anterior</translation>
+      <translation>Torna a la pàgina anterior</translation>
     </message>
   </context>
   <context>
@@ -34,7 +34,7 @@
     <message>
       <location filename="../../Command.cpp" line="103"/>
       <source>Go to the next page</source>
-      <translation>Anar a la pàgina següent</translation>
+      <translation>Ves a la pàgina següent</translation>
     </message>
   </context>
   <context>
@@ -48,7 +48,7 @@
       <location filename="../../Command.cpp" line="131"/>
       <location filename="../../Command.cpp" line="132"/>
       <source>Refresh web page</source>
-      <translation>Actualitzar la pàgina web</translation>
+      <translation>Actualitza la pàgina web</translation>
     </message>
   </context>
   <context>
@@ -90,7 +90,7 @@
       <location filename="../../Command.cpp" line="189"/>
       <location filename="../../Command.cpp" line="190"/>
       <source>Zoom in</source>
-      <translation>Ampliar</translation>
+      <translation>Apropa</translation>
     </message>
   </context>
   <context>
@@ -117,12 +117,12 @@
     <message>
       <location filename="../../Command.cpp" line="47"/>
       <source>Open website...</source>
-      <translation>Obrir web...</translation>
+      <translation>Obre el lloc web...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="48"/>
       <source>Opens a website in FreeCAD</source>
-      <translation>Obra una pàgina web a FreeCAD</translation>
+      <translation>Obre una pàgina web al FreeCAD</translation>
     </message>
   </context>
   <context>
@@ -151,12 +151,12 @@
     <message>
       <location filename="../../BrowserView.cpp" line="616"/>
       <source>There were errors while loading the file. Some data might have been modified or not recovered at all. Look in the report view for more specific information about the objects involved.</source>
-      <translation>Hi hagué errors quan es carregava el fitxer. Algunes dades s'han pogut modificar o no s'han recuperat. Cerqueu a la vista d'informes per a obtindre informació més específica sobre els objectes implicats.</translation>
+      <translation>S'han produït errors en carregar el fitxer. Algunes dades es poden haver modificades o no s'han recuperat. Consulteu la vista d'informe per a obtenir informació més específica sobre els objectes implicats.</translation>
     </message>
     <message>
       <location filename="../../BrowserView.cpp" line="619"/>
       <source>There were serious errors while loading the file. Some data might have been modified or not recovered at all. Saving the project will most likely result in loss of data.</source>
-      <translation>Hi ha hagut greus errors en carregar l'arxiu. Pot ser que s'hagin modificat dades o no s'hagin recuperat. Guardar el projecte molt probablement resulti en pèrdua de dades.</translation>
+      <translation>Hi ha hagut errors greus en carregar el fitxer. Pot ser que s'hagin modificat dades o no s'hagin recuperat. Desar el projecte probablement provocarà la pèrdua de dades.</translation>
     </message>
     <message>
       <location filename="../../BrowserView.cpp" line="783"/>
@@ -169,12 +169,12 @@
     <message>
       <location filename="../../BrowserView.cpp" line="362"/>
       <source>Open in External Browser</source>
-      <translation>Obrir en un Navegador Extern</translation>
+      <translation>Obre en un navegador extern</translation>
     </message>
     <message>
       <location filename="../../BrowserView.cpp" line="365"/>
       <source>Open in new window</source>
-      <translation>Obrir en una finestra nova</translation>
+      <translation>Obre en una finestra nova</translation>
     </message>
     <message>
       <location filename="../../BrowserView.cpp" line="411"/>

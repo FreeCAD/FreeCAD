@@ -107,7 +107,7 @@
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="266"/>
       <source>Maximum fragment size</source>
-      <translation type="unfinished">Maximum fragment size</translation>
+      <translation>Максимальный размер фрагмента</translation>
     </message>
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="385"/>
@@ -184,17 +184,17 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="101"/>
       <source>Unable to explode %s</source>
-      <translation type="unfinished">Unable to explode %s</translation>
+      <translation>Не удалось разъединить %s</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="148"/>
       <source>Convert Edges to Faces</source>
-      <translation type="unfinished">Convert Edges to Faces</translation>
+      <translation>Преобразовать рёбра в грани</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="308"/>
       <source>Please select 3 objects first</source>
-      <translation type="unfinished">Please select 3 objects first</translation>
+      <translation>Сначала необходимо выбрать 3 объекта</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="340"/>
@@ -236,7 +236,7 @@
       <location filename="../../OpenSCADCommands.py" line="358"/>
       <location filename="../../OpenSCADCommands.py" line="369"/>
       <source>Add OpenSCAD Element</source>
-      <translation type="unfinished">Add OpenSCAD Element</translation>
+      <translation>Добавить элемент OpenSCAD</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="443"/>
@@ -253,23 +253,23 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="474"/>
       <source>Minkowski sum</source>
-      <translation type="unfinished">Minkowski sum</translation>
+      <translation>Сумма Минковского</translation>
     </message>
     <message>
       <location filename="../../OpenSCADUtils.py" line="709"/>
       <source>OpenSCAD file contains both 2D and 3D shapes. That is not supported in this importer, all shapes must have the same dimensionality.</source>
-      <translation type="unfinished">OpenSCAD file contains both 2D and 3D shapes. That is not supported in this importer, all shapes must have the same dimensionality.</translation>
+      <translation>Файл OpenSCAD содержит как 2D, так и 3D фигуры. В данном модуле импорта это не поддерживается, все фигуры должны иметь одинаковую размерность.</translation>
     </message>
     <message>
       <location filename="../../OpenSCADUtils.py" line="721"/>
       <source>Error: either all shapes must be 2D or all shapes must be 3D</source>
-      <translation type="unfinished">Error: either all shapes must be 2D or all shapes must be 3D</translation>
+      <translation>Ошибка: все фигуры должны быть только 2D или только 3D</translation>
     </message>
     <message>
       <location filename="../../importCSG.py" line="557"/>
       <location filename="../../importCSG.py" line="1436"/>
       <source>Unsupported Function</source>
-      <translation type="unfinished">Unsupported Function</translation>
+      <translation>Неподдерживаемая функция</translation>
     </message>
     <message>
       <location filename="../../importCSG.py" line="557"/>
@@ -283,12 +283,12 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="109"/>
       <source>Explode Group</source>
-      <translation type="unfinished">Explode Group</translation>
+      <translation>Разъединить группу</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="112"/>
       <source>Remove fusion, apply placement to children, and color randomly</source>
-      <translation type="unfinished">Remove fusion, apply placement to children, and color randomly</translation>
+      <translation>Убирает слияние, размещает и меняет цвет дочерних элементов случайным образом</translation>
     </message>
   </context>
   <context>
@@ -309,7 +309,7 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="145"/>
       <source>Convert Edges To Faces</source>
-      <translation type="unfinished">Convert Edges To Faces</translation>
+      <translation>Преобразовать рёбра в грани</translation>
     </message>
   </context>
   <context>
@@ -395,7 +395,7 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="311"/>
       <source>Replace Object</source>
-      <translation type="unfinished">Replace Object</translation>
+      <translation>Заменить объект</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="314"/>
@@ -408,12 +408,12 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="323"/>
       <source>Remove Objects and their Children</source>
-      <translation type="unfinished">Remove Objects and their Children</translation>
+      <translation>Удалить объекты и их дочерние элементы</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="326"/>
       <source>Removes the selected objects and all children that are not referenced from other objects</source>
-      <translation type="unfinished">Removes the selected objects and all children that are not referenced from other objects</translation>
+      <translation>Удаляет выбранные объекты и все дочерние, на которые нет ссылок из других объектов</translation>
     </message>
   </context>
   <context>
@@ -421,12 +421,12 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="517"/>
       <source>Add OpenSCAD Element...</source>
-      <translation type="unfinished">Add OpenSCAD Element...</translation>
+      <translation>Добавить элемент OpenSCAD...</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="521"/>
       <source>Add an OpenSCAD element by entering OpenSCAD code and executing the OpenSCAD binary</source>
-      <translation type="unfinished">Add an OpenSCAD element by entering OpenSCAD code and executing the OpenSCAD binary</translation>
+      <translation>Добавить элемент OpenSCAD, введя скрипт и запустив OpenSCAD</translation>
     </message>
   </context>
   <context>
@@ -452,7 +452,7 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="555"/>
       <source>Use OpenSCAD to create a hull</source>
-      <translation type="unfinished">Use OpenSCAD to create a hull</translation>
+      <translation>Использовать OpenSCAD для создания выпуклой оболочки</translation>
     </message>
   </context>
   <context>
@@ -460,12 +460,12 @@
     <message>
       <location filename="../../InitGui.py" line="152"/>
       <source>OpenSCAD Tools</source>
-      <translation type="unfinished">OpenSCAD Tools</translation>
+      <translation>Инструменты OpenSCAD</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="156"/>
       <source>Frequently-used Part WB tools</source>
-      <translation type="unfinished">Frequently-used Part WB tools</translation>
+      <translation>Часто используемые инструменты верстака Part</translation>
     </message>
   </context>
   <context>
@@ -473,12 +473,12 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="571"/>
       <source>Minkowski sum</source>
-      <translation type="unfinished">Minkowski sum</translation>
+      <translation>Сумма Минковского</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="574"/>
       <source>Use OpenSCAD to create a Minkowski sum</source>
-      <translation type="unfinished">Use OpenSCAD to create a Minkowski sum</translation>
+      <translation>Использовать OpenSCAD, чтобы сделать сумму Минковского</translation>
     </message>
   </context>
 </TS>

@@ -1628,7 +1628,7 @@
     <message>
       <location filename="../../Command.cpp" line="1632"/>
       <source>Project shape...</source>
-      <translation>Fläche projizieren...</translation>
+      <translation>Form projizieren...</translation>
     </message>
   </context>
   <context>
@@ -4077,7 +4077,7 @@ Schraffieren zu können; dies kann aber zu Performance-Einbußen bei komplexen M
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="229"/>
       <source>Include 2D Objects in projection</source>
-      <translation>2D-Objekte in die Projektion einbeziehen</translation>
+      <translation>2D-Objekte beim Projizieren berücksichtigen</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="232"/>
@@ -4431,7 +4431,7 @@ das Schraffieren einer Fläche mit einem PAT-Schraffurmuster</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="82"/>
       <source>Show arc center marks in views</source>
-      <translation>Zeige die Bogenmittenmarkierungen in den Ansichten an</translation>
+      <translation>Zeigt die Bogenmittenmarkierungen in den Ansichten an</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="85"/>
@@ -4441,7 +4441,7 @@ das Schraffieren einer Fläche mit einem PAT-Schraffurmuster</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="113"/>
       <source>Show arc centers in printed output</source>
-      <translation>Zeige die Bogenmittenmarkierungen in Ausdrucken an</translation>
+      <translation>Zeigt die Bogenmittenmarkierungen in Ausdrucken an</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="116"/>
@@ -4884,7 +4884,7 @@ Dies kann die Reaktionszeit verlangsamen.</translation>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="160"/>
       <source>Automatically distribute secondary views
 for ProjectionGroups</source>
-      <translation>Automatisch zweitrangige Ansichten
+      <translation>Automatisch sekundäre Ansichten
 für Ansichtengruppen verteilen</translation>
     </message>
     <message>
@@ -7182,7 +7182,7 @@ Du kannst weitere Punkte auswählen, um Liniensegmente zu erhalten.</translation
     <message>
       <location filename="../../TaskProjGroup.ui" line="353"/>
       <source>Secondary Projections</source>
-      <translation>Sekundäre Projektionen</translation>
+      <translation>Sekundäre Ansichten</translation>
     </message>
     <message>
       <location filename="../../TaskProjGroup.ui" line="367"/>
@@ -7282,7 +7282,7 @@ mit dem vorgegebenen X/Y-Abstand</translation>
     <message>
       <location filename="../../TaskProjection.ui" line="14"/>
       <source>Project shapes</source>
-      <translation>Flächen projizieren</translation>
+      <translation>Formen projizieren</translation>
     </message>
     <message>
       <location filename="../../TaskProjection.ui" line="22"/>
@@ -8269,7 +8269,7 @@ mit dem vorgegebenen X/Y-Abstand</translation>
     <message>
       <location filename="../../../TechDrawTools/CommandAxoLengthDimension.py" line="50"/>
       <source>Axonometric length dimension</source>
-      <translation type="unfinished">Axonometric length dimension</translation>
+      <translation>Axonometrisches Längenmaß</translation>
     </message>
     <message>
       <location filename="../../../TechDrawTools/CommandAxoLengthDimension.py" line="57"/>
@@ -8278,11 +8278,11 @@ mit dem vorgegebenen X/Y-Abstand</translation>
                 - select second edge to define the direction of the extension lines&lt;br&gt;
                 - optional: select two more vertexes which define the measurement instead of the length&lt;br&gt;
                   of the first selected edge</source>
-      <translation type="unfinished">Create an axonometric length dimension&lt;br&gt;
-                - select first edge to define direction and length of the dimension line&lt;br&gt;
-                - select second edge to define the direction of the extension lines&lt;br&gt;
-                - optional: select two more vertexes which define the measurement instead of the length&lt;br&gt;
-                  of the first selected edge</translation>
+      <translation>Erstellt ein axonometrisches Längenmaß&lt;br&gt;
+                - Die erste Kante auswählen, um Ausrichtung und Länge der Maßlinie festzulegen&lt;br&gt;
+                - Die zweite Kante auswählen, um die Ausrichtung der Maßhilfslinien festzulegen&lt;br&gt;
+                - optional: Zwei weitere Knoten auswählen, die das Maß festlegen, anstelle der Länge&lt;br&gt;
+                  der zuerst ausgewählten Kante</translation>
     </message>
   </context>
 </TS>
