@@ -23,6 +23,7 @@
 #ifndef PARTGUI_SECTIONCUTTING_H
 #define PARTGUI_SECTIONCUTTING_H
 
+#include <Inventor/SbBox3f.h>
 #include <QDialog>
 #include <App/DocumentObserver.h>
 
@@ -64,7 +65,7 @@ public:
     void reject();
 
 private:
-    Ui_SectionCut* ui;
+    std::unique_ptr<Ui_SectionCut> ui;
     std::vector<App::DocumentObjectT> ObjectsListVisible;
     App::Document* doc = nullptr; // pointer to active document
     bool hasBoxX = false;
