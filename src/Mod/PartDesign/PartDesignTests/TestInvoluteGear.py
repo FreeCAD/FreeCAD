@@ -125,7 +125,7 @@ class TestInvoluteGear(unittest.TestCase):
         root_diameter = pitch_diameter + 2 * ded_coef * m
         # the test purpose here is just to ensure the gear's parameters are used,
         # not super precise profile verification. Thus a lax delta is just file here.
-        delta = 0.1 # FIXME it seems that the top land arc is in the wrong direction, thus a larger tolerance.
+        delta = 0.01
         self.assertIntersection(hub.Shape, makeCircle(pitch_diameter/2), "Expecting intersection at pitch circle")
         self.assertNoIntersection(hub.Shape, makeCircle(tip_diameter/2 - delta), "Teeth extent below tip circle")
         self.assertNoIntersection(hub.Shape, makeCircle(root_diameter/2 + delta), "Teeth extend beyond root circle")

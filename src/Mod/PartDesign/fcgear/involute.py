@@ -312,11 +312,7 @@ def CreateInternalGear(w, m, Z, phi,
         if (not tipWithinInvolute):
             w.line(tip) # line from tip down to base circle
 
-        if split:
-            w.arc(tipR, Ra, 0) # arc across addendum circle
-        else:
-            #w.arc(tipR[-1], Ra, 0) # arc across addendum circle
-            w.arc(tipR, Ra, 0)
+        w.arc(tipR, Ra, 1) # arc across addendum circle
 
         if (not tipWithinInvolute):
             w.line(invR[0]) # line up to the base circle
@@ -329,7 +325,7 @@ def CreateInternalGear(w, m, Z, phi,
 
         if (rootNext[1] > rootR[1]):    # is there a section of root circle between fillets?
             w.arc(rootR, fRad, 1) # back fillet
-            w.arc(rootNext, Rroot, 0) # root circle arc
+            w.arc(rootNext, Rroot, 1) # root circle arc
 
         w.arc(filletNext, fRad, 1)
 
