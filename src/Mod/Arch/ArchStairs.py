@@ -236,7 +236,7 @@ class _CommandStairs:
 
         FreeCADGui.addModule("Draft")
         for obj in stairs:
-                Draft.autogroup(obj) # seems not working?
+            Draft.autogroup(obj) # seems not working?
 
         FreeCAD.ActiveDocument.commitTransaction()
         FreeCAD.ActiveDocument.recompute()
