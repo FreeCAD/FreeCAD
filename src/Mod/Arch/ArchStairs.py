@@ -508,7 +508,7 @@ class _Stairs(ArchComponent.Component):
                     else:
                         if obj.Landings == "At center":
                             landings = 1
-                            self.makeCurvedStairsWithLandings(obj,edge)
+                            self.makeCurvedStairsWithLanding(obj,edge)
                         else:
                             self.makeCurvedStairs(obj,edge)
 
