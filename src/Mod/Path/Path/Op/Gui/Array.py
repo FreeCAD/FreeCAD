@@ -24,7 +24,7 @@ import FreeCAD
 import FreeCADGui
 import Path
 import PathScripts
-from PathScripts.PathUtils import rotatePath
+from PathScripts.PathUtils import applyPlacementToPath
 from Path.Dressup.Utils import toolController
 from PySide import QtCore
 import math
@@ -412,7 +412,10 @@ class PathArray:
                     ang = 360
                     if self.copies > 0:
                         ang = self.angle / self.copies * (1 + i)
-                    np = rotatePath(b.Path, ang, self.centre)
+
+                    pl = FreeCAD.Placement()
+                    pl.rotate(self.centre, FreeCAD.Vector(0, 0, 1), ang)
+                    np = applyPlacementToPath(pl, b.Path)
                     output += np.toGCode()
 
         # return output

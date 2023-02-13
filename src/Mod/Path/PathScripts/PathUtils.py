@@ -839,11 +839,22 @@ def RtoIJ(startpoint, command):
 
     return newcommand
 
-def rotatePath(path, angle, centre):
+def getPathWithPlacement(pathobj):
     """
-    Rotates Path around given centre vector
-    Only X and Y is considered
+    Applies the rotation, and then postition of the obj's Placement
+    to the obj's path
     """
+
+    if not hasattr(pathobj, "Placement") or pathobj.Path is None:
+        return pathobj.Path
+
+    return applyPlacementToPath(pathobj.Placement, pathobj.Path)
+
+def applyPlacementToPath(placement, path):
+    """
+    Applies the rotation, and then postition of the placement to path
+    """
+
     CmdMoveRapid = ["G0", "G00"]
     CmdMoveStraight = ["G1", "G01"]
     CmdMoveCW = ["G2", "G02"]
@@ -853,9 +864,9 @@ def rotatePath(path, angle, centre):
     CmdMove = CmdMoveStraight + CmdMoveArc
 
     commands = []
-    ang = angle / 180 * math.pi
     currX = 0
     currY = 0
+    currZ = 0
     for cmd in path.Commands:
         if (
             (cmd.Name in CmdMoveRapid)
@@ -863,67 +874,33 @@ def rotatePath(path, angle, centre):
             or (cmd.Name in CmdDrill)
         ):
             params = cmd.Parameters
-            x = params.get("X")
-            if x is None:
-                x = currX
-            currX = x
-            y = params.get("Y")
-            if y is None:
-                y = currY
-            currY = y
+            currX = x = params.get("X", currX)
+            currY = y = params.get("Y", currY)
+            currZ = z = params.get("Z", currZ)
 
-            # "move" the centre to origin
-            x = x - centre.x
-            y = y - centre.y
+            x, y, z = placement.Rotation.multVec(FreeCAD.Vector(x, y ,z))
 
-            # rotation around origin:
-            nx = x * math.cos(ang) - y * math.sin(ang)
-            ny = y * math.cos(ang) + x * math.sin(ang)
-
-            # "move" the centre back and update
-            nx += centre.x
-            ny += centre.y
-
-            if nx != currX:
-                params.update({"X": nx})
-            if ny != currY:
-                params.update({"Y": ny})
+            if x != currX:
+                params.update({"X": x})
+            if y != currY:
+                params.update({"Y": y})
+            if z != currZ:
+                params.update({"Z": z})
 
             # Arcs need to have the I and J params rotated as well
             if cmd.Name in CmdMoveArc:
-                i = params.get("I")
-                if i is None:
-                    i = 0
-                j = params.get("J")
-                if j is None:
-                    j = 0
+                currI = i = params.get("I", 0)
+                currJ = j = params.get("J", 0)
 
-                ni = i * math.cos(ang) - j * math.sin(ang)
-                nj = j * math.cos(ang) + i * math.sin(ang)
+                i, j, k = placement.Rotation.multVec(FreeCAD.Vector(i, j, 0))
 
-                if ni != i:
-                    params.update({"I": ni})
-                if nj != j:
-                    params.update({"J": nj})
+                if currI != i:
+                    params.update({"I": i})
+                if currJ != j:
+                    params.update({"J": j})
 
             cmd.Parameters = params
-        commands.append(cmd)
+        commands.append(cmd.transform(placement))
     newPath = Path.Path(commands)
 
     return newPath
-
-def getPathWithPlacement(pathobj):
-    """
-    This function takes the pathobj's Placement Position, along with
-    the Z rotation and computes a new path.
-
-    A more "complete" version of this function would take the X and Y axis into
-    account for the rotation.  Currently it is limited by the rotatePath
-    function that was refactored out of the Array Operation.
-    """
-    placement = pathobj.Placement
-    xAngle, yAngle, zAngle = placement.Rotation.toEulerAngles('XYZ')
-    if xAngle != 0 or yAngle != 0:
-        Path.Log.warning("Invalid Path Placement: Rotations about X and Y axes are not currently supported and will be ignored")
-    commands = rotatePath(pathobj.Path, zAngle, FreeCAD.Vector(0, 0, 0)).Commands
-    return Path.Path([cm.transform(placement) for cm in commands])
