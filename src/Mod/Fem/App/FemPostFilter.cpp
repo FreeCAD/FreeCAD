@@ -663,49 +663,49 @@ short int FemPostWarpVectorFilter::mustExecute() const {
 // cut filter
 PROPERTY_SOURCE(Fem::FemPostCutFilter, Fem::FemPostFilter)
 
-FemPostCutFilter::FemPostCutFilter() : FemPostFilter() {
-
+FemPostCutFilter::FemPostCutFilter()
+    : FemPostFilter()
+{
     ADD_PROPERTY_TYPE(Function,
                       (nullptr),
                       "Cut",
                       App::Prop_None,
-                      "The function object which defines the clip cut function");
+                      "The function object which defines the cut function");
 
-    FilterPipeline clip;
+    FilterPipeline cut;
     m_cutter    = vtkSmartPointer<vtkCutter>::New();
-    clip.source = m_cutter;
-    clip.target = m_cutter;
-    addFilterPipeline(clip, "cut");
+    cut.source = m_cutter;
+    cut.target = m_cutter;
+    addFilterPipeline(cut, "cut");
     setActiveFilterPipeline("cut");
 }
 
-FemPostCutFilter::~FemPostCutFilter() {
+FemPostCutFilter::~FemPostCutFilter()
+{}
 
-}
-
-void FemPostCutFilter::onChanged(const Property* prop) {
-
+void FemPostCutFilter::onChanged(const Property* prop)
+{
     if (prop == &Function) {
-
-        if (Function.getValue() && Function.getValue()->isDerivedFrom(FemPostFunction::getClassTypeId())) {
-            m_cutter->SetCutFunction(static_cast<FemPostFunction*>(Function.getValue())->getImplicitFunction());
+        if (Function.getValue()
+            && Function.getValue()->isDerivedFrom(FemPostFunction::getClassTypeId())) {
+            m_cutter->SetCutFunction(
+                static_cast<FemPostFunction*>(Function.getValue())->getImplicitFunction());
         }
     }
 
     Fem::FemPostFilter::onChanged(prop);
 }
 
-short int FemPostCutFilter::mustExecute() const {
-
-    if (Function.isTouched()) {
-
+short int FemPostCutFilter::mustExecute() const
+{
+    if (Function.isTouched())
         return 1;
-    }
-    else return App::DocumentObject::mustExecute();
+    else
+        return App::DocumentObject::mustExecute();
 }
 
-DocumentObjectExecReturn* FemPostCutFilter::execute() {
-
+DocumentObjectExecReturn* FemPostCutFilter::execute()
+{
     if (!m_cutter->GetCutFunction())
         return StdReturn;
 
