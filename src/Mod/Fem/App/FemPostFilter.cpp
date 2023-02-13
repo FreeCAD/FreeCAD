@@ -46,27 +46,27 @@ FemPostFilter::FemPostFilter()
 }
 
 FemPostFilter::~FemPostFilter()
+{}
+
+void FemPostFilter::addFilterPipeline(const FemPostFilter::FilterPipeline& p, std::string name)
 {
-
-}
-
-void FemPostFilter::addFilterPipeline(const FemPostFilter::FilterPipeline& p, std::string name) {
     m_pipelines[name] = p;
 }
 
-FemPostFilter::FilterPipeline& FemPostFilter::getFilterPipeline(std::string name) {
+FemPostFilter::FilterPipeline& FemPostFilter::getFilterPipeline(std::string name)
+{
     return m_pipelines[name];
 }
 
-void FemPostFilter::setActiveFilterPipeline(std::string name) {
-
+void FemPostFilter::setActiveFilterPipeline(std::string name)
+{
     if (m_activePipeline != name && isValid()) {
         m_activePipeline = name;
     }
 }
 
-DocumentObjectExecReturn* FemPostFilter::execute() {
-
+DocumentObjectExecReturn* FemPostFilter::execute()
+{
     if (!m_pipelines.empty() && !m_activePipeline.empty()) {
         FemPostFilter::FilterPipeline& pipe = m_pipelines[m_activePipeline];
         vtkSmartPointer<vtkDataObject> data = getInputData();
@@ -88,8 +88,8 @@ DocumentObjectExecReturn* FemPostFilter::execute() {
     return StdReturn;
 }
 
-vtkDataObject* FemPostFilter::getInputData() {
-
+vtkDataObject* FemPostFilter::getInputData()
+{
     if (Input.getValue()) {
         if (Input.getValue()->getTypeId().isDerivedFrom(Base::Type::fromName("Fem::FemPostObject")))
             return Input.getValue<FemPostObject*>()->Data.getValue();
@@ -111,101 +111,18 @@ vtkDataObject* FemPostFilter::getInputData() {
     return nullptr;
 }
 
-
 // ***************************************************************************
-// clip filter
-PROPERTY_SOURCE(Fem::FemPostClipFilter, Fem::FemPostFilter)
-
-FemPostClipFilter::FemPostClipFilter() : FemPostFilter() {
-
-    ADD_PROPERTY_TYPE(Function,
-                      (nullptr),
-                      "Clip",
-                      App::Prop_None,
-                      "The function object which defines the clip regions");
-    ADD_PROPERTY_TYPE(InsideOut, (false), "Clip", App::Prop_None, "Invert the clip direction");
-    ADD_PROPERTY_TYPE(
-        CutCells,
-        (false),
-        "Clip",
-        App::Prop_None,
-        "Decides if cells are cut and interpolated or if the cells are kept as a whole");
-
-    FilterPipeline clip;
-    m_clipper  = vtkSmartPointer<vtkTableBasedClipDataSet>::New();
-    clip.source = m_clipper;
-    clip.target = m_clipper;
-    addFilterPipeline(clip, "clip");
-
-    FilterPipeline extr;
-    m_extractor = vtkSmartPointer<vtkExtractGeometry>::New();
-    extr.source = m_extractor;
-    extr.target = m_extractor;
-    addFilterPipeline(extr, "extract");
-
-    m_extractor->SetExtractInside(0);
-    setActiveFilterPipeline("extract");
-}
-
-FemPostClipFilter::~FemPostClipFilter() {
-
-}
-
-void FemPostClipFilter::onChanged(const Property* prop) {
-
-    if (prop == &Function) {
-
-        if (Function.getValue()
-            && Function.getValue()->isDerivedFrom(FemPostFunction::getClassTypeId())) {
-            m_clipper->SetClipFunction(
-                static_cast<FemPostFunction*>(Function.getValue())->getImplicitFunction());
-            m_extractor->SetImplicitFunction(
-                static_cast<FemPostFunction*>(Function.getValue())->getImplicitFunction());
-        }
-    }
-    else if (prop == &InsideOut) {
-
-        m_clipper->SetInsideOut(InsideOut.getValue());
-        m_extractor->SetExtractInside((InsideOut.getValue()) ? 1 : 0);
-    }
-    else if (prop == &CutCells) {
-
-        if (!CutCells.getValue())
-            setActiveFilterPipeline("extract");
-        else
-            setActiveFilterPipeline("clip");
-    };
-
-    Fem::FemPostFilter::onChanged(prop);
-}
-
-short int FemPostClipFilter::mustExecute() const {
-
-    if (Function.isTouched() ||
-        InsideOut.isTouched() ||
-        CutCells.isTouched()) {
-
-        return 1;
-    }
-    else
-        return App::DocumentObject::mustExecute();
-}
-
-DocumentObjectExecReturn* FemPostClipFilter::execute() {
-
-    if (!m_extractor->GetImplicitFunction())
-        return StdReturn;
-
-    return Fem::FemPostFilter::execute();
-}
+// in the following, the different filters sorted alphabetically
+// ***************************************************************************
 
 
 // ***************************************************************************
-// data along a line
+// data along line filter
 PROPERTY_SOURCE(Fem::FemPostDataAlongLineFilter, Fem::FemPostFilter)
 
-FemPostDataAlongLineFilter::FemPostDataAlongLineFilter() : FemPostFilter() {
-
+FemPostDataAlongLineFilter::FemPostDataAlongLineFilter()
+    : FemPostFilter()
+{
     ADD_PROPERTY_TYPE(Point1,
                       (Base::Vector3d(0.0, 0.0, 0.0)),
                       "DataAlongLine",
@@ -259,12 +176,11 @@ FemPostDataAlongLineFilter::FemPostDataAlongLineFilter() : FemPostFilter() {
     setActiveFilterPipeline("DataAlongLine");
 }
 
-FemPostDataAlongLineFilter::~FemPostDataAlongLineFilter() {
+FemPostDataAlongLineFilter::~FemPostDataAlongLineFilter()
+{}
 
-}
-
-DocumentObjectExecReturn* FemPostDataAlongLineFilter::execute() {
-
+DocumentObjectExecReturn* FemPostDataAlongLineFilter::execute()
+{
     //recalculate the filter
     return Fem::FemPostFilter::execute();
 }
@@ -289,7 +205,8 @@ void FemPostDataAlongLineFilter::handleChangedPropertyType(Base::XMLReader& read
     }
 }
 
-void FemPostDataAlongLineFilter::onChanged(const Property* prop) {
+void FemPostDataAlongLineFilter::onChanged(const Property* prop)
+{
     if (prop == &Point1) {
         const Base::Vector3d& vec1 = Point1.getValue();
         m_line->SetPoint1(vec1.x, vec1.y, vec1.z);
@@ -307,19 +224,16 @@ void FemPostDataAlongLineFilter::onChanged(const Property* prop) {
     Fem::FemPostFilter::onChanged(prop);
 }
 
-short int FemPostDataAlongLineFilter::mustExecute() const {
-
-    if (Point1.isTouched() ||
-        Point2.isTouched() ||
-        Resolution.isTouched()) {
-
+short int FemPostDataAlongLineFilter::mustExecute() const
+{
+    if (Point1.isTouched() || Point2.isTouched() || Resolution.isTouched())
         return 1;
-    }
-    else return App::DocumentObject::mustExecute();
+    else
+        return App::DocumentObject::mustExecute();
 }
 
-void FemPostDataAlongLineFilter::GetAxisData() {
-
+void FemPostDataAlongLineFilter::GetAxisData()
+{
     std::vector<double> coords;
     std::vector<double> values;
 
@@ -364,11 +278,12 @@ void FemPostDataAlongLineFilter::GetAxisData() {
 
 
 // ***************************************************************************
-// data point filter
+// data at point filter
 PROPERTY_SOURCE(Fem::FemPostDataAtPointFilter, Fem::FemPostFilter)
 
-FemPostDataAtPointFilter::FemPostDataAtPointFilter() : FemPostFilter() {
-
+FemPostDataAtPointFilter::FemPostDataAtPointFilter()
+    : FemPostFilter()
+{
     ADD_PROPERTY_TYPE(Center,
                       (Base::Vector3d(0.0, 0.0, 0.0)),
                       "DataAtPoint",
@@ -409,17 +324,17 @@ FemPostDataAtPointFilter::FemPostDataAtPointFilter() : FemPostFilter() {
     setActiveFilterPipeline("DataAtPoint");
 }
 
-FemPostDataAtPointFilter::~FemPostDataAtPointFilter() {
+FemPostDataAtPointFilter::~FemPostDataAtPointFilter()
+{}
 
-}
-
-DocumentObjectExecReturn* FemPostDataAtPointFilter::execute() {
-
+DocumentObjectExecReturn* FemPostDataAtPointFilter::execute()
+{
     //recalculate the filter
     return Fem::FemPostFilter::execute();
 }
 
-void FemPostDataAtPointFilter::onChanged(const Property* prop) {
+void FemPostDataAtPointFilter::onChanged(const Property* prop)
+{
     if (prop == &Center) {
         const Base::Vector3d& vec = Center.getValue();
         m_point->SetCenter(vec.x, vec.y, vec.z);
@@ -428,16 +343,16 @@ void FemPostDataAtPointFilter::onChanged(const Property* prop) {
     Fem::FemPostFilter::onChanged(prop);
 }
 
-short int FemPostDataAtPointFilter::mustExecute() const {
-
+short int FemPostDataAtPointFilter::mustExecute() const
+{
     if (Center.isTouched())
         return 1;
     else
         return App::DocumentObject::mustExecute();
 }
 
-void FemPostDataAtPointFilter::GetPointData() {
-
+void FemPostDataAtPointFilter::GetPointData()
+{
     std::vector<double> values;
 
     vtkSmartPointer<vtkDataObject> data = m_probe->GetOutputDataObject(0);
@@ -468,246 +383,84 @@ void FemPostDataAtPointFilter::GetPointData() {
 
 
 // ***************************************************************************
-// scalar clip filter
-PROPERTY_SOURCE(Fem::FemPostScalarClipFilter, Fem::FemPostFilter)
+// clip filter
+PROPERTY_SOURCE(Fem::FemPostClipFilter, Fem::FemPostFilter)
 
-FemPostScalarClipFilter::FemPostScalarClipFilter() : FemPostFilter() {
-
-    ADD_PROPERTY_TYPE(
-        Value, (0), "Clip", App::Prop_None, "The scalar value used to clip the selected field");
-    ADD_PROPERTY_TYPE(Scalars, (long(0)), "Clip", App::Prop_None, "The field used to clip");
-    ADD_PROPERTY_TYPE(InsideOut, (false), "Clip", App::Prop_None, "Invert the clip direction");
-
-    Value.setConstraints(&m_constraints);
-
-    FilterPipeline clip;
-    m_clipper  = vtkSmartPointer<vtkTableBasedClipDataSet>::New();
-    clip.source = m_clipper;
-    clip.target = m_clipper;
-    addFilterPipeline(clip, "clip");
-    setActiveFilterPipeline("clip");
-}
-
-FemPostScalarClipFilter::~FemPostScalarClipFilter() {
-
-}
-
-DocumentObjectExecReturn* FemPostScalarClipFilter::execute() {
-
-    std::string val;
-    if (Scalars.getValue() >= 0)
-        val = Scalars.getValueAsString();
-
-    std::vector<std::string> ScalarsArray;
-
-    vtkSmartPointer<vtkDataObject> data = getInputData();
-    if (!data || !data->IsA("vtkDataSet"))
-        return StdReturn;
-
-    vtkDataSet* dset = vtkDataSet::SafeDownCast(data);
-    vtkPointData* pd = dset->GetPointData();
-
-    // get all scalar fields
-    for (int i = 0; i < pd->GetNumberOfArrays(); ++i) {
-        if (pd->GetArray(i)->GetNumberOfComponents() == 1)
-            ScalarsArray.emplace_back(pd->GetArrayName(i));
-    }
-
-    App::Enumeration empty;
-    Scalars.setValue(empty);
-    m_scalarFields.setEnums(ScalarsArray);
-    Scalars.setValue(m_scalarFields);
-
-    // search if the current field is in the available ones and set it
-    std::vector<std::string>::iterator it =
-        std::find(ScalarsArray.begin(), ScalarsArray.end(), val);
-    if (!val.empty() && it != ScalarsArray.end())
-        Scalars.setValue(val.c_str());
-
-    //recalculate the filter
-    return Fem::FemPostFilter::execute();
-}
-
-void FemPostScalarClipFilter::onChanged(const Property* prop) {
-
-    if (prop == &Value) {
-        m_clipper->SetValue(Value.getValue());
-    }
-    else if (prop == &InsideOut) {
-        m_clipper->SetInsideOut(InsideOut.getValue());
-    }
-    else if (prop == &Scalars && (Scalars.getValue() >= 0)) {
-        m_clipper->SetInputArrayToProcess(0, 0, 0,
-            vtkDataObject::FIELD_ASSOCIATION_POINTS, Scalars.getValueAsString());
-        setConstraintForField();
-    }
-
-    Fem::FemPostFilter::onChanged(prop);
-}
-
-short int FemPostScalarClipFilter::mustExecute() const {
-
-    if (Value.isTouched() ||
-        InsideOut.isTouched() ||
-        Scalars.isTouched())
-        return 1;
-    else
-        return App::DocumentObject::mustExecute();
-}
-
-void FemPostScalarClipFilter::setConstraintForField() {
-
-    vtkSmartPointer<vtkDataObject> data = getInputData();
-    if (!data || !data->IsA("vtkDataSet"))
-        return;
-
-    vtkDataSet* dset = vtkDataSet::SafeDownCast(data);
-
-    vtkDataArray* pdata = dset->GetPointData()->GetArray(Scalars.getValueAsString());
-    // VTK cannot deliver data when the filer relies e.g. on a cut clip filter
-    // whose value is set so that all data are cut
-    if (!pdata)
-        return;
-    double p[2];
-    pdata->GetRange(p);
-    m_constraints.LowerBound = p[0];
-    m_constraints.UpperBound = p[1];
-    m_constraints.StepSize = (p[1] - p[0]) / 100.;
-}
-
-
-// ***************************************************************************
-// warp vector filter
-PROPERTY_SOURCE(Fem::FemPostWarpVectorFilter, Fem::FemPostFilter)
-
-FemPostWarpVectorFilter::FemPostWarpVectorFilter() : FemPostFilter() {
-
-    ADD_PROPERTY_TYPE(Factor,
-                      (0),
-                      "Warp",
-                      App::Prop_None,
-                      "The factor by which the vector is added to the node positions");
-    ADD_PROPERTY_TYPE(
-        Vector, (long(0)), "Warp", App::Prop_None, "The field added to the node position");
-
-    FilterPipeline warp;
-    m_warp      = vtkSmartPointer<vtkWarpVector>::New();
-    warp.source = m_warp;
-    warp.target = m_warp;
-    addFilterPipeline(warp, "warp");
-    setActiveFilterPipeline("warp");
-}
-
-FemPostWarpVectorFilter::~FemPostWarpVectorFilter() {
-
-}
-
-DocumentObjectExecReturn* FemPostWarpVectorFilter::execute() {
-
-    std::string val;
-    if (Vector.getValue() >= 0)
-        val = Vector.getValueAsString();
-
-    std::vector<std::string> VectorArray;
-
-    vtkSmartPointer<vtkDataObject> data = getInputData();
-    if (!data || !data->IsA("vtkDataSet"))
-        return StdReturn;
-
-    vtkDataSet* dset = vtkDataSet::SafeDownCast(data);
-    vtkPointData* pd = dset->GetPointData();
-
-    // get all vector fields
-    for (int i = 0; i < pd->GetNumberOfArrays(); ++i) {
-        if (pd->GetArray(i)->GetNumberOfComponents() == 3)
-            VectorArray.emplace_back(pd->GetArrayName(i));
-    }
-
-    App::Enumeration empty;
-    Vector.setValue(empty);
-    m_vectorFields.setEnums(VectorArray);
-    Vector.setValue(m_vectorFields);
-
-    // search if the current field is in the available ones and set it
-    std::vector<std::string>::iterator it =
-        std::find(VectorArray.begin(), VectorArray.end(), val);
-    if (!val.empty() && it != VectorArray.end())
-        Vector.setValue(val.c_str());
-
-    //recalculate the filter
-    return Fem::FemPostFilter::execute();
-}
-
-void FemPostWarpVectorFilter::onChanged(const Property* prop) {
-
-    if (prop == &Factor)
-        // since our mesh is in mm, we must scale the factor
-        m_warp->SetScaleFactor(1000 * Factor.getValue());
-    else if (prop == &Vector && (Vector.getValue() >= 0))
-        m_warp->SetInputArrayToProcess(0, 0, 0,
-            vtkDataObject::FIELD_ASSOCIATION_POINTS, Vector.getValueAsString());
-
-    Fem::FemPostFilter::onChanged(prop);
-}
-
-short int FemPostWarpVectorFilter::mustExecute() const {
-
-    if (Factor.isTouched() ||
-        Vector.isTouched())
-        return 1;
-    else
-        return App::DocumentObject::mustExecute();
-}
-
-
-// ***************************************************************************
-// cut filter
-PROPERTY_SOURCE(Fem::FemPostCutFilter, Fem::FemPostFilter)
-
-FemPostCutFilter::FemPostCutFilter()
+FemPostClipFilter::FemPostClipFilter()
     : FemPostFilter()
 {
     ADD_PROPERTY_TYPE(Function,
                       (nullptr),
-                      "Cut",
+                      "Clip",
                       App::Prop_None,
-                      "The function object which defines the cut function");
+                      "The function object which defines the clip regions");
+    ADD_PROPERTY_TYPE(InsideOut, (false), "Clip", App::Prop_None, "Invert the clip direction");
+    ADD_PROPERTY_TYPE(
+        CutCells,
+        (false),
+        "Clip",
+        App::Prop_None,
+        "Decides if cells are cut and interpolated or if the cells are kept as a whole");
 
-    FilterPipeline cut;
-    m_cutter    = vtkSmartPointer<vtkCutter>::New();
-    cut.source = m_cutter;
-    cut.target = m_cutter;
-    addFilterPipeline(cut, "cut");
-    setActiveFilterPipeline("cut");
+    FilterPipeline clip;
+    m_clipper = vtkSmartPointer<vtkTableBasedClipDataSet>::New();
+    clip.source = m_clipper;
+    clip.target = m_clipper;
+    addFilterPipeline(clip, "clip");
+
+    FilterPipeline extr;
+    m_extractor = vtkSmartPointer<vtkExtractGeometry>::New();
+    extr.source = m_extractor;
+    extr.target = m_extractor;
+    addFilterPipeline(extr, "extract");
+
+    m_extractor->SetExtractInside(0);
+    setActiveFilterPipeline("extract");
 }
 
-FemPostCutFilter::~FemPostCutFilter()
+FemPostClipFilter::~FemPostClipFilter()
 {}
 
-void FemPostCutFilter::onChanged(const Property* prop)
+void FemPostClipFilter::onChanged(const Property* prop)
 {
     if (prop == &Function) {
+
         if (Function.getValue()
             && Function.getValue()->isDerivedFrom(FemPostFunction::getClassTypeId())) {
-            m_cutter->SetCutFunction(
+            m_clipper->SetClipFunction(
+                static_cast<FemPostFunction*>(Function.getValue())->getImplicitFunction());
+            m_extractor->SetImplicitFunction(
                 static_cast<FemPostFunction*>(Function.getValue())->getImplicitFunction());
         }
     }
+    else if (prop == &InsideOut) {
+
+        m_clipper->SetInsideOut(InsideOut.getValue());
+        m_extractor->SetExtractInside((InsideOut.getValue()) ? 1 : 0);
+    }
+    else if (prop == &CutCells) {
+
+        if (!CutCells.getValue())
+            setActiveFilterPipeline("extract");
+        else
+            setActiveFilterPipeline("clip");
+    };
 
     Fem::FemPostFilter::onChanged(prop);
 }
 
-short int FemPostCutFilter::mustExecute() const
+short int FemPostClipFilter::mustExecute() const
 {
-    if (Function.isTouched())
+    if (Function.isTouched() || InsideOut.isTouched() || CutCells.isTouched())
+
         return 1;
     else
         return App::DocumentObject::mustExecute();
 }
 
-DocumentObjectExecReturn* FemPostCutFilter::execute()
+DocumentObjectExecReturn* FemPostClipFilter::execute()
 {
-    if (!m_cutter->GetCutFunction())
+    if (!m_extractor->GetImplicitFunction())
         return StdReturn;
 
     return Fem::FemPostFilter::execute();
@@ -720,14 +473,11 @@ PROPERTY_SOURCE(Fem::FemPostContoursFilter, Fem::FemPostFilter)
 FemPostContoursFilter::FemPostContoursFilter()
     : FemPostFilter()
 {
-    ADD_PROPERTY_TYPE(NumberOfContours, (10), "Contours",
-        App::Prop_None, "The number of contours");
-    ADD_PROPERTY_TYPE(Field, (long(0)), "Clip",
-        App::Prop_None, "The field used to clip");
-    ADD_PROPERTY_TYPE(VectorMode, ((long)0), "Contours",
-        App::Prop_None, "Select what vector field");
-    ADD_PROPERTY_TYPE(NoColor, (false), "Contours",
-        App::Prop_None, "Don't color the contours");
+    ADD_PROPERTY_TYPE(NumberOfContours, (10), "Contours", App::Prop_None, "The number of contours");
+    ADD_PROPERTY_TYPE(Field, (long(0)), "Clip", App::Prop_None, "The field used to clip");
+    ADD_PROPERTY_TYPE(
+        VectorMode, ((long)0), "Contours", App::Prop_None, "Select what vector field");
+    ADD_PROPERTY_TYPE(NoColor, (false), "Contours", App::Prop_None, "Don't color the contours");
 
     m_contourConstraints.LowerBound = 1;
     m_contourConstraints.UpperBound = 1000;
@@ -744,8 +494,7 @@ FemPostContoursFilter::FemPostContoursFilter()
 }
 
 FemPostContoursFilter::~FemPostContoursFilter()
-{
-}
+{}
 
 DocumentObjectExecReturn* FemPostContoursFilter::execute()
 {
@@ -827,24 +576,23 @@ void FemPostContoursFilter::onChanged(const Property* prop)
             }
             else {
                 for (vtkIdType tupleIdx = 0; tupleIdx < numTuples; ++tupleIdx) {
-                    componentArray->SetComponent(tupleIdx, 0,
-                        std::sqrt(pdata->GetComponent(tupleIdx, 0) *
-                            pdata->GetComponent(tupleIdx, 0) +
-                            pdata->GetComponent(tupleIdx, 1) *
-                            pdata->GetComponent(tupleIdx, 1) +
-                            pdata->GetComponent(tupleIdx, 2) *
-                            pdata->GetComponent(tupleIdx, 2) ) );
+                    componentArray->SetComponent(
+                        tupleIdx,
+                        0,
+                        std::sqrt(
+                            pdata->GetComponent(tupleIdx, 0) * pdata->GetComponent(tupleIdx, 0)
+                            + pdata->GetComponent(tupleIdx, 1) * pdata->GetComponent(tupleIdx, 1)
+                            + pdata->GetComponent(tupleIdx, 2) * pdata->GetComponent(tupleIdx, 2)));
                 }
             }
             // name the array
-            contourFieldName =
-                std::string(Field.getValueAsString()) + "_contour";
+            contourFieldName = std::string(Field.getValueAsString()) + "_contour";
             componentArray->SetName(contourFieldName.c_str());
 
             // add the array as new field and use it for the contour filter
             dset->GetPointData()->AddArray(componentArray);
-            m_contours->SetInputArrayToProcess(0, 0, 0,
-                vtkDataObject::FIELD_ASSOCIATION_POINTS, contourFieldName.c_str());
+            m_contours->SetInputArrayToProcess(
+                0, 0, 0, vtkDataObject::FIELD_ASSOCIATION_POINTS, contourFieldName.c_str());
             componentArray->GetRange(p);
             recalculateContours(p[0], p[1]);
             if (prop == &Data) {
@@ -966,6 +714,251 @@ void FemPostContoursFilter::refreshVectors()
     auto it = std::find(vectorArray.begin(), vectorArray.end(), vectorName);
     if (!vectorName.empty() && it != vectorArray.end())
         VectorMode.setValue(vectorName.c_str());
-    
+
     m_blockPropertyChanges = false;
+}
+
+
+// ***************************************************************************
+// cut filter
+PROPERTY_SOURCE(Fem::FemPostCutFilter, Fem::FemPostFilter)
+
+FemPostCutFilter::FemPostCutFilter()
+    : FemPostFilter()
+{
+    ADD_PROPERTY_TYPE(Function,
+                      (nullptr),
+                      "Cut",
+                      App::Prop_None,
+                      "The function object which defines the cut function");
+
+    FilterPipeline cut;
+    m_cutter = vtkSmartPointer<vtkCutter>::New();
+    cut.source = m_cutter;
+    cut.target = m_cutter;
+    addFilterPipeline(cut, "cut");
+    setActiveFilterPipeline("cut");
+}
+
+FemPostCutFilter::~FemPostCutFilter()
+{}
+
+void FemPostCutFilter::onChanged(const Property* prop)
+{
+    if (prop == &Function) {
+        if (Function.getValue()
+            && Function.getValue()->isDerivedFrom(FemPostFunction::getClassTypeId())) {
+            m_cutter->SetCutFunction(
+                static_cast<FemPostFunction*>(Function.getValue())->getImplicitFunction());
+        }
+    }
+
+    Fem::FemPostFilter::onChanged(prop);
+}
+
+short int FemPostCutFilter::mustExecute() const
+{
+    if (Function.isTouched())
+        return 1;
+    else
+        return App::DocumentObject::mustExecute();
+}
+
+DocumentObjectExecReturn* FemPostCutFilter::execute()
+{
+    if (!m_cutter->GetCutFunction())
+        return StdReturn;
+
+    return Fem::FemPostFilter::execute();
+}
+
+
+// ***************************************************************************
+// scalar clip filter
+PROPERTY_SOURCE(Fem::FemPostScalarClipFilter, Fem::FemPostFilter)
+
+FemPostScalarClipFilter::FemPostScalarClipFilter() : FemPostFilter() {
+
+    ADD_PROPERTY_TYPE(
+        Value, (0), "Clip", App::Prop_None, "The scalar value used to clip the selected field");
+    ADD_PROPERTY_TYPE(Scalars, (long(0)), "Clip", App::Prop_None, "The field used to clip");
+    ADD_PROPERTY_TYPE(InsideOut, (false), "Clip", App::Prop_None, "Invert the clip direction");
+
+    Value.setConstraints(&m_constraints);
+
+    FilterPipeline clip;
+    m_clipper  = vtkSmartPointer<vtkTableBasedClipDataSet>::New();
+    clip.source = m_clipper;
+    clip.target = m_clipper;
+    addFilterPipeline(clip, "clip");
+    setActiveFilterPipeline("clip");
+}
+
+FemPostScalarClipFilter::~FemPostScalarClipFilter() {
+
+}
+
+DocumentObjectExecReturn* FemPostScalarClipFilter::execute()
+{
+    std::string val;
+    if (Scalars.getValue() >= 0)
+        val = Scalars.getValueAsString();
+
+    std::vector<std::string> ScalarsArray;
+
+    vtkSmartPointer<vtkDataObject> data = getInputData();
+    if (!data || !data->IsA("vtkDataSet"))
+        return StdReturn;
+
+    vtkDataSet* dset = vtkDataSet::SafeDownCast(data);
+    vtkPointData* pd = dset->GetPointData();
+
+    // get all scalar fields
+    for (int i = 0; i < pd->GetNumberOfArrays(); ++i) {
+        if (pd->GetArray(i)->GetNumberOfComponents() == 1)
+            ScalarsArray.emplace_back(pd->GetArrayName(i));
+    }
+
+    App::Enumeration empty;
+    Scalars.setValue(empty);
+    m_scalarFields.setEnums(ScalarsArray);
+    Scalars.setValue(m_scalarFields);
+
+    // search if the current field is in the available ones and set it
+    std::vector<std::string>::iterator it =
+        std::find(ScalarsArray.begin(), ScalarsArray.end(), val);
+    if (!val.empty() && it != ScalarsArray.end())
+        Scalars.setValue(val.c_str());
+
+    //recalculate the filter
+    return Fem::FemPostFilter::execute();
+}
+
+void FemPostScalarClipFilter::onChanged(const Property* prop)
+{
+    if (prop == &Value) {
+        m_clipper->SetValue(Value.getValue());
+    }
+    else if (prop == &InsideOut) {
+        m_clipper->SetInsideOut(InsideOut.getValue());
+    }
+    else if (prop == &Scalars && (Scalars.getValue() >= 0)) {
+        m_clipper->SetInputArrayToProcess(0, 0, 0,
+            vtkDataObject::FIELD_ASSOCIATION_POINTS, Scalars.getValueAsString());
+        setConstraintForField();
+    }
+
+    Fem::FemPostFilter::onChanged(prop);
+}
+
+short int FemPostScalarClipFilter::mustExecute() const
+{
+    if (Value.isTouched() ||
+        InsideOut.isTouched() ||
+        Scalars.isTouched())
+        return 1;
+    else
+        return App::DocumentObject::mustExecute();
+}
+
+void FemPostScalarClipFilter::setConstraintForField()
+{
+    vtkSmartPointer<vtkDataObject> data = getInputData();
+    if (!data || !data->IsA("vtkDataSet"))
+        return;
+
+    vtkDataSet* dset = vtkDataSet::SafeDownCast(data);
+
+    vtkDataArray* pdata = dset->GetPointData()->GetArray(Scalars.getValueAsString());
+    // VTK cannot deliver data when the filer relies e.g. on a cut clip filter
+    // whose value is set so that all data are cut
+    if (!pdata)
+        return;
+    double p[2];
+    pdata->GetRange(p);
+    m_constraints.LowerBound = p[0];
+    m_constraints.UpperBound = p[1];
+    m_constraints.StepSize = (p[1] - p[0]) / 100.;
+}
+
+
+// ***************************************************************************
+// warp vector filter
+PROPERTY_SOURCE(Fem::FemPostWarpVectorFilter, Fem::FemPostFilter)
+
+FemPostWarpVectorFilter::FemPostWarpVectorFilter() : FemPostFilter()
+{
+    ADD_PROPERTY_TYPE(Factor,
+                      (0),
+                      "Warp",
+                      App::Prop_None,
+                      "The factor by which the vector is added to the node positions");
+    ADD_PROPERTY_TYPE(
+        Vector, (long(0)), "Warp", App::Prop_None, "The field added to the node position");
+
+    FilterPipeline warp;
+    m_warp      = vtkSmartPointer<vtkWarpVector>::New();
+    warp.source = m_warp;
+    warp.target = m_warp;
+    addFilterPipeline(warp, "warp");
+    setActiveFilterPipeline("warp");
+}
+
+FemPostWarpVectorFilter::~FemPostWarpVectorFilter()
+{}
+
+DocumentObjectExecReturn* FemPostWarpVectorFilter::execute()
+{
+    std::string val;
+    if (Vector.getValue() >= 0)
+        val = Vector.getValueAsString();
+
+    std::vector<std::string> VectorArray;
+
+    vtkSmartPointer<vtkDataObject> data = getInputData();
+    if (!data || !data->IsA("vtkDataSet"))
+        return StdReturn;
+
+    vtkDataSet* dset = vtkDataSet::SafeDownCast(data);
+    vtkPointData* pd = dset->GetPointData();
+
+    // get all vector fields
+    for (int i = 0; i < pd->GetNumberOfArrays(); ++i) {
+        if (pd->GetArray(i)->GetNumberOfComponents() == 3)
+            VectorArray.emplace_back(pd->GetArrayName(i));
+    }
+
+    App::Enumeration empty;
+    Vector.setValue(empty);
+    m_vectorFields.setEnums(VectorArray);
+    Vector.setValue(m_vectorFields);
+
+    // search if the current field is in the available ones and set it
+    std::vector<std::string>::iterator it =
+        std::find(VectorArray.begin(), VectorArray.end(), val);
+    if (!val.empty() && it != VectorArray.end())
+        Vector.setValue(val.c_str());
+
+    //recalculate the filter
+    return Fem::FemPostFilter::execute();
+}
+
+void FemPostWarpVectorFilter::onChanged(const Property* prop)
+{
+    if (prop == &Factor)
+        // since our mesh is in mm, we must scale the factor
+        m_warp->SetScaleFactor(1000 * Factor.getValue());
+    else if (prop == &Vector && (Vector.getValue() >= 0))
+        m_warp->SetInputArrayToProcess(0, 0, 0,
+            vtkDataObject::FIELD_ASSOCIATION_POINTS, Vector.getValueAsString());
+
+    Fem::FemPostFilter::onChanged(prop);
+}
+
+short int FemPostWarpVectorFilter::mustExecute() const
+{
+    if (Factor.isTouched() || Vector.isTouched())
+        return 1;
+    else
+        return App::DocumentObject::mustExecute();
 }
