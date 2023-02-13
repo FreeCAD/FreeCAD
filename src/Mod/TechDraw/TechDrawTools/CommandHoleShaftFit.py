@@ -36,10 +36,6 @@ import TechDrawTools
 class CommandHoleShaftFit:
     """Adds a hole or shaft fit to a selected dimension."""
 
-    def __init__(self):
-        """Initialize variables for the command that must exist at all times."""
-        pass
-
     def GetResources(self):
         """Return a dictionary with data that will be used by the button or menu item."""
         return {'Pixmap': 'actions/TechDraw_HoleShaftFit.svg',
@@ -69,4 +65,3 @@ class CommandHoleShaftFit:
 #
 # The command must be "registered" with a unique name by calling its class.
 Gui.addCommand('TechDraw_HoleShaftFit', CommandHoleShaftFit())
-

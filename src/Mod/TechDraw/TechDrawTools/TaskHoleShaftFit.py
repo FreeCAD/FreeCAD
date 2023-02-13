@@ -27,8 +27,6 @@ __version__ = "00.01"
 __date__ = "2023/02/07"
 
 from PySide.QtCore import QT_TRANSLATE_NOOP
-from PySide import QtCore
-import PySide.QtGui as QtGui
 
 import FreeCAD as App
 import FreeCADGui as Gui
@@ -40,16 +38,19 @@ import os
 class TaskHoleShaftFit:
     def __init__(self,sel):
 
+        loose = QT_TRANSLATE_NOOP("TechDraw_HoleShaftFit", "loose")
+        snug = QT_TRANSLATE_NOOP("TechDraw_HoleShaftFit", "snug")
+        press = QT_TRANSLATE_NOOP("TechDraw_HoleShaftFit", "press")
         self.isHole = True
         self.sel = sel
-        self.holeValues = [["h9","D10","loose"],["h9","E9","loose"],["h9","F8","Loose"],["h6","G7","loose"],
-                          ["c11","H11","loose"],["f7","H8","loose"],["h6","H7","loose"],["h7","H8","loose"],
-                          ["k6","H7","snug"],["n6","H7","snug"],["r6","H7","press"],["s6","H7","press"],
-                          ["h6","K7","snug"],["h6","N7","snug"],["h6","R7","press"],["h6","S7","press"]]
-        self.shaftValues = [["H11","c11","loose"],["H8","f7","loose"],["H7","h6","loose"],["H8","h7","loose"],
-                           ["D10","h9","loose"],["E9","h9","loose"],["F8","h9","loose"],["G7","h6","loose"],
-                           ["K7","h6","snug"],["N7","h6","snug"],["R7","h6","press"],["S7","h6","press"],
-                           ["H7","k6","snug"],["H7","n6","snug"],["H7","r6","press"],["H7","s6","press"]]
+        self.holeValues = [["h9","D10",loose],["h9","E9",loose],["h9","F8",loose],["h6","G7",loose],
+                          ["c11","H11",loose],["f7","H8",loose],["h6","H7",loose],["h7","H8",loose],
+                          ["k6","H7",snug],["n6","H7",snug],["r6","H7",press],["s6","H7",press],
+                          ["h6","K7",snug],["h6","N7",snug],["h6","R7",press],["h6","S7",press]]
+        self.shaftValues = [["H11","c11",loose],["H8","f7",loose],["H7","h6",loose],["H8","h7",loose],
+                           ["D10","h9",loose],["E9","h9",loose],["F8","h9",loose],["G7","h6",loose],
+                           ["K7","h6",snug],["N7","h6",snug],["R7","h6",press],["S7","h6",press],
+                           ["H7","k6",snug],["H7","n6",snug],["H7","r6",press],["H7","s6",press]]
 
         self._uiPath = App.getHomePath()
         self._uiPath = os.path.join(self._uiPath, "Mod/TechDraw/TechDrawTools/Gui/TaskHoleShaftFit.ui")
