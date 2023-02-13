@@ -48,7 +48,7 @@
       <location filename="../../Command.cpp" line="131"/>
       <location filename="../../Command.cpp" line="132"/>
       <source>Refresh web page</source>
-      <translation>Абнавіць старонку</translation>
+      <translation>Абнавіць інтэрнэт-старонку</translation>
     </message>
   </context>
   <context>
@@ -117,12 +117,12 @@
     <message>
       <location filename="../../Command.cpp" line="47"/>
       <source>Open website...</source>
-      <translation>Адчыніць вэб-сайт...</translation>
+      <translation>Адчыніць інтэрнэт-сайт...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="48"/>
       <source>Opens a website in FreeCAD</source>
-      <translation>Адчыняе вэб-сайт у FreeCAD</translation>
+      <translation>Адчыняе інтэрнэт-сайт у FreeCAD</translation>
     </message>
   </context>
   <context>

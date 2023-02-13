@@ -8282,7 +8282,7 @@ using the given X/Y Spacing</source>
     <message>
       <location filename="../../../TechDrawTools/CommandAxoLengthDimension.py" line="50"/>
       <source>Axonometric length dimension</source>
-      <translation type="unfinished">Axonometric length dimension</translation>
+      <translation>აქსონომეტრიული სიგრძის ზომა</translation>
     </message>
     <message>
       <location filename="../../../TechDrawTools/CommandAxoLengthDimension.py" line="57"/>
@@ -8291,11 +8291,11 @@ using the given X/Y Spacing</source>
                 - select second edge to define the direction of the extension lines&lt;br&gt;
                 - optional: select two more vertexes which define the measurement instead of the length&lt;br&gt;
                   of the first selected edge</source>
-      <translation type="unfinished">Create an axonometric length dimension&lt;br&gt;
-                - select first edge to define direction and length of the dimension line&lt;br&gt;
-                - select second edge to define the direction of the extension lines&lt;br&gt;
-                - optional: select two more vertexes which define the measurement instead of the length&lt;br&gt;
-                  of the first selected edge</translation>
+      <translation>აქსონომეტრიული სიგრის ზომის შექმნა&lt;br&gt;
+                - აირჩიეთ პირველი წიბო, რათა ზომის ხაზის მიმართულება და სიგრძე აღწეროთ&lt;br&gt;
+                 - აირჩიეთ მეორე წიბო, რათა გაფართოების ხაზების მიმართულება განსაზღვროთ&lt;br&gt;
+                 - არასავალდებულო: აირჩიეთ ერთი ან მეტი წვერო, რომელიც &lt;br&gt;
+                  პირველი მონიშნული წიბოს სიგრძის მაგიერ გაზოვას აღწერს</translation>
     </message>
   </context>
 </TS>

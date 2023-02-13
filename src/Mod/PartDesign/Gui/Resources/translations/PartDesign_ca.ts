@@ -3096,8 +3096,8 @@ clica altre cop per finalitzar la selecció</translation>
       <location filename="../../TaskThicknessParameters.ui" line="52"/>
       <source>- select an item to highlight it
 - double-click on an item to see the features</source>
-      <translation>- seleccionar un element per ressaltar-ho
-- fer doble clic en un element per veure les característiques</translation>
+      <translation>- Seleccioneu un element per ressaltar-ho
+- Feu doble clic en un element per veure les característiques</translation>
     </message>
     <message>
       <location filename="../../TaskThicknessParameters.ui" line="65"/>
@@ -3444,22 +3444,22 @@ clica altre cop per finalitzar la selecció</translation>
     <message>
       <location filename="../../CommandBody.cpp" line="882"/>
       <source>Select a feature from the list</source>
-      <translation>Seleccioneu un element de la llista</translation>
+      <translation>Seleccioneu una característica de la llista</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="953"/>
       <source>Move tip</source>
-      <translation>Mou punta</translation>
+      <translation>Mou la punta</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="954"/>
       <source>The moved feature appears after the currently set tip.</source>
-      <translation>La característica moguda apareix després de la punta configurada en aquest moment.</translation>
+      <translation>La característica moguda apareix després de la punta establerta actualment.</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="955"/>
       <source>Do you want the last feature to be the new tip?</source>
-      <translation>Vol que la darrera característica sigui la nova punta?</translation>
+      <translation>Voleu que la darrera característica sigui la nova punta?</translation>
     </message>
   </context>
   <context>

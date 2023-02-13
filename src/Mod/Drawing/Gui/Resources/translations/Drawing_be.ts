@@ -30,13 +30,13 @@
     <message>
       <location filename="../../Command.cpp" line="524"/>
       <source>&amp;Clip</source>
-      <translation>&amp;Зрэз</translation>
+      <translation>&amp;Выгляд</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="525"/>
       <location filename="../../Command.cpp" line="527"/>
       <source>Inserts a clip group in the active drawing</source>
-      <translation>Уставіць групу зрэзаў у бягучы чарцёж</translation>
+      <translation>Уставіць суполку выглядаў у бягучы чарцёж</translation>
     </message>
   </context>
   <context>
@@ -55,7 +55,7 @@
       <location filename="../../Command.cpp" line="716"/>
       <location filename="../../Command.cpp" line="718"/>
       <source>Inserts a Draft view of the selected object(s) in the active drawing</source>
-      <translation>Уставіць выгляд Чарнавіка абранага аб'екта(аў) у бягучы чарцёж</translation>
+      <translation>Уставіць выгляд Чарнавіка абраных аб'ектаў у бягучы чарцёж</translation>
     </message>
   </context>
   <context>
@@ -490,12 +490,12 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskOrthoViews.ui" line="681"/>
       <source>Show hidden lines</source>
-      <translation>Адлюстраваць схаваныя лініі</translation>
+      <translation>Паказаць схаваныя лініі</translation>
     </message>
     <message>
       <location filename="../../TaskOrthoViews.ui" line="688"/>
       <source>Show smooth lines</source>
-      <translation>Адлюстраваць плыўныя лініі</translation>
+      <translation>Паказаць плыўныя лініі</translation>
     </message>
     <message>
       <location filename="../../TaskOrthoViews.ui" line="699"/>
@@ -761,7 +761,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../ViewProviderPage.cpp" line="141"/>
       <source>Show drawing</source>
-      <translation>Адлюстраваць чарцёж</translation>
+      <translation>Паказаць чарцёж</translation>
     </message>
   </context>
   <context>

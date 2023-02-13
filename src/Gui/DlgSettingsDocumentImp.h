@@ -52,6 +52,7 @@ protected Q_SLOTS:
 
 protected:
     void changeEvent(QEvent *e) override;
+    void addLicenseTypes();
 
 private:
     std::unique_ptr<Ui_DlgSettingsDocument> ui;

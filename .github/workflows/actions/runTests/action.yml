@@ -19,7 +19,7 @@
 # *                                                                         *
 # ***************************************************************************
 
-name: generateCacheKey
+name: runTests
 description: "Linux: run unit tests, generate log and report"
 
 inputs:
@@ -43,7 +43,7 @@ runs:
       id: runTests
       shell: bash
       run: |
-        stdbuf -oL -eL ${{ inputs.testCommand }} |& sed -E '/[[:blank:]]*\([[:digit:]]{1,3} %\)[[:blank:]]*/d' | tee ${{ inputs.logFile }}
+        stdbuf -oL -eL ${{ inputs.testCommand }} |& sed -E '/[[:blank:]]*\([[:digit:]]{1,3} %\)[[:blank:]]*/d' | tee -a ${{ inputs.logFile }}
     - name: Write report
       shell: bash
       if: always()

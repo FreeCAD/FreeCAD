@@ -199,7 +199,7 @@ so that self intersection is avoided.</translation>
     <message>
       <location filename="../../Command.cpp" line="1708"/>
       <source>Chamfer</source>
-      <translation>Obori ivice</translation>
+      <translation>Obaranje ivica</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1709"/>
@@ -235,7 +235,7 @@ so that self intersection is avoided.</translation>
     <message>
       <location filename="../../Command.cpp" line="1737"/>
       <source>Draft</source>
-      <translation>Crtež</translation>
+      <translation>Zakošenje</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1738"/>

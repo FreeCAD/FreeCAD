@@ -57,7 +57,7 @@
       <location filename="../ui/openscadprefs-base.ui" line="139"/>
       <location filename="../ui/openscadprefs-base.ui" line="162"/>
       <source>The maximum number of faces of a polygon, prism or frustum. If fn is greater than this value the object is considered to be a circular. Set to 0 for no limit</source>
-      <translation>Найбольшая колькасць граняў шматкутніка, прызмы альбо ўсечанага конусу. Калі fn больш гэтага значэння, то аб'ект лічыцца кругавым. Ужыць 0, каб адключыць абмежаванні</translation>
+      <translation>Найбольшая колькасць граняў шматкутніка, прызмы ці ўсечанага конусу. Калі fn болей гэтага значэння, то аб'ект лічыцца кругавым. Ужыць 0, каб адключыць абмежаванні</translation>
     </message>
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="142"/>
@@ -72,7 +72,7 @@
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="195"/>
       <source>The transfer mechanism for getting data to and from OpenSCAD</source>
-      <translation>Механізм перадачы дадзеных у і з OpenSCAD</translation>
+      <translation>Механізм перадачы дадзеных у OpenSCAD і з яго</translation>
     </message>
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="205"/>
@@ -118,12 +118,12 @@
       <location filename="../ui/openscadprefs-base.ui" line="286"/>
       <location filename="../ui/openscadprefs-base.ui" line="296"/>
       <source>Minimum angle for a fragment</source>
-      <translation>Найменшы кут фрагменту</translation>
+      <translation>Найменшы вугал фрагменту</translation>
     </message>
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="289"/>
       <source>angular (fa)</source>
-      <translation>кутні (fa)</translation>
+      <translation>вуглавы (fa)</translation>
     </message>
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="328"/>
@@ -248,7 +248,7 @@
       <location filename="../../OpenSCADCommands.py" line="469"/>
       <location filename="../../OpenSCADCommands.py" line="473"/>
       <source>Mesh Boolean</source>
-      <translation>Паліганальная сетка - лагічнае значэнне</translation>
+      <translation>Лагічная аперацыя з паліганальнай сеткай</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="474"/>
@@ -258,12 +258,12 @@
     <message>
       <location filename="../../OpenSCADUtils.py" line="709"/>
       <source>OpenSCAD file contains both 2D and 3D shapes. That is not supported in this importer, all shapes must have the same dimensionality.</source>
-      <translation>Файл OpenSCAD змяшчае як двухмерныя, так і трохмерныя формы. У гэтым імпарцёры такое не падтрымліваецца, усе формы павінны мець аднолькавую памернасць.</translation>
+      <translation>Файл OpenSCAD змяшчае як двухмерныя, так і трохмерныя фігуры. У гэтым імпарцёры такое не падтрымліваецца, усе формы павінны мець аднолькавую памернасць.</translation>
     </message>
     <message>
       <location filename="../../OpenSCADUtils.py" line="721"/>
       <source>Error: either all shapes must be 2D or all shapes must be 3D</source>
-      <translation>Памылка: альбо ўсе фігуры павінны быць дзвюхмерныя, альбо ўсе фігуры павінны быць трохмерныя</translation>
+      <translation>Памылка: альбо ўсе фігуры павінны быць дзвюхмернымі, альбо ўсе фігуры павінны быць трохмернымі</translation>
     </message>
     <message>
       <location filename="../../importCSG.py" line="557"/>
@@ -434,7 +434,7 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="532"/>
       <source>Mesh Boolean...</source>
-      <translation>Паліганальная сетка - лагічнае значэнне...</translation>
+      <translation>Лагічная аперацыя з паліганальнай сеткай...</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="536"/>

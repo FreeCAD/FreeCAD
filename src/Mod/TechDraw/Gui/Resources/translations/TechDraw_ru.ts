@@ -8279,7 +8279,7 @@ using the given X/Y Spacing</source>
     <message>
       <location filename="../../../TechDrawTools/CommandAxoLengthDimension.py" line="50"/>
       <source>Axonometric length dimension</source>
-      <translation type="unfinished">Axonometric length dimension</translation>
+      <translation>Измерение длин в аксонометрической проекции</translation>
     </message>
     <message>
       <location filename="../../../TechDrawTools/CommandAxoLengthDimension.py" line="57"/>
@@ -8288,11 +8288,11 @@ using the given X/Y Spacing</source>
                 - select second edge to define the direction of the extension lines&lt;br&gt;
                 - optional: select two more vertexes which define the measurement instead of the length&lt;br&gt;
                   of the first selected edge</source>
-      <translation type="unfinished">Create an axonometric length dimension&lt;br&gt;
-                - select first edge to define direction and length of the dimension line&lt;br&gt;
-                - select second edge to define the direction of the extension lines&lt;br&gt;
-                - optional: select two more vertexes which define the measurement instead of the length&lt;br&gt;
-                  of the first selected edge</translation>
+      <translation>Создать аксонометрический размер&lt;br&gt;
+                - выберите первое ребро для определения направления и длины размерной линии&lt;br&gt;
+                - выберите второе ребро для определения направления продления линии&lt;br&gt;
+                - опционально: выберите две вершины, которые станут размерной базой вместо&lt;br&gt;
+                  первого выделенного ребра</translation>
     </message>
   </context>
 </TS>

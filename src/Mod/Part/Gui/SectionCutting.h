@@ -61,14 +61,18 @@ protected Q_SLOTS:
     void onFlipZclicked();
     void onRefreshCutPBclicked();
     void onCutColorclicked();
-    void onTransparencySliderMoved(int);
-    void onTransparencyChanged(int);
+    void onTransparencyHSMoved(int);
+    void onTransparencyHSChanged(int);
+    void onGroupBoxIntersectingToggled();
+    void onBFragColorclicked();
+    void onBFragTransparencyHSMoved(int);
+    void onBFragTransparencyHSChanged(int);
 
 public:
     void reject() override;
 
 private:
-    Ui_SectionCut* ui;
+    std::unique_ptr<Ui_SectionCut> ui;
     std::vector<App::DocumentObjectT> ObjectsListVisible;
     App::Document* doc = nullptr; // pointer to active document
     bool hasBoxX = false;
@@ -90,6 +94,8 @@ private:
     const char* CutYName = "SectionCutY";
     const char* CutZName = "SectionCutZ";
     void changeCutBoxColors();
+    App::DocumentObject* CreateBooleanFragments(App::Document* doc);
+    void setBooleanFragmentsColor();
 };
 
 } // namespace PartGui

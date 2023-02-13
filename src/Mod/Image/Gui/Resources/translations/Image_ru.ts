@@ -73,7 +73,7 @@
     <message>
       <location filename="../../OpenGLImageBox.cpp" line="394"/>
       <source>Undefined type of colour space for image viewing</source>
-      <translation>Неопределённый тип цветового пространства для просмотра изображений</translation>
+      <translation>Неопределенный тип цветового пространства для просмотра изображений</translation>
     </message>
   </context>
   <context>
@@ -252,7 +252,7 @@
     <message>
       <location filename="../../../ImageTools/_CommandImageScaling.py" line="159"/>
       <source>Select image plane</source>
-      <translation type="unfinished">Select image plane</translation>
+      <translation>Выберите плоскость изображения</translation>
     </message>
     <message>
       <location filename="../../../ImageTools/_CommandImageScaling.py" line="184"/>

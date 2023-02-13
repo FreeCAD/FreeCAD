@@ -384,7 +384,7 @@ so that self intersection is avoided.</source>
     <message>
       <location filename="../../Command.cpp" line="1945"/>
       <source>Create a mirrored feature</source>
-      <translation>Создать элемент отраженый относительно оси симметрии</translation>
+      <translation>Отразить элемент</translation>
     </message>
   </context>
   <context>
@@ -415,7 +415,7 @@ so that self intersection is avoided.</source>
     <message>
       <location filename="../../CommandBody.cpp" line="826"/>
       <source>Move object after other object</source>
-      <translation>Поместить объект позади другого объекта</translation>
+      <translation>Изменить позицию в дереве</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="827"/>
@@ -523,12 +523,12 @@ so that self intersection is avoided.</source>
     <message>
       <location filename="../../Command.cpp" line="1007"/>
       <source>Pocket</source>
-      <translation>Вырез</translation>
+      <translation>Карман</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1008"/>
       <source>Create a pocket with the selected sketch</source>
-      <translation>Создать вырез на основе выбранного эскиза</translation>
+      <translation>Создать выемку на основе выбранного эскиза</translation>
     </message>
   </context>
   <context>
@@ -820,17 +820,17 @@ so that self intersection is avoided.</source>
     <message>
       <location filename="../../Command.cpp" line="299"/>
       <source>Edit ShapeBinder</source>
-      <translation type="unfinished">Edit ShapeBinder</translation>
+      <translation>Редактировать связующую форму</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="308"/>
       <source>Create ShapeBinder</source>
-      <translation type="unfinished">Create ShapeBinder</translation>
+      <translation>Создать связующую форму</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="391"/>
       <source>Create SubShapeBinder</source>
-      <translation type="unfinished">Create SubShapeBinder</translation>
+      <translation>Создать подобъектную связующую форму</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="446"/>
@@ -846,7 +846,7 @@ so that self intersection is avoided.</source>
     <message>
       <location filename="../../SketchWorkflow.cpp" line="247"/>
       <source>Create a Sketch on Face</source>
-      <translation type="unfinished">Create a Sketch on Face</translation>
+      <translation>Создать новый эскиз на грани</translation>
     </message>
     <message>
       <location filename="../../SketchWorkflow.cpp" line="487"/>
@@ -856,12 +856,12 @@ so that self intersection is avoided.</source>
     <message>
       <location filename="../../Command.cpp" line="2233"/>
       <source>Convert to MultiTransform feature</source>
-      <translation type="unfinished">Convert to MultiTransform feature</translation>
+      <translation>Преобразовать в элемент множественного преобразования</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2325"/>
       <source>Create Boolean</source>
-      <translation type="unfinished">Create Boolean</translation>
+      <translation>Булева операция</translation>
     </message>
     <message>
       <location filename="../../DlgActiveBody.cpp" line="104"/>
@@ -872,7 +872,7 @@ so that self intersection is avoided.</source>
     <message>
       <location filename="../../CommandBody.cpp" line="426"/>
       <source>Migrate legacy part design features to Bodies</source>
-      <translation type="unfinished">Migrate legacy part design features to Bodies</translation>
+      <translation>Преобразовать устаревшие элементы проектирования деталей в тела</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="571"/>
@@ -882,17 +882,17 @@ so that self intersection is avoided.</source>
     <message>
       <location filename="../../CommandBody.cpp" line="616"/>
       <source>Duplicate a PartDesign object</source>
-      <translation type="unfinished">Duplicate a PartDesign object</translation>
+      <translation>Дублировать объект PartDesign</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="739"/>
       <source>Move an object</source>
-      <translation type="unfinished">Move an object</translation>
+      <translation>Переместить объект</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="890"/>
       <source>Move an object inside tree</source>
-      <translation type="unfinished">Move an object inside tree</translation>
+      <translation>Переместить объект внутри дерева</translation>
     </message>
     <message>
       <location filename="../../TaskMultiTransformParameters.cpp" line="295"/>
@@ -902,7 +902,7 @@ so that self intersection is avoided.</source>
     <message>
       <location filename="../../TaskMultiTransformParameters.cpp" line="323"/>
       <source>Make LinearPattern</source>
-      <translation type="unfinished">Make LinearPattern</translation>
+      <translation>Создать линейный массив</translation>
     </message>
     <message>
       <location filename="../../TaskMultiTransformParameters.cpp" line="361"/>
@@ -1039,10 +1039,10 @@ so that self intersection is avoided.</source>
   - the active Body does not contain a base shape, so there is no
   material to be removed;
   - the selected sketch does not belong to the active Body.</source>
-      <translation type="unfinished">The requested feature cannot be created. The reason may be that:
-  - the active Body does not contain a base shape, so there is no
-  material to be removed;
-  - the selected sketch does not belong to the active Body.</translation>
+      <translation>Запрошенный элемент не может быть создан. Причина может состоять в том, что:
+  - активное тело не содержит базовой формы, поэтому нет
+  материала для удаления;
+  - выбранный эскиз не принадлежит активному телу.</translation>
     </message>
   </context>
   <context>
@@ -1053,10 +1053,10 @@ so that self intersection is avoided.</source>
   - the active Body does not contain a base shape, so there is no
   material to be removed;
   - the selected sketch does not belong to the active Body.</source>
-      <translation type="unfinished">The requested feature cannot be created. The reason may be that:
-  - the active Body does not contain a base shape, so there is no
-  material to be removed;
-  - the selected sketch does not belong to the active Body.</translation>
+      <translation>Запрошенный элемент не может быть создан. Причина может состоять в том, что:
+  - активное тело не содержит базовой формы, поэтому нет
+  материала для удаления;
+  - выбранный эскиз не принадлежит активному телу.</translation>
     </message>
   </context>
   <context>
@@ -1067,10 +1067,10 @@ so that self intersection is avoided.</source>
   - the active Body does not contain a base shape, so there is no
   material to be removed;
   - the selected sketch does not belong to the active Body.</source>
-      <translation type="unfinished">The requested feature cannot be created. The reason may be that:
-  - the active Body does not contain a base shape, so there is no
-  material to be removed;
-  - the selected sketch does not belong to the active Body.</translation>
+      <translation>Запрошенный элемент не может быть создан. Причина может состоять в том, что:
+  - активное тело не содержит базовой формы, поэтому нет
+  материала для удаления;
+  - выбранный эскиз не принадлежит активному телу.</translation>
     </message>
   </context>
   <context>
@@ -1460,7 +1460,7 @@ If zero, it is equal to Radius2</translation>
     <message>
       <location filename="../../TaskPrimitiveParameters.cpp" line="761"/>
       <source>The radii for cones must not be equal!</source>
-      <translation type="unfinished">The radii for cones must not be equal!</translation>
+      <translation>Радиусы конуса не должны совпадать!</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.cpp" line="836"/>
@@ -1472,17 +1472,17 @@ If zero, it is equal to Radius2</translation>
     <message>
       <location filename="../../TaskPrimitiveParameters.cpp" line="837"/>
       <source>X min must not be equal to X max!</source>
-      <translation type="unfinished">X min must not be equal to X max!</translation>
+      <translation>X мин. не должен быть равен X макс.!</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.cpp" line="842"/>
       <source>Y min must not be equal to Y max!</source>
-      <translation type="unfinished">Y min must not be equal to Y max!</translation>
+      <translation>Y мин. не должен быть равен Y макс.!</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.cpp" line="847"/>
       <source>Z min must not be equal to Z max!</source>
-      <translation type="unfinished">Z min must not be equal to Z max!</translation>
+      <translation>Z мин. не должен быть равен Z макс.!</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.cpp" line="885"/>
@@ -1503,8 +1503,8 @@ If zero, it is equal to Radius2</translation>
       <location filename="../../TaskChamferParameters.cpp" line="170"/>
       <source>Click button to enter selection mode,
 click again to end selection</source>
-      <translation type="unfinished">Click button to enter selection mode,
-click again to end selection</translation>
+      <translation>Нажмите кнопку, чтобы войти в режим выделения,
+нажмите еще раз для завершения выбора</translation>
     </message>
     <message>
       <location filename="../../TaskChamferParameters.ui" line="26"/>
@@ -1574,7 +1574,7 @@ click again to end selection</translation>
       <location filename="../../TaskChamferParameters.cpp" line="257"/>
       <location filename="../../TaskChamferParameters.cpp" line="259"/>
       <source>There must be at least one item</source>
-      <translation type="unfinished">There must be at least one item</translation>
+      <translation>Должен быть хотя бы один элемент</translation>
     </message>
     <message>
       <location filename="../../TaskChamferParameters.cpp" line="225"/>
@@ -1647,8 +1647,8 @@ click again to end selection</translation>
       <location filename="../../TaskDraftParameters.cpp" line="137"/>
       <source>Click button to enter selection mode,
 click again to end selection</source>
-      <translation type="unfinished">Click button to enter selection mode,
-click again to end selection</translation>
+      <translation>Нажмите кнопку, чтобы войти в режим выделения,
+нажмите еще раз для завершения выбора</translation>
     </message>
     <message>
       <location filename="../../TaskDraftParameters.ui" line="26"/>
@@ -1693,7 +1693,7 @@ click again to end selection</translation>
       <location filename="../../TaskDraftParameters.cpp" line="273"/>
       <location filename="../../TaskDraftParameters.cpp" line="275"/>
       <source>There must be at least one item</source>
-      <translation type="unfinished">There must be at least one item</translation>
+      <translation>Должен быть хотя бы один элемент</translation>
     </message>
     <message>
       <location filename="../../TaskDraftParameters.cpp" line="241"/>
@@ -1711,7 +1711,7 @@ click again to end selection</translation>
     <message>
       <location filename="../../TaskDressUpParameters.cpp" line="276"/>
       <source>Add all edges</source>
-      <translation type="unfinished">Add all edges</translation>
+      <translation>Добавить все рёбра</translation>
     </message>
     <message>
       <location filename="../../TaskDressUpParameters.cpp" line="284"/>
@@ -1727,7 +1727,7 @@ click again to end selection</translation>
       <location filename="../../TaskDressUpParameters.cpp" line="303"/>
       <location filename="../../TaskDressUpParameters.cpp" line="305"/>
       <source>There must be at least one item</source>
-      <translation type="unfinished">There must be at least one item</translation>
+      <translation>Должен быть хотя бы один элемент</translation>
     </message>
   </context>
   <context>
@@ -1767,7 +1767,7 @@ click again to end selection</translation>
     <message>
       <location filename="../../TaskExtrudeParameters.cpp" line="894"/>
       <source>Click on a face in the model</source>
-      <translation type="unfinished">Click on a face in the model</translation>
+      <translation>Выберите грань внутри модели</translation>
     </message>
   </context>
   <context>
@@ -1876,8 +1876,8 @@ click again to end selection</translation>
       <location filename="../../TaskFilletParameters.cpp" line="124"/>
       <source>Click button to enter selection mode,
 click again to end selection</source>
-      <translation type="unfinished">Click button to enter selection mode,
-click again to end selection</translation>
+      <translation>Нажмите кнопку, чтобы войти в режим выделения,
+нажмите еще раз для завершения выбора</translation>
     </message>
     <message>
       <location filename="../../TaskFilletParameters.ui" line="26"/>
@@ -1912,7 +1912,7 @@ click again to end selection</translation>
       <location filename="../../TaskFilletParameters.cpp" line="211"/>
       <location filename="../../TaskFilletParameters.cpp" line="213"/>
       <source>There must be at least one item</source>
-      <translation type="unfinished">There must be at least one item</translation>
+      <translation>Должен быть хотя бы один элемент</translation>
     </message>
     <message>
       <location filename="../../TaskFilletParameters.cpp" line="179"/>
@@ -2037,7 +2037,7 @@ click again to end selection</translation>
     <message>
       <location filename="../../TaskHelixParameters.ui" line="233"/>
       <source>Radial growth:</source>
-      <translation type="unfinished">Radial growth:</translation>
+      <translation>Радиальный рост:</translation>
     </message>
     <message>
       <location filename="../../TaskHelixParameters.ui" line="255"/>
@@ -2072,7 +2072,7 @@ click again to end selection</translation>
     <message>
       <location filename="../../TaskHelixParameters.cpp" line="333"/>
       <source>Error: unsupported mode</source>
-      <translation type="unfinished">Error: unsupported mode</translation>
+      <translation>Ошибка: неподдерживаемый режим</translation>
     </message>
   </context>
   <context>
@@ -2090,7 +2090,7 @@ click again to end selection</translation>
     <message>
       <location filename="../../TaskHoleParameters.cpp" line="49"/>
       <source>Counterdrill</source>
-      <translation type="unfinished">Counterdrill</translation>
+      <translation>Зенковка с цилиндрическим хвостовиком</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.cpp" line="53"/>
@@ -2148,7 +2148,7 @@ click again to end selection</translation>
     <message>
       <location filename="../../TaskLinearPatternParameters.ui" line="44"/>
       <source>List can be reordered by dragging</source>
-      <translation type="unfinished">List can be reordered by dragging</translation>
+      <translation>Список может быть переупорядочен перетаскиванием</translation>
     </message>
     <message>
       <location filename="../../TaskLinearPatternParameters.ui" line="56"/>
@@ -2231,7 +2231,7 @@ click again to end selection</translation>
     <message>
       <location filename="../../TaskLoftParameters.ui" line="103"/>
       <source>List can be reordered by dragging</source>
-      <translation type="unfinished">List can be reordered by dragging</translation>
+      <translation>Список может быть переупорядочен перетаскиванием</translation>
     </message>
     <message>
       <location filename="../../TaskLoftParameters.ui" line="120"/>
@@ -2269,7 +2269,7 @@ click again to end selection</translation>
     <message>
       <location filename="../../TaskMirroredParameters.ui" line="44"/>
       <source>List can be reordered by dragging</source>
-      <translation type="unfinished">List can be reordered by dragging</translation>
+      <translation>Список может быть переупорядочен перетаскиванием</translation>
     </message>
     <message>
       <location filename="../../TaskMirroredParameters.ui" line="56"/>
@@ -2317,7 +2317,7 @@ click again to end selection</translation>
     <message>
       <location filename="../../TaskMultiTransformParameters.ui" line="44"/>
       <source>List can be reordered by dragging</source>
-      <translation type="unfinished">List can be reordered by dragging</translation>
+      <translation>Список может быть переупорядочен перетаскиванием</translation>
     </message>
     <message>
       <location filename="../../TaskMultiTransformParameters.ui" line="54"/>
@@ -2390,7 +2390,7 @@ click again to end selection</translation>
     <message>
       <location filename="../../TaskPadParameters.cpp" line="42"/>
       <source>Offset from face at which pad will end</source>
-      <translation type="unfinished">Offset from face at which pad will end</translation>
+      <translation>Смещение от конечной грани</translation>
     </message>
     <message>
       <location filename="../../TaskPadParameters.cpp" line="43"/>
@@ -2464,8 +2464,7 @@ click again to end selection</translation>
       <location filename="../../TaskPadPocketParameters.ui" line="92"/>
       <source>Set a direction or select an edge
 from the model as reference</source>
-      <translation type="unfinished">Set a direction or select an edge
-from the model as reference</translation>
+      <translation>Задайте направление или выберите ребро модели</translation>
     </message>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="97"/>
@@ -2491,8 +2490,8 @@ from the model as reference</translation>
       <location filename="../../TaskPadPocketParameters.ui" line="127"/>
       <source>Use custom vector for pad direction, otherwise
 the sketch plane's normal vector will be used</source>
-      <translation type="unfinished">Use custom vector for pad direction, otherwise
-the sketch plane's normal vector will be used</translation>
+      <translation>Укажите пользовательский вектор для направления кармана,
+в противном случае будет использована нормаль эскиза</translation>
     </message>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="140"/>
@@ -2502,7 +2501,7 @@ the sketch plane's normal vector will be used</translation>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="147"/>
       <source>x-component of direction vector</source>
-      <translation type="unfinished">x-component of direction vector</translation>
+      <translation>абсцисса вектора направления</translation>
     </message>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="169"/>
@@ -2512,7 +2511,7 @@ the sketch plane's normal vector will be used</translation>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="176"/>
       <source>y-component of direction vector</source>
-      <translation type="unfinished">y-component of direction vector</translation>
+      <translation>ордината вектора направления</translation>
     </message>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="198"/>
@@ -2522,14 +2521,13 @@ the sketch plane's normal vector will be used</translation>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="205"/>
       <source>z-component of direction vector</source>
-      <translation type="unfinished">z-component of direction vector</translation>
+      <translation>аппликата вектора направления</translation>
     </message>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="236"/>
       <source>If unchecked, the length will be
 measured along the specified direction</source>
-      <translation type="unfinished">If unchecked, the length will be
-measured along the specified direction</translation>
+      <translation>Если флажок не установлен, длина будет измеряться вдоль заданного направления</translation>
     </message>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="240"/>
@@ -2539,7 +2537,7 @@ measured along the specified direction</translation>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="253"/>
       <source>Applies length symmetrically to sketch plane</source>
-      <translation type="unfinished">Applies length symmetrically to sketch plane</translation>
+      <translation>Применяет длину симметрично плоскости эскиза</translation>
     </message>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="256"/>
@@ -2560,7 +2558,7 @@ measured along the specified direction</translation>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="275"/>
       <source>Taper angle</source>
-      <translation>Уклон выреза</translation>
+      <translation>Угол сужения</translation>
     </message>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="296"/>
@@ -2570,12 +2568,12 @@ measured along the specified direction</translation>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="320"/>
       <source>2nd taper angle</source>
-      <translation type="unfinished">2nd taper angle</translation>
+      <translation>Второй угол сужения</translation>
     </message>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="347"/>
       <source>Select face</source>
-      <translation type="unfinished">Select face</translation>
+      <translation>Выбрать грань</translation>
     </message>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="373"/>
@@ -2786,7 +2784,7 @@ measured along the specified direction</translation>
     <message>
       <location filename="../../TaskPipeScaling.ui" line="102"/>
       <source>List can be reordered by dragging</source>
-      <translation type="unfinished">List can be reordered by dragging</translation>
+      <translation>Список может быть переупорядочен перетаскиванием</translation>
     </message>
     <message>
       <location filename="../../TaskPipeParameters.cpp" line="808"/>
@@ -2809,12 +2807,12 @@ measured along the specified direction</translation>
     <message>
       <location filename="../../TaskPocketParameters.cpp" line="43"/>
       <source>Offset from face at which pocket will end</source>
-      <translation type="unfinished">Offset from face at which pocket will end</translation>
+      <translation>Смещение от конечной грани</translation>
     </message>
     <message>
       <location filename="../../TaskPocketParameters.cpp" line="44"/>
       <source>Reverses pocket direction</source>
-      <translation type="unfinished">Reverses pocket direction</translation>
+      <translation>Переворачивает направление кармана</translation>
     </message>
     <message>
       <location filename="../../TaskPocketParameters.cpp" line="73"/>
@@ -2862,7 +2860,7 @@ measured along the specified direction</translation>
     <message>
       <location filename="../../TaskPolarPatternParameters.ui" line="44"/>
       <source>List can be reordered by dragging</source>
-      <translation type="unfinished">List can be reordered by dragging</translation>
+      <translation>Список может быть переупорядочен перетаскиванием</translation>
     </message>
     <message>
       <location filename="../../TaskPolarPatternParameters.ui" line="56"/>
@@ -3082,8 +3080,8 @@ measured along the specified direction</translation>
       <location filename="../../TaskThicknessParameters.cpp" line="136"/>
       <source>Click button to enter selection mode,
 click again to end selection</source>
-      <translation type="unfinished">Click button to enter selection mode,
-click again to end selection</translation>
+      <translation>Нажмите кнопку, чтобы войти в режим выделения,
+нажмите еще раз для завершения выбора</translation>
     </message>
     <message>
       <location filename="../../TaskThicknessParameters.ui" line="26"/>
@@ -3154,7 +3152,7 @@ click again to end selection</translation>
       <location filename="../../TaskThicknessParameters.cpp" line="213"/>
       <location filename="../../TaskThicknessParameters.cpp" line="215"/>
       <source>There must be at least one item</source>
-      <translation type="unfinished">There must be at least one item</translation>
+      <translation>Должен быть хотя бы один элемент</translation>
     </message>
     <message>
       <location filename="../../TaskThicknessParameters.cpp" line="181"/>
@@ -3295,7 +3293,7 @@ click again to end selection</translation>
     <message>
       <location filename="../../ViewProviderLinearPattern.h" line="38"/>
       <source>LinearPattern parameters</source>
-      <translation type="unfinished">LinearPattern parameters</translation>
+      <translation>Параметры линейного массива</translation>
     </message>
   </context>
   <context>
@@ -3303,7 +3301,7 @@ click again to end selection</translation>
     <message>
       <location filename="../../ViewProviderMultiTransform.h" line="38"/>
       <source>MultiTransform parameters</source>
-      <translation type="unfinished">MultiTransform parameters</translation>
+      <translation>Параметры множественного преобразования</translation>
     </message>
   </context>
   <context>
@@ -3311,7 +3309,7 @@ click again to end selection</translation>
     <message>
       <location filename="../../ViewProviderPolarPattern.h" line="38"/>
       <source>PolarPattern parameters</source>
-      <translation type="unfinished">PolarPattern parameters</translation>
+      <translation>Параметры кругового массива</translation>
     </message>
   </context>
   <context>
@@ -3573,7 +3571,7 @@ click again to end selection</translation>
     <message>
       <location filename="../../Command.cpp" line="797"/>
       <source>Cannot use selected object. Selected object must belong to the active body</source>
-      <translation type="unfinished">Cannot use selected object. Selected object must belong to the active body</translation>
+      <translation>Невозможно использовать выбранный объект. Выбранный объект должен принадлежать активному телу</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="798"/>
@@ -3601,7 +3599,7 @@ click again to end selection</translation>
     <message>
       <location filename="../../Command.cpp" line="1560"/>
       <source>Select an edge, face, or body.</source>
-      <translation type="unfinished">Select an edge, face, or body.</translation>
+      <translation>Выберите ребро, грань или тело.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1564"/>
@@ -3652,7 +3650,7 @@ click again to end selection</translation>
     <message>
       <location filename="../../Command.cpp" line="1922"/>
       <source>Please select only one feature in an active body.</source>
-      <translation type="unfinished">Please select only one feature in an active body.</translation>
+      <translation>Пожалуйста, выберите только один элемент в активном теле.</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="67"/>
@@ -3789,7 +3787,7 @@ This may lead to unexpected results.</source>
     <message>
       <location filename="../../CommandBody.cpp" line="717"/>
       <source>There are no other bodies to move to</source>
-      <translation>Нет других тел для перемещение к</translation>
+      <translation>Других тел нет</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="854"/>
@@ -3809,14 +3807,14 @@ This may lead to unexpected results.</source>
     <message>
       <location filename="../../CommandBody.cpp" line="939"/>
       <source>Dependency violation</source>
-      <translation type="unfinished">Dependency violation</translation>
+      <translation>Нарушение зависимостей</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="940"/>
       <source>Early feature must not depend on later feature.
 
 </source>
-      <translation type="unfinished">Early feature must not depend on later feature.
+      <translation>Ранний элемент не может зависеть от более позднего.
 
 </translation>
     </message>
@@ -3997,7 +3995,7 @@ This feature is broken and can't be edited.</source>
     <message>
       <location filename="../../ViewProviderShapeBinder.cpp" line="308"/>
       <source>Synchronize</source>
-      <translation type="unfinished">Synchronize</translation>
+      <translation>Синхронизировать</translation>
     </message>
     <message>
       <location filename="../../ViewProviderShapeBinder.cpp" line="310"/>
@@ -4396,7 +4394,7 @@ Although you will be able to migrate any moment later with 'Part Design -&gt; Mi
     <message>
       <location filename="../../TaskHoleParameters.ui" line="62"/>
       <source>Whether the hole gets a thread</source>
-      <translation type="unfinished">Whether the hole gets a thread</translation>
+      <translation>Включите для добавления резьбы</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="65"/>
@@ -4433,7 +4431,7 @@ Note that the calculation can take some time</translation>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="111"/>
       <source>Custom Thread</source>
-      <translation type="unfinished">Custom Thread</translation>
+      <translation>Пользовательская резьба</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="124"/>
@@ -4500,7 +4498,7 @@ Only available for holes without thread</source>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="288"/>
       <source>Tolerance class for threaded holes according to hole profile</source>
-      <translation type="unfinished">Tolerance class for threaded holes according to hole profile</translation>
+      <translation>Класс допуска для резьбовых отверстий в соответствии профилю отверстия</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="301"/>
@@ -4559,7 +4557,7 @@ Only available for holes without thread</source>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="459"/>
       <source>Cut type for screw heads</source>
-      <translation type="unfinished">Cut type for screw heads</translation>
+      <translation>Вид гнезда под шляпку</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="472"/>

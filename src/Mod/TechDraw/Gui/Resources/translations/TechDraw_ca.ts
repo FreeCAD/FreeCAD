@@ -121,7 +121,7 @@
     <message>
       <location filename="../../CommandAnnotate.cpp" line="529"/>
       <source>Insert Annotation</source>
-      <translation>Insereix Anotació</translation>
+      <translation>Insereix una anotació</translation>
     </message>
   </context>
   <context>
@@ -222,12 +222,12 @@
     <message>
       <location filename="../../Command.cpp" line="622"/>
       <source>Insert Complex Section</source>
-      <translation type="unfinished">Insert Complex Section</translation>
+      <translation>Insereix una secció complexa</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="623"/>
       <source>Insert a Complex Section</source>
-      <translation type="unfinished">Insert a Complex Section</translation>
+      <translation>Insereix una secció complexa</translation>
     </message>
   </context>
   <context>
@@ -364,12 +364,12 @@
     <message>
       <location filename="../../Command.cpp" line="1603"/>
       <source>Save DXF file</source>
-      <translation type="unfinished">Save DXF file</translation>
+      <translation>Desa el fitxer DXF</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1604"/>
       <source>DXF (*.dxf)</source>
-      <translation type="unfinished">DXF (*.dxf)</translation>
+      <translation>DXF (*.dxf)</translation>
     </message>
   </context>
   <context>
@@ -413,7 +413,7 @@
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1767"/>
       <source>Calculate the area of selected faces</source>
-      <translation type="unfinished">Calculate the area of selected faces</translation>
+      <translation>Calcula l'àrea de les cares seleccionades</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1768"/>
@@ -527,7 +527,7 @@
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="748"/>
       <source>Change Line Attributes</source>
-      <translation type="unfinished">Change Line Attributes</translation>
+      <translation>Canvia els atributs de la línia</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="749"/>
@@ -2284,7 +2284,7 @@
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="766"/>
       <source>Change Line Attributes</source>
-      <translation type="unfinished">Change Line Attributes</translation>
+      <translation>Canvia els atributs de la línia</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="826"/>
@@ -5366,12 +5366,12 @@ Do you want to continue?</source>
     <message>
       <location filename="../../MDIViewPage.cpp" line="701"/>
       <source>Save DXF file</source>
-      <translation type="unfinished">Save DXF file</translation>
+      <translation>Desa el fitxer DXF</translation>
     </message>
     <message>
       <location filename="../../MDIViewPage.cpp" line="702"/>
       <source>DXF (*.dxf)</source>
-      <translation type="unfinished">DXF (*.dxf)</translation>
+      <translation>DXF (*.dxf)</translation>
     </message>
     <message>
       <location filename="../../MDIViewPage.cpp" line="1210"/>
@@ -7848,7 +7848,7 @@ usant l'espaiat X/Y donat</translation>
     <message>
       <location filename="../../DlgTemplateField.ui" line="35"/>
       <source>TextLabel</source>
-      <translation>Etiqueta de Text</translation>
+      <translation>Etiqueta de text</translation>
     </message>
     <message>
       <location filename="../../DlgTemplateField.ui" line="42"/>

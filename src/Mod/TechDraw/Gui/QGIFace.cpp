@@ -70,11 +70,11 @@ QGIFace::QGIFace(int index) :
     setPrettyNormal();
     m_texture = QPixmap();                      //empty texture
 
-    m_image = new QGCustomImage();
-    m_image->setParentItem(this);
+    m_imageHatchArea = new QGCustomImage();
+    m_imageHatchArea->setParentItem(this);
 
-    m_rect = new QGCustomRect();
-    m_rect->setParentItem(this);
+    m_svgHatchArea = new QGCustomRect();
+    m_svgHatchArea->setParentItem(this);
 
     m_svgCol = SVGCOLDEFAULT;
     m_fillScale = 1.0;
@@ -116,8 +116,8 @@ void QGIFace::draw()
                     lineSetToFillItems(ls);
                 }
             }
-            m_image->hide();
-            m_rect->hide();
+            m_imageHatchArea->hide();
+            m_svgHatchArea->hide();
         } else if (m_mode == SvgFill) {
             m_brush.setTexture(QPixmap());
             m_styleNormal = m_styleDef;
@@ -127,14 +127,14 @@ void QGIFace::draw()
                 //bitmap hatch doesn't need clipping
                 setFlag(QGraphicsItem::ItemClipsChildrenToShape, false);
                 buildPixHatch();
-                m_rect->hide();
-                m_image->show();
+                m_svgHatchArea->hide();
+                m_imageHatchArea->show();
             } else {
                 //SVG tiles need to be clipped
                 setFlag(QGraphicsItem::ItemClipsChildrenToShape, true);
                 buildSvgHatch();
-                m_image->hide();
-                m_rect->show();
+                m_imageHatchArea->hide();
+                m_svgHatchArea->show();
             }
         } else if (m_mode == BitmapFill) {
             m_fillStyleCurrent = Qt::TexturePattern;
@@ -142,12 +142,12 @@ void QGIFace::draw()
             m_brush.setTexture(m_texture);
         } else if (m_mode == PlainFill) {
             setFill(m_colNormalFill, m_styleNormal);
-            m_image->hide();
-            m_rect->hide();
+            m_imageHatchArea->hide();
+            m_svgHatchArea->hide();
         }
     } else {
-        m_image->hide();
-        m_rect->hide();
+        m_imageHatchArea->hide();
+        m_svgHatchArea->hide();
     }
     show();
 }
@@ -520,8 +520,8 @@ void QGIFace::buildSvgHatch()
     double nh = ceil(hatchOverlaySize / hTile);
     w = nw * wTile;
     h = nh * hTile;
-    m_rect->setRect(0., 0., w,-h);
-    m_rect->centerAt(faceCenter);
+    m_svgHatchArea->setRect(0., 0., w,-h);
+    m_svgHatchArea->centerAt(faceCenter);
     QByteArray before, after;
     before = QString::fromStdString(SVGCOLPREFIX + SVGCOLDEFAULT).toUtf8();
     after = QString::fromStdString(SVGCOLPREFIX + m_svgCol).toUtf8();
@@ -532,7 +532,7 @@ void QGIFace::buildSvgHatch()
             QGCustomSvg* tile = new QGCustomSvg();
             tile->setScale(m_fillScale);
             if (tile->load(&colorXML)) {
-                tile->setParentItem(m_rect);
+                tile->setParentItem(m_svgHatchArea);
                 tile->setPos(iw*wTile + getHatchOffset().x,
                              -h + ih*hTile + getHatchOffset().y);
             }
@@ -546,9 +546,9 @@ void QGIFace::buildSvgHatch()
             break;
         }
     }
-    QPointF faceCenterToMRect = mapToItem(m_rect, faceCenter);
-    m_rect->setTransformOriginPoint(faceCenterToMRect);
-    m_rect->setRotation(m_hatchRotation);
+    QPointF faceCenterToMRect = mapToItem(m_svgHatchArea, faceCenter);
+    m_svgHatchArea->setTransformOriginPoint(faceCenterToMRect);
+    m_svgHatchArea->setRotation(m_hatchRotation);
 }
 
 void QGIFace::clearSvg()
@@ -571,8 +571,8 @@ void QGIFace::buildPixHatch()
     double overlayWidth = numberWide * wTile;
     double overlayHeight= numberHigh * hTile;
 
-    m_rect->setRect(0., 0., overlayWidth, -overlayHeight);
-    m_rect->centerAt(faceCenter);
+    m_svgHatchArea->setRect(0., 0., overlayWidth, -overlayHeight);
+    m_svgHatchArea->centerAt(faceCenter);
 
     QByteArray before, after;
     before = QString::fromStdString(SVGCOLPREFIX + SVGCOLDEFAULT).toUtf8();
@@ -604,7 +604,7 @@ void QGIFace::buildPixHatch()
 
     //layout a field of QPixmap tiles as a QImage
     QImage tileField(overlayWidth, overlayHeight, QImage::Format_ARGB32);
-    QPointF fieldCenter(overlayWidth, overlayHeight);
+    QPointF fieldCenter(overlayWidth / 2.0, overlayHeight / 2.0);
 
     //do we have to rotate the field before we clip it??
     tileField.fill(Qt::transparent);
@@ -639,9 +639,9 @@ void QGIFace::buildPixHatch()
     bigMap = QPixmap::fromImage(tileField);
 
     QPixmap nothing;
-    m_image->setPixmap(nothing);
-    m_image->load(bigMap);
-    m_image->centerAt(faceCenter);
+    m_imageHatchArea->setPixmap(nothing);
+    m_imageHatchArea->load(bigMap);
+    m_imageHatchArea->centerAt(faceCenter);
 }
 
 //this isn't used currently

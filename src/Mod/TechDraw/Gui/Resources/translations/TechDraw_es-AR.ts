@@ -8281,7 +8281,7 @@ usando el espacio X/Y dado</translation>
     <message>
       <location filename="../../../TechDrawTools/CommandAxoLengthDimension.py" line="50"/>
       <source>Axonometric length dimension</source>
-      <translation type="unfinished">Axonometric length dimension</translation>
+      <translation>Cota de longitud axonométrica</translation>
     </message>
     <message>
       <location filename="../../../TechDrawTools/CommandAxoLengthDimension.py" line="57"/>
@@ -8290,11 +8290,11 @@ usando el espacio X/Y dado</translation>
                 - select second edge to define the direction of the extension lines&lt;br&gt;
                 - optional: select two more vertexes which define the measurement instead of the length&lt;br&gt;
                   of the first selected edge</source>
-      <translation type="unfinished">Create an axonometric length dimension&lt;br&gt;
-                - select first edge to define direction and length of the dimension line&lt;br&gt;
-                - select second edge to define the direction of the extension lines&lt;br&gt;
-                - optional: select two more vertexes which define the measurement instead of the length&lt;br&gt;
-                  of the first selected edge</translation>
+      <translation>Crea una cota de longitud axonométrica&lt;br&gt;
+                - seleccione el primer borde para definir la dirección y la longitud de la línea de cota&lt;br&gt;
+                - seleccione el segundo borde para definir la dirección de las líneas de extensión&lt;br&gt;
+                - opcional: seleccione dos vértices más que definan la medida en lugar de la longitud&lt;br&gt;
+                  del primer borde seleccionado</translation>
     </message>
   </context>
 </TS>

@@ -30,13 +30,13 @@
     <message>
       <location filename="../../Command.cpp" line="1560"/>
       <source>Boundings info...</source>
-      <translation>Інфармацыя аб межах...</translation>
+      <translation>Інфармацыя аб габарытах...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1561"/>
       <location filename="../../Command.cpp" line="1563"/>
       <source>Shows the boundings of the selected mesh</source>
-      <translation>Адлюстроўвае межы абранай паліганальнай сетцы</translation>
+      <translation>Адлюстроўвае габарыты абранай паліганальнай сеткі</translation>
     </message>
   </context>
   <context>
@@ -177,7 +177,7 @@
       <location filename="../../Command.cpp" line="1154"/>
       <location filename="../../Command.cpp" line="1156"/>
       <source>Opens a dialog to analyze and repair a mesh</source>
-      <translation>Адчыняе дыялогавае акно для аналізу і аднаўлення паліганальнай сеткі</translation>
+      <translation>Адчыняе дыялогавае акно для даследавання і аднаўлення паліганальнай сеткі</translation>
     </message>
   </context>
   <context>
@@ -561,13 +561,13 @@
     <message>
       <location filename="../../Command.cpp" line="1714"/>
       <source>Create mesh segments...</source>
-      <translation>Стварыць сегменты паліганальнай сеткі...</translation>
+      <translation>Стварыць адрэзкі паліганальнай сеткі...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1715"/>
       <location filename="../../Command.cpp" line="1717"/>
       <source>Create mesh segments</source>
-      <translation>Стварыць сегменты паліганальнай сеткі</translation>
+      <translation>Стварыць адрэзкі паліганальнай сеткі</translation>
     </message>
   </context>
   <context>
@@ -580,13 +580,13 @@
     <message>
       <location filename="../../Command.cpp" line="1750"/>
       <source>Create mesh segments from best-fit surfaces...</source>
-      <translation>Стварыць сегменты паліганальнай сеткі з найлепшай адпаведнасці паверхні...</translation>
+      <translation>Стварае адрэзкі паліганальнай сеткі з найлепшай адпаведнасцю паверхні...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1751"/>
       <location filename="../../Command.cpp" line="1753"/>
       <source>Create mesh segments from best-fit surfaces</source>
-      <translation>Стварае сегменты паліганальнай сеткі з найлепшай адпаведнасці паверхні</translation>
+      <translation>Стварае адрэзкі паліганальнай сеткі з найлепшай адпаведнасцю паверхні</translation>
     </message>
   </context>
   <context>
@@ -911,7 +911,7 @@
     <message>
       <location filename="../../DlgDecimating.ui" line="28"/>
       <source>None</source>
-      <translation type="unfinished">None</translation>
+      <translation>Нічога</translation>
     </message>
     <message>
       <location filename="../../DlgDecimating.ui" line="57"/>
@@ -998,7 +998,7 @@
       <location filename="../../DlgEvaluateMesh.ui" line="773"/>
       <location filename="../../DlgEvaluateMesh.ui" line="853"/>
       <source>Analyze</source>
-      <translation type="unfinished">Analyze</translation>
+      <translation>Даследаваць</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMesh.ui" line="244"/>
@@ -1139,12 +1139,12 @@ Please run the command to repair folds first</source>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="638"/>
       <source>Invalid face indices</source>
-      <translation>Недапушчальныя індэксы грані</translation>
+      <translation>Хібныя індэксы грані</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="645"/>
       <source>Invalid point indices</source>
-      <translation>Недапушчальныя індэксы кропкі</translation>
+      <translation>Хібныя індэксы кропкі</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="652"/>
@@ -1154,12 +1154,12 @@ Please run the command to repair folds first</source>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="659"/>
       <source>Invalid neighbour indices</source>
-      <translation>Недапушчальныя суседнія індэксы</translation>
+      <translation>Хібныя суседнія індэксы</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="666"/>
       <source>No invalid indices</source>
-      <translation>Без недапушчальных індэксаў</translation>
+      <translation>Без хібных індэксаў</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="690"/>
@@ -1352,7 +1352,7 @@ Please run the command to repair folds first</source>
       <location filename="../../DlgRegularSolid.ui" line="307"/>
       <location filename="../../DlgRegularSolid.ui" line="455"/>
       <source>Closed</source>
-      <translation>Зачынены</translation>
+      <translation>Замкнуты</translation>
     </message>
     <message>
       <location filename="../../DlgRegularSolid.ui" line="353"/>
@@ -1519,7 +1519,7 @@ If not checked, it depends on the option "Enable backlight color"
 will be used or black.</source>
       <translation>Ніжні бок паверхні будзе адлюстроўвацца так жа, як і верхні бок.
 Калі не птушка, гэта залежыць ад налады "Уключыць колер асвятлення".
-(падзел пераваг Праецыраванне - &gt; Трохмерны выгляд).
+(падзел пераваг Праецыраванне - &gt; Трохмернае прадстаўленне).
 Будзе ўжывацца альбо колер асвятлення, альбо чорны.</translation>
     </message>
     <message>
@@ -1530,12 +1530,12 @@ will be used or black.</source>
     <message>
       <location filename="../../DlgSettingsMeshView.ui" line="273"/>
       <source>A bounding box will be displayed</source>
-      <translation>Будзе адлюстраваны абмежаваны прастакутнік</translation>
+      <translation>Габарыты будуць адлюстраваныя</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsMeshView.ui" line="276"/>
       <source>Show bounding-box for highlighted or selected meshes</source>
-      <translation>Адлюстраваць абмежаваны прастакутнік для вылучаных ці абраных паліганальных сетак</translation>
+      <translation>Адлюстраваць габарыты для вылучаных ці абраных паліганальных сетак</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsMeshView.ui" line="313"/>
@@ -2022,7 +2022,7 @@ to a smoother appearance.
       <location filename="../../SegmentationBestFit.cpp" line="337"/>
       <location filename="../../SegmentationBestFit.cpp" line="363"/>
       <source>Base</source>
-      <translation>База</translation>
+      <translation>Асноўныя</translation>
     </message>
     <message>
       <location filename="../../SegmentationBestFit.cpp" line="338"/>
@@ -2144,7 +2144,7 @@ to a smoother appearance.
     <message>
       <location filename="../../Command.cpp" line="1577"/>
       <source>Boundings of %1:</source>
-      <translation>Межы %1:</translation>
+      <translation>Прывязкі %1:</translation>
     </message>
   </context>
   <context>
@@ -2262,163 +2262,163 @@ Please visit http://www.openscad.org/index.html to install it.</source>
     <message>
       <location filename="../../Command.cpp" line="512"/>
       <source>Inventor V2.1 ascii</source>
-      <translation type="unfinished">Inventor V2.1 ascii</translation>
+      <translation>Inventor V2.1 у ASCII</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="513"/>
       <source>X3D Extensible 3D</source>
-      <translation type="unfinished">X3D Extensible 3D</translation>
+      <translation>X3D Extensible 3D (*. x3d)</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="514"/>
       <source>Compressed X3D</source>
-      <translation type="unfinished">Compressed X3D</translation>
+      <translation>Сціснуты X3D</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="515"/>
       <source>WebGL/X3D</source>
-      <translation type="unfinished">WebGL/X3D</translation>
+      <translation>WebGL/X3D</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="517"/>
       <source>VRML V2.0</source>
-      <translation type="unfinished">VRML V2.0</translation>
+      <translation>VRML V2.0</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="518"/>
       <source>Compressed VRML 2.0</source>
-      <translation type="unfinished">Compressed VRML 2.0</translation>
+      <translation>Сціснуты VRML 2.0</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="519"/>
       <source>Nastran</source>
-      <translation type="unfinished">Nastran</translation>
+      <translation>Nastran</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="520"/>
       <source>Python module def</source>
-      <translation type="unfinished">Python module def</translation>
+      <translation>Вызначэнне модуля Python</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="521"/>
       <source>Asymptote Format</source>
-      <translation type="unfinished">Asymptote Format</translation>
+      <translation>Фармат асімптоты</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="522"/>
       <source>3D Manufacturing Format</source>
-      <translation type="unfinished">3D Manufacturing Format</translation>
+      <translation>Фармат 3D-вытворчасці</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="530"/>
       <source>Export mesh</source>
-      <translation type="unfinished">Export mesh</translation>
+      <translation>Экспартаваць паліганальную сетку</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="571"/>
       <source>Meshing Tolerance</source>
-      <translation type="unfinished">Meshing Tolerance</translation>
+      <translation>Дакладнасць паліганальнай сеткі</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="572"/>
       <source>Enter tolerance for meshing geometry:</source>
-      <translation type="unfinished">Enter tolerance for meshing geometry:</translation>
+      <translation>Увядзіце дакладнасць для геаметрыі паліганальнай сеткі:</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1374"/>
       <source>The mesh '%1' is not a solid.</source>
-      <translation type="unfinished">The mesh '%1' is not a solid.</translation>
+      <translation>Паліганальная сетка '%1' не з'яўляецца суцэльным целам.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1377"/>
       <source>The mesh '%1' is a solid.</source>
-      <translation type="unfinished">The mesh '%1' is a solid.</translation>
+      <translation>Паліганальная сетка '%1' з'яўляецца суцэльным целам.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1379"/>
       <source>Solid Mesh</source>
-      <translation type="unfinished">Solid Mesh</translation>
+      <translation>Паліганальная сетка суцэльнага цела</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1582"/>
       <source>Boundings</source>
-      <translation type="unfinished">Boundings</translation>
+      <translation>Прывязкі</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1644"/>
       <source>Fill holes</source>
-      <translation type="unfinished">Fill holes</translation>
+      <translation>Запоўніць адтуліны</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1645"/>
       <source>Fill holes with maximum number of edges:</source>
-      <translation type="unfinished">Fill holes with maximum number of edges:</translation>
+      <translation>Запаўняе адтуліны з найбольшай колькасцю рэбраў:</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1889"/>
       <source>Scaling</source>
-      <translation type="unfinished">Scaling</translation>
+      <translation>Маштабаванне</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1890"/>
       <source>Enter scaling factor:</source>
-      <translation type="unfinished">Enter scaling factor:</translation>
+      <translation>Увядзіце каэфіцыент маштабавання:</translation>
     </message>
     <message>
       <location filename="../../PropertyEditorMesh.cpp" line="75"/>
       <source>[Points: %1, Edges: %2, Faces: %3]</source>
-      <translation type="unfinished">[Points: %1, Edges: %2, Faces: %3]</translation>
+      <translation>[Кропак: %1, рэбраў: %2, граняў: %3]</translation>
     </message>
     <message>
       <location filename="../../ViewProvider.cpp" line="779"/>
       <source>Display components</source>
-      <translation type="unfinished">Display components</translation>
+      <translation>Адлюстраваць кампаненты</translation>
     </message>
     <message>
       <location filename="../../ViewProvider.cpp" line="785"/>
       <source>Display segments</source>
-      <translation type="unfinished">Display segments</translation>
+      <translation>Адлюстраваць адрэзкі</translation>
     </message>
     <message>
       <location filename="../../ViewProvider.cpp" line="791"/>
       <source>Display colors</source>
-      <translation type="unfinished">Display colors</translation>
+      <translation>Адлюстраваць колеры</translation>
     </message>
     <message>
       <location filename="../../ViewProvider.cpp" line="1612"/>
       <location filename="../../ViewProviderCurvature.cpp" line="497"/>
       <source>Leave info mode</source>
-      <translation type="unfinished">Leave info mode</translation>
+      <translation>Выйсці з інфармацыйнага рэжыму</translation>
     </message>
     <message>
       <location filename="../../ViewProvider.cpp" line="1671"/>
       <source>Index: %1</source>
-      <translation type="unfinished">Index: %1</translation>
+      <translation>Індэкс: %1</translation>
     </message>
     <message>
       <location filename="../../ViewProvider.cpp" line="1694"/>
       <source>Leave hole-filling mode</source>
-      <translation type="unfinished">Leave hole-filling mode</translation>
+      <translation>Выйсці з рэжыму запаўнення адтулін</translation>
     </message>
     <message>
       <location filename="../../ViewProvider.cpp" line="1740"/>
       <source>Leave removal mode</source>
-      <translation type="unfinished">Leave removal mode</translation>
+      <translation>Выйсці з рэжыму выдалення</translation>
     </message>
     <message>
       <location filename="../../ViewProvider.cpp" line="1741"/>
       <source>Delete selected faces</source>
-      <translation type="unfinished">Delete selected faces</translation>
+      <translation>Выдаліць абраныя грані</translation>
     </message>
     <message>
       <location filename="../../ViewProvider.cpp" line="1742"/>
       <source>Clear selected faces</source>
-      <translation type="unfinished">Clear selected faces</translation>
+      <translation>Зныць выбар з абраных граняў</translation>
     </message>
     <message>
       <location filename="../../ViewProviderCurvature.cpp" line="494"/>
       <source>Annotation</source>
-      <translation type="unfinished">Annotation</translation>
+      <translation>Заметка</translation>
     </message>
   </context>
   <context>
@@ -2426,17 +2426,17 @@ Please visit http://www.openscad.org/index.html to install it.</source>
     <message>
       <location filename="../../Workbench.cpp" line="43"/>
       <source>Analyze</source>
-      <translation type="unfinished">Analyze</translation>
+      <translation>Даследаваць</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="44"/>
       <source>Boolean</source>
-      <translation>Лагічнае значэнне</translation>
+      <translation>Лагічная аперацыя</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="45"/>
       <source>&amp;Meshes</source>
-      <translation type="unfinished">&amp;Meshes</translation>
+      <translation>&amp;Паліганальных сетак</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="46"/>
@@ -2446,22 +2446,22 @@ Please visit http://www.openscad.org/index.html to install it.</source>
     <message>
       <location filename="../../Workbench.cpp" line="47"/>
       <source>Mesh tools</source>
-      <translation type="unfinished">Mesh tools</translation>
+      <translation>Інструменты паліганальнай сеткі</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="48"/>
       <source>Mesh modify</source>
-      <translation type="unfinished">Mesh modify</translation>
+      <translation>Змена паліганальнай сеткі</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="49"/>
       <source>Mesh boolean</source>
-      <translation type="unfinished">Mesh boolean</translation>
+      <translation>Лагічная аперацыя з паліганальнай сеткай</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="50"/>
       <source>Mesh cutting</source>
-      <translation type="unfinished">Mesh cutting</translation>
+      <translation>Рэзка паліганальнай сеткі</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="51"/>
@@ -2471,7 +2471,7 @@ Please visit http://www.openscad.org/index.html to install it.</source>
     <message>
       <location filename="../../Workbench.cpp" line="52"/>
       <source>Mesh analyze</source>
-      <translation type="unfinished">Mesh analyze</translation>
+      <translation>Даследаванне паліганальнай сеткі</translation>
     </message>
   </context>
 </TS>

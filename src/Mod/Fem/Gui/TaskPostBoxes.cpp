@@ -56,6 +56,7 @@
 #include "ui_TaskPostDataAtPoint.h"
 #include "ui_TaskPostDisplay.h"
 #include "ui_TaskPostScalarClip.h"
+#include "ui_TaskPostContours.h"
 #include "ui_TaskPostWarpVector.h"
 
 #include "TaskPostBoxes.h"
@@ -69,7 +70,7 @@ using namespace FemGui;
 using namespace Gui;
 
 // ***************************************************************************
-
+// point marker
 PointMarker::PointMarker(Gui::View3DInventorViewer* iv, std::string ObjName) : view(iv),
     vp(new ViewProviderPointMarker)
 {
@@ -117,7 +118,8 @@ void PointMarker::customEvent(QEvent*)
     Gui::Command::doCommand(Gui::Command::Doc, ObjectInvisible().c_str());
 }
 
-std::string PointMarker::ObjectInvisible() {
+std::string PointMarker::ObjectInvisible()
+{
     return "for amesh in App.activeDocument().Objects:\n\
     if \"Mesh\" in amesh.TypeId:\n\
          aparttoshow = amesh.Name.replace(\"_Mesh\",\"\")\n\
@@ -145,8 +147,9 @@ ViewProviderPointMarker::~ViewProviderPointMarker()
     pCoords->unref();
 }
 
-// ***************************************************************************
 
+// ***************************************************************************
+// data marker
 DataMarker::DataMarker(Gui::View3DInventorViewer* iv, std::string ObjName) : view(iv),
     vp(new ViewProviderDataMarker)
 {
@@ -189,7 +192,8 @@ void DataMarker::customEvent(QEvent*)
     Gui::Command::doCommand(Gui::Command::Doc, ObjectInvisible().c_str());
 }
 
-std::string DataMarker::ObjectInvisible() {
+std::string DataMarker::ObjectInvisible()
+{
     return "for amesh in App.activeDocument().Objects:\n\
     if \"Mesh\" in amesh.TypeId:\n\
          aparttoshow = amesh.Name.replace(\"_Mesh\",\"\")\n\
@@ -227,24 +231,71 @@ ViewProviderDataMarker::~ViewProviderDataMarker()
     pMarker->unref();
 }
 
-// ***************************************************************************
-// ***************************************************************************
-// TaskDialog
-// ***************************************************************************
 
+// ***************************************************************************
+// main task dialog
+TaskPostBox::TaskPostBox(Gui::ViewProviderDocumentObject* view, const QPixmap& icon,
+                         const QString& title, QWidget* parent)
+    : TaskBox(icon, title, true, parent),
+      m_object(view->getObject()),
+      m_view(view)
+{}
+
+TaskPostBox::~TaskPostBox()
+{}
+
+bool TaskPostBox::autoApply()
+{
+    return FemSettings().getPostAutoRecompute();
+}
+
+App::Document* TaskPostBox::getDocument() const
+{
+    App::DocumentObject* obj = getObject();
+    return (obj ? obj->getDocument() : nullptr);
+}
+
+void TaskPostBox::recompute()
+{
+    if (autoApply()) {
+        App::Document* doc = getDocument();
+        if (doc)
+            doc->recompute();
+    }
+}
+
+void TaskPostBox::updateEnumerationList(App::PropertyEnumeration& prop, QComboBox* box)
+{
+    QStringList list;
+    std::vector<std::string> vec = prop.getEnumVector();
+    for (std::vector<std::string>::iterator it = vec.begin(); it != vec.end(); ++it) {
+        list.push_back(QString::fromStdString(*it));
+    }
+
+    int index = prop.getValue();
+    // be aware the QComboxBox might be connected to the Property,
+    // thus clearing the box will set back the property enumeration index too.
+    // https://forum.freecadweb.org/viewtopic.php?f=10&t=30944
+    box->clear();
+    box->insertItems(0, list);
+    box->setCurrentIndex(index);
+}
+
+
+// ***************************************************************************
+// simulation dialog for the TaskView
 TaskDlgPost::TaskDlgPost(Gui::ViewProviderDocumentObject* view)
-    : TaskDialog()
-    , m_view(view)
+    : TaskDialog(),
+      m_view(view)
 {
     assert(view);
 }
 
 TaskDlgPost::~TaskDlgPost()
+{}
+
+QDialogButtonBox::StandardButtons TaskDlgPost::getStandardButtons() const
 {
-
-}
-
-QDialogButtonBox::StandardButtons TaskDlgPost::getStandardButtons() const {
 
     //check if we only have gui task boxes
     bool guionly = true;
@@ -283,8 +334,8 @@ void TaskDlgPost::connectSlots()
     }
 }
 
-void TaskDlgPost::appendBox(TaskPostBox* box) {
-
+void TaskDlgPost::appendBox(TaskPostBox* box)
+{
     m_boxes.push_back(box);
     Content.push_back(box);
 }
@@ -341,63 +392,13 @@ void TaskDlgPost::modifyStandardButtons(QDialogButtonBox* box) {
         box->button(QDialogButtonBox::Apply)->setDefault(true);
 }
 
-// ***************************************************************************
-// some task box methods
-TaskPostBox::TaskPostBox(Gui::ViewProviderDocumentObject* view, const QPixmap& icon,
-                         const QString& title, QWidget* parent)
-    : TaskBox(icon, title, true, parent)
-    , m_object(view->getObject())
-    , m_view(view)
-{
-}
-
-TaskPostBox::~TaskPostBox() {
-
-}
-
-bool TaskPostBox::autoApply() {
-
-    return FemSettings().getPostAutoRecompute();
-}
-
-App::Document* TaskPostBox::getDocument() const {
-    App::DocumentObject* obj = getObject();
-    return (obj ? obj->getDocument() : nullptr);
-}
-
-void TaskPostBox::recompute() {
-
-    if (autoApply()) {
-        App::Document* doc = getDocument();
-        if (doc)
-            doc->recompute();
-    }
-}
-
-void TaskPostBox::updateEnumerationList(App::PropertyEnumeration& prop, QComboBox* box) {
-
-    QStringList list;
-    std::vector<std::string> vec = prop.getEnumVector();
-    for (std::vector<std::string>::iterator it = vec.begin(); it != vec.end(); ++it) {
-        list.push_back(QString::fromStdString(*it));
-    }
-
-    int index = prop.getValue();
-    // be aware the QComboxBox might be connected to the Property,
-    // thus clearing the box will set back the property enumeration index too.
-    // https://forum.freecadweb.org/viewtopic.php?f=10&t=30944
-    box->clear();
-    box->insertItems(0, list);
-    box->setCurrentIndex(index);
-}
-
 
 // ***************************************************************************
-// post pipeline results
+// box to set the coloring
 TaskPostDisplay::TaskPostDisplay(Gui::ViewProviderDocumentObject* view, QWidget* parent)
     : TaskPostBox(view, Gui::BitmapFactory().pixmap("FEM_ResultShow"), tr("Result display options"),
-                  parent)
-    , ui(new Ui_TaskPostDisplay)
+                  parent),
+      ui(new Ui_TaskPostDisplay)
 {
     // we need a separate container widget to add all controls to
     proxy = new QWidget(this);
@@ -407,7 +408,8 @@ TaskPostDisplay::TaskPostDisplay(Gui::ViewProviderDocumentObject* view, QWidget*
     this->groupLayout()->addWidget(proxy);
 
     // update all fields
-    updateEnumerationList(getTypedView<ViewProviderFemPostObject>()->DisplayMode, ui->Representation);
+    updateEnumerationList(getTypedView<ViewProviderFemPostObject>()->DisplayMode,
+                          ui->Representation);
     updateEnumerationList(getTypedView<ViewProviderFemPostObject>()->Field, ui->Field);
     updateEnumerationList(getTypedView<ViewProviderFemPostObject>()->VectorMode, ui->VectorMode);
 
@@ -420,29 +422,28 @@ TaskPostDisplay::TaskPostDisplay(Gui::ViewProviderDocumentObject* view, QWidget*
 }
 
 TaskPostDisplay::~TaskPostDisplay()
-{
-}
+{}
 
 void TaskPostDisplay::slotAddedFunction()
 {
     updateEnumerationList(getTypedView<ViewProviderFemPostObject>()->Field, ui->Field);
 }
 
-void TaskPostDisplay::on_Representation_activated(int i) {
-
+void TaskPostDisplay::on_Representation_activated(int i)
+{
     getTypedView<ViewProviderFemPostObject>()->DisplayMode.setValue(i);
     updateEnumerationList(getTypedView<ViewProviderFemPostObject>()->Field, ui->Field);
     updateEnumerationList(getTypedView<ViewProviderFemPostObject>()->VectorMode, ui->VectorMode);
 }
 
-void TaskPostDisplay::on_Field_activated(int i) {
-
+void TaskPostDisplay::on_Field_activated(int i)
+{
     getTypedView<ViewProviderFemPostObject>()->Field.setValue(i);
     updateEnumerationList(getTypedView<ViewProviderFemPostObject>()->VectorMode, ui->VectorMode);
 }
 
-void TaskPostDisplay::on_VectorMode_activated(int i) {
-
+void TaskPostDisplay::on_VectorMode_activated(int i)
+{
     getTypedView<ViewProviderFemPostObject>()->VectorMode.setValue(i);
 }
 
@@ -454,19 +455,16 @@ void TaskPostDisplay::on_Transparency_valueChanged(int i) {
     QToolTip::showText(QCursor::pos(), QString::number(i) + QString::fromLatin1(" %"), nullptr);
 }
 
-void TaskPostDisplay::applyPythonCode() {
+void TaskPostDisplay::applyPythonCode()
+{}
 
-}
 
 // ***************************************************************************
-// ?
-// the icon fem-post-geo-plane might be wrong but I do not know any better since the plane is one
-// of the implicit functions
+// functions
 TaskPostFunction::TaskPostFunction(ViewProviderDocumentObject* view, QWidget* parent)
     : TaskPostBox(view, Gui::BitmapFactory().pixmap("fem-post-geo-plane"), tr("Implicit function"),
                   parent)
 {
-
     assert(view->isDerivedFrom(ViewProviderFemPostFunction::getClassTypeId()));
 
     //we load the views widget
@@ -476,173 +474,27 @@ TaskPostFunction::TaskPostFunction(ViewProviderDocumentObject* view, QWidget* pa
     this->groupLayout()->addWidget(w);
 }
 
-TaskPostFunction::~TaskPostFunction() {
+TaskPostFunction::~TaskPostFunction()
+{}
 
-}
-
-void TaskPostFunction::applyPythonCode() {
-
+void TaskPostFunction::applyPythonCode()
+{
     //we apply the views widgets python code
 }
 
 
 // ***************************************************************************
-// region clip filter
-TaskPostClip::TaskPostClip(ViewProviderDocumentObject* view, App::PropertyLink* function,
-                           QWidget* parent)
-    : TaskPostBox(view, Gui::BitmapFactory().pixmap("FEM_PostFilterClipRegion"),
-                  tr("Clip region, choose implicit function"), parent),
-      ui(new Ui_TaskPostClip)
-{
-
-    assert(view->isDerivedFrom(ViewProviderFemPostClip::getClassTypeId()));
-    assert(function);
-    Q_UNUSED(function);
-
-    fwidget = nullptr;
-
-    //we load the views widget
-    proxy = new QWidget(this);
-    ui->setupUi(proxy);
-    QMetaObject::connectSlotsByName(this);
-    this->groupLayout()->addWidget(proxy);
-
-    //the layout for the container widget
-    QVBoxLayout* layout = new QVBoxLayout();
-    ui->Container->setLayout(layout);
-
-    //fill up the combo box with possible functions
-    collectImplicitFunctions();
-
-    //add the function creation command
-    Gui::CommandManager& rcCmdMgr = Gui::Application::Instance->commandManager();
-    Gui::Command* cmd = rcCmdMgr.getCommandByName("FEM_PostCreateFunctions");
-    if (cmd && cmd->getAction())
-        cmd->getAction()->addTo(ui->CreateButton);
-    ui->CreateButton->setPopupMode(QToolButton::InstantPopup);
-
-    //load the default values
-    ui->CutCells->setChecked(
-        static_cast<Fem::FemPostClipFilter*>(getObject())->CutCells.getValue());
-    ui->InsideOut->setChecked(
-        static_cast<Fem::FemPostClipFilter*>(getObject())->InsideOut.getValue());
-}
-
-TaskPostClip::~TaskPostClip() {
-
-}
-
-void TaskPostClip::applyPythonCode() {
-
-}
-
-void TaskPostClip::collectImplicitFunctions() {
-
-    std::vector<Fem::FemPostPipeline*> pipelines;
-    pipelines = getDocument()->getObjectsOfType<Fem::FemPostPipeline>();
-    if (!pipelines.empty()) {
-        Fem::FemPostPipeline* pipeline = pipelines.front();
-        if (pipeline->Functions.getValue() && pipeline->Functions.getValue()->getTypeId()
-                == Fem::FemPostFunctionProvider::getClassTypeId()) {
-
-            ui->FunctionBox->clear();
-            QStringList items;
-            std::size_t currentItem = 0;
-            App::DocumentObject* currentFunction =
-                static_cast<Fem::FemPostClipFilter*>(getObject())->Function.getValue();
-            const std::vector<App::DocumentObject*>& funcs =
-                static_cast<Fem::FemPostFunctionProvider*>(pipeline->Functions.getValue())
-                    ->Functions.getValues();
-            for (std::size_t i = 0; i < funcs.size(); ++i) {
-                items.push_back(QString::fromLatin1(funcs[i]->getNameInDocument()));
-                if (currentFunction == funcs[i])
-                    currentItem = i;
-            }
-            ui->FunctionBox->addItems(items);
-            ui->FunctionBox->setCurrentIndex(currentItem);
-        }
-    }
-}
-
-void TaskPostClip::on_CreateButton_triggered(QAction*) {
-
-    int numFuncs = ui->FunctionBox->count();
-    int currentItem = ui->FunctionBox->currentIndex();
-    collectImplicitFunctions();
-
-    // if a new function was successfully added use it
-    int indexCount = ui->FunctionBox->count();
-    if (indexCount > currentItem + 1)
-        ui->FunctionBox->setCurrentIndex(indexCount - 1);
-
-    // When the first function ever was added, a signal must be emitted
-    if (numFuncs == 0) {
-        Q_EMIT emitAddedFunction();
-    }
-
-    recompute();
-}
-
-void TaskPostClip::on_FunctionBox_currentIndexChanged(int idx) {
-
-    //set the correct property
-    std::vector<Fem::FemPostPipeline*> pipelines;
-    pipelines = getDocument()->getObjectsOfType<Fem::FemPostPipeline>();
-    if (!pipelines.empty()) {
-        Fem::FemPostPipeline* pipeline = pipelines.front();
-        if (pipeline->Functions.getValue() && pipeline->Functions.getValue()->getTypeId()
-                == Fem::FemPostFunctionProvider::getClassTypeId()) {
-
-            const std::vector<App::DocumentObject*>& funcs =
-                static_cast<Fem::FemPostFunctionProvider*>(pipeline->Functions.getValue())
-                    ->Functions.getValues();
-            if (idx >= 0)
-                static_cast<Fem::FemPostClipFilter*>(getObject())->Function.setValue(funcs[idx]);
-            else
-                static_cast<Fem::FemPostClipFilter*>(getObject())->Function.setValue(nullptr);
-        }
-    }
-
-    //load the correct view
-    Fem::FemPostFunction* fobj = static_cast<Fem::FemPostFunction*>(
-        static_cast<Fem::FemPostClipFilter*>(getObject())->Function.getValue());
-    Gui::ViewProvider* view = nullptr;
-    if (fobj)
-        view = Gui::Application::Instance->getViewProvider(fobj);
-
-    if (fwidget)
-        fwidget->deleteLater();
-
-    if (view) {
-        fwidget = static_cast<FemGui::ViewProviderFemPostFunction*>(view)->createControlWidget();
-        fwidget->setParent(ui->Container);
-        fwidget->setViewProvider(static_cast<FemGui::ViewProviderFemPostFunction*>(view));
-        ui->Container->layout()->addWidget(fwidget);
-    }
-    recompute();
-}
-
-void TaskPostClip::on_CutCells_toggled(bool val) {
-
-    static_cast<Fem::FemPostClipFilter*>(getObject())->CutCells.setValue(val);
-    recompute();
-}
-
-void TaskPostClip::on_InsideOut_toggled(bool val) {
-
-    static_cast<Fem::FemPostClipFilter*>(getObject())->InsideOut.setValue(val);
-    recompute();
-}
+// in the following, the different filters sorted alphabetically
+// ***************************************************************************
 
 
 // ***************************************************************************
-// data along a line
+// data along line filter
 TaskPostDataAlongLine::TaskPostDataAlongLine(ViewProviderDocumentObject* view, QWidget* parent)
     : TaskPostBox(view, Gui::BitmapFactory().pixmap("FEM_PostFilterDataAlongLine"),
                   tr("Data along a line options"), parent),
       ui(new Ui_TaskPostDataAlongLine)
 {
-
     assert(view->isDerivedFrom(ViewProviderFemPostDataAlongLine::getClassTypeId()));
 
     //we load the views widget
@@ -694,20 +546,34 @@ TaskPostDataAlongLine::TaskPostDataAlongLine(ViewProviderDocumentObject* view, Q
     int res = static_cast<Fem::FemPostDataAlongLineFilter*>(getObject())->Resolution.getValue();
     ui->resolution->setValue(res);
 
-    connect(ui->point1X, qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
-            this, &TaskPostDataAlongLine::point1Changed);
-    connect(ui->point1Y, qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
-            this, &TaskPostDataAlongLine::point1Changed);
-    connect(ui->point1Z, qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
-            this, &TaskPostDataAlongLine::point1Changed);
-    connect(ui->point2X, qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
-            this, &TaskPostDataAlongLine::point2Changed);
-    connect(ui->point2Y, qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
-            this, &TaskPostDataAlongLine::point2Changed);
-    connect(ui->point2Z, qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
-            this, &TaskPostDataAlongLine::point2Changed);
-    connect(ui->resolution, qOverload<int>(&QSpinBox::valueChanged),
-            this, &TaskPostDataAlongLine::resolutionChanged);
+    connect(ui->point1X,
+            qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
+            this,
+            &TaskPostDataAlongLine::point1Changed);
+    connect(ui->point1Y,
+            qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
+            this,
+            &TaskPostDataAlongLine::point1Changed);
+    connect(ui->point1Z,
+            qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
+            this,
+            &TaskPostDataAlongLine::point1Changed);
+    connect(ui->point2X,
+            qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
+            this,
+            &TaskPostDataAlongLine::point2Changed);
+    connect(ui->point2Y,
+            qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
+            this,
+            &TaskPostDataAlongLine::point2Changed);
+    connect(ui->point2Z,
+            qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
+            this,
+            &TaskPostDataAlongLine::point2Changed);
+    connect(ui->resolution,
+            qOverload<int>(&QSpinBox::valueChanged),
+            this,
+            &TaskPostDataAlongLine::resolutionChanged);
 
     //update all fields
     updateEnumerationList(getTypedView<ViewProviderFemPostObject>()->DisplayMode,
@@ -716,39 +582,36 @@ TaskPostDataAlongLine::TaskPostDataAlongLine(ViewProviderDocumentObject* view, Q
     updateEnumerationList(getTypedView<ViewProviderFemPostObject>()->VectorMode, ui->VectorMode);
 }
 
-TaskPostDataAlongLine::~TaskPostDataAlongLine() {
+TaskPostDataAlongLine::~TaskPostDataAlongLine()
+{}
 
-}
+void TaskPostDataAlongLine::applyPythonCode()
+{}
 
-void TaskPostDataAlongLine::applyPythonCode() {
+static const char* cursor_triangle[] = {"32 32 3 1",
+                                        "       c None",
+                                        ".      c #FFFFFF",
+                                        "+      c #FF0000",
+                                        "      .                         ",
+                                        "      .                         ",
+                                        "      .                         ",
+                                        "      .                         ",
+                                        "      .                         ",
+                                        "                                ",
+                                        ".....   .....                   ",
+                                        "                                ",
+                                        "      .                         ",
+                                        "      .                         ",
+                                        "      .        ++               ",
+                                        "      .       +  +              ",
+                                        "      .      + ++ +             ",
+                                        "            + ++++ +            ",
+                                        "           +  ++ ++ +           ",
+                                        "          + ++++++++ +          ",
+                                        "         ++  ++  ++  ++         "};
 
-}
-
-static const char* cursor_triangle[] = {
-"32 32 3 1",
-"       c None",
-".      c #FFFFFF",
-"+      c #FF0000",
-"      .                         ",
-"      .                         ",
-"      .                         ",
-"      .                         ",
-"      .                         ",
-"                                ",
-".....   .....                   ",
-"                                ",
-"      .                         ",
-"      .                         ",
-"      .        ++               ",
-"      .       +  +              ",
-"      .      + ++ +             ",
-"            + ++++ +            ",
-"           +  ++ ++ +           ",
-"          + ++++++++ +          ",
-"         ++  ++  ++  ++         " };
-
-void TaskPostDataAlongLine::on_SelectPoints_clicked() {
-
+void TaskPostDataAlongLine::on_SelectPoints_clicked()
+{
     Gui::Command::doCommand(Gui::Command::Doc, ObjectVisible().c_str());
     Gui::Document* doc = Gui::Application::Instance->getDocument(getDocument());
     Gui::View3DInventor* view = static_cast<Gui::View3DInventor*>(doc->getActiveView());
@@ -763,13 +626,14 @@ void TaskPostDataAlongLine::on_SelectPoints_clicked() {
 
         FemGui::PointMarker* marker = new FemGui::PointMarker(viewer, ObjName);
         viewer->addEventCallback(SoMouseButtonEvent::getClassTypeId(),
-            FemGui::TaskPostDataAlongLine::pointCallback, marker);
-        connect(marker, &PointMarker::PointsChanged,
-                this, &TaskPostDataAlongLine::onChange);
+                                 FemGui::TaskPostDataAlongLine::pointCallback,
+                                 marker);
+        connect(marker, &PointMarker::PointsChanged, this, &TaskPostDataAlongLine::onChange);
     }
 }
 
-std::string TaskPostDataAlongLine::ObjectVisible() {
+std::string TaskPostDataAlongLine::ObjectVisible()
+{
     return "for amesh in App.activeDocument().Objects:\n\
     if \"Mesh\" in amesh.TypeId:\n\
          aparttoshow = amesh.Name.replace(\"_Mesh\",\"\")\n\
@@ -778,8 +642,8 @@ std::string TaskPostDataAlongLine::ObjectVisible() {
                  apart.ViewObject.Visibility = True\n";
 }
 
-void TaskPostDataAlongLine::on_CreatePlot_clicked() {
-
+void TaskPostDataAlongLine::on_CreatePlot_clicked()
+{
     App::DocumentObjectT objT(getObject());
     std::string ObjName = objT.getObjectPython();
     Gui::doCommandT(Gui::Command::Doc, "x = %s.XAxisData", ObjName);
@@ -792,7 +656,6 @@ void TaskPostDataAlongLine::on_CreatePlot_clicked() {
 void TaskPostDataAlongLine::onChange(double x1, double y1, double z1, double x2, double y2,
                                      double z2)
 {
-
     // call point1Changed only once
     ui->point1X->blockSignals(true);
     ui->point1Y->blockSignals(true);
@@ -818,11 +681,13 @@ void TaskPostDataAlongLine::onChange(double x1, double y1, double z1, double x2,
     point2Changed(0.0);
 }
 
-void TaskPostDataAlongLine::point1Changed(double) {
-
+void TaskPostDataAlongLine::point1Changed(double)
+{
     try {
         std::string ObjName = getObject()->getNameInDocument();
-        Gui::cmdAppDocumentArgs(getDocument(), "%s.Point1 = App.Vector(%f, %f, %f)", ObjName,
+        Gui::cmdAppDocumentArgs(getDocument(),
+                                "%s.Point1 = App.Vector(%f, %f, %f)",
+                                ObjName,
                                 ui->point1X->value().getValue(),
                                 ui->point1Y->value().getValue(),
                                 ui->point1Z->value().getValue());
@@ -840,11 +705,13 @@ void TaskPostDataAlongLine::point1Changed(double) {
     }
 }
 
-void TaskPostDataAlongLine::point2Changed(double) {
-
+void TaskPostDataAlongLine::point2Changed(double)
+{
     try {
         std::string ObjName = getObject()->getNameInDocument();
-        Gui::cmdAppDocumentArgs(getDocument(), "%s.Point2 = App.Vector(%f, %f, %f)", ObjName,
+        Gui::cmdAppDocumentArgs(getDocument(),
+                                "%s.Point2 = App.Vector(%f, %f, %f)",
+                                ObjName,
                                 ui->point2X->value().getValue(),
                                 ui->point2Y->value().getValue(),
                                 ui->point2Z->value().getValue());
@@ -862,8 +729,8 @@ void TaskPostDataAlongLine::point2Changed(double) {
     }
 }
 
-void TaskPostDataAlongLine::resolutionChanged(int val) {
-
+void TaskPostDataAlongLine::resolutionChanged(int val)
+{
     static_cast<Fem::FemPostDataAlongLineFilter*>(getObject())->Resolution.setValue(val);
     // recompute the feature
     getObject()->recomputeFeature();
@@ -909,27 +776,28 @@ void TaskPostDataAlongLine::pointCallback(void* ud, SoEventCallback* n)
     }
 }
 
-void TaskPostDataAlongLine::on_Representation_activated(int i) {
-
+void TaskPostDataAlongLine::on_Representation_activated(int i)
+{
     getTypedView<ViewProviderFemPostObject>()->DisplayMode.setValue(i);
     updateEnumerationList(getTypedView<ViewProviderFemPostObject>()->Field, ui->Field);
     updateEnumerationList(getTypedView<ViewProviderFemPostObject>()->VectorMode, ui->VectorMode);
 }
 
-void TaskPostDataAlongLine::on_Field_activated(int i) {
-
+void TaskPostDataAlongLine::on_Field_activated(int i)
+{
     getTypedView<ViewProviderFemPostObject>()->Field.setValue(i);
     std::string FieldName = ui->Field->currentText().toStdString();
     static_cast<Fem::FemPostDataAlongLineFilter*>(getObject())->PlotData.setValue(FieldName);
     updateEnumerationList(getTypedView<ViewProviderFemPostObject>()->VectorMode, ui->VectorMode);
 }
 
-void TaskPostDataAlongLine::on_VectorMode_activated(int i) {
-
+void TaskPostDataAlongLine::on_VectorMode_activated(int i)
+{
     getTypedView<ViewProviderFemPostObject>()->VectorMode.setValue(i);
 }
 
-std::string TaskPostDataAlongLine::Plot() {
+std::string TaskPostDataAlongLine::Plot()
+{
     auto xlabel = tr("Length", "X-Axis plot label");
     std::ostringstream oss;
     oss << "import FreeCAD\n\
@@ -939,7 +807,8 @@ from matplotlib import pyplot as plt\n\
 plt.ioff()\n\
 plt.figure(title)\n\
 plt.plot(x, y)\n\
-plt.xlabel(\"" << xlabel.toStdString() << "\")\n\
+plt.xlabel(\""
+        << xlabel.toStdString() << "\")\n\
 plt.ylabel(title)\n\
 plt.title(title)\n\
 plt.grid()\n\
@@ -952,13 +821,12 @@ plt.show()\n";
 
 
 // ***************************************************************************
-// data at point
+// data at point filter
 TaskPostDataAtPoint::TaskPostDataAtPoint(ViewProviderDocumentObject* view, QWidget* parent)
     : TaskPostBox(view, Gui::BitmapFactory().pixmap("FEM_PostFilterDataAtPoint"),
                   tr("Data at point options"), parent),
       ui(new Ui_TaskPostDataAtPoint)
 {
-
     assert(view->isDerivedFrom(ViewProviderFemPostDataAtPoint::getClassTypeId()));
 
     //we load the views widget
@@ -995,57 +863,62 @@ TaskPostDataAtPoint::TaskPostDataAtPoint(ViewProviderDocumentObject* view, QWidg
     updateEnumerationList(getTypedView<ViewProviderFemPostObject>()->Field, ui->Field);
 
     // read in point value
-    auto pointValue = static_cast<Fem::FemPostDataAtPointFilter *>(getObject())->PointData[0];
+    auto pointValue = static_cast<Fem::FemPostDataAtPointFilter*>(getObject())->PointData[0];
     showValue(pointValue,
               static_cast<Fem::FemPostDataAtPointFilter*>(getObject())->Unit.getValue());
 
-    connect(ui->centerX, qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
-            this, &TaskPostDataAtPoint::centerChanged);
-    connect(ui->centerY, qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
-            this, &TaskPostDataAtPoint::centerChanged);
-    connect(ui->centerZ, qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
-            this, &TaskPostDataAtPoint::centerChanged);
+    connect(ui->centerX,
+            qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
+            this,
+            &TaskPostDataAtPoint::centerChanged);
+    connect(ui->centerY,
+            qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
+            this,
+            &TaskPostDataAtPoint::centerChanged);
+    connect(ui->centerZ,
+            qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
+            this,
+            &TaskPostDataAtPoint::centerChanged);
 
     // the point filter object needs to be recomputed
     // to fill all fields with data at the current point
     getObject()->recomputeFeature();
 }
 
-TaskPostDataAtPoint::~TaskPostDataAtPoint() {
+TaskPostDataAtPoint::~TaskPostDataAtPoint()
+{
     App::Document* doc = getDocument();
     if (doc)
         doc->recompute();
 }
 
-void TaskPostDataAtPoint::applyPythonCode() {
+void TaskPostDataAtPoint::applyPythonCode()
+{}
 
-}
+static const char* cursor_star[] = {"32 17 3 1",
+                                    "       c None",
+                                    ".      c #FFFFFF",
+                                    "+      c #FF0000",
+                                    "      .                         ",
+                                    "      .                         ",
+                                    "      .                         ",
+                                    "      .                         ",
+                                    "      .                         ",
+                                    "                                ",
+                                    ".....   .....                   ",
+                                    "                                ",
+                                    "      .                         ",
+                                    "      .                         ",
+                                    "      .        ++               ",
+                                    "      .       +  +              ",
+                                    "      .      + ++ +             ",
+                                    "            + ++++ +            ",
+                                    "           +  ++ ++ +           ",
+                                    "          + ++++++++ +          ",
+                                    "         ++  ++  ++  ++         "};
 
-static const char* cursor_star[] = {
-"32 17 3 1",
-"       c None",
-".      c #FFFFFF",
-"+      c #FF0000",
-"      .                         ",
-"      .                         ",
-"      .                         ",
-"      .                         ",
-"      .                         ",
-"                                ",
-".....   .....                   ",
-"                                ",
-"      .                         ",
-"      .                         ",
-"      .        ++               ",
-"      .       +  +              ",
-"      .      + ++ +             ",
-"            + ++++ +            ",
-"           +  ++ ++ +           ",
-"          + ++++++++ +          ",
-"         ++  ++  ++  ++         " };
-
-void TaskPostDataAtPoint::on_SelectPoint_clicked() {
-
+void TaskPostDataAtPoint::on_SelectPoint_clicked()
+{
     Gui::Command::doCommand(Gui::Command::Doc, ObjectVisible().c_str());
     Gui::Document* doc = Gui::Application::Instance->getDocument(getDocument());
     Gui::View3DInventor* view = static_cast<Gui::View3DInventor*>(doc->getActiveView());
@@ -1060,14 +933,16 @@ void TaskPostDataAtPoint::on_SelectPoint_clicked() {
 
         FemGui::DataMarker* marker = new FemGui::DataMarker(viewer, ObjName);
         viewer->addEventCallback(SoMouseButtonEvent::getClassTypeId(),
-            FemGui::TaskPostDataAtPoint::pointCallback, marker);
+                                 FemGui::TaskPostDataAtPoint::pointCallback,
+                                 marker);
         connect(marker, &DataMarker::PointsChanged, this, &TaskPostDataAtPoint::onChange);
     }
     getTypedView<ViewProviderFemPostObject>()->DisplayMode.setValue(1);
     updateEnumerationList(getTypedView<ViewProviderFemPostObject>()->Field, ui->Field);
 }
 
-std::string TaskPostDataAtPoint::ObjectVisible() {
+std::string TaskPostDataAtPoint::ObjectVisible()
+{
     return "for amesh in App.activeDocument().Objects:\n\
     if \"Mesh\" in amesh.TypeId:\n\
          aparttoshow = amesh.Name.replace(\"_Mesh\",\"\")\n\
@@ -1076,7 +951,8 @@ std::string TaskPostDataAtPoint::ObjectVisible() {
                  apart.ViewObject.Visibility = True\n";
 }
 
-void TaskPostDataAtPoint::onChange(double x, double y, double z) {
+void TaskPostDataAtPoint::onChange(double x, double y, double z)
+{
 
     // call centerChanged only once
     ui->centerX->blockSignals(true);
@@ -1091,11 +967,13 @@ void TaskPostDataAtPoint::onChange(double x, double y, double z) {
     centerChanged(0.0);
 }
 
-void TaskPostDataAtPoint::centerChanged(double) {
-
+void TaskPostDataAtPoint::centerChanged(double)
+{
     try {
         std::string ObjName = getObject()->getNameInDocument();
-        Gui::cmdAppDocumentArgs(getDocument(), "%s.Center = App.Vector(%f, %f, %f)", ObjName,
+        Gui::cmdAppDocumentArgs(getDocument(),
+                                "%s.Center = App.Vector(%f, %f, %f)",
+                                ObjName,
                                 ui->centerX->value().getValue(),
                                 ui->centerY->value().getValue(),
                                 ui->centerZ->value().getValue());
@@ -1147,8 +1025,8 @@ void TaskPostDataAtPoint::pointCallback(void* ud, SoEventCallback* n)
     }
 }
 
-void TaskPostDataAtPoint::on_Field_activated(int i) {
-
+void TaskPostDataAtPoint::on_Field_activated(int i)
+{
     getTypedView<ViewProviderFemPostObject>()->Field.setValue(i);
     std::string FieldName = ui->Field->currentText().toStdString();
     // there is no "None" for the FieldName property, thus return here
@@ -1162,61 +1040,96 @@ void TaskPostDataAtPoint::on_Field_activated(int i) {
     // Set the unit for the different known result types.
 
     //  CCX names
-    if ( (FieldName == "von Mises Stress") || (FieldName == "Tresca Stress")
-        || (FieldName == "Major Principal Stress")
-        || (FieldName == "Intermediate Principal Stress")
-        || (FieldName == "Minor Principal Stress")
-        || (FieldName == "Major Principal Stress Vector")
+    if ((FieldName == "von Mises Stress") || (FieldName == "Tresca Stress")
+        || (FieldName == "Major Principal Stress") || (FieldName == "Intermediate Principal Stress")
+        || (FieldName == "Minor Principal Stress") || (FieldName == "Major Principal Stress Vector")
         || (FieldName == "Intermediate Principal Stress Vector")
-        || (FieldName == "Minor Principal Stress Vector")
-        || (FieldName == "Stress xx component") || (FieldName == "Stress xy component")
-        || (FieldName == "Stress xz component") || (FieldName == "Stress yy component")
-        || (FieldName == "Stress yz component") || (FieldName == "Stress zz component") ) {
+        || (FieldName == "Minor Principal Stress Vector") || (FieldName == "Stress xx component")
+        || (FieldName == "Stress xy component") || (FieldName == "Stress xz component")
+        || (FieldName == "Stress yy component") || (FieldName == "Stress yz component")
+        || (FieldName == "Stress zz component")) {
         static_cast<Fem::FemPostDataAtPointFilter*>(getObject())->Unit.setValue("Pa");
     }
-    // The elmer names are different. If there are EigenModes, the names are unique for
+    // The Elmer names are different. If there are EigenModes, the names are unique for
     // every mode. Therefore we only check for the beginning of the name.
-    else if ( (FieldName.find("tresca", 0) == 0) || (FieldName.find("vonmises", 0) == 0)
-        || (FieldName.find("stress_", 0) == 0) || (FieldName.find("principal stress", 0) == 0) ) {
-        static_cast<Fem::FemPostDataAtPointFilter *>(getObject())->Unit.setValue("Pa");
+    else if ((FieldName.find("tresca", 0) == 0) || (FieldName.find("vonmises", 0) == 0)
+             || (FieldName.find("stress_", 0) == 0)
+             || (FieldName.find("principal stress", 0) == 0)) {
+        static_cast<Fem::FemPostDataAtPointFilter*>(getObject())->Unit.setValue("Pa");
     }
-    else if ( (FieldName == "Displacement") || (FieldName == "Displacement Magnitude")
-        || (FieldName.find("displacement", 0) == 0) // Elmer name
-        ) {
+    else if ((FieldName == "current density") || (FieldName == "current density re")
+             || (FieldName == "current density im") || (FieldName == "current density abs")) {
+        static_cast<Fem::FemPostDataAtPointFilter*>(getObject())->Unit.setValue("A/m^2");
+    }
+    else if ((FieldName == "Displacement") || (FieldName == "Displacement Magnitude")
+             || (FieldName.find("displacement", 0) == 0)) {// Elmer name
         static_cast<Fem::FemPostDataAtPointFilter*>(getObject())->Unit.setValue("m");
-    }
-    else if (
-        // CalculiX name
-        FieldName == "Temperature" ||
-        // Elmer name
-        ((FieldName.find("temperature", 0) == 0) && (FieldName != "temperature flux"))
-        ) {
-        static_cast<Fem::FemPostDataAtPointFilter*>(getObject())->Unit.setValue("K");
-    }
-    else if (FieldName == "electric field") {
-        static_cast<Fem::FemPostDataAtPointFilter*>(getObject())->Unit.setValue("V/m");
-    }
-    else if (FieldName == "electric force density") {
-        static_cast<Fem::FemPostDataAtPointFilter *>(getObject())->Unit.setValue("N/m^2");
-    }
-    else if (FieldName == "potential") {
-        static_cast<Fem::FemPostDataAtPointFilter*>(getObject())->Unit.setValue("V");
     }
     else if (FieldName == "electric energy density") {
         static_cast<Fem::FemPostDataAtPointFilter*>(getObject())->Unit.setValue("J/m^3");
     }
+    else if ((FieldName == "electric field") || (FieldName == "electric field re")
+             || (FieldName == "electric field im") || (FieldName == "electric field abs")) {
+        static_cast<Fem::FemPostDataAtPointFilter*>(getObject())->Unit.setValue("V/m");
+    }
     else if (FieldName == "electric flux") {
-        static_cast<Fem::FemPostDataAtPointFilter *>(getObject())->Unit.setValue("A*s/m^2");
+        static_cast<Fem::FemPostDataAtPointFilter*>(getObject())->Unit.setValue("A*s/m^2");
+    }
+    else if (FieldName == "electric force density") {
+        static_cast<Fem::FemPostDataAtPointFilter*>(getObject())->Unit.setValue("N/m^2");
+    }
+    else if ((FieldName == "harmonic loss linear") || (FieldName == "harmonic loss quadratic")) {
+        static_cast<Fem::FemPostDataAtPointFilter*>(getObject())->Unit.setValue("W");
+    }
+    else if ((FieldName == "joule heating") || (FieldName == "nodal joule heating")) {
+        static_cast<Fem::FemPostDataAtPointFilter*>(getObject())->Unit.setValue("J");
+    }
+    else if ((FieldName == "magnetic field strength") || (FieldName == "magnetic field strength re")
+             || (FieldName == "magnetic field strength im")
+             || (FieldName == "magnetic field strength abs")) {
+        static_cast<Fem::FemPostDataAtPointFilter*>(getObject())->Unit.setValue("A/m");
+    }
+    else if ((FieldName == "magnetic flux density") || (FieldName == "magnetic flux density re")
+             || (FieldName == "magnetic flux density im")
+             || (FieldName == "magnetic flux density abs")) {
+        static_cast<Fem::FemPostDataAtPointFilter*>(getObject())->Unit.setValue("T");
+    }
+    else if ((FieldName == "maxwell stress 1") || (FieldName == "maxwell stress 2")
+             || (FieldName == "maxwell stress 3") || (FieldName == "maxwell stress 4")
+             || (FieldName == "maxwell stress 5") || (FieldName == "maxwell stress 6")
+             || (FieldName == "maxwell stress re 1") || (FieldName == "maxwell stress re 2")
+             || (FieldName == "maxwell stress re 3") || (FieldName == "maxwell stress re 4")
+             || (FieldName == "maxwell stress re 5") || (FieldName == "maxwell stress re 6")
+             || (FieldName == "maxwell stress im 1") || (FieldName == "maxwell stress im 2")
+             || (FieldName == "maxwell stress im 3") || (FieldName == "maxwell stress im 4")
+             || (FieldName == "maxwell stress im 5") || (FieldName == "maxwell stress im 6")) {
+        static_cast<Fem::FemPostDataAtPointFilter*>(getObject())->Unit.setValue("As/m^3");
+    }
+    else if (FieldName == "nodal force") {
+        static_cast<Fem::FemPostDataAtPointFilter*>(getObject())->Unit.setValue("N");
+    }
+    else if ((FieldName == "potential") || (FieldName == "potential re")
+             || (FieldName == "potential im") || (FieldName == "potential abs")
+             || (FieldName == "av") || (FieldName == "av re") || (FieldName == "av im")
+             || (FieldName == "av abs")) {
+        static_cast<Fem::FemPostDataAtPointFilter*>(getObject())->Unit.setValue("V");
     }
     else if (FieldName == "potential flux") {
-        static_cast<Fem::FemPostDataAtPointFilter *>(getObject())->Unit.setValue("W/m^2");
+        static_cast<Fem::FemPostDataAtPointFilter*>(getObject())->Unit.setValue("W/m^2");
     }
     // potential loads are in Coulomb: https://www.elmerfem.org/forum/viewtopic.php?t=7780
     else if (FieldName == "potential loads") {
         static_cast<Fem::FemPostDataAtPointFilter*>(getObject())->Unit.setValue("C");
     }
+    else if (
+        // CalculiX name
+        FieldName == "Temperature" ||
+        // Elmer name
+        ((FieldName.find("temperature", 0) == 0) && (FieldName != "temperature flux"))) {
+        static_cast<Fem::FemPostDataAtPointFilter*>(getObject())->Unit.setValue("K");
+    }
     else if (FieldName == "temperature flux") {
-        static_cast<Fem::FemPostDataAtPointFilter *>(getObject())->Unit.setValue("W/m^2");
+        static_cast<Fem::FemPostDataAtPointFilter*>(getObject())->Unit.setValue("W/m^2");
     }
     else {
         static_cast<Fem::FemPostDataAtPointFilter*>(getObject())->Unit.setValue("");
@@ -1259,15 +1172,20 @@ std::string TaskPostDataAtPoint::toString(double val) const
     return valueStream.str();
 }
 
-// ***************************************************************************
-// scalar clip filter
-TaskPostScalarClip::TaskPostScalarClip(ViewProviderDocumentObject* view, QWidget* parent)
-    : TaskPostBox(view, Gui::BitmapFactory().pixmap("FEM_PostFilterClipScalar"),
-                  tr("Scalar clip options"), parent),
-      ui(new Ui_TaskPostScalarClip)
-{
 
-    assert(view->isDerivedFrom(ViewProviderFemPostScalarClip::getClassTypeId()));
+// ***************************************************************************
+// clip filter
+TaskPostClip::TaskPostClip(ViewProviderDocumentObject* view, App::PropertyLink* function,
+                           QWidget* parent)
+    : TaskPostBox(view, Gui::BitmapFactory().pixmap("FEM_PostFilterClipRegion"),
+                  tr("Clip region, choose implicit function"), parent),
+      ui(new Ui_TaskPostClip)
+{
+    assert(view->isDerivedFrom(ViewProviderFemPostClip::getClassTypeId()));
+    assert(function);
+    Q_UNUSED(function);
+
+    fwidget = nullptr;
 
     //we load the views widget
     proxy = new QWidget(this);
@@ -1275,278 +1193,282 @@ TaskPostScalarClip::TaskPostScalarClip(ViewProviderDocumentObject* view, QWidget
     QMetaObject::connectSlotsByName(this);
     this->groupLayout()->addWidget(proxy);
 
+    //the layout for the container widget
+    QVBoxLayout* layout = new QVBoxLayout();
+    ui->Container->setLayout(layout);
+
+    //fill up the combo box with possible functions
+    collectImplicitFunctions();
+
+    //add the function creation command
+    Gui::CommandManager& rcCmdMgr = Gui::Application::Instance->commandManager();
+    Gui::Command* cmd = rcCmdMgr.getCommandByName("FEM_PostCreateFunctions");
+    if (cmd && cmd->getAction())
+        cmd->getAction()->addTo(ui->CreateButton);
+    ui->CreateButton->setPopupMode(QToolButton::InstantPopup);
+
     //load the default values
-    updateEnumerationList(getTypedObject<Fem::FemPostScalarClipFilter>()->Scalars, ui->Scalar);
+    ui->CutCells->setChecked(
+        static_cast<Fem::FemPostClipFilter*>(getObject())->CutCells.getValue());
     ui->InsideOut->setChecked(
-        static_cast<Fem::FemPostScalarClipFilter*>(getObject())->InsideOut.getValue());
-    App::PropertyFloatConstraint& scalar_prop =
-        static_cast<Fem::FemPostScalarClipFilter*>(getObject())->Value;
-    double scalar_factor = scalar_prop.getValue();
-
-    // set spinbox scalar_factor, don't forget to sync the slider
-    ui->Value->blockSignals(true);
-    ui->Value->setValue(scalar_factor);
-    ui->Value->blockSignals(false);
-
-    // sync the slider
-    // slider min = 0%, slider max = 100%
-    //
-    //                 scalar_factor
-    // slider_value = --------------- x 100
-    //                      max
-    //
-    double max = scalar_prop.getConstraints()->UpperBound;
-    int slider_value = (scalar_factor / max) * 100.;
-    ui->Slider->blockSignals(true);
-    ui->Slider->setValue(slider_value);
-    ui->Slider->blockSignals(false);
-    Base::Console().Log(
-        "init: scalar_factor, slider_value: %f, %i: \n", scalar_factor, slider_value);
+        static_cast<Fem::FemPostClipFilter*>(getObject())->InsideOut.getValue());
 }
 
-TaskPostScalarClip::~TaskPostScalarClip() {
+TaskPostClip::~TaskPostClip()
+{}
 
+void TaskPostClip::applyPythonCode()
+{}
+
+void TaskPostClip::collectImplicitFunctions()
+{
+    std::vector<Fem::FemPostPipeline*> pipelines;
+    pipelines = getDocument()->getObjectsOfType<Fem::FemPostPipeline>();
+    if (!pipelines.empty()) {
+        Fem::FemPostPipeline* pipeline = pipelines.front();
+        if (pipeline->Functions.getValue() && pipeline->Functions.getValue()->getTypeId()
+                == Fem::FemPostFunctionProvider::getClassTypeId()) {
+
+            ui->FunctionBox->clear();
+            QStringList items;
+            std::size_t currentItem = 0;
+            App::DocumentObject* currentFunction =
+                static_cast<Fem::FemPostClipFilter*>(getObject())->Function.getValue();
+            const std::vector<App::DocumentObject*>& funcs =
+                static_cast<Fem::FemPostFunctionProvider*>(pipeline->Functions.getValue())
+                    ->Functions.getValues();
+            for (std::size_t i = 0; i < funcs.size(); ++i) {
+                items.push_back(QString::fromLatin1(funcs[i]->getNameInDocument()));
+                if (currentFunction == funcs[i])
+                    currentItem = i;
+            }
+            ui->FunctionBox->addItems(items);
+            ui->FunctionBox->setCurrentIndex(currentItem);
+        }
+    }
 }
 
-void TaskPostScalarClip::applyPythonCode() {
+void TaskPostClip::on_CreateButton_triggered(QAction*)
+{
+    int numFuncs = ui->FunctionBox->count();
+    int currentItem = ui->FunctionBox->currentIndex();
+    collectImplicitFunctions();
 
-}
+    // if a new function was successfully added use it
+    int indexCount = ui->FunctionBox->count();
+    if (indexCount > currentItem + 1)
+        ui->FunctionBox->setCurrentIndex(indexCount - 1);
 
-void TaskPostScalarClip::on_Scalar_currentIndexChanged(int idx) {
+    // When the first function ever was added, a signal must be emitted
+    if (numFuncs == 0) {
+        Q_EMIT emitAddedFunction();
+    }
 
-    static_cast<Fem::FemPostScalarClipFilter*>(getObject())->Scalars.setValue(idx);
     recompute();
-
-    // update constraints and values
-    App::PropertyFloatConstraint& scalar_prop =
-        static_cast<Fem::FemPostScalarClipFilter*>(getObject())->Value;
-    double scalar_factor = scalar_prop.getValue();
-    double min = scalar_prop.getConstraints()->LowerBound;
-    double max = scalar_prop.getConstraints()->UpperBound;
-
-    ui->Maximum->setText(QString::number(min));
-    ui->Minimum->setText(QString::number(max));
-
-    // set scalar_factor, don't forget to sync the slider
-    ui->Value->blockSignals(true);
-    ui->Value->setValue(scalar_factor);
-    ui->Value->blockSignals(false);
-
-    // sync the slider
-    ui->Slider->blockSignals(true);
-    int slider_value = (scalar_factor / max) * 100.;
-    ui->Slider->setValue(slider_value);
-    ui->Slider->blockSignals(false);
 }
 
-void TaskPostScalarClip::on_Slider_valueChanged(int v) {
+void TaskPostClip::on_FunctionBox_currentIndexChanged(int idx)
+{
+    //set the correct property
+    std::vector<Fem::FemPostPipeline*> pipelines;
+    pipelines = getDocument()->getObjectsOfType<Fem::FemPostPipeline>();
+    if (!pipelines.empty()) {
+        Fem::FemPostPipeline* pipeline = pipelines.front();
+        if (pipeline->Functions.getValue() && pipeline->Functions.getValue()->getTypeId()
+                == Fem::FemPostFunctionProvider::getClassTypeId()) {
 
-    App::PropertyFloatConstraint& value =
-        static_cast<Fem::FemPostScalarClipFilter*>(getObject())->Value;
-    double val = value.getConstraints()->LowerBound * (1 - double(v) / 100.)
-        + double(v) / 100. * value.getConstraints()->UpperBound;
+            const std::vector<App::DocumentObject*>& funcs =
+                static_cast<Fem::FemPostFunctionProvider*>(pipeline->Functions.getValue())
+                    ->Functions.getValues();
+            if (idx >= 0)
+                static_cast<Fem::FemPostClipFilter*>(getObject())->Function.setValue(funcs[idx]);
+            else
+                static_cast<Fem::FemPostClipFilter*>(getObject())->Function.setValue(nullptr);
+        }
+    }
 
-    value.setValue(val);
+    //load the correct view
+    Fem::FemPostFunction* fobj = static_cast<Fem::FemPostFunction*>(
+        static_cast<Fem::FemPostClipFilter*>(getObject())->Function.getValue());
+    Gui::ViewProvider* view = nullptr;
+    if (fobj)
+        view = Gui::Application::Instance->getViewProvider(fobj);
+
+    if (fwidget)
+        fwidget->deleteLater();
+
+    if (view) {
+        fwidget = static_cast<FemGui::ViewProviderFemPostFunction*>(view)->createControlWidget();
+        fwidget->setParent(ui->Container);
+        fwidget->setViewProvider(static_cast<FemGui::ViewProviderFemPostFunction*>(view));
+        ui->Container->layout()->addWidget(fwidget);
+    }
     recompute();
-
-    //don't forget to sync the spinbox
-    ui->Value->blockSignals(true);
-    ui->Value->setValue(val);
-    ui->Value->blockSignals(false);
 }
 
-void TaskPostScalarClip::on_Value_valueChanged(double v) {
-
-    App::PropertyFloatConstraint& value =
-        static_cast<Fem::FemPostScalarClipFilter*>(getObject())->Value;
-    value.setValue(v);
+void TaskPostClip::on_CutCells_toggled(bool val)
+{
+    static_cast<Fem::FemPostClipFilter*>(getObject())->CutCells.setValue(val);
     recompute();
-
-    //don't forget to sync the slider
-    ui->Slider->blockSignals(true);
-    ui->Slider->setValue(
-        int(((v - value.getConstraints()->LowerBound)
-             / (value.getConstraints()->UpperBound - value.getConstraints()->LowerBound))
-            * 100.));
-    ui->Slider->blockSignals(false);
 }
 
-void TaskPostScalarClip::on_InsideOut_toggled(bool val) {
-
-    static_cast<Fem::FemPostScalarClipFilter*>(getObject())->InsideOut.setValue(val);
+void TaskPostClip::on_InsideOut_toggled(bool val)
+{
+    static_cast<Fem::FemPostClipFilter*>(getObject())->InsideOut.setValue(val);
     recompute();
 }
 
 
 // ***************************************************************************
-// warp filter
-// spinbox min, slider, spinbox max
-// spinbox warp factor
-TaskPostWarpVector::TaskPostWarpVector(ViewProviderDocumentObject* view, QWidget* parent)
-    : TaskPostBox(view, Gui::BitmapFactory().pixmap("FEM_PostFilterWarp"), tr("Warp options"),
-                  parent),
-      ui(new Ui_TaskPostWarpVector)
+// contours filter
+TaskPostContours::TaskPostContours(ViewProviderDocumentObject* view, QWidget* parent)
+    : TaskPostBox(view, Gui::BitmapFactory().pixmap("FEM_PostFilterContours"),
+                  tr("Contours filter options"), parent),
+      ui(new Ui_TaskPostContours)
 {
+    assert(view->isDerivedFrom(ViewProviderFemPostContours::getClassTypeId()));
 
-    assert(view->isDerivedFrom(ViewProviderFemPostWarpVector::getClassTypeId()));
-
-    // we load the views widget
+    // load the views widget
     proxy = new QWidget(this);
     ui->setupUi(proxy);
     QMetaObject::connectSlotsByName(this);
     this->groupLayout()->addWidget(proxy);
 
-    // load the default values for warp display
-    updateEnumerationList(getTypedObject<Fem::FemPostWarpVectorFilter>()->Vector, ui->Vector);
-    double warp_factor = static_cast<Fem::FemPostWarpVectorFilter*>(getObject())
-                             ->Factor.getValue();// get the standard warp factor
-
-    // set spinbox warp_factor, don't forget to sync the slider
-    ui->Value->blockSignals(true);
-    ui->Value->setValue(warp_factor);
-    ui->Value->blockSignals(false);
-
-    // set min and max, don't forget to sync the slider
-    // TODO if warp is set to standard 1.0, find a smarter way for standard min, max and warp_factor
-    // may be depend on grid boundbox and min max vector values
-    ui->Max->blockSignals(true);
-    ui->Max->setValue(warp_factor == 0 ? 1 : warp_factor * 10.);
-    ui->Max->blockSignals(false);
-    ui->Min->blockSignals(true);
-    ui->Min->setValue(warp_factor == 0 ? 0 : warp_factor / 10.);
-    ui->Min->blockSignals(false);
-
-    // sync slider
-    ui->Slider->blockSignals(true);
-    // slider min = 0%, slider max = 100%
-    //
-    //                 ( warp_factor - min )
-    // slider_value = ----------------------- x 100
-    //                     ( max - min )
-    //
-    int slider_value =
-        (warp_factor - ui->Min->value()) / (ui->Max->value() - ui->Min->value()) * 100.;
-    ui->Slider->setValue(slider_value);
-    ui->Slider->blockSignals(false);
-    Base::Console().Log("init: warp_factor, slider_value: %f, %i: \n", warp_factor, slider_value);
-}
-
-TaskPostWarpVector::~TaskPostWarpVector() {
-
-}
-
-void TaskPostWarpVector::applyPythonCode() {
-
-}
-
-void TaskPostWarpVector::on_Vector_currentIndexChanged(int idx) {
-    // combobox to choose the result to warp
-
-    static_cast<Fem::FemPostWarpVectorFilter*>(getObject())->Vector.setValue(idx);
-    recompute();
-}
-
-void TaskPostWarpVector::on_Slider_valueChanged(int slider_value) {
-    // slider changed, change warp factor and sync spinbox
-
-    //
-    //                                       ( max - min )
-    // warp_factor = min + ( slider_value x --------------- )
-    //                                            100
-    //
-    double warp_factor =
-        ui->Min->value() + ((ui->Max->value() - ui->Min->value()) / 100.) * slider_value;
-    static_cast<Fem::FemPostWarpVectorFilter*>(getObject())->Factor.setValue(warp_factor);
-    recompute();
-
-    // sync the spinbox
-    ui->Value->blockSignals(true);
-    ui->Value->setValue(warp_factor);
-    ui->Value->blockSignals(false);
-    Base::Console().Log("Change: warp_factor, slider_value: %f, %i: \n", warp_factor, slider_value);
-}
-
-void TaskPostWarpVector::on_Value_valueChanged(double warp_factor) {
-    // spinbox changed, change warp factor and sync slider
-
-    // TODO warp factor should not be smaller than min and greater than max,
-    // but problems on automate change of warp_factor, see on_Max_valueChanged
-
-    static_cast<Fem::FemPostWarpVectorFilter*>(getObject())->Factor.setValue(warp_factor);
-    recompute();
-
-    // sync the slider, see above for formula
-    ui->Slider->blockSignals(true);
-    int slider_value =
-        (warp_factor - ui->Min->value()) / (ui->Max->value() - ui->Min->value()) * 100.;
-    ui->Slider->setValue(slider_value);
-    ui->Slider->blockSignals(false);
-    Base::Console().Log("Change: warp_factor, slider_value: %f, %i: \n", warp_factor, slider_value);
-}
-
-void TaskPostWarpVector::on_Max_valueChanged(double) {
-
-    // TODO max should be greater than min, see a few lines later on problem on input characters
-    ui->Slider->blockSignals(true);
-    ui->Slider->setValue((ui->Value->value() - ui->Min->value())
-                         / (ui->Max->value() - ui->Min->value()) * 100.);
-    ui->Slider->blockSignals(false);
-
-    /*
-     * problem, if warp_factor is 2000 one would like to input 4000 as max, one starts to input 4
-     * immediately the warp_factor is changed to 4 because 4 < 2000, but one has just input
-     * one character of their 4000. * I do not know how to solve this, but the code to set slider
-     * and spinbox is fine thus I leave it ...
-     *
-     * mhh it works if "apply changes to pipeline directly" button is deactivated,
-     * still it really confuses if the button is active. More investigation is needed.
-     *
-    // set warp factor to max, if warp factor > max
-    if (ui->Value->value() > ui->Max->value()) {
-        double warp_factor = ui->Max->value();
-        static_cast<Fem::FemPostWarpVectorFilter*>(getObject())->Factor.setValue(warp_factor);
-        recompute();
-
-        // sync the slider, see above for formula
-        ui->Slider->blockSignals(true);
-        int slider_value = (warp_factor - ui->Min->value())
-                           / (ui->Max->value() - ui->Min->value()) * 100.;
-        ui->Slider->setValue(slider_value);
-        ui->Slider->blockSignals(false);
-        // sync the spinbox, see above for formula
-        ui->Value->blockSignals(true);
-        ui->Value->setValue(warp_factor);
-        ui->Value->blockSignals(false);
-    Base::Console().Log("Change: warp_factor, slider_value: %f, %i: \n", warp_factor, slider_value);
+    // load filter settings
+    updateEnumerationList(getTypedObject<Fem::FemPostContoursFilter>()->Field, ui->fieldsCB);
+    updateEnumerationList(getTypedObject<Fem::FemPostContoursFilter>()->VectorMode, ui->vectorsCB);
+    // for a new filter, initialize the coloring
+    auto colorState = static_cast<Fem::FemPostContoursFilter*>(getObject())->NoColor.getValue();
+    if (!colorState && getTypedView<ViewProviderFemPostObject>()->Field.getValue() == 0) {
+        getTypedView<ViewProviderFemPostObject>()->Field.setValue(1);
     }
-    */
+
+    ui->numberContoursSB->setValue(
+        static_cast<Fem::FemPostContoursFilter*>(getObject())->NumberOfContours.getValue());
+    ui->noColorCB->setChecked(colorState);
+
+    // connect
+    connect(ui->fieldsCB,
+            qOverload<int>(&QComboBox::currentIndexChanged),
+            this,
+            &TaskPostContours::onFieldsChanged);
+    connect(ui->vectorsCB,
+            qOverload<int>(&QComboBox::currentIndexChanged),
+            this,
+            &TaskPostContours::onVectorModeChanged);
+    connect(ui->numberContoursSB,
+            qOverload<int>(&QSpinBox::valueChanged),
+            this,
+            &TaskPostContours::onNumberOfContoursChanged);
+    connect(ui->noColorCB, &QCheckBox::toggled, this, &TaskPostContours::onNoColorChanged);
 }
 
-void TaskPostWarpVector::on_Min_valueChanged(double) {
+TaskPostContours::~TaskPostContours()
+{}
 
-    // TODO min should be smaller than max
-    // TODO if warp factor is smaller than min, warp factor should be min, don't forget to sync
-    ui->Slider->blockSignals(true);
-    ui->Slider->setValue((ui->Value->value() - ui->Min->value())
-                         / (ui->Max->value() - ui->Min->value()) * 100.);
-    ui->Slider->blockSignals(false);
+void TaskPostContours::applyPythonCode()
+{}
+
+void TaskPostContours::updateFields(int idx)
+{
+    std::vector<std::string> fieldArray;
+    std::vector<std::string> vec =
+        getTypedObject<Fem::FemPostContoursFilter>()->Field.getEnumVector();
+    for (std::vector<std::string>::iterator it = vec.begin(); it != vec.end(); ++it) {
+        fieldArray.emplace_back(*it);
+    }
+    // update the ViewProvider Field enums
+    App::Enumeration anEnum;
+    getTypedView<ViewProviderFemPostObject>()->Field.setValue(anEnum);
+    anEnum.setEnums(fieldArray);
+    getTypedView<ViewProviderFemPostObject>()->Field.setValue(anEnum);
+    // set new Field index to ViewProvider Field
+    // the ViewProvider field starts with an additional entry "None",
+    // therefore the desired new setting is idx + 1
+    if (!static_cast<Fem::FemPostContoursFilter*>(getObject())->NoColor.getValue())
+        getTypedView<ViewProviderFemPostObject>()->Field.setValue(idx + 1);
+    else
+        getTypedView<ViewProviderFemPostObject>()->Field.setValue(long(0));
+}
+
+void TaskPostContours::onFieldsChanged(int idx)
+{
+    static_cast<Fem::FemPostContoursFilter*>(getObject())->Field.setValue(idx);
+
+    blockVectorUpdate = true;
+    updateEnumerationList(getTypedObject<Fem::FemPostContoursFilter>()->VectorMode, ui->vectorsCB);
+    blockVectorUpdate = false;
+
+    // In > 99 % of the cases the coloring should be equal to the field,
+    // thus change the coloring field too. Users can override this be resetting only the coloring
+    // field afterwards in the properties if really necessary.
+    updateFields(idx);
+
+    // since a new field can be e.g. no vector while the previous one was,
+    // we must also update the VectorMode
+    if (!static_cast<Fem::FemPostContoursFilter*>(getObject())->NoColor.getValue()) {
+        auto newMode = getTypedObject<Fem::FemPostContoursFilter>()->VectorMode.getValue();
+        getTypedView<ViewProviderFemPostObject>()->VectorMode.setValue(newMode);
+    }
+}
+
+void TaskPostContours::onVectorModeChanged(int idx)
+{
+    static_cast<Fem::FemPostContoursFilter*>(getObject())->VectorMode.setValue(idx);
+    recompute();
+    if (!blockVectorUpdate) {
+        // we can have the case that the previous field had VectorMode "Z" but
+        // since it is a 2D field, Z is eompty thus no field is available to color
+        // when the user noch goes back to e.g. "Y" we must set the Field
+        // first to get the possible VectorModes of that field
+        auto currentField = getTypedObject<Fem::FemPostContoursFilter>()->Field.getValue();
+        updateFields(currentField);
+        // now we can set the VectorMode
+        if (!static_cast<Fem::FemPostContoursFilter*>(getObject())->NoColor.getValue())
+            getTypedView<ViewProviderFemPostObject>()->VectorMode.setValue(idx);
+    }
+}
+
+void TaskPostContours::onNumberOfContoursChanged(int number)
+{
+    static_cast<Fem::FemPostContoursFilter*>(getObject())->NumberOfContours.setValue(number);
+    recompute();
+}
+
+void TaskPostContours::onNoColorChanged(bool state)
+{
+    static_cast<Fem::FemPostContoursFilter*>(getObject())->NoColor.setValue(state);
+    if (state) {
+        // no color
+        getTypedView<ViewProviderFemPostObject>()->Field.setValue(long(0));
+    }
+    else {
+        // set same field
+        auto currentField = getTypedObject<Fem::FemPostContoursFilter>()->Field.getValue();
+        // the ViewProvider field starts with an additional entry "None",
+        // therefore the desired new setting is idx + 1
+        getTypedView<ViewProviderFemPostObject>()->Field.setValue(currentField + 1);
+        // set the VectorMode too
+        auto currentMode = getTypedObject<Fem::FemPostContoursFilter>()->VectorMode.getValue();
+        getTypedView<ViewProviderFemPostObject>()->VectorMode.setValue(currentMode);
+    }
+    recompute();
 }
 
 
 // ***************************************************************************
-// function clip filter
+// cut filter
 TaskPostCut::TaskPostCut(ViewProviderDocumentObject* view, App::PropertyLink* function,
                          QWidget* parent)
     : TaskPostBox(view, Gui::BitmapFactory().pixmap("FEM_PostFilterCutFunction"),
                   tr("Function cut, choose implicit function"), parent),
       ui(new Ui_TaskPostCut)
 {
-
     assert(view->isDerivedFrom(ViewProviderFemPostCut::getClassTypeId()));
     assert(function);
     Q_UNUSED(function)
 
-        fwidget = nullptr;
+    fwidget = nullptr;
 
     //we load the views widget
     proxy = new QWidget(this);
@@ -1569,16 +1491,14 @@ TaskPostCut::TaskPostCut(ViewProviderDocumentObject* view, App::PropertyLink* fu
     ui->CreateButton->setPopupMode(QToolButton::InstantPopup);
 }
 
-TaskPostCut::~TaskPostCut() {
+TaskPostCut::~TaskPostCut()
+{}
 
-}
+void TaskPostCut::applyPythonCode()
+{}
 
-void TaskPostCut::applyPythonCode() {
-
-}
-
-void TaskPostCut::collectImplicitFunctions() {
-
+void TaskPostCut::collectImplicitFunctions()
+{
     std::vector<Fem::FemPostPipeline*> pipelines;
     pipelines = getDocument()->getObjectsOfType<Fem::FemPostPipeline>();
     if (!pipelines.empty()) {
@@ -1606,8 +1526,8 @@ void TaskPostCut::collectImplicitFunctions() {
     }
 }
 
-void TaskPostCut::on_CreateButton_triggered(QAction*) {
-
+void TaskPostCut::on_CreateButton_triggered(QAction*)
+{
     int numFuncs = ui->FunctionBox->count();
     int currentItem = ui->FunctionBox->currentIndex();
     collectImplicitFunctions();
@@ -1625,8 +1545,8 @@ void TaskPostCut::on_CreateButton_triggered(QAction*) {
     recompute();
 }
 
-void TaskPostCut::on_FunctionBox_currentIndexChanged(int idx) {
-
+void TaskPostCut::on_FunctionBox_currentIndexChanged(int idx)
+{
     //set the correct property
     std::vector<Fem::FemPostPipeline*> pipelines;
     pipelines = getDocument()->getObjectsOfType<Fem::FemPostPipeline>();
@@ -1664,5 +1584,275 @@ void TaskPostCut::on_FunctionBox_currentIndexChanged(int idx) {
     }
     recompute();
 }
+
+
+// ***************************************************************************
+// scalar clip filter
+TaskPostScalarClip::TaskPostScalarClip(ViewProviderDocumentObject* view, QWidget* parent)
+    : TaskPostBox(view, Gui::BitmapFactory().pixmap("FEM_PostFilterClipScalar"),
+                  tr("Scalar clip options"), parent),
+      ui(new Ui_TaskPostScalarClip)
+{
+    assert(view->isDerivedFrom(ViewProviderFemPostScalarClip::getClassTypeId()));
+
+    //we load the views widget
+    proxy = new QWidget(this);
+    ui->setupUi(proxy);
+    QMetaObject::connectSlotsByName(this);
+    this->groupLayout()->addWidget(proxy);
+
+    //load the default values
+    updateEnumerationList(getTypedObject<Fem::FemPostScalarClipFilter>()->Scalars, ui->Scalar);
+    ui->InsideOut->setChecked(
+        static_cast<Fem::FemPostScalarClipFilter*>(getObject())->InsideOut.getValue());
+    App::PropertyFloatConstraint& scalar_prop =
+        static_cast<Fem::FemPostScalarClipFilter*>(getObject())->Value;
+    double scalar_factor = scalar_prop.getValue();
+
+    // set spinbox scalar_factor, don't forget to sync the slider
+    ui->Value->blockSignals(true);
+    ui->Value->setValue(scalar_factor);
+    ui->Value->blockSignals(false);
+
+    // sync the slider
+    // slider min = 0%, slider max = 100%
+    //
+    //                 scalar_factor
+    // slider_value = --------------- x 100
+    //                      max
+    //
+    double max = scalar_prop.getConstraints()->UpperBound;
+    int slider_value = (scalar_factor / max) * 100.;
+    ui->Slider->blockSignals(true);
+    ui->Slider->setValue(slider_value);
+    ui->Slider->blockSignals(false);
+    Base::Console().Log(
+        "init: scalar_factor, slider_value: %f, %i: \n", scalar_factor, slider_value);
+}
+
+TaskPostScalarClip::~TaskPostScalarClip()
+{}
+
+void TaskPostScalarClip::applyPythonCode()
+{}
+
+void TaskPostScalarClip::on_Scalar_currentIndexChanged(int idx)
+{
+    static_cast<Fem::FemPostScalarClipFilter*>(getObject())->Scalars.setValue(idx);
+    recompute();
+
+    // update constraints and values
+    App::PropertyFloatConstraint& scalar_prop =
+        static_cast<Fem::FemPostScalarClipFilter*>(getObject())->Value;
+    double scalar_factor = scalar_prop.getValue();
+    double min = scalar_prop.getConstraints()->LowerBound;
+    double max = scalar_prop.getConstraints()->UpperBound;
+
+    ui->Maximum->setText(QString::number(min));
+    ui->Minimum->setText(QString::number(max));
+
+    // set scalar_factor, don't forget to sync the slider
+    ui->Value->blockSignals(true);
+    ui->Value->setValue(scalar_factor);
+    ui->Value->blockSignals(false);
+
+    // sync the slider
+    ui->Slider->blockSignals(true);
+    int slider_value = (scalar_factor / max) * 100.;
+    ui->Slider->setValue(slider_value);
+    ui->Slider->blockSignals(false);
+}
+
+void TaskPostScalarClip::on_Slider_valueChanged(int v)
+{
+    App::PropertyFloatConstraint& value =
+        static_cast<Fem::FemPostScalarClipFilter*>(getObject())->Value;
+    double val = value.getConstraints()->LowerBound * (1 - double(v) / 100.)
+        + double(v) / 100. * value.getConstraints()->UpperBound;
+
+    value.setValue(val);
+    recompute();
+
+    //don't forget to sync the spinbox
+    ui->Value->blockSignals(true);
+    ui->Value->setValue(val);
+    ui->Value->blockSignals(false);
+}
+
+void TaskPostScalarClip::on_Value_valueChanged(double v)
+{
+    App::PropertyFloatConstraint& value =
+        static_cast<Fem::FemPostScalarClipFilter*>(getObject())->Value;
+    value.setValue(v);
+    recompute();
+
+    //don't forget to sync the slider
+    ui->Slider->blockSignals(true);
+    ui->Slider->setValue(
+        int(((v - value.getConstraints()->LowerBound)
+             / (value.getConstraints()->UpperBound - value.getConstraints()->LowerBound))
+            * 100.));
+    ui->Slider->blockSignals(false);
+}
+
+void TaskPostScalarClip::on_InsideOut_toggled(bool val)
+{
+    static_cast<Fem::FemPostScalarClipFilter*>(getObject())->InsideOut.setValue(val);
+    recompute();
+}
+
+
+// ***************************************************************************
+// warp vector filter
+TaskPostWarpVector::TaskPostWarpVector(ViewProviderDocumentObject* view, QWidget* parent)
+    : TaskPostBox(view, Gui::BitmapFactory().pixmap("FEM_PostFilterWarp"), tr("Warp options"),
+                  parent),
+      ui(new Ui_TaskPostWarpVector)
+{
+    assert(view->isDerivedFrom(ViewProviderFemPostWarpVector::getClassTypeId()));
+
+    // we load the views widget
+    proxy = new QWidget(this);
+    ui->setupUi(proxy);
+    QMetaObject::connectSlotsByName(this);
+    this->groupLayout()->addWidget(proxy);
+
+    // load the default values for warp display
+    updateEnumerationList(getTypedObject<Fem::FemPostWarpVectorFilter>()->Vector, ui->Vector);
+    double warp_factor = static_cast<Fem::FemPostWarpVectorFilter*>(getObject())
+                             ->Factor.getValue();// get the standard warp factor
+
+    // set spinbox warp_factor, don't forget to sync the slider
+    ui->Value->blockSignals(true);
+    ui->Value->setValue(warp_factor);
+    ui->Value->blockSignals(false);
+
+    // set min and max, don't forget to sync the slider
+    // TODO if warp is set to standard 1.0, find a smarter way for standard min, max
+    // and warp_factor may be depend on grid boundbox and min max vector values
+    ui->Max->blockSignals(true);
+    ui->Max->setValue(warp_factor == 0 ? 1 : warp_factor * 10.);
+    ui->Max->blockSignals(false);
+    ui->Min->blockSignals(true);
+    ui->Min->setValue(warp_factor == 0 ? 0 : warp_factor / 10.);
+    ui->Min->blockSignals(false);
+
+    // sync slider
+    ui->Slider->blockSignals(true);
+    // slider min = 0%, slider max = 100%
+    //
+    //                 ( warp_factor - min )
+    // slider_value = ----------------------- x 100
+    //                     ( max - min )
+    //
+    int slider_value =
+        (warp_factor - ui->Min->value()) / (ui->Max->value() - ui->Min->value()) * 100.;
+    ui->Slider->setValue(slider_value);
+    ui->Slider->blockSignals(false);
+    Base::Console().Log("init: warp_factor, slider_value: %f, %i: \n", warp_factor, slider_value);
+}
+
+TaskPostWarpVector::~TaskPostWarpVector()
+{}
+
+void TaskPostWarpVector::applyPythonCode()
+{}
+
+void TaskPostWarpVector::on_Vector_currentIndexChanged(int idx)
+{
+    // combobox to choose the result to warp
+
+    static_cast<Fem::FemPostWarpVectorFilter*>(getObject())->Vector.setValue(idx);
+    recompute();
+}
+
+void TaskPostWarpVector::on_Slider_valueChanged(int slider_value)
+{
+    // slider changed, change warp factor and sync spinbox
+
+    //
+    //                                       ( max - min )
+    // warp_factor = min + ( slider_value x --------------- )
+    //                                            100
+    //
+    double warp_factor =
+        ui->Min->value() + ((ui->Max->value() - ui->Min->value()) / 100.) * slider_value;
+    static_cast<Fem::FemPostWarpVectorFilter*>(getObject())->Factor.setValue(warp_factor);
+    recompute();
+
+    // sync the spinbox
+    ui->Value->blockSignals(true);
+    ui->Value->setValue(warp_factor);
+    ui->Value->blockSignals(false);
+    Base::Console().Log("Change: warp_factor, slider_value: %f, %i: \n", warp_factor, slider_value);
+}
+
+void TaskPostWarpVector::on_Value_valueChanged(double warp_factor)
+{
+    // spinbox changed, change warp factor and sync slider
+
+    // TODO warp factor should not be smaller than min and greater than max,
+    // but problems on automate change of warp_factor, see on_Max_valueChanged
+
+    static_cast<Fem::FemPostWarpVectorFilter*>(getObject())->Factor.setValue(warp_factor);
+    recompute();
+
+    // sync the slider, see above for formula
+    ui->Slider->blockSignals(true);
+    int slider_value =
+        (warp_factor - ui->Min->value()) / (ui->Max->value() - ui->Min->value()) * 100.;
+    ui->Slider->setValue(slider_value);
+    ui->Slider->blockSignals(false);
+    Base::Console().Log("Change: warp_factor, slider_value: %f, %i: \n", warp_factor, slider_value);
+}
+
+void TaskPostWarpVector::on_Max_valueChanged(double)
+{
+    // TODO max should be greater than min, see a few lines later on problem on input characters
+    ui->Slider->blockSignals(true);
+    ui->Slider->setValue((ui->Value->value() - ui->Min->value())
+                         / (ui->Max->value() - ui->Min->value()) * 100.);
+    ui->Slider->blockSignals(false);
+
+    /*
+     * problem, if warp_factor is 2000 one would like to input 4000 as max, one starts to input 4
+     * immediately the warp_factor is changed to 4 because 4 < 2000, but one has just input
+     * one character of their 4000. * I do not know how to solve this, but the code to set slider
+     * and spinbox is fine thus I leave it ...
+     *
+     * mhh it works if "apply changes to pipeline directly" button is deactivated,
+     * still it really confuses if the button is active. More investigation is needed.
+     *
+    // set warp factor to max, if warp factor > max
+    if (ui->Value->value() > ui->Max->value()) {
+        double warp_factor = ui->Max->value();
+        static_cast<Fem::FemPostWarpVectorFilter*>(getObject())->Factor.setValue(warp_factor);
+        recompute();
+
+        // sync the slider, see above for formula
+        ui->Slider->blockSignals(true);
+        int slider_value = (warp_factor - ui->Min->value())
+                           / (ui->Max->value() - ui->Min->value()) * 100.;
+        ui->Slider->setValue(slider_value);
+        ui->Slider->blockSignals(false);
+        // sync the spinbox, see above for formula
+        ui->Value->blockSignals(true);
+        ui->Value->setValue(warp_factor);
+        ui->Value->blockSignals(false);
+    Base::Console().Log("Change: warp_factor, slider_value: %f, %i: \n", warp_factor, slider_value);
+    }
+    */
+}
+
+void TaskPostWarpVector::on_Min_valueChanged(double)
+{
+    // TODO min should be smaller than max
+    // TODO if warp factor is smaller than min, warp factor should be min, don't forget to sync
+    ui->Slider->blockSignals(true);
+    ui->Slider->setValue((ui->Value->value() - ui->Min->value())
+                         / (ui->Max->value() - ui->Min->value()) * 100.);
+    ui->Slider->blockSignals(false);
+}
+
 
 #include "moc_TaskPostBoxes.cpp"

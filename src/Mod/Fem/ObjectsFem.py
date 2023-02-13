@@ -720,6 +720,21 @@ def makePostVtkFilterWarp(
     return obj
 
 
+def makePostVtkFilterContours(
+    doc,
+    base_vtk_result,
+    name="VtkFilterContours"
+):
+    """makePostVtkFilterContours(document, base_vtk_result, [name]):
+    creates a FEM post processing contours filter object (vtk based)"""
+    obj = doc.addObject("Fem::FemPostContoursFilter", name)
+    tmp_filter_list = base_vtk_result.Filter
+    tmp_filter_list.append(obj)
+    base_vtk_result.Filter = tmp_filter_list
+    del tmp_filter_list
+    return obj
+
+
 def makePostVtkResult(
     doc,
     base_result,

@@ -70,6 +70,7 @@
         <!-- gui command icons: post processing -->
         <file>icons/FEM_PostFilterClipRegion.svg</file>
         <file>icons/FEM_PostFilterClipScalar.svg</file>
+        <file>icons/FEM_PostFilterContours.svg</file>
         <file>icons/FEM_PostFilterCutFunction.svg</file>
         <file>icons/FEM_PostFilterDataAlongLine.svg</file>
         <file>icons/FEM_PostFilterDataAtPoint.svg</file>

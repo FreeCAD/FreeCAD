@@ -95,7 +95,7 @@
     <message>
       <location filename="../../Command.cpp" line="438"/>
       <source>Insert Active View (3D View)</source>
-      <translation>Уставіць бягучы выгляд (трохмерны выгляд)</translation>
+      <translation>Уставіць бягучы выгляд (трохмернае прадстаўленне)</translation>
     </message>
   </context>
   <context>
@@ -183,7 +183,7 @@
     <message>
       <location filename="../../Command.cpp" line="1101"/>
       <source>Insert Clip Group</source>
-      <translation>Уставіць суполку зрэзаў</translation>
+      <translation>Уставіць суполку выглядаў</translation>
     </message>
   </context>
   <context>
@@ -196,7 +196,7 @@
     <message>
       <location filename="../../Command.cpp" line="1138"/>
       <source>Add View to Clip Group</source>
-      <translation>Дадаць выгляд у суполку зрэзаў</translation>
+      <translation>Дадаць выгляд у суполку выглядаў</translation>
     </message>
   </context>
   <context>
@@ -209,7 +209,7 @@
     <message>
       <location filename="../../Command.cpp" line="1222"/>
       <source>Remove View from Clip Group</source>
-      <translation>Выдаліць выгляд з суполкі зрэзаў</translation>
+      <translation>Выдаліць выгляд з суполкі выглядаў</translation>
     </message>
   </context>
   <context>
@@ -1379,12 +1379,12 @@
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="808"/>
       <source>Add Cosmetic Intersection Vertex(es)</source>
-      <translation>Дадаць касметычнае перакрыжаванне вяршыні(яў)</translation>
+      <translation>Дадаць касметычнае перакрыжаванне вяршынь</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="810"/>
       <source>Add cosmetic vertex(es) at the intersection(s) of selected edges:&lt;br&gt;- Select two edges (lines, circles and/or arcs)&lt;br&gt;- Click this tool</source>
-      <translation>Дадайце касметычную вяршыню(і) на перакрыжаванні абраных рэбраў:&lt;br&gt;- Абярыце два рабра (лініі, акружнасці і/ці дугі)&lt;br&gt;- Пстрыкніце гэты інструмент</translation>
+      <translation>Дадайце касметычныя вяршыні на перакрыжаванні абраных рэбраў:&lt;br&gt;- Абярыце два рабра (лініі, акружнасці і/ці дугі)&lt;br&gt;- Пстрыкніце гэты інструмент</translation>
     </message>
   </context>
   <context>
@@ -1646,7 +1646,7 @@
     <message>
       <location filename="../../Command.cpp" line="798"/>
       <source>Insert multiple linked views of drawable object(s)</source>
-      <translation>Уставіць некалькі звязаных відаў аб'екта(аў) чарцяжа</translation>
+      <translation>Уставіць некалькі звязаных выглядаў аб'ектаў чарцяжа</translation>
     </message>
   </context>
   <context>
@@ -1747,7 +1747,7 @@
     <message>
       <location filename="../../CommandAnnotate.cpp" line="1324"/>
       <source>Show/Hide Invisible Edges</source>
-      <translation>Адлюстраваць/схаваць нябачныя рэбры</translation>
+      <translation>Паказаць/схаваць нябачныя рэбры</translation>
     </message>
   </context>
   <context>
@@ -1900,7 +1900,7 @@
       <location filename="../../CommandDecorate.cpp" line="290"/>
       <location filename="../../CommandDecorate.cpp" line="291"/>
       <source>Turn View Frames On/Off</source>
-      <translation>Адлюстраваць/схаваць элементы для змены чарцяжа</translation>
+      <translation>Уключыць/адключыць рамку для змены чарцяжа</translation>
     </message>
   </context>
   <context>
@@ -2289,7 +2289,7 @@
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="826"/>
       <source>Cosmetic Intersection Vertex(es)</source>
-      <translation>Касметычнае перакрыжаванне вяршыні(яў)</translation>
+      <translation>Касметычнае перакрыжаванне вяршынь</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="873"/>
@@ -2352,7 +2352,7 @@
     <message>
       <location filename="../../Widgets/CompassWidget.cpp" line="160"/>
       <source>The view direction angle relative to +X in the BaseView.</source>
-      <translation>Вугал напрамку выгляд адносна + X на базавым выглядзе.</translation>
+      <translation>Вугал напрамку выгляд адносна + X на асноўным выглядзе.</translation>
     </message>
     <message>
       <location filename="../../Widgets/CompassWidget.cpp" line="162"/>
@@ -2476,42 +2476,42 @@
     <message>
       <location filename="../../mrichtextedit.ui" line="362"/>
       <source>Bullet list (CTRL+-)</source>
-      <translation type="unfinished">Bullet list (CTRL+-)</translation>
+      <translation>Маркіраваны спіс (&lt;Ctrl + ->)</translation>
     </message>
     <message>
       <location filename="../../mrichtextedit.ui" line="388"/>
       <source>Ordered list (CTRL+=)</source>
-      <translation type="unfinished">Ordered list (CTRL+=)</translation>
+      <translation>Упарадкаваны спіс (&lt;Ctrl + =>)</translation>
     </message>
     <message>
       <location filename="../../mrichtextedit.ui" line="414"/>
       <source>Decrease indentation (CTRL+,)</source>
-      <translation type="unfinished">Decrease indentation (CTRL+,)</translation>
+      <translation>Паменшыць водступ (&lt;Ctrl + ,>)</translation>
     </message>
     <message>
       <location filename="../../mrichtextedit.ui" line="417"/>
       <source>Decrease indentation</source>
-      <translation type="unfinished">Decrease indentation</translation>
+      <translation>Паменшыць водступ</translation>
     </message>
     <message>
       <location filename="../../mrichtextedit.ui" line="437"/>
       <source>Increase indentation (CTRL+.)</source>
-      <translation type="unfinished">Increase indentation (CTRL+.)</translation>
+      <translation>Павялічыць водступ (&lt;Ctrl + .>)</translation>
     </message>
     <message>
       <location filename="../../mrichtextedit.ui" line="440"/>
       <source>Increase indentation</source>
-      <translation type="unfinished">Increase indentation</translation>
+      <translation>Павялічыць водступ</translation>
     </message>
     <message>
       <location filename="../../mrichtextedit.ui" line="473"/>
       <source>Text foreground color</source>
-      <translation type="unfinished">Text foreground color</translation>
+      <translation>Колер тэксту</translation>
     </message>
     <message>
       <location filename="../../mrichtextedit.ui" line="496"/>
       <source>Text background color</source>
-      <translation type="unfinished">Text background color</translation>
+      <translation>Колер фону тэкста</translation>
     </message>
     <message>
       <location filename="../../mrichtextedit.ui" line="499"/>
@@ -2527,7 +2527,7 @@
       <location filename="../../mrichtextedit.ui" line="566"/>
       <location filename="../../mrichtextedit.ui" line="612"/>
       <source>More functions</source>
-      <translation type="unfinished">More functions</translation>
+      <translation>Больш функцый</translation>
     </message>
     <message>
       <location filename="../../mrichtextedit.cpp" line="100"/>
@@ -2537,67 +2537,67 @@
     <message>
       <location filename="../../mrichtextedit.cpp" line="101"/>
       <source>Heading 1</source>
-      <translation type="unfinished">Heading 1</translation>
+      <translation>Загаловак 1</translation>
     </message>
     <message>
       <location filename="../../mrichtextedit.cpp" line="102"/>
       <source>Heading 2</source>
-      <translation type="unfinished">Heading 2</translation>
+      <translation>Загаловак 2</translation>
     </message>
     <message>
       <location filename="../../mrichtextedit.cpp" line="103"/>
       <source>Heading 3</source>
-      <translation type="unfinished">Heading 3</translation>
+      <translation>Загаловак 3</translation>
     </message>
     <message>
       <location filename="../../mrichtextedit.cpp" line="104"/>
       <source>Heading 4</source>
-      <translation type="unfinished">Heading 4</translation>
+      <translation>Загаловак 4</translation>
     </message>
     <message>
       <location filename="../../mrichtextedit.cpp" line="105"/>
       <source>Monospace</source>
-      <translation type="unfinished">Monospace</translation>
+      <translation>Аднолькавай шырыні</translation>
     </message>
     <message>
       <location filename="../../mrichtextedit.cpp" line="165"/>
       <source>Remove character formatting</source>
-      <translation type="unfinished">Remove character formatting</translation>
+      <translation>Прыбраць фарматаванне знаку</translation>
     </message>
     <message>
       <location filename="../../mrichtextedit.cpp" line="170"/>
       <source>Remove all formatting</source>
-      <translation type="unfinished">Remove all formatting</translation>
+      <translation>Прыбраць усё фарматаванне</translation>
     </message>
     <message>
       <location filename="../../mrichtextedit.cpp" line="174"/>
       <source>Edit document source</source>
-      <translation type="unfinished">Edit document source</translation>
+      <translation>Змяніць крыніцу дакумента</translation>
     </message>
     <message>
       <location filename="../../mrichtextedit.cpp" line="269"/>
       <source>Document source</source>
-      <translation type="unfinished">Document source</translation>
+      <translation>Крыніца дакументу</translation>
     </message>
     <message>
       <location filename="../../mrichtextedit.cpp" line="372"/>
       <source>Create a link</source>
-      <translation type="unfinished">Create a link</translation>
+      <translation>Стварыць сувязь</translation>
     </message>
     <message>
       <location filename="../../mrichtextedit.cpp" line="373"/>
       <source>Link URL:</source>
-      <translation type="unfinished">Link URL:</translation>
+      <translation>URL-адрас спасылкі:</translation>
     </message>
     <message>
       <location filename="../../mrichtextedit.cpp" line="702"/>
       <source>Select an image</source>
-      <translation type="unfinished">Select an image</translation>
+      <translation>Абраць выяву</translation>
     </message>
     <message>
       <location filename="../../mrichtextedit.cpp" line="704"/>
       <source>JPEG (*.jpg);; GIF (*.gif);; PNG (*.png);; BMP (*.bmp);; All (*)</source>
-      <translation type="unfinished">JPEG (*.jpg);; GIF (*.gif);; PNG (*.png);; BMP (*.bmp);; All (*)</translation>
+      <translation>JPEG (*.jpg);; GIF (*.gif);; PNG (*.png);; BMP (*.bmp);; Усе (*)</translation>
     </message>
   </context>
   <context>
@@ -2637,28 +2637,28 @@
       <location filename="../../Command.cpp" line="376"/>
       <location filename="../../Command.cpp" line="874"/>
       <source>No Shapes, Groups or Links in this selection</source>
-      <translation type="unfinished">No Shapes, Groups or Links in this selection</translation>
+      <translation>Без фігур, суполак і сувязяў у абраным</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="602"/>
       <location filename="../../Command.cpp" line="768"/>
       <source>Select at least 1 DrawViewPart object as Base.</source>
-      <translation type="unfinished">Select at least 1 DrawViewPart object as Base.</translation>
+      <translation>Абярыце хаця б адзін аб'ект выгляду дэталі як асноўны.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="719"/>
       <source>I do not know what base view to use.</source>
-      <translation type="unfinished">I do not know what base view to use.</translation>
+      <translation>Я не ведаю, які асноўны выгляд патрэбна ўжываць.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="726"/>
       <source>No Base View, Shapes, Groups or Links in this selection</source>
-      <translation type="unfinished">No Base View, Shapes, Groups or Links in this selection</translation>
+      <translation>Без асноўнага выгляду, суполак і сувязяў у абраным</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="731"/>
       <source>No profile object found in selection</source>
-      <translation type="unfinished">No profile object found in selection</translation>
+      <translation>Аб'ект профілю не знойдзены ў абраным</translation>
     </message>
     <message>
       <location filename="../../CommandDecorate.cpp" line="345"/>
@@ -2680,19 +2680,19 @@
       <location filename="../../Command.cpp" line="966"/>
       <location filename="../../Command.cpp" line="978"/>
       <source>Incorrect selection</source>
-      <translation type="unfinished">Incorrect selection</translation>
+      <translation>Няправільны выбар</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1438"/>
       <location filename="../../Command.cpp" line="952"/>
       <source>Select an object first</source>
-      <translation type="unfinished">Select an object first</translation>
+      <translation>Спачатку абярыце аб'ект</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1446"/>
       <location filename="../../Command.cpp" line="959"/>
       <source>Too many objects selected</source>
-      <translation type="unfinished">Too many objects selected</translation>
+      <translation>Абрана зашмат аб'ектаў</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1455"/>
@@ -2711,37 +2711,37 @@
       <location filename="../../CommandCreateDims.cpp" line="1085"/>
       <location filename="../../Command.cpp" line="979"/>
       <source>No View of a Part in selection.</source>
-      <translation type="unfinished">No View of a Part in selection.</translation>
+      <translation>Без выгляду дэталі ў абраным.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1151"/>
       <source>Select one Clip group and one View.</source>
-      <translation type="unfinished">Select one Clip group and one View.</translation>
+      <translation>Абярыце адну суполку выглядаў і адзін выгляд.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1168"/>
       <source>Select exactly one View to add to group.</source>
-      <translation type="unfinished">Select exactly one View to add to group.</translation>
+      <translation>Абярыце толькі адзін выгляд, каб дадаць яго ў суполку.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1173"/>
       <source>Select exactly one Clip group.</source>
-      <translation type="unfinished">Select exactly one Clip group.</translation>
+      <translation>Абярыце роўна адну суполку выглядаў.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1182"/>
       <source>Clip and View must be from same Page.</source>
-      <translation type="unfinished">Clip and View must be from same Page.</translation>
+      <translation>Зрэз і выгляд павінны быць на адной старонцы.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1235"/>
       <source>Select exactly one View to remove from Group.</source>
-      <translation type="unfinished">Select exactly one View to remove from Group.</translation>
+      <translation>Абярыце толькі адзін выгляд, каб выдаліць яго з суполкі.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1254"/>
       <source>View does not belong to a Clip</source>
-      <translation type="unfinished">View does not belong to a Clip</translation>
+      <translation>Выгляд не належыць да зрэзу</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1313"/>
@@ -2761,17 +2761,17 @@
     <message>
       <location filename="../../Command.cpp" line="1367"/>
       <source>Select at least one object.</source>
-      <translation type="unfinished">Select at least one object.</translation>
+      <translation>Абярыце хаця б адзін аб'ект.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1431"/>
       <source>Please select only 1 Arch Section.</source>
-      <translation type="unfinished">Please select only 1 Arch Section.</translation>
+      <translation>Калі ласка, абярыце толькі адзін перасек Архітэктуры.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1437"/>
       <source>No Arch Sections in selection.</source>
-      <translation type="unfinished">No Arch Sections in selection.</translation>
+      <translation>Без перасек Архітэктуры ў абраным.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1480"/>
@@ -2781,44 +2781,44 @@
     <message>
       <location filename="../../Command.cpp" line="1552"/>
       <source>No Drawing View</source>
-      <translation type="unfinished">No Drawing View</translation>
+      <translation>Без выгляду чарцяжоў</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1553"/>
       <source>Open Drawing View before attempting export to SVG.</source>
-      <translation type="unfinished">Open Drawing View before attempting export to SVG.</translation>
+      <translation>Адчыніце выгляд чарцяжа перад экспартаваннем у SVG.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1588"/>
       <source>Can not export selection</source>
-      <translation type="unfinished">Can not export selection</translation>
+      <translation>Не атрымалася экспартаваць абранае</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1589"/>
       <source>Page contains DrawViewArch which will not be exported. Continue?</source>
-      <translation type="unfinished">Page contains DrawViewArch which will not be exported. Continue?</translation>
+      <translation>Старонка ўтрымлівае DrawViewArch, які не будзе экспартаваны. Ці працягнуць?</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="212"/>
       <location filename="../../CommandCreateDims.cpp" line="338"/>
       <source>Ellipse Curve Warning</source>
-      <translation type="unfinished">Ellipse Curve Warning</translation>
+      <translation>Папярэджанне крывой эліпса</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="213"/>
       <source>Selected edge is an Ellipse.  Radius will be approximate. Continue?</source>
-      <translation type="unfinished">Selected edge is an Ellipse.  Radius will be approximate. Continue?</translation>
+      <translation>Абранае рабро ўяўляе сабой эліпс. Радыус будзе прыблізным. Ці працягнуць?</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="223"/>
       <location filename="../../CommandCreateDims.cpp" line="349"/>
       <source>BSpline Curve Warning</source>
-      <translation type="unfinished">BSpline Curve Warning</translation>
+      <translation>Папярэджанне крывой B-сплайна</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="224"/>
       <source>Selected edge is a BSpline.  Radius will be approximate. Continue?</source>
-      <translation type="unfinished">Selected edge is a BSpline.  Radius will be approximate. Continue?</translation>
+      <translation>Абранае рабро ўяўляе сабой B-сплайн. Радыус будзе прыблізным. Ці працягнуць?</translation>
     </message>
     <message>
       <location filename="../../CommandDecorate.cpp" line="366"/>
@@ -2847,17 +2847,17 @@
       <location filename="../../TaskDimRepair.cpp" line="149"/>
       <location filename="../../TaskDimension.cpp" line="400"/>
       <source>Incorrect Selection</source>
-      <translation type="unfinished">Incorrect Selection</translation>
+      <translation>Няправільны выбар</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="188"/>
       <source>Can not make 2d radius dimension from selection</source>
-      <translation type="unfinished">Can not make 2d radius dimension from selection</translation>
+      <translation>Не атрымалася стварыць двухмернае вымярэнне радыусу з абранага</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="203"/>
       <source>Can not make 3d radius dimension from selection</source>
-      <translation type="unfinished">Can not make 3d radius dimension from selection</translation>
+      <translation>Не атрымалася стварыць трохмернае вымярэнне радыусу з абранага</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="234"/>
@@ -2878,7 +2878,7 @@
     <message>
       <location filename="../../CommandCreateDims.cpp" line="329"/>
       <source>Can not make 3d diameter dimension from selection</source>
-      <translation type="unfinished">Can not make 3d diameter dimension from selection</translation>
+      <translation>Не атрымалася стварыць трохмернае вымярэнне дыяметру з абранага</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="339"/>
@@ -2903,7 +2903,7 @@
     <message>
       <location filename="../../CommandCreateDims.cpp" line="457"/>
       <source>Can not make 3d linear dimension from selection</source>
-      <translation type="unfinished">Can not make 3d linear dimension from selection</translation>
+      <translation>Не атрымалася стварыць трохмернае лінейнае вымярэнне з абранага</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="539"/>
@@ -2913,7 +2913,7 @@
     <message>
       <location filename="../../CommandCreateDims.cpp" line="555"/>
       <source>Can not make 3d horizontal dimension from selection</source>
-      <translation type="unfinished">Can not make 3d horizontal dimension from selection</translation>
+      <translation>Не атрымалася стварыць трохмернае гарызантальнае вымярэнне з абранага</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="638"/>
@@ -2923,7 +2923,7 @@
     <message>
       <location filename="../../CommandCreateDims.cpp" line="653"/>
       <source>Can not make 3d vertical dimension from selection</source>
-      <translation type="unfinished">Can not make 3d vertical dimension from selection</translation>
+      <translation>Не атрымалася стварыць трохмернае вертыкальнае вымярэнне з абранага</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="734"/>
@@ -2935,7 +2935,7 @@
       <location filename="../../CommandCreateDims.cpp" line="749"/>
       <location filename="../../CommandCreateDims.cpp" line="845"/>
       <source>Can not make 3d angle dimension from selection</source>
-      <translation type="unfinished">Can not make 3d angle dimension from selection</translation>
+      <translation>Не атрымалася стварыць трохмернае вымярэнне вугла з абранага</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1113"/>
@@ -2945,7 +2945,7 @@
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1127"/>
       <source>Can not make 3d extent dimension from selection</source>
-      <translation type="unfinished">Can not make 3d extent dimension from selection</translation>
+      <translation>Не атрымалася стварыць трохмернае габарытнае вымярэнне з абранага</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1219"/>
@@ -2955,12 +2955,12 @@
     <message>
       <location filename="../../CommandCreateDims.cpp" line="913"/>
       <source>There is no 3D object in your selection</source>
-      <translation type="unfinished">There is no 3D object in your selection</translation>
+      <translation>У вашым выбары няма трохмернага аб'екта</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="920"/>
       <source>There are no 3D Edges or Vertices in your selection</source>
-      <translation type="unfinished">There are no 3D Edges or Vertices in your selection</translation>
+      <translation>У вашым выбары няма трохмерных рэбраў ці вяршынь</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1278"/>
@@ -3324,12 +3324,12 @@
     <message>
       <location filename="../../ViewProviderPage.cpp" line="238"/>
       <source>Show drawing</source>
-      <translation>Адлюстраваць чарцёж</translation>
+      <translation>Паказаць чарцёж</translation>
     </message>
     <message>
       <location filename="../../ViewProviderPage.cpp" line="240"/>
       <source>Toggle KeepUpdated</source>
-      <translation type="unfinished">Toggle KeepUpdated</translation>
+      <translation>Пераключыць абнаўленне</translation>
     </message>
     <message>
       <location filename="../../TemplateTextField.cpp" line="47"/>
@@ -3386,12 +3386,12 @@
     <message>
       <location filename="../../TaskActiveView.cpp" line="132"/>
       <source>No 3D Viewer</source>
-      <translation type="unfinished">No 3D Viewer</translation>
+      <translation>Без трохмернага прадстаўлення</translation>
     </message>
     <message>
       <location filename="../../TaskActiveView.cpp" line="133"/>
       <source>Can not find a 3D viewer</source>
-      <translation type="unfinished">Can not find a 3D viewer</translation>
+      <translation>Не атрымалася знайсці сродак трохмернага прадстаўлення</translation>
     </message>
     <message>
       <location filename="../../TaskCenterLine.cpp" line="167"/>
@@ -3760,7 +3760,7 @@ it has a tile weld that would become broken.</translation>
     <message>
       <location filename="../../TaskActiveView.ui" line="99"/>
       <source>Use 3d Background</source>
-      <translation type="unfinished">Use 3d Background</translation>
+      <translation>Ужыць трохмерны фон</translation>
     </message>
     <message>
       <location filename="../../TaskActiveView.ui" line="115"/>
@@ -4189,7 +4189,7 @@ when hatching a face with a PAT pattern</translation>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="20"/>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="32"/>
       <source>Annotation</source>
-      <translation type="unfinished">Annotation</translation>
+      <translation>Заметка</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="296"/>
@@ -4362,7 +4362,7 @@ when hatching a face with a PAT pattern</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="574"/>
       <source>None</source>
-      <translation type="unfinished">None</translation>
+      <translation>Нічога</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="583"/>
@@ -4855,19 +4855,19 @@ Multiplier of &apos;Font Size&apos;</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="61"/>
       <source>Whether or not pages are updated every time the 3D model is changed</source>
-      <translation type="unfinished">Whether or not pages are updated every time the 3D model is changed</translation>
+      <translation>Незалежна ад таго, абнаўляюцца старонкі пры кожнай змене трохмернай мадэлі, ці не</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="64"/>
       <source>Update With 3D (global policy)</source>
-      <translation type="unfinished">Update With 3D (global policy)</translation>
+      <translation>Абнаўленне з дапамогай трохмернага прадстаўлення (глабальнае правіла)</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="92"/>
       <source>Whether or not a page&apos;s &apos;Keep Updated&apos; property
 can override the global &apos;Update With 3D&apos; parameter</source>
-      <translation type="unfinished">Whether or not a page&apos;s &apos;Keep Updated&apos; property
-can override the global &apos;Update With 3D&apos; parameter</translation>
+      <translation>Незалежна ад таго, ці можа ўласцівасць старонкі &apos;Абнаўленне&apos;
+перавызначаць глабальную наладу &apos;Абнаўленне з дапамогай трохмернага прадстаўлення&apos;, ці не</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="96"/>
@@ -4878,8 +4878,8 @@ can override the global &apos;Update With 3D&apos; parameter</translation>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="123"/>
       <source>Keep drawing pages in sync with changes of 3D model in real time.
 This can slow down the response time.</source>
-      <translation type="unfinished">Keep drawing pages in sync with changes of 3D model in real time.
-This can slow down the response time.</translation>
+      <translation>Сінхранізуе старонку малявання чарцяжа з зменамі трохмернай мадэлі ў рэжыме рэальнага часу.
+Гэта можа запаволіць час адказу.</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="127"/>
@@ -5013,7 +5013,7 @@ for ProjectionGroups</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="611"/>
       <source>Default SVG or bitmap file for hatching</source>
-      <translation type="unfinished">Default SVG or bitmap file for hatching</translation>
+      <translation>Першапачатковы SVG ці растравы файл для штрыхоўкі</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="635"/>
@@ -5063,7 +5063,7 @@ for ProjectionGroups</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="792"/>
       <source>Grid</source>
-      <translation type="unfinished">Grid</translation>
+      <translation>Сетка</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="805"/>
@@ -5144,7 +5144,7 @@ Fast, but result is a collection of short straight lines.</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawHLR.ui" line="200"/>
       <source>Show smooth lines</source>
-      <translation>Адлюстраваць плыўныя лініі</translation>
+      <translation>Паказаць плыўныя лініі</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawHLR.ui" line="203"/>
@@ -5314,12 +5314,12 @@ Fast, but result is a collection of short straight lines.</translation>
     <message>
       <location filename="../../MDIViewPage.cpp" line="94"/>
       <source>Toggle &amp;Keep Updated</source>
-      <translation type="unfinished">Toggle &amp;Keep Updated</translation>
+      <translation>Пераключыць &amp;абнаўленне</translation>
     </message>
     <message>
       <location filename="../../MDIViewPage.cpp" line="97"/>
       <source>Toggle &amp;Frames</source>
-      <translation type="unfinished">Toggle &amp;Frames</translation>
+      <translation>Пераключыць &amp;рамку</translation>
     </message>
     <message>
       <location filename="../../MDIViewPage.cpp" line="100"/>
@@ -5469,7 +5469,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskBalloon.ui" line="115"/>
       <source>None</source>
-      <translation type="unfinished">None</translation>
+      <translation>Нічога</translation>
     </message>
     <message>
       <location filename="../../TaskBalloon.ui" line="124"/>
@@ -5958,7 +5958,7 @@ Do you want to continue?</source>
       <location filename="../../TaskCosmeticLine.ui" line="74"/>
       <location filename="../../TaskCosmeticLine.ui" line="147"/>
       <source>3d Point</source>
-      <translation type="unfinished">3d Point</translation>
+      <translation>Трохмерная кропка</translation>
     </message>
     <message>
       <location filename="../../TaskCosmeticLine.ui" line="88"/>
@@ -6753,7 +6753,7 @@ be used instead of the dimension value</translation>
     <message>
       <location filename="../../TaskHatch.ui" line="38"/>
       <source>Select an Svg or Bitmap file</source>
-      <translation type="unfinished">Select an Svg or Bitmap file</translation>
+      <translation>Абраць SVG ці растравы файл</translation>
     </message>
     <message>
       <location filename="../../TaskHatch.ui" line="41"/>
@@ -6763,7 +6763,7 @@ be used instead of the dimension value</translation>
     <message>
       <location filename="../../TaskHatch.ui" line="55"/>
       <source>Choose an Svg or Bitmap file as a pattern</source>
-      <translation type="unfinished">Choose an Svg or Bitmap file as a pattern</translation>
+      <translation>Абярыце SVG ці растравы файла ў якасці шаблону</translation>
     </message>
     <message>
       <location filename="../../TaskHatch.ui" line="114"/>
@@ -7052,12 +7052,12 @@ You can pick further points to get line segments.</translation>
     <message>
       <location filename="../../TaskLinkDim.ui" line="26"/>
       <source>Link Dimension</source>
-      <translation type="unfinished">Link Dimension</translation>
+      <translation>Звязаць вымярэнне</translation>
     </message>
     <message>
       <location filename="../../TaskLinkDim.ui" line="54"/>
       <source>Link This 3D Geometry</source>
-      <translation type="unfinished">Link This 3D Geometry</translation>
+      <translation>Звязаць гэтае з трохмернай геаметрыяй</translation>
     </message>
     <message>
       <location filename="../../TaskLinkDim.ui" line="67"/>
@@ -7605,7 +7605,7 @@ using the given X/Y Spacing</translation>
     <message>
       <location filename="../../TaskSectionView.ui" line="316"/>
       <source>Position from the 3D origin of the object in the view</source>
-      <translation type="unfinished">Position from the 3D origin of the object in the view</translation>
+      <translation>Становішча ад пачатку трохмерных каардынат аб'екта ў выглядзе</translation>
     </message>
     <message>
       <location filename="../../TaskSectionView.ui" line="319"/>
@@ -8231,7 +8231,7 @@ using the given X/Y Spacing</translation>
     <message>
       <location filename="../../TaskDimRepair.ui" line="187"/>
       <source>References 3D</source>
-      <translation type="unfinished">References 3D</translation>
+      <translation>Спасылкі на трохмернае прадстаўленне</translation>
     </message>
   </context>
   <context>

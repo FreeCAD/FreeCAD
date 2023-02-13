@@ -750,7 +750,7 @@
     <message>
       <location filename="../../Command.cpp" line="238"/>
       <source>Mesh union</source>
-      <translation>Объеденить полигональные сетки</translation>
+      <translation>Объединить полигональные сетки</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="307"/>
