@@ -332,9 +332,9 @@ class _Stairs(ArchComponent.Component):
             self.OutlineRailArcRight = []
 
         if not hasattr(obj,"RailingLeft"):
-            obj.addProperty("App::PropertyLinkHidden","RailingLeft","Segment and Parts","The left railing object")
+            obj.addProperty("App::PropertyLinkHidden","RailingLeft","Segment and Parts","Name of Railing object (left) created")
         if not hasattr(obj,"RailingRight"):
-            obj.addProperty("App::PropertyLinkHidden","RailingRight","Segment and Parts","The right railing object")
+            obj.addProperty("App::PropertyLinkHidden","RailingRight","Segment and Parts","Name of Railing object (right) created")
 
         if not hasattr(obj,"OutlineLeftAll"):
             obj.addProperty("App::PropertyVectorList","OutlineLeftAll","Segment and Parts",QT_TRANSLATE_NOOP("App::Property","The 'left outline' of all segments of stairs"))
@@ -401,12 +401,12 @@ class _Stairs(ArchComponent.Component):
         self.setProperties(obj)
 
         if hasattr(obj,"OutlineWireLeft"):
-            self.update_properties_0v19(obj)
+            self.update_properties_0v18_to_0v20(obj)
 
         if obj.getTypeIdOfProperty("RailingLeft") == "App::PropertyString":
-            self.update_properties_0v21(obj)
+            self.update_properties_0v19_to_0v20(obj)
 
-    def update_properties_0v19(self, obj):
+    def update_properties_0v18_to_0v20(self, obj):
         doc = FreeCAD.ActiveDocument
         outlineWireLeftObject = doc.getObject(obj.OutlineWireLeft)
         outlineWireRightObject = doc.getObject(obj.OutlineWireRight)
@@ -420,10 +420,13 @@ class _Stairs(ArchComponent.Component):
             pass
         obj.removeProperty("OutlineWireLeft")
         obj.removeProperty("OutlineWireRight")
-        self.update_properties_0v19_0v21(obj)
+        self.update_properties_to_0v20(obj)
         doc.recompute()
+        from draftutils.messages import _wrn
+        _wrn("v0.20.3, " + obj.Label + ", "
+             + translate("Arch", "removed properties 'OutlineWireLeft' and 'OutlineWireRight', and added properties 'RailingLeft' and 'RailingRight'"))
 
-    def update_properties_0v21(self, obj):
+    def update_properties_0v19_to_0v20(self, obj):
         doc = FreeCAD.ActiveDocument
         railingLeftObject = doc.getObject(obj.RailingLeft)
         railingRightObject = doc.getObject(obj.RailingRight)
@@ -432,10 +435,13 @@ class _Stairs(ArchComponent.Component):
         self.setProperties(obj)
         obj.RailingLeft = railingLeftObject
         obj.RailingRight = railingRightObject
-        self.update_properties_0v19_0v21(obj)
+        self.update_properties_to_0v20(obj)
         doc.recompute()
+        from draftutils.messages import _wrn
+        _wrn("v0.20.3, " + obj.Label + ", "
+             + translate("Arch", "changed the type of properties 'RailingLeft' and 'RailingRight'"))
 
-    def update_properties_0v19_0v21(self, obj):
+    def update_properties_to_0v20(self, obj):
         additions = obj.Additions
         if obj.RailingLeft in additions:
             additions.remove(obj.RailingLeft)
