@@ -153,7 +153,7 @@ class MgDyn2Dwriter:
                 if not obj.CurrentDensity_im_1_Disabled:
                     currentDensity = float(obj.CurrentDensity_im_1.getValueAs("A/m^2"))
                     self.write.bodyForce(name, "Current Density Im", round(currentDensity, 6))
- 
+
         if hasattr(obj, "Magnetization_re_1"):
             # output only if magnetization is enabled and needed
             if not obj.Magnetization_re_1_Disabled:

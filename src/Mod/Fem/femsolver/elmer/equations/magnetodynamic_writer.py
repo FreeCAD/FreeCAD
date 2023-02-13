@@ -350,7 +350,7 @@ class MgDynwriter:
                     for name in obj.References[0][1]:
                         self._outputMagnetodynamicBndConditions(obj, name, equation)
                     self.write.handled(obj)
-        
+
         # the potential can either be a body force or a boundary constraint
         # therefore only output here if a face is referenced
         potentials = self.write.getMember("Fem::ConstraintElectrostaticPotential")

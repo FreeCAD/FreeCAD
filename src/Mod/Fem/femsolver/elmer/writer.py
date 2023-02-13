@@ -548,7 +548,7 @@ class Writer(object):
                     activeIn = equation.References[0][1]
                 else:
                     activeIn = self.getAllBodies()
-                    
+
                 solverSection = MgDyn.getMagnetodynamicSolver(equation)
                 solverPostSection = MgDyn.getMagnetodynamicSolverPost(equation)
                 for body in activeIn:
