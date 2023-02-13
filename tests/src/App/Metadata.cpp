@@ -1,6 +1,31 @@
+/**************************************************************************
+*                                                                         *
+*   Copyright (c) 2021-2023 FreeCAD Project Association                   *
+*                                                                         *
+*   This file is part of FreeCAD.                                         *
+*                                                                         *
+*   FreeCAD is free software: you can redistribute it and/or modify it    *
+*   under the terms of the GNU Lesser General Public License as           *
+*   published by the Free Software Foundation, either version 2.1 of the  *
+*   License, or (at your option) any later version.                       *
+*                                                                         *
+*   FreeCAD is distributed in the hope that it will be useful, but        *
+*   WITHOUT ANY WARRANTY; without even the implied warranty of            *
+*   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU      *
+*   Lesser General Public License for more details.                       *
+*                                                                         *
+*   You should have received a copy of the GNU Lesser General Public      *
+*   License along with FreeCAD. If not, see                               *
+*   <https://www.gnu.org/licenses/>.                                      *
+*                                                                         *
+***************************************************************************/
+
+// NOLINTNEXTLINE
 #include "gtest/gtest.h"
 
 #include "App/Metadata.h"
+
+// NOLINTBEGIN(readability-named-parameter)
 
 TEST(ContactTest, ContactDefaultConstruction){
     auto contact = App::Meta::Contact();
@@ -128,6 +153,7 @@ TEST(VersionTest, VersionOperatorComparison){
     auto version_2_2_4_delta = App::Meta::Version(2,2,4,"delta");
     auto version_2_4_4_delta = App::Meta::Version(2,4,4,"delta");
     auto version_2_3_3_delta = App::Meta::Version(2,3,3,"delta");
+    // NOLINTNEXTLINE Five is not really a "magic number" in this test
     auto version_2_3_5_delta = App::Meta::Version(2,3,5,"delta");
     auto version_2_3_4_epsilon = App::Meta::Version(2,3,4,"epsilon");
     auto version_2_3_4_beta = App::Meta::Version(2,3,4,"beta");
@@ -147,19 +173,14 @@ TEST(VersionTest, VersionOperatorComparison){
 class MetadataTest : public ::testing::Test {
 protected:
     void SetUp() override {
-        try {
-            xercesc_3_2::XMLPlatformUtils::Initialize();
-        }
-        catch (const xercesc_3_2::XMLException& toCatch) {
-            // Some kind of Google Test error condition?
-        }
+        xercesc_3_2::XMLPlatformUtils::Initialize();
     }
     void TearDown() override {
         xercesc_3_2::XMLPlatformUtils::Terminate();
     }
     std::string GivenSimpleMetadataXMLString()
     {
-        std::stringstream stream;
+        std::ostringstream stream;
         stream << "<?xml version=\"1.0\" encoding=\"utf-8\" standalone=\"no\" ?>\n"
                <<  "<package format=\"1\" xmlns=\"https://wiki.freecad.org/Package_Metadata\">\n"
                <<  "  <name>" << _name << "</name>\n"
@@ -176,7 +197,7 @@ protected:
         ASSERT_EQ(testObject.description(), _description);
         ASSERT_EQ(testObject.version(), App::Meta::Version(_version));
     }
-
+private:
     std::string _name = "TestAddon";
     std::string _description = "A package.xml file for unit testing.";
     std::string _version = "1.2.3beta";
@@ -188,3 +209,4 @@ TEST_F(MetadataTest, MetadataInMemoryConstruction) {
     AssertMetadataMatches(testObject);
 }
 
+// NOLINTEND(readability-named-parameter)
