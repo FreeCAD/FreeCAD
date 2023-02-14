@@ -23,9 +23,8 @@
 #   License along with FCGear; if not, write to the Free Software
 #   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307
 
-from math import cos, sin, pi, acos, asin, atan, sqrt
-
-xrange = range
+from math import cos, sin, pi, acos, asin, atan, sqrt, radians
+from math import comb as binom
 
 
 def CreateExternalGear(w, m, Z, phi,
@@ -38,7 +37,7 @@ def CreateExternalGear(w, m, Z, phi,
     w is wirebuilder object (in which the gear will be constructed)
     m is the gear's module (pitch diameter divided by the number of teeth)
     Z is the number of teeth
-    phi is the gear's pressure angle
+    phi is the gear's pressure angle, in degrees
     addCoeff is the addendum coefficient (addendum normalized by module)
     dedCoeff is the dedendum coefficient (dedendum normalized by module)
     filletCoeff is the root fillet radius, normalized by the module.
@@ -51,16 +50,17 @@ def CreateExternalGear(w, m, Z, phi,
     """
     # ****** external gear specifications
     addendum = addCoeff * m         # distance from pitch circle to tip circle
-    dedendum = dedCoeff * m         # pitch circle to root, sets clearance
+    dedendum = dedCoeff * m         # distance from pitch circle to root circle
 
     # Calculate radii
-    Rpitch = Z * m / 2            # pitch circle radius
-    Rb = Rpitch*cos(phi * pi / 180)  # base circle radius
+    Rpitch = Z * m / 2             # pitch circle radius
+    Rb = Rpitch*cos(radians(phi))  # base circle radius
     Ra = Rpitch + addendum    # tip (addendum) circle radius
     Rroot = Rpitch - dedendum # root circle radius
-    fRad = filletCoeff * m  # fillet radius, max 1.5*clearance
+    fRad = filletCoeff * m    # fillet radius
     Rc = Rroot + fRad # radius at the center of the fillet circle
     Rf = Rc  # radius at top of fillet, assuming fillet below involute
+
     filletWithinInvolute = Rf > Rb # above the base circle we have the involute,
                                    # below we have a straight line towards the center.
     if (filletWithinInvolute and fRad > 0):
@@ -99,12 +99,10 @@ def CreateExternalGear(w, m, Z, phi,
             - asin((-r**2 + fRad**2 + Rc**2) / (2 * fRad * Rc)))
         q_prime = lambda r: (r / (sqrt(-Rb**2 + r**2) * Rb)
             + r / (fRad * Rc * sqrt(1 - 1/4 * (r**2 - fRad**2 - Rc**2)**2 / (fRad**2 * Rc**2))))
-
         Rf = findRootNewton(q, q_prime, x_min=max(Rb, Rroot), x_max=Rc)
 
-
     # ****** calculate angles (all in radians)
-    pitchAngle = 2 * pi / Z  # angle subtended by whole tooth (rads)
+    pitchAngle = 2 * pi / Z  # angle subtended by whole tooth
     baseToPitchAngle = genInvolutePolar(Rb, Rpitch)
     pitchToFilletAngle = baseToPitchAngle  # profile starts at base circle
     if (filletWithinInvolute): # start profile at top of fillet
@@ -130,24 +128,21 @@ def CreateExternalGear(w, m, Z, phi,
     else:
         inv = BezCoeffs(Rb, Ra, 4, fs, fe)
 
-    # create the back profile of tooth (mirror image)
-    invR = []
-    for i, pt in enumerate(inv):
-        # rotate all points to put pitch point at y = 0
-        ptx, pty = inv[i] = rotate(pt, -baseToPitchAngle - pitchAngle / 4)
-        # generate the back of tooth profile nodes, mirror coords in X axis
-        invR.append((ptx, -pty))
+    # rotate all points to make the tooth symetric to the X axis
+    inv = [rotate(pt, -baseToPitchAngle - pitchAngle / 4) for pt in inv]
+
+    # create the back profile of tooth (mirror image on X axis)
+    invR = [mirror(pt) for pt in inv]
 
     # ****** calculate section junction points R=back of tooth, Next=front of next tooth)
     fillet = toCartesian(Rf, -pitchAngle / 4 - pitchToFilletAngle) # top of fillet
-    filletR = [fillet[0], -fillet[1]]   # flip to make same point on back of tooth
+    filletR = mirror(fillet) # flip to make same point on back of tooth
     rootR = toCartesian(Rroot, pitchAngle / 4 + pitchToFilletAngle + filletAngle)
     rootNext = toCartesian(Rroot, 3 * pitchAngle / 4 - pitchToFilletAngle - filletAngle)
     filletNext = rotate(fillet, pitchAngle)  # top of fillet, front of next tooth
 
-    # Build the shapes using FreeCAD.Part
-    t_inc = 2.0 * pi / float(Z)
-    thetas = [(x * t_inc) for x in range(Z)]
+    # Build the shapes using the provided WireBuilder
+    thetas = [x * pitchAngle for x in range(Z)]
 
     # Make sure we begin *exactly* where our last curve ends.
     # In theory start == rotate(end, angle_of_last_tooth), but in practice we have limited
@@ -190,6 +185,7 @@ def CreateExternalGear(w, m, Z, phi,
     w.close()
     return w
 
+
 def CreateInternalGear(w, m, Z, phi,
         split=True,
         addCoeff=0.6, dedCoeff=1.25,
@@ -200,7 +196,7 @@ def CreateInternalGear(w, m, Z, phi,
     w is wirebuilder object (in which the gear will be constructed)
     m is the gear's module (pitch diameter divided by the number of teeth)
     Z is the number of teeth
-    phi is the gear's pressure angle
+    phi is the gear's pressure angle, in degrees
     addCoeff is the addendum coefficient (addendum normalized by module)
         The default of 0.6 comes from the "Handbook of Gear Design" by Gitin M. Maitra,
         with the goal to push the addendum circle beyond the base circle to avoid non-involute
@@ -219,15 +215,15 @@ def CreateInternalGear(w, m, Z, phi,
     """
     # ****** external gear specifications
     addendum = addCoeff * m         # distance from pitch circle to tip circle
-    dedendum = dedCoeff * m         # pitch circle to root, sets clearance
+    dedendum = dedCoeff * m         # distance from pitch circle to root circle
 
     # Calculate radii
     Rpitch = Z * m / 2              # pitch circle radius
-    Rb = Rpitch*cos(phi * pi / 180) # base circle radius
+    Rb = Rpitch*cos(radians(phi))   # base circle radius
     Ra = Rpitch - addendum          # tip (addendum) circle radius
     Rroot = Rpitch + dedendum       # root circle radius
-    fRad = filletCoeff * m          # fillet radius, max 1.5*clearance
-    Rc = Rroot - fRad      # radius at the center of the fillet circle
+    fRad = filletCoeff * m          # fillet radius
+    Rc = Rroot - fRad               # radius at the center of the fillet circle
 
     tipWithinInvolute = Ra > Rb     # above the base circle we have the involute,
                                     # below we have a straight line towards the center.
@@ -261,14 +257,14 @@ def CreateInternalGear(w, m, Z, phi,
     else:
         Rf = Rroot # no fillet
 
-
     # ****** calculate angles (all in radians)
-    pitchAngle = 2 * pi / Z  # angle subtended by whole tooth (rads)
+    pitchAngle = 2 * pi / Z  # angle subtended by whole tooth
     baseToPitchAngle = genInvolutePolar(Rb, Rpitch)
     tipToPitchAngle = baseToPitchAngle
     if (tipWithinInvolute):  # start profile at tip, not base
         tipToPitchAngle -= genInvolutePolar(Rb, Ra)
     pitchToFilletAngle = genInvolutePolar(Rb, Rf) - baseToPitchAngle;
+
     filletWidth = sqrt(fRad**2 - (Rf - Rc)**2)
     filletAngle = atan(filletWidth / Rf)
 
@@ -289,27 +285,22 @@ def CreateInternalGear(w, m, Z, phi,
     else:
         invR = BezCoeffs(Rb, Rf, 4, fs, fe)
 
-    # create the back profile of tooth (mirror image)
-    inv = []
-    for i, pt in enumerate(invR):
-        # rotate involute to put center of tooth at y = 0
-        ptx, pty = invR[i] = rotate(pt,  pitchAngle / 4 - baseToPitchAngle)
-        # generate the back of tooth profile nodes, flip Y coords
-        inv.append((ptx, -pty))
+    # rotate all points to make the tooth symetric to the X axis
+    invR = [rotate(pt, -baseToPitchAngle + pitchAngle / 4) for pt in invR]
+
+    # create the front profile of tooth (mirror image on X axis)
+    inv = [mirror(pt) for pt in invR]
 
     # ****** calculate section junction points R=back of tooth, Next=front of next tooth)
-    #fillet = inv[6] # top of fillet, front of tooth   #toCartesian(Rf, -pitchAngle / 4 - pitchToFilletAngle) # top of fillet
-    fillet = [ptx,-pty]
-    tip = toCartesian(Ra, -pitchAngle/4+tipToPitchAngle)  # tip, front of tooth
-    tipR = [ tip[0], -tip[1] ]
-    #filletR = [fillet[0], -fillet[1]]   # flip to make same point on back of tooth
+    fillet = inv[-1] # end of fillet, front of tooth; right where the involute starts
+    tip = toCartesian(Ra, -pitchAngle / 4 + tipToPitchAngle)  # tip, front of tooth
+    tipR = mirror(tip)
     rootR = toCartesian(Rroot, pitchAngle / 4 + pitchToFilletAngle + filletAngle)
     rootNext = toCartesian(Rroot, 3 * pitchAngle / 4 - pitchToFilletAngle - filletAngle)
-    filletNext = rotate(fillet, pitchAngle)  # top of fillet, front of next tooth
+    filletNext = rotate(fillet, pitchAngle)  # end of fillet, front of next tooth
 
-    # Build the shapes using FreeCAD.Part
-    t_inc = 2.0 * pi / float(Z)
-    thetas = [(x * t_inc) for x in range(Z)]
+    # Build the shapes using the provided WireBuilder
+    thetas = [x * pitchAngle for x in range(Z)]
 
     # Make sure we begin *exactly* where our last curve ends.
     # In theory start == rotate(end, angle_of_last_tooth), but in practice we have limited
@@ -331,7 +322,7 @@ def CreateInternalGear(w, m, Z, phi,
             w.curve(*inv[-2::-1])
 
         if (not tipWithinInvolute):
-            w.line(tip) # line from tip down to base circle
+            w.line(tip) # line to tip down from base circle
 
         w.arc(tipR, Ra, 1) # arc across addendum circle
 
@@ -352,30 +343,34 @@ def CreateInternalGear(w, m, Z, phi,
         if fRad > 0:
             w.arc(filletNext, fRad, 1)
 
-
     w.close()
     return w
 
 
 def genInvolutePolar(Rb, R):
-    """returns the involute angle as function of radius R.
+    """return the involute angle as function of radius R.
     Rb = base circle radius
     """
     return (sqrt(R*R - Rb*Rb) / Rb) - acos(Rb / R)
 
 
 def rotate(pt, rads):
-    "rotate pt by rads radians about origin"
+    """rotate pt by rads radians about origin"""
     sinA = sin(rads)
     cosA = cos(rads)
     return (pt[0] * cosA - pt[1] * sinA,
             pt[0] * sinA + pt[1] * cosA)
 
 
+def mirror(pt):
+    """mirror pt on the X axis, i.e. flip its Y"""
+    return (pt[0], -pt[1])
+
 
 def toCartesian(radius, angle):
-    "convert polar coords to cartesian"
-    return [radius * cos(angle), radius * sin(angle)]
+    """convert polar coords to cartesian"""
+    return (radius * cos(angle), radius * sin(angle))
+
 
 def findRootNewton(f, f_prime, x_min, x_max):
     """Appy Newton's Method to find the root of f within x_min and x_max
@@ -398,10 +393,11 @@ def findRootNewton(f, f_prime, x_min, x_max):
 
     raise RuntimeError(f"No convergence after {i+1} iterations.")
 
+
 def chebyExpnCoeffs(j, func):
     N = 50      # a suitably large number  N>>p
     c = 0
-    for k in xrange(1, N + 1):
+    for k in range(1, N + 1):
         c += func(cos(pi * (k - 0.5) / N)) * cos(pi * j * (k - 0.5) / N)
     return 2 *c / N
 
@@ -422,34 +418,23 @@ def chebyPolyCoeffs(p, func):
     #       [ 0,  5,  0,-20,  0, 16],    # T5(x) =   0  5x    0  -20xxx       0  +16xxxxx
     #     ...                     ]
 
-    for k in xrange(1, p):
-        for j in xrange(len(T[k]) - 1):
+    for k in range(1, p):
+        for j in range(len(T[k]) - 1):
             T[k + 1][j + 1] = 2 * T[k][j]
-        for j in xrange(len(T[k - 1])):
+        for j in range(len(T[k - 1])):
             T[k + 1][j] -= T[k - 1][j]
 
     # convert the chebyshev function series into a simple polynomial
     # and collect like terms, out T polynomial coefficients
-    for k in xrange(p + 1):
+    for k in range(p + 1):
         fnCoeff.append(chebyExpnCoeffs(k, func))
 
-    for k in xrange(p + 1):
-        for pwr in xrange(p + 1):
+    for k in range(p + 1):
+        for pwr in range(p + 1):
             coeffs[pwr] += fnCoeff[k] * T[k][pwr]
 
     coeffs[0] -= fnCoeff[0] / 2  # fix the 0th coeff
     return coeffs
-
-
-def binom(n, k):
-    coeff = 1
-    for i in xrange(n - k + 1, n + 1):
-        coeff *= i
-
-    for i in xrange(1, k + 1):
-        coeff /= i
-
-    return coeff
 
 
 def bezCoeff(i, p, polyCoeffs):
@@ -495,7 +480,7 @@ def BezCoeffs(baseRadius, limitRadius, order, fstart, fstop):
     bzCoeffs = []
     polyCoeffsX = chebyPolyCoeffs(p, involuteXbez)
     polyCoeffsY = chebyPolyCoeffs(p, involuteYbez)
-    for i in xrange(p + 1):
+    for i in range(p + 1):
         bx = bezCoeff(i, p, polyCoeffsX)
         by = bezCoeff(i, p, polyCoeffsY)
         bzCoeffs.append((bx, by))
