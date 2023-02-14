@@ -2244,29 +2244,23 @@ GeomBSplineCurve* GeomCircle::toNurbs(double first, double last) const
         return GeomConic::toNurbs(first, last);
     }
 
-    double radius = getRadius();
-    Handle(Geom_Conic) conic =  Handle(Geom_Conic)::DownCast(handle());
-    gp_Ax1 axis = conic->Axis();
-  //gp_Dir xdir = conic->XAxis().Direction();
-  //Standard_Real angle = gp_Dir(1,0,0).Angle(xdir) + first;
-    Standard_Real angle = first;
-    const gp_Pnt& loc = axis.Location();
-    //Note: If the matching this way doesn't work reliably then we must compute the
-    //angle so that the point of the curve for 'first' matches the first pole
-    //gp_Pnt pnt = conic->Value(first);
+    Handle(Geom_Circle) conic =  Handle(Geom_Circle)::DownCast(handle());
+    double radius = conic->Radius();
 
     TColgp_Array1OfPnt poles(1, 7);
-    poles(1) = loc.Translated(gp_Vec(radius, 0, 0));
-    poles(2) = loc.Translated(gp_Vec(radius, 2*radius, 0));
-    poles(3) = loc.Translated(gp_Vec(-radius, 2*radius, 0));
-    poles(4) = loc.Translated(gp_Vec(-radius, 0, 0));
-    poles(5) = loc.Translated(gp_Vec(-radius, -2*radius, 0));
-    poles(6) = loc.Translated(gp_Vec(radius, -2*radius, 0));
-    poles(7) = loc.Translated(gp_Vec(radius, 0, 0));
+    poles(1) = gp_Pnt(radius, 0, 0);
+    poles(2) = gp_Pnt(radius, 2*radius, 0);
+    poles(3) = gp_Pnt(-radius, 2*radius, 0);
+    poles(4) = gp_Pnt(-radius, 0, 0);
+    poles(5) = gp_Pnt(-radius, -2*radius, 0);
+    poles(6) = gp_Pnt(radius, -2*radius, 0);
+    poles(7) = gp_Pnt(radius, 0, 0);
 
+    gp_Trsf trsf;
+    trsf.SetTransformation(conic->Position(), gp_Ax3());
     TColStd_Array1OfReal weights(1,7);
     for (int i=1; i<=7; i++) {
-        poles(i).Rotate(axis, angle);
+        poles(i).Transform(trsf);
         weights(i) = 1;
     }
     weights(1) = 3;
@@ -2285,7 +2279,6 @@ GeomBSplineCurve* GeomCircle::toNurbs(double first, double last) const
 
     Handle(Geom_BSplineCurve) spline = new Geom_BSplineCurve(poles, weights,knots, mults, 3,
         Standard_False, Standard_True);
-    spline->Segment(0, last-first);
     return new GeomBSplineCurve(spline);
 }
 
@@ -2671,25 +2664,23 @@ GeomBSplineCurve* GeomEllipse::toNurbs(double first, double last) const
     }
 
     Handle(Geom_Ellipse) conic =  Handle(Geom_Ellipse)::DownCast(handle());
-    gp_Ax1 axis = conic->Axis();
     Standard_Real majorRadius = conic->MajorRadius();
     Standard_Real minorRadius = conic->MinorRadius();
-    gp_Dir xdir = conic->XAxis().Direction();
-    Standard_Real angle = atan2(xdir.Y(), xdir.X());
-    const gp_Pnt& loc = axis.Location();
 
     TColgp_Array1OfPnt poles(1, 7);
-    poles(1) = loc.Translated(gp_Vec(majorRadius, 0, 0));
-    poles(2) = loc.Translated(gp_Vec(majorRadius, 2*minorRadius, 0));
-    poles(3) = loc.Translated(gp_Vec(-majorRadius, 2*minorRadius, 0));
-    poles(4) = loc.Translated(gp_Vec(-majorRadius, 0, 0));
-    poles(5) = loc.Translated(gp_Vec(-majorRadius, -2*minorRadius, 0));
-    poles(6) = loc.Translated(gp_Vec(majorRadius, -2*minorRadius, 0));
-    poles(7) = loc.Translated(gp_Vec(majorRadius, 0, 0));
+    poles(1) = gp_Pnt(majorRadius, 0, 0);
+    poles(2) = gp_Pnt(majorRadius, 2*minorRadius, 0);
+    poles(3) = gp_Pnt(-majorRadius, 2*minorRadius, 0);
+    poles(4) = gp_Pnt(-majorRadius, 0, 0);
+    poles(5) = gp_Pnt(-majorRadius, -2*minorRadius, 0);
+    poles(6) = gp_Pnt(majorRadius, -2*minorRadius, 0);
+    poles(7) = gp_Pnt(majorRadius, 0, 0);
 
+    gp_Trsf trsf;
+    trsf.SetTransformation(conic->Position(), gp_Ax3());
     TColStd_Array1OfReal weights(1,7);
     for (int i=1; i<=7; i++) {
-        poles(i).Rotate(axis, angle);
+        poles(i).Transform(trsf);
         weights(i) = 1;
     }
     weights(1) = 3;
