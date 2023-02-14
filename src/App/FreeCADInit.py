@@ -947,6 +947,17 @@ class PropertyType(IntEnum):
 
 App.PropertyType = PropertyType
 
+class ReturnType(IntEnum):
+    PyObject = 0
+    DocObject = 1
+    DocAndPyObject = 2
+    Placement = 3
+    Matrix = 4
+    LinkAndPlacement = 5
+    LinkAndMatrix = 6
+
+App.ReturnType = ReturnType
+
 # clean up namespace
 del(InitApplications)
 del(test_ascii)
