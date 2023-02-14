@@ -709,6 +709,8 @@ void EditModeCoinManager::createEditModeInventorNodes()
     float transparency;
     SbColor cursorTextColor(0,0,1);
     cursorTextColor.setPackedValue((uint32_t)hGrp->GetUnsigned("CursorTextColor", cursorTextColor.getPackedValue()), transparency);
+    int defaultFontSizePixels = defaultApplicationFontSizePixels(); // returns height in pixels, not points
+    int cursorFontSize = hGrp->GetInt("EditSketcherFontSize", defaultFontSizePixels);
 
     // stuff for the EditMarkers +++++++++++++++++++++++++++++++++++++++
     SoSeparator* editMarkersRoot = new SoSeparator;
@@ -746,7 +748,7 @@ void EditModeCoinManager::createEditModeInventorNodes()
     Coordsep->addChild(CoordTextMaterials);
 
     SoFont *font = new SoFont();
-    font->size.setValue(drawingParameters.coinFontSize);
+    font->size.setValue(cursorFontSize);
 
     Coordsep->addChild(font);
 
