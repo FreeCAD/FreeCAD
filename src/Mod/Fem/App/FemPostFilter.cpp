@@ -239,6 +239,8 @@ void FemPostDataAlongLineFilter::GetAxisData()
 
     vtkSmartPointer<vtkDataObject> data = m_probe->GetOutputDataObject(0);
     vtkDataSet* dset = vtkDataSet::SafeDownCast(data);
+    if (!dset)
+        return;
     vtkDataArray* pdata = dset->GetPointData()->GetArray(PlotData.getValue());
     // VTK cannot deliver data when the filer relies e.g. on a scalar clip filter
     // whose value is set so that all data are clipped
@@ -357,6 +359,8 @@ void FemPostDataAtPointFilter::GetPointData()
 
     vtkSmartPointer<vtkDataObject> data = m_probe->GetOutputDataObject(0);
     vtkDataSet* dset = vtkDataSet::SafeDownCast(data);
+    if (!dset)
+        return;
     vtkDataArray* pdata = dset->GetPointData()->GetArray(FieldName.getValue());
     // VTK cannot deliver data when the filer relies e.g. on a scalar clip filter
     // whose value is set so that all data are clipped
@@ -511,6 +515,8 @@ DocumentObjectExecReturn* FemPostContoursFilter::execute()
     // delete contour field
     vtkSmartPointer<vtkDataObject> data = getInputData();
     vtkDataSet* dset = vtkDataSet::SafeDownCast(data);
+    if (!dset)
+        return returnObject;
     dset->GetPointData()->RemoveArray(contourFieldName.c_str());
     // refresh fields to reflect the deletion
     if (!m_blockPropertyChanges)
@@ -536,11 +542,10 @@ void FemPostContoursFilter::onChanged(const Property* prop)
 
         // get the field and its data
         vtkSmartPointer<vtkDataObject> data = getInputData();
-        if (!data || !data->IsA("vtkDataSet"))
-            return;
         vtkDataSet* dset = vtkDataSet::SafeDownCast(data);
+        if (!dset)
+            return;
         vtkDataArray* pdata = dset->GetPointData()->GetArray(Field.getValueAsString());
-
         if (!pdata)
             return;
         if (pdata->GetNumberOfComponents() == 1) {
@@ -637,11 +642,11 @@ void FemPostContoursFilter::refreshFields()
     std::vector<std::string> FieldsArray;
 
     vtkSmartPointer<vtkDataObject> data = getInputData();
-    if (!data || !data->IsA("vtkDataSet")) {
+    vtkDataSet* dset = vtkDataSet::SafeDownCast(data);
+    if (!dset) {
         m_blockPropertyChanges = false;
         return;
     }
-    vtkDataSet* dset = vtkDataSet::SafeDownCast(data);
     vtkPointData* pd = dset->GetPointData();
 
     // get all fields
@@ -676,11 +681,11 @@ void FemPostContoursFilter::refreshVectors()
     m_blockPropertyChanges = true;
 
     vtkSmartPointer<vtkDataObject> data = getInputData();
-    if (!data || !data->IsA("vtkDataSet")) {
+    vtkDataSet* dset = vtkDataSet::SafeDownCast(data);
+    if (!dset) {
         m_blockPropertyChanges = false;
         return;
     }
-    vtkDataSet* dset = vtkDataSet::SafeDownCast(data);
     vtkDataArray* fieldArray = dset->GetPointData()->GetArray(Field.getValueAsString());
     if (!fieldArray) {
         m_blockPropertyChanges = false;
@@ -807,10 +812,9 @@ DocumentObjectExecReturn* FemPostScalarClipFilter::execute()
     std::vector<std::string> ScalarsArray;
 
     vtkSmartPointer<vtkDataObject> data = getInputData();
-    if (!data || !data->IsA("vtkDataSet"))
-        return StdReturn;
-
     vtkDataSet* dset = vtkDataSet::SafeDownCast(data);
+    if (!dset)
+        return StdReturn;
     vtkPointData* pd = dset->GetPointData();
 
     // get all scalar fields
@@ -864,10 +868,9 @@ short int FemPostScalarClipFilter::mustExecute() const
 void FemPostScalarClipFilter::setConstraintForField()
 {
     vtkSmartPointer<vtkDataObject> data = getInputData();
-    if (!data || !data->IsA("vtkDataSet"))
-        return;
-
     vtkDataSet* dset = vtkDataSet::SafeDownCast(data);
+    if (!dset)
+        return;
 
     vtkDataArray* pdata = dset->GetPointData()->GetArray(Scalars.getValueAsString());
     // VTK cannot deliver data when the filer relies e.g. on a cut clip filter
@@ -916,10 +919,9 @@ DocumentObjectExecReturn* FemPostWarpVectorFilter::execute()
     std::vector<std::string> VectorArray;
 
     vtkSmartPointer<vtkDataObject> data = getInputData();
-    if (!data || !data->IsA("vtkDataSet"))
-        return StdReturn;
-
     vtkDataSet* dset = vtkDataSet::SafeDownCast(data);
+    if (!dset)
+        return StdReturn;
     vtkPointData* pd = dset->GetPointData();
 
     // get all vector fields

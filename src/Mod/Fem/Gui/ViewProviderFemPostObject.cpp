@@ -634,6 +634,8 @@ bool ViewProviderFemPostObject::setupPipeline()
     // add a field with an absolute value
     vtkSmartPointer<vtkDataObject> SPdata = data;
     vtkDataSet* dset = vtkDataSet::SafeDownCast(SPdata);
+    if (!dset)
+        return false;
     std::string FieldName;
     auto numFields = dset->GetPointData()->GetNumberOfArrays();
     for (int i = 0; i < numFields; ++i) {
