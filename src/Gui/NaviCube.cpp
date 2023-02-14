@@ -296,24 +296,18 @@ void NaviCube::setFontSize(int size)
 // the Helvetica font is a good start for most OSes
 QFont NaviCube::getDefaultSansserifFont()
 {
-    QFont font(QString::fromLatin1("Helvetica"));
-    if (font.styleHint() & QFont::SansSerif)
+    // Windows versions since 2017 have the 'Bahnschrift' font (a condensed
+    // sans serif font, optimized for readability despite being condensed),
+    // we first check for that.
+    QFont font(QString::fromLatin1("Bahnschrift"));
+    if (font.exactMatch())
         return font;
-    // on Windows 10 or newer there is no Helvetica font
-    // therefore if we didn't find a Helvetica font check
-    // for the Bahnschrift font (in all Windows since 2017)
-    // if this too is unavailable (on Win 7), we check for the
-    // DejaVu Sans fonts
-    font.setFamily(QString::fromLatin1("Bahnschrift"));
-    // on Windows 11 sansserif fonts like Bahnschrift do not have the
-    // styleHint QFont::SansSerif but QFont::AnyStyle
-    // however, in future they might have, thus allow both
-    if (font.styleHint() == QFont::SansSerif || font.styleHint() == QFont::AnyStyle)
-        return font;
-    font.setFamily(QString::fromLatin1("DejaVu Sans"));
-    if (font.styleHint() == QFont::SansSerif || font.styleHint() == QFont::AnyStyle)
-        return font;
-    return font; // We failed, but return whatever we have anyway
+
+    // On systems without 'Bahnschrift' we check for 'Helvetica' or its closest match
+    // as default sans serif font. (For Windows 7 this will e.g. result in 'Arial'.)
+    font = QString::fromLatin1("Helvetica");
+    font.setStyleHint(QFont::SansSerif);
+    return font;
 }
 
 int NaviCube::getDefaultFontSize()
