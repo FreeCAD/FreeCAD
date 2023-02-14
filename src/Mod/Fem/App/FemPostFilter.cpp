@@ -511,7 +511,6 @@ DocumentObjectExecReturn* FemPostContoursFilter::execute()
     // delete contour field
     vtkSmartPointer<vtkDataObject> data = getInputData();
     vtkDataSet* dset = vtkDataSet::SafeDownCast(data);
-    vtkPointData* pd = dset->GetPointData();
     dset->GetPointData()->RemoveArray(contourFieldName.c_str());
     // refresh fields to reflect the deletion
     if (!m_blockPropertyChanges)
@@ -715,7 +714,7 @@ void FemPostContoursFilter::refreshVectors()
     auto it = std::find(vectorArray.begin(), vectorArray.end(), vectorName);
     if (!vectorName.empty() && it != vectorArray.end())
         VectorMode.setValue(vectorName.c_str());
-
+    
     m_blockPropertyChanges = false;
 }
 
