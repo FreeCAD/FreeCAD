@@ -477,7 +477,8 @@ FemPostContoursFilter::FemPostContoursFilter()
     ADD_PROPERTY_TYPE(Field, (long(0)), "Clip", App::Prop_None, "The field used to clip");
     ADD_PROPERTY_TYPE(
         VectorMode, ((long)0), "Contours", App::Prop_None, "Select what vector field");
-    ADD_PROPERTY_TYPE(NoColor, (false), "Contours", App::Prop_None, "Don't color the contours");
+    ADD_PROPERTY_TYPE(NoColor, (false), "Contours",
+        PropertyType(Prop_Hidden), "Don't color the contours");
 
     m_contourConstraints.LowerBound = 1;
     m_contourConstraints.UpperBound = 1000;

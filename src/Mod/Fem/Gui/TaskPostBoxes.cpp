@@ -1369,26 +1369,19 @@ TaskPostContours::~TaskPostContours()
 void TaskPostContours::applyPythonCode()
 {}
 
-void TaskPostContours::updateFields(int idx)
+void TaskPostContours::updateFields()
 {
-    std::vector<std::string> fieldArray;
-    std::vector<std::string> vec =
-        getTypedObject<Fem::FemPostContoursFilter>()->Field.getEnumVector();
-    for (std::vector<std::string>::iterator it = vec.begin(); it != vec.end(); ++it) {
-        fieldArray.emplace_back(*it);
+    // update the ViewProvider Field
+    // since the ViewProvider can have another field sorting, we cannot use the same index
+    if (!static_cast<Fem::FemPostContoursFilter*>(getObject())->NoColor.getValue()) {
+        std::string objectField =
+            getTypedObject<Fem::FemPostContoursFilter>()->Field.getValueAsString();
+        getTypedView<ViewProviderFemPostObject>()->Field.setValue(objectField.c_str());
     }
-    // update the ViewProvider Field enums
-    App::Enumeration anEnum;
-    getTypedView<ViewProviderFemPostObject>()->Field.setValue(anEnum);
-    anEnum.setEnums(fieldArray);
-    getTypedView<ViewProviderFemPostObject>()->Field.setValue(anEnum);
-    // set new Field index to ViewProvider Field
-    // the ViewProvider field starts with an additional entry "None",
-    // therefore the desired new setting is idx + 1
-    if (!static_cast<Fem::FemPostContoursFilter*>(getObject())->NoColor.getValue())
-        getTypedView<ViewProviderFemPostObject>()->Field.setValue(idx + 1);
-    else
-        getTypedView<ViewProviderFemPostObject>()->Field.setValue(long(0));
+    else {
+        getTypedView<ViewProviderFemPostObject>()->Field.setValue("None");
+    }
+    
 }
 
 void TaskPostContours::onFieldsChanged(int idx)
@@ -1402,7 +1395,7 @@ void TaskPostContours::onFieldsChanged(int idx)
     // In > 99 % of the cases the coloring should be equal to the field,
     // thus change the coloring field too. Users can override this be resetting only the coloring
     // field afterwards in the properties if really necessary.
-    updateFields(idx);
+    updateFields();
 
     // since a new field can be e.g. no vector while the previous one was,
     // we must also update the VectorMode
@@ -1421,8 +1414,7 @@ void TaskPostContours::onVectorModeChanged(int idx)
         // since it is a 2D field, Z is eompty thus no field is available to color
         // when the user noch goes back to e.g. "Y" we must set the Field
         // first to get the possible VectorModes of that field
-        auto currentField = getTypedObject<Fem::FemPostContoursFilter>()->Field.getValue();
-        updateFields(currentField);
+        updateFields();
         // now we can set the VectorMode
         if (!static_cast<Fem::FemPostContoursFilter*>(getObject())->NoColor.getValue())
             getTypedView<ViewProviderFemPostObject>()->VectorMode.setValue(idx);
