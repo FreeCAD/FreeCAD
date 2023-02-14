@@ -38,6 +38,7 @@
 # include <vtkCellArray.h>
 # include <vtkCellData.h>
 # include <vtkDoubleArray.h>
+# include <vtkImplicitFunction.h>
 # include <vtkPointData.h>
 
 # include <QApplication>
@@ -55,6 +56,8 @@
 #include <Gui/SelectionObject.h>
 #include <Gui/SoFCColorBar.h>
 #include <Gui/TaskView/TaskDialog.h>
+#include <Gui/View3DInventor.h>
+#include <Gui/View3DInventorViewer.h>
 #include <Mod/Fem/App/FemPostFilter.h>
 
 #include "ViewProviderFemPostObject.h"
@@ -265,8 +268,8 @@ void ViewProviderFemPostObject::attach(App::DocumentObject* pcObj)
     (void)setupPipeline();
 }
 
-SoSeparator* ViewProviderFemPostObject::getFrontRoot() const {
-
+SoSeparator* ViewProviderFemPostObject::getFrontRoot() const
+{
     return m_colorRoot;
 }
 
@@ -623,10 +626,65 @@ void ViewProviderFemPostObject::updateData(const App::Property* p) {
     }
 }
 
-bool ViewProviderFemPostObject::setupPipeline()
+void ViewProviderFemPostObject::filterArtifacts(vtkDataObject* data)
+{
+    // The problem is that in the surface view the boundary reagions of the volumess
+    // calculated by the different CPU cores is always visible, independent of the
+    // transparency setting. Elmer is not to blame, this is just a property of the
+    // partial VTK file reader. So this can happen with various input
+    // since FreeCAD can also be used to view VTK files without the need to perform
+    // an analysis. Therefore it is impossible to know in advance when to filter
+    // or not.
+    // Only for pure CCX analyses we know that no filtering is necessary.
+    // However, the effort to catch this case is not worth it since the filtering
+    // is only as time-consuming as enabling the surface filter. In fact, it is like
+    // performing the surface flter twice.
+
+    // We need to set the filter clipping plane below the z minimum of the data.
+    // We can either do this by checkting the VTK data or by getting the info from
+    // the 3D view. We use here the latter because this much faster.
+
+    // since we will set the filter according to the visible bounding box
+    // assure the object is visible
+    bool visibility = this->Visibility.getValue();
+    this->Visibility.setValue(false);
+
+    Gui::Document* doc = this->getDocument();
+    Gui::View3DInventor* view =
+        qobject_cast<Gui::View3DInventor*>(doc->getViewOfViewProvider(this));
+    if (view) {
+        Gui::View3DInventorViewer* viewer = view->getViewer();
+        SbBox3f boundingBox;
+        boundingBox = viewer->getBoundingBox();
+        if (boundingBox.hasVolume()) {
+            // setup
+            vtkSmartPointer<vtkImplicitFunction> m_implicit;
+            auto m_plane = vtkSmartPointer<vtkPlane>::New();
+            m_implicit = m_plane;
+            m_plane->SetNormal(0., 0., 1.);
+            auto extractor = vtkSmartPointer<vtkTableBasedClipDataSet>::New();
+            float dx, dy, dz;
+            boundingBox.getSize(dx, dy, dz);
+            // set plane slightly below the minimum to assure there are
+            // no boundary cells (touching the function
+            m_plane->SetOrigin(0., 0., -1 * dz - 1);
+            extractor->SetClipFunction(m_implicit);
+            extractor->SetInputData(data);
+            extractor->Update();
+            m_surface->SetInputData(extractor->GetOutputDataObject(0));
+        }
+        else {
+            // for e.g. DataAtPoint filter
+            m_surface->SetInputData(data);
+        }
+    }
+    // restore initial vsibility
+    this->Visibility.setValue(visibility);
+}
+
+    bool ViewProviderFemPostObject::setupPipeline()
 {
     vtkDataObject* data = static_cast<Fem::FemPostObject*>(getObject())->Data.getValue();
-
     if (!data)
         return false;
 
@@ -644,9 +702,12 @@ bool ViewProviderFemPostObject::setupPipeline()
     }
 
     m_outline->SetInputData(data);
-    m_surface->SetInputData(data);
     m_wireframe->SetInputData(data);
     m_points->SetInputData(data);
+
+    // filter artifacts
+    // only necessary for the surface filter
+    filterArtifacts(data);
 
     return true;
 }
