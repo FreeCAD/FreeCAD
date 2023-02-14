@@ -28,6 +28,7 @@
 #include <Mod/Fem/FemGlobal.h>
 
 #include <vtkAppendPolyData.h>
+#include <vtkDataObject.h>
 #include <vtkExtractEdges.h>
 #include <vtkGeometryFilter.h>
 #include <vtkOutlineCornerFilter.h>
@@ -150,6 +151,7 @@ protected:
     vtkSmartPointer<vtkVertexGlyphFilter>       m_points, m_pointsSurface;
 
 private:
+    void filterArtifacts(vtkDataObject* data);
     void updateProperties();
     void update3D();
     void WritePointData(vtkPoints *points, vtkDataArray *normals,
