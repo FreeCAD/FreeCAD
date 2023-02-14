@@ -385,7 +385,7 @@ private:
     QWidget* proxy;
     std::unique_ptr<Ui_TaskPostContours> ui;
     bool blockVectorUpdate = false;
-    void updateFields(int idx);
+    void updateFields();
 };
 
 
