@@ -130,6 +130,29 @@ class TestInvoluteGear(unittest.TestCase):
         self.assertNoIntersection(hub.Shape, makeCircle(tip_diameter/2 - delta), "Teeth extent below tip circle")
         self.assertNoIntersection(hub.Shape, makeCircle(root_diameter/2 + delta), "Teeth extend beyond root circle")
 
+    def testZeroFilletExternalGearProfile_BaseAboveRoot(self):
+        gear = InvoluteGearFeature.makeInvoluteGear('InvoluteGear')
+        # below 42 teeth, with default dedendum 1.25, we have some non-involute flanks
+        gear.NumberOfTeeth = 41
+        gear.RootFilletCoefficient = 0
+        self.assertSuccessfulRecompute(gear)
+        self.assertClosedWire(gear.Shape)
+
+    def testZeroFilletExternalGearProfile_BaseBelowRoot(self):
+        gear = InvoluteGearFeature.makeInvoluteGear('InvoluteGear')
+        # above 41 teeth, with default dedendum 1.25, the root is within the involute flank
+        gear.NumberOfTeeth = 42
+        gear.RootFilletCoefficient = 0
+        self.assertSuccessfulRecompute(gear)
+        self.assertClosedWire(gear.Shape)
+
+    def testZeroFilletInternalGearProfile(self):
+        gear = InvoluteGearFeature.makeInvoluteGear('InvoluteGear')
+        gear.ExternalGear = False
+        gear.RootFilletCoefficient = 0
+        self.assertSuccessfulRecompute(gear)
+        self.assertClosedWire(gear.Shape)
+
     def testUsagePadGearProfile(self):
         profile = InvoluteGearFeature.makeInvoluteGear('GearProfile')
         body = self.Doc.addObject('PartDesign::Body','GearBody')
