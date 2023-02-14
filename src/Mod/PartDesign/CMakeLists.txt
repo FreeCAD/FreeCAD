@@ -63,7 +63,6 @@ set(PartDesign_TestFixtures
 set(PartDesign_GearScripts
     fcgear/__init__.py
     fcgear/fcgear.py
-    fcgear/fcgeardialog.py
     fcgear/involute.py
     fcgear/svggear.py
 )
