@@ -918,6 +918,22 @@ public:
         }
     }
 
+    void trySaveUserParameter()
+    {
+        // update the XML structure and save the user parameter to disk (#0001989)
+        bool saveParameter = App::GetApplication().GetParameterGroupByPath
+            ("User parameter:BaseApp/Preferences/General")->GetBool("SaveUserParameter", true);
+        if (saveParameter) {
+            saveUserParameter();
+        }
+    }
+
+    void saveUserParameter()
+    {
+        ParameterManager* parmgr = App::GetApplication().GetParameterSet("User parameter");
+        parmgr->SaveDocument(App::Application::Config()["UserParameter"].c_str());
+    }
+
 public:
     RecentFilesAction *master;
     ParameterGrp::handle handle;
@@ -954,13 +970,7 @@ void RecentFilesAction::appendFile(const QString& filename)
     setFiles(files);
     save();
 
-    // update the XML structure and save the user parameter to disk (#0001989)
-    bool saveParameter = App::GetApplication().GetParameterGroupByPath
-        ("User parameter:BaseApp/Preferences/General")->GetBool("SaveUserParameter", true);
-    if (saveParameter) {
-        ParameterManager* parmgr = App::GetApplication().GetParameterSet("User parameter");
-        parmgr->SaveDocument(App::Application::Config()["UserParameter"].c_str());
-    }
+    _pimpl->trySaveUserParameter();
 }
 
 /**
@@ -1022,6 +1032,7 @@ void RecentFilesAction::activateFile(int id)
         QMessageBox::critical(getMainWindow(), tr("File not found"), tr("The file '%1' cannot be opened.").arg(filename));
         files.removeAll(filename);
         setFiles(files);
+        save();
     }
     else {
         // invokes appendFile()
