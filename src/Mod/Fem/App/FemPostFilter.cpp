@@ -714,7 +714,7 @@ void FemPostContoursFilter::refreshVectors()
     auto it = std::find(vectorArray.begin(), vectorArray.end(), vectorName);
     if (!vectorName.empty() && it != vectorArray.end())
         VectorMode.setValue(vectorName.c_str());
-    
+
     m_blockPropertyChanges = false;
 }
 
