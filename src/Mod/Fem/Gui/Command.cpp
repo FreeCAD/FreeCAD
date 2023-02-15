@@ -2019,7 +2019,7 @@ bool CmdFemPostWarpVectorFilter::isActive()
         return false;
     // only activate if a result is either a post pipeline or a possible other filter
     if (getSelection().getObjectsOfType<Fem::FemPostPipeline>().size() == 1)
-        return true; 
+        return true;
     else if (getSelection().getObjectsOfType<Fem::FemPostClipFilter>().size() == 1)
         return true;
     else if (getSelection().getObjectsOfType<Fem::FemPostCutFilter>().size() == 1)
@@ -2432,6 +2432,6 @@ void CreateFemCommands()
     rcCmdMgr.addCommand(new CmdFemPostFunctions);
     rcCmdMgr.addCommand(new CmdFemPostPipelineFromResult);
     rcCmdMgr.addCommand(new CmdFemPostScalarClipFilter);
-    rcCmdMgr.addCommand(new CmdFemPostWarpVectorFilter);  
+    rcCmdMgr.addCommand(new CmdFemPostWarpVectorFilter);
 #endif
 }

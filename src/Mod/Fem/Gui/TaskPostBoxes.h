@@ -333,7 +333,7 @@ private:
 
 // ***************************************************************************
 // clip filter
-class TaskPostClip : public TaskPostBox 
+class TaskPostClip : public TaskPostBox
 {
     Q_OBJECT
 

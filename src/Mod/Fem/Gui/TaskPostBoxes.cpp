@@ -1381,7 +1381,7 @@ void TaskPostContours::updateFields()
     else {
         getTypedView<ViewProviderFemPostObject>()->Field.setValue("None");
     }
-    
+
 }
 
 void TaskPostContours::onFieldsChanged(int idx)
