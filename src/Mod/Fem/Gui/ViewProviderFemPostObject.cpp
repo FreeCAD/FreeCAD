@@ -549,7 +549,8 @@ void ViewProviderFemPostObject::WriteColorData(bool ResetColorBarRange) {
 
     if (Field.getEnumVector().empty() || Field.getValue() == 0) {
         m_material->diffuseColor.setValue(SbColor(0.8, 0.8, 0.8));
-        m_material->transparency.setValue(0.);
+        float trans = float(Transparency.getValue()) / 100.0;
+        m_material->transparency.setValue(trans);
         m_materialBinding->value = SoMaterialBinding::OVERALL;
         m_materialBinding->touch();
         // since there is no field, set the range to the default
