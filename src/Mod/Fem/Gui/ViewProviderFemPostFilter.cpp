@@ -155,7 +155,7 @@ void ViewProviderFemPostCut::setupTaskDialog(TaskDlgPost* dlg)
 // scalar clip filter
 PROPERTY_SOURCE(FemGui::ViewProviderFemPostScalarClip, FemGui::ViewProviderFemPostObject)
 
-ViewProviderFemPostScalarClip::ViewProviderFemPostScalarClip() 
+ViewProviderFemPostScalarClip::ViewProviderFemPostScalarClip()
 {
     sPixmap = "FEM_PostFilterClipScalar";
 }
