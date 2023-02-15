@@ -1440,7 +1440,7 @@ void EditModeConstraintCoinManager::rebuildConstraintNodes(const GeoListFacade &
                                             drawingParameters.ConstrDimColor
                                             :drawingParameters.NonDrivingConstrDimColor)
                                         :drawingParameters.DeactivatedConstrDimColor;
-                text->size.setValue(drawingParameters.coinFontSize);
+                text->size.setValue(drawingParameters.labelFontSize);
                 text->lineWidth = 2 * drawingParameters.pixelScalingFactor;
                 text->useAntialiasing = false;
                 SoAnnotation *anno = new SoAnnotation();
