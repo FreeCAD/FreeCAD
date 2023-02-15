@@ -628,21 +628,21 @@ void ViewProviderFemPostObject::updateData(const App::Property* p) {
 
 void ViewProviderFemPostObject::filterArtifacts(vtkDataObject* data)
 {
-    // The problem is that in the surface view the boundary reagions of the volumess
+    // The problem is that in the surface view the boundary regions of the volumes
     // calculated by the different CPU cores is always visible, independent of the
-    // transparency setting. Elmer is not to blame, this is just a property of the
-    // partial VTK file reader. So this can happen with various input
+    // transparency setting. Elmer is not to blame because this is a property of the
+    // partial VTK file reader. So this can happen with various inputs
     // since FreeCAD can also be used to view VTK files without the need to perform
-    // an analysis. Therefore it is impossible to know in advance when to filter
-    // or not.
-    // Only for pure CCX analyses we know that no filtering is necessary.
-    // However, the effort to catch this case is not worth it since the filtering
-    // is only as time-consuming as enabling the surface filter. In fact, it is like
-    // performing the surface flter twice.
+    // an analysis. Therefore it is impossible to know in advance when a filter
+    // is necessary or not.
+    // Only for pure CCX analyses we know that no filtering is necessary. However,
+    // the effort to catch this case is not worth it since the filtering is
+    // only as time-consuming as enabling the surface filter. In fact, it is like
+    // performing the surface filter twice.
 
-    // We need to set the filter clipping plane below the z minimum of the data.
-    // We can either do this by checkting the VTK data or by getting the info from
-    // the 3D view. We use here the latter because this much faster.
+    // We need to set the filter clipping plane below the z-minimum of the data.
+    // We can either do this by checking the VTK data or by getting the info from
+    // the 3D view. We use here the latter because this is much faster.
 
     // since we will set the filter according to the visible bounding box
     // assure the object is visible
