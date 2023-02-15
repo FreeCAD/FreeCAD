@@ -280,6 +280,7 @@ MainWindow::MainWindow(QWidget * parent, Qt::WindowFlags f)
         tab->setTabsClosable(true);
         // The tabs might be very wide
         tab->setExpanding(false);
+        tab->setObjectName(QString::fromLatin1("mdiAreaTabBar"));
     }
     d->mdiArea->setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
     d->mdiArea->setHorizontalScrollBarPolicy(Qt::ScrollBarAsNeeded);
