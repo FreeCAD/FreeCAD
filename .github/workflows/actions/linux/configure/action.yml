@@ -68,9 +68,9 @@ runs:
           echo "<details><summary>:fire: CMake configure failed</summary>" >> ${{ inputs.reportFile }}
         fi
         echo "" >> ${{ inputs.reportFile }}
-        echo "Configure Log (stdout output):" >> ${{ inputs.reportFile }}
+        echo "Configure Log (only final configuration values reported):" >> ${{ inputs.reportFile }}
         echo '```' >> ${{ inputs.reportFile }}
-        tail -n 60 ${{ inputs.logFile }} >> ${{ inputs.reportFile }}
+        cat ${{ inputs.logFile }} | sed -ne '/^  *==/,/^====/p' >> ${{ inputs.reportFile }}
         echo '```' >> ${{ inputs.reportFile }}
         echo "</details>">> ${{ inputs.reportFile }}
         echo "" >> ${{ inputs.reportFile }}
