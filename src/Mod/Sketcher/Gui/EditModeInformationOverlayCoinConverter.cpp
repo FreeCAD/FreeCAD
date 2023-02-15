@@ -365,9 +365,9 @@ void EditModeInformationOverlayCoinConverter::addNode(const Result & result) {
             else
                 setText(result.strings[i], text);
 
-            sep->addChild(translate);
             sep->addChild(mat);
             sep->addChild(font);
+            sep->addChild(translate);
             sep->addChild(text);
 
             sw->addChild(sep);
