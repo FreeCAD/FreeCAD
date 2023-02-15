@@ -94,7 +94,7 @@ on:
         default: disable=C0302
         type: string
         required: false
-      pylintFailtSilent:
+      pylintFailSilent:
         default: true
         type: boolean
         required: false
@@ -206,6 +206,7 @@ jobs:
           echo "reportFile=${{ env.reportfilename }}" >> $GITHUB_OUTPUT
       - name: Check for non Unix line ending
         if: inputs.checkLineendings && always()
+        continue-on-error: ${{ inputs.lineendingsFailSilent }}
         run: |
           lineendings=0
           for file in ${{ inputs.changedFiles }}
@@ -232,14 +233,10 @@ jobs:
           fi
           echo "" >> ${{env.reportdir}}${{ env.reportfilename }}
           # Exit the step with appropriate code
-          if [ $lineendings -gt 0 ] && [ ${{ inputs.lineendingsFailSilent }} != true ]
-          then
-            exit 1
-          else
-            exit 0
-          fi
+          [ $lineendings -eq 0 ]
       - name: Check for trailing whitespaces
         if: inputs.checkWhitespace && always()
+        continue-on-error: ${{ inputs.whitespaceFailSilent }}
         run: |
           whitespaceErrors=0
           exclude="*[.md]"
@@ -271,14 +268,10 @@ jobs:
           fi
           echo "" >> ${{env.reportdir}}${{ env.reportfilename }}
           # Exit the step with appropriate code
-          if [ $whitespaceErrors -gt 0 ] && [ ${{ inputs.whitespaceFailSilent }} != true ]
-          then
-            exit 1
-          else
-            exit 0
-          fi
+          [ $whitespaceErrors -eq 0 ]
       - name: Check for Tab usage
         if: inputs.checkTabs && always()
+        continue-on-error: ${{ inputs.tabsFailSilent }}
         run: |
           tabErrors=0
           exclude="*[.md]"
@@ -309,14 +302,10 @@ jobs:
           fi
           echo "" >> ${{env.reportdir}}${{ env.reportfilename }}
           # Exit the step with appropriate code
-          if [ $tabErrors -gt 0 ] && [ ${{ inputs.tabsFailSilent }} != true ]
-          then
-            exit 1
-          else
-            exit 0
-          fi
+          [ $tabErrors -eq 0 ]
       - name: Check old Qt string-based connections (https://wiki.qt.io/New_Signal_Slot_Syntax)
         if: inputs.checkQtConnections && inputs.changedCppFiles != '' && always()
+        continue-on-error: ${{ inputs.qtConnectionsFailSilent }}
         run: |
           qtconnectionSyntax=0
           exclude="*[.md,.log,.ts,.git]"
@@ -348,14 +337,10 @@ jobs:
           fi
           echo "" >> ${{env.reportdir}}${{ env.reportfilename }}
           # Exit the step with appropriate code
-          if [ $qtconnectionSyntax -gt 0 ] && [ ${{ inputs.qtConnectionsFailSilent }} != true ]
-          then
-            exit 1
-          else
-            exit 0
-          fi
+          [ $qtconnectionSyntax -eq 0 ]
       - name: Cpplint
         if: inputs.checkCpplint && inputs.changedCppFiles != '' && always()
+        continue-on-error: ${{ inputs.cpplintFailSilent }}
         run: |
           cpplintErrors=0
           pip install cpplint
@@ -387,14 +372,10 @@ jobs:
           echo "</details>" >> ${{env.reportdir}}${{ env.reportfilename }}
           echo "" >> ${{env.reportdir}}${{ env.reportfilename }}
           # Exit the step with appropriate code
-          if [ $cpplintErrors -gt 0 ] && [ ${{ inputs.cpplintFailSilent }} != true ]
-          then
-            exit 1
-          else
-            exit 0
-          fi
+          [ $cpplintErrors -eq 0 ]
       - name: Pylint
         if: inputs.checkPylint && inputs.changedPythonFiles != '' && always()
+        continue-on-error: ${{ inputs.pylintFailSilent }}
         run: |
           set +e
           pylintErrors=0
@@ -452,15 +433,10 @@ jobs:
           echo "</details>" >> ${{env.reportdir}}${{ env.reportfilename }}
           echo "" >> ${{env.reportdir}}${{ env.reportfilename }}
           # Exit the step with appropriate code
-          if [ $pylintErrors -gt 0 ] && [ ${{ inputs.pylintFailSilent }} != true ]
-          then
-            exit $exitCode
-          else
-            echo "Pylint exited with code $exitCode, but we are ignoring it"
-            exit 0
-          fi
+          [ $pylintErrors -eq 0 ]
       - name: Black (Python)
         if: inputs.checkBlack && inputs.changedPythonFiles != '' && always()
+        continue-on-error: ${{ inputs.blackFailSilent }}
         run: |
           set +e
           blackReformats=0
@@ -492,15 +468,10 @@ jobs:
           echo "</details>" >> ${{env.reportdir}}${{ env.reportfilename }}
           echo "" >> ${{env.reportdir}}${{ env.reportfilename }}
           # Exit the step with appropriate code
-          if [ $exitCode -gt 0 ] && [ ${{ inputs.blackFailSilent }} != true ]
-          then
-            exit $exitCode
-          else
-            echo "Black exited with code $exitCode, but we are ignoring it"
-            exit 0
-          fi
+          [ $exitCode -eq 0 ]
       - name: Clang-format
         if: inputs.checkClangFormat && inputs.changedCppFiles != '' && always()
+        continue-on-error: ${{ inputs.clangFormatFailSilent }}
         run: |
           clangFormatErrors=0
           # Run clang-format on all cpp files
@@ -528,14 +499,10 @@ jobs:
           echo "</details>" >> ${{env.reportdir}}${{ env.reportfilename }}
           echo "" >> ${{env.reportdir}}${{ env.reportfilename }}
           # Exit the step with appropriate code
-          if [ $clangFormatErrors -gt 0 ] && [ ${{ inputs.clangFormatFailSilent }} != true ]
-          then
-            exit 1
-          else
-            exit 0
-          fi
+          [ $clangFormatErrors -eq 0 ]
       - name: Codespell
         if: inputs.checkSpelling && always()
+        continue-on-error: ${{ inputs.codespellFailSilent }}
         run: |
           pip install codespell
           wget https://raw.githubusercontent.com/codespell-project/codespell/master/codespell_lib/data/dictionary.txt
@@ -564,13 +531,10 @@ jobs:
           echo "</details>" >> ${{env.reportdir}}${{ env.reportfilename }}
           echo "" >> ${{env.reportdir}}${{ env.reportfilename }}
           # Exit the step with appropriate code
-          if [ $misspellings -gt 0 ] && [ ${{ inputs.codespellFailSilent }} != true ]; then
-            exit 1
-          else
-            exit 0
-          fi
+          [ $misspellings -eq 0 ]
       - name: Clang-tidy
         if: inputs.checkClangTidy && inputs.changedCppFiles != '' && always()
+        continue-on-error: ${{ inputs.clangTidyFailSilent }}
         run: |
           set +e
           clangTidyErrors=0
@@ -621,15 +585,10 @@ jobs:
           echo "</details>" >> ${{env.reportdir}}${{ env.reportfilename }}
           echo "" >> ${{env.reportdir}}${{ env.reportfilename }}
           # Exit the step with appropriate code
-          if [ $clangTidyErrors -gt 0 ] && [ ${{ inputs.clangTidyFailSilent }} != true ]
-          then
-            exit $exitCode
-          else
-            echo "Clang-tidy exited with code $exitCode, but we are ignoring it"
-            exit 0
-          fi
+          [ $clangTidyErrors -eq 0 ]
       - name: Clazy
         if: inputs.checkClazy && inputs.changedCppFiles != '' && always()
+        continue-on-error: ${{ inputs.clazyFailSilent }}
         run: |
           clazyErrors=0
           clazyWarnings=0
@@ -670,14 +629,10 @@ jobs:
           echo "</details>" >> ${{env.reportdir}}${{ env.reportfilename }}
           echo "" >> ${{env.reportdir}}${{ env.reportfilename }}
           # Exit the step with appropriate code
-          if [ "$clazyErrors" -gt 0 ] && [ ${{ inputs.clazyFailSilent }} != true ]
-          then
-            exit 1
-          else
-            exit 0
-          fi
+          [ $clazyErrors -eq 0 ]
       - name: Clazy-QT6
         if: inputs.checkClazyQT6 && inputs.changedCppFiles != '' && github.ref == inputs.QT6Branch && always()
+        continue-on-error: ${{ inputs.clazyQT6FailSilent }}
         run: |
           clazyQT6Errors=0
           clazyQT6Warnings=0
@@ -717,11 +672,7 @@ jobs:
           echo "</details>" >> ${{env.reportdir}}${{ env.reportfilename }}
           echo "" >> ${{env.reportdir}}${{ env.reportfilename }}
           # Exit the step with appropriate code
-          if [ "$clazyQT6Errors" -gt 0 ] && [ ${{ inputs.clazyQT6FailSilent }} != true ]; then
-            exit 1
-          else
-            exit 0
-          fi
+          [ $clazyQT6Errors -eq 0 ]
       - name: Upload logs and fixes
         if: always()
         uses: actions/upload-artifact@v3
