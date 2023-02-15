@@ -314,28 +314,28 @@ class Component(ArchIFC.IfcProduct):
         if prop == "Placement":
             if hasattr(self,"oldPlacement"):
                 if self.oldPlacement:
-                    import DraftVecUtils
                     deltap = obj.Placement.Base.sub(self.oldPlacement.Base)
                     if deltap.Length == 0:
                         deltap = None
-                    v = FreeCAD.Vector(0,0,1)
-                    deltar = FreeCAD.Rotation(self.oldPlacement.Rotation.multVec(v),obj.Placement.Rotation.multVec(v))
-                    #print "Rotation",deltar.Axis,deltar.Angle
+                    deltar = obj.Placement.Rotation * self.oldPlacement.Rotation.inverted()
                     if deltar.Angle < 0.0001:
                         deltar = None
                     for child in self.getMovableChildren(obj):
-                        #print "moving ",child.Label
                         if deltar:
-                            #child.Placement.Rotation = child.Placement.Rotation.multiply(deltar) - not enough, child must also move
-                            # use shape methods to obtain a correct placement
-                            import Part,math
-                            shape = Part.Shape()
-                            shape.Placement = child.Placement
-                            #print("angle before rotation:",shape.Placement.Rotation.Angle)
-                            #print("rotation angle:",math.degrees(deltar.Angle))
-                            shape.rotate(DraftVecUtils.tup(self.oldPlacement.Base), DraftVecUtils.tup(deltar.Axis), math.degrees(deltar.Angle))
-                            #print("angle after rotation:",shape.Placement.Rotation.Angle)
-                            child.Placement = shape.Placement
+                            import math
+                            # Code for V1.0:
+                            # child.Placement.rotate(self.oldPlacement.Base,
+                                                   # deltar.Axis,
+                                                   # math.degrees(deltar.Angle),
+                                                   # comp=True)
+
+                            # Workaround solution for V0.20.3 backport:
+                            # See: https://forum.freecadweb.org/viewtopic.php?p=613196#p613196
+                            offset_rotation = FreeCAD.Placement(FreeCAD.Vector(0, 0, 0),
+                                                                FreeCAD.Rotation(deltar.Axis, math.degrees(deltar.Angle)),
+                                                                self.oldPlacement.Base)
+                            child.Placement = offset_rotation * child.Placement
+                            # End workaround solution.
                         if deltap:
                             child.Placement.move(deltap)
 
