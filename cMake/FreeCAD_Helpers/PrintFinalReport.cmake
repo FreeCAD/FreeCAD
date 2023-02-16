@@ -99,7 +99,7 @@ macro(PrintFinalReport)
     value(FREECAD_LIBPACK_USE)
 
     section_end()
-    
+
     ################ Libraries ##################
 
     section_begin(Libraries)
