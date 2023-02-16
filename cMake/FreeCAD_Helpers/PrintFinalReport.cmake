@@ -178,6 +178,7 @@ macro(PrintFinalReport)
     conditional(Doxygen DOXYGEN_FOUND "not found" "${DOXYGEN_VERSION} Language: ${DOXYGEN_LANGUAGE}")
     conditional(Coin3D_DOC COIN3D_DOC_FOUND "not found" ${COIN3D_DOC_PATH})
     conditional(PYCXX ${PYCXX_FOUND} "not found" "${PYCXX_VERSION} Incl: ${PYCXX_INCLUDE_DIR} Src:${PYCXX_SOURCE_DIR}")
+    conditional(fmt ${fmt_FOUND} "${fmt_VERSION}" "Source located in ${fmt_SOURCE_DIR}")
 
     section_end()
 
