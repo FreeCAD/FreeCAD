@@ -230,6 +230,7 @@ jobs:
           name: ${{ inputs.artifactBasename }}-Logs
           path: |
             ${{ env.logdir }}
+            /var/crash/*FreeCAD*
       - name: Upload report
         if: always()
         uses: actions/upload-artifact@v3
