@@ -214,7 +214,8 @@ jobs:
             # Check for DOS or MAC line endings
             if [[ $(file -b $file) =~ "with CR" ]]
             then
-              echo "::warning file=$file::File has non Unix line endings" | tee -a ${{ env.logdir }}lineendings.log
+              echo "::warning file=$file,title=$file::File has non Unix line endings"
+              echo "$file has non Unix line endings" >> ${{ env.logdir }}lineendings.log
               ((lineendings=lineendings+1))
             fi
           done
