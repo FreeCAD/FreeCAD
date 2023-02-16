@@ -70,7 +70,7 @@ runs:
         echo "" >> ${{ inputs.reportFile }}
         echo "Configure Log (only final configuration values reported):" >> ${{ inputs.reportFile }}
         echo '```' >> ${{ inputs.reportFile }}
-        cat ${{ inputs.logFile }} | sed -ne '/^  *==/,/^====/p' >> ${{ inputs.reportFile }}
+        cat ${{ inputs.logFile }} | sed -ne "/^  *==/,/^====/p" >> ${{ inputs.reportFile }}
         echo '```' >> ${{ inputs.reportFile }}
         echo "</details>">> ${{ inputs.reportFile }}
         echo "" >> ${{ inputs.reportFile }}

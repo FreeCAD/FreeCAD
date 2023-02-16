@@ -244,7 +244,7 @@ jobs:
           for file in ${{ inputs.changedFiles }}
           do
             # Check for trailing whitespaces
-            grep -nIHE --exclude="$exclude" " $" $file | sed 's/$/<-- trailing whitespace/' >> ${{ env.logdir }}whitespace.log || true
+            grep -nIHE --exclude="$exclude" " $" $file | sed -e "s/$/<-- trailing whitespace/" >> ${{ env.logdir }}whitespace.log || true
           done
           # Write the Log to the console with the Problem Matchers
           if [ -f ${{ env.logdir }}whitespace.log ]
@@ -279,7 +279,7 @@ jobs:
           # Check for Tab usage
           for file in ${{ steps.changed-files.outputs.all_changed_files }}
           do
-            grep -nIHE --exclude="$exclude" $'\t' $file | sed 's/$/ <-- contains tab/' >> ${{ env.logdir }}tab.log || true
+            grep -nIHE --exclude="$exclude" $'\t' $file | sed -e "s/$/ <-- contains tab/" >> ${{ env.logdir }}tab.log || true
           done
           # Write the Log to the console with the Problem Matchers
           if [ -f ${{ env.logdir }}tab.log ]
@@ -313,7 +313,7 @@ jobs:
           # Check all files for QT string-based connections
           for file in ${{ inputs.changedFiles }} #TODO does this makes sense in Python files ?
           do
-            grep -nIHE --exclude="$exclude" $' SIGNAL| SLOT' $file | sed 's/$/ <--Consider using Functor-Based Connections/' >> ${{ env.logdir }}qtConnections.log || true #TODO seems to trigger false positives
+            grep -nIHE --exclude="$exclude" $' SIGNAL| SLOT' $file | sed -e "s/$/ <--Consider using Functor-Based Connections/" >> ${{ env.logdir }}qtConnections.log || true #TODO seems to trigger false positives
           done
           # Write the Log to the console with the Problem Matchers
           if [ -f ${{ env.logdir }}qtConnections.log ]; then
