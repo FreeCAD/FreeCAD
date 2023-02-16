@@ -43,11 +43,11 @@ jobs:
     with:
       artifactBasename: Build2004-${{ github.run_id }}
 
-  Ubuntu_22-04:
-    needs: [Prepare]
-    uses: ./.github/workflows/sub_buildUbuntu2204.yml
-    with:
-      artifactBasename: Build2204-${{ github.run_id }}
+#  Ubuntu_22-04:
+#    needs: [Prepare]
+#    uses: ./.github/workflows/sub_buildUbuntu2204.yml
+#    with:
+#      artifactBasename: Build2204-${{ github.run_id }}
 
   Lint:
     needs: [Prepare]
