@@ -421,7 +421,6 @@ class _Stairs(ArchComponent.Component):
         obj.removeProperty("OutlineWireLeft")
         obj.removeProperty("OutlineWireRight")
         self.update_properties_to_0v20(obj)
-        doc.recompute()
         from draftutils.messages import _wrn
         _wrn("v0.20.3, " + obj.Label + ", "
              + translate("Arch", "removed properties 'OutlineWireLeft' and 'OutlineWireRight', and added properties 'RailingLeft' and 'RailingRight'"))
@@ -436,7 +435,6 @@ class _Stairs(ArchComponent.Component):
         obj.RailingLeft = railingLeftObject
         obj.RailingRight = railingRightObject
         self.update_properties_to_0v20(obj)
-        doc.recompute()
         from draftutils.messages import _wrn
         _wrn("v0.20.3, " + obj.Label + ", "
              + translate("Arch", "changed the type of properties 'RailingLeft' and 'RailingRight'"))
