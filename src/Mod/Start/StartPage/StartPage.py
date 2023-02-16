@@ -253,7 +253,7 @@ def getDefaultIcon():
 
 def buildCard(filename,method,arg=None):
 
-    """builds an html <li> element representing a file. 
+    """builds an html <li> element representing a file.
     method is a script + a keyword, for ex. url.py?key="""
 
     result = ""

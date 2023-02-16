@@ -2,8 +2,8 @@
 
 #***************************************************************************
 #*                                                                         *
-#*   Copyright (c) 2012                                                    * 
-#*   Yorik van Havre <yorik@uncreated.net>                                 * 
+#*   Copyright (c) 2012                                                    *
+#*   Yorik van Havre <yorik@uncreated.net>                                 *
 #*                                                                         *
 #*   This program is free software; you can redistribute it and/or modify  *
 #*   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -52,7 +52,7 @@ if os.path.exists(os.path.abspath(os.path.join(os.environ["HOME"],"FreeCAD/lib")
 elif commands.getstatusoutput("locate FreeCAD/lib")[0] == 0:
     path = commands.getstatusoutput("locate FreeCAD/lib")[1].split()[0]
     sys.path.append(path)
-    
+
 # locate TemplatePyMod
 if commands.getstatusoutput("locate TemplatePyMod")[0] == 0:
     path = commands.getstatusoutput("locate TemplatePyMod")[1].split()[0]

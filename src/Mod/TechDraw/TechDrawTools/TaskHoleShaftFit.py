@@ -115,7 +115,7 @@ class TaskHoleShaftFit:
         rangeValues = iso.getValues()
         mainFormat = dim.FormatSpec
         dim.FormatSpec = mainFormat+selectedField
-        dim.EqualTolerance = False 
+        dim.EqualTolerance = False
         dim.FormatSpecOverTolerance = '(%+.3f)'
         dim.OverTolerance = rangeValues[0]
         dim.UnderTolerance = rangeValues[1]
