@@ -706,9 +706,14 @@ void ViewProviderFemPostObject::filterArtifacts(vtkDataObject* data)
     m_wireframe->SetInputData(data);
     m_points->SetInputData(data);
 
-    // filter artifacts
-    // only necessary for the surface filter
-    filterArtifacts(data);
+    // filtering artifacts is only necessary for the surface filter
+    auto hGrp = App::GetApplication().GetParameterGroupByPath(
+        "User parameter:BaseApp/Preferences/Mod/Fem/Elmer");
+    bool FilterMultiCPUResults = hGrp->GetBool("FilterMultiCPUResults", 1);
+    if (FilterMultiCPUResults)
+        filterArtifacts(data);
+    else
+        m_surface->SetInputData(data);
 
     return true;
 }
