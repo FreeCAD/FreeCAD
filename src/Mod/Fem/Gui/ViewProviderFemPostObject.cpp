@@ -362,8 +362,9 @@ void ViewProviderFemPostObject::updateProperties() {
         colorArrays.emplace_back("Not a vector");
     else {
         int array = Field.getValue() - 1; //0 is none
-        vtkPolyData* pd = m_currentAlgorithm->GetOutput();
-        vtkDataArray* data = pd->GetPointData()->GetArray(array);
+        vtkDataArray* data = point->GetArray(array);
+        if (!data)
+            return;
 
         if (data->GetNumberOfComponents() == 1)
             colorArrays.emplace_back("Not a vector");
@@ -494,7 +495,6 @@ void ViewProviderFemPostObject::update3D() {
 void ViewProviderFemPostObject::WritePointData(vtkPoints* points, vtkDataArray* normals,
                                                vtkDataArray* tcoords)
 {
-
     Q_UNUSED(tcoords);
 
     if (!points)
@@ -542,8 +542,8 @@ void ViewProviderFemPostObject::updateMaterial()
     WriteColorData(true);
 }
 
-void ViewProviderFemPostObject::WriteColorData(bool ResetColorBarRange) {
-
+void ViewProviderFemPostObject::WriteColorData(bool ResetColorBarRange)
+{
     if (!setupPipeline())
         return;
 
@@ -562,6 +562,8 @@ void ViewProviderFemPostObject::WriteColorData(bool ResetColorBarRange) {
     int array = Field.getValue() - 1; // 0 is none
     vtkPolyData* pd = m_currentAlgorithm->GetOutput();
     vtkDataArray* data = pd->GetPointData()->GetArray(array);
+    if (!data)
+        return;
 
     int component = VectorMode.getValue() - 1; // 0 is either "Not a vector" or magnitude,
                                                // for -1 is correct for magnitude.
@@ -610,8 +612,8 @@ void ViewProviderFemPostObject::WriteColorData(bool ResetColorBarRange) {
     m_triangleStrips->touch();
 }
 
-void ViewProviderFemPostObject::WriteTransparency() {
-
+void ViewProviderFemPostObject::WriteTransparency()
+{
     float trans = float(Transparency.getValue()) / 100.0;
     m_material->transparency.setValue(trans);
 
@@ -620,8 +622,8 @@ void ViewProviderFemPostObject::WriteTransparency() {
     m_triangleStrips->touch();
 }
 
-void ViewProviderFemPostObject::updateData(const App::Property* p) {
-
+void ViewProviderFemPostObject::updateData(const App::Property* p)
+{
     if (strcmp(p->getName(), "Data") == 0) {
         updateVtk();
     }
@@ -653,6 +655,7 @@ void ViewProviderFemPostObject::filterArtifacts(vtkDataObject* data)
     Gui::Document* doc = this->getDocument();
     Gui::View3DInventor* view =
         qobject_cast<Gui::View3DInventor*>(doc->getViewOfViewProvider(this));
+
     if (view) {
         Gui::View3DInventorViewer* viewer = view->getViewer();
         SbBox3f boundingBox;
@@ -683,7 +686,7 @@ void ViewProviderFemPostObject::filterArtifacts(vtkDataObject* data)
     this->Visibility.setValue(visibility);
 }
 
-    bool ViewProviderFemPostObject::setupPipeline()
+bool ViewProviderFemPostObject::setupPipeline()
 {
     vtkDataObject* data = static_cast<Fem::FemPostObject*>(getObject())->Data.getValue();
     if (!data)
@@ -718,8 +721,8 @@ void ViewProviderFemPostObject::filterArtifacts(vtkDataObject* data)
     return true;
 }
 
-void ViewProviderFemPostObject::onChanged(const App::Property* prop) {
-
+void ViewProviderFemPostObject::onChanged(const App::Property* prop)
+{
     if (m_blockPropertyChanges)
         return;
 
@@ -748,7 +751,8 @@ void ViewProviderFemPostObject::onChanged(const App::Property* prop) {
     ViewProviderDocumentObject::onChanged(prop);
 }
 
-bool ViewProviderFemPostObject::doubleClicked() {
+bool ViewProviderFemPostObject::doubleClicked()
+{
     // work around for a problem in VTK implementation:
     // https://forum.freecadweb.org/viewtopic.php?t=10587&start=130#p125688
     // check if backlight is enabled
@@ -764,8 +768,8 @@ bool ViewProviderFemPostObject::doubleClicked() {
     return true;
 }
 
-bool ViewProviderFemPostObject::setEdit(int ModNum) {
-
+bool ViewProviderFemPostObject::setEdit(int ModNum)
+{
     if (ModNum == ViewProvider::Default || ModNum == 1) {
 
         Gui::TaskView::TaskDialog* dlg = Gui::Control().activeDialog();
@@ -802,8 +806,8 @@ bool ViewProviderFemPostObject::setEdit(int ModNum) {
     }
 }
 
-void ViewProviderFemPostObject::setupTaskDialog(TaskDlgPost* dlg) {
-
+void ViewProviderFemPostObject::setupTaskDialog(TaskDlgPost* dlg)
+{
     dlg->appendBox(new TaskPostDisplay(this));
 }
 
@@ -821,7 +825,8 @@ void ViewProviderFemPostObject::unsetEdit(int ModNum) {
     }
 }
 
-void ViewProviderFemPostObject::hide() {
+void ViewProviderFemPostObject::hide()
+{
     Gui::ViewProviderDocumentObject::hide();
     m_colorStyle->style = SoDrawStyle::INVISIBLE;
     // The object is now hidden but the color bar is wrong
@@ -856,7 +861,8 @@ void ViewProviderFemPostObject::hide() {
     }
 }
 
-void ViewProviderFemPostObject::show() {
+void ViewProviderFemPostObject::show()
+{
     Gui::ViewProviderDocumentObject::show();
     m_colorStyle->style = SoDrawStyle::FILLED;
     // we must update the color bar except for data point filters
@@ -864,7 +870,8 @@ void ViewProviderFemPostObject::show() {
     WriteColorData(true);
 }
 
-void ViewProviderFemPostObject::OnChange(Base::Subject< int >& /*rCaller*/, int /*rcReason*/) {
+void ViewProviderFemPostObject::OnChange(Base::Subject< int >& /*rCaller*/, int /*rcReason*/)
+{
     bool ResetColorBarRange = false;
     WriteColorData(ResetColorBarRange);
 }
