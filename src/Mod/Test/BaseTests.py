@@ -214,6 +214,15 @@ class AlgebraTestCase(unittest.TestCase):
     def setUp(self):
         pass
 
+    def testRotationScale(self):
+        matrix = FreeCAD.Matrix()
+        matrix.scale(0.5)
+        rot = FreeCAD.Rotation(matrix)
+        msg = f'Rotation Q{rot.Q} not equal self'
+        self.assertTrue(rot.isSame(rot, 1e-7), msg)
+        msg2 = msg + f' halqa {rot.isSame(rot, 1e-7)}'
+        self.assertTrue(False, msg2)
+
     def testAngle(self):
         v1 = FreeCAD.Vector(0,0,0.000001)
         v2 = FreeCAD.Vector(0,0.000001,0)
