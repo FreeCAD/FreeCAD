@@ -22,9 +22,12 @@ macro(SetupLibFmt)
        endif()
 
        include(FetchContent)
+       if(${CMAKE_VERSION} VERSION_GREATER_EQUAL "3.24.0")
+              cmake_policy(SET CMP0135 NEW)
+       endif()
        FetchContent_Declare(fmt
-              GIT_REPOSITORY https://github.com/fmtlib/fmt
-              GIT_TAG 9.1.0
+               URL https://github.com/fmtlib/fmt/archive/refs/tags/9.1.0.zip
+               URL_MD5 e6754011ff56bfc37631fcc90961e377
        )
        FetchContent_MakeAvailable(fmt)
        set_target_properties(fmt PROPERTIES POSITION_INDEPENDENT_CODE ON)
