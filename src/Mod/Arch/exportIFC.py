@@ -474,6 +474,7 @@ def export(exportList, filename, colors=None, preferences=None):
             else:
                 axgroups = obj.Proxy.getAxisData(obj)
             if not axgroups:
+                if preferences["DEBUG"]: print("Warning! Axis system object found '{}', but no axis data found.".format(obj.Label))
                 continue
             ifctype = "IfcGrid"
             for axg in axgroups:
@@ -512,6 +513,8 @@ def export(exportList, filename, colors=None, preferences=None):
                 grid = ifcfile.createIfcGrid(uid,history,name,description,None,plac,pdef,u,v,w)
                 products[obj.Name] = grid
                 count += 1
+            else:
+                if preferences["DEBUG"]: print("Warning! Axis system object '{}' only contains one set of axis but at least two are needed for a IfcGrid to be added to IFC.".format(obj.Label))
             continue
 
         if ifctype not in ArchIFCSchema.IfcProducts.keys():
