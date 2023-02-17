@@ -262,6 +262,8 @@ private:
 
     void updateInventorNodeSizes();
 
+    void updateInventorColors();
+
     /** @name coin nodes creation*/
     void createEditModeInventorNodes();
     //@}

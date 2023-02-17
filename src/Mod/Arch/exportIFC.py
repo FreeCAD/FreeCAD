@@ -2237,6 +2237,11 @@ def getRepresentation(
                                 loops = []
                                 verts = [v.Point for v in fcface.OuterWire.OrderedVertexes]
                                 c = fcface.CenterOfMass
+                                if len(verts) < 1:
+                                    print("Warning: OuterWire returned no ordered Vertexes in ", obj.Label)
+                                    # Part.show(fcface)
+                                    # Part.show(fcsolid)
+                                    continue
                                 v1 = verts[0].sub(c)
                                 v2 = verts[1].sub(c)
                                 try:

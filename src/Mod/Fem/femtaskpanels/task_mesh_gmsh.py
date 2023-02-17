@@ -199,6 +199,8 @@ class _TaskPanel:
         )
 
     def run_gmsh(self):
+        from femmesh import gmshtools
+        gmsh_mesh = gmshtools.GmshTools(self.mesh_obj, self.analysis)
         QApplication.setOverrideCursor(Qt.WaitCursor)
         part = self.mesh_obj.Part
         if (
@@ -209,43 +211,26 @@ class _TaskPanel:
                 or is_of_type(part, "FeatureXOR")
             )
         ):
-            error_message = (
-                "The shape to mesh is a boolean split tools Compound "
-                "and the mesh has mesh region list. "
-                "Gmsh could return unexpected meshes in such circumstances. "
-                "It is strongly recommended to extract the shape "
-                "to mesh from the Compound and use this one."
-            )
-            qtbox_title = (
-                "Shape to mesh is a BooleanFragmentsCompound "
-                "and mesh regions are defined"
-            )
-            QtGui.QMessageBox.critical(
-                None,
-                qtbox_title,
-                error_message
-            )
+            gmsh_mesh.outputCompoundWarning()
         self.Start = time.time()
         self.form.l_time.setText("Time: {0:4.1f}: ".format(time.time() - self.Start))
         self.console_message_gmsh = ""
         self.gmsh_runs = True
         self.console_log("We are going to start ...")
         self.get_active_analysis()
-        from femmesh import gmshtools
-        gmsh_mesh = gmshtools.GmshTools(self.mesh_obj, self.analysis)
         self.console_log("Start Gmsh ...")
         error = ""
         try:
             error = gmsh_mesh.create_mesh()
         except Exception:
             error = sys.exc_info()[1]
-            FreeCAD.Console.PrintMessage(
+            FreeCAD.Console.PrintError(
                 "Unexpected error when creating mesh: {}\n"
                 .format(error)
             )
         if error:
-            FreeCAD.Console.PrintMessage("Gmsh had warnings ...\n")
-            FreeCAD.Console.PrintMessage("{}\n".format(error))
+            FreeCAD.Console.PrintWarning("Gmsh had warnings:\n")
+            FreeCAD.Console.PrintWarning("{}\n".format(error))
             self.console_log("Gmsh had warnings ...")
             self.console_log(error, "#FF0000")
         else:
@@ -265,7 +250,7 @@ class _TaskPanel:
         else:
             for m in analysis.Group:
                 if m.Name == self.mesh_obj.Name:
-                    FreeCAD.Console.PrintMessage(
+                    FreeCAD.Console.PrintLog(
                         "Active analysis found: {}\n"
                         .format(analysis.Name)
                     )

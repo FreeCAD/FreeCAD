@@ -220,7 +220,7 @@ class TestAddon(unittest.TestCase):
         self.assertEqual(addon.repo_type, Addon.Kind.MACRO)
         self.assertEqual(addon.name, "DoNothing")
         self.assertEqual(
-            addon.macro.comment, "Do absolutely nothing. For Addon Manager unit tests."
+            addon.macro.comment, "Do absolutely nothing. For Addon Manager integration tests."
         )
         self.assertEqual(addon.url, "https://github.com/FreeCAD/FreeCAD")
         self.assertEqual(addon.macro.version, "1.0")
@@ -228,7 +228,7 @@ class TestAddon(unittest.TestCase):
         self.assertEqual(addon.macro.author, "Chris Hennes")
         self.assertEqual(addon.macro.date, "2022-02-28")
         self.assertEqual(addon.macro.icon, "not_real.png")
-        self.assertEqual(addon.macro.xpm, "")
+        self.assertNotEqual(addon.macro.xpm, "")
 
     def test_cache(self):
         addon = Addon(

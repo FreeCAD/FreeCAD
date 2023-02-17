@@ -155,10 +155,9 @@ void ViewProviderFemPostPipeline::transformField(char *FieldName, double FieldFa
     Fem::FemPostPipeline *obj = static_cast<Fem::FemPostPipeline *>(getObject());
 
     vtkSmartPointer<vtkDataObject> data = obj->Data.getValue();
-    if (!data || !data->IsA("vtkDataSet"))
-        return;
-
     vtkDataSet *dset = vtkDataSet::SafeDownCast(data);
+    if (!dset)
+        return;
     vtkDataArray *pdata = dset->GetPointData()->GetArray(FieldName);
     if (!pdata)
         return;

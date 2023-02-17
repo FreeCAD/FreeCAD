@@ -24,7 +24,8 @@
 containers for Arch objects, and also define a terrain surface.
 """
 
-import FreeCAD,Draft,ArchCommands,math,re,datetime,ArchIFC
+import FreeCAD,Draft,ArchCommands,ArchComponent,math,re,datetime,ArchIFC
+
 if FreeCAD.GuiUp:
     import FreeCADGui
     from PySide import QtGui,QtCore
@@ -718,24 +719,16 @@ class _Site(ArchIFC.IfcProduct):
             if vobj.Proxy is not None:
                 vobj.Proxy.updateDisplaymodeTerrainSwitches(vobj)
 
-    def onChanged(self,obj,prop):
-        """Method called when the object has a property changed.
+    def onBeforeChange(self, obj, prop):
+        ArchComponent.Component.onBeforeChange(self, obj, prop)
 
-        If Terrain has changed, hide the base object terrain.
+    def onChanged(self, obj, prop):
+        ArchComponent.Component.onChanged(self, obj, prop)
+        if prop == "Terrain" and obj.Terrain and FreeCAD.GuiUp:
+            obj.Terrain.ViewObject.hide()
 
-        Also call ArchIFC.IfcProduct.onChanged().
-
-        Parameters
-        ----------
-        prop: string
-            The name of the property that has changed.
-        """
-
-        ArchIFC.IfcProduct.onChanged(self, obj, prop)
-        if prop == "Terrain":
-            if obj.Terrain:
-                if FreeCAD.GuiUp:
-                    obj.Terrain.ViewObject.hide()
+    def getMovableChildren(self, obj):
+        return obj.Additions + obj.Subtractions
 
     def computeAreas(self,obj):
         """Compute the area, perimeter length, and volume of the terrain shape.

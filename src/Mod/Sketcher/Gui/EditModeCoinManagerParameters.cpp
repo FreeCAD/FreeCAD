@@ -51,5 +51,6 @@ SbColor DrawingParameters::ConstrIcoColor                           (1.0f,  0.14
 SbColor DrawingParameters::NonDrivingConstrDimColor                 (0.0f,  0.149f, 1.0f);   // #0026FF -> (  0, 38,255)
 SbColor DrawingParameters::ExprBasedConstrDimColor                  (1.0f,  0.5f,   0.149f);   // #FF7F26 -> (255, 127,38)
 SbColor DrawingParameters::DeactivatedConstrDimColor                (0.8f,  0.8f,   0.8f);     // #CCCCCC -> (204,204,204)
+SbColor DrawingParameters::CursorTextColor                          (0.0f,  0.0f,   1.0f);  // #0000FF -> (0,0,255)
 
 const MultiFieldId MultiFieldId::Invalid = MultiFieldId();

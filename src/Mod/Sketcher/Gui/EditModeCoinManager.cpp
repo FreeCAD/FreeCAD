@@ -148,6 +148,8 @@ void EditModeCoinManager::ParameterObserver::initParameters()
             [this, drawingParameters = Client.drawingParameters](const std::string & param){updateColor(drawingParameters.PreselectColor, param);}},
         {"SelectionColor",
             [this, drawingParameters = Client.drawingParameters](const std::string & param){updateColor(drawingParameters.SelectColor, param);}},
+        {"CursorTextColor",
+            [this, drawingParameters = Client.drawingParameters](const std::string & param){updateColor(drawingParameters.CursorTextColor, param);}},
     };
 
     for( auto & val : str2updatefunction){
@@ -230,12 +232,12 @@ void EditModeCoinManager::ParameterObserver::updateElementSizeParameters(const s
     // simple scaling factor for hardcoded pixel values in the Sketcher
     Client.drawingParameters.pixelScalingFactor = viewScalingFactor * dpi / 96; // 96 ppi is the standard pixel density for which pixel quantities were calculated
 
-    // Coin documentation indicates the size of a font is:
-    // SoSFFloat SoFont::size        Size of font. Defaults to 10.0.
+    // About sizes:
+    // SoDatumLabel takes the size in points, not in pixels. This is because it uses QFont internally.
+    // Coin, at least our coin at this time, takes pixels, not points.
     //
-    // For 2D rendered bitmap fonts (like for SoText2), this value is the height of a character in screen pixels. For 3D text, this value is the world-space coordinates height of a character in the current units setting (see documentation for SoUnits node).
-    //
-    // However, with hdpi monitors, the coin font labels do not respect the size passed in pixels:
+    // DPI considerations:
+    // With hdpi monitors, the coin font labels do not respect the size passed in pixels:
     // https://forum.freecadweb.org/viewtopic.php?f=3&t=54347&p=467610#p467610
     // https://forum.freecadweb.org/viewtopic.php?f=10&t=49972&start=40#p467471
     //
@@ -247,7 +249,8 @@ void EditModeCoinManager::ParameterObserver::updateElementSizeParameters(const s
     // This means that the following correction does not have a documented basis, but appears necessary so that the Sketcher is usable in
     // HDPI monitors.
 
-    Client.drawingParameters.coinFontSize = std::lround(sketcherfontSize * 96.0f / dpi);
+    Client.drawingParameters.coinFontSize = std::lround(sketcherfontSize * 96.0f / dpi); // this is in pixels
+    Client.drawingParameters.labelFontSize = std::lround(sketcherfontSize * 72.0f / dpi); // this is in points, as SoDatumLabel uses points
     Client.drawingParameters.constraintIconSize = std::lround(0.8 * sketcherfontSize);
 
     // For marker size the global default is used.
@@ -269,6 +272,8 @@ void EditModeCoinManager::ParameterObserver::updateColor(SbColor &sbcolor, const
     unsigned long color = (unsigned long)(sbcolor.getPackedValue());
     color = hGrp->GetUnsigned(parametername.c_str(), color);
     sbcolor.setPackedValue((uint32_t)color, transparency);
+
+    Client.updateInventorColors();
 }
 
 void EditModeCoinManager::ParameterObserver::subscribeToParameters()
@@ -705,11 +710,6 @@ void EditModeCoinManager::createEditModeInventorNodes()
     editModeScenegraphNodes.EditCurveSet->setName("EditCurveLineSet");
     editCurvesRoot->addChild(editModeScenegraphNodes.EditCurveSet);
 
-    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
-    float transparency;
-    SbColor cursorTextColor(0,0,1);
-    cursorTextColor.setPackedValue((uint32_t)hGrp->GetUnsigned("CursorTextColor", cursorTextColor.getPackedValue()), transparency);
-
     // stuff for the EditMarkers +++++++++++++++++++++++++++++++++++++++
     SoSeparator* editMarkersRoot = new SoSeparator;
     editModeScenegraphNodes.EditRoot->addChild(editMarkersRoot);
@@ -740,15 +740,16 @@ void EditModeCoinManager::createEditModeInventorNodes()
     // no caching for frequently-changing data structures
     Coordsep->renderCaching = SoSeparator::OFF;
 
-    SoMaterial *CoordTextMaterials = new SoMaterial;
-    CoordTextMaterials->setName("CoordTextMaterials");
-    CoordTextMaterials->diffuseColor = cursorTextColor;
-    Coordsep->addChild(CoordTextMaterials);
+    editModeScenegraphNodes.textMaterial = new SoMaterial;
+    editModeScenegraphNodes.textMaterial->setName("CoordTextMaterials");
+    editModeScenegraphNodes.textMaterial->diffuseColor = drawingParameters.CursorTextColor;
+    Coordsep->addChild(editModeScenegraphNodes.textMaterial);
 
-    SoFont *font = new SoFont();
-    font->size.setValue(drawingParameters.coinFontSize);
+    editModeScenegraphNodes.textFont = new SoFont();
+    editModeScenegraphNodes.textFont->name.setValue("Helvetica");
+    editModeScenegraphNodes.textFont->size.setValue(drawingParameters.coinFontSize);
 
-    Coordsep->addChild(font);
+    Coordsep->addChild(editModeScenegraphNodes.textFont);
 
     editModeScenegraphNodes.textPos = new SoTranslation();
     Coordsep->addChild(editModeScenegraphNodes.textPos);
@@ -828,7 +829,16 @@ void EditModeCoinManager::updateInventorNodeSizes()
     editModeScenegraphNodes.ConstraintDrawStyle->lineWidth = 1 * drawingParameters.pixelScalingFactor;
     editModeScenegraphNodes.InformationDrawStyle->lineWidth = 1 * drawingParameters.pixelScalingFactor;
 
+    editModeScenegraphNodes.textFont->size.setValue(drawingParameters.coinFontSize);
+
     pEditModeConstraintCoinManager->rebuildConstraintNodes();
+}
+
+void EditModeCoinManager::updateInventorColors()
+{
+    editModeScenegraphNodes.RootCrossMaterials->diffuseColor.set1Value(0, drawingParameters.CrossColorH);
+    editModeScenegraphNodes.RootCrossMaterials->diffuseColor.set1Value(1, drawingParameters.CrossColorV);
+    editModeScenegraphNodes.textMaterial->diffuseColor = drawingParameters.CursorTextColor;
 }
 
 /************************ Edit node access ************************/

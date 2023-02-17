@@ -21,14 +21,17 @@ set(TechDraw_ToolsScripts
     TechDrawTools/CommandMoveView.py
     TechDrawTools/CommandShareView.py
     TechDrawTools/CommandAxoLengthDimension.py
+    TechDrawTools/CommandHoleShaftFit.py
     TechDrawTools/TaskMoveView.py
     TechDrawTools/TaskShareView.py
+    TechDrawTools/TaskHoleShaftFit.py
     TechDrawTools/TDToolsUtil.py
     TechDrawTools/TDToolsMovers.py
 )
 
 set(TechDraw_ToolsGui
     Gui/TaskMoveView.ui
+    Gui/TaskHoleShaftFit.ui
     Gui/DlgPageChooser.ui
 )
 

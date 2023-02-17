@@ -1534,13 +1534,14 @@ void setupFilter(Gui::Command* cmd, std::string Name) {
 
     // issue error if no post object
     if (!((selObject->getTypeId() == Base::Type::fromName("Fem::FemPostPipeline"))
-        || (selObject->getTypeId() == Base::Type::fromName("Fem::FemPostWarpVectorFilter"))
-        || (selObject->getTypeId() == Base::Type::fromName("Fem::FemPostScalarClipFilter"))
-        || (selObject->getTypeId() == Base::Type::fromName("Fem::FemPostCutFilter"))
-        || (selObject->getTypeId() == Base::Type::fromName("Fem::FemPostClipFilter"))
-        || (selObject->getTypeId() == Base::Type::fromName("Fem::FemPostDataAlongLineFilter")) )
-        ) {
-        QMessageBox::warning(Gui::getMainWindow(),
+          || (selObject->getTypeId() == Base::Type::fromName("Fem::FemPostClipFilter"))
+          || (selObject->getTypeId() == Base::Type::fromName("Fem::FemPostContoursFilter"))
+          || (selObject->getTypeId() == Base::Type::fromName("Fem::FemPostCutFilter"))
+          || (selObject->getTypeId() == Base::Type::fromName("Fem::FemPostDataAlongLineFilter"))
+          || (selObject->getTypeId() == Base::Type::fromName("Fem::FemPostScalarClipFilter"))
+          || (selObject->getTypeId() == Base::Type::fromName("Fem::FemPostWarpVectorFilter")))) {
+        QMessageBox::warning(
+            Gui::getMainWindow(),
             qApp->translate("setupFilter", "Error: no post processing object selected."),
             qApp->translate("setupFilter", "The filter could not be set up."));
         return;
@@ -1721,19 +1722,20 @@ bool CmdFemPostClipFilter::isActive()
     // only allow one object
     if (getSelection().getSelection().size() > 1)
         return false;
-    // only activate if a result is either a post pipeline, scalar, cut or warp filter,
-    // itself or along line filter
+    // only activate if a result is either a post pipeline or a possible filter
     if (getSelection().getObjectsOfType<Fem::FemPostPipeline>().size() == 1)
-        return true;
-    else if (getSelection().getObjectsOfType<Fem::FemPostScalarClipFilter>().size() == 1)
-        return true;
-    else if (getSelection().getObjectsOfType<Fem::FemPostCutFilter>().size() == 1)
-        return true;
-    else if (getSelection().getObjectsOfType<Fem::FemPostWarpVectorFilter>().size() == 1)
         return true;
     else if (getSelection().getObjectsOfType<Fem::FemPostClipFilter>().size() == 1)
         return true;
     else if (getSelection().getObjectsOfType<Fem::FemPostDataAlongLineFilter>().size() == 1)
+        return true;
+    else if (getSelection().getObjectsOfType<Fem::FemPostScalarClipFilter>().size() == 1)
+        return true;
+    else if (getSelection().getObjectsOfType<Fem::FemPostContoursFilter>().size() == 1)
+        return true;
+    else if (getSelection().getObjectsOfType<Fem::FemPostCutFilter>().size() == 1)
+        return true;
+    else if (getSelection().getObjectsOfType<Fem::FemPostWarpVectorFilter>().size() == 1)
         return true;
     else
         return false;
@@ -1765,19 +1767,20 @@ bool CmdFemPostCutFilter::isActive()
     // only allow one object
     if (getSelection().getSelection().size() > 1)
         return false;
-    // only activate if a result is either a post pipeline, scalar, clip or warp filter,
-    // itself, or along line filter
+    // only activate if a result is either a post pipeline or a possible filter
     if (getSelection().getObjectsOfType<Fem::FemPostPipeline>().size() == 1)
-        return true;
-    else if (getSelection().getObjectsOfType<Fem::FemPostScalarClipFilter>().size() == 1)
         return true;
     else if (getSelection().getObjectsOfType<Fem::FemPostClipFilter>().size() == 1)
         return true;
-    else if (getSelection().getObjectsOfType<Fem::FemPostWarpVectorFilter>().size() == 1)
+    else if (getSelection().getObjectsOfType<Fem::FemPostContoursFilter>().size() == 1)
         return true;
     else if (getSelection().getObjectsOfType<Fem::FemPostCutFilter>().size() == 1)
         return true;
+    else if (getSelection().getObjectsOfType<Fem::FemPostScalarClipFilter>().size() == 1)
+        return true;
     else if (getSelection().getObjectsOfType<Fem::FemPostDataAlongLineFilter>().size() == 1)
+        return true;
+    else if (getSelection().getObjectsOfType<Fem::FemPostWarpVectorFilter>().size() == 1)
         return true;
     else
         return false;
@@ -1809,14 +1812,16 @@ bool CmdFemPostDataAlongLineFilter::isActive()
     // only allow one object
     if (getSelection().getSelection().size() > 1)
         return false;
-    // only activate if a result is either a post pipeline, scalar, cut, clip or warp filter
+    // only activate if a result is either a post pipeline or a possible filter
     if (getSelection().getObjectsOfType<Fem::FemPostPipeline>().size() == 1)
         return true;
-    else if (getSelection().getObjectsOfType<Fem::FemPostScalarClipFilter>().size() == 1)
+    else if (getSelection().getObjectsOfType<Fem::FemPostClipFilter>().size() == 1)
+        return true;
+    else if (getSelection().getObjectsOfType<Fem::FemPostContoursFilter>().size() == 1)
         return true;
     else if (getSelection().getObjectsOfType<Fem::FemPostCutFilter>().size() == 1)
         return true;
-    else if (getSelection().getObjectsOfType<Fem::FemPostClipFilter>().size() == 1)
+    else if (getSelection().getObjectsOfType<Fem::FemPostScalarClipFilter>().size() == 1)
         return true;
     else if (getSelection().getObjectsOfType<Fem::FemPostWarpVectorFilter>().size() == 1)
         return true;
@@ -1852,19 +1857,18 @@ bool CmdFemPostDataAtPointFilter::isActive()
     // only allow one object
     if (getSelection().getSelection().size() > 1)
         return false;
-    // only activate if a result is either a post pipeline, scalar, cut, clip,
-    // warp or along line filter
+    // only activate if a result is either a post pipeline or a possible filter
     if (getSelection().getObjectsOfType<Fem::FemPostPipeline>().size() == 1)
-        return true;
-    else if (getSelection().getObjectsOfType<Fem::FemPostScalarClipFilter>().size() == 1)
-        return true;
-    else if (getSelection().getObjectsOfType<Fem::FemPostCutFilter>().size() == 1)
         return true;
     else if (getSelection().getObjectsOfType<Fem::FemPostClipFilter>().size() == 1)
         return true;
-    else if (getSelection().getObjectsOfType<Fem::FemPostWarpVectorFilter>().size() == 1)
+    else if (getSelection().getObjectsOfType<Fem::FemPostCutFilter>().size() == 1)
         return true;
     else if (getSelection().getObjectsOfType<Fem::FemPostDataAlongLineFilter>().size() == 1)
+        return true;
+    else if (getSelection().getObjectsOfType<Fem::FemPostScalarClipFilter>().size() == 1)
+        return true;
+    else if (getSelection().getObjectsOfType<Fem::FemPostWarpVectorFilter>().size() == 1)
         return true;
     else
         return false;
@@ -1970,16 +1974,18 @@ bool CmdFemPostScalarClipFilter::isActive()
     // only allow one object
     if (getSelection().getSelection().size() > 1)
         return false;
-    // only activate if a result is either a post pipeline, clip, cut, warp or along line filter
+    // only activate if a result is either a post pipeline or a possible other filter
     if (getSelection().getObjectsOfType<Fem::FemPostPipeline>().size() == 1)
         return true;
     else if (getSelection().getObjectsOfType<Fem::FemPostClipFilter>().size() == 1)
         return true;
+    else if (getSelection().getObjectsOfType<Fem::FemPostContoursFilter>().size() == 1)
+        return true;
     else if (getSelection().getObjectsOfType<Fem::FemPostCutFilter>().size() == 1)
         return true;
-    else if (getSelection().getObjectsOfType<Fem::FemPostWarpVectorFilter>().size() == 1)
-        return true;
     else if (getSelection().getObjectsOfType<Fem::FemPostDataAlongLineFilter>().size() == 1)
+        return true;
+    else if (getSelection().getObjectsOfType<Fem::FemPostWarpVectorFilter>().size() == 1)
         return true;
     else
         return false;
@@ -2011,16 +2017,62 @@ bool CmdFemPostWarpVectorFilter::isActive()
     // only allow one object
     if (getSelection().getSelection().size() > 1)
         return false;
-    // only activate if a result is either a post pipeline, scalar, clip, cut or along line filter
+    // only activate if a result is either a post pipeline or a possible other filter
     if (getSelection().getObjectsOfType<Fem::FemPostPipeline>().size() == 1)
-        return true;
-    else if (getSelection().getObjectsOfType<Fem::FemPostScalarClipFilter>().size() == 1)
-        return true;
-    else if (getSelection().getObjectsOfType<Fem::FemPostCutFilter>().size() == 1)
         return true;
     else if (getSelection().getObjectsOfType<Fem::FemPostClipFilter>().size() == 1)
         return true;
+    else if (getSelection().getObjectsOfType<Fem::FemPostCutFilter>().size() == 1)
+        return true;
+    else if (getSelection().getObjectsOfType<Fem::FemPostContoursFilter>().size() == 1)
+        return true;
     else if (getSelection().getObjectsOfType<Fem::FemPostDataAlongLineFilter>().size() == 1)
+        return true;
+    else if (getSelection().getObjectsOfType<Fem::FemPostScalarClipFilter>().size() == 1)
+        return true;
+    else
+        return false;
+}
+
+
+//================================================================================================
+DEF_STD_CMD_A(CmdFemPostContoursFilter)
+
+CmdFemPostContoursFilter::CmdFemPostContoursFilter()
+    : Command("FEM_PostFilterContours")
+{
+    sAppModule = "Fem";
+    sGroup = QT_TR_NOOP("Fem");
+    sMenuText = QT_TR_NOOP("Contours filter");
+    sToolTipText =
+        QT_TR_NOOP("Define/create a contours filter which displays iso contours");
+    sWhatsThis = "FEM_PostFilterContours";
+    sStatusTip = sToolTipText;
+    sPixmap = "FEM_PostFilterContours";
+}
+
+void CmdFemPostContoursFilter::activated(int)
+{
+    setupFilter(this, "Contours");
+}
+
+bool CmdFemPostContoursFilter::isActive()
+{
+    // only allow one object
+    if (getSelection().getSelection().size() > 1)
+        return false;
+    // only activate if a result is either a post pipeline or a possible other filter
+    if (getSelection().getObjectsOfType<Fem::FemPostPipeline>().size() == 1)
+        return true;
+    else if (getSelection().getObjectsOfType<Fem::FemPostClipFilter>().size() == 1)
+        return true;
+    else if (getSelection().getObjectsOfType<Fem::FemPostCutFilter>().size() == 1)
+        return true;
+    else if (getSelection().getObjectsOfType<Fem::FemPostDataAlongLineFilter>().size() == 1)
+        return true;
+    else if (getSelection().getObjectsOfType<Fem::FemPostScalarClipFilter>().size() == 1)
+        return true;
+    else if (getSelection().getObjectsOfType<Fem::FemPostWarpVectorFilter>().size() == 1)
         return true;
     else
         return false;
@@ -2370,15 +2422,16 @@ void CreateFemCommands()
 
     // vtk post processing
 #ifdef FC_USE_VTK
+    rcCmdMgr.addCommand(new CmdFemPostApllyChanges);
     rcCmdMgr.addCommand(new CmdFemPostClipFilter);
+    rcCmdMgr.addCommand(new CmdFemPostContoursFilter);
     rcCmdMgr.addCommand(new CmdFemPostCutFilter);
     rcCmdMgr.addCommand(new CmdFemPostDataAlongLineFilter);
     rcCmdMgr.addCommand(new CmdFemPostDataAtPointFilter);
     rcCmdMgr.addCommand(new CmdFemPostLinearizedStressesFilter);
+    rcCmdMgr.addCommand(new CmdFemPostFunctions);
+    rcCmdMgr.addCommand(new CmdFemPostPipelineFromResult);
     rcCmdMgr.addCommand(new CmdFemPostScalarClipFilter);
     rcCmdMgr.addCommand(new CmdFemPostWarpVectorFilter);
-    rcCmdMgr.addCommand(new CmdFemPostFunctions);
-    rcCmdMgr.addCommand(new CmdFemPostApllyChanges);
-    rcCmdMgr.addCommand(new CmdFemPostPipelineFromResult);
 #endif
 }
