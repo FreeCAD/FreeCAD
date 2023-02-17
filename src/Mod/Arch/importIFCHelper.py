@@ -1061,6 +1061,7 @@ def createAnnotation(annotation,doc,ifcscale,preferences):
     """creates an annotation object"""
 
     anno = None
+    aid =  annotation.id()
     if annotation.is_a("IfcGrid"):
         axes = []
         uvwaxes = ()
