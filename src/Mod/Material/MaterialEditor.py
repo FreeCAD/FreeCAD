@@ -55,13 +55,11 @@ class MaterialEditor:
         self.cards = {}
         self.icons = {}
         self.card_path = card_path
+        filePath = os.path.dirname(__file__) + os.sep
+        self.iconPath = (filePath + "Resources" + os.sep + "Icons" + os.sep)
 
         # load the UI file from the same directory as this script
-        self.widget = FreeCADGui.PySideUic.loadUi(
-            os.path.dirname(__file__) + os.sep + "materials-editor.ui"
-        )
-
-        self.widget.setWindowIcon(QtGui.QIcon(":/icons/preview-rendered.svg"))
+        self.widget = FreeCADGui.PySideUic.loadUi(filePath + "materials-editor.ui")      
 
         # restore size and position
         p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Material")
@@ -81,11 +79,11 @@ class MaterialEditor:
         treeView = widget.treeView
 
         # create preview svg slots
-        self.widget.PreviewRender = QtSvg.QSvgWidget(":/icons/preview-rendered.svg")
+        self.widget.PreviewRender = QtSvg.QSvgWidget(self.iconPath + "preview-rendered.svg")
         self.widget.PreviewRender.setMaximumWidth(64)
         self.widget.PreviewRender.setMinimumHeight(64)
         self.widget.topLayout.addWidget(self.widget.PreviewRender)
-        self.widget.PreviewVector = QtSvg.QSvgWidget(":/icons/preview-vector.svg")
+        self.widget.PreviewVector = QtSvg.QSvgWidget(self.iconPath + "preview-vector.svg")
         self.widget.PreviewVector.setMaximumWidth(64)
         self.widget.PreviewVector.setMinimumHeight(64)
         self.widget.topLayout.addWidget(self.widget.PreviewVector)
@@ -118,14 +116,14 @@ class MaterialEditor:
         self.implementModel()
 
         # update the editor with the contents of the property, if we have one
-        d = None
+        matProperty = None
         if self.prop and self.obj:
-            d = FreeCAD.ActiveDocument.getObject(self.obj).getPropertyByName(self.prop)
+            matProperty = FreeCAD.ActiveDocument.getObject(self.obj).getPropertyByName(self.prop)
         elif self.material:
-            d = self.material
+            matProperty = self.material
 
-        if d:
-            self.updateMatParamsInTree(d)
+        if matProperty:
+            self.updateMatParamsInTree(matProperty)
             self.widget.ComboMaterial.setCurrentIndex(0)
             # set after tree params to the none material
 
@@ -218,7 +216,6 @@ class MaterialEditor:
             self.customprops.append(k)
 
     def chooseMaterial(self, index):
-
         if index < 0:
             return
         self.card_path = self.widget.ComboMaterial.itemData(index)
@@ -473,7 +470,7 @@ class MaterialEditor:
         if "SectionColor" in mat:
             sectioncol = mat["SectionColor"]
         if diffcol or highlightcol:
-            fd = QtCore.QFile(":/icons/preview-rendered.svg")
+            fd = QtCore.QFile(self.iconPath + "preview-rendered.svg")
             if fd.open(QtCore.QIODevice.ReadOnly | QtCore.QIODevice.Text):
                 svg = QtCore.QTextStream(fd).readAll()
                 fd.close()
@@ -484,7 +481,7 @@ class MaterialEditor:
                     svg = svg.replace("#fffffe", self.getColorHash(highlightcol, val=255))
                 self.widget.PreviewRender.load(QtCore.QByteArray(bytes(svg, encoding="utf8")))
         if diffcol or sectioncol:
-            fd = QtCore.QFile(":/icons/preview-vector.svg")
+            fd = QtCore.QFile(self.iconPath + "preview-vector.svg")
             if fd.open(QtCore.QIODevice.ReadOnly | QtCore.QIODevice.Text):
                 svg = QtCore.QTextStream(fd).readAll()
                 fd.close()
