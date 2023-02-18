@@ -304,17 +304,25 @@ void NotificationBox::showText(const QPoint &pos, const QString &text, int displ
     }
 
     // no label can be reused, create new label:
-    if (!text.isEmpty()){
-        #ifdef Q_OS_WIN32
+    if (!text.isEmpty()) {
+#ifdef Q_OS_WIN32
         // On windows, we can't use the widget as parent otherwise the window will be
         // raised when the toollabel will be shown
         QT_WARNING_PUSH
         QT_WARNING_DISABLE_DEPRECATED
-        new NotificationLabel(text, pos, QGuiApplication::screenAt(pos), displayTime, minShowTime); // NotificationLabel manages its own lifetime.
+        new NotificationLabel(text,
+                              pos,
+                              nullptr,
+                              displayTime,
+                              minShowTime);// NotificationLabel manages its own lifetime.
         QT_WARNING_POP
-        #else
-        new NotificationLabel(text, pos, nullptr, displayTime, minShowTime); // sets NotificationLabel::instance to itself
-        #endif
+#else
+        new NotificationLabel(text,
+                              pos,
+                              nullptr,
+                              displayTime,
+                              minShowTime);// sets NotificationLabel::instance to itself
+#endif
         NotificationLabel::instance->placeNotificationLabel(pos);
         NotificationLabel::instance->setObjectName(QLatin1String("NotificationBox_label"));
 
