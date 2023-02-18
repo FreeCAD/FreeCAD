@@ -29,6 +29,7 @@
 # include <QLabel>
 # include <QMenu>
 # include <QMessageBox>
+# include <QSignalBlocker>
 # include <QWidgetAction>
 #endif
 
@@ -977,14 +978,13 @@ public:
 
         if(sketchView) {
 
-            auto updateCheckBox = [this](QCheckBox * checkbox, App::PropertyBool & property) {
+            auto updateCheckBox = [](QCheckBox * checkbox, App::PropertyBool & property) {
                 auto checked = checkbox->checkState() == Qt::Checked;
                 auto propvalue = property.getValue();
 
                 if( propvalue != checked ) {
-                    checkbox->blockSignals(true);
+                    const QSignalBlocker blocker(checkbox);
                     checkbox->setChecked(propvalue);
-                    checkbox->blockSignals(false);
                 }
             };
 
@@ -999,18 +999,32 @@ public:
         }
     }
 
+    void languageChange()
+    {
+        gridSnap->setText(QApplication::translate("GridSpaceAction", "Grid Snap"));
+        gridSnap->setToolTip(QApplication::translate("GridSpaceAction", "New points will snap to the nearest grid line.\nPoints must be set closer than a fifth of the grid spacing to a grid line to snap."));
+        gridSnap->setStatusTip(gridSnap->toolTip());
+
+        gridAutoSpacing->setText(QApplication::translate("GridSpaceAction", "Grid Auto Spacing"));
+        gridAutoSpacing->setToolTip(QApplication::translate("GridSpaceAction", "Resize grid automatically depending on zoom."));
+        gridAutoSpacing->setStatusTip(gridAutoSpacing->toolTip());
+
+        sizeLabel->setText(QApplication::translate("GridSpaceAction", "Spacing"));
+        gridSizeBox->setToolTip(QApplication::translate("GridSpaceAction", "Distance between two subsequent grid lines"));
+    }
+
 protected:
     QWidget* createWidget(QWidget* parent) override
     {
         gridSnap = new QCheckBox(QApplication::translate("GridSpaceAction", "Grid Snap"));
-        gridSnap->setToolTip(QApplication::translate("CmdSketcherCompGrid", "New points will snap to the nearest grid line.\nPoints must be set closer than a fifth of the grid spacing to a grid line to snap."));
+        gridSnap->setToolTip(QApplication::translate("GridSpaceAction", "New points will snap to the nearest grid line.\nPoints must be set closer than a fifth of the grid spacing to a grid line to snap."));
         gridSnap->setStatusTip(gridSnap->toolTip());
 
         gridAutoSpacing = new QCheckBox(QApplication::translate("GridSpaceAction", "Grid Auto Spacing"));
-        gridAutoSpacing->setToolTip(QApplication::translate("CmdSketcherCompGrid", "Resize grid automatically depending on zoom."));
+        gridAutoSpacing->setToolTip(QApplication::translate("GridSpaceAction", "Resize grid automatically depending on zoom."));
         gridAutoSpacing->setStatusTip(gridAutoSpacing->toolTip());
 
-        auto* sizeLabel = new QLabel(QApplication::translate("GridSpaceAction", "Spacing"));
+        sizeLabel = new QLabel(QApplication::translate("GridSpaceAction", "Spacing"));
         gridSizeBox = new Gui::QuantitySpinBox();
         gridSizeBox->setProperty("unit", QVariant(QStringLiteral("mm")));
         gridSizeBox->setObjectName(QStringLiteral("gridSize"));
@@ -1067,6 +1081,7 @@ private:
 private:
     QCheckBox * gridSnap;
     QCheckBox * gridAutoSpacing;
+    QLabel * sizeLabel;
     Gui::QuantitySpinBox * gridSizeBox;
 };
 
@@ -1077,6 +1092,7 @@ public:
     virtual ~CmdSketcherGrid(){}
     virtual const char* className() const
     { return "CmdSketcherGrid"; }
+    virtual void languageChange();
 protected:
     virtual void activated(int iMsg);
     virtual bool isActive(void);
@@ -1121,7 +1137,6 @@ void CmdSketcherGrid::updateInactiveHandlerIcon()
 
         updateIcon(value);
     }
-
 }
 
 void CmdSketcherGrid::activated(int iMsg)
@@ -1156,12 +1171,24 @@ Gui::Action* CmdSketcherGrid::createAction()
         gsa->updateWidget();
     });
 
-    languageChange();
-
     // set the right pixmap
     updateInactiveHandlerIcon();
 
     return pcAction;
+}
+
+void CmdSketcherGrid::languageChange()
+{
+    Command::languageChange();
+
+    if (!_pcAction)
+        return;
+
+    Gui::ActionGroup* pcAction = qobject_cast<Gui::ActionGroup*>(_pcAction);
+    QList<QAction*> a = pcAction->actions();
+
+    auto* gsa = static_cast<GridSpaceAction *>(a[0]);
+    gsa->languageChange();
 }
 
 bool CmdSketcherGrid::isActive()
