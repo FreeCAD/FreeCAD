@@ -65,7 +65,6 @@ public:
 private:
     static void init();
 
-private:
     struct LicenseItem{
         std::string license;
         std::string url;
