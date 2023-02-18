@@ -17,6 +17,10 @@ SET (MaterialTools_Files
     materialtools/__init__.py
     materialtools/cardutils.py
 )
+SET (Material_Icon_Files
+    Resources/icons/preview-rendered.svg
+    Resources/icons/preview-vector.svg
+)
 
 # collect all the material cards:
 #FILE( GLOB MaterialLib_Files ./StandardMaterial/*.FCMat ./StandardMaterial/*.txt  )
@@ -169,13 +173,22 @@ ADD_CUSTOM_TARGET(MaterialToolsLib ALL
     SOURCES ${MaterialTools_Files}
 )
 
+ADD_CUSTOM_TARGET(MaterialIconsLib ALL
+    SOURCES ${Material_Icon_Files}
+)
+
 fc_target_copy_resource(MaterialToolsLib
     ${CMAKE_CURRENT_SOURCE_DIR}
     ${CMAKE_BINARY_DIR}/Mod/Material
     ${MaterialTools_Files})
+    
+fc_target_copy_resource(MaterialIconsLib
+    ${CMAKE_CURRENT_SOURCE_DIR}
+    ${CMAKE_BINARY_DIR}/Mod/Material
+    ${Material_Icon_Files})
 
 INSTALL(FILES ${MaterialTools_Files} DESTINATION Mod/Material/materialtools)
-
+INSTALL(FILES ${Material_Icon_Files} DESTINATION Mod/Material/Resources/icons)
 
 IF (BUILD_GUI)
     fc_target_copy_resource(Material
