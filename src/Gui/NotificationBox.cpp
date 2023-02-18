@@ -20,28 +20,22 @@
  *                                                                         *
  ***************************************************************************/
 
+#include "PreCompiled.h"
 #ifndef _PreComp_
 # include <memory>
 # include <mutex>
 # include <QApplication>
-# include <QAction>
-# include <QActionEvent>
-# include <QDesktopWidget>
 # include <QEvent>
-# include <QHBoxLayout>
-# include <QHeaderView>
 # include <QLabel>
-# include <QMenu>
-# include <QPointer>
 # include <QScreen>
 # include <QStyleOption>
 # include <QStylePainter>
-# include <QStringList>
 # include <QTextDocument>
 # include <QTimer>
 #endif
 
 #include "NotificationBox.h"
+
 
 using namespace Gui;
 
@@ -369,4 +363,3 @@ void NotificationBox::setFont(const QFont &font)
 } // namespace Gui
 
 #include "NotificationBox.moc"
-
