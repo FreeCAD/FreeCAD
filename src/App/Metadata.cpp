@@ -23,14 +23,11 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-#include <boost/core/ignore_unused.hpp>
-#include <memory>
-#include <sstream>
+# include <boost/core/ignore_unused.hpp>
+# include <memory>
+# include <sstream>
 #endif
 
-#include "Metadata.h"
-
-#include <utility>
 #include <xercesc/framework/LocalFileFormatTarget.hpp>
 #include <xercesc/framework/LocalFileInputSource.hpp>
 #include <xercesc/framework/MemBufInputSource.hpp>
@@ -39,6 +36,9 @@
 #include "App/Application.h"
 #include "App/Expression.h"
 #include "Base/XMLTools.h"
+
+#include "Metadata.h"
+
 
 /*
 *** From GCC: ***
