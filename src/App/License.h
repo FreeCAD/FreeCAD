@@ -34,7 +34,7 @@ namespace App {
  * \brief The License class
  * Handling of standard licenses.
  */
-class AppExport License
+class License
 {
 public:
     enum class Type {
@@ -53,19 +53,20 @@ public:
         Other
     };
 
-    explicit License(Type);
-    explicit License(long);
-    explicit License(int);
-    Type getType() const;
-    std::string getLicense() const;
-    std::string getUrl() const;
+    AppExport explicit License(Type);
+    AppExport explicit License(long);
+    AppExport explicit License(int);
+    AppExport Type getType() const;
+    AppExport std::string getLicense() const;
+    AppExport std::string getUrl() const;
 
-    static std::vector<std::string> getLicenses();
+    AppExport static std::vector<std::string> getLicenses();
 
 private:
     static void init();
 
-    struct LicenseItem{
+    struct LicenseItem
+    {
         std::string license;
         std::string url;
     };
