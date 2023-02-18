@@ -22,6 +22,7 @@
 # *                                                                         *
 # ***************************************************************************
 
+import sys
 import FreeCAD
 from FreeCAD import Rotation
 from FreeCAD import Vector
@@ -33,7 +34,6 @@ from . import manager
 from .manager import get_meshname
 from .manager import init_doc
 
-
 def get_information():
     return {
         "name": "Electrostatics Capacitance Two Balls",
@@ -44,7 +44,6 @@ def get_information():
         "material": "fluid",
         "equation": "electrostatic"
     }
-
 
 def get_explanation(header=""):
     return header + """
@@ -60,7 +59,6 @@ https://forum.freecadweb.org/viewtopic.php?f=18&t=41488&start=90#p412047
 Electrostatics equation in FreeCAD FEM-Elmer
 
 """
-
 
 def setup(doc=None, solvertype="elmer"):
 
@@ -99,6 +97,9 @@ def setup(doc=None, solvertype="elmer"):
 
     # analysis
     analysis = ObjectsFem.makeAnalysis(doc, "Analysis")
+    if FreeCAD.GuiUp:
+        import FemGui
+        FemGui.setActiveAnalysis(analysis)
 
     # solver
     if solvertype == "elmer":
@@ -115,17 +116,18 @@ def setup(doc=None, solvertype="elmer"):
     analysis.addObject(solver_obj)
 
     # material
-    material_obj = ObjectsFem.makeMaterialFluid(doc, "FemMaterial")
+    material_obj = ObjectsFem.makeMaterialFluid(doc, "Air")
     mat = material_obj.Material
-    mat["Name"] = "Air-Generic"
-    mat["Density"] = "1.20 kg/m^3"
+    mat["Name"] = "Air"
+    mat["Density"] = "1.204 kg/m^3"
     mat["KinematicViscosity"] = "15.11 mm^2/s"
     mat["VolumetricThermalExpansionCoefficient"] = "0.00 mm/m/K"
-    mat["ThermalConductivity"] = "0.03 W/m/K"
-    mat["ThermalExpansionCoefficient"] = "0.0034/K"
-    mat["SpecificHeat"] = "1.00 J/kg/K"
-    mat["RelativePermittivity"] = "1.00"
+    mat["ThermalConductivity"] = "0.02587 W/m/K"
+    mat["ThermalExpansionCoefficient"] = "0.00343/K"
+    mat["SpecificHeat"] = "1010.00 J/kg/K"
+    mat["RelativePermittivity"] = "1.00059"
     material_obj.Material = mat
+    material_obj.References = [(geom_obj, "Solid1")]
     analysis.addObject(material_obj)
 
     # constraint potential 1st
@@ -152,23 +154,40 @@ def setup(doc=None, solvertype="elmer"):
     analysis.addObject(con_elect_pot3)
 
     # mesh
-    from .meshes.mesh_capacitance_two_balls_tetra10 import create_nodes, create_elements
-    fem_mesh = Fem.FemMesh()
-    control = create_nodes(fem_mesh)
-    if not control:
-        FreeCAD.Console.PrintError("Error on creating nodes.\n")
-    control = create_elements(fem_mesh)
-    if not control:
-        FreeCAD.Console.PrintError("Error on creating elements.\n")
     femmesh_obj = analysis.addObject(ObjectsFem.makeMeshGmsh(doc, get_meshname()))[0]
-    femmesh_obj.FemMesh = fem_mesh
     femmesh_obj.Part = geom_obj
     femmesh_obj.SecondOrderLinear = False
+    femmesh_obj.CharacteristicLengthMax = "600 mm"
+    femmesh_obj.ViewObject.Visibility = False
 
     # mesh_region
     mesh_region = ObjectsFem.makeMeshRegion(doc, femmesh_obj, name="MeshRegion")
-    mesh_region.CharacteristicLength = "300 mm"
+    mesh_region.CharacteristicLength = "250 mm"
     mesh_region.References = [(geom_obj, "Face2"), (geom_obj, "Face3")]
+    mesh_region.ViewObject.Visibility = False
+
+    # generate the mesh
+    from femmesh import gmshtools
+    gmsh_mesh = gmshtools.GmshTools(femmesh_obj, analysis)
+    try:
+        error = gmsh_mesh.create_mesh()
+    except Exception:
+        error = sys.exc_info()[1]
+        FreeCAD.Console.PrintError(
+            "Unexpected error when creating mesh: {}\n"
+            .format(error)
+        )
+    if error:
+        # try to create from existing rough mesh
+        from .meshes.mesh_capacitance_two_balls_tetra10 import create_nodes, create_elements
+        fem_mesh = Fem.FemMesh()
+        control = create_nodes(fem_mesh)
+        if not control:
+            FreeCAD.Console.PrintError("Error on creating nodes.\n")
+        control = create_elements(fem_mesh)
+        if not control:
+            FreeCAD.Console.PrintError("Error on creating elements.\n")
+        femmesh_obj.FemMesh = fem_mesh
 
     doc.recompute()
     return doc
