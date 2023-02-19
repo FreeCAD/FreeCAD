@@ -650,7 +650,9 @@ void ViewProviderFemPostObject::filterArtifacts(vtkDataObject* data)
     // since we will set the filter according to the visible bounding box
     // assure the object is visible
     bool visibility = this->Visibility.getValue();
-    this->Visibility.setValue(false);
+    if (!visibility)
+        this->Visibility.setValue(true);
+    m_blockPropertyChanges = true;
 
     Gui::Document* doc = this->getDocument();
     Gui::View3DInventor* view =
@@ -669,26 +671,31 @@ void ViewProviderFemPostObject::filterArtifacts(vtkDataObject* data)
             auto extractor = vtkSmartPointer<vtkTableBasedClipDataSet>::New();
             float dx, dy, dz;
             boundingBox.getSize(dx, dy, dz);
-            // set plane slightly below the minimum to assure there are
-            // no boundary cells (touching the function
-            m_plane->SetOrigin(0., 0., -1 * dz - 1);
+            // Set plane below the minimum to assure there are
+            // no boundary cells (touching the function) and for Warp filters
+            // the user might change the warp factor a lot. Thus set
+            // 10 times dz to be safe even for unrealistic warp deformations
+            m_plane->SetOrigin(0., 0., -10 * dz);
             extractor->SetClipFunction(m_implicit);
             extractor->SetInputData(data);
             extractor->Update();
             m_surface->SetInputData(extractor->GetOutputDataObject(0));
         }
-        else {
-            // for e.g. DataAtPoint filter
-            m_surface->SetInputData(data);
-        }
     }
     // restore initial vsibility
-    this->Visibility.setValue(visibility);
+    if (!visibility)
+        this->Visibility.setValue(visibility);
+    m_blockPropertyChanges = false;
 }
 
 bool ViewProviderFemPostObject::setupPipeline()
 {
-    vtkDataObject* data = static_cast<Fem::FemPostObject*>(getObject())->Data.getValue();
+    if (m_blockPropertyChanges)
+        return false;
+
+    auto postObject = static_cast<Fem::FemPostObject*>(getObject());
+
+    vtkDataObject* data = postObject->Data.getValue();
     if (!data)
         return false;
 
@@ -705,18 +712,27 @@ bool ViewProviderFemPostObject::setupPipeline()
         addAbsoluteField(dset, FieldName);
     }
 
-    m_outline->SetInputData(data);
-    m_wireframe->SetInputData(data);
-    m_points->SetInputData(data);
+    m_outline->SetInputData(dset);  
+    m_points->SetInputData(dset);
+    m_wireframe->SetInputData(dset);
 
-    // filtering artifacts is only necessary for the surface filter
+    // Filtering artifacts is necessary for partial VTU files (*.pvtu) independent of the
+    // current Elmer CPU core settings because the user might load an external file.
+    // It is only necessary for the surface filter.
+    // The problem is that when opening an existing FreeCAD file, we get no information how the
+    // Data of the postObject was once created. The vtkDataObject type does not provide this info.
+    // Therefore the only way is the hack to filter only if the used Elmer CPU cores are > 1.
     auto hGrp = App::GetApplication().GetParameterGroupByPath(
         "User parameter:BaseApp/Preferences/Mod/Fem/Elmer");
     bool FilterMultiCPUResults = hGrp->GetBool("FilterMultiCPUResults", 1);
-    if (FilterMultiCPUResults)
+    int UseNumberOfCores = hGrp->GetInt("UseNumberOfCores", 1);
+    // filtering is only necessary for pipelines and warp filters
+    if (FilterMultiCPUResults && (UseNumberOfCores > 1)
+        && ((postObject->getTypeId() == Base::Type::fromName("Fem::FemPostPipeline"))
+            || (postObject->getTypeId() == Base::Type::fromName("Fem::FemPostWarpVectorFilter"))))
         filterArtifacts(data);
     else
-        m_surface->SetInputData(data);
+        m_surface->SetInputData(dset);
 
     return true;
 }
