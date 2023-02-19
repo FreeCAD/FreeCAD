@@ -850,11 +850,11 @@ ScaleType Matrix4D::hasScale(double tol) const
     // Adjust the tolerance to according to scale
     // beacause compared values is proportional
     // to scale^3
-    //tol *= fabs(d3);
+    tol *= fabs(d3);
     
-    // check if values are close to equal
+    // check if the absolute values are close or equal
     auto close = [&](double a, double b) {
-        return fabs(a - b) <= tol;
+        return fabs(fabs(a) - fabs(b)) <= tol;
     };
 
     // This could be e.g. a projection, a shearing,... matrix
