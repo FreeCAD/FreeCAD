@@ -51,7 +51,7 @@ def get_information():
         "constraints": ["fixed", "initial temperature", "temperature"],
         "solvers": ["calculix", "ccxtools", "elmer"],
         "material": "multimaterial",
-        "equation": "thermomechanical"
+        "equations": ["thermomechanical"]
     }
 
 
