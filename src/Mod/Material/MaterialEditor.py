@@ -57,6 +57,7 @@ class MaterialEditor:
         self.materials = {}
         self.cards = {}
         self.icons = {}
+        self.initialIndex = -1
         self.card_path = card_path
 
         # load the UI file from the same directory as this script
@@ -134,8 +135,8 @@ class MaterialEditor:
 
         if self.card_path:
             # we need the index of this path
-            index = self.widget.ComboMaterial.findData(self.card_path)
-            self.chooseMaterial(index)
+            self.initialIndex = self.widget.ComboMaterial.findData(self.card_path)
+            self.chooseMaterial(self.initialIndex)
 
         # TODO: What if material and card_name was given?
         # In such case ATM material is chosen, give some feedback for all those corner cases.
@@ -506,13 +507,48 @@ class MaterialEditor:
 
     def openfile(self):
         "Opens a FCMat file"
+        if self.category == "Solid":
+            directory = self.directory + os.sep + "StandardMaterial"
+        else:
+            directory = self.directory + os.sep + "FluidMaterial"
         filetuple = QtGui.QFileDialog.getOpenFileName(
             QtGui.QApplication.activeWindow(),
             "Open FreeCAD Material file",
-            self.directory,
+            directory,
             "*.FCMat"
         )
         self.card_path = filetuple[0]
+        # we cannot simply execute findData(self.card_path) because e.g. on Windows
+        # the return path has "/" as folder separator, but the paths in the ComboMaterial
+        # have also some "\" in them. For example a path can look like this:
+        # D:/FreeCAD-build/data/Mod\Material\FluidMaterial\Air.FCMat
+        # To keep it simple, we take a path from the ComboMaterial and change only the
+        # material card filename
+        if self.initialIndex > -1:
+            path = self.widget.ComboMaterial.itemData(self.initialIndex)
+            # at first check if we have a uniform usage
+            # if a character is not present, rsplit delivers the initial string
+            testBackslash = path.rsplit('\\', 1)[0]
+            testSlash = path.rsplit('/', 1)[0]
+            if testBackslash == path:
+                path = testBackslash.rsplit('/', 1)[0] + '/'
+            elif testSlash == path:
+                path = testSlash.rsplit('\\', 1)[0] + '\\'
+            # since we don't know if we have to deal with slash or backslash, take the
+            # longest result as path
+            else:
+                pathBackslash = path.rsplit('\\', 1)[0]
+                pathSlash = path.rsplit('/', 1)[0]
+                if len(pathBackslash) > len(pathSlash):
+                    path = pathBackslash + '\\'
+                else:
+                    path = pathSlash + '/'
+            # we know that the return path has uniformly either / or \ but not yet what
+            testBackslash = self.card_path.rsplit('\\', 1)[0]
+            if testBackslash == self.card_path:
+                self.card_path = path + self.card_path.rsplit('/', 1)[1]
+            else:
+                self.card_path = path + self.card_path.rsplit('\\', 1)[1]
         index = self.widget.ComboMaterial.findData(self.card_path)
 
         # check if card_path is in known path, means it is in combo box already
@@ -520,14 +556,14 @@ class MaterialEditor:
         if os.path.isfile(self.card_path):
             if index == -1:
                 FreeCAD.Console.PrintMessage(
-                    "Card path: {} not found in known cards."
+                    "Card path: {} not found in known cards.\n"
                     "The material parameter only are loaded.\n"
                     .format(self.card_path)
                 )
                 from importFCMat import read
-                d = read(self.card_path)
-                if d:
-                    self.updateMatParamsInTree(d)
+                materialDict = read(self.card_path)
+                if materialDict:
+                    self.updateMatParamsInTree(materialDict)
                     self.widget.ComboMaterial.setCurrentIndex(0)
                     # set combo box to the none material after tree params
             else:
