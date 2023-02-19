@@ -25,6 +25,13 @@ if(MSVC)
     endif()
 endif()
 
+if(NOT BUILD_DYNAMIC_LINK_PYTHON)
+    list(APPEND Google_Tests_LIBS
+        ${PYTHON_LIBRARIES}
+    )
+endif()
+
+
 add_executable(Tests_run)
 add_subdirectory(lib)
 add_subdirectory(src)
