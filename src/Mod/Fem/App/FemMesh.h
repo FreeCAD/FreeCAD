@@ -28,6 +28,7 @@
 #include <vector>
 
 #include <SMESH_Version.h>
+#include <SMDSAbs_ElementType.hxx>
 
 #include <App/ComplexGeoData.h>
 #include <Base/Quantity.h>
@@ -100,6 +101,8 @@ public:
     std::set<int> getNodesByVertex(const TopoDS_Vertex &vertex) const;
     /// retrieving node IDs by element ID
     std::list<int> getElementNodes(int id) const;
+    /// retrieving elements IDs by node ID
+    std::list<int> getNodeElements(int id, SMDSAbs_ElementType type=SMDSAbs_All) const;
     /// retrieving face IDs number by face
     std::list<int> getFacesByFace(const TopoDS_Face &face) const;
     /// retrieving edge IDs number by edge
