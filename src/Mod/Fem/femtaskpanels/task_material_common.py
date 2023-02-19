@@ -176,7 +176,6 @@ class _TaskPanel:
                 self.card_path
             )
             index = self.parameterWidget.cb_materials.findData(self.card_path)
-            # print(index)
             # fill input fields and set the current material in the cb widget
             self.choose_material(index)
         else:
@@ -186,7 +185,6 @@ class _TaskPanel:
                 "We will use this material.\n"
             )
             index = self.parameterWidget.cb_materials.findData(self.card_path)
-            # print(index)
             # fill input fields and set the current material in the cb widget
             self.choose_material(index)
 
@@ -322,7 +320,8 @@ class _TaskPanel:
             )
             new_material_params = MaterialEditor.editMaterial(material=self.material)
         else:
-            new_material_params = MaterialEditor.editMaterial(card_path=self.card_path)
+            new_material_params = MaterialEditor.editMaterial(card_path=self.card_path,
+                                                              category=self.obj.Category)
         # material editor returns the mat_dict only, not a card_path
         # if the material editor was canceled a empty dict will be returned
         # do not change the self.material
@@ -333,7 +332,6 @@ class _TaskPanel:
             if checkunits(new_material_params) is True:
                 self.material = new_material_params
                 self.card_path = self.get_material_card(self.material)
-                # print("card_path: " + self.card_path)
                 self.check_material_keys()
                 self.set_mat_params_in_input_fields(self.material)
                 if not self.card_path:
@@ -355,7 +353,6 @@ class _TaskPanel:
                         "The found material card will be used.\n"
                     )
                     index = self.parameterWidget.cb_materials.findData(self.card_path)
-                    # print(index)
                     # set the current material in the cb widget
                     self.choose_material(index)
             else:
