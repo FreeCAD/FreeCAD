@@ -143,6 +143,11 @@
                 <UserDocu>Return a tuple of node IDs to a given element ID</UserDocu>
             </Documentation>
         </Methode>
+        <Methode Name="getNodeElements" Const="true">
+            <Documentation>
+                <UserDocu>Return a tuple of specific element IDs associated to a given node ID</UserDocu>
+            </Documentation>
+        </Methode>
         <Methode Name="getGroupName" Const="true">
             <Documentation>
                 <UserDocu>Return a string of group name to a given group ID</UserDocu>
