@@ -39,13 +39,14 @@ unicode = str
 # ************************************************************************************************
 class MaterialEditor:
 
-    def __init__(self, obj=None, prop=None, material=None, card_path=""):
+    def __init__(self, obj=None, prop=None, material=None, card_path="", category="Solid"):
 
         """Initializes, optionally with an object name and a material property
         name to edit, or directly with a material dictionary."""
 
         self.obj = obj
         self.prop = prop
+        self.category = category
         self.material = material
         self.customprops = []
         self.internalprops = []
@@ -62,10 +63,10 @@ class MaterialEditor:
         self.widget = FreeCADGui.PySideUic.loadUi(filePath + "materials-editor.ui")      
 
         # restore size and position
-        p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Material")
-        w = p.GetInt("MaterialEditorWidth", 441)
-        h = p.GetInt("MaterialEditorHeight", 626)
-        self.widget.resize(w, h)
+        param = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Material")
+        width = param.GetInt("MaterialEditorWidth", 441)
+        height = param.GetInt("MaterialEditorHeight", 626)
+        self.widget.resize(width, height)
 
         # additional UI fixes and tweaks
         widget = self.widget
@@ -242,7 +243,7 @@ class MaterialEditor:
 
         # get all available materials (fill self.materials, self.cards and self.icons)
         from materialtools.cardutils import import_materials as getmats
-        self.materials, self.cards, self.icons = getmats()
+        self.materials, self.cards, self.icons = getmats(category=self.category)
 
         card_name_list = []  # [ [card_name, card_path, icon_path], ... ]
 
@@ -508,7 +509,6 @@ class MaterialEditor:
         )
         self.card_path = filetuple[0]
         index = self.widget.ComboMaterial.findData(self.card_path)
-        print(index)
 
         # check if card_path is in known path, means it is in combo box already
         # if not print message, and give some feedbach that the card parameter are loaded
@@ -765,7 +765,7 @@ def openEditor(obj=None, prop=None):
     editor.exec_()
 
 
-def editMaterial(material=None, card_path=None):
+def editMaterial(material=None, card_path=None, category="Solid"):
     """editMaterial(material): opens the editor to edit the contents
     of the given material dictionary. Returns the modified material dictionary."""
     # if the material editor is opened with this def and the card_path is None
@@ -775,7 +775,7 @@ def editMaterial(material=None, card_path=None):
     # TODO: add some text in combo box, may be "custom material data" or "user material data"
     # TODO: if card_path is None, all known cards could be checked,
     # if one fits exact ALL provided data, this card name could be displayed
-    editor = MaterialEditor(material=material, card_path=card_path)
+    editor = MaterialEditor(material=material, card_path=card_path, category=category)
     result = editor.exec_()
     if result:
         return editor.getDict()
