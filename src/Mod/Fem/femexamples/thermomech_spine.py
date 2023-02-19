@@ -40,7 +40,7 @@ def get_information():
         "constraints": ["fixed", "initial temperature", "temperature", "heatflux"],
         "solvers": ["calculix", "ccxtools"],
         "material": "solid",
-        "equation": "thermomechanical"
+        "equations": ["thermomechanical"]
     }
 
 

@@ -39,7 +39,7 @@ def get_information():
         "constraints": [],
         "solvers": ["calculix", "ccxtools", "elmer"],
         "material": "solid",
-        "equation": "elasticity"  # "frequency", but list not allowed here
+        "equations": ["elasticity"] # "frequency", but list not allowed here
     }
 
 

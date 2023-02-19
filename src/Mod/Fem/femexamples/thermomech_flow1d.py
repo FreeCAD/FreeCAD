@@ -43,7 +43,7 @@ def get_information():
         "constraints": ["self weight"],
         "solvers": ["calculix", "ccxtools"],
         "material": "fluid",
-        "equation": "thermomechanical"
+        "equations": ["thermomechanical"]
     }
 
 

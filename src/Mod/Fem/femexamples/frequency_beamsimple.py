@@ -39,7 +39,7 @@ def get_information():
         "constraints": ["fixed"],
         "solvers": ["calculix", "ccxtools"],
         "material": "solid",
-        "equation": "frequency"
+        "equations": ["frequency"]
     }
 
 

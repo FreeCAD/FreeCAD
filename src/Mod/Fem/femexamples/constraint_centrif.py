@@ -44,7 +44,7 @@ def get_information():
         "constraints": ["centrif", "fixed"],
         "solvers": ["calculix", "ccxtools"],
         "material": "multimaterial",
-        "equation": "mechanical"
+        "equations": ["mechanical"]
     }
 
 
