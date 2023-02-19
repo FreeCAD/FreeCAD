@@ -450,7 +450,7 @@ void gPntToTuple(double* result, gp_Pnt& p)
 }
 
 point3D gPntTopoint3D(gp_Pnt& p)
-{ 
+{
    point3D result;
    result.x = p.X();
    result.y = p.Y();

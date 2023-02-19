@@ -133,7 +133,7 @@ def process_emn(doc,filename):
    place_steps(doc,placement,board_thickness)
 
 def Process_board_outline(doc,board_outline,drills,board_thickness):
-    """Process_board_outline(doc,board_outline,drills,board_thickness)-> number proccesed loops
+    """Process_board_outline(doc,board_outline,drills,board_thickness)-> number processed loops
 
         adds emn geometry from emn file"""
     vertex_index=-1; #presume no vertex
