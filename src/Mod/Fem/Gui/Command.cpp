@@ -1248,7 +1248,7 @@ CmdFemCompEmConstraints::CmdFemCompEmConstraints()
 {
     sAppModule = "Fem";
     sGroup = QT_TR_NOOP("Fem");
-    sMenuText = QT_TR_NOOP("Electromagnetic constraints...");
+    sMenuText = QT_TR_NOOP("Electromagnetic constraints");
     sToolTipText = QT_TR_NOOP("Electromagnetic constraints");
     sWhatsThis = "";
     sStatusTip = sToolTipText;
@@ -1371,7 +1371,7 @@ CmdFEMCompEmEquations::CmdFEMCompEmEquations()
 {
     sAppModule = "Fem";
     sGroup = QT_TR_NOOP("Fem");
-    sMenuText = QT_TR_NOOP("Electromagnetic Equations");
+    sMenuText = QT_TR_NOOP("Electromagnetic equations");
     sToolTipText = QT_TR_NOOP(
         "Electromagnetic equations for the Elmer solver");
     sWhatsThis = "FEM_CompEmEquations";
