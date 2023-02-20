@@ -21,6 +21,8 @@
 # *                                                                         *
 # ***************************************************************************
 
+import addonmanager_freecad_interface as fci
+
 # Unit test for the Addon Manager module GUI
 from AddonManagerTest.gui.test_gui import TestGui as AddonManagerTestGui
 
@@ -49,10 +51,6 @@ class TestListTerminator:
 
 
 # Basic usage mostly to get static analyzers to stop complaining about unused imports
-try:
-    import FreeCAD
-except ImportError:
-    FreeCAD = None
 loaded_gui_tests = [
     AddonManagerTestGui,
     AddonManagerTestWorkersUtility,
@@ -63,6 +61,5 @@ loaded_gui_tests = [
     AddonManagerTestUninstallerGUI,
     TestListTerminator  # Needed to prevent the last test from running twice
 ]
-if FreeCAD:
-    for test in loaded_gui_tests:
-        FreeCAD.Console.PrintLog(f"Loaded tests from {test.__name__}\n")
+for test in loaded_gui_tests:
+    fci.Console.PrintLog(f"Loaded tests from {test.__name__}\n")
