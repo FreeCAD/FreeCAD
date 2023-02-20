@@ -43,11 +43,26 @@ from AddonManagerTest.gui.test_uninstaller_gui import (
     TestUninstallerGUI as AddonManagerTestUninstallerGUI,
 )
 
-# dummy usage to get flake8 and lgtm quiet
-False if AddonManagerTestGui.__name__ else True
-False if AddonManagerTestWorkersUtility.__name__ else True
-False if AddonManagerTestWorkersStartup.__name__ else True
-False if AddonManagerTestInstallerGui.__name__ else True
-False if AddonManagerTestMacroInstallerGui.__name__ else True
-False if AddonManagerTestUpdateAllGui.__name__ else True
-False if AddonManagerTestUninstallerGUI.__name__ else True
+
+class TestListTerminator:
+    pass
+
+
+# Basic usage mostly to get static analyzers to stop complaining about unused imports
+try:
+    import FreeCAD
+except ImportError:
+    FreeCAD = None
+loaded_gui_tests = [
+    AddonManagerTestGui,
+    AddonManagerTestWorkersUtility,
+    AddonManagerTestWorkersStartup,
+    AddonManagerTestInstallerGui,
+    AddonManagerTestMacroInstallerGui,
+    AddonManagerTestUpdateAllGui,
+    AddonManagerTestUninstallerGUI,
+    TestListTerminator  # Needed to prevent the last test from running twice
+]
+if FreeCAD:
+    for test in loaded_gui_tests:
+        FreeCAD.Console.PrintLog(f"Loaded tests from {test.__name__}\n")
