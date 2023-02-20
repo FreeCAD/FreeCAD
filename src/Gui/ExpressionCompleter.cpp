@@ -820,9 +820,12 @@ void ExpressionCompleter::slotUpdate(const QString & prefix, int pos)
         std::transform(result.cbegin(),
                        result.cend(),
                        std::back_inserter(tokens),
-                       [](const std::tuple<int, int, std::string>& item) {
+                       [&](const std::tuple<int, int, std::string>& item) {
                            return std::make_tuple(
-                               get<0>(item), get<1>(item), QString::fromStdString(get<2>(item)));
+                                get<0>(item),
+                                QString::fromStdString(expr.toStdString().substr(0,get<1>(item))).size(),
+                                QString::fromStdString(get<2>(item))
+                                );
                        });
         return tokens;
     };
@@ -883,7 +886,9 @@ void ExpressionCompleter::slotUpdate(const QString & prefix, int pos)
     }
 
     // Not an unclosed string and the last character is a space
-    if (!stringing && !prefix.isEmpty() && prefix[prefixEnd-1] == QChar(32)) {
+    if (!stringing && !prefix.isEmpty() &&
+            prefixEnd > 0 && prefixEnd <= prefix.size() &&
+            prefix[prefixEnd-1] == QChar(32)) {
         if (auto itemView = popup())
             itemView->setVisible(false);
         return;
