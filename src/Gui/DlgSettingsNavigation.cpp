@@ -187,7 +187,7 @@ void DlgSettingsNavigation::loadSettings()
     // fill up font styles
     hGrp = App::GetApplication().GetParameterGroupByPath(
         "User parameter:BaseApp/Preferences/NaviCube");
-    QByteArray defaultSansserifFont = NaviCube::getDefaultSansserifFont().family().toLatin1();
+    std::string defaultSansserifFont = NaviCube::getDefaultSansserifFont().family().toStdString();
 
     // we purposely allow all available fonts on the system
 #if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
@@ -200,9 +200,9 @@ void DlgSettingsNavigation::loadSettings()
     // if the parameter has not yet been set, do so immediately
     // this assures it is set even if the user cancels the dialog
     if (hGrp->GetASCII("FontString", "").empty())
-        hGrp->SetASCII("FontString", defaultSansserifFont.constData());
+        hGrp->SetASCII("FontString", defaultSansserifFont.c_str());
     int indexFamilyNames = familyNames.indexOf(
-        QString::fromStdString(hGrp->GetASCII("FontString", defaultSansserifFont)));
+        QString::fromStdString(hGrp->GetASCII("FontString", defaultSansserifFont.c_str())));
     if (indexFamilyNames < 0)
         indexFamilyNames = 0;
     ui->naviCubeFontName->setCurrentIndex(indexFamilyNames);
