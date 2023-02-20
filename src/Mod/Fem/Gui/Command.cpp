@@ -1364,9 +1364,9 @@ bool CmdFemCompEmConstraints::isActive()
 // FEM_CompEmEquations (dropdown toolbar button for Electromagnetic equations)
 //===========================================================================
 
-DEF_STD_CMD_ACL(CmdFEMCompEmEquations)
+DEF_STD_CMD_ACL(CmdFemCompEmEquations)
 
-CmdFEMCompEmEquations::CmdFEMCompEmEquations()
+CmdFemCompEmEquations::CmdFemCompEmEquations()
     : Command("FEM_CompEmEquations")
 {
     sAppModule = "Fem";
@@ -1378,7 +1378,7 @@ CmdFEMCompEmEquations::CmdFEMCompEmEquations()
     sStatusTip = sToolTipText;
 }
 
-void CmdFEMCompEmEquations::activated(int iMsg)
+void CmdFemCompEmEquations::activated(int iMsg)
 {
     Gui::CommandManager& rcCmdMgr = Gui::Application::Instance->commandManager();
     if (iMsg == 0)
@@ -1401,7 +1401,7 @@ void CmdFEMCompEmEquations::activated(int iMsg)
     pcAction->setIcon(a[iMsg]->icon());
 }
 
-Gui::Action* CmdFEMCompEmEquations::createAction()
+Gui::Action* CmdFemCompEmEquations::createAction()
 {
     Gui::ActionGroup* pcAction = new Gui::ActionGroup(this, Gui::getMainWindow());
     pcAction->setDropDownMenu(true);
@@ -1426,7 +1426,7 @@ Gui::Action* CmdFEMCompEmEquations::createAction()
     return pcAction;
 }
 
-void CmdFEMCompEmEquations::languageChange()
+void CmdFemCompEmEquations::languageChange()
 {
     Command::languageChange();
 
@@ -1485,7 +1485,7 @@ void CmdFEMCompEmEquations::languageChange()
     }
 }
 
-bool CmdFEMCompEmEquations::isActive()
+bool CmdFemCompEmEquations::isActive()
 {
     // only if there is an active analysis
     Fem::FemAnalysis* ActiveAnalysis =
@@ -2418,7 +2418,7 @@ void CreateFemCommands()
     rcCmdMgr.addCommand(new CmdFemDefineNodesSet());
 
     // equations
-    rcCmdMgr.addCommand(new CmdFEMCompEmEquations());
+    rcCmdMgr.addCommand(new CmdFemCompEmEquations());
 
     // vtk post processing
 #ifdef FC_USE_VTK
