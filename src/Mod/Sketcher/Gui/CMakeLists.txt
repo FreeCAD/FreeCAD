@@ -66,6 +66,7 @@ SET(SketcherGui_SRCS
     DrawSketchHandlerArcOfHyperbola.h
     DrawSketchHandlerArcOfParabola.h
     DrawSketchHandlerBSpline.h
+    DrawSketchHandlerBSplineByInterpolation.h
     DrawSketchHandlerPoint.h
     DrawSketchHandlerFillet.h
     DrawSketchHandlerTrimming.h

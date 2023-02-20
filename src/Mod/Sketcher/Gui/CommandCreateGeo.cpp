@@ -56,6 +56,7 @@
 #include "DrawSketchHandlerArcOfHyperbola.h"
 #include "DrawSketchHandlerArcOfParabola.h"
 #include "DrawSketchHandlerBSpline.h"
+#include "DrawSketchHandlerBSplineByInterpolation.h"
 #include "DrawSketchHandlerCarbonCopy.h"
 #include "DrawSketchHandlerCircle.h"
 #include "DrawSketchHandlerEllipse.h"
@@ -947,9 +948,14 @@ void CmdSketcherCompCreateBSpline::activated(int iMsg)
 {
     if (iMsg == 0) {
         ActivateHandler(getActiveGuiDocument(), new DrawSketchHandlerBSpline(iMsg));
-    } else if (iMsg == 1) {
+    }
+    else if (iMsg == 1) {
         ActivateHandler(getActiveGuiDocument(), new DrawSketchHandlerBSpline(iMsg));
-    } else {
+    }
+    else if (iMsg == 2) {
+        ActivateHandler(getActiveGuiDocument(), new DrawSketchHandlerBSplineByInterpolation(0));
+    }
+    else {
         return;
     }
 
@@ -973,6 +979,9 @@ Gui::Action * CmdSketcherCompCreateBSpline::createAction()
 
     QAction* periodicbspline = pcAction->addAction(QString());
     periodicbspline->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_Create_Periodic_BSpline"));
+
+    QAction* bsplinebyknot = pcAction->addAction(QString());
+    bsplinebyknot->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_Create_BSplineByKnot"));
 
     _pcAction = pcAction;
     languageChange();
