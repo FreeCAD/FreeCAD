@@ -1495,7 +1495,8 @@ bool CmdFemCompEmEquations::isActive()
         return false;
 
     // only activate if a single Elmer object is selected
-    auto results = getSelection().getSelectionEx(nullptr, App::DocumentObject::getClassTypeId(), Gui::ResolveMode::FollowLink); //.getObjectsOfType<femsolver.elmer.solver.Proxy>();
+    auto results = getSelection().getSelectionEx(
+        nullptr, App::DocumentObject::getClassTypeId(), Gui::ResolveMode::FollowLink);
     if (results.size() == 1) {
         auto object = results.begin()->getObject();
         // FIXME: this is not unique since the Ccx solver object has the same type
@@ -1505,6 +1506,7 @@ bool CmdFemCompEmEquations::isActive()
     }
     return false;
 }
+
 
 //================================================================================================
 //================================================================================================
