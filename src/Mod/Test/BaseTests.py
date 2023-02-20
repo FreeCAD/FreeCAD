@@ -270,8 +270,8 @@ class AlgebraTestCase(unittest.TestCase):
         self.assertTrue(r1.isSame(r2, 1e-7), 'Scale on matrix influenced rotation')
         m2.scale(1,2,3)
         msg = 'Matrix with rotation and non uniform scale should not be accepted to extract rotation from'
-        #with self.assertRaises(ValueError, msg=msg):
-        #    FreeCAD.Rotation(m2)
+        with self.assertRaises(ValueError):
+            FreeCAD.Rotation(m2)
         m1.unity()
         m1.scale(-1)
         r1 = FreeCAD.Rotation(m1)
