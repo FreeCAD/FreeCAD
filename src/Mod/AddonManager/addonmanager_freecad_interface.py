@@ -41,6 +41,7 @@ try:
 
     Console = FreeCAD.Console
     ParamGet = FreeCAD.ParamGet
+    Version = FreeCAD.Version
     getUserAppDataDir = FreeCAD.getUserAppDataDir
     getUserMacroDir = FreeCAD.getUserMacroDir
     getUserCachePath = FreeCAD.getUserCachePath
@@ -54,6 +55,9 @@ except ImportError:
 
     def translate(_context: str, string: str, _desc: str = "") -> str:
         return string
+
+    def Version():
+        return 1, 0, 0
 
     class ConsoleReplacement:
         """If FreeCAD's Console is not available, create a replacement by redirecting FreeCAD
