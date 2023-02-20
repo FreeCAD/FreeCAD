@@ -846,31 +846,30 @@ ScaleType Matrix4D::hasScale(double tol) const
     double duvw = sqrt(du * dv * dw);
 
     double d3 = determinant3();
-
-    // Adjust the tolerance to according to scale
-    // beacause compared values is proportional
-    // to scale^3
-    tol *= fabs(d3);
     
-    // check if the absolute values are close or equal
-    auto close = [&](double a, double b) {
-        return fabs(fabs(a) - fabs(b)) <= tol;
+    // check if the absolute values are proportionally close or equal
+    auto closeAbs = [&](double a, double b) {
+        double c = fabs(a);
+        double d = fabs(b);
+        if (d>c) return (d-c)/d <= tol;
+        else if (c>d) return (c-d)/c <= tol;
+        return true;
     };
 
     // This could be e.g. a projection, a shearing,... matrix
-    if (!close(dxyz, d3) && !close(duvw, d3)) {
+    if (!closeAbs(dxyz, d3) && !closeAbs(duvw, d3)) {
         return ScaleType::Other;
     }
 
-    if (close(duvw, d3) && (!close(du, dv) || !close(dv, dw))) {
+    if (closeAbs(duvw, d3) && (!closeAbs(du, dv) || !closeAbs(dv, dw))) {
         return ScaleType::NonUniformLeft;
     }
 
-    if (close(dxyz, d3) && (!close(dx, dy) || !close(dy, dz))) {
+    if (closeAbs(dxyz, d3) && (!closeAbs(dx, dy) || !closeAbs(dy, dz))) {
         return ScaleType::NonUniformRight;
     }
 
-    if (abs(d3 - 1.0) > tol) {
+    if (fabs(d3 - 1.0) > tol) {
         return ScaleType::Uniform;
     }
 
