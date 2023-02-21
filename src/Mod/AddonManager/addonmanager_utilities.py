@@ -439,7 +439,7 @@ def run_interruptable_subprocess(args) -> subprocess.CompletedProcess:
     while return_code is None:
         try:
             stdout, stderr = p.communicate(timeout=0.1)
-            return_code = p.returncode if p.returncode is not None else -1
+            return_code = p.returncode
         except subprocess.TimeoutExpired:
             if QtCore.QThread.currentThread().isInterruptionRequested():
                 p.kill()
