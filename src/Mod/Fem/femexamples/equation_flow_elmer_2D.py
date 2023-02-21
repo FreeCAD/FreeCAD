@@ -40,8 +40,8 @@ def get_information():
         "name": "Flow - Elmer 2D",
         "meshtype": "solid",
         "meshelement": "Tet10",
-        "constraints": ["initial pressure", "initial velocity",
-                        "velocity", "initial temperature", "temperature"],
+        "constraints": ["initial pressure", "initial temperature", "initial velocity",
+                        "temperature", "velocity"],
         "solvers": ["elmer"],
         "material": "fluid",
         "equations": ["flow", "heat"]
@@ -119,8 +119,8 @@ def setup(doc=None, solvertype="elmer"):
     # solver
     if solvertype == "elmer":
         solver_obj = ObjectsFem.makeSolverElmer(doc, "SolverElmer")
-        solver_flow = ObjectsFem.makeEquationFlow(doc, solver_obj)
-        solver_heat = ObjectsFem.makeEquationHeat(doc, solver_obj)
+        equation_flow = ObjectsFem.makeEquationFlow(doc, solver_obj)
+        equation_heat = ObjectsFem.makeEquationHeat(doc, solver_obj)
     else:
         FreeCAD.Console.PrintWarning(
             "Not known or not supported solver type: {}. "
@@ -130,15 +130,13 @@ def setup(doc=None, solvertype="elmer"):
     analysis.addObject(solver_obj)
 
     # solver settings
-    solver_flow.Priority = 10
-    solver_flow.IdrsParameter = 3
-    solver_flow.LinearIterativeMethod = "Idrs"
-    solver_flow.LinearPreconditioning = "ILU1"
-    solver_heat.Priority = 20
-    solver_heat.IdrsParameter = 3
-    solver_heat.LinearIterativeMethod = "Idrs"
-    solver_heat.LinearPreconditioning = "ILU1"
-    solver_heat.RelaxationFactor = 0.9
+    equation_flow.IdrsParameter = 3
+    equation_flow.LinearIterativeMethod = "Idrs"
+    equation_flow.LinearPreconditioning = "ILU1"
+    equation_heat.IdrsParameter = 3
+    equation_heat.LinearIterativeMethod = "Idrs"
+    equation_heat.LinearPreconditioning = "ILU1"
+    equation_heat.RelaxationFactor = 0.9
 
     # material
     material_obj = ObjectsFem.makeMaterialFluid(doc, "Material_Fluid")
