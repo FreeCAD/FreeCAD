@@ -43,6 +43,8 @@ try:
     RegexWrapper = QRegularExpression
     RegexValidatorWrapper = QRegularExpressionValidator
 except ImportError:
+    QRegularExpressionValidator = None
+    QRegularExpression = None
     from PySide.QtGui import (
         QRegExpValidator,
     )
@@ -150,7 +152,7 @@ class LicenseSelector:
                 new_short_code = self.dialog.otherLineEdit.text()
             self.pref.SetString("devModeLastSelectedLicense", new_short_code)
             return new_short_code, new_license_path
-        return None, None
+        return None
 
     def set_license(self, short_code):
         """Set the currently-selected license."""

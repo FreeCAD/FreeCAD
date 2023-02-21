@@ -63,7 +63,7 @@ class Predictor:
         if not self.git_manager:
             raise Exception("Cannot use Developer Mode without git installed")
 
-    def predict_metadata(self, path: os.PathLike) -> FreeCAD.Metadata:
+    def predict_metadata(self, path: str) -> FreeCAD.Metadata:
         """Create a predicted Metadata object based on the contents of the passed-in directory"""
         if not os.path.isdir(path):
             return None
@@ -85,7 +85,7 @@ class Predictor:
 
         committers = self.git_manager.get_last_committers(self.path)
 
-        # This is a dictionary keyed to the author's name (which can be many different
+        # This is a dictionary keyed to the author's name (which can be many
         # things, depending on the author) containing two fields, "email" and "count". It
         # is common for there to be multiple entries representing the same human being,
         # so a passing attempt is made to reconcile:

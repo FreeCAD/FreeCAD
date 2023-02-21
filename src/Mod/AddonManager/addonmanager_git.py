@@ -29,32 +29,13 @@ import os
 import platform
 import shutil
 import subprocess
-from typing import List
+from typing import List, Optional
 import time
 import FreeCAD
-
-from PySide import QtCore  # Needed to detect thread interruption
 
 import addonmanager_utilities as utils
 
 translate = FreeCAD.Qt.translate
-
-
-def initialize_git() -> object:
-    """If git is enabled, locate the git executable if necessary and return a new
-    GitManager object. The executable location is saved in user preferences for reuse,
-    and git can be disabled by setting the disableGit parameter in the Addons
-    preference group. Returns None if for any of those reasons we aren't using git."""
-
-    git_manager = None
-    pref = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Addons")
-    disable_git = pref.GetBool("disableGit", False)
-    if not disable_git:
-        try:
-            git_manager = GitManager()
-        except NoGitFound:
-            pass
-    return git_manager
 
 
 class NoGitFound(RuntimeError):
@@ -219,7 +200,7 @@ class GitManager:
 
         original_cwd = os.getcwd()
 
-        # Make sure we are not currently in that directory, otherwise on Windows the rename
+        # Make sure we are not currently in that directory, otherwise on Windows the "rename"
         # will fail. To guarantee we aren't in it, change to it, then shift up one.
         os.chdir(local_path)
         os.chdir("..")
@@ -284,7 +265,7 @@ class GitManager:
         return branches
 
     def get_last_committers(self, local_path, n=10):
-        """Examine the last n entries of the commit history, and return a list of all of the
+        """Examine the last n entries of the commit history, and return a list of all the
         committers, their email addresses, and how many commits each one is responsible for."""
         old_dir = os.getcwd()
         os.chdir(local_path)
@@ -313,7 +294,7 @@ class GitManager:
         return result_dict
 
     def get_last_authors(self, local_path, n=10):
-        """Examine the last n entries of the commit history, and return a list of all of the
+        """Examine the last n entries of the commit history, and return a list of all the
         authors, their email addresses, and how many commits each one is responsible for."""
         old_dir = os.getcwd()
         os.chdir(local_path)
@@ -338,7 +319,7 @@ class GitManager:
         # Find git. In preference order
         #   A) The value of the GitExecutable user preference
         #   B) The executable located in the same bin directory as FreeCAD and called "git"
-        #   C) The result of an shutil search for your system's "git" executable
+        #   C) The result of a shutil search for your system's "git" executable
         prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Addons")
         git_exe = prefs.GetString("GitExecutable", "Not set")
         if not git_exe or git_exe == "Not set" or not os.path.exists(git_exe):
@@ -371,3 +352,20 @@ class GitManager:
             )
 
         return proc.stdout
+
+
+def initialize_git() -> Optional[GitManager]:
+    """If git is enabled, locate the git executable if necessary and return a new
+    GitManager object. The executable location is saved in user preferences for reuse,
+    and git can be disabled by setting the disableGit parameter in the Addons
+    preference group. Returns None if for any of those reasons we aren't using git."""
+
+    git_manager = None
+    pref = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Addons")
+    disable_git = pref.GetBool("disableGit", False)
+    if not disable_git:
+        try:
+            git_manager = GitManager()
+        except NoGitFound:
+            pass
+    return git_manager
