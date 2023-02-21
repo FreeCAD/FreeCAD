@@ -25,16 +25,16 @@
 
 import os
 import subprocess
-from time import sleep
 from typing import List
 
-import FreeCAD
+import addonmanager_freecad_interface as fci
 
 from PySide import QtCore
 import addonmanager_utilities as utils
 from addonmanager_installer import AddonInstaller, MacroInstaller
+from Addon import Addon
 
-translate = FreeCAD.Qt.translate
+translate = fci.translate
 
 
 class DependencyInstaller(QtCore.QObject):
@@ -48,7 +48,7 @@ class DependencyInstaller(QtCore.QObject):
 
     def __init__(
         self,
-        addons: List[object],
+        addons: List[Addon],
         python_requires: List[str],
         python_optional: List[str],
         location: os.PathLike = None,
@@ -56,7 +56,8 @@ class DependencyInstaller(QtCore.QObject):
         """Install the various types of dependencies that might be specified. If an optional
          dependency fails this is non-fatal, but other failures are considered fatal. If location
         is specified it overrides the FreeCAD user base directory setting: this is used mostly
-        for testing purposes and shouldn't be set by normal code in most circumstances."""
+        for testing purposes and shouldn't be set by normal code in most circumstances.
+        """
         super().__init__()
         self.addons = addons
         self.python_requires = python_requires
@@ -95,18 +96,19 @@ class DependencyInstaller(QtCore.QObject):
             return False
         try:
             proc = self._run_pip(["--version"])
-            FreeCAD.Console.PrintMessage(proc.stdout + "\n")
+            fci.Console.PrintMessage(proc.stdout + "\n")
         except subprocess.CalledProcessError:
             self.no_pip.emit(f"{python_exe} -m pip --version")
             return False
         return True
 
-    def _install_required(self, vendor_path: os.PathLike) -> bool:
-        """Install the required Python package dependencies. If any fail a failure signal is
-        emitted and the function exits without proceeding with any additional installs."""
+    def _install_required(self, vendor_path: str) -> bool:
+        """Install the required Python package dependencies. If any fail a failure
+        signal is emitted and the function exits without proceeding with any additional
+        installations."""
         for pymod in self.python_requires:
             if QtCore.QThread.currentThread().isInterruptionRequested():
-                return
+                return False
             try:
                 proc = self._run_pip(
                     [
@@ -117,9 +119,9 @@ class DependencyInstaller(QtCore.QObject):
                         pymod,
                     ]
                 )
-                FreeCAD.Console.PrintMessage(proc.stdout + "\n")
+                fci.Console.PrintMessage(proc.stdout + "\n")
             except subprocess.CalledProcessError as e:
-                FreeCAD.Console.PrintError(str(e) + "\n")
+                fci.Console.PrintError(str(e) + "\n")
                 self.failure.emit(
                     translate(
                         "AddonsInstaller",
@@ -127,9 +129,10 @@ class DependencyInstaller(QtCore.QObject):
                     ).format(pymod),
                     str(e),
                 )
-                return
+                return False
+        return True
 
-    def _install_optional(self, vendor_path: os.PathLike):
+    def _install_optional(self, vendor_path: str):
         """Install the optional Python package dependencies. If any fail a message is printed to
         the console, but installation of the others continues."""
         for pymod in self.python_optional:
@@ -145,9 +148,9 @@ class DependencyInstaller(QtCore.QObject):
                         pymod,
                     ]
                 )
-                FreeCAD.Console.PrintMessage(proc.stdout + "\n")
+                fci.Console.PrintMessage(proc.stdout + "\n")
             except subprocess.CalledProcessError as e:
-                FreeCAD.Console.PrintError(
+                fci.Console.PrintError(
                     translate(
                         "AddonsInstaller", "Installation of optional package failed"
                     )
@@ -162,7 +165,8 @@ class DependencyInstaller(QtCore.QObject):
         final_args.extend(args)
         return self._subprocess_wrapper(final_args)
 
-    def _subprocess_wrapper(self, args) -> object:
+    @staticmethod
+    def _subprocess_wrapper(args) -> subprocess.CompletedProcess:
         """Wrap subprocess call so test code can mock it."""
         return utils.run_interruptable_subprocess(args)
 
@@ -177,7 +181,7 @@ class DependencyInstaller(QtCore.QObject):
         for addon in self.addons:
             if QtCore.QThread.currentThread().isInterruptionRequested():
                 return
-            FreeCAD.Console.PrintMessage(
+            fci.Console.PrintMessage(
                 translate(
                     "AddonsInstaller", "Installing required dependency {}"
                 ).format(addon.name)

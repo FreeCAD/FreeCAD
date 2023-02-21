@@ -58,7 +58,7 @@ translate = FreeCAD.Qt.translate
 class AddContent:
     """A dialog for adding a single content item to the package metadata."""
 
-    def __init__(self, path_to_addon: os.PathLike, toplevel_metadata: FreeCAD.Metadata):
+    def __init__(self, path_to_addon: str, toplevel_metadata: FreeCAD.Metadata):
         """path_to_addon is the full path to the toplevel directory of this Addon, and
         toplevel_metadata is to overall package.xml Metadata object for this Addon. This
         information is used to assist the use in filling out the dialog by providing
@@ -147,7 +147,7 @@ class AddContent:
         result = self.dialog.exec()
         if result == QDialog.Accepted:
             return self._generate_metadata()
-        return None, None
+        return None
 
     def _populate_dialog(self, metadata: FreeCAD.Metadata) -> None:
         """Fill in the dialog with the details from the passed metadata object"""
@@ -231,7 +231,7 @@ class AddContent:
 
         # Early return if this is the only addon
         if self.dialog.singletonCheckBox.isChecked():
-            return (current_data, self.metadata)
+            return current_data, self.metadata
 
         # Otherwise, process the rest of the metadata (display name is already done)
         self.metadata.Description = (
@@ -254,13 +254,14 @@ class AddContent:
 
         licenses = []
         for row in range(self.dialog.licensesTableWidget.rowCount()):
-            new_license = {}
-            new_license["name"] = self.dialog.licensesTableWidget.item(row, 0).text
-            new_license["file"] = self.dialog.licensesTableWidget.item(row, 1).text()
+            new_license = {
+                "name": self.dialog.licensesTableWidget.item(row, 0).text,
+                "file": self.dialog.licensesTableWidget.item(row, 1).text(),
+            }
             licenses.append(new_license)
         self.metadata.License = licenses
 
-        return (self.dialog.addonKindComboBox.currentData(), self.metadata)
+        return self.dialog.addonKindComboBox.currentData(), self.metadata
 
     ###############################################################################################
     #                                         DIALOG SLOTS
@@ -381,7 +382,8 @@ class EditTags:
 
     def exec(self):
         """Execute the dialog, returning a list of tags (which may be empty, but still represents
-        the expected list of tags to be set, e.g. the user may have removed them all)."""
+        the expected list of tags to be set, e.g. the user may have removed them all).
+        """
         result = self.dialog.exec()
         if result == QDialog.Accepted:
             new_tags: List[str] = self.dialog.lineEdit.text().split(",")
@@ -541,7 +543,8 @@ class EditDependency:
         self, dep_type="", dep_name="", dep_optional=False
     ) -> Tuple[str, str, bool]:
         """Execute the dialog, returning a tuple of the type of dependency (workbench, addon, or
-        python), the name of the dependency, and a boolean indicating whether this is optional."""
+        python), the name of the dependency, and a boolean indicating whether this is optional.
+        """
 
         # If we are editing an existing row, set up the dialog:
         if dep_type and dep_name:
@@ -564,8 +567,8 @@ class EditDependency:
             dep_name = self.dialog.dependencyComboBox.currentData()
             if dep_name == "other":
                 dep_name = self.dialog.lineEdit.text()
-            return (dep_type, dep_name, dep_optional)
-        return ("", "", False)
+            return dep_type, dep_name, dep_optional
+        return "", "", False
 
     def _populate_internal_workbenches(self):
         """Add all known internal FreeCAD Workbenches to the list"""

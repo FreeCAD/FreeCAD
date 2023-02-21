@@ -65,7 +65,7 @@ class MetadataValidators:
             return
 
         # The package.xml standard has some required elements that the basic XML reader is not
-        # actually checking for. In developer mode, actually make sure that all of the rules are
+        # actually checking for. In developer mode, actually make sure that all the rules are
         # being followed for each element.
 
         errors = []
@@ -141,7 +141,8 @@ class MetadataValidators:
         errors.extend(self.validate_urls(urls))
         return errors
 
-    def validate_urls(self, urls) -> List[str]:
+    @staticmethod
+    def validate_urls(urls) -> List[str]:
         """Check the URLs provided by the addon"""
         errors = []
         if len(urls) == 0:
@@ -183,14 +184,16 @@ class MetadataValidators:
                 )
         return errors
 
-    def validate_workbench_metadata(self, workbench) -> List[str]:
+    @staticmethod
+    def validate_workbench_metadata(workbench) -> List[str]:
         """Validate the required element(s) for a workbench"""
         errors = []
         if not workbench.Classname or len(workbench.Classname) == 0:
             errors.append("No <classname> specified for workbench")
         return errors
 
-    def validate_preference_pack_metadata(self, pack) -> List[str]:
+    @staticmethod
+    def validate_preference_pack_metadata(pack) -> List[str]:
         """Validate the required element(s) for a preference pack"""
         errors = []
         if not pack.Name or len(pack.Name) == 0:

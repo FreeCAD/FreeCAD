@@ -72,9 +72,9 @@ class LicensesTable:
         """Use the passed metadata object to populate the maintainers and authors"""
         self.widget.tableWidget.setRowCount(0)
         row = 0
-        for l in self.metadata.License:
-            shortcode = l["name"]
-            path = l["file"]
+        for lic in self.metadata.License:
+            shortcode = lic["name"]
+            path = lic["file"]
             self._add_row(row, shortcode, path)
             row += 1
 
