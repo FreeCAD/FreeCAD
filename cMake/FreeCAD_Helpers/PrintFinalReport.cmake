@@ -148,8 +148,8 @@ macro(PrintFinalReport)
     else()
         simple(QtWebKitWidgets "not needed")
     endif()
-    conditional(Shiboken Shiboken_FOUND "not found" "${SHIBOKEN_VERSION} Base: [${SHIBOKEN_BASEDIR}]")
-    conditional(PySide PySide_FOUND "not found" "${PYSIDE_VERSION} [${PYSIDE_INCLUDE_DIR}]")
+    conditional(Shiboken Shiboken${SHIBOKEN_MAJOR_VERSION}_FOUND "not found" "${Shiboken_VERSION} [${SHIBOKEN_INCLUDE_DIR}]")
+    conditional(PySide PySide${PYSIDE_MAJOR_VERSION}_FOUND "not found" "${PySide_VERSION} [${PYSIDE_INCLUDE_DIR}]")
     conditional(PySideTools PYSIDE_TOOLS_FOUND
                 "not found"
                 "v: ${PySideTools_VERSION}  uic: [${PYSIDE_UIC_EXECUTABLE}]  rcc: [${PYSIDE_RCC_EXECUTABLE}]"
