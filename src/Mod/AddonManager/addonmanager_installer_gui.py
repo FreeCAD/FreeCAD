@@ -36,7 +36,7 @@ from PySide import QtCore, QtWidgets
 from addonmanager_installer import AddonInstaller, MacroInstaller
 from addonmanager_dependency_installer import DependencyInstaller
 import addonmanager_utilities as utils
-from Addon import MissingDependencies
+from Addon import Addon, MissingDependencies
 
 translate = FreeCAD.Qt.translate
 
@@ -58,11 +58,11 @@ class AddonInstallerGUI(QtCore.QObject):
     # Emitted once all work has been completed, regardless of success or failure
     finished = QtCore.Signal()
 
-    def __init__(self, addon: object, addons: List[object] = None):
+    def __init__(self, addon: Addon, addons: List[Addon] = None):
         super().__init__()
         self.addon_to_install = addon
         self.addons = [] if addons is None else addons
-        self.installer = AddonInstaller(addon, addons)
+        self.installer = AddonInstaller(addon)
         self.dependency_installer = None
         self.install_worker = None
         self.dependency_dialog = None
