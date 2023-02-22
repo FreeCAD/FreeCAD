@@ -76,12 +76,14 @@ DlgProjectInformationImp::DlgProjectInformationImp(App::Document* doc, QWidget* 
     ui->lineEditLastModDate->setText(QString::fromUtf8(doc->LastModifiedDate.getValue()));
     ui->lineEditCompany->setText(QString::fromUtf8(doc->Company.getValue()));
 
-    auto rawLicenses = App::License::getLicenses();
-    for (const auto& it : rawLicenses) {
-        QString text = QApplication::translate("Gui::Dialog::DlgSettingsDocument", it.c_str());
-        ui->comboLicense->addItem(text, QByteArray(it.c_str()));
+    // load comboBox with license names
+    for (const auto& item : App::licenseItems) {
+        const char* name {item.at(App::posnOfFullName)};
+        QString translated = QApplication::translate("Gui::Dialog::DlgSettingsDocument", name);
+        ui->comboLicense->addItem(translated, QByteArray(name));
     }
 
+    // set default position to match document
     int index = ui->comboLicense->findData(QByteArray(doc->License.getValue()));
     if (index >= 0) {
         ui->comboLicense->setCurrentIndex(index);
@@ -128,10 +130,12 @@ void DlgProjectInformationImp::accept()
     _doc->CreatedBy.setValue(ui->lineEditCreator->text().toUtf8());
     _doc->LastModifiedBy.setValue(ui->lineEditCreator->text().toUtf8());
     _doc->Company.setValue(ui->lineEditCompany->text().toUtf8());
-    QByteArray license = ui->comboLicense->itemData(ui->comboLicense->currentIndex()).toByteArray();
-    if (license.isEmpty())
-        license = ui->comboLicense->itemText(ui->comboLicense->currentIndex()).toUtf8();
-    _doc->License.setValue(license);
+    QByteArray licenseName {ui->comboLicense->currentData().toByteArray()};
+    // Is this really necessary?
+    if (licenseName.isEmpty()) {
+        licenseName = ui->comboLicense->currentText().toUtf8();
+    }
+    _doc->License.setValue(licenseName);
     _doc->LicenseURL.setValue(ui->lineEditLicenseURL->text().toUtf8());
 
     // Replace newline escape sequence through '\\n' string
@@ -149,13 +153,10 @@ void DlgProjectInformationImp::accept()
 
 void DlgProjectInformationImp::onLicenseTypeChanged(int index)
 {
-    App::License license{index};
-    std::string url = license.getUrl();
-    if (license.getType() == App::License::Type::Other) {
-        url = _doc->LicenseURL.getValue();
-    }
+    const char* url {index >= 0 && index < App::countOfLicenses ? App::licenseItems.at(index).at(App::posnOfUrl)
+                                                  : _doc->LicenseURL.getValue()};
 
-    ui->lineEditLicenseURL->setText(QString::fromStdString(url));
+    ui->lineEditLicenseURL->setText(QString::fromLatin1(url));
 }
 
 /**

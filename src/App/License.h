@@ -24,57 +24,48 @@
 #define APP_LICENSE_H
 
 #include <FCGlobal.h>
+#include <array>
 #include <string>
-#include <map>
-#include <vector>
 
-namespace App {
-
-/*!
- * \brief The License class
- * Handling of standard licenses.
- */
-class License
+namespace App
 {
-public:
-    enum class Type {
-        AllRightsReserved,
-        CC_BY_40,
-        CC_BY_SA_40,
-        CC_BY_ND_40,
-        CC_BY_NC_40,
-        CC_BY_NC_SA_40,
-        CC_BY_NC_ND_40,
-        PublicDomain,
-        FreeArt,
-        CERN_OHS_S,
-        CERN_OHS_W,
-        CERN_OHS_P,
-        Other
-    };
 
-    AppExport explicit License(Type);
-    AppExport explicit License(long);
-    AppExport explicit License(int);
-    AppExport Type getType() const;
-    AppExport std::string getLicense() const;
-    AppExport std::string getUrl() const;
+/**
+ * Licenses data [identifier, fullName, url]
+ * See also https://spdx.org/licenses/
+ */
+constexpr int colsInArray = 3;
+using TLicenseArr = std::array<const char*, colsInArray>;
+constexpr int posnOfIdentifier = 0;
+constexpr int posnOfFullName = 1;
+constexpr int posnOfUrl = 2;
+constexpr int countOfLicenses {12};
+// clang-format off
+constexpr std::array<TLicenseArr, countOfLicenses> licenseItems {{
+    { "AllRightsReserved", "All rights reserved",                                      "https://en.wikipedia.org/wiki/All_rights_reserved"  },
+    { "CC_BY_40",          "Creative Commons Attribution",                             "https://creativecommons.org/licenses/by/4.0/"       },
+    { "CC_BY_SA_40",       "Creative Commons Attribution-ShareAlike",                  "https://creativecommons.org/licenses/by-sa/4.0/"    },
+    { "CC_BY_ND_40",       "Creative Commons Attribution-NoDerivatives",               "https://creativecommons.org/licenses/by-nd/4.0/"    },
+    { "CC_BY_NC_40",       "Creative Commons Attribution-NonCommercial",               "https://creativecommons.org/licenses/by-nc/4.0/"    },
+    { "CC_BY_NC_SA_40",    "Creative Commons Attribution-NonCommercial-ShareAlike",    "https://creativecommons.org/licenses/by-nc-sa/4.0/" },
+    { "CC_BY_NC_ND_40",    "Creative Commons Attribution-NonCommercial-NoDerivatives", "https://creativecommons.org/licenses/by-nc-nd/4.0/" },
+    { "PublicDomain",      "Public Domain",                                            "https://en.wikipedia.org/wiki/Public_domain"        },
+    { "FreeArt",           "FreeArt",                                                  "https://artlibre.org/licence/lal"                   },
+    { "CERN_OHS_S",        "CERN Open Hardware Licence strongly-reciprocal",           "https://cern-ohl.web.cern.ch/"                      },
+    { "CERN_OHS_W",        "CERN Open Hardware Licence weakly-reciprocal",             "https://cern-ohl.web.cern.ch/"                      },
+    { "CERN_OHS_P",        "CERN Open Hardware Licence permissive",                    "https://cern-ohl.web.cern.ch/"                      },
+}};
+// clang-format on
 
-    AppExport static std::vector<std::string> getLicenses();
-
-private:
-    static void init();
-
-    struct LicenseItem
-    {
-        std::string license;
-        std::string url;
-    };
-    Type type;
-
-    static std::map<Type, LicenseItem> licenseItems;
-};
-
+int constexpr findLicense(const char* identifier)
+{
+    for (int i = 0; i < countOfLicenses; i++) {
+        if (licenseItems.at(i).at(posnOfIdentifier) == identifier) {
+            return i;
+        }
+    }
+    return -1;
 }
+}// namespace App
 
-#endif // APP_LICENSE_H
+#endif// APP_LICENSE_H
