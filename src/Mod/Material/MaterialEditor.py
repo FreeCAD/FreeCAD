@@ -625,6 +625,8 @@ class MaterialsDelegate(QtGui.QStyledItemDelegate):
     def __init__(self):
         ""
 
+        self.matproperty = ""
+        self.Value = ""
         super(MaterialsDelegate, self).__init__()
 
     def createEditor(self, parent, option, index):
@@ -644,7 +646,7 @@ class MaterialsDelegate(QtGui.QStyledItemDelegate):
             row = index.row()
 
             PP = group.child(row, 0)
-            matproperty = PP.text().replace(" ", "")  # remove spaces
+            self.matproperty = PP.text().replace(" ", "")  # remove spaces
 
             TT = group.child(row, 2)
 
@@ -655,9 +657,9 @@ class MaterialsDelegate(QtGui.QStyledItemDelegate):
                 Type = "String"
 
             VV = group.child(row, 1)
-            Value = VV.text()
+            self.Value = VV.text()
 
-            editor = matProperWidget(parent, matproperty, Type, Value)
+            editor = matProperWidget(parent, self.matproperty, Type, self.Value)
 
         elif column == 0:
 
@@ -693,10 +695,38 @@ class MaterialsDelegate(QtGui.QStyledItemDelegate):
             lineEdit = editor.children()[1]
             item.setText(lineEdit.text())
 
+        elif Type == "Float":
+            # avoid rounding artifacts
+            inputValue = float('%.6g' % editor.value())
+            item.setText(str(inputValue))
+
+        elif Type == "Quantity":
+            if not hasattr(FreeCAD.Units, self.matproperty):
+                FreeCAD.Console.PrintError(
+                    "Error: property '{}' is a quantity but has no unit defined\n"
+                    .format(self.matproperty)
+                )
+                return
+            # we must use the unit of the input value because the
+            # "Gui::QuantitySpinBox" uses e.g. for the density always the mm-based unit
+            # kg/mm^3, also when the input value is in kg/^3.
+            # E.g. when the input is e.g. "7875 kg/m^3" and we would pass "7875" as rawValue
+            # and "kg/m^3" as unit, we would get "7875 kg/mm^3" as result. If we try to be
+            # clever and input "7875e-6" as rawValue and "kg/m^3" as unit we get
+            # "7875e-6 kg/m^3" as result. If we input "7875e-6" as rawValue and "kg/mm^3"
+            # as unit we get also "7875e-6 kg/m^3" as result.
+            if not self.Value:
+                # for empty (not yet set properties) we use the matproperty unit
+                unit = getattr(FreeCAD.Units, self.matproperty)
+                quantity = FreeCAD.Units.Quantity(1, unit)
+                item.setText(str(editor.value()) + " " + quantity.getUserPreferred()[2])
+            else:
+                # since we checked we have a quantity, we can use split() to get the unit
+                item.setText(str(editor.value()) + " " + self.Value.split()[1])
+
         else:
 
             super(MaterialsDelegate, self).setEditorData(editor, index)
-
 
 
 # ************************************************************************************************
@@ -740,35 +770,67 @@ def matProperWidget(parent=None, matproperty=None, Type="String", Value=None,
             lineEdit.setText(Value)
 
     elif Type == "Quantity":
+        # We don't use a Gui::QuantitySpinBox widget because depending on the value,
+        # the unit might change. For some inputs there is no way to do this right,
+        # see the comment above in "def setEditorData". Moreover it is error-prone to provide
+        # a unit as in the Gui::QuantitySpinBox widget because users likely delete the unit or
+        # change it accidentally. It is therefore better not to display the unit while editing.
+        widget = ui.createWidget("Gui::DoubleSpinBox")
 
-        widget = ui.createWidget("Gui::InputField")
-        # print(matproperty)
-        if hasattr(FreeCAD.Units, matproperty):
-            unit = getattr(FreeCAD.Units, matproperty)
-            quantity = FreeCAD.Units.Quantity(1, unit)
-            widget.setProperty("unit", quantity.getUserPreferred()[2])
+        if minimum is None:
+            widget.setMinimum(-1*sys.float_info.max)
         else:
-            FreeCAD.Console.PrintWarning(
-                "Not known unit for property: {}. Probably the Quantity does not have a unit.\n"
-                .format(matproperty)
-            )
+            widget.setMinimum(minimum)
+        if maximum is None:
+            widget.setMaximum(sys.float_info.max)
+        else:
+            widget.setMaximum(maximum)
+
+        # we must increase the digits before we can set the value
+        # 6 is sufficient as some metarial cards use e.g. "0.000011"
+        widget.setDecimals(6)
+
+        # for properties with an underscored number (vectorial values),
+        # we must strip the part after the first underscore to obtain the bound unit
+        # since in cardutils.py in def get_material_template
+        # the underscores were removed, we must check for numbers
+        import re
+        if re.search(r'\d', matproperty):
+            matpropertyNum = matproperty.rstrip('0123456789')
+            matproperty = matpropertyNum
+
+        if Value:
+            widget.setValue(float(Value.split()[0]))
             # the Gui::InputField is used for Floats too, because of the digits
 
     elif Type == "Integer":
 
         widget = ui.createWidget("Gui::UIntSpinBox")
+        if minimum is None:
+            widget.setMinimum(0)
+        else:
+            widget.setMinimum(minimum)
+        if maximum is None:
+            widget.setMaximum(sys.maxsize)
+        else:
+            widget.setMaximum(maximum)
 
     elif Type == "Float":
-        widget = ui.createWidget("Gui::PrefDoubleSpinBox")
+        widget = ui.createWidget("Gui::DoubleSpinBox")
         # the magnetic permeability is the parameter for which many decimals matter
         # the most however, even for this, 6 digits are sufficient
         widget.setDecimals(6)
         # for almost all Float parameters of materials a step of 1 would be too large
         widget.setSingleStep(0.1)
         if minimum is None:
-            widget.setProperty("minimum", -1e12)
+            widget.setMinimum(sys.float_info.min)
+        else:
+            widget.setMinimum(minimum)
         if maximum is None:
-            widget.setProperty("maximum", 1e12)
+            widget.setMaximum(sys.float_info.max)
+        else:
+            widget.setMaximum(maximum)
+        widget.setValue(float(Value))
 
     #     widget = ui.createWidget("Gui::PrefDoubleSpinBox")
     # has only 2 digit precision, but for example RelativePermittivity needs much more
@@ -800,15 +862,6 @@ def matProperWidget(parent=None, matproperty=None, Type="String", Value=None,
     else:
 
         widget = QtGui.QLineEdit()
-
-    if minimum is not None:
-        widget.setProperty("minimum", minimum)
-    if maximum is not None:
-        widget.setProperty("maximum", maximum)
-    if stepsize is not None:
-        widget.setProperty("stepsize", stepsize)
-    if precision is not None:
-        widget.setProperty("precision", precision)
 
     widget.setProperty("Type", Type)
 
