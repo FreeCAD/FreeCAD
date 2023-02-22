@@ -229,6 +229,8 @@ SET(Properties_SRCS
     PropertyTopoShape.h
     PropertyGeometryList.cpp
     PropertyGeometryList.h
+    PropertyTopoShapeList.cpp
+    PropertyTopoShapeList.h
 )
 SOURCE_GROUP("Properties" FILES ${Properties_SRCS})
 

@@ -212,7 +212,7 @@ public:
     void exportStep(const char *FileName) const;
     void exportBrep(const char *FileName) const;
     void exportBrep(std::ostream&) const;
-    void exportBinary(std::ostream&);
+    void exportBinary(std::ostream&) const;
     void exportStl (const char *FileName, double deflection) const;
     void exportFaceSet(double, double, const std::vector<App::Color>&, std::ostream&) const;
     void exportLineSet(std::ostream&) const;

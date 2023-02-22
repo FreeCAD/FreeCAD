@@ -171,6 +171,8 @@
 #include <Base/Exception.h>
 #include <Base/Placement.h>
 #include <Base/Tools.h>
+#include <Base/Reader.h>
+#include <Base/Writer.h>
 
 #include "TopoShape.h"
 #include "BRepOffsetAPI_MakeOffsetFix.h"
@@ -994,7 +996,7 @@ void TopoShape::exportBrep(std::ostream& out) const
     SS.Write(this->_Shape, out);
 }
 
-void TopoShape::exportBinary(std::ostream& out)
+void TopoShape::exportBinary(std::ostream& out) const
 {
     // See BinTools_FormatVersion of OCCT 7.6
     enum {
@@ -1202,20 +1204,57 @@ bool TopoShape::getCenterOfGravity(Base::Vector3d& center) const
     return true;
 }
 
-void TopoShape::Save (Base::Writer & ) const
+void TopoShape::Save (Base::Writer& writer) const
 {
+    if(!writer.isForceXML()) {
+        //See SaveDocFile(), RestoreDocFile()
+        // add a filename to the writer's list.  Each file on the list is eventually
+        // processed by SaveDocFile().
+        if (writer.getMode("BinaryBrep")) {
+            writer.Stream() << writer.ind() << "<TopoShape file=\""
+                            << writer.addFile("TopoShape.bin", this)
+                            << "\"/>" << std::endl;
+        }
+        else {
+            writer.Stream() << writer.ind() << "<TopoShape file=\""
+                            << writer.addFile("TopoShape.brp", this)
+                            << "\"/>" << std::endl;
+        }
+    }}
+
+void TopoShape::Restore(Base::XMLReader& reader)
+{
+    reader.readElement("TopoShape");
+    std::string file (reader.getAttribute("file") );
+
+    if (!file.empty()) {
+        // add a filename to the writer's list.  Each file on the list is eventually
+        // processed by RestoreDocFile().
+        reader.addFile(file.c_str(),this);
+    }
 }
 
-void TopoShape::Restore(Base::XMLReader &)
+void TopoShape::SaveDocFile (Base::Writer& writer) const
 {
+    if (getShape().IsNull()) {
+        return;
+    }
+    //the writer has already opened a stream with the appropriate filename
+    if (writer.getMode("BinaryBrep")) {
+        exportBinary(writer.Stream());
+    } else {
+        exportBrep(writer.Stream());
+    }
 }
 
-void TopoShape::SaveDocFile (Base::Writer &) const
+void TopoShape::RestoreDocFile(Base::Reader& reader)
 {
-}
-
-void TopoShape::RestoreDocFile(Base::Reader &)
-{
+    Base::FileInfo brep(reader.getFileName());
+    if (brep.hasExtension("bin")) {
+        importBinary(reader);
+    } else {
+        importBrep(reader);
+    }
 }
 
 unsigned int TopoShape_RefCountShapes(const TopoDS_Shape& aShape)
