@@ -149,7 +149,6 @@ void SketcherSettingsGrid::saveSettings()
 {
     ui->checkBoxShowGrid->onSave();
     ui->gridSize->onSave();
-    ui->checkBoxGridSnap->onSave();
     ui->checkBoxGridAuto->onSave();
     ui->gridSizePixelThreshold->onSave();
     ui->gridLineColor->onSave();
@@ -172,7 +171,6 @@ void SketcherSettingsGrid::loadSettings()
 {
     ui->checkBoxShowGrid->onRestore();
     ui->gridSize->onRestore();
-    ui->checkBoxGridSnap->onRestore();
     ui->checkBoxGridAuto->onRestore();
     ui->gridSizePixelThreshold->onRestore();
     ui->gridLineColor->onRestore();

@@ -28,6 +28,7 @@
 #include <Mod/Part/PartGlobal.h>
 #include <App/PropertyStandard.h>
 #include <App/PropertyUnits.h>
+#include <App/Material.h>
 
 namespace PartGui {
 
@@ -40,8 +41,6 @@ class PartGuiExport ViewProviderGridExtension : public Gui::ViewProviderExtensio
 public:
     App::PropertyBool ShowGrid;
     App::PropertyLength GridSize;
-    App::PropertyEnumeration GridStyle;
-    App::PropertyBool GridSnap;
     App::PropertyBool GridAuto;
 
     /// constructor
@@ -56,8 +55,14 @@ public:
 
     SoSeparator* getGridNode();
 
+    /** Return the distance to the closest point in the grid.
+    *   The point closer to the grid is returned by reference
+    */
+    void getClosestGridPoint(double &x, double &y) const;
+    double getGridSize() const;
+
 protected:
-    void extensionOnChanged(const App::Property* /*prop*/) override;
+    void extensionOnChanged(const App::Property*) override;
 
     // configuration parameters
     void setGridSizePixelThreshold(int value);
@@ -66,13 +71,9 @@ protected:
     void setGridDivLinePattern(int pattern);
     void setGridLineWidth(int width);
     void setGridDivLineWidth(int width);
-    void setGridLineColor(unsigned int color);
-    void setGridDivLineColor(unsigned int color);
+    void setGridLineColor(const App::Color & color);
+    void setGridDivLineColor(const App::Color & color);
 
-
-    //void extensionRestore(Base::XMLReader& reader) override;
-    //virtual void extHandleChangedPropertyName(Base::XMLReader &reader, const char* TypeName, const char* PropName) override;
-    //void handleChangedPropertyType(Base::XMLReader& reader, const char* TypeName, App::Property* prop) override;
     virtual bool extensionHandleChangedPropertyType(Base::XMLReader &reader, const char * TypeName, App::Property * prop) override;
 
 

@@ -85,6 +85,13 @@ namespace SketcherGui {
 class EditModeCoinManager;
 class DrawSketchHandler;
 
+enum class SnapMode { // to be moved to SnapManager
+    None,
+    SnapToObject,
+    SnapToAngle,
+    SnapToGrid,
+};
+
 using GeoList = Sketcher::GeoList;
 using GeoListFacade = Sketcher::GeoListFacade;
 
@@ -474,6 +481,9 @@ public:
     void onSelectionChanged(const Gui::SelectionChanges& msg) override;
     //@}
 
+    void setSnapMode(SnapMode mode);
+    SnapMode getSnapMode() const;
+
     /** @name Access to Sketch and Solver objects */
     //@{
     /// get the pointer to the sketch document object
@@ -779,6 +789,8 @@ private:
 
     SoNodeSensor cameraSensor;
     int viewOrientationFactor; // stores if sketch viewed from front or back
+
+    SnapMode snapMode = SnapMode::None; // temporary - to be moved to SnapManager
 };
 
 } // namespace PartGui

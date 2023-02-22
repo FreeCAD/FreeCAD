@@ -49,26 +49,6 @@
        </widget>
       </item>
       <item row="1" column="0">
-       <widget class="Gui::PrefCheckBox" name="checkBoxGridSnap">
-        <property name="enabled">
-         <bool>true</bool>
-        </property>
-        <property name="toolTip">
-         <string>New points will snap to the nearest grid line.
-Points must be set closer than a fifth of the grid spacing to a grid line to snap.</string>
-        </property>
-        <property name="text">
-         <string>Grid snap</string>
-        </property>
-        <property name="prefEntry" stdset="0">
-         <cstring>GridSnap</cstring>
-        </property>
-        <property name="prefPath" stdset="0">
-         <cstring>Mod/Sketcher/General</cstring>
-        </property>
-       </widget>
-      </item>
-      <item row="2" column="0">
        <widget class="Gui::PrefCheckBox" name="checkBoxGridAuto">
         <property name="checked">
          <bool>true</bool>
@@ -87,7 +67,7 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
         </property>
        </widget>
       </item>
-      <item row="3" column="0">
+      <item row="2" column="0">
        <widget class="QLabel" name="label_gridSize">
         <property name="text">
          <string>Grid spacing</string>
@@ -97,7 +77,7 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
         </property>
        </widget>
       </item>
-      <item row="3" column="1">
+      <item row="2" column="1">
        <widget class="Gui::PrefQuantitySpinBox" name="gridSize">
         <property name="toolTip">
          <string>Distance between two subsequent grid lines</string>
@@ -128,7 +108,7 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
         </property>
        </widget>
       </item>
-      <item row="4" column="0">
+      <item row="3" column="0">
        <widget class="QLabel" name="label_gridSizePixelThreshold">
         <property name="text">
          <string>Pixel size threshold</string>
@@ -138,7 +118,7 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
         </property>
        </widget>
       </item>
-      <item row="4" column="1">
+      <item row="3" column="1">
        <widget class="Gui::PrefSpinBox" name="gridSizePixelThreshold">
         <property name="toolTip">
          <string>While using 'Grid Auto Spacing' this sets a threshold in pixel to the grid spacing. The grid spacing change if it becomes smaller than this number of pixel.</string>
