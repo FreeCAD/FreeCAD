@@ -79,6 +79,7 @@ SET(FemExamples_SRCS
     femexamples/equation_electrostatics_electricforce_elmer_nongui6.py
     femexamples/equation_flow_elmer_2D.py
     femexamples/equation_flux_elmer.py
+    femexamples/equation_magnetodynamics_elmer.py
     femexamples/frequency_beamsimple.py
     femexamples/manager.py
     femexamples/material_multiple_bendingbeam_fiveboxes.py

@@ -49,7 +49,7 @@ To run the example from Python console use:
 from femexamples.equation_flux_elmer import setup
 setup()
 
-Flow and Heat equation in FreeCAD FEM-Elmer
+Potential flux and heat flux - Elmer solver
 
 """
 

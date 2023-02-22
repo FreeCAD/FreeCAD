@@ -54,7 +54,7 @@ To run the example from Python console use:
 from femexamples.equation_flow_elmer_2D import setup
 setup()
 
-Flow and Heat equation in FreeCAD FEM-Elmer
+Flow and Heat equation - Elmer solver
 
 """
 
