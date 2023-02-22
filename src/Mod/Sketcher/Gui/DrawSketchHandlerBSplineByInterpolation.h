@@ -201,7 +201,8 @@ public:
             SplineDegree = QInputDialog::getInt(
                 Gui::getMainWindow(),
                 QObject::tr("B-Spline Degree"),
-                QObject::tr("Define B-Spline Degree, between 1 and %1:")
+                QObject::tr("NOTE: For construction by interpolation, this degree is ignored for now.\n"
+                            "Define B-Spline Degree, between 1 and %1:")
                 .arg(QString::number(Geom_BSplineCurve::MaxDegree())),
                 SplineDegree, 1, Geom_BSplineCurve::MaxDegree(), 1);
             // FIXME: Pressing Esc here also finishes the B-Spline creation.
@@ -263,8 +264,7 @@ public:
                 return;
             }
         }
-        // TODO: On pressing, say, W, modify last pole's weight
-        // TODO: On pressing, say, M, modify next knot's multiplicity
+        // TODO: On pressing, say, M, modify the knot's multiplicity
 
         return;
     }
