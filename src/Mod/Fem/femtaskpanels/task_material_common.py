@@ -260,13 +260,43 @@ class _TaskPanel:
                 "This parameter is not saved in the material data.\n"
             )
 
+    def isfloat(self, num):
+        try:
+            float(num)
+            return True
+        except ValueError:
+            return False
+
     # choose material ****************************************************************************
     def get_material_card(self, material):
         for a_mat in self.materials:
             # check if every item of the current material fits to a known material card
             # if all items were found we know it is the right card
-            unmatched_items = set(self.materials[a_mat].items()) ^ set(material.items())
-            if len(unmatched_items) == 0:
+            # we can hereby not simply perform
+            # set(self.materials[a_mat].items()) ^ set(material.items())
+            # because emtries are often identic, just appear in the set in a different order
+            unmatched_item = False
+            for item in material.items():
+                if item not in self.materials[a_mat].items():
+                    unmatched_item = True
+                    # often the difference is just a decimal e.g. "120" to "120.0"
+                    # therefore first check if the item name exists
+                    for a_mat_item in self.materials[a_mat].items():
+                        if item[0] == a_mat_item[0]:
+                            # now check if we have a number value in a unit
+                            if item[1].split() != item[1]:
+                                if not self.isfloat(item[1].split()[0]):
+                                    break
+                                if float(item[1].split()[0]) == float(a_mat_item[1].split()[0]):
+                                    unmatched_item = False
+                            else:
+                                # it can be a unitless number
+                                if not self.isfloat(item[1]):
+                                    break
+                                if float(item[1]) == float(a_mat_item[1]):
+                                    unmatched_item = False
+                    break
+            if not unmatched_item:
                 return a_mat
         return ""
 
