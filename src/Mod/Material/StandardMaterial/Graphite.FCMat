@@ -13,15 +13,15 @@ ReferenceSource = Properties and characteristics of graphite
 SourceURL = https://www.entegris.com/content/dam/web/resources/manuals-and-guides/manual-properties-and-characteristics-of-graphite-109441.pdf
 
 [Mechanical]
-CompressiveStrength = 120,000 MPa
-Density = 1750,000 kg/m^3
+CompressiveStrength = 120.000 MPa
+Density = 1750.000 kg/m^3
 PoissonRatio = 0.20
 UltimateTensileStrength = 34 MPa
-YoungsModulus = 11,7 MPa
+YoungsModulus = 11.7 MPa
 
 [Thermal]
-SpecificHeat = 0,72 kJ/kg/K
-ThermalConductivity = 96,000 W/m/K
+SpecificHeat = 0.72 kJ/kg/K
+ThermalConductivity = 96.000 W/m/K
 ThermalExpansionCoefficient = 8e-6 1/K
 
 [Electrical]
