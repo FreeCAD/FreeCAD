@@ -1517,8 +1517,8 @@ void Document::setTransactionMode(int iMode)
 //--------------------------------------------------------------------------
 // constructor
 //--------------------------------------------------------------------------
-Document::Document(const char *name)
-    : myName(name)
+Document::Document(const char* documentName)
+    : myName(documentName)
 {
     // Remark: In a constructor we should never increment a Python object as we cannot be sure
     // if the Python interpreter gets a reference of it. E.g. if we increment but Python don't
@@ -1533,15 +1533,29 @@ Document::Document(const char *name)
     Console().Log("+App::Document: %p\n", this);
 #endif
     std::string CreationDateString = Base::TimeInfo::currentDateTimeString();
-    std::string Author = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Document")->GetASCII("prefAuthor", "");
-    std::string AuthorComp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Document")->GetASCII("prefCompany", "");
+    std::string Author = App::GetApplication()
+                             .GetParameterGroupByPath("User parameter:BaseApp/Preferences/Document")
+                             ->GetASCII("prefAuthor", "");
+    std::string AuthorComp =
+        App::GetApplication()
+            .GetParameterGroupByPath("User parameter:BaseApp/Preferences/Document")
+            ->GetASCII("prefCompany", "");
     ADD_PROPERTY_TYPE(Label, ("Unnamed"), 0, Prop_None, "The name of the document");
-    ADD_PROPERTY_TYPE(FileName, (""), 0, PropertyType(Prop_Transient | Prop_ReadOnly), "The path to the file where the document is saved to");
+    ADD_PROPERTY_TYPE(FileName,
+                      (""),
+                      0,
+                      PropertyType(Prop_Transient | Prop_ReadOnly),
+                      "The path to the file where the document is saved to");
     ADD_PROPERTY_TYPE(CreatedBy, (Author.c_str()), 0, Prop_None, "The creator of the document");
-    ADD_PROPERTY_TYPE(CreationDate, (CreationDateString.c_str()), 0, Prop_ReadOnly, "Date of creation");
+    ADD_PROPERTY_TYPE(
+        CreationDate, (CreationDateString.c_str()), 0, Prop_ReadOnly, "Date of creation");
     ADD_PROPERTY_TYPE(LastModifiedBy, (""), 0, Prop_None, 0);
     ADD_PROPERTY_TYPE(LastModifiedDate, ("Unknown"), 0, Prop_ReadOnly, "Date of last modification");
-    ADD_PROPERTY_TYPE(Company, (AuthorComp.c_str()), 0, Prop_None, "Additional tag to save the name of the company");
+    ADD_PROPERTY_TYPE(Company,
+                      (AuthorComp.c_str()),
+                      0,
+                      Prop_None,
+                      "Additional tag to save the name of the company");
     ADD_PROPERTY_TYPE(Comment, (""), 0, Prop_None, "Additional tag to save a comment");
     ADD_PROPERTY_TYPE(Meta, (), 0, Prop_None, "Map with additional meta information");
     ADD_PROPERTY_TYPE(Material, (), 0, Prop_None, "Map with material properties");
@@ -1551,23 +1565,34 @@ Document::Document(const char *name)
     ADD_PROPERTY_TYPE(Uid, (id), 0, Prop_ReadOnly, "UUID of the document");
 
     // license stuff
-    long licenseId = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Document")->GetInt("prefLicenseType", 0);
-    App::License licenseType{licenseId};
-    std::string license = licenseType.getLicense();
-    std::string licenseUrl = licenseType.getUrl();
-    licenseUrl = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Document")->GetASCII("prefLicenseUrl", licenseUrl.c_str());
+    auto paramGrp {App::GetApplication().GetParameterGroupByPath(
+        "User parameter:BaseApp/Preferences/Document")};
+    auto index = static_cast<int>(paramGrp->GetInt("prefLicenseType", 0));
+    const char* name = App::licenseItems.at(index).at(App::posnOfFullName);
+    const char* url = App::licenseItems.at(index).at(App::posnOfUrl);
+    std::string licenseUrl = (paramGrp->GetASCII("prefLicenseUrl", url));
 
-    ADD_PROPERTY_TYPE(License, (license.c_str()), 0, Prop_None, "License string of the Item");
-    ADD_PROPERTY_TYPE(LicenseURL, (licenseUrl.c_str()), 0, Prop_None, "URL to the license text/contract");
-    ADD_PROPERTY_TYPE(ShowHidden, (false), 0, PropertyType(Prop_None),
+    ADD_PROPERTY_TYPE(License, (name), 0, Prop_None, "License string of the Item");
+    ADD_PROPERTY_TYPE(
+        LicenseURL, (licenseUrl.c_str()), 0, Prop_None, "URL to the license text/contract");
+    ADD_PROPERTY_TYPE(ShowHidden,
+                      (false),
+                      0,
+                      PropertyType(Prop_None),
                       "Whether to show hidden object items in the tree view");
 
     // this creates and sets 'TransientDir' in onChanged()
-    ADD_PROPERTY_TYPE(TransientDir, (""), 0, PropertyType(Prop_Transient | Prop_ReadOnly),
+    ADD_PROPERTY_TYPE(TransientDir,
+                      (""),
+                      0,
+                      PropertyType(Prop_Transient | Prop_ReadOnly),
                       "Transient directory, where the files live while the document is open");
-    ADD_PROPERTY_TYPE(Tip, (nullptr), 0, PropertyType(Prop_Transient),
-                      "Link of the tip object of the document");
-    ADD_PROPERTY_TYPE(TipName, (""), 0, PropertyType(Prop_Hidden | Prop_ReadOnly),
+    ADD_PROPERTY_TYPE(
+        Tip, (nullptr), 0, PropertyType(Prop_Transient), "Link of the tip object of the document");
+    ADD_PROPERTY_TYPE(TipName,
+                      (""),
+                      0,
+                      PropertyType(Prop_Hidden | Prop_ReadOnly),
                       "Link of the tip object of the document");
     Uid.touch();
 }
