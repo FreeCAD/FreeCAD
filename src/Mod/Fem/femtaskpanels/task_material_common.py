@@ -318,7 +318,8 @@ class _TaskPanel:
             FreeCAD.Console.PrintLog(
                 "Card path not in cards, material dict will be used to open Material Editor.\n"
             )
-            new_material_params = MaterialEditor.editMaterial(material=self.material)
+            new_material_params = MaterialEditor.editMaterial(
+                material=self.material, category=self.obj.Category)
         else:
             new_material_params = MaterialEditor.editMaterial(card_path=self.card_path,
                                                               category=self.obj.Category)
@@ -391,7 +392,6 @@ class _TaskPanel:
     def check_material_keys(self):
         # FreeCAD units definition is at file end of src/Base/Unit.cpp
         if not self.material:
-            FreeCAD.Console.PrintMessage("For some reason all material data is empty!\n")
             self.material["Name"] = "NoName"
         if "Density" in self.material:
             if "Density" not in str(Units.Unit(self.material["Density"])):
@@ -402,10 +402,10 @@ class _TaskPanel:
                 )
                 self.material["Density"] = "0 kg/m^3"
         else:
-            FreeCAD.Console.PrintMessage(
-                "Density not found in {}\n"
-                .format(self.material["Name"])
-            )
+            if self.material["Name"] != "NoName":
+                FreeCAD.Console.PrintMessage(
+                    "Density not found in {}\n".format(self.material["Name"])
+                )
             self.material["Density"] = "0 kg/m^3"
         if self.obj.Category == "Solid":
             # mechanical properties
@@ -419,10 +419,10 @@ class _TaskPanel:
                     )
                     self.material["YoungsModulus"] = "0 MPa"
             else:
-                FreeCAD.Console.PrintMessage(
-                    "YoungsModulus not found in {}\n"
-                    .format(self.material["Name"])
-                )
+                if self.material["Name"] != "NoName":
+                    FreeCAD.Console.PrintMessage(
+                        "YoungsModulus not found in {}\n".format(self.material["Name"])
+                    )
                 self.material["YoungsModulus"] = "0 MPa"
             if "PoissonRatio" in self.material:
                 # PoissonRatio does not have a unit, but it is checked if there is no value at all
@@ -437,10 +437,10 @@ class _TaskPanel:
                     )
                     self.material["PoissonRatio"] = "0"
             else:
-                FreeCAD.Console.PrintMessage(
-                    "PoissonRatio not found in {}\n"
-                    .format(self.material["Name"])
-                )
+                if self.material["Name"] != "NoName":
+                    FreeCAD.Console.PrintMessage(
+                        "PoissonRatio not found in {}\n".format(self.material["Name"])
+                    )
                 self.material["PoissonRatio"] = "0"
         if self.obj.Category == "Fluid":
             # Fluidic properties
@@ -454,10 +454,10 @@ class _TaskPanel:
                     )
                     self.material["KinematicViscosity"] = "0 m^2/s"
             else:
-                FreeCAD.Console.PrintMessage(
-                    "KinematicViscosity not found in {}\n"
-                    .format(self.material["Name"])
-                )
+                if self.material["Name"] != "NoName":
+                    FreeCAD.Console.PrintMessage(
+                        "KinematicViscosity not found in {}\n".format(self.material["Name"])
+                    )
                 self.material["KinematicViscosity"] = "0 m^2/s"
             if "ThermalExpansionCoefficient" in self.material:
                 vol_ther_ex_co = self.material["ThermalExpansionCoefficient"]
@@ -469,10 +469,11 @@ class _TaskPanel:
                     )
                     self.material["ThermalExpansionCoefficient"] = "0 1/K"
             else:
-                FreeCAD.Console.PrintMessage(
-                    "ThermalExpansionCoefficient not found in {}\n"
-                    .format(self.material["Name"])
-                )
+                if self.material["Name"] != "NoName":
+                    FreeCAD.Console.PrintMessage(
+                        "ThermalExpansionCoefficient not found in {}\n"
+                        .format(self.material["Name"])
+                    )
                 self.material["ThermalExpansionCoefficient"] = "0 1/K"
             if "VolumetricThermalExpansionCoefficient" in self.material:
                 # unit type VolumetricThermalExpansionCoefficient is ThermalExpansionCoefficient
@@ -515,10 +516,10 @@ class _TaskPanel:
                 )
                 self.material["ThermalConductivity"] = "0 W/m/K"
         else:
-            FreeCAD.Console.PrintMessage(
-                "ThermalConductivity not found in {}\n"
-                .format(self.material["Name"])
-            )
+            if self.material["Name"] != "NoName":
+                FreeCAD.Console.PrintMessage(
+                    "ThermalConductivity not found in {}\n".format(self.material["Name"])
+                )
             self.material["ThermalConductivity"] = "0 W/m/K"
         if "ThermalExpansionCoefficient" in self.material:
             the_ex_co = self.material["ThermalExpansionCoefficient"]
@@ -530,10 +531,10 @@ class _TaskPanel:
                 )
                 self.material["ThermalExpansionCoefficient"] = "0 um/m/K"
         else:
-            FreeCAD.Console.PrintMessage(
-                "ThermalExpansionCoefficient not found in {}\n"
-                .format(self.material["Name"])
-            )
+            if self.material["Name"] != "NoName":
+                FreeCAD.Console.PrintMessage(
+                    "ThermalExpansionCoefficient not found in {}\n".format(self.material["Name"])
+                )
             self.material["ThermalExpansionCoefficient"] = "0 um/m/K"
         if "SpecificHeat" in self.material:
             if "SpecificHeat" not in str(Units.Unit(self.material["SpecificHeat"])):
@@ -544,10 +545,10 @@ class _TaskPanel:
                 )
                 self.material["SpecificHeat"] = "0 J/kg/K"
         else:
-            FreeCAD.Console.PrintMessage(
-                "SpecificHeat not found in {}\n"
-                .format(self.material["Name"])
-            )
+            if self.material["Name"] != "NoName":
+                FreeCAD.Console.PrintMessage(
+                    "SpecificHeat not found in {}\n".format(self.material["Name"])
+                )
             self.material["SpecificHeat"] = "0 J/kg/K"
         FreeCAD.Console.PrintMessage("\n")
 
