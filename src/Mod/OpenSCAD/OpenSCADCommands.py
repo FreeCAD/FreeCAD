@@ -420,7 +420,12 @@ class AddSCADTask:
         self.addelement()
 
     def loadelement(self):
-        filename, filter = QtGui.QFileDialog.getOpenFileName(parent=self.form, caption='Open file', dir='.', filter='OpenSCAD Files (*.scad)',selectedFilter='',option=0)
+        filename, _ = QtGui.QFileDialog.getOpenFileName(
+            parent=self.form, 
+            caption='Open file', 
+            dir='.', 
+            filter='OpenSCAD Files (*.scad)'
+        )
 
         if filename:
            print('filename :'+filename)
@@ -429,7 +434,12 @@ class AddSCADTask:
               self.form.textEdit.setText(data)
 
     def saveelement(self) :
-        filename, filter = QtGui.QFileDialog.getSaveFileName(parent=self.form, caption='Open file', dir='.', filter='OpenSCAD Files (*.scad)',selectedFilter='',option=0)
+        filename, _ = QtGui.QFileDialog.getSaveFileName(
+            parent=self.form, 
+            caption='Open file', 
+            dir='.', 
+            filter='OpenSCAD Files (*.scad)'
+        )
 
         if filename:
            Text = self.form.textEdit.toPlainText()
