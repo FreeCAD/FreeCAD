@@ -238,7 +238,7 @@ class MaterialEditor:
             # the card could be updated the dict not
             self.widget.ComboMaterial.setCurrentIndex(index)  # set after tree params
         else:
-            FreeCAD.Console.PrintError("material card not found: {}\n".format(self.card_path))
+            FreeCAD.Console.PrintError("Material card not found: {}\n".format(self.card_path))
 
     def updateCardsInCombo(self):
 
@@ -511,13 +511,19 @@ class MaterialEditor:
             directory = self.directory + os.sep + "StandardMaterial"
         else:
             directory = self.directory + os.sep + "FluidMaterial"
+        if self.card_path is None:
+            self.card_path = directory
         filetuple = QtGui.QFileDialog.getOpenFileName(
             QtGui.QApplication.activeWindow(),
             "Open FreeCAD Material file",
-            directory,
+            self.card_path,
             "*.FCMat"
         )
-        self.card_path = filetuple[0]
+        if os.path.isfile(filetuple[0]):
+            card_path_new = filetuple[0]
+        else:
+            FreeCAD.Console.PrintError("Error: Invalid path to the material file\n")
+            return
         # we cannot simply execute findData(self.card_path) because e.g. on Windows
         # the return path has "/" as folder separator, but the paths in the ComboMaterial
         # have also some "\" in them. For example a path can look like this:
@@ -527,7 +533,7 @@ class MaterialEditor:
         if self.initialIndex > -1:
             path = self.widget.ComboMaterial.itemData(self.initialIndex)
             # at first check if we have a uniform usage
-            # if a character is not present, rsplit delivers the initial string
+            # (if a character is not present, rsplit delivers the initial string)
             testBackslash = path.rsplit('\\', 1)[0]
             testSlash = path.rsplit('/', 1)[0]
             if testBackslash == path:
@@ -543,31 +549,32 @@ class MaterialEditor:
                     path = pathBackslash + '\\'
                 else:
                     path = pathSlash + '/'
-            # we know that the return path has uniformly either / or \ but not yet what
-            testBackslash = self.card_path.rsplit('\\', 1)[0]
-            if testBackslash == self.card_path:
-                self.card_path = path + self.card_path.rsplit('/', 1)[1]
+            # we know that card_path_new has uniformly either / or \ but not yet what
+            testBackslash = card_path_new.rsplit('\\', 1)[0]
+            if testBackslash == card_path_new:
+                self.card_path = path + card_path_new.rsplit('/', 1)[1]
             else:
-                self.card_path = path + self.card_path.rsplit('\\', 1)[1]
+                self.card_path = path + card_path_new.rsplit('\\', 1)[1]
         index = self.widget.ComboMaterial.findData(self.card_path)
 
         # check if card_path is in known path, means it is in combo box already
         # if not print message, and give some feedbach that the card parameter are loaded
-        if os.path.isfile(self.card_path):
-            if index == -1:
-                FreeCAD.Console.PrintMessage(
-                    "Card path: {} not found in known cards.\n"
-                    "The material parameter only are loaded.\n"
-                    .format(self.card_path)
-                )
-                from importFCMat import read
-                materialDict = read(self.card_path)
-                if materialDict:
-                    self.updateMatParamsInTree(materialDict)
-                    self.widget.ComboMaterial.setCurrentIndex(0)
-                    # set combo box to the none material after tree params
-            else:
-                self.chooseMaterial(index)
+        if index == -1:
+            FreeCAD.Console.PrintMessage(
+                "Card path: {} not found in known cards.\n"
+                "The material parameter only are loaded.\n"
+                .format(self.card_path)
+            )
+            # a material card was chosen that is unknown, thus use its full path
+            self.card_path = card_path_new
+            from importFCMat import read
+            materialDict = read(self.card_path)
+            if materialDict:
+                self.updateMatParamsInTree(materialDict)
+                self.widget.ComboMaterial.setCurrentIndex(0)
+                # set combo box to the none material after tree params
+        else:
+            self.chooseMaterial(index)
         self.directory = os.path.dirname(self.card_path)
 
     def savefile(self):
@@ -732,7 +739,7 @@ def matProperWidget(parent=None, matproperty=None, Type="String", Value=None,
             lineEdit = widget.children()[1]
             lineEdit.setText(Value)
 
-    elif Type == "Quantity" or Type == "Float":
+    elif Type == "Quantity":
 
         widget = ui.createWidget("Gui::InputField")
         # print(matproperty)
@@ -751,7 +758,17 @@ def matProperWidget(parent=None, matproperty=None, Type="String", Value=None,
 
         widget = ui.createWidget("Gui::UIntSpinBox")
 
-    # elif Type == "Float":
+    elif Type == "Float":
+        widget = ui.createWidget("Gui::PrefDoubleSpinBox")
+        # the magnetic permeability is the parameter for which many decimals matter
+        # the most however, even for this, 6 digits are sufficient
+        widget.setDecimals(6)
+        # for almost all Float parameters of materials a step of 1 would be too large
+        widget.setSingleStep(0.1)
+        if minimum is None:
+            widget.setProperty("minimum", -1e12)
+        if maximum is None:
+            widget.setProperty("maximum", 1e12)
 
     #     widget = ui.createWidget("Gui::PrefDoubleSpinBox")
     # has only 2 digit precision, but for example RelativePermittivity needs much more
