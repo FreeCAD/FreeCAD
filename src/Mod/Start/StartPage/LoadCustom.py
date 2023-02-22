@@ -35,10 +35,9 @@ if cfolders:
     if not os.path.isdir(cfolder):
         cfolder = os.path.dirname(cfolder)
     f = unquote(filename).replace("+", " ")
-    if f.lower().endswith(".fcstd"):
-        FreeCAD.open(os.path.join(cfolder, f))
-    else:
-        FreeCAD.loadFile(os.path.join(cfolder, f))
+    ext = os.path.splitext(filename)[1].lower().strip(".")
+    mod = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Start").GetString("DefaultImport"+ext,"")
+    FreeCAD.loadFile(os.path.join(cfolder, f),mod)
     FreeCADGui.activeDocument().sendMsgToViews("ViewFit")
 
     from StartPage import StartPage
