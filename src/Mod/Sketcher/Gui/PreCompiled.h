@@ -73,6 +73,8 @@
 # include <Gui/QtAll.h>
 #endif
 
+#include <QWidgetAction>
+
 // all of Inventor
 #ifndef __InventorAll__
 # include <Gui/InventorAll.h>

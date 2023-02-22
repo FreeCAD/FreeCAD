@@ -220,14 +220,6 @@ void ViewProviderSketch::ParameterObserver::initParameters()
             {[this](const std::string & string, App::Property * property){ updateBoolProperty(string, property, true);}, &Client.Autoconstraints }},
         {"AvoidRedundantAutoconstraints",
             {[this](const std::string & string, App::Property * property){ updateBoolProperty(string, property, true);}, &Client.AvoidRedundant }},
-        {"ShowGrid",
-            {[this](const std::string & string, App::Property * property){ updateBoolProperty(string, property, false);}, &Client.ShowGrid }},
-        {"GridSnap",
-            {[this](const std::string & string, App::Property * property){ updateBoolProperty(string, property, false);}, &Client.GridSnap }},
-        {"GridAuto",
-            {[this](const std::string & string, App::Property * property){ updateBoolProperty(string, property, true); }, &Client.GridAuto }},
-        {"GridSize",
-            {[this](const std::string & string, App::Property * property){ updateGridSize(string, property);}, &Client.GridSize }},
         {"SketchEdgeColor",
             {[this](const std::string & string, App::Property * property){ updateColorProperty(string, property, 1.f, 1.f, 1.f);}, &Client.LineColor }},
         {"SketchVertexColor",
@@ -251,9 +243,15 @@ void ViewProviderSketch::ParameterObserver::initParameters()
         {"GridDivLineWidth",
             {[this](const std::string & string, [[maybe_unused]] App::Property * property){ auto v = getSketcherGeneralParameter(string, 2); Client.setGridDivLineWidth(v); }, nullptr }},
         {"GridLineColor",
-            {[this, packedDefaultGridColor](const std::string & string, [[maybe_unused]] App::Property * property){ auto v = getSketcherGeneralParameter(string, packedDefaultGridColor); Client.setGridLineColor(v); }, nullptr }},
+            {[this, packedDefaultGridColor](const std::string & string, [[maybe_unused]] App::Property * property){
+                auto v = getSketcherGeneralParameter(string, packedDefaultGridColor);
+                auto color = App::Color(v);
+                Client.setGridLineColor(color);}, nullptr }},
         {"GridDivLineColor",
-            {[this, packedDefaultGridColor](const std::string & string, [[maybe_unused]] App::Property * property){ auto v = getSketcherGeneralParameter(string, packedDefaultGridColor); Client.setGridDivLineColor(v); }, nullptr }},
+            {[this, packedDefaultGridColor](const std::string & string, [[maybe_unused]] App::Property * property){
+                auto v = getSketcherGeneralParameter(string, packedDefaultGridColor);
+                auto color = App::Color(v);
+                Client.setGridDivLineColor(color);}, nullptr }},
     };
 
     for( auto & val : parameterMap){
@@ -263,6 +261,11 @@ void ViewProviderSketch::ParameterObserver::initParameters()
 
         update(string, property);
     }
+
+    // unsubscribed parameters which update a property on just once upon construction (and before restore if properties are being restored from a file)
+    updateBoolProperty("ShowGrid", &Client.ShowGrid, false);
+    updateBoolProperty("GridAuto", &Client.GridAuto, true);
+    updateGridSize("GridSize", &Client.GridSize);
 }
 
 void ViewProviderSketch::ParameterObserver::OnChange(Base::Subject<const char*> &rCaller, const char * sReason)
@@ -538,30 +541,35 @@ bool ViewProviderSketch::keyPressed(bool pressed, int key)
     return true; // handle all other key events
 }
 
-void ViewProviderSketch::snapToGrid(double &x, double &y)
+void ViewProviderSketch::setSnapMode(SnapMode mode)
 {
-    if (GridSnap.getValue() && ShowGrid.getValue()) {
+    snapMode = mode; // to be redirected to SnapManager
+}
+
+SnapMode ViewProviderSketch::getSnapMode() const
+{
+    return snapMode; // to be redirected to SnapManager
+}
+
+void ViewProviderSketch::snapToGrid(double &x, double &y) // Paddle, when resolving this conflict, make sure to use the function in ViewProviderGridExtension
+{
+    if (snapMode == SnapMode::SnapToGrid && ShowGrid.getValue()) {
         // Snap Tolerance in pixels
-        const double snapTol = GridSize.getValue() / 5;
+        const double snapTol = getGridSize() / 5;
 
         double tmpX = x, tmpY = y;
 
-        // Find Nearest Snap points
-        tmpX = tmpX / GridSize.getValue();
-        tmpX = tmpX < 0.0 ? ceil(tmpX - 0.5) : floor(tmpX + 0.5);
-        tmpX *= GridSize.getValue();
-
-        tmpY = tmpY / GridSize.getValue();
-        tmpY = tmpY < 0.0 ? ceil(tmpY - 0.5) : floor(tmpY + 0.5);
-        tmpY *= GridSize.getValue();
+        getClosestGridPoint(tmpX, tmpY);
 
         // Check if x within snap tolerance
-        if (x < tmpX + snapTol && x > tmpX - snapTol)
+        if (x < tmpX + snapTol && x > tmpX - snapTol) {
             x = tmpX; // Snap X Mouse Position
+        }
 
          // Check if y within snap tolerance
-        if (y < tmpY + snapTol && y > tmpY - snapTol)
+        if (y < tmpY + snapTol && y > tmpY - snapTol) {
             y = tmpY; // Snap Y Mouse Position
+        }
     }
 }
 

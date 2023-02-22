@@ -34,6 +34,8 @@
 # include <Inventor/nodes/SoSeparator.h>
 # include <Inventor/nodes/SoBaseColor.h>
 # include <Inventor/SbVec3f.h>
+
+# include <QApplication>
 #endif
 
 #include <Base/Parameter.h>
@@ -58,12 +60,6 @@ using namespace std;
 
 EXTENSION_PROPERTY_SOURCE(PartGui::ViewProviderGridExtension, Gui::ViewProviderExtension)
 
-enum class GridStyle {
-    Dashed = 0,
-    Light = 1,
-};
-
-const char* ViewProviderGridExtension::GridStyleEnums[] = { "Dashed","Light",nullptr };
 App::PropertyQuantityConstraint::Constraints ViewProviderGridExtension::GridSizeRange = { 0.001,DBL_MAX,1.0 };
 
 namespace PartGui {
@@ -79,6 +75,9 @@ public:
     bool getEnabled();
 
     SoSeparator * getGridRoot();
+
+    void getClosestGridPoint(double &x, double &y) const;
+    double getGridSize() const;
 
     // Configurable parameters (to be configured by specific VP)
     int GridSizePixelThreshold = 15;
@@ -97,9 +96,9 @@ public:
     void OnChange(Base::Subject<const char*> &rCaller, const char * sReason) override;
 
 private:
-    double computeGridSize(const Gui::View3DInventorViewer* viewer);
+    void computeGridSize(const Gui::View3DInventorViewer* viewer);
     void createGrid(bool cameraUpdate = false);
-    void createGridPart(double Step, int numberSubdiv, bool divLines, bool subDivLines, int pattern, SoBaseColor* color, int lineWidth = 1);
+    void createGridPart(int numberSubdiv, bool divLines, bool subDivLines, int pattern, SoBaseColor* color, int lineWidth = 1);
 
     bool checkCameraZoomChange(const Gui::View3DInventorViewer* viewer);
     bool checkCameraTranslationChange(const Gui::View3DInventorViewer* viewer);
@@ -113,6 +112,9 @@ private:
     ViewProviderGridExtension * vp;
 
     bool enabled = false;
+    double computedGridValue = 10;
+
+    bool isTooManySegmentsNotified = false;
 
     // scenograph
     SoSeparator * GridRoot;
@@ -147,6 +149,25 @@ GridExtensionP::~GridExtensionP()
     hGrp->Detach(this);
 }
 
+double GridExtensionP::getGridSize() const
+{
+    return computedGridValue;
+}
+
+void GridExtensionP::getClosestGridPoint(double &x, double &y) const
+{
+    auto closestdim = [](double &dim, double gridValue) {
+        dim = dim / gridValue;
+        dim = dim < 0.0 ? ceil(dim - 0.5) : floor(dim + 0.5);
+        dim *= gridValue;
+    };
+
+    closestdim(x, computedGridValue);
+    closestdim(y, computedGridValue);
+
+    //Base::Console().Log("gridvalue=%f, (x,y)=(%f,%f)", computedGridValue, x, y);
+}
+
 bool GridExtensionP::checkCameraZoomChange(const Gui::View3DInventorViewer* viewer)
 {
     float newCamMaxDimension = viewer->getMaxDimension();
@@ -171,34 +192,46 @@ bool GridExtensionP::checkCameraTranslationChange(const Gui::View3DInventorViewe
     return false;
 }
 
-double GridExtensionP::computeGridSize(const Gui::View3DInventorViewer* viewer)
+void GridExtensionP::computeGridSize(const Gui::View3DInventorViewer* viewer)
 {
+
+    auto capGridSize = [](auto & value){
+        value = std::max(static_cast<float>(value), std::numeric_limits<float>::min());
+        value = std::min(static_cast<float>(value), std::numeric_limits<float>::max());
+    };
+
+    if (!vp->GridAuto.getValue()) {
+        computedGridValue = vp->GridSize.getValue();
+        capGridSize(computedGridValue);
+        return;
+    }
+
     short pixelWidth = -1;
     short pixelHeight = -1;
     viewer->getViewportRegion().getViewportSizePixels().getValue(pixelWidth, pixelHeight);
-    if (pixelWidth < 0 || pixelHeight < 0)
-        return vp->GridSize.getValue();
+    if (pixelWidth < 0 || pixelHeight < 0) {
+        computedGridValue = vp->GridSize.getValue();
+        return;
+    }
 
     int numberOfLines = static_cast<int>(std::max(pixelWidth, pixelHeight)) / GridSizePixelThreshold;
 
     double unitMultiplier = (unitsUserSchema == 2 || unitsUserSchema == 3) ? 25.4 : (unitsUserSchema == 5 || unitsUserSchema == 7) ? 304.8 : 1;
 
-    double newGridSize = unitMultiplier * pow(GridNumberSubdivision, 1 + floor(log(camMaxDimension / unitMultiplier / numberOfLines) / log(GridNumberSubdivision)));
+    computedGridValue = vp->GridSize.getValue() * unitMultiplier * pow(GridNumberSubdivision, floor(log(camMaxDimension / unitMultiplier / numberOfLines) / log(GridNumberSubdivision)));
 
     //cap the grid size
-    newGridSize = std::max(newGridSize, 0.000001);
-    newGridSize = std::min(newGridSize, 10000000.0);
-
-    if (newGridSize != vp->GridSize.getValue()) // avoid unnecessary property update
-        vp->GridSize.setValue(newGridSize); //grid size must be set for grid snap. But we need to block it from calling createGrid.
-
-    return newGridSize;
+    capGridSize(computedGridValue);
 }
 
 void GridExtensionP::createGrid(bool cameraUpdate)
 {
-    Gui::MDIView* mdi = Gui::Application::Instance->editDocument()->getActiveView();
-    Gui::View3DInventorViewer* viewer = static_cast<Gui::View3DInventor*>(mdi)->getViewer();
+    auto view = dynamic_cast<Gui::View3DInventor*>(Gui::Application::Instance->editDocument()->getActiveView());
+
+    if(!view)
+        return;
+
+    Gui::View3DInventorViewer* viewer = view->getViewer();
 
     bool cameraDimensionsChanged = checkCameraZoomChange(viewer);
 
@@ -211,11 +244,7 @@ void GridExtensionP::createGrid(bool cameraUpdate)
 
     Gui::coinRemoveAllChildren(GridRoot);
 
-    double step;
-    if (vp->GridAuto.getValue())
-        step = computeGridSize(viewer);
-    else
-        step = vp->GridSize.getValue();
+    computeGridSize(viewer);
 
     auto getColor = [](auto unpackedcolor) {
         SoBaseColor* lineColor = new SoBaseColor;
@@ -227,18 +256,18 @@ void GridExtensionP::createGrid(bool cameraUpdate)
     };
 
     //First we create the subdivision lines
-    createGridPart(step, GridNumberSubdivision, true,
+    createGridPart(GridNumberSubdivision, true,
                    (GridNumberSubdivision == 1), GridLinePattern,
                    getColor(GridLineColor), GridLineWidth);
 
     //Second we create the wider lines marking every nth lines
     if (GridNumberSubdivision > 1) {
-        createGridPart(step, GridNumberSubdivision, false, true,
+        createGridPart(GridNumberSubdivision, false, true,
             GridDivLinePattern, getColor(GridDivLineColor), GridDivLineWidth);
     }
 }
 
-void GridExtensionP::createGridPart(double Step, int numberSubdiv, bool subDivLines, bool divLines, int pattern, SoBaseColor* color, int lineWidth)
+void GridExtensionP::createGridPart(int numberSubdiv, bool subDivLines, bool divLines, int pattern, SoBaseColor* color, int lineWidth)
 {
     SoGroup* parent = new Gui::SoSkipBoundingGroup();
     GridRoot->addChild(parent);
@@ -246,17 +275,10 @@ void GridExtensionP::createGridPart(double Step, int numberSubdiv, bool subDivLi
 
     parent->addChild(color);
 
-    if (vp->GridStyle.getValue() == static_cast<long>(GridStyle::Dashed)) {
-        SoDrawStyle* DefaultStyle = new SoDrawStyle;
-        DefaultStyle->lineWidth = lineWidth;
-        DefaultStyle->linePattern = pattern;
-        parent->addChild(DefaultStyle);
-    }
-    else {
-        SoMaterial* LightStyle = new SoMaterial;
-        LightStyle->transparency = 0.7f;
-        parent->addChild(LightStyle);
-    }
+    SoDrawStyle* DefaultStyle = new SoDrawStyle;
+    DefaultStyle->lineWidth = lineWidth;
+    DefaultStyle->linePattern = pattern;
+    parent->addChild(DefaultStyle);
 
     SoPickStyle* PickStyle = new SoPickStyle;
     PickStyle->style = SoPickStyle::UNPICKABLE;
@@ -267,11 +289,20 @@ void GridExtensionP::createGridPart(double Step, int numberSubdiv, bool subDivLi
     grid->vertexProperty = vts;
 
     float gridDimension = 1.5 * camMaxDimension;
-    int vlines = static_cast<int>(gridDimension / Step); // total number of vertical lines
+    int vlines = static_cast<int>(gridDimension / computedGridValue); // total number of vertical lines
     int nlines = 2 * vlines; // total number of lines
+
     if (nlines > 2000) {
+        if(!isTooManySegmentsNotified) {
+            Base::Console().Warning("The grid is too dense, so it is being disabled. Consider zooming in or changing the grid configuration\n");
+            isTooManySegmentsNotified = true;
+        }
+
         Gui::coinRemoveAllChildren(GridRoot);
         return;
+    }
+    else {
+        isTooManySegmentsNotified = false;
     }
 
     // set the grid indices
@@ -293,12 +324,12 @@ void GridExtensionP::createGridPart(double Step, int numberSubdiv, bool subDivLi
     maxY = minY + gridDimension;
 
     // vertical lines
-    int i_offset_x = static_cast<int>(minX / Step);
+    int i_offset_x = static_cast<int>(minX / computedGridValue);
     for (int i = 0; i < vlines; i++) {
         int iStep = (i + i_offset_x);
         if (((iStep % numberSubdiv == 0) && divLines) || ((iStep % numberSubdiv != 0) && subDivLines)) {
-            vertex_coords[2 * i].setValue(iStep * Step, minY, 0);
-            vertex_coords[2 * i + 1].setValue(iStep * Step, maxY, 0);
+            vertex_coords[2 * i].setValue(iStep * computedGridValue, minY, 0);
+            vertex_coords[2 * i + 1].setValue(iStep * computedGridValue, maxY, 0);
         }
         else {
             /*the number of vertices is defined before. To know the number of vertices ahead it would require
@@ -310,12 +341,12 @@ void GridExtensionP::createGridPart(double Step, int numberSubdiv, bool subDivLi
     }
 
     // horizontal lines
-    int i_offset_y = static_cast<int>(minY / Step) - vlines;
+    int i_offset_y = static_cast<int>(minY / computedGridValue) - vlines;
     for (int i = vlines; i < nlines; i++) {
         int iStep = (i + i_offset_y);
         if (((iStep % numberSubdiv == 0) && divLines) || ((iStep % numberSubdiv != 0) && subDivLines)) {
-            vertex_coords[2 * i].setValue(minX, iStep * Step, 0);
-            vertex_coords[2 * i + 1].setValue(maxX, iStep * Step, 0);
+            vertex_coords[2 * i].setValue(minX, iStep * computedGridValue, 0);
+            vertex_coords[2 * i + 1].setValue(maxX, iStep * computedGridValue, 0);
         }
         else {
             vertex_coords[2 * i].setValue(0, 0, 0);
@@ -379,16 +410,15 @@ ViewProviderGridExtension::ViewProviderGridExtension()
 
     EXTENSION_ADD_PROPERTY_TYPE(ShowGrid, (false), "Grid", (App::PropertyType)(App::Prop_None), "Switch the grid on/off");
     EXTENSION_ADD_PROPERTY_TYPE(GridSize, (10.0), "Grid", (App::PropertyType)(App::Prop_None), "Gap size of the grid");
-    EXTENSION_ADD_PROPERTY_TYPE(GridStyle, (0L), "Grid", (App::PropertyType)(App::Prop_None), "Appearance style of the grid");
-    EXTENSION_ADD_PROPERTY_TYPE(GridSnap, (false), "Grid", (App::PropertyType)(App::Prop_None), "Switch the grid snap on/off");
     EXTENSION_ADD_PROPERTY_TYPE(GridAuto, (true), "Grid", (App::PropertyType)(App::Prop_None), "Change size of grid based on view area.");
 
     initExtensionType(ViewProviderGridExtension::getExtensionClassTypeId());
 
-    GridStyle.setEnums(GridStyleEnums);
     GridSize.setConstraints(&GridSizeRange);
 
     pImpl = std::make_unique<GridExtensionP>(this);
+
+
 }
 
 ViewProviderGridExtension::~ViewProviderGridExtension()
@@ -409,6 +439,16 @@ SoSeparator* ViewProviderGridExtension::getGridNode()
     return pImpl->getGridRoot();
 }
 
+double ViewProviderGridExtension::getGridSize() const
+{
+    return pImpl->getGridSize();
+}
+
+void ViewProviderGridExtension::getClosestGridPoint(double &x, double &y) const
+{
+    return pImpl->getClosestGridPoint(x, y);
+}
+
 void ViewProviderGridExtension::extensionUpdateData(const App::Property* prop)
 {
     if(pImpl->getEnabled()) {
@@ -422,8 +462,8 @@ void ViewProviderGridExtension::extensionOnChanged(const App::Property* prop)
 {
     if(pImpl->getEnabled()) {
         if (prop == &ShowGrid ||
-            prop == &GridSize ||
-            prop == &GridStyle) {
+            prop == &GridAuto ||
+            prop == &GridSize ) {
                 pImpl->drawGrid();
         }
     }
@@ -459,14 +499,14 @@ void ViewProviderGridExtension::setGridDivLineWidth(int width)
     pImpl->GridDivLineWidth = width;
 }
 
-void ViewProviderGridExtension::setGridLineColor(unsigned int color)
+void ViewProviderGridExtension::setGridLineColor(const App::Color & color)
 {
-    pImpl->GridLineColor = color;
+    pImpl->GridLineColor = color.getPackedValue();
 }
 
-void ViewProviderGridExtension::setGridDivLineColor(unsigned int color)
+void ViewProviderGridExtension::setGridDivLineColor(const App::Color & color)
 {
-    pImpl->GridDivLineColor = color;
+    pImpl->GridDivLineColor = color.getPackedValue();
 }
 
 bool ViewProviderGridExtension::extensionHandleChangedPropertyType(Base::XMLReader& reader,

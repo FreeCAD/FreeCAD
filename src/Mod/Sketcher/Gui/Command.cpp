@@ -42,6 +42,7 @@
 #include <Gui/Control.h>
 #include <Gui/Document.h>
 #include <Gui/MainWindow.h>
+#include <Gui/PrefWidgets.h>
 #include <Gui/QuantitySpinBox.h>
 #include <Gui/SelectionFilter.h>
 #include <Gui/SelectionObject.h>
@@ -970,6 +971,7 @@ class GridSpaceAction : public QWidgetAction
 {
 public:
     GridSpaceAction(QObject* parent) : QWidgetAction(parent) {
+        setEnabled(false);
     }
 
     void updateWidget() {
@@ -978,18 +980,24 @@ public:
 
         if(sketchView) {
 
-            auto updateCheckBox = [](QCheckBox * checkbox, App::PropertyBool & property) {
+            auto updateCheckBox = [](QCheckBox * checkbox, bool value) {
                 auto checked = checkbox->checkState() == Qt::Checked;
-                auto propvalue = property.getValue();
 
-                if( propvalue != checked ) {
+                if( value != checked ) {
                     const QSignalBlocker blocker(checkbox);
-                    checkbox->setChecked(propvalue);
+                    checkbox->setChecked(value);
                 }
             };
 
-            updateCheckBox(gridSnap, sketchView->GridSnap);
-            updateCheckBox(gridAutoSpacing, sketchView->GridAuto);
+            auto updateCheckBoxFromProperty = [updateCheckBox](QCheckBox * checkbox, App::PropertyBool & property) {
+                auto propvalue = property.getValue();
+
+                updateCheckBox(checkbox, propvalue);
+            };
+
+            updateCheckBox(gridSnap, sketchView->getSnapMode() == SnapMode::SnapToGrid);
+
+            updateCheckBoxFromProperty(gridAutoSpacing, sketchView->GridAuto);
 
             auto autospacing = gridAutoSpacing->checkState() == Qt::Checked;
 
@@ -1001,34 +1009,30 @@ public:
 
     void languageChange()
     {
-        gridSnap->setText(QApplication::translate("GridSpaceAction", "Grid Snap"));
-        gridSnap->setToolTip(QApplication::translate("GridSpaceAction", "New points will snap to the nearest grid line.\nPoints must be set closer than a fifth of the grid spacing to a grid line to snap."));
+        gridSnap->setText(tr("Grid Snap"));
+        gridSnap->setToolTip(tr("New points will snap to the nearest grid line.\nPoints must be set closer than a fifth of the grid spacing to a grid line to snap."));
         gridSnap->setStatusTip(gridSnap->toolTip());
 
-        gridAutoSpacing->setText(QApplication::translate("GridSpaceAction", "Grid Auto Spacing"));
-        gridAutoSpacing->setToolTip(QApplication::translate("GridSpaceAction", "Resize grid automatically depending on zoom."));
+        gridAutoSpacing->setText(tr("Grid Auto Spacing"));
+        gridAutoSpacing->setToolTip(tr("Resize grid automatically depending on zoom."));
         gridAutoSpacing->setStatusTip(gridAutoSpacing->toolTip());
 
-        sizeLabel->setText(QApplication::translate("GridSpaceAction", "Spacing"));
-        gridSizeBox->setToolTip(QApplication::translate("GridSpaceAction", "Distance between two subsequent grid lines"));
+        sizeLabel->setText(tr("Spacing"));
+        gridSizeBox->setToolTip(tr("Distance between two subsequent grid lines"));
     }
 
 protected:
     QWidget* createWidget(QWidget* parent) override
     {
-        gridSnap = new QCheckBox(QApplication::translate("GridSpaceAction", "Grid Snap"));
-        gridSnap->setToolTip(QApplication::translate("GridSpaceAction", "New points will snap to the nearest grid line.\nPoints must be set closer than a fifth of the grid spacing to a grid line to snap."));
-        gridSnap->setStatusTip(gridSnap->toolTip());
+        gridSnap = new QCheckBox();
 
-        gridAutoSpacing = new QCheckBox(QApplication::translate("GridSpaceAction", "Grid Auto Spacing"));
-        gridAutoSpacing->setToolTip(QApplication::translate("GridSpaceAction", "Resize grid automatically depending on zoom."));
-        gridAutoSpacing->setStatusTip(gridAutoSpacing->toolTip());
+        gridAutoSpacing = new QCheckBox();
 
-        sizeLabel = new QLabel(QApplication::translate("GridSpaceAction", "Spacing"));
+        sizeLabel = new QLabel();
+
         gridSizeBox = new Gui::QuantitySpinBox();
         gridSizeBox->setProperty("unit", QVariant(QStringLiteral("mm")));
         gridSizeBox->setObjectName(QStringLiteral("gridSize"));
-        gridSizeBox->setToolTip(QApplication::translate("GridSpaceAction", "Distance between two subsequent grid lines"));
         gridSizeBox->setMaximum(99999999.0);
         gridSizeBox->setMinimum(0.001);
 
@@ -1039,14 +1043,23 @@ protected:
         layout->addWidget(sizeLabel, 2, 0);
         layout->addWidget(gridSizeBox, 2, 1);
 
-        QObject::connect(gridSnap,&QCheckBox::stateChanged, [this](int state) {
+        languageChange();
+
+        QObject::connect(gridSnap, &QCheckBox::stateChanged, [this](int state) {
             auto* sketchView = getView();
+
             if(sketchView) {
-                sketchView->GridSnap.setValue(state == Qt::Checked);
+                if(state == Qt::Checked) {
+                    sketchView->setSnapMode(SnapMode::SnapToGrid);
+                }
+                else {
+                    sketchView->setSnapMode(SnapMode::None);
+                }
             }
         });
 
-        QObject::connect(gridAutoSpacing,&QCheckBox::stateChanged, [this](int state) {
+
+        QObject::connect(gridAutoSpacing, &QCheckBox::stateChanged, [this](int state) {
             auto* sketchView = getView();
 
             if(sketchView) {
