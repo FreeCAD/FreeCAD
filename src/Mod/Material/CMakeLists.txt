@@ -181,7 +181,7 @@ fc_target_copy_resource(MaterialToolsLib
     ${CMAKE_CURRENT_SOURCE_DIR}
     ${CMAKE_BINARY_DIR}/Mod/Material
     ${MaterialTools_Files})
-    
+
 fc_target_copy_resource(MaterialIconsLib
     ${CMAKE_CURRENT_SOURCE_DIR}
     ${CMAKE_BINARY_DIR}/Mod/Material

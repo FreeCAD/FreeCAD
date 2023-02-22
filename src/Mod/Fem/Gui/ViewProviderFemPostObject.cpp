@@ -712,7 +712,7 @@ bool ViewProviderFemPostObject::setupPipeline()
         addAbsoluteField(dset, FieldName);
     }
 
-    m_outline->SetInputData(dset);  
+    m_outline->SetInputData(dset);
     m_points->SetInputData(dset);
     m_wireframe->SetInputData(dset);
 
