@@ -24,7 +24,7 @@
     <widget class="QGroupBox" name="groupBoxX">
      <property name="maximumSize">
       <size>
-       <width>215</width>
+       <width>16777215</width>
        <height>16777215</height>
       </size>
      </property>
@@ -98,7 +98,7 @@
     <widget class="QGroupBox" name="groupBoxY">
      <property name="maximumSize">
       <size>
-       <width>215</width>
+       <width>16777215</width>
        <height>16777215</height>
       </size>
      </property>
@@ -166,7 +166,7 @@
     <widget class="QGroupBox" name="groupBoxZ">
      <property name="maximumSize">
       <size>
-       <width>215</width>
+       <width>16777215</width>
        <height>16777215</height>
       </size>
      </property>
@@ -363,7 +363,7 @@ have the same values.</string>
     <widget class="QGroupBox" name="groupBoxIntersecting">
      <property name="maximumSize">
       <size>
-       <width>215</width>
+       <width>16777215</width>
        <height>16777215</height>
       </size>
      </property>
