@@ -100,7 +100,7 @@ public:
 
             Mode = STATUS_SEEK_ADDITIONAL_POINTS;
 
-            // insert circle point for knot, defer internal alignment constraining.
+            // insert point for knot, defer internal alignment constraining.
             try {
                 Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Add Knot Point"));
 
@@ -125,7 +125,7 @@ public:
 
             // add auto constraints on knot
             if (!sugConstr.back().empty()) {
-                createAutoConstraints(sugConstr.back(), knotGeoIds.back(), Sketcher::PointPos::mid, false);
+                createAutoConstraints(sugConstr.back(), knotGeoIds.back(), Sketcher::PointPos::start, false);
             }
 
             static_cast<Sketcher::SketchObject *>(sketchgui->getObject())->solve();
@@ -147,6 +147,7 @@ public:
                 Mode = STATUS_CLOSE;
 
                 if (ConstrMethod == 1) { // if periodic we do not need the last pole
+                    // FIXME: Look at `interpolate` and check if we need to do this for knots. Periodic splines are as of writing not tested.
                     BSplineKnots.pop_back();
                     sugConstr.pop_back();
 
@@ -157,9 +158,8 @@ public:
             // insert point for knot, defer internal alignment constraining.
             try {
 
-                //Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Add Pole circle"));
 
-                //Add pole
+                //Add knot
                 Gui::cmdAppObjectArgs(sketchgui->getObject(), "addGeometry(Part.Point(App.Vector(%f,%f,0)),True)",
                                       BSplineKnots.back().x,BSplineKnots.back().y);
 
@@ -176,7 +176,7 @@ public:
 
             // add auto constraints on knot
             if (!sugConstr.back().empty()) {
-                createAutoConstraints(sugConstr.back(), knotGeoIds.back(), Sketcher::PointPos::mid, false);
+                createAutoConstraints(sugConstr.back(), knotGeoIds.back(), Sketcher::PointPos::start, false);
             }
 
             if (!IsClosed) {
@@ -397,7 +397,6 @@ private:
             try {
                 //Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Add B-spline curve"));
 
-                // {"poles", "mults", "knots", "periodic", "degree", "weights", "CheckRational", NULL};
                 // FIXME: can we get by without naming the variable?
                 // TODO: variable degrees?
                 QString cmdstr = QString::fromLatin1("_bsp = Part.BSplineCurve()\n"
@@ -411,11 +410,11 @@ private:
 
                 currentgeoid++;
 
-                // autoconstraints were added to the circles of the poles, which is ok because they must go to the
+                // autoconstraints were added to the knots, which is ok because they must go to the
                 // right position, or the user will freak-out if they appear out of the autoconstrained position.
-                // However, autoconstraints on the first and last knot, in normal non-periodic b-splines (with appropriate endpoint knot multiplicity)
+                // However, autoconstraints on the first and last knot, in non-periodic b-splines (with appropriate endpoint knot multiplicity)
                 // as the ones created by this tool are intended for the b-spline endpoints, and not for the knots,
-                // so here we retrieve any autoconstraint on those knots' center and mangle it to the endpoint.
+                // so here we retrieve any autoconstraint on those knots and mangle it to the endpoint.
                 // TODO: this will be done to the first and last knots instead for ConstrMethod==2
                 if (ConstrMethod == 0) {
                     for(auto & constr : static_cast<Sketcher::SketchObject *>(sketchgui->getObject())->Constraints.getValues()) {
@@ -430,8 +429,7 @@ private:
                     }
                 }
 
-                // TODO: Change this for construction by knots
-                // Constraint pole circles to B-spline.
+                // Constraint knots to B-spline.
                 std::stringstream cstream;
 
                 cstream << "conList = []\n";
