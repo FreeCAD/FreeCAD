@@ -385,6 +385,10 @@ def buildRelProductColors(ifcfile, prodrepr):
     i = 0
 
     for p in prodrepr.keys():
+        # see method getColorFromProduct()
+        # it is a method for the redundant code inside this loop
+        # which can be used to get the color from a product directly
+
         # Representation item, see `IfcRepresentationItem` documentation.
         # All kinds of geometric or topological representation items
         # `IfcExtrudedAreaSolid`, `IfcMappedItem`, `IfcFacetedBrep`,
