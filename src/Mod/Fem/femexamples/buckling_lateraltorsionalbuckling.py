@@ -39,7 +39,7 @@ def get_information():
         "constraints": ["displacement", "force"],
         "solvers": ["calculix", "ccxtools"],
         "material": "solid",
-        "equation": "buckling"
+        "equations": ["buckling"]
     }
 
 

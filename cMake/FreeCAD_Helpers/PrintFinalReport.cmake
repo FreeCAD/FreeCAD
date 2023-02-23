@@ -148,8 +148,8 @@ macro(PrintFinalReport)
     else()
         simple(QtWebKitWidgets "not needed")
     endif()
-    conditional(Shiboken Shiboken_FOUND "not found" "${SHIBOKEN_VERSION} Base: [${SHIBOKEN_BASEDIR}]")
-    conditional(PySide PySide_FOUND "not found" "${PYSIDE_VERSION} [${PYSIDE_INCLUDE_DIR}]")
+    conditional(Shiboken Shiboken${SHIBOKEN_MAJOR_VERSION}_FOUND "not found" "${Shiboken_VERSION} [${SHIBOKEN_INCLUDE_DIR}]")
+    conditional(PySide PySide${PYSIDE_MAJOR_VERSION}_FOUND "not found" "${PySide_VERSION} [${PYSIDE_INCLUDE_DIR}]")
     conditional(PySideTools PYSIDE_TOOLS_FOUND
                 "not found"
                 "v: ${PySideTools_VERSION}  uic: [${PYSIDE_UIC_EXECUTABLE}]  rcc: [${PYSIDE_RCC_EXECUTABLE}]"
@@ -177,7 +177,8 @@ macro(PrintFinalReport)
     endif()
     conditional(Doxygen DOXYGEN_FOUND "not found" "${DOXYGEN_VERSION} Language: ${DOXYGEN_LANGUAGE}")
     conditional(Coin3D_DOC COIN3D_DOC_FOUND "not found" ${COIN3D_DOC_PATH})
-    conditional(PYCXX ${PYCXX_FOUND} "not found" "${PYCXX_VERSION} Incl: ${PYCXX_INCLUDE_DIR} Src:${PYCXX_SOURCE_DIR}")
+    conditional(PYCXX PYCXX_FOUND "not found" "${PYCXX_VERSION} Incl: ${PYCXX_INCLUDE_DIR} Src:${PYCXX_SOURCE_DIR}")
+    conditional(fmt fmt_FOUND "Sources downloaded to ${fmt_SOURCE_DIR}" "${fmt_VERSION}")
 
     section_end()
 

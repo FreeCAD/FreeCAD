@@ -1066,6 +1066,22 @@ std::list<int> FemMesh::getElementNodes(int id) const
         for (int i = 0; i < elem->NbNodes(); i++)
             result.push_back(elem->GetNode(i)->GetID());
     }
+
+    return result;
+}
+
+std::list<int> FemMesh::getNodeElements(int id, SMDSAbs_ElementType type) const
+{
+    std::list<int> result;
+    const SMDS_MeshNode* node = myMesh->GetMeshDS()->FindNode(id);
+    if (node) {
+        SMDS_ElemIteratorPtr it = node->GetInverseElementIterator(type);
+        while (it->more()) {
+            const SMDS_MeshElement* elem = it->next();
+            result.push_back(elem->GetID());
+        }
+    }
+
     return result;
 }
 

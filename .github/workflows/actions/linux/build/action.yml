@@ -63,9 +63,9 @@ runs:
         echo '```' >> ${{ inputs.reportFile }}
         cat ${{ inputs.errorFile }} >> ${{ inputs.reportFile }}
         echo '```' >> ${{ inputs.reportFile }}
-        echo "Build Log (stdout output trimmed to the last 100 Lines):" >> ${{ inputs.reportFile }}
+        echo "Build Log (only built targets reported):" >> ${{ inputs.reportFile }}
         echo '```' >> ${{ inputs.reportFile }}
-        tail -n 50 ${{ inputs.logFile }} >> ${{ inputs.reportFile }}
+        cat ${{ inputs.logFile }} | sed -ne "/Built target/p" >> ${{ inputs.reportFile }}
         echo '```' >> ${{ inputs.reportFile }}
         echo "</details>">> ${{ inputs.reportFile }}
         echo "" >> ${{ inputs.reportFile }}

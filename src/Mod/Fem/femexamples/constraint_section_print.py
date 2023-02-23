@@ -50,7 +50,7 @@ def get_information():
         "constraints": ["section_print", "fixed", "pressure"],
         "solvers": ["calculix", "ccxtools"],
         "material": "solid",
-        "equation": "mechanical"
+        "equations": ["mechanical"]
     }
 
 

@@ -474,6 +474,7 @@ def export(exportList, filename, colors=None, preferences=None):
             else:
                 axgroups = obj.Proxy.getAxisData(obj)
             if not axgroups:
+                if preferences["DEBUG"]: print("Warning! Axis system object found '{}', but no axis data found.".format(obj.Label))
                 continue
             ifctype = "IfcGrid"
             for axg in axgroups:
@@ -512,6 +513,8 @@ def export(exportList, filename, colors=None, preferences=None):
                 grid = ifcfile.createIfcGrid(uid,history,name,description,None,plac,pdef,u,v,w)
                 products[obj.Name] = grid
                 count += 1
+            else:
+                if preferences["DEBUG"]: print("Warning! Axis system object '{}' only contains one set of axis but at least two are needed for a IfcGrid to be added to IFC.".format(obj.Label))
             continue
 
         if ifctype not in ArchIFCSchema.IfcProducts.keys():
@@ -1691,7 +1694,11 @@ def getIfcTypeFromObj(obj):
 
     dtype = Draft.getType(obj)
     if (dtype == "BuildingPart") and hasattr(obj,"IfcType") and (obj.IfcType == "Undefined"):
-        ifctype = "IfcBuildingStorey" # export BuildingParts as Storeys if their type wasn't explicitly set
+        ifctype = "IfcBuildingElementPart"
+        obj.IfcType = "Building Element Part"
+        # export BuildingParts as Building Element Parts if their type wasn't explicitly set
+        # set IfcType in the object as well
+        # https://forum.freecad.org/viewtopic.php?p=662934#p662927
     elif hasattr(obj,"IfcType"):
         ifctype = obj.IfcType.replace(" ","")
     elif dtype in ["App::Part","Part::Compound"]:
@@ -2237,6 +2244,11 @@ def getRepresentation(
                                 loops = []
                                 verts = [v.Point for v in fcface.OuterWire.OrderedVertexes]
                                 c = fcface.CenterOfMass
+                                if len(verts) < 1:
+                                    print("Warning: OuterWire returned no ordered Vertexes in ", obj.Label)
+                                    # Part.show(fcface)
+                                    # Part.show(fcsolid)
+                                    continue
                                 v1 = verts[0].sub(c)
                                 v2 = verts[1].sub(c)
                                 try:
@@ -2396,6 +2408,7 @@ def createProduct(ifcfile,obj,ifctype,uid,history,name,description,placement,rep
         # print("Wrong IfcType: IfcBuildingElementProxy is used. {}".format(ifctype))
         ifctype = "IfcBuildingElementProxy"
     # print("createProduct: {}".format(ifctype))
+    # print(kwargs)
     product = getattr(ifcfile,"create"+ifctype)(**kwargs)
     return product
 

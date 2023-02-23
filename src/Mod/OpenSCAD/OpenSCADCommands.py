@@ -338,7 +338,7 @@ class AddSCADWidget(QtGui.QWidget):
         self.textMsg.setMaximumHeight(h)
         self.textMsg.resize(self.textMsg.width(),h)
         self.buttonadd = QtGui.QPushButton(translate('OpenSCAD','Add'))
-        self.buttonclear = QtGui.QPushButton(translate('OpenSCAD','Clear'))
+        self.buttonclear = QtGui.QPushButton(translate('OpenSCAD','Clear code'))
         self.buttonload = QtGui.QPushButton(translate('OpenSCAD','Load'))
         self.buttonsave = QtGui.QPushButton(translate('OpenSCAD','Save'))
         self.buttonrefresh = QtGui.QPushButton(translate('OpenSCAD','Refresh'))
@@ -357,7 +357,15 @@ class AddSCADWidget(QtGui.QWidget):
         self.setLayout(layout)
         self.setWindowTitle(translate('OpenSCAD','Add OpenSCAD Element'))
         self.textEdit.setText(u'cube();')
-        self.buttonclear.clicked.connect(self.textEdit.clear)
+
+        def undoable_clear():
+            """Clears the textEdit in a way that allows undo of the action"""
+            self.textEdit.setFocus()
+            self.textEdit.selectAll()
+            keypress = QtGui.QKeyEvent(QtGui.QKeyEvent.KeyPress, QtCore.Qt.Key_Delete, QtCore.Qt.NoModifier)
+            QtGui.QGuiApplication.sendEvent(self.textEdit, keypress)
+
+        self.buttonclear.clicked.connect(undoable_clear)
 
     def retranslateUi(self, widget=None):
         self.buttonadd.setText(translate('OpenSCAD','Add'))
@@ -420,7 +428,12 @@ class AddSCADTask:
         self.addelement()
 
     def loadelement(self):
-        filename, filter = QtGui.QFileDialog.getOpenFileName(parent=self.form, caption='Open file', dir='.', filter='OpenSCAD Files (*.scad)',selectedFilter='',option=0)
+        filename, _ = QtGui.QFileDialog.getOpenFileName(
+            parent=self.form,
+            caption='Open file',
+            dir='.',
+            filter='OpenSCAD Files (*.scad)'
+        )
 
         if filename:
            print('filename :'+filename)
@@ -429,7 +442,12 @@ class AddSCADTask:
               self.form.textEdit.setText(data)
 
     def saveelement(self) :
-        filename, filter = QtGui.QFileDialog.getSaveFileName(parent=self.form, caption='Open file', dir='.', filter='OpenSCAD Files (*.scad)',selectedFilter='',option=0)
+        filename, _ = QtGui.QFileDialog.getSaveFileName(
+            parent=self.form,
+            caption='Open file',
+            dir='.',
+            filter='OpenSCAD Files (*.scad)'
+        )
 
         if filename:
            Text = self.form.textEdit.toPlainText()

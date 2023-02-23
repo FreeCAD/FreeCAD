@@ -59,17 +59,18 @@ runs:
         if [ ${{ steps.configure.outcome }} == 'success' ]
         then
           echo "<details><summary>:heavy_check_mark: CMake configure succeeded</summary>" >> ${{ inputs.reportFile }}
+          echo "" >> ${{ inputs.reportFile }}
+          echo "Configure Error Log (stderr output):" >> ${{ inputs.reportFile }}
+          echo '```' >> ${{ inputs.reportFile }}
+          cat ${{ inputs.errorFile }} >> ${{ inputs.reportFile }}
+          echo '```' >> ${{ inputs.reportFile }}
         else
           echo "<details><summary>:fire: CMake configure failed</summary>" >> ${{ inputs.reportFile }}
         fi
         echo "" >> ${{ inputs.reportFile }}
-        echo "Configure Error Log (stderr output):" >> ${{ inputs.reportFile }}
+        echo "Configure Log (only final configuration values reported):" >> ${{ inputs.reportFile }}
         echo '```' >> ${{ inputs.reportFile }}
-        cat ${{ inputs.errorFile }} >> ${{ inputs.reportFile }}
-        echo '```' >> ${{ inputs.reportFile }}
-        echo "Configure Log (stdout output):" >> ${{ inputs.reportFile }}
-        echo '```' >> ${{ inputs.reportFile }}
-        tail -n 60 ${{ inputs.logFile }} >> ${{ inputs.reportFile }}
+        cat ${{ inputs.logFile }} | sed -ne "/^  *==/,/^====/p" >> ${{ inputs.reportFile }}
         echo '```' >> ${{ inputs.reportFile }}
         echo "</details>">> ${{ inputs.reportFile }}
         echo "" >> ${{ inputs.reportFile }}

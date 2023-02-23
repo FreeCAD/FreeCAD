@@ -43,22 +43,37 @@ runs:
       id: runTests
       shell: bash
       run: |
-        stdbuf -oL -eL ${{ inputs.testCommand }} |& sed -E '/[[:blank:]]*\([[:digit:]]{1,3} %\)[[:blank:]]*/d' | tee -a ${{ inputs.logFile }}
+        stdbuf -oL -eL ${{ inputs.testCommand }} |& sed -Ee "/[[:blank:]]*\([[:digit:]]{1,3} %\)[[:blank:]]*/d" | tee -a ${{ inputs.logFile }}
     - name: Write report
       shell: bash
       if: always()
       run: |
+        sed -ne "/^FAIL[[:alpha:]]*:/,/^[[:blank:]]*$/bF; /^Traceback/,/^[^[:blank:]]/{/^Traceback/bT; /^[^[:blank:]]/G; bT}; b; :T w ${{ inputs.logFile }}_tracebacks" -e "b; :F w ${{ inputs.logFile }}_failedtests" ${{ inputs.logFile }}
+        icon=""
+        if [ $( cat ${{ inputs.logFile }}_tracebacks | wc -l ) -gt 0 ]
+        then
+          icon=" :fire:"
+        fi
         if [ ${{ steps.runTests.outcome }} == 'success' ]
         then
-          echo "<details><summary>:heavy_check_mark: ${{ inputs.testDescription }} succeeded</summary>" >> ${{ inputs.reportFile}}
+          echo "<details><summary>:heavy_check_mark: ${{ inputs.testDescription }} succeeded$icon</summary>" >> ${{ inputs.reportFile }}
         else
-          echo "<details><summary>:fire: ${{ inputs.testDescription }} failed</summary>" >> ${{ inputs.reportFile}}
+          echo "<details><summary>:fire: ${{ inputs.testDescription }} failed$icon</summary>" >> ${{ inputs.reportFile }}
+          echo "" >> ${{ inputs.reportFile }}
+          echo "Failed tests" >> ${{ inputs.reportFile }}
+          echo "" >> ${{ inputs.reportFile }}
+          echo '```' >> ${{ inputs.reportFile }}
+          cat ${{ inputs.logFile }}_failedtests >> ${{ inputs.reportFile }}
+          echo '```' >> ${{ inputs.reportFile }}
         fi
-        echo "" >> ${{ inputs.reportFile}}
-        echo "Below is presented only the 20 last lines of the test log" >> ${{ inputs.reportFile}}
-        echo "" >> ${{ inputs.reportFile}}
-        echo '```' >> ${{ inputs.reportFile}}
-        cat ${{ inputs.logFile }} | tail -n 20 >> ${{ inputs.reportFile}}
-        echo '```' >> ${{ inputs.reportFile}}
-        echo "</details>">> ${{ inputs.reportFile}}
-        echo "" >> ${{ inputs.reportFile}}
+        echo "" >> ${{ inputs.reportFile }}
+        if [ $( cat ${{ inputs.logFile }}_tracebacks | wc -l ) -gt 0 ]
+        then
+          echo "Uncaught tracebacks -- these tracebacks appeared during test but didn't fail a test --" >> ${{ inputs.reportFile }}
+          echo "" >> ${{ inputs.reportFile }}
+          echo '```' >> ${{ inputs.reportFile }}
+          cat ${{ inputs.logFile }}_tracebacks >> ${{ inputs.reportFile }}
+          echo '```' >> ${{ inputs.reportFile }}
+        fi
+        echo "</details>">> ${{ inputs.reportFile }}
+        echo "" >> ${{ inputs.reportFile }}

@@ -421,7 +421,6 @@ class _Stairs(ArchComponent.Component):
         obj.removeProperty("OutlineWireLeft")
         obj.removeProperty("OutlineWireRight")
         self.update_properties_to_0v20(obj)
-        doc.recompute()
         from draftutils.messages import _wrn
         _wrn("v0.20.3, " + obj.Label + ", "
              + translate("Arch", "removed properties 'OutlineWireLeft' and 'OutlineWireRight', and added properties 'RailingLeft' and 'RailingRight'"))
@@ -436,7 +435,6 @@ class _Stairs(ArchComponent.Component):
         obj.RailingLeft = railingLeftObject
         obj.RailingRight = railingRightObject
         self.update_properties_to_0v20(obj)
-        doc.recompute()
         from draftutils.messages import _wrn
         _wrn("v0.20.3, " + obj.Label + ", "
              + translate("Arch", "changed the type of properties 'RailingLeft' and 'RailingRight'"))
@@ -1330,24 +1328,25 @@ class _Stairs(ArchComponent.Component):
 
         "builds a straight staircase with/without a landing in the middle"
 
-        if obj.NumberOfSteps < 3:
+        if obj.NumberOfSteps < 2:
+            print("Fewer than 2 steps, unable to create/update stairs")
             return
         v = DraftGeomUtils.vec(edge)
 
         landing = 0
         if obj.TreadDepthEnforce == 0:
-            if obj.Landings == "At center":
+            if obj.Landings == "At center" and obj.NumberOfSteps > 3:
                 if obj.LandingDepth:
                     reslength = edge.Length - obj.LandingDepth.Value
                 else:
                     reslength = edge.Length - obj.Width.Value
 
-                treadDepth = float(reslength)/(obj.NumberOfSteps-2)        # why needs 'float'?
+                treadDepth = reslength/(obj.NumberOfSteps-2)
                 obj.TreadDepth = treadDepth
                 vLength = DraftVecUtils.scaleTo(v,treadDepth)
             else:
                 reslength = edge.Length
-                treadDepth = float(reslength)/(obj.NumberOfSteps-1)        # why needs 'float'?
+                treadDepth = reslength/(obj.NumberOfSteps-1)
                 obj.TreadDepth = treadDepth
                 vLength = DraftVecUtils.scaleTo(v,treadDepth)
         else:
@@ -1370,7 +1369,7 @@ class _Stairs(ArchComponent.Component):
             h = obj.RiserHeightEnforce.Value * (obj.NumberOfSteps)
             hstep = obj.RiserHeightEnforce.Value
             obj.RiserHeight = hstep
-        if obj.Landings == "At center":
+        if obj.Landings == "At center" and obj.NumberOfSteps > 3:
             landing = int(obj.NumberOfSteps/2)
         else:
             landing = obj.NumberOfSteps
@@ -1382,7 +1381,7 @@ class _Stairs(ArchComponent.Component):
         obj.AbsTop = p1.add(Vector(0,0,h))
         p2 = p1.add(DraftVecUtils.scale(vLength,landing-1).add(Vector(0,0,landing*hstep)))
 
-        if obj.Landings == "At center":
+        if obj.Landings == "At center" and obj.NumberOfSteps > 3:
             if obj.LandingDepth:
                 p3 = p2.add(DraftVecUtils.scaleTo(vLength,obj.LandingDepth.Value))
             else:
@@ -1414,13 +1413,16 @@ class _Stairs(ArchComponent.Component):
 
             self.makeStraightStairs(obj,Part.LineSegment(p1,p2).toShape(),obj.DownSlabThickness.Value,obj.RiserHeight.Value,landing,None,'toSlabThickness')
         else:
+            if obj.Landings == "At center":
+                print("Fewer than 4 steps, unable to create landing")
             self.makeStraightStairs(obj,Part.LineSegment(p1,p2).toShape(),obj.DownSlabThickness.Value,obj.UpSlabThickness.Value,landing,None,None)
 
         print (p1, p2)
-        if obj.Landings == "At center" and obj.Flight not in ["HalfTurnLeft", "HalfTurnRight"]:
-            print (p3, p4)
-        elif obj.Landings == "At center" and obj.Flight in ["HalfTurnLeft", "HalfTurnRight"]:
-            print (p3r, p4r)
+        if obj.Landings == "At center" and obj.NumberOfSteps > 3:
+            if obj.Flight not in ["HalfTurnLeft", "HalfTurnRight"]:
+                print (p3, p4)
+            elif obj.Flight in ["HalfTurnLeft", "HalfTurnRight"]:
+                print (p3r, p4r)
 
         edge = Part.LineSegment(p1,p2).toShape()
 

@@ -184,6 +184,7 @@ jobs:
           ccache -s
       - name: FreeCAD CLI tests on build dir
         if: inputs.testOnBuildDir
+        timeout-minutes: 10
         uses: ./.github/workflows/actions/runTests
         with:
           testDescription: "CLI tests on build dir"
@@ -192,6 +193,7 @@ jobs:
           reportFile: ${{env.reportdir}}${{ env.reportfilename }}
       - name: FreeCAD GUI tests on build dir
         if: inputs.testOnBuildDir
+        timeout-minutes: 15
         uses: ./.github/workflows/actions/runTests
         with:
           testDescription: "GUI tests on build dir"
@@ -206,6 +208,7 @@ jobs:
           errorFile: ${{ env.logdir }}InstallErrors.log
           reportFile: ${{env.reportdir}}${{ env.reportfilename }}
       - name: FreeCAD CLI tests on install
+        timeout-minutes: 10
         uses: ./.github/workflows/actions/runTests
         with:
           testDescription: "CLI tests on install"
@@ -213,6 +216,7 @@ jobs:
           logFile: ${{ env.logdir }}TestCLIInstall.log
           reportFile: ${{env.reportdir}}${{ env.reportfilename }}
       - name: FreeCAD GUI tests on install
+        timeout-minutes: 15
         uses: ./.github/workflows/actions/runTests
         with:
           testDescription: "GUI tests on install"
@@ -226,6 +230,7 @@ jobs:
           name: ${{ inputs.artifactBasename }}-Logs
           path: |
             ${{ env.logdir }}
+            /var/crash/*FreeCAD*
       - name: Upload report
         if: always()
         uses: actions/upload-artifact@v3

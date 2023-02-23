@@ -15,7 +15,7 @@ The following command is used to install the required packages used to compile F
 
 .. code-block:: console
 
-    sudo sh tools/build/arch.sh
+    sudo sh tools/build/Docker/arch.sh
 
 
 Debian
@@ -25,7 +25,7 @@ The following command is used to install the required packages used to compile F
 
 .. code-block:: console
 
-    sudo sh tools/build/debian.sh
+    sudo sh tools/build/Docker/debian.sh
 
 
 Fedora
@@ -35,7 +35,7 @@ The following command is used to install the required packages used to compile F
 
 .. code-block:: console
 
-    sudo sh tools/build/fedora.sh
+    sudo sh tools/build/Docker/fedora.sh
 
 
 Manjaro
@@ -45,7 +45,7 @@ The following command is used to install the required packages used to compile F
 
 .. code-block:: console
 
-    sudo sh tools/build/manjaro.sh
+    sudo sh tools/build/Docker/manjaro.sh
 
 
 Ubuntu
@@ -56,7 +56,7 @@ The following command is used to install the required packages used to compile F
 
 .. code-block:: console
 
-    sudo sh tools/build/ubuntu.sh
+    sudo sh tools/build/Docker/ubuntu.sh
 
 
 Containers

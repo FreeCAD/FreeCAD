@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
 # ***************************************************************************
 # *                                                                         *
 # *   Copyright (c) 2022 FreeCAD Project Association                        *
@@ -109,7 +110,6 @@ class DeveloperMode:
     """The main Developer Mode dialog, for editing package.xml metadata graphically."""
 
     def __init__(self):
-
         # In the UI we want to show a translated string for the person type, but the underlying
         # string must be the one expected by the metadata parser, in English
         self.person_type_translation = {
@@ -152,7 +152,7 @@ class DeveloperMode:
             QIcon.fromTheme("remove", QIcon(":/icons/list-remove.svg"))
         )
 
-    def show(self, parent=None, path=None):
+    def show(self, parent=None, path: str = None):
         """Show the main dev mode dialog"""
         if parent:
             self.dialog.setParent(parent)
@@ -177,7 +177,7 @@ class DeveloperMode:
             self.metadata.Date = str(now)
             self.metadata.write(os.path.join(self.current_mod, "package.xml"))
 
-    def _populate_dialog(self, path_to_repo):
+    def _populate_dialog(self, path_to_repo: str):
         """Populate this dialog using the best available parsing of the contents of the repo at
         path_to_repo. This is a multi-layered process that starts with any existing package.xml
         file or other known metadata files, and proceeds through examining the contents of the
@@ -329,7 +329,7 @@ class DeveloperMode:
         predictor = Predictor()
         self.metadata = predictor.predict_metadata(self.current_mod)
 
-    def _scan_for_git_info(self, path):
+    def _scan_for_git_info(self, path: str):
         """Look for branch availability"""
         self.git_interface = AddonGitInterface(path)
         if self.git_interface.git_exists:
@@ -382,7 +382,7 @@ class DeveloperMode:
         # Finally, populate the combo boxes, etc.
         self._populate_combo()
 
-        # Disable all of the "Remove" buttons until something is selected
+        # Disable all the "Remove" buttons until something is selected
         self.dialog.removeContentItemToolButton.setDisabled(True)
 
     def _sync_metadata_to_ui(self):
@@ -444,7 +444,7 @@ class DeveloperMode:
         else:
             self.metadata.PythonMin = "0.0.0"  # Code for "unset"
 
-        # Content, people, and licenses should already be sync'ed
+        # Content, people, and licenses should already be synchronized
 
     ###############################################################################################
     #                                         DIALOG SLOTS
@@ -515,7 +515,7 @@ class DeveloperMode:
                 if entry and entry not in recent_mod_paths and os.path.exists(entry):
                     recent_mod_paths.append(entry)
 
-            # Remove the whole thing so we can recreate it from scratch
+            # Remove the whole thing, so we can recreate it from scratch
             self.pref.RemGroup("recentModsList")
 
         if recent_mod_paths:
@@ -603,11 +603,10 @@ class DeveloperMode:
         import vermin
 
         required_minor_version = 0
-        for dirpath, _, filenames in os.walk(self.current_mod):
+        for dir_path, _, filenames in os.walk(self.current_mod):
             for filename in filenames:
                 if filename.endswith(".py"):
-
-                    with open(os.path.join(dirpath, filename), encoding="utf-8") as f:
+                    with open(os.path.join(dir_path, filename), encoding="utf-8") as f:
                         contents = f.read()
                         version_strings = vermin.version_strings(
                             vermin.detect(contents)
@@ -648,7 +647,7 @@ class DeveloperMode:
                 translate("AddonsInstaller", "Install Vermin?"),
                 translate(
                     "AddonsInstaller",
-                    "Autodetecting the required version of Python for this Addon requires Vermin (https://pypi.org/project/vermin/). OK to install?",
+                    "Auto-detecting the required version of Python for this Addon requires Vermin (https://pypi.org/project/vermin/). OK to install?",
                 ),
                 QMessageBox.Yes | QMessageBox.Cancel,
             )
@@ -681,7 +680,7 @@ class DeveloperMode:
             )
             FreeCAD.Console.PrintMessage(proc.stdout.decode())
             if proc.returncode != 0:
-                response = QMessageBox.critical(
+                QMessageBox.critical(
                     self.dialog,
                     translate("AddonsInstaller", "Installation failed"),
                     translate(
@@ -696,7 +695,7 @@ class DeveloperMode:
             # pylint: disable=import-outside-toplevel
             import vermin
         except ImportError:
-            response = QMessageBox.critical(
+            QMessageBox.critical(
                 self.dialog,
                 translate("AddonsInstaller", "Installation failed"),
                 translate(

@@ -1122,8 +1122,10 @@ def insert(srcfile, docname, skip=[], only=[], root=None, preferences=None):
         if preferences['DEBUG']: print(count,"/",len(annotations),"object #"+str(aid),":",annotation.is_a(),end="")
 
         if aid in skip:
+            if preferences['DEBUG']: print(", skipped.")
             continue  # user given id skip list
         if annotation.is_a() in preferences['SKIP']:
+            if preferences['DEBUG']: print(", skipped.")
             continue  # preferences-set type skip list
 
         anno = importIFCHelper.createAnnotation(annotation,doc,ifcscale,preferences)
@@ -1137,6 +1139,8 @@ def insert(srcfile, docname, skip=[], only=[], root=None, preferences=None):
                 for host,children in additions.items():
                     if (aid in children) and (host in objects.keys()):
                         Arch.addComponents(anno,objects[host])
+
+        if preferences['DEBUG']: print("")  # add newline for 2D objects debug prints
 
     doc.recompute()
 

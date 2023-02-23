@@ -544,7 +544,7 @@ class _EquationMagnetodynamic(CommandManager):
         )
         self.tooltip = Qt.QT_TRANSLATE_NOOP(
             "FEM_EquationMagnetodynamic",
-            "Creates a FEM equation for\n magentodynamic forces"
+            "Creates a FEM equation for\n magnetodynamic forces"
         )
         self.is_active = "with_solver_elmer"
         self.do_activated = "add_obj_on_gui_selobj_noset_edit"
@@ -561,7 +561,7 @@ class _EquationMagnetodynamic2D(CommandManager):
         )
         self.tooltip = Qt.QT_TRANSLATE_NOOP(
             "FEM_EquationMagnetodynamic2D",
-            "Creates a FEM equation for\n2D magentodynamic forces"
+            "Creates a FEM equation for\n 2D magnetodynamic forces"
         )
         self.is_active = "with_solver_elmer"
         self.do_activated = "add_obj_on_gui_selobj_noset_edit"

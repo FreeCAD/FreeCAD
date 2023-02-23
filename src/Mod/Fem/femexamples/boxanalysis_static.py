@@ -39,7 +39,7 @@ def get_information():
         "constraints": ["fixed", "force", "pressure"],
         "solvers": ["calculix", "ccxtools", "elmer"],
         "material": "solid",
-        "equation": "mechanical"
+        "equations": ["mechanical"]
     }
 
 

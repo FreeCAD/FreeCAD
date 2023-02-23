@@ -1248,7 +1248,7 @@ CmdFemCompEmConstraints::CmdFemCompEmConstraints()
 {
     sAppModule = "Fem";
     sGroup = QT_TR_NOOP("Fem");
-    sMenuText = QT_TR_NOOP("Electromagnetic constraints...");
+    sMenuText = QT_TR_NOOP("Electromagnetic constraints");
     sToolTipText = QT_TR_NOOP("Electromagnetic constraints");
     sWhatsThis = "";
     sStatusTip = sToolTipText;
@@ -1364,21 +1364,21 @@ bool CmdFemCompEmConstraints::isActive()
 // FEM_CompEmEquations (dropdown toolbar button for Electromagnetic equations)
 //===========================================================================
 
-DEF_STD_CMD_ACL(CmdFEMCompEmEquations)
+DEF_STD_CMD_ACL(CmdFemCompEmEquations)
 
-CmdFEMCompEmEquations::CmdFEMCompEmEquations()
+CmdFemCompEmEquations::CmdFemCompEmEquations()
     : Command("FEM_CompEmEquations")
 {
     sAppModule = "Fem";
     sGroup = QT_TR_NOOP("Fem");
-    sMenuText = QT_TR_NOOP("Electromagnetic Equations");
+    sMenuText = QT_TR_NOOP("Electromagnetic equations");
     sToolTipText = QT_TR_NOOP(
         "Electromagnetic equations for the Elmer solver");
     sWhatsThis = "FEM_CompEmEquations";
     sStatusTip = sToolTipText;
 }
 
-void CmdFEMCompEmEquations::activated(int iMsg)
+void CmdFemCompEmEquations::activated(int iMsg)
 {
     Gui::CommandManager& rcCmdMgr = Gui::Application::Instance->commandManager();
     if (iMsg == 0)
@@ -1401,7 +1401,7 @@ void CmdFEMCompEmEquations::activated(int iMsg)
     pcAction->setIcon(a[iMsg]->icon());
 }
 
-Gui::Action* CmdFEMCompEmEquations::createAction()
+Gui::Action* CmdFemCompEmEquations::createAction()
 {
     Gui::ActionGroup* pcAction = new Gui::ActionGroup(this, Gui::getMainWindow());
     pcAction->setDropDownMenu(true);
@@ -1426,7 +1426,7 @@ Gui::Action* CmdFEMCompEmEquations::createAction()
     return pcAction;
 }
 
-void CmdFEMCompEmEquations::languageChange()
+void CmdFemCompEmEquations::languageChange()
 {
     Command::languageChange();
 
@@ -1485,7 +1485,7 @@ void CmdFEMCompEmEquations::languageChange()
     }
 }
 
-bool CmdFEMCompEmEquations::isActive()
+bool CmdFemCompEmEquations::isActive()
 {
     // only if there is an active analysis
     Fem::FemAnalysis* ActiveAnalysis =
@@ -1495,7 +1495,8 @@ bool CmdFEMCompEmEquations::isActive()
         return false;
 
     // only activate if a single Elmer object is selected
-    auto results = getSelection().getSelectionEx(nullptr, App::DocumentObject::getClassTypeId(), Gui::ResolveMode::FollowLink); //.getObjectsOfType<femsolver.elmer.solver.Proxy>();
+    auto results = getSelection().getSelectionEx(
+        nullptr, App::DocumentObject::getClassTypeId(), Gui::ResolveMode::FollowLink);
     if (results.size() == 1) {
         auto object = results.begin()->getObject();
         // FIXME: this is not unique since the Ccx solver object has the same type
@@ -1505,6 +1506,7 @@ bool CmdFEMCompEmEquations::isActive()
     }
     return false;
 }
+
 
 //================================================================================================
 //================================================================================================
@@ -2418,7 +2420,7 @@ void CreateFemCommands()
     rcCmdMgr.addCommand(new CmdFemDefineNodesSet());
 
     // equations
-    rcCmdMgr.addCommand(new CmdFEMCompEmEquations());
+    rcCmdMgr.addCommand(new CmdFemCompEmEquations());
 
     // vtk post processing
 #ifdef FC_USE_VTK

@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
 # ***************************************************************************
 # *                                                                         *
 # *   Copyright (c) 2022 FreeCAD Project Association                        *
@@ -115,7 +116,7 @@ class AddonInstaller(QtCore.QObject):
 
     allowed_packages = set()
 
-    def __init__(self, addon: object, allow_list: List[str] = None):
+    def __init__(self, addon: Addon, allow_list: List[str] = None):
         """Initialize the installer with an optional list of addons. If provided, then installation
         by name is supported, as long as the objects in the list contain a "name" and "url"
         property. In most use cases it is expected that addons is a List of Addon objects, but that

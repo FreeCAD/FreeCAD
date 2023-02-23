@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
 # ***************************************************************************
 # *                                                                         *
 # *   Copyright (c) 2022-2023 FreeCAD Project Association                   *
@@ -46,16 +47,12 @@ if FreeCAD.GuiUp:
     # Python urllib.request (if requests is not available).
     import NetworkManager  # Requires an event loop, so is only available with the GUI
 else:
-    has_requests = False
     try:
         import requests
-
-        has_requests = True
     except ImportError:
-        has_requests = False
+        requests = None
         import urllib.request
         import ssl
-
 
 #  @package AddonManager_utilities
 #  \ingroup ADDONMANAGER
@@ -98,7 +95,7 @@ def symlink(source, link_name):
 def rmdir(path: os.PathLike) -> bool:
     try:
         shutil.rmtree(path, onerror=remove_readonly)
-    except Exception:
+    except (WindowsError, PermissionError, OSError):
         return False
     return True
 
@@ -213,10 +210,10 @@ def get_desc_regex(repo):
     """Returns a regex string that extracts a WB description to be displayed in the description
     panel of the Addon manager, if the README could not be found"""
 
-    parsedUrl = urlparse(repo.url)
-    if parsedUrl.netloc == "github.com":
+    parsed_url = urlparse(repo.url)
+    if parsed_url.netloc == "github.com":
         return r'<meta property="og:description" content="(.*?)"'
-    if parsedUrl.netloc in ["gitlab.com", "salsa.debian.org", "framagit.org"]:
+    if parsed_url.netloc in ["gitlab.com", "salsa.debian.org", "framagit.org"]:
         return r'<meta.*?content="(.*?)".*?og:description.*?>'
     FreeCAD.Console.PrintLog(
         "Debug: addonmanager_utilities.get_desc_regex: Unknown git host:",
@@ -229,10 +226,10 @@ def get_desc_regex(repo):
 def get_readme_html_url(repo):
     """Returns the location of a html file containing readme"""
 
-    parsedUrl = urlparse(repo.url)
-    if parsedUrl.netloc == "github.com":
+    parsed_url = urlparse(repo.url)
+    if parsed_url.netloc == "github.com":
         return f"{repo.url}/blob/{repo.branch}/README.md"
-    if parsedUrl.netloc in ["gitlab.com", "salsa.debian.org", "framagit.org"]:
+    if parsed_url.netloc in ["gitlab.com", "salsa.debian.org", "framagit.org"]:
         return f"{repo.url}/-/blob/{repo.branch}/README.md"
     FreeCAD.Console.PrintLog(
         "Unrecognized git repo location '' -- guessing it is a GitLab instance..."
@@ -357,8 +354,8 @@ def get_python_exe() -> str:
     E) The result of an shutil search for your system's "python" executable"""
     prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Addons")
     python_exe = prefs.GetString("PythonExecutableForPip", "Not set")
+    fc_dir = FreeCAD.getHomePath()
     if not python_exe or python_exe == "Not set" or not os.path.exists(python_exe):
-        fc_dir = FreeCAD.getHomePath()
         python_exe = os.path.join(fc_dir, "bin", "python3")
         if "Windows" in platform.system():
             python_exe += ".exe"
@@ -408,7 +405,7 @@ def blocking_get(url: str, method=None) -> str:
     if FreeCAD.GuiUp and method is None or method == "networkmanager":
         NetworkManager.InitializeNetworkManager()
         p = NetworkManager.AM_NETWORK_MANAGER.blocking_get(url)
-    elif has_requests and method is None or method == "requests":
+    elif requests and method is None or method == "requests":
         response = requests.get(url)
         if response.status_code == 200:
             p = response.text
@@ -419,18 +416,18 @@ def blocking_get(url: str, method=None) -> str:
     return p
 
 
-def run_interruptable_subprocess(args) -> object:
+def run_interruptable_subprocess(args) -> subprocess.CompletedProcess:
     """Wrap subprocess call so it can be interrupted gracefully."""
-    creationflags = 0
+    creation_flags = 0
     if hasattr(subprocess, "CREATE_NO_WINDOW"):
         # Added in Python 3.7 -- only used on Windows
-        creationflags = subprocess.CREATE_NO_WINDOW
+        creation_flags = subprocess.CREATE_NO_WINDOW
     try:
         p = subprocess.Popen(
             args,
             stdout=subprocess.PIPE,
             stderr=subprocess.PIPE,
-            creationflags=creationflags,
+            creationflags=creation_flags,
             text=True,
             encoding="utf-8",
         )
@@ -442,16 +439,15 @@ def run_interruptable_subprocess(args) -> object:
     while return_code is None:
         try:
             stdout, stderr = p.communicate(timeout=0.1)
-            return_code = p.returncode if p.returncode is not None else -1
+            return_code = p.returncode
         except subprocess.TimeoutExpired:
             if QtCore.QThread.currentThread().isInterruptionRequested():
                 p.kill()
-                stdout, stderr = p.communicate()
-                return_code = -1
                 raise ProcessInterrupted()
     if return_code is None or return_code != 0:
         raise subprocess.CalledProcessError(return_code, args, stdout, stderr)
     return subprocess.CompletedProcess(args, return_code, stdout, stderr)
+
 
 def get_main_am_window():
     windows = QtWidgets.QApplication.topLevelWidgets()
