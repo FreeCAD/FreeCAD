@@ -189,7 +189,10 @@ class _ArchSchedule:
             obj.Result.set(k,v)
         # recompute
         obj.Result.recompute()
-        obj.Result.purgeTouched() # Remove the confusing blue checkmark from the spreadsheet.
+        obj.Result.purgeTouched()     # Remove the confusing blue checkmark from the spreadsheet.
+        for ref in obj.Result.InList: # Also recompute TechDraw views.
+            ref.TypeId == "TechDraw::DrawViewSpreadsheet"
+            ref.recompute()
 
     def execute(self,obj):
 
