@@ -32,4 +32,3 @@ FreeCADGui.loadFile(filename, mod)
 
 from StartPage import StartPage
 StartPage.postStart()
-
