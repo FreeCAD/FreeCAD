@@ -135,6 +135,16 @@ public:
     Py::Object createWidget(const Py::Tuple&);
     Py::Object load(const Py::Tuple&);
 
+    Py::Object addPluginPath(const Py::Tuple&);
+    Py::Object clearPluginPaths(const Py::Tuple&);
+    Py::Object pluginPaths(const Py::Tuple&);
+    Py::Object availableWidgets(const Py::Tuple&);
+    Py::Object errorString(const Py::Tuple&);
+    Py::Object isLanguageChangeEnabled(const Py::Tuple&);
+    Py::Object setLanguageChangeEnabled(const Py::Tuple&);
+    Py::Object setWorkingDirectory(const Py::Tuple&);
+    Py::Object workingDirectory(const Py::Tuple&);
+
 private:
     static PyObject *PyMake(struct _typeobject *, PyObject *, PyObject *);
 
