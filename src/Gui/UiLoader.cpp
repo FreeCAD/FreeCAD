@@ -528,10 +528,24 @@ void UiLoaderPy::init_type()
     add_varargs_method("load",&UiLoaderPy::load,"load(string, QWidget parent=None) -> QWidget\n"
                                                 "load(QIODevice, QWidget parent=None) -> QWidget");
     add_varargs_method("createWidget",&UiLoaderPy::createWidget,"createWidget()");
+
+    add_varargs_method("availableWidgets",&UiLoaderPy::availableWidgets,"availableWidgets()");
+    add_varargs_method("clearPluginPaths",&UiLoaderPy::clearPluginPaths,"clearPluginPaths()");
+    add_varargs_method("pluginPaths",&UiLoaderPy::pluginPaths,"pluginPaths()");
+    add_varargs_method("addPluginPath",&UiLoaderPy::addPluginPath,"addPluginPath()");
+    add_varargs_method("errorString",&UiLoaderPy::errorString,"errorString()");
+    add_varargs_method("isLanguageChangeEnabled",&UiLoaderPy::isLanguageChangeEnabled,
+                       "isLanguageChangeEnabled()");
+    add_varargs_method("setLanguageChangeEnabled",&UiLoaderPy::setLanguageChangeEnabled,
+                       "setLanguageChangeEnabled()");
+    add_varargs_method("setWorkingDirectory",&UiLoaderPy::setWorkingDirectory,
+                       "setWorkingDirectory()");
+    add_varargs_method("workingDirectory",&UiLoaderPy::workingDirectory,"workingDirectory()");
 }
 
 UiLoaderPy::UiLoaderPy()
 {
+    loader.setLanguageChangeEnabled(true);
 }
 
 UiLoaderPy::~UiLoaderPy()
@@ -603,6 +617,85 @@ Py::Object UiLoaderPy::createWidget(const Py::Tuple& args)
                                                  std::placeholders::_1,
                                                  std::placeholders::_2,
                                                  std::placeholders::_3));
+}
+
+Py::Object UiLoaderPy::addPluginPath(const Py::Tuple& args)
+{
+    Gui::PythonWrapper wrap;
+    if (wrap.loadCoreModule()) {
+        std::string fn;
+        if (wrap.toCString(args[0], fn)) {
+            loader.addPluginPath(QString::fromStdString(fn));
+        }
+    }
+    return Py::None();
+}
+
+Py::Object UiLoaderPy::clearPluginPaths(const Py::Tuple& /*args*/)
+{
+    loader.clearPluginPaths();
+    return Py::None();
+}
+
+Py::Object UiLoaderPy::pluginPaths(const Py::Tuple& /*args*/)
+{
+    auto list = loader.pluginPaths();
+    Py::List py;
+    for (const auto& it : list) {
+        py.append(Py::String(it.toStdString()));
+    }
+    return py;
+}
+
+Py::Object UiLoaderPy::availableWidgets(const Py::Tuple& /*args*/)
+{
+    auto list = loader.availableWidgets();
+    Py::List py;
+    for (const auto& it : list) {
+        py.append(Py::String(it.toStdString()));
+    }
+
+    auto producer = WidgetFactory().CanProduce();
+    for (const auto& it : producer) {
+        py.append(Py::String(it));
+    }
+
+    return py;
+}
+
+Py::Object UiLoaderPy::errorString(const Py::Tuple& /*args*/)
+{
+    return Py::String(loader.errorString().toStdString());
+}
+
+Py::Object UiLoaderPy::isLanguageChangeEnabled(const Py::Tuple& /*args*/)
+{
+    return Py::Boolean(loader.isLanguageChangeEnabled());
+}
+
+Py::Object UiLoaderPy::setLanguageChangeEnabled(const Py::Tuple& args)
+{
+    loader.setLanguageChangeEnabled(Py::Boolean(args[0]));
+    return Py::None();
+}
+
+Py::Object UiLoaderPy::setWorkingDirectory(const Py::Tuple& args)
+{
+    Gui::PythonWrapper wrap;
+    if (wrap.loadCoreModule()) {
+        std::string fn;
+        if (wrap.toCString(args[0], fn)) {
+            loader.setWorkingDirectory(QString::fromStdString(fn));
+        }
+    }
+    return Py::None();
+}
+
+Py::Object UiLoaderPy::workingDirectory(const Py::Tuple& /*args*/)
+{
+    QDir dir = loader.workingDirectory();
+    QString path = dir.absolutePath();
+    return Py::String(path.toStdString());
 }
 
 #if !defined (HAVE_QT_UI_TOOLS)

@@ -24,6 +24,7 @@
 
 #ifndef _PreComp_
 # include <sstream>
+# include <QEvent>
 # include <QFile>
 # include <QPointer>
 #endif
@@ -534,6 +535,7 @@ TaskDialogPython::TaskDialogPython(const Py::Object& o) : dlg(o)
             form = loader.load(&file, nullptr);
         file.close();
         if (form) {
+            form->installEventFilter(this);
             auto taskbox = new Gui::TaskView::TaskBox(
                 QPixmap(icon), form->windowTitle(), true, nullptr);
             taskbox->groupLayout()->addWidget(form);
@@ -561,6 +563,7 @@ TaskDialogPython::TaskDialogPython(const Py::Object& o) : dlg(o)
                 if (object) {
                     QWidget* form = qobject_cast<QWidget*>(object);
                     if (form) {
+                        form->installEventFilter(this);
                         auto taskbox = new Gui::TaskView::TaskBox(
                             form->windowIcon().pixmap(32), form->windowTitle(), true, nullptr);
                         taskbox->groupLayout()->addWidget(form);
@@ -688,6 +691,27 @@ void TaskDialogPython::helpRequested()
         Base::PyException e; // extract the Python error text
         e.ReportException();
     }
+}
+
+bool TaskDialogPython::eventFilter(QObject *watched, QEvent *event)
+{
+    if (event->type() == QEvent::LanguageChange) {
+        Base::PyGILStateLocker lock;
+        try {
+            if (dlg.hasAttr(std::string("changeEvent"))) {
+                Py::Callable method(dlg.getAttr(std::string("changeEvent")));
+                Py::Tuple args{1};
+                args.setItem(0, Py::Long(static_cast<int>(event->type())));
+                method.apply(args);
+            }
+        }
+        catch (Py::Exception&) {
+            Base::PyException e; // extract the Python error text
+            e.ReportException();
+        }
+    }
+
+    return TaskDialog::eventFilter(watched, event);
 }
 
 QDialogButtonBox::StandardButtons TaskDialogPython::getStandardButtons() const
