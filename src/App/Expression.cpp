@@ -1578,6 +1578,7 @@ void OperatorExpression::_toString(std::ostream &s, bool persistent,int) const
         s << " >= ";
         break;
     case UNIT:
+        s << " ";
         break;
     default:
         assert(0);
