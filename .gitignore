@@ -40,6 +40,7 @@ install_manifest.txt
 /src/Tools/offlinedoc/*.txt
 OpenSCAD_rc.py
 tags
+/LibPack*
 
 # crowdin file
 src/Tools/freecad.zip
