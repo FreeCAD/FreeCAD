@@ -38,7 +38,7 @@ def get_information():
         "constraints": ["fixed", "force"],
         "solvers": ["z88"],
         "material": "solid",
-        "equation": "mechanical"
+        "equations": ["mechanical"]
     }
 
 

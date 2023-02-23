@@ -172,6 +172,9 @@ public:
     /// is called by the framework if the user press the help button 
     void helpRequested() override;
 
+    /// event handling
+    bool eventFilter(QObject *watched, QEvent *event) override;
+
 private:
     void clearForm();
 

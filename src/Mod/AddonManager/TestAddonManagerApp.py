@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
 # ***************************************************************************
 # *                                                                         *
 # *   Copyright (c) 2022-2023 FreeCAD Project Association                   *
@@ -19,6 +20,8 @@
 # *   <https://www.gnu.org/licenses/>.                                      *
 # *                                                                         *
 # ***************************************************************************
+
+import addonmanager_freecad_interface as fci
 
 # Unit tests for the Addon Manager module
 from AddonManagerTest.app.test_utilities import (
@@ -75,6 +78,5 @@ loaded_gui_tests = [
     AddonManagerTestDataPaths,
     TestListTerminator  # Needed to prevent the last test from running twice
 ]
-if FreeCAD:
-    for test in loaded_gui_tests:
-        FreeCAD.Console.PrintLog(f"Loaded tests from {test.__name__}\n")
+for test in loaded_gui_tests:
+    fci.Console.PrintLog(f"Loaded tests from {test.__name__}\n")

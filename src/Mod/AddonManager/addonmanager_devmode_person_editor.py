@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
 # ***************************************************************************
 # *                                                                         *
 # *   Copyright (c) 2022 FreeCAD Project Association                        *
@@ -60,7 +61,7 @@ class PersonEditor:
                 self.dialog.nameLineEdit.text(),
                 self.dialog.emailLineEdit.text(),
             )
-        return (None, None, None)
+        return "", "", ""
 
     def setup(
         self, person_type: str = "maintainer", name: str = "", email: str = ""

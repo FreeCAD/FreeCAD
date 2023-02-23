@@ -42,7 +42,7 @@ def get_information():
         "constraints": ["fixed", "force"],
         "solvers": ["calculix", "ccxtools"],
         "material": "multimaterial",
-        "equation": "mechanical"
+        "equations": ["mechanical"]
     }
 
 

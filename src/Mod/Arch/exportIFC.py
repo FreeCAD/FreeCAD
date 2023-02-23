@@ -1694,7 +1694,11 @@ def getIfcTypeFromObj(obj):
 
     dtype = Draft.getType(obj)
     if (dtype == "BuildingPart") and hasattr(obj,"IfcType") and (obj.IfcType == "Undefined"):
-        ifctype = "IfcBuildingStorey" # export BuildingParts as Storeys if their type wasn't explicitly set
+        ifctype = "IfcBuildingElementPart"
+        obj.IfcType = "Building Element Part"
+        # export BuildingParts as Building Element Parts if their type wasn't explicitly set
+        # set IfcType in the object as well
+        # https://forum.freecad.org/viewtopic.php?p=662934#p662927
     elif hasattr(obj,"IfcType"):
         ifctype = obj.IfcType.replace(" ","")
     elif dtype in ["App::Part","Part::Compound"]:
@@ -2404,6 +2408,7 @@ def createProduct(ifcfile,obj,ifctype,uid,history,name,description,placement,rep
         # print("Wrong IfcType: IfcBuildingElementProxy is used. {}".format(ifctype))
         ifctype = "IfcBuildingElementProxy"
     # print("createProduct: {}".format(ifctype))
+    # print(kwargs)
     product = getattr(ifcfile,"create"+ifctype)(**kwargs)
     return product
 

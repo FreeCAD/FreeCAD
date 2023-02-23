@@ -1,16 +1,17 @@
 #***************************************************************************
-#*   Copyright (c) 2018 Yorik van Havre <yorik@uncreated.net>              *
+#*                                                                         *
+#*   Copyright (c) 2022 Yorik van Havre <yorik@uncreated.net>              *
 #*                                                                         *
 #*   This program is free software; you can redistribute it and/or modify  *
-#*   it under the terms of the GNU Lesser General Public License (LGPL)    *
-#*   as published by the Free Software Foundation; either version 2 of     *
+#*   it under the terms of the GNU General Public License (GPL)            *
+#*   as published by the Free Software Foundation; either version 3 of     *
 #*   the License, or (at your option) any later version.                   *
 #*   for detail see the LICENCE text file.                                 *
 #*                                                                         *
 #*   This program is distributed in the hope that it will be useful,       *
 #*   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
 #*   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
-#*   GNU Library General Public License for more details.                  *
+#*   GNU General Public License for more details.                          *
 #*                                                                         *
 #*   You should have received a copy of the GNU Library General Public     *
 #*   License along with this program; if not, write to the Free Software   *
@@ -19,26 +20,29 @@
 #*                                                                         *
 #***************************************************************************
 
-import os
 import FreeCAD
-import FreeCADGui
 
-from urllib.parse import unquote
+class ifc_vp_object:
+    """NativeIFC class placeholder"""
+    def __init__(self):
+        pass
+    def attach(self, vobj):
+        return
+    def getDisplayModes(self, obj):
+        return []
+    def getDefaultDisplayMode(self):
+        return "FlatLines"
+    def setDisplayMode(self,mode):
+        return mode
+    def __getstate__(self):
+        return None
+    def __setstate__(self, state):
+        return None
 
-
-# filename will be given before this script is run
-cfolders = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Start").GetString("ShowCustomFolder","")
-if cfolders:
-    dirnumber = int(filename[0])
-    filename = filename[2:]
-    cfolder = cfolders.split(";;")[dirnumber]
-    if not os.path.isdir(cfolder):
-        cfolder = os.path.dirname(cfolder)
-    f = unquote(filename).replace("+", " ")
-    ext = os.path.splitext(filename)[1].lower().strip(".")
-    mod = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Start").GetString("DefaultImport"+ext,"")
-    FreeCAD.loadFile(os.path.join(cfolder, f),mod)
-    FreeCADGui.activeDocument().sendMsgToViews("ViewFit")
-
-    from StartPage import StartPage
-    StartPage.postStart()
+class ifc_vp_document(ifc_vp_object):
+    """NativeIFC class placeholder"""
+    def __init__(self):
+        pass
+    def attach(self, vobj):
+        FreeCAD.Console.PrintWarning("Warning: Object "+vobj.Object.Label+" depends on the NativeIFC addon which is not installed, and will not display correctly in the 3D view\n")
+        return

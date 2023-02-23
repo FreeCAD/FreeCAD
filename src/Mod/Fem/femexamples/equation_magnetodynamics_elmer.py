@@ -1,6 +1,5 @@
 # ***************************************************************************
-# *   Copyright (c) 2020 Sudhanshu Dubey <sudhanshu.thethunder@gmail.com>   *
-# *   Copyright (c) 2021 Bernd Hahnebach <bernd@bimstatik.org>              *
+# *   Copyright (c) 2023 Uwe Stöhr <uwestoehr@lyx.org>                      *
 # *                                                                         *
 # *   This file is part of the FreeCAD CAx development system.              *
 # *                                                                         *
@@ -30,33 +29,31 @@ from FreeCAD import Vector
 import Fem
 import ObjectsFem
 
+from BOPTools import SplitFeatures
+from BasicShapes import Shapes
 from . import manager
 from .manager import get_meshname
 from .manager import init_doc
 
 def get_information():
     return {
-        "name": "Electrostatics Capacitance Two Balls",
+        "name": "Magnetic Field Around Wire",
         "meshtype": "solid",
         "meshelement": "Tet10",
-        "constraints": ["electrostatic potential"],
+        "constraints": ["electrostatic potential", "magnetization"],
         "solvers": ["elmer"],
-        "material": "fluid",
-        "equations": ["electrostatic"]
+        "material": "solid",
+        "equations": ["magnetodynamic"]
     }
 
 def get_explanation(header=""):
     return header + """
 
 To run the example from Python console use:
-from femexamples.equation_electrostatics_capacitance_two_balls import setup
+from femexamples.equation_magnetodynamics_elmer import setup
 setup()
 
-
-See forum topic post:
-https://forum.freecadweb.org/viewtopic.php?f=18&t=41488&start=90#p412047
-
-Electrostatics equation in FreeCAD FEM-Elmer
+Magnetodynamic equation - Elmer solver
 
 """
 
@@ -71,29 +68,31 @@ def setup(doc=None, solvertype="elmer"):
     manager.add_explanation_obj(doc, get_explanation(manager.get_header(get_information())))
 
     # geometric objects
-    small_sphere1 = doc.addObject("Part::Sphere", "Small_Sphere1")
-    small_sphere1.Placement = FreeCAD.Placement(Vector(-1000, 0, 0), Rotation(Vector(0, 0, 1), 0))
-    small_sphere1.Radius = "500 mm"
 
-    small_sphere2 = doc.addObject("Part::Sphere", "Small_Sphere2")
-    small_sphere2.Placement = FreeCAD.Placement(Vector(1000, 0, 0), Rotation(Vector(0, 0, 1), 0))
-    small_sphere2.Radius = "500 mm"
+    # wire
+    Wire = doc.addObject("Part::Cylinder", "Wire")
+    Wire.Radius = "1 mm"
+    Wire.Height = "10 mm"
+    Wire.ViewObject.Visibility = False
 
-    fusion = doc.addObject("Part::MultiFuse", "Fusion")
-    fusion.Shapes = [small_sphere1, small_sphere2]
+    # air around wire
+    Air = Shapes.addTube(doc, "Tube")
+    Air.Label = "AirObject"
+    Air.OuterRadius = "5 mm"
+    Air.InnerRadius = "1 mm"
+    Air.Height = "10 mm"
+    Air.ViewObject.Visibility = False
 
-    large_sphere = doc.addObject("Part::Sphere", "Large_Sphere")
-    large_sphere.Radius = "5000 mm"
+    # BooleanFregments object to combine cut with rod
+    BooleanFragments = SplitFeatures.makeBooleanFragments(name="BooleanFragments")
+    BooleanFragments.Objects = [Wire, Air]
 
-    geom_obj = doc.addObject("Part::Cut", "Cut")
-    geom_obj.Base = large_sphere
-    geom_obj.Tool = fusion
+    # set view
     doc.recompute()
-
     if FreeCAD.GuiUp:
-        geom_obj.ViewObject.Transparency = 75
-        geom_obj.ViewObject.Document.activeView().viewAxonometric()
-        geom_obj.ViewObject.Document.activeView().fitAll()
+        BooleanFragments.ViewObject.Transparency = 75
+        BooleanFragments.ViewObject.Document.activeView().viewAxonometric()
+        BooleanFragments.ViewObject.Document.activeView().fitAll()
 
     # analysis
     analysis = ObjectsFem.makeAnalysis(doc, "Analysis")
@@ -104,10 +103,12 @@ def setup(doc=None, solvertype="elmer"):
     # solver
     if solvertype == "elmer":
         solver_obj = ObjectsFem.makeSolverElmer(doc, "SolverElmer")
-        eq_electrostatic = ObjectsFem.makeEquationElectrostatic(doc, solver_obj)
-        eq_electrostatic.CalculateCapacitanceMatrix = True
-        eq_electrostatic.CalculateElectricEnergy = True
-        eq_electrostatic.CalculateElectricField = True
+        eq_electrostatic = ObjectsFem.makeEquationMagnetodynamic(doc, solver_obj)
+        eq_electrostatic.AngularFrequency = "100 kHz"
+        eq_electrostatic.BiCGstablDegree = 4
+        eq_electrostatic.IsHarmonic = True
+        eq_electrostatic.LinearIterativeMethod = "BiCGStabl"
+        eq_electrostatic.LinearPreconditioning = "None"
     else:
         FreeCAD.Console.PrintWarning(
             "Not known or not supported solver type: {}. "
@@ -116,6 +117,8 @@ def setup(doc=None, solvertype="elmer"):
     analysis.addObject(solver_obj)
 
     # material
+
+    # air around the wire
     material_obj = ObjectsFem.makeMaterialFluid(doc, "Air")
     mat = material_obj.Material
     mat["Name"] = "Air"
@@ -125,45 +128,84 @@ def setup(doc=None, solvertype="elmer"):
     mat["ThermalConductivity"] = "0.02587 W/m/K"
     mat["ThermalExpansionCoefficient"] = "0.00343/K"
     mat["SpecificHeat"] = "1010.00 J/kg/K"
+    mat["ElectricalConductivity"] = "1e-12 S/m"
+    mat["RelativePermeability"] = "1.0"
     mat["RelativePermittivity"] = "1.00059"
     material_obj.Material = mat
-    material_obj.References = [(geom_obj, "Solid1")]
+    material_obj.References = [(BooleanFragments, "Solid2")]
     analysis.addObject(material_obj)
 
-    # constraint potential 1st
-    name_pot1 = "ElectrostaticPotential1"
-    con_elect_pot1 = ObjectsFem.makeConstraintElectrostaticPotential(doc, name_pot1)
-    con_elect_pot1.References = [(geom_obj, "Face1")]
-    con_elect_pot1.ElectricInfinity = True
-    analysis.addObject(con_elect_pot1)
+    # copper wire
+    material_obj = ObjectsFem.makeMaterialSolid(doc, "Copper")
+    mat = material_obj.Material
+    mat["Name"] = "Copper-Generic"
+    mat["Density"] = "8960 kg/m^3"
+    mat["PoissonRatio"] = "0.343"
+    mat["ShearModulus"] = "46 GPa"
+    mat["UltimateTensileStrength"] = "210 MPa"
+    mat["YoungsModulus"] = "119 GPa"
+    mat["ThermalConductivity"] = "398 W/m/K"
+    mat["ThermalExpansionCoefficient"] = "16.5 µm/m/K"
+    mat["SpecificHeat"] = "385 J/kg/K"
+    mat["ElectricalConductivity"] = "59590000 S/m"
+    mat["RelativePermeability"] = "0.999994"
+    material_obj.Material = mat
+    material_obj.References = [(BooleanFragments, "Solid1")]
+    analysis.addObject(material_obj)
 
-    # constraint potential 2nd
-    name_pot2 = "ElectrostaticPotential2"
-    con_elect_pot2 = ObjectsFem.makeConstraintElectrostaticPotential(doc, name_pot2)
-    con_elect_pot2.References = [(geom_obj, "Face2")]
-    con_elect_pot2.CapacitanceBody = 1
-    con_elect_pot2.CapacitanceBodyEnabled = True
-    analysis.addObject(con_elect_pot2)
+    # axial field around the wire
+    AxialField = ObjectsFem.makeConstraintElectrostaticPotential(doc, "AxialField")
+    AxialField.References = [
+        (BooleanFragments, "Face4"),
+        (BooleanFragments, "Face5"),
+        (BooleanFragments, "Face6")]
+    AxialField.PotentialEnabled = False
+    AxialField.AV_im_1_Disabled = False
+    AxialField.AV_im_2_Disabled = False
+    AxialField.AV_re_1_Disabled = False
+    AxialField.AV_re_2_Disabled = False
+    analysis.addObject(AxialField)
 
-    # constraint potential 3rd
-    name_pot3 = "ElectrostaticPotential3"
-    con_elect_pot3 = ObjectsFem.makeConstraintElectrostaticPotential(doc, name_pot3)
-    con_elect_pot3.References = [(geom_obj, "Face3")]
-    con_elect_pot3.CapacitanceBody = 2
-    con_elect_pot3.CapacitanceBodyEnabled = True
-    analysis.addObject(con_elect_pot3)
+    # voltage on one end
+    Voltage = ObjectsFem.makeConstraintElectrostaticPotential(doc, "Voltage")
+    Voltage.References = [(BooleanFragments, "Face3")]
+    Voltage.Potential = "10.000 mV"
+    Voltage.AV_im_1_Disabled = False
+    Voltage.AV_im_2_Disabled = False
+    Voltage.AV_re_1_Disabled = False
+    Voltage.AV_re_2_Disabled = False
+    analysis.addObject(Voltage)
+
+    # ground on other end
+    Ground = ObjectsFem.makeConstraintElectrostaticPotential(doc, "Ground")
+    Ground.References = [(BooleanFragments, "Face2")]
+    Ground.Potential = "0 V"
+    Ground.AV_im_1_Disabled = False
+    Ground.AV_im_2_Disabled = False
+    Ground.AV_re_1_Disabled = False
+    Ground.AV_re_2_Disabled = False
+    analysis.addObject(Ground)
+
+    # magnetization
+    Magnetization = ObjectsFem.makeConstraintMagnetization(doc, "Magnetization")
+    Magnetization.References = [(BooleanFragments, "Solid1")]
+    Magnetization.Magnetization_re_1 = "7500.000 A/m"
+    Magnetization.Magnetization_re_2 = "7500.000 A/m"
+    Magnetization.Magnetization_re_3 = "7500.000 A/m"
+    Magnetization.Magnetization_re_2_Disabled = False
+    analysis.addObject(Magnetization)
 
     # mesh
     femmesh_obj = analysis.addObject(ObjectsFem.makeMeshGmsh(doc, get_meshname()))[0]
-    femmesh_obj.Part = geom_obj
-    femmesh_obj.SecondOrderLinear = False
-    femmesh_obj.CharacteristicLengthMax = "600 mm"
+    femmesh_obj.Part = BooleanFragments
+    femmesh_obj.ElementOrder = "1st"
+    femmesh_obj.CharacteristicLengthMax = "0.5 mm"
     femmesh_obj.ViewObject.Visibility = False
 
     # mesh_region
     mesh_region = ObjectsFem.makeMeshRegion(doc, femmesh_obj, name="MeshRegion")
-    mesh_region.CharacteristicLength = "250 mm"
-    mesh_region.References = [(geom_obj, "Face2"), (geom_obj, "Face3")]
+    mesh_region.CharacteristicLength = "0.15 mm"
+    mesh_region.References = [(BooleanFragments, "Solid1")]
     mesh_region.ViewObject.Visibility = False
 
     # generate the mesh

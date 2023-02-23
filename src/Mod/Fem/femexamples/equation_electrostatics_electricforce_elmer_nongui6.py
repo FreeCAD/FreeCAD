@@ -45,7 +45,7 @@ def get_information():
         "constraints": ["electrostatic potential"],
         "solvers": ["elmer"],
         "material": "fluid",
-        "equation": "electrostatic"
+        "equations": ["electrostatic"]
     }
 
 def get_explanation(header=""):
