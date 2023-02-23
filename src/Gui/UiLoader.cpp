@@ -545,6 +545,7 @@ void UiLoaderPy::init_type()
 
 UiLoaderPy::UiLoaderPy()
 {
+    loader.setLanguageChangeEnabled(true);
 }
 
 UiLoaderPy::~UiLoaderPy()
