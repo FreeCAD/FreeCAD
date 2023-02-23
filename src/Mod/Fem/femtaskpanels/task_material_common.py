@@ -276,7 +276,7 @@ class _TaskPanel:
             # if all items were found we know it is the right card
             # we can hereby not simply perform
             # set(self.materials[a_mat].items()) ^ set(material.items())
-            # because emtries are often identic, just appear in the set in a different order
+            # because entries are often identical, just appear in the set in a different order
             unmatched_item = False
             for item in material.items():
                 if item not in self.materials[a_mat].items():
