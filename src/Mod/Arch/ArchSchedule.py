@@ -74,6 +74,24 @@ class CommandArchSchedule:
             return False
 
 
+class _ArchScheduleDocObserver:
+
+    "doc observer to monitor all recomputes"
+
+    # https://forum.freecad.org/viewtopic.php?style=3&p=553377#p553377
+
+    def __init__(self, doc, schedule):
+        self.doc = doc
+        self.schedule = schedule
+
+    def slotRecomputedDocument(self, doc):
+        if doc != self.doc:
+            return
+        try:
+            self.schedule.Proxy.execute(self.schedule)
+        except:
+            pass
+
 
 class _ArchSchedule:
 
@@ -88,6 +106,17 @@ class _ArchSchedule:
     def onDocumentRestored(self,obj):
 
         self.setProperties(obj)
+        if obj.getTypeIdOfProperty("Result") == "App::PropertyLink":
+            self.update_properties_0v21(obj)
+
+    def update_properties_0v21(self,obj):
+        result = obj.Result
+        obj.removeProperty("Result")
+        self.setProperties(obj)
+        obj.Result = result
+        from draftutils.messages import _wrn
+        _wrn("v0.21, " + obj.Label + ", "
+             + translate("Arch", "changed the property type of 'Result', and added property 'AutoUpdate'"))
 
     def setProperties(self,obj):
 
@@ -104,18 +133,32 @@ class _ArchSchedule:
         if not "CreateSpreadsheet" in obj.PropertiesList:
             obj.addProperty("App::PropertyBool",      "CreateSpreadsheet", "Arch",QT_TRANSLATE_NOOP("App::Property","If True, a spreadsheet containing the results is recreated when needed"))
         if not "Result" in obj.PropertiesList:
-            obj.addProperty("App::PropertyLink",      "Result",            "Arch",QT_TRANSLATE_NOOP("App::Property","The spreadsheet to print the results to"))
+            obj.addProperty("App::PropertyLinkHidden","Result",            "Arch",QT_TRANSLATE_NOOP("App::Property","The spreadsheet to print the results to"))
         if not "DetailedResults" in obj.PropertiesList:
-            obj.addProperty("App::PropertyBool",      "DetailedResults", "Arch",QT_TRANSLATE_NOOP("App::Property","If True, additional lines with each individual object are added to the results"))
+            obj.addProperty("App::PropertyBool",      "DetailedResults",   "Arch",QT_TRANSLATE_NOOP("App::Property","If True, additional lines with each individual object are added to the results"))
+        if not "AutoUpdate" in obj.PropertiesList:
+            obj.addProperty("App::PropertyBool",      "AutoUpdate",        "Arch",QT_TRANSLATE_NOOP("App::Property","If True, whenever the document is recomputed this schedule and the linked spreadsheet are recomputed as well"))
+            obj.AutoUpdate = True
+
+        # To add the doc observer:
+        self.onChanged(obj,"AutoUpdate")
 
     def onChanged(self,obj,prop):
 
-        if (prop == "CreateSpreadsheet"):
-            if hasattr(obj,"CreateSpreadsheet") and obj.CreateSpreadsheet:
+        if prop == "CreateSpreadsheet":
+            if obj.CreateSpreadsheet:
                 if not obj.Result:
                     import Spreadsheet
                     sp = FreeCAD.ActiveDocument.addObject("Spreadsheet::Sheet","Result")
                     obj.Result = sp
+        elif prop == "AutoUpdate":
+            if obj.AutoUpdate:
+                if getattr(self, "docObserver", None) is None:
+                    self.docObserver = _ArchScheduleDocObserver(FreeCAD.ActiveDocument, obj)
+                    FreeCAD.addDocumentObserver(self.docObserver)
+            elif getattr(self, "docObserver", None) is not None:
+                FreeCAD.removeDocumentObserver(self.docObserver)
+                self.docObserver = None
 
     def setSpreadsheetData(self,obj,force=False):
 
@@ -146,6 +189,7 @@ class _ArchSchedule:
             obj.Result.set(k,v)
         # recompute
         obj.Result.recompute()
+        obj.Result.purgeTouched() # Remove the confusing blue checkmark from the spreadsheet.
 
     def execute(self,obj):
 
@@ -318,10 +362,6 @@ class _ArchSchedule:
                         self.data["C"+str(li)] = unit
                     else:
                         self.data["B"+str(li)] = str(val)
-                    if obj.DetailedResults:
-                        # additional blank line...
-                        li += 1
-                        self.data["A"+str(li)] = " "
                     if verbose:
                         if tp and unit:
                             v = fs.format(FreeCAD.Units.Quantity(val,tp).getValueAs(unit).Value)
@@ -349,6 +389,9 @@ class _ViewProviderArchSchedule:
         vobj.Proxy = self
 
     def getIcon(self):
+        if self.Object.AutoUpdate is False:
+            import TechDrawGui
+            return ":/icons/TechDraw_TreePageUnsync.svg"
         import Arch_rc
         return ":/icons/Arch_Schedule.svg"
 
