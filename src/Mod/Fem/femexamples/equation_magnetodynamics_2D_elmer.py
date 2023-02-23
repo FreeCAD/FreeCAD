@@ -29,6 +29,7 @@ from FreeCAD import Vector
 
 import Draft
 import ObjectsFem
+import Part
 
 from BOPTools import SplitFeatures
 from . import manager
@@ -113,24 +114,12 @@ def setup(doc=None, solvertype="elmer"):
     Powder.Label = "Powder"
     Powder.ViewObject.Visibility = False
 
-    # circle defining later the air volume
-    Air_Circle = Draft.make_circle(134.536)
-    Air_Circle.Placement = FreeCAD.Placement(
-        FreeCAD.Vector(0.0, 60.0, 0.0),
-        FreeCAD.Rotation(0, 0, 0),
-        FreeCAD.Vector(0, 0, 1),
-    )
-    Air_Circle.Label = "Air_Circle"
-    Air_Circle.ViewObject.Visibility = False
-
-    # wire to cut the air circle
-    p1 = Vector(0.0, -100.0, 0.0)
-    p2 = Vector(-140.0, -100.0, 0.0)
-    p3 = Vector(-140.0, 200.0, 0.0)
-    p4 = Vector(0.0, 200.0, 0.0)
-    Air_Rectangle = Draft.make_wire([p1, p2, p3, p4], closed=True)
-    Air_Rectangle.Label = "Air_Rectangle"
-    Air_Rectangle.ViewObject.Visibility = False
+    # a half circle defining later the air volume    
+    Air_Circle =Part.makeCircle(
+        140.0, Vector(0.0, 60.0, 0.0), Vector(0.0, 0.0, 1.0), -90.0, 90.0)
+    Air_Line = Part.makeLine((0.0, -80.0, 0.0), (0.0, 200.0, 0.0))
+    Air_Area = doc.addObject("Part::Feature", "Air_Area")
+    Air_Area.Shape = Part.Face([Part.Wire([Air_Circle, Air_Line])])
 
     # a link of the Insulation
     InsulationLink = doc.addObject("App::Link", "Link_Insulation")
@@ -158,12 +147,12 @@ def setup(doc=None, solvertype="elmer"):
 
     # fusion of all links
     Fusion = doc.addObject("Part::MultiFuse", "Fusion")
-    Fusion.Shapes = [Air_Rectangle, InsulationLink, CoilLink, CrucibleLink, PowderLink]
+    Fusion.Shapes = [InsulationLink, CoilLink, CrucibleLink, PowderLink]
     Fusion.ViewObject.Visibility = False
 
     # cut all objects from Air wire to get volume of fluid
     Cut = doc.addObject("Part::Cut", "Cut_Air")
-    Cut.Base = Air_Circle
+    Cut.Base = Air_Area
     Cut.Tool = Fusion
     Cut.ViewObject.Visibility = False
 
