@@ -63,6 +63,9 @@ class MaterialEditor:
 
         # load the UI file from the same directory as this script
         self.widget = FreeCADGui.PySideUic.loadUi(filePath + "materials-editor.ui")
+        # remove unused Help button
+        self.widget.setWindowFlags(self.widget.windowFlags()
+                                   & ~QtCore.Qt.WindowContextHelpButtonHint)
 
         # restore size and position
         param = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Material")
