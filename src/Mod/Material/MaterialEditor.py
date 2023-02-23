@@ -64,6 +64,9 @@ class MaterialEditor:
         self.widget = FreeCADGui.PySideUic.loadUi(
             os.path.dirname(__file__) + os.sep + "materials-editor.ui"
         )
+        # remove unused Help button
+        self.widget.setWindowFlags(self.widget.windowFlags()
+                                   & ~QtCore.Qt.WindowContextHelpButtonHint)
 
         self.widget.setWindowIcon(QtGui.QIcon(":/icons/preview-rendered.svg"))
 
