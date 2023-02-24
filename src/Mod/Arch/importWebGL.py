@@ -37,7 +37,12 @@
 
 """FreeCAD WebGL Exporter"""
 
-import FreeCAD,Mesh,Draft,Part,OfflineRenderingUtils,json,six
+import FreeCAD
+import Mesh
+import Draft
+import Part
+import OfflineRenderingUtils
+import json
 import textwrap
 
 if FreeCAD.GuiUp:

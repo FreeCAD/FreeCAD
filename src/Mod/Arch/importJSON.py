@@ -23,7 +23,6 @@
 
 import FreeCAD, Mesh, Draft, Part
 import json
-import six
 
 if FreeCAD.GuiUp:
     import FreeCADGui
