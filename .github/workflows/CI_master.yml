@@ -43,13 +43,19 @@ jobs:
     needs: [Prepare]
     uses: ./.github/workflows/sub_buildUbuntu2004.yml
     with:
-      artifactBasename: Build2004-${{ github.run_id }}
+      artifactBasename: Ubuntu_20-04-${{ github.run_id }}
 
   Ubuntu_22-04:
     needs: [Prepare]
     uses: ./.github/workflows/sub_buildUbuntu2204.yml
     with:
-      artifactBasename: Build2204-${{ github.run_id }}
+      artifactBasename: Ubuntu_22-04-${{ github.run_id }}
+
+  Windows:
+    needs: [Prepare]
+    uses: ./.github/workflows/sub_buildWindows.yml
+    with:
+      artifactBasename: Windows-${{ github.run_id }}
 
   Lint:
     needs: [Prepare]
@@ -61,7 +67,7 @@ jobs:
       changedPythonFiles: ${{ needs.Prepare.outputs.changedPythonFiles }}
 
   WrapUp:
-    needs: [Prepare, Ubuntu_20-04, Ubuntu_22-04, Lint]
+    needs: [Prepare, Ubuntu_20-04, Ubuntu_22-04, Windows, Lint]
     if: always()
     uses: ./.github/workflows/sub_wrapup.yml
     with:
