@@ -196,7 +196,7 @@ def callopenscad(inputfilename,outputfilename=None, outputext='csg', keepname=Fa
     elif transferMechanism ==  2: # Use pipes instead of tempfiles
         return call_openscad_with_pipes(inputfilename, outputfilename, outputext, keepname)
     else:
-        raise OpenSCADError("Invalid transfer mechanism specified");
+        raise OpenSCADError("Invalid transfer mechanism specified")
 
     if osfilename and os.path.isfile(osfilename):
         if not outputfilename:
@@ -251,7 +251,7 @@ def call_openscad_with_pipes(input_filename, output_filename, output_extension, 
                 output_filename=os.path.join(dir1,'%s.%s' % \
                     (next(tempfilenamegen),output_extension))
         with open(output_filename,"w") as outfile:
-            outfile.write(stdoutd);
+            outfile.write(stdoutd)
             return output_filename
     return None
 
@@ -507,7 +507,7 @@ def roundrotation(rot, maxangulardistance=1e-5):
             for euler in itertools.permutations((0,0,angle)):
                 eulers.append(euler)
         for euler in itertools.product((0,45,90,135,180,-45,-90,-135), repeat=3):
-                eulers.append(euler)
+            eulers.append(euler)
         for euler in eulers:
             r2 = FreeCAD.Rotation(*euler)
             if comparerotations(r1, r2) < maxangulardistance:
@@ -607,9 +607,9 @@ def meshoponobjs(opname, inobjs):
         else:
             pass #neither a mesh nor a part
     if len(objs) > 0:
-            return (meshoptempfile(opname,meshes),objs)
+        return (meshoptempfile(opname,meshes),objs)
     else:
-            return (None,[])
+        return (None,[])
 
 
 def process2D_ObjectsViaOpenSCADShape(ObjList, Operation, doc):
@@ -654,9 +654,9 @@ def process2D_ObjectsViaOpenSCAD(ObjList, Operation, doc=None):
     obj.Shape=face
     # Hide Children
     if FreeCAD.GuiUp:
-       for index in ObjList :
-          index.ViewObject.hide()
-    return(obj)
+        for index in ObjList :
+            index.ViewObject.hide()
+    return obj
 
 
 def process3D_ObjectsViaOpenSCADShape(ObjList, Operation, maxmeshpoints=None):
@@ -681,7 +681,7 @@ def process3D_ObjectsViaOpenSCADShape(ObjList, Operation, maxmeshpoints=None):
         solid = Part.Solid(sh)
         solid = solid.removeSplitter()
         if solid.Volume < 0:
-           solid.complement()
+            solid.complement()
         return solid
 
 
@@ -691,9 +691,9 @@ def process3D_ObjectsViaOpenSCAD(doc,ObjList, Operation):
         obj = doc.addObject('Part::Feature',Operation) #non-parametric object
         obj.Shape=solid#.removeSplitter()
         if FreeCAD.GuiUp:
-          for index in ObjList:
-              index.ViewObject.hide()
-        return(obj)
+            for index in ObjList:
+                index.ViewObject.hide()
+        return obj
 
 
 def process_ObjectsViaOpenSCADShape(doc, children, name, maxmeshpoints=None):
