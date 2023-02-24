@@ -1951,7 +1951,7 @@ void DlgPrimitives::acceptChanges(const QString& placement)
     QString command = primitive->change(objectName, placement);
 
     // execute command, a transaction is already opened
-    Gui::Command::runCommand(Gui::Command::App, command.toLatin1());
+    Gui::Command::runCommand(Gui::Command::App, command.toUtf8());
 }
 
 void DlgPrimitives::accept(const QString& placement)
