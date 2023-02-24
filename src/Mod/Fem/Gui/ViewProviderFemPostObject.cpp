@@ -629,7 +629,7 @@ void ViewProviderFemPostObject::updateData(const App::Property* p)
     }
 }
 
-void ViewProviderFemPostObject::filterArtifacts(vtkDataObject* data)
+void ViewProviderFemPostObject::filterArtifacts(vtkDataSet* dset)
 {
     // The problem is that in the surface view the boundary regions of the volumes
     // calculated by the different CPU cores is always visible, independent of the
@@ -677,9 +677,17 @@ void ViewProviderFemPostObject::filterArtifacts(vtkDataObject* data)
             // 10 times dz to be safe even for unrealistic warp deformations
             m_plane->SetOrigin(0., 0., -10 * dz);
             extractor->SetClipFunction(m_implicit);
-            extractor->SetInputData(data);
+            extractor->SetInputData(dset);
             extractor->Update();
-            m_surface->SetInputData(extractor->GetOutputDataObject(0));
+            auto extractorResult = extractor->GetOutputDataObject(0);
+            if (extractorResult)
+                m_surface->SetInputData(extractorResult);
+            else
+                m_surface->SetInputData(dset);
+        }
+        else {
+            // for the case that there are only 2D objects
+            m_surface->SetInputData(dset);
         }
     }
     // restore initial vsibility
@@ -730,7 +738,7 @@ bool ViewProviderFemPostObject::setupPipeline()
     if (FilterMultiCPUResults && (UseNumberOfCores > 1)
         && ((postObject->getTypeId() == Base::Type::fromName("Fem::FemPostPipeline"))
             || (postObject->getTypeId() == Base::Type::fromName("Fem::FemPostWarpVectorFilter"))))
-        filterArtifacts(data);
+        filterArtifacts(dset);
     else
         m_surface->SetInputData(dset);
 
