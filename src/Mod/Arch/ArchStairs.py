@@ -1331,29 +1331,25 @@ class _Stairs(ArchComponent.Component):
         if obj.NumberOfSteps < 2:
             print("Fewer than 2 steps, unable to create/update stairs")
             return
-        v = DraftGeomUtils.vec(edge)
 
+        v = DraftGeomUtils.vec(edge)
+        v_proj = Vector(v.x, v.y, 0) # Projected on XY plane.
         landing = 0
         if obj.TreadDepthEnforce == 0:
             if obj.Landings == "At center" and obj.NumberOfSteps > 3:
                 if obj.LandingDepth:
-                    reslength = edge.Length - obj.LandingDepth.Value
+                    reslength = v_proj.Length - obj.LandingDepth.Value
                 else:
-                    reslength = edge.Length - obj.Width.Value
-
+                    reslength = v_proj.Length - obj.Width.Value
                 treadDepth = reslength/(obj.NumberOfSteps-2)
-                obj.TreadDepth = treadDepth
-                vLength = DraftVecUtils.scaleTo(v,treadDepth)
             else:
-                reslength = edge.Length
+                reslength = v_proj.Length
                 treadDepth = reslength/(obj.NumberOfSteps-1)
-                obj.TreadDepth = treadDepth
-                vLength = DraftVecUtils.scaleTo(v,treadDepth)
+            obj.TreadDepth = treadDepth
+            vLength = DraftVecUtils.scaleTo(v_proj,treadDepth)
         else:
             obj.TreadDepth = obj.TreadDepthEnforce
-
-            vLength = DraftVecUtils.scaleTo(v,float(obj.TreadDepthEnforce))
-        vLength = Vector(vLength.x,vLength.y,0)
+            vLength = DraftVecUtils.scaleTo(v_proj,obj.TreadDepthEnforce.Value)
 
         vWidth = DraftVecUtils.scaleTo(vLength.cross(Vector(0,0,1)),obj.Width.Value)
         p1 = edge.Vertexes[0].Point
