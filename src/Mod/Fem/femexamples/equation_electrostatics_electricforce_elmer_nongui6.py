@@ -177,12 +177,12 @@ def setup(doc=None, solvertype="elmer"):
     mat = material_obj.Material
     mat["Name"] = "Air-Generic"
     mat["Density"] = "1.20 kg/m^3"
-    mat["KinematicViscosity"] = "15.11 mm^2/s"
-    mat["VolumetricThermalExpansionCoefficient"] = "0.00 mm/m/K"
-    mat["ThermalConductivity"] = "0.03 W/m/K"
-    mat["ThermalExpansionCoefficient"] = "0.0034/K"
-    mat["SpecificHeat"] = "1.00 J/kg/K"
-    mat["RelativePermittivity"] = "1.00"
+    mat["ThermalConductivity"] = "0.02587 W/m/K"
+    mat["ThermalExpansionCoefficient"] = "3.43e-3 1/K"
+    mat["SpecificHeat"] = "1.01 kJ/kg/K"
+    mat["ElectricalConductivity"] = "1e-12 S/m"
+    mat["RelativePermeability"] = "1.0"
+    mat["RelativePermittivity"] = "1.00059"
     material_obj.Material = mat
     analysis.addObject(material_obj)
 
