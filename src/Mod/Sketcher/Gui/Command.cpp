@@ -999,10 +999,6 @@ public:
 
             updateCheckBoxFromProperty(gridAutoSpacing, sketchView->GridAuto);
 
-            auto autospacing = gridAutoSpacing->checkState() == Qt::Checked;
-
-            gridSizeBox->setEnabled(!autospacing);
-
             gridSizeBox->setValue(sketchView->GridSize.getValue());
         }
     }
@@ -1065,8 +1061,6 @@ protected:
             if(sketchView) {
                 auto enable = (state == Qt::Checked);
                 sketchView->GridAuto.setValue(enable);
-
-                gridSizeBox->setEnabled(!enable);
             }
         });
 

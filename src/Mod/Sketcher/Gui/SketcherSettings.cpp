@@ -132,12 +132,6 @@ SketcherSettingsGrid::SketcherSettingsGrid(QWidget* parent)
         ui->gridLinePattern->addItem(QIcon(px), QString(), QVariant(it->second));
         ui->gridDivLinePattern->addItem(QIcon(px), QString(), QVariant(it->second));
     }
-
-    ui->gridSize->setEnabled(!ui->checkBoxGridAuto->isChecked());
-
-    QObject::connect(ui->checkBoxGridAuto,&Gui::PrefCheckBox::stateChanged, [this](int state) {
-        ui->gridSize->setEnabled(state != Qt::Checked);
-    });
 }
 
 SketcherSettingsGrid::~SketcherSettingsGrid()
