@@ -292,22 +292,20 @@ void NaviCube::setFontSize(int size)
     m_NaviCubeImplementation->m_CubeTextSize = size;
 }
 
-// sets a default sansserif font
-// the Helvetica font is a good start for most OSes
-QFont NaviCube::getDefaultSansserifFont()
+QString NaviCube::getDefaultSansserifFont()
 {
     // Windows versions since 2017 have the 'Bahnschrift' font (a condensed
     // sans serif font, optimized for readability despite being condensed),
     // we first check for that.
-    QFont font(QString::fromLatin1("Bahnschrift"));
-    if (font.exactMatch())
-        return font;
+    QFont font(QStringLiteral("Bahnschrift"));
+    if (!font.exactMatch())
+        // On systems without 'Bahnschrift' we check for 'Helvetica' or its closest match
+        // as default sans serif font. (For Windows 7 this will e.g. result in 'Arial'.)
+        font = QFont(QStringLiteral("Helvetica"));
 
-    // On systems without 'Bahnschrift' we check for 'Helvetica' or its closest match
-    // as default sans serif font. (For Windows 7 this will e.g. result in 'Arial'.)
-    font = QString::fromLatin1("Helvetica");
     font.setStyleHint(QFont::SansSerif);
-    return font;
+    // QFontInfo is required to get the actually matched font family
+    return QFontInfo(font).family();
 }
 
 int NaviCube::getDefaultFontSize()
@@ -406,7 +404,7 @@ void NaviCubeImplementation::OnChange(ParameterGrp::SubjectType& rCaller,
     }
     else if (strcmp(reason, "FontString") == 0) {
         m_CubeTextFont = (rGrp.GetASCII(
-            reason, NaviCube::getDefaultSansserifFont().family().toStdString().c_str()));
+            reason, NaviCube::getDefaultSansserifFont().toStdString().c_str()));
     }
 }
 
