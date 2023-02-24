@@ -432,7 +432,7 @@ class AddSCADTask:
             parent=self.form,
             caption='Open file',
             dir='.',
-            filter='OpenSCAD Files (*.scad)'
+            filter='OpenSCAD Files (*.scad *.csg)'
         )
 
         if filename:
