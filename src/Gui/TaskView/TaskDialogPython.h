@@ -176,6 +176,9 @@ public:
     bool eventFilter(QObject *watched, QEvent *event) override;
 
 private:
+    bool tryLoadUiFile();
+    bool tryLoadForm();
+    void appendForm(QWidget* widget, const QPixmap& icon);
     void clearForm();
 
 private:
