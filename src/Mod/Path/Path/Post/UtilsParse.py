@@ -291,8 +291,7 @@ def init_parameter_functions(parameter_functions):
         "Z": default_axis_parameter,
         # "$" is used by LinuxCNC (and others?) to designate which spindle
     }
-    for parameter in default_parameter_functions:
-        parameter_functions[parameter] = default_parameter_functions[parameter]
+    parameter_functions.update(default_parameter_functions)
 
 
 def linenumber(values, space=None):
