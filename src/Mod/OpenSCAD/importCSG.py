@@ -129,11 +129,7 @@ def open(filename):
     doc = FreeCAD.newDocument(docname)
     if filename.lower().endswith('.scad'):
         tmpfile = callopenscad(filename)
-        if workaroundforissue128needed():
-            pathName = ''  # https://github.com/openscad/openscad/issues/128
-            #pathName = os.getcwd() # https://github.com/openscad/openscad/issues/128
-        else:
-            pathName = os.path.dirname(os.path.normpath(filename))
+        pathName = os.path.dirname(os.path.normpath(filename))
         processcsg(tmpfile)
         try:
             os.unlink(tmpfile)
@@ -159,11 +155,7 @@ def insert(filename, docname):
     #importgroup = doc.addObject("App::DocumentObjectGroup",groupname)
     if filename.lower().endswith('.scad'):
         tmpfile = callopenscad(filename)
-        if workaroundforissue128needed():
-            pathName = ''  # https://github.com/openscad/openscad/issues/128
-            #pathName = os.getcwd() # https://github.com/openscad/openscad/issues/128
-        else:
-            pathName = os.path.dirname(os.path.normpath(filename))
+        pathName = os.path.dirname(os.path.normpath(filename))
         processcsg(tmpfile)
         try:
             os.unlink(tmpfile)
