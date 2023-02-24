@@ -22,12 +22,13 @@
 
 #include "PreCompiled.h"
 
+#include <BRepBuilderAPI_Copy.hxx>
+
 #include <Base/Console.h>
 #include <Base/Reader.h>
 #include <Base/Writer.h>
 
 #include "TopoShapePy.h"
-#include "Part2DObject.h"
 
 #include "PropertyTopoShapeList.h"
 
@@ -53,14 +54,10 @@ PropertyTopoShapeList::PropertyTopoShapeList()
 
 PropertyTopoShapeList::~PropertyTopoShapeList()
 {
-    for (std::vector<TopoShape*>::iterator it = _lValueList.begin(); it != _lValueList.end(); ++it)
-        if (*it) delete *it;
 }
 
 void PropertyTopoShapeList::setSize(int newSize)
 {
-    for (unsigned int i = newSize; i < _lValueList.size(); i++)
-        delete _lValueList[i];
     _lValueList.resize(newSize);
 }
 
@@ -69,42 +66,67 @@ int PropertyTopoShapeList::getSize() const
     return static_cast<int>(_lValueList.size());
 }
 
-void PropertyTopoShapeList::setValue(TopoShape* lValue)
+// this verion of setValue is for the ADD_PROPERTY_TYPE macro to use when creating a
+// new PropertyTopoShapeList.  In other list properties that use pointers (instead of
+// references) a nullptr is passed to setValue to initialize the empty list, but we can
+// not do that with references.
+void PropertyTopoShapeList::setValue()
 {
-    if (lValue) {
-        aboutToSetValue();
-        _lValueList.resize(1);
-        _lValueList[0] = lValue;
-        hasSetValue();
-    }
+    aboutToSetValue();
+    clear();
+    hasSetValue();
 }
 
-void PropertyTopoShapeList::setValues(const std::vector<TopoShape*>& lValue)
+void PropertyTopoShapeList::setValue(const TopoShape &ts)
+{
+    aboutToSetValue();
+    _lValueList.resize(1);
+    _lValueList[0] = ts;
+    hasSetValue();
+}
+
+void PropertyTopoShapeList::setValues(const std::vector<TopoShape>& lValue)
 {
     aboutToSetValue();
     _lValueList.resize(lValue.size());
-    for (unsigned int i = 0; i < lValue.size(); i++)
+    for (unsigned int i = 0; i < lValue.size(); i++) {
         _lValueList[i] = lValue[i];
+    }
     hasSetValue();
+}
+
+// clean out the list
+void PropertyTopoShapeList::clear()
+{
+    _lValueList.clear();
+    _lValueList.resize(0);
+}
+
+// populate the lists with the TopoShapes that have now finished restoring
+void PropertyTopoShapeList::afterRestore()
+{
+    _lValueList.clear();
+    for (auto entry : m_restorePointers) {
+        _lValueList.push_back(*entry);
+        delete entry;     //??
+    }
+    m_restorePointers.clear();
+    App::PropertyLists::afterRestore();
 }
 
 PyObject *PropertyTopoShapeList::getPyObject()
 {
     PyObject* list = PyList_New(getSize());
     for (int i = 0; i < getSize(); i++)
-        PyList_SetItem( list, i, _lValueList[i]->getPyObject());
+        PyList_SetItem( list, i, _lValueList[i].getPyObject());
     return list;
 }
 
-
 void PropertyTopoShapeList::setPyObject(PyObject *value)
 {
-    // check container of this property to notify about changes
-    Part2DObject* part2d = dynamic_cast<Part2DObject*>(this->getContainer());
-
     if (PySequence_Check(value)) {
         Py_ssize_t nSize = PySequence_Size(value);
-        std::vector<TopoShape*> values;
+        std::vector<TopoShape> values;
         values.resize(nSize);
 
         for (Py_ssize_t i=0; i < nSize; ++i) {
@@ -115,19 +137,14 @@ void PropertyTopoShapeList::setPyObject(PyObject *value)
                 throw Base::TypeError(error);
             }
 
-            values[i] = static_cast<TopoShapePy*>(item)->getTopoShapePtr();
+            values[i] = *static_cast<TopoShapePy*>(item)->getTopoShapePtr();
         }
-
         setValues(values);
-        if (part2d)
-            part2d->acceptGeometry();
     }
     else if (PyObject_TypeCheck(value, &(TopoShapePy::Type))) {
         TopoShapePy  *pcObject = static_cast<TopoShapePy*>(value);
-        setValue(pcObject->getTopoShapePtr());
-        if (part2d)
-            part2d->acceptGeometry();
-    }
+        setValue(*pcObject->getTopoShapePtr());
+   }
     else {
         std::string error = std::string("type must be 'Shape' or list of 'Shape', not ");
         error += value->ob_type->tp_name;
@@ -140,7 +157,7 @@ void PropertyTopoShapeList::Save(Writer &writer) const
     writer.Stream() << writer.ind() << "<ShapeList count=\"" << getSize() <<"\">" << endl;
     writer.incInd();
     for (int i = 0; i < getSize(); i++) {
-        _lValueList[i]->Save(writer);
+        _lValueList[i].Save(writer);
     }
     writer.decInd();
     writer.Stream() << writer.ind() << "</ShapeList>" << endl ;
@@ -150,29 +167,31 @@ void PropertyTopoShapeList::Restore(Base::XMLReader &reader)
 {
     reader.readElement("ShapeList");
     int count = reader.getAttributeAsInteger("count");
-    std::vector<TopoShape*> values;
-    values.reserve(count);
+    m_restorePointers.clear();      // just in case
+    m_restorePointers.reserve(count);
     for (int i = 0; i < count; i++) {
         reader.readElement("TopoShape");
         std::string file (reader.getAttribute("file") );
         if (!file.empty()) {
             // add file to reader's list of files to be loaded by each newShape's RestoreDocFile()
             TopoShape* newShape = new TopoShape();
-            values.push_back(newShape);
+            m_restorePointers.push_back(newShape);
             reader.addFile(file.c_str(), newShape);
         }
     }
     reader.readEndElement("ShapeList");
-
-    // set the list to the restored values
-    setValues(std::move(values));
 }
-
 
 App::Property *PropertyTopoShapeList::Copy() const
 {
     PropertyTopoShapeList *p = new PropertyTopoShapeList();
-    p->setValues(_lValueList);
+    std::vector<TopoShape> copiedShapes;
+    for (auto& shape : _lValueList) {
+        BRepBuilderAPI_Copy copy(shape.getShape());
+        TopoDS_Shape* newShape = new TopoDS_Shape(copy.Shape());
+        copiedShapes.push_back(*newShape);
+    }
+    p->setValues(copiedShapes);
     return p;
 }
 
@@ -186,8 +205,7 @@ unsigned int PropertyTopoShapeList::getMemSize() const
 {
     int size = sizeof(PropertyTopoShapeList);
     for (int i = 0; i < getSize(); i++)
-        size += _lValueList[i]->getMemSize();
+        size += _lValueList[i].getMemSize();
     return size;
 }
-
 

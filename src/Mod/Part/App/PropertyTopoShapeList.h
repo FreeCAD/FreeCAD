@@ -64,15 +64,17 @@ public:
 
     /** Sets the property
      */
-    void setValue(TopoShape*);
-    void setValues(const std::vector<TopoShape*>&);
+    void setValue();
+    void setValue(const TopoShape& ts);
+    void setValues(const std::vector<TopoShape>&);
+    void clear();
 
     /// index operator
-    const TopoShape* operator[] (const int idx) const {
+    const TopoShape& operator[] (const int idx) const {
         return _lValueList[idx];
     }
 
-    const std::vector<TopoShape*>& getValues() const {
+    const std::vector<TopoShape>& getValues() const {
         return _lValueList;
     }
 
@@ -87,8 +89,15 @@ public:
 
     unsigned int getMemSize() const override;
 
+    void afterRestore() override;
+
 private:
-    std::vector<TopoShape*> _lValueList;
+    std::vector<TopoShape> _lValueList;
+
+    // holds the new TopoShapes between their creation in Restore, and the completion of all
+    // individual RestoreDocFile calls.  Once the restore is complete, the new TopoShapes are
+    // inserted into _lValueList;
+    std::vector<TopoShape*> m_restorePointers;
 };
 
 } // namespace Part
