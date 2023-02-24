@@ -254,7 +254,7 @@ class AlgebraTestCase(unittest.TestCase):
         self.assertNotEqual(m2, m4*m3, "Wrong multiplication order")
 
 
-    def testRotAndScaleMatrix(self):
+    def testRotationFromMatrix(self):
         m1 = FreeCAD.Matrix()
         m1.rotateZ(.2)
         m1.scale(0.5)
@@ -267,16 +267,19 @@ class AlgebraTestCase(unittest.TestCase):
         m2.rotateY(.2)
         m2.move(10,5,-3)
         r2 = FreeCAD.Rotation(m2)    
-        self.assertTrue(r1.isSame(r2, 1e-7), 'Scale on matrix influenced rotation')
-        # m2.scale(1,2,3)
-        # msg = 'Matrix with rotation and non uniform scale should not be accepted to extract rotation from'
-        # with self.assertRaises(Exception, msg = msg):
-        #     FreeCAD.Rotation(m2)
         m1.unity()
         m1.scale(-1)
         r1 = FreeCAD.Rotation(m1)
         r2 = FreeCAD.Rotation()
         self.assertTrue(r1.isSame(r2, 1e-7), 'Scale on matrix influenced rotation')
+        m3 = App.Matrix()
+        m3.scale(1.25,1.0,0.25)
+        m3.move(4,5,6)
+        r3 = App.Rotation(m2*m3)
+        r4 = App.Rotation(m3*m2)
+        self.assertTrue(r2.isSame(r3, 1e-7), 'Scale on matrix influenced rotation')
+        self.assertTrue(r2.isSame(r4, 1e-7), 'Scale on matrix influenced rotation')
+
         
     def testRotation(self):
         r=FreeCAD.Rotation(1,0,0,0) # 180 deg around (1,0,0)
