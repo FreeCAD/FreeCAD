@@ -1023,13 +1023,13 @@ class SpreadsheetCases(unittest.TestCase):
         self.assertLess(sheet.E6.distanceToPoint(vec),tol)
         self.assertLess(sheet.F6.distanceToPoint(vec),tol)
 
-        self.assertEqual(sheet.A7.Base, FreeCAD.Vector(1, 2, 3))
-        self.assertEqual(sheet.B7.Base, FreeCAD.Vector(1, -3.0000000000000013, 1.9999999999999998))
-        self.assertEqual(sheet.C7.Base, FreeCAD.Vector(1, -3.0000000000000013, 1.9999999999999998))
-        self.assertEqual(sheet.D7.Base, FreeCAD.Vector(3.000000000000001, 2.0, -1.0000000000000009))
-        self.assertEqual(sheet.E7.Base, FreeCAD.Vector(-2.000000000000001, 0.9999999999999998, 3.0))
-        self.assertEqual(sheet.F7.Base, FreeCAD.Vector(2.0, 4.0, 6.0))
-        self.assertEqual(sheet.G7.Base, FreeCAD.Vector(2.0, 4.0, 6.0))
+        self.assertTrue(sheet.A7.Base.isEqual(FreeCAD.Vector(1, 2, 3), tol))
+        self.assertTrue(sheet.B7.Base.isEqual(FreeCAD.Vector(1, -3, 2), tol))
+        self.assertTrue(sheet.C7.Base.isEqual(FreeCAD.Vector(1, -3, 2), tol))
+        self.assertTrue(sheet.D7.Base.isEqual(FreeCAD.Vector(3, 2.0, -1), tol))
+        self.assertTrue(sheet.E7.Base.isEqual(FreeCAD.Vector(-2, 1, 3.0), tol))
+        self.assertTrue(sheet.F7.Base.isEqual(FreeCAD.Vector(2, 4, 6), tol))
+        self.assertTrue(sheet.G7.Base.isEqual(FreeCAD.Vector(2, 4, 6), tol))
 
     def testIssue3128(self):
         """ Regression test for issue 3128; mod should work with arbitrary units for both arguments """
