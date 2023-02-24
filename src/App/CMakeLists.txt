@@ -140,6 +140,7 @@ SET(Document_CPP_SRCS
     DocumentObserverPython.cpp
     DocumentPyImp.cpp
     Expression.cpp
+    ExpressionTokenizer.cpp
     FeaturePython.cpp
     FeatureTest.cpp
     GeoFeature.cpp
@@ -182,6 +183,7 @@ SET(Document_HPP_SRCS
     DocumentObserverPython.h
     Expression.h
     ExpressionParser.h
+    ExpressionTokenizer.h
     ExpressionVisitors.h
     FeatureCustom.h
     FeaturePython.h
