@@ -445,11 +445,15 @@ QString CylinderPrimitive::change(const QString& objectName, const QString& plac
         "%1.Radius='%2'\n"
         "%1.Height='%3'\n"
         "%1.Angle='%4'\n"
-        "%1.Placement=%5\n")
+        "%1.FirstAngle='%5'\n"
+        "%1.SecondAngle='%6'\n"
+        "%1.Placement=%7\n")
         .arg(objectName,
              ui->cylinderRadius->value().getSafeUserString(),
              ui->cylinderHeight->value().getSafeUserString(),
              ui->cylinderAngle->value().getSafeUserString(),
+             ui->cylinderXSkew->value().getSafeUserString(),
+             ui->cylinderYSkew->value().getSafeUserString(),
              placement);
 }
 
