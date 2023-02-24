@@ -37,16 +37,7 @@ if FreeCAD.GuiUp:
 else:
     gui = False
 
-if gui:
-    try:
-        _encoding = QtGui.QApplication.UnicodeUTF8
-        def translate(context, text):
-            "convenience function for Qt translator"
-            return QtGui.QApplication.translate(context, text, None, _encoding)
-    except AttributeError:
-        def translate(context, text):
-            "convenience function for Qt translator"
-            return QtGui.QApplication.translate(context, text, None)
+translate = FreeCAD.Qt.translate
 
 class ExplodeGroup:
     "Ungroup Objects"
@@ -430,9 +421,9 @@ class AddSCADTask:
     def loadelement(self):
         filename, _ = QtGui.QFileDialog.getOpenFileName(
             parent=self.form,
-            caption='Open file',
+            caption=translate("OpenSCAD", "Open file"),
             dir='.',
-            filter='OpenSCAD Files (*.scad *.csg)'
+            filter=translate("OpenSCAD", "OpenSCAD Files") + " (*.scad *.csg)"
         )
 
         if filename:
@@ -444,9 +435,9 @@ class AddSCADTask:
     def saveelement(self) :
         filename, _ = QtGui.QFileDialog.getSaveFileName(
             parent=self.form,
-            caption='Open file',
+            caption=translate("OpenSCAD", "Save file"),
             dir='.',
-            filter='OpenSCAD Files (*.scad)'
+            filter=translate("OpenSCAD", "OpenSCAD Files") + " (*.scad *.csg)"
         )
 
         if filename:
