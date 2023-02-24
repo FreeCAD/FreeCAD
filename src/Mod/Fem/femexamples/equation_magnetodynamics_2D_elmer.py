@@ -44,7 +44,7 @@ def get_information():
         "constraints": ["current density"],
         "solvers": ["elmer"],
         "material": "solid",
-        "equations": ["magnetodynamic"]
+        "equations": ["electromagnetic"]
     }
 
 def get_explanation(header=""):
@@ -72,7 +72,7 @@ def setup(doc=None, solvertype="elmer"):
 
     # wire defining the insulation area
     p1 = Vector(0.0, 0.0, 0.0)
-    p2 = Vector(40.0, 0, 0.0)
+    p2 = Vector(40.0, 0.0, 0.0)
     p3 = Vector(40.0, 120.0, 0.0)
     p4 = Vector(0.0, 120.0, 0.0)
     p5 = Vector(0.0, 100.0, 0.0)
@@ -85,7 +85,7 @@ def setup(doc=None, solvertype="elmer"):
 
     # wire defining the coil volume
     p1 = Vector(50.0, -10.0, 0.0)
-    p2 = Vector(55.0, -10, 0.0)
+    p2 = Vector(55.0, -10.0, 0.0)
     p3 = Vector(55.0, 110.0, 0.0)
     p4 = Vector(50.0, 110.0, 0.0)
     Coil = Draft.make_wire([p1, p2, p3, p4], closed=True)
@@ -94,7 +94,7 @@ def setup(doc=None, solvertype="elmer"):
 
     # wire defining the crucible area
     p1 = Vector(0.0, 20.0, 0.0)
-    p2 = Vector(25.0, 20, 0.0)
+    p2 = Vector(25.0, 20.0, 0.0)
     p3 = Vector(25.0, 100.0, 0.0)
     p4 = Vector(0.0, 100.0, 0.0)
     p5 = Vector(0.0, 90.0, 0.0)
@@ -114,7 +114,7 @@ def setup(doc=None, solvertype="elmer"):
     Powder.Label = "Powder"
     Powder.ViewObject.Visibility = False
 
-    # a half circle defining later the air volume    
+    # a half circle defining later the air volume
     Air_Circle =Part.makeCircle(
         140.0, Vector(0.0, 60.0, 0.0), Vector(0.0, 0.0, 1.0), -90.0, 90.0)
     Air_Line = Part.makeLine((0.0, -80.0, 0.0), (0.0, 200.0, 0.0))
@@ -198,8 +198,8 @@ def setup(doc=None, solvertype="elmer"):
     mat["Name"] = "Air"
     mat["Density"] = "1.204 kg/m^3"
     mat["ThermalConductivity"] = "0.02587 W/m/K"
-    mat["ThermalExpansionCoefficient"] = "0.00343/K"
-    mat["SpecificHeat"] = "1010.00 J/kg/K"
+    mat["ThermalExpansionCoefficient"] = "3.43e-3 1/K"
+    mat["SpecificHeat"] = "1.01 kJ/kg/K"
     mat["ElectricalConductivity"] = "1e-12 S/m"
     mat["RelativePermeability"] = "1.0"
     mat["RelativePermittivity"] = "1.00059"
@@ -230,7 +230,7 @@ def setup(doc=None, solvertype="elmer"):
     material_obj.References = [(BooleanFragments, "Face1")]
     analysis.addObject(material_obj)
 
-    # mmaterial of powder
+    # material of powder
     material_obj = ObjectsFem.makeMaterialSolid(doc, "Material-Powder")
     mat = material_obj.Material
     mat["Name"] = "Powder"
@@ -240,7 +240,7 @@ def setup(doc=None, solvertype="elmer"):
     material_obj.References = [(BooleanFragments, "Face4")]
     analysis.addObject(material_obj)
 
-    # constraint inlet velocity
+    # constraint current density
     CurrentDensity = ObjectsFem.makeConstraintCurrentDensity(doc, "CurrentDensity")
     CurrentDensity.References = [(BooleanFragments, "Face2")]
     CurrentDensity.CurrentDensity_re_1 = "250000.000 A/m^2"

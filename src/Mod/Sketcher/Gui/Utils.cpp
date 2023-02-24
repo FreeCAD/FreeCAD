@@ -581,18 +581,19 @@ std::string SketcherGui::angleToDisplayFormat(double value, int digits)
 
     //we always use use U+00B0 (°) as the unit of measure for angles in
     //single unit schema.  Will need a change to support rads or grads.
-    QString qUnitString = QString::fromUtf8("°");
+    auto qUnitString = QString::fromUtf8("°");
+    auto decimalSep = QLocale().decimalPoint();
 
     //get the numeric part of the user string
     QRegularExpression rxNoUnits(
-        QString::fromUtf8("(\\d*\\.?\\d*)(\\D*)$"));// number + non digits at end of string
+        QString::fromUtf8("(\\d*\\%1?\\d*)(\\D*)$").arg(decimalSep));// number + non digits at end of string
     QRegularExpressionMatch match = rxNoUnits.match(qUserString);
     if (!match.hasMatch()) {
         //no units in userString?
         return Base::Tools::toStdString(qUserString);
     }
     QString matched = match.captured(1);//matched is the numeric part of user string
-    int dpPos = matched.indexOf(QLocale().decimalPoint());
+    int dpPos = matched.indexOf(decimalSep);
     if (dpPos < 0) {
         //no decimal separator (ie an integer), return all the digits
         return Base::Tools::toStdString(matched + qUnitString);
