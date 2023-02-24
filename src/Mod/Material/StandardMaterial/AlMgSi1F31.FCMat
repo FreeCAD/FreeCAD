@@ -23,4 +23,6 @@ YieldStrength = 260 MPa
 YoungsModulus = 70000 MPa
 
 [Thermal]
-ThermalExpansionCoefficient = 0.000023 m/m/K
+SpecificHeat = 896 J/kg/K
+ThermalConductivity = 160 W/m/K
+ThermalExpansionCoefficient = 23 µm/m/K
