@@ -218,7 +218,11 @@ void GridExtensionP::computeGridSize(const Gui::View3DInventorViewer* viewer)
 
     double unitMultiplier = (unitsUserSchema == 2 || unitsUserSchema == 3) ? 25.4 : (unitsUserSchema == 5 || unitsUserSchema == 7) ? 304.8 : 1;
 
-    computedGridValue = vp->GridSize.getValue() * unitMultiplier * pow(GridNumberSubdivision, floor(log(camMaxDimension / unitMultiplier / numberOfLines) / log(GridNumberSubdivision)));
+    // If number of subdivision is 1, grid auto spacing can't work as it uses it as a factor
+    // In such case, we apply a default factor of 10
+    auto safeGridNumberSubdivision = GridNumberSubdivision <= 1 ? 10 : GridNumberSubdivision;
+
+    computedGridValue = vp->GridSize.getValue() * safeGridNumberSubdivision * unitMultiplier * pow(safeGridNumberSubdivision, floor(log(camMaxDimension / unitMultiplier / numberOfLines / vp->GridSize.getValue()) / log(safeGridNumberSubdivision)));
 
     //cap the grid size
     capGridSize(computedGridValue);
@@ -472,41 +476,49 @@ void ViewProviderGridExtension::extensionOnChanged(const App::Property* prop)
 void ViewProviderGridExtension::setGridSizePixelThreshold(int value)
 {
     pImpl->GridSizePixelThreshold = value;
+    drawGrid(false);
 }
 
 void ViewProviderGridExtension::setGridNumberSubdivision(int value)
 {
     pImpl->GridNumberSubdivision = value;
+    drawGrid(false);
 }
 
 void ViewProviderGridExtension::setGridLinePattern(int pattern)
 {
     pImpl->GridLinePattern = pattern;
+    drawGrid(false);
 }
 
 void ViewProviderGridExtension::setGridDivLinePattern(int pattern)
 {
     pImpl->GridDivLinePattern = pattern;
+    drawGrid(false);
 }
 
 void ViewProviderGridExtension::setGridLineWidth(int width)
 {
     pImpl->GridLineWidth = width;
+    drawGrid(false);
 }
 
 void ViewProviderGridExtension::setGridDivLineWidth(int width)
 {
     pImpl->GridDivLineWidth = width;
+    drawGrid(false);
 }
 
 void ViewProviderGridExtension::setGridLineColor(const App::Color & color)
 {
     pImpl->GridLineColor = color.getPackedValue();
+    drawGrid(false);
 }
 
 void ViewProviderGridExtension::setGridDivLineColor(const App::Color & color)
 {
     pImpl->GridDivLineColor = color.getPackedValue();
+    drawGrid(false);
 }
 
 bool ViewProviderGridExtension::extensionHandleChangedPropertyType(Base::XMLReader& reader,

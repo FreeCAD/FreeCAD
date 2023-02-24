@@ -233,7 +233,7 @@ void ViewProviderSketch::ParameterObserver::initParameters()
         {"GridSizePixelThreshold",
             {[this](const std::string & string, [[maybe_unused]] App::Property * property){ auto v = getSketcherGeneralParameter(string, 15); Client.setGridSizePixelThreshold(v); }, nullptr }},
         {"GridNumberSubdivision",
-            {[this](const std::string & string, [[maybe_unused]] App::Property * property){ auto v = getSketcherGeneralParameter(string, 10); Client.setGridSizePixelThreshold(v); }, nullptr }},
+            {[this](const std::string & string, [[maybe_unused]] App::Property * property){ auto v = getSketcherGeneralParameter(string, 10); Client.setGridNumberSubdivision(v); }, nullptr }},
         {"GridLinePattern",
             {[this](const std::string & string, [[maybe_unused]] App::Property * property){ auto v = getSketcherGeneralParameter(string, 0x0f0f); Client.setGridLinePattern(v); }, nullptr }},
         {"GridDivLinePattern",
