@@ -1,0 +1,24 @@
+; Ti-6Al-4V
+; vlk
+; information about the content of such cards can be found on the wiki:
+; https://www.freecadweb.org/wiki/Material
+; file created by FreeCAD 0.20.29603 (Git)
+
+[General]
+Name = Ti-6Al-4V (Grade 5)
+Father = Metal
+KindOfMaterial = Titanium
+SourceURL = https://asm.matweb.com/search/SpecificMaterial.asp?bassnum=mtp641
+
+[Mechanical]
+Density = 4430 kg/m^3
+PoissonRatio = 0.342
+ShearModulus = 44 GPa
+UltimateTensileStrength = 950 MPa
+YieldStrength = 880 MPa
+YoungsModulus = 113.8 GPa
+
+[Thermal]
+SpecificHeat = 5266.3 J/kg/K
+ThermalConductivity = 6.7 W/m/K
+ThermalExpansionCoefficient = 8.6 µm/m/K
