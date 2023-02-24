@@ -139,31 +139,36 @@ def setup(doc=None, solvertype="elmer"):
     equation_heat.RelaxationFactor = 0.9
 
     # material
+
+    # fluid
     material_obj = ObjectsFem.makeMaterialFluid(doc, "Material_Fluid")
     mat = material_obj.Material
     mat["Name"] = "Air"
     mat["Density"] = "1.204 kg/m^3"
-    mat["KinematicViscosity"] = "15.11 mm^2/s"
-    mat["VolumetricThermalExpansionCoefficient"] = "0.00 mm/m/K"
+    mat["DynamicViscosity"] = "1.80e-5 kg/m/s"
+    mat["KinematicViscosity"] = "1.511e-5 m^2/s"
     mat["ThermalConductivity"] = "0.02587 W/m/K"
-    mat["ThermalExpansionCoefficient"] = "0.00343/K"
-    mat["SpecificHeat"] = "1010.00 J/kg/K"
+    mat["ThermalExpansionCoefficient"] = "3.43e-3 1/K"
+    mat["SpecificHeat"] = "1.01 kJ/kg/K"
+    mat["ElectricalConductivity"] = "1e-12 S/m"
+    mat["RelativePermeability"] = "1.0"
     mat["RelativePermittivity"] = "1.00059"
     material_obj.Material = mat
     material_obj.References = [(BooleanFragments, "Face2")]
     analysis.addObject(material_obj)
 
+    # tube wall
     material_obj = ObjectsFem.makeMaterialSolid(doc, "Material_Wall")
     mat = material_obj.Material
-    mat["Name"] = "Aluminum-Generic"
-    mat["Density"] = "2700.0 kg/m^3"
+    mat["Name"] = "Aluminum Generic"
+    mat["Density"] = "2700 kg/m^3"
     mat["PoissonRatio"] = "0.35"
     mat["ShearModulus"] = "25.0 GPa"
     mat["UltimateTensileStrength"] = "310 MPa"
     mat["YoungsModulus"] = "70000 MPa"
-    mat["ThermalConductivity"] = "237 W/m/K"
+    mat["ThermalConductivity"] = "237.0 W/m/K"
     mat["ThermalExpansionCoefficient"] = "23.1 µm/m/K"
-    mat["SpecificHeat"] = "897.00 J/kg/K"
+    mat["SpecificHeat"] = "897.0 J/kg/K"
     material_obj.Material = mat
     material_obj.References = [(BooleanFragments, "Face1")]
     analysis.addObject(material_obj)
