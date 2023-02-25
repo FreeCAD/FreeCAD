@@ -292,6 +292,11 @@ void NaviCube::setFontSize(int size)
     m_NaviCubeImplementation->m_CubeTextSize = size;
 }
 
+void NaviCube::setButtonColor(QColor ButtonColor)
+{
+    m_NaviCubeImplementation->m_ButtonColor = ButtonColor;
+}
+
 QString NaviCube::getDefaultSansserifFont()
 {
     // Windows versions since 2017 have the 'Bahnschrift' font (a condensed
@@ -379,7 +384,12 @@ void NaviCubeImplementation::OnChange(ParameterGrp::SubjectType& rCaller,
         m_HiliteColor.setRgba(rGrp.GetUnsigned(reason, QColor(170, 226, 255, 255).rgba()));
     }
     else if (strcmp(reason, "ButtonColor") == 0) {
-        m_ButtonColor.setRgba(rGrp.GetUnsigned(reason, QColor(226, 233, 239, 128).rgba()));
+        // the color is stored in the form ARRGGBB thus we cannot read in using .rgba()
+        unsigned long col = rGrp.GetUnsigned("ButtonColor", 3806916480);
+        // 3806916480 is AAA,RRR,GGG,BBB: 128,226,233,239
+        QColor buttonColor(
+            (col >> 24) & 0xff, (col >> 16) & 0xff, (col >> 8) & 0xff, col & 0xff);
+        m_ButtonColor = buttonColor;
     }
     else if (strcmp(reason, "CornerNaviCube") == 0) {
         m_Corner = static_cast<NaviCube::Corner>(rGrp.GetInt(reason, 1));

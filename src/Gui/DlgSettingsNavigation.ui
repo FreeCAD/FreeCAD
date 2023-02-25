@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>500</width>
-    <height>394</height>
+    <width>432</width>
+    <height>423</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -117,7 +117,7 @@
         </item>
        </widget>
       </item>
-      <item row="2" column="0" colspan="2">
+      <item row="1" column="0" colspan="2">
        <widget class="Gui::PrefCheckBox" name="naviCubeToNearest">
         <property name="toolTip">
          <string>Rotates to nearest possible state when clicking a cube face</string>
@@ -136,14 +136,14 @@
         </property>
        </widget>
       </item>
-      <item row="2" column="3">
-       <widget class="QLabel" name="TextLabel3">
+      <item row="1" column="3">
+       <widget class="QLabel" name="FontNameLabel">
         <property name="text">
          <string>Font name:</string>
         </property>
        </widget>
       </item>
-      <item row="2" column="4">
+      <item row="1" column="4">
        <widget class="Gui::PrefComboBox" name="naviCubeFontName">
         <property name="toolTip">
          <string>Font name of the navigation cube</string>
@@ -159,14 +159,14 @@
         </property>
        </widget>
       </item>
-      <item row="3" column="0">
-       <widget class="QLabel" name="label_3">
+      <item row="2" column="0">
+       <widget class="QLabel" name="CubeSizeLabel">
         <property name="text">
          <string>Cube size</string>
         </property>
        </widget>
       </item>
-      <item row="3" column="1">
+      <item row="2" column="1">
        <widget class="Gui::PrefSpinBox" name="prefCubeSize">
         <property name="toolTip">
          <string>Size of the navigation cube</string>
@@ -194,14 +194,14 @@
         </property>
        </widget>
       </item>
-      <item row="3" column="3">
-       <widget class="QLabel" name="TextLabel4">
+      <item row="2" column="3">
+       <widget class="QLabel" name="FontSizeLabel">
         <property name="text">
          <string>Font size:</string>
         </property>
        </widget>
       </item>
-      <item row="3" column="4">
+      <item row="2" column="4">
        <widget class="Gui::PrefSpinBox" name="naviCubeFontSize">
         <property name="sizePolicy">
          <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
@@ -226,6 +226,34 @@
         </property>
         <property name="prefEntry" stdset="0">
          <cstring>FontSize</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>NaviCube</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="0">
+       <widget class="QLabel" name="ButtonColorLabel">
+        <property name="text">
+         <string>Button color</string>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="1">
+       <widget class="Gui::PrefColorButton" name="naviCubeButtonColor">
+        <property name="toolTip">
+         <string>color for all elements
+around the cube</string>
+        </property>
+        <property name="color">
+         <color alpha="128">
+          <red>226</red>
+          <green>232</green>
+          <blue>239</blue>
+         </color>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>ButtonColor</cstring>
         </property>
         <property name="prefPath" stdset="0">
          <cstring>NaviCube</cstring>
@@ -641,8 +669,18 @@ Mouse tilting is not disabled by this setting.</string>
  </widget>
  <customwidgets>
   <customwidget>
+   <class>Gui::ColorButton</class>
+   <extends>QPushButton</extends>
+   <header>Gui/Widgets.h</header>
+  </customwidget>
+  <customwidget>
    <class>Gui::PrefSpinBox</class>
    <extends>QSpinBox</extends>
+   <header>Gui/PrefWidgets.h</header>
+  </customwidget>
+  <customwidget>
+   <class>Gui::PrefColorButton</class>
+   <extends>Gui::ColorButton</extends>
    <header>Gui/PrefWidgets.h</header>
   </customwidget>
   <customwidget>
