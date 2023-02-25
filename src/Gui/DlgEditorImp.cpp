@@ -184,7 +184,7 @@ void DlgSettingsEditorImp::on_displayItems_currentItemChanged(QTreeWidgetItem *i
 {
     int index = ui->displayItems->indexOfTopLevelItem(item);
     unsigned int col = d->colormap[index].second;
-    ui->colorButton->setColor(QColor((col >> 24) & 0xff, (col >> 16) & 0xff, (col >> 8) & 0xff));
+    ui->colorButton->setColor(App::Color::fromPackedRGB<QColor>(col));
 }
 
 /** Updates the color map if a color was changed */
@@ -263,8 +263,7 @@ void DlgSettingsEditorImp::loadSettings()
         auto col = static_cast<unsigned long>((*it).second);
         col = hGrp->GetUnsigned((*it).first.toLatin1(), col);
         (*it).second = static_cast<unsigned int>(col);
-        QColor color;
-        color.setRgb((col >> 24) & 0xff, (col >> 16) & 0xff, (col >> 8) & 0xff);
+        QColor color = App::Color::fromPackedRGB<QColor>(col);
         pythonSyntax->setColor((*it).first, color);
     }
 

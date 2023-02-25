@@ -24,8 +24,8 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-#include <sstream>
 #include <iomanip>
+#include <sstream>
 #endif
 
 #include "Color.h"
@@ -49,7 +49,6 @@ Color::Color(uint32_t rgba)
 bool Color::operator==(const Color& c) const
 {
     return getPackedValue() == c.getPackedValue();
-    //return (c.r==r && c.g==g && c.b==b && c.a==a);
 }
 
 bool Color::operator!=(const Color& c) const
@@ -57,7 +56,7 @@ bool Color::operator!=(const Color& c) const
     return !operator==(c);
 }
 
-void Color::set(float R,float G, float B, float A)
+void Color::set(float R, float G, float B, float A)
 {
     r = R;
     g = G;
@@ -88,6 +87,16 @@ uint32_t Color::getPackedARGB() const
             static_cast<uint32_t>(r*255.0f + 0.5f) << 16 |
             static_cast<uint32_t>(g*255.0f + 0.5f) << 8  |
             static_cast<uint32_t>(b*255.0f + 0.5f));
+}
+
+void Color::setPackedARGB(uint32_t argb)
+{
+    // clang-format off
+    this->set(((argb >> 16) & 0xff) / 255.0f,
+              ((argb >>  8) & 0xff) / 255.0f,
+               (argb        & 0xff) / 255.0f,
+               (argb >> 24)         / 255.0f);
+    // clang-format on
 }
 
 std::string Color::asHexString() const

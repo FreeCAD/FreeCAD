@@ -102,6 +102,7 @@
 #include "View3DInventorViewer.h"
 #include "DlgObjectSelection.h"
 #include "Tools.h"
+#include <App/Color.h>
 
 FC_LOG_LEVEL_INIT("MainWindow",false,true,true)
 
@@ -2124,15 +2125,15 @@ void StatusBarObserver::OnChange(Base::Subject<const char*> &rCaller, const char
     auto format = QString::fromLatin1("#statusBar{color: %1}");
     if (strcmp(sReason, "colorText") == 0) {
         unsigned long col = rclGrp.GetUnsigned( sReason );
-        this->msg = format.arg(QColor((col >> 24) & 0xff,(col >> 16) & 0xff,(col >> 8) & 0xff).name());
+        this->msg = format.arg(App::Color::fromPackedRGB<QColor>(col).name());
     }
     else if (strcmp(sReason, "colorWarning") == 0) {
         unsigned long col = rclGrp.GetUnsigned( sReason );
-        this->wrn = format.arg(QColor((col >> 24) & 0xff,(col >> 16) & 0xff,(col >> 8) & 0xff).name());
+        this->wrn = format.arg(App::Color::fromPackedRGB<QColor>(col).name());
     }
     else if (strcmp(sReason, "colorError") == 0) {
         unsigned long col = rclGrp.GetUnsigned( sReason );
-        this->err = format.arg(QColor((col >> 24) & 0xff,(col >> 16) & 0xff,(col >> 8) & 0xff).name());
+        this->err = format.arg(App::Color::fromPackedRGB<QColor>(col).name());
     }
 }
 
