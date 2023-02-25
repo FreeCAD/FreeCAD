@@ -955,6 +955,9 @@ void CmdSketcherCompCreateBSpline::activated(int iMsg)
     else if (iMsg == 2) {
         ActivateHandler(getActiveGuiDocument(), new DrawSketchHandlerBSplineByInterpolation(0));
     }
+    else if (iMsg == 3) {
+        ActivateHandler(getActiveGuiDocument(), new DrawSketchHandlerBSplineByInterpolation(1));
+    }
     else {
         return;
     }
@@ -981,7 +984,10 @@ Gui::Action * CmdSketcherCompCreateBSpline::createAction()
     periodicbspline->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_Create_Periodic_BSpline"));
 
     QAction* bsplinebyknot = pcAction->addAction(QString());
-    bsplinebyknot->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_Create_BSplineByKnot"));
+    bsplinebyknot->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_Create_BSpline_By_Knot"));
+
+    QAction* periodicbsplinebyknot = pcAction->addAction(QString());
+    periodicbsplinebyknot->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_Create_Periodic_BSpline_By_Knot"));
 
     _pcAction = pcAction;
     languageChange();
