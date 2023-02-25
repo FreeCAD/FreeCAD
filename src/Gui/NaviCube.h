@@ -52,6 +52,7 @@ public:
     void setNaviStepByTurn(int steps);
     void setFont(std::string font);
     void setFontSize(int size);
+    void setButtonColor(QColor buttonColor);
     static QString getDefaultSansserifFont();
     int getDefaultFontSize();
     static void setNaviCubeCommands(const std::vector<std::string>& cmd);

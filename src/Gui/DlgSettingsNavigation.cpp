@@ -57,6 +57,7 @@ DlgSettingsNavigation::DlgSettingsNavigation(QWidget* parent)
     , q0(0), q1(0), q2(0), q3(1)
 {
     ui->setupUi(this);
+    ui->naviCubeButtonColor->setAllowTransparency(true);
     retranslate();
 }
 
@@ -93,6 +94,7 @@ void DlgSettingsNavigation::saveSettings()
     ui->naviCubeToNearest->onSave();
     ui->prefCubeSize->onSave();
     ui->naviCubeFontSize->onSave();
+    ui->naviCubeButtonColor->onSave();
 
     bool showNaviCube = ui->groupBoxNaviCube->isChecked();
     hGrp->SetBool("ShowNaviCube", showNaviCube);
@@ -141,6 +143,7 @@ void DlgSettingsNavigation::loadSettings()
     ui->naviCubeToNearest->onRestore();
     ui->prefCubeSize->onRestore();
     ui->naviCubeFontSize->onRestore();
+    ui->naviCubeButtonColor->onRestore();
 
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath
         ("User parameter:BaseApp/Preferences/View");

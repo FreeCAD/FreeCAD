@@ -402,6 +402,9 @@ void View3DInventor::OnChange(ParameterGrp::SubjectType &rCaller,ParameterGrp::M
             "FontString", NaviCube::getDefaultSansserifFont().toStdString().c_str());
         _viewer->getNavigationCube()->setFont(font);
     }
+    else if (strcmp(Reason, "ButtonColor") == 0) {
+        _viewer->getNavigationCube()->setButtonColor(rGrp.GetUnsigned("ButtonColor", 3806916480));
+    }
     else if (strcmp(Reason,"UseVBO") == 0) {
         _viewer->setEnabledVBO(rGrp.GetBool("UseVBO", false));
     }
