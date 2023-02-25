@@ -42,12 +42,17 @@
 # include <Standard_Version.hxx>
 # include <STEPCAFControl_Reader.hxx>
 # include <STEPCAFControl_Writer.hxx>
+# include <TColStd_IndexedDataMapOfStringString.hxx>
 # include <TDocStd_Document.hxx>
 # include <Transfer_TransientProcess.hxx>
 # include <XCAFApp_Application.hxx>
 # include <XCAFDoc_DocumentTool.hxx>
 # include <XSControl_TransferReader.hxx>
 # include <XSControl_WorkSession.hxx>
+# if OCC_VERSION_HEX >= 0x070500
+#  include <Message_ProgressRange.hxx>
+#  include <RWGltf_CafWriter.hxx>
+# endif
 # if defined(__clang__)
 #  pragma clang diagnostic pop
 # endif
@@ -379,6 +384,23 @@ private:
                     PyErr_Format(PyExc_IOError, "Cannot open file '%s'", Utf8Name.c_str());
                     throw Py::Exception();
                 }
+            }
+            else if (file.hasExtension("glb") || file.hasExtension("gltf")) {
+#if OCC_VERSION_HEX >= 0x070500
+                TColStd_IndexedDataMapOfStringString aMetadata;
+                RWGltf_CafWriter aWriter (name8bit.c_str(), file.hasExtension("glb"));
+                aWriter.SetTransformationFormat (RWGltf_WriterTrsfFormat_Compact);
+                // https://github.com/KhronosGroup/glTF/blob/master/specification/2.0/README.md#coordinate-system-and-units
+                aWriter.ChangeCoordinateSystemConverter().SetInputLengthUnit (0.001);
+                aWriter.ChangeCoordinateSystemConverter().SetInputCoordinateSystem (RWMesh_CoordinateSystem_Zup);
+                Standard_Boolean ret = aWriter.Perform (hDoc, aMetadata, Message_ProgressRange());
+                if (!ret) {
+                    PyErr_Format(PyExc_IOError, "Cannot save to file '%s'", Utf8Name.c_str());
+                    throw Py::Exception();
+                }
+#else
+                throw Py::RuntimeError("gITF support requires OCCT 7.5.0 or later");
+#endif
             }
 
             hApp->Close(hDoc);
