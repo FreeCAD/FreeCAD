@@ -111,23 +111,17 @@ App::DocumentObjectExecReturn *DrawViewSpreadsheet::execute()
     return TechDraw::DrawView::execute();
 }
 
-std::vector<std::string> DrawViewSpreadsheet::getAvailColumns()
+std::vector <std::string> DrawViewSpreadsheet::getAvailColumns()
 {
-    // build a list of available columns: A, B, C, ... AA, AB, ... ZY, ZZ.
-    std::string alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-    std::vector<std::string> availcolumns;
-    for (int i=0; i<26; ++i) {              //A:Z
-        std::stringstream s;
-        s << alphabet[i];
-        availcolumns.push_back(s.str());
-    }
-    for (int i=0; i<26; ++i) {             //AA:ZZ
-        for (int j=0; j<26; ++j) {
-            std::stringstream s;
-            s << alphabet[i] << alphabet[j];
-            availcolumns.push_back(s.str());
-        }
-    }
+    // builds a list of available columns: A, B, ... Y, Z, AA, AB, ... ZY, ZZ.
+    const std::string alphabet [] {"A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"};
+
+    std::vector <std::string> availcolumns { std::begin (alphabet), std::end (alphabet) };
+
+    for (const std::string &left : alphabet)
+        for (const std::string &right : alphabet)
+            availcolumns.push_back(left + right);
+
     return availcolumns;
 }
 
@@ -200,7 +194,7 @@ std::string DrawViewSpreadsheet::getSheetImage()
         }
     }
 
-    std::vector<std::string> availcolumns = getAvailColumns();
+    const std::vector <std::string> availcolumns = getAvailColumns();
 
     //validate range start column in sheet's available columns
     int iAvailColStart = colInList(availcolumns, sColStart);
@@ -309,11 +303,11 @@ std::string DrawViewSpreadsheet::getSheetImage()
                 if (cell->getStyle(st)) {
                     for (std::set<std::string>::const_iterator i = st.begin(); i != st.end(); ++i) {
                          if ((*i) == "bold")
-                            textstyle = textstyle + "font-weight: bold; ";
+                            textstyle += "font-weight: bold; ";
                         else if ((*i) == "italic")
-                            textstyle = textstyle + "font-style: italic; ";
+                            textstyle += "font-style: italic; ";
                         else if ((*i) == "underline")
-                            textstyle = textstyle + "text-decoration: underline; ";
+                            textstyle += "text-decoration: underline; ";
                     }
                 }
                 if (cell->getSpans(rowspan, colspan)) {
@@ -321,9 +315,9 @@ std::string DrawViewSpreadsheet::getSheetImage()
                         for (int j=0; j<rowspan; ++j) {
                             App::CellAddress nextcell(address.row()+j, address.col()+i);
                             if (i > 0)
-                                cellwidth = cellwidth + sheet->getColumnWidth(nextcell.col());
+                                cellwidth += sheet->getColumnWidth(nextcell.col());
                             if (j > 0)
-                                cellheight = cellheight + sheet->getRowHeight(nextcell.row());
+                                cellheight += sheet->getRowHeight(nextcell.row());
                             if ( (i > 0) || (j > 0) )
                                 skiplist.push_back(nextcell.toString());
                         }
@@ -357,11 +351,11 @@ std::string DrawViewSpreadsheet::getSheetImage()
                            << " fill=\"" << fcolor << "\">" << celltext << "</text>" << std::endl;
                 }
             }
-            rowoffset = rowoffset + sheet->getRowHeight(address.row());
+            rowoffset += sheet->getRowHeight(address.row());
         }
         result << "  </g>" << std::endl;
         rowoffset = 0.0;
-        coloffset = coloffset + cellwidth;
+        coloffset += cellwidth;
     }
 
     // close the containing group
