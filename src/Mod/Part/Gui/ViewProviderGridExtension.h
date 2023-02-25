@@ -24,11 +24,14 @@
 #ifndef PARTGUI_VIEWPROVIDERGRIDEXTENSION_H
 #define PARTGUI_VIEWPROVIDERGRIDEXTENSION_H
 
-#include <Gui/ViewProviderExtensionPython.h>
-#include <Mod/Part/PartGlobal.h>
+#include <Base/Vector3D.h>
+#include <Base/Rotation.h>
+#include <App/Material.h>
 #include <App/PropertyStandard.h>
 #include <App/PropertyUnits.h>
-#include <App/Material.h>
+#include <Gui/ViewProviderExtensionPython.h>
+
+#include <Mod/Part/PartGlobal.h>
 
 namespace PartGui {
 
@@ -54,6 +57,8 @@ public:
     void extensionUpdateData(const App::Property*) override;
 
     SoSeparator* getGridNode();
+
+    void setGridOrientation(Base::Vector3d origin, Base::Rotation rotation);
 
     /** Return the distance to the closest point in the grid.
     *   The point closer to the grid is returned by reference
