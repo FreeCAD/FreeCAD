@@ -16,18 +16,17 @@ protected:
 
 TEST_F(Quantity, TestSchemeImperialTwo)
 {
-    Base::UnitsSchemaImperialDecimal scheme;
     Base::Quantity quantity{1.0, Base::Unit::Length};
 
     double factor;
     QString unitString;
-    QString result = scheme.schemaTranslate(quantity, factor, unitString);
+    auto scheme = Base::UnitsApi::createSchema(Base::UnitSystem::ImperialDecimal);
+    QString result = scheme->schemaTranslate(quantity, factor, unitString);
     EXPECT_EQ(result.toStdString(), "0.04 in");
 }
 
 TEST_F(Quantity, TestSchemeImperialOne)
 {
-    Base::UnitsSchemaImperialDecimal scheme;
     Base::Quantity quantity{1.0, Base::Unit::Length};
 
     Base::QuantityFormat format = quantity.getFormat();
@@ -36,7 +35,8 @@ TEST_F(Quantity, TestSchemeImperialOne)
 
     double factor;
     QString unitString;
-    QString result = scheme.schemaTranslate(quantity, factor, unitString);
+    auto scheme = Base::UnitsApi::createSchema(Base::UnitSystem::ImperialDecimal);
+    QString result = scheme->schemaTranslate(quantity, factor, unitString);
 
     EXPECT_EQ(result.toStdString(), "0.0 in");
 }
