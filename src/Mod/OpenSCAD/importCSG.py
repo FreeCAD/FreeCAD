@@ -67,6 +67,8 @@ original_root_objects = []
 import tokrules
 from tokrules import tokens
 
+translate = FreeCAD.Qt.translate
+
 
 def shallHide(subject):
     for obj in subject.OutListRecursive:
@@ -105,20 +107,6 @@ def fixVisibility():
             root_object.ViewObject.Visibility = True
             for obj in root_object.OutListRecursive:
                 obj.ViewObject.Visibility = False
-
-
-if gui:
-    try:
-        _encoding = QtGui.QApplication.UnicodeUTF8
-        def translate(context, text):
-            "convenience function for Qt translator"
-            from PySide import QtGui
-            return QtGui.QApplication.translate(context, text, None, _encoding)
-    except AttributeError:
-        def translate(context, text):
-            "convenience function for Qt translator"
-            from PySide import QtGui
-            return QtGui.QApplication.translate(context, text, None)
 
 
 def open(filename):

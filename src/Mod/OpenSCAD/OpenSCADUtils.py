@@ -19,30 +19,30 @@
 #*                                                                         *
 #***************************************************************************
 
+""" This Script includes various python helper functions that are shared across the
+module."""
+
+import io
+import itertools
+import os
+import shutil
+import sys
+import subprocess
+import tempfile
+import time
+
+from exportCSG import mesh2polyhedron
+import FreeCAD
+import Part
+import Mesh
+import MeshPart
+import importDXF
+
 __title__ = "FreeCAD OpenSCAD Workbench - Utility Functions"
 __author__ = "Sebastian Hoogen"
 __url__ = ["https://www.freecadweb.org"]
 
-'''
-This Script includes various python helper functions that are shared across
-the module
-'''
-from exportCSG import mesh2polyhedron
-import FreeCAD
-import io
-
-if FreeCAD.GuiUp:
-    try:
-        from PySide import QtGui
-        _encoding = QtGui.QApplication.UnicodeUTF8
-        def translate(context, text):
-            "convenience function for Qt translator"
-            return QtGui.QApplication.translate(context, text, None, _encoding)
-    except AttributeError:
-        def translate(context, text):
-            "convenience function for Qt translator"
-            from PySide import QtGui
-            return QtGui.QApplication.translate(context, text, None)
+translate = FreeCAD.Qt.translate
 
 try:
     BaseError = FreeCAD.Base.FreeCADError
@@ -60,11 +60,7 @@ class OpenSCADError(BaseError):
 
 
 def getopenscadexe(osfilename=None):
-    import os
-    import subprocess
-    import time
     if not osfilename:
-        import FreeCAD
         osfilename = FreeCAD.ParamGet(\
             "User parameter:BaseApp/Preferences/Mod/OpenSCAD").\
             GetString('openscadexecutable')
@@ -74,9 +70,16 @@ def getopenscadexe(osfilename=None):
 
 
 def searchforopenscadexe():
-    import os
-    import sys
-    import subprocess
+    """Try to use Python's built-in executable-finder. If that fails, fall back to the
+    old code."""
+    py3_find = shutil.which("openscad")
+    if py3_find:
+        return py3_find
+    FreeCAD.Console.PrintError(
+        "shutil.which('openscad') did not return a result. Using fallback.\n"
+    )
+    # The code that follows is from the original OpenSCAD WB code, kept around until we
+    # can verify that all of our expected systems work with the shutil call. -CH 2/23
     if sys.platform == 'win32':
         testpaths = [os.path.join(os.environ.get('Programfiles(x86)','C:'),\
             'OpenSCAD\\openscad.exe')]
@@ -112,11 +115,7 @@ def searchforopenscadexe():
 
 
 def getopenscadversion(osfilename=None):
-    import os
-    import subprocess
-    import time
     if not osfilename:
-        import FreeCAD
         osfilename = FreeCAD.ParamGet(\
             "User parameter:BaseApp/Preferences/Mod/OpenSCAD").\
             GetString('openscadexecutable')
@@ -130,8 +129,6 @@ def getopenscadversion(osfilename=None):
 
 
 def newtempfilename():
-    import os
-    import time
     formatstr = 'fc-%05d-%06d-%06d'
     count = 0
     while True:
@@ -145,11 +142,6 @@ def callopenscad(inputfilename,outputfilename=None, outputext='csg', keepname=Fa
     '''call the open scad binary
     returns the filename of the result (or None),
     please delete the file afterwards'''
-    import FreeCAD
-    import os
-    import subprocess
-    import tempfile
-    import time
 
     def check_output2(*args, **kwargs):
         kwargs.update({'stdout':subprocess.PIPE,'stderr':subprocess.PIPE})
@@ -202,7 +194,6 @@ def call_openscad_with_pipes(input_filename, output_filename, output_extension, 
     # For testing purposes continue using temp files, but now OpenSCAD does not need
     # read or write access to the files, only the FreeCAD process does. In the future
     # this could be changed to keep everything in memory, if desired.
-    import subprocess,tempfile,os
     transfer_directory = tempfile.gettempdir()
 
     # Load the data back in from our tempfile:
@@ -233,14 +224,12 @@ def call_openscad_with_pipes(input_filename, output_filename, output_extension, 
         with open(output_filename,"w") as outfile:
             outfile.write(stdoutd)
             return output_filename
-    return None
 
 
 def callopenscadstring(scadstr,outputext='csg'):
     '''create a tempfile and call the open scad binary
     returns the filename of the result (or None),
     please delete the file afterwards'''
-    import os,tempfile,time
     dir1 = tempfile.gettempdir()
     inputfilename = os.path.join(dir1,'%s.scad' % next(tempfilenamegen))
     inputfile = io.open(inputfilename,'w', encoding="utf8")
@@ -264,7 +253,6 @@ def reverseimporttypes():
             return set1
 
     importtypes = {}
-    import FreeCAD
     for key,value in FreeCAD.getImportType().items():
         if type(value) is str:
             getsetfromdict(importtypes,value).add(key)
@@ -319,7 +307,6 @@ def isspecialorthogonal(mat, precision=4):
 
 
 def decomposerotoinversion(m, precision=4):
-    import FreeCAD
     rmat = [[round(f,precision) for f in line] for line in fcsubmatrix(m)]
     cmat = FreeCAD.Matrix()
     if rmat == [[-1,0,0],[0,1,0],[0,0,1]]:
@@ -337,7 +324,6 @@ def decomposerotoinversion(m, precision=4):
 
 
 def mirror2mat(nv, bv):
-    import FreeCAD
     """calculate the transformation matrix of a mirror feature"""
     mbef = FreeCAD.Matrix()
     mbef.move(bv * -1)
@@ -348,7 +334,6 @@ def mirror2mat(nv, bv):
 
 def vec2householder(nv):
     """calculated the householder matrix for a given normal vector"""
-    import FreeCAD
     lnv = nv.dot(nv)
     l = 2/lnv if lnv > 0 else 0
     hh = FreeCAD.Matrix(nv.x*nv.x*l,nv.x*nv.y*l,nv.x*nv.z*l,0,\
@@ -397,7 +382,6 @@ def shorthexfloat(f):
 
 
 def comparerotations(r1,r2):
-    import FreeCAD
     '''compares two rotations
     a value of zero means that they are identical'''
     r2c = FreeCAD.Rotation(r2)
@@ -405,7 +389,6 @@ def comparerotations(r1,r2):
     return r1.multiply(r2c).Angle
 
 def findbestmatchingrotation(r1):
-    import FreeCAD
     vangl = \
 (1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0, 11.0, 11.25, 12.0, 13.0,
 14.0, 15.0, 16.0, (180.0/11.0), 17.0, 18.0, 19.0, 20.0, 21.0, 22.0, 22.5,
@@ -481,7 +464,6 @@ def roundrotation(rot, maxangulardistance=1e-5):
     (from a quaterion or transformation matrix)'''
     def teststandardrot(r1, maxangulardistance=1e-5):
         '''test a few common rotations beforehand'''
-        import FreeCAD,itertools
         eulers = []
         for angle in (90,-90,180,45,-45,135,-135):
             for euler in itertools.permutations((0,0,angle)):
@@ -508,7 +490,6 @@ def roundrotation(rot, maxangulardistance=1e-5):
 
 def callopenscadmeshstring(scadstr):
     """Call OpenSCAD and return the result as a Mesh"""
-    import Mesh,os
     tmpfilename = callopenscadstring(scadstr, 'stl')
     newmesh = Mesh.Mesh()
     newmesh.read(tmpfilename)
@@ -525,7 +506,6 @@ def meshopinline(opname, iterable1):
     FreeCAD Mesh objects
     includes all the mesh data in the SCAD file
     """
-    from exportCSG import mesh2polyhedron
     return callopenscadmeshstring('%s(){%s}' % (opname,' '.join(\
         (mesh2polyhedron(meshobj) for meshobj in iterable1))))
 
@@ -536,8 +516,6 @@ def meshoptempfile(opname, iterable1):
     FreeCAD Mesh objects
     uses stl files to supply the mesh data
     """
-    import os
-    import tempfile
     dir1 = tempfile.gettempdir()
     filenames = []
     for mesh in iterable1:
@@ -571,17 +549,14 @@ def meshoponobjs(opname, inobjs):
             meshes.append(obj.Mesh)
         elif obj.isDerivedFrom('Part::Feature'):
             #mesh the shape
-            import FreeCAD
             params = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/OpenSCAD")
             objs.append(obj)
             if False: # disabled due to issue 1292
-                import MeshPart
                 meshes.append(MeshPart.meshFromShape(obj.Shape,params.GetFloat(\
                 'meshmaxlength',1.0), params.GetFloat('meshmaxarea',0.0),\
                  params.GetFloat('meshlocallen',0.0),\
                  params.GetFloat('meshdeflection',0.0)))
             else:
-                import Mesh
                 meshes.append(Mesh.Mesh(obj.Shape.tessellate(params.GetFloat(\
                             'meshmaxlength',1.0))))
         else:
@@ -593,10 +568,6 @@ def meshoponobjs(opname, inobjs):
 
 
 def process2D_ObjectsViaOpenSCADShape(ObjList, Operation, doc):
-    import FreeCAD
-    import importDXF
-    import os
-    import tempfile
     # https://www.freecadweb.org/tracker/view.php?id=3419
     params = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/OpenSCAD")
     fn  = params.GetInt('fnForImport',32)
@@ -627,7 +598,6 @@ def process2D_ObjectsViaOpenSCADShape(ObjList, Operation, doc):
 
 
 def process2D_ObjectsViaOpenSCAD(ObjList, Operation, doc=None):
-    import FreeCAD
     doc = doc or FreeCAD.activeDocument()
     face=process2D_ObjectsViaOpenSCADShape(ObjList,Operation,doc)
     obj=doc.addObject('Part::Feature',Operation)
@@ -640,12 +610,8 @@ def process2D_ObjectsViaOpenSCAD(ObjList, Operation, doc=None):
 
 
 def process3D_ObjectsViaOpenSCADShape(ObjList, Operation, maxmeshpoints=None):
-    import FreeCAD
-    import Mesh
-    import Part
     params = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/OpenSCAD")
     if False: # disabled due to issue 1292
-        import MeshPart
         meshes = [MeshPart.meshFromShape(obj.Shape,params.GetFloat(\
                 'meshmaxlength',1.0), params.GetFloat('meshmaxarea',0.0),\
                  params.GetFloat('meshlocallen',0.0),\
@@ -684,7 +650,6 @@ def process_ObjectsViaOpenSCADShape(doc, children, name, maxmeshpoints=None):
             for obj in children):
         return process3D_ObjectsViaOpenSCADShape(children,name,maxmeshpoints)
     else:
-        import FreeCAD
         FreeCAD.Console.PrintError( translate('OpenSCAD',\
             "OpenSCAD file contains both 2D and 3D shapes. That is not supported in this importer, all shapes must have the same dimensionality.")+u'\n')
 
@@ -696,7 +661,6 @@ def process_ObjectsViaOpenSCAD(doc,children,name):
             for obj in children):
         return process3D_ObjectsViaOpenSCAD(doc,children,name)
     else:
-        import FreeCAD
         FreeCAD.Console.PrintError( translate('OpenSCAD',\
             "Error: either all shapes must be 2D or all shapes must be 3D")+u'\n')
 
@@ -707,7 +671,6 @@ def removesubtree(objs):
         for subobj in obj.OutList:
             addsubobjs(subobj, toremoveset)
 
-    import FreeCAD
     toremove = set()
     for obj in objs:
         addsubobjs(obj, toremove)
@@ -727,7 +690,6 @@ def applyPlacement(shape):
     if shape.Placement.isNull():
         return shape
     else:
-        import Part
         if shape.ShapeType == 'Solid':
             return Part.Solid(shape.childShapes()[0])
         elif shape.ShapeType == 'Face':
