@@ -299,15 +299,8 @@ void NaviCube::setButtonColor(QColor ButtonColor)
 
 QString NaviCube::getDefaultSansserifFont()
 {
-    // Windows versions since 2017 have the 'Bahnschrift' font (a condensed
-    // sans serif font, optimized for readability despite being condensed),
-    // we first check for that.
-    QFont font(QStringLiteral("Bahnschrift"));
-    if (!font.exactMatch())
-        // On systems without 'Bahnschrift' we check for 'Helvetica' or its closest match
-        // as default sans serif font. (For Windows 7 this will e.g. result in 'Arial'.)
-        font = QFont(QStringLiteral("Helvetica"));
-
+    // "FreeCAD NaviCube" family susbtitutions are set in MainWindow::MainWindow
+    QFont font(QStringLiteral("FreeCAD NaviCube"));
     font.setStyleHint(QFont::SansSerif);
     // QFontInfo is required to get the actually matched font family
     return QFontInfo(font).family();
