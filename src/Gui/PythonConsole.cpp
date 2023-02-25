@@ -36,6 +36,7 @@
 #endif
 
 #include <Base/Interpreter.h>
+#include <App/Color.h>
 
 #include "PythonConsole.h"
 #include "PythonConsolePy.h"
@@ -528,7 +529,7 @@ void PythonConsole::OnChange(Base::Subject<const char*> &rCaller, const char* sR
         QMap<QString, QColor>::Iterator it = d->colormap.find(QString::fromLatin1(sReason));
         if (it != d->colormap.end()) {
             QColor color = it.value();
-            unsigned int col = (color.red() << 24) | (color.green() << 16) | (color.blue() << 8);
+            unsigned int col = App::Color::asPackedRGB<QColor>(color);
             auto value = static_cast<unsigned long>(col);
             value = rGrp.GetUnsigned(sReason, value);
             col = static_cast<unsigned int>(value);
@@ -960,7 +961,7 @@ void PythonConsole::changeEvent(QEvent *e)
     else if (e->type() == QEvent::StyleChange) {
         QPalette pal = qApp->palette();
         QColor color = pal.windowText().color();
-        unsigned int text = (color.red() << 24) | (color.green() << 16) | (color.blue() << 8);
+        unsigned int text = App::Color::asPackedRGB<QColor>(color);
         auto value = static_cast<unsigned long>(text);
         // if this parameter is not already set use the style's window text color
         value = getWindowParameter()->GetUnsigned("Text", value);

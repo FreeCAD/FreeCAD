@@ -30,6 +30,7 @@
 
 #include <Base/Console.h>
 #include <Base/Tools.h>
+#include <App/Color.h>
 
 #include "PrefWidgets.h"
 
@@ -555,9 +556,7 @@ void PrefColorButton::restorePreferences()
   if (!m_Restored)
     m_Default = color();
 
-  const QColor &col = m_Default;
-
-  unsigned int icol = (col.red() << 24) | (col.green() << 16) | (col.blue() << 8) | col.alpha();
+  unsigned int icol = App::Color::asPackedRGBA<QColor>(m_Default);
 
   unsigned long lcol = static_cast<unsigned long>(icol);
   lcol = getWindowParameter()->GetUnsigned( entryName(), lcol );
@@ -581,7 +580,7 @@ void PrefColorButton::savePreferences()
 
   QColor col = color();
   // (r,g,b,a) with a = 255 (opaque)
-  unsigned int icol = (col.red() << 24) | (col.green() << 16) | (col.blue() << 8) | col.alpha();
+  unsigned int icol = App::Color::asPackedRGBA<QColor>(col);
   unsigned long lcol = static_cast<unsigned long>(icol);
   getWindowParameter()->SetUnsigned( entryName(), lcol );
 }
