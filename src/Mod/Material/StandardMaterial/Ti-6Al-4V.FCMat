@@ -8,6 +8,7 @@
 Name = Ti-6Al-4V (Grade 5)
 Father = Metal
 KindOfMaterial = Titanium
+MaterialNumber = 3.7165
 
 [Mechanical]
 Density = 4430 kg/m^3
