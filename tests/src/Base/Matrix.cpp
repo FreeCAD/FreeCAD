@@ -1,7 +1,7 @@
 #include "gtest/gtest.h"
 #include <Base/Matrix.h>
 
-
+// NOLINTBEGIN(cppcoreguidelines-avoid-magic-numbers,readability-magic-numbers)
 TEST(Matrix, TestShearing)
 {
     Base::Matrix4D mat;
@@ -121,3 +121,4 @@ TEST(Matrix, TestNull)
     mat.nullify();
     EXPECT_EQ(mat.isNull(), true);
 }
+// NOLINTEND(cppcoreguidelines-avoid-magic-numbers,readability-magic-numbers)

@@ -3,6 +3,7 @@
 #include <Base/Rotation.h>
 
 
+// NOLINTBEGIN(cppcoreguidelines-avoid-magic-numbers,readability-magic-numbers)
 TEST(Rotation, TestNonUniformScaleLeft)
 {
     Base::Rotation rot;
@@ -63,3 +64,4 @@ TEST(Rotation, TestUniformScaleLT1)
 
     EXPECT_EQ(scaled_rot.isSame(scaled_rot, 1.0e-7), true);
 }
+// NOLINTEND(cppcoreguidelines-avoid-magic-numbers,readability-magic-numbers)
