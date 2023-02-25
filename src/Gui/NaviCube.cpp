@@ -208,7 +208,7 @@ public:
     QColor m_TextColor;
     QColor m_HiliteColor;
     QColor m_ButtonColor;
-    QColor m_FrontFaceColor;
+    QColor m_FrontColor;
     QColor m_BorderColor;
     int m_HiliteId = 0;
     bool m_MouseDown = false;
@@ -292,9 +292,34 @@ void NaviCube::setFontSize(int size)
     m_NaviCubeImplementation->m_CubeTextSize = size;
 }
 
+void NaviCube::setTextColor(QColor TextColor)
+{
+    m_NaviCubeImplementation->m_TextColor = TextColor;
+}
+
+void NaviCube::setFrontColor(QColor FrontColor)
+{
+    m_NaviCubeImplementation->m_FrontColor = FrontColor;
+}
+
+void NaviCube::setHiliteColor(QColor HiliteColor)
+{
+    m_NaviCubeImplementation->m_HiliteColor = HiliteColor;
+}
+
 void NaviCube::setButtonColor(QColor ButtonColor)
 {
     m_NaviCubeImplementation->m_ButtonColor = ButtonColor;
+}
+
+void NaviCube::setBorderWidth(double BorderWidth)
+{
+    m_NaviCubeImplementation->m_BorderWidth = BorderWidth;
+}
+
+void NaviCube::setBorderColor(QColor BorderColor)
+{
+    m_NaviCubeImplementation->m_BorderColor = BorderColor;
 }
 
 QString NaviCube::getDefaultSansserifFont()
@@ -375,18 +400,28 @@ void NaviCubeImplementation::OnChange(ParameterGrp::SubjectType& rCaller,
     const auto& rGrp = static_cast<ParameterGrp&>(rCaller);
 
     if (strcmp(reason, "TextColor") == 0) {
-        m_TextColor.setRgba(rGrp.GetUnsigned(reason, QColor(0, 0, 0, 255).rgba()));
+        // the colors are stored in the form RRGGBBAA as unsigned long
+        // QColor expects the form AARRGGBB therefore we must make a shift in writing to QColor
+        unsigned long col = rGrp.GetUnsigned(reason, 255);
+        // 255 is RRR,GGG,BBB,AAA: 0,0,0,255
+        QColor textColor((col >> 24) & 0xff, (col >> 16) & 0xff, (col >> 8) & 0xff, col & 0xff);
+        m_TextColor = textColor;
     }
     else if (strcmp(reason, "FrontColor") == 0) {
-        m_FrontFaceColor.setRgba(rGrp.GetUnsigned(reason, QColor(226, 233, 239, 192).rgba()));
+        unsigned long col = rGrp.GetUnsigned(reason, 3806916544);
+        // 3236096495 is RRR,GGG,BBB,AAA: 226,233,239,192
+        QColor frontColor((col >> 24) & 0xff, (col >> 16) & 0xff, (col >> 8) & 0xff, col & 0xff);
+        m_FrontColor = frontColor;
     }
     else if (strcmp(reason, "HiliteColor") == 0) {
-        m_HiliteColor.setRgba(rGrp.GetUnsigned(reason, QColor(170, 226, 255, 255).rgba()));
+        unsigned long col = rGrp.GetUnsigned(reason, 2867003391);
+        // 2867003391  is RRR,GGG,BBB,AAA: 170,226,255,255
+        QColor hiliteColor((col >> 24) & 0xff, (col >> 16) & 0xff, (col >> 8) & 0xff, col & 0xff);
+        m_HiliteColor = hiliteColor;
     }
     else if (strcmp(reason, "ButtonColor") == 0) {
-        // the color is stored in the form ARRGGBB thus we cannot read in using .rgba()
-        unsigned long col = rGrp.GetUnsigned("ButtonColor", 3806916480);
-        // 3806916480 is AAA,RRR,GGG,BBB: 128,226,233,239
+        unsigned long col = rGrp.GetUnsigned(reason, 3806916480);
+        // 3806916480 is RRR,GGG,BBB,AAA: 226,233,239,128
         QColor buttonColor(
             (col >> 24) & 0xff, (col >> 16) & 0xff, (col >> 8) & 0xff, col & 0xff);
         m_ButtonColor = buttonColor;
@@ -407,7 +442,10 @@ void NaviCubeImplementation::OnChange(ParameterGrp::SubjectType& rCaller,
         m_BorderWidth = rGrp.GetFloat(reason, 1.1);
     }
     else if (strcmp(reason, "BorderColor") == 0) {
-        m_BorderColor.setRgba(rGrp.GetUnsigned(reason, QColor(50, 50, 50, 255).rgba()));
+        unsigned long col = rGrp.GetUnsigned(reason, 842150655);
+        // 842150655 is RRR,GGG,BBB,AAA: 50,50,50,255
+        QColor borderColor((col >> 24) & 0xff, (col >> 16) & 0xff, (col >> 8) & 0xff, col & 0xff);
+        m_BorderColor = borderColor;
     }
     else if (strcmp(reason, "FontSize") == 0) {
         m_CubeTextSize = rGrp.GetInt(reason, getDefaultFontSize());
@@ -800,7 +838,7 @@ void NaviCubeImplementation::addFace(float gap, const Vector3f& x, const Vector3
         pickId,
         pickTex,
         m_Textures[pickTex],
-        m_FrontFaceColor,
+        m_FrontColor,
         1);
     m_Faces.push_back(FaceFront);
 
