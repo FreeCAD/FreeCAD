@@ -80,8 +80,8 @@ namespace Import {
 class ImportOCAFExt : public Import::ImportOCAF2
 {
 public:
-    ImportOCAFExt(Handle(TDocStd_Document) h, App::Document* d, const std::string& name)
-        : ImportOCAF2(h, d, name)
+    ImportOCAFExt(Handle(TDocStd_Document) hStdDoc, App::Document* doc, const std::string& name)
+        : ImportOCAF2(hStdDoc, doc, name)
     {
     }
 
@@ -122,7 +122,7 @@ public:
        initialize("This module is the Import module."); // register with Python       
     }
 
-    ~Module() override {}
+    ~Module() override = default;
 
 private:
     Py::Object importer(const Py::Tuple& args, const Py::Dict &kwds)
