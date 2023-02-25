@@ -77,7 +77,7 @@ class TestMaterialUnits(unittest.TestCase):
             self.assertTrue(
                 checkparamunit(param),
                 "Unit of quantity material parameter {} "
-                "is not known by FreeCAD unit system."
+                "is unknown to the FreeCAD unit system."
                 .format(param)
             )
 
