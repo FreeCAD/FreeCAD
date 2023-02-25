@@ -111,7 +111,7 @@ def setup(doc=None, solvertype="elmer"):
         eq_electrostatic.LinearPreconditioning = "None"
     else:
         FreeCAD.Console.PrintWarning(
-            "Not known or not supported solver type: {}. "
+            "Unknown or unsupported solver type: {}. "
             "No solver object was created.\n".format(solvertype)
         )
     analysis.addObject(solver_obj)
