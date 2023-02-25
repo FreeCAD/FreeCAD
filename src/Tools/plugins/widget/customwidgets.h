@@ -653,6 +653,7 @@ class ColorButton : public QPushButton
     Q_PROPERTY( QColor color READ color WRITE setColor )
     Q_PROPERTY( bool allowChangeColor READ allowChangeColor WRITE setAllowChangeColor )
     Q_PROPERTY( bool drawFrame READ drawFrame WRITE setDrawFrame )
+    Q_PROPERTY( bool allowTransparency READ allowTransparency WRITE setAllowTransparency )
 
 public:
     ColorButton( QWidget* parent = 0 );
@@ -663,6 +664,8 @@ public:
 
     void setAllowChangeColor(bool);
     bool allowChangeColor() const;
+    void setAllowTransparency(bool);
+    bool allowTransparency() const;
 
     void setDrawFrame(bool);
     bool drawFrame() const;
@@ -679,6 +682,7 @@ protected:
 private:
     QColor _col;
     bool _allowChange;
+    bool _allowTransparency;
     bool _drawFrame;
 };
 

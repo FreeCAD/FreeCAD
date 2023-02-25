@@ -1762,7 +1762,10 @@ void PrefDoubleSpinBox::setParamGrpPath ( const QByteArray& name )
 // -------------------------------------------------------------
 
 ColorButton::ColorButton(QWidget* parent)
-    : QPushButton( parent ), _allowChange(true), _drawFrame(true)
+    : QPushButton(parent),
+      _allowChange(true),
+      _drawFrame(true),
+      _allowTransparency(false)
 {
     _col = palette().color(QPalette::Active,QPalette::Midlight);
     connect( this, SIGNAL( clicked() ), SLOT( onChooseColor() ));
@@ -1791,6 +1794,16 @@ void ColorButton::setAllowChangeColor(bool ok)
 bool ColorButton::allowChangeColor() const
 {
     return _allowChange;
+}
+
+void ColorButton::setAllowTransparency(bool ok)
+{
+    _allowTransparency = ok;
+}
+
+bool ColorButton::allowTransparency() const
+{
+    return _allowTransparency;
 }
 
 void ColorButton::setDrawFrame(bool ok)
