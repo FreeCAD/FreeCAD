@@ -1020,7 +1020,7 @@ void StatefulLabel::setState(QString state)
 
     if (auto entry = _availableStates.find(state); entry != _availableStates.end()) {
         // Order of precedence: first, check if the user has set this in their preferences:
-        if (!entry->second.preferenceString.empty()) {            
+        if (!entry->second.preferenceString.empty()) {
             // First, try to see if it's just stored a color (as an unsigned int):
             auto availableColorPrefs = _parameterGroup->GetUnsignedMap();
             std::string lookingForGroup = entry->second.preferenceString;
@@ -1029,7 +1029,7 @@ void StatefulLabel::setState(QString state)
                 if (unsignedEntry.first == entry->second.preferenceString) {
                     // Convert the stored Uint into usable color data:
                     unsigned int col = unsignedEntry.second;
-                    QColor qcolor((col >> 24) & 0xff, (col >> 16) & 0xff, (col >> 8) & 0xff);
+                    QColor qcolor(App::Color::fromPackedRGB<QColor>(col));
                     this->setStyleSheet(QString::fromUtf8("Gui--StatefulLabel{ color : rgba(%1,%2,%3,%4) ;}").arg(qcolor.red()).arg(qcolor.green()).arg(qcolor.blue()).arg(qcolor.alpha()));
                     _styleCache[state] = this->styleSheet();
                     return;

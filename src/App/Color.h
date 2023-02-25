@@ -83,20 +83,37 @@ public:
      * Returns color as a 32 bit packed unsigned int in the form 0xAARRGGBB.
      */
     uint32_t getPackedARGB() const;
+    /**
+     * Sets color as a 32 bit packed unsigned int in the form 0xAARRGGBB.
+     */
+    void setPackedARGB(uint32_t);
+
     template <typename T>
     static uint32_t asPackedRGBA(const T& color) {
         return (color.red() << 24) | (color.green() << 16) | (color.blue() << 8) | color.alpha();
     }
+
+    template <typename T>
+    static T fromPackedRGBA(uint32_t color) {
+        return T((color >> 24) & 0xff, (color >> 16) & 0xff, (color >> 8) & 0xff, color & 0xff);
+    }
+
     template <typename T>
     static uint32_t asPackedRGB(const T& color) {
         return (color.red() << 24) | (color.green() << 16) | (color.blue() << 8);
+    }
+
+    template <typename T>
+    static T fromPackedRGB(uint32_t color) {
+        return T((color >> 24) & 0xff, (color >> 16) & 0xff, (color >> 8) & 0xff);
     }
     /**
      * creates FC Color from template type, e.g. Qt QColor
      */
     template <typename T>
-    void setValue(const T& q)
-    { set(q.redF(),q.greenF(),q.blueF()); }
+    void setValue(const T& q) {
+        set(q.redF(),q.greenF(),q.blueF());
+    }
     /**
      * returns a template type e.g. Qt color equivalent to FC color
      *

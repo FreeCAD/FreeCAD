@@ -561,13 +561,10 @@ void PrefColorButton::restorePreferences()
   unsigned long lcol = static_cast<unsigned long>(icol);
   lcol = getWindowParameter()->GetUnsigned( entryName(), lcol );
   icol = static_cast<unsigned int>(lcol);
-  int r = (icol >> 24)&0xff;
-  int g = (icol >> 16)&0xff;
-  int b = (icol >>  8)&0xff;
-  int a = (icol      )&0xff;
+  QColor value = App::Color::fromPackedRGB<QColor>(icol);
   if (!this->allowTransparency())
-      a = 0xff;
-  setColor(QColor(r,g,b,a));
+      value.setAlpha(0xff);
+  setColor(value);
 }
 
 void PrefColorButton::savePreferences()

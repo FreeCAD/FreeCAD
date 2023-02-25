@@ -1089,14 +1089,9 @@ void PcdReader::read(const std::string& filename)
         if (types[rgba] == "U") {
             for (std::size_t i=0; i<numPoints; i++) {
                 uint32_t packed = static_cast<uint32_t>(data(i,rgba));
-                uint32_t a = (packed >> 24) & 0xff;
-                uint32_t r = (packed >> 16) & 0xff;
-                uint32_t g = (packed >> 8) & 0xff;
-                uint32_t b = packed & 0xff;
-                colors.emplace_back(static_cast<float>(r)/255.0f,
-                                    static_cast<float>(g)/255.0f,
-                                    static_cast<float>(b)/255.0f,
-                                    static_cast<float>(a)/255.0f);
+                App::Color col;
+                col.setPackedARGB(packed);
+                colors.emplace_back(col);
             }
         }
         else if (types[rgba] == "F") {
@@ -1105,14 +1100,9 @@ void PcdReader::read(const std::string& filename)
                 float f = static_cast<float>(data(i,rgba));
                 uint32_t packed;
                 std::memcpy(&packed, &f, sizeof(packed));
-                uint32_t a = (packed >> 24) & 0xff;
-                uint32_t r = (packed >> 16) & 0xff;
-                uint32_t g = (packed >> 8) & 0xff;
-                uint32_t b = packed & 0xff;
-                colors.emplace_back(static_cast<float>(r)/255.0f,
-                                    static_cast<float>(g)/255.0f,
-                                    static_cast<float>(b)/255.0f,
-                                    static_cast<float>(a)/255.0f);
+                App::Color col;
+                col.setPackedARGB(packed);
+                colors.emplace_back(col);
             }
         }
     }
