@@ -64,7 +64,7 @@ App::PropertyQuantityConstraint::Constraints ViewProviderGridExtension::GridSize
 
 namespace PartGui {
 
-class GridExtensionP : public ParameterGrp::ObserverType {
+class GridExtensionP {
 public:
     explicit GridExtensionP(ViewProviderGridExtension *);
     ~GridExtensionP();
@@ -88,12 +88,6 @@ public:
     int GridDivLineWidth = 2;
     unsigned int GridLineColor;
     unsigned int GridDivLineColor;
-
-    // VP Independent parameters through observer
-    int unitsUserSchema = 0;
-
-    /** Observer for parameter group. */
-    void OnChange(Base::Subject<const char*> &rCaller, const char * sReason) override;
 
 private:
     void computeGridSize(const Gui::View3DInventorViewer* viewer);
@@ -134,19 +128,12 @@ GridExtensionP::GridExtensionP(ViewProviderGridExtension * vp):
     GridDivLineColor = GridLineColor;
 
     createEditModeInventorNodes();
-
-    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Units");
-    unitsUserSchema = hGrp->GetInt("UserSchema", 0); //2 3 5 7 are imperial schemas. 2 3 inches, 5 7 feet
-    hGrp->Attach(this);
 }
 
 GridExtensionP::~GridExtensionP()
 {
     Gui::coinRemoveAllChildren(GridRoot);
     GridRoot->unref();
-
-    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Units");
-    hGrp->Detach(this);
 }
 
 double GridExtensionP::getGridSize() const
@@ -216,13 +203,11 @@ void GridExtensionP::computeGridSize(const Gui::View3DInventorViewer* viewer)
 
     int numberOfLines = static_cast<int>(std::max(pixelWidth, pixelHeight)) / GridSizePixelThreshold;
 
-    double unitMultiplier = (unitsUserSchema == 2 || unitsUserSchema == 3) ? 25.4 : (unitsUserSchema == 5 || unitsUserSchema == 7) ? 304.8 : 1;
-
     // If number of subdivision is 1, grid auto spacing can't work as it uses it as a factor
     // In such case, we apply a default factor of 10
     auto safeGridNumberSubdivision = GridNumberSubdivision <= 1 ? 10 : GridNumberSubdivision;
 
-    computedGridValue = vp->GridSize.getValue() * safeGridNumberSubdivision * unitMultiplier * pow(safeGridNumberSubdivision, floor(log(camMaxDimension / unitMultiplier / numberOfLines / vp->GridSize.getValue()) / log(safeGridNumberSubdivision)));
+    computedGridValue = vp->GridSize.getValue() * pow(safeGridNumberSubdivision, 1 + floor(log(camMaxDimension / numberOfLines / vp->GridSize.getValue()) / log(safeGridNumberSubdivision)));
 
     //cap the grid size
     capGridSize(computedGridValue);
@@ -396,16 +381,6 @@ void GridExtensionP::drawGrid(bool cameraUpdate) {
     }
     else {
         Gui::coinRemoveAllChildren(GridRoot);
-    }
-}
-
-void GridExtensionP::OnChange(Base::Subject<const char*> &rCaller, const char * sReason)
-{
-    (void) rCaller;
-
-    if (strcmp(sReason, "UserSchema") == 0) {
-        ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Units");
-        unitsUserSchema = hGrp->GetInt("UserSchema", 0); //2 3 5 7 are imperial schemas. 2 3 inches, 5 7 feet
     }
 }
 
