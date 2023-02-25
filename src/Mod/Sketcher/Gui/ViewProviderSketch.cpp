@@ -2844,6 +2844,8 @@ bool ViewProviderSketch::setEdit(int ModNum)
     this->attachSelection();
 
     auto gridnode = getGridNode();
+    Base::Placement plm = getEditingPlacement();
+    setGridOrientation(plm.getPosition(), plm.getRotation());
     addNodeToRoot(gridnode);
     setGridEnabled(true);
 

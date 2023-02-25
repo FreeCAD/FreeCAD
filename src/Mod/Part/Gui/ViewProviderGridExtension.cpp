@@ -79,6 +79,8 @@ public:
     void getClosestGridPoint(double &x, double &y) const;
     double getGridSize() const;
 
+    void setGridOrientation(Base::Vector3d origin, Base::Rotation rotation);
+
     // Configurable parameters (to be configured by specific VP)
     int GridSizePixelThreshold = 15;
     int GridNumberSubdivision = 10;
@@ -99,8 +101,13 @@ private:
 
     void createEditModeInventorNodes();
 
-    SbVec3f camCenterOnSketch;
+    Base::Vector3d getCamCenterInSketchCoordinates() const;
+
+    SbVec3f camCenterPointOnFocalPlane;
     float camMaxDimension;
+
+    Base::Vector3d gridOrigin;
+    Base::Rotation gridRotation;
 
 private:
     ViewProviderGridExtension * vp;
@@ -118,7 +125,7 @@ private:
 
 
 GridExtensionP::GridExtensionP(ViewProviderGridExtension * vp):
-    camCenterOnSketch(SbVec3f(0., 0., 0.)),
+    camCenterPointOnFocalPlane(SbVec3f(0., 0., 0.)),
     camMaxDimension(200.),
     vp(vp),
     GridRoot(nullptr)
@@ -134,6 +141,12 @@ GridExtensionP::~GridExtensionP()
 {
     Gui::coinRemoveAllChildren(GridRoot);
     GridRoot->unref();
+}
+
+void GridExtensionP::setGridOrientation(Base::Vector3d origin, Base::Rotation rotation)
+{
+    gridOrigin = origin;
+    gridRotation = rotation;
 }
 
 double GridExtensionP::getGridSize() const
@@ -169,10 +182,10 @@ bool GridExtensionP::checkCameraZoomChange(const Gui::View3DInventorViewer* view
 bool GridExtensionP::checkCameraTranslationChange(const Gui::View3DInventorViewer* viewer)
 {
     //Then we check if user moved by more than 10% of camera dimension (must be after updating camera dimension).
-    SbVec3f newCamCenterOnSketch = viewer->getCenterPointOnFocalPlane();
+    SbVec3f newCamCenterPointOnFocalPlane = viewer->getCenterPointOnFocalPlane();
 
-    if ((camCenterOnSketch - newCamCenterOnSketch).length() > 0.1 * camMaxDimension) {
-        camCenterOnSketch = newCamCenterOnSketch;
+    if ((camCenterPointOnFocalPlane - newCamCenterPointOnFocalPlane).length() > 0.1 * camMaxDimension) {
+        camCenterPointOnFocalPlane = newCamCenterPointOnFocalPlane;
         return true;
     }
 
@@ -305,8 +318,11 @@ void GridExtensionP::createGridPart(int numberSubdiv, bool subDivLines, bool div
     vts->vertex.setNum(2 * nlines);
     SbVec3f* vertex_coords = vts->vertex.startEditing();
 
-    float minX, minY, maxX, maxY, z;
-    camCenterOnSketch.getValue(minX, minY, z);
+    float minX, minY, maxX, maxY;
+    Base::Vector3d camCenterOnSketch = getCamCenterInSketchCoordinates();
+    minX = static_cast<float>(camCenterOnSketch.x);
+    minY = static_cast<float>(camCenterOnSketch.y);
+
     minX -= (gridDimension / 2);
     minY -= (gridDimension / 2);
     maxX = minX + gridDimension;
@@ -346,6 +362,23 @@ void GridExtensionP::createGridPart(int numberSubdiv, bool subDivLines, bool div
 
     parent->addChild(vts);
     parent->addChild(grid);
+}
+
+Base::Vector3d GridExtensionP::getCamCenterInSketchCoordinates() const
+{
+    Base::Vector3d xaxis(1, 0, 0), yaxis(0, 1, 0);
+
+    gridRotation.multVec(xaxis,xaxis);
+    gridRotation.multVec(yaxis,yaxis);
+
+    float x,y,z;
+    camCenterPointOnFocalPlane.getValue(x, y, z);
+
+    Base::Vector3d center (x,y,z);
+
+    center.TransformToCoordinateSystem(gridOrigin, xaxis, yaxis);
+
+    return center;
 }
 
 void GridExtensionP::setEnabled(bool enable)
@@ -411,6 +444,11 @@ void ViewProviderGridExtension::setGridEnabled(bool enable)
 void ViewProviderGridExtension::drawGrid(bool cameraUpdate)
 {
     pImpl->drawGrid(cameraUpdate);
+}
+
+void ViewProviderGridExtension::setGridOrientation(Base::Vector3d origin, Base::Rotation rotation)
+{
+    pImpl->setGridOrientation(origin, rotation);
 }
 
 SoSeparator* ViewProviderGridExtension::getGridNode()
