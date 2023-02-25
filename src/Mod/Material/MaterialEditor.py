@@ -186,7 +186,7 @@ class MaterialEditor:
 
         """updates the contents of the editor with the given dictionary
            the material property keys where added to the editor already
-           not known material property keys will be added to the user defined group"""
+           unknown material property keys will be added to the user defined group"""
 
         # print(data)
         model = self.widget.treeView.model()

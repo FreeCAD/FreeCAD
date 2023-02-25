@@ -292,22 +292,25 @@ void NaviCube::setFontSize(int size)
     m_NaviCubeImplementation->m_CubeTextSize = size;
 }
 
-// sets a default sansserif font
-// the Helvetica font is a good start for most OSes
-QFont NaviCube::getDefaultSansserifFont()
+void NaviCube::setButtonColor(QColor ButtonColor)
+{
+    m_NaviCubeImplementation->m_ButtonColor = ButtonColor;
+}
+
+QString NaviCube::getDefaultSansserifFont()
 {
     // Windows versions since 2017 have the 'Bahnschrift' font (a condensed
     // sans serif font, optimized for readability despite being condensed),
     // we first check for that.
-    QFont font(QString::fromLatin1("Bahnschrift"));
-    if (font.exactMatch())
-        return font;
+    QFont font(QStringLiteral("Bahnschrift"));
+    if (!font.exactMatch())
+        // On systems without 'Bahnschrift' we check for 'Helvetica' or its closest match
+        // as default sans serif font. (For Windows 7 this will e.g. result in 'Arial'.)
+        font = QFont(QStringLiteral("Helvetica"));
 
-    // On systems without 'Bahnschrift' we check for 'Helvetica' or its closest match
-    // as default sans serif font. (For Windows 7 this will e.g. result in 'Arial'.)
-    font = QString::fromLatin1("Helvetica");
     font.setStyleHint(QFont::SansSerif);
-    return font;
+    // QFontInfo is required to get the actually matched font family
+    return QFontInfo(font).family();
 }
 
 int NaviCube::getDefaultFontSize()
@@ -381,7 +384,12 @@ void NaviCubeImplementation::OnChange(ParameterGrp::SubjectType& rCaller,
         m_HiliteColor.setRgba(rGrp.GetUnsigned(reason, QColor(170, 226, 255, 255).rgba()));
     }
     else if (strcmp(reason, "ButtonColor") == 0) {
-        m_ButtonColor.setRgba(rGrp.GetUnsigned(reason, QColor(226, 233, 239, 128).rgba()));
+        // the color is stored in the form ARRGGBB thus we cannot read in using .rgba()
+        unsigned long col = rGrp.GetUnsigned("ButtonColor", 3806916480);
+        // 3806916480 is AAA,RRR,GGG,BBB: 128,226,233,239
+        QColor buttonColor(
+            (col >> 24) & 0xff, (col >> 16) & 0xff, (col >> 8) & 0xff, col & 0xff);
+        m_ButtonColor = buttonColor;
     }
     else if (strcmp(reason, "CornerNaviCube") == 0) {
         m_Corner = static_cast<NaviCube::Corner>(rGrp.GetInt(reason, 1));
@@ -406,7 +414,7 @@ void NaviCubeImplementation::OnChange(ParameterGrp::SubjectType& rCaller,
     }
     else if (strcmp(reason, "FontString") == 0) {
         m_CubeTextFont = (rGrp.GetASCII(
-            reason, NaviCube::getDefaultSansserifFont().family().toStdString().c_str()));
+            reason, NaviCube::getDefaultSansserifFont().toStdString().c_str()));
     }
 }
 

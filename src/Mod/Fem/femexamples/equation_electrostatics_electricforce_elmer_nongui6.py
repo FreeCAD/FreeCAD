@@ -169,7 +169,7 @@ def setup(doc=None, solvertype="elmer"):
         ObjectsFem.makeEquationElectricforce(doc, solver_obj)
     else:
         FreeCAD.Console.PrintWarning(
-            "Not known or not supported solver type: {}. "
+            "Unknown or unsupported solver type: {}. "
             "No solver object was created.\n".format(solvertype)
         )
     analysis.addObject(solver_obj)

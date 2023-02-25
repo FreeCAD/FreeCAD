@@ -350,8 +350,8 @@ def get_python_exe() -> str:
     A) The value of the PythonExecutableForPip user preference
     B) The executable located in the same bin directory as FreeCAD and called "python3"
     C) The executable located in the same bin directory as FreeCAD and called "python"
-    D) The result of an shutil search for your system's "python3" executable
-    E) The result of an shutil search for your system's "python" executable"""
+    D) The result of a shutil search for your system's "python3" executable
+    E) The result of a shutil search for your system's "python" executable"""
     prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Addons")
     python_exe = prefs.GetString("PythonExecutableForPip", "Not set")
     fc_dir = FreeCAD.getHomePath()
@@ -445,7 +445,12 @@ def run_interruptable_subprocess(args) -> subprocess.CompletedProcess:
                 p.kill()
                 raise ProcessInterrupted()
     if return_code is None or return_code != 0:
-        raise subprocess.CalledProcessError(return_code, args, stdout, stderr)
+        raise subprocess.CalledProcessError (
+            return_code if return_code is not None else -1,
+            args,
+            stdout,
+            stderr
+        )
     return subprocess.CompletedProcess(args, return_code, stdout, stderr)
 
 

@@ -420,7 +420,7 @@ def makeElementGeometry1D(
     element_geometry1D.ElementGeometry1D(obj)
     sec_types = element_geometry1D.ElementGeometry1D.known_beam_types
     if sectiontype not in sec_types:
-        FreeCAD.Console.PrintError("Section type is not known. Set to " + sec_types[0] + " \n")
+        FreeCAD.Console.PrintError("Section type is unknown. Set to " + sec_types[0] + " \n")
         obj.SectionType = sec_types[0]
     else:
         obj.SectionType = sectiontype
