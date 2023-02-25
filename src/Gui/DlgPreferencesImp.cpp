@@ -74,6 +74,8 @@ DlgPreferencesImp::DlgPreferencesImp(QWidget* parent, Qt::WindowFlags fl)
     int length = QtTools::horizontalAdvance(fm, longestGroupName());
     ui->listBox->setFixedWidth(Base::clamp<int>(length + 20, 108, 120));
     ui->listBox->setGridSize(QSize(108, 75));
+    // remove unused help button
+    setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
 
     connect(ui->buttonBox, &QDialogButtonBox::clicked,
             this, &DlgPreferencesImp::onButtonBoxClicked);
