@@ -254,6 +254,7 @@ SET(FreeCADApp_CPP_SRCS
     ApplicationPy.cpp
     AutoTransaction.cpp
     Branding.cpp
+    Color.cpp
     ColorModel.cpp
     ComplexGeoData.cpp
     ComplexGeoDataPyImp.cpp
@@ -270,6 +271,7 @@ SET(FreeCADApp_HPP_SRCS
     Application.h
     AutoTransaction.h
     Branding.h
+    Color.h
     ColorModel.h
     ComplexGeoData.h
     Enumeration.h
