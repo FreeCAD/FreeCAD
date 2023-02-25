@@ -402,8 +402,23 @@ void View3DInventor::OnChange(ParameterGrp::SubjectType &rCaller,ParameterGrp::M
             "FontString", NaviCube::getDefaultSansserifFont().toStdString().c_str());
         _viewer->getNavigationCube()->setFont(font);
     }
+    else if (strcmp(Reason, "TextColor") == 0) {
+        _viewer->getNavigationCube()->setTextColor(rGrp.GetUnsigned("TextColor", 255));
+    }
+    else if (strcmp(Reason, "FrontColor") == 0) {
+        _viewer->getNavigationCube()->setFrontColor(rGrp.GetUnsigned("FrontColor", 3806916544));
+    }
+    else if (strcmp(Reason, "HiliteColor") == 0) {
+        _viewer->getNavigationCube()->setHiliteColor(rGrp.GetUnsigned("HiliteColor", 2867003391));
+    }
     else if (strcmp(Reason, "ButtonColor") == 0) {
         _viewer->getNavigationCube()->setButtonColor(rGrp.GetUnsigned("ButtonColor", 3806916480));
+    }
+    else if (strcmp(Reason, "BorderWidth") == 0) {
+        _viewer->getNavigationCube()->setBorderWidth(rGrp.GetFloat("BorderWidth", 1.1));
+    }
+    else if (strcmp(Reason, "BorderColor") == 0) {
+        _viewer->getNavigationCube()->setBorderColor(rGrp.GetUnsigned("BorderColor", 842150655));
     }
     else if (strcmp(Reason,"UseVBO") == 0) {
         _viewer->setEnabledVBO(rGrp.GetBool("UseVBO", false));
