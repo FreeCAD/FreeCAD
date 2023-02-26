@@ -167,8 +167,6 @@ public Q_SLOTS:
     void setUrl( const QString &u );
 
 protected:
-    void enterEvent ( QEvent * );
-    void leaveEvent ( QEvent * );
     void mouseReleaseEvent ( QMouseEvent * );
 
 private:
@@ -582,7 +580,7 @@ public:
     void setMaximum( uint value );
 
 Q_SIGNALS:
-    void valueChanged( uint value );
+    void unsignedChanged( uint value );
 
 public Q_SLOTS:
     void setValue( uint value );
