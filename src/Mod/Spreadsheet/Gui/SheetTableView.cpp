@@ -709,7 +709,7 @@ void SheetTableView::pasteClipboard()
             return;
 
         if(!copy) {
-            for(auto range : ranges) {
+            for(auto &range : ranges) {
                 do {
                     sheet->clear(*range);
                 } while (range.next());
