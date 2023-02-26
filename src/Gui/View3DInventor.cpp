@@ -51,6 +51,7 @@
 # include <Inventor/nodes/SoSeparator.h>
 #endif
 
+#include <App/Color.h>
 #include <App/Document.h>
 #include <Base/Builder3D.h>
 #include <Base/Console.h>
@@ -404,31 +405,26 @@ void View3DInventor::OnChange(ParameterGrp::SubjectType &rCaller,ParameterGrp::M
     }
     else if (strcmp(Reason, "TextColor") == 0) {
         unsigned long col = rGrp.GetUnsigned("TextColor", 255);
-        QColor textColor((col >> 24) & 0xff, (col >> 16) & 0xff, (col >> 8) & 0xff, col & 0xff);
-        _viewer->getNavigationCube()->setTextColor(textColor);
+        _viewer->getNavigationCube()->setTextColor(App::Color::fromPackedRGBA<QColor>(col));
     }
     else if (strcmp(Reason, "FrontColor") == 0) {
         unsigned long col = rGrp.GetUnsigned("FrontColor", 3806916544);
-        QColor frontColor((col >> 24) & 0xff, (col >> 16) & 0xff, (col >> 8) & 0xff, col & 0xff);
-        _viewer->getNavigationCube()->setFrontColor(frontColor);
+        _viewer->getNavigationCube()->setFrontColor(App::Color::fromPackedRGBA<QColor>(col));
     }
     else if (strcmp(Reason, "HiliteColor") == 0) {
         unsigned long col = rGrp.GetUnsigned("HiliteColor", 2867003391);
-        QColor hiliteColor((col >> 24) & 0xff, (col >> 16) & 0xff, (col >> 8) & 0xff, col & 0xff);
-        _viewer->getNavigationCube()->setHiliteColor(hiliteColor);
+        _viewer->getNavigationCube()->setHiliteColor(App::Color::fromPackedRGBA<QColor>(col));
     }
     else if (strcmp(Reason, "ButtonColor") == 0) {
         unsigned long col = rGrp.GetUnsigned("ButtonColor", 3806916480);
-        QColor buttonColor((col >> 24) & 0xff, (col >> 16) & 0xff, (col >> 8) & 0xff, col & 0xff);
-        _viewer->getNavigationCube()->setButtonColor(buttonColor);
+        _viewer->getNavigationCube()->setButtonColor(App::Color::fromPackedRGBA<QColor>(col));
     }
     else if (strcmp(Reason, "BorderWidth") == 0) {
         _viewer->getNavigationCube()->setBorderWidth(rGrp.GetFloat("BorderWidth", 1.1));
     }
     else if (strcmp(Reason, "BorderColor") == 0) {
         unsigned long col = rGrp.GetUnsigned("BorderColor", 842150655);
-        QColor borderColor((col >> 24) & 0xff, (col >> 16) & 0xff, (col >> 8) & 0xff, col & 0xff);
-        _viewer->getNavigationCube()->setBorderColor(borderColor);
+        _viewer->getNavigationCube()->setBorderColor(App::Color::fromPackedRGBA<QColor>(col));
     }
     else if (strcmp(Reason,"UseVBO") == 0) {
         _viewer->setEnabledVBO(rGrp.GetBool("UseVBO", false));

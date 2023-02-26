@@ -44,6 +44,7 @@
 # include <QPainterPath>
 #endif
 
+#include <App/Color.h>
 #include <Base/Tools.h>
 #include <Eigen/Dense>
 
@@ -404,27 +405,22 @@ void NaviCubeImplementation::OnChange(ParameterGrp::SubjectType& rCaller,
         // QColor expects the form AARRGGBB therefore we must make a shift in writing to QColor
         unsigned long col = rGrp.GetUnsigned(reason, 255);
         // 255 is RRR,GGG,BBB,AAA: 0,0,0,255
-        QColor textColor((col >> 24) & 0xff, (col >> 16) & 0xff, (col >> 8) & 0xff, col & 0xff);
-        m_TextColor = textColor;
+        m_TextColor = App::Color::fromPackedRGBA<QColor>(col);
     }
     else if (strcmp(reason, "FrontColor") == 0) {
         unsigned long col = rGrp.GetUnsigned(reason, 3806916544);
-        // 3236096495 is RRR,GGG,BBB,AAA: 226,233,239,192
-        QColor frontColor((col >> 24) & 0xff, (col >> 16) & 0xff, (col >> 8) & 0xff, col & 0xff);
-        m_FrontColor = frontColor;
+        // 3236096495 is RRR,GGG,BBB,AAA: 226,232,239,192
+        m_FrontColor = App::Color::fromPackedRGBA<QColor>(col);
     }
     else if (strcmp(reason, "HiliteColor") == 0) {
         unsigned long col = rGrp.GetUnsigned(reason, 2867003391);
         // 2867003391  is RRR,GGG,BBB,AAA: 170,226,255,255
-        QColor hiliteColor((col >> 24) & 0xff, (col >> 16) & 0xff, (col >> 8) & 0xff, col & 0xff);
-        m_HiliteColor = hiliteColor;
+        m_HiliteColor = App::Color::fromPackedRGBA<QColor>(col);
     }
     else if (strcmp(reason, "ButtonColor") == 0) {
         unsigned long col = rGrp.GetUnsigned(reason, 3806916480);
-        // 3806916480 is RRR,GGG,BBB,AAA: 226,233,239,128
-        QColor buttonColor(
-            (col >> 24) & 0xff, (col >> 16) & 0xff, (col >> 8) & 0xff, col & 0xff);
-        m_ButtonColor = buttonColor;
+        // 3806916480 is RRR,GGG,BBB,AAA: 226,232,239,128
+        m_ButtonColor = App::Color::fromPackedRGBA<QColor>(col);
     }
     else if (strcmp(reason, "CornerNaviCube") == 0) {
         m_Corner = static_cast<NaviCube::Corner>(rGrp.GetInt(reason, 1));
@@ -444,8 +440,7 @@ void NaviCubeImplementation::OnChange(ParameterGrp::SubjectType& rCaller,
     else if (strcmp(reason, "BorderColor") == 0) {
         unsigned long col = rGrp.GetUnsigned(reason, 842150655);
         // 842150655 is RRR,GGG,BBB,AAA: 50,50,50,255
-        QColor borderColor((col >> 24) & 0xff, (col >> 16) & 0xff, (col >> 8) & 0xff, col & 0xff);
-        m_BorderColor = borderColor;
+        m_BorderColor = App::Color::fromPackedRGBA<QColor>(col);
     }
     else if (strcmp(reason, "FontSize") == 0) {
         m_CubeTextSize = rGrp.GetInt(reason, getDefaultFontSize());
