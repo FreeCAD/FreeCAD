@@ -2203,7 +2203,7 @@ Py::Object FunctionExpression::evaluate(const Expression *expr, int f, const std
               ((s.AmountOfSubstance % 3) == 0) &&
               ((s.LuminousIntensity % 3) == 0) &&
               ((s.Angle % 3) == 0))
-	        _EXPR_THROW("All dimensions must be multiples of 3 to compute the cube root.",expr);
+            _EXPR_THROW("All dimensions must be multiples of 3 to compute the cube root.",expr);
 
         unit = Unit(s.Length /3,
                     s.Mass / 3,
@@ -2304,7 +2304,7 @@ Py::Object FunctionExpression::evaluate(const Expression *expr, int f, const std
         output = sqrt(value);
         break;
     case CBRT:
-	    output = cbrt(value);
+        output = cbrt(value);
         break;
     case COS:
         output = cos(value);
