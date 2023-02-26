@@ -20,7 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef APP_PROPERTYUNITS_H
 #define APP_PROPERTYUNITS_H
 
@@ -29,10 +28,10 @@
 
 #include "PropertyStandard.h"
 
+
 namespace Base {
 class Writer;
 }
-
 
 namespace App
 {
@@ -119,6 +118,10 @@ protected:
     const Constraints* _ConstStruct;
 };
 
+// ------------------------------------------------------
+// now all properties
+// ------------------------------------------------------
+
 /** Acceleration property
  * This is a property for representing acceleration. It is basically a float
  * property. On the Gui it has a quantity like m/s^2.
@@ -130,6 +133,20 @@ class AppExport PropertyAcceleration: public PropertyQuantity
 public:
     PropertyAcceleration();
     ~PropertyAcceleration() override = default;
+};
+
+/** AmountOfSubstance property
+ * This is a property for representing number of molecules. It is basically a
+ * float property. On the Gui it has a quantity like mole.
+ */
+class AppExport PropertyAmountOfSubstance: public PropertyQuantity
+{
+    TYPESYSTEM_HEADER();
+
+public:
+    PropertyAmountOfSubstance(void);
+    virtual ~PropertyAmountOfSubstance()
+    {}
 };
 
 /** Angle property
@@ -159,17 +176,18 @@ public:
     ~PropertyArea() override = default;
 };
 
-/** Distance property
- * This is a property for representing distances. It is basically a float
- * property. On the Gui it has a quantity like m or mm.
+/** CompressiveStrength property
+ * This is a property for representing compressive strength. It is basically a
+ * float property. On the Gui it has a quantity like Pa.
  */
-class AppExport PropertyDistance: public PropertyQuantity
+class AppExport PropertyCompressiveStrength: public PropertyQuantity
 {
-    TYPESYSTEM_HEADER_WITH_OVERRIDE();
+    TYPESYSTEM_HEADER();
 
 public:
-    PropertyDistance();
-    ~PropertyDistance() override = default;
+    PropertyCompressiveStrength(void);
+    virtual ~PropertyCompressiveStrength()
+    {}
 };
 
 /** CurrentDensity property
@@ -183,6 +201,162 @@ class AppExport PropertyCurrentDensity: public PropertyQuantity
 public:
     PropertyCurrentDensity();
     ~PropertyCurrentDensity() override = default;
+};
+
+/** Density property
+ * This is a property for representing density. It is basically a float
+ * property which must not be negative. On the Gui it has a quantity like
+ * kg/m^3.
+ */
+class AppExport PropertyDensity: public PropertyQuantity
+{
+    TYPESYSTEM_HEADER();
+
+public:
+    PropertyDensity(void);
+    virtual ~PropertyDensity()
+    {}
+};
+
+/** DissipationRate property
+ * This is a property for representing turbulent dissipation rate. It basically
+ * a float property. On the Gui it has a quantity like m^2/s^3.
+ */
+class AppExport PropertyDissipationRate: public PropertyQuantity
+{
+    TYPESYSTEM_HEADER();
+
+public:
+    PropertyDissipationRate(void);
+    virtual ~PropertyDissipationRate()
+    {}
+};
+
+/** Distance property
+ * This is a property for representing distances. It is basically a float
+ * property. On the Gui it has a quantity like m or mm.
+ */
+class AppExport PropertyDistance: public PropertyQuantity
+{
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
+
+public:
+    PropertyDistance();
+    ~PropertyDistance() override = default;
+};
+
+/** DynamicViscosity property
+ * This is a property for representing dynamic viscosity. It is basically a
+ * float property which must not be negative. On the Gui it has a quantity like
+ * Pa*s.
+ */
+class AppExport PropertyDynamicViscosity: public PropertyQuantity
+{
+    TYPESYSTEM_HEADER();
+
+public:
+    PropertyDynamicViscosity(void);
+    virtual ~PropertyDynamicViscosity()
+    {}
+};
+
+/** ElectricalCapacitance property
+ * This is a property for representing capacitance. It is basically a float
+ * property. On the Gui it has a quantity like uF.
+ */
+class AppExport PropertyElectricalCapacitance: public PropertyQuantity
+{
+    TYPESYSTEM_HEADER();
+
+public:
+    PropertyElectricalCapacitance(void);
+    virtual ~PropertyElectricalCapacitance()
+    {}
+};
+
+/** ElectricalConductance property
+ * This is a property for representing electrical conductance. It is basically a
+ * float property. On the Gui it has a quantity like S.
+ */
+class AppExport PropertyElectricalConductance: public PropertyQuantity
+{
+    TYPESYSTEM_HEADER();
+
+public:
+    PropertyElectricalConductance(void);
+    virtual ~PropertyElectricalConductance()
+    {}
+};
+
+/** ElectricalConductivity property
+ * This is a property for representing electrical conductivity. It is basically
+ * a float property. On the Gui it has a quantity like S/m.
+ */
+class AppExport PropertyElectricalConductivity: public PropertyQuantity
+{
+    TYPESYSTEM_HEADER();
+
+public:
+    PropertyElectricalConductivity(void);
+    virtual ~PropertyElectricalConductivity()
+    {}
+};
+
+/** ElectricalInductance property
+ * This is a property for representing electrical inductance. It is basically a
+ * float property. On the Gui it has a quantity like H.
+ */
+class AppExport PropertyElectricalInductance: public PropertyQuantity
+{
+    TYPESYSTEM_HEADER();
+
+public:
+    PropertyElectricalInductance(void);
+    virtual ~PropertyElectricalInductance()
+    {}
+};
+
+/** ElectricalResistance property
+ * This is a property for representing electrical resistance. It is basically a
+ * float property. On the Gui it has a quantity like Ohm.
+ */
+
+class AppExport PropertyElectricalResistance: public PropertyQuantity
+{
+    TYPESYSTEM_HEADER();
+
+public:
+    PropertyElectricalResistance(void);
+    virtual ~PropertyElectricalResistance()
+    {}
+};
+
+/** ElectricCharge property
+ * This is a property for representing electric charge. It is basically a float
+ * property. On the Gui it has a quantity like C.
+ */
+class AppExport PropertyElectricCharge: public PropertyQuantity
+{
+    TYPESYSTEM_HEADER();
+
+public:
+    PropertyElectricCharge(void);
+    virtual ~PropertyElectricCharge()
+    {}
+};
+
+/** ElectricCurrent property
+ * This is a property for representing electric currents. It is basically a
+ * float property. On the Gui it has a quantity like A.
+ */
+class AppExport PropertyElectricCurrent: public PropertyQuantity
+{
+    TYPESYSTEM_HEADER();
+
+public:
+    PropertyElectricCurrent(void);
+    virtual ~PropertyElectricCurrent()
+    {}
 };
 
 /** ElectricPotential property
@@ -224,6 +398,80 @@ public:
     ~PropertyForce() override = default;
 };
 
+/** HeatFlux property
+ * This is a property for representing heat flux. It is basically a float
+ * property. On the Gui it has a quantity like W/m^2.
+ */
+class AppExport PropertyHeatFlux: public PropertyQuantity
+{
+    TYPESYSTEM_HEADER();
+
+public:
+    PropertyHeatFlux(void);
+    virtual ~PropertyHeatFlux()
+    {}
+};
+
+/** InverseArea property
+ * This is a property for representing the reciprocal of area. It is basically a
+ * float property which must not be negative. On the Gui it has a quantity like
+ * 1/m^2.
+ */
+class AppExport PropertyInverseArea: public PropertyQuantity
+{
+    TYPESYSTEM_HEADER();
+
+public:
+    PropertyInverseArea(void);
+    virtual ~PropertyInverseArea()
+    {}
+};
+
+/** InverseLength property
+ * This is a property for representing the reciprocal of length. It is basically
+ * a float property which must not be negative. On the Gui it has a quantity
+ * like 1/m.
+ */
+class AppExport PropertyInverseLength: public PropertyQuantity
+{
+    TYPESYSTEM_HEADER();
+
+public:
+    PropertyInverseLength(void);
+    virtual ~PropertyInverseLength()
+    {}
+};
+
+/** InverseVolume property
+ * This is a property for representing the reciprocal of volume. It is basically
+ * a float property. which must not be negative. On the Gui it has a quantity
+ * like 1/m^3.
+ */
+class AppExport PropertyInverseVolume: public PropertyQuantity
+{
+    TYPESYSTEM_HEADER();
+
+public:
+    PropertyInverseVolume(void);
+    virtual ~PropertyInverseVolume()
+    {}
+};
+
+/** KinematicViscosity property
+ * This is a property for representing kinematic viscosity. It is basically a
+ * float property which must not be negative. On the Gui it has a quantity like
+ * m^2/s^2.
+ */
+class AppExport PropertyKinematicViscosity: public PropertyQuantity
+{
+    TYPESYSTEM_HEADER();
+
+public:
+    PropertyKinematicViscosity(void);
+    virtual ~PropertyKinematicViscosity()
+    {}
+};
+
 /** Length property
  * This is a property for representing lengths. It is basically a float
  * property which must not be negative. On the Gui it has a quantity like m or mm.
@@ -235,6 +483,62 @@ class AppExport PropertyLength: public PropertyQuantityConstraint
 public:
     PropertyLength();
     ~PropertyLength() override = default;
+};
+
+/** LuminousIntensity property
+ * This is a property for representing luminous intensity. It is basically a
+ * float property. On the Gui it has a quantity like cd.
+ */
+class AppExport PropertyLuminousIntensity: public PropertyQuantity
+{
+    TYPESYSTEM_HEADER();
+
+public:
+    PropertyLuminousIntensity(void);
+    virtual ~PropertyLuminousIntensity()
+    {}
+};
+
+/** MagneticFieldStrength property
+ * This is a property for representing magnetic field strength. It is basically
+ * a float property. On the Gui it has a quantity like Wb.
+ */
+class AppExport PropertyMagneticFieldStrength: public PropertyQuantity
+{
+    TYPESYSTEM_HEADER();
+
+public:
+    PropertyMagneticFieldStrength(void);
+    virtual ~PropertyMagneticFieldStrength()
+    {}
+};
+
+/** MagneticFlux property
+ * This is a property for representing magnetic flux. It is basically a float
+ * property. On the Gui it has a quantity like Wb.
+ */
+class AppExport PropertyMagneticFlux: public PropertyQuantity
+{
+    TYPESYSTEM_HEADER();
+
+public:
+    PropertyMagneticFlux(void);
+    virtual ~PropertyMagneticFlux()
+    {}
+};
+
+/** MagneticFluxDensity property
+ * This is a property for representing magnetic flux density. It is basically a
+ * float property. On the Gui it has a quantity like G or T.
+ */
+class AppExport PropertyMagneticFluxDensity: public PropertyQuantity
+{
+    TYPESYSTEM_HEADER();
+
+public:
+    PropertyMagneticFluxDensity(void);
+    virtual ~PropertyMagneticFluxDensity()
+    {}
 };
 
  /** Magnetization property
@@ -250,6 +554,20 @@ public:
     ~PropertyMagnetization() override = default;
 };
 
+/** Mass property
+ * This is a property for representing mass. It is basically a float
+ * property. On the Gui it has a quantity like kg.
+ */
+class AppExport PropertyMass: public PropertyQuantity
+    {
+    TYPESYSTEM_HEADER();
+
+public:
+    PropertyMass(void);
+    virtual ~PropertyMass()
+    {}
+    };
+
 /** Pressure property
  * This is a property for representing pressure. It basically a float
  * property. On the Gui it has a quantity like Pa.
@@ -261,6 +579,62 @@ class AppExport PropertyPressure: public PropertyQuantity
 public:
     PropertyPressure();
     ~PropertyPressure() override = default;
+};
+
+/** Power property
+ * This is a property for representing power. It is basically a float
+ * property. On the Gui it has a quantity like W.
+ */
+class AppExport PropertyPower: public PropertyQuantity
+{
+    TYPESYSTEM_HEADER();
+
+public:
+    PropertyPower(void);
+    virtual ~PropertyPower()
+    {}
+};
+
+/** ShearModulus property
+ * This is a property for representing shear modulus. It is basically a float
+ * property. On the Gui it has a quantity like Pa.
+ */
+class AppExport PropertyShearModulus: public PropertyQuantity
+{
+    TYPESYSTEM_HEADER();
+
+public:
+    PropertyShearModulus(void);
+    virtual ~PropertyShearModulus()
+    {}
+};
+
+/** SpecificEnergy property
+ * This is a property for representing specific energy. It is basically a float
+ * property. On the Gui it has a quantity like m^2/s^2.
+ */
+class AppExport PropertySpecificEnergy: public PropertyQuantity
+{
+    TYPESYSTEM_HEADER();
+
+public:
+    PropertySpecificEnergy(void);
+    virtual ~PropertySpecificEnergy()
+    {}
+};
+
+/** SpecificHeat property
+ * This is a property for representing specific heat capacity. It is basically a
+ * float property. On the Gui it has a quantity like J/kg/K.
+ */
+class AppExport PropertySpecificHeat: public PropertyQuantity
+{
+    TYPESYSTEM_HEADER();
+
+public:
+    PropertySpecificHeat(void);
+    virtual ~PropertySpecificHeat()
+    {}
 };
 
 /** Speed property
@@ -289,31 +663,74 @@ public:
     ~PropertyStiffness() override = default;
 };
 
-/** Mass property
- * This is a property for representing mass. It is basically a float
- * property. On the Gui it has a quantity like kg.
+/** Stress property
+ * This is a property for representing . It is basically a float
+ * property. On the Gui it has a quantity like .
  */
-class AppExport PropertyMass: public PropertyQuantity
+class AppExport PropertyStress: public PropertyQuantity
 {
     TYPESYSTEM_HEADER();
 
 public:
-    PropertyMass(void);
-    virtual ~PropertyMass(){}
+    PropertyStress(void);
+    virtual ~PropertyStress()
+    {}
 };
 
-/** Density property
- * This is a property for representing density. It is basically a float
- * property which must not be negative. On the Gui it has a quantity like
- * kg/m^3.
+/** Temperature property
+ * This is a property for representing temperatures. It is basically a float
+ * property which must not be negative. On the Gui it has a quantity like K.
  */
-class AppExport PropertyDensity: public PropertyQuantity
+class AppExport PropertyTemperature: public PropertyQuantity
 {
     TYPESYSTEM_HEADER();
 
 public:
-    PropertyDensity(void);
-    virtual ~PropertyDensity(){}
+    PropertyTemperature(void);
+    virtual ~PropertyTemperature()
+    {}
+};
+
+/** ThermalConductivity property
+ * This is a property for representing thermal conductivity. It is basically a
+ * float property. On the Gui it has a quantity like W/m/K.
+ */
+class AppExport PropertyThermalConductivity: public PropertyQuantity
+{
+    TYPESYSTEM_HEADER();
+
+public:
+    PropertyThermalConductivity(void);
+    virtual ~PropertyThermalConductivity()
+    {}
+};
+
+/** ThermalExpansionCoefficient property
+ * This is a property for representing a coefficient of thermal expansion. It
+ * basically a float property. On the Gui it has a quantity like 1/K.
+ */
+class AppExport PropertyThermalExpansionCoefficient: public PropertyQuantity
+{
+    TYPESYSTEM_HEADER();
+
+public:
+    PropertyThermalExpansionCoefficient(void);
+    virtual ~PropertyThermalExpansionCoefficient()
+    {}
+};
+
+/** ThermalTransferCoefficient property
+ * This is a property for representing heat transfer coefficient. It is
+ * basically a float property. On the Gui it has a quantity like W/m^2/K.
+ */
+class AppExport PropertyThermalTransferCoefficient: public PropertyQuantity
+{
+    TYPESYSTEM_HEADER();
+
+public:
+    PropertyThermalTransferCoefficient(void);
+    virtual ~PropertyThermalTransferCoefficient()
+    {}
 };
 
 /** TimeSpan property
@@ -329,228 +746,6 @@ public:
     virtual ~PropertyTime(){}
 };
 
-/** Velocity property
- * This is a property for representing velocities. It is basically a float
- * property. On the Gui it has a quantity like m/s.
- */
-class AppExport PropertyVelocity: public PropertyQuantity
-{
-    TYPESYSTEM_HEADER();
-
-public:
-    PropertyVelocity(void);
-    virtual ~PropertyVelocity(){}
-};
-
-/** Temperature property
- * This is a property for representing temperatures. It is basically a float
- * property which must not be negative. On the Gui it has a quantity like K.
- */
-class AppExport PropertyTemperature: public PropertyQuantity
-{
-    TYPESYSTEM_HEADER();
-
-public:
-    PropertyTemperature(void);
-    virtual ~PropertyTemperature(){}
-};
-
-/** ElectricCurrent property
- * This is a property for representing electric currents. It is basically a
- * float property. On the Gui it has a quantity like A.
- */
-class AppExport PropertyElectricCurrent: public PropertyQuantity
-{
-    TYPESYSTEM_HEADER();
-
-public:
-    PropertyElectricCurrent(void);
-    virtual ~PropertyElectricCurrent(){}
-};
-
-/** ElectricCharge property
- * This is a property for representing electric charge. It is basically a float
- * property. On the Gui it has a quantity like C.
- */
-class AppExport PropertyElectricCharge: public PropertyQuantity
-{
-    TYPESYSTEM_HEADER();
-
-public:
-    PropertyElectricCharge(void);
-    virtual ~PropertyElectricCharge(){}
-};
-
-/** MagneticFieldStrength property
- * This is a property for representing magnetic field strength. It is basically
- * a float property. On the Gui it has a quantity like Wb.
- */
-class AppExport PropertyMagneticFieldStrength: public PropertyQuantity
-{
-    TYPESYSTEM_HEADER();
-
-public:
-    PropertyMagneticFieldStrength(void);
-    virtual ~PropertyMagneticFieldStrength(){}
-};
-
-/** MagneticFlux property
- * This is a property for representing magnetic flux. It is basically a float
- * property. On the Gui it has a quantity like Wb.
- */
-class AppExport PropertyMagneticFlux: public PropertyQuantity
-{
-    TYPESYSTEM_HEADER();
-
-public:
-    PropertyMagneticFlux(void);
-    virtual ~PropertyMagneticFlux(){}
-};
-
-/** MagneticFluxDensity property
- * This is a property for representing magnetic flux density. It is basically a
- * float property. On the Gui it has a quantity like G or T.
- */
-class AppExport PropertyMagneticFluxDensity: public PropertyQuantity
-{
-    TYPESYSTEM_HEADER();
-
-public:
-    PropertyMagneticFluxDensity(void);
-    virtual ~PropertyMagneticFluxDensity(){}
-};
-
-/** ElectricalCapacitance property
- * This is a property for representing capacitance. It is basically a float
- * property. On the Gui it has a quantity like uF.
- */
-class AppExport PropertyElectricalCapacitance: public PropertyQuantity
-{
-    TYPESYSTEM_HEADER();
-
-public:
-    PropertyElectricalCapacitance(void);
-    virtual ~PropertyElectricalCapacitance(){}
-};
-
-/** ElectricalInductance property
- * This is a property for representing electrical inductance. It is basically a
- * float property. On the Gui it has a quantity like H.
- */
-class AppExport PropertyElectricalInductance: public PropertyQuantity
-{
-    TYPESYSTEM_HEADER();
-
-public:
-    PropertyElectricalInductance(void);
-    virtual ~PropertyElectricalInductance(){}
-};
-
-/** ElectricalConductance property
- * This is a property for representing electrical conductance. It is basically a
- * float property. On the Gui it has a quantity like S.
- */
-class AppExport PropertyElectricalConductance: public PropertyQuantity
-{
-    TYPESYSTEM_HEADER();
-
-public:
-    PropertyElectricalConductance(void);
-    virtual ~PropertyElectricalConductance(){}
-};
-
-/** ElectricalResistance property
- * This is a property for representing electrical resistance. It is basically a
- * float property. On the Gui it has a quantity like Ohm.
- */
-
-class AppExport PropertyElectricalResistance: public PropertyQuantity
-{
-    TYPESYSTEM_HEADER();
-
-public:
-    PropertyElectricalResistance(void);
-    virtual ~PropertyElectricalResistance(){}
-};
-
-/** ElectricalConductivity property
- * This is a property for representing electrical conductivity. It is basically
- * a float property. On the Gui it has a quantity like S/m.
- */
-class AppExport PropertyElectricalConductivity: public PropertyQuantity
-{
-    TYPESYSTEM_HEADER();
-
-public:
-    PropertyElectricalConductivity(void);
-    virtual ~PropertyElectricalConductivity(){}
-};
-
-/** AmountOfSubstance property
- * This is a property for representing number of molecules. It is basically a
- * float property. On the Gui it has a quantity like mole.
- */
-class AppExport PropertyAmountOfSubstance: public PropertyQuantity
-{
-    TYPESYSTEM_HEADER();
-
-public:
-    PropertyAmountOfSubstance(void);
-    virtual ~PropertyAmountOfSubstance(){}
-};
-
-/** LuminousIntensity property
- * This is a property for representing luminous intensity. It is basically a
- * float property. On the Gui it has a quantity like cd.
- */
-class AppExport PropertyLuminousIntensity: public PropertyQuantity
-{
-    TYPESYSTEM_HEADER();
-
-public:
-    PropertyLuminousIntensity(void);
-    virtual ~PropertyLuminousIntensity(){}
-};
-
-/** CompressiveStrength property
- * This is a property for representing compressive strength. It is basically a
- * float property. On the Gui it has a quantity like Pa.
- */
-class AppExport PropertyCompressiveStrength: public PropertyQuantity
-{
-    TYPESYSTEM_HEADER();
-
-public:
-    PropertyCompressiveStrength(void);
-    virtual ~PropertyCompressiveStrength(){}
-};
-
-/** ShearModulus property
- * This is a property for representing shear modulus. It is basically a float
- * property. On the Gui it has a quantity like Pa.
- */
-class AppExport PropertyShearModulus: public PropertyQuantity
-{
-    TYPESYSTEM_HEADER();
-
-public:
-    PropertyShearModulus(void);
-    virtual ~PropertyShearModulus(){}
-};
-
-/** Stress property
- * This is a property for representing . It is basically a float
- * property. On the Gui it has a quantity like .
- */
-class AppExport PropertyStress: public PropertyQuantity
-{
-    TYPESYSTEM_HEADER();
-
-public:
-    PropertyStress(void);
-    virtual ~PropertyStress(){}
-};
-
 /** UltimateTensileStrength property
  * This is a property for representing ultimate tensile strength. It is
  * basically a float property. On the Gui it has a quantity like Pa.
@@ -564,177 +759,6 @@ public:
     virtual ~PropertyUltimateTensileStrength(){}
 };
 
-/** YieldStrength property
- * This is a property for representing yield strength. It is basically a float
- * property. On the Gui it has a quantity like Pa.
- */
-class AppExport PropertyYieldStrength: public PropertyQuantity
-{
-    TYPESYSTEM_HEADER();
-
-public:
-    PropertyYieldStrength(void);
-    virtual ~PropertyYieldStrength(){}
-};
-
-/** YoungsModulus property
- * This is a property for representing Young's modulus. It is basically a float
- * property. On the Gui it has a quantity like Pa.
- */
-class AppExport PropertyYoungsModulus: public PropertyQuantity
-{
-    TYPESYSTEM_HEADER();
-
-public:
-    PropertyYoungsModulus(void);
-    virtual ~PropertyYoungsModulus(){}
-};
-
-/** Work property
- * This is a property for representing work. It is basically a float
- * property. On the Gui it has a quantity like Nm.
- */
-class AppExport PropertyWork: public PropertyQuantity
-{
-    TYPESYSTEM_HEADER();
-
-public:
-    PropertyWork(void);
-    virtual ~PropertyWork(){}
-};
-
-/** Power property
- * This is a property for representing power. It is basically a float
- * property. On the Gui it has a quantity like W.
- */
-class AppExport PropertyPower: public PropertyQuantity
-{
-    TYPESYSTEM_HEADER();
-
-public:
-    PropertyPower(void);
-    virtual ~PropertyPower(){}
-};
-
-/** SpecificEnergy property
- * This is a property for representing specific energy. It is basically a float
- * property. On the Gui it has a quantity like m^2/s^2.
- */
-class AppExport PropertySpecificEnergy: public PropertyQuantity
-{
-    TYPESYSTEM_HEADER();
-
-public:
-    PropertySpecificEnergy(void);
-    virtual ~PropertySpecificEnergy(){}
-};
-
-/** ThermalConductivity property
- * This is a property for representing thermal conductivity. It is basically a
- * float property. On the Gui it has a quantity like W/m/K.
- */
-class AppExport PropertyThermalConductivity: public PropertyQuantity
-{
-    TYPESYSTEM_HEADER();
-
-public:
-    PropertyThermalConductivity(void);
-    virtual ~PropertyThermalConductivity(){}
-};
-
-/** ThermalExpansionCoefficient property
- * This is a property for representing a coefficient of thermal expansion. It
- * basically a float property. On the Gui it has a quantity like 1/K.
- */
-class AppExport PropertyThermalExpansionCoefficient: public PropertyQuantity
-{
-    TYPESYSTEM_HEADER();
-
-public:
-    PropertyThermalExpansionCoefficient(void);
-    virtual ~PropertyThermalExpansionCoefficient(){}
-};
-
-/** VolumetricThermalExpansionCoefficient property
- * This is a property for representing . It is basically a float
- * property. On the Gui it has a quantity like 1/K.
- */
-class AppExport PropertyVolumetricThermalExpansionCoefficient: public PropertyQuantity
-{
-    TYPESYSTEM_HEADER();
-
-public:
-    PropertyVolumetricThermalExpansionCoefficient(void);
-    virtual ~PropertyVolumetricThermalExpansionCoefficient(){}
-};
-
-/** SpecificHeat property
- * This is a property for representing specific heat capacity. It is basically a
- * float property. On the Gui it has a quantity like J/kg/K.
- */
-class AppExport PropertySpecificHeat: public PropertyQuantity
-{
-    TYPESYSTEM_HEADER();
-
-public:
-    PropertySpecificHeat(void);
-    virtual ~PropertySpecificHeat(){}
-};
-
-/** ThermalTransferCoefficient property
- * This is a property for representing heat transfer coefficient. It is
- * basically a float property. On the Gui it has a quantity like W/m^2/K.
- */
-class AppExport PropertyThermalTransferCoefficient: public PropertyQuantity
-{
-    TYPESYSTEM_HEADER();
-
-public:
-    PropertyThermalTransferCoefficient(void);
-    virtual ~PropertyThermalTransferCoefficient(){}
-};
-
-/** HeatFlux property
- * This is a property for representing heat flux. It is basically a float
- * property. On the Gui it has a quantity like W/m^2.
- */
-class AppExport PropertyHeatFlux: public PropertyQuantity
-{
-    TYPESYSTEM_HEADER();
-
-public:
-    PropertyHeatFlux(void);
-    virtual ~PropertyHeatFlux(){}
-};
-
-/** DynamicViscosity property
- * This is a property for representing dynamic viscosity. It is basically a
- * float property which must not be negative. On the Gui it has a quantity like
- * Pa*s.
- */
-class AppExport PropertyDynamicViscosity: public PropertyQuantity
-{
-    TYPESYSTEM_HEADER();
-
-public:
-    PropertyDynamicViscosity(void);
-    virtual ~PropertyDynamicViscosity(){}
-};
-
-/** KinematicViscosity property
- * This is a property for representing kinematic viscosity. It is basically a
- * float property which must not be negative. On the Gui it has a quantity like
- * m^2/s^2.
- */
-class AppExport PropertyKinematicViscosity: public PropertyQuantity
-{
-    TYPESYSTEM_HEADER();
-
-public:
-    PropertyKinematicViscosity(void);
-    virtual ~PropertyKinematicViscosity(){}
-};
-
 /** VacuumPermittivity property
  * This is a property for representing vacuum permittivity. It is basically a float
  * property. On the Gui it has a quantity like s^4*A^2 / (m^3*kg).
@@ -746,6 +770,20 @@ class AppExport PropertyVacuumPermittivity: public PropertyQuantity
 public:
     PropertyVacuumPermittivity();
     ~PropertyVacuumPermittivity() override = default;
+};
+
+/** Velocity property
+ * This is a property for representing velocities. It is basically a float
+ * property. On the Gui it has a quantity like m/s.
+ */
+class AppExport PropertyVelocity: public PropertyQuantity
+{
+    TYPESYSTEM_HEADER();
+
+public:
+    PropertyVelocity(void);
+    virtual ~PropertyVelocity()
+    {}
 };
 
 /** Volume property
@@ -771,64 +809,64 @@ class AppExport PropertyVolumeFlowRate: public PropertyQuantity
 
 public:
     PropertyVolumeFlowRate(void);
-    virtual ~PropertyVolumeFlowRate(){}
+    virtual ~PropertyVolumeFlowRate()
+    {}
 };
 
-/** DissipationRate property
- * This is a property for representing turbulent dissipation rate. It basically
- * a float property. On the Gui it has a quantity like m^2/s^3.
+/** VolumetricThermalExpansionCoefficient property
+ * This is a property for representing . It is basically a float
+ * property. On the Gui it has a quantity like 1/K.
  */
-class AppExport PropertyDissipationRate: public PropertyQuantity
+class AppExport PropertyVolumetricThermalExpansionCoefficient: public PropertyQuantity
 {
     TYPESYSTEM_HEADER();
 
 public:
-    PropertyDissipationRate(void);
-    virtual ~PropertyDissipationRate(){}
+    PropertyVolumetricThermalExpansionCoefficient(void);
+    virtual ~PropertyVolumetricThermalExpansionCoefficient()
+    {}
 };
 
-/** InverseLength property
- * This is a property for representing the reciprocal of length. It is basically
- * a float property which must not be negative. On the Gui it has a quantity
- * like 1/m.
+/** Work property
+ * This is a property for representing work. It is basically a float
+ * property. On the Gui it has a quantity like Nm.
  */
-class AppExport PropertyInverseLength: public PropertyQuantity
+class AppExport PropertyWork: public PropertyQuantity
 {
     TYPESYSTEM_HEADER();
 
 public:
-    PropertyInverseLength(void);
-    virtual ~PropertyInverseLength(){}
+    PropertyWork(void);
+    virtual ~PropertyWork(){}
 };
 
-/** InverseArea property
- * This is a property for representing the reciprocal of area. It is basically a
- * float property which must not be negative. On the Gui it has a quantity like
- * 1/m^2.
+/** YieldStrength property
+ * This is a property for representing yield strength. It is basically a float
+ * property. On the Gui it has a quantity like Pa.
  */
-class AppExport PropertyInverseArea: public PropertyQuantity
+class AppExport PropertyYieldStrength: public PropertyQuantity
 {
     TYPESYSTEM_HEADER();
 
 public:
-    PropertyInverseArea(void);
-    virtual ~PropertyInverseArea(){}
+    PropertyYieldStrength(void);
+    virtual ~PropertyYieldStrength()
+    {}
 };
 
-/** InverseVolume property
- * This is a property for representing the reciprocal of volume. It is basically
- * a float property. which must not be negative. On the Gui it has a quantity
- * like 1/m^3.
+/** YoungsModulus property
+ * This is a property for representing Young's modulus. It is basically a float
+ * property. On the Gui it has a quantity like Pa.
  */
-class AppExport PropertyInverseVolume: public PropertyQuantity
+class AppExport PropertyYoungsModulus: public PropertyQuantity
 {
     TYPESYSTEM_HEADER();
 
 public:
-    PropertyInverseVolume(void);
-    virtual ~PropertyInverseVolume(){}
+    PropertyYoungsModulus(void);
+    virtual ~PropertyYoungsModulus()
+    {}
 };
-
 
 }// namespace App
 
