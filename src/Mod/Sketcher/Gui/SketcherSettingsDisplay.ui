@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>500</width>
-    <height>664</height>
+    <height>538</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -515,7 +515,6 @@ Then objects are only visible behind the sketch plane.</string>
  <tabstops>
   <tabstop>EditSketcherFontSize</tabstop>
   <tabstop>viewScalingFactor</tabstop>
-  <tabstop>comboBox</tabstop>
   <tabstop>SegmentsPerGeometry</tabstop>
   <tabstop>dialogOnDistanceConstraint</tabstop>
   <tabstop>continueMode</tabstop>
