@@ -18,7 +18,7 @@ TEST_F(Quantity, TestSchemeImperialTwo)
 {
     Base::Quantity quantity{1.0, Base::Unit::Length};
 
-    double factor;
+    double factor{};
     QString unitString;
     auto scheme = Base::UnitsApi::createSchema(Base::UnitSystem::ImperialDecimal);
     QString result = scheme->schemaTranslate(quantity, factor, unitString);
@@ -33,7 +33,7 @@ TEST_F(Quantity, TestSchemeImperialOne)
     format.precision = 1;
     quantity.setFormat(format);
 
-    double factor;
+    double factor{};
     QString unitString;
     auto scheme = Base::UnitsApi::createSchema(Base::UnitSystem::ImperialDecimal);
     QString result = scheme->schemaTranslate(quantity, factor, unitString);
