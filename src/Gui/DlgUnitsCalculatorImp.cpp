@@ -114,9 +114,9 @@ DlgUnitsCalculator::DlgUnitsCalculator( QWidget* parent, Qt::WindowFlags fl )
           << Base::Unit::TimeSpan
           << Base::Unit::VacuumPermittivity
           << Base::Unit::Velocity
+          << Base::Unit::Volume
           << Base::Unit::VolumeFlowRate
           << Base::Unit::VolumetricThermalExpansionCoefficient
-          << Base::Unit::Volume
           << Base::Unit::Work;
     for (QList<Base::Unit>::iterator it = units.begin(); it != units.end(); ++it) {
         ui->unitsBox->addItem(it->getTypeString());

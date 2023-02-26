@@ -246,9 +246,8 @@ public:
 };
 
 /** DynamicViscosity property
- * This is a property for representing dynamic viscosity. It is basically a
- * float property which must not be negative. On the Gui it has a quantity like
- * Pa*s.
+ * This is a property for representing dynamic viscosity. It is basically a float
+ * property which must not be negative. On the Gui it has a quantity like Pa*s.
  */
 class AppExport PropertyDynamicViscosity: public PropertyQuantity
 {
@@ -262,7 +261,7 @@ public:
 
 /** ElectricalCapacitance property
  * This is a property for representing capacitance. It is basically a float
- * property. On the Gui it has a quantity like uF.
+ * property. On the Gui it has a quantity like F.
  */
 class AppExport PropertyElectricalCapacitance: public PropertyQuantity
 {
@@ -413,9 +412,8 @@ public:
 };
 
 /** InverseArea property
- * This is a property for representing the reciprocal of area. It is basically a
- * float property which must not be negative. On the Gui it has a quantity like
- * 1/m^2.
+ * This is a property for representing the reciprocal of area. It is basically a float
+ * property which must not be negative. On the Gui it has a quantity like 1/m^2.
  */
 class AppExport PropertyInverseArea: public PropertyQuantity
 {
@@ -428,9 +426,8 @@ public:
 };
 
 /** InverseLength property
- * This is a property for representing the reciprocal of length. It is basically
- * a float property which must not be negative. On the Gui it has a quantity
- * like 1/m.
+ * This is a property for representing the reciprocal of length. It is basically a float
+ * property which must not be negative. On the Gui it has a quantity like 1/m.
  */
 class AppExport PropertyInverseLength: public PropertyQuantity
 {
@@ -443,9 +440,8 @@ public:
 };
 
 /** InverseVolume property
- * This is a property for representing the reciprocal of volume. It is basically
- * a float property. which must not be negative. On the Gui it has a quantity
- * like 1/m^3.
+ * This is a property for representing the reciprocal of volume. It is basically a float
+*  property. which must not be negative. On the Gui it has a quantity like 1/m^3.
  */
 class AppExport PropertyInverseVolume: public PropertyQuantity
 {
@@ -458,9 +454,8 @@ public:
 };
 
 /** KinematicViscosity property
- * This is a property for representing kinematic viscosity. It is basically a
- * float property which must not be negative. On the Gui it has a quantity like
- * m^2/s^2.
+ * This is a property for representing kinematic viscosity. It is basically a float
+ * property which must not be negative. On the Gui it has a quantity like m^2/s.
  */
 class AppExport PropertyKinematicViscosity: public PropertyQuantity
 {
@@ -501,7 +496,7 @@ public:
 
 /** MagneticFieldStrength property
  * This is a property for representing magnetic field strength. It is basically
- * a float property. On the Gui it has a quantity like Wb.
+ * a float property. On the Gui it has a quantity like A/m.
  */
 class AppExport PropertyMagneticFieldStrength: public PropertyQuantity
 {
@@ -611,7 +606,7 @@ public:
 
 /** SpecificEnergy property
  * This is a property for representing specific energy. It is basically a float
- * property. On the Gui it has a quantity like m^2/s^2.
+ * property. On the Gui it has a quantity like m^2/s^2 or J/kg.
  */
 class AppExport PropertySpecificEnergy: public PropertyQuantity
 {
@@ -665,7 +660,7 @@ public:
 
 /** Stress property
  * This is a property for representing . It is basically a float
- * property. On the Gui it has a quantity like .
+ * property. On the Gui it has a quantity like Pa.
  */
 class AppExport PropertyStress: public PropertyQuantity
 {
