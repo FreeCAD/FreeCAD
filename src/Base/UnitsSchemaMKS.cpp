@@ -41,34 +41,34 @@ QString UnitsSchemaMKS::schemaTranslate(const Quantity &quant, double &factor, Q
     Unit unit = quant.getUnit();
 
     // now do special treatment on all cases seems necessary:
-    if (unit == Unit::Length) {  // Length handling ============================
-        if (UnitValue < 0.000000001) {// smaller then 0.001 nm -> scientific notation
-            unitString = QString::fromLatin1("m");
-            factor = 1000.0;
-        }
-        else if(UnitValue < 0.001) {
-            unitString = QString::fromLatin1("nm");
-            factor = 0.000001;
-        }
-        else if(UnitValue < 0.1) {
-            unitString = QString::fromUtf8("\xC2\xB5m");
-            factor = 0.001;
-        }
-        else if(UnitValue < 100.0) {
+    if (unit == Unit::Length) {// Length handling ============================
+        if (UnitValue < 1e-6) {// smaller than 0.001 nm -> scientific notation
             unitString = QString::fromLatin1("mm");
             factor = 1.0;
         }
-        else if(UnitValue < 10000000.0) {
-            unitString = QString::fromLatin1("m");
-            factor = 1000.0;
+        else if (UnitValue < 1e-3) {
+            unitString = QString::fromLatin1("nm");
+            factor = 1e-6;
         }
-        else if(UnitValue < 100000000000.0 ) {
+        else if (UnitValue < 0.1) {
+            unitString = QString::fromUtf8("\xC2\xB5m");
+            factor = 1e-3;
+        }
+        else if (UnitValue < 1e4) {
+            unitString = QString::fromLatin1("mm");
+            factor = 1.0;
+        }
+        else if (UnitValue < 1e7) {
+            unitString = QString::fromLatin1("m");
+            factor = 1e3;
+        }
+        else if (UnitValue < 1e10) {
             unitString = QString::fromLatin1("km");
-            factor = 1000000.0;
+            factor = 1e6;
         }
-        else { // bigger then 1000 km -> scientific notation
+        else {// bigger than 1000 km -> scientific notation
             unitString = QString::fromLatin1("m");
-            factor = 1000.0;
+            factor = 1e3;
         }
     }
     else if (unit == Unit::Area) {
@@ -367,7 +367,8 @@ QString UnitsSchemaMKS::schemaTranslate(const Quantity &quant, double &factor, Q
             factor = 1e-15;
         }
         else if (UnitValue < 1e-9) {
-            unitString = QString::fromUtf8("\xC2\xB5""F"); // \x reads everything to the end, therefore split
+            // \x reads everything to the end, therefore split
+            unitString = QString::fromUtf8("\xC2\xB5""F");
             factor = 1e-12;
         }
         else if (UnitValue < 1e-6) {
@@ -504,7 +505,7 @@ QString UnitsSchemaMKS::schemaTranslate(const Quantity &quant, double &factor, Q
         factor = 1e6;
     }
     else if (unit == Unit::InverseLength) {
-        if (UnitValue < 1e-6) {  // smaller than 0.001 1/km -> scientific notation
+        if (UnitValue < 1e-6) {// smaller than 0.001 1/km -> scientific notation
             unitString = QString::fromLatin1("1/m");
             factor = 1e-3;
         }
@@ -512,51 +513,47 @@ QString UnitsSchemaMKS::schemaTranslate(const Quantity &quant, double &factor, Q
             unitString = QString::fromLatin1("1/km");
             factor = 1e-6;
         }
-        else if (UnitValue < 1) {
+        else if (UnitValue < 1.0) {
             unitString = QString::fromLatin1("1/m");
             factor = 1e-3;
         }
         else if (UnitValue < 1e3) {
             unitString = QString::fromLatin1("1/mm");
-            factor = 1;
+            factor = 1.0;
         }
-        else if(UnitValue < 1e6) {
-            unitString = QString::fromUtf8("\xC2\xB5m");
+        else if (UnitValue < 1e6) {
+            unitString = QString::fromUtf8("1/\xC2\xB5m");
             factor = 1e3;
         }
-        else if(UnitValue < 1e9) {
+        else if (UnitValue < 1e9) {
             unitString = QString::fromLatin1("1/nm");
             factor = 1e6;
         }
-        else {  // bigger than 1000 1/nm -> scientific notation
+        else {// larger -> scientific notation
             unitString = QString::fromLatin1("1/m");
             factor = 1e-3;
         }
     }
     else if (unit == Unit::InverseArea) {
-        if (UnitValue < 1e-15) {  // smaller than 0.001 1/km^2 -> scientific notation
+        if (UnitValue < 1e-12) {// smaller than 0.001 1/km^2 -> scientific notation
             unitString = QString::fromLatin1("1/m^2");
             factor = 1e-6;
         }
-        else if (UnitValue < 1e-9) {
+        else if (UnitValue < 1e-6) {
             unitString = QString::fromLatin1("1/km^2");
             factor = 1e-12;
         }
-        else if (UnitValue < 1e-3) {
+        else if (UnitValue < 1.0) {
             unitString = QString::fromLatin1("1/m^2");
             factor = 1e-6;
         }
-        else if (UnitValue < 1e-1) {
+        else if (UnitValue < 1e2) {
             unitString = QString::fromLatin1("1/cm^2");
             factor = 1e-2;
         }
-        else if (UnitValue < 1e3) {
+        else {
             unitString = QString::fromLatin1("1/mm^2");
-            factor = 1;
-        }
-        else {  // bigger than 1000 1/mm^2 -> scientific notation
-            unitString = QString::fromLatin1("1/m^2");
-            factor = 1e-6;
+            factor = 1.0;
         }
     }
     else if (unit == Unit::InverseVolume) {
@@ -565,20 +562,16 @@ QString UnitsSchemaMKS::schemaTranslate(const Quantity &quant, double &factor, Q
             factor = 1e-9;
         }
         else if (UnitValue < 1e-3) {
-            unitString = QString::fromLatin1("1/l^3");
+            unitString = QString::fromLatin1("1/l");
             factor = 1e-6;
         }
-        else if (UnitValue < 1) {
+        else if (UnitValue < 1.0) {
             unitString = QString::fromLatin1("1/ml");
             factor = 1e-3;
         }
-        else if (UnitValue < 1e3) {
+        else {
             unitString = QString::fromLatin1("1/mm^3");
-            factor = 1;
-        }
-        else {  // bigger than 1000 1/mm^3 -> scientific notation
-            unitString = QString::fromLatin1("1/m^3");
-            factor = 1e-9;
+            factor = 1.0;
         }
     }
     else {
