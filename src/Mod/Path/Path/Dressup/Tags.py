@@ -675,7 +675,8 @@ class PathData:
     def __init__(self, obj):
         Path.Log.track(obj.Base.Name)
         self.obj = obj
-        self.wire, rapid = Path.Geom.wireForPath(obj.Base.Path)
+        path = PathUtils.getPathWithPlacement(obj.Base)
+        self.wire, rapid = Path.Geom.wireForPath(path)
         self.rapid = _RapidEdges(rapid)
         if self.wire:
             self.edges = self.wire.Edges
@@ -1256,7 +1257,7 @@ class ObjectTagDressup:
 
         if not self.tags:
             Path.Log.debug("execute - no tags")
-            obj.Path = obj.Base.Path
+            obj.Path = PathUtils.getPathWithPlacement(obj.Base)
             return
 
         try:
@@ -1265,7 +1266,7 @@ class ObjectTagDressup:
             Path.Log.error(
                 "processing tags failed clearing all tags ... '%s'" % (e.args[0])
             )
-            obj.Path = obj.Base.Path
+            obj.Path = PathUtils.getPathWithPlacement(obj.Base)
 
         # update disabled in case there are some additional ones
         disabled = copy.copy(self.obj.Disabled)

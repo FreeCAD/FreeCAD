@@ -114,7 +114,7 @@ class ObjectDressup:
             if obj.Base.isDerivedFrom("Path::Feature"):
                 if obj.Base.Path:
                     if obj.Base.Path.Commands:
-                        pp = obj.Base.Path.Commands
+                        pp = PathUtils.getPathWithPlacement(obj.Base).Commands
                         if len([i for i in pp if i.Name in Path.Geom.CmdMoveArc]) == 0:
                             pathlist = pp
                         else:

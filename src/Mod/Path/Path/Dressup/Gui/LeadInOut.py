@@ -189,7 +189,7 @@ class ObjectDressup:
                 + "\n"
             )
             obj.Length = 0.1
-        self.wire, self.rapids = Path.Geom.wireForPath(obj.Base.Path)
+        self.wire, self.rapids = Path.Geom.wireForPath(PathUtils.getPathWithPlacement(obj.Base))
         obj.Path = self.generateLeadInOutCurve(obj)
 
     def getDirectionOfPath(self, obj):
@@ -557,7 +557,7 @@ class ObjectDressup:
         layers = []
 
         # Read in all commands
-        for curCommand in obj.Base.Path.Commands:
+        for curCommand in PathUtils.getPathWithPlacement(obj.Base).Commands:
             Path.Log.debug("CurCMD: {}".format(curCommand))
             if curCommand.Name not in movecommands + rapidcommands:
                 # Don't worry about non-move commands, just add to output

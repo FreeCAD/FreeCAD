@@ -911,7 +911,7 @@ class ObjectDressup(object):
         self.length = 0
         # boneIserted = False
 
-        for (i, thisCommand) in enumerate(obj.Base.Path.Commands):
+        for (i, thisCommand) in enumerate(PathUtils.getPathWithPlacement(obj.Base).Commands):
             # if i > 14:
             #    if lastCommand:
             #        commands.append(lastCommand)
