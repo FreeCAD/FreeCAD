@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2017 Kustaa Nyholm  <kustaa.nyholm@sparetimelabs.com>   *
+ *   Copyright (c) 2023 Werner Mayer <wmayer[at]users.sourceforge.net>     *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -20,53 +20,44 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef SRC_GUI_NAVICUBE_H_
-#define SRC_GUI_NAVICUBE_H_
+#ifndef GUI_VIEW3DSETTINGS_H
+#define GUI_VIEW3DSETTINGS_H
 
-#include <CXX/Extensions.hxx>
-#include <QColor>
-#include <FCGlobal.h>
-
-class SoEvent;
+#include <Base/Parameter.h>
 
 namespace Gui {
 class View3DInventorViewer;
-}
 
-class NaviCubeImplementation;
-
-class GuiExport NaviCube {
+class View3DSettings : public ParameterGrp::ObserverType
+{
 public:
-    enum Corner {
-        TopLeftCorner,
-        TopRightCorner,
-        BottomLeftCorner,
-        BottomRightCorner
-    };
-    NaviCube(Gui::View3DInventorViewer* viewer);
-    virtual ~NaviCube();
-    void drawNaviCube();
-    void createContextMenu(const std::vector<std::string>& cmd);
-    bool processSoEvent(const SoEvent* ev);
-    void setCorner(Corner);
-    void setSize(int size);
-    void setNaviRotateToNearest(bool toNearest);
-    void setNaviStepByTurn(int steps);
-    void setFont(std::string font);
-    void setFontSize(int size);
-    void setTextColor(QColor TextColor);
-    void setFrontColor(QColor FrontColor);
-    void setHiliteColor(QColor HiliteColor);
-    void setButtonColor(QColor ButtonColor);
-    void setBorderWidth(double BorderWidth);
-    void setBorderColor(QColor BorderColor);
-    static QString getDefaultSansserifFont();
-    int getDefaultFontSize();
-    static void setNaviCubeCommands(const std::vector<std::string>& cmd);
-    static void setNaviCubeLabels(const std::vector<std::string>& labels);
+    View3DSettings(ParameterGrp::handle hGrp, View3DInventorViewer *);
+    ~View3DSettings() override;
+
+    /// Observer message from the ParameterGrp
+    void OnChange(ParameterGrp::SubjectType &rCaller,ParameterGrp::MessageType Reason) override;
+    void applySettings();
 
 private:
-    NaviCubeImplementation* m_NaviCubeImplementation;
+    ParameterGrp::handle hGrp;
+    View3DInventorViewer * _viewer;
 };
 
-#endif /* SRC_GUI_NAVICUBE_H_ */
+class NaviCubeSettings : public ParameterGrp::ObserverType
+{
+public:
+    NaviCubeSettings(ParameterGrp::handle hGrp, View3DInventorViewer *);
+    ~NaviCubeSettings() override;
+
+    /// Observer message from the ParameterGrp
+    void OnChange(ParameterGrp::SubjectType &rCaller,ParameterGrp::MessageType Reason) override;
+    void applySettings();
+
+private:
+    ParameterGrp::handle hGrp;
+    View3DInventorViewer * _viewer;
+};
+
+} // namespace Gui
+
+#endif  // GUI_VIEW3DSETTINGS_H
