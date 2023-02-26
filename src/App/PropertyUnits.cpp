@@ -837,3 +837,15 @@ PropertyInverseVolume::PropertyInverseVolume()
 {
     setUnit(Base::Unit::InverseVolume);
 }
+
+//**************************************************************************
+//**************************************************************************
+// PropertyVelocity
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+TYPESYSTEM_SOURCE(App::PropertyVelocity, App::PropertyQuantity)
+
+PropertyVelocity::PropertyVelocity()
+{
+    setUnit(Base::Unit::Velocity);
+}
