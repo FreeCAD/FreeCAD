@@ -655,11 +655,14 @@ int SketchAnalysis::detectMissingEqualityConstraints(double precision)
     std::vector<Sketcher::Constraint*> constraint = sketch->Constraints.getValues();
     for (std::vector<Sketcher::Constraint*>::iterator it = constraint.begin(); it != constraint.end(); ++it) {
         if ((*it)->Type == Sketcher::Equal) {
-            ConstraintIds id;
-            id.First = (*it)->First;
-            id.FirstPos = (*it)->FirstPos;
-            id.Second = (*it)->Second;
-            id.SecondPos = (*it)->SecondPos;
+            ConstraintIds id {
+                Base::Vector3d{},
+                (*it)->First,
+                (*it)->Second,
+                (*it)->FirstPos,
+                (*it)->SecondPos,
+                (*it)->Type
+            };
 
             std::list<ConstraintIds>::iterator pos = std::find_if
                 (equallines.begin(), equallines.end(), Constraint_Equal(id));
