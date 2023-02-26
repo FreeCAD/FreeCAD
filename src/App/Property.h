@@ -550,24 +550,31 @@ public:
 
 protected:
 
-    void setPyValues(const std::vector<PyObject*> &vals, const std::vector<int> &indices) override 
+    void setPyValues(const std::vector<PyObject*>& vals, const std::vector<int>& indices) override
     {
+        int i = 0;
         if (indices.empty()) {
-            ListT values;
+            ListT values {};
             values.resize(vals.size());
-            for (std::size_t i=0,count=vals.size();i<count;++i)
-                values[i] = getPyValue(vals[i]);
+            i = 0;
+            for (auto valsContent : vals) {
+                values[i] = getPyValue(valsContent);
+                i++;
+            }
             setValues(std::move(values));
             return;
         }
-        assert(vals.size()==indices.size());
+        assert(vals.size() == indices.size());
         atomic_change guard(*this);
-        for (int i=0,count=indices.size();i<count;++i)
-            set1Value(indices[i],getPyValue(vals[i]));
+        i = 0;
+        for (auto index : indices) {
+            set1Value(index, getPyValue(vals[i]));
+            i++;
+        }
         guard.tryInvoke();
     }
 
-    virtual T getPyValue(PyObject *item) const = 0;
+    virtual T getPyValue(PyObject* item) const = 0;
 
 protected:
     ListT _lValueList;
