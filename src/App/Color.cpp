@@ -33,6 +33,7 @@
 using namespace App;
 
 
+// NOLINTNEXTLINE(bugprone-easily-swappable-parameters)
 Color::Color(float red, float green, float blue, float alpha)
   : r(red)
   , g(green)
@@ -57,6 +58,7 @@ bool Color::operator!=(const Color& color) const
     return !operator==(color);
 }
 
+// NOLINTNEXTLINE(bugprone-easily-swappable-parameters)
 void Color::set(float red, float green, float blue, float alpha)
 {
     r = red;
@@ -65,38 +67,45 @@ void Color::set(float red, float green, float blue, float alpha)
     a = alpha;
 }
 
+// NOLINTBEGIN(cppcoreguidelines-avoid-magic-numbers,readability-magic-numbers)
 Color& Color::setPackedValue(uint32_t rgba)
 {
-    this->set((rgba >> 24)/255.0f,
-             ((rgba >> 16)&0xff)/255.0f,
-             ((rgba >> 8)&0xff)/255.0f,
-             (rgba&0xff)/255.0f);
+    // clang-format off
+    this->set(static_cast<float> (rgba >> 24)         / 255.0F,
+              static_cast<float>((rgba >> 16) & 0xff) / 255.0F,
+              static_cast<float>((rgba >>  8) & 0xff) / 255.0F,
+              static_cast<float> (rgba        & 0xff) / 255.0F);
     return *this;
+    // clang-format on
 }
 
 uint32_t Color::getPackedValue() const
 {
-    return (static_cast<uint32_t>(r*255.0f + 0.5f) << 24 |
-            static_cast<uint32_t>(g*255.0f + 0.5f) << 16 |
-            static_cast<uint32_t>(b*255.0f + 0.5f) << 8  |
-            static_cast<uint32_t>(a*255.0f + 0.5f));
+    // clang-format off
+    return (static_cast<uint32_t>(r * 255.0F + 0.5F) << 24 |
+            static_cast<uint32_t>(g * 255.0F + 0.5F) << 16 |
+            static_cast<uint32_t>(b * 255.0F + 0.5F) << 8  |
+            static_cast<uint32_t>(a * 255.0F + 0.5F));
+    // clang-format on
 }
 
 uint32_t Color::getPackedARGB() const
 {
-    return (static_cast<uint32_t>(a*255.0f + 0.5f) << 24 |
-            static_cast<uint32_t>(r*255.0f + 0.5f) << 16 |
-            static_cast<uint32_t>(g*255.0f + 0.5f) << 8  |
-            static_cast<uint32_t>(b*255.0f + 0.5f));
+    // clang-format off
+    return (static_cast<uint32_t>(a * 255.0F + 0.5F) << 24 |
+            static_cast<uint32_t>(r * 255.0F + 0.5F) << 16 |
+            static_cast<uint32_t>(g * 255.0F + 0.5F) << 8  |
+            static_cast<uint32_t>(b * 255.0F + 0.5F));
+    // clang-format on
 }
 
 void Color::setPackedARGB(uint32_t argb)
 {
     // clang-format off
-    this->set(((argb >> 16) & 0xff) / 255.0f,
-              ((argb >>  8) & 0xff) / 255.0f,
-               (argb        & 0xff) / 255.0f,
-               (argb >> 24)         / 255.0f);
+    this->set(static_cast<float>((argb >> 16) & 0xff) / 255.0F,
+              static_cast<float>((argb >>  8) & 0xff) / 255.0F,
+              static_cast<float> (argb        & 0xff) / 255.0F,
+              static_cast<float> (argb >> 24)         / 255.0F);
     // clang-format on
 }
 
@@ -104,30 +113,32 @@ std::string Color::asHexString() const
 {
     std::stringstream ss;
     ss << "#" << std::hex << std::uppercase << std::setfill('0')
-       << std::setw(2) << int(r*255.0f)
-       << std::setw(2) << int(g*255.0f)
-       << std::setw(2) << int(b*255.0f);
+       << std::setw(2) << int(r * 255.0F)
+       << std::setw(2) << int(g * 255.0F)
+       << std::setw(2) << int(b * 255.0F);
     return ss.str();
 }
 
 bool Color::fromHexString(const std::string& hex)
 {
-    if (hex.size() < 7 || hex[0] != '#')
+    if (hex.size() < 7 || hex[0] != '#') {
         return false;
+    }
+
     // #RRGGBB
     if (hex.size() == 7) {
         std::stringstream ss(hex);
         unsigned int rgb;
-        char c;
+        char ch{};
 
-        ss >> c >> std::hex >> rgb;
+        ss >> ch >> std::hex >> rgb;
         int rc = (rgb >> 16) & 0xff;
         int gc = (rgb >> 8) & 0xff;
         int bc = rgb & 0xff;
 
-        r = rc / 255.0f;
-        g = gc / 255.0f;
-        b = bc / 255.0f;
+        r = rc / 255.0F;
+        g = gc / 255.0F;
+        b = bc / 255.0F;
 
         return true;
     }
@@ -135,21 +146,22 @@ bool Color::fromHexString(const std::string& hex)
     if (hex.size() == 9) {
         std::stringstream ss(hex);
         unsigned int rgba;
-        char c;
+        char ch{};
 
-        ss >> c >> std::hex >> rgba;
+        ss >> ch >> std::hex >> rgba;
         int rc = (rgba >> 24) & 0xff;
         int gc = (rgba >> 16) & 0xff;
         int bc = (rgba >> 8) & 0xff;
-        int ac = rgba & 0xff;
+        int ac =  rgba & 0xff;
 
-        r = rc / 255.0f;
-        g = gc / 255.0f;
-        b = bc / 255.0f;
-        a = ac / 255.0f;
+        r = rc / 255.0F;
+        g = gc / 255.0F;
+        b = bc / 255.0F;
+        a = ac / 255.0F;
 
         return true;
     }
 
     return false;
 }
+// NOLINTEND(cppcoreguidelines-avoid-magic-numbers,readability-magic-numbers)
