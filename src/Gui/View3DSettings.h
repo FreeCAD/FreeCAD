@@ -37,6 +37,7 @@ public:
     /// Observer message from the ParameterGrp
     void OnChange(ParameterGrp::SubjectType &rCaller,ParameterGrp::MessageType Reason) override;
     void applySettings();
+    int stopAnimatingIfDeactivated() const;
 
 private:
     ParameterGrp::handle hGrp;
