@@ -534,68 +534,59 @@ QString Unit::getTypeString() const
     return QString();
 }
 
-Unit Unit::Length(1);
-Unit Unit::Area(2);
-Unit Unit::Volume(3);
-Unit Unit::Mass(0,1);
+// SI base units
+Unit Unit::AmountOfSubstance          (0, 0, 0, 0, 0, 1);
+Unit Unit::ElectricCurrent            (0, 0, 0, 1);
+Unit Unit::Length                     (1);
+Unit Unit::LuminousIntensity          (0, 0, 0, 0, 0, 0, 1);
+Unit Unit::Mass                       (0, 1);
+Unit Unit::Temperature                (0, 0, 0, 0, 1);
+Unit Unit::TimeSpan                   (0, 0, 1);
 
-// Angle, deg
-Unit Unit::Angle           (0,0,0,0,0,0,0,1);
-Unit Unit::AngleOfFriction (0,0,0,0,0,0,0,1);
-
-Unit Unit::Density(-3,1);
-
-Unit Unit::TimeSpan(0,0,1);
-Unit Unit::Frequency(0,0,-1);
-Unit Unit::Velocity(1,0,-1);
-Unit Unit::Acceleration(1,0,-2);
-Unit Unit::Temperature(0,0,0,0,1);
-
-Unit Unit::CurrentDensity(-2,0,0,1);
-Unit Unit::ElectricCurrent(0,0,0,1);
-Unit Unit::ElectricPotential(2,1,-3,-1);
-Unit Unit::ElectricCharge(0,0,1,1);
-Unit Unit::MagneticFieldStrength(-1,0,0,1);
-Unit Unit::MagneticFlux(2,1,-2,-1);
-Unit Unit::MagneticFluxDensity(0,1,-2,-1);
-Unit Unit::Magnetization(-1,0,0,1);
-Unit Unit::ElectricalCapacitance(-2,-1,4,2);
-Unit Unit::ElectricalInductance(2,1,-2,-2);
-Unit Unit::ElectricalConductance(-2,-1,3,2);
-Unit Unit::ElectricalResistance(2,1,-3,-2);
-Unit Unit::ElectricalConductivity(-3,-1,3,2);
-Unit Unit::AmountOfSubstance(0,0,0,0,0,1);
-Unit Unit::LuminousIntensity(0,0,0,0,0,0,1);
-
-// Pressure, kg/m*s^2 or N/m^2 or PSI or MPa
-Unit Unit::CompressiveStrength     (-1,1,-2);
-Unit Unit::Pressure                (-1,1,-2);
-Unit Unit::ShearModulus            (-1,1,-2);
-Unit Unit::Stress                  (-1,1,-2);
-Unit Unit::UltimateTensileStrength (-1,1,-2);
-Unit Unit::YieldStrength           (-1,1,-2);
-Unit Unit::YoungsModulus           (-1,1,-2);
-
-// Stiffness [kg/s^-2]
-Unit Unit::Stiffness               (0,1,-2);
-
-Unit Unit::Force   (1,1,-2);
-Unit Unit::Work    (2,1,-2);
-Unit Unit::Power   (2,1,-3);
-
-Unit Unit::SpecificEnergy              (2,0,-2);
-Unit Unit::ThermalConductivity         (1,1,-3,0,-1);
-Unit Unit::ThermalExpansionCoefficient (0,0,0,0,-1);
-Unit Unit::VolumetricThermalExpansionCoefficient (0,0,0,0,-1);
-Unit Unit::SpecificHeat                (2,0,-2,0,-1);
-Unit Unit::ThermalTransferCoefficient  (0,1,-3,0,-1);
-Unit Unit::HeatFlux                    (0,1,-3,0,0);
-Unit Unit::DynamicViscosity            (-1,1,-1);  // SI unit: kg/m/s
-Unit Unit::KinematicViscosity          (2,0,-1);  // SI unit: m^2/s, https://en.wikipedia.org/wiki/Viscosity#Kinematic_viscosity
-Unit Unit::VacuumPermittivity          (-3,-1,4,2); // SI unit: A²*s⁴/kg/m³ https://en.wikipedia.org/wiki/Permittivity#Vacuum_permittivity
-Unit Unit::VolumeFlowRate              (3,0,-1);
-Unit Unit::DissipationRate             (2,0,-3);  // SI unit: m^2/s^3 https://cfd-online.com/Wiki/Turbulence_dissipation_rate
-
-Unit Unit::InverseLength               (-1,0,0);
-Unit Unit::InverseArea                 (-2,0,0);
-Unit Unit::InverseVolume               (-3,0,0);
+// all other units
+Unit Unit::Acceleration               (1, 0, -2);
+Unit Unit::Angle                      (0, 0, 0, 0, 0, 0, 0, 1);
+Unit Unit::AngleOfFriction            (0, 0, 0, 0, 0, 0, 0, 1);
+Unit Unit::Area                       (2);
+Unit Unit::CompressiveStrength        (-1, 1, -2);
+Unit Unit::CurrentDensity             (-2, 0, 0, 1);
+Unit Unit::Density                    (-3, 1);
+Unit Unit::DissipationRate   (2, 0, -3); // https://cfd-online.com/Wiki/Turbulence_dissipation_rate
+Unit Unit::DynamicViscosity           (-1, 1, -1);
+Unit Unit::ElectricalCapacitance      (-2, -1, 4, 2);
+Unit Unit::ElectricalConductance      (-2, -1, 3, 2);
+Unit Unit::ElectricalConductivity     (-3, -1, 3, 2);
+Unit Unit::ElectricalInductance       (2, 1, -2, -2);
+Unit Unit::ElectricalResistance       (2, 1, -3, -2);
+Unit Unit::ElectricCharge             (0, 0, 1, 1);
+Unit Unit::ElectricPotential          (2, 1, -3, -1);
+Unit Unit::Force                      (1, 1, -2);
+Unit Unit::Frequency                  (0, 0, -1);
+Unit Unit::HeatFlux                   (0, 1, -3, 0, 0);
+Unit Unit::InverseArea                (-2, 0, 0);
+Unit Unit::InverseLength              (-1, 0, 0);
+Unit Unit::InverseVolume              (-3, 0, 0);
+Unit Unit::KinematicViscosity         (2, 0, -1);
+Unit Unit::MagneticFieldStrength      (-1,0,0,1);
+Unit Unit::MagneticFlux               (2,1,-2,-1);
+Unit Unit::MagneticFluxDensity        (0,1,-2,-1);
+Unit Unit::Magnetization              (-1,0,0,1);
+Unit Unit::Pressure                   (-1,1,-2);
+Unit Unit::Power                      (2, 1, -3);
+Unit Unit::ShearModulus               (-1,1,-2);
+Unit Unit::SpecificEnergy             (2, 0, -2);
+Unit Unit::SpecificHeat               (2, 0, -2, 0, -1);
+Unit Unit::Stiffness                  (0, 1, -2);
+Unit Unit::Stress                     (-1,1,-2);
+Unit Unit::ThermalConductivity        (1, 1, -3, 0, -1);
+Unit Unit::ThermalExpansionCoefficient(0, 0, 0, 0, -1);
+Unit Unit::ThermalTransferCoefficient (0, 1, -3, 0, -1);
+Unit Unit::UltimateTensileStrength    (-1,1,-2);
+Unit Unit::VacuumPermittivity         (-3, -1, 4,  2);
+Unit Unit::Velocity                   (1, 0, -1);
+Unit Unit::Volume                     (3);
+Unit Unit::VolumeFlowRate             (3, 0, -1);
+Unit Unit::VolumetricThermalExpansionCoefficient(0, 0, 0, 0, -1);
+Unit Unit::Work                       (2, 1, -2);
+Unit Unit::YieldStrength              (-1,1,-2);
+Unit Unit::YoungsModulus              (-1,1,-2);
