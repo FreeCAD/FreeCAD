@@ -45,20 +45,11 @@ UrlLabel::UrlLabel ( QWidget * parent, Qt::WindowFlags f )
 {
     _url = "http://localhost";
     setToolTip(this->_url);
+    setCursor(Qt::PointingHandCursor);
 }
 
 UrlLabel::~UrlLabel()
 {
-}
-
-void UrlLabel::enterEvent ( QEvent * )
-{
-    setCursor(Qt::PointingHandCursor);
-}
-
-void UrlLabel::leaveEvent ( QEvent * )
-{
-    setCursor(Qt::ArrowCursor);
 }
 
 void UrlLabel::mouseReleaseEvent ( QMouseEvent * )
@@ -1577,8 +1568,7 @@ UIntSpinBox::UIntSpinBox (QWidget* parent)
 {
     d = new UIntSpinBoxPrivate;
     d->mValidator =  new UnsignedValidator(this->minimum(), this->maximum(), this);
-    connect(this, qOverload<uint>(&UIntSpinBox::valueChanged),
-            this, &UIntSpinBox::valueChange);
+    connect(this, qOverload<int>(&QSpinBox::valueChanged), this, &UIntSpinBox::valueChange);
     setRange(0, 99);
     setValue(0);
     updateValidator();
@@ -1615,7 +1605,7 @@ void UIntSpinBox::setValue(uint value)
 
 void UIntSpinBox::valueChange(int value)
 {
-    valueChanged(d->mapToUInt(value));
+    unsignedChanged(d->mapToUInt(value));
 }
 
 uint UIntSpinBox::minimum() const
@@ -1758,10 +1748,10 @@ void PrefDoubleSpinBox::setParamGrpPath ( const QByteArray& name )
 // -------------------------------------------------------------
 
 ColorButton::ColorButton(QWidget* parent)
-    : QPushButton(parent),
-      _allowChange(true),
-      _drawFrame(true),
-      _allowTransparency(false)
+    : QPushButton(parent)
+    ,  _allowChange(true)
+    , _allowTransparency(false)
+    , _drawFrame(true)
 {
     _col = palette().color(QPalette::Active,QPalette::Midlight);
     connect(this, &ColorButton::clicked, this, &ColorButton::onChooseColor);
