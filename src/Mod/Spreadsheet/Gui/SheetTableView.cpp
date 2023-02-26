@@ -609,7 +609,7 @@ bool SheetTableView::event(QEvent* event)
             kevent->accept();
         }
     }
-    else if (event->type() == QEvent::LanguageChange) {
+    else if (event && event->type() == QEvent::LanguageChange) {
         actionProperties->setText(tr("Properties..."));
         actionRecompute->setText(tr("Recompute"));
         actionConf->setText(tr("Configuration table..."));
