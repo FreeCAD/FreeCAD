@@ -436,7 +436,9 @@ QString Unit::getTypeString() const
         return QString::fromLatin1("Mass");
     if (*this == Unit::Angle)
         return QString::fromLatin1("Angle");
-    if (*this == Unit::Density)
+    if(*this == Unit::AngleOfFriction             )
+        return QString::fromLatin1("AngleOfFriction");
+    if(*this == Unit::Density)
         return QString::fromLatin1("Density");
     if (*this == Unit::TimeSpan)
         return QString::fromLatin1("TimeSpan");
@@ -480,7 +482,17 @@ QString Unit::getTypeString() const
         return QString::fromLatin1("LuminousIntensity");
     if (*this == Unit::Pressure)
         return QString::fromLatin1("Pressure");
-    if (*this == Unit::Force)
+    if(*this == Unit::ShearModulus)
+        return QString::fromLatin1("ShearModulus");
+    if(*this == Unit::Stress)
+        return QString::fromLatin1("Stress");
+    if(*this == Unit::UltimateTensileStrength     )
+        return QString::fromLatin1("UltimateTensileStrength");
+    if(*this == Unit::YieldStrength)
+        return QString::fromLatin1("YieldStrength");
+    if(*this == Unit::YoungsModulus)
+        return QString::fromLatin1("YoungsModulus");
+    if(*this == Unit::Force)
         return QString::fromLatin1("Force");
     if (*this == Unit::Work)
         return QString::fromLatin1("Work");
@@ -508,6 +520,16 @@ QString Unit::getTypeString() const
         return QString::fromLatin1("KinematicViscosity");
     if (*this == Unit::VacuumPermittivity)
         return QString::fromLatin1("VacuumPermittivity");
+    if (*this == Unit::VolumeFlowRate)
+        return QString::fromLatin1("VolumeFlowRate");
+    if (*this == Unit::DissipationRate)
+        return QString::fromLatin1("DissipationRate");
+    if (*this == Unit::InverseLength)
+        return QString::fromLatin1("InverseLength");
+    if (*this == Unit::InverseArea)
+        return QString::fromLatin1("InverseArea");
+    if (*this == Unit::InverseVolume)
+        return QString::fromLatin1("InverseVolume");
 
     return QString();
 
@@ -572,3 +594,9 @@ Unit Unit::HeatFlux                    (0,1,-3,0,0);
 Unit Unit::DynamicViscosity            (-1,1,-1);  // SI unit: kg/m/s
 Unit Unit::KinematicViscosity          (2,0,-1);  // SI unit: m^2/s, https://en.wikipedia.org/wiki/Viscosity#Kinematic_viscosity
 Unit Unit::VacuumPermittivity          (-3,-1,4,2); // SI unit: A²*s⁴/kg/m³ https://en.wikipedia.org/wiki/Permittivity#Vacuum_permittivity
+Unit Unit::VolumeFlowRate              (3,0,-1);
+Unit Unit::DissipationRate             (2,0,-3);  // SI unit: m^2/s^3 https://cfd-online.com/Wiki/Turbulence_dissipation_rate
+
+Unit Unit::InverseLength               (-1,0,0);
+Unit Unit::InverseArea                 (-2,0,0);
+Unit Unit::InverseVolume               (-3,0,0);

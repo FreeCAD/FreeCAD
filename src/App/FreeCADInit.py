@@ -901,6 +901,12 @@ App.Units.HeatFlux                     = App.Units.Unit(0,1,-3,0,0)
 App.Units.DynamicViscosity             = App.Units.Unit(-1,1,-1)
 App.Units.KinematicViscosity           = App.Units.Unit(2,0,-1)
 App.Units.VacuumPermittivity           = App.Units.Unit(-3,-1,4,2)
+App.Units.VolumeFlowRate               = App.Units.Unit(3,0,-1)
+App.Units.DissipationRate              = App.Units.Unit(2,0,-3)
+App.Units.InverseLength                = App.Units.Unit(-1)
+App.Units.InverseArea                  = App.Units.Unit(-2)
+App.Units.InverseVolume                = App.Units.Unit(-3)
+
 
 # Add an enum for the different unit schemes
 from enum import IntEnum
