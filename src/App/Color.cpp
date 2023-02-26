@@ -33,35 +33,36 @@
 using namespace App;
 
 
-Color::Color(float R, float G, float B, float A)
-  : r(R)
-  , g(G)
-  , b(B)
-  , a(A)
+Color::Color(float red, float green, float blue, float alpha)
+  : r(red)
+  , g(green)
+  , b(blue)
+  , a(alpha)
 {
 }
 
 Color::Color(uint32_t rgba)
+  : Color{}
 {
-    setPackedValue( rgba );
+    setPackedValue(rgba);
 }
 
-bool Color::operator==(const Color& c) const
+bool Color::operator==(const Color& color) const
 {
-    return getPackedValue() == c.getPackedValue();
+    return getPackedValue() == color.getPackedValue();
 }
 
-bool Color::operator!=(const Color& c) const
+bool Color::operator!=(const Color& color) const
 {
-    return !operator==(c);
+    return !operator==(color);
 }
 
-void Color::set(float R, float G, float B, float A)
+void Color::set(float red, float green, float blue, float alpha)
 {
-    r = R;
-    g = G;
-    b = B;
-    a = A;
+    r = red;
+    g = green;
+    b = blue;
+    a = alpha;
 }
 
 Color& Color::setPackedValue(uint32_t rgba)
