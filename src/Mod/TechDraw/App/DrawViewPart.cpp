@@ -1281,13 +1281,12 @@ bool DrawViewPart::checkXDirection() const
     if (DrawUtil::fpCompare(xDir.Length(), 0.0)) {
         Base::Vector3d dir = Direction.getValue();
         Base::Vector3d origin(0.0, 0.0, 0.0);
-        Base::Vector3d xDir = getLegacyX(origin, dir);
+        xDir = getLegacyX(origin, dir);
         return false;
     }
     return true;
 }
 
-//
 Base::Vector3d DrawViewPart::getXDirection() const
 {
     //    Base::Console().Message("DVP::getXDirection() - %s\n", Label.getValue());
