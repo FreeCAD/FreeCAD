@@ -223,6 +223,10 @@ class _InvoluteGearTaskPanel:
         assign("DedendumCoefficient", self.form.doubleSpinBox_Dedendum, self.form.label_Dedendum)
         assign("RootFilletCoefficient", self.form.doubleSpinBox_RootFillet, self.form.label_RootFillet)
 
+    def changeEvent(self, event):
+        if event == QtCore.QEvent.LanguageChange:
+            self.assignToolTipsFromPropertyDocs()
+
     def transferTo(self):
         "Transfer from the dialog to the object"
         self.obj.NumberOfTeeth  = self.form.spinBox_NumberOfTeeth.value()
