@@ -638,8 +638,7 @@ void View3DInventor::windowStateChanged(MDIView* view)
     }
 
     if (canStartTimer) {
-        // do a single shot event (maybe insert a checkbox in viewer settings)
-        int msecs = 3000; //hGrp->GetInt("stopAnimatingIfDeactivated", 3000);
+        int msecs = viewSettings->stopAnimatingIfDeactivated();
         if (!stopSpinTimer->isActive() && msecs >= 0) { // if < 0 do not stop rotation
             stopSpinTimer->setSingleShot(true);
             stopSpinTimer->start(msecs);

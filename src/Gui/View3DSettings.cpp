@@ -53,6 +53,12 @@ View3DSettings::~View3DSettings()
     hGrp->Detach(this);
 }
 
+int View3DSettings::stopAnimatingIfDeactivated() const
+{
+    long defaultTimeout = 3000;
+    return hGrp->GetInt("stopAnimatingIfDeactivated", defaultTimeout);
+}
+
 void View3DSettings::applySettings()
 {
     // apply the user settings
