@@ -552,21 +552,18 @@ protected:
 
     void setPyValues(const std::vector<PyObject*>& vals, const std::vector<int>& indices) override
     {
-        int i = 0;
         if (indices.empty()) {
             ListT values {};
-            values.resize(vals.size());
-            i = 0;
-            for (auto valsContent : vals) {
-                values[i] = getPyValue(valsContent);
-                i++;
+            values.reserve(vals.size());
+            for (auto *valsContent : vals) {
+                values.push_back(getPyValue(valsContent));
             }
             setValues(std::move(values));
             return;
         }
         assert(vals.size() == indices.size());
         atomic_change guard(*this);
-        i = 0;
+        int i {0};
         for (auto index : indices) {
             set1Value(index, getPyValue(vals[i]));
             i++;
