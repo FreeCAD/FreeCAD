@@ -136,6 +136,8 @@ SET(SketcherGui_SRCS
     Workbench.h
     EditDatumDialog.cpp
     EditDatumDialog.h
+    PropertyVisualLayerList.cpp
+    PropertyVisualLayerList.h
     SketchOrientationDialog.cpp
     SketchOrientationDialog.h
     SketchMirrorDialog.cpp
