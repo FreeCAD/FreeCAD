@@ -201,7 +201,38 @@ TEST(BaseQuantity, TestNoDim)
 {
     Base::Quantity q1{};
 
+    EXPECT_EQ(q1.pow(2), Base::Quantity{0});
     EXPECT_EQ(q1.isDimensionless(), true);
+}
+
+TEST(BaseQuantity, TestPowEQ1)
+{
+    Base::Quantity q1{2, Base::Unit::Area};
+    EXPECT_EQ(q1.pow(1), Base::Quantity(2, Base::Unit::Area));
+}
+
+TEST(BaseQuantity, TestPowEQ0)
+{
+    Base::Quantity q1{2, Base::Unit::Area};
+    EXPECT_EQ(q1.pow(0), Base::Quantity{1});
+}
+
+TEST(BaseQuantity, TestPowGT1)
+{
+    Base::Quantity q1{2, Base::Unit::Length};
+    EXPECT_EQ(q1.pow(2), Base::Quantity(4, Base::Unit::Area));
+}
+
+TEST(BaseQuantity, TestPowLT1)
+{
+    Base::Quantity q1{8, Base::Unit::Volume};
+    EXPECT_EQ(q1.pow(1.0/3.0), Base::Quantity(2, Base::Unit::Length));
+}
+
+TEST(BaseQuantity, TestPow3DIV2)
+{
+    Base::Quantity unit{8, Base::Unit::Volume};
+    EXPECT_THROW(unit.pow(3.0/2.0), Base::UnitsMismatchError);
 }
 
 TEST(BaseQuantity, TestString)

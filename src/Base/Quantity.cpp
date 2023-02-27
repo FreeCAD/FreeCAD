@@ -195,7 +195,7 @@ Quantity Quantity::pow(double p) const
 {
     return Quantity(
         std::pow(this->_Value, p),
-        this->_Unit.pow((short)p)
+        this->_Unit.pow(p)
         );
 }
 
