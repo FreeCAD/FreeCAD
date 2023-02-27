@@ -1143,7 +1143,7 @@ def drawEllipse(ellipse, forceShape=False):
         x = majv.normalize()
         z = vec(ellipse.extrusion).normalize()
         y = z.cross(x)
-        m = DraftVecUtils.getPlaneRotation(x, y, z)
+        m = DraftVecUtils.getPlaneRotation(x, y)
         pl = FreeCAD.Placement(m)
         pl.move(c)
         if (dxfCreateDraft or dxfCreateSketch) and (not forceShape):
