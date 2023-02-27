@@ -198,7 +198,7 @@ def getCutShapes(objs,cutplane,onlySolids,clip,joinArch,showHidden,groupSshapesB
     for o, shapeList in objectShapes:
         tmpSshapes = []
         for sh in shapeList:
-            for sub in (sh.SubShapes if sh.SubShapes else [sh]):
+            for sub in (sh.SubShapes if sh.ShapeType == "Compound" else [sh]):
                 if cutvolume:
                     if sub.Volume < 0:
                         sub = sub.reversed() # Use reversed as sub is immutable.
@@ -212,10 +212,10 @@ def getCutShapes(objs,cutplane,onlySolids,clip,joinArch,showHidden,groupSshapesB
                     except Part.OCCError:
                         #print "ArchDrawingView: unable to get a face"
                         tmpSshapes.append(s)
-                    shapes.extend(c.SubShapes if c.SubShapes else [c])
+                    shapes.extend(c.SubShapes if c.ShapeType == "Compound" else [c])
                     if showHidden:
                         c = sub.cut(invcutvolume)
-                        hshapes.extend(c.SubShapes if c.SubShapes else [c])
+                        hshapes.extend(c.SubShapes if c.ShapeType == "Compound" else [c])
                 else:
                     shapes.append(sub)
 
