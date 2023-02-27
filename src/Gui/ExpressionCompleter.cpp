@@ -450,25 +450,7 @@ void ExpressionCompleter::slotUpdate(const QString & prefix, int pos)
 {
     init();
 
-    // ExpressionParser::tokenize() only supports std::string but we need a tuple QString
-    // because due to UTF-8 encoding a std::string may be longer than a QString
-    // See https://forum.freecadweb.org/viewtopic.php?f=3&t=69931
-    auto tokenizeExpression = [](const QString& expr) {
-        std::vector<std::tuple<int, int, std::string>> result =
-            ExpressionParser::tokenize(expr.toStdString());
-        std::vector<std::tuple<int, int, QString>> tokens;
-        std::transform(result.cbegin(),
-                       result.cend(),
-                       std::back_inserter(tokens),
-                       [&](const std::tuple<int, int, std::string>& item) {
-                           return std::make_tuple(
-                                get<0>(item),
-                                QString::fromStdString(expr.toStdString().substr(0,get<1>(item))).size(),
-                                QString::fromStdString(get<2>(item))
-                                );
-                       });
-        return tokens;
-    };
+    std::string completionPrefix;
 
     // Compute start; if prefix starts with =, start parsing from offset 1.
     int start = (prefix.size() > 0 && prefix.at(0) == QChar::fromLatin1('=')) ? 1 : 0;
@@ -526,11 +508,9 @@ void ExpressionCompleter::slotUpdate(const QString & prefix, int pos)
     }
 
     // Not an unclosed string and the last character is a space
-    if (!stringing && !prefix.isEmpty() &&
-            prefixEnd > 0 && prefixEnd <= prefix.size() &&
-            prefix[prefixEnd-1] == QChar(32)) {
-        if (auto itemView = popup())
-            itemView->setVisible(false);
+    if(!stringing && prefix.size() && prefix[prefixEnd-1] == QChar(32)) {
+        if (auto p = popup())
+            p->setVisible(false);
         return;
     }
 
