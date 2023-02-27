@@ -115,6 +115,11 @@ bool Quantity::operator ==(const Quantity& that) const
     return (this->_Value == that._Value) && (this->_Unit == that._Unit);
 }
 
+bool Quantity::operator !=(const Quantity& that) const
+{
+    return !(*this == that);
+}
+
 bool Quantity::operator <(const Quantity& that) const
 {
     if (this->_Unit != that._Unit)
