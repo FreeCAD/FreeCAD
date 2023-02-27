@@ -152,6 +152,8 @@ SET(SketcherGui_SRCS
     ViewProviderPython.h
     ViewProviderSketchGeometryExtension.h
     ViewProviderSketchGeometryExtension.cpp
+    VisualLayer.cpp
+    VisualLayer.h
 )
 
 SET(Python_SRCS
