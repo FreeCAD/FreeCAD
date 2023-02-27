@@ -133,10 +133,12 @@ def setup(doc=None, solvertype="elmer"):
     equation_flow.IdrsParameter = 3
     equation_flow.LinearIterativeMethod = "Idrs"
     equation_flow.LinearPreconditioning = "ILU1"
+    equation_heat.Convection = "Computed"
     equation_heat.IdrsParameter = 3
     equation_heat.LinearIterativeMethod = "Idrs"
     equation_heat.LinearPreconditioning = "ILU1"
-    equation_heat.RelaxationFactor = 0.9
+    equation_heat.Priority = 5
+    equation_heat.Stabilize = True
 
     # material
 
@@ -220,7 +222,7 @@ def setup(doc=None, solvertype="elmer"):
 
     # constraint wall temperature
     Temperature_Wall = ObjectsFem.makeConstraintTemperature(doc, "Temperature_Wall")
-    Temperature_Wall.Temperature = 293.0
+    Temperature_Wall.Temperature = 300.0
     Temperature_Wall.NormalDirection = Vector(0, 0, -1)
     Temperature_Wall.References = [
         (BooleanFragments, "Edge2"),
@@ -238,7 +240,7 @@ def setup(doc=None, solvertype="elmer"):
 
     # constraint heating rod temperature
     Temperature_HeatingRod = ObjectsFem.makeConstraintTemperature(doc, "Temperature_HeatingRod")
-    Temperature_HeatingRod.Temperature = 600.0
+    Temperature_HeatingRod.Temperature = 373.0
     Temperature_HeatingRod.NormalDirection = Vector(0, -1, 0)
     Temperature_HeatingRod.References = [(BooleanFragments, "Edge1")]
     analysis.addObject(Temperature_HeatingRod)
