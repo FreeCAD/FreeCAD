@@ -130,6 +130,7 @@ public:
     Quantity operator /(const Quantity &p) const;
     Quantity operator /(double p) const;
     bool operator ==(const Quantity&) const;
+    bool operator !=(const Quantity&) const;
     bool operator < (const Quantity&) const;
     bool operator > (const Quantity&) const;
     bool operator <= (const Quantity&) const;
