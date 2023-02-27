@@ -22,6 +22,8 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
+# include <cmath>
+# include <limits>
 # include <sstream>
 #endif
 
@@ -31,6 +33,23 @@
 
 
 using namespace Base;
+
+static inline void checkPow(UnitSignature sig, double exp)
+{
+    auto isInt = [](double value) {
+        return std::fabs(std::round(value) - value) < std::numeric_limits<double>::epsilon();
+    };
+    if (!isInt(sig.Length * exp) ||
+        !isInt(sig.Mass * exp) ||
+        !isInt(sig.Time * exp) ||
+        !isInt(sig.ElectricCurrent * exp) ||
+        !isInt(sig.ThermodynamicTemperature * exp) ||
+        !isInt(sig.AmountOfSubstance * exp) ||
+        !isInt(sig.LuminousIntensity * exp) ||
+        !isInt(sig.Angle * exp)) {
+        throw Base::UnitsMismatchError("pow() of unit not possible");
+    }
+}
 
 static inline void checkRange(const char * op, int length, int mass, int time, int electricCurrent,
                               int thermodynamicTemperature, int amountOfSubstance, int luminousIntensity, int angle)
@@ -52,7 +71,7 @@ static inline void checkRange(const char * op, int length, int mass, int time, i
          ( amountOfSubstance        <  -(1 << (UnitSignatureAmountOfSubstanceBits        - 1)) ) ||
          ( luminousIntensity        <  -(1 << (UnitSignatureLuminousIntensityBits        - 1)) ) ||
          ( angle                    <  -(1 << (UnitSignatureAngleBits                    - 1)) ) )
-        throw Base::OverflowError((std::string("Unit underflow in ") + std::string(op)).c_str());
+        throw Base::UnderflowError((std::string("Unit underflow in ") + std::string(op)).c_str());
 }
 
 Unit::Unit(int8_t Length,
@@ -119,27 +138,28 @@ Unit::Unit(const QString& expr)
     }
 }
 
-Unit Unit::pow(signed char exp) const
+Unit Unit::pow(double exp) const
 {
+    checkPow(Sig, exp);
     checkRange("pow()",
-               Sig.Length * exp,
-               Sig.Mass * exp,
-               Sig.Time * exp,
-               Sig.ElectricCurrent * exp,
-               Sig.ThermodynamicTemperature * exp,
-               Sig.AmountOfSubstance * exp,
-               Sig.LuminousIntensity * exp,
-               Sig.Angle * exp);
+               static_cast<int>(Sig.Length * exp),
+               static_cast<int>(Sig.Mass * exp),
+               static_cast<int>(Sig.Time * exp),
+               static_cast<int>(Sig.ElectricCurrent * exp),
+               static_cast<int>(Sig.ThermodynamicTemperature * exp),
+               static_cast<int>(Sig.AmountOfSubstance * exp),
+               static_cast<int>(Sig.LuminousIntensity * exp),
+               static_cast<int>(Sig.Angle * exp));
 
     Unit result;
-    result.Sig.Length                   = Sig.Length                    * exp;
-    result.Sig.Mass                     = Sig.Mass                      * exp;
-    result.Sig.Time                     = Sig.Time                      * exp;
-    result.Sig.ElectricCurrent          = Sig.ElectricCurrent           * exp;
-    result.Sig.ThermodynamicTemperature = Sig.ThermodynamicTemperature  * exp;
-    result.Sig.AmountOfSubstance        = Sig.AmountOfSubstance         * exp;
-    result.Sig.LuminousIntensity        = Sig.LuminousIntensity         * exp;
-    result.Sig.Angle                    = Sig.Angle                     * exp;
+    result.Sig.Length                   = static_cast<int8_t>(Sig.Length                    * exp);
+    result.Sig.Mass                     = static_cast<int8_t>(Sig.Mass                      * exp);
+    result.Sig.Time                     = static_cast<int8_t>(Sig.Time                      * exp);
+    result.Sig.ElectricCurrent          = static_cast<int8_t>(Sig.ElectricCurrent           * exp);
+    result.Sig.ThermodynamicTemperature = static_cast<int8_t>(Sig.ThermodynamicTemperature  * exp);
+    result.Sig.AmountOfSubstance        = static_cast<int8_t>(Sig.AmountOfSubstance         * exp);
+    result.Sig.LuminousIntensity        = static_cast<int8_t>(Sig.LuminousIntensity         * exp);
+    result.Sig.Angle                    = static_cast<int8_t>(Sig.Angle                     * exp);
 
     return result;
 }
