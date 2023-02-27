@@ -473,7 +473,7 @@ Korisno da bi izbegao kružne zavisnosti, ali koristi oprezno!</translation>
     <message>
       <location filename="../../DlgBindSheet.ui" line="147"/>
       <source>Cancel</source>
-      <translation>Poništi</translation>
+      <translation>Otkaži</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.ui" line="154"/>
@@ -565,7 +565,7 @@ switch the design configuration. The property will be created if not exist.</tra
     <message>
       <location filename="../../DlgSheetConf.ui" line="95"/>
       <source>Cancel</source>
-      <translation>Poništi</translation>
+      <translation>Otkaži</translation>
     </message>
     <message>
       <location filename="../../DlgSheetConf.ui" line="102"/>

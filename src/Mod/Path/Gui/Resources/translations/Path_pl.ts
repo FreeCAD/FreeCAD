@@ -441,7 +441,7 @@
     <message>
       <location filename="../panels/ToolBitLibraryEdit.ui" line="75"/>
       <source>Remove</source>
-      <translation>Skasuj</translation>
+      <translation>Usuń</translation>
     </message>
     <message>
       <location filename="../panels/ToolBitLibraryEdit.ui" line="99"/>
@@ -725,7 +725,7 @@
       <location filename="../panels/PageBaseLocationEdit.ui" line="53"/>
       <location filename="../panels/PropertyBag.ui" line="48"/>
       <source>Remove</source>
-      <translation>Skasuj</translation>
+      <translation>Usuń</translation>
     </message>
     <message>
       <location filename="../panels/PageBaseGeometryEdit.ui" line="89"/>
@@ -3139,7 +3139,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/SurfaceEdit.ui" line="80"/>
       <source>Remove</source>
-      <translation>Skasuj</translation>
+      <translation>Usuń</translation>
     </message>
     <message>
       <location filename="../panels/SurfaceEdit.ui" line="87"/>
@@ -3878,7 +3878,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/PathEdit.ui" line="1247"/>
       <source>Remove</source>
-      <translation>Skasuj</translation>
+      <translation>Usuń</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="1274"/>
