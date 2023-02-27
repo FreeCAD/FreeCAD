@@ -39,6 +39,8 @@
 #include <Mod/Part/Gui/ViewProviderAttachExtension.h>
 #include <Mod/Sketcher/App/GeoList.h>
 
+#include "PropertyVisualLayerList.h"
+
 #include "ShortcutListener.h"
 
 
@@ -421,6 +423,7 @@ public:
     App::PropertyBool ForceOrtho;
     App::PropertyBool SectionView;
     App::PropertyString EditingWorkbench;
+    SketcherGui::PropertyVisualLayerList VisualLayerList;
     //@}
 
     // TODO: It is difficult to imagine that these functions are necessary in the public interface. This requires review at a second stage and possibly
