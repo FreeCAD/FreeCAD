@@ -211,8 +211,9 @@ void DlgSettingsNavigation::loadSettings()
     // but not accessible if there is no cube yet drawn
     if (hGrp->GetInt("FontSize", 0) == 0) {
         // the "4" is the hardcoded m_OverSample from getDefaultFontSize()
-        hGrp->SetInt("FontSize", int(0.18 * 4 * ui->prefCubeSize->value()));
-        ui->naviCubeFontSize->onRestore();
+        ui->naviCubeFontSize->setValue(int(0.18 * 4 * ui->prefCubeSize->value()));
+        // we purposely don't write to the parameters because the writing would
+        // also be done when the user cancels the preferences dialog
     }
 }
 
