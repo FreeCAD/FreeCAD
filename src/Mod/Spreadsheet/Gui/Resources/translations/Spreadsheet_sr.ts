@@ -473,7 +473,7 @@ Useful to avoid cyclic dependencies, but use with caution!</source>
     <message>
       <location filename="../../DlgBindSheet.ui" line="147"/>
       <source>Cancel</source>
-      <translation>Поништи</translation>
+      <translation>Откажи</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.ui" line="154"/>
@@ -565,7 +565,7 @@ switch the design configuration. The property will be created if not exist.</tra
     <message>
       <location filename="../../DlgSheetConf.ui" line="95"/>
       <source>Cancel</source>
-      <translation>Поништи</translation>
+      <translation>Откажи</translation>
     </message>
     <message>
       <location filename="../../DlgSheetConf.ui" line="102"/>

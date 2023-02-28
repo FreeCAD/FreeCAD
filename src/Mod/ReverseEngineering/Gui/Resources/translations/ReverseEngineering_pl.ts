@@ -106,7 +106,7 @@
     <message>
       <location filename="../../Command.cpp" line="486"/>
       <source>Create wire from mesh boundaries</source>
-      <translation>Utwórz linię łamaną z obwiedni siatki</translation>
+      <translation>Utwórz polilinię z obwiedni siatki</translation>
     </message>
   </context>
   <context>

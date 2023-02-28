@@ -79,6 +79,46 @@ i.e. counter-clockwise when moving along its axis.</source>
 so that self intersection is avoided.</source>
       <translation>Калі адключана, інструмент прапануе пачатковае значэнне кроку на аснове профілю габарытаў, каб пазбегнуць самаперакрыжавання.</translation>
     </message>
+    <message>
+      <location filename="../../../InvoluteGearFeature.py" line="98"/>
+      <source>Number of gear teeth</source>
+      <translation type="unfinished">Number of gear teeth</translation>
+    </message>
+    <message>
+      <location filename="../../../InvoluteGearFeature.py" line="101"/>
+      <source>Modules of the gear</source>
+      <translation type="unfinished">Modules of the gear</translation>
+    </message>
+    <message>
+      <location filename="../../../InvoluteGearFeature.py" line="104"/>
+      <source>Pressure angle of gear teeth</source>
+      <translation type="unfinished">Pressure angle of gear teeth</translation>
+    </message>
+    <message>
+      <location filename="../../../InvoluteGearFeature.py" line="108"/>
+      <source>True=2 curves with each 3 control points False=1 curve with 4 control points.</source>
+      <translation type="unfinished">True=2 curves with each 3 control points False=1 curve with 4 control points.</translation>
+    </message>
+    <message>
+      <location filename="../../../InvoluteGearFeature.py" line="111"/>
+      <source>True=external Gear False=internal Gear</source>
+      <translation type="unfinished">True=external Gear False=internal Gear</translation>
+    </message>
+    <message>
+      <location filename="../../../InvoluteGearFeature.py" line="115"/>
+      <source>The height of the tooth from the pitch circle up to its tip, normalized by the module.</source>
+      <translation type="unfinished">The height of the tooth from the pitch circle up to its tip, normalized by the module.</translation>
+    </message>
+    <message>
+      <location filename="../../../InvoluteGearFeature.py" line="119"/>
+      <source>The height of the tooth from the pitch circle down to its root, normalized by the module.</source>
+      <translation type="unfinished">The height of the tooth from the pitch circle down to its root, normalized by the module.</translation>
+    </message>
+    <message>
+      <location filename="../../../InvoluteGearFeature.py" line="123"/>
+      <source>The radius of the fillet at the root of the tooth, normalized by the module.</source>
+      <translation type="unfinished">The radius of the fillet at the root of the tooth, normalized by the module.</translation>
+    </message>
   </context>
   <context>
     <name>CmdPartDesignAdditiveHelix</name>
@@ -378,12 +418,12 @@ so that self intersection is avoided.</source>
     <message>
       <location filename="../../Command.cpp" line="1944"/>
       <source>Mirrored</source>
-      <translation>Адлюстраваны</translation>
+      <translation>Сiметрыя</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1945"/>
       <source>Create a mirrored feature</source>
-      <translation>Стварыць элемент адлюстравання</translation>
+      <translation>Стварыць адлюстраваны элемент</translation>
     </message>
   </context>
   <context>
@@ -432,7 +472,7 @@ so that self intersection is avoided.</source>
     <message>
       <location filename="../../CommandBody.cpp" line="524"/>
       <source>Set tip</source>
-      <translation>Ўставіць кропку завяршэння разліку цела</translation>
+      <translation>Задаць кропку завяршэння разліку цела</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="525"/>
@@ -896,7 +936,7 @@ so that self intersection is avoided.</source>
     <message>
       <location filename="../../TaskMultiTransformParameters.cpp" line="295"/>
       <source>Mirrored</source>
-      <translation>Адлюстраваны</translation>
+      <translation>Сiметрыя</translation>
     </message>
     <message>
       <location filename="../../TaskMultiTransformParameters.cpp" line="323"/>
@@ -1012,7 +1052,7 @@ so that self intersection is avoided.</source>
     <message>
       <location filename="../../../InvoluteGearFeature.ui" line="152"/>
       <source>External gear:</source>
-      <translation>Вонкавае зачапленне:</translation>
+      <translation>Вонкавая шасцярня:</translation>
     </message>
     <message>
       <location filename="../../../InvoluteGearFeature.ui" line="179"/>
@@ -2599,7 +2639,7 @@ measured along the specified direction</source>
     <message>
       <location filename="../../TaskPipeOrientation.ui" line="41"/>
       <source>Fixed</source>
-      <translation type="unfinished">Fixed</translation>
+      <translation>Зафіксаваны</translation>
     </message>
     <message>
       <location filename="../../TaskPipeOrientation.ui" line="46"/>
@@ -3331,7 +3371,7 @@ click again to end selection</source>
     <message>
       <location filename="../../ViewProviderMirrored.h" line="38"/>
       <source>Mirrored parameters</source>
-      <translation>Налады адлюстравання</translation>
+      <translation>Параметры сiметрычнага адлюстравання</translation>
     </message>
   </context>
   <context>
@@ -3559,7 +3599,7 @@ click again to end selection</source>
     <message>
       <location filename="../../Command.cpp" line="775"/>
       <source>Cannot use this command as there is no solid to subtract from.</source>
-      <translation>Немагчыма ўжыць гэтую каманду, так як адсутнічае суцэльнае цела для адымання.</translation>
+      <translation>Не атрымалася ўжыць гэтую каманду, так як адсутнічае суцэльнае цела для адымання.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="776"/>
@@ -3569,7 +3609,7 @@ click again to end selection</source>
     <message>
       <location filename="../../Command.cpp" line="797"/>
       <source>Cannot use selected object. Selected object must belong to the active body</source>
-      <translation>Немагчыма ўжыць абраны аб'ект. Абраны аб'ект павінен належыць да бягучага цела</translation>
+      <translation>Не атрымалася ўжыць абраны аб'ект. Абраны аб'ект павінен належыць да бягучага цела</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="798"/>
@@ -3770,7 +3810,7 @@ This may lead to unexpected results.</source>
       <location filename="../../CommandBody.cpp" line="701"/>
       <location filename="../../CommandBody.cpp" line="716"/>
       <source>Features cannot be moved</source>
-      <translation>Элемент немагчыма рухаць</translation>
+      <translation>Элемент не атрымалася рухаць</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="680"/>
@@ -4700,7 +4740,7 @@ over 90: larger hole radius at the bottom</source>
     <message>
       <location filename="../../Workbench.cpp" line="52"/>
       <source>Involute gear...</source>
-      <translation>Эвальвентнае зачапленне...</translation>
+      <translation>Эвальвентная шасцярня...</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="53"/>
@@ -4736,14 +4776,14 @@ over 90: larger hole radius at the bottom</source>
   <context>
     <name>PartDesign_InvoluteGear</name>
     <message>
-      <location filename="../../../InvoluteGearFeature.py" line="57"/>
+      <location filename="../../../InvoluteGearFeature.py" line="58"/>
       <source>Involute gear...</source>
-      <translation>Эвальвентнае зачапленне...</translation>
+      <translation>Эвальвентная шасцярня...</translation>
     </message>
     <message>
-      <location filename="../../../InvoluteGearFeature.py" line="61"/>
+      <location filename="../../../InvoluteGearFeature.py" line="62"/>
       <source>Creates or edit the involute gear definition.</source>
-      <translation>Стварыць ці змяніць вызначэнне эвальвентнага зачаплення.</translation>
+      <translation>Стварыць ці змяніць вызначэнне эвальвентнай шасцярні.</translation>
     </message>
   </context>
   <context>

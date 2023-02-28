@@ -74,6 +74,46 @@ i.e. counter-clockwise when moving along its axis.</source>
 so that self intersection is avoided.</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <location filename="../../../InvoluteGearFeature.py" line="98"/>
+        <source>Number of gear teeth</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../InvoluteGearFeature.py" line="101"/>
+        <source>Modules of the gear</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../InvoluteGearFeature.py" line="104"/>
+        <source>Pressure angle of gear teeth</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../InvoluteGearFeature.py" line="108"/>
+        <source>True=2 curves with each 3 control points False=1 curve with 4 control points.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../InvoluteGearFeature.py" line="111"/>
+        <source>True=external Gear False=internal Gear</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../InvoluteGearFeature.py" line="115"/>
+        <source>The height of the tooth from the pitch circle up to its tip, normalized by the module.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../InvoluteGearFeature.py" line="119"/>
+        <source>The height of the tooth from the pitch circle down to its root, normalized by the module.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../InvoluteGearFeature.py" line="123"/>
+        <source>The radius of the fillet at the root of the tooth, normalized by the module.</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>CmdPartDesignAdditiveHelix</name>
@@ -4694,12 +4734,12 @@ over 90: larger hole radius at the bottom</source>
 <context>
     <name>PartDesign_InvoluteGear</name>
     <message>
-        <location filename="../../../InvoluteGearFeature.py" line="57"/>
+        <location filename="../../../InvoluteGearFeature.py" line="58"/>
         <source>Involute gear...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../InvoluteGearFeature.py" line="61"/>
+        <location filename="../../../InvoluteGearFeature.py" line="62"/>
         <source>Creates or edit the involute gear definition.</source>
         <translation type="unfinished"></translation>
     </message>

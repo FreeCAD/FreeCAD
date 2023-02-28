@@ -1134,7 +1134,7 @@ Please run the command to repair folds first</source>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="600"/>
       <source>Cannot remove non-manifolds</source>
-      <translation>Немагчыма выдаліць аднастайнасць</translation>
+      <translation>Не атрымалася выдаліць аднастайнасць</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="638"/>
@@ -1668,7 +1668,7 @@ to a smoother appearance.
       <location filename="../../RemeshGmsh.cpp" line="180"/>
       <location filename="../../RemeshGmsh.cpp" line="236"/>
       <source>Time:</source>
-      <translation type="unfinished">Time:</translation>
+      <translation>Час:</translation>
     </message>
     <message>
       <location filename="../../RemeshGmsh.cpp" line="225"/>
@@ -1805,7 +1805,7 @@ to a smoother appearance.
     <message>
       <location filename="../../RemeshGmsh.ui" line="134"/>
       <source>Path</source>
-      <translation>Шлях</translation>
+      <translation>Траекторыя</translation>
     </message>
     <message>
       <location filename="../../RemeshGmsh.ui" line="154"/>
@@ -1815,7 +1815,7 @@ to a smoother appearance.
     <message>
       <location filename="../../RemeshGmsh.ui" line="181"/>
       <source>Time:</source>
-      <translation type="unfinished">Time:</translation>
+      <translation>Час:</translation>
     </message>
     <message>
       <location filename="../../RemeshGmsh.ui" line="188"/>

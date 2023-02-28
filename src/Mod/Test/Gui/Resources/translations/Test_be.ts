@@ -31,7 +31,7 @@
     <message>
       <location filename="../../UnitTest.ui" line="128"/>
       <source>&amp;Help</source>
-      <translation>&amp;Дапамога</translation>
+      <translation>&amp;Даведка</translation>
     </message>
     <message>
       <location filename="../../UnitTest.ui" line="131"/>
