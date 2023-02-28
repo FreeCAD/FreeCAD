@@ -5349,6 +5349,17 @@ int SketchObject::exposeInternalGeometry(int GeoId)
                 }
                 else {
                     controlpointgeoids[0] = currentgeoid+incrgeo+1;
+                    if (weights[0] == 1.0) {
+                        // if the first weight is 1.0 it's probably going to be non-rational
+                        Sketcher::Constraint *newConstr3 = new Sketcher::Constraint();
+                        newConstr3->Type = Sketcher::Weight;
+                        newConstr3->First = controlpointgeoids[0];
+                        newConstr3->setValue(weights[0]);
+
+                        icon.push_back(newConstr3);
+
+                        isfirstweightconstrained = true;
+                    }
                 }
                 incrgeo++;
             }
