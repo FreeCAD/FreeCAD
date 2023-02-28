@@ -25,6 +25,7 @@
 # ifdef FC_OS_WIN32
 # define _USE_MATH_DEFINES
 # endif // FC_OS_WIN32
+# include <array>
 #endif
 
 #include "Quantity.h"
@@ -72,50 +73,44 @@ QuantityFormat::QuantityFormat(QuantityFormat::NumberFormat format, int decimals
 // ----------------------------------------------------------------------------
 
 Quantity::Quantity()
-  : _Value{0.0}
-{
-}
-
-Quantity::Quantity(const Quantity& that)
-  : _Value{that._Value}
-  , _Unit{that._Unit}
+  : myValue{0.0}
 {
 }
 
 Quantity::Quantity(double value, const Unit& unit)
-  : _Value{value}
-  , _Unit{unit}
+  : myValue{value}
+  , myUnit{unit}
 {
 }
 
 Quantity::Quantity(double value, const QString& unit)
-  : _Value{0.0}
+  : myValue{0.0}
 {
     if (unit.isEmpty()) {
-        this->_Value = value;
-        this->_Unit = Unit();
+        this->myValue = value;
+        this->myUnit = Unit();
         return;
     }
 
     try {
         auto tmpQty = parse(unit);
-        this->_Unit = tmpQty.getUnit();
-        this->_Value = value * tmpQty.getValue();
+        this->myUnit = tmpQty.getUnit();
+        this->myValue = value * tmpQty.getValue();
     }
     catch (const Base::ParserError&) {
-        this->_Value = 0.0;
-        this->_Unit = Unit();
+        this->myValue = 0.0;
+        this->myUnit = Unit();
     }
 }
 
 double Quantity::getValueAs(const Quantity& other)const
 {
-    return _Value / other.getValue();
+    return myValue / other.getValue();
 }
 
 bool Quantity::operator ==(const Quantity& that) const
 {
-    return (this->_Value == that._Value) && (this->_Unit == that._Unit);
+    return (this->myValue == that.myValue) && (this->myUnit == that.myUnit);
 }
 
 bool Quantity::operator !=(const Quantity& that) const
@@ -125,131 +120,123 @@ bool Quantity::operator !=(const Quantity& that) const
 
 bool Quantity::operator <(const Quantity& that) const
 {
-    if (this->_Unit != that._Unit) {
+    if (this->myUnit != that.myUnit) {
         throw Base::UnitsMismatchError("Quantity::operator <(): quantities need to have same unit to compare");
     }
 
-    return (this->_Value < that._Value) ;
+    return (this->myValue < that.myValue) ;
 }
 
 bool Quantity::operator >(const Quantity& that) const
 {
-    if (this->_Unit != that._Unit) {
+    if (this->myUnit != that.myUnit) {
         throw Base::UnitsMismatchError("Quantity::operator >(): quantities need to have same unit to compare");
     }
 
-    return (this->_Value > that._Value) ;
+    return (this->myValue > that.myValue) ;
 }
 
 bool Quantity::operator <=(const Quantity& that) const
 {
-    if (this->_Unit != that._Unit) {
+    if (this->myUnit != that.myUnit) {
         throw Base::UnitsMismatchError("Quantity::operator <=(): quantities need to have same unit to compare");
     }
 
-    return (this->_Value <= that._Value) ;
+    return (this->myValue <= that.myValue) ;
 }
 
 bool Quantity::operator >=(const Quantity& that) const
 {
-    if (this->_Unit != that._Unit) {
+    if (this->myUnit != that.myUnit) {
         throw Base::UnitsMismatchError("Quantity::operator >=(): quantities need to have same unit to compare");
     }
 
-    return (this->_Value >= that._Value) ;
+    return (this->myValue >= that.myValue) ;
 }
 
 Quantity Quantity::operator *(const Quantity& other) const
 {
-    return Quantity(this->_Value * other._Value, this->_Unit * other._Unit);
+    return Quantity(this->myValue * other.myValue, this->myUnit * other.myUnit);
 }
 
 Quantity Quantity::operator *(double factor) const
 {
-    return Quantity(this->_Value * factor, this->_Unit);
+    return Quantity(this->myValue * factor, this->myUnit);
 }
 
 Quantity Quantity::operator /(const Quantity& other) const
 {
-    return Quantity(this->_Value / other._Value, this->_Unit / other._Unit);
+    return Quantity(this->myValue / other.myValue, this->myUnit / other.myUnit);
 }
 
 Quantity Quantity::operator /(double factor) const
 {
-    return Quantity(this->_Value / factor, this->_Unit);
+    return Quantity(this->myValue / factor, this->myUnit);
 }
 
 Quantity Quantity::pow(const Quantity& other) const
 {
-    if (!other._Unit.isEmpty()) {
+    if (!other.myUnit.isEmpty()) {
         throw Base::UnitsMismatchError("Quantity::pow(): exponent must not have a unit");
     }
 
     return Quantity(
-        std::pow(this->_Value, other._Value),
-        this->_Unit.pow(static_cast<signed char>(other._Value))
+        std::pow(this->myValue, other.myValue),
+        this->myUnit.pow(static_cast<signed char>(other.myValue))
         );
 }
 
 Quantity Quantity::pow(double exp) const
 {
     return Quantity(
-        std::pow(this->_Value, exp),
-        this->_Unit.pow(exp)
+        std::pow(this->myValue, exp),
+        this->myUnit.pow(exp)
         );
 }
 
 Quantity Quantity::operator +(const Quantity& other) const
 {
-    if (this->_Unit != other._Unit) {
+    if (this->myUnit != other.myUnit) {
         throw Base::UnitsMismatchError("Quantity::operator +(): Unit mismatch in plus operation");
     }
 
-    return Quantity(this->_Value + other._Value, this->_Unit);
+    return Quantity(this->myValue + other.myValue, this->myUnit);
 }
 
 Quantity& Quantity::operator +=(const Quantity& other)
 {
-    if (this->_Unit != other._Unit) {
+    if (this->myUnit != other.myUnit) {
         throw Base::UnitsMismatchError("Quantity::operator +=(): Unit mismatch in plus operation");
     }
 
-    _Value += other._Value;
+    myValue += other.myValue;
 
     return *this;
 }
 
 Quantity Quantity::operator -(const Quantity& other) const
 {
-    if (this->_Unit != other._Unit) {
+    if (this->myUnit != other.myUnit) {
         throw Base::UnitsMismatchError("Quantity::operator -(): Unit mismatch in minus operation");
     }
 
-    return Quantity(this->_Value - other._Value,this->_Unit);
+    return Quantity(this->myValue - other.myValue,this->myUnit);
 }
 
 Quantity& Quantity::operator -=(const Quantity& other)
 {
-    if (this->_Unit != other._Unit) {
+    if (this->myUnit != other.myUnit) {
         throw Base::UnitsMismatchError("Quantity::operator -=(): Unit mismatch in minus operation");
     }
 
-    _Value -= other._Value;
+    myValue -= other.myValue;
 
     return *this;
 }
 
 Quantity Quantity::operator -() const
 {
-    return Quantity(-(this->_Value), this->_Unit);
-}
-
-Quantity& Quantity::operator = (const Quantity &New)
-{
-    this->_Value = New._Value;
-    this->_Unit = New._Unit;
-    this->_Format = New._Format;
-    return *this;
+    return Quantity(-(this->myValue), this->myUnit);
 }
 
 QString Quantity::getUserString(double& factor, QString& unitString) const
@@ -265,13 +252,13 @@ QString Quantity::getUserString(UnitsSchema* schema, double &factor, QString &un
 QString Quantity::getSafeUserString() const
 {
     auto retString = getUserString();
-    if(Q_LIKELY(this->_Value != 0))
+    if(Q_LIKELY(this->myValue != 0))
     {
         auto feedbackQty = parse(retString);
         auto feedbackVal = feedbackQty.getValue();
         if (feedbackVal == 0) {
             retString = QStringLiteral("%1 %2")
-                .arg(this->_Value)
+                .arg(this->myValue)
                 .arg(this->getUnit().getString());
         }
     }
@@ -281,24 +268,24 @@ QString Quantity::getSafeUserString() const
 /// true if it has a number without a unit
 bool Quantity::isDimensionless() const
 {
-    return isValid() && _Unit.isEmpty();
+    return isValid() && myUnit.isEmpty();
 }
 
 // true if it has a number and a valid unit
 bool Quantity::isQuantity() const
 {
-    return isValid() && !_Unit.isEmpty();
+    return isValid() && !myUnit.isEmpty();
 }
 
 // true if it has a number with or without a unit
 bool Quantity::isValid() const
 {
-    return !boost::math::isnan(_Value);
+    return !boost::math::isnan(myValue);
 }
 
 void Quantity::setInvalid()
 {
-    _Value = std::numeric_limits<double>::quiet_NaN();
+    myValue = std::numeric_limits<double>::quiet_NaN();
 }
 
 // === Predefined types =====================================================
@@ -457,31 +444,39 @@ const Quantity Quantity::Gon              (360.0/400.0   ,Unit(0,0,0,0,0,0,0,1))
 
 // include the Scanner and the Parser for the 'Quantity's
 
+// NOLINTNEXTLINE
 Quantity QuantResult;
 
 /* helper function for tuning number strings with groups in a locale agnostic way... */
-double num_change(char* yytext,char dez_delim,char grp_delim)
+// NOLINTBEGIN
+double num_change(char* yytext, char dez_delim, char grp_delim)
 {
-    double ret_val;
-    char temp[40];
-    int i = 0;
-    for (char* c=yytext;*c!='\0';c++) {
+    double ret_val{};
+    const int num = 40;
+    std::array<char, num> temp{};
+    int iter = 0;
+    for (char* ch = yytext; *ch != '\0'; ch++) {
         // skip group delimiter
-        if (*c==grp_delim) continue;
+        if (*ch == grp_delim)
+            continue;
         // check for a dez delimiter other then dot
-        if (*c==dez_delim && dez_delim !='.')
-             temp[i++] = '.';
-        else
-            temp[i++] = *c;
+        if (*ch == dez_delim && dez_delim != '.') {
+             temp[iter++] = '.';
+        }
+        else {
+            temp[iter++] = *ch;
+        }
         // check buffer overflow
-        if (i>39)
+        if (iter >= num)
             return 0.0;
     }
-    temp[i] = '\0';
 
-    ret_val = atof( temp );
+    temp[iter] = '\0';
+
+    ret_val = atof(temp.data());
     return ret_val;
 }
+// NOLINTEND
 
 #if defined(__clang__)
 # pragma clang diagnostic push
@@ -511,16 +506,19 @@ void Quantity_yyerror(char *errorinfo)
 
 namespace QuantityParser {
 
+// NOLINTNEXTLINE
 #define YYINITDEPTH 20
 // show parser the lexer method
 #define yylex QuantityLexer
 int QuantityLexer();
 
 // Parser, defined in QuantityParser.y
+// NOLINTNEXTLINE
 #include "QuantityParser.c"
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 // Scanner, defined in QuantityParser.l
+// NOLINTNEXTLINE
 #include "QuantityLexer.c"
 #endif // DOXYGEN_SHOULD_SKIP_THIS
 }
