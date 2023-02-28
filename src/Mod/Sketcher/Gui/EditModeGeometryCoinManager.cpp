@@ -416,6 +416,8 @@ void EditModeGeometryCoinManager::updateGeometryLayersConfiguration()
     // 2) The number of layers is the same, but the configuration needs to be updated
 
     // TODO: Quite some room for improvement here:
+    geometryLayerParameters.CoinLayers = viewProvider.VisualLayerList.getSize();
+
     emptyGeometryRootNodes();
     createEditModePointInventorNodes();
     createEditModeCurveInventorNodes();
@@ -430,6 +432,8 @@ auto concat (std::string string, int i)
 void EditModeGeometryCoinManager::createEditModeInventorNodes()
 {
     createGeometryRootNodes();
+
+    geometryLayerParameters.CoinLayers = viewProvider.VisualLayerList.getSize();
 
     createEditModePointInventorNodes();
 
@@ -494,6 +498,8 @@ void EditModeGeometryCoinManager::createEditModePointInventorNodes()
 
 void EditModeGeometryCoinManager::createEditModeCurveInventorNodes()
 {
+    auto layersconfigurations = viewProvider.VisualLayerList.getValue();
+
     for(int i=0; i < geometryLayerParameters.CoinLayers; i++) {
         SoSeparator * sep = new SoSeparator;
         sep->ref();
@@ -516,13 +522,10 @@ void EditModeGeometryCoinManager::createEditModeCurveInventorNodes()
         auto drawstyle = new SoDrawStyle;
         editModeScenegraphNodes.CurvesDrawStyle.push_back(drawstyle);
         editModeScenegraphNodes.CurvesDrawStyle[i]->setName(concat("CurvesDrawStyle",i).c_str());
-        editModeScenegraphNodes.CurvesDrawStyle[i]->lineWidth = 3 * drawingParameters.pixelScalingFactor;
 
-        /* Demo code to introduce a dashed line
-           if(i == 1) {
-            editModeScenegraphNodes.CurvesDrawStyle[i]->linePattern = 0x3CF2;
-            editModeScenegraphNodes.CurvesDrawStyle[i]->linePatternScaleFactor = 5;
-        }*/
+        editModeScenegraphNodes.CurvesDrawStyle[i]->lineWidth = layersconfigurations[i].getLineWidth() * drawingParameters.pixelScalingFactor;
+        editModeScenegraphNodes.CurvesDrawStyle[i]->linePattern = layersconfigurations[i].getLinePattern();
+        editModeScenegraphNodes.CurvesDrawStyle[i]->linePatternScaleFactor = 5;
 
         sep->addChild(editModeScenegraphNodes.CurvesDrawStyle[i]);
 
