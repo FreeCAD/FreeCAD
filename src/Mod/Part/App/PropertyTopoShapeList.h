@@ -97,7 +97,8 @@ private:
     // holds the new TopoShapes between their creation in Restore, and the completion of all
     // individual RestoreDocFile calls.  Once the restore is complete, the new TopoShapes are
     // inserted into _lValueList;
-    std::vector<TopoShape*> m_restorePointers;
+    using TopoShapePtr = std::shared_ptr<TopoShape>;
+    std::vector<TopoShapePtr> m_restorePointers;
 };
 
 } // namespace Part

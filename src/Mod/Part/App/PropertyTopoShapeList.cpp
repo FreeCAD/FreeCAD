@@ -72,9 +72,9 @@ int PropertyTopoShapeList::getSize() const
 // not do that with references.
 void PropertyTopoShapeList::setValue()
 {
-    aboutToSetValue();
+    // aboutToSetValue() and hasSetValue() are called in clear() so don't need
+    // to be called here.
     clear();
-    hasSetValue();
 }
 
 void PropertyTopoShapeList::setValue(const TopoShape &ts)
@@ -98,18 +98,23 @@ void PropertyTopoShapeList::setValues(const std::vector<TopoShape>& lValue)
 // clean out the list
 void PropertyTopoShapeList::clear()
 {
+    aboutToSetValue();
     _lValueList.clear();
     _lValueList.resize(0);
+    hasSetValue();
+
 }
 
 // populate the lists with the TopoShapes that have now finished restoring
 void PropertyTopoShapeList::afterRestore()
 {
+    aboutToSetValue();
     _lValueList.clear();
-    for (auto entry : m_restorePointers) {
+    for (auto& entry : m_restorePointers) {
         _lValueList.push_back(*entry);
-        delete entry;     //??
     }
+    hasSetValue();
+
     m_restorePointers.clear();
     App::PropertyLists::afterRestore();
 }
@@ -170,14 +175,9 @@ void PropertyTopoShapeList::Restore(Base::XMLReader &reader)
     m_restorePointers.clear();      // just in case
     m_restorePointers.reserve(count);
     for (int i = 0; i < count; i++) {
-        reader.readElement("TopoShape");
-        std::string file (reader.getAttribute("file") );
-        if (!file.empty()) {
-            // add file to reader's list of files to be loaded by each newShape's RestoreDocFile()
-            TopoShape* newShape = new TopoShape();
-            m_restorePointers.push_back(newShape);
-            reader.addFile(file.c_str(), newShape);
-        }
+        auto newShape = std::make_shared<TopoShape>();
+        newShape->Restore(reader);
+        m_restorePointers.push_back(newShape);
     }
     reader.readEndElement("ShapeList");
 }
