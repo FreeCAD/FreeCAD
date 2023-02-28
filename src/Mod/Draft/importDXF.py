@@ -50,11 +50,17 @@ texts, colors,layers (from groups)
 TEXTSCALING = 1.35
 CURRENTDXFLIB = 1.40
 
-import sys, os, math, re
-import six
+import sys
+import os
+import math
+import re
 import FreeCAD
-import Part, Draft, Mesh
-import DraftVecUtils, DraftGeomUtils, WorkingPlane
+import Part
+import Draft
+import Mesh
+import DraftVecUtils
+import DraftGeomUtils
+import WorkingPlane
 from Draft import _Dimension
 from FreeCAD import Vector
 from FreeCAD import Console as FCC
@@ -263,22 +269,16 @@ def deformat(text):
     sts = re.split("\\\\(U\+....)", t)
     ns = u""
     for ss in sts:
-        # print(ss, type(ss))
-        if ss.startswith("U+"):
-            ucode = "0x" + ss[2:]
-            # In Python3 unichr doesn't exist anymore
-            ns += six.unichr(eval(ucode))
-        else:
+        try:
+            ns += ss.decode("utf8")
+        except UnicodeError:
             try:
-                ns += ss.decode("utf8")
+                ns += ss.decode("latin1")
             except UnicodeError:
-                try:
-                    ns += ss.decode("latin1")
-                except UnicodeError:
-                    print("unable to decode text: ", text)
-            except AttributeError:
-                # this is python3 (nothing to do)
-                ns += ss
+                print("unable to decode text: ", text)
+        except AttributeError:
+            # this is python3 (nothing to do)
+            ns += ss
     t = ns
     # replace degrees, diameters chars
     t = re.sub('%%d', u'°', t)
