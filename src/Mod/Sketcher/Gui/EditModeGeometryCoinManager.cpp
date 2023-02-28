@@ -409,17 +409,53 @@ void EditModeGeometryCoinManager::updateGeometryColor(const GeoListFacade & geol
     editModeScenegraphNodes.RootCrossMaterials->diffuseColor.finishEditing();
 }
 
+void EditModeGeometryCoinManager::updateGeometryLayersConfiguration()
+{
+    // Several cases:
+    // 1) The number of layers have changed
+    // 2) The number of layers is the same, but the configuration needs to be updated
+
+    // TODO: Quite some room for improvement here:
+    emptyGeometryRootNodes();
+    createEditModePointInventorNodes();
+    createEditModeCurveInventorNodes();
+}
+
+auto concat (std::string string, int i)
+{
+    return string+std::to_string(i);
+};
+
 
 void EditModeGeometryCoinManager::createEditModeInventorNodes()
+{
+    createGeometryRootNodes();
+
+    createEditModePointInventorNodes();
+
+    createEditModeCurveInventorNodes();
+}
+
+void EditModeGeometryCoinManager::createGeometryRootNodes()
 {
     // stuff for the points ++++++++++++++++++++++++++++++++++++++
     editModeScenegraphNodes.PointsGroup = new SmSwitchboard;
     editModeScenegraphNodes.EditRoot->addChild(editModeScenegraphNodes.PointsGroup);
 
-    auto concat = [](std::string string, int i) {
-        return string+std::to_string(i);
-    };
+    // stuff for the Curves +++++++++++++++++++++++++++++++++++++++
+    editModeScenegraphNodes.CurvesGroup = new SmSwitchboard;
+    editModeScenegraphNodes.EditRoot->addChild(editModeScenegraphNodes.CurvesGroup);
 
+}
+
+void EditModeGeometryCoinManager::emptyGeometryRootNodes()
+{
+    Gui::coinRemoveAllChildren(editModeScenegraphNodes.PointsGroup);
+    Gui::coinRemoveAllChildren(editModeScenegraphNodes.CurvesGroup);
+}
+
+void EditModeGeometryCoinManager::createEditModePointInventorNodes()
+{
     for(int i=0; i < geometryLayerParameters.CoinLayers; i++) {
         SoSeparator * sep = new SoSeparator;
         sep->ref();
@@ -454,11 +490,10 @@ void EditModeGeometryCoinManager::createEditModeInventorNodes()
         editModeScenegraphNodes.PointsGroup->addChild(sep);
         sep->unref();
     }
+}
 
-    // stuff for the Curves +++++++++++++++++++++++++++++++++++++++
-    editModeScenegraphNodes.CurvesGroup = new SmSwitchboard;
-    editModeScenegraphNodes.EditRoot->addChild(editModeScenegraphNodes.CurvesGroup);
-
+void EditModeGeometryCoinManager::createEditModeCurveInventorNodes()
+{
     for(int i=0; i < geometryLayerParameters.CoinLayers; i++) {
         SoSeparator * sep = new SoSeparator;
         sep->ref();
@@ -499,5 +534,4 @@ void EditModeGeometryCoinManager::createEditModeInventorNodes()
         editModeScenegraphNodes.CurvesGroup->addChild(sep);
         sep->unref();
     }
-
 }

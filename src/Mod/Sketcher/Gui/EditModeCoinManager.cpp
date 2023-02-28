@@ -638,6 +638,12 @@ void EditModeCoinManager::setConstraintSelectability(bool enabled /* = true */)
     pEditModeConstraintCoinManager->setConstraintSelectability(enabled);
 }
 
+
+void EditModeCoinManager::updateGeometryLayersConfiguration()
+{
+    pEditModeGeometryCoinManager->updateGeometryLayersConfiguration();
+}
+
 void EditModeCoinManager::createEditModeInventorNodes()
 {
     // 1 - Create the edit root node
