@@ -496,7 +496,7 @@ class ViewProviderLinearDimension(ViewProviderDimensionBase):
             u = u.negative()
 
         v2 = norm.cross(u)
-        _plane_rot = DraftVecUtils.getPlaneRotation(u, v2, norm)
+        _plane_rot = DraftVecUtils.getPlaneRotation(u, v2)
         rot2 = App.Placement(_plane_rot).Rotation.Q
         self.trans1.rotation.setValue((rot2[0], rot2[1],
                                        rot2[2], rot2[3]))
@@ -507,7 +507,7 @@ class ViewProviderLinearDimension(ViewProviderDimensionBase):
             u3 = self.p1 - self.p2
             u3.normalize()
             v3 = norm.cross(u3)
-            _plane_rot = DraftVecUtils.getPlaneRotation(u3, v3, norm)
+            _plane_rot = DraftVecUtils.getPlaneRotation(u3, v3)
             rot3 = App.Placement(_plane_rot).Rotation.Q
             self.transExtOvershoot1.rotation.setValue((rot3[0], rot3[1],
                                                        rot3[2], rot3[3]))
@@ -1046,8 +1046,8 @@ class ViewProviderAngularDimension(ViewProviderDimensionBase):
 
             v1 = w1.cross(u1)
             v2 = w2.cross(u2)
-            _plane_rot_1 = DraftVecUtils.getPlaneRotation(u1, v1, w1)
-            _plane_rot_2 = DraftVecUtils.getPlaneRotation(u2, v2, w2)
+            _plane_rot_1 = DraftVecUtils.getPlaneRotation(u1, v1)
+            _plane_rot_2 = DraftVecUtils.getPlaneRotation(u2, v2)
             q1 = App.Placement(_plane_rot_1).Rotation.Q
             q2 = App.Placement(_plane_rot_2).Rotation.Q
 
@@ -1062,7 +1062,7 @@ class ViewProviderAngularDimension(ViewProviderDimensionBase):
 
         u3 = ray.cross(norm).normalize()
         v3 = norm.cross(u3)
-        _plane_rot_3 = DraftVecUtils.getPlaneRotation(u3, v3, norm)
+        _plane_rot_3 = DraftVecUtils.getPlaneRotation(u3, v3)
         r = App.Placement(_plane_rot_3).Rotation
         offset = r.multVec(App.Vector(0, 1, 0))
 
