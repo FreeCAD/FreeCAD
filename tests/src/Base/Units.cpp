@@ -6,6 +6,7 @@
 #include <Base/UnitsApi.h>
 #include <Base/UnitsSchemaImperial1.h>
 
+// NOLINTBEGIN
 TEST(Unit, TestString)
 {
     auto toString = [](const Base::Unit& unit) {
@@ -188,6 +189,14 @@ TEST(BaseQuantity, TestValid)
 
     EXPECT_EQ(q1.isValid(), true);
     EXPECT_EQ(q2.isValid(), false);
+}
+
+TEST(BaseQuantity, TestParse)
+{
+    Base::Quantity q1 = Base::Quantity::parse(QString::fromLatin1("1,234 kg"));
+
+    EXPECT_EQ(q1, Base::Quantity(1.2340, Base::Unit::Mass));
+    EXPECT_THROW(boost::ignore_unused(Base::Quantity::parse(QString::fromLatin1("1,234,500.12 kg"))), Base::ParserError);
 }
 
 TEST(BaseQuantity, TestDim)
@@ -388,3 +397,4 @@ TEST_F(Quantity, TestSafeUserString)
 
     EXPECT_EQ(result.toStdString(), "1 mm");
 }
+// NOLINTEND
