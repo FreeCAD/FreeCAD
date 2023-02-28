@@ -143,6 +143,7 @@ SET (MaterialLib_Files
     StandardMaterial/Steel-X5CrNiMo17-12-2.FCMat
     StandardMaterial/Steel-X6CrNiTi18-10.FCMat
     StandardMaterial/TEMPLATE.FCMat
+    StandardMaterial/Ti-6Al-4V.FCMat
     StandardMaterial/Wood-Generic.FCMat
     StandardMaterial/Readme.txt
 )

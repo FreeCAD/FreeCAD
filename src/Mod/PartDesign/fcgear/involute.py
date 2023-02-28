@@ -63,7 +63,7 @@ def CreateExternalGear(w, m, Z, phi,
     Rf = Rc  # radius at top of fillet, assuming fillet below involute
     filletWithinInvolute = Rf > Rb # above the base circle we have the involute,
                                    # below we have a straight line towards the center.
-    if (filletWithinInvolute):
+    if (filletWithinInvolute and fRad > 0):
         # In this case we need tangency of the involute and the fillet circle.
         # It has to be somewhere between max(Rb,Rroot) and Rc.
         # So we need the radius r from the origin depending on the tangent angle, for both:
@@ -149,7 +149,16 @@ def CreateExternalGear(w, m, Z, phi,
     t_inc = 2.0 * pi / float(Z)
     thetas = [(x * t_inc) for x in range(Z)]
 
-    w.move(fillet) # start at top of fillet
+    # Make sure we begin *exactly* where our last curve ends.
+    # In theory start == rotate(end, angle_of_last_tooth), but in practice we have limited
+    # precision. Especially if we don't have a fillet, we end at rootNext, not filletNext.
+    # And even though these two should also be equal, they are calculated differently,
+    # which is enough for the resulting wire not being closed any more.
+    # So to be on the save side, we begin at rotate(end, angle_of_last_tooth), not start.
+    if fRad > 0:
+        w.move(rotate(filletNext, thetas[-1])) # start at top of front profile
+    else:
+        w.move(rotate(rootNext, thetas[-1])) # start at top of front profile
 
     for theta in thetas:
         w.theta = theta
@@ -171,10 +180,12 @@ def CreateExternalGear(w, m, Z, phi,
             w.line(filletR) # line down to topof fillet
 
         if (rootNext[1] > rootR[1]):    # is there a section of root circle between fillets?
-            w.arc(rootR, fRad, 0) # back fillet
+            if fRad > 0:
+                w.arc(rootR, fRad, 0) # back fillet
             w.arc(rootNext, Rroot, 1) # root circle arc
 
-        w.arc(filletNext, fRad, 0)
+        if fRad > 0:
+            w.arc(filletNext, fRad, 0)
 
     w.close()
     return w
@@ -239,14 +250,16 @@ def CreateInternalGear(w, m, Z, phi,
     # interpretation of it: The tangent angle of the involute experiences the same rotation as the
     # involute itself. So its is just a simple offset: Our q(r) becomes qi(r) - qc(i) - phi_corr,
     # where phi_corr is the amount we (virtually) turn our involute around the origin.
-    phi_corr = genInvolutePolar(Rb, Rroot) + atan(fRad / Rroot)
-    q = lambda r: (sqrt(r**2 - Rb**2) / Rb
-        - asin((r**2 - fRad**2 - Rc**2) / (2 * fRad * Rc))
-        - phi_corr)
-    q_prime = lambda r: (r / (sqrt(-Rb**2 + r**2) * Rb)
-        - r / (fRad * Rc * sqrt(1 - 1/4 * (r**2 - fRad**2 - Rc**2)**2 / (fRad**2 * Rc**2))))
-
-    Rf = findRootNewton(q, q_prime, x_min=max(Rb, Rc), x_max=Rroot)
+    if (fRad > 0):
+        phi_corr = genInvolutePolar(Rb, Rroot) + atan(fRad / Rroot)
+        q = lambda r: (sqrt(r**2 - Rb**2) / Rb
+            - asin((r**2 - fRad**2 - Rc**2) / (2 * fRad * Rc))
+            - phi_corr)
+        q_prime = lambda r: (r / (sqrt(-Rb**2 + r**2) * Rb)
+            - r / (fRad * Rc * sqrt(1 - 1/4 * (r**2 - fRad**2 - Rc**2)**2 / (fRad**2 * Rc**2))))
+        Rf = findRootNewton(q, q_prime, x_min=max(Rb, Rc), x_max=Rroot)
+    else:
+        Rf = Rroot # no fillet
 
 
     # ****** calculate angles (all in radians)
@@ -298,8 +311,16 @@ def CreateInternalGear(w, m, Z, phi,
     t_inc = 2.0 * pi / float(Z)
     thetas = [(x * t_inc) for x in range(Z)]
 
-    w.move(fillet) # start at top of front profile
-
+    # Make sure we begin *exactly* where our last curve ends.
+    # In theory start == rotate(end, angle_of_last_tooth), but in practice we have limited
+    # precision. Especially if we don't have a fillet, we end at rootNext, not filletNext.
+    # And even though these two should also be equal, they are calculated differently,
+    # which is enough for the resulting wire not being closed any more.
+    # So to be on the save side, we begin at rotate(end, angle_of_last_tooth), not start.
+    if fRad > 0:
+        w.move(rotate(filletNext, thetas[-1])) # start at top of front profile
+    else:
+        w.move(rotate(rootNext, thetas[-1])) # start at top of front profile
 
     for theta in thetas:
         w.theta = theta
@@ -324,10 +345,12 @@ def CreateInternalGear(w, m, Z, phi,
             w.curve(*invR[1:])
 
         if (rootNext[1] > rootR[1]):    # is there a section of root circle between fillets?
-            w.arc(rootR, fRad, 1) # back fillet
+            if fRad > 0:
+                w.arc(rootR, fRad, 1) # back fillet
             w.arc(rootNext, Rroot, 1) # root circle arc
 
-        w.arc(filletNext, fRad, 1)
+        if fRad > 0:
+            w.arc(filletNext, fRad, 1)
 
 
     w.close()

@@ -580,12 +580,12 @@ Select a different shape, please.</source>
     <message>
       <location filename="../../MeshFlatteningCommand.py" line="47"/>
       <source>Unwrap Mesh</source>
-      <translation type="unfinished">Unwrap Mesh</translation>
+      <translation>Развернуть сетку</translation>
     </message>
     <message>
       <location filename="../../MeshFlatteningCommand.py" line="50"/>
       <source>Find a flat representation of a mesh.</source>
-      <translation type="unfinished">Find a flat representation of a mesh.</translation>
+      <translation>Найдите плоское представление сетки.</translation>
     </message>
   </context>
   <context>
@@ -593,12 +593,12 @@ Select a different shape, please.</source>
     <message>
       <location filename="../../MeshFlatteningCommand.py" line="79"/>
       <source>Unwrap Face</source>
-      <translation type="unfinished">Unwrap Face</translation>
+      <translation>Развернуть грани</translation>
     </message>
     <message>
       <location filename="../../MeshFlatteningCommand.py" line="82"/>
       <source>Find a flat representation of a face.</source>
-      <translation type="unfinished">Find a flat representation of a face.</translation>
+      <translation>Найдите плоское изображение фаски.</translation>
     </message>
   </context>
 </TS>

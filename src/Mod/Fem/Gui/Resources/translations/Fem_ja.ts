@@ -321,17 +321,17 @@
   <context>
     <name>CmdFemPostApllyChanges</name>
     <message>
-      <location filename="../../Command.cpp" line="2202"/>
+      <location filename="../../Command.cpp" line="2256"/>
       <source>Fem</source>
       <translation>有限要素法</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2203"/>
+      <location filename="../../Command.cpp" line="2257"/>
       <source>Apply changes to pipeline</source>
       <translation>パイプラインに変更を適用</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2204"/>
+      <location filename="../../Command.cpp" line="2258"/>
       <source>Apply changes to parameters directly and not on recompute only...</source>
       <translation>再計算時以外も、パラメーターに変更を直接適用します...</translation>
     </message>
@@ -339,27 +339,27 @@
   <context>
     <name>CmdFemPostClipFilter</name>
     <message>
-      <location filename="../../Command.cpp" line="1705"/>
+      <location filename="../../Command.cpp" line="1708"/>
       <source>Fem</source>
       <translation>有限要素法</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1706"/>
+      <location filename="../../Command.cpp" line="1709"/>
       <source>Region clip filter</source>
       <translation>領域クリップフィルター</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1708"/>
+      <location filename="../../Command.cpp" line="1711"/>
       <source>Define/create a clip filter which uses functions to define the cliped region</source>
       <translation>クリップ領域を定義する関数を使用するクリップフィルターを定義/作成</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2128"/>
+      <location filename="../../Command.cpp" line="2182"/>
       <source>Wrong selection</source>
       <translation>誤った選択</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2129"/>
+      <location filename="../../Command.cpp" line="2183"/>
       <source>Select a pipeline, please.</source>
       <translation>パイプラインを選択してください。</translation>
     </message>
@@ -367,17 +367,17 @@
   <context>
     <name>CmdFemPostCutFilter</name>
     <message>
-      <location filename="../../Command.cpp" line="1750"/>
+      <location filename="../../Command.cpp" line="1754"/>
       <source>Fem</source>
       <translation>有限要素法</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1751"/>
+      <location filename="../../Command.cpp" line="1755"/>
       <source>Function cut filter</source>
       <translation>関数カットフィルター</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1752"/>
+      <location filename="../../Command.cpp" line="1756"/>
       <source>Cut the data along an implicit function</source>
       <translation>陰関数に従ってデータを切り出し</translation>
     </message>
@@ -385,17 +385,17 @@
   <context>
     <name>CmdFemPostDataAlongLineFilter</name>
     <message>
-      <location filename="../../Command.cpp" line="1794"/>
+      <location filename="../../Command.cpp" line="1799"/>
       <source>Fem</source>
       <translation>有限要素法</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1795"/>
+      <location filename="../../Command.cpp" line="1800"/>
       <source>Line clip filter</source>
       <translation>直線クリップフィルター</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1796"/>
+      <location filename="../../Command.cpp" line="1801"/>
       <source>Define/create a clip filter which clips a field along a line</source>
       <translation>直線に沿って場の値をクリップするクリップフィルターを定義/作成</translation>
     </message>
@@ -403,17 +403,17 @@
   <context>
     <name>CmdFemPostDataAtPointFilter</name>
     <message>
-      <location filename="../../Command.cpp" line="1835"/>
+      <location filename="../../Command.cpp" line="1842"/>
       <source>Fem</source>
       <translation>有限要素法</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1836"/>
+      <location filename="../../Command.cpp" line="1843"/>
       <source>Data at point clip filter</source>
       <translation>点データクリップフィルター</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1837"/>
+      <location filename="../../Command.cpp" line="1844"/>
       <source>Define/create a clip filter which clips a field data at point</source>
       <translation>点位置での場の値をクリップするクリップフィルターを定義/作成</translation>
     </message>
@@ -421,27 +421,27 @@
   <context>
     <name>CmdFemPostFunctions</name>
     <message>
-      <location filename="../../Command.cpp" line="2037"/>
+      <location filename="../../Command.cpp" line="2091"/>
       <source>Fem</source>
       <translation>有限要素法</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2038"/>
+      <location filename="../../Command.cpp" line="2092"/>
       <source>Filter functions</source>
       <translation>フィルター関数</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2039"/>
+      <location filename="../../Command.cpp" line="2093"/>
       <source>Functions for use in postprocessing filter...</source>
       <translation>ポスト処理フィルターで使用する関数...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2173"/>
+      <location filename="../../Command.cpp" line="2227"/>
       <source>Plane</source>
       <translation>平面</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2179"/>
+      <location filename="../../Command.cpp" line="2233"/>
       <source>Sphere</source>
       <translation>球体</translation>
     </message>
@@ -449,65 +449,65 @@
   <context>
     <name>CmdFemPostLinearizedStressesFilter</name>
     <message>
-      <location filename="../../Command.cpp" line="1607"/>
+      <location filename="../../Command.cpp" line="1610"/>
       <source>Thickness [mm]</source>
       <comment>Plot X-Axis Label</comment>
       <translation>厚み [mm]</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1611"/>
+      <location filename="../../Command.cpp" line="1614"/>
       <source>Stress [MPa]</source>
       <comment>Plot Y-Axis Label</comment>
       <translation>圧力 [MPa]</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1614"/>
+      <location filename="../../Command.cpp" line="1617"/>
       <source>Linearized Stresses</source>
       <comment>Plot title</comment>
       <translation>線形化圧力</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1617"/>
+      <location filename="../../Command.cpp" line="1620"/>
       <source>Membrane</source>
       <comment>Plot legend item label</comment>
       <translation>薄膜</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1621"/>
+      <location filename="../../Command.cpp" line="1624"/>
       <source>Membrane and Bending</source>
       <comment>Plot legend item label</comment>
       <translation>膜と曲げ</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1625"/>
+      <location filename="../../Command.cpp" line="1628"/>
       <source>Total</source>
       <comment>Plot legend item label</comment>
       <translation>合計</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1881"/>
+      <location filename="../../Command.cpp" line="1887"/>
       <source>Fem</source>
       <translation>有限要素法</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1882"/>
+      <location filename="../../Command.cpp" line="1888"/>
       <source>Stress linearization plot</source>
       <translation>応力線形化プロット</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1883"/>
+      <location filename="../../Command.cpp" line="1889"/>
       <source>Define/create stress linearization plots</source>
       <translation>応力線形化プロットの定義/作成</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1919"/>
-      <location filename="../../Command.cpp" line="1928"/>
+      <location filename="../../Command.cpp" line="1925"/>
+      <location filename="../../Command.cpp" line="1934"/>
       <source>Wrong selection</source>
       <translation>誤った選択</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1920"/>
-      <location filename="../../Command.cpp" line="1929"/>
+      <location filename="../../Command.cpp" line="1926"/>
+      <location filename="../../Command.cpp" line="1935"/>
       <source>Select a Clip filter which clips a STRESS field along a line, please.</source>
       <translation>直線に沿って圧力場をクリップするクリップフィルターを選択してください。</translation>
     </message>
@@ -515,27 +515,27 @@
   <context>
     <name>CmdFemPostPipelineFromResult</name>
     <message>
-      <location filename="../../Command.cpp" line="2241"/>
+      <location filename="../../Command.cpp" line="2295"/>
       <source>Fem</source>
       <translation>有限要素法</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2242"/>
+      <location filename="../../Command.cpp" line="2296"/>
       <source>Post pipeline from result</source>
       <translation>結果によるポスト処理パイプライン</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2243"/>
+      <location filename="../../Command.cpp" line="2297"/>
       <source>Creates a post processing pipeline from a result object</source>
       <translation>結果オブジェクトからポスト処理パイプラインを作成</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2318"/>
+      <location filename="../../Command.cpp" line="2372"/>
       <source>Wrong selection type</source>
       <translation>間違った選択タイプ</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2319"/>
+      <location filename="../../Command.cpp" line="2373"/>
       <source>Select a result object, please.</source>
       <translation>結果オブジェクトを選択してください。</translation>
     </message>
@@ -543,17 +543,17 @@
   <context>
     <name>CmdFemPostScalarClipFilter</name>
     <message>
-      <location filename="../../Command.cpp" line="1954"/>
+      <location filename="../../Command.cpp" line="1960"/>
       <source>Fem</source>
       <translation>有限要素法</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1955"/>
+      <location filename="../../Command.cpp" line="1961"/>
       <source>Scalar clip filter</source>
       <translation>スカラークリップフィルター</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1957"/>
+      <location filename="../../Command.cpp" line="1963"/>
       <source>Define/create a clip filter which clips a field with a scalar value</source>
       <translation>スカラー値の場をクリップするクリップフィルターを定義/作成</translation>
     </message>
@@ -561,17 +561,17 @@
   <context>
     <name>CmdFemPostWarpVectorFilter</name>
     <message>
-      <location filename="../../Command.cpp" line="1996"/>
+      <location filename="../../Command.cpp" line="2004"/>
       <source>Fem</source>
       <translation>有限要素法</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1997"/>
+      <location filename="../../Command.cpp" line="2005"/>
       <source>Warp filter</source>
       <translation>たわみフィルター</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1998"/>
+      <location filename="../../Command.cpp" line="2006"/>
       <source>Warp the geometry along a vector field by a certain factor</source>
       <translation>ベクトル場に従って一定の係数でジオメトリーをたわめる</translation>
     </message>
@@ -669,17 +669,17 @@
       <translation>節点セットを作成</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1578"/>
+      <location filename="../../Command.cpp" line="1581"/>
       <source>Create filter</source>
       <translation>フィルターを作成</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2062"/>
+      <location filename="../../Command.cpp" line="2116"/>
       <source>Create function</source>
       <translation>関数を作成</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2294"/>
+      <location filename="../../Command.cpp" line="2348"/>
       <source>Create pipeline from result</source>
       <translation>結果からパイプラインを作成</translation>
     </message>
@@ -766,12 +766,12 @@
   <context>
     <name>FEM_PostCreateFunctions</name>
     <message>
-      <location filename="../../Command.cpp" line="2174"/>
+      <location filename="../../Command.cpp" line="2228"/>
       <source>Create a plane function, defined by its origin and normal</source>
       <translation>原点と法線で定義された平面関数を作成</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2180"/>
+      <location filename="../../Command.cpp" line="2234"/>
       <source>Create a sphere function, defined by its center and radius</source>
       <translation>中心点と半径で定義された球関数を作成</translation>
     </message>
@@ -1031,58 +1031,80 @@ Specify another file please.</translation>
       <translation>ElmerGrid:</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemElmer.ui" line="45"/>
-      <location filename="../../DlgSettingsFemElmer.ui" line="124"/>
+      <location filename="../../DlgSettingsFemElmer.ui" line="85"/>
+      <location filename="../../DlgSettingsFemElmer.ui" line="148"/>
       <source>Search in known binary directories</source>
       <translation>既知のバイナリディレクトリ内を検索</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemElmer.ui" line="70"/>
+      <location filename="../../DlgSettingsFemElmer.ui" line="173"/>
       <source>ElmerGrid binary path</source>
       <translation>ElmerGrid バイナリパス</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemElmer.ui" line="104"/>
+      <location filename="../../DlgSettingsFemElmer.ui" line="261"/>
+      <source>Multi-CPU core support:</source>
+      <translation type="unfinished">Multi-CPU core support:</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsFemElmer.ui" line="268"/>
+      <source>The mesh volume regions processed by each CPU core
+will be merged to make the volume boundaries invisible.</source>
+      <translation type="unfinished">The mesh volume regions processed by each CPU core
+will be merged to make the volume boundaries invisible.</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsFemElmer.ui" line="272"/>
+      <source>Filter results</source>
+      <translation type="unfinished">Filter results</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsFemElmer.ui" line="128"/>
       <source>Leave blank to use default ElmerGrid binary file</source>
       <translation>デフォルトの ElmerGrid バイナリファイルを使用する場合は入力なし</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemElmer.ui" line="117"/>
+      <location filename="../../DlgSettingsFemElmer.ui" line="141"/>
       <source>ElmerSolver:</source>
       <translation>ElmerSolver:</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemElmer.ui" line="149"/>
+      <location filename="../../DlgSettingsFemElmer.ui" line="189"/>
       <source>ElmerSolver binary path</source>
       <translation>ElmerSolver バイナリパス</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemElmer.ui" line="183"/>
+      <location filename="../../DlgSettingsFemElmer.ui" line="72"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Leave blank to use default Elmer elmer binary file&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Note:&lt;/span&gt; To use multithreading you must specify here&lt;br&gt; the executable variant with the suffix &amp;quot;_mpi&amp;quot;.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
       <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Leave blank to use default Elmer elmer binary file&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Note:&lt;/span&gt; To use multithreading you must specify here&lt;br&gt; the executable variant with the suffix &amp;quot;_mpi&amp;quot;.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemElmer.ui" line="196"/>
+      <location filename="../../DlgSettingsFemElmer.ui" line="199"/>
+      <source>Options</source>
+      <translation>オプション</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsFemElmer.ui" line="205"/>
       <source>Multithreading:</source>
       <translation type="unfinished">Multithreading:</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemElmer.ui" line="208"/>
+      <location filename="../../DlgSettingsFemElmer.ui" line="217"/>
       <source>CPU cores to be used:</source>
       <translation type="unfinished">CPU cores to be used:</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemElmer.ui" line="218"/>
+      <location filename="../../DlgSettingsFemElmer.ui" line="227"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Note:&lt;/span&gt; It is recommended to use an even number of cores to benefit from mesh symmetries. (Using 8 cores can be faster than 9 cores.)&lt;br/&gt;&lt;span style=" font-weight:600;"&gt;Note too:&lt;/span&gt; In extreme cases ElmerSolver might not converge if the core number is too high.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
       <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Note:&lt;/span&gt; It is recommended to use an even number of cores to benefit from mesh symmetries. (Using 8 cores can be faster than 9 cores.)&lt;br/&gt;&lt;span style=" font-weight:600;"&gt;Note too:&lt;/span&gt; In extreme cases ElmerSolver might not converge if the core number is too high.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemElmerImp.cpp" line="102"/>
+      <location filename="../../DlgSettingsFemElmerImp.cpp" line="104"/>
       <source>File does not exist</source>
       <translation type="unfinished">File does not exist</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemElmerImp.cpp" line="103"/>
+      <location filename="../../DlgSettingsFemElmerImp.cpp" line="105"/>
       <source>The specified executable 
 '%1'
  does not exist!
@@ -1093,20 +1115,20 @@ Specify another file please.</source>
 Specify another file please.</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemElmerImp.cpp" line="121"/>
-      <location filename="../../DlgSettingsFemElmerImp.cpp" line="131"/>
+      <location filename="../../DlgSettingsFemElmerImp.cpp" line="123"/>
+      <location filename="../../DlgSettingsFemElmerImp.cpp" line="133"/>
       <source>FEM Elmer: Not suitable for multithreading</source>
       <translation type="unfinished">FEM Elmer: Not suitable for multithreading</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemElmerImp.cpp" line="122"/>
+      <location filename="../../DlgSettingsFemElmerImp.cpp" line="124"/>
       <source>Wrong Elmer setting: You use more than one CPU core.
 Therefore an executable with the suffix '_mpi.exe' is required.</source>
       <translation type="unfinished">Wrong Elmer setting: You use more than one CPU core.
 Therefore an executable with the suffix '_mpi.exe' is required.</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemElmerImp.cpp" line="132"/>
+      <location filename="../../DlgSettingsFemElmerImp.cpp" line="134"/>
       <source>Wrong Elmer setting: You use more than one CPU core.
 Therefore an executable with the suffix '_mpi' is required.</source>
       <translation type="unfinished">Wrong Elmer setting: You use more than one CPU core.
@@ -1780,7 +1802,7 @@ Specify another file please.</translation>
   <context>
     <name>FemGui::TaskDlgPost</name>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="313"/>
+      <location filename="../../TaskPostBoxes.cpp" line="364"/>
       <source>Input error</source>
       <translation>入力エラー</translation>
     </message>
@@ -2424,7 +2446,7 @@ Specify another file please.</translation>
   <context>
     <name>FemGui::TaskPostClip</name>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="494"/>
+      <location filename="../../TaskPostBoxes.cpp" line="1181"/>
       <source>Clip region, choose implicit function</source>
       <translation>クリップ領域、陰関数を選択</translation>
     </message>
@@ -2432,7 +2454,7 @@ Specify another file please.</translation>
   <context>
     <name>FemGui::TaskPostCut</name>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="1577"/>
+      <location filename="../../TaskPostBoxes.cpp" line="1456"/>
       <source>Function cut, choose implicit function</source>
       <translation>関数による切り取り、陰関数を選択</translation>
     </message>
@@ -2440,12 +2462,12 @@ Specify another file please.</translation>
   <context>
     <name>FemGui::TaskPostDataAlongLine</name>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="642"/>
+      <location filename="../../TaskPostBoxes.cpp" line="495"/>
       <source>Data along a line options</source>
       <translation>直線に沿うデータのオプション</translation>
     </message>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="933"/>
+      <location filename="../../TaskPostBoxes.cpp" line="801"/>
       <source>Length</source>
       <comment>X-Axis plot label</comment>
       <translation>長さ</translation>
@@ -2454,12 +2476,12 @@ Specify another file please.</translation>
   <context>
     <name>FemGui::TaskPostDataAtPoint</name>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="958"/>
+      <location filename="../../TaskPostBoxes.cpp" line="827"/>
       <source>Data at point options</source>
       <translation>点位置データのオプション</translation>
     </message>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="1278"/>
+      <location filename="../../TaskPostBoxes.cpp" line="1155"/>
       <source>%1 at (%2; %3; %4) is: %5 %6</source>
       <translation type="unfinished">%1 at (%2; %3; %4) is: %5 %6</translation>
     </message>
@@ -2467,7 +2489,7 @@ Specify another file please.</translation>
   <context>
     <name>FemGui::TaskPostDisplay</name>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="398"/>
+      <location filename="../../TaskPostBoxes.cpp" line="399"/>
       <source>Result display options</source>
       <translation>結果表示オプション</translation>
     </message>
@@ -2475,7 +2497,7 @@ Specify another file please.</translation>
   <context>
     <name>FemGui::TaskPostFunction</name>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="466"/>
+      <location filename="../../TaskPostBoxes.cpp" line="465"/>
       <source>Implicit function</source>
       <translation>陰関数</translation>
     </message>
@@ -2483,7 +2505,7 @@ Specify another file please.</translation>
   <context>
     <name>FemGui::TaskPostScalarClip</name>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="1302"/>
+      <location filename="../../TaskPostBoxes.cpp" line="1585"/>
       <source>Scalar clip options</source>
       <translation>スカラークリップのオプション</translation>
     </message>
@@ -2491,7 +2513,7 @@ Specify another file please.</translation>
   <context>
     <name>FemGui::TaskPostWarpVector</name>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="1422"/>
+      <location filename="../../TaskPostBoxes.cpp" line="1700"/>
       <source>Warp options</source>
       <translation>たわみのオプション</translation>
     </message>
@@ -2507,7 +2529,7 @@ Specify another file please.</translation>
   <context>
     <name>FemGui::ViewProviderFemAnalysis</name>
     <message>
-      <location filename="../../ViewProviderAnalysis.cpp" line="143"/>
+      <location filename="../../ViewProviderAnalysis.cpp" line="146"/>
       <source>Activate analysis</source>
       <translation>解析をアクティブ化</translation>
     </message>
@@ -2598,83 +2620,83 @@ Specify another file please.</translation>
       <translation>密度                     </translation>
     </message>
     <message>
-      <location filename="../ui/Material.ui" line="174"/>
+      <location filename="../ui/Material.ui" line="177"/>
       <source>0 kg/m^3</source>
       <translation>0 kg/m^3</translation>
     </message>
     <message>
-      <location filename="../ui/Material.ui" line="210"/>
+      <location filename="../ui/Material.ui" line="213"/>
       <source>Mechanical Properties</source>
       <translation>機械特性</translation>
     </message>
     <message>
-      <location filename="../ui/Material.ui" line="221"/>
+      <location filename="../ui/Material.ui" line="224"/>
       <source>Young's Modulus:</source>
       <translation>ヤング係数:</translation>
     </message>
     <message>
-      <location filename="../ui/Material.ui" line="240"/>
+      <location filename="../ui/Material.ui" line="246"/>
       <source>0 Pa</source>
       <translation>0 Pa</translation>
     </message>
     <message>
-      <location filename="../ui/Material.ui" line="265"/>
+      <location filename="../ui/Material.ui" line="271"/>
       <source>Poisson Ratio:</source>
       <translation>ポアソン比:</translation>
     </message>
     <message>
-      <location filename="../ui/Material.ui" line="314"/>
+      <location filename="../ui/Material.ui" line="323"/>
       <source>Fluidic Properties</source>
       <translation>流体特性</translation>
     </message>
     <message>
-      <location filename="../ui/Material.ui" line="325"/>
+      <location filename="../ui/Material.ui" line="334"/>
       <source>Kinematic viscosity:</source>
       <translation>動粘度:</translation>
     </message>
     <message>
-      <location filename="../ui/Material.ui" line="344"/>
+      <location filename="../ui/Material.ui" line="356"/>
       <source>0 m^2/s</source>
       <translation>0 m^2/s</translation>
     </message>
     <message>
-      <location filename="../ui/Material.ui" line="380"/>
+      <location filename="../ui/Material.ui" line="392"/>
       <source>Thermal  Properties</source>
       <translation>熱特性</translation>
     </message>
     <message>
-      <location filename="../ui/Material.ui" line="391"/>
+      <location filename="../ui/Material.ui" line="403"/>
       <source>Thermal Conductivity:</source>
       <translation>熱伝導率:</translation>
     </message>
     <message>
-      <location filename="../ui/Material.ui" line="410"/>
+      <location filename="../ui/Material.ui" line="425"/>
       <source>0 W/m/K</source>
       <translation>0 W/m/K</translation>
     </message>
     <message>
-      <location filename="../ui/Material.ui" line="435"/>
+      <location filename="../ui/Material.ui" line="450"/>
       <source>Expansion Coefficient:</source>
       <translation>膨張率:</translation>
     </message>
     <message>
-      <location filename="../ui/Material.ui" line="454"/>
-      <location filename="../ui/Material.ui" line="542"/>
+      <location filename="../ui/Material.ui" line="472"/>
+      <location filename="../ui/Material.ui" line="566"/>
       <source>0 m/m/K</source>
       <translation>0 m/m/K</translation>
     </message>
     <message>
-      <location filename="../ui/Material.ui" line="479"/>
+      <location filename="../ui/Material.ui" line="497"/>
       <source>Specific Heat:</source>
       <translation>比熱:</translation>
     </message>
     <message>
-      <location filename="../ui/Material.ui" line="498"/>
+      <location filename="../ui/Material.ui" line="519"/>
       <source>0 J/kg/K</source>
       <translation>0 J/kg/K</translation>
     </message>
     <message>
-      <location filename="../ui/Material.ui" line="523"/>
+      <location filename="../ui/Material.ui" line="544"/>
       <source>Vol Expansion Coeff</source>
       <translation>体積膨張率</translation>
     </message>
@@ -3523,7 +3545,7 @@ Note: for 2D only setting for x is possible,
       <location filename="../../ViewProviderFemConstraintPulley.cpp" line="70"/>
       <location filename="../../ViewProviderFemConstraintGear.cpp" line="73"/>
       <location filename="../../ViewProviderFemConstraintForce.cpp" line="72"/>
-      <location filename="../../ViewProviderFemPostObject.cpp" line="708"/>
+      <location filename="../../ViewProviderFemPostObject.cpp" line="805"/>
       <location filename="../../ViewProviderFemConstraintBearing.cpp" line="71"/>
       <source>A dialog is already open in the task panel</source>
       <translation>タスクパネルで既にダイアログが開かれています</translation>
@@ -3535,7 +3557,7 @@ Note: for 2D only setting for x is possible,
       <location filename="../../ViewProviderFemConstraintPulley.cpp" line="71"/>
       <location filename="../../ViewProviderFemConstraintGear.cpp" line="74"/>
       <location filename="../../ViewProviderFemConstraintForce.cpp" line="73"/>
-      <location filename="../../ViewProviderFemPostObject.cpp" line="709"/>
+      <location filename="../../ViewProviderFemPostObject.cpp" line="806"/>
       <location filename="../../ViewProviderFemConstraintBearing.cpp" line="72"/>
       <source>Do you want to close this dialog?</source>
       <translation>このダイアログを閉じますか？</translation>
@@ -3551,19 +3573,19 @@ Note: for 2D only setting for x is possible,
       <translation>拘束力</translation>
     </message>
     <message>
-      <location filename="../../AppFemGui.cpp" line="169"/>
       <location filename="../../AppFemGui.cpp" line="170"/>
       <location filename="../../AppFemGui.cpp" line="171"/>
       <location filename="../../AppFemGui.cpp" line="172"/>
       <location filename="../../AppFemGui.cpp" line="173"/>
       <location filename="../../AppFemGui.cpp" line="174"/>
       <location filename="../../AppFemGui.cpp" line="175"/>
+      <location filename="../../AppFemGui.cpp" line="176"/>
       <source>FEM</source>
       <translation>有限要素法</translation>
     </message>
     <message>
-      <location filename="../../AppFemGui.cpp" line="178"/>
       <location filename="../../AppFemGui.cpp" line="179"/>
+      <location filename="../../AppFemGui.cpp" line="180"/>
       <source>Import-Export</source>
       <translation>インポート/エクスポート</translation>
     </message>
@@ -3628,7 +3650,7 @@ Note: for 2D only setting for x is possible,
       <translation>変換拘束</translation>
     </message>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="295"/>
+      <location filename="../../TaskPostBoxes.cpp" line="346"/>
       <source>Edit post processing object</source>
       <translation>ポスト処理オブジェクトを編集</translation>
     </message>
@@ -3670,8 +3692,8 @@ Note: for 2D only setting for x is possible,
     <message>
       <location filename="../../ViewProviderSolver.cpp" line="71"/>
       <location filename="../../ViewProviderFemPostFunction.cpp" line="144"/>
-      <location filename="../../ViewProviderAnalysis.cpp" line="263"/>
-      <location filename="../../ViewProviderFemPostObject.cpp" line="819"/>
+      <location filename="../../ViewProviderAnalysis.cpp" line="266"/>
+      <location filename="../../ViewProviderFemPostObject.cpp" line="919"/>
       <source>Are you sure you want to continue?</source>
       <translation>本当に続行しますか？</translation>
     </message>
@@ -4012,7 +4034,7 @@ For possible variables, see the description box below.</source>
   <context>
     <name>Std_Delete</name>
     <message>
-      <location filename="../../ViewProviderAnalysis.cpp" line="258"/>
+      <location filename="../../ViewProviderAnalysis.cpp" line="261"/>
       <source>The analysis is not empty, therefore the
 following referencing objects might be lost:</source>
       <translation>解析が空ではないため、以下の参照オブジェクトが失われる可能性があります:</translation>
@@ -4020,8 +4042,8 @@ following referencing objects might be lost:</source>
     <message>
       <location filename="../../ViewProviderSolver.cpp" line="74"/>
       <location filename="../../ViewProviderFemPostFunction.cpp" line="147"/>
-      <location filename="../../ViewProviderAnalysis.cpp" line="266"/>
-      <location filename="../../ViewProviderFemPostObject.cpp" line="822"/>
+      <location filename="../../ViewProviderAnalysis.cpp" line="269"/>
+      <location filename="../../ViewProviderFemPostObject.cpp" line="922"/>
       <source>Object dependencies</source>
       <translation>オブジェクトの依存関係</translation>
     </message>
@@ -4032,7 +4054,7 @@ following referencing objects might be lost:</source>
       <translation>関数リストが空ではないため、以下の参照オブジェクトが失われる可能性があります:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderFemPostObject.cpp" line="813"/>
+      <location filename="../../ViewProviderFemPostObject.cpp" line="913"/>
       <source>The pipeline is not empty, therefore the
 following referencing objects might be lost:</source>
       <translation>パイプラインが空ではないため、以下の参照オブジェクトが失われる可能性があります:</translation>
@@ -5389,20 +5411,20 @@ normal vector of the face is used as direction</source>
   <context>
     <name>setupFilter</name>
     <message>
-      <location filename="../../Command.cpp" line="1527"/>
+      <location filename="../../Command.cpp" line="1529"/>
       <source>Error: A filter can only be applied to a single object.</source>
       <translation>エラー: フィルタは単一オブジェクトにのみ適用できます。</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1529"/>
-      <location filename="../../Command.cpp" line="1545"/>
-      <location filename="../../Command.cpp" line="1573"/>
+      <location filename="../../Command.cpp" line="1531"/>
+      <location filename="../../Command.cpp" line="1548"/>
+      <location filename="../../Command.cpp" line="1576"/>
       <source>The filter could not be set up.</source>
       <translation>フィルタを設定できませんでした。</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1544"/>
-      <location filename="../../Command.cpp" line="1572"/>
+      <location filename="../../Command.cpp" line="1547"/>
+      <location filename="../../Command.cpp" line="1575"/>
       <source>Error: no post processing object selected.</source>
       <translation>エラー: ポスト処理オブジェクトが選択されていません。</translation>
     </message>
@@ -6122,95 +6144,95 @@ normal vector of the face is used as direction</source>
   <context>
     <name>FEM</name>
     <message>
-      <location filename="../../../femtaskpanels/task_result_mechanical.py" line="294"/>
+      <location filename="../../../femtaskpanels/task_result_mechanical.py" line="305"/>
       <source>Displacement Magnitude</source>
       <translation>変位の大きさ</translation>
     </message>
     <message>
-      <location filename="../../../femtaskpanels/task_result_mechanical.py" line="309"/>
+      <location filename="../../../femtaskpanels/task_result_mechanical.py" line="320"/>
       <source>Displacement X</source>
       <translation>変位 X</translation>
     </message>
     <message>
-      <location filename="../../../femtaskpanels/task_result_mechanical.py" line="324"/>
+      <location filename="../../../femtaskpanels/task_result_mechanical.py" line="335"/>
       <source>Displacement Y</source>
       <translation>変位 Y</translation>
     </message>
     <message>
-      <location filename="../../../femtaskpanels/task_result_mechanical.py" line="339"/>
+      <location filename="../../../femtaskpanels/task_result_mechanical.py" line="350"/>
       <source>Displacement Z</source>
       <translation>変位 Z</translation>
     </message>
     <message>
-      <location filename="../../../femtaskpanels/task_result_mechanical.py" line="351"/>
+      <location filename="../../../femtaskpanels/task_result_mechanical.py" line="362"/>
       <source>von Mises Stress</source>
       <translation>フォンミーゼス応力</translation>
     </message>
     <message>
-      <location filename="../../../femtaskpanels/task_result_mechanical.py" line="363"/>
+      <location filename="../../../femtaskpanels/task_result_mechanical.py" line="374"/>
       <source>Max Shear Stress</source>
       <translation type="unfinished">Max Shear Stress</translation>
     </message>
     <message>
-      <location filename="../../../femtaskpanels/task_result_mechanical.py" line="375"/>
+      <location filename="../../../femtaskpanels/task_result_mechanical.py" line="386"/>
       <source>Max Principal Stress</source>
       <translation>最大主応力</translation>
     </message>
     <message>
-      <location filename="../../../femtaskpanels/task_result_mechanical.py" line="387"/>
+      <location filename="../../../femtaskpanels/task_result_mechanical.py" line="398"/>
       <source>Temperature</source>
       <translation>温度</translation>
     </message>
     <message>
-      <location filename="../../../femtaskpanels/task_result_mechanical.py" line="399"/>
+      <location filename="../../../femtaskpanels/task_result_mechanical.py" line="410"/>
       <source>Mass Flow Rate</source>
       <translation>質量流量</translation>
     </message>
     <message>
-      <location filename="../../../femtaskpanels/task_result_mechanical.py" line="411"/>
+      <location filename="../../../femtaskpanels/task_result_mechanical.py" line="422"/>
       <source>Network Pressure</source>
       <translation>ネットワーク圧力</translation>
     </message>
     <message>
-      <location filename="../../../femtaskpanels/task_result_mechanical.py" line="423"/>
+      <location filename="../../../femtaskpanels/task_result_mechanical.py" line="434"/>
       <source>Min Principal Stress</source>
       <translation>最小主応力</translation>
     </message>
     <message>
-      <location filename="../../../femtaskpanels/task_result_mechanical.py" line="435"/>
+      <location filename="../../../femtaskpanels/task_result_mechanical.py" line="446"/>
       <source>Equivalent Plastic Strain</source>
       <translation>相当塑性ひずみ</translation>
     </message>
     <message>
-      <location filename="../../../femtaskpanels/task_result_mechanical.py" line="454"/>
+      <location filename="../../../femtaskpanels/task_result_mechanical.py" line="465"/>
       <source>Information</source>
       <translation>情報</translation>
     </message>
     <message>
-      <location filename="../../../femtaskpanels/task_result_mechanical.py" line="456"/>
+      <location filename="../../../femtaskpanels/task_result_mechanical.py" line="467"/>
       <source>No histogram available.
 Please select a result type first.</source>
       <translation type="unfinished">No histogram available.
 Please select a result type first.</translation>
     </message>
     <message>
-      <location filename="../../../femtaskpanels/task_result_mechanical.py" line="569"/>
+      <location filename="../../../femtaskpanels/task_result_mechanical.py" line="580"/>
       <source>Histogram of {}</source>
       <translation type="unfinished">Histogram of {}</translation>
     </message>
     <message>
-      <location filename="../../../femtaskpanels/task_result_mechanical.py" line="570"/>
+      <location filename="../../../femtaskpanels/task_result_mechanical.py" line="581"/>
       <source>Nodes</source>
       <translation>ノード</translation>
     </message>
     <message>
-      <location filename="../../../femtaskpanels/task_result_mechanical.py" line="700"/>
+      <location filename="../../../femtaskpanels/task_result_mechanical.py" line="711"/>
       <source>Empty result mesh</source>
       <translation type="unfinished">Empty result mesh</translation>
     </message>
     <message>
-      <location filename="../../../femtaskpanels/task_result_mechanical.py" line="718"/>
-      <location filename="../../../femtaskpanels/task_result_mechanical.py" line="730"/>
+      <location filename="../../../femtaskpanels/task_result_mechanical.py" line="729"/>
+      <location filename="../../../femtaskpanels/task_result_mechanical.py" line="741"/>
       <source>No result object</source>
       <translation type="unfinished">No result object</translation>
     </message>
@@ -6238,9 +6260,9 @@ Please select a result type first.</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="566"/>
       <source>Creates a FEM equation for
-2D magentodynamic forces</source>
+ 2D magnetodynamic forces</source>
       <translation type="unfinished">Creates a FEM equation for
-2D magentodynamic forces</translation>
+ 2D magnetodynamic forces</translation>
     </message>
   </context>
   <context>
@@ -6252,31 +6274,9 @@ Please select a result type first.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1251"/>
-      <source>Electromagnetic constraints...</source>
-      <translation type="unfinished">Electromagnetic constraints...</translation>
-    </message>
-    <message>
       <location filename="../../Command.cpp" line="1252"/>
       <source>Electromagnetic constraints</source>
       <translation type="unfinished">Electromagnetic constraints</translation>
-    </message>
-  </context>
-  <context>
-    <name>CmdFEMCompEmEquations</name>
-    <message>
-      <location filename="../../Command.cpp" line="1373"/>
-      <source>Fem</source>
-      <translation>有限要素法</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="1374"/>
-      <source>Electromagnetic Equations</source>
-      <translation type="unfinished">Electromagnetic Equations</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="1375"/>
-      <source>Electromagnetic equations for the Elmer solver</source>
-      <translation type="unfinished">Electromagnetic equations for the Elmer solver</translation>
     </message>
   </context>
   <context>
@@ -6302,9 +6302,81 @@ Please select a result type first.</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="549"/>
       <source>Creates a FEM equation for
- magentodynamic forces</source>
+ magnetodynamic forces</source>
       <translation type="unfinished">Creates a FEM equation for
- magentodynamic forces</translation>
+ magnetodynamic forces</translation>
+    </message>
+  </context>
+  <context>
+    <name>TaskPostContours</name>
+    <message>
+      <location filename="../../TaskPostContours.ui" line="14"/>
+      <source>Form</source>
+      <translation>フォーム</translation>
+    </message>
+    <message>
+      <location filename="../../TaskPostContours.ui" line="25"/>
+      <source>Vector:</source>
+      <translation type="unfinished">Vector:</translation>
+    </message>
+    <message>
+      <location filename="../../TaskPostContours.ui" line="35"/>
+      <source>Field:</source>
+      <translation type="unfinished">Field:</translation>
+    </message>
+    <message>
+      <location filename="../../TaskPostContours.ui" line="79"/>
+      <source>Contour lines will not be colored</source>
+      <translation type="unfinished">Contour lines will not be colored</translation>
+    </message>
+    <message>
+      <location filename="../../TaskPostContours.ui" line="82"/>
+      <source>No color</source>
+      <translation type="unfinished">No color</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdFemCompEmEquations</name>
+    <message>
+      <location filename="../../Command.cpp" line="1373"/>
+      <source>Fem</source>
+      <translation>有限要素法</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="1374"/>
+      <source>Electromagnetic equations</source>
+      <translation type="unfinished">Electromagnetic equations</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="1375"/>
+      <source>Electromagnetic equations for the Elmer solver</source>
+      <translation type="unfinished">Electromagnetic equations for the Elmer solver</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdFemPostContoursFilter</name>
+    <message>
+      <location filename="../../Command.cpp" line="2047"/>
+      <source>Fem</source>
+      <translation>有限要素法</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="2048"/>
+      <source>Contours filter</source>
+      <translation type="unfinished">Contours filter</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="2050"/>
+      <source>Define/create a contours filter which displays iso contours</source>
+      <translation type="unfinished">Define/create a contours filter which displays iso contours</translation>
+    </message>
+  </context>
+  <context>
+    <name>FemGui::TaskPostContours</name>
+    <message>
+      <location filename="../../TaskPostBoxes.cpp" line="1326"/>
+      <source>Contours filter options</source>
+      <translation type="unfinished">Contours filter options</translation>
     </message>
   </context>
 </TS>

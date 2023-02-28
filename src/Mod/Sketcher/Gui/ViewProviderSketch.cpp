@@ -79,6 +79,18 @@ namespace bp = boost::placeholders;
 
 /************** ViewProviderSketch::ParameterObserver *********************/
 
+template <typename T>
+T getSketcherGeneralParameter(const std::string & string, T defaultvalue) {
+    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher/General");
+
+    if constexpr (std::is_same_v<decltype(defaultvalue), unsigned int>) {
+        return static_cast<unsigned int>(hGrp->GetUnsigned(string.c_str(), defaultvalue));
+    }
+    else if constexpr (std::is_same_v<decltype(defaultvalue), int>) {
+        return static_cast<int>(hGrp->GetInt(string.c_str(), defaultvalue));
+    }
+}
+
 ViewProviderSketch::ParameterObserver::ParameterObserver(ViewProviderSketch &client): Client(client)
 {
 }
@@ -188,6 +200,9 @@ void ViewProviderSketch::ParameterObserver::initParameters()
 {
     // once initialize the map with the properties
 
+    SbColor defaultGridColor(0.7f, 0.7f, 0.7f);
+    unsigned int packedDefaultGridColor = defaultGridColor.getPackedValue();
+
     parameterMap = {
         {"HideDependent",
             {[this](const std::string & string, App::Property * property){ updateBoolProperty(string, property, true);}, &Client.HideDependent }},
@@ -201,16 +216,10 @@ void ViewProviderSketch::ParameterObserver::initParameters()
             {[this](const std::string & string, App::Property * property){ updateBoolProperty(string, property, false);}, &Client.ForceOrtho }},
         {"SectionView",
             {[this](const std::string & string, App::Property * property){ updateBoolProperty(string, property, false);}, &Client.SectionView }},
-        {"ShowGrid",
-            {[this](const std::string & string, App::Property * property){ updateBoolProperty(string, property, false);}, &Client.ShowGrid }},
-        {"GridSnap",
-            {[this](const std::string & string, App::Property * property){ updateBoolProperty(string, property, false);}, &Client.GridSnap }},
         {"AutoConstraints",
             {[this](const std::string & string, App::Property * property){ updateBoolProperty(string, property, true);}, &Client.Autoconstraints }},
         {"AvoidRedundantAutoconstraints",
             {[this](const std::string & string, App::Property * property){ updateBoolProperty(string, property, true);}, &Client.AvoidRedundant }},
-        {"GridSize",
-            {[this](const std::string & string, App::Property * property){ updateGridSize(string, property);}, &Client.GridSize }},
         {"SketchEdgeColor",
             {[this](const std::string & string, App::Property * property){ updateColorProperty(string, property, 1.f, 1.f, 1.f);}, &Client.LineColor }},
         {"SketchVertexColor",
@@ -221,6 +230,28 @@ void ViewProviderSketch::ParameterObserver::initParameters()
             {[this](const std::string & string, App::Property * property){ updateAutoRecompute(string, property);}, nullptr }},
         {"RecalculateInitialSolutionWhileDragging",
             {[this](const std::string & string, App::Property * property){ updateRecalculateInitialSolutionWhileDragging(string, property);}, nullptr }},
+        {"GridSizePixelThreshold",
+            {[this](const std::string & string, [[maybe_unused]] App::Property * property){ auto v = getSketcherGeneralParameter(string, 15); Client.setGridSizePixelThreshold(v); }, nullptr }},
+        {"GridNumberSubdivision",
+            {[this](const std::string & string, [[maybe_unused]] App::Property * property){ auto v = getSketcherGeneralParameter(string, 10); Client.setGridNumberSubdivision(v); }, nullptr }},
+        {"GridLinePattern",
+            {[this](const std::string & string, [[maybe_unused]] App::Property * property){ auto v = getSketcherGeneralParameter(string, 0x0f0f); Client.setGridLinePattern(v); }, nullptr }},
+        {"GridDivLinePattern",
+            {[this](const std::string & string, [[maybe_unused]] App::Property * property){ auto v = getSketcherGeneralParameter(string, 0xffff); Client.setGridDivLinePattern(v); }, nullptr }},
+        {"GridLineWidth",
+            {[this](const std::string & string, [[maybe_unused]] App::Property * property){ auto v = getSketcherGeneralParameter(string, 1); Client.setGridLineWidth(v); }, nullptr }},
+        {"GridDivLineWidth",
+            {[this](const std::string & string, [[maybe_unused]] App::Property * property){ auto v = getSketcherGeneralParameter(string, 2); Client.setGridDivLineWidth(v); }, nullptr }},
+        {"GridLineColor",
+            {[this, packedDefaultGridColor](const std::string & string, [[maybe_unused]] App::Property * property){
+                auto v = getSketcherGeneralParameter(string, packedDefaultGridColor);
+                auto color = App::Color(v);
+                Client.setGridLineColor(color);}, nullptr }},
+        {"GridDivLineColor",
+            {[this, packedDefaultGridColor](const std::string & string, [[maybe_unused]] App::Property * property){
+                auto v = getSketcherGeneralParameter(string, packedDefaultGridColor);
+                auto color = App::Color(v);
+                Client.setGridDivLineColor(color);}, nullptr }},
     };
 
     for( auto & val : parameterMap){
@@ -231,6 +262,10 @@ void ViewProviderSketch::ParameterObserver::initParameters()
         update(string, property);
     }
 
+    // unsubscribed parameters which update a property on just once upon construction (and before restore if properties are being restored from a file)
+    updateBoolProperty("ShowGrid", &Client.ShowGrid, false);
+    updateBoolProperty("GridAuto", &Client.GridAuto, true);
+    updateGridSize("GridSize", &Client.GridSize);
 }
 
 void ViewProviderSketch::ParameterObserver::OnChange(Base::Subject<const char*> &rCaller, const char * sReason)
@@ -261,7 +296,7 @@ SbVec2s ViewProviderSketch::DoubleClick::newCursorPos;
 
 /* TRANSLATOR SketcherGui::ViewProviderSketch */
 
-PROPERTY_SOURCE_WITH_EXTENSIONS(SketcherGui::ViewProviderSketch, PartGui::ViewProvider2DObjectGrid)
+PROPERTY_SOURCE_WITH_EXTENSIONS(SketcherGui::ViewProviderSketch, PartGui::ViewProvider2DObject)
 
 
 ViewProviderSketch::ViewProviderSketch()
@@ -274,6 +309,7 @@ ViewProviderSketch::ViewProviderSketch()
     viewOrientationFactor(1)
 {
     PartGui::ViewProviderAttachExtension::initExtension(this);
+    PartGui::ViewProviderGridExtension::initExtension(this);
 
     ADD_PROPERTY_TYPE(Autoconstraints,(true),"Auto Constraints",(App::PropertyType)(App::Prop_None),"Create auto constraints");
     ADD_PROPERTY_TYPE(AvoidRedundant,(true),"Auto Constraints",(App::PropertyType)(App::Prop_None),"Avoid redundant autoconstraint");
@@ -292,8 +328,6 @@ ViewProviderSketch::ViewProviderSketch()
     // visibility automation and other parameters: update parameter and property defaults to follow preferences
     pObserver->initParameters();
     pObserver->subscribeToParameters();
-
-    this->GridAutoSize.setValue(false); //Grid size is managed by this class
 
     sPixmap = "Sketcher_Sketch";
 
@@ -507,30 +541,35 @@ bool ViewProviderSketch::keyPressed(bool pressed, int key)
     return true; // handle all other key events
 }
 
-void ViewProviderSketch::snapToGrid(double &x, double &y)
+void ViewProviderSketch::setSnapMode(SnapMode mode)
 {
-    if (GridSnap.getValue() && ShowGrid.getValue()) {
+    snapMode = mode; // to be redirected to SnapManager
+}
+
+SnapMode ViewProviderSketch::getSnapMode() const
+{
+    return snapMode; // to be redirected to SnapManager
+}
+
+void ViewProviderSketch::snapToGrid(double &x, double &y) // Paddle, when resolving this conflict, make sure to use the function in ViewProviderGridExtension
+{
+    if (snapMode == SnapMode::SnapToGrid && ShowGrid.getValue()) {
         // Snap Tolerance in pixels
-        const double snapTol = GridSize.getValue() / 5;
+        const double snapTol = getGridSize() / 5;
 
         double tmpX = x, tmpY = y;
 
-        // Find Nearest Snap points
-        tmpX = tmpX / GridSize.getValue();
-        tmpX = tmpX < 0.0 ? ceil(tmpX - 0.5) : floor(tmpX + 0.5);
-        tmpX *= GridSize.getValue();
-
-        tmpY = tmpY / GridSize.getValue();
-        tmpY = tmpY < 0.0 ? ceil(tmpY - 0.5) : floor(tmpY + 0.5);
-        tmpY *= GridSize.getValue();
+        getClosestGridPoint(tmpX, tmpY);
 
         // Check if x within snap tolerance
-        if (x < tmpX + snapTol && x > tmpX - snapTol)
+        if (x < tmpX + snapTol && x > tmpX - snapTol) {
             x = tmpX; // Snap X Mouse Position
+        }
 
          // Check if y within snap tolerance
-        if (y < tmpY + snapTol && y > tmpY - snapTol)
+        if (y < tmpY + snapTol && y > tmpY - snapTol) {
             y = tmpY; // Snap Y Mouse Position
+        }
     }
 }
 
@@ -1553,7 +1592,7 @@ bool ViewProviderSketch::isSelectable() const
     if (isEditing())
         return false;
     else
-        return PartGui::ViewProvider2DObjectGrid::isSelectable();
+        return PartGui::ViewProvider2DObject::isSelectable();
 }
 
 void ViewProviderSketch::onSelectionChanged(const Gui::SelectionChanges& msg)
@@ -2686,7 +2725,7 @@ void ViewProviderSketch::drawEditMarkers(const std::vector<Base::Vector2d> &Edit
 
 void ViewProviderSketch::updateData(const App::Property *prop)
 {
-    ViewProvider2DObjectGrid::updateData(prop);
+    ViewProvider2DObject::updateData(prop);
 
     // In the case of an undo/redo transaction, updateData is triggered by SketchObject::onUndoRedoFinished() in the solve()
     // In the case of an internal transaction, touching the geometry results in a call to updateData.
@@ -2721,7 +2760,7 @@ void ViewProviderSketch::updateData(const App::Property *prop)
 void ViewProviderSketch::onChanged(const App::Property *prop)
 {
     // call father
-    PartGui::ViewProvider2DObjectGrid::onChanged(prop);
+    ViewProviderPart::onChanged(prop);
 }
 
 void ViewProviderSketch::attach(App::DocumentObject *pcFeat)
@@ -2757,6 +2796,7 @@ namespace
 
 bool ViewProviderSketch::setEdit(int ModNum)
 {
+    Q_UNUSED(ModNum)
     // When double-clicking on the item for this sketch the
     // object unsets and sets its edit mode without closing
     // the task panel
@@ -2802,6 +2842,12 @@ bool ViewProviderSketch::setEdit(int ModNum)
     Gui::Selection().rmvPreselect();
 
     this->attachSelection();
+
+    auto gridnode = getGridNode();
+    Base::Placement plm = getEditingPlacement();
+    setGridOrientation(plm.getPosition(), plm.getRotation());
+    addNodeToRoot(gridnode);
+    setGridEnabled(true);
 
     // create the container for the additional edit data
     assert(!isInEditMode());
@@ -2852,10 +2898,6 @@ bool ViewProviderSketch::setEdit(int ModNum)
     } catch (Base::PyException &){
         Base::Console().Warning("ViewProviderSketch::setEdit: could not import Show module. Visibility automation will not work.\n");
     }
-
-    TightGrid.setValue(false);
-
-    ViewProvider2DObjectGrid::setEdit(ModNum); // notify to handle grid according to edit mode property
 
     // start the edit dialog
     if (sketchDlg)
@@ -3036,6 +3078,10 @@ void ViewProviderSketch::unsetEdit(int ModNum)
 {
     Q_UNUSED(ModNum);
 
+    setGridEnabled(false);
+    auto gridnode = getGridNode();
+    pcRoot->removeChild(gridnode);
+
     /*Modify toolbars dynamically.
     First save state of toolbars in case user changed visibility of a toolbar but he's not changing the wb.
     This happens in someone works directly from sketcher, changing from edit mode to not-edit-mode*/
@@ -3043,8 +3089,6 @@ void ViewProviderSketch::unsetEdit(int ModNum)
 
     Gui::ToolBarManager::getInstance()->setToolbarVisibility(false, editModeToolbarNames());
     Gui::ToolBarManager::getInstance()->setToolbarVisibility(true, nonEditModeToolbarNames());
-
-    TightGrid.setValue(true);
 
     if(listener) {
         Gui::getMainWindow()->removeEventFilter(listener);
@@ -3098,8 +3142,6 @@ void ViewProviderSketch::unsetEdit(int ModNum)
         Base::Console().Error("ViewProviderSketch::unsetEdit: visibility automation failed with an error: \n");
         e.ReportException();
     }
-
-    ViewProvider2DObjectGrid::unsetEdit(ModNum); // notify grid that edit mode is being left
 }
 
 void ViewProviderSketch::setEditViewer(Gui::View3DInventorViewer* viewer, int ModNum)
@@ -3207,24 +3249,31 @@ void ViewProviderSketch::camSensCB(void *data, SoSensor *)
     auto vp = proxyVPrdr->vp;
     auto cam = proxyVPrdr->renderMgr->getCamera();
 
-    auto rotSk = Base::Rotation(vp->getDocument()->getEditingTransform()); //sketch orientation
+    vp->onCameraChanged(cam);
+}
+
+void ViewProviderSketch::onCameraChanged(SoCamera* cam)
+{
+    auto rotSk = Base::Rotation(getDocument()->getEditingTransform()); //sketch orientation
     auto rotc = cam->orientation.getValue().getValue();
     auto rotCam = Base::Rotation(rotc[0], rotc[1], rotc[2], rotc[3]); // camera orientation (needed because float to double conversion)
 
     // Is camera in the same hemisphere as positive sketch normal ?
-    auto orientation = (rotCam.invert()*rotSk).multVec(Base::Vector3d(0,0,1));
-    auto tmpFactor = orientation.z<0?-1:1;
+    auto orientation = (rotCam.invert() * rotSk).multVec(Base::Vector3d(0, 0, 1));
+    auto tmpFactor = orientation.z < 0 ? -1 : 1;
 
-    if (tmpFactor != vp->viewOrientationFactor) { // redraw only if viewing side changed
+    if (tmpFactor != viewOrientationFactor) { // redraw only if viewing side changed
         Base::Console().Log("Switching side, now %s, redrawing\n", tmpFactor < 0 ? "back" : "front");
-        vp->viewOrientationFactor = tmpFactor;
-        vp->draw();
+        viewOrientationFactor = tmpFactor;
+        draw();
 
         QString cmdStr = QStringLiteral(
             "ActiveSketch.ViewObject.TempoVis.sketchClipPlane(ActiveSketch, ActiveSketch.ViewObject.SectionView, %1)\n")
-            .arg(tmpFactor<0?QLatin1String("True"):QLatin1String("False"));
+            .arg(tmpFactor < 0 ? QLatin1String("True") : QLatin1String("False"));
         Base::Interpreter().runStringObject(cmdStr.toLatin1());
     }
+
+    drawGrid(true);
 }
 
 int ViewProviderSketch::getPreselectPoint() const
@@ -3465,7 +3514,6 @@ QIcon ViewProviderSketch::mergeColorfulOverlayIcons (const QIcon & orig) const
 
     return Gui::ViewProvider::mergeColorfulOverlayIcons (mergedicon);
 }
-
 
 /*************************** functions ViewProviderSketch offers to friends such as DrawHandlerSketch ************************/
 

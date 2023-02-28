@@ -23,6 +23,7 @@
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <algorithm>
+# include <iomanip>
 # include <ios>
 # include <sstream>
 # include <QCursor>

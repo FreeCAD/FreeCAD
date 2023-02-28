@@ -252,6 +252,7 @@ public:
         ATAN,
         ATAN2,
         CATH,
+        CBRT,
         CEIL,
         COS,
         COSH,

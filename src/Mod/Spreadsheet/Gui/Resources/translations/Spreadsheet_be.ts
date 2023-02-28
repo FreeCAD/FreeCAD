@@ -1281,7 +1281,7 @@ Defaults to: %V = %A
     <message>
       <location filename="../../AppSpreadsheetGui.cpp" line="79"/>
       <source>Unnamed</source>
-      <translation type="unfinished">Unnamed</translation>
+      <translation>Без назвы</translation>
     </message>
   </context>
 </TS>

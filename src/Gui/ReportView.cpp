@@ -32,6 +32,7 @@
 #endif
 
 #include <Base/Interpreter.h>
+#include <App/Color.h>
 
 #include "ReportView.h"
 #include "Application.h"
@@ -528,7 +529,7 @@ void ReportOutput::changeEvent(QEvent *ev)
     if (ev->type() == QEvent::StyleChange) {
         QPalette pal = qApp->palette();
         QColor color = pal.windowText().color();
-        unsigned int text = (color.red() << 24) | (color.green() << 16) | (color.blue() << 8);
+        unsigned int text = App::Color::asPackedRGB<QColor>(color);
         auto value = static_cast<unsigned long>(text);
         // if this parameter is not already set use the style's window text color
         value = getWindowParameter()->GetUnsigned("colorText", value);
@@ -762,19 +763,19 @@ void ReportOutput::OnChange(Base::Subject<const char*> &rCaller, const char * sR
     }
     else if (strcmp(sReason, "colorText") == 0) {
         unsigned long col = rclGrp.GetUnsigned( sReason );
-        reportHl->setTextColor( QColor( (col >> 24) & 0xff,(col >> 16) & 0xff,(col >> 8) & 0xff) );
+        reportHl->setTextColor(App::Color::fromPackedRGB<QColor>(col));
     }
     else if (strcmp(sReason, "colorLogging") == 0) {
         unsigned long col = rclGrp.GetUnsigned( sReason );
-        reportHl->setLogColor( QColor( (col >> 24) & 0xff,(col >> 16) & 0xff,(col >> 8) & 0xff) );
+        reportHl->setLogColor(App::Color::fromPackedRGB<QColor>(col));
     }
     else if (strcmp(sReason, "colorWarning") == 0) {
         unsigned long col = rclGrp.GetUnsigned( sReason );
-        reportHl->setWarningColor( QColor( (col >> 24) & 0xff,(col >> 16) & 0xff,(col >> 8) & 0xff) );
+        reportHl->setWarningColor(App::Color::fromPackedRGB<QColor>(col));
     }
     else if (strcmp(sReason, "colorError") == 0) {
         unsigned long col = rclGrp.GetUnsigned( sReason );
-        reportHl->setErrorColor( QColor( (col >> 24) & 0xff,(col >> 16) & 0xff,(col >> 8) & 0xff) );
+        reportHl->setErrorColor(App::Color::fromPackedRGB<QColor>(col));
     }
     else if (strcmp(sReason, "checkGoToEnd") == 0) {
         gotoEnd = rclGrp.GetBool(sReason, gotoEnd);

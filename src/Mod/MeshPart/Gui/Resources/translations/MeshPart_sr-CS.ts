@@ -195,7 +195,7 @@ Ova komanda radi samo sa objektom koji je mreža.</translation>
     <message>
       <location filename="../../CurveOnMesh.cpp" line="369"/>
       <source>Cancel</source>
-      <translation>Poništi</translation>
+      <translation>Otkaži</translation>
     </message>
     <message>
       <location filename="../../CurveOnMesh.cpp" line="615"/>

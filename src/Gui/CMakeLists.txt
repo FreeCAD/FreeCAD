@@ -812,6 +812,7 @@ SET(View3D_CPP_SRCS
     View3DInventorSelection.cpp
     View3DInventorViewer.cpp
     View3DInventorRiftViewer.cpp
+    View3DSettings.cpp
     CoinRiftWidget.cpp
     View3DPy.cpp
     View3DViewerPy.cpp
@@ -833,6 +834,7 @@ SET(View3D_SRCS
     View3DInventorViewer.h
     View3DPy.h
     View3DInventorRiftViewer.h
+    View3DSettings.h
     CoinRiftWidget.h
     View3DViewerPy.h
     NaviCube.h

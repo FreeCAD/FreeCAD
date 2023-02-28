@@ -341,7 +341,7 @@ void SoStringLabel::GLRender(SoGLRenderAction *action)
 
     // text color
     SbColor color = this->textColor.getValue();
-    glColor4f(color[0], color[1], color[2],1);
+    glColor4f(color[0], color[1], color[2], 1);
     const SbMatrix & mat = SoModelMatrixElement::get(state);
     const SbMatrix & projmatrix = (mat * SoViewingMatrixElement::get(state) *
                                    SoProjectionMatrixElement::get(state));

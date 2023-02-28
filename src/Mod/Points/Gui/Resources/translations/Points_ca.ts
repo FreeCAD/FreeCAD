@@ -87,7 +87,7 @@
     <message>
       <location filename="../../Command.cpp" line="264"/>
       <source>Cut point cloud</source>
-      <translation>Tallar núvol de punts</translation>
+      <translation>Talla un núvol de punts</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="265"/>
@@ -125,7 +125,7 @@
     <message>
       <location filename="../../Command.cpp" line="151"/>
       <source>Transform Points</source>
-      <translation>Transformar Punts</translation>
+      <translation>Transforma els punts</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="152"/>
@@ -139,12 +139,12 @@
     <message>
       <location filename="../../Command.cpp" line="86"/>
       <source>Import points</source>
-      <translation>Importar punts</translation>
+      <translation>Importa els punts</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="166"/>
       <source>Transform points</source>
-      <translation>Transformar Punts</translation>
+      <translation>Transforma els punts</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="212"/>
@@ -155,7 +155,7 @@
       <location filename="../../ViewProvider.cpp" line="456"/>
       <location filename="../../ViewProvider.cpp" line="615"/>
       <source>Cut points</source>
-      <translation>Punts de tall</translation>
+      <translation>Talla els punts</translation>
     </message>
   </context>
   <context>
@@ -163,7 +163,7 @@
     <message>
       <location filename="../../DlgPointsRead.ui" line="14"/>
       <source>ASCII points import</source>
-      <translation>Importar punts ASCII</translation>
+      <translation>Importa els punts ASCII</translation>
     </message>
     <message>
       <location filename="../../DlgPointsRead.ui" line="34"/>
@@ -183,7 +183,7 @@
     <message>
       <location filename="../../DlgPointsRead.ui" line="70"/>
       <source>Ignore</source>
-      <translation>Ignorar</translation>
+      <translation>Ignora</translation>
     </message>
     <message>
       <location filename="../../DlgPointsRead.ui" line="80"/>

@@ -388,7 +388,7 @@ The smallest value is 0.</source>
     <message>
       <location filename="../../Tessellation.ui" line="217"/>
       <source>Fineness:</source>
-      <translation type="unfinished">Fineness:</translation>
+      <translation>Дакладнасць:</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="234"/>
@@ -398,17 +398,17 @@ The smallest value is 0.</source>
     <message>
       <location filename="../../Tessellation.ui" line="239"/>
       <source>Coarse</source>
-      <translation type="unfinished">Coarse</translation>
+      <translation>Груба</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="244"/>
       <source>Moderate</source>
-      <translation type="unfinished">Moderate</translation>
+      <translation>Умерана</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="249"/>
       <source>Fine</source>
-      <translation type="unfinished">Fine</translation>
+      <translation>Дакладна</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="254"/>

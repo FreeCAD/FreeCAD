@@ -135,21 +135,6 @@ def getSectionData(source):
     return objs,cutplane,onlySolids,clip,direction
 
 
-def looksLikeDraft(o):
-
-    """Does this object look like a Draft shape? (flat, no solid, etc)"""
-
-    # If there is no shape at all ignore it
-    if not hasattr(o, 'Shape') or o.Shape.isNull():
-        return False
-    # If there are solids in the object, it will be handled later
-    # by getCutShapes
-    if len(o.Shape.Solids) > 0:
-        return False
-    # If we have a shape, but no volume, it looks like a flat 2D object
-    return o.Shape.Volume < 0.0000001 # add a little tolerance...
-
-
 def getCutShapes(objs,cutplane,onlySolids,clip,joinArch,showHidden,groupSshapesByObject=False):
 
     """
@@ -213,29 +198,26 @@ def getCutShapes(objs,cutplane,onlySolids,clip,joinArch,showHidden,groupSshapesB
     for o, shapeList in objectShapes:
         tmpSshapes = []
         for sh in shapeList:
-            for sol in sh.Solids:
+            for sub in (sh.SubShapes if sh.ShapeType == "Compound" else [sh]):
                 if cutvolume:
-                    if sol.Volume < 0:
-                        sol.reverse()
-                    c = sol.cut(cutvolume)
-                    s = sol.section(cutface)
+                    if sub.Volume < 0:
+                        sub = sub.reversed() # Use reversed as sub is immutable.
+                    c = sub.cut(cutvolume)
+                    s = sub.section(cutface)
                     try:
                         wires = DraftGeomUtils.findWires(s.Edges)
                         for w in wires:
                             f = Part.Face(w)
                             tmpSshapes.append(f)
-                        #s = Part.Wire(s.Edges)
-                        #s = Part.Face(s)
                     except Part.OCCError:
                         #print "ArchDrawingView: unable to get a face"
                         tmpSshapes.append(s)
-                    shapes.extend(c.Solids)
-                    #sshapes.append(s)
+                    shapes.extend(c.SubShapes if c.ShapeType == "Compound" else [c])
                     if showHidden:
-                        c = sol.cut(invcutvolume)
-                        hshapes.append(c)
+                        c = sub.cut(invcutvolume)
+                        hshapes.extend(c.SubShapes if c.ShapeType == "Compound" else [c])
                 else:
-                    shapes.extend(sol.Solids)
+                    shapes.append(sub)
 
             if len(tmpSshapes) > 0:
                 sshapes.extend(tmpSshapes)
@@ -365,22 +347,18 @@ def getSVG(source,
     # separate spaces and Draft objects
     spaces = []
     nonspaces = []
-    drafts = []
+    drafts = [] # Only used for annotations.
     windows = []
     cutface = None
     for o in objs:
         if Draft.getType(o) == "Space":
             spaces.append(o)
-        elif Draft.getType(o) in ["Dimension","AngularDimension","LinearDimension","Annotation","Label","Text", "DraftText"]:
+        elif Draft.getType(o) in ["Dimension","AngularDimension","LinearDimension","Annotation","Label","Text","DraftText"]:
             if isOriented(o,cutplane):
                 drafts.append(o)
-        elif o.isDerivedFrom("Part::Part2DObject"):
-            drafts.append(o)
         elif o.isDerivedFrom("App::DocumentObjectGroup"):
             # These will have been expanded by getSectionData already
             pass
-        elif looksLikeDraft(o):
-            drafts.append(o)
         else:
             nonspaces.append(o)
         if Draft.getType(o.getLinkedObject()) == "Window":  # To support Link of Windows(Doors)

@@ -30,7 +30,6 @@ Internally it uses IfcOpenShell, which must be installed before using.
 
 from __future__ import print_function
 
-import six
 import os
 import math
 import time

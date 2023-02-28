@@ -57,7 +57,6 @@
 #include "ViewProviderSketch.h"
 #include "ViewProviderSketchCoinAttorney.h"
 
-
 using namespace SketcherGui;
 using namespace Sketcher;
 
@@ -573,8 +572,6 @@ void EditModeCoinManager::processGeometryConstraintsInformationOverlay(const Geo
 
     updateAxesLength();
 
-    updateGridExtent();
-
     pEditModeConstraintCoinManager->processConstraints(geolistfacade);
 }
 
@@ -611,13 +608,6 @@ void EditModeCoinManager::updateAxesLength()
     editModeScenegraphNodes.RootCrossCoordinate->point.set1Value(1,SbVec3f(analysisResults.boundingBoxMagnitudeOrder, 0.0f, zCrossH));
     editModeScenegraphNodes.RootCrossCoordinate->point.set1Value(2,SbVec3f(0.0f, -analysisResults.boundingBoxMagnitudeOrder, zCrossH));
     editModeScenegraphNodes.RootCrossCoordinate->point.set1Value(3,SbVec3f(0.0f, analysisResults.boundingBoxMagnitudeOrder, zCrossH));
-}
-
-void EditModeCoinManager::updateGridExtent()
-{
-    float dMagF = analysisResults.boundingBoxMagnitudeOrder;
-
-    ViewProviderSketchCoinAttorney::updateGridExtent(viewProvider,-dMagF, dMagF, -dMagF, dMagF);
 }
 
 void EditModeCoinManager::updateColor()

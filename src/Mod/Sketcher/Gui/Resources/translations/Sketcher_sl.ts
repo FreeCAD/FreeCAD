@@ -1082,12 +1082,12 @@ glede na črto ali tretjo točko</translation>
   <context>
     <name>CmdSketcherEditSketch</name>
     <message>
-      <location filename="../../Command.cpp" line="260"/>
+      <location filename="../../Command.cpp" line="272"/>
       <source>Edit sketch</source>
       <translation type="unfinished">Edit sketch</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="261"/>
+      <location filename="../../Command.cpp" line="273"/>
       <source>Edit the selected sketch.</source>
       <translation>Uredi izbrani očrt.</translation>
     </message>
@@ -1173,12 +1173,12 @@ glede na črto ali tretjo točko</translation>
   <context>
     <name>CmdSketcherLeaveSketch</name>
     <message>
-      <location filename="../../Command.cpp" line="290"/>
+      <location filename="../../Command.cpp" line="302"/>
       <source>Leave sketch</source>
       <translation>Zapusti očrt</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="291"/>
+      <location filename="../../Command.cpp" line="303"/>
       <source>Finish editing the active sketch.</source>
       <translation>Končaj urejanje dejavnega očrta.</translation>
     </message>
@@ -1186,12 +1186,12 @@ glede na črto ali tretjo točko</translation>
   <context>
     <name>CmdSketcherMapSketch</name>
     <message>
-      <location filename="../../Command.cpp" line="502"/>
+      <location filename="../../Command.cpp" line="501"/>
       <source>Map sketch to face...</source>
       <translation>Preslikaj očrt na ploskev ...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="503"/>
+      <location filename="../../Command.cpp" line="502"/>
       <source>Set the 'Support' of a sketch.
 First select the supporting geometry, for example, a face or an edge of a solid object,
 then call this command, then choose the desired sketch.</source>
@@ -1200,7 +1200,7 @@ Najprej izberite podporno geometrijo, npr. ploskev ali rob telesa,
 nato prikličite ta ukaz in izberite željeni očrt.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="555"/>
+      <location filename="../../Command.cpp" line="554"/>
       <source>Some of the selected objects depend on the sketch to be mapped. Circular dependencies are not allowed.</source>
       <translation>Nekateri izbrani predmeti so odvisni od odslikave očrta. Krožne odvisnosti niso dopustne.</translation>
     </message>
@@ -1208,22 +1208,22 @@ nato prikličite ta ukaz in izberite željeni očrt.</translation>
   <context>
     <name>CmdSketcherMergeSketches</name>
     <message>
-      <location filename="../../Command.cpp" line="862"/>
+      <location filename="../../Command.cpp" line="854"/>
       <source>Merge sketches</source>
       <translation>Združi očrte</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="863"/>
+      <location filename="../../Command.cpp" line="855"/>
       <source>Create a new sketch from merging two or more selected sketches.</source>
       <translation>Z združevanjem dveh ali več izbranih očrtov ustvari nov očrt.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="876"/>
+      <location filename="../../Command.cpp" line="868"/>
       <source>Wrong selection</source>
       <translation>Napačna izbira</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="877"/>
+      <location filename="../../Command.cpp" line="869"/>
       <source>Select at least two sketches.</source>
       <translation>Izberite najmanj dva očrta.</translation>
     </message>
@@ -1231,12 +1231,12 @@ nato prikličite ta ukaz in izberite željeni očrt.</translation>
   <context>
     <name>CmdSketcherMirrorSketch</name>
     <message>
-      <location filename="../../Command.cpp" line="755"/>
+      <location filename="../../Command.cpp" line="747"/>
       <source>Mirror sketch</source>
       <translation>Zrcali očrt</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="756"/>
+      <location filename="../../Command.cpp" line="748"/>
       <source>Create a new mirrored sketch for each selected sketch
 by using the X or Y axes, or the origin point,
 as mirroring reference.</source>
@@ -1244,12 +1244,12 @@ as mirroring reference.</source>
 preko X ali Y osi, oz. preko izhodiščne točke.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="771"/>
+      <location filename="../../Command.cpp" line="763"/>
       <source>Wrong selection</source>
       <translation>Napačna izbira</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="772"/>
+      <location filename="../../Command.cpp" line="764"/>
       <source>Select one or more sketches.</source>
       <translation>Izberite enega ali več očrtov.</translation>
     </message>
@@ -1270,12 +1270,12 @@ preko X ali Y osi, oz. preko izhodiščne točke.</translation>
   <context>
     <name>CmdSketcherNewSketch</name>
     <message>
-      <location filename="../../Command.cpp" line="136"/>
+      <location filename="../../Command.cpp" line="148"/>
       <source>Create sketch</source>
       <translation>Ustvari očrt</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="137"/>
+      <location filename="../../Command.cpp" line="149"/>
       <source>Create a new sketch.</source>
       <translation>Ustvari nov očrt.</translation>
     </message>
@@ -1309,12 +1309,12 @@ preko X ali Y osi, oz. preko izhodiščne točke.</translation>
   <context>
     <name>CmdSketcherReorientSketch</name>
     <message>
-      <location filename="../../Command.cpp" line="375"/>
+      <location filename="../../Command.cpp" line="374"/>
       <source>Reorient sketch...</source>
       <translation>Preusmeri očrt ...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="376"/>
+      <location filename="../../Command.cpp" line="375"/>
       <source>Place the selected sketch on one of the global coordinate planes.
 This will clear the 'Support' property, if any.</source>
       <translation>Umestite izbrani očrt na eno izmed glavnih koordinatnih ravnin.
@@ -1464,12 +1464,12 @@ To bo izbrisalo lastnosti "Podpore", če sploh obstajajo.</translation>
   <context>
     <name>CmdSketcherStopOperation</name>
     <message>
-      <location filename="../../Command.cpp" line="334"/>
+      <location filename="../../Command.cpp" line="339"/>
       <source>Stop operation</source>
       <translation>Ustavi opravilo</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="335"/>
+      <location filename="../../Command.cpp" line="340"/>
       <source>When in edit mode, stop the active operation (drawing, constraining, etc.).</source>
       <translation>V urejevalnem načinu prekini dejavno opravilo (risanje, omejevanje, ...).</translation>
     </message>
@@ -1557,24 +1557,24 @@ na gnani oz. sklicni način</translation>
   <context>
     <name>CmdSketcherValidateSketch</name>
     <message>
-      <location filename="../../Command.cpp" line="717"/>
+      <location filename="../../Command.cpp" line="709"/>
       <source>Validate sketch...</source>
       <translation>Preveri veljavnost očrta ...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="718"/>
+      <location filename="../../Command.cpp" line="710"/>
       <source>Validate a sketch by looking at missing coincidences,
 invalid constraints, degenerated geometry, etc.</source>
       <translation>Preveri, ali ima očrt manjkajoča sovpadanja,
 neveljavna omejila, izrojene geometrije, ...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="732"/>
+      <location filename="../../Command.cpp" line="724"/>
       <source>Wrong selection</source>
       <translation>Napačna izbira</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="733"/>
+      <location filename="../../Command.cpp" line="725"/>
       <source>Select only one sketch.</source>
       <translation>Izberite le en očrt.</translation>
     </message>
@@ -1582,12 +1582,12 @@ neveljavna omejila, izrojene geometrije, ...</translation>
   <context>
     <name>CmdSketcherViewSection</name>
     <message>
-      <location filename="../../Command.cpp" line="946"/>
+      <location filename="../../Command.cpp" line="938"/>
       <source>View section</source>
       <translation>Pogled prereza</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="947"/>
+      <location filename="../../Command.cpp" line="939"/>
       <source>When in edit mode, switch between section view and full view.</source>
       <translation>V urejevalnem načinu preklopi med pogledom odseka in celotnim pogledom.</translation>
     </message>
@@ -1595,12 +1595,12 @@ neveljavna omejila, izrojene geometrije, ...</translation>
   <context>
     <name>CmdSketcherViewSketch</name>
     <message>
-      <location filename="../../Command.cpp" line="677"/>
+      <location filename="../../Command.cpp" line="676"/>
       <source>View sketch</source>
       <translation>Pokaži očrt</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="678"/>
+      <location filename="../../Command.cpp" line="677"/>
       <source>When in edit mode, set the camera orientation perpendicular to the sketch plane.</source>
       <translation>V urejevalnem načinu nastavi kamero tako, da je usmerjena pravokotno na očrtno ravnino.</translation>
     </message>
@@ -1853,37 +1853,37 @@ neveljavna omejila, izrojene geometrije, ...</translation>
       <translation>Omogoči/onemogoči omejilo</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="201"/>
+      <location filename="../../Command.cpp" line="213"/>
       <source>Create a new sketch on a face</source>
       <translation>Ustvari nov očrt na ploskvi</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="233"/>
+      <location filename="../../Command.cpp" line="245"/>
       <source>Create a new sketch</source>
       <translation>Ustvari nov očrt</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="483"/>
+      <location filename="../../Command.cpp" line="482"/>
       <source>Reorient sketch</source>
       <translation>Preusmeri očrt</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="638"/>
+      <location filename="../../Command.cpp" line="637"/>
       <source>Attach sketch</source>
       <translation>Pripni očrt</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="644"/>
+      <location filename="../../Command.cpp" line="643"/>
       <source>Detach sketch</source>
       <translation>Odpni očrt</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="787"/>
+      <location filename="../../Command.cpp" line="779"/>
       <source>Create a mirrored sketch for each selected sketch</source>
       <translation>Vsakemu izbranemu očrtu naredi zrcalni očrt</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="886"/>
+      <location filename="../../Command.cpp" line="878"/>
       <source>Merge sketches</source>
       <translation>Združi očrte</translation>
     </message>
@@ -2104,22 +2104,22 @@ neveljavna omejila, izrojene geometrije, ...</translation>
       <translation>Preimenuj očrtno omejilo</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="782"/>
+      <location filename="../../ViewProviderSketch.cpp" line="821"/>
       <source>Drag Point</source>
       <translation>Vleci točko</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="814"/>
+      <location filename="../../ViewProviderSketch.cpp" line="853"/>
       <source>Drag Curve</source>
       <translation>Vleci krivuljo</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="866"/>
+      <location filename="../../ViewProviderSketch.cpp" line="905"/>
       <source>Drag Constraint</source>
       <translation>Vleci omejilo</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="1055"/>
+      <location filename="../../ViewProviderSketch.cpp" line="1094"/>
       <source>Modify sketch constraints</source>
       <translation>Spremeni očrtno omejilo</translation>
     </message>
@@ -2158,27 +2158,27 @@ neveljavna omejila, izrojene geometrije, ...</translation>
       <translation>Napaka samodejnega omejila: Nerešljiv očrt pri uveljavitvi navpičnostnih/vodoravnostnih omejil.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchAnalysis.cpp" line="727"/>
+      <location filename="../../../App/SketchAnalysis.cpp" line="730"/>
       <source>Autoconstrain error: Unsolvable sketch while applying equality constraints.</source>
       <translation>Napaka samodejnega omejila: Nerešljiv očrt pri uporabi enakostnih omejil.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchAnalysis.cpp" line="781"/>
+      <location filename="../../../App/SketchAnalysis.cpp" line="784"/>
       <source>Autoconstrain error: Unsolvable sketch without constraints.</source>
       <translation>Napaka samodejnega omejila: Nerešljiv načrt brez omejil.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchAnalysis.cpp" line="818"/>
+      <location filename="../../../App/SketchAnalysis.cpp" line="821"/>
       <source>Autoconstrain error: Unsolvable sketch after applying horizontal and vertical constraints.</source>
       <translation>Napaka samodejnega omejila: Nerešljiv očrt po uveljavitivi vodoravnostnih in navpičnostnih omejil.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchAnalysis.cpp" line="840"/>
+      <location filename="../../../App/SketchAnalysis.cpp" line="843"/>
       <source>Autoconstrain error: Unsolvable sketch after applying point-on-point constraints.</source>
       <translation>Napaka samodejnega omejila: Nerešljiv očrt po uveljavitivi omejila točka-na-točko.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchAnalysis.cpp" line="868"/>
+      <location filename="../../../App/SketchAnalysis.cpp" line="871"/>
       <source>Autoconstrain error: Unsolvable sketch after applying equality constraints.</source>
       <translation>Napaka samodejnega omejila: Nerešljiv očrt po uveljavitiv enakostnega omejila.</translation>
     </message>
@@ -2254,48 +2254,49 @@ neveljavna omejila, izrojene geometrije, ...</translation>
       <location filename="../../AppSketcherGui.cpp" line="129"/>
       <location filename="../../AppSketcherGui.cpp" line="130"/>
       <location filename="../../AppSketcherGui.cpp" line="131"/>
+      <location filename="../../AppSketcherGui.cpp" line="132"/>
       <source>Sketcher</source>
       <translation>Očrtovalnik</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="104"/>
+      <location filename="../../Command.cpp" line="116"/>
       <source>There are no modes that accept the selected set of subelements</source>
       <translation>Ni načina, ki bi sprejel izbrani niz podprvin</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="107"/>
+      <location filename="../../Command.cpp" line="119"/>
       <source>Broken link to support subelements</source>
       <translation>Pokvarjena povezava za podporo podprvin</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="110"/>
-      <location filename="../../Command.cpp" line="119"/>
+      <location filename="../../Command.cpp" line="122"/>
+      <location filename="../../Command.cpp" line="131"/>
       <source>Unexpected error</source>
       <translation>Nepričakovana napaka</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="114"/>
+      <location filename="../../Command.cpp" line="126"/>
       <source>Face is non-planar</source>
       <translation>Ploskev je neravna</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="116"/>
+      <location filename="../../Command.cpp" line="128"/>
       <source>Selected shapes are of wrong form (e.g., a curved edge where a straight one is needed)</source>
       <translation>Izbrane oblike so napačne oblike (npr., ukrivljen rob, kjer je potreben raven)</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="157"/>
+      <location filename="../../Command.cpp" line="169"/>
       <source>Sketch mapping</source>
       <translation>Preslikava očrta</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="158"/>
+      <location filename="../../Command.cpp" line="170"/>
       <source>Can't map the sketch to selected object. %1.</source>
       <translation>Očrta ni mogoče preslikati na izbrani predmet. %1.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="165"/>
-      <location filename="../../Command.cpp" line="584"/>
+      <location filename="../../Command.cpp" line="177"/>
+      <location filename="../../Command.cpp" line="583"/>
       <source>Don't attach</source>
       <translation>Ne pripnite</translation>
     </message>
@@ -3872,23 +3873,23 @@ da se spremembe izvirnih predmetov neposredno odrazijo v kopijah</translation>
   <context>
     <name>SketcherGui::SketcherGeneralWidget</name>
     <message>
-      <location filename="../../TaskSketcherGeneral.cpp" line="123"/>
-      <location filename="../../TaskSketcherGeneral.cpp" line="128"/>
-      <location filename="../../TaskSketcherGeneral.cpp" line="133"/>
+      <location filename="../../TaskSketcherGeneral.cpp" line="110"/>
+      <location filename="../../TaskSketcherGeneral.cpp" line="115"/>
+      <location filename="../../TaskSketcherGeneral.cpp" line="120"/>
       <source>Normal Geometry</source>
       <translation>Normalna Geometrija</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherGeneral.cpp" line="123"/>
-      <location filename="../../TaskSketcherGeneral.cpp" line="128"/>
-      <location filename="../../TaskSketcherGeneral.cpp" line="133"/>
+      <location filename="../../TaskSketcherGeneral.cpp" line="110"/>
+      <location filename="../../TaskSketcherGeneral.cpp" line="115"/>
+      <location filename="../../TaskSketcherGeneral.cpp" line="120"/>
       <source>Construction Geometry</source>
       <translation>Pomožna geometrija</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherGeneral.cpp" line="123"/>
-      <location filename="../../TaskSketcherGeneral.cpp" line="128"/>
-      <location filename="../../TaskSketcherGeneral.cpp" line="133"/>
+      <location filename="../../TaskSketcherGeneral.cpp" line="110"/>
+      <location filename="../../TaskSketcherGeneral.cpp" line="115"/>
+      <location filename="../../TaskSketcherGeneral.cpp" line="120"/>
       <source>External Geometry</source>
       <translation>Zunanja Geometrija</translation>
     </message>
@@ -4268,16 +4269,6 @@ Supports all unit systems except 'US customary' and 'Building US/Euro'.</source>
 Podprti so vsi merski sistemi razen "Ameriškega merskega sistema" in "Gradbeniškega ZDA/Evro".</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="218"/>
-      <source>Grid line pattern</source>
-      <translation>Vzorec mrežnih črt</translation>
-    </message>
-    <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="228"/>
-      <source>Line pattern used for grid lines.</source>
-      <translation>Črtni vzorec za mrežne črte.</translation>
-    </message>
-    <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="131"/>
       <source>Segments per geometry</source>
       <translation>Odseki na geometrijo</translation>
@@ -4288,17 +4279,17 @@ Podprti so vsi merski sistemi razen "Ameriškega merskega sistema" in "Gradbeni�
       <translation>Število mnogokotnikov za približek geometriji.</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="257"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="237"/>
       <source>Cursor position coordinates will be displayed beside cursor while editing sketch.</source>
       <translation>Sorednice položaja kazalke bodo med urejanjem očrta prikazane poleg kazalke.</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="276"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="256"/>
       <source>A dialog will pop up to input a value for new dimensional constraints.</source>
       <translation>Pojavilo se bo pogovorno okno, v katerega vnesete vrednost novega merskega omejila.</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="279"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="259"/>
       <source>Ask for value after creating a dimensional constraint</source>
       <translation>Ko je ustvarjeno mersko omejilo, vprašaj za vrednost</translation>
     </message>
@@ -4313,12 +4304,12 @@ Podprti so vsi merski sistemi razen "Ameriškega merskega sistema" in "Gradbeni�
       <translation>"Nadaljevalni način" ustvarjanja geometrije</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="238"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="218"/>
       <source>The current constraint creation tool will remain active after creation.</source>
       <translation>Trenutni ustvarjalnik omejil bo po ustvaritvi ostajl dejaven.</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="241"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="221"/>
       <source>Constraint creation "Continue Mode"</source>
       <translation>"Nadaljevalni način" ustvarjanja omejil</translation>
     </message>
@@ -4356,111 +4347,111 @@ Privzeto: %N = %V
 %V - vrednost velikosti</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="260"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="240"/>
       <source>Show coordinates beside cursor while editing</source>
       <translation>Med urejanje poleg kazalke prikazuj sorednice</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="295"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="275"/>
       <source>Cursor coordinates will use the system decimals setting instead of the short form.</source>
       <translation>Sorednice kazalke bodo prikazane skladno s sistemskimi nastavitvami decimalke namesto v skrajšani obliki.</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="298"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="278"/>
       <source>Use system decimals setting for cursor coordinates</source>
       <translation>Za sorednice kazalke uporabi sistemske nastavitve decimalke</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="341"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="321"/>
       <source>Visibility automation</source>
       <translation>Samodejnost vidnosti</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="347"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="327"/>
       <source>When opening a sketch, hide all features that depend on it.</source>
       <translation>Pri odpiranju očrta skrij vse značilnosti, ki so od njega odvisne.</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="350"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="330"/>
       <source>Hide all objects that depend on the sketch</source>
       <translation>Skrij vse predmet ki so odvisni od očrta</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="366"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="346"/>
       <source>When opening a sketch, show sources for external geometry links.</source>
       <translation>Ob odpiranju skice, prikaži vire za povezave zunanje geometrije.</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="369"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="349"/>
       <source>Show objects used for external geometry</source>
       <translation>Prikaži predmete, uporabljene za zunanjo geometrijo</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="385"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="365"/>
       <source>When opening a sketch, show objects the sketch is attached to.</source>
       <translation>Pri odpiranju očrta prikaži predmete, na katere je očrt vezan.</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="388"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="368"/>
       <source>Show objects that the sketch is attached to</source>
       <translation>Prikaži predmete, na katere je očrt vezan</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="404"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="384"/>
       <source>When closing a sketch, move camera back to where it was before the sketch was opened.</source>
       <translation>Pri zapiranju očrta vrni kamero na mesto pred odprtjem očrta.</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="407"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="387"/>
       <source>Restore camera position after editing</source>
       <translation>Po urejanju povrni položaj kamere</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="423"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="403"/>
       <source>When entering edit mode, force orthographic view of camera.
 Works only when "Restore camera position after editing" is enabled.</source>
       <translation>Pri prehodu v urejevalni način prestavi kamero na pravokotni pogled.
 Deluje le, če je nastavitev "Po urejanju povrni položaj kamere" omogočena.</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="427"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="407"/>
       <source>Force orthographic camera when entering edit</source>
       <translation>Pri prehodu v urejanje preklopi na pravokotni pogled</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="443"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="423"/>
       <source>Open a sketch in Section View mode by default.
 Then objects are only visible behind the sketch plane.</source>
       <translation>Privzeto odpri očrt v načinu prereznega pogleda.
 V tem primeru je predmete mogoče videti le za očrtno ravnino.</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="447"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="427"/>
       <source>Open sketch in Section View mode</source>
       <translation>Odpri očrt v načinu prereznega pogleda</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="469"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="449"/>
       <source>Note: these settings are defaults applied to new sketches. The behavior is remembered for each sketch individually as properties on the View tab.</source>
       <translation>Opomba: te nastavitve so privzeto uporabljene pri novih očrtih. Ravnanje se hrani za vsak očrt posebej kot lastnosti v zavihku Pogled.</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="488"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="468"/>
       <source>Applies current visibility automation settings to all sketches in open documents.</source>
       <translation>Uveljavi v vseh očrtih odprtih dokumentov trenutne nastavitve samodejnosti za vidnost.</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="491"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="471"/>
       <source>Apply to existing sketches</source>
       <translation>Uporabi za obstoječe očrte</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettings.cpp" line="236"/>
+      <location filename="../../SketcherSettings.cpp" line="298"/>
       <source>Unexpected C++ exception</source>
       <translation>Nepričakovana izjema C++</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettings.cpp" line="239"/>
+      <location filename="../../SketcherSettings.cpp" line="301"/>
       <source>Sketcher</source>
       <translation>Očrtovalnik</translation>
     </message>
@@ -4823,64 +4814,37 @@ However, no constraints linking to the endpoints were found.</source>
       <translation>Oblika</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherGeneral.ui" line="25"/>
-      <source>A grid will be shown</source>
-      <translation>Prikazana bo mreža</translation>
-    </message>
-    <message>
-      <location filename="../../TaskSketcherGeneral.ui" line="28"/>
-      <source>Grid</source>
-      <translation>Mreža</translation>
-    </message>
-    <message>
-      <location filename="../../TaskSketcherGeneral.ui" line="44"/>
-      <source>Distance between two subsequent grid lines</source>
-      <translation>Razdalja med zaporednima mrežnima črtama</translation>
-    </message>
-    <message>
-      <location filename="../../TaskSketcherGeneral.ui" line="80"/>
-      <source>New points will snap to the nearest grid line.
-Points must be set closer than a fifth of the grid size to a grid line to snap.</source>
-      <translation>Nove točke se bodo pripenjale na najbližje črte mreže.
-Da bi se pripele, morajo biti točke oddaljene od črte do eno petino polja mreže.</translation>
-    </message>
-    <message>
-      <location filename="../../TaskSketcherGeneral.ui" line="84"/>
-      <source>Grid snap</source>
-      <translation>Pripni na mrežo</translation>
-    </message>
-    <message>
-      <location filename="../../TaskSketcherGeneral.ui" line="100"/>
+      <location filename="../../TaskSketcherGeneral.ui" line="23"/>
       <source>Sketcher proposes automatically sensible constraints.</source>
       <translation>Očrtovalnik samodejno predlaga smiselna omejila.</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherGeneral.ui" line="103"/>
+      <location filename="../../TaskSketcherGeneral.ui" line="26"/>
       <source>Auto constraints</source>
       <translation>Samoomejila</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherGeneral.ui" line="119"/>
+      <location filename="../../TaskSketcherGeneral.ui" line="42"/>
       <source>Sketcher tries not to propose redundant auto constraints</source>
       <translation>Očrtovalnik se skuša izogniti predlaganju čezmernih samoomejil</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherGeneral.ui" line="122"/>
+      <location filename="../../TaskSketcherGeneral.ui" line="45"/>
       <source>Avoid redundant auto constraints</source>
       <translation>Izogni se odvečnim samoomejitvam</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherGeneral.ui" line="138"/>
+      <location filename="../../TaskSketcherGeneral.ui" line="61"/>
       <source>Rendering order (global):</source>
       <translation>Zaporedje izrisovanja (obče):</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherGeneral.ui" line="157"/>
+      <location filename="../../TaskSketcherGeneral.ui" line="80"/>
       <source>To change, drag and drop a geometry type to top or bottom</source>
       <translation>Če želite spremeniti, povlecite-spustite vrsto geometrije na vrh ali na dno</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherGeneral.cpp" line="185"/>
+      <location filename="../../TaskSketcherGeneral.cpp" line="151"/>
       <source>Edit controls</source>
       <translation type="unfinished">Edit controls</translation>
     </message>
@@ -5066,112 +5030,112 @@ Izvede se s pregledom geometrij in omejil očrta.</translation>
   <context>
     <name>SketcherGui::ViewProviderSketch</name>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="2734"/>
+      <location filename="../../ViewProviderSketch.cpp" line="2773"/>
       <source>Edit sketch</source>
       <translation type="unfinished">Edit sketch</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="2769"/>
+      <location filename="../../ViewProviderSketch.cpp" line="2809"/>
       <source>A dialog is already open in the task panel</source>
       <translation type="unfinished">A dialog is already open in the task panel</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="2770"/>
+      <location filename="../../ViewProviderSketch.cpp" line="2810"/>
       <source>Do you want to close this dialog?</source>
       <translation type="unfinished">Do you want to close this dialog?</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="2784"/>
+      <location filename="../../ViewProviderSketch.cpp" line="2824"/>
       <source>Invalid sketch</source>
       <translation>Neveljaven očrt</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="2785"/>
+      <location filename="../../ViewProviderSketch.cpp" line="2825"/>
       <source>Do you want to open the sketch validation tool?</source>
       <translation>Ali želite odprti orodje za preverjanje veljavnosti očrta?</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="2786"/>
+      <location filename="../../ViewProviderSketch.cpp" line="2826"/>
       <source>The sketch is invalid and cannot be edited.</source>
       <translation>Očrt je neveljaven in ga ni mogoče urejati.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="2913"/>
+      <location filename="../../ViewProviderSketch.cpp" line="2955"/>
       <source>Please remove the following constraint:</source>
       <translation>Odstranite naslednjo omejilo:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="2914"/>
+      <location filename="../../ViewProviderSketch.cpp" line="2956"/>
       <source>Please remove at least one of the following constraints:</source>
       <translation>Odstranite vsaj eno od naslednjih omejil:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="2920"/>
+      <location filename="../../ViewProviderSketch.cpp" line="2962"/>
       <source>Please remove the following redundant constraint:</source>
       <translation>Odstranite naslednje čezmerno omejilo:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="2921"/>
+      <location filename="../../ViewProviderSketch.cpp" line="2963"/>
       <source>Please remove the following redundant constraints:</source>
       <translation>Odstranite naslednja čezmerna omejila:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="2927"/>
+      <location filename="../../ViewProviderSketch.cpp" line="2969"/>
       <source>The following constraint is partially redundant:</source>
       <translation>Naslednje omejilo je deloma čezmerno:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="2928"/>
+      <location filename="../../ViewProviderSketch.cpp" line="2970"/>
       <source>The following constraints are partially redundant:</source>
       <translation>Naslednja omejila so deloma čezmerna:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="2934"/>
+      <location filename="../../ViewProviderSketch.cpp" line="2976"/>
       <source>Please remove the following malformed constraint:</source>
       <translation>Odstranite naslednje narobe oblikovano omejilo:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="2935"/>
+      <location filename="../../ViewProviderSketch.cpp" line="2977"/>
       <source>Please remove the following malformed constraints:</source>
       <translation>Odstranite naslednja narobe oblikovana omejila:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="2993"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3035"/>
       <source>Empty sketch</source>
       <translation>Prazen očrt</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="2997"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3039"/>
       <source>Over-constrained: </source>
       <translation>Preomejeno: </translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3003"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3045"/>
       <source>Malformed constraints: </source>
       <translation>Narobe oblikovana omejila: </translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3009"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3051"/>
       <source>Redundant constraints:</source>
       <translation>Čezmerna omejila:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3015"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3057"/>
       <source>Partially redundant:</source>
       <translation>Delno čezmerno:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3021"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3063"/>
       <source>Solver failed to converge</source>
       <translation>Reševalniku je zbliževanje spodletelo</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3026"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3068"/>
       <source>Under constrained:</source>
       <translation>Podomejeno:</translation>
     </message>
     <message numerus="yes">
-      <location filename="../../ViewProviderSketch.cpp" line="3028"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3070"/>
       <source>%n DoF(s)</source>
       <translation>
         <numerusform>%n prostostna stopnja</numerusform>
@@ -5181,7 +5145,7 @@ Izvede se s pregledom geometrij in omejil očrta.</translation>
       </translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3031"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3073"/>
       <source>Fully constrained</source>
       <translation>Polnoomejen</translation>
     </message>
@@ -5533,64 +5497,64 @@ Izvede se s pregledom geometrij in omejil očrta.</translation>
   <context>
     <name>Sketcher_MapSketch</name>
     <message>
-      <location filename="../../Command.cpp" line="527"/>
+      <location filename="../../Command.cpp" line="526"/>
       <source>No sketch found</source>
       <translation>Ni najdenega očrta</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="528"/>
+      <location filename="../../Command.cpp" line="527"/>
       <source>The document doesn't have a sketch</source>
       <translation>Dokument ne vsebuje očrta</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="537"/>
+      <location filename="../../Command.cpp" line="536"/>
       <source>Select sketch</source>
       <translation>Izberi očrt</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="538"/>
+      <location filename="../../Command.cpp" line="537"/>
       <source>Select a sketch from the list</source>
       <translation>Izberite očrt s seznama</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="592"/>
+      <location filename="../../Command.cpp" line="591"/>
       <source> (incompatible with selection)</source>
       <translation> (nezdružljivo z izborom)</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="594"/>
+      <location filename="../../Command.cpp" line="593"/>
       <source> (current)</source>
       <translation> (trenutno)</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="601"/>
+      <location filename="../../Command.cpp" line="600"/>
       <source> (suggested)</source>
       <translation> (predlagano)</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="607"/>
+      <location filename="../../Command.cpp" line="606"/>
       <source>Sketch attachment</source>
       <translation>Pripenjanje očrta</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="609"/>
+      <location filename="../../Command.cpp" line="608"/>
       <source>Current attachment mode is incompatible with the new selection.
 Select the method to attach this sketch to selected objects.</source>
       <translation>Trenutni način pripenjanja je nezdružljiv z novim izborom.
 Izberi način pripenjanja tega očrta na izbrane predmete.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="613"/>
+      <location filename="../../Command.cpp" line="612"/>
       <source>Select the method to attach this sketch to selected objects.</source>
       <translation>Izberi metodo pripenjanja tega očrta na izbrane predmete.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="652"/>
+      <location filename="../../Command.cpp" line="651"/>
       <source>Map sketch</source>
       <translation>Preslikaj očrt</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="653"/>
+      <location filename="../../Command.cpp" line="652"/>
       <source>Can't map a sketch to support:
 %1</source>
       <translation>Ni mogoče preslikati očrta na podporo:
@@ -5609,12 +5573,12 @@ Izberi način pripenjanja tega očrta na izbrane predmete.</translation>
   <context>
     <name>Sketcher_NewSketch</name>
     <message>
-      <location filename="../../Command.cpp" line="173"/>
+      <location filename="../../Command.cpp" line="185"/>
       <source>Sketch attachment</source>
       <translation>Pripenjanje očrta</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="174"/>
+      <location filename="../../Command.cpp" line="186"/>
       <source>Select the method to attach this sketch to selected object</source>
       <translation>Izberi metodo pripenjanja tega očrta na izbrani predmet</translation>
     </message>
@@ -5622,12 +5586,12 @@ Izberi način pripenjanja tega očrta na izbrane predmete.</translation>
   <context>
     <name>Sketcher_ReorientSketch</name>
     <message>
-      <location filename="../../Command.cpp" line="389"/>
+      <location filename="../../Command.cpp" line="388"/>
       <source>Sketch has support</source>
       <translation>Očrt ima podporo</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="390"/>
+      <location filename="../../Command.cpp" line="389"/>
       <source>Sketch with a support face cannot be reoriented.
 Do you want to detach it from the support?</source>
       <translation>Očrta s podporno ploskvijo ni mogoče preusmeriti.
@@ -5961,7 +5925,7 @@ Eigen Sparse QR algoritem je optimiziran za redke razpredelnice; običajno hitre
   <context>
     <name>ViewProviderSketch</name>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="2977"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3019"/>
       <source>and %1 more</source>
       <translation type="unfinished">and %1 more</translation>
     </message>
@@ -6020,6 +5984,170 @@ Eigen Sparse QR algoritem je optimiziran za redke razpredelnice; običajno hitre
       <location filename="../../../Profiles.py" line="58"/>
       <source>Creates a hexagonal profile in the sketch</source>
       <translation>V očrtu ustvari šestkotnik</translation>
+    </message>
+  </context>
+  <context>
+    <name>SketcherGui::SketcherSettingsGrid</name>
+    <message>
+      <location filename="../../SketcherSettingsGrid.ui" line="14"/>
+      <location filename="../../SketcherSettingsGrid.ui" line="38"/>
+      <source>Grid</source>
+      <translation>Mreža</translation>
+    </message>
+    <message>
+      <location filename="../../SketcherSettingsGrid.ui" line="20"/>
+      <source>Grid settings</source>
+      <translation type="unfinished">Grid settings</translation>
+    </message>
+    <message>
+      <location filename="../../SketcherSettingsGrid.ui" line="35"/>
+      <source>A grid will be shown</source>
+      <translation>Prikazana bo mreža</translation>
+    </message>
+    <message>
+      <location filename="../../SketcherSettingsGrid.ui" line="57"/>
+      <source>Automatically adapt grid spacing based on the viewer dimensions.</source>
+      <translation type="unfinished">Automatically adapt grid spacing based on the viewer dimensions.</translation>
+    </message>
+    <message>
+      <location filename="../../SketcherSettingsGrid.ui" line="60"/>
+      <source>Grid Auto Spacing</source>
+      <translation type="unfinished">Grid Auto Spacing</translation>
+    </message>
+    <message>
+      <location filename="../../SketcherSettingsGrid.ui" line="73"/>
+      <source>Grid spacing</source>
+      <translation>Razmik v mreži</translation>
+    </message>
+    <message>
+      <location filename="../../SketcherSettingsGrid.ui" line="83"/>
+      <source>Distance between two subsequent grid lines.
+If 'Grid Auto Spacing' is enabled, will be used as base value.</source>
+      <translation type="unfinished">Distance between two subsequent grid lines.
+If 'Grid Auto Spacing' is enabled, will be used as base value.</translation>
+    </message>
+    <message>
+      <location filename="../../SketcherSettingsGrid.ui" line="115"/>
+      <source>Pixel size threshold</source>
+      <translation type="unfinished">Pixel size threshold</translation>
+    </message>
+    <message>
+      <location filename="../../SketcherSettingsGrid.ui" line="125"/>
+      <source>While using 'Grid Auto Spacing' this sets a threshold in pixel to the grid spacing.
+The grid spacing change if it becomes smaller than this number of pixel.</source>
+      <translation type="unfinished">While using 'Grid Auto Spacing' this sets a threshold in pixel to the grid spacing.
+The grid spacing change if it becomes smaller than this number of pixel.</translation>
+    </message>
+    <message>
+      <location filename="../../SketcherSettingsGrid.ui" line="151"/>
+      <source>Grid display</source>
+      <translation type="unfinished">Grid display</translation>
+    </message>
+    <message>
+      <location filename="../../SketcherSettingsGrid.ui" line="163"/>
+      <source>Subdivision lines</source>
+      <translation type="unfinished">Subdivision lines</translation>
+    </message>
+    <message>
+      <location filename="../../SketcherSettingsGrid.ui" line="175"/>
+      <location filename="../../SketcherSettingsGrid.ui" line="313"/>
+      <source>Line pattern</source>
+      <translation>Vzorec črte</translation>
+    </message>
+    <message>
+      <location filename="../../SketcherSettingsGrid.ui" line="185"/>
+      <source>Line pattern used for grid lines.</source>
+      <translation>Črtni vzorec za mrežne črte.</translation>
+    </message>
+    <message>
+      <location filename="../../SketcherSettingsGrid.ui" line="195"/>
+      <location filename="../../SketcherSettingsGrid.ui" line="333"/>
+      <source>Line width</source>
+      <translation>Širina črte</translation>
+    </message>
+    <message>
+      <location filename="../../SketcherSettingsGrid.ui" line="205"/>
+      <source>Distance between two subsequent grid lines</source>
+      <translation>Razdalja med zaporednima mrežnima črtama</translation>
+    </message>
+    <message>
+      <location filename="../../SketcherSettingsGrid.ui" line="230"/>
+      <location filename="../../SketcherSettingsGrid.ui" line="365"/>
+      <source>Line color</source>
+      <translation>Barva črte</translation>
+    </message>
+    <message>
+      <location filename="../../SketcherSettingsGrid.ui" line="269"/>
+      <source>Division lines</source>
+      <translation type="unfinished">Division lines</translation>
+    </message>
+    <message>
+      <location filename="../../SketcherSettingsGrid.ui" line="281"/>
+      <source>Number of subdivisions per division</source>
+      <translation type="unfinished">Number of subdivisions per division</translation>
+    </message>
+    <message>
+      <location filename="../../SketcherSettingsGrid.ui" line="291"/>
+      <source>Number of subdivisions of each grid division. Set to 1 to disable divisions.</source>
+      <translation type="unfinished">Number of subdivisions of each grid division. Set to 1 to disable divisions.</translation>
+    </message>
+    <message>
+      <location filename="../../SketcherSettingsGrid.ui" line="323"/>
+      <source>Line pattern used for grid division.</source>
+      <translation type="unfinished">Line pattern used for grid division.</translation>
+    </message>
+    <message>
+      <location filename="../../SketcherSettingsGrid.ui" line="343"/>
+      <source>Distance between two subsequent division lines</source>
+      <translation type="unfinished">Distance between two subsequent division lines</translation>
+    </message>
+  </context>
+  <context>
+    <name>GridSpaceAction</name>
+    <message>
+      <location filename="../../Command.cpp" line="1008"/>
+      <source>Grid Snap</source>
+      <translation type="unfinished">Grid Snap</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="1009"/>
+      <source>New points will snap to the nearest grid line.
+Points must be set closer than a fifth of the grid spacing to a grid line to snap.</source>
+      <translation type="unfinished">New points will snap to the nearest grid line.
+Points must be set closer than a fifth of the grid spacing to a grid line to snap.</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="1012"/>
+      <source>Grid Auto Spacing</source>
+      <translation type="unfinished">Grid Auto Spacing</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="1013"/>
+      <source>Resize grid automatically depending on zoom.</source>
+      <translation type="unfinished">Resize grid automatically depending on zoom.</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="1016"/>
+      <source>Spacing</source>
+      <translation type="unfinished">Spacing</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="1017"/>
+      <source>Distance between two subsequent grid lines</source>
+      <translation>Razdalja med zaporednima mrežnima črtama</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdSketcherGrid</name>
+    <message>
+      <location filename="../../Command.cpp" line="1122"/>
+      <source>Activate Grid</source>
+      <translation type="unfinished">Activate Grid</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="1123"/>
+      <source>Activate grid and grid settings</source>
+      <translation type="unfinished">Activate grid and grid settings</translation>
     </message>
   </context>
 </TS>
