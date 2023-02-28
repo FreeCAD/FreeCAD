@@ -28,6 +28,7 @@ from FreeCAD import Base
 App = FreeCAD
 
 from parttests.regression_tests import RegressionTests
+from parttests.TopoShapeListTest import TopoShapeListTest
 
 #---------------------------------------------------------------------------
 # define the test cases to test the FreeCAD Part module
