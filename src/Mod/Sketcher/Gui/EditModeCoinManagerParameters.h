@@ -44,6 +44,8 @@
 #include <Gui/Inventor/SmSwitchboard.h>
 #include <Mod/Sketcher/App/GeoList.h>
 
+#include "ViewProviderSketchGeometryExtension.h"
+
 
 namespace Part {
     class Geometry;
@@ -227,22 +229,26 @@ private:
 public:
     void reset() {
         CoinLayers = 1;
-        logicalLayer2CoinLayer.clear();
-        logicalLayer2CoinLayer.push_back(Default); // Logical layer 1 always maps to CoinLayer 1
     }
 
-    int getCoinLayer(int logicallayer) {
-        if(logicallayer < int(logicalLayer2CoinLayer.size()))
-            return logicalLayer2CoinLayer[logicallayer];
+    inline int getSafeCoinLayer(int coinlayer) {
+        if(coinlayer < CoinLayers) {
+            return coinlayer;
+        }
 
         return Default;
     }
 
-    int CoinLayers = 1; // defaults to a single Coin Geometry Layer.
+    int inline getCoinLayerCount() const {
+        return CoinLayers;
+    }
+
+    void setCoinLayerCount(int layernumber) {
+        CoinLayers = layernumber;
+    }
 
 private:
-    /// This maps a logicalLayer (the one of GeometryFacade) to a CoinLayer (the ones created in the scenegraph)
-    std::vector<int> logicalLayer2CoinLayer;
+    int CoinLayers = 1; // defaults to a single Coin Geometry Layer.
 };
 
 /** @brief     Struct to hold the results of analysis performed on geometry
@@ -403,7 +409,6 @@ struct CoinMapping {
     /// This maps GeoElementId index {GeoId, PointPos} to a {coin layer and MF index} of a curve or point.
     std::map<Sketcher::GeoElementId,MultiFieldId> GeoElementId2SetId;
 };
-
 
 } // namespace SketcherGui
 
