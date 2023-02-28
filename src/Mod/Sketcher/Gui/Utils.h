@@ -29,6 +29,7 @@
 #include <Mod/Sketcher/App/GeoEnum.h>
 
 #include "AutoConstraint.h"
+#include "ViewProviderSketchGeometryExtension.h"
 
 
 namespace App {
@@ -154,6 +155,24 @@ auto toPointerVector(const std::vector<std::unique_ptr<T>> & vector) {
     std::transform(vector.begin(), vector.end(), vp.begin(), [](auto &p) {return p.get();});
 
     return vp;
+}
+
+/** returns the visual layer id (not the one of the GeometryFacade, but the index to PropertyVisualLayerList) from a geometry or GeometryFacade.
+ * NOTE: If the geometry or geometryfacade does not have a corresponding ViewProviderSketchGeometryExtension, the default layer (layer 0) is returned.
+ * */
+template <typename T>
+auto getSafeGeomLayerId(T geom)
+{
+    int layerId = 0;
+
+    if(geom->hasExtension(SketcherGui::ViewProviderSketchGeometryExtension::getClassTypeId())) {
+        auto vpext = std::static_pointer_cast<const SketcherGui::ViewProviderSketchGeometryExtension>(
+                                                geom->getExtension(SketcherGui::ViewProviderSketchGeometryExtension::getClassTypeId()).lock());
+
+        layerId = vpext->getVisualLayerId();
+    }
+
+    return layerId;
 }
 
 #endif // SKETCHERGUI_Recompute_H
