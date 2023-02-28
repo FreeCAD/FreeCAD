@@ -50,7 +50,7 @@
 #include "TaskSketcherElements.h"
 #include "ui_TaskSketcherElements.h"
 #include "ViewProviderSketch.h"
-
+#include "Utils.h"
 
 using namespace SketcherGui;
 using namespace Gui::TaskView;
@@ -1085,10 +1085,19 @@ void TaskSketcherElements::slotElementsChanged(void)
         bool construction = Sketcher::GeometryFacade::getConstruction(*it);
         bool internalAligned = Sketcher::GeometryFacade::isInternalAligned(*it);
 
+        auto layerId = getSafeGeomLayerId(*it);
+
         if (internalAligned)
             state = GeometryState::InternalAlignment;
         else if (construction) //Caution, internalAligned geos are construction too. So the 'if' and 'else if' cannot be swapped.
             state = GeometryState::Construction;
+
+        auto IdInformation = [this,i,layerId](){
+            if(sketchView->VisualLayerList.getSize() > 1)
+                return QString::fromLatin1("(Edge%1#ID%2#VL%3)").arg(i).arg(i - 1).arg(layerId);
+            else
+                return QString::fromLatin1("(Edge%1#ID%2)").arg(i).arg(i - 1);
+        };
 
         ElementItem* itemN = new ElementItem(i - 1,
             sketchView->getSketchObject()->getVertexIndexGeoPos(i - 1, Sketcher::PointPos::start),
@@ -1096,43 +1105,43 @@ void TaskSketcherElements::slotElementsChanged(void)
             sketchView->getSketchObject()->getVertexIndexGeoPos(i - 1, Sketcher::PointPos::end),
             type, state,
             type == Part::GeomPoint::getClassTypeId() ? (isNamingBoxChecked ?
-                (tr("Point") + QString::fromLatin1("(Edge%1#ID%2)").arg(i).arg(i - 1)) +
+                (tr("Point") + IdInformation()) +
                 (construction ? (QString::fromLatin1("-") + tr("Construction")) : (internalAligned ? (QString::fromLatin1("-") + tr("Internal")) : QString::fromLatin1(""))) :
                 (QString::fromLatin1("%1-").arg(i) + tr("Point"))) :
             type == Part::GeomLineSegment::getClassTypeId() ? (isNamingBoxChecked ?
-                (tr("Line") + QString::fromLatin1("(Edge%1#ID%2)").arg(i).arg(i - 1)) +
+                (tr("Line") + IdInformation()) +
                 (construction ? (QString::fromLatin1("-") + tr("Construction")) : (internalAligned ? (QString::fromLatin1("-") + tr("Internal")) : QString::fromLatin1(""))) :
                 (QString::fromLatin1("%1-").arg(i) + tr("Line"))) :
             type == Part::GeomArcOfCircle::getClassTypeId() ? (isNamingBoxChecked ?
-                (tr("Arc") + QString::fromLatin1("(Edge%1#ID%2)").arg(i).arg(i - 1)) +
+                (tr("Arc") + IdInformation()) +
                 (construction ? (QString::fromLatin1("-") + tr("Construction")) : (internalAligned ? (QString::fromLatin1("-") + tr("Internal")) : QString::fromLatin1(""))) :
                 (QString::fromLatin1("%1-").arg(i) + tr("Arc"))) :
             type == Part::GeomCircle::getClassTypeId() ? (isNamingBoxChecked ?
-                (tr("Circle") + QString::fromLatin1("(Edge%1#ID%2)").arg(i).arg(i - 1)) +
+                (tr("Circle") + IdInformation()) +
                 (construction ? (QString::fromLatin1("-") + tr("Construction")) : (internalAligned ? (QString::fromLatin1("-") + tr("Internal")) : QString::fromLatin1(""))) :
                 (QString::fromLatin1("%1-").arg(i) + tr("Circle"))) :
             type == Part::GeomEllipse::getClassTypeId() ? (isNamingBoxChecked ?
-                (tr("Ellipse") + QString::fromLatin1("(Edge%1#ID%2)").arg(i).arg(i - 1)) +
+                (tr("Ellipse") + IdInformation()) +
                 (construction ? (QString::fromLatin1("-") + tr("Construction")) : (internalAligned ? (QString::fromLatin1("-") + tr("Internal")) : QString::fromLatin1(""))) :
                 (QString::fromLatin1("%1-").arg(i) + tr("Ellipse"))) :
             type == Part::GeomArcOfEllipse::getClassTypeId() ? (isNamingBoxChecked ?
-                (tr("Elliptical Arc") + QString::fromLatin1("(Edge%1#ID%2)").arg(i).arg(i - 1)) +
+                (tr("Elliptical Arc") + IdInformation()) +
                 (construction ? (QString::fromLatin1("-") + tr("Construction")) : (internalAligned ? (QString::fromLatin1("-") + tr("Internal")) : QString::fromLatin1(""))) :
                 (QString::fromLatin1("%1-").arg(i) + tr("Elliptical Arc"))) :
             type == Part::GeomArcOfHyperbola::getClassTypeId() ? (isNamingBoxChecked ?
-                (tr("Hyperbolic Arc") + QString::fromLatin1("(Edge%1#ID%2)").arg(i).arg(i - 1)) +
+                (tr("Hyperbolic Arc") + IdInformation()) +
                 (construction ? (QString::fromLatin1("-") + tr("Construction")) : (internalAligned ? (QString::fromLatin1("-") + tr("Internal")) : QString::fromLatin1(""))) :
                 (QString::fromLatin1("%1-").arg(i) + tr("Hyperbolic Arc"))) :
             type == Part::GeomArcOfParabola::getClassTypeId() ? (isNamingBoxChecked ?
-                (tr("Parabolic Arc") + QString::fromLatin1("(Edge%1#ID%2)").arg(i).arg(i - 1)) +
+                (tr("Parabolic Arc") + IdInformation()) +
                 (construction ? (QString::fromLatin1("-") + tr("Construction")) : (internalAligned ? (QString::fromLatin1("-") + tr("Internal")) : QString::fromLatin1(""))) :
                 (QString::fromLatin1("%1-").arg(i) + tr("Parabolic Arc"))) :
             type == Part::GeomBSplineCurve::getClassTypeId() ? (isNamingBoxChecked ?
-                (tr("BSpline") + QString::fromLatin1("(Edge%1#ID%2)").arg(i).arg(i - 1)) +
+                (tr("BSpline") + IdInformation()) +
                 (construction ? (QString::fromLatin1("-") + tr("Construction")) : (internalAligned ? (QString::fromLatin1("-") + tr("Internal")) : QString::fromLatin1(""))) :
                 (QString::fromLatin1("%1-").arg(i) + tr("BSpline"))) :
             (isNamingBoxChecked ?
-                (tr("Other") + QString::fromLatin1("(Edge%1#ID%2)").arg(i).arg(i - 1)) +
+                (tr("Other") + IdInformation()) +
                 (construction ? (QString::fromLatin1("-") + tr("Construction")) : (internalAligned ? (QString::fromLatin1("-") + tr("Internal")) : QString::fromLatin1(""))) :
                 (QString::fromLatin1("%1-").arg(i) + tr("Other")))
         );
@@ -1153,18 +1162,39 @@ void TaskSketcherElements::slotElementsChanged(void)
 
         if(j>2) { // we do not want the H and V axes
 
+            auto layerId = getSafeGeomLayerId(*it);
+
+            auto IdInformation = [this,j,layerId](bool link){
+                if(sketchView->VisualLayerList.getSize() > 1) {
+                    if(link) {
+                        return QString::fromLatin1("(ExternalEdge%1#ID%2#VL%3, ").arg(j-2).arg(-j).arg(layerId);
+                    }
+                    else {
+                        return QString::fromLatin1("(ExternalEdge%1#ID%2#VL%3)").arg(j-2).arg(-j).arg(layerId);
+                    }
+                }
+                else {
+                   if(link) {
+                        return QString::fromLatin1("(ExternalEdge%1#ID%2, ").arg(j-2).arg(-j);
+                    }
+                    else {
+                        return QString::fromLatin1("(ExternalEdge%1#ID%2)").arg(j-2).arg(-j);
+                    }
+                }
+            };
+
             QString linkname;
 
             if(isNamingBoxChecked) {
                 if(size_t(j-3) < linkobjs.size() && size_t(j-3) < linksubs.size()) {
-                    linkname =  QString::fromLatin1("(ExternalEdge%1#ID%2, ").arg(j-2).arg(-j) +
+                    linkname =  IdInformation(true) +
                                 QString::fromUtf8(linkobjs[j-3]->getNameInDocument()) +
                                 QString::fromLatin1(".") +
                                 QString::fromUtf8(linksubs[j-3].c_str()) +
                                 QString::fromLatin1(")");
                 }
                 else {
-                    linkname = QString::fromLatin1("(ExternalEdge%1)").arg(j-2);
+                    linkname = IdInformation(false);
                 }
             }
 
