@@ -71,14 +71,20 @@ EditModeGeometryCoinManager::~EditModeGeometryCoinManager()
 void EditModeGeometryCoinManager::processGeometry(const GeoListFacade & geolistfacade)
 {
     // enable all layers
-    editModeScenegraphNodes.PointsGroup->enable.setNum(geometryLayerParameters.CoinLayers);
-    editModeScenegraphNodes.CurvesGroup->enable.setNum(geometryLayerParameters.CoinLayers);
+    editModeScenegraphNodes.PointsGroup->enable.setNum(geometryLayerParameters.getCoinLayerCount());
+    editModeScenegraphNodes.CurvesGroup->enable.setNum(geometryLayerParameters.getCoinLayerCount());
     SbBool *swsp = editModeScenegraphNodes.PointsGroup->enable.startEditing();
     SbBool *swsc = editModeScenegraphNodes.CurvesGroup->enable.startEditing();
 
-    for(int l=0; l<geometryLayerParameters.CoinLayers; l++){
-        swsp[l] = true; // layer defaults to enabled
-        swsc[l] = true; // layer defaults to enabled
+    auto setEnableLayer = [swsp, swsc](int l, bool enabled) {
+        swsp[l] = enabled; // layer defaults to enabled
+        swsc[l] = enabled; // layer defaults to enabled
+    };
+
+    auto layersconfigurations = viewProvider.VisualLayerList.getValues();
+
+    for(auto l=0; l<geometryLayerParameters.getCoinLayerCount(); l++){
+        setEnableLayer(l,layersconfigurations[l].isVisible());
     }
 
     editModeScenegraphNodes.PointsGroup->enable.finishEditing();
@@ -152,7 +158,7 @@ void EditModeGeometryCoinManager::updateGeometryColor(const GeoListFacade & geol
     SbColor *crosscolor = editModeScenegraphNodes.RootCrossMaterials->diffuseColor.startEditing();
     auto viewOrientationFactor = ViewProviderSketchCoinAttorney::getViewOrientationFactor(viewProvider);
 
-    for(int l=0; l<geometryLayerParameters.CoinLayers; l++) {
+    for(auto l=0; l<geometryLayerParameters.getCoinLayerCount(); l++) {
 
         int PtNum = editModeScenegraphNodes.PointsMaterials[l]->diffuseColor.getNum();
         SbColor *pcolor = editModeScenegraphNodes.PointsMaterials[l]->diffuseColor.startEditing();
@@ -416,7 +422,7 @@ void EditModeGeometryCoinManager::updateGeometryLayersConfiguration()
     // 2) The number of layers is the same, but the configuration needs to be updated
 
     // TODO: Quite some room for improvement here:
-    geometryLayerParameters.CoinLayers = viewProvider.VisualLayerList.getSize();
+    geometryLayerParameters.setCoinLayerCount(viewProvider.VisualLayerList.getSize());
 
     emptyGeometryRootNodes();
     createEditModePointInventorNodes();
@@ -433,7 +439,7 @@ void EditModeGeometryCoinManager::createEditModeInventorNodes()
 {
     createGeometryRootNodes();
 
-    geometryLayerParameters.CoinLayers = viewProvider.VisualLayerList.getSize();
+    geometryLayerParameters.setCoinLayerCount(viewProvider.VisualLayerList.getSize());
 
     createEditModePointInventorNodes();
 
@@ -460,7 +466,7 @@ void EditModeGeometryCoinManager::emptyGeometryRootNodes()
 
 void EditModeGeometryCoinManager::createEditModePointInventorNodes()
 {
-    for(int i=0; i < geometryLayerParameters.CoinLayers; i++) {
+    for(int i=0; i < geometryLayerParameters.getCoinLayerCount(); i++) {
         SoSeparator * sep = new SoSeparator;
         sep->ref();
 
@@ -500,7 +506,7 @@ void EditModeGeometryCoinManager::createEditModeCurveInventorNodes()
 {
     auto layersconfigurations = viewProvider.VisualLayerList.getValue();
 
-    for(int i=0; i < geometryLayerParameters.CoinLayers; i++) {
+    for(int i=0; i < geometryLayerParameters.getCoinLayerCount(); i++) {
         SoSeparator * sep = new SoSeparator;
         sep->ref();
 

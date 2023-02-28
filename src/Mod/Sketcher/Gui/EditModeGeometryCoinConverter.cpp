@@ -28,6 +28,8 @@
 #include "EditModeGeometryCoinConverter.h"
 #include "EditModeCoinManagerParameters.h"
 #include "ViewProviderSketchCoinAttorney.h"
+#include "ViewProviderSketchGeometryExtension.h"
+#include "Utils.h"
 
 
 using namespace SketcherGui;
@@ -60,7 +62,7 @@ void EditModeGeometryCoinConverter::convert(const Sketcher::GeoListFacade & geol
     pointCounter.clear();
     curveCounter.clear();
 
-    for(int l=0; l<geometryLayerParameters.CoinLayers; l++){
+    for(auto l=0; l<geometryLayerParameters.getCoinLayerCount(); l++){
         Coords.emplace_back();
         Points.emplace_back();
         Index.emplace_back();
@@ -70,8 +72,8 @@ void EditModeGeometryCoinConverter::convert(const Sketcher::GeoListFacade & geol
         coinMapping.PointIdToVertexId.emplace_back();
     }
 
-    pointCounter.resize(geometryLayerParameters.CoinLayers,0);
-    curveCounter.resize(geometryLayerParameters.CoinLayers,0);
+    pointCounter.resize(geometryLayerParameters.getCoinLayerCount(),0);
+    curveCounter.resize(geometryLayerParameters.getCoinLayerCount(),0);
 
     // RootPoint
     // TODO: RootPoint is here added in layer0. However, this layer may be hidden. The point should,
@@ -150,9 +152,10 @@ void EditModeGeometryCoinConverter::convert(const Sketcher::GeoListFacade & geol
         const auto GeoId = geolistfacade.getGeoIdFromGeomListIndex(i);
         const auto geom = geolistfacade.getGeometryFacadeFromGeoId(GeoId);
         const auto type = geom->getGeometry()->getTypeId();
-        auto layerId = geom->getGeometryLayerId();
 
-        auto coinLayer = geometryLayerParameters.getCoinLayer(layerId);
+        auto layerId = getSafeGeomLayerId(geom);
+
+        auto coinLayer = geometryLayerParameters.getSafeCoinLayer(layerId);
 
         if (type == Part::GeomPoint::getClassTypeId()) { // add a point
             convert< Part::GeomPoint,
@@ -192,7 +195,7 @@ void EditModeGeometryCoinConverter::convert(const Sketcher::GeoListFacade & geol
         }
     }
 
-    for(int l=0 ; l < geometryLayerParameters.CoinLayers ; l++) {
+    for(auto l=0 ; l < geometryLayerParameters.getCoinLayerCount() ; l++) {
 
         // Coin Nodes Editing
         geometryLayerNodes.CurvesCoordinate[l]->point.setNum(Coords[l].size());
@@ -231,9 +234,9 @@ template <  typename GeoType,
             EditModeGeometryCoinConverter::AnalyseMode analysemode >
 void EditModeGeometryCoinConverter::convert(const Sketcher::GeometryFacade * geometryfacade, [[maybe_unused]] int geoid) {
     auto geo = static_cast<const GeoType *>(geometryfacade->getGeometry());
-    auto layerId = geometryfacade->getGeometryLayerId();
+    auto layerId = getSafeGeomLayerId(geometryfacade);
 
-    auto coinLayer = geometryLayerParameters.getCoinLayer(layerId);
+    auto coinLayer = geometryLayerParameters.getSafeCoinLayer(layerId);
 
     auto addPoint = [&dMg = boundingBoxMaxMagnitude] (auto & pushvector, Base::Vector3d point) {
 
