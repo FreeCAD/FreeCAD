@@ -2761,6 +2761,13 @@ void ViewProviderSketch::updateData(const App::Property *prop)
 
 void ViewProviderSketch::onChanged(const App::Property *prop)
 {
+    if (prop == &VisualLayerList) {
+        if(isInEditMode()) {
+            // Configure and rebuild Coin SceneGraph
+            editCoinManager->updateGeometryLayersConfiguration();
+        }
+        return;
+    }
     // call father
     ViewProviderPart::onChanged(prop);
 }
