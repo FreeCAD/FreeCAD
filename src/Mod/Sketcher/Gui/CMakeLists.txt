@@ -27,6 +27,8 @@ set(SketcherGui_LIBS
 
 qt_add_resources(SketcherGui_SRCS Resources/Sketcher.qrc)
 
+generate_from_xml(ViewProviderSketchGeometryExtensionPy)
+
 set(SketcherGui_UIC_SRCS
     TaskSketcherConstraints.ui
     TaskSketcherElements.ui
@@ -150,6 +152,17 @@ SET(SketcherGui_SRCS
     ViewProviderPython.h
     ViewProviderSketchGeometryExtension.h
     ViewProviderSketchGeometryExtension.cpp
+)
+
+SET(Python_SRCS
+    ViewProviderSketchGeometryExtensionPy.xml
+    ViewProviderSketchGeometryExtensionPyImp.cpp
+)
+SOURCE_GROUP("Python" FILES ${Python_SRCS})
+
+SET(SketcherGui_SRCS
+    ${SketcherGui_SRCS}
+    ${Python_SRCS}
 )
 
 if(FREECAD_USE_PCH)

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GenerateModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="generateMetaModel_Module.xsd">
+  <PythonExport
+      Father="GeometryExtensionPy"
+      Name="ViewProviderSketchGeometryExtensionPy"
+      PythonName="SketcherGui.ViewProviderSketchGeometryExtension"
+      Twin="ViewProviderSketchGeometryExtension"
+      TwinPointer="ViewProviderSketchGeometryExtension"
+      Include="Mod/Sketcher/Gui/ViewProviderSketchGeometryExtension.h"
+      Namespace="SketcherGui"
+      FatherInclude="Mod/Part/App/GeometryExtensionPy.h"
+      FatherNamespace="Part"
+      Constructor="true">
+    <Documentation>
+      <Author Licence="LGPL" Name="Abdullah Tahiri" EMail="abdullah.tahiri.yo@gmail.com" />
+      <UserDocu>Describes a ViewProviderSketchGeometryExtension</UserDocu>
+    </Documentation>
+    <Attribute Name="VisualLayerId" ReadOnly="false">
+        <Documentation>
+            <UserDocu>
+                Sets/returns this geometry's Visual Layer Id.
+            </UserDocu>
+        </Documentation>
+        <Parameter Name="VisualLayerId" Type="Long"/>
+    </Attribute>
+  </PythonExport>
+</GenerateModel>
