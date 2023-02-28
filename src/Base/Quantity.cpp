@@ -159,82 +159,82 @@ bool Quantity::operator >=(const Quantity& that) const
     return (this->_Value >= that._Value) ;
 }
 
-Quantity Quantity::operator *(const Quantity &p) const
+Quantity Quantity::operator *(const Quantity& other) const
 {
-    return Quantity(this->_Value * p._Value,this->_Unit * p._Unit);
+    return Quantity(this->_Value * other._Value, this->_Unit * other._Unit);
 }
 
-Quantity Quantity::operator *(double p) const
+Quantity Quantity::operator *(double factor) const
 {
-    return Quantity(this->_Value * p,this->_Unit);
+    return Quantity(this->_Value * factor, this->_Unit);
 }
 
-Quantity Quantity::operator /(const Quantity &p) const
+Quantity Quantity::operator /(const Quantity& other) const
 {
-    return Quantity(this->_Value / p._Value,this->_Unit / p._Unit);
+    return Quantity(this->_Value / other._Value, this->_Unit / other._Unit);
 }
 
-Quantity Quantity::operator /(double p) const
+Quantity Quantity::operator /(double factor) const
 {
-    return Quantity(this->_Value / p,this->_Unit);
+    return Quantity(this->_Value / factor, this->_Unit);
 }
 
-Quantity Quantity::pow(const Quantity &p) const
+Quantity Quantity::pow(const Quantity& other) const
 {
-    if (!p._Unit.isEmpty()) {
+    if (!other._Unit.isEmpty()) {
         throw Base::UnitsMismatchError("Quantity::pow(): exponent must not have a unit");
     }
 
     return Quantity(
-        std::pow(this->_Value, p._Value),
-        this->_Unit.pow(static_cast<signed char>(p._Value))
+        std::pow(this->_Value, other._Value),
+        this->_Unit.pow(static_cast<signed char>(other._Value))
         );
 }
 
-Quantity Quantity::pow(double p) const
+Quantity Quantity::pow(double exp) const
 {
     return Quantity(
-        std::pow(this->_Value, p),
-        this->_Unit.pow(p)
+        std::pow(this->_Value, exp),
+        this->_Unit.pow(exp)
         );
 }
 
-Quantity Quantity::operator +(const Quantity &p) const
+Quantity Quantity::operator +(const Quantity& other) const
 {
-    if (this->_Unit != p._Unit) {
+    if (this->_Unit != other._Unit) {
         throw Base::UnitsMismatchError("Quantity::operator +(): Unit mismatch in plus operation");
     }
 
-    return Quantity(this->_Value + p._Value,this->_Unit);
+    return Quantity(this->_Value + other._Value, this->_Unit);
 }
 
-Quantity& Quantity::operator +=(const Quantity &p)
+Quantity& Quantity::operator +=(const Quantity& other)
 {
-    if (this->_Unit != p._Unit) {
+    if (this->_Unit != other._Unit) {
         throw Base::UnitsMismatchError("Quantity::operator +=(): Unit mismatch in plus operation");
     }
 
-    _Value += p._Value;
+    _Value += other._Value;
 
     return *this;
 }
 
-Quantity Quantity::operator -(const Quantity &p) const
+Quantity Quantity::operator -(const Quantity& other) const
 {
-    if (this->_Unit != p._Unit) {
+    if (this->_Unit != other._Unit) {
         throw Base::UnitsMismatchError("Quantity::operator -(): Unit mismatch in minus operation");
     }
 
-    return Quantity(this->_Value - p._Value,this->_Unit);
+    return Quantity(this->_Value - other._Value,this->_Unit);
 }
 
-Quantity& Quantity::operator -=(const Quantity &p)
+Quantity& Quantity::operator -=(const Quantity& other)
 {
-    if (this->_Unit != p._Unit) {
+    if (this->_Unit != other._Unit) {
         throw Base::UnitsMismatchError("Quantity::operator -=(): Unit mismatch in minus operation");
     }
 
-    _Value -= p._Value;
+    _Value -= other._Value;
 
     return *this;
 }
