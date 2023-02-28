@@ -37,6 +37,7 @@
 #include "ViewProviderPython.h"
 #include "ViewProviderSketch.h"
 #include "ViewProviderSketchGeometryExtension.h"
+#include "ViewProviderSketchGeometryExtensionPy.h"
 #include "Workbench.h"
 
 
@@ -93,7 +94,7 @@ PyMOD_INIT_FUNC(SketcherGui)
         PyMOD_Return(nullptr);
     }
 
-    PyObject* mod = SketcherGui::initModule();
+    PyObject* sketcherGuiModule = SketcherGui::initModule();
     Base::Console().Log("Loading GUI of Sketcher module... done\n");
 
     Gui::BitmapFactory().addPath(QString::fromLatin1(":/icons/constraints"));
@@ -116,6 +117,9 @@ PyMOD_INIT_FUNC(SketcherGui)
 
     SketcherGui::Workbench::init();
 
+    // Add Types to module
+    Base::Interpreter().addType(&SketcherGui::ViewProviderSketchGeometryExtensionPy    ::Type,sketcherGuiModule,"ViewProviderSketchGeometryExtension");
+
     // init objects
     SketcherGui::ViewProviderSketch         		  ::init();
     SketcherGui::ViewProviderPython         		  ::init();
@@ -124,7 +128,7 @@ PyMOD_INIT_FUNC(SketcherGui)
     SketcherGui::SoDatumLabel               		  ::initClass();
     SketcherGui::SoZoomTranslation          		  ::initClass();
     SketcherGui::PropertyConstraintListItem 		  ::init();
-    SketcherGui::ViewProviderSketchGeometryExtension  ::init();
+    SketcherGui::ViewProviderSketchGeometryExtension      ::init();
 
     (void)new Gui::PrefPageProducer<SketcherGui::SketcherSettings>        ( QT_TRANSLATE_NOOP("QObject","Sketcher") );
     (void)new Gui::PrefPageProducer<SketcherGui::SketcherSettingsGrid>    ( QT_TRANSLATE_NOOP("QObject","Sketcher") );
@@ -134,5 +138,5 @@ PyMOD_INIT_FUNC(SketcherGui)
      // add resources and reloads the translators
     loadSketcherResource();
 
-    PyMOD_Return(mod);
+    PyMOD_Return(sketcherGuiModule);
 }
