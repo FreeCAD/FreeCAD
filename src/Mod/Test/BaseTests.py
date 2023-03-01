@@ -364,6 +364,25 @@ class AlgebraTestCase(unittest.TestCase):
         p.Rotation.Angle = math.pi / 2
         self.assertEqual(abs(p.inverse().Rotation.Angle), p.Rotation.Angle)
 
+    def testMatrixToRotationFailure(self):
+        mat = FreeCAD.Matrix()
+        mat.A21 = 1.0
+        with self.assertRaises(ValueError):
+            FreeCAD.Placement(mat)
+        with self.assertRaises(ValueError):
+            FreeCAD.Rotation(mat)
+        with self.assertRaises(ValueError):
+            FreeCAD.Rotation(*mat.A)
+        with self.assertRaises(ValueError):
+            FreeCAD.Rotation(1, 1, 0, 0, 1, 0, 0, 0, 1)
+        with self.assertRaises(ValueError):
+            rot = FreeCAD.Rotation()
+            rot.Matrix = FreeCAD.Matrix(1, 1, 0, 0, 1, 0, 0, 0, 1)
+        with self.assertRaises(ValueError):
+            plm = FreeCAD.Placement()
+            rot.Matrix = FreeCAD.Matrix(1, 1, 0, 0, 1, 0, 0, 0, 1)
+
+
     def testYawPitchRoll(self):
         def getYPR1(yaw, pitch, roll):
             r = FreeCAD.Rotation()
