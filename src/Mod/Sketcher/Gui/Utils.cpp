@@ -146,6 +146,32 @@ void SketcherGui::getIdsFromName(const std::string& name, const Sketcher::Sketch
     }
 }
 
+std::vector<int> SketcherGui::getGeoIdsOfEdgesFromNames(const Sketcher::SketchObject* Obj, const std::vector<std::string> & names)
+{
+    std::vector<int> geoids;
+
+    for(const auto & name : names) {
+        if (name.size() > 4 && name.substr(0, 4) == "Edge") {
+            geoids.push_back(std::atoi(name.substr(4, 4000).c_str()) - 1);
+        }
+        else if (name.size() > 12 && name.substr(0, 12) == "ExternalEdge") {
+            geoids.push_back(Sketcher::GeoEnum::RefExt + 1 - std::atoi(name.substr(12, 4000).c_str()));
+        }
+        else if (name.size() > 6 && name.substr(0, 6) == "Vertex") {
+            int VtId = std::atoi(name.substr(6, 4000).c_str()) - 1;
+            int GeoId;
+            Sketcher::PointPos PosId;
+            Obj->getGeoVertexIndex(VtId, GeoId, PosId);
+            const Part::Geometry* geo = Obj->getGeometry(GeoId);
+            if (geo->getTypeId() == Part::GeomPoint::getClassTypeId()){
+                geoids.push_back(GeoId);
+            }
+        }
+    }
+
+    return geoids;
+}
+
 bool SketcherGui::checkBothExternal(int GeoId1, int GeoId2)
 {
     if (GeoId1 == GeoEnum::GeoUndef || GeoId2 == GeoEnum::GeoUndef)
