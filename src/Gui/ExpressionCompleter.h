@@ -28,6 +28,7 @@
 #include <QObject>
 #include <QPlainTextEdit>
 #include <App/DocumentObserver.h>
+#include <App/ExpressionTokenizer.h>
 
 class QStandardItem;
 
@@ -52,12 +53,11 @@ public:
             QObject *parent = nullptr, bool noProperty = false, bool checkInList = true);
 
     void getPrefixRange(int &start, int &end) const {
-        start = prefixStart;
-        end = prefixEnd;
+        tokenizer.getPrefixRange(start, end);
     }
 
     void updatePrefixEnd(int end) {
-        prefixEnd = end;
+        tokenizer.updatePrefixEnd(end);
     }
 
     void setDocumentObject(const App::DocumentObject*, bool checkInList=true);
@@ -72,10 +72,8 @@ private:
     QString pathFromIndex ( const QModelIndex & index ) const override;
     QStringList splitPath ( const QString & input ) const override;
 
-    int prefixStart = 0;
-    int prefixEnd = 0;
-
     App::DocumentObjectT currentObj;
+    App::ExpressionTokenizer tokenizer;
     bool noProperty;
     bool checkInList;
 };

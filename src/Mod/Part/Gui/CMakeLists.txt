@@ -174,6 +174,8 @@ SET(PartGui_SRCS
     ViewProviderPointParametric.h
     ViewProviderEllipseParametric.cpp
     ViewProviderEllipseParametric.h
+    ViewProviderGridExtension.cpp
+    ViewProviderGridExtension.h
     ViewProviderHelixParametric.cpp
     ViewProviderHelixParametric.h
     ViewProviderPlaneParametric.cpp

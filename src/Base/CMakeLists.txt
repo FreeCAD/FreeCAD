@@ -291,7 +291,6 @@ SET(FreeCADBase_HPP_SRCS
     FileInfo.h
     FileTemplate.h
     FutureWatcherProgress.h
-    fdstream.hpp
     GeometryPyCXX.h
     Handle.h
     InputSource.h

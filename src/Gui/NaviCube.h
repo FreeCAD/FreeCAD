@@ -24,6 +24,8 @@
 #define SRC_GUI_NAVICUBE_H_
 
 #include <CXX/Extensions.hxx>
+#include <QColor>
+#include <FCGlobal.h>
 
 class SoEvent;
 
@@ -52,7 +54,13 @@ public:
     void setNaviStepByTurn(int steps);
     void setFont(std::string font);
     void setFontSize(int size);
-    static QFont getDefaultSansserifFont();
+    void setTextColor(QColor TextColor);
+    void setFrontColor(QColor FrontColor);
+    void setHiliteColor(QColor HiliteColor);
+    void setButtonColor(QColor ButtonColor);
+    void setBorderWidth(double BorderWidth);
+    void setBorderColor(QColor BorderColor);
+    static QString getDefaultSansserifFont();
     int getDefaultFontSize();
     static void setNaviCubeCommands(const std::vector<std::string>& cmd);
     static void setNaviCubeLabels(const std::vector<std::string>& labels);

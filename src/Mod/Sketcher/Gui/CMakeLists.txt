@@ -38,6 +38,7 @@ set(SketcherGui_UIC_SRCS
     SketchOrientationDialog.ui
     SketchMirrorDialog.ui
     SketcherSettings.ui
+    SketcherSettingsGrid.ui
     SketcherSettingsColors.ui
     SketcherSettingsDisplay.ui
     SketchRectangularArrayDialog.ui

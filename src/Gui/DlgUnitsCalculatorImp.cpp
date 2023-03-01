@@ -78,6 +78,8 @@ DlgUnitsCalculator::DlgUnitsCalculator( QWidget* parent, Qt::WindowFlags fl )
           << Base::Unit::Area
           << Base::Unit::Density
           << Base::Unit::CurrentDensity
+          << Base::Unit::DissipationRate
+          << Base::Unit::DynamicViscosity
           << Base::Unit::ElectricalCapacitance
           << Base::Unit::ElectricalInductance
           << Base::Unit::ElectricalConductance
@@ -86,10 +88,13 @@ DlgUnitsCalculator::DlgUnitsCalculator( QWidget* parent, Qt::WindowFlags fl )
           << Base::Unit::ElectricCharge
           << Base::Unit::ElectricCurrent
           << Base::Unit::ElectricPotential
-          << Base::Unit::Frequency
           << Base::Unit::Force
-          << Base::Unit::Stiffness
+          << Base::Unit::Frequency
           << Base::Unit::HeatFlux
+          << Base::Unit::InverseArea
+          << Base::Unit::InverseLength
+          << Base::Unit::InverseVolume
+          << Base::Unit::KinematicViscosity
           << Base::Unit::Length
           << Base::Unit::LuminousIntensity
           << Base::Unit::Mass
@@ -97,17 +102,21 @@ DlgUnitsCalculator::DlgUnitsCalculator( QWidget* parent, Qt::WindowFlags fl )
           << Base::Unit::MagneticFlux
           << Base::Unit::MagneticFluxDensity
           << Base::Unit::Magnetization
-          << Base::Unit::Pressure
           << Base::Unit::Power
+          << Base::Unit::Pressure
+          << Base::Unit::SpecificEnergy
           << Base::Unit::SpecificHeat
-          << Base::Unit::Stress
+          << Base::Unit::Stiffness
           << Base::Unit::Temperature
           << Base::Unit::ThermalConductivity
           << Base::Unit::ThermalExpansionCoefficient
           << Base::Unit::ThermalTransferCoefficient
           << Base::Unit::TimeSpan
+          << Base::Unit::VacuumPermittivity
           << Base::Unit::Velocity
           << Base::Unit::Volume
+          << Base::Unit::VolumeFlowRate
+          << Base::Unit::VolumetricThermalExpansionCoefficient
           << Base::Unit::Work;
     for (QList<Base::Unit>::iterator it = units.begin(); it != units.end(); ++it) {
         ui->unitsBox->addItem(it->getTypeString());

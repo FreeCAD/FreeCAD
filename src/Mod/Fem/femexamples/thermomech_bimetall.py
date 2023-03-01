@@ -135,7 +135,7 @@ def setup(doc=None, solvertype="ccxtools"):
         eq_elasticity.Priority = 1
     else:
         FreeCAD.Console.PrintWarning(
-            "Not known or not supported solver type: {}. "
+            "Unknown or unsupported solver type: {}. "
             "No solver object was created.\n".format(solvertype)
         )
     if solvertype == "calculix" or solvertype == "ccxtools":

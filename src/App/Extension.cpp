@@ -187,6 +187,24 @@ void Extension::initExtensionSubclass(Base::Type& toInit, const char* ClassName,
 }
 
 
+bool Extension::extensionHandleChangedPropertyName(Base::XMLReader &reader, const char * TypeName, const char *PropName)
+{
+    (void) reader;
+    (void) TypeName;
+    (void) PropName;
+
+    return false;
+};
+
+bool Extension::extensionHandleChangedPropertyType(Base::XMLReader &reader, const char * TypeName, Property * prop)
+{
+    (void) reader;
+    (void) TypeName;
+    (void) prop;
+
+    return false;
+};
+
 namespace App {
 EXTENSION_PROPERTY_SOURCE_TEMPLATE(App::ExtensionPython, App::ExtensionPython::Inherited)
 

@@ -106,7 +106,7 @@ void TaskLineDecor::getDefaults()
         int num = DrawUtil::getIndexFromName(m_edges.front());
         BaseGeomPtr bg = m_partFeat->getGeomByIndex(num);
         if (bg) {
-            if (bg->cosmetic) {
+            if (bg->getCosmetic()) {
                 if (bg->source() == 1) {
                     TechDraw::CosmeticEdge* ce = m_partFeat->getCosmeticEdgeBySelection(m_edges.front());
                     m_style = ce->m_format.m_style;
@@ -178,7 +178,7 @@ void TaskLineDecor::applyDecorations()
         int num = DrawUtil::getIndexFromName(e);
         BaseGeomPtr bg = m_partFeat->getGeomByIndex(num);
         if (bg) {
-            if (bg->cosmetic) {
+            if (bg->getCosmetic()) {
                 if (bg->source() == 1) {
                     TechDraw::CosmeticEdge* ce = m_partFeat->getCosmeticEdgeBySelection(e);
                     ce->m_format.m_style = m_style;

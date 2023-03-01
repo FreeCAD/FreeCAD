@@ -7776,6 +7776,83 @@ using the given X/Y Spacing</source>
         <source>ASME</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <location filename="../../TaskHoleShaftFit.ui" line="29"/>
+        <source>Hole /Shaft Fit ISO 286</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../TaskHoleShaftFit.ui" line="37"/>
+        <source>shaft fit</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../TaskHoleShaftFit.ui" line="47"/>
+        <source>hole fit</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../TaskHoleShaftFit.ui" line="62"/>
+        <source>c11</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../TaskHoleShaftFit.ui" line="67"/>
+        <source>f7</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../TaskHoleShaftFit.ui" line="72"/>
+        <location filename="../../TaskHoleShaftFit.ui" line="97"/>
+        <location filename="../../TaskHoleShaftFit.ui" line="102"/>
+        <location filename="../../TaskHoleShaftFit.ui" line="107"/>
+        <location filename="../../TaskHoleShaftFit.ui" line="112"/>
+        <location filename="../../TaskHoleShaftFit.ui" line="117"/>
+        <source>h6</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../TaskHoleShaftFit.ui" line="77"/>
+        <source>h7</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../TaskHoleShaftFit.ui" line="82"/>
+        <location filename="../../TaskHoleShaftFit.ui" line="87"/>
+        <location filename="../../TaskHoleShaftFit.ui" line="92"/>
+        <source>h9</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../TaskHoleShaftFit.ui" line="122"/>
+        <source>k6</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../TaskHoleShaftFit.ui" line="127"/>
+        <source>n6</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../TaskHoleShaftFit.ui" line="132"/>
+        <source>r6</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../TaskHoleShaftFit.ui" line="137"/>
+        <source>s6</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../TaskHoleShaftFit.ui" line="145"/>
+        <source>loose fit</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../TaskHoleShaftFit.ui" line="152"/>
+        <source>             H11/</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>TechDrawGui::TaskWeldingSymbol</name>
@@ -8244,6 +8321,43 @@ using the given X/Y Spacing</source>
                 - select second edge to define the direction of the extension lines&lt;br&gt;
                 - optional: select two more vertexes which define the measurement instead of the length&lt;br&gt;
                   of the first selected edge</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>TechDraw_HoleShaftFit</name>
+    <message>
+        <location filename="../../../TechDrawTools/CommandHoleShaftFit.py" line="43"/>
+        <source>Add hole or shaft fit</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../TechDrawTools/CommandHoleShaftFit.py" line="50"/>
+        <source>Add a hole or shaft fit to a dimension&lt;br&gt;
+                - select one length dimension or diameter dimension&lt;br&gt;
+                - click the tool button, a panel openes&lt;br&gt;
+                - select shaft fit / hole fit&lt;br&gt;
+                - select the desired ISO 286 fit field using the combo box</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../TechDrawTools/TaskHoleShaftFit.py" line="42"/>
+        <source>loose</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../TechDrawTools/TaskHoleShaftFit.py" line="43"/>
+        <source>snug</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../TechDrawTools/TaskHoleShaftFit.py" line="44"/>
+        <source>press</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../TechDrawTools/TaskHoleShaftFit.py" line="59"/>
+        <source>Hole / Shaft Fit ISO 286</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

@@ -609,7 +609,7 @@ bool SheetTableView::event(QEvent* event)
             kevent->accept();
         }
     }
-    else if (event->type() == QEvent::LanguageChange) {
+    else if (event && event->type() == QEvent::LanguageChange) {
         actionProperties->setText(tr("Properties..."));
         actionRecompute->setText(tr("Recompute"));
         actionConf->setText(tr("Configuration table..."));
@@ -709,7 +709,7 @@ void SheetTableView::pasteClipboard()
             return;
 
         if(!copy) {
-            for(auto range : ranges) {
+            for(auto &range : ranges) {
                 do {
                     sheet->clear(*range);
                 } while (range.next());

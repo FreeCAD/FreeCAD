@@ -2019,43 +2019,43 @@ unit to work with when opening the file.</source>
       <translation>Parte di edificio</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="305"/>
+      <location filename="../../ArchBuildingPart.py" line="302"/>
       <source>Create BuildingPart</source>
       <translation>Crea una Parte</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="907"/>
+      <location filename="../../ArchBuildingPart.py" line="904"/>
       <source>Deactivate</source>
       <translation>Disattiva</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="909"/>
+      <location filename="../../ArchBuildingPart.py" line="906"/>
       <source>Activate</source>
       <translation>Attiva</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="917"/>
+      <location filename="../../ArchBuildingPart.py" line="914"/>
       <source>Set working plane</source>
       <translation>Imposta piano di lavoro</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="925"/>
+      <location filename="../../ArchBuildingPart.py" line="922"/>
       <source>Write camera position</source>
       <translation>Scrivi posizione fotocamera</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="932"/>
+      <location filename="../../ArchBuildingPart.py" line="929"/>
       <source>Create group...</source>
       <translation>Crea gruppo...</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="939"/>
+      <location filename="../../ArchBuildingPart.py" line="936"/>
       <location filename="../../ArchMaterial.py" line="221"/>
       <source>Reorder children alphabetically</source>
       <translation>Riordina i figli alfabeticamente</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="946"/>
+      <location filename="../../ArchBuildingPart.py" line="943"/>
       <source>Clone level up</source>
       <translation type="unfinished">Clone level up</translation>
     </message>
@@ -2087,7 +2087,7 @@ unit to work with when opening the file.</source>
       <translation>Profilo</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="533"/>
+      <location filename="../../ArchSite.py" line="534"/>
       <source>Please either select only Building objects or nothing at all!
 
 Site is not allowed to accept any other object besides Building.
@@ -2104,7 +2104,7 @@ Altri oggetti verranno rimossi dalla selezione.
 Nota: È possibile modificarlo nelle preferenze.</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="536"/>
+      <location filename="../../ArchSite.py" line="537"/>
       <source>There is no valid object in the selection.
 
 Site creation aborted.</source>
@@ -2113,7 +2113,7 @@ Site creation aborted.</source>
 Creazione del Sito interrotta.</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="543"/>
+      <location filename="../../ArchSite.py" line="544"/>
       <source>Create Site</source>
       <translation>Crea Sito</translation>
     </message>
@@ -2428,7 +2428,7 @@ Se Base = 0 allora la Base viene calcolata in modo che l'altezza sia la stessa d
       <translation>Aggiungi</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="920"/>
+      <location filename="../../ArchSite.py" line="926"/>
       <location filename="../../ArchReference.py" line="490"/>
       <location filename="../../ArchWindow.py" line="1782"/>
       <location filename="../../ArchIFCView.py" line="55"/>
@@ -2623,9 +2623,19 @@ Se Base = 0 allora la Base viene calcolata in modo che l'altezza sia la stessa d
       <translation>Crea Progetto</translation>
     </message>
     <message>
-      <location filename="../../ArchStairs.py" line="227"/>
+      <location filename="../../ArchStairs.py" line="217"/>
       <source>Create Stairs</source>
       <translation>Crea scale</translation>
+    </message>
+    <message>
+      <location filename="../../ArchStairs.py" line="426"/>
+      <source>removed properties 'OutlineWireLeft' and 'OutlineWireRight', and added properties 'RailingLeft' and 'RailingRight'</source>
+      <translation type="unfinished">removed properties 'OutlineWireLeft' and 'OutlineWireRight', and added properties 'RailingLeft' and 'RailingRight'</translation>
+    </message>
+    <message>
+      <location filename="../../ArchStairs.py" line="440"/>
+      <source>changed the type of properties 'RailingLeft' and 'RailingRight'</source>
+      <translation type="unfinished">changed the type of properties 'RailingLeft' and 'RailingRight'</translation>
     </message>
     <message>
       <location filename="../../ArchMaterial.py" line="123"/>
@@ -2737,12 +2747,12 @@ Se Base = 0 allora la Base viene calcolata in modo che l'altezza sia la stessa d
     <message>
       <location filename="../../ArchGrid.py" line="425"/>
       <source>Add col</source>
-      <translation type="unfinished">Add col</translation>
+      <translation>Aggiungi colonna</translation>
     </message>
     <message>
       <location filename="../../ArchGrid.py" line="426"/>
       <source>Del col</source>
-      <translation type="unfinished">Del col</translation>
+      <translation>Cancella colonna</translation>
     </message>
     <message>
       <location filename="../../ArchGrid.py" line="427"/>
@@ -3187,7 +3197,7 @@ Creazione del Piano interrotta.</translation>
       <translation>ha una forma nulla</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="928"/>
+      <location filename="../../ArchSite.py" line="934"/>
       <location filename="../../ArchComponent.py" line="1505"/>
       <source>Toggle subcomponents</source>
       <translation>Attiva/disattiva sottocomponenti</translation>
@@ -3872,210 +3882,210 @@ Creazione Edificio interrotta.</translation>
       <translation>L'energia richiesta da questa apparecchiatura in watt</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="235"/>
-      <location filename="../../ArchBuildingPart.py" line="259"/>
+      <location filename="../../ArchBuildingPart.py" line="232"/>
+      <location filename="../../ArchBuildingPart.py" line="256"/>
       <location filename="../../ArchBuilding.py" line="276"/>
       <source>The type of this building</source>
       <translation>Il tipo di questo edificio</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="333"/>
+      <location filename="../../ArchBuildingPart.py" line="330"/>
       <location filename="../../ArchFloor.py" line="204"/>
       <source>The height of this object</source>
       <translation>L'altezza di questo oggetto</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="335"/>
+      <location filename="../../ArchBuildingPart.py" line="332"/>
       <source>If true, the height value propagates to contained objects</source>
       <translation>Se vero, il valore dell'altezza si propaga agli oggetti contenuti</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="338"/>
+      <location filename="../../ArchBuildingPart.py" line="335"/>
       <source>The level of the (0,0,0) point of this level</source>
       <translation type="unfinished">The level of the (0,0,0) point of this level</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="340"/>
+      <location filename="../../ArchBuildingPart.py" line="337"/>
       <location filename="../../ArchFloor.py" line="206"/>
       <source>The computed floor area of this floor</source>
       <translation>La superficie calcolata di questo piano</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="342"/>
+      <location filename="../../ArchBuildingPart.py" line="339"/>
       <location filename="../../ArchComponent.py" line="200"/>
       <source>An optional description for this component</source>
       <translation>Una descrizione facoltativa per questo componente</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="344"/>
+      <location filename="../../ArchBuildingPart.py" line="341"/>
       <location filename="../../ArchComponent.py" line="202"/>
       <source>An optional tag for this component</source>
       <translation>Un tag opzionale per questo componente</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="346"/>
+      <location filename="../../ArchBuildingPart.py" line="343"/>
       <location filename="../../ArchSectionPlane.py" line="913"/>
       <source>The shape of this object</source>
       <translation>La forma di questo oggetto</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="348"/>
+      <location filename="../../ArchBuildingPart.py" line="345"/>
       <source>This property stores an inventor representation for this object</source>
       <translation type="unfinished">This property stores an inventor representation for this object</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="351"/>
+      <location filename="../../ArchBuildingPart.py" line="348"/>
       <source>If true, only solids will be collected by this object when referenced from other files</source>
       <translation>Se Vero, solo i solidi saranno raccolti da questo oggetto quando sono referenziati da altri file</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="354"/>
+      <location filename="../../ArchBuildingPart.py" line="351"/>
       <source>A MaterialName:SolidIndexesList map that relates material names with solid indexes to be used when referencing this object from other files</source>
       <translation type="unfinished">A MaterialName:SolidIndexesList map that relates material names with solid indexes to be used when referencing this object from other files</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="552"/>
+      <location filename="../../ArchBuildingPart.py" line="549"/>
       <location filename="../../ArchSectionPlane.py" line="1002"/>
       <source>The line width of this object</source>
       <translation>Lo spessore della linea di questo oggetto</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="555"/>
+      <location filename="../../ArchBuildingPart.py" line="552"/>
       <source>An optional unit to express levels</source>
       <translation>Un'unità opzionale per esprimere i livelli</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="557"/>
+      <location filename="../../ArchBuildingPart.py" line="554"/>
       <source>A transformation to apply to the level mark</source>
       <translation>Una trasformazione da applicare al simbolo di livello</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="560"/>
+      <location filename="../../ArchBuildingPart.py" line="557"/>
       <source>If true, show the level</source>
       <translation>Se vero, visualizza il livello</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="563"/>
+      <location filename="../../ArchBuildingPart.py" line="560"/>
       <source>If true, show the unit on the level tag</source>
       <translation>Se vero, visualizza l'unità nell'etichetta del livello</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="565"/>
+      <location filename="../../ArchBuildingPart.py" line="562"/>
       <source>If true, display offset will affect the origin mark too</source>
       <translation>Se è vero, l'offset della visualizzazione influisce anche sul segno di origine</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="567"/>
+      <location filename="../../ArchBuildingPart.py" line="564"/>
       <source>If true, the object's label is displayed</source>
       <translation>Se vero, viene visualizzata l'etichetta dell'oggetto</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="570"/>
+      <location filename="../../ArchBuildingPart.py" line="567"/>
       <source>The font to be used for texts</source>
       <translation>Il carattere da usare per i testi</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="573"/>
+      <location filename="../../ArchBuildingPart.py" line="570"/>
       <source>The font size of texts</source>
       <translation>La dimensione del carattere dei testi</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="576"/>
+      <location filename="../../ArchBuildingPart.py" line="573"/>
       <source>The individual face colors</source>
       <translation>I colori delle singole facce</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="580"/>
+      <location filename="../../ArchBuildingPart.py" line="577"/>
       <source>If true, when activated, the working plane will automatically adapt to this level</source>
       <translation>Se vero, quando attivato, il piano di lavoro si adatta automaticamente a questo livello</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="583"/>
+      <location filename="../../ArchBuildingPart.py" line="580"/>
       <source>If set to True, the working plane will be kept on Auto mode</source>
       <translation>Se impostato su True, il piano di lavoro viene mantenuto in modalità Auto</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="585"/>
+      <location filename="../../ArchBuildingPart.py" line="582"/>
       <source>Camera position data associated with this object</source>
       <translation>Dati di posizione della fotocamera associati a questo oggetto</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="588"/>
+      <location filename="../../ArchBuildingPart.py" line="585"/>
       <source>If set, the view stored in this object will be restored on double-click</source>
       <translation>Se abilitato, la vista salvata in questo oggetto viene ripristinata facendo doppio clic</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="590"/>
+      <location filename="../../ArchBuildingPart.py" line="587"/>
       <source>If True, double-clicking this object in the tree activates it</source>
       <translation>Se è True, facendo doppio clic su questo oggetto nell'albero lo si rende attivo</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="594"/>
+      <location filename="../../ArchBuildingPart.py" line="591"/>
       <source>If this is enabled, the inventor representation of this object will be saved in the FreeCAD file, allowing to reference it in other files in lightweight mode.</source>
       <translation>Se abilitato, la rappresentazione inventor di questo oggetto verrà salvata nel file FreeCAD, consentendo il riferimento ad esso in un altro file in modalità leggera.</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="596"/>
+      <location filename="../../ArchBuildingPart.py" line="593"/>
       <source>A slot to save the inventor representation of this object, if enabled</source>
       <translation>Uno slot per salvare la rappresentazione inventor di questo oggetto, se abilitato</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="601"/>
+      <location filename="../../ArchBuildingPart.py" line="598"/>
       <source>If true, show the objects contained in this Building Part will adopt these line, color and transparency settings</source>
       <translation>Se è vero, mostra gli oggetti contenuti in questa Parte di edificio adottando queste impostazioni di linea, colore e trasparenza</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="603"/>
+      <location filename="../../ArchBuildingPart.py" line="600"/>
       <source>The line width of child objects</source>
       <translation>La larghezza della linea degli oggetti figlio</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="606"/>
+      <location filename="../../ArchBuildingPart.py" line="603"/>
       <source>The line color of child objects</source>
       <translation>Il colore della linea degli oggetti figlio</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="610"/>
+      <location filename="../../ArchBuildingPart.py" line="607"/>
       <source>The shape color of child objects</source>
       <translation>Il colore della forma degli oggetti figlio</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="614"/>
+      <location filename="../../ArchBuildingPart.py" line="611"/>
       <source>The transparency of child objects</source>
       <translation>La trasparenza degli oggetti figlio</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="618"/>
+      <location filename="../../ArchBuildingPart.py" line="615"/>
       <source>Cut the view above this level</source>
       <translation>Taglia la vista sopra questo livello</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="620"/>
+      <location filename="../../ArchBuildingPart.py" line="617"/>
       <source>The distance between the level plane and the cut line</source>
       <translation>La distanza tra il piano del livello e la linea di taglio</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="623"/>
+      <location filename="../../ArchBuildingPart.py" line="620"/>
       <source>Turn cutting on when activating this level</source>
       <translation>Attiva il taglio quando si attiva questo livello</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="627"/>
+      <location filename="../../ArchBuildingPart.py" line="624"/>
       <source>The capture box for newly created objects expressed as [XMin,YMin,ZMin,XMax,YMax,ZMax]</source>
       <translation>Il box di acquisizione per gli oggetti appena creati espressa come [XMin,YMin,ZMin,XMax,YMax,ZMax]</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="629"/>
+      <location filename="../../ArchBuildingPart.py" line="626"/>
       <source>Turns auto group box on/off</source>
       <translation>Attiva/disattiva la casella di gruppo automatica</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="631"/>
+      <location filename="../../ArchBuildingPart.py" line="628"/>
       <source>Automatically set size from contents</source>
       <translation>Imposta automaticamente la dimensione dai contenuti</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="633"/>
+      <location filename="../../ArchBuildingPart.py" line="630"/>
       <source>A margin to use when autosize is turned on</source>
       <translation>Un margine da usare quando il ridimensionamento automatico è attivo</translation>
     </message>
@@ -4142,167 +4152,167 @@ Creazione Edificio interrotta.</translation>
       <translation type="unfinished">Thickness of the legs</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="590"/>
+      <location filename="../../ArchSite.py" line="591"/>
       <source>The base terrain of this site</source>
       <translation>Il terreno base di questo sito</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="592"/>
+      <location filename="../../ArchSite.py" line="593"/>
       <source>The street and house number of this site, with postal box or apartment number if needed</source>
       <translation>La via e il numero civico di questo sito, con il codice postale o il numero dell'appartamento se necessario</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="594"/>
+      <location filename="../../ArchSite.py" line="595"/>
       <source>The postal or zip code of this site</source>
       <translation>Il codice postale di questo sito</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="596"/>
+      <location filename="../../ArchSite.py" line="597"/>
       <source>The city of this site</source>
       <translation>La città di questo sito</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="598"/>
+      <location filename="../../ArchSite.py" line="599"/>
       <source>The region, province or county of this site</source>
       <translation>La regione, la provincia o il paese di questo sito</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="600"/>
+      <location filename="../../ArchSite.py" line="601"/>
       <source>The country of this site</source>
       <translation>Il paese di questo sito</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="602"/>
-      <location filename="../../ArchSite.py" line="604"/>
+      <location filename="../../ArchSite.py" line="603"/>
+      <location filename="../../ArchSite.py" line="605"/>
       <source>The latitude of this site</source>
       <translation>La latitudine di questo sito</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="606"/>
+      <location filename="../../ArchSite.py" line="607"/>
       <source>Angle between the true North and the North direction in this document</source>
       <translation>Angolo tra il Nord vero e la direzione nord in questo documento</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="611"/>
+      <location filename="../../ArchSite.py" line="612"/>
       <source>The elevation of level 0 of this site</source>
       <translation>L'elevazione del livello 0 di questo sito</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="613"/>
+      <location filename="../../ArchSite.py" line="614"/>
       <source>A URL that shows this site in a mapping website</source>
       <translation type="unfinished">A URL that shows this site in a mapping website</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="615"/>
+      <location filename="../../ArchSite.py" line="616"/>
       <location filename="../../ArchComponent.py" line="196"/>
       <source>Other shapes that are appended to this object</source>
       <translation>Altre forme che vengono aggiunte a questo oggetto</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="617"/>
+      <location filename="../../ArchSite.py" line="618"/>
       <location filename="../../ArchComponent.py" line="198"/>
       <source>Other shapes that are subtracted from this object</source>
       <translation>Altre forme che sono sottratte da questo oggetto</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="619"/>
+      <location filename="../../ArchSite.py" line="620"/>
       <location filename="../../ArchComponent.py" line="221"/>
       <source>The area of the projection of this object onto the XY plane</source>
       <translation>L'area della proiezione di questo oggetto sul piano XY</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="621"/>
-      <source>The perimeter length of this terrain</source>
-      <translation>La lunghezza del perimetro di questo terreno</translation>
+      <location filename="../../ArchSite.py" line="622"/>
+      <source>The perimeter length of the projected area</source>
+      <translation type="unfinished">The perimeter length of the projected area</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="623"/>
+      <location filename="../../ArchSite.py" line="624"/>
       <source>The volume of earth to be added to this terrain</source>
       <translation>Il volume di terra da aggiungere a questo terreno</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="625"/>
+      <location filename="../../ArchSite.py" line="626"/>
       <source>The volume of earth to be removed from this terrain</source>
       <translation>Il volume di terra che deve essere rimosso da questo terreno</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="627"/>
+      <location filename="../../ArchSite.py" line="628"/>
       <source>An extrusion vector to use when performing boolean operations</source>
       <translation>Un vettore di estrusione da utilizzare quando si eseguono le operazioni booleane</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="630"/>
+      <location filename="../../ArchSite.py" line="631"/>
       <source>Remove splitters from the resulting shape</source>
       <translation type="unfinished">Remove splitters from the resulting shape</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="632"/>
+      <location filename="../../ArchSite.py" line="633"/>
       <source>An optional offset between the model (0,0,0) origin and the point indicated by the geocoordinates</source>
       <translation>Scostamento facoltativo tra l'origine del modello (0,0,0) e il punto indicato dalle geocoordinate</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="636"/>
+      <location filename="../../ArchSite.py" line="637"/>
       <location filename="../../ArchIFC.py" line="69"/>
       <source>The type of this object</source>
       <translation>Il tipo di questo oggetto</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="640"/>
+      <location filename="../../ArchSite.py" line="641"/>
       <source>The time zone where this site is located</source>
       <translation>Il fuso orario in cui si trova questo sito</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="642"/>
+      <location filename="../../ArchSite.py" line="643"/>
       <source>An optional EPW File for the location of this site. Refer to the Site documentation to know how to obtain one</source>
       <translation>Un file EPW opzionale per la posizione di questo sito. Fare riferimento alla documentazione del comando Sito per sapere come ottenerne uno</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="836"/>
+      <location filename="../../ArchSite.py" line="846"/>
       <source>Show wind rose diagram or not. Uses solar diagram scale. Needs Ladybug module</source>
       <translation>Mostra o nasconde il diagramma della rosa dei venti. Usa la scala del grafico solare. Richiede il modulo Ladybug</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="838"/>
+      <location filename="../../ArchSite.py" line="848"/>
       <source>Show solar diagram or not</source>
       <translation>Mostra o no il diagramma solare</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="840"/>
+      <location filename="../../ArchSite.py" line="850"/>
       <source>The scale of the solar diagram</source>
       <translation>La scala del diagramma solare</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="843"/>
+      <location filename="../../ArchSite.py" line="853"/>
       <source>The position of the solar diagram</source>
       <translation>La posizione del diagramma solare</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="845"/>
+      <location filename="../../ArchSite.py" line="855"/>
       <source>The color of the solar diagram</source>
       <translation>Il colore del diagramma solare</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="849"/>
+      <location filename="../../ArchSite.py" line="859"/>
       <source>When set to 'True North' the whole geometry will be rotated to match the true north of this site</source>
       <translation>Quando impostato su 'Vero Nord' l'intera geometria sarà ruotata per coincidere con il vero nord di questo sito</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="853"/>
+      <location filename="../../ArchSite.py" line="863"/>
       <source>Show compass or not</source>
       <translation>Mostra la bussola o no</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="855"/>
+      <location filename="../../ArchSite.py" line="865"/>
       <source>The rotation of the Compass relative to the Site</source>
       <translation>La rotazione della bussola relativa al sito</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="857"/>
+      <location filename="../../ArchSite.py" line="867"/>
       <source>The position of the Compass relative to the Site placement</source>
       <translation>La posizione della Bussola rispetto al posizionamento del Sito</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="859"/>
+      <location filename="../../ArchSite.py" line="869"/>
       <source>Update the Declination value based on the compass rotation</source>
       <translation>Aggiorna il valore del Declinazione in base alla rotazione della bussola</translation>
     </message>
@@ -4602,159 +4612,159 @@ Creazione Edificio interrotta.</translation>
       <translation>Come disegnare le aste</translation>
     </message>
     <message>
-      <location filename="../../ArchStairs.py" line="273"/>
+      <location filename="../../ArchStairs.py" line="263"/>
       <source>The length of these stairs, if no baseline is defined</source>
       <translation>La lunghezza di queste scale, se non è definita nessuna linea guida</translation>
     </message>
     <message>
-      <location filename="../../ArchStairs.py" line="275"/>
+      <location filename="../../ArchStairs.py" line="265"/>
       <source>The width of these stairs</source>
       <translation>La larghezza di queste scale</translation>
     </message>
     <message>
-      <location filename="../../ArchStairs.py" line="277"/>
+      <location filename="../../ArchStairs.py" line="267"/>
       <source>The total height of these stairs</source>
       <translation>L'altezza totale di queste scale</translation>
     </message>
     <message>
-      <location filename="../../ArchStairs.py" line="279"/>
+      <location filename="../../ArchStairs.py" line="269"/>
       <source>The alignment of these stairs on their baseline, if applicable</source>
       <translation>L'allineamento di queste scale sulla loro linea guida, se applicabile</translation>
     </message>
     <message>
-      <location filename="../../ArchStairs.py" line="284"/>
+      <location filename="../../ArchStairs.py" line="274"/>
       <source>The width of a Landing (Second edge and after - First edge follows Width property)</source>
       <translation type="unfinished">The width of a Landing (Second edge and after - First edge follows Width property)</translation>
     </message>
     <message>
-      <location filename="../../ArchStairs.py" line="289"/>
+      <location filename="../../ArchStairs.py" line="279"/>
       <source>The number of risers in these stairs</source>
       <translation>Il numero di alzate in queste scale</translation>
     </message>
     <message>
-      <location filename="../../ArchStairs.py" line="291"/>
+      <location filename="../../ArchStairs.py" line="281"/>
       <source>The depth of the treads of these stairs</source>
       <translation>La profondità della pedata di queste scale</translation>
     </message>
     <message>
-      <location filename="../../ArchStairs.py" line="294"/>
+      <location filename="../../ArchStairs.py" line="284"/>
       <source>The height of the risers of these stairs</source>
       <translation>L'altezza delle alzate di queste scale</translation>
     </message>
     <message>
-      <location filename="../../ArchStairs.py" line="297"/>
+      <location filename="../../ArchStairs.py" line="287"/>
       <source>The size of the nosing</source>
       <translation>La dimensione della sporgenza</translation>
     </message>
     <message>
-      <location filename="../../ArchStairs.py" line="299"/>
+      <location filename="../../ArchStairs.py" line="289"/>
       <source>The thickness of the treads</source>
       <translation type="unfinished">The thickness of the treads</translation>
     </message>
     <message>
-      <location filename="../../ArchStairs.py" line="301"/>
+      <location filename="../../ArchStairs.py" line="291"/>
       <source>The Blondel ratio indicates comfortable stairs and should be between 62 and 64cm or 24.5 and 25.5in</source>
       <translation>Il rapporto di Blondel indica scalini comodi e dovrebbe essere compreso tra 62 e 64 cm o 24.5 e 25,5 in</translation>
     </message>
     <message>
-      <location filename="../../ArchStairs.py" line="305"/>
+      <location filename="../../ArchStairs.py" line="295"/>
       <source>The thickness of the risers</source>
       <translation>Lo spessore delle alzate</translation>
     </message>
     <message>
-      <location filename="../../ArchStairs.py" line="308"/>
+      <location filename="../../ArchStairs.py" line="298"/>
       <source>The depth of the landing of these stairs</source>
       <translation type="unfinished">The depth of the landing of these stairs</translation>
     </message>
     <message>
-      <location filename="../../ArchStairs.py" line="311"/>
+      <location filename="../../ArchStairs.py" line="301"/>
       <source>The depth of the treads of these stairs - Enforced regardless of Length or edge's Length</source>
       <translation>La profondità delle pedate di queste scale - applicate indipendentemente dalla lunghezza o dalla lunghezza del bordo</translation>
     </message>
     <message>
-      <location filename="../../ArchStairs.py" line="313"/>
+      <location filename="../../ArchStairs.py" line="303"/>
       <source>The height of the risers of these stairs - Enforced regardless of Height or edge's Height</source>
       <translation>L'alzata di queste scale - indipendentemente dall'altezza o dall'altezza del bordo</translation>
     </message>
     <message>
-      <location filename="../../ArchStairs.py" line="316"/>
+      <location filename="../../ArchStairs.py" line="306"/>
       <source>The direction of flight after landing</source>
       <translation>Direzione della scala dopo il pianerottolo</translation>
     </message>
     <message>
-      <location filename="../../ArchStairs.py" line="323"/>
+      <location filename="../../ArchStairs.py" line="313"/>
       <source>The 'absolute' top level of a flight of stairs leads to</source>
       <translation type="unfinished">The 'absolute' top level of a flight of stairs leads to</translation>
     </message>
     <message>
-      <location filename="../../ArchStairs.py" line="326"/>
-      <location filename="../../ArchStairs.py" line="329"/>
+      <location filename="../../ArchStairs.py" line="316"/>
+      <location filename="../../ArchStairs.py" line="319"/>
       <source>The 'left outline' of stairs</source>
       <translation>Il "contorno sinistro" delle scale</translation>
     </message>
     <message>
-      <location filename="../../ArchStairs.py" line="366"/>
+      <location filename="../../ArchStairs.py" line="340"/>
       <source>The 'left outline' of all segments of stairs</source>
       <translation>Il 'contorno sinistro' di tutti i segmenti delle scale</translation>
     </message>
     <message>
-      <location filename="../../ArchStairs.py" line="369"/>
+      <location filename="../../ArchStairs.py" line="343"/>
       <source>The 'right outline' of all segments of stairs</source>
       <translation>Il 'contorno destro' di tutti i segmenti delle scale</translation>
     </message>
     <message>
-      <location filename="../../ArchStairs.py" line="395"/>
+      <location filename="../../ArchStairs.py" line="369"/>
       <source>The type of landings of these stairs</source>
       <translation>Il tipo di pianerottoli di queste scale</translation>
     </message>
     <message>
-      <location filename="../../ArchStairs.py" line="398"/>
+      <location filename="../../ArchStairs.py" line="372"/>
       <source>The type of winders in these stairs</source>
       <translation type="unfinished">The type of winders in these stairs</translation>
     </message>
     <message>
-      <location filename="../../ArchStairs.py" line="401"/>
+      <location filename="../../ArchStairs.py" line="375"/>
       <source>The type of structure of these stairs</source>
       <translation>Il tipo di struttura di queste scale</translation>
     </message>
     <message>
-      <location filename="../../ArchStairs.py" line="404"/>
+      <location filename="../../ArchStairs.py" line="378"/>
       <source>The thickness of the massive structure or of the stringers</source>
       <translation type="unfinished">The thickness of the massive structure or of the stringers</translation>
     </message>
     <message>
-      <location filename="../../ArchStairs.py" line="406"/>
+      <location filename="../../ArchStairs.py" line="380"/>
       <source>The width of the stringers</source>
       <translation type="unfinished">The width of the stringers</translation>
     </message>
     <message>
-      <location filename="../../ArchStairs.py" line="408"/>
+      <location filename="../../ArchStairs.py" line="382"/>
       <source>The offset between the border of the stairs and the structure</source>
       <translation type="unfinished">The offset between the border of the stairs and the structure</translation>
     </message>
     <message>
-      <location filename="../../ArchStairs.py" line="410"/>
-      <location filename="../../ArchStairs.py" line="1098"/>
+      <location filename="../../ArchStairs.py" line="384"/>
+      <location filename="../../ArchStairs.py" line="1122"/>
       <source>The overlap of the stringers above the bottom of the treads</source>
       <translation type="unfinished">The overlap of the stringers above the bottom of the treads</translation>
     </message>
     <message>
-      <location filename="../../ArchStairs.py" line="412"/>
+      <location filename="../../ArchStairs.py" line="386"/>
       <source>The thickness of the lower floor slab</source>
       <translation>Lo spessore della soletta del piano inferiore</translation>
     </message>
     <message>
-      <location filename="../../ArchStairs.py" line="414"/>
+      <location filename="../../ArchStairs.py" line="388"/>
       <source>The thickness of the upper floor slab</source>
       <translation>Lo spessore della soletta del piano superiore</translation>
     </message>
     <message>
-      <location filename="../../ArchStairs.py" line="416"/>
+      <location filename="../../ArchStairs.py" line="390"/>
       <source>The type of connection between the lower floor slab and the start of the stairs</source>
       <translation>Il tipo di collegamento tra la soletta inferiore e l'inizio delle scale</translation>
     </message>
     <message>
-      <location filename="../../ArchStairs.py" line="419"/>
+      <location filename="../../ArchStairs.py" line="393"/>
       <source>The type of connection between the end of the stairs and the upper floor slab</source>
       <translation>Tipo di collegamento tra la fine delle scale e la soletta del piano superiore</translation>
     </message>
@@ -5929,12 +5939,12 @@ Creazione Edificio interrotta.</translation>
   <context>
     <name>Arch_BuildingPart</name>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="290"/>
+      <location filename="../../ArchBuildingPart.py" line="287"/>
       <source>BuildingPart</source>
       <translation>Parte di edificio</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="294"/>
+      <location filename="../../ArchBuildingPart.py" line="291"/>
       <source>Creates a BuildingPart object including selected objects</source>
       <translation>Crea un oggetto Parte di edificio che comprende gli oggetti selezionati</translation>
     </message>
@@ -5942,7 +5952,7 @@ Creazione Edificio interrotta.</translation>
   <context>
     <name>Draft</name>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="998"/>
+      <location filename="../../ArchBuildingPart.py" line="995"/>
       <source>Writing camera position</source>
       <translation>Scrittura posizione fotocamera</translation>
     </message>
@@ -6084,12 +6094,12 @@ Creazione Edificio interrotta.</translation>
   <context>
     <name>Arch_Site</name>
     <message>
-      <location filename="../../ArchSite.py" line="505"/>
+      <location filename="../../ArchSite.py" line="506"/>
       <source>Site</source>
       <translation>Sito</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="509"/>
+      <location filename="../../ArchSite.py" line="510"/>
       <source>Creates a site object including selected objects.</source>
       <translation>Crea un oggetto Sito che include gli oggetti selezionati.</translation>
     </message>
@@ -6214,7 +6224,7 @@ Creazione Edificio interrotta.</translation>
   <context>
     <name>Arch_Stairs</name>
     <message>
-      <location filename="../../ArchStairs.py" line="216"/>
+      <location filename="../../ArchStairs.py" line="206"/>
       <source>Stairs</source>
       <translation>Scale</translation>
     </message>
@@ -6222,7 +6232,7 @@ Creazione Edificio interrotta.</translation>
   <context>
     <name>Arch_Space</name>
     <message>
-      <location filename="../../ArchStairs.py" line="220"/>
+      <location filename="../../ArchStairs.py" line="210"/>
       <source>Creates a stairs object</source>
       <translation>Crea un oggetto scale</translation>
     </message>
@@ -6765,7 +6775,7 @@ Creazione Edificio interrotta.</translation>
   <context>
     <name>Command</name>
     <message>
-      <location filename="../../ArchSite.py" line="940"/>
+      <location filename="../../ArchSite.py" line="946"/>
       <location filename="../../ArchIFCView.py" line="67"/>
       <location filename="../../ArchAxis.py" line="643"/>
       <source>Transform</source>

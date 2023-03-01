@@ -2447,7 +2447,7 @@ void ViewProviderLink::setupContextMenu(QMenu* menu, QObject* receiver, const ch
                     bool applyAll = box->isChecked();
                     App::LinkParams::setCopyOnChangeApplyToAll(applyAll);
 
-                    App::Link::OnChangeCopyOptions options;
+                    App::Link::OnChangeCopyOptions options {App::Link::OnChangeCopyOptions::None};
                     if (applyAll)
                         options |= App::Link::OnChangeCopyOptions::ApplyAll;
 

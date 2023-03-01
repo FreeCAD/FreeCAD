@@ -50,6 +50,7 @@
 #include "ViewProvider.h"
 #include "ViewProvider2DObject.h"
 #include "ViewProviderAttachExtension.h"
+#include "ViewProviderGridExtension.h"
 #include "ViewProviderBoolean.h"
 #include "ViewProviderBox.h"
 #include "ViewProviderCircleParametric.h"
@@ -155,6 +156,8 @@ PyMOD_INIT_FUNC(PartGui)
     PartGui::SoFCControlPoints                      ::initClass();
     PartGui::ViewProviderAttachExtension            ::init();
     PartGui::ViewProviderAttachExtensionPython      ::init();
+    PartGui::ViewProviderGridExtension              ::init();
+    PartGui::ViewProviderGridExtensionPython        ::init();
     PartGui::ViewProviderSplineExtension            ::init();
     PartGui::ViewProviderSplineExtensionPython      ::init();
     PartGui::ViewProviderPartExt                    ::init();

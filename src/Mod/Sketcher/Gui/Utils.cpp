@@ -315,22 +315,28 @@ void SketcherGui::ActivateHandler(Gui::Document* doc, DrawSketchHandler* handler
     }
 }
 
-bool SketcherGui::isCommandActive(Gui::Document* doc, bool actsOnSelection)
-{
+bool SketcherGui::isSketchInEdit(Gui::Document* doc) {
     if (doc) {
         // checks if a Sketch Viewprovider is in Edit and is in no special mode
-        if (doc->getInEdit()
-            && doc->getInEdit()->isDerivedFrom(SketcherGui::ViewProviderSketch::getClassTypeId())) {
-            auto mode =
-                static_cast<SketcherGui::ViewProviderSketch*>(doc->getInEdit())->getSketchMode();
-            if (mode == ViewProviderSketch::STATUS_NONE
-                || mode == ViewProviderSketch::STATUS_SKETCH_UseHandler) {
-                if (!actsOnSelection)
-                    return true;
-                else if (Gui::Selection().countObjectsOfType(
-                             Sketcher::SketchObject::getClassTypeId())
-                         > 0)
-                    return true;
+        auto* vp = dynamic_cast<SketcherGui::ViewProviderSketch*>(doc->getInEdit());
+        return (vp != nullptr);
+    }
+    return false;
+}
+
+bool SketcherGui::isCommandActive(Gui::Document* doc, bool actsOnSelection)
+{
+    if(isSketchInEdit(doc)) {
+        auto mode = static_cast<SketcherGui::ViewProviderSketch*>(doc->getInEdit())->getSketchMode();
+
+        if (mode == ViewProviderSketch::STATUS_NONE ||
+            mode == ViewProviderSketch::STATUS_SKETCH_UseHandler) {
+
+            if (!actsOnSelection) {
+                return true;
+            }
+            else if (Gui::Selection().countObjectsOfType(Sketcher::SketchObject::getClassTypeId()) > 0) {
+                return true;
             }
         }
     }
@@ -338,14 +344,20 @@ bool SketcherGui::isCommandActive(Gui::Document* doc, bool actsOnSelection)
     return false;
 }
 
-SketcherGui::ViewProviderSketch* SketcherGui::getSketchViewprovider(Gui::Document* doc)
+SketcherGui::ViewProviderSketch* SketcherGui::getInactiveHandlerEditModeSketchViewProvider(Gui::Document* doc)
 {
-    if (doc) {
-        if (doc->getInEdit()
-            && doc->getInEdit()->isDerivedFrom(SketcherGui::ViewProviderSketch::getClassTypeId()))
-            return dynamic_cast<SketcherGui::ViewProviderSketch*>(doc->getInEdit());
+    if(doc) {
+        return dynamic_cast<SketcherGui::ViewProviderSketch*>(doc->getInEdit());
     }
+
     return nullptr;
+}
+
+SketcherGui::ViewProviderSketch* SketcherGui::getInactiveHandlerEditModeSketchViewProvider()
+{
+    Gui::Document *doc = Gui::Application::Instance->activeDocument();
+
+    return getInactiveHandlerEditModeSketchViewProvider(doc);
 }
 
 void SketcherGui::removeRedundantHorizontalVertical(Sketcher::SketchObject* psketch,
@@ -581,18 +593,19 @@ std::string SketcherGui::angleToDisplayFormat(double value, int digits)
 
     //we always use use U+00B0 (°) as the unit of measure for angles in
     //single unit schema.  Will need a change to support rads or grads.
-    QString qUnitString = QString::fromUtf8("°");
+    auto qUnitString = QString::fromUtf8("°");
+    auto decimalSep = QLocale().decimalPoint();
 
     //get the numeric part of the user string
     QRegularExpression rxNoUnits(
-        QString::fromUtf8("(\\d*\\.?\\d*)(\\D*)$"));// number + non digits at end of string
+        QString::fromUtf8("(\\d*\\%1?\\d*)(\\D*)$").arg(decimalSep));// number + non digits at end of string
     QRegularExpressionMatch match = rxNoUnits.match(qUserString);
     if (!match.hasMatch()) {
         //no units in userString?
         return Base::Tools::toStdString(qUserString);
     }
     QString matched = match.captured(1);//matched is the numeric part of user string
-    int dpPos = matched.indexOf(QLocale().decimalPoint());
+    int dpPos = matched.indexOf(decimalSep);
     if (dpPos < 0) {
         //no decimal separator (ie an integer), return all the digits
         return Base::Tools::toStdString(matched + qUnitString);

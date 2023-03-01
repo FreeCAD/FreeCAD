@@ -35,6 +35,7 @@
 #include <Gui/GLPainter.h>
 #include <Gui/Selection.h>
 #include <Mod/Part/Gui/ViewProvider2DObject.h>
+#include <Mod/Part/Gui/ViewProviderGridExtension.h>
 #include <Mod/Part/Gui/ViewProviderAttachExtension.h>
 #include <Mod/Sketcher/App/GeoList.h>
 
@@ -83,6 +84,13 @@ namespace SketcherGui {
 
 class EditModeCoinManager;
 class DrawSketchHandler;
+
+enum class SnapMode { // to be moved to SnapManager
+    None,
+    SnapToObject,
+    SnapToAngle,
+    SnapToGrid,
+};
 
 using GeoList = Sketcher::GeoList;
 using GeoListFacade = Sketcher::GeoListFacade;
@@ -135,7 +143,8 @@ using GeoListFacade = Sketcher::GeoListFacade;
  * concentrating the coupling in a single point (and code reuse).
  *
  */
-class SketcherGuiExport ViewProviderSketch : public PartGui::ViewProvider2DObjectGrid
+class SketcherGuiExport ViewProviderSketch : public PartGui::ViewProvider2DObject
+                                           , public PartGui::ViewProviderGridExtension
                                            , public PartGui::ViewProviderAttachExtension
                                            , public Gui::SelectionObserver
 {
@@ -472,6 +481,9 @@ public:
     void onSelectionChanged(const Gui::SelectionChanges& msg) override;
     //@}
 
+    void setSnapMode(SnapMode mode);
+    SnapMode getSnapMode() const;
+
     /** @name Access to Sketch and Solver objects */
     //@{
     /// get the pointer to the sketch document object
@@ -533,6 +545,7 @@ public:
     bool mouseWheelEvent(int delta, const SbVec2s &cursorPos, const Gui::View3DInventorViewer* viewer) override;
     //@}
 
+
     /// Control the overlays appearing on the Tree and reflecting different sketcher states
     QIcon mergeColorfulOverlayIcons (const QIcon & orig) const override;
 
@@ -560,6 +573,7 @@ protected:
     void setEditViewer(Gui::View3DInventorViewer*, int ModNum) override;
     void unsetEditViewer(Gui::View3DInventorViewer*) override;
     static void camSensCB(void *data, SoSensor *); // camera sensor callback
+    void onCameraChanged(SoCamera* cam);
     //@}
 
     /** @name miscelanea editing functions */
@@ -775,6 +789,8 @@ private:
 
     SoNodeSensor cameraSensor;
     int viewOrientationFactor; // stores if sketch viewed from front or back
+
+    SnapMode snapMode = SnapMode::None; // temporary - to be moved to SnapManager
 };
 
 } // namespace PartGui

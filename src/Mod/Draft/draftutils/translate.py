@@ -34,7 +34,6 @@ using the QtCore module.
 # @{
 import PySide.QtCore as QtCore
 import PySide.QtGui as QtGui
-import six
 
 Qtranslate = QtCore.QCoreApplication.translate
 

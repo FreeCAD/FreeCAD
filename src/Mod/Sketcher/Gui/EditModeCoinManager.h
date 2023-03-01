@@ -226,12 +226,6 @@ public:
     void updateColor(const GeoListFacade & geolistfacade); // overload to be used with temporal geometry.
     //@}
 
-
-    /** @name change coin visualisation and behaviour*/
-    //@{
-    void updateGridExtent();
-    //@}
-
     /** @name change constraints selectability*/
     //@{
     void setConstraintSelectability(bool enabled = true);

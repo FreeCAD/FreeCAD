@@ -19,7 +19,6 @@
 #*                                                                         *
 #***************************************************************************
 
-import six
 
 import FreeCAD, Part, Draft, math, ArchCommands
 from FreeCAD import Vector

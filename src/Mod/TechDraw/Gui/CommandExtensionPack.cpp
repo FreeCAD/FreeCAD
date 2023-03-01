@@ -102,7 +102,7 @@ void execHoleCircle(Gui::Command* cmd)
         std::string GeoType = TechDraw::DrawUtil::getGeomTypeFromName(Name);
         TechDraw::BaseGeomPtr geom = objFeat->getGeomByIndex(GeoId);
         if (GeoType == "Edge") {
-            if (geom->geomType == TechDraw::CIRCLE || geom->geomType == TechDraw::ARCOFCIRCLE) {
+            if (geom->getGeomType() == TechDraw::CIRCLE || geom->getGeomType() == TechDraw::ARCOFCIRCLE) {
                 TechDraw::CirclePtr cgen = std::static_pointer_cast<TechDraw::Circle>(geom);
                 Circles.push_back(cgen);
             }
@@ -192,7 +192,7 @@ void execCircleCenterLines(Gui::Command* cmd)
         TechDraw::BaseGeomPtr geom = objFeat->getGeomByIndex(GeoId);
         std::string GeoType = TechDraw::DrawUtil::getGeomTypeFromName(Name);
         if (GeoType == "Edge") {
-            if (geom->geomType == TechDraw::CIRCLE || geom->geomType == TechDraw::ARCOFCIRCLE) {
+            if (geom->getGeomType() == TechDraw::CIRCLE || geom->getGeomType() == TechDraw::ARCOFCIRCLE) {
                 TechDraw::CirclePtr cgen = std::static_pointer_cast<TechDraw::Circle>(geom);
                 Base::Vector3d center = cgen->center;
                 center.y = -center.y;
@@ -769,7 +769,7 @@ void CmdTechDrawExtensionChangeLineAttributes::activated(int iMsg)
         int num = DrawUtil::getIndexFromName(name);
         BaseGeomPtr baseGeo = objFeat->getGeomByIndex(num);
         if (baseGeo) {
-            if (baseGeo->cosmetic) {
+            if (baseGeo->getCosmetic()) {
                 if (baseGeo->source() == 1) {
                     TechDraw::CosmeticEdge* cosEdgeTag = objFeat->getCosmeticEdgeBySelection(name);
                     _setLineAttributes(cosEdgeTag);
@@ -1525,14 +1525,14 @@ void execExtendShortenLine(Gui::Command* cmd, bool extend)
         if (geoType == "Edge") {
             TechDraw::BaseGeomPtr baseGeo = objFeat->getGeomByIndex(num);
             if (baseGeo) {
-                if (baseGeo->geomType == TechDraw::GENERIC) {
+                if (baseGeo->getGeomType() == TechDraw::GENERIC) {
                     TechDraw::GenericPtr genLine =
                         std::static_pointer_cast<TechDraw::Generic>(baseGeo);
                     Base::Vector3d P0 = genLine->points.at(0);
                     Base::Vector3d P1 = genLine->points.at(1);
                     bool isCenterLine = false;
                     TechDraw::CenterLine* centerEdge = nullptr;
-                    if (baseGeo->cosmetic) {
+                    if (baseGeo->getCosmetic()) {
                         std::string uniTag = baseGeo->getCosmeticTag();
                         int oldStyle = 1;
                         float oldWeight = 1.0f;
@@ -1789,7 +1789,7 @@ void CmdTechDrawExtensionAreaAnnotation::activated(int iMsg)
             std::vector<TechDraw::BaseGeomPtr> faceEdges = objFeat->getFaceEdgesByIndex(idx);
             // We filter arcs, circles etc. which are not allowed.
             for (const TechDraw::BaseGeomPtr& geoPtr : faceEdges)
-                if (geoPtr->geomType != TechDraw::GENERIC)
+                if (geoPtr->getGeomType() != TechDraw::GENERIC)
                     throw Base::TypeError(
                         "CmdTechDrawAreaAnnotation - forbidden border element found\n");
             // We create a list of all points along the boundary of the face.
@@ -1990,7 +1990,7 @@ void _createThreadCircle(std::string Name, TechDraw::DrawViewPart* objFeat, floa
     TechDraw::BaseGeomPtr geom = objFeat->getGeomByIndex(GeoId);
     std::string GeoType = TechDraw::DrawUtil::getGeomTypeFromName(Name);
 
-    if (GeoType == "Edge" && geom->geomType == TechDraw::CIRCLE) {
+    if (GeoType == "Edge" && geom->getGeomType() == TechDraw::CIRCLE) {
         TechDraw::CirclePtr cgen = std::static_pointer_cast<TechDraw::Circle>(geom);
         Base::Vector3d center = cgen->center;
         float radius = cgen->radius;
@@ -2014,7 +2014,7 @@ void _createThreadLines(std::vector<std::string> SubNames, TechDraw::DrawViewPar
         int GeoId1 = TechDraw::DrawUtil::getIndexFromName(SubNames[1]);
         TechDraw::BaseGeomPtr geom0 = objFeat->getGeomByIndex(GeoId0);
         TechDraw::BaseGeomPtr geom1 = objFeat->getGeomByIndex(GeoId1);
-        if (geom0->geomType != TechDraw::GENERIC || geom1->geomType != TechDraw::GENERIC) {
+        if (geom0->getGeomType() != TechDraw::GENERIC || geom1->getGeomType() != TechDraw::GENERIC) {
             QMessageBox::warning(Gui::getMainWindow(), QObject::tr("TechDraw Thread Hole Side"),
                                  QObject::tr("Please select two straight lines"));
             return;

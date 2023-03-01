@@ -95,25 +95,9 @@ class TechDrawExport BaseGeom : public std::enable_shared_from_this<BaseGeom>
         //BaseGeom(BaseGeomPtr bg);   //do we need a copy constructor too?
         virtual ~BaseGeom() = default;
 
-    public:
-        GeomType geomType;
-        ExtractionType extractType;     //obs
-        edgeClass classOfEdge;
-        bool hlrVisible;
-        bool reversed;
-        int ref3D;                      //obs?
-        TopoDS_Edge occEdge;            //projected Edge
-        bool cosmetic;
-        int source() { return m_source; }
-        void source(int s) { m_source = s; }
-        int sourceIndex() { return m_sourceIndex; }
-        void sourceIndex(int si) { m_sourceIndex = si; }
-        std::string getCosmeticTag() { return cosmeticTag; }
-        void setCosmeticTag(std::string t) { cosmeticTag = t; }
-
-        virtual std::string toString() const;
         virtual void Save(Base::Writer& w) const;
         virtual void Restore(Base::XMLReader& r);
+
         std::vector<Base::Vector3d> findEndPoints();
         Base::Vector3d getStartPoint();
         Base::Vector3d getEndPoint();
@@ -127,6 +111,7 @@ class TechDrawExport BaseGeom : public std::enable_shared_from_this<BaseGeom>
         bool closed();
         BaseGeomPtr copy();
         std::string dump();
+        virtual std::string toString() const;
         std::vector<Base::Vector3d> intersection(TechDraw::BaseGeomPtr geom2);
 
         //Uniqueness
@@ -134,8 +119,33 @@ class TechDrawExport BaseGeom : public std::enable_shared_from_this<BaseGeom>
         virtual std::string getTagAsString() const;
 
         std::string geomTypeName();
+        BaseGeomPtr inverted();
 
-private:
+        // attribute setters and getters
+        GeomType getGeomType() { return geomType; }
+        void setGeomType(GeomType type) { geomType = type; }
+        edgeClass getClassOfEdge() { return classOfEdge; }
+        void setClassOfEdge(edgeClass newClass) { classOfEdge = newClass; }
+        bool getHlrVisible() { return hlrVisible; }
+        void setHlrVisible(bool state) { hlrVisible = state; }
+        bool getReversed()  { return reversed; }
+        void setReversed(bool state) { reversed = state; }
+        int getRef3d()  { return ref3D; }
+        void setRef3d(int ref)  { ref3D = ref; }
+        TopoDS_Edge getOCCEdge()  { return occEdge; }
+        void setOCCEdge(TopoDS_Edge newEdge)  { occEdge = newEdge; }
+        bool getCosmetic()  { return cosmetic; }
+        void setCosmetic (bool state)  { cosmetic = state; }
+        int source() { return m_source; }
+        void source(int s) { m_source = s; }
+        int sourceIndex() { return m_sourceIndex; }
+        void sourceIndex(int si) { m_sourceIndex = si; }
+        std::string getCosmeticTag() { return cosmeticTag; }
+        void setCosmeticTag(std::string t) { cosmeticTag = t; }
+
+protected:
+        void createNewTag();
+
         void intersectionLL(TechDraw::BaseGeomPtr geom1,
                             TechDraw::BaseGeomPtr geom2,
                             std::vector<Base::Vector3d>& interPoints);
@@ -146,14 +156,20 @@ private:
                             TechDraw::BaseGeomPtr geom2,
                             std::vector<Base::Vector3d>& interPoints);
 
-protected:
+        GeomType geomType;
+        ExtractionType extractType;     //obs
+        edgeClass classOfEdge;
+        bool hlrVisible;
+        bool reversed;
+        int ref3D;                      //obs?
+        TopoDS_Edge occEdge;            //projected Edge
+        bool cosmetic;
+        //TODO: all these attributes should be private
         int m_source;         //0 - geom, 1 - cosmetic edge, 2 - centerline
         int m_sourceIndex;
         std::string cosmeticTag;
-
-        void createNewTag();
-
         boost::uuids::uuid tag;
+
 };
 using BaseGeomPtrVector = std::vector<BaseGeomPtr>;    //new style
 
@@ -335,19 +351,9 @@ class TechDrawExport Vertex
         virtual void Restore(Base::XMLReader &/*reader*/);
         virtual void dump(const char* title = "");
 
-        Base::Vector3d pnt;
-        ExtractionType extractType;       //obs?
-        bool hlrVisible;                 //visible according to HLR
-        int ref3D;                        //obs. never used.
-        bool isCenter;
-        TopoDS_Vertex occVertex;
         bool isEqual(const Vertex& v, double tol);
         Base::Vector3d point() const { return Base::Vector3d(pnt.x, pnt.y, 0.0); }
         void point(Base::Vector3d v){ pnt = Base::Vector3d(v.x, v.y); }
-        bool cosmetic;
-        int cosmeticLink;                 //deprec. use cosmeticTag
-        std::string cosmeticTag;
-        bool reference;                   //reference vertex (ex robust dimension)
 
         double x() {return pnt.x;}
         double y() {return pnt.y;}
@@ -355,10 +361,37 @@ class TechDrawExport Vertex
         boost::uuids::uuid getTag() const;
         virtual std::string getTagAsString() const;
 
+        // attribute setters and getters
+        bool getHlrVisible() { return hlrVisible; }
+        void setHlrVisible(bool state) { hlrVisible = state; }
+        int getRef3d()  { return ref3D; }
+        void setRef3d(int ref)  { ref3D = ref; }
+        TopoDS_Vertex getOCCVertex()  { return occVertex; }
+        void setOCCVertex(TopoDS_Vertex newVertex)  { occVertex = newVertex; }
+        bool getCosmetic()  { return cosmetic; }
+        void setCosmetic (bool state)  { cosmetic = state; }
+        std::string getCosmeticTag() { return cosmeticTag; }
+        void setCosmeticTag(std::string t) { cosmeticTag = t; }
+        bool isCenter() {return m_center;}
+        void isCenter(bool state) { m_center = state; }
+        bool isReference() { return m_reference; }
+        void isReference(bool state) { m_reference = state; }
+
     protected:
         //Uniqueness
         void createNewTag();
         void assignTag(const TechDraw::Vertex* v);
+
+        Base::Vector3d pnt;
+        ExtractionType extractType;       //obs?
+        bool hlrVisible;                 //visible according to HLR
+        int ref3D;                        //obs. never used.
+        bool m_center;
+        TopoDS_Vertex occVertex;
+        bool cosmetic;
+        int cosmeticLink;                 //deprec. use cosmeticTag
+        std::string cosmeticTag;
+        bool m_reference;                   //reference vertex (ex robust dimension)
 
         boost::uuids::uuid tag;
 };

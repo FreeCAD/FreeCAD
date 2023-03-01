@@ -45,12 +45,6 @@ SketcherGeneralWidget::SketcherGeneralWidget(QWidget *parent)
     ui->renderingOrder->setSizeAdjustPolicy(QAbstractScrollArea::AdjustToContents);
 
     // connecting the needed signals
-    connect(ui->checkBoxShowGrid, &QCheckBox::toggled,
-            this, &SketcherGeneralWidget::emitToggleGridView);
-    connect(ui->checkBoxGridSnap, &QCheckBox::toggled,
-            this, &SketcherGeneralWidget::emitToggleGridSnap);
-    connect(ui->gridSize, qOverload<double>(&Gui::PrefQuantitySpinBox::valueChanged),
-            this, &SketcherGeneralWidget::emitSetGridSize);
     connect(ui->checkBoxAutoconstraints, &QCheckBox::toggled,
             this, &SketcherGeneralWidget::emitToggleAutoconstraints);
     connect(ui->checkBoxRedundantAutoconstraints, &QCheckBox::toggled,
@@ -72,9 +66,6 @@ bool SketcherGeneralWidget::eventFilter(QObject *object, QEvent *event)
 
 void SketcherGeneralWidget::saveSettings()
 {
-    ui->checkBoxShowGrid->onSave();
-    ui->gridSize->onSave();
-    ui->checkBoxGridSnap->onSave();
     ui->checkBoxAutoconstraints->onSave();
     ui->checkBoxRedundantAutoconstraints->onSave();
 
@@ -95,10 +86,6 @@ void SketcherGeneralWidget::saveOrderingOrder()
 
 void SketcherGeneralWidget::loadSettings()
 {
-    ui->checkBoxShowGrid->onRestore();
-    ui->gridSize->onRestore();
-    if (ui->gridSize->rawValue() == 0) { ui->gridSize->setValue(10.0); }
-    ui->checkBoxGridSnap->onRestore();
     ui->checkBoxAutoconstraints->onRestore();
     ui->checkBoxRedundantAutoconstraints->onRestore();
 
@@ -135,21 +122,6 @@ void SketcherGeneralWidget::loadOrderingOrder()
     }
 }
 
-void SketcherGeneralWidget::setGridSize(double val)
-{
-    ui->gridSize->setValue(Base::Quantity(val,Base::Unit::Length));
-}
-
-void SketcherGeneralWidget::checkGridView(bool on)
-{
-    ui->checkBoxShowGrid->setChecked(on);
-}
-
-void SketcherGeneralWidget::checkGridSnap(bool on)
-{
-    ui->checkBoxGridSnap->setChecked(on);
-}
-
 void SketcherGeneralWidget::checkAutoconstraints(bool on)
 {
     ui->checkBoxAutoconstraints->setChecked(on);
@@ -158,12 +130,6 @@ void SketcherGeneralWidget::checkAutoconstraints(bool on)
 void SketcherGeneralWidget::checkAvoidRedundant(bool on)
 {
     ui->checkBoxRedundantAutoconstraints->setChecked(on);
-}
-
-void SketcherGeneralWidget::enableGridSettings(bool on)
-{
-    ui->gridSize->setEnabled(on);
-    ui->checkBoxGridSnap->setEnabled(on);
 }
 
 void SketcherGeneralWidget::enableAvoidRedundant(bool on)
@@ -188,18 +154,12 @@ TaskSketcherGeneral::TaskSketcherGeneral(ViewProviderSketch *sketchView)
     // we need a separate container widget to add all controls to
     widget = new SketcherGeneralWidget(this);
     this->groupLayout()->addWidget(widget);
-    
+
     {
         //Blocker probably not needed as signals aren't connected yet
         QSignalBlocker block(widget);
         //Load default settings to get ordering order & avoid redundant values
         widget->loadSettings();
-        widget->checkGridView(sketchView->ShowGrid.getValue());
-        if (sketchView->GridSize.getValue() > 0) {
-            widget->setGridSize(sketchView->GridSize.getValue());
-        }
-        widget->checkGridSnap(sketchView->GridSnap.getValue());
-        widget->enableGridSettings(sketchView->ShowGrid.getValue());
         widget->checkAutoconstraints(sketchView->Autoconstraints.getValue());
         widget->checkAvoidRedundant(sketchView->AvoidRedundant.getValue());
         widget->enableAvoidRedundant(sketchView->Autoconstraints.getValue());
@@ -207,25 +167,10 @@ TaskSketcherGeneral::TaskSketcherGeneral(ViewProviderSketch *sketchView)
 
     // connecting the needed signals
     QObject::connect(
-        widget, &SketcherGeneralWidget::emitToggleGridView,
-        this  , &TaskSketcherGeneral::onToggleGridView
-    );
-
-    QObject::connect(
-        widget, &SketcherGeneralWidget::emitToggleGridSnap,
-        this  , &TaskSketcherGeneral::onToggleGridSnap
-    );
-
-    QObject::connect(
-        widget, &SketcherGeneralWidget::emitSetGridSize,
-        this  , &TaskSketcherGeneral::onSetGridSize
-    );
-
-    QObject::connect(
         widget, &SketcherGeneralWidget::emitToggleAutoconstraints,
         this  , &TaskSketcherGeneral::onToggleAutoconstraints
     );
-    
+
     QObject::connect(
         widget, &SketcherGeneralWidget::emitToggleAvoidRedundant,
         this  , &TaskSketcherGeneral::onToggleAvoidRedundant
@@ -252,20 +197,7 @@ void TaskSketcherGeneral::onChangedSketchView(const Gui::ViewProvider& vp,
                                               const App::Property& prop)
 {
     if (sketchView == &vp) {
-        if (&sketchView->ShowGrid == &prop) {
-            QSignalBlocker block(widget);
-            widget->checkGridView(sketchView->ShowGrid.getValue());
-            widget->enableGridSettings(sketchView->ShowGrid.getValue());
-        }
-        else if (&sketchView->GridSize == &prop) {
-            QSignalBlocker block(widget);
-            widget->setGridSize(sketchView->GridSize.getValue());
-        }
-        else if (&sketchView->GridSnap == &prop) {
-            QSignalBlocker block(widget);
-            widget->checkGridSnap(sketchView->GridSnap.getValue());
-        }
-        else if (&sketchView->Autoconstraints == &prop) {
+        if (&sketchView->Autoconstraints == &prop) {
             QSignalBlocker block(widget);
             widget->checkAutoconstraints(sketchView->Autoconstraints.getValue());
             widget->enableAvoidRedundant(sketchView->Autoconstraints.getValue());
@@ -275,26 +207,6 @@ void TaskSketcherGeneral::onChangedSketchView(const Gui::ViewProvider& vp,
             widget->checkAvoidRedundant(sketchView->AvoidRedundant.getValue());
         }
     }
-}
-
-void TaskSketcherGeneral::onToggleGridView(bool on)
-{
-    Base::ConnectionBlocker block(changedSketchView);
-    sketchView->ShowGrid.setValue(on);
-    widget->enableGridSettings(on);
-}
-
-void TaskSketcherGeneral::onSetGridSize(double val)
-{
-    Base::ConnectionBlocker block(changedSketchView);
-    if (val > 0)
-        sketchView->GridSize.setValue(val);
-}
-
-void TaskSketcherGeneral::onToggleGridSnap(bool on)
-{
-    Base::ConnectionBlocker block(changedSketchView);
-    sketchView->GridSnap.setValue(on);
 }
 
 void TaskSketcherGeneral::onToggleAutoconstraints(bool on)

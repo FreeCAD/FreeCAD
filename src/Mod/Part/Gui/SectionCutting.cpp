@@ -603,7 +603,7 @@ void SectionCut::startCutting(bool isInitial)
 
     // store color and transparency of first object
     App::Color cutColor;
-    int cutTransparency;
+    int cutTransparency {0};
     bool autoColor = true;
     bool autoTransparency = true;
     auto vpFirstObject = dynamic_cast<Gui::ViewProviderGeometryObject*>(
