@@ -178,5 +178,22 @@ auto getSafeGeomLayerId(T geom)
     return layerId;
 }
 
+/** sets the visual layer id (not the one of the GeometryFacade, but the index to PropertyVisualLayerList) for a geometry or GeometryFacade.
+ * NOTE: If no ViewProviderSketchGeometryExtension is present, one is created.
+ * */
+template <typename T>
+void setSafeGeomLayerId(T geom, int layerindex)
+{
+    // create extension if none existing
+    if(!geom->hasExtension(SketcherGui::ViewProviderSketchGeometryExtension::getClassTypeId())) {
+        geom->setExtension(std::make_unique<SketcherGui::ViewProviderSketchGeometryExtension>());
+    }
+
+    auto vpext = std::static_pointer_cast<SketcherGui::ViewProviderSketchGeometryExtension>(
+                                          geom->getExtension(SketcherGui::ViewProviderSketchGeometryExtension::getClassTypeId()).lock());
+
+    vpext->setVisualLayerId(layerindex);
+}
+
 #endif // SKETCHERGUI_Recompute_H
 
