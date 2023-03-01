@@ -38,7 +38,6 @@
 #include "ui_SketcherSettingsDisplay.h"
 #include "ui_SketcherSettingsColors.h"
 #include "ui_SketcherSettingsDisplay.h"
-#include "TaskSketcherGeneral.h"
 
 
 using namespace SketcherGui;
@@ -49,11 +48,6 @@ SketcherSettings::SketcherSettings(QWidget* parent)
     : PreferencePage(parent), ui(new Ui_SketcherSettings)
 {
     ui->setupUi(this);
-    QGridLayout* gridLayout = new QGridLayout(ui->placeholder);
-    gridLayout->setSpacing(0);
-    gridLayout->setContentsMargins(0, 0, 0, 0);
-    form = new SketcherGeneralWidget(ui->placeholder);
-    gridLayout->addWidget(form, 0, 0, 1, 1);
 }
 
 /**
@@ -73,7 +67,6 @@ void SketcherSettings::saveSettings()
     ui->checkBoxEnableEscape->onSave();
     ui->checkBoxNotifyConstraintSubstitutions->onSave();
     ui->checkBoxAutoRemoveRedundants->onSave();
-    form->saveSettings();
 }
 
 void SketcherSettings::loadSettings()
@@ -85,7 +78,6 @@ void SketcherSettings::loadSettings()
     ui->checkBoxEnableEscape->onRestore();
     ui->checkBoxNotifyConstraintSubstitutions->onRestore();
     ui->checkBoxAutoRemoveRedundants->onRestore();
-    form->loadSettings();
 }
 
 /**
