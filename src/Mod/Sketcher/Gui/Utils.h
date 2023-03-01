@@ -72,6 +72,9 @@ std::string getStrippedPythonExceptionString(const Base::Exception&);
 
 void getIdsFromName(const std::string &name, const Sketcher::SketchObject* Obj, int &GeoId, Sketcher::PointPos &PosId);
 
+/// Returns ONLY the geometry elements when the "Edge" is selected (including GeomPoints)
+std::vector<int> getGeoIdsOfEdgesFromNames(const Sketcher::SketchObject* Obj, const std::vector<std::string> & names);
+
 bool checkBothExternal(int GeoId1, int GeoId2);
 
 bool isPointOrSegmentFixed(const Sketcher::SketchObject* Obj, int GeoId);
