@@ -5,14 +5,16 @@
 
 import FreeCAD as App
 import Part
+import os
+import tempfile
 import unittest
-from PySide import QtCore
 
 class TopoShapeListTest(unittest.TestCase):
     def setUp(self):
         """Creates a document and a FeaturePython that has a PropertyTopoShapeList property"""
         print("TopoShapeListTest - setting up")
-        self.fileName = "/tmp/TopoShapeListTest.FCStd"
+        TempPath = tempfile.gettempdir()
+        self.fileName = TempPath + os.sep + "TopoShapeListTest.FCStd"
         self.objName = "TestObject"
         App.newDocument("TopoShapeList")
         App.setActiveDocument("TopoShapeList")
@@ -35,6 +37,7 @@ class TopoShapeListTest(unittest.TestCase):
         """Tests PropertyTopoShapeList"""
         print("running TopoShapeListTest")
         doc = App.openDocument(self.fileName)
+        doc.UndoMode = 1
         obj = doc.getObject(self.objName)
         boxes = obj.Shapes
 
