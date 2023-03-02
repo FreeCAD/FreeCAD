@@ -4,5 +4,6 @@ target_sources(
             ${CMAKE_CURRENT_SOURCE_DIR}/Matrix.cpp
             ${CMAKE_CURRENT_SOURCE_DIR}/Rotation.cpp
             ${CMAKE_CURRENT_SOURCE_DIR}/tst_Tools.cpp
-            ${CMAKE_CURRENT_SOURCE_DIR}/Units.cpp
+            ${CMAKE_CURRENT_SOURCE_DIR}/Unit.cpp
+            ${CMAKE_CURRENT_SOURCE_DIR}/Quantity.cpp
 )
