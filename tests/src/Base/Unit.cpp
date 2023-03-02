@@ -1,24 +1,41 @@
-#include "gtest/gtest.h"
 #include "Base/Unit.h"
+#include "gtest/gtest.h"
 #include <Base/Exception.h>
 
 // NOLINTBEGIN
-TEST(Unit, TestString)
+TEST(Unit, BaseItemStringsEmpty)
 {
     auto toString = [](const Base::Unit& unit) {
         return unit.getString().toStdString();
     };
-    EXPECT_EQ(toString(Base::Unit(0,0,0,0,0,0,0,0)), "");
-    EXPECT_EQ(toString(Base::Unit(1,0,0,0,0,0,0,0)), "mm");
-    EXPECT_EQ(toString(Base::Unit(0,1,0,0,0,0,0,0)), "kg");
-    EXPECT_EQ(toString(Base::Unit(0,0,1,0,0,0,0,0)), "s");
-    EXPECT_EQ(toString(Base::Unit(0,0,0,1,0,0,0,0)), "A");
-    EXPECT_EQ(toString(Base::Unit(0,0,0,0,1,0,0,0)), "K");
-    EXPECT_EQ(toString(Base::Unit(0,0,0,0,0,1,0,0)), "mol");
-    EXPECT_EQ(toString(Base::Unit(0,0,0,0,0,0,1,0)), "cd");
-    EXPECT_EQ(toString(Base::Unit(0,0,0,0,0,0,0,1)), "deg");
-    EXPECT_EQ(toString(Base::Unit(2,0,0,0,0,0,0,0)), "mm^2");
-    EXPECT_EQ(toString(Base::Unit(1,1,-2,0,0,0,0,0)), "mm*kg/s^2");
+    EXPECT_EQ(toString(Base::Unit(0, 0, 0, 0, 0, 0, 0, 0)), "");
+ }
+
+TEST(Unit, BaseItemStringsBaseValues)
+{
+    auto toString = [](const Base::Unit& unit) {
+        return unit.getString().toStdString();
+    };
+    EXPECT_EQ(toString(Base::Unit(1, 0, 0, 0, 0, 0, 0, 0)), "mm");
+    EXPECT_EQ(toString(Base::Unit(0, 1, 0, 0, 0, 0, 0, 0)), "kg");
+    EXPECT_EQ(toString(Base::Unit(0, 0, 1, 0, 0, 0, 0, 0)), "s");
+    EXPECT_EQ(toString(Base::Unit(0, 0, 0, 1, 0, 0, 0, 0)), "A");
+    EXPECT_EQ(toString(Base::Unit(0, 0, 0, 0, 1, 0, 0, 0)), "K");
+    EXPECT_EQ(toString(Base::Unit(0, 0, 0, 0, 0, 1, 0, 0)), "mol");
+    EXPECT_EQ(toString(Base::Unit(0, 0, 0, 0, 0, 0, 1, 0)), "cd");
+    EXPECT_EQ(toString(Base::Unit(0, 0, 0, 0, 0, 0, 0, 1)), "deg");
+}
+
+TEST(Unit, BaseItemStringsOther)
+{
+    auto toString = [](const Base::Unit& unit) {
+        return unit.getString().toStdString();
+    };
+    EXPECT_EQ(toString(Base::Unit(1, 1, 0, 0, 0, 0, 0, 0)), "mm*kg");
+    EXPECT_EQ(toString(Base::Unit(1, -1, 0, 0, 0, 0, 0, 0)), "mm/kg");
+    EXPECT_EQ(toString(Base::Unit(2, 0, 0, 0, 0, 0, 0, 0)), "mm^2");
+    EXPECT_EQ(toString(Base::Unit(-2, 0, 0, 0, 0, 0, 0, 0)), "1/mm^2");
+    EXPECT_EQ(toString(Base::Unit(1, 1, -2, 0, 0, 0, 0, 0)), "mm*kg/s^2");
 }
 
 TEST(Unit, TestTypeString)
@@ -29,7 +46,7 @@ TEST(Unit, TestTypeString)
     EXPECT_EQ(toString(Base::Unit::Acceleration), "Acceleration");
     EXPECT_EQ(toString(Base::Unit::AmountOfSubstance), "AmountOfSubstance");
     EXPECT_EQ(toString(Base::Unit::Angle), "Angle");
-    EXPECT_EQ(toString(Base::Unit::AngleOfFriction), "Angle"); // same unit as Angle
+    EXPECT_EQ(toString(Base::Unit::AngleOfFriction), "Angle");// same unit as Angle
     EXPECT_EQ(toString(Base::Unit::Area), "Area");
     EXPECT_EQ(toString(Base::Unit::CurrentDensity), "CurrentDensity");
     EXPECT_EQ(toString(Base::Unit::Density), "Density");
@@ -55,136 +72,178 @@ TEST(Unit, TestTypeString)
     EXPECT_EQ(toString(Base::Unit::MagneticFieldStrength), "MagneticFieldStrength");
     EXPECT_EQ(toString(Base::Unit::MagneticFlux), "MagneticFlux");
     EXPECT_EQ(toString(Base::Unit::MagneticFluxDensity), "MagneticFluxDensity");
-    EXPECT_EQ(toString(Base::Unit::Magnetization), "MagneticFieldStrength"); // same as MagneticFieldStrength
+    EXPECT_EQ(toString(Base::Unit::Magnetization),
+              "MagneticFieldStrength");// same as MagneticFieldStrength
     EXPECT_EQ(toString(Base::Unit::Mass), "Mass");
     EXPECT_EQ(toString(Base::Unit::Pressure), "Pressure");
     EXPECT_EQ(toString(Base::Unit::Power), "Power");
-    EXPECT_EQ(toString(Base::Unit::ShearModulus), "Pressure"); // same as Pressure
+    EXPECT_EQ(toString(Base::Unit::ShearModulus), "Pressure");// same as Pressure
     EXPECT_EQ(toString(Base::Unit::SpecificEnergy), "SpecificEnergy");
     EXPECT_EQ(toString(Base::Unit::SpecificHeat), "SpecificHeat");
     EXPECT_EQ(toString(Base::Unit::Stiffness), "Stiffness");
-    EXPECT_EQ(toString(Base::Unit::Stress), "Pressure"); // same as Pressure
+    EXPECT_EQ(toString(Base::Unit::Stress), "Pressure");// same as Pressure
     EXPECT_EQ(toString(Base::Unit::Temperature), "Temperature");
     EXPECT_EQ(toString(Base::Unit::ThermalConductivity), "ThermalConductivity");
     EXPECT_EQ(toString(Base::Unit::ThermalExpansionCoefficient), "ThermalExpansionCoefficient");
     EXPECT_EQ(toString(Base::Unit::ThermalTransferCoefficient), "ThermalTransferCoefficient");
     EXPECT_EQ(toString(Base::Unit::TimeSpan), "TimeSpan");
-    EXPECT_EQ(toString(Base::Unit::UltimateTensileStrength), "Pressure"); // same as Pressure
+    EXPECT_EQ(toString(Base::Unit::UltimateTensileStrength), "Pressure");// same as Pressure
     EXPECT_EQ(toString(Base::Unit::VacuumPermittivity), "VacuumPermittivity");
     EXPECT_EQ(toString(Base::Unit::Velocity), "Velocity");
     EXPECT_EQ(toString(Base::Unit::Volume), "Volume");
     EXPECT_EQ(toString(Base::Unit::VolumeFlowRate), "VolumeFlowRate");
-    EXPECT_EQ(toString(Base::Unit::VolumetricThermalExpansionCoefficient), "ThermalExpansionCoefficient");
+    EXPECT_EQ(toString(Base::Unit::VolumetricThermalExpansionCoefficient),
+              "ThermalExpansionCoefficient");
     EXPECT_EQ(toString(Base::Unit::Work), "Work");
-    EXPECT_EQ(toString(Base::Unit::YieldStrength), "Pressure"); // same as Pressure
-    EXPECT_EQ(toString(Base::Unit::YoungsModulus), "Pressure"); // same unit as Pressure
+    EXPECT_EQ(toString(Base::Unit::YieldStrength), "Pressure");// same as Pressure
+    EXPECT_EQ(toString(Base::Unit::YoungsModulus), "Pressure");// same unit as Pressure
 }
-TEST(Unit, strings){
-    EXPECT_STREQ(Base::Unit::Acceleration.getString().toStdString().c_str()      , "mm/s^2");
-    EXPECT_STREQ(Base::Unit::AmountOfSubstance.getString().toStdString().c_str() , "mol");
-    EXPECT_STREQ(Base::Unit::Angle.getString().toStdString().c_str()             , "deg");
-    EXPECT_STREQ(Base::Unit::AngleOfFriction.getString().toStdString().c_str()   , "deg");
-    EXPECT_STREQ(Base::Unit::Area.getString().toStdString().c_str()              , "mm^2");
-    EXPECT_STREQ(Base::Unit::CurrentDensity.getString().toStdString().c_str()    , "A/mm^2");
-    EXPECT_STREQ(Base::Unit::Density.getString().toStdString().c_str()           , "kg/mm^3");
-    EXPECT_STREQ(Base::Unit::DissipationRate.getString().toStdString().c_str()   , "mm^2/s^3");
+
+TEST(Unit, stringsAcceleration)
+{
+    EXPECT_STREQ(Base::Unit::Acceleration.getString().toStdString().c_str(), "mm/s^2"); // 1,0,-2
 }
+
+TEST(Unit, stringsAmountOfSubstance)
+{
+    EXPECT_STREQ(Base::Unit::AmountOfSubstance.getString().toStdString().c_str(), "mol");
+}
+
+TEST(Unit, stringsAngle)
+{
+    EXPECT_STREQ(Base::Unit::Angle.getString().toStdString().c_str(), "deg");
+}
+
+TEST(Unit, stringsAngleOfFriction)
+{
+    EXPECT_STREQ(Base::Unit::AngleOfFriction.getString().toStdString().c_str(), "deg");
+}
+
+TEST(Unit, stringsArea)
+{
+    EXPECT_STREQ(Base::Unit::Area.getString().toStdString().c_str(), "mm^2");
+}
+
+TEST(Unit, stringsCurrentDensity)
+{
+    EXPECT_STREQ(Base::Unit::CurrentDensity.getString().toStdString().c_str(), "A/mm^2");
+}
+
+TEST(Unit, stringsDensity)
+{
+    EXPECT_STREQ(Base::Unit::Density.getString().toStdString().c_str(), "kg/mm^3");
+}
+
+TEST(Unit, stringsDissipationRate)
+{
+    EXPECT_STREQ(Base::Unit::DissipationRate.getString().toStdString().c_str(), "mm^2/s^3"); // 2, 0, -3
+}
+
 
 TEST(Unit, TestEqual)
 {
-    Base::Unit unit{1};
-    EXPECT_EQ(unit.pow(2) == Base::Unit{2}, true);
+    Base::Unit unit {1};
+    EXPECT_EQ(unit.pow(2) == Base::Unit {2}, true);
 }
 
 TEST(Unit, TestNotEqual)
 {
-    Base::Unit unit{1};
-    EXPECT_EQ(unit.pow(2) != Base::Unit{1}, true);
+    Base::Unit unit {1};
+    EXPECT_EQ(unit.pow(2) != Base::Unit {1}, true);
+}
+
+TEST(Unit, TestMultEmpty)
+{
+    EXPECT_EQ(Base::Unit {} * Base::Unit {}, Base::Unit {});
 }
 
 TEST(Unit, TestMult)
 {
-    EXPECT_EQ(Base::Unit{} * Base::Unit{}, Base::Unit{});
     EXPECT_EQ(Base::Unit(0, 1) * Base::Unit(1, 0), Base::Unit(1, 1));
 }
 
-TEST(Unit, TestDiv)
+TEST(Unit, TestDiv2)
 {
-    EXPECT_EQ(Base::Unit{} * Base::Unit{}, Base::Unit{});
     EXPECT_EQ(Base::Unit(0, 1) / Base::Unit(1, 0), Base::Unit(-1, 1));
 }
 
-TEST(Unit, TestPowNoDim)
+TEST(Unit, TestPowNoDim1)
 {
-    Base::Unit unit{};
-    EXPECT_EQ(unit.pow(2), Base::Unit{0});
+    Base::Unit unit {};
+    EXPECT_EQ(unit.pow(2), Base::Unit {0});
+}
+
+TEST(Unit, TestPowNoDim2)
+{
+    Base::Unit unit {};
+    unit.pow(2);
     EXPECT_EQ(unit.isEmpty(), true);
 }
 
 TEST(Unit, TestPowEQ1)
 {
-    Base::Unit unit{2};
-    EXPECT_EQ(unit.pow(1), Base::Unit{2});
+    Base::Unit unit {2};
+    EXPECT_EQ(unit.pow(1), Base::Unit {2});
 }
 
 TEST(Unit, TestPowEQ0)
 {
-    Base::Unit unit{2};
-    EXPECT_EQ(unit.pow(0), Base::Unit{0});
+    Base::Unit unit {2};
+    EXPECT_EQ(unit.pow(0), Base::Unit {0});
 }
 
 TEST(Unit, TestPowGT1)
 {
-    Base::Unit unit{2};
-    EXPECT_EQ(unit.pow(2), Base::Unit{4});
+    Base::Unit unit {2};
+    EXPECT_EQ(unit.pow(2), Base::Unit {4});
 }
 
 TEST(Unit, TestPowLT1)
 {
-    Base::Unit unit{3};
-    EXPECT_EQ(unit.pow(1.0/3.0), Base::Unit{1});
+    Base::Unit unit {3};
+    EXPECT_EQ(unit.pow(1.0 / 3.0), Base::Unit {1});
 }
 
 TEST(Unit, TestPow3DIV2)
 {
-    Base::Unit unit{3};
-    EXPECT_THROW(unit.pow(3.0/2.0), Base::UnitsMismatchError);
+    Base::Unit unit {3};
+    EXPECT_THROW(unit.pow(3.0 / 2.0), Base::UnitsMismatchError);
 }
 
 TEST(Unit, TestOverflow)
 {
     // this tests _that_ the expected exception is thrown
-    EXPECT_THROW({
-        try
+    EXPECT_THROW(
         {
-            Base::Unit unit{3};
-            unit.pow(10000);
-        }
-        catch (const Base::OverflowError& e)
-        {
-            // and this tests that it has the correct message
-            EXPECT_STREQ( "Unit overflow in pow()", e.what());
-            throw;
-        }
-    }, Base::OverflowError);
+            try {
+                Base::Unit unit {3};
+                unit.pow(10000);
+            }
+            catch (const Base::OverflowError& e) {
+                // and this tests that it has the correct message
+                EXPECT_STREQ("Unit overflow", e.what());
+                throw;
+            }
+        },
+        Base::OverflowError);
 }
 
 TEST(Unit, TestUnderflow)
 {
     // this tests _that_ the expected exception is thrown
-    EXPECT_THROW({
-        try
+    EXPECT_THROW(
         {
-            Base::Unit unit{3};
-            unit.pow(-10000);
-        }
-        catch (const Base::UnderflowError& e)
-        {
-            // and this tests that it has the correct message
-            EXPECT_STREQ( "Unit underflow in pow()", e.what());
-            throw;
-        }
-    }, Base::UnderflowError);
+            try {
+                Base::Unit unit {3};
+                unit.pow(-10000);
+            }
+            catch (const Base::UnderflowError& e) {
+                // and this tests that it has the correct message
+                EXPECT_STREQ("Unit underflow", e.what());
+                throw;
+            }
+        },
+        Base::UnderflowError);
 }
 
 // NOLINTEND

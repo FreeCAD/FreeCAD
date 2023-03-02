@@ -34,23 +34,7 @@ using namespace Base;
 // returns a string which represents the object e.g. when printed in python
 std::string UnitPy::representation() const
 {
-    const UnitSignature &  Sig = getUnitPtr()->getSignature();
-    std::stringstream ret;
-    ret << "Unit: ";
-    ret << getUnitPtr()->getString().toUtf8().constData() << " (";
-    ret << Sig.Length << ",";
-    ret << Sig.Mass  << ",";
-    ret << Sig.Time  << ",";
-    ret << Sig.ElectricCurrent  << ",";
-    ret << Sig.ThermodynamicTemperature << ",";
-    ret << Sig.AmountOfSubstance  << ",";
-    ret << Sig.LuminousIntensity  << ",";
-    ret << Sig.Angle  << ")";
-    std::string type = getUnitPtr()->getTypeString().toUtf8().constData();
-    if (! type.empty())
-        ret << " [" << type << "]";
-
-    return ret.str();
+    return getUnitPtr()->representation();
 }
 
 PyObject *UnitPy::PyMake(struct _typeobject *, PyObject *, PyObject *)  // Python wrapper
@@ -218,16 +202,16 @@ Py::String UnitPy::getType() const
 
 Py::Tuple UnitPy::getSignature() const
 {
-    const UnitSignature &  Sig = getUnitPtr()->getSignature();
+    Unit* unit = getUnitPtr();
     Py::Tuple tuple(8);
-    tuple.setItem(0, Py::Long(Sig.Length));
-    tuple.setItem(1, Py::Long(Sig.Mass));
-    tuple.setItem(2, Py::Long(Sig.Time));
-    tuple.setItem(3, Py::Long(Sig.ElectricCurrent));
-    tuple.setItem(4, Py::Long(Sig.ThermodynamicTemperature));
-    tuple.setItem(5, Py::Long(Sig.AmountOfSubstance));
-    tuple.setItem(6, Py::Long(Sig.LuminousIntensity));
-    tuple.setItem(7, Py::Long(Sig.Angle));
+    tuple.setItem(0, Py::Long(unit->getLength()));
+    tuple.setItem(1, Py::Long(unit->getMass()));
+    tuple.setItem(2, Py::Long(unit->getTime()));
+    tuple.setItem(3, Py::Long(unit->getElectricCurrent()));
+    tuple.setItem(4, Py::Long(unit->getThermodynamicTemperature()));
+    tuple.setItem(5, Py::Long(unit->getAmountOfSubstance()));
+    tuple.setItem(6, Py::Long(unit->getLuminousIntensity()));
+    tuple.setItem(7, Py::Long(unit->getAngle()));
     return tuple;
 }
 

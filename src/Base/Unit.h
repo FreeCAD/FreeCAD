@@ -1,3 +1,5 @@
+#pragma clang diagnostic push
+#pragma ide diagnostic ignored "cppcoreguidelines-avoid-non-const-global-variables"
 /***************************************************************************
  *   Copyright (c) 2011 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
@@ -24,34 +26,21 @@
 #ifndef BASE_Unit_H
 #define BASE_Unit_H
 
-#include <cstdint>
-#include <QString>
 #include <FCGlobal.h>
+#include <QString>
+#include <array>
+#include <cstdint>
 
-namespace Base {
+namespace Base
+{
 
-#define UnitSignatureLengthBits 4
-#define UnitSignatureMassBits 4
-#define UnitSignatureTimeBits 4
-#define UnitSignatureElectricCurrentBits 4
-#define UnitSignatureThermodynamicTemperatureBits 4
-#define UnitSignatureAmountOfSubstanceBits 4
-#define UnitSignatureLuminousIntensityBits 4
-#define UnitSignatureAngleBits 4
+constexpr int bitsLength {4};                 // bit field legacy
+constexpr int shifted {1 << (bitsLength - 1)};// bit field legacy
+constexpr int numBaseItems {8};
+using ValsArray = std::array<int, numBaseItems>;
+using StrsArray = std::array<const char*, numBaseItems>;
+constexpr StrsArray baseDefStrs {"mm", "kg", "s", "A", "K", "mol", "cd", "deg"};
 
-// Hint:
-// https://en.cppreference.com/w/cpp/language/bit_field
-// https://stackoverflow.com/questions/33723631/signed-bit-field-in-c14
-struct UnitSignature{
-    int32_t Length:UnitSignatureLengthBits;
-    int32_t Mass:UnitSignatureMassBits;
-    int32_t Time:UnitSignatureTimeBits;
-    int32_t ElectricCurrent:UnitSignatureElectricCurrentBits;
-    int32_t ThermodynamicTemperature:UnitSignatureThermodynamicTemperatureBits;
-    int32_t AmountOfSubstance:UnitSignatureAmountOfSubstanceBits;
-    int32_t LuminousIntensity:UnitSignatureLuminousIntensityBits;
-    int32_t Angle:UnitSignatureAngleBits;
-};
 /**
  * The Unit class.
  */
@@ -59,34 +48,49 @@ class BaseExport Unit
 {
 public:
     /// default constructor
-    explicit Unit(int8_t Length,int8_t Mass=0,int8_t Time=0,int8_t ElectricCurrent=0,
-                  int8_t ThermodynamicTemperature=0, int8_t AmountOfSubstance=0,
-                  int8_t LuminousIntensity=0, int8_t Angle=0);
+    explicit Unit(int length, int mass = 0, int time = 0, int electricCurrent = 0,
+                  int thermodynamicTemperature = 0, int amountOfSubstance = 0,
+                  int luminousIntensity = 0, int angle = 0);
     Unit();
     Unit(const Unit&);
     explicit Unit(const QString& expr);
     /// Destruction
-    ~Unit () = default;
-
+    ~Unit() = default;
 
     /** Operators. */
     //@{
-    inline Unit& operator *=(const Unit& that);
-    inline Unit& operator /=(const Unit& that);
-    Unit operator *(const Unit&) const;
-    Unit operator /(const Unit&) const;
-    bool operator ==(const Unit&) const;
-    bool operator !=(const Unit&that) const {return !(*this == that);}
-    Unit& operator =(const Unit&);
-    Unit pow(double exp)const;
+    inline Unit& operator*=(const Unit& that);
+    inline Unit& operator/=(const Unit& that);
+    Unit operator*(const Unit&) const;
+    Unit operator/(const Unit&) const;
+    bool operator==(const Unit&) const;
+    bool operator!=(const Unit& that) const
+    {
+        return !(*this == that);
+    }
+    Unit& operator=(const Unit&);
+    Unit pow(double exp) const;
+
     //@}
-    /// get the unit signature
-    const UnitSignature & getSignature()const {return Sig;}
-    bool isEmpty()const;
+    bool isEmpty() const;
+
+    // TODO replace all QString with std::string
 
     QString getString() const;
     /// get the type as an string such as "Area", "Length" or "Pressure".
     QString getTypeString() const;
+    bool allZeroOrDivisibleBy(int) const;
+    void divideAllBy(int);
+    std::string representation() const;
+
+    int getLength() const;
+    int getMass() const;
+    int getTime() const;
+    int getElectricCurrent() const;
+    int getThermodynamicTemperature() const;
+    int getAmountOfSubstance() const;
+    int getLuminousIntensity() const;
+    int getAngle() const;
 
     /** Predefined Unit types. */
     //@{
@@ -159,21 +163,33 @@ public:
 
     //@}
 protected:
-    UnitSignature Sig;
+    void reset();
+    void checkUnitRange() const;
+
+    int length {};
+    int mass {};
+    int time {};
+    int electricCurrent {};
+    int thermodynamicTemperature {};
+    int amountOfSubstance {};
+    int luminousIntensity {};
+    int angle {};
 };
 
-inline Unit& Unit::operator *=(const Unit& that)
+inline Unit& Unit::operator*=(const Unit& that)
 {
     *this = *this * that;
     return *this;
 }
 
-inline Unit& Unit::operator /=(const Unit& that)
+inline Unit& Unit::operator/=(const Unit& that)
 {
     *this = *this / that;
     return *this;
 }
 
-} // namespace Base
+}// namespace Base
 
-#endif // BASE_Unit_H
+#endif// BASE_Unit_H
+
+#pragma clang diagnostic pop

@@ -210,11 +210,11 @@ void DlgUnitsCalculator::on_unitsBox_activated(int index)
     // SI units use [m], not [mm] for lengths
     //
     Base::Quantity q = ui->quantitySpinBox->value();
-    int32_t old = q.getUnit().getSignature().Length;
+    int32_t old = q.getUnit().getLength();
     double value = q.getValue();
 
     Base::Unit unit = units[index];
-    int32_t len = unit.getSignature().Length;
+    int32_t len = unit.getLength();
     ui->quantitySpinBox->setValue(Base::Quantity(value * std::pow(10.0, 3*(len-old)), unit));
 }
 
