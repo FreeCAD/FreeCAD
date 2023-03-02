@@ -1174,34 +1174,65 @@ Base::BoundBox3d TopoShape::getBoundBox() const
     return box;
 }
 
+namespace {
+bool getShapeProperties(const TopoDS_Shape& shape, GProp_GProps& prop)
+{
+    TopExp_Explorer xpSolid(shape, TopAbs_SOLID);
+    if (xpSolid.More()) {
+        BRepGProp::VolumeProperties(shape, prop);
+        return true;
+    }
+
+    TopExp_Explorer xpFace(shape, TopAbs_FACE);
+    if (xpFace.More()) {
+        BRepGProp::SurfaceProperties(shape, prop);
+        return true;
+    }
+
+    TopExp_Explorer xpEdge(shape, TopAbs_EDGE);
+    if (xpEdge.More()) {
+        BRepGProp::LinearProperties(shape, prop);
+        return true;
+    }
+
+    TopExp_Explorer xpVert(shape, TopAbs_VERTEX);
+    if (xpVert.More()) {
+        gp_Pnt pnts;
+        int count = 0;
+        for (; xpVert.More(); xpVert.Next()) {
+            count++;
+            gp_Pnt pnt = BRep_Tool::Pnt(TopoDS::Vertex(xpVert.Current()));
+            pnts.SetX(pnts.X() + pnt.X());
+            pnts.SetY(pnts.Y() + pnt.Y());
+            pnts.SetZ(pnts.Z() + pnt.Z());
+        }
+
+        pnts.SetX(pnts.X() / count);
+        pnts.SetY(pnts.Y() / count);
+        pnts.SetZ(pnts.Z() / count);
+        prop = GProp_GProps(pnts);
+
+        return true;
+    }
+
+    return false;
+}
+}
+
 bool TopoShape::getCenterOfGravity(Base::Vector3d& center) const
 {
     if (_Shape.IsNull())
         return false;
 
     // Computing of CentreOfMass
-    gp_Pnt pnt;
-
-    if (_Shape.ShapeType() == TopAbs_VERTEX) {
-        pnt = BRep_Tool::Pnt(TopoDS::Vertex(_Shape));
-    }
-    else {
-        GProp_GProps prop;
-        if (_Shape.ShapeType() == TopAbs_EDGE || _Shape.ShapeType() == TopAbs_WIRE) {
-            BRepGProp::LinearProperties(_Shape, prop);
-        }
-        else if (_Shape.ShapeType() == TopAbs_FACE || _Shape.ShapeType() == TopAbs_SHELL) {
-            BRepGProp::SurfaceProperties(_Shape, prop);
-        }
-        else {
-            BRepGProp::VolumeProperties(_Shape, prop);
-        }
-
-        pnt = prop.CentreOfMass();
+    GProp_GProps prop;
+    if (getShapeProperties(_Shape, prop)) {
+        gp_Pnt pnt = prop.CentreOfMass();
+        center.Set(pnt.X(), pnt.Y(), pnt.Z());
+        return true;
     }
 
-    center.Set(pnt.X(), pnt.Y(), pnt.Z());
-    return true;
+    return false;
 }
 
 void TopoShape::Save (Base::Writer& writer) const
