@@ -53,7 +53,6 @@ protected:
 
 private:
     std::unique_ptr<Ui_SketcherSettings> ui;
-    SketcherGeneralWidget* form;
 };
 
 /**
