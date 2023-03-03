@@ -66,7 +66,7 @@ int PropertyTopoShapeList::getSize() const
     return static_cast<int>(_lValueList.size());
 }
 
-// this verion of setValue is for the ADD_PROPERTY_TYPE macro to use when creating a
+// this version of setValue is for the ADD_PROPERTY_TYPE macro to use when creating a
 // new PropertyTopoShapeList.  In other list properties that use pointers (instead of
 // references) a nullptr is passed to setValue to initialize the empty list, but we can
 // not do that with references.
