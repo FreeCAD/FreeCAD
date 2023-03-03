@@ -38,6 +38,14 @@ using namespace Gui::Dialog;
 
 const uint DlgSettingsLazyLoadedImp::WorkbenchNameRole = Qt::UserRole;
 
+// this enum defines the order of the columns
+enum Column {
+    Icon,
+    Name,
+    CheckBox,
+    Load
+};
+
 /* TRANSLATOR Gui::Dialog::DlgSettingsLazyLoadedImp */
 
 /**
@@ -117,12 +125,19 @@ void DlgSettingsLazyLoadedImp::buildUnloadedWorkbenchList()
     _autoloadCheckboxes.clear(); // setRowCount(0) just invalidated all of these pointers
     ui->workbenchTable->setColumnCount(4);
     ui->workbenchTable->setSelectionMode(QAbstractItemView::SelectionMode::NoSelection);
-    ui->workbenchTable->horizontalHeader()->setSectionResizeMode(0, QHeaderView::ResizeMode::ResizeToContents);
-    ui->workbenchTable->horizontalHeader()->setSectionResizeMode(1, QHeaderView::ResizeMode::Stretch);
-    ui->workbenchTable->horizontalHeader()->setSectionResizeMode(2, QHeaderView::ResizeMode::ResizeToContents);
-    ui->workbenchTable->horizontalHeader()->setSectionResizeMode(3, QHeaderView::ResizeMode::ResizeToContents);
+    ui->workbenchTable->horizontalHeader()->setSectionResizeMode(Icon, QHeaderView::ResizeMode::ResizeToContents);
+    ui->workbenchTable->horizontalHeader()->setSectionResizeMode(Name, QHeaderView::ResizeMode::Stretch);
+    ui->workbenchTable->horizontalHeader()->setSectionResizeMode(CheckBox, QHeaderView::ResizeMode::ResizeToContents);
+    ui->workbenchTable->horizontalHeader()->setSectionResizeMode(Load, QHeaderView::ResizeMode::ResizeToContents);
     QStringList columnHeaders;
-    columnHeaders << QString() << tr("Workbench") << tr("Autoload") << QString();
+    for (int i = 0; i < 4; i++) {
+        switch (i) {
+            case Icon    : columnHeaders << QString();            break;
+            case Name    : columnHeaders << tr("Workbench Name"); break;
+            case CheckBox: columnHeaders << tr("Autoload?");      break;
+            case Load    : columnHeaders << QString();            break;
+        }
+    }
     ui->workbenchTable->setHorizontalHeaderLabels(columnHeaders);
 
     unsigned int rowNumber = 0;
@@ -139,13 +154,13 @@ void DlgSettingsLazyLoadedImp::buildUnloadedWorkbenchList()
         iconLabel->setPixmap(wbIcon.scaled(QSize(20,20), Qt::AspectRatioMode::KeepAspectRatio, Qt::TransformationMode::SmoothTransformation));
         iconLabel->setToolTip(wbTooltip);
         iconLabel->setContentsMargins(5, 3, 3, 3); // Left, top, right, bottom
-        ui->workbenchTable->setCellWidget(rowNumber, 0, iconLabel);
+        ui->workbenchTable->setCellWidget(rowNumber, Icon, iconLabel);
 
         // Column 2: Workbench Display Name
         auto wbDisplayName = Application::Instance->workbenchMenuText(wbName);
         auto textLabel = new QLabel(wbDisplayName);
         textLabel->setToolTip(wbTooltip);
-        ui->workbenchTable->setCellWidget(rowNumber, 1, textLabel);
+        ui->workbenchTable->setCellWidget(rowNumber, Name, textLabel);
 
         // Column 3: Autoloaded checkbox
         //
@@ -174,18 +189,18 @@ void DlgSettingsLazyLoadedImp::buildUnloadedWorkbenchList()
         else {
             _autoloadCheckboxes.insert(std::make_pair(wbName, autoloadCheckbox));
         }
-        ui->workbenchTable->setCellWidget(rowNumber, 2, checkWidget);
+        ui->workbenchTable->setCellWidget(rowNumber, CheckBox, checkWidget);
 
         // Column 4: Load button/loaded indicator
         if (WorkbenchManager::instance()->getWorkbench(wbName.toStdString())) {
             auto label = new QLabel(tr("Loaded"));
             label->setAlignment(Qt::AlignCenter);
-            ui->workbenchTable->setCellWidget(rowNumber, 3, label);
+            ui->workbenchTable->setCellWidget(rowNumber, Load, label);
         }
         else {
             auto button = new QPushButton(tr("Load now"));
             connect(button, &QPushButton::clicked, this, [this,wbName]() { onLoadClicked(wbName); });
-            ui->workbenchTable->setCellWidget(rowNumber, 3, button);
+            ui->workbenchTable->setCellWidget(rowNumber, Load, button);
         }
 
         ++rowNumber;
