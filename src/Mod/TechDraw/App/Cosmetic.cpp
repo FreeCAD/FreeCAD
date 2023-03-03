@@ -461,7 +461,7 @@ void CosmeticEdge::Save(Base::Writer &writer) const
         TechDraw::AOCPtr aoc = std::static_pointer_cast<TechDraw::AOC>(m_geometry);
         aoc->Save(writer);
     } else {
-        Base::Console().Warning("CE::Save - unimplemented geomType: %d\n", m_geometry->getGeomType());
+        Base::Console().Warning("CE::Save - unimplemented geomType: %d\n", static_cast<int>(m_geometry->getGeomType()));
     }
 }
 
@@ -507,7 +507,7 @@ void CosmeticEdge::Restore(Base::XMLReader &reader)
         permaEnd   = aoc->endPnt;
         permaRadius = aoc->radius;
     } else {
-        Base::Console().Warning("CE::Restore - unimplemented geomType: %d\n", gType);
+        Base::Console().Warning("CE::Restore - unimplemented geomType: %d\n", static_cast<int>(gType));
     }
 }
 
@@ -1262,7 +1262,7 @@ void CenterLine::Save(Base::Writer &writer) const
         TechDraw::AOCPtr aoc = std::static_pointer_cast<TechDraw::AOC>(m_geometry);
         aoc->Save(writer);
     } else {
-        Base::Console().Message("CL::Save - unimplemented geomType: %d\n", m_geometry->getGeomType());
+        Base::Console().Message("CL::Save - unimplemented geomType: %d\n", static_cast<int>(m_geometry->getGeomType()));
     }
 }
 
@@ -1362,7 +1362,7 @@ void CenterLine::Restore(Base::XMLReader &reader)
         aoc->setOCCEdge(GeometryUtils::edgeFromCircleArc(aoc));
         m_geometry = aoc;
     } else {
-        Base::Console().Warning("CL::Restore - unimplemented geomType: %d\n", gType);
+        Base::Console().Warning("CL::Restore - unimplemented geomType: %d\n", static_cast<int>(gType));
     }
 }
 

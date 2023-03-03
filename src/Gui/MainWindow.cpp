@@ -2146,10 +2146,16 @@ void StatusBarObserver::OnChange(Base::Subject<const char*> &rCaller, const char
         unsigned long col = rclGrp.GetUnsigned( sReason );
         this->err = format.arg(App::Color::fromPackedRGB<QColor>(col).name());
     }
+    else if (strcmp(sReason, "colorCritical") == 0) {
+        unsigned long col = rclGrp.GetUnsigned( sReason );
+        this->critical = format.arg(QColor((col >> 24) & 0xff,(col >> 16) & 0xff,(col >> 8) & 0xff).name());
+    }
 }
 
-void StatusBarObserver::SendLog(const std::string& msg, Base::LogStyle level)
+void StatusBarObserver::SendLog(const std::string& notifiername, const std::string& msg, Base::LogStyle level)
 {
+    (void) notifiername;
+
     int messageType = -1;
     switch(level){
         case Base::LogStyle::Warning:
@@ -2163,6 +2169,11 @@ void StatusBarObserver::SendLog(const std::string& msg, Base::LogStyle level)
             break;
         case Base::LogStyle::Log:
             messageType = MainWindow::Log;
+            break;
+        case Base::LogStyle::Critical:
+            messageType = MainWindow::Critical;
+            break;
+        default:
             break;
     }
 

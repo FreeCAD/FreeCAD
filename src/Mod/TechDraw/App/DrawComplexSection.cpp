@@ -820,7 +820,7 @@ TopoDS_Wire DrawComplexSection::makeSectionLineWire()
         else {
             //probably can't happen as cut profile has been checked before this
             Base::Console().Message("DCS::makeSectionLineGeometry - profile is type: %d\n",
-                                    sScaled.ShapeType());
+                                    static_cast<int>(sScaled.ShapeType()));
             return TopoDS_Wire();
         }
     }

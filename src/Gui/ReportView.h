@@ -70,10 +70,11 @@ class GuiExport ReportHighlighter : public QSyntaxHighlighter
 {
 public:
     enum Paragraph {
-        Message  = 0, /**< normal text */
-        Warning  = 1, /**< Warning */
-        Error    = 2, /**< Error text */
-        LogText  = 3  /**< Log text */
+        Message          = 0, /**< normal text */
+        Warning          = 1, /**< Warning */
+        Error            = 2, /**< Error text */
+        LogText          = 3,  /**< Log text */
+        Critical         = 4, /**< critical text */
     };
 
 public:
@@ -87,6 +88,7 @@ public:
      * @see ReportOutput::Message
      * @see ReportOutput::Warning
      * @see ReportOutput::Error
+     * @see ReportOutput::Critical
      */
     void setParagraphType(Paragraph);
 
@@ -110,11 +112,16 @@ public:
      */
     void setErrorColor( const QColor& col );
 
+    /**
+     * Sets the text color to  \a col.
+     */
+    void setCriticalColor( const QColor& col );
+
 private:
     /** @name for internal use only */
     //@{
     Paragraph type;
-    QColor txtCol, logCol, warnCol, errCol;
+    QColor txtCol, logCol, warnCol, errCol, criticalCol;
     //@}
 };
 
@@ -134,7 +141,7 @@ public:
     /** Observes its parameter group. */
     void OnChange(Base::Subject<const char*> &rCaller, const char * sReason) override;
 
-    void SendLog(const std::string& msg, Base::LogStyle level) override;
+    void SendLog(const std::string& notifiername, const std::string& msg, Base::LogStyle level) override;
 
     /// returns the name for observer handling
     const char* Name() override {return "ReportOutput";}
@@ -150,6 +157,8 @@ public:
     bool isLogMessage() const;
     /** Returns true whether normal messages are reported. */
     bool isNormalMessage() const;
+    /** Returns true whether critical messages are reported. */
+    bool isCritical() const;
 
 protected:
     /** For internal use only */
@@ -172,12 +181,16 @@ public Q_SLOTS:
     void onToggleLogMessage();
     /** Toggles the report of normal messages. */
     void onToggleNormalMessage();
+    /** Toggles the report of normal messages. */
+    void onToggleCritical();
     /** Toggles whether to show report view on warnings*/
     void onToggleShowReportViewOnWarning();
     /** Toggles whether to show report view on errors*/
     void onToggleShowReportViewOnError();
     /** Toggles whether to show report view on normal messages*/
     void onToggleShowReportViewOnNormalMessage();
+    /** Toggles whether to show report view on normal messages*/
+    void onToggleShowReportViewOnCritical();
     /** Toggles whether to show report view on log messages*/
     void onToggleShowReportViewOnLogMessage();
     /** Toggles the redirection of Python stdout. */

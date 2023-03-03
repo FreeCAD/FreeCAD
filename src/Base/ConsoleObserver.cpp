@@ -58,8 +58,10 @@ ConsoleObserverFile::~ConsoleObserverFile()
     cFileStream.close();
 }
 
-void ConsoleObserverFile::SendLog(const std::string& msg, LogStyle level)
+void ConsoleObserverFile::SendLog(const std::string& notifiername, const std::string& msg, LogStyle level)
 {
+    (void) notifiername;
+    
     std::string prefix;
     switch(level){
         case LogStyle::Warning:
@@ -73,6 +75,11 @@ void ConsoleObserverFile::SendLog(const std::string& msg, LogStyle level)
             break;
         case LogStyle::Log:
             prefix = "Log: ";
+            break;
+        case LogStyle::Critical:
+            prefix = "Critical: ";
+            break;
+        default:
             break;
     }
 
@@ -94,8 +101,10 @@ ConsoleObserverStd::ConsoleObserverStd() :
 
 ConsoleObserverStd::~ConsoleObserverStd() = default;
 
-void ConsoleObserverStd::SendLog(const std::string& msg, LogStyle level)
+void ConsoleObserverStd::SendLog(const std::string& notifiername, const std::string& msg, LogStyle level)
 {
+    (void) notifiername;
+    
     switch(level){
         case LogStyle::Warning:
             this->Warning(msg.c_str());
@@ -108,6 +117,11 @@ void ConsoleObserverStd::SendLog(const std::string& msg, LogStyle level)
             break;
         case LogStyle::Log:
             this->Log(msg.c_str());
+            break;
+        case LogStyle::Critical:
+            this->Critical(msg.c_str());
+            break;
+        default:
             break;
     }
 }
@@ -177,6 +191,27 @@ void ConsoleObserverStd::Log    (const char *sErr)
 #   elif defined(FC_OS_LINUX) || defined(FC_OS_MACOSX) || defined(FC_OS_BSD)
         fprintf(stderr, "\033[0m");
 #   endif
+    }
+}
+
+void ConsoleObserverStd::Critical(const char *sCritical)
+{
+    if (useColorStderr) {
+        #   if defined(FC_OS_WIN32)
+        ::SetConsoleTextAttribute(::GetStdHandle(STD_ERROR_HANDLE), FOREGROUND_GREEN | FOREGROUND_BLUE);
+        #   elif defined(FC_OS_LINUX) || defined(FC_OS_MACOSX) || defined(FC_OS_BSD)
+        fprintf(stderr, "\033[1;33m");
+        #   endif
+    }
+
+    fprintf(stderr, "%s", sCritical);
+
+    if (useColorStderr) {
+        #   if defined(FC_OS_WIN32)
+        ::SetConsoleTextAttribute(::GetStdHandle(STD_ERROR_HANDLE),FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE );
+        #   elif defined(FC_OS_LINUX) || defined(FC_OS_MACOSX) || defined(FC_OS_BSD)
+        fprintf(stderr, "\033[0m");
+        #   endif
     }
 }
 

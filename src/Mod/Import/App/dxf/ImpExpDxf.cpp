@@ -568,7 +568,7 @@ void ImpExpDxfWrite::exportShape(const TopoDS_Shape input)
         } else if (adapt.GetType() == GeomAbs_Line) {
             exportLine(adapt);
         } else {
-            Base::Console().Warning("ImpExpDxf - unknown curve type: %d\n",adapt.GetType());
+            Base::Console().Warning("ImpExpDxf - unknown curve type: %d\n", static_cast<int>(adapt.GetType()));
         }
     }
 

@@ -1088,7 +1088,7 @@ void ViewProviderSketch::editDoubleClicked()
         Base::Console().Log("double click edge:%d\n",preselection.PreselectCurve);
     }
     else if (preselection.isCrossPreselected()) {
-        Base::Console().Log("double click cross:%d\n",preselection.PreselectCross);
+        Base::Console().Log("double click cross:%d\n",static_cast<int>(preselection.PreselectCross));
     }
     else if (!preselection.PreselectConstraintSet.empty()) {
         // Find the constraint

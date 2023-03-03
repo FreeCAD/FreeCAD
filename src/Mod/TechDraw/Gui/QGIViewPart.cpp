@@ -331,7 +331,7 @@ QPainterPath QGIViewPart::geomToPainterPath(BaseGeomPtr baseGeom, double rot)
         } break;
         default: {
             Base::Console().Error("Error - geomToPainterPath - UNKNOWN geomType: %d\n",
-                                  baseGeom->getGeomType());
+                                  static_cast<int>(baseGeom->getGeomType()));
         } break;
     }//sb end of switch
 
@@ -1257,8 +1257,8 @@ void QGIViewPart::dumpPath(const char* text, QPainterPath path)
             typeName = "CurveData";
         }
         Base::Console().Message(">>>>> element %d: type:%d/%s pos(%.3f, %.3f) M:%d L:%d C:%d\n",
-                                iElem, elem.type, typeName, elem.x, elem.y, elem.isMoveTo(),
-                                elem.isLineTo(), elem.isCurveTo());
+                                iElem, static_cast<int>(elem.type), typeName, elem.x, elem.y, static_cast<int>(elem.isMoveTo()),
+                                static_cast<int>(elem.isLineTo()), static_cast<int>(elem.isCurveTo()));
     }
 }
 
