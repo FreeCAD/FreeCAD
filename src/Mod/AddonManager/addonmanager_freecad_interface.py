@@ -47,8 +47,14 @@ try:
     getUserCachePath = FreeCAD.getUserCachePath
     translate = FreeCAD.Qt.translate
 
+    if FreeCAD.GuiUp:
+        import FreeCADGui
+    else:
+        FreeCADGui = None
+
 except ImportError:
     FreeCAD = None
+    FreeCADGui = None
     getUserAppDataDir = None
     getUserCachePath = None
     getUserMacroDir = None
@@ -57,7 +63,7 @@ except ImportError:
         return string
 
     def Version():
-        return 1, 0, 0
+        return 0, 21, 0, "dev"
 
     class ConsoleReplacement:
         """If FreeCAD's Console is not available, create a replacement by redirecting FreeCAD
@@ -140,6 +146,7 @@ class DataPaths:
     mod_dir = None
     macro_dir = None
     cache_dir = None
+    home_dir = None
 
     reference_count = 0
 
@@ -151,6 +158,8 @@ class DataPaths:
                 self.cache_dir = getUserCachePath()
             if self.macro_dir is None:
                 self.macro_dir = getUserMacroDir(True)
+            if self.home_dir is None:
+                self.home_dir = FreeCAD.getHomePath()
         else:
             self.reference_count += 1
             if self.mod_dir is None:
@@ -159,6 +168,8 @@ class DataPaths:
                 self.cache_dir = tempfile.mkdtemp()
             if self.macro_dir is None:
                 self.macro_dir = tempfile.mkdtemp()
+            if self.home_dir is None:
+                self.home_dir = os.path.join(os.path.dirname(__file__), "..", "..")
 
     def __del__(self):
         self.reference_count -= 1
