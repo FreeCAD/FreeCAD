@@ -105,10 +105,22 @@ void DlgSettingsLazyLoadedImp::loadSettings()
 
 void DlgSettingsLazyLoadedImp::onLoadClicked(const QString &wbName)
 {
+    // activate selected workbench
     Workbench* originalActiveWB = WorkbenchManager::instance()->active();
     Application::Instance->activateWorkbench(wbName.toStdString().c_str());
     Application::Instance->activateWorkbench(originalActiveWB->name().c_str());
-    buildUnloadedWorkbenchList();
+
+    // replace load button with loaded indicator
+    auto wbDisplayName = Application::Instance->workbenchMenuText(wbName);
+    for (int i = 0; i < ui->workbenchTable->rowCount(); i++) {
+        QWidget* widget = ui->workbenchTable->cellWidget(i, Name);
+        auto textLabel = dynamic_cast<QLabel*>(widget);
+        if (textLabel->text() == wbDisplayName) {
+            auto label = new QLabel(tr("Loaded"));
+            label->setAlignment(Qt::AlignCenter);
+            ui->workbenchTable->setCellWidget(i, Load, label);
+       }
+    }
 }
 
 
