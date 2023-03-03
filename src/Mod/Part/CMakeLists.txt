@@ -30,6 +30,7 @@ set(AttachmentEditor_Scripts
 set(BasicShapes_Scripts
     BasicShapes/__init__.py
     BasicShapes/Shapes.py
+    BasicShapes/Utils.py
 )
 
 if(BUILD_GUI)
