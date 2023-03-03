@@ -291,7 +291,7 @@
     <message>
       <location filename="../panels/DlgToolControllerEdit.ui" line="29"/>
       <source>Controller</source>
-      <translation type="unfinished">Controller</translation>
+      <translation>Контролер</translation>
     </message>
     <message>
       <location filename="../panels/DlgToolControllerEdit.ui" line="35"/>
@@ -346,7 +346,7 @@
     <message>
       <location filename="../panels/DlgToolEdit.ui" line="14"/>
       <source>Tool Editor</source>
-      <translation type="unfinished">Tool Editor</translation>
+      <translation>Редактор інструментів</translation>
     </message>
     <message>
       <location filename="../panels/PropertyCreate.ui" line="14"/>
@@ -386,7 +386,7 @@
     <message>
       <location filename="../panels/PropertyCreate.ui" line="65"/>
       <source>val1,val2,val3,...</source>
-      <translation type="unfinished">val1,val2,val3,...</translation>
+      <translation>вал1,вал2,вал3,...</translation>
     </message>
     <message>
       <location filename="../panels/PropertyCreate.ui" line="72"/>
@@ -401,7 +401,7 @@
     <message>
       <location filename="../panels/PropertyCreate.ui" line="89"/>
       <source>ToolTip</source>
-      <translation type="unfinished">ToolTip</translation>
+      <translation>Підказка</translation>
     </message>
     <message>
       <location filename="../panels/PropertyCreate.ui" line="117"/>
@@ -512,12 +512,12 @@
     <message>
       <location filename="../../DlgProcessorChooser.ui" line="20"/>
       <source>Processor</source>
-      <translation type="unfinished">Processor</translation>
+      <translation>Процесор</translation>
     </message>
     <message>
       <location filename="../../DlgProcessorChooser.ui" line="33"/>
       <source>Arguments</source>
-      <translation type="unfinished">Arguments</translation>
+      <translation>Аргументи</translation>
     </message>
   </context>
   <context>
@@ -3524,12 +3524,12 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/PathEdit.ui" line="155"/>
       <source>Processor</source>
-      <translation type="unfinished">Processor</translation>
+      <translation>Процесор</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="165"/>
       <source>Arguments</source>
-      <translation type="unfinished">Arguments</translation>
+      <translation>Аргументи</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="172"/>

@@ -729,27 +729,38 @@ def pruneIncluded(objectslist,strict=False):
     for obj in objectslist:
         toplevel = True
         if obj.isDerivedFrom("Part::Feature"):
-            if not (Draft.getType(obj) in ["Window","Clone","Pipe","Rebar"]):
+            if Draft.getType(obj) not in ["Window","Clone","Pipe","Rebar"]:
                 for parent in obj.InList:
-                    if parent.isDerivedFrom("Part::Feature") and not (Draft.getType(parent) in ["Space","Facebinder","Window","Roof","Clone","Site","Project"]):
-                        if not parent.isDerivedFrom("Part::Part2DObject"):
-                            # don't consider 2D objects based on arch elements
-                            if hasattr(parent,"Host") and (parent.Host == obj):
-                                pass
-                            elif hasattr(parent,"Hosts") and (obj in parent.Hosts):
-                                pass
-                            elif hasattr(parent,"TypeId") and (parent.TypeId == "Part::Mirroring"):
-                                pass
-                            elif hasattr(parent,"CloneOf"):
-                                if parent.CloneOf:
-                                    if parent.CloneOf.Name != obj.Name:
-                                        toplevel = False
-                                else:
-                                    toplevel = False
-                            else:
+                    if not parent.isDerivedFrom("Part::Feature"):
+                        pass
+                    elif Draft.getType(parent) in ["Space","Facebinder","Window","Roof","Clone","Site","Project"]:
+                        pass
+                    elif parent.isDerivedFrom("Part::Part2DObject"):
+                        # don't consider 2D objects based on arch elements
+                        pass
+                    elif parent.isDerivedFrom("PartDesign::FeatureBase"):
+                        # don't consider a PartDesign_Clone that references obj
+                        pass
+                    elif parent.isDerivedFrom("PartDesign::Body") and obj == parent.BaseFeature:
+                        # don't consider a PartDesign_Body with a PartDesign_Clone that references obj
+                        pass
+                    elif hasattr(parent,"Host") and parent.Host == obj:
+                        pass
+                    elif hasattr(parent,"Hosts") and obj in parent.Hosts:
+                        pass
+                    elif hasattr(parent,"TypeId") and parent.TypeId == "Part::Mirroring":
+                        pass
+                    elif hasattr(parent,"CloneOf"):
+                        if parent.CloneOf:
+                            if parent.CloneOf.Name != obj.Name:
                                 toplevel = False
-                    if (toplevel == False) and strict:
-                        if not(parent in objectslist) and not(parent in newlist):
+                        else:
+                            toplevel = False
+                    else:
+                        toplevel = False
+
+                    if toplevel == False and strict:
+                        if parent not in objectslist and parent not in newlist:
                             toplevel = True
         if toplevel:
             newlist.append(obj)
@@ -1122,10 +1133,10 @@ class SurveyTaskPanel:
 def toggleIfcBrepFlag(obj):
     """toggleIfcBrepFlag(obj): toggles the IFC brep flag of the given object, forcing it
     to be exported as brep geometry or not."""
-    if not hasattr(obj,"IfcAttributes"):
-        FreeCAD.Console.PrintMessage(translate("Arch","Object doesn't have settable IFC Attributes"))
+    if not hasattr(obj,"IfcData"):
+        FreeCAD.Console.PrintMessage(translate("Arch","Object doesn't have settable IFCData"))
     else:
-        d = obj.IfcAttributes
+        d = obj.IfcData
         if "FlagForceBrep" in d.keys():
             if d["FlagForceBrep"] == "True":
                 d["FlagForceBrep"] = "False"
@@ -1136,7 +1147,7 @@ def toggleIfcBrepFlag(obj):
         else:
             d["FlagForceBrep"] = "True"
             FreeCAD.Console.PrintMessage(translate("Arch","Enabling Brep force flag of object")+" "+obj.Label+"\n")
-        obj.IfcAttributes = d
+        obj.IfcData = d
 
 
 def makeCompoundFromSelected(objects=None):

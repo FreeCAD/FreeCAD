@@ -21,7 +21,6 @@
 """Helper functions that are used by IFC importer and exporter."""
 import sys
 import math
-import six
 
 import FreeCAD
 import Arch
@@ -385,6 +384,10 @@ def buildRelProductColors(ifcfile, prodrepr):
     i = 0
 
     for p in prodrepr.keys():
+        # see method getColorFromProduct()
+        # it is a method for the redundant code inside this loop
+        # which can be used to get the color from a product directly
+
         # Representation item, see `IfcRepresentationItem` documentation.
         # All kinds of geometric or topological representation items
         # `IfcExtrudedAreaSolid`, `IfcMappedItem`, `IfcFacetedBrep`,
@@ -443,6 +446,20 @@ def getColorFromMaterial(material):
             if rep.is_a("IfcStyledRepresentation"):
                 return getColorFromStyledItem(rep)
     return None
+
+
+def color2colorRGB(color_data):
+
+    if color_data is None:
+        return None
+
+    color_rgb = [
+        int(round(color_data[0]*255, 0)),
+        int(round(color_data[1]*255, 0)),
+        int(round(color_data[2]*255, 0))
+    ]  # int(159.99) would return 159 not 160, thus round
+
+    return color_rgb
 
 
 def getColorFromStyledItem(styled_item):
@@ -1061,6 +1078,7 @@ def createAnnotation(annotation,doc,ifcscale,preferences):
     """creates an annotation object"""
 
     anno = None
+    aid =  annotation.id()
     if annotation.is_a("IfcGrid"):
         axes = []
         uvwaxes = ()

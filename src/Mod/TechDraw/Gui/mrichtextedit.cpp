@@ -74,17 +74,17 @@ MRichTextEdit::MRichTextEdit(QWidget *parent, QString textIn) : QWidget(parent) 
     m_defFont = getDefFont().family();
     f_textedit->setFont(getDefFont());
 
-    connect(f_save, SIGNAL(clicked()),
-            this,     SLOT(onSave()));
-    connect(f_exit, SIGNAL(clicked()),
-            this,     SLOT(onExit()));
+    connect(f_save, &QToolButton::clicked,
+            this, &MRichTextEdit::onSave);
+    connect(f_exit, &QToolButton::clicked,
+            this, &MRichTextEdit::onExit);
 
-    connect(f_textedit, SIGNAL(currentCharFormatChanged(QTextCharFormat)),
-            this,     SLOT(slotCurrentCharFormatChanged(QTextCharFormat)));
-    connect(f_textedit, SIGNAL(cursorPositionChanged()),
-            this,     SLOT(slotCursorPositionChanged()));
-    connect(f_textedit, SIGNAL(selectionChanged()),
-            this,     SLOT(onSelectionChanged()));
+    connect(f_textedit, &MTextEdit::currentCharFormatChanged,
+            this, &MRichTextEdit::slotCurrentCharFormatChanged);
+    connect(f_textedit, &MTextEdit::cursorPositionChanged,
+            this, &MRichTextEdit::slotCursorPositionChanged);
+    connect(f_textedit, &MTextEdit::selectionChanged,
+            this, &MRichTextEdit::onSelectionChanged);
 
 
     m_fontsize_h1 = m_defFontSize + 8;
@@ -106,24 +106,24 @@ MRichTextEdit::MRichTextEdit(QWidget *parent, QString textIn) : QWidget(parent) 
                         << QString::fromUtf8(" ");
     f_paragraph->addItems(m_paragraphItems);
 
-    connect(f_paragraph, SIGNAL(activated(int)),
-            this, SLOT(textStyle(int)));
+    connect(f_paragraph, qOverload<int>(&QComboBox::activated),
+            this, &MRichTextEdit::textStyle);
 
     // undo & redo
 
     f_undo->setShortcut(QKeySequence::Undo);
     f_redo->setShortcut(QKeySequence::Redo);
 
-    connect(f_textedit->document(), SIGNAL(undoAvailable(bool)),
-            f_undo, SLOT(setEnabled(bool)));
-    connect(f_textedit->document(), SIGNAL(redoAvailable(bool)),
-            f_redo, SLOT(setEnabled(bool)));
+    connect(f_textedit->document(), &QTextDocument::undoAvailable,
+            f_undo, &QToolButton::setEnabled);
+    connect(f_textedit->document(), &QTextDocument::redoAvailable,
+            f_redo, &QToolButton::setEnabled);
 
     f_undo->setEnabled(f_textedit->document()->isUndoAvailable());
     f_redo->setEnabled(f_textedit->document()->isRedoAvailable());
 
-    connect(f_undo, SIGNAL(clicked()), f_textedit, SLOT(undo()));
-    connect(f_redo, SIGNAL(clicked()), f_textedit, SLOT(redo()));
+    connect(f_undo, &QToolButton::clicked, f_textedit, &MTextEdit::undo);
+    connect(f_redo, &QToolButton::clicked, f_textedit, &MTextEdit::redo);
 
     // cut, copy & paste
 
@@ -134,22 +134,22 @@ MRichTextEdit::MRichTextEdit(QWidget *parent, QString textIn) : QWidget(parent) 
     f_cut->setEnabled(false);
     f_copy->setEnabled(false);
 
-    connect(f_cut, SIGNAL(clicked()), f_textedit, SLOT(cut()));
-    connect(f_copy, SIGNAL(clicked()), f_textedit, SLOT(copy()));
-    connect(f_paste, SIGNAL(clicked()), f_textedit, SLOT(paste()));
+    connect(f_cut, &QToolButton::clicked, f_textedit, &MTextEdit::cut);
+    connect(f_copy, &QToolButton::clicked, f_textedit, &MTextEdit::copy);
+    connect(f_paste, &QToolButton::clicked, f_textedit, &MTextEdit::paste);
 
-    connect(f_textedit, SIGNAL(copyAvailable(bool)), f_cut, SLOT(setEnabled(bool)));
-    connect(f_textedit, SIGNAL(copyAvailable(bool)), f_copy, SLOT(setEnabled(bool)));
+    connect(f_textedit, &MTextEdit::copyAvailable, f_cut, &QToolButton::setEnabled);
+    connect(f_textedit, &MTextEdit::copyAvailable, f_copy, &QToolButton::setEnabled);
 
 #ifndef QT_NO_CLIPBOARD
-    connect(QApplication::clipboard(), SIGNAL(dataChanged()), this, SLOT(slotClipboardDataChanged()));
+    connect(QApplication::clipboard(), &QClipboard::dataChanged, this, &MRichTextEdit::slotClipboardDataChanged);
 #endif
 
     // link
 
     f_link->setShortcut(QKeySequence(QString::fromUtf8("CTRL+L")));
 
-    connect(f_link, SIGNAL(clicked(bool)), this, SLOT(textLink(bool)));
+    connect(f_link, &QToolButton::clicked, this, &MRichTextEdit::textLink);
 
     // bold, italic & underline
 
@@ -157,23 +157,23 @@ MRichTextEdit::MRichTextEdit(QWidget *parent, QString textIn) : QWidget(parent) 
     f_italic->setShortcut(QKeySequence(QString::fromUtf8("CTRL+I")));
     f_underline->setShortcut(QKeySequence(QString::fromUtf8("CTRL+U")));
 
-    connect(f_bold, SIGNAL(clicked()), this, SLOT(textBold()));
-    connect(f_italic, SIGNAL(clicked()), this, SLOT(textItalic()));
-    connect(f_underline, SIGNAL(clicked()), this, SLOT(textUnderline()));
-    connect(f_strikeout, SIGNAL(clicked()), this, SLOT(textStrikeout()));
+    connect(f_bold, &QToolButton::clicked, this, &MRichTextEdit::textBold);
+    connect(f_italic, &QToolButton::clicked, this, &MRichTextEdit::textItalic);
+    connect(f_underline, &QToolButton::clicked, this, &MRichTextEdit::textUnderline);
+    connect(f_strikeout, &QToolButton::clicked, this, &MRichTextEdit::textStrikeout);
 
     QAction *removeFormat = new QAction(tr("Remove character formatting"), this);
     removeFormat->setShortcut(QKeySequence(QString::fromUtf8("CTRL+M")));
-    connect(removeFormat, SIGNAL(triggered()), this, SLOT(textRemoveFormat()));
+    connect(removeFormat, &QAction::triggered, this, &MRichTextEdit::textRemoveFormat);
     f_textedit->addAction(removeFormat);
 
     QAction *removeAllFormat = new QAction(tr("Remove all formatting"), this);
-    connect(removeAllFormat, SIGNAL(triggered()), this, SLOT(textRemoveAllFormat()));
+    connect(removeAllFormat, &QAction::triggered, this, &MRichTextEdit::textRemoveAllFormat);
     f_textedit->addAction(removeAllFormat);
 
     QAction *textsource = new QAction(tr("Edit document source"), this);
     textsource->setShortcut(QKeySequence(QString::fromUtf8("CTRL+O")));
-    connect(textsource, SIGNAL(triggered()), this, SLOT(textSource()));
+    connect(textsource, &QAction::triggered, this, &MRichTextEdit::textSource);
     f_textedit->addAction(textsource);
 
     QMenu *menu = new QMenu(this);
@@ -188,16 +188,16 @@ MRichTextEdit::MRichTextEdit(QWidget *parent, QString textIn) : QWidget(parent) 
     f_list_bullet->setShortcut(QKeySequence(QString::fromUtf8("CTRL+-")));
     f_list_ordered->setShortcut(QKeySequence(QString::fromUtf8("CTRL+=")));
 
-    connect(f_list_bullet, SIGNAL(clicked(bool)), this, SLOT(listBullet(bool)));
-    connect(f_list_ordered, SIGNAL(clicked(bool)), this, SLOT(listOrdered(bool)));
+    connect(f_list_bullet, &QToolButton::clicked, this, &MRichTextEdit::listBullet);
+    connect(f_list_ordered, &QToolButton::clicked, this, &MRichTextEdit::listOrdered);
 
     // indentation
 
     f_indent_dec->setShortcut(QKeySequence(QString::fromUtf8("CTRL+, ")));
     f_indent_inc->setShortcut(QKeySequence(QString::fromUtf8("CTRL+.")));
 
-    connect(f_indent_inc, SIGNAL(clicked()), this, SLOT(increaseIndentation()));
-    connect(f_indent_dec, SIGNAL(clicked()), this, SLOT(decreaseIndentation()));
+    connect(f_indent_inc, &QToolButton::clicked, this, &MRichTextEdit::increaseIndentation);
+    connect(f_indent_dec, &QToolButton::clicked, this, &MRichTextEdit::decreaseIndentation);
 
     // font size
 
@@ -207,19 +207,25 @@ MRichTextEdit::MRichTextEdit(QWidget *parent, QString textIn) : QWidget(parent) 
         f_fontsize->addItem(QString::number(size));
     }
     //TODO: void QComboBox::setEditText(const QString &text) to " " when multiple select
-    connect(f_fontsize, SIGNAL(currentIndexChanged(QString)),
-            this, SLOT(textSize(QString)));
+#if QT_VERSION < QT_VERSION_CHECK(5,15,0)
+    connect(f_fontsize, qOverload<const QString&>(&QComboBox::currentIndexChanged),
+            this, &MRichTextEdit::textSize);
+#else
+    connect(f_fontsize, qOverload<int>(&QComboBox::currentIndexChanged), this, [=](int index) {
+        textSize(f_fontsize->itemText(index));
+    });
+#endif
 
     // text foreground color
 
-    connect(f_fgcolor, SIGNAL(clicked()), this, SLOT(textFgColor()));
+    connect(f_fgcolor, &QToolButton::clicked, this, &MRichTextEdit::textFgColor);
 
     // text background color
 
-    connect(f_bgcolor, SIGNAL(clicked()), this, SLOT(textBgColor()));
+    connect(f_bgcolor, &QToolButton::clicked, this, &MRichTextEdit::textBgColor);
 
     // images
-    connect(f_image, SIGNAL(clicked()), this, SLOT(insertImage()));
+    connect(f_image, &QToolButton::clicked, this, &MRichTextEdit::insertImage);
 
     //set initial font size when editing existing text
     if (!textIn.isEmpty()) {

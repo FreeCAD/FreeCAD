@@ -499,15 +499,15 @@ QGIViewDimension::QGIViewDimension() : dvDimension(nullptr), hasHover(false), m_
     dimLines->setStyle(Qt::SolidLine);
 
     // connecting the needed slots and signals
-    QObject::connect(datumLabel, SIGNAL(dragging(bool)), this, SLOT(datumLabelDragged(bool)));
+    QObject::connect(datumLabel, &QGIDatumLabel::dragging, this, &QGIViewDimension::datumLabelDragged);
 
-    QObject::connect(datumLabel, SIGNAL(dragFinished()), this, SLOT(datumLabelDragFinished()));
+    QObject::connect(datumLabel, &QGIDatumLabel::dragFinished, this, &QGIViewDimension::datumLabelDragFinished);
 
-    QObject::connect(datumLabel, SIGNAL(selected(bool)), this, SLOT(select(bool)));
+    QObject::connect(datumLabel, &QGIDatumLabel::selected, this, &QGIViewDimension::select);
 
-    QObject::connect(datumLabel, SIGNAL(hover(bool)), this, SLOT(hover(bool)));
+    QObject::connect(datumLabel, &QGIDatumLabel::hover, this, &QGIViewDimension::hover);
 
-    QObject::connect(datumLabel, SIGNAL(setPretty(int)), this, SLOT(onPrettyChanged(int)));
+    QObject::connect(datumLabel, &QGIDatumLabel::setPretty, this, &QGIViewDimension::onPrettyChanged);
 
     setZValue(ZVALUE::DIMENSION);//note: this won't paint dimensions over another View if it stacks
                                  //above this Dimension's parent view.   need Layers?

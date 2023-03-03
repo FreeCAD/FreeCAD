@@ -26,7 +26,7 @@
     <message>
       <location filename="TranslationTexts.py" line="46"/>
       <source>Recent files</source>
-      <translation type="unfinished">Recent files</translation>
+      <translation>Апошнія файлы</translation>
     </message>
     <message>
       <location filename="TranslationTexts.py" line="47"/>
@@ -36,7 +36,7 @@
     <message>
       <location filename="TranslationTexts.py" line="48"/>
       <source>Adjust the number of recent files to be shown here in menu Edit -&gt; Preferences -&gt; General -&gt; Size of recent file list</source>
-      <translation>Адрэгуляваць колькасць апошніх файлаў, якія будуць адлюстраваныя тут, у меню Праўка -&gt; Перавагі -&gt; Агульныя -&gt; Памер спісу апошніх файлаў</translation>
+      <translation>Адрэгуляваць колькасць апошніх файлаў, якія будуць паказаныя тут, у меню Праўка -&gt; Перавагі -&gt; Агульныя -&gt; Памер спісу апошніх файлаў</translation>
     </message>
     <message>
       <location filename="TranslationTexts.py" line="49"/>
@@ -270,22 +270,22 @@
     <message>
       <location filename="../../DlgStartPreferences.ui" line="55"/>
       <source>Show examples folder contents</source>
-      <translation>Адлюстраваць змест каталогу з прыкладамі</translation>
+      <translation>Паказаць змест каталогу з прыкладамі</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="62"/>
       <source>Show additional folder</source>
-      <translation>Адлюстраваць дадатковы каталог</translation>
+      <translation>Паказаць дадатковы каталог</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="69"/>
       <source>If you want the examples to show on the first page</source>
-      <translation>Калі вы жадаеце, каб прыклады былі адлюстраваныя на першай старонцы</translation>
+      <translation>Калі вы жадаеце, каб прыклады былі паказаныя на першай старонцы</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="91"/>
       <source>If this is checked, the latest posts from the FreeCAD forum will be displayed on the Activity tab</source>
-      <translation>Калі птушка ўключана, апошнія паведамленні з форума FreeCAD будуць адлюстраваныя на ўкладцы Актыўнасць</translation>
+      <translation>Калі птушка, апошнія паведамленні з форума FreeCAD будуць адлюстраваныя на ўкладцы Актыўнасць</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="110"/>
@@ -297,17 +297,17 @@ By using ";;" to separate paths, you can add several folders here</source>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="127"/>
       <source>Show notepad</source>
-      <translation>Адлюстраваць нататнік</translation>
+      <translation>Паказаць нататнік</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="134"/>
       <source>Shows a notepad next to the file thumbnails, where you can keep notes across sessions</source>
-      <translation>Адлюстроўвае нататнік побач з файламі мініяцюры, дзе вы можаце захоўваць нататкі паміж сеансамі</translation>
+      <translation>Паказвае нататнік побач з файламі мініяцюры, дзе вы можаце захоўваць нататкі паміж сеансамі</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="153"/>
       <source>Show tips</source>
-      <translation>Адлюстраваць парады</translation>
+      <translation>Паказаць парады</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="163"/>
@@ -327,7 +327,7 @@ By using ";;" to separate paths, you can add several folders here</source>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="217"/>
       <source>Background color</source>
-      <translation type="unfinished">Background color</translation>
+      <translation>Колер фону</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="229"/>
@@ -362,7 +362,7 @@ By using ";;" to separate paths, you can add several folders here</source>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="319"/>
       <source>If this is checked and a style sheet is specified in General preferences, it will be used and override the colors below</source>
-      <translation>Калі птушка ўключана, і ў агульных перавагах паказана табліца стыляў, яна будзе ўжыта і колеры будуць пераназначаныя, названыя ніжэй</translation>
+      <translation>Калі птушка, і ў агульных перавагах паказана табліца стыляў, яна будзе ўжыта і колеры будуць пераназначаныя, названыя ніжэй</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="338"/>
@@ -427,7 +427,7 @@ By using ";;" to separate paths, you can add several folders here</source>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="523"/>
       <source>Font family</source>
-      <translation type="unfinished">Font family</translation>
+      <translation>Сямейства шрыфтоў</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="532"/>
@@ -442,12 +442,12 @@ By using ";;" to separate paths, you can add several folders here</source>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="551"/>
       <source>The base font size to use for all texts of the Start page</source>
-      <translation>Базавы памер шрыфту, які будзе ўжыты для ўсіх тэкстаў пачатковай старонкі</translation>
+      <translation>Асноўны памер шрыфту, які будзе ўжыты для ўсіх тэкстаў пачатковай старонкі</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="554"/>
       <source>px</source>
-      <translation type="unfinished">px</translation>
+      <translation>px</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="572"/>
@@ -457,7 +457,7 @@ By using ";;" to separate paths, you can add several folders here</source>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="579"/>
       <source>If this is selected, the 'New File' icon shows a gradient icon instead of the normal icon</source>
-      <translation>Калі птушка ўключана, на гузіку 'Новы файл' будзе адлюстраваны гузік градыенту замест звычайнага гузіка</translation>
+      <translation>Калі птушка, на гузіку 'Новы файл' будзе паказаны гузік градыенту замест звычайнага гузіка</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="601"/>
@@ -472,7 +472,7 @@ By using ";;" to separate paths, you can add several folders here</source>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="614"/>
       <source>If checked, will automatically close the Start page when FreeCAD launches</source>
-      <translation>Калі птушка ўключана, пачатковая старонка будзе аўтаматычна зачынена пры запуску FreeCAD</translation>
+      <translation>Калі птушка, пачатковая старонка будзе аўтаматычна зачынена пры запуску FreeCAD</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="633"/>

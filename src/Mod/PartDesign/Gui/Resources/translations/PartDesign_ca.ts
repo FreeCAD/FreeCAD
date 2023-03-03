@@ -80,6 +80,46 @@ so that self intersection is avoided.</source>
       <translation>Si és fals, l'eina proposarà un valor inicial per al pas basat en el quadre delimitador del perfil,
 de manera que s'evita l'autointersecció.</translation>
     </message>
+    <message>
+      <location filename="../../../InvoluteGearFeature.py" line="98"/>
+      <source>Number of gear teeth</source>
+      <translation type="unfinished">Number of gear teeth</translation>
+    </message>
+    <message>
+      <location filename="../../../InvoluteGearFeature.py" line="101"/>
+      <source>Modules of the gear</source>
+      <translation type="unfinished">Modules of the gear</translation>
+    </message>
+    <message>
+      <location filename="../../../InvoluteGearFeature.py" line="104"/>
+      <source>Pressure angle of gear teeth</source>
+      <translation type="unfinished">Pressure angle of gear teeth</translation>
+    </message>
+    <message>
+      <location filename="../../../InvoluteGearFeature.py" line="108"/>
+      <source>True=2 curves with each 3 control points False=1 curve with 4 control points.</source>
+      <translation type="unfinished">True=2 curves with each 3 control points False=1 curve with 4 control points.</translation>
+    </message>
+    <message>
+      <location filename="../../../InvoluteGearFeature.py" line="111"/>
+      <source>True=external Gear False=internal Gear</source>
+      <translation type="unfinished">True=external Gear False=internal Gear</translation>
+    </message>
+    <message>
+      <location filename="../../../InvoluteGearFeature.py" line="115"/>
+      <source>The height of the tooth from the pitch circle up to its tip, normalized by the module.</source>
+      <translation type="unfinished">The height of the tooth from the pitch circle up to its tip, normalized by the module.</translation>
+    </message>
+    <message>
+      <location filename="../../../InvoluteGearFeature.py" line="119"/>
+      <source>The height of the tooth from the pitch circle down to its root, normalized by the module.</source>
+      <translation type="unfinished">The height of the tooth from the pitch circle down to its root, normalized by the module.</translation>
+    </message>
+    <message>
+      <location filename="../../../InvoluteGearFeature.py" line="123"/>
+      <source>The radius of the fillet at the root of the tooth, normalized by the module.</source>
+      <translation type="unfinished">The radius of the fillet at the root of the tooth, normalized by the module.</translation>
+    </message>
   </context>
   <context>
     <name>CmdPartDesignAdditiveHelix</name>
@@ -1014,6 +1054,21 @@ de manera que s'evita l'autointersecció.</translation>
       <location filename="../../../InvoluteGearFeature.ui" line="152"/>
       <source>External gear:</source>
       <translation>Engranatge amb dentat exterior:</translation>
+    </message>
+    <message>
+      <location filename="../../../InvoluteGearFeature.ui" line="179"/>
+      <source>Addendum Coefficient</source>
+      <translation type="unfinished">Addendum Coefficient</translation>
+    </message>
+    <message>
+      <location filename="../../../InvoluteGearFeature.ui" line="199"/>
+      <source>Dedendum Coefficient</source>
+      <translation type="unfinished">Dedendum Coefficient</translation>
+    </message>
+    <message>
+      <location filename="../../../InvoluteGearFeature.ui" line="219"/>
+      <source>Root Fillet Coefficient</source>
+      <translation type="unfinished">Root Fillet Coefficient</translation>
     </message>
   </context>
   <context>
@@ -3081,8 +3136,8 @@ clica altre cop per finalitzar la selecció</translation>
       <location filename="../../TaskThicknessParameters.ui" line="52"/>
       <source>- select an item to highlight it
 - double-click on an item to see the features</source>
-      <translation>- seleccionar un element per ressaltar-ho
-- fer doble clic en un element per veure les característiques</translation>
+      <translation>- Seleccioneu un element per ressaltar-ho
+- Feu doble clic en un element per veure les característiques</translation>
     </message>
     <message>
       <location filename="../../TaskThicknessParameters.ui" line="65"/>
@@ -3429,22 +3484,22 @@ clica altre cop per finalitzar la selecció</translation>
     <message>
       <location filename="../../CommandBody.cpp" line="882"/>
       <source>Select a feature from the list</source>
-      <translation>Seleccioneu un element de la llista</translation>
+      <translation>Seleccioneu una característica de la llista</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="953"/>
       <source>Move tip</source>
-      <translation>Mou punta</translation>
+      <translation>Mou la punta</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="954"/>
       <source>The moved feature appears after the currently set tip.</source>
-      <translation>La característica moguda apareix després de la punta configurada en aquest moment.</translation>
+      <translation>La característica moguda apareix després de la punta establerta actualment.</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="955"/>
       <source>Do you want the last feature to be the new tip?</source>
-      <translation>Vol que la darrera característica sigui la nova punta?</translation>
+      <translation>Voleu que la darrera característica sigui la nova punta?</translation>
     </message>
   </context>
   <context>
@@ -4721,12 +4776,12 @@ més de 90: radi de forat més gran a la part inferior</translation>
   <context>
     <name>PartDesign_InvoluteGear</name>
     <message>
-      <location filename="../../../InvoluteGearFeature.py" line="57"/>
+      <location filename="../../../InvoluteGearFeature.py" line="58"/>
       <source>Involute gear...</source>
       <translation>Engranatges esvolvant...</translation>
     </message>
     <message>
-      <location filename="../../../InvoluteGearFeature.py" line="61"/>
+      <location filename="../../../InvoluteGearFeature.py" line="62"/>
       <source>Creates or edit the involute gear definition.</source>
       <translation type="unfinished">Creates or edit the involute gear definition.</translation>
     </message>

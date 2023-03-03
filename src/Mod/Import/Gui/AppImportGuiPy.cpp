@@ -726,6 +726,9 @@ private:
                 // https://github.com/KhronosGroup/glTF/blob/master/specification/2.0/README.md#coordinate-system-and-units
                 aWriter.ChangeCoordinateSystemConverter().SetInputLengthUnit (0.001);
                 aWriter.ChangeCoordinateSystemConverter().SetInputCoordinateSystem (RWMesh_CoordinateSystem_Zup);
+#if OCC_VERSION_HEX >= 0x070700
+                aWriter.SetParallel(true);
+#endif
                 Standard_Boolean ret = aWriter.Perform (hDoc, aMetadata, Message_ProgressRange());
                 if (!ret) {
                     PyErr_Format(PyExc_IOError, "Cannot save to file '%s'", Utf8Name.c_str());

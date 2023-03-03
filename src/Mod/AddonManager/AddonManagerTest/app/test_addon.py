@@ -1,24 +1,23 @@
-# -*- coding: utf-8 -*-
-
+# SPDX-License-Identifier: LGPL-2.1-or-later
 # ***************************************************************************
-# *   Copyright (c) 2022 FreeCAD Project Association                        *
 # *                                                                         *
-# *   This file is part of the FreeCAD CAx development system.              *
+# *   Copyright (c) 2022-2023 FreeCAD Project Association                   *
 # *                                                                         *
-# *   This library is free software; you can redistribute it and/or         *
-# *   modify it under the terms of the GNU Lesser General Public            *
-# *   License as published by the Free Software Foundation; either          *
-# *   version 2.1 of the License, or (at your option) any later version.    *
+# *   This file is part of FreeCAD.                                         *
 # *                                                                         *
-# *   This library is distributed in the hope that it will be useful,       *
-# *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
-# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU     *
+# *   FreeCAD is free software: you can redistribute it and/or modify it    *
+# *   under the terms of the GNU Lesser General Public License as           *
+# *   published by the Free Software Foundation, either version 2.1 of the  *
+# *   License, or (at your option) any later version.                       *
+# *                                                                         *
+# *   FreeCAD is distributed in the hope that it will be useful, but        *
+# *   WITHOUT ANY WARRANTY; without even the implied warranty of            *
+# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU      *
 # *   Lesser General Public License for more details.                       *
 # *                                                                         *
 # *   You should have received a copy of the GNU Lesser General Public      *
-# *   License along with this library; if not, write to the Free Software   *
-# *   Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA         *
-# *   02110-1301  USA                                                       *
+# *   License along with FreeCAD. If not, see                               *
+# *   <https://www.gnu.org/licenses/>.                                      *
 # *                                                                         *
 # ***************************************************************************
 
@@ -222,7 +221,7 @@ class TestAddon(unittest.TestCase):
         self.assertEqual(addon.repo_type, Addon.Kind.MACRO)
         self.assertEqual(addon.name, "DoNothing")
         self.assertEqual(
-            addon.macro.comment, "Do absolutely nothing. For Addon Manager unit tests."
+            addon.macro.comment, "Do absolutely nothing. For Addon Manager integration tests."
         )
         self.assertEqual(addon.url, "https://github.com/FreeCAD/FreeCAD")
         self.assertEqual(addon.macro.version, "1.0")
@@ -230,7 +229,7 @@ class TestAddon(unittest.TestCase):
         self.assertEqual(addon.macro.author, "Chris Hennes")
         self.assertEqual(addon.macro.date, "2022-02-28")
         self.assertEqual(addon.macro.icon, "not_real.png")
-        self.assertEqual(addon.macro.xpm, "")
+        self.assertNotEqual(addon.macro.xpm, "")
 
     def test_cache(self):
         addon = Addon(

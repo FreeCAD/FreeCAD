@@ -1373,7 +1373,7 @@ en els seus components X, Y i Z.</translation>
     <message>
       <location filename="../../CommandParametric.cpp" line="108"/>
       <source>Create a cube solid</source>
-      <translation>Crear un cub sòlid</translation>
+      <translation>Crea un cub sòlid</translation>
     </message>
   </context>
   <context>
@@ -1391,7 +1391,7 @@ en els seus components X, Y i Z.</translation>
     <message>
       <location filename="../../Command.cpp" line="132"/>
       <source>Create a box solid without dialog</source>
-      <translation>Crear sòlid sense diàleg</translation>
+      <translation>Crea sòlid sense diàleg</translation>
     </message>
   </context>
   <context>
@@ -1409,7 +1409,7 @@ en els seus components X, Y i Z.</translation>
     <message>
       <location filename="../../Command.cpp" line="173"/>
       <source>Create a box solid without dialog</source>
-      <translation>Crear sòlid sense diàleg</translation>
+      <translation>Crea sòlid sense diàleg</translation>
     </message>
   </context>
   <context>
@@ -1534,8 +1534,8 @@ en els seus components X, Y i Z.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="686"/>
-      <source>Shape splitting tools. Compsolid creation tools. OCC 6.9.0 or later is required.</source>
-      <translation>Forma partint d'eines. Eines de creació de Compsolid. OCC 6.9.0 o més tard s'exigeix.</translation>
+      <source>Shape splitting and Compsolid creation tools.</source>
+      <translation type="unfinished">Shape splitting and Compsolid creation tools.</translation>
     </message>
   </context>
   <context>
@@ -1573,7 +1573,7 @@ en els seus components X, Y i Z.</translation>
     <message>
       <location filename="../../CommandParametric.cpp" line="192"/>
       <source>Create a cone solid</source>
-      <translation>Crear un con sòlid</translation>
+      <translation>Crea un con sòlid</translation>
     </message>
   </context>
   <context>
@@ -1629,7 +1629,7 @@ en els seus components X, Y i Z.</translation>
     <message>
       <location filename="../../CommandParametric.cpp" line="66"/>
       <source>Create a Cylinder</source>
-      <translation>Crear un Cilindre</translation>
+      <translation>Crea un cilindre</translation>
     </message>
   </context>
   <context>
@@ -1827,7 +1827,7 @@ en els seus components X, Y i Z.</translation>
     <message>
       <location filename="../../Command.cpp" line="1175"/>
       <source>Create solid from a shell or compound</source>
-      <translation>Crear sòlid a partir d'un entorn o compost</translation>
+      <translation>Crea un sòlid a partir d'un entorn o compost</translation>
     </message>
   </context>
   <context>
@@ -1930,12 +1930,12 @@ en els seus components X, Y i Z.</translation>
     <message>
       <location filename="../../Command.cpp" line="213"/>
       <source>Create primitives...</source>
-      <translation>Crear primitives...</translation>
+      <translation>Crea primitives...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="214"/>
       <source>Creation of parametrized geometric primitives</source>
-      <translation>Crear primitives parametritzades</translation>
+      <translation>Crea primitives parametritzades</translation>
     </message>
   </context>
   <context>
@@ -2026,7 +2026,7 @@ de projecció.</translation>
     <message>
       <location filename="../../Command.cpp" line="2074"/>
       <source>Create ruled surface</source>
-      <translation>Crear Superfície Reglada</translation>
+      <translation>Crea una superfície reglada</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2075"/>
@@ -2075,12 +2075,12 @@ de projecció.</translation>
     <message>
       <location filename="../../CommandSimple.cpp" line="103"/>
       <source>Create shape from mesh...</source>
-      <translation>Crear la forma de malla...</translation>
+      <translation>Crea la forma de malla...</translation>
     </message>
     <message>
       <location filename="../../CommandSimple.cpp" line="104"/>
       <source>Create shape from selected mesh object</source>
-      <translation>Crear la forma de l'objecte de malla seleccionat</translation>
+      <translation>Crea la forma de l'objecte de malla seleccionat</translation>
     </message>
   </context>
   <context>
@@ -2093,12 +2093,12 @@ de projecció.</translation>
     <message>
       <location filename="../../CommandSimple.cpp" line="182"/>
       <source>Create simple copy</source>
-      <translation>Crear còpia simple</translation>
+      <translation>Crea una còpia simple</translation>
     </message>
     <message>
       <location filename="../../CommandSimple.cpp" line="183"/>
       <source>Create a simple non-parametric copy</source>
-      <translation>Crear una còpia simple no paramètrica</translation>
+      <translation>Crea una còpia simple no paramètrica</translation>
     </message>
   </context>
   <context>
@@ -2111,12 +2111,12 @@ de projecció.</translation>
     <message>
       <location filename="../../CommandSimple.cpp" line="53"/>
       <source>Create Cylinder...</source>
-      <translation>Crear Cilindre...</translation>
+      <translation>Crea un cilindre...</translation>
     </message>
     <message>
       <location filename="../../CommandSimple.cpp" line="54"/>
       <source>Create a Cylinder</source>
-      <translation>Crear un Cilindre</translation>
+      <translation>Crea un cilindre</translation>
     </message>
   </context>
   <context>
@@ -2202,7 +2202,7 @@ de projecció.</translation>
     <message>
       <location filename="../../CommandParametric.cpp" line="234"/>
       <source>Create a torus solid</source>
-      <translation>Crear un toroide sòlid</translation>
+      <translation>Crea un toroide sòlid</translation>
     </message>
   </context>
   <context>
@@ -2294,12 +2294,12 @@ de projecció.</translation>
     <message>
       <location filename="../../Command.cpp" line="2155"/>
       <source>Create ruled surface</source>
-      <translation>Crear Superfície Reglada</translation>
+      <translation>Crea una superfície reglada</translation>
     </message>
     <message>
       <location filename="../../CommandSimple.cpp" line="67"/>
       <source>Create Part Cylinder</source>
-      <translation>Crear Cilindre</translation>
+      <translation>Crea un cilindre</translation>
     </message>
     <message>
       <location filename="../../CommandSimple.cpp" line="148"/>
@@ -2616,7 +2616,7 @@ Nota: La ubicació s'expressa en l'espai local de l'objecte que s'adjunta.</tran
     <message>
       <location filename="../../DlgBooleanOperation.cpp" line="392"/>
       <source>Cannot perform a boolean operation with the same shape</source>
-      <translation>No pot realitzar una operació booleana amb la mateixa forma</translation>
+      <translation>No es pot realitzar una operació booleana amb la mateixa forma</translation>
     </message>
     <message>
       <location filename="../../DlgBooleanOperation.cpp" line="402"/>
@@ -2915,7 +2915,7 @@ Si les dues longituds són zero, s'utilitza la magnitud de la direcció.</transl
     <message>
       <location filename="../../DlgExtrusion.ui" line="340"/>
       <source>Create solid</source>
-      <translation>Crear sòlid</translation>
+      <translation>Crea un sòlid</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.ui" line="360"/>
@@ -3543,19 +3543,19 @@ durant la lectura del fitxer (detalls més lents però més alts).</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="33"/>
-      <location filename="../../DlgPrimitives.cpp" line="275"/>
+      <location filename="../../DlgPrimitives.cpp" line="274"/>
       <source>Plane</source>
       <translation>Pla</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="42"/>
-      <location filename="../../DlgPrimitives.cpp" line="351"/>
+      <location filename="../../DlgPrimitives.cpp" line="349"/>
       <source>Box</source>
       <translation type="unfinished">Box</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="51"/>
-      <location filename="../../DlgPrimitives.cpp" line="442"/>
+      <location filename="../../DlgPrimitives.cpp" line="439"/>
       <source>Cylinder</source>
       <translation>Cilindre</translation>
     </message>
@@ -3567,55 +3567,55 @@ durant la lectura del fitxer (detalls més lents però més alts).</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="69"/>
-      <location filename="../../DlgPrimitives.cpp" line="627"/>
+      <location filename="../../DlgPrimitives.cpp" line="626"/>
       <source>Sphere</source>
       <translation>Esfera</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="78"/>
-      <location filename="../../DlgPrimitives.cpp" line="732"/>
+      <location filename="../../DlgPrimitives.cpp" line="730"/>
       <source>Ellipsoid</source>
       <translation>El·lipsoide</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="87"/>
-      <location filename="../../DlgPrimitives.cpp" line="840"/>
+      <location filename="../../DlgPrimitives.cpp" line="837"/>
       <source>Torus</source>
       <translation>Torus</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="96"/>
-      <location filename="../../DlgPrimitives.cpp" line="939"/>
+      <location filename="../../DlgPrimitives.cpp" line="935"/>
       <source>Prism</source>
       <translation>Prisma</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="105"/>
-      <location filename="../../DlgPrimitives.cpp" line="1082"/>
+      <location filename="../../DlgPrimitives.cpp" line="1077"/>
       <source>Wedge</source>
       <translation>Falca</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="114"/>
-      <location filename="../../DlgPrimitives.cpp" line="1209"/>
+      <location filename="../../DlgPrimitives.cpp" line="1203"/>
       <source>Helix</source>
       <translation>Hèlix</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="123"/>
-      <location filename="../../DlgPrimitives.cpp" line="1299"/>
+      <location filename="../../DlgPrimitives.cpp" line="1292"/>
       <source>Spiral</source>
       <translation>Espiral</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="132"/>
-      <location filename="../../DlgPrimitives.cpp" line="1380"/>
+      <location filename="../../DlgPrimitives.cpp" line="1372"/>
       <source>Circle</source>
       <translation>Cercle</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="141"/>
-      <location filename="../../DlgPrimitives.cpp" line="1467"/>
+      <location filename="../../DlgPrimitives.cpp" line="1458"/>
       <source>Ellipse</source>
       <translation>El·lipse</translation>
     </message>
@@ -3626,13 +3626,13 @@ durant la lectura del fitxer (detalls més lents però més alts).</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="159"/>
-      <location filename="../../DlgPrimitives.cpp" line="1645"/>
+      <location filename="../../DlgPrimitives.cpp" line="1634"/>
       <source>Line</source>
       <translation>Línia</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="168"/>
-      <location filename="../../DlgPrimitives.cpp" line="1545"/>
+      <location filename="../../DlgPrimitives.cpp" line="1535"/>
       <source>Regular polygon</source>
       <translation>Polígon regular</translation>
     </message>
@@ -3870,27 +3870,27 @@ durant la lectura del fitxer (detalls més lents però més alts).</translation>
       <translation>Punt final</translation>
     </message>
     <message>
-      <location filename="../../DlgPrimitives.cpp" line="1744"/>
+      <location filename="../../DlgPrimitives.cpp" line="1732"/>
       <source>Vertex</source>
       <translation type="unfinished">Vertex</translation>
     </message>
     <message>
-      <location filename="../../DlgPrimitives.cpp" line="1924"/>
-      <location filename="../../DlgPrimitives.cpp" line="1934"/>
-      <location filename="../../DlgPrimitives.cpp" line="1949"/>
-      <location filename="../../DlgPrimitives.cpp" line="1953"/>
+      <location filename="../../DlgPrimitives.cpp" line="1912"/>
+      <location filename="../../DlgPrimitives.cpp" line="1922"/>
+      <location filename="../../DlgPrimitives.cpp" line="1937"/>
+      <location filename="../../DlgPrimitives.cpp" line="1941"/>
       <source>Create %1</source>
       <translation>Creat %1</translation>
     </message>
     <message>
-      <location filename="../../DlgPrimitives.cpp" line="1925"/>
+      <location filename="../../DlgPrimitives.cpp" line="1913"/>
       <source>No active document</source>
       <translation>Document no Actiu</translation>
     </message>
     <message>
-      <location filename="../../DlgPrimitives.cpp" line="2228"/>
+      <location filename="../../DlgPrimitives.cpp" line="2216"/>
       <source>&amp;Create</source>
-      <translation>&amp;Crear</translation>
+      <translation>&amp;Crea</translation>
     </message>
   </context>
   <context>
@@ -4171,7 +4171,7 @@ durant la lectura del fitxer (detalls més lents però més alts).</translation>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="26"/>
       <source>Automatically check model after boolean operation</source>
-      <translation>Automàticament refinar el model de després de l'operació booleana</translation>
+      <translation>Comprova automàticament el model després de l'operació booleana</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="39"/>
@@ -4181,7 +4181,7 @@ durant la lectura del fitxer (detalls més lents però més alts).</translation>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="52"/>
       <source>Automatically refine model after sketch-based operation</source>
-      <translation>Automàticament refinar el model de després de l'operació booleana</translation>
+      <translation>Refina automàticament el model després de l'operació basada en el croquis</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="68"/>
@@ -4244,7 +4244,7 @@ durant la lectura del fitxer (detalls més lents però més alts).</translation>
     <message>
       <location filename="../../DlgSettingsMeasure.ui" line="202"/>
       <source>Font name</source>
-      <translation>Nom de la font</translation>
+      <translation>Nom del tipus de lletra</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsMeasure.ui" line="213"/>
@@ -4642,62 +4642,89 @@ s'utilitzarà el vector normal del pla d'esbós</translation>
     </message>
     <message>
       <location filename="../../SectionCutting.ui" line="254"/>
+      <location filename="../../SectionCutting.ui" line="394"/>
       <source>Color of cut face</source>
       <translation>Color de la cara tallada</translation>
     </message>
     <message>
       <location filename="../../SectionCutting.ui" line="257"/>
+      <location filename="../../SectionCutting.ui" line="397"/>
       <source>Color</source>
       <translation>Color</translation>
     </message>
     <message>
       <location filename="../../SectionCutting.ui" line="302"/>
+      <location filename="../../SectionCutting.ui" line="445"/>
       <source>If checked, the color and transparency
 will be taken from the cut objects.
-Works only if all objects have the same values.</source>
-      <translation>Si està marcat, el color i la transparència
-s'agafarà dels objectes tallats.
-Només funciona si tots els objectes tenen els mateixos valors.</translation>
+Works only properly if all objects
+have the same values.</source>
+      <translation type="unfinished">If checked, the color and transparency
+will be taken from the cut objects.
+Works only properly if all objects
+have the same values.</translation>
     </message>
     <message>
-      <location filename="../../SectionCutting.ui" line="307"/>
+      <location filename="../../SectionCutting.ui" line="308"/>
+      <location filename="../../SectionCutting.ui" line="451"/>
       <source>Auto</source>
       <translation>Auto</translation>
     </message>
     <message>
-      <location filename="../../SectionCutting.ui" line="329"/>
+      <location filename="../../SectionCutting.ui" line="330"/>
+      <location filename="../../SectionCutting.ui" line="473"/>
       <source>Transparency of cut face</source>
       <translation>Transparència de la cara tallada</translation>
     </message>
     <message>
-      <location filename="../../SectionCutting.ui" line="332"/>
+      <location filename="../../SectionCutting.ui" line="333"/>
+      <location filename="../../SectionCutting.ui" line="476"/>
       <source>Transparency</source>
       <translation>Transparència</translation>
     </message>
     <message>
-      <location filename="../../SectionCutting.ui" line="367"/>
+      <location filename="../../SectionCutting.ui" line="371"/>
+      <source>Allows to cut objects intersecting each other
+for the price that all cut objects
+will get the same color</source>
+      <translation type="unfinished">Allows to cut objects intersecting each other
+for the price that all cut objects
+will get the same color</translation>
+    </message>
+    <message>
+      <location filename="../../SectionCutting.ui" line="376"/>
+      <source>Cut intersecting objects</source>
+      <translation>Tallar objectes que intersequen</translation>
+    </message>
+    <message>
+      <location filename="../../SectionCutting.ui" line="419"/>
+      <source>Color for all objects</source>
+      <translation>Color de tots els objectes</translation>
+    </message>
+    <message>
+      <location filename="../../SectionCutting.ui" line="511"/>
       <source>Refreshes the list of visible objects</source>
       <translation>Actualitza la llista d'objectes visibles</translation>
     </message>
     <message>
-      <location filename="../../SectionCutting.ui" line="370"/>
+      <location filename="../../SectionCutting.ui" line="514"/>
       <source>Refresh view</source>
       <translation>Actualitza la vista</translation>
     </message>
     <message>
-      <location filename="../../SectionCutting.ui" line="400"/>
+      <location filename="../../SectionCutting.ui" line="544"/>
       <source>When the dialog is closed,
 only created cuts will be visible</source>
       <translation>Quan el diàleg està tancat,
 només seran visibles els talls creats</translation>
     </message>
     <message>
-      <location filename="../../SectionCutting.ui" line="404"/>
+      <location filename="../../SectionCutting.ui" line="548"/>
       <source>Keep only cuts visible when closing</source>
       <translation>Mantenir visibles només els talls al tancar</translation>
     </message>
     <message>
-      <location filename="../../SectionCutting.cpp" line="429"/>
+      <location filename="../../SectionCutting.cpp" line="520"/>
       <source>Sliders are disabled for assemblies</source>
       <translation>Els controls lliscants estan desactivats per als muntatges</translation>
     </message>
@@ -4755,7 +4782,7 @@ només seran visibles els talls creats</translation>
     <message>
       <location filename="../../TaskShapeBuilder.cpp" line="536"/>
       <source>Select two vertices to create an edge</source>
-      <translation>Seleccioneu dos vèrtexs per crear un Cantell</translation>
+      <translation>Seleccioneu dos vèrtexs per crear un cantell</translation>
     </message>
     <message>
       <location filename="../../TaskShapeBuilder.cpp" line="543"/>
@@ -5353,7 +5380,7 @@ by dragging a selection rectangle in the 3D view</source>
     <message>
       <location filename="../../TaskLoft.ui" line="23"/>
       <source>Create solid</source>
-      <translation>Crear sòlid</translation>
+      <translation>Crea un sòlid</translation>
     </message>
     <message>
       <location filename="../../TaskLoft.ui" line="30"/>
@@ -5442,7 +5469,7 @@ by dragging a selection rectangle in the 3D view</source>
       <location filename="../../TaskShapeBuilder.ui" line="14"/>
       <location filename="../../TaskShapeBuilder.ui" line="20"/>
       <source>Create shape</source>
-      <translation>Crear Pla</translation>
+      <translation>Crea un pla</translation>
     </message>
     <message>
       <location filename="../../TaskShapeBuilder.ui" line="26"/>
@@ -5515,7 +5542,7 @@ by dragging a selection rectangle in the 3D view</source>
     <message>
       <location filename="../../TaskSweep.ui" line="53"/>
       <source>Create solid</source>
-      <translation>Crear sòlid</translation>
+      <translation>Crea un sòlid</translation>
     </message>
     <message>
       <location filename="../../TaskSweep.ui" line="60"/>
@@ -5636,21 +5663,21 @@ in the 3D view for the sweep path.</source>
       <translation>Editar %1</translation>
     </message>
     <message>
-      <location filename="../../AppPartGui.cpp" line="224"/>
+      <location filename="../../AppPartGui.cpp" line="227"/>
       <source>Part and Part Design workbench</source>
       <translation type="unfinished">Part and Part Design workbench</translation>
     </message>
     <message>
-      <location filename="../../AppPartGui.cpp" line="225"/>
-      <location filename="../../AppPartGui.cpp" line="226"/>
-      <location filename="../../AppPartGui.cpp" line="227"/>
       <location filename="../../AppPartGui.cpp" line="228"/>
+      <location filename="../../AppPartGui.cpp" line="229"/>
+      <location filename="../../AppPartGui.cpp" line="230"/>
+      <location filename="../../AppPartGui.cpp" line="231"/>
       <source>Part/Part Design</source>
       <translation type="unfinished">Part/Part Design</translation>
     </message>
     <message>
-      <location filename="../../AppPartGui.cpp" line="229"/>
-      <location filename="../../AppPartGui.cpp" line="230"/>
+      <location filename="../../AppPartGui.cpp" line="232"/>
+      <location filename="../../AppPartGui.cpp" line="233"/>
       <source>Import-Export</source>
       <translation>Importació-exportació</translation>
     </message>
@@ -6302,11 +6329,10 @@ or from the shapes inside a compound.
 This is a boolean union which is then sliced at the intersections
 of the original shapes.
 A 'Compound Filter' can be used to extract the individual slices.</source>
-      <translation type="unfinished">Create a 'Boolean Fragments' object from two or more selected objects,
-or from the shapes inside a compound.
-This is a boolean union which is then sliced at the intersections
-of the original shapes.
-A 'Compound Filter' can be used to extract the individual slices.</translation>
+      <translation>Creeu un objecte de "Fragments booleans" a partir de dos objectes seleccionats o més,
+o de les formes dins d'un compost.
+Aquesta unió booleana després es tallarà a les interseccions de les formes originals.
+Es pot utilitzar un "Filtre compost" per extreure els talls individuals.</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="198"/>
@@ -6332,19 +6358,19 @@ A 'Compound Filter' can be used to extract the individual slices.</translation>
       <location filename="../../../BOPTools/SplitFeatures.py" line="353"/>
       <location filename="../../../BOPTools/SplitFeatures.py" line="384"/>
       <source>Select at least two objects. The first one is the object to be sliced; the rest are objects to slice with.</source>
-      <translation type="unfinished">Select at least two objects. The first one is the object to be sliced; the rest are objects to slice with.</translation>
+      <translation>Seleccioneu almenys dos objectes. El primer és l'objecte que voleu tallar; la resta són objectes amb els quals es farà el tall.</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="369"/>
       <source>Slice apart</source>
-      <translation type="unfinished">Slice apart</translation>
+      <translation>Talla i separa</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="375"/>
       <source>Slice a selected object by other objects, and split it apart.
 It will create a 'Compound Filter' for each slice.</source>
-      <translation type="unfinished">Slice a selected object by other objects, and split it apart.
-It will create a 'Compound Filter' for each slice.</translation>
+      <translation>Talla un objecte seleccionat per altres objectes i el divideix.
+Crearà un «Filtre compost» per a cada tall.</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="517"/>

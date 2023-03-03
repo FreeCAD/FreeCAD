@@ -1,22 +1,24 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
 # ***************************************************************************
 # *                                                                         *
+# *   Copyright (c) 2022-2023 FreeCAD Project Association                   *
 # *   Copyright (c) 2018 Gaël Écorchard <galou_breizh@yahoo.fr>             *
 # *                                                                         *
-# *   This program is free software; you can redistribute it and/or modify  *
-# *   it under the terms of the GNU Lesser General Public License (LGPL)    *
-# *   as published by the Free Software Foundation; either version 2 of     *
-# *   the License, or (at your option) any later version.                   *
-# *   for detail see the LICENCE text file.                                 *
+# *   This file is part of FreeCAD.                                         *
 # *                                                                         *
-# *   This program is distributed in the hope that it will be useful,       *
-# *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
-# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
-# *   GNU Library General Public License for more details.                  *
+# *   FreeCAD is free software: you can redistribute it and/or modify it    *
+# *   under the terms of the GNU Lesser General Public License as           *
+# *   published by the Free Software Foundation, either version 2.1 of the  *
+# *   License, or (at your option) any later version.                       *
 # *                                                                         *
-# *   You should have received a copy of the GNU Library General Public     *
-# *   License along with this program; if not, write to the Free Software   *
-# *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
-# *   USA                                                                   *
+# *   FreeCAD is distributed in the hope that it will be useful, but        *
+# *   WITHOUT ANY WARRANTY; without even the implied warranty of            *
+# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU      *
+# *   Lesser General Public License for more details.                       *
+# *                                                                         *
+# *   You should have received a copy of the GNU Lesser General Public      *
+# *   License along with FreeCAD. If not, see                               *
+# *   <https://www.gnu.org/licenses/>.                                      *
 # *                                                                         *
 # ***************************************************************************
 
@@ -30,13 +32,14 @@ import shutil
 from html import unescape
 from typing import Dict, Tuple, List, Union, Optional
 
-import FreeCAD
 import NetworkManager
-from PySide import QtCore
 
-from addonmanager_utilities import is_float
 
-translate = FreeCAD.Qt.translate
+from addonmanager_macro_parser import MacroParser
+
+import addonmanager_freecad_interface as fci
+
+translate = fci.translate
 
 
 #  @package AddonManager_macro
@@ -72,6 +75,7 @@ class Macro:
         self.xpm = ""  # Possible alternate icon data
         self.other_files = []
         self.parsed = False
+        self._console = fci.Console
 
     def __eq__(self, other):
         return self.filename == other.filename
@@ -86,9 +90,12 @@ class Macro:
         return instance
 
     def to_cache(self) -> Dict:
-        """For cache purposes this entire class is dumped directly"""
-
-        return self.__dict__
+        """For cache purposes all public members of the class are returned"""
+        cache_dict = {}
+        for key, value in self.__dict__.items():
+            if key[0] != "_":
+                cache_dict[key] = value
+        return cache_dict
 
     @classmethod
     def _get_network_manager(cls):
@@ -108,13 +115,14 @@ class Macro:
     def is_installed(self):
         """Returns True if this macro is currently installed (that is, if it exists in the
         user macro directory), or False if it is not. Both the exact filename, as well as
-        the filename prefixed with "Macro", are considered an installation of this macro."""
+        the filename prefixed with "Macro", are considered an installation of this macro.
+        """
         if self.on_git and not self.src_filename:
             return False
         return os.path.exists(
-            os.path.join(FreeCAD.getUserMacroDir(True), self.filename)
+            os.path.join(fci.DataPaths().macro_dir, self.filename)
         ) or os.path.exists(
-            os.path.join(FreeCAD.getUserMacroDir(True), "Macro_" + self.filename)
+            os.path.join(fci.DataPaths().macro_dir, "Macro_" + self.filename)
         )
 
     def fill_details_from_file(self, filename: str) -> None:
@@ -124,143 +132,12 @@ class Macro:
             self.fill_details_from_code(self.code)
 
     def fill_details_from_code(self, code: str) -> None:
-        """Reads in the macro code from the given string and parses it for its metadata."""
-        # Number of parsed fields of metadata. Overrides anything set previously (the code is
-        # considered authoritative).
-        # For now:
-        # __Comment__
-        # __Web__
-        # __Wiki__
-        # __Version__
-        # __Files__
-        # __Author__
-        # __Date__
-        # __Icon__
-        max_lines_to_search = 200
-        line_counter = 0
-
-        string_search_mapping = {
-            "__comment__": "comment",
-            "__web__": "url",
-            "__wiki__": "wiki",
-            "__version__": "version",
-            "__files__": "other_files",
-            "__author__": "author",
-            "__date__": "date",
-            "__icon__": "icon",
-            "__xpm__": "xpm",
-        }
-
-        string_search_regex = re.compile(r"\s*(['\"])(.*)\1")
-        f = io.StringIO(code)
-        while f and line_counter < max_lines_to_search:
-            line = f.readline()
-            if not line:
-                break
-            if QtCore.QThread.currentThread().isInterruptionRequested():
-                return
-            line_counter += 1
-            if not line.startswith("__"):
-                # Speed things up a bit... this comparison is very cheap
-                continue
-
-            lowercase_line = line.lower()
-            for key, value in string_search_mapping.items():
-                if lowercase_line.startswith(key):
-                    _, _, after_equals = line.partition("=")
-                    match = re.match(string_search_regex, after_equals)
-
-                    # We do NOT support triple-quoted strings, except for the icon XPM data
-                    # Most cases should be caught by this code
-                    if match and '"""' not in after_equals:
-                        self._standard_extraction(value, match.group(2))
-                        string_search_mapping.pop(key)
-                        break
-
-                    # For cases where either there is no match, or we found a triple quote,
-                    # more processing is needed
-
-                    # Macro authors are supposed to be providing strings here, but in some
-                    # cases they are not doing so. If this is the "__version__" tag, try
-                    # to apply some special handling to accepts numbers, and "__date__"
-                    if key == "__version__":
-                        self._process_noncompliant_version(after_equals)
-                        string_search_mapping.pop(key)
-                        break
-
-                    # Icon data can be actual embedded XPM data, inside a triple-quoted string
-                    if key in ("__icon__", "__xpm__"):
-                        self._process_icon(f, key, after_equals)
-                        string_search_mapping.pop(key)
-                        break
-
-                    FreeCAD.Console.PrintError(
-                        translate(
-                            "AddonsInstaller",
-                            "Syntax error while reading {} from macro {}",
-                        ).format(key, self.name)
-                        + "\n"
-                    )
-                    FreeCAD.Console.PrintError(line + "\n")
-
-        # Do some cleanup of the values:
-        if self.comment:
-            self.comment = re.sub("<.*?>", "", self.comment)  # Strip any HTML tags
-
-        # Truncate long comments to speed up searches, and clean up display
-        if len(self.comment) > 512:
-            self.comment = self.comment[:511] + "…"
-
-        # Make sure the icon is not an absolute path, etc.
-        self.clean_icon()
-
+        """Read the passed-in code and parse it for known metadata elements"""
+        parser = MacroParser(self.name, code)
+        for key, value in parser.parse_results.items():
+            if value:
+                self.__dict__[key] = value
         self.parsed = True
-
-    def _standard_extraction(self, value: str, match_group):
-        """For most macro metadata values, this extracts the required data"""
-        if isinstance(self.__dict__[value], str):
-            self.__dict__[value] = match_group
-        elif isinstance(self.__dict__[value], list):
-            self.__dict__[value] = [of.strip() for of in match_group.split(",")]
-        else:
-            FreeCAD.Console.PrintError(
-                "Internal Error: bad type in addonmanager_macro class.\n"
-            )
-
-    def _process_noncompliant_version(self, after_equals):
-        if "__date__" in after_equals.lower():
-            self.version = self.date
-        elif is_float(after_equals):
-            self.version = str(after_equals).strip()
-        else:
-            FreeCAD.Console.PrintLog(
-                f"Unrecognized value for __version__ in macro {self.name}"
-            )
-            self.version = "(Unknown)"
-
-    def _process_icon(self, f, key, after_equals):
-        # If this is an icon, it's possible that the icon was actually directly
-        # specified in the file as XPM data. This data **must** be between
-        # triple double quotes in order for the Addon Manager to recognize it.
-        if '"""' in after_equals:
-            _, _, xpm_data = after_equals.partition('"""')
-            while True:
-                line = f.readline()
-                if not line:
-                    FreeCAD.Console.PrintError(
-                        translate(
-                            "AddonsInstaller",
-                            "Syntax error while reading {} from macro {}",
-                        ).format(key, self.name)
-                        + "\n"
-                    )
-                    break
-                if '"""' in line:
-                    last_line, _, _ = line.partition('"""')
-                    xpm_data += last_line
-                    break
-                xpm_data += line
-            self.xpm = xpm_data
 
     def fill_details_from_wiki(self, url):
         """For a given URL, download its data and attempt to get the macro's metadata out of
@@ -270,7 +147,7 @@ class Macro:
         nm = Macro._get_network_manager()
         p = nm.blocking_get(url)
         if not p:
-            FreeCAD.Console.PrintWarning(
+            self._console.PrintWarning(
                 translate(
                     "AddonsInstaller",
                     "Unable to open macro wiki page at {}",
@@ -286,7 +163,7 @@ class Macro:
         if not code:
             code = self._read_code_from_wiki(p)
         if not code:
-            FreeCAD.Console.PrintWarning(
+            self._console.PrintWarning(
                 translate("AddonsInstaller", "Unable to fetch the code of this macro.")
                 + "\n"
             )
@@ -299,7 +176,7 @@ class Macro:
         if desc:
             desc = desc[0]
         else:
-            FreeCAD.Console.PrintWarning(
+            self._console.PrintWarning(
                 translate(
                     "AddonsInstaller",
                     "Unable to retrieve a description from the wiki for macro {}",
@@ -325,7 +202,7 @@ class Macro:
             self.date = self.parse_desc("Last modified: ")
 
     def _fetch_raw_code(self, page_data) -> Optional[str]:
-        """Fetch code from the rawcodeurl specified on the wiki page."""
+        """Fetch code from the raw code URL specified on the wiki page."""
         code = None
         self.raw_code_url = re.findall('rawcodeurl.*?href="(http.*?)">', page_data)
         if self.raw_code_url:
@@ -333,7 +210,7 @@ class Macro:
             nm = Macro._get_network_manager()
             u2 = nm.blocking_get(self.raw_code_url)
             if not u2:
-                FreeCAD.Console.PrintWarning(
+                self._console.PrintWarning(
                     translate(
                         "AddonsInstaller",
                         "Unable to open macro code URL {}",
@@ -344,7 +221,8 @@ class Macro:
             code = u2.data().decode("utf8")
         return code
 
-    def _read_code_from_wiki(self, p: str) -> Optional[str]:
+    @staticmethod
+    def _read_code_from_wiki(p: str) -> Optional[str]:
         code = re.findall(r"<pre>(.*?)</pre>", p.replace("\n", "--endl--"))
         if code:
             # take the biggest code block
@@ -359,20 +237,18 @@ class Macro:
         """Downloads the macro's icon from whatever source is specified and stores a local
         copy, potentially updating the internal icon location to that local storage."""
         if self.icon.startswith("http://") or self.icon.startswith("https://"):
-            FreeCAD.Console.PrintLog(
-                f"Attempting to fetch macro icon from {self.icon}\n"
-            )
+            self._console.PrintLog(f"Attempting to fetch macro icon from {self.icon}\n")
             nm = Macro._get_network_manager()
             p = nm.blocking_get(self.icon)
             if p:
-                cache_path = FreeCAD.getUserCachePath()
+                cache_path = fci.DataPaths().cache_dir
                 am_path = os.path.join(cache_path, "AddonManager", "MacroIcons")
                 os.makedirs(am_path, exist_ok=True)
                 _, _, filename = self.icon.rpartition("/")
                 base, _, extension = filename.rpartition(".")
                 if base.lower().startswith("file:"):
                     # pylint: disable=line-too-long
-                    FreeCAD.Console.PrintMessage(
+                    self._console.PrintMessage(
                         f"Cannot use specified icon for {self.name}, {self.icon} is not a direct download link\n"
                     )
                     self.icon = ""
@@ -384,7 +260,7 @@ class Macro:
                     self.icon = constructed_name
             else:
                 # pylint: disable=line-too-long
-                FreeCAD.Console.PrintLog(
+                self._console.PrintLog(
                     f"MACRO DEVELOPER WARNING: failed to download icon from {self.icon} for macro {self.name}\n"
                 )
                 self.icon = ""
@@ -429,7 +305,7 @@ class Macro:
         if warnings or not success > 0:
             return False, warnings
 
-        FreeCAD.Console.PrintLog(f"Macro {self.name} was installed successfully.\n")
+        self._console.PrintLog(f"Macro {self.name} was installed successfully.\n")
         return True, []
 
     def _copy_icon_data(self, macro_dir, warnings):
@@ -487,14 +363,14 @@ class Macro:
             # If the file does not exist, see if we have a raw code URL to fetch from
             if self.raw_code_url:
                 fetch_url = self.raw_code_url.rsplit("/", 1)[0] + "/" + other_file
-                FreeCAD.Console.PrintLog(f"Attempting to fetch {fetch_url}...\n")
+                self._console.PrintLog(f"Attempting to fetch {fetch_url}...\n")
                 nm = Macro._get_network_manager()
                 p = nm.blocking_get(fetch_url)
                 if p:
                     with open(dst_file, "wb") as f:
                         f.write(p)
                 else:
-                    FreeCAD.Console.PrintWarning(
+                    self._console.PrintWarning(
                         translate(
                             "AddonsInstaller",
                             "Unable to fetch macro-specified file {} from {}",
@@ -517,7 +393,7 @@ class Macro:
 
         # pylint: disable=line-too-long
         # Try to get an icon from the wiki page itself:
-        # <a rel="nofollow" class="external text" href="https://www.freecadweb.org/wiki/images/f/f5/Macro_3D_Parametric_Curve.png">ToolBar Icon</a>
+        # <a rel="nofollow" class="external text" href="https://wiki.freecad.org/images/f/f5/blah.png">ToolBar Icon</a>
         icon_regex = re.compile(r'.*href="(.*?)">ToolBar Icon', re.IGNORECASE)
         wiki_icon = ""
         if "ToolBar Icon" in page_data:
@@ -537,7 +413,7 @@ class Macro:
         icon_regex = re.compile(r'.*img.*?src="(.*?)"', re.IGNORECASE)
         if wiki_icon.startswith("http"):
             # It's a File: wiki link. We can load THAT page and get the image from it...
-            FreeCAD.Console.PrintLog(
+            self._console.PrintLog(
                 f"Found a File: link for macro {self.name} -- {wiki_icon}\n"
             )
             nm = Macro._get_network_manager()
@@ -552,7 +428,7 @@ class Macro:
                         match = icon_regex.match(line)
                         if match:
                             wiki_icon = match.group(1)
-                            self.icon = "https://www.freecadweb.org/wiki" + wiki_icon
+                            self.icon = "https://wiki.freecad.org/" + wiki_icon
                             return
                     elif "fullImageLink" in line:
                         trigger = True

@@ -249,10 +249,11 @@ class Rotate(gui_base_original.Modifier):
         import Part
 
         ghosts = []
-        for object in self.selected_subelements:
-            for subelement in object.SubObjects:
-                if isinstance(subelement, (Part.Vertex, Part.Edge)):
-                    ghosts.append(trackers.ghostTracker(subelement))
+        for sel in Gui.Selection.getSelectionEx("", 0):
+            for sub in sel.SubElementNames if sel.SubElementNames else [""]:
+                if "Vertex" in sub or "Edge" in sub:
+                    shape = Part.getShape(sel.Object, sub, needSubElement=True, retType=0)
+                    ghosts.append(trackers.ghostTracker(shape))
         return ghosts
 
     def finish(self, cont=False):
@@ -318,7 +319,7 @@ class Rotate(gui_base_original.Modifier):
                 arguments.append(_cmd)
 
         all_args = ', '.join(arguments)
-        command.append('Draft.copyRotatedEdges([' + all_args + '])')
+        command.append('Draft.copy_rotated_edges([' + all_args + '])')
         command.append('FreeCAD.ActiveDocument.recompute()')
         return command
 
@@ -334,7 +335,7 @@ class Rotate(gui_base_original.Modifier):
             for index, subelement in enumerate(obj.SubObjects):
                 if isinstance(subelement, Part.Vertex):
                     _vertex_index = int(obj.SubElementNames[index][V:]) - 1
-                    _cmd = 'Draft.rotateVertex'
+                    _cmd = 'Draft.rotate_vertex'
                     _cmd += '('
                     _cmd += 'FreeCAD.ActiveDocument.'
                     _cmd += obj.ObjectName + ', '
@@ -346,7 +347,7 @@ class Rotate(gui_base_original.Modifier):
                     command.append(_cmd)
                 elif isinstance(subelement, Part.Edge):
                     _edge_index = int(obj.SubElementNames[index][E:]) - 1
-                    _cmd = 'Draft.rotateEdge'
+                    _cmd = 'Draft.rotate_edge'
                     _cmd += '('
                     _cmd += 'FreeCAD.ActiveDocument.'
                     _cmd += obj.ObjectName + ', '

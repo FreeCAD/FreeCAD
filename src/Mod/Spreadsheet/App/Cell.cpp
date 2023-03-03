@@ -23,6 +23,7 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
+# include <iomanip>
 # include <sstream>
 # include <QLocale>
 # include <boost/tokenizer.hpp>
@@ -196,7 +197,7 @@ void Cell::setExpression(App::ExpressionPtr &&expr)
             }catch(Base::Exception &e) {
                 e.ReportException();
                 FC_ERR("Failed to restore style of cell "
-                    << owner->sheet()->getFullName() << '.' 
+                    << owner->sheet()->getFullName() << '.'
                     << address.toString() << ": " << e.what());
             }
         }
@@ -224,7 +225,7 @@ const App::Expression *Cell::getExpression(bool withFormat) const
                                 | STYLE_SET
                                 | FOREGROUND_COLOR_SET
                                 | BACKGROUND_COLOR_SET
-                                | DISPLAY_UNIT_SET 
+                                | DISPLAY_UNIT_SET
                                 | ALIAS_SET
                                 | SPANS_SET)))
         {
@@ -273,7 +274,7 @@ bool Cell::getStringContent(std::string & s, bool persistent) const
 
 void Cell::afterRestore() {
     auto expr = freecad_dynamic_cast<StringExpression>(expression.get());
-    if(expr) 
+    if(expr)
         setContent(expr->getText().c_str());
 }
 
@@ -638,7 +639,7 @@ bool Cell::getSpans(int &rows, int &columns) const
 void Cell::setException(const std::string &e, bool silent)
 {
     if(!silent && !e.empty() && owner && owner->sheet()) {
-        FC_ERR(owner->sheet()->getFullName() << '.' 
+        FC_ERR(owner->sheet()->getFullName() << '.'
                 << address.toString() << ": " << e);
     }
     exceptionStr = e;
@@ -648,7 +649,7 @@ void Cell::setException(const std::string &e, bool silent)
 void Cell::setParseException(const std::string &e)
 {
     if(!e.empty() && owner && owner->sheet()) {
-        FC_ERR(owner->sheet()->getFullName() << '.' 
+        FC_ERR(owner->sheet()->getFullName() << '.'
                 << address.toString() << ": " << e);
     }
     exceptionStr = e;
@@ -658,7 +659,7 @@ void Cell::setParseException(const std::string &e)
 void Cell::setResolveException(const std::string &e)
 {
     if(!e.empty() && owner && owner->sheet()) {
-        FC_LOG(owner->sheet()->getFullName() << '.' 
+        FC_LOG(owner->sheet()->getFullName() << '.'
                 << address.toString() << ": " << e);
     }
     exceptionStr = e;

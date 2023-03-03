@@ -683,7 +683,7 @@ CmdPartCompSplitFeatures::CmdPartCompSplitFeatures()
     sAppModule      = "Part";
     sGroup          = QT_TR_NOOP("Part");
     sMenuText       = QT_TR_NOOP("Split objects...");
-    sToolTipText    = QT_TR_NOOP("Shape splitting tools. Compsolid creation tools. OCC 6.9.0 or later is required.");
+    sToolTipText    = QT_TR_NOOP("Shape splitting and Compsolid creation tools.");
     sWhatsThis      = "Part_CompSplitFeatures";
     sStatusTip      = sToolTipText;
 }

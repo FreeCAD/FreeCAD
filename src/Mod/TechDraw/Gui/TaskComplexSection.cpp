@@ -220,24 +220,23 @@ void TaskComplexSection::setUiCommon()
     editLayout->addWidget(m_viewDirectionWidget);
 
 
-    connect(m_compass, SIGNAL(angleChanged(double)), this, SLOT(slotChangeAngle(double)));
+    connect(m_compass, &CompassWidget::angleChanged, this, &TaskComplexSection::slotChangeAngle);
 
-    connect(ui->pbUp, SIGNAL(clicked(bool)), this, SLOT(onUpClicked()));
-    connect(ui->pbDown, SIGNAL(clicked(bool)), this, SLOT(onDownClicked()));
-    connect(ui->pbRight, SIGNAL(clicked(bool)), this, SLOT(onRightClicked()));
-    connect(ui->pbLeft, SIGNAL(clicked(bool)), this, SLOT(onLeftClicked()));
+    connect(ui->pbUp, &QPushButton::clicked, this, &TaskComplexSection::onUpClicked);
+    connect(ui->pbDown, &QPushButton::clicked, this, &TaskComplexSection::onDownClicked);
+    connect(ui->pbRight, &QPushButton::clicked, this, &TaskComplexSection::onRightClicked);
+    connect(ui->pbLeft, &QPushButton::clicked, this, &TaskComplexSection::onLeftClicked);
 
-    connect(ui->pbUpdateNow, SIGNAL(clicked(bool)), this, SLOT(updateNowClicked()));
-    connect(ui->cbLiveUpdate, SIGNAL(clicked(bool)), this, SLOT(liveUpdateClicked()));
+    connect(ui->pbUpdateNow, &QPushButton::clicked, this, &TaskComplexSection::updateNowClicked);
+    connect(ui->cbLiveUpdate, &QCheckBox::clicked, this, &TaskComplexSection::liveUpdateClicked);
 
-    connect(ui->pbSectionObjects, SIGNAL(clicked()), this,
-            SLOT(onSectionObjectsUseSelectionClicked()));
-    connect(ui->pbProfileObject, SIGNAL(clicked()), this,
-            SLOT(onProfileObjectsUseSelectionClicked()));
+    connect(ui->pbSectionObjects, &QPushButton::clicked, this,
+            &TaskComplexSection::onSectionObjectsUseSelectionClicked);
+    connect(ui->pbProfileObject, &QPushButton::clicked, this,
+            &TaskComplexSection::onProfileObjectsUseSelectionClicked);
 
-    connect(m_compass, SIGNAL(angleChanged(double)), this, SLOT(slotChangeAngle(double)));
-    connect(m_viewDirectionWidget, SIGNAL(valueChanged(Base::Vector3d)), this,
-            SLOT(slotViewDirectionChanged(Base::Vector3d)));
+    connect(m_viewDirectionWidget, &VectorEditWidget::valueChanged, this,
+            &TaskComplexSection::slotViewDirectionChanged);
 }
 
 //save the start conditions

@@ -1,6 +1,7 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
 # ***************************************************************************
 # *                                                                         *
-# *   Copyright (c) 2022 FreeCAD Project Association                        *
+# *   Copyright (c) 2022-2023 FreeCAD Project Association                   *
 # *                                                                         *
 # *   This file is part of FreeCAD.                                         *
 # *                                                                         *
@@ -19,6 +20,8 @@
 # *   <https://www.gnu.org/licenses/>.                                      *
 # *                                                                         *
 # ***************************************************************************
+
+import addonmanager_freecad_interface as fci
 
 # Unit tests for the Addon Manager module
 from AddonManagerTest.app.test_utilities import (
@@ -44,14 +47,36 @@ from AddonManagerTest.app.test_uninstaller import (
     TestAddonUninstaller as AddonManagerTestAddonUninstaller,
     TestMacroUninstaller as AddonManagerTestMacroUninstaller,
 )
+from AddonManagerTest.app.test_freecad_interface import (
+    TestConsole as AddonManagerTestConsole,
+    TestParameters as AddonManagerTestParameters,
+    TestDataPaths as AddonManagerTestDataPaths,
+)
 
-# dummy usage to get flake8 and lgtm quiet
-False if AddonManagerTestUtilities.__name__ else True
-False if AddonManagerTestAddon.__name__ else True
-False if AddonManagerTestMacro.__name__ else True
-False if AddonManagerTestGit.__name__ else True
-False if AddonManagerTestAddonInstaller.__name__ else True
-False if AddonManagerTestMacroInstaller.__name__ else True
-False if AddonManagerTestDependencyInstaller.__name__ else True
-False if AddonManagerTestAddonUninstaller.__name__ else True
-False if AddonManagerTestMacroUninstaller.__name__ else True
+
+class TestListTerminator:
+    pass
+
+
+# Basic usage mostly to get static analyzers to stop complaining about unused imports
+try:
+    import FreeCAD
+except ImportError:
+    FreeCAD = None
+loaded_gui_tests = [
+    AddonManagerTestUtilities,
+    AddonManagerTestAddon,
+    AddonManagerTestMacro,
+    AddonManagerTestGit,
+    AddonManagerTestAddonInstaller,
+    AddonManagerTestMacroInstaller,
+    AddonManagerTestDependencyInstaller,
+    AddonManagerTestAddonUninstaller,
+    AddonManagerTestMacroUninstaller,
+    AddonManagerTestConsole,
+    AddonManagerTestParameters,
+    AddonManagerTestDataPaths,
+    TestListTerminator  # Needed to prevent the last test from running twice
+]
+for test in loaded_gui_tests:
+    fci.Console.PrintLog(f"Loaded tests from {test.__name__}\n")

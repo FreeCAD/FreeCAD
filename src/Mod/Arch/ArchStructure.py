@@ -839,10 +839,10 @@ class _Structure(ArchComponent.Component):
                             baseface = obj.Base.Shape.copy()
                     elif obj.Base.Shape.Wires:
                         # ArchSketch feature :
-                        # Get base shape wires, and faceMaker, for Structure (slab. etc.) from Base Objects if they store and provide by getStructureBaseShapeWires() 
+                        # Get base shape wires, and faceMaker, for Structure (slab. etc.) from Base Objects if they store and provide by getStructureBaseShapeWires()
                         # (thickness, normal/extrusion, length, width, baseface maybe for later) of structure (slab etc.)
                         structureBaseShapeWires = None
-                        baseShapeWires = None					#baseSlabWires / baseSlabOpeningWires = None
+                        baseShapeWires = None                   #baseSlabWires / baseSlabOpeningWires = None
                         faceMaker = None
                         if hasattr(obj.Base, 'Proxy'):
                             if hasattr(obj.Base.Proxy, 'getStructureBaseShapeWires'):
@@ -850,7 +850,7 @@ class _Structure(ArchComponent.Component):
                                 # provide selected edges, or groups, in obj.ArchSketchEdges for processing in getStructureBaseShapeWires() (getSortedClusters) as override
                                 # returned a {dict} ( or a [list] )
                         # get slab wires; use original wires if structureBaseShapeWires() provided none
-                        if structureBaseShapeWires:  # would be false (none) if both base ArchSketch and obj do not have the edges stored / inputed by user
+                        if structureBaseShapeWires:  # would be false (none) if both base ArchSketch and obj do not have the edges stored / inputted by user
                             # if structureBaseShapeWires is {dict}
                             baseShapeWires = structureBaseShapeWires.get('slabWires')
                             faceMaker = structureBaseShapeWires.get('faceMaker')
@@ -926,7 +926,7 @@ class _Structure(ArchComponent.Component):
                 if obj.Normal.Length:
                     normal = Vector(obj.Normal).normalize()
                 else:
-                    normal = baseface.Faces[0].normalAt(0, 0)  ## TODO to use ArchSketch's 'normal' for consistency 
+                    normal = baseface.Faces[0].normalAt(0, 0)  ## TODO to use ArchSketch's 'normal' for consistency
             base = None
             placement = None
             inverse_placement = None

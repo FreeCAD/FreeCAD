@@ -67,7 +67,7 @@ This command only works with a 'mesh' object.</source>
     <message>
       <location filename="../../Command.cpp" line="185"/>
       <source>Create section from mesh and plane</source>
-      <translation type="unfinished">Create section from mesh and plane</translation>
+      <translation>Стварыць перасек з паліганальнай сеткі і плоскасці</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="186"/>
@@ -85,13 +85,13 @@ This command only works with a 'mesh' object.</source>
     <message>
       <location filename="../../Command.cpp" line="84"/>
       <source>Trim mesh with a plane</source>
-      <translation type="unfinished">Trim mesh with a plane</translation>
+      <translation>Абрэзаць паліганальную сетку плоскасцю</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="85"/>
       <location filename="../../Command.cpp" line="86"/>
       <source>Trims a mesh with a plane</source>
-      <translation type="unfinished">Trims a mesh with a plane</translation>
+      <translation>Абразае паліганальную сетку плоскасцю</translation>
     </message>
   </context>
   <context>
@@ -195,7 +195,7 @@ This command only works with a 'mesh' object.</source>
     <message>
       <location filename="../../CurveOnMesh.cpp" line="369"/>
       <source>Cancel</source>
-      <translation type="unfinished">Cancel</translation>
+      <translation>Скасаваць</translation>
     </message>
     <message>
       <location filename="../../CurveOnMesh.cpp" line="615"/>
@@ -205,7 +205,7 @@ This command only works with a 'mesh' object.</source>
     <message>
       <location filename="../../CurveOnMesh.cpp" line="655"/>
       <source>No point was picked</source>
-      <translation type="unfinished">No point was picked</translation>
+      <translation>Не абрана ніводнай кропкі</translation>
     </message>
   </context>
   <context>
@@ -232,7 +232,7 @@ This command only works with a 'mesh' object, not a regular face or surface. To 
     <message>
       <location filename="../../TaskCurveOnMesh.ui" line="44"/>
       <source>Snap tolerance to vertices</source>
-      <translation>Допуск прывязкі да вяршыняў</translation>
+      <translation>Дакладнасць прывязкі да вяршыняў</translation>
     </message>
     <message>
       <location filename="../../TaskCurveOnMesh.ui" line="51"/>
@@ -388,7 +388,7 @@ The smallest value is 0.</source>
     <message>
       <location filename="../../Tessellation.ui" line="217"/>
       <source>Fineness:</source>
-      <translation type="unfinished">Fineness:</translation>
+      <translation>Дакладнасць:</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="234"/>
@@ -398,17 +398,17 @@ The smallest value is 0.</source>
     <message>
       <location filename="../../Tessellation.ui" line="239"/>
       <source>Coarse</source>
-      <translation type="unfinished">Coarse</translation>
+      <translation>Груба</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="244"/>
       <source>Moderate</source>
-      <translation type="unfinished">Moderate</translation>
+      <translation>Умерана</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="249"/>
       <source>Fine</source>
-      <translation type="unfinished">Fine</translation>
+      <translation>Дакладна</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="254"/>
@@ -488,13 +488,13 @@ A value in the range of 0.2-10.</source>
     <message>
       <location filename="../../Tessellation.cpp" line="61"/>
       <source>Gmsh</source>
-      <translation type="unfinished">Gmsh</translation>
+      <translation>Gmsh</translation>
     </message>
     <message>
       <location filename="../../Tessellation.cpp" line="212"/>
       <location filename="../../Tessellation.cpp" line="218"/>
       <source>No active document</source>
-      <translation>Няма бягучага дакумента</translation>
+      <translation>Без бягучага дакумента</translation>
     </message>
     <message>
       <location filename="../../Tessellation.cpp" line="246"/>

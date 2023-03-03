@@ -27,6 +27,7 @@
 #include "DlgSettingsDocumentImp.h"
 #include "ui_DlgSettingsDocument.h"
 #include "AutoSaver.h"
+#include <App/License.h>
 
 
 using namespace Gui::Dialog;
@@ -42,6 +43,8 @@ DlgSettingsDocumentImp::DlgSettingsDocumentImp( QWidget* parent )
     , ui(new Ui_DlgSettingsDocument)
 {
     ui->setupUi(this);
+    addLicenseTypes();
+
     ui->prefSaveTransaction->hide();
     ui->prefDiscardTransaction->hide();
 
@@ -54,7 +57,8 @@ DlgSettingsDocumentImp::DlgSettingsDocumentImp( QWidget* parent )
     ui->prefCountBackupFiles->setMaximum(INT_MAX);
     ui->prefCompression->setMinimum(Z_NO_COMPRESSION);
     ui->prefCompression->setMaximum(Z_BEST_COMPRESSION);
-    connect( ui->prefLicenseType, SIGNAL(currentIndexChanged(int)), this, SLOT(onLicenseTypeChanged(int)) );
+    connect(ui->prefLicenseType, qOverload<int>(&QComboBox::currentIndexChanged),
+            this, &DlgSettingsDocumentImp::onLicenseTypeChanged);
 }
 
 /**
@@ -136,9 +140,22 @@ void DlgSettingsDocumentImp::changeEvent(QEvent *e)
 {
     if (e->type() == QEvent::LanguageChange) {
         ui->retranslateUi(this);
+        int index = ui->prefLicenseType->currentIndex();
+        addLicenseTypes();
+        ui->prefLicenseType->setCurrentIndex(index);
     }
     else {
         QWidget::changeEvent(e);
+    }
+}
+
+void DlgSettingsDocumentImp::addLicenseTypes()
+{
+    ui->prefLicenseType->clear();
+    auto rawLicenses = App::License::getLicenses();
+    for (const auto& it : rawLicenses) {
+        QString text = QApplication::translate("Gui::Dialog::DlgSettingsDocument", it.c_str());
+        ui->prefLicenseType->addItem(text);
     }
 }
 
@@ -147,40 +164,15 @@ void DlgSettingsDocumentImp::changeEvent(QEvent *e)
  */
 void DlgSettingsDocumentImp::onLicenseTypeChanged(int index)
 {
-    ui->prefLicenseUrl->setReadOnly(true);
-
-    switch (index) {
-        case 0:
-            ui->prefLicenseUrl->setText(QString::fromLatin1("http://en.wikipedia.org/wiki/All_rights_reserved"));
-            break;
-        case 1:
-            ui->prefLicenseUrl->setText(QString::fromLatin1("http://creativecommons.org/licenses/by/4.0/"));
-            break;
-        case 2:
-            ui->prefLicenseUrl->setText(QString::fromLatin1("http://creativecommons.org/licenses/by-sa/4.0/"));
-            break;
-        case 3:
-            ui->prefLicenseUrl->setText(QString::fromLatin1("http://creativecommons.org/licenses/by-nd/4.0/"));
-            break;
-        case 4:
-            ui->prefLicenseUrl->setText(QString::fromLatin1("http://creativecommons.org/licenses/by-nc/4.0/"));
-            break;
-        case 5:
-            ui->prefLicenseUrl->setText(QString::fromLatin1("http://creativecommons.org/licenses/by-nc-sa/4.0/"));
-            break;
-        case 6:
-            ui->prefLicenseUrl->setText(QString::fromLatin1("http://creativecommons.org/licenses/by-nc-nd/4.0/"));
-            break;
-        case 7:
-            ui->prefLicenseUrl->setText(QString::fromLatin1("http://en.wikipedia.org/wiki/Public_domain"));
-            break;
-        case 8:
-            ui->prefLicenseUrl->setText(QString::fromLatin1("http://artlibre.org/licence/lal"));
-            break;
-        default:
-            ui->prefLicenseUrl->clear();
-            ui->prefLicenseUrl->setReadOnly(false);
-            break;
+    App::License license{index};
+    std::string url = license.getUrl();
+    if (license.getType() == App::License::Type::Other) {
+        ui->prefLicenseUrl->clear();
+        ui->prefLicenseUrl->setReadOnly(false);
+    }
+    else {
+        ui->prefLicenseUrl->setReadOnly(true);
+        ui->prefLicenseUrl->setText(QString::fromStdString(url));
     }
 }
 

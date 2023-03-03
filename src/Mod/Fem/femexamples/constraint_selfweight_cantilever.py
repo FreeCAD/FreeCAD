@@ -39,7 +39,7 @@ def get_information():
         "constraints": ["fixed", "self weight"],
         "solvers": ["calculix", "ccxtools", "elmer"],
         "material": "solid",
-        "equation": "mechanical"
+        "equations": ["mechanical"]
     }
 
 
@@ -95,7 +95,7 @@ def setup(doc=None, solvertype="ccxtools"):
         eq_obj.LinearSolverType = "Direct"
     else:
         FreeCAD.Console.PrintWarning(
-            "Not known or not supported solver type: {}. "
+            "Unknown or unsupported solver type: {}. "
             "No solver object was created.\n".format(solvertype)
         )
     if solvertype == "calculix" or solvertype == "ccxtools":

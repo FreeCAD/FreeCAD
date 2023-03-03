@@ -32,6 +32,7 @@
 #endif
 
 #include <Base/Interpreter.h>
+#include <App/Color.h>
 
 #include "ReportView.h"
 #include "Application.h"
@@ -528,7 +529,7 @@ void ReportOutput::changeEvent(QEvent *ev)
     if (ev->type() == QEvent::StyleChange) {
         QPalette pal = qApp->palette();
         QColor color = pal.windowText().color();
-        unsigned int text = (color.red() << 24) | (color.green() << 16) | (color.blue() << 8);
+        unsigned int text = App::Color::asPackedRGB<QColor>(color);
         auto value = static_cast<unsigned long>(text);
         // if this parameter is not already set use the style's window text color
         value = getWindowParameter()->GetUnsigned("colorText", value);
@@ -554,19 +555,19 @@ void ReportOutput::contextMenuEvent ( QContextMenuEvent * e )
     displayMenu->setTitle(tr("Display message types"));
     optionMenu->addMenu(displayMenu);
 
-    QAction* logMsg = displayMenu->addAction(tr("Normal messages"), this, SLOT(onToggleNormalMessage()));
+    QAction* logMsg = displayMenu->addAction(tr("Normal messages"), this, &ReportOutput::onToggleNormalMessage);
     logMsg->setCheckable(true);
     logMsg->setChecked(bMsg);
 
-    QAction* logAct = displayMenu->addAction(tr("Log messages"), this, SLOT(onToggleLogMessage()));
+    QAction* logAct = displayMenu->addAction(tr("Log messages"), this, &ReportOutput::onToggleLogMessage);
     logAct->setCheckable(true);
     logAct->setChecked(bLog);
 
-    QAction* wrnAct = displayMenu->addAction(tr("Warnings"), this, SLOT(onToggleWarning()));
+    QAction* wrnAct = displayMenu->addAction(tr("Warnings"), this, &ReportOutput::onToggleWarning);
     wrnAct->setCheckable(true);
     wrnAct->setChecked(bWrn);
 
-    QAction* errAct = displayMenu->addAction(tr("Errors"), this, SLOT(onToggleError()));
+    QAction* errAct = displayMenu->addAction(tr("Errors"), this, &ReportOutput::onToggleError);
     errAct->setCheckable(true);
     errAct->setChecked(bErr);
 
@@ -574,41 +575,41 @@ void ReportOutput::contextMenuEvent ( QContextMenuEvent * e )
     showOnMenu->setTitle(tr("Show Report view on"));
     optionMenu->addMenu(showOnMenu);
 
-    QAction* showNormAct = showOnMenu->addAction(tr("Normal messages"), this, SLOT(onToggleShowReportViewOnNormalMessage()));
+    QAction* showNormAct = showOnMenu->addAction(tr("Normal messages"), this, &ReportOutput::onToggleShowReportViewOnNormalMessage);
     showNormAct->setCheckable(true);
     showNormAct->setChecked(bShowOnNormal);
 
-    QAction* showLogAct = showOnMenu->addAction(tr("Log messages"), this, SLOT(onToggleShowReportViewOnLogMessage()));
+    QAction* showLogAct = showOnMenu->addAction(tr("Log messages"), this, &ReportOutput::onToggleShowReportViewOnLogMessage);
     showLogAct->setCheckable(true);
     showLogAct->setChecked(bShowOnLog);
 
-    QAction* showWrnAct = showOnMenu->addAction(tr("Warnings"), this, SLOT(onToggleShowReportViewOnWarning()));
+    QAction* showWrnAct = showOnMenu->addAction(tr("Warnings"), this, &ReportOutput::onToggleShowReportViewOnWarning);
     showWrnAct->setCheckable(true);
     showWrnAct->setChecked(bShowOnWarn);
 
-    QAction* showErrAct = showOnMenu->addAction(tr("Errors"), this, SLOT(onToggleShowReportViewOnError()));
+    QAction* showErrAct = showOnMenu->addAction(tr("Errors"), this, &ReportOutput::onToggleShowReportViewOnError);
     showErrAct->setCheckable(true);
     showErrAct->setChecked(bShowOnError);
 
     optionMenu->addSeparator();
 
-    QAction* stdoutAct = optionMenu->addAction(tr("Redirect Python output"), this, SLOT(onToggleRedirectPythonStdout()));
+    QAction* stdoutAct = optionMenu->addAction(tr("Redirect Python output"), this, &ReportOutput::onToggleRedirectPythonStdout);
     stdoutAct->setCheckable(true);
     stdoutAct->setChecked(d->redirected_stdout);
 
-    QAction* stderrAct = optionMenu->addAction(tr("Redirect Python errors"), this, SLOT(onToggleRedirectPythonStderr()));
+    QAction* stderrAct = optionMenu->addAction(tr("Redirect Python errors"), this, &ReportOutput::onToggleRedirectPythonStderr);
     stderrAct->setCheckable(true);
     stderrAct->setChecked(d->redirected_stderr);
 
     optionMenu->addSeparator();
-    QAction* botAct = optionMenu->addAction(tr("Go to end"), this, SLOT(onToggleGoToEnd()));
+    QAction* botAct = optionMenu->addAction(tr("Go to end"), this, &ReportOutput::onToggleGoToEnd);
     botAct->setCheckable(true);
     botAct->setChecked(gotoEnd);
 
     // Use Qt's internal translation of the Copy & Select All commands
     const char* context = "QWidgetTextControl";
     QString copyStr = QCoreApplication::translate(context, "&Copy");
-    QAction* copy = menu->addAction(copyStr, this, SLOT(copy()), QKeySequence(QKeySequence::Copy));
+    QAction* copy = menu->addAction(copyStr, this, &ReportOutput::copy, QKeySequence(QKeySequence::Copy));
     copy->setEnabled(textCursor().hasSelection());
     QIcon icon = QIcon::fromTheme(QString::fromLatin1("edit-copy"));
     if (!icon.isNull())
@@ -616,11 +617,11 @@ void ReportOutput::contextMenuEvent ( QContextMenuEvent * e )
 
     menu->addSeparator();
     QString selectStr = QCoreApplication::translate(context, "Select All");
-    menu->addAction(selectStr, this, SLOT(selectAll()), QKeySequence(QKeySequence::SelectAll));
+    menu->addAction(selectStr, this, &ReportOutput::selectAll, QKeySequence(QKeySequence::SelectAll));
 
-    menu->addAction(tr("Clear"), this, SLOT(clear()));
+    menu->addAction(tr("Clear"), this, &ReportOutput::clear);
     menu->addSeparator();
-    menu->addAction(tr("Save As..."), this, SLOT(onSaveAs()));
+    menu->addAction(tr("Save As..."), this, &ReportOutput::onSaveAs);
 
     menu->exec(e->globalPos());
     delete menu;
@@ -762,19 +763,19 @@ void ReportOutput::OnChange(Base::Subject<const char*> &rCaller, const char * sR
     }
     else if (strcmp(sReason, "colorText") == 0) {
         unsigned long col = rclGrp.GetUnsigned( sReason );
-        reportHl->setTextColor( QColor( (col >> 24) & 0xff,(col >> 16) & 0xff,(col >> 8) & 0xff) );
+        reportHl->setTextColor(App::Color::fromPackedRGB<QColor>(col));
     }
     else if (strcmp(sReason, "colorLogging") == 0) {
         unsigned long col = rclGrp.GetUnsigned( sReason );
-        reportHl->setLogColor( QColor( (col >> 24) & 0xff,(col >> 16) & 0xff,(col >> 8) & 0xff) );
+        reportHl->setLogColor(App::Color::fromPackedRGB<QColor>(col));
     }
     else if (strcmp(sReason, "colorWarning") == 0) {
         unsigned long col = rclGrp.GetUnsigned( sReason );
-        reportHl->setWarningColor( QColor( (col >> 24) & 0xff,(col >> 16) & 0xff,(col >> 8) & 0xff) );
+        reportHl->setWarningColor(App::Color::fromPackedRGB<QColor>(col));
     }
     else if (strcmp(sReason, "colorError") == 0) {
         unsigned long col = rclGrp.GetUnsigned( sReason );
-        reportHl->setErrorColor( QColor( (col >> 24) & 0xff,(col >> 16) & 0xff,(col >> 8) & 0xff) );
+        reportHl->setErrorColor(App::Color::fromPackedRGB<QColor>(col));
     }
     else if (strcmp(sReason, "checkGoToEnd") == 0) {
         gotoEnd = rclGrp.GetBool(sReason, gotoEnd);

@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2022 WandererFan <wandererfan@gmail.com >               *
+ *   Copyright (c) 2022 WandererFan <wandererfan@gmail.com>                *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -53,7 +53,7 @@ TaskDimRepair::TaskDimRepair(TechDraw::DrawViewDimension* inDvd)
 {
     ui->setupUi(this);
 
-    connect(ui->pbSelection, SIGNAL(clicked(bool)), this, SLOT(slotUseSelection()));
+    connect(ui->pbSelection, &QPushButton::clicked, this, &TaskDimRepair::slotUseSelection);
 
     saveDimState();
     setUiPrimary();

@@ -1567,7 +1567,7 @@ VectorListWidget::VectorListWidget(int decimals, QWidget *parent)
   : PropertyEditorWidget(parent)
   , decimals(decimals)
 {
-    connect(button, SIGNAL(clicked()), this, SLOT(buttonClicked()));
+    connect(button, &QPushButton::clicked, this, &VectorListWidget::buttonClicked);
 }
 
 void VectorListWidget::buttonClicked()
@@ -2483,8 +2483,8 @@ void PlacementEditor::browse()
     }
     if (!_task) {
         _task = task;
-        connect(task, SIGNAL(placementChanged(const QVariant &, bool, bool)),
-                this, SLOT(updateValue(const QVariant&, bool, bool)));
+        connect(task, &TaskPlacement::placementChanged,
+                this, &PlacementEditor::updateValue);
     }
     task->setPlacement(value().value<Base::Placement>());
     task->setPropertyName(propertyname);
@@ -3270,11 +3270,10 @@ void PropertyColorItem::setValue(const QVariant& value)
     if (hasExpression() || !value.canConvert<QColor>())
         return;
     auto col = value.value<QColor>();
-    App::Color val; val.setValue<QColor>(col);
     QString data = QString::fromLatin1("(%1,%2,%3)")
-                       .arg(val.r, 0, 'f', decimals())
-                       .arg(val.g, 0, 'f', decimals())
-                       .arg(val.b, 0, 'f', decimals());
+                       .arg(col.red())
+                       .arg(col.green())
+                       .arg(col.blue());
     setPropertyValue(data);
 }
 
@@ -4319,10 +4318,10 @@ LinkLabel::LinkLabel (QWidget * parent, const App::Property *prop)
     
     // setLayout(layout);
     
-    connect(label, SIGNAL(linkActivated(const QString&)),
-            this, SLOT(onLinkActivated(const QString&)));
-    connect(editButton, SIGNAL(clicked()),
-            this, SLOT(onEditClicked()));
+    connect(label, &QLabel::linkActivated,
+            this, &LinkLabel::onLinkActivated);
+    connect(editButton, &QPushButton::clicked,
+            this, &LinkLabel::onEditClicked);
 }
 
 LinkLabel::~LinkLabel()
@@ -4373,7 +4372,7 @@ void LinkLabel::onLinkActivated (const QString& s)
 {
     Q_UNUSED(s);
     auto select = new LinkSelection(qvariant_cast<App::SubObjectT>(link));
-    QTimer::singleShot(50, select, SLOT(select()));
+    QTimer::singleShot(50, select, &LinkSelection::select);
 }
 
 void LinkLabel::onEditClicked ()

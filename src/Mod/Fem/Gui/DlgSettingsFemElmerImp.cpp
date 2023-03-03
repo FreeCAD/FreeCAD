@@ -70,6 +70,7 @@ void DlgSettingsFemElmerImp::saveSettings()
     ui->fc_grid_binary_path->onSave();
 
     ui->sb_elmer_num_cores->onSave();
+    ui->cb_elmer_filtering->onSave();
 }
 
 void DlgSettingsFemElmerImp::loadSettings()
@@ -81,6 +82,7 @@ void DlgSettingsFemElmerImp::loadSettings()
     ui->fc_grid_binary_path->onRestore();
 
     ui->sb_elmer_num_cores->onRestore();
+    ui->cb_elmer_filtering->onRestore();
 }
 
 /**

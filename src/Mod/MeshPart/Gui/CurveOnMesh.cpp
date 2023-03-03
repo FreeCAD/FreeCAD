@@ -361,12 +361,12 @@ void CurveOnMeshHandler::setParameters(int maxDegree, GeomAbs_Shape cont, double
 void CurveOnMeshHandler::onContextMenu()
 {
     QMenu menu;
-    menu.addAction(tr("Create"), this, SLOT(onCreate()));
+    menu.addAction(tr("Create"), this, &CurveOnMeshHandler::onCreate);
     if (!d_ptr->wireClosed && d_ptr->pickedPoints.size() >= 3) {
-        menu.addAction(tr("Close wire"), this, SLOT(onCloseWire()));
+        menu.addAction(tr("Close wire"), this, &CurveOnMeshHandler::onCloseWire);
     }
-    menu.addAction(tr("Clear"), this, SLOT(onClear()));
-    menu.addAction(tr("Cancel"), this, SLOT(onCancel()));
+    menu.addAction(tr("Clear"), this, &CurveOnMeshHandler::onClear);
+    menu.addAction(tr("Cancel"), this, &CurveOnMeshHandler::onCancel);
     menu.exec(QCursor::pos());
 }
 
@@ -657,7 +657,7 @@ void CurveOnMeshHandler::Private::vertexCallback(void * ud, SoEventCallback * cb
         }
         else if (mbe->getButton() == SoMouseButtonEvent::BUTTON2 && mbe->getState() == SoButtonEvent::UP) {
             CurveOnMeshHandler* self = static_cast<CurveOnMeshHandler*>(ud);
-            QTimer::singleShot(100, self, SLOT(onContextMenu()));
+            QTimer::singleShot(100, self, &CurveOnMeshHandler::onContextMenu);
         }
     }
 }

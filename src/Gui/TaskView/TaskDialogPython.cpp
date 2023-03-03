@@ -24,6 +24,7 @@
 
 #ifndef _PreComp_
 # include <sstream>
+# include <QEvent>
 # include <QFile>
 # include <QPointer>
 #endif
@@ -520,55 +521,8 @@ Py::Object TaskDialogPy::reject(const Py::Tuple& args)
 
 TaskDialogPython::TaskDialogPython(const Py::Object& o) : dlg(o)
 {
-    if (dlg.hasAttr(std::string("ui"))) {
-        UiLoader loader;
-        loader.setLanguageChangeEnabled(true);
-        QString fn, icon;
-        Py::String ui(dlg.getAttr(std::string("ui")));
-        std::string path = static_cast<std::string>(ui);
-        fn = QString::fromUtf8(path.c_str());
-
-        QFile file(fn);
-        QWidget* form = nullptr;
-        if (file.open(QFile::ReadOnly))
-            form = loader.load(&file, nullptr);
-        file.close();
-        if (form) {
-            auto taskbox = new Gui::TaskView::TaskBox(
-                QPixmap(icon), form->windowTitle(), true, nullptr);
-            taskbox->groupLayout()->addWidget(form);
-            Content.push_back(taskbox);
-        }
-        else {
-            Base::Console().Error("Failed to load UI file from '%s'\n",
-                (const char*)fn.toUtf8());
-        }
-    }
-    else if (dlg.hasAttr(std::string("form"))) {
-        Py::Object f(dlg.getAttr(std::string("form")));
-        Py::List widgets;
-        if (f.isList()) {
-            widgets = f;
-        }
-        else {
-            widgets.append(f);
-        }
-
-        Gui::PythonWrapper wrap;
-        if (wrap.loadCoreModule()) {
-            for (Py::List::iterator it = widgets.begin(); it != widgets.end(); ++it) {
-                QObject* object = wrap.toQObject(*it);
-                if (object) {
-                    QWidget* form = qobject_cast<QWidget*>(object);
-                    if (form) {
-                        auto taskbox = new Gui::TaskView::TaskBox(
-                            form->windowIcon().pixmap(32), form->windowTitle(), true, nullptr);
-                        taskbox->groupLayout()->addWidget(form);
-                        Content.push_back(taskbox);
-                    }
-                }
-            }
-        }
+    if (!tryLoadUiFile()) {
+        tryLoadForm();
     }
 }
 
@@ -585,6 +539,75 @@ TaskDialogPython::~TaskDialogPython()
     // By guarding them with QPointer their pointers will be set to null
     // so that the destructor of the base class can reliably call 'delete'.
     Content.insert(Content.begin(), guarded.begin(), guarded.end());
+}
+
+bool TaskDialogPython::tryLoadUiFile()
+{
+    if (dlg.hasAttr(std::string("ui"))) {
+        UiLoader loader;
+        loader.setLanguageChangeEnabled(true);
+        QString fn, icon;
+        Py::String ui(dlg.getAttr(std::string("ui")));
+        std::string path = static_cast<std::string>(ui);
+        fn = QString::fromUtf8(path.c_str());
+
+        QFile file(fn);
+        QWidget* form = nullptr;
+        if (file.open(QFile::ReadOnly))
+            form = loader.load(&file, nullptr);
+        file.close();
+        if (form) {
+            appendForm(form, QPixmap(icon));
+        }
+        else {
+            Base::Console().Error("Failed to load UI file from '%s'\n",
+                (const char*)fn.toUtf8());
+        }
+
+        return true;
+    }
+
+    return false;
+}
+
+bool TaskDialogPython::tryLoadForm()
+{
+    if (dlg.hasAttr(std::string("form"))) {
+        Py::Object f(dlg.getAttr(std::string("form")));
+        Py::List widgets;
+        if (f.isList()) {
+            widgets = f;
+        }
+        else {
+            widgets.append(f);
+        }
+
+        Gui::PythonWrapper wrap;
+        if (wrap.loadCoreModule()) {
+            for (Py::List::iterator it = widgets.begin(); it != widgets.end(); ++it) {
+                QObject* object = wrap.toQObject(*it);
+                if (object) {
+                    QWidget* form = qobject_cast<QWidget*>(object);
+                    if (form) {
+                        appendForm(form, form->windowIcon().pixmap(32));
+                    }
+                }
+            }
+        }
+
+        return true;
+    }
+
+    return false;
+}
+
+void TaskDialogPython::appendForm(QWidget* form, const QPixmap& icon)
+{
+    form->installEventFilter(this);
+    auto taskbox = new Gui::TaskView::TaskBox(
+        icon, form->windowTitle(), true, nullptr);
+    taskbox->groupLayout()->addWidget(form);
+    Content.push_back(taskbox);
 }
 
 void TaskDialogPython::clearForm()
@@ -688,6 +711,27 @@ void TaskDialogPython::helpRequested()
         Base::PyException e; // extract the Python error text
         e.ReportException();
     }
+}
+
+bool TaskDialogPython::eventFilter(QObject *watched, QEvent *event)
+{
+    if (event->type() == QEvent::LanguageChange) {
+        Base::PyGILStateLocker lock;
+        try {
+            if (dlg.hasAttr(std::string("changeEvent"))) {
+                Py::Callable method(dlg.getAttr(std::string("changeEvent")));
+                Py::Tuple args{1};
+                args.setItem(0, Py::Long(static_cast<int>(event->type())));
+                method.apply(args);
+            }
+        }
+        catch (Py::Exception&) {
+            Base::PyException e; // extract the Python error text
+            e.ReportException();
+        }
+    }
+
+    return TaskDialog::eventFilter(watched, event);
 }
 
 QDialogButtonBox::StandardButtons TaskDialogPython::getStandardButtons() const

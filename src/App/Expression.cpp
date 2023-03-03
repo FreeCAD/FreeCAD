@@ -1578,6 +1578,7 @@ void OperatorExpression::_toString(std::ostream &s, bool persistent,int) const
         s << " >= ";
         break;
     case UNIT:
+        s << " ";
         break;
     default:
         assert(0);
@@ -1740,6 +1741,7 @@ FunctionExpression::FunctionExpression(const DocumentObject *_owner, Function _f
     case TAN:
     case TANH:
     case SQRT:
+    case CBRT:
     case COS:
     case COSH:
     case ROUND:
@@ -2188,6 +2190,31 @@ Py::Object FunctionExpression::evaluate(const Expression *expr, int f, const std
                     s.Angle);
         break;
     }
+    case CBRT: {
+        unit = v1.getUnit();
+
+        // All components of unit must be either zero or dividable by 3
+        UnitSignature s = unit.getSignature();
+        if ( !((s.Length % 3) == 0) &&
+              ((s.Mass % 3) == 0) &&
+              ((s.Time % 3) == 0) &&
+              ((s.ElectricCurrent % 3) == 0) &&
+              ((s.ThermodynamicTemperature % 3) == 0) &&
+              ((s.AmountOfSubstance % 3) == 0) &&
+              ((s.LuminousIntensity % 3) == 0) &&
+              ((s.Angle % 3) == 0))
+            _EXPR_THROW("All dimensions must be multiples of 3 to compute the cube root.",expr);
+
+        unit = Unit(s.Length /3,
+                    s.Mass / 3,
+                    s.Time / 3,
+                    s.ElectricCurrent / 3,
+                    s.ThermodynamicTemperature / 3,
+                    s.AmountOfSubstance / 3,
+                    s.LuminousIntensity / 3,
+                    s.Angle);
+        break;
+    }
     case ATAN2:
         if (e2.isNone())
             _EXPR_THROW("Invalid second argument.",expr);
@@ -2275,6 +2302,9 @@ Py::Object FunctionExpression::evaluate(const Expression *expr, int f, const std
         break;
     case SQRT:
         output = sqrt(value);
+        break;
+    case CBRT:
+        output = cbrt(value);
         break;
     case COS:
         output = cos(value);
@@ -2391,6 +2421,8 @@ void FunctionExpression::_toString(std::ostream &ss, bool persistent,int) const
         ss << "tanh("; break;;
     case SQRT:
         ss << "sqrt("; break;;
+    case CBRT:
+        ss << "cbrt("; break;;
     case COS:
         ss << "cos("; break;;
     case COSH:
@@ -3247,6 +3279,7 @@ static void initParser(const App::DocumentObject *owner)
         registered_functions["tan"] = FunctionExpression::TAN;
         registered_functions["tanh"] = FunctionExpression::TANH;
         registered_functions["sqrt"] = FunctionExpression::SQRT;
+        registered_functions["cbrt"] = FunctionExpression::CBRT;
         registered_functions["cos"] = FunctionExpression::COS;
         registered_functions["cosh"] = FunctionExpression::COSH;
         registered_functions["atan2"] = FunctionExpression::ATAN2;

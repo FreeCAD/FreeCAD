@@ -1,5 +1,7 @@
-# March 2021, the oldest we have to support : Ununtu 18.04 LTS
-cmake_minimum_required(VERSION 3.10.2 FATAL_ERROR)
+# As of January 2023 we require CMake 3.16.3
+# see https://forum.freecadweb.org/viewtopic.php?f=10&t=72173
+# for further info why
+cmake_minimum_required(VERSION 3.16.3 FATAL_ERROR)
 
 # policy CMP0072 was introduced with CMake 3.11
 # relates to FindOpenGL module
@@ -40,6 +42,7 @@ InitializeFreeCADBuildOptions()
 CheckInterModuleDependencies()
 FreeCADLibpackChecks()
 SetupDoxygen()
+SetupLibFmt()
 if(NOT FREECAD_LIBPACK_USE OR FREECAD_LIBPACK_CHECKFILE_CLBUNDLER)
     SetupPython()
     SetupPCL()
@@ -90,8 +93,16 @@ BuildAndInstallDesignerPlugin()
 
 CreatePackagingTargets()
 
-PrintFinalReport()
+if(MSVC AND FREECAD_LIBPACK_USE AND LIBPACK_FOUND)
+    CopyLibpackDirectories()
+endif()
 
 if (BUILD_TEST)
     add_subdirectory(tests)
 endif()
+
+PrintFinalReport()
+
+message("\n=================================================\n"
+        "Now run 'cmake --build ${CMAKE_BINARY_DIR}' to build ${PROJECT_NAME}\n"
+        "=================================================\n")

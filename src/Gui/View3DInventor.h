@@ -23,6 +23,7 @@
 #ifndef GUI_VIEW3DINVENTOR_H
 #define GUI_VIEW3DINVENTOR_H
 
+#include <memory>
 #include <QImage>
 #include <QtOpenGL.h>
 
@@ -39,6 +40,8 @@ namespace Gui {
 class Document;
 class View3DInventorViewer;
 class View3DPy;
+class View3DSettings;
+class NaviCubeSettings;
 
 class GuiExport GLOverlayWidget : public QWidget
 {
@@ -61,7 +64,7 @@ protected:
  *  It consists out of the 3D view
  *  \author Juergen Riegel
  */
-class GuiExport View3DInventor : public MDIView, public ParameterGrp::ObserverType
+class GuiExport View3DInventor : public MDIView
 {
     Q_OBJECT
 
@@ -75,8 +78,6 @@ public:
     bool onMsg(const char* pMsg, const char** ppReturn) override;
     bool onHasMsg(const char* pMsg) const override;
     void deleteSelf() override;
-    /// Observer message from the ParameterGrp
-    void OnChange(ParameterGrp::SubjectType &rCaller,ParameterGrp::MessageType Reason) override;
     /// get called when the document is updated
     void onRename(Gui::Document *pDoc) override;
     void onUpdate() override;
@@ -121,6 +122,9 @@ protected Q_SLOTS:
 public:
     bool eventFilter(QObject*, QEvent* ) override;
 
+private:
+    void applySettings();
+
 protected:
     void windowStateChanged(MDIView* ) override;
     void dropEvent        (QDropEvent      * e) override;
@@ -131,15 +135,13 @@ protected:
     void customEvent      (QEvent          * e) override;
     void contextMenuEvent (QContextMenuEvent*e) override;
 
-    /// handle to the viewer parameter group
-    ParameterGrp::handle hGrp;
-    ParameterGrp::handle hGrpNavi;
-
 private:
     View3DInventorViewer * _viewer;
     PyObject *_viewerPy;
     QTimer * stopSpinTimer;
     QStackedWidget* stack;
+    std::unique_ptr<View3DSettings> viewSettings;
+    std::unique_ptr<NaviCubeSettings> naviSettings;
 
     // friends
     friend class View3DPy;

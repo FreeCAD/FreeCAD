@@ -56,7 +56,7 @@ class Clone(DraftObject):
                 "set True for fusion or False for compound")
         obj.addProperty("App::PropertyBool", "Fuse",
                         "Draft", _tip)
-        
+
         obj.Scale = App.Vector(1,1,1)
 
     def join(self,obj,shapes):
@@ -86,6 +86,12 @@ class Clone(DraftObject):
         return Part.makeCompound(shapes)
 
     def execute(self,obj):
+        if self.props_changed_placement_only():
+            if hasattr(obj,"positionBySupport"):
+                obj.positionBySupport()
+            self.props_changed_clear()
+            return
+
         import Part
         pl = obj.Placement
         shapes = []
@@ -118,6 +124,10 @@ class Clone(DraftObject):
         obj.Placement = pl
         if hasattr(obj,"positionBySupport"):
             obj.positionBySupport()
+        self.props_changed_clear()
+
+    def onChanged(self, obj, prop):
+        self.props_changed_store(prop)
 
     def getSubVolume(self,obj,placement=None):
         # this allows clones of arch windows to return a subvolume too

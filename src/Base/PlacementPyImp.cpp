@@ -67,9 +67,15 @@ int PlacementPy::PyInit(PyObject* args, PyObject* /*kwd*/)
 
     PyErr_Clear();
     if (PyArg_ParseTuple(args, "O!", &(Base::MatrixPy::Type), &o)) {
-        Base::Matrix4D mat = static_cast<Base::MatrixPy*>(o)->value();
-        getPlacementPtr()->fromMatrix(mat);
-        return 0;
+        try {
+            Base::Matrix4D mat = static_cast<Base::MatrixPy*>(o)->value();
+            getPlacementPtr()->fromMatrix(mat);
+            return 0;
+        }
+        catch (const Base::Exception& e) {
+            PyErr_SetString(e.getPyExceptionType(), e.what());
+            return -1;
+        }
     }
 
     PyErr_Clear();
@@ -342,8 +348,13 @@ void PlacementPy::setMatrix(Py::Object arg)
     Py::Matrix mat;
     if (!mat.accepts(arg.ptr()))
         throw Py::TypeError("Expect type Matrix");
-    mat = arg;
-    getPlacementPtr()->fromMatrix(mat);
+    try {
+        mat = arg;
+        getPlacementPtr()->fromMatrix(mat);
+    }
+    catch (const Base::ValueError& e) {
+        throw Py::ValueError(e.what());
+    }
 }
 
 PyObject *PlacementPy::getCustomAttributes(const char* attr) const

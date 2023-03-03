@@ -80,6 +80,46 @@ so that self intersection is avoided.</source>
       <translation>Ako je lažno, alat će predložiti početnu vrijednost za nagib na temelju graničnog okvira profila,
 tako da je izbjegnuto samopresjecanje.</translation>
     </message>
+    <message>
+      <location filename="../../../InvoluteGearFeature.py" line="98"/>
+      <source>Number of gear teeth</source>
+      <translation type="unfinished">Number of gear teeth</translation>
+    </message>
+    <message>
+      <location filename="../../../InvoluteGearFeature.py" line="101"/>
+      <source>Modules of the gear</source>
+      <translation type="unfinished">Modules of the gear</translation>
+    </message>
+    <message>
+      <location filename="../../../InvoluteGearFeature.py" line="104"/>
+      <source>Pressure angle of gear teeth</source>
+      <translation type="unfinished">Pressure angle of gear teeth</translation>
+    </message>
+    <message>
+      <location filename="../../../InvoluteGearFeature.py" line="108"/>
+      <source>True=2 curves with each 3 control points False=1 curve with 4 control points.</source>
+      <translation type="unfinished">True=2 curves with each 3 control points False=1 curve with 4 control points.</translation>
+    </message>
+    <message>
+      <location filename="../../../InvoluteGearFeature.py" line="111"/>
+      <source>True=external Gear False=internal Gear</source>
+      <translation type="unfinished">True=external Gear False=internal Gear</translation>
+    </message>
+    <message>
+      <location filename="../../../InvoluteGearFeature.py" line="115"/>
+      <source>The height of the tooth from the pitch circle up to its tip, normalized by the module.</source>
+      <translation type="unfinished">The height of the tooth from the pitch circle up to its tip, normalized by the module.</translation>
+    </message>
+    <message>
+      <location filename="../../../InvoluteGearFeature.py" line="119"/>
+      <source>The height of the tooth from the pitch circle down to its root, normalized by the module.</source>
+      <translation type="unfinished">The height of the tooth from the pitch circle down to its root, normalized by the module.</translation>
+    </message>
+    <message>
+      <location filename="../../../InvoluteGearFeature.py" line="123"/>
+      <source>The radius of the fillet at the root of the tooth, normalized by the module.</source>
+      <translation type="unfinished">The radius of the fillet at the root of the tooth, normalized by the module.</translation>
+    </message>
   </context>
   <context>
     <name>CmdPartDesignAdditiveHelix</name>
@@ -96,7 +136,7 @@ tako da je izbjegnuto samopresjecanje.</translation>
     <message>
       <location filename="../../Command.cpp" line="1416"/>
       <source>Sweep a selected sketch along a helix</source>
-      <translation>Zavrći odabranu skicu uzduž spirale</translation>
+      <translation>Zamah odabrane skice uzduž spirale</translation>
     </message>
   </context>
   <context>
@@ -132,7 +172,7 @@ tako da je izbjegnuto samopresjecanje.</translation>
     <message>
       <location filename="../../Command.cpp" line="1213"/>
       <source>Sweep a selected sketch along a path or to other profiles</source>
-      <translation>Proteže odabranu skicu uzduž puta ili drugog profila</translation>
+      <translation>Zamah odabrane skice uzduž puta ili drugog profila</translation>
     </message>
   </context>
   <context>
@@ -582,7 +622,7 @@ tako da je izbjegnuto samopresjecanje.</translation>
     <message>
       <location filename="../../Command.cpp" line="1087"/>
       <source>Revolve a selected sketch</source>
-      <translation>Kreiraj tijelo obrtanjem skice</translation>
+      <translation>Zakreće odabranu skicu</translation>
     </message>
   </context>
   <context>
@@ -650,7 +690,7 @@ tako da je izbjegnuto samopresjecanje.</translation>
     <message>
       <location filename="../../Command.cpp" line="1493"/>
       <source>Sweep a selected sketch along a helix and remove it from the body</source>
-      <translation>Izvuci odabranu skicu duž spirale i uklonite je s tijela</translation>
+      <translation>Zamah odabrane skice duž spirale i uklanja ga iz tijela</translation>
     </message>
   </context>
   <context>
@@ -686,7 +726,7 @@ tako da je izbjegnuto samopresjecanje.</translation>
     <message>
       <location filename="../../Command.cpp" line="1264"/>
       <source>Sweep a selected sketch along a path or to other profiles and remove it from the body</source>
-      <translation>Izvuci odabranu skicu uzduž puta ili drugog profila i uklanja ga iz tijela</translation>
+      <translation>Zamah odabrane skice uzduž puta ili drugog profila i uklanja ga iz tijela</translation>
     </message>
   </context>
   <context>
@@ -872,7 +912,7 @@ tako da je izbjegnuto samopresjecanje.</translation>
     <message>
       <location filename="../../CommandBody.cpp" line="426"/>
       <source>Migrate legacy part design features to Bodies</source>
-      <translation>Premjestite značajke naslijeđenih dizajn dijelova na Tijela</translation>
+      <translation>Premjestite značajke naslijeđene Oblikovanjem dijelova na Tijela</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="571"/>
@@ -1014,6 +1054,21 @@ tako da je izbjegnuto samopresjecanje.</translation>
       <location filename="../../../InvoluteGearFeature.ui" line="152"/>
       <source>External gear:</source>
       <translation>Vanjski zupčanik:</translation>
+    </message>
+    <message>
+      <location filename="../../../InvoluteGearFeature.ui" line="179"/>
+      <source>Addendum Coefficient</source>
+      <translation type="unfinished">Addendum Coefficient</translation>
+    </message>
+    <message>
+      <location filename="../../../InvoluteGearFeature.ui" line="199"/>
+      <source>Dedendum Coefficient</source>
+      <translation type="unfinished">Dedendum Coefficient</translation>
+    </message>
+    <message>
+      <location filename="../../../InvoluteGearFeature.ui" line="219"/>
+      <source>Root Fillet Coefficient</source>
+      <translation type="unfinished">Root Fillet Coefficient</translation>
     </message>
   </context>
   <context>
@@ -1227,7 +1282,7 @@ Ako je nula, jednak je Polumjeru2</translation>
       <location filename="../../TaskPrimitiveParameters.ui" line="1214"/>
       <location filename="../../TaskPrimitiveParameters.ui" line="2290"/>
       <source>Polygon:</source>
-      <translation>Poligon:</translation>
+      <translation>Višekutnik:</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="1234"/>
@@ -1745,7 +1800,7 @@ kliknite ponovno za završetak odabira</translation>
       <location filename="../../TaskExtrudeParameters.cpp" line="368"/>
       <location filename="../../TaskExtrudeParameters.cpp" line="370"/>
       <source>Custom direction</source>
-      <translation>Korisnički smjer</translation>
+      <translation>Prilagođeni smjer</translation>
     </message>
     <message>
       <location filename="../../TaskExtrudeParameters.cpp" line="894"/>
@@ -2465,7 +2520,7 @@ iz modela kao reference</translation>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="107"/>
       <source>Custom direction</source>
-      <translation>Korisnički smjer</translation>
+      <translation>Prilagođeni smjer</translation>
     </message>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="117"/>
@@ -4662,7 +4717,7 @@ preko 90: veći polumjer rupe na dnu</translation>
     <message>
       <location filename="../../Workbench.cpp" line="45"/>
       <source>&amp;Part Design</source>
-      <translation>&amp;Dizajn dijelova</translation>
+      <translation>&amp;Oblikovanje Dijelova</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="46"/>
@@ -4724,25 +4779,25 @@ preko 90: veći polumjer rupe na dnu</translation>
     <message>
       <location filename="../../Workbench.cpp" line="61"/>
       <source>Part Design Helper</source>
-      <translation>Pomoćnik Dizajn dijelova </translation>
+      <translation>Oblikovanje dijelova Pomoćnik</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="62"/>
       <source>Part Design Modeling</source>
-      <translation>Modeliranje Dizajn dijelova </translation>
+      <translation>Oblikovanje dijelova Modeliranje</translation>
     </message>
   </context>
   <context>
     <name>PartDesign_InvoluteGear</name>
     <message>
-      <location filename="../../../InvoluteGearFeature.py" line="57"/>
+      <location filename="../../../InvoluteGearFeature.py" line="58"/>
       <source>Involute gear...</source>
       <translation>Evolventni zupčanik...
 
 </translation>
     </message>
     <message>
-      <location filename="../../../InvoluteGearFeature.py" line="61"/>
+      <location filename="../../../InvoluteGearFeature.py" line="62"/>
       <source>Creates or edit the involute gear definition.</source>
       <translation>Stvara ili uređuje definiciju evolventnog zupčanika.</translation>
     </message>

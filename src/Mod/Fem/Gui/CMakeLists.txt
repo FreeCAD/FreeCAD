@@ -93,6 +93,7 @@ if(BUILD_FEM_VTK)
         ${FemGui_UIC_SRCS}
         TaskPostDisplay.ui
         TaskPostClip.ui
+        TaskPostContours.ui
         TaskPostDataAlongLine.ui
         TaskPostDataAtPoint.ui
         TaskPostScalarClip.ui
@@ -271,6 +272,7 @@ if(BUILD_FEM_VTK)
         PlaneWidget.ui
         SphereWidget.ui
         TaskPostClip.ui
+        TaskPostContours.ui
         TaskPostDataAlongLine.ui
         TaskPostDataAtPoint.ui
         TaskPostScalarClip.ui
@@ -375,6 +377,7 @@ SET(FemGuiPythonUI_SRCS
     Resources/ui/ConstraintCentrif.ui
     Resources/ui/ConstraintTie.ui
     Resources/ui/ConstraintSectionPrint.ui
+    Resources/ui/CurrentDensity.ui
     Resources/ui/ElectrostaticPotential.ui
     Resources/ui/ElementFluid1D.ui
     Resources/ui/ElementGeometry1D.ui
@@ -383,6 +386,7 @@ SET(FemGuiPythonUI_SRCS
     Resources/ui/FlowVelocity.ui
     Resources/ui/InitialFlowVelocity.ui
     Resources/ui/InitialPressure.ui
+    Resources/ui/Magnetization.ui
     Resources/ui/Material.ui
     Resources/ui/MaterialReinforcement.ui
     Resources/ui/MeshBoundaryLayer.ui

@@ -24,6 +24,13 @@
 
 /* Lexer for the FreeCAD Expression language   */
 
+/* use this file to generate the file 'lex.ExpressionParser.c' using the program flex
+ * the command for this operation is:
+ * flex --outfile=lex.ExpressionParser.c ExpressionParser.l
+ * (flex for Windows is available here:
+ *  https://sourceforge.net/projects/winflexbison/
+ *  (you must then change 'flex' to 'win_flex' in the command)) */
+
 /* This disables inclusion of unistd.h, which is not available under Visual C++
  * on Win32. The C++ scanner uses STL streams instead. */
 #define YY_NO_UNISTD_H
@@ -291,8 +298,6 @@ EXPO     [eE][-+]?[0-9]+
 "G"                          COUNTCHARS; yylval.quantity.scaler  = Quantity::Gauss;               yylval.quantity.unitStr = yytext; return UNIT; // Gauss (1 G = 1e-4 T)
 
 "Wb"                         COUNTCHARS; yylval.quantity.scaler  = Quantity::Weber;               yylval.quantity.unitStr = yytext; return UNIT; // Weber (kg*m^2/s^2/A)
-
-"Oe"                         COUNTCHARS; yylval.quantity.scaler  = Quantity::Oersted;             yylval.quantity.unitStr = yytext; return UNIT; // Oersted (A/m)
 
 "F"                          COUNTCHARS; yylval.quantity.scaler  = Quantity::Farad;               yylval.quantity.unitStr = yytext; return UNIT; // Farad (s^4*A^2/m^2/kg)
 "mF"                         COUNTCHARS; yylval.quantity.scaler  = Quantity::MilliFarad;          yylval.quantity.unitStr = yytext; return UNIT; // milli Farad

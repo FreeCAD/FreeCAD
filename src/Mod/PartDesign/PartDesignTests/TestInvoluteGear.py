@@ -20,10 +20,13 @@
 #***************************************************************************
 
 import unittest
+import pathlib
 
 import FreeCAD
 from Part import makeCircle, Precision
 import InvoluteGearFeature
+
+FIXTURE_PATH = pathlib.Path(__file__).parent / "Fixtures"
 
 class TestInvoluteGear(unittest.TestCase):
     def setUp(self):
@@ -78,6 +81,78 @@ class TestInvoluteGear(unittest.TestCase):
         self.assertNoIntersection(gear.Shape, makeCircle(tip_diameter/2 + delta), "Teeth extent beyond tip circle")
         self.assertNoIntersection(gear.Shape, makeCircle(root_diameter/2 - delta), "Teeth extend below root circle")
 
+    def testCustomizedGearProfileForSplinedShaft(self):
+        spline = InvoluteGearFeature.makeInvoluteGear('InvoluteSplinedShaft')
+        z = 12
+        m = 2
+        add_coef = 0.5
+        ded_coef = 0.9
+        spline.NumberOfTeeth = z
+        spline.Modules = f'{m} mm'
+        spline.PressureAngle = '30 deg'
+        spline.AddendumCoefficient = add_coef
+        spline.DedendumCoefficient = ded_coef
+        spline.RootFilletCoefficient = 0.4
+        self.assertSuccessfulRecompute(spline)
+        self.assertClosedWire(spline.Shape)
+        pitch_diameter = m * z
+        tip_diameter = pitch_diameter + 2 * add_coef * m
+        root_diameter = pitch_diameter - 2 * ded_coef * m
+        # the test purpose here is just to ensure the gear's parameters are used,
+        # not super precise profile verification. Thus a lax delta is just file here.
+        delta = 0.01
+        self.assertIntersection(spline.Shape, makeCircle(pitch_diameter/2), "Expecting intersection at pitch circle")
+        self.assertNoIntersection(spline.Shape, makeCircle(tip_diameter/2 + delta), "Teeth extent beyond tip circle")
+        self.assertNoIntersection(spline.Shape, makeCircle(root_diameter/2 - delta), "Teeth extend below root circle")
+
+    def testCustomizedGearProfileForSplinedHub(self):
+        hub = InvoluteGearFeature.makeInvoluteGear('InvoluteSplinedHub')
+        hub.ExternalGear = False
+        z = 12
+        m = 2
+        add_coef = 0.5
+        ded_coef = 0.9
+        hub.NumberOfTeeth = z
+        hub.Modules = f'{m} mm'
+        hub.PressureAngle = '30 deg'
+        hub.AddendumCoefficient = add_coef
+        hub.DedendumCoefficient = ded_coef
+        hub.RootFilletCoefficient = 0.4
+        self.assertSuccessfulRecompute(hub)
+        self.assertClosedWire(hub.Shape)
+        pitch_diameter = m * z
+        tip_diameter = pitch_diameter - 2 * add_coef * m
+        root_diameter = pitch_diameter + 2 * ded_coef * m
+        # the test purpose here is just to ensure the gear's parameters are used,
+        # not super precise profile verification. Thus a lax delta is just file here.
+        delta = 0.01
+        self.assertIntersection(hub.Shape, makeCircle(pitch_diameter/2), "Expecting intersection at pitch circle")
+        self.assertNoIntersection(hub.Shape, makeCircle(tip_diameter/2 - delta), "Teeth extent below tip circle")
+        self.assertNoIntersection(hub.Shape, makeCircle(root_diameter/2 + delta), "Teeth extend beyond root circle")
+
+    def testZeroFilletExternalGearProfile_BaseAboveRoot(self):
+        gear = InvoluteGearFeature.makeInvoluteGear('InvoluteGear')
+        # below 42 teeth, with default dedendum 1.25, we have some non-involute flanks
+        gear.NumberOfTeeth = 41
+        gear.RootFilletCoefficient = 0
+        self.assertSuccessfulRecompute(gear)
+        self.assertClosedWire(gear.Shape)
+
+    def testZeroFilletExternalGearProfile_BaseBelowRoot(self):
+        gear = InvoluteGearFeature.makeInvoluteGear('InvoluteGear')
+        # above 41 teeth, with default dedendum 1.25, the root is within the involute flank
+        gear.NumberOfTeeth = 42
+        gear.RootFilletCoefficient = 0
+        self.assertSuccessfulRecompute(gear)
+        self.assertClosedWire(gear.Shape)
+
+    def testZeroFilletInternalGearProfile(self):
+        gear = InvoluteGearFeature.makeInvoluteGear('InvoluteGear')
+        gear.ExternalGear = False
+        gear.RootFilletCoefficient = 0
+        self.assertSuccessfulRecompute(gear)
+        self.assertClosedWire(gear.Shape)
+
     def testUsagePadGearProfile(self):
         profile = InvoluteGearFeature.makeInvoluteGear('GearProfile')
         body = self.Doc.addObject('PartDesign::Body','GearBody')
@@ -107,6 +182,38 @@ class TestInvoluteGear(unittest.TestCase):
         pocket.Type = 'ThroughAll'
         self.assertSuccessfulRecompute()
         self.assertSolid(pocket.Shape)
+
+    def testRecomputeExternalGearFromV020(self):
+        FreeCAD.closeDocument(self.Doc.Name) # this was created in setUp(self)
+        self.Doc = FreeCAD.openDocument(str(FIXTURE_PATH / "InvoluteGear_v0-20.FCStd"))
+        created_with = f"created with {self.Doc.getProgramVersion()}"
+        gear = self.Doc.InvoluteGear # from fixture
+        fixture_length = 187.752 # from fixture, rounded to micrometer
+        self.assertClosedWire(gear.Shape) # no recompute yet, i.e. check original
+        self.assertAlmostEqual(fixture_length, gear.Shape.Length, places=3,
+            msg=f"Total wire length does not match fixture for gear {created_with}")
+        gear.enforceRecompute()
+        self.assertSuccessfulRecompute(gear, msg=f"Cannot recompute gear {created_with}")
+        relative_tolerance_per_tooth = 1e-3 # wild guess: changes of <0.1%/tooth are ok
+        length_delta = fixture_length * relative_tolerance_per_tooth * gear.NumberOfTeeth
+        self.assertAlmostEqual(fixture_length, gear.Shape.Length, delta=length_delta,
+            msg=f"Total wire length changed after recomputing gear {created_with}")
+
+    def testRecomputeInternalGearFromV020(self):
+        FreeCAD.closeDocument(self.Doc.Name) # this was created in setUp(self)
+        self.Doc = FreeCAD.openDocument(str(FIXTURE_PATH / "InternalInvoluteGear_v0-20.FCStd"))
+        created_with = f"created with {self.Doc.getProgramVersion()}"
+        gear = self.Doc.InvoluteGear # from fixture
+        fixture_length = 165.408 # from fixture, rounded to micrometer
+        self.assertClosedWire(gear.Shape) # no recompute yet, i.e. check original
+        self.assertAlmostEqual(fixture_length, gear.Shape.Length, places=3,
+            msg=f"Total wire length does not match fixture for gear {created_with}")
+        gear.enforceRecompute()
+        self.assertSuccessfulRecompute(gear, msg=f"Cannot recompute gear {created_with}")
+        relative_tolerance_per_tooth = 1e-3 # wild guess: changes of <0.1%/tooth are ok
+        length_delta = fixture_length * relative_tolerance_per_tooth * gear.NumberOfTeeth
+        self.assertAlmostEqual(fixture_length, gear.Shape.Length, delta=length_delta,
+            msg=f"Total wire length changed after recomputing gear {created_with}")
 
     def assertSuccessfulRecompute(self, *objs, msg=None):
         if (len(objs) == 0):

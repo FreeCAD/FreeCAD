@@ -1251,9 +1251,9 @@
       <source>Measure the linear distance between two points;
 if edges or faces are picked, it will measure
 between two vertices of them.</source>
-      <translation>Mesurer la distance linéaire entre deux points ;
-si des arêtes ou des faces sont sélectionnées, ce sera
-la distance entre deux sommets d’entre elles.</translation>
+      <translation>Mesurer la distance linéaire entre deux points. Si des 
+arêtes ou des faces sont sélectionnées, cela mesurera
+entre deux de leurs sommets.</translation>
     </message>
   </context>
   <context>
@@ -1334,8 +1334,8 @@ directes, orthogonales et angulaires.</translation>
 meaning that a direct dimension will be decomposed
 into its X, Y, and Z components.</source>
       <translation>Basculer toutes les cotes orthogonales,
-ce qui signifie qu’une cote directe sera décomposée
-en ses composantes X, Y et Z.</translation>
+ce qui signifie qu’une cote directe sera 
+décomposée en ses composantes X, Y et Z.</translation>
     </message>
   </context>
   <context>
@@ -1534,8 +1534,8 @@ en ses composantes X, Y et Z.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="686"/>
-      <source>Shape splitting tools. Compsolid creation tools. OCC 6.9.0 or later is required.</source>
-      <translation>Outils de division de forme. Outils de création de Compsolid. OCC 6.9.0 ou ultérieur est requis.</translation>
+      <source>Shape splitting and Compsolid creation tools.</source>
+      <translation>Outils pour éclater des formes et créer des composés.</translation>
     </message>
   </context>
   <context>
@@ -1948,7 +1948,7 @@ en ses composantes X, Y et Z.</translation>
     <message>
       <location filename="../../Command.cpp" line="2502"/>
       <source>Create projection on surface...</source>
-      <translation>Créer une projection sur la surface...</translation>
+      <translation>Créer une projection sur une surface...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2503"/>
@@ -2057,12 +2057,12 @@ de la projection.</translation>
     <message>
       <location filename="../../Command.cpp" line="2535"/>
       <source>Persistent section cut</source>
-      <translation>Coupe de section persistante</translation>
+      <translation>Coupe persistante</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2536"/>
       <source>Creates a persistent section cut of visible part objects</source>
-      <translation>Crée une coupe de section persistante des objets de la partie visible</translation>
+      <translation>Crée une coupe persistante des objets de la partie visible</translation>
     </message>
   </context>
   <context>
@@ -2725,7 +2725,7 @@ Remarque : le placement est exprimé localement par rapport à l'objet auquel il
     <message>
       <location filename="../../DlgExportStep.ui" line="72"/>
       <source>Uncheck this to skip invisible object when exporting, which is useful for CADs that do not support invisibility STEP styling.</source>
-      <translation>Décochez cette case pour ignorer l'objet invisible lors de l'exportation, ce qui est utile pour les CAO qui ne prennent pas en charge l'invisibilité du style STEP.</translation>
+      <translation>Décochez cette case pour ignorer l'objet invisible lors de l'exportation, ce qui est utile pour les logiciels de CAO qui ne prennent pas en charge l'invisibilité du style STEP.</translation>
     </message>
     <message>
       <location filename="../../DlgExportStep.ui" line="75"/>
@@ -3302,7 +3302,7 @@ during file reading (slower but higher details).</source>
     <message>
       <location filename="../../DlgImportStep.ui" line="59"/>
       <source>Select this to not import any invisible objects.</source>
-      <translation>Sélectionnez cette option pour ne pas importer d'objets invisibles.</translation>
+      <translation>Sélectionner cette option pour ne pas importer d'objets invisibles.</translation>
     </message>
     <message>
       <location filename="../../DlgImportStep.ui" line="62"/>
@@ -3538,19 +3538,19 @@ during file reading (slower but higher details).</source>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="33"/>
-      <location filename="../../DlgPrimitives.cpp" line="275"/>
+      <location filename="../../DlgPrimitives.cpp" line="274"/>
       <source>Plane</source>
       <translation>Plan</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="42"/>
-      <location filename="../../DlgPrimitives.cpp" line="351"/>
+      <location filename="../../DlgPrimitives.cpp" line="349"/>
       <source>Box</source>
       <translation>Boîte</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="51"/>
-      <location filename="../../DlgPrimitives.cpp" line="442"/>
+      <location filename="../../DlgPrimitives.cpp" line="439"/>
       <source>Cylinder</source>
       <translation>Cylindre</translation>
     </message>
@@ -3562,55 +3562,55 @@ during file reading (slower but higher details).</source>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="69"/>
-      <location filename="../../DlgPrimitives.cpp" line="627"/>
+      <location filename="../../DlgPrimitives.cpp" line="626"/>
       <source>Sphere</source>
       <translation>Sphère</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="78"/>
-      <location filename="../../DlgPrimitives.cpp" line="732"/>
+      <location filename="../../DlgPrimitives.cpp" line="730"/>
       <source>Ellipsoid</source>
       <translation>Ellipsoïde</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="87"/>
-      <location filename="../../DlgPrimitives.cpp" line="840"/>
+      <location filename="../../DlgPrimitives.cpp" line="837"/>
       <source>Torus</source>
       <translation>Tore</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="96"/>
-      <location filename="../../DlgPrimitives.cpp" line="939"/>
+      <location filename="../../DlgPrimitives.cpp" line="935"/>
       <source>Prism</source>
       <translation>Prisme</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="105"/>
-      <location filename="../../DlgPrimitives.cpp" line="1082"/>
+      <location filename="../../DlgPrimitives.cpp" line="1077"/>
       <source>Wedge</source>
       <translation>Prisme</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="114"/>
-      <location filename="../../DlgPrimitives.cpp" line="1209"/>
+      <location filename="../../DlgPrimitives.cpp" line="1203"/>
       <source>Helix</source>
       <translation>Hélice</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="123"/>
-      <location filename="../../DlgPrimitives.cpp" line="1299"/>
+      <location filename="../../DlgPrimitives.cpp" line="1292"/>
       <source>Spiral</source>
       <translation>Spirale</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="132"/>
-      <location filename="../../DlgPrimitives.cpp" line="1380"/>
+      <location filename="../../DlgPrimitives.cpp" line="1372"/>
       <source>Circle</source>
       <translation>Cercle</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="141"/>
-      <location filename="../../DlgPrimitives.cpp" line="1467"/>
+      <location filename="../../DlgPrimitives.cpp" line="1458"/>
       <source>Ellipse</source>
       <translation>Ellipse</translation>
     </message>
@@ -3621,13 +3621,13 @@ during file reading (slower but higher details).</source>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="159"/>
-      <location filename="../../DlgPrimitives.cpp" line="1645"/>
+      <location filename="../../DlgPrimitives.cpp" line="1634"/>
       <source>Line</source>
       <translation>Ligne</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="168"/>
-      <location filename="../../DlgPrimitives.cpp" line="1545"/>
+      <location filename="../../DlgPrimitives.cpp" line="1535"/>
       <source>Regular polygon</source>
       <translation>Polygone régulier</translation>
     </message>
@@ -3865,25 +3865,25 @@ during file reading (slower but higher details).</source>
       <translation>Point final</translation>
     </message>
     <message>
-      <location filename="../../DlgPrimitives.cpp" line="1744"/>
+      <location filename="../../DlgPrimitives.cpp" line="1732"/>
       <source>Vertex</source>
       <translation>Sommet</translation>
     </message>
     <message>
-      <location filename="../../DlgPrimitives.cpp" line="1924"/>
-      <location filename="../../DlgPrimitives.cpp" line="1934"/>
-      <location filename="../../DlgPrimitives.cpp" line="1949"/>
-      <location filename="../../DlgPrimitives.cpp" line="1953"/>
+      <location filename="../../DlgPrimitives.cpp" line="1912"/>
+      <location filename="../../DlgPrimitives.cpp" line="1922"/>
+      <location filename="../../DlgPrimitives.cpp" line="1937"/>
+      <location filename="../../DlgPrimitives.cpp" line="1941"/>
       <source>Create %1</source>
       <translation>Créer %1</translation>
     </message>
     <message>
-      <location filename="../../DlgPrimitives.cpp" line="1925"/>
+      <location filename="../../DlgPrimitives.cpp" line="1913"/>
       <source>No active document</source>
       <translation>Aucun document actif</translation>
     </message>
     <message>
-      <location filename="../../DlgPrimitives.cpp" line="2228"/>
+      <location filename="../../DlgPrimitives.cpp" line="2216"/>
       <source>&amp;Create</source>
       <translation>&amp;Créer</translation>
     </message>
@@ -3893,7 +3893,7 @@ during file reading (slower but higher details).</source>
     <message>
       <location filename="../../DlgProjectionOnSurface.ui" line="14"/>
       <source>Projection on surface</source>
-      <translation>Projection sur surface</translation>
+      <translation>Projection sur une surface</translation>
     </message>
     <message>
       <location filename="../../DlgProjectionOnSurface.ui" line="20"/>
@@ -3908,7 +3908,7 @@ during file reading (slower but higher details).</source>
     <message>
       <location filename="../../DlgProjectionOnSurface.ui" line="38"/>
       <source>Add wire</source>
-      <translation>Ajouter un fil</translation>
+      <translation>Ajouter une polyligne</translation>
     </message>
     <message>
       <location filename="../../DlgProjectionOnSurface.ui" line="45"/>
@@ -4180,7 +4180,7 @@ during file reading (slower but higher details).</source>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="52"/>
       <source>Automatically refine model after sketch-based operation</source>
-      <translation>Affiner les modèles automatiquement après une opération d'esquisse</translation>
+      <translation>Affiner les modèles automatiquement après une opération sur une esquisse</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="68"/>
@@ -4213,7 +4213,7 @@ during file reading (slower but higher details).</source>
     <message>
       <location filename="../../DlgSettingsMeasure.ui" line="88"/>
       <source>Delta color</source>
-      <translation>Écart de couleur</translation>
+      <translation>Couleur pour les dimensions delta</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsMeasure.ui" line="112"/>
@@ -4332,7 +4332,7 @@ during file reading (slower but higher details).</source>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="219"/>
       <source>Vertex size</source>
-      <translation>Taille du sommet</translation>
+      <translation>Taille des sommets</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="226"/>
@@ -4352,12 +4352,12 @@ during file reading (slower but higher details).</source>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="287"/>
       <source>Bounding box font size</source>
-      <translation>Taille de police de la boîte englobante</translation>
+      <translation>Taille de la police de la boîte englobante</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="294"/>
       <source>The font size of bounding boxes in the 3D view</source>
-      <translation>La taille de police des boîtes englobantes dans la vue 3D</translation>
+      <translation>La taille de la police des boîtes englobantes dans la vue 3D</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="328"/>
@@ -4603,12 +4603,12 @@ le vecteur normal du plan de l'esquisse sera utilisé</translation>
     <message>
       <location filename="../../SectionCutting.ui" line="20"/>
       <source>Permanent Section Cutting</source>
-      <translation>Coupe de section permanente</translation>
+      <translation>Coupe persistante</translation>
     </message>
     <message>
       <location filename="../../SectionCutting.ui" line="32"/>
       <source>Cutting X</source>
-      <translation>Coupe sur X</translation>
+      <translation>Coupe en X</translation>
     </message>
     <message>
       <location filename="../../SectionCutting.ui" line="44"/>
@@ -4627,76 +4627,101 @@ le vecteur normal du plan de l'esquisse sera utilisé</translation>
     <message>
       <location filename="../../SectionCutting.ui" line="106"/>
       <source>Cutting Y</source>
-      <translation>Coupe sur Y</translation>
+      <translation>Coupe en Y</translation>
     </message>
     <message>
       <location filename="../../SectionCutting.ui" line="174"/>
       <source>Cutting Z</source>
-      <translation>Coupe sur Z</translation>
+      <translation>Coupe en Z</translation>
     </message>
     <message>
       <location filename="../../SectionCutting.ui" line="242"/>
       <source>Cut face</source>
-      <translation>Couper la face</translation>
+      <translation>Face coupée</translation>
     </message>
     <message>
       <location filename="../../SectionCutting.ui" line="254"/>
+      <location filename="../../SectionCutting.ui" line="394"/>
       <source>Color of cut face</source>
       <translation>Couleur de la face coupée</translation>
     </message>
     <message>
       <location filename="../../SectionCutting.ui" line="257"/>
+      <location filename="../../SectionCutting.ui" line="397"/>
       <source>Color</source>
       <translation>Couleur</translation>
     </message>
     <message>
       <location filename="../../SectionCutting.ui" line="302"/>
+      <location filename="../../SectionCutting.ui" line="445"/>
       <source>If checked, the color and transparency
 will be taken from the cut objects.
-Works only if all objects have the same values.</source>
+Works only properly if all objects
+have the same values.</source>
       <translation>Si coché, la couleur et la transparence
-vont être prises sur les objets coupés.
-Marche uniquement si tous les objets ont les mêmes valeurs.</translation>
+seront identiques à celles des objets coupés.
+Fonctionne uniquement si tous les objets ont les mêmes valeurs.</translation>
     </message>
     <message>
-      <location filename="../../SectionCutting.ui" line="307"/>
+      <location filename="../../SectionCutting.ui" line="308"/>
+      <location filename="../../SectionCutting.ui" line="451"/>
       <source>Auto</source>
       <translation>Auto</translation>
     </message>
     <message>
-      <location filename="../../SectionCutting.ui" line="329"/>
+      <location filename="../../SectionCutting.ui" line="330"/>
+      <location filename="../../SectionCutting.ui" line="473"/>
       <source>Transparency of cut face</source>
       <translation>Transparence de la face coupée</translation>
     </message>
     <message>
-      <location filename="../../SectionCutting.ui" line="332"/>
+      <location filename="../../SectionCutting.ui" line="333"/>
+      <location filename="../../SectionCutting.ui" line="476"/>
       <source>Transparency</source>
       <translation>Transparence</translation>
     </message>
     <message>
-      <location filename="../../SectionCutting.ui" line="367"/>
+      <location filename="../../SectionCutting.ui" line="371"/>
+      <source>Allows to cut objects intersecting each other
+for the price that all cut objects
+will get the same color</source>
+      <translation>Permet de couper des objets s'intersectant au risque
+que tous les objets coupés auront la même couleur</translation>
+    </message>
+    <message>
+      <location filename="../../SectionCutting.ui" line="376"/>
+      <source>Cut intersecting objects</source>
+      <translation>Couper des objets s'intersectant</translation>
+    </message>
+    <message>
+      <location filename="../../SectionCutting.ui" line="419"/>
+      <source>Color for all objects</source>
+      <translation>Couleur pour tous les objets</translation>
+    </message>
+    <message>
+      <location filename="../../SectionCutting.ui" line="511"/>
       <source>Refreshes the list of visible objects</source>
       <translation>Rafraîchit la liste des objets visibles</translation>
     </message>
     <message>
-      <location filename="../../SectionCutting.ui" line="370"/>
+      <location filename="../../SectionCutting.ui" line="514"/>
       <source>Refresh view</source>
       <translation>Rafraîchir la vue</translation>
     </message>
     <message>
-      <location filename="../../SectionCutting.ui" line="400"/>
+      <location filename="../../SectionCutting.ui" line="544"/>
       <source>When the dialog is closed,
 only created cuts will be visible</source>
       <translation>Lorsque la boîte de dialogue sera fermée,
 seules les coupes créées seront visibles</translation>
     </message>
     <message>
-      <location filename="../../SectionCutting.ui" line="404"/>
+      <location filename="../../SectionCutting.ui" line="548"/>
       <source>Keep only cuts visible when closing</source>
       <translation>Garder uniquement les coupes visibles lors de la fermeture</translation>
     </message>
     <message>
-      <location filename="../../SectionCutting.cpp" line="429"/>
+      <location filename="../../SectionCutting.cpp" line="520"/>
       <source>Sliders are disabled for assemblies</source>
       <translation>Les curseurs sont désactivés pour les assemblages</translation>
     </message>
@@ -4989,7 +5014,7 @@ Remarque : le placement est exprimé dans le système de coordonnées local de l
     <message>
       <location filename="../../TaskAttacher.ui" line="364"/>
       <source>Flip side of attachment and offset</source>
-      <translation>Retourner le côté de l'ancrage et décalage</translation>
+      <translation>L'envers de l'ancrage et du décalage</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.ui" line="367"/>
@@ -5088,13 +5113,13 @@ Remarque : le placement est exprimé dans le système de coordonnées local de l
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1010"/>
       <source>Skip settings page</source>
-      <translation>Passer la page de paramètres</translation>
+      <translation>Sauter cette page des paramètres</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1011"/>
       <source>Skip this settings page and run the geometry check automatically.
 Default: false</source>
-      <translation>Ignorer cette page de paramètres et exécuter la vérification de la géométrie automatiquement.
+      <translation>Sauter cette page de paramètres et exécuter la vérification de la géométrie automatiquement.
 Valeur par défaut : false</translation>
     </message>
     <message>
@@ -5107,21 +5132,23 @@ Valeur par défaut : false</translation>
       <source>Extra boolean operations check that can sometimes find errors that
 the standard BRep geometry check misses. These errors do not always 
 mean the checked object is unusable.  Default: false</source>
-      <translation>Les opérations booléennes supplémentaires peuvent parfois trouver des erreurs que
-la vérification de géométrie standard BRep rate. Ces erreurs ne signifient pas toujours 
-que l'objet vérifié est inutilisable. Valeur par dar défaut : false</translation>
+      <translation>Vérification supplémentaire des opérations booléennes. Elle peut parfois
+trouver des erreurs que la vérification standard de la géométrie BRep aura 
+manqué. Ces erreurs ne signifient pas toujours que l'objet vérifié est inutilisable.
+Valeur par défaut : false</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1031"/>
       <source>Single-threaded</source>
-      <translation>Fil unique</translation>
+      <translation>Exécution non parallélisée</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1032"/>
       <source>Run the geometry check in a single thread.  This is slower,
 but more stable.  Default: false</source>
-      <translation>Lancer la vérification de la géométrie dans un seul thread.
-C'est plus lent, mais plus stable. Valeur par défaut : false</translation>
+      <translation>Lancer la vérification de la géométrie avec un seul thread.
+C'est plus lent, mais plus stable.
+Valeur par défaut : false</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1041"/>
@@ -5131,7 +5158,8 @@ C'est plus lent, mais plus stable. Valeur par défaut : false</translation>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1042"/>
       <source>Log errors to report view.  Default: true</source>
-      <translation>Journal des erreurs vers la vue rapport. Par défaut: vrai</translation>
+      <translation>Journal des erreurs vers la vue rapport.
+Par défaut: true</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1049"/>
@@ -5142,8 +5170,9 @@ C'est plus lent, mais plus stable. Valeur par défaut : false</translation>
       <location filename="../../TaskCheckGeometry.cpp" line="1050"/>
       <source>Expand shape content.  Changes will take effect next time you use 
 the check geometry tool.  Default: false</source>
-      <translation>Développer le contenu de la forme. Les modifications prendront effet la prochaine fois que vous utiliserez 
-l'outil de vérification de la géométrie. valeur par défaut : false</translation>
+      <translation>Développer le contenu de la forme. Les modifications prendront effet la
+prochaine fois que vous utiliserez l'outil de vérification de la géométrie.
+Valeur par défaut : false</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1059"/>
@@ -5154,15 +5183,16 @@ l'outil de vérification de la géométrie. valeur par défaut : false</translat
       <location filename="../../TaskCheckGeometry.cpp" line="1060"/>
       <source>Show advanced shape content.  Changes will take effect next time you use 
 the check geometry tool.  Default: false</source>
-      <translation>Afficher le contenu avancé de la forme. Les modifications prendront effet la prochaine fois que vous utiliserez 
-l'outil de vérification de la géométrie. Valeur par défaut : false</translation>
+      <translation>Afficher le contenu avancé de la forme. Les modifications prendront effet la
+prochaine fois que vous utiliserez l'outil de vérification de la géométrie.
+Valeur par défaut : false</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1068"/>
       <source>
 Individual BOP Checks:</source>
       <translation>
-Vérifications individuelles du BOP :</translation>
+Vérifications des opérations booléennes :</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1071"/>
@@ -5172,7 +5202,8 @@ Vérifications individuelles du BOP :</translation>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1072"/>
       <source>Check for bad argument types.  Default: true</source>
-      <translation>Vérifier les mauvais types d'arguments. Valeur par défaut : true</translation>
+      <translation>Vérifier la présence de mauvais types d'arguments.
+Valeur par défaut : true</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1079"/>
@@ -5182,7 +5213,8 @@ Vérifications individuelles du BOP :</translation>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1080"/>
       <source>Check for self-intersections.  Default: true</source>
-      <translation>Rechercher la présence d'auto-intersections. Valeur par défaut : true</translation>
+      <translation>Vérifier la présence d'auto-intersections.
+Valeur par défaut : true</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1087"/>
@@ -5192,7 +5224,8 @@ Vérifications individuelles du BOP :</translation>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1088"/>
       <source>Check for edges that are too small.  Default: true</source>
-      <translation>Rechercher la présence d'arêtes trop petites. Valeur par défaut: true</translation>
+      <translation>Vérifier la présence d'arêtes trop petites.
+Valeur par défaut : true</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1095"/>
@@ -5202,7 +5235,8 @@ Vérifications individuelles du BOP :</translation>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1096"/>
       <source>Check for nonrecoverable faces.  Default: true</source>
-      <translation>Rechercher la présence de faces non-récupérables. Valeur par défaut : true</translation>
+      <translation>Vérifier la présence de faces non-récupérables. 
+Valeur par défaut : true</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1103"/>
@@ -5212,7 +5246,8 @@ Vérifications individuelles du BOP :</translation>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1104"/>
       <source>Check for continuity.  Default: true</source>
-      <translation>Vérifier la continuité. Par défaut: vrai</translation>
+      <translation>Vérifier la continuité.
+Par défaut : true</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1111"/>
@@ -5222,7 +5257,8 @@ Vérifications individuelles du BOP :</translation>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1112"/>
       <source>Check for incompatible faces.  Default: true</source>
-      <translation>Vérifier s'il y a des faces incompatibles. Par défaut: vrai</translation>
+      <translation>Vérifier la présence de faces incompatibles.
+Par défaut : true</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1119"/>
@@ -5232,7 +5268,8 @@ Vérifications individuelles du BOP :</translation>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1120"/>
       <source>Check for incompatible vertices.  Default: true</source>
-      <translation>Vérifier s'il y a des faces incompatibles. Valeur par défaut: vrai</translation>
+      <translation>Vérifier la présence de sommets incompatibles.
+Valeur par défaut : true</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1127"/>
@@ -5242,7 +5279,8 @@ Vérifications individuelles du BOP :</translation>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1128"/>
       <source>Check for incompatible edges.  Default: true</source>
-      <translation>Rechercher la présende d'arêtes incompatibles. Valeur par défaut : true</translation>
+      <translation>Vérifier la présence d'arêtes incompatibles.
+Valeur par défaut : true</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1135"/>
@@ -5252,7 +5290,8 @@ Vérifications individuelles du BOP :</translation>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1136"/>
       <source>Check for invalid curves on surfaces.  Default: true</source>
-      <translation>Rechercher la présence de courbes de surfaces invalides. Valeur par défaut : true</translation>
+      <translation>Vérifier la présence de courbes invalides sur des surfaces.
+Valeur par défaut : true</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1199"/>
@@ -5449,7 +5488,7 @@ en traçant un rectangle de sélection dans la vue 3D</translation>
     <message>
       <location filename="../../TaskShapeBuilder.ui" line="33"/>
       <source>Wire from edges</source>
-      <translation>Fil à partir d'arêtes</translation>
+      <translation>Polyligne à partir d'arêtes</translation>
     </message>
     <message>
       <location filename="../../TaskShapeBuilder.ui" line="40"/>
@@ -5489,7 +5528,7 @@ en traçant un rectangle de sélection dans la vue 3D</translation>
     <message>
       <location filename="../../TaskShapeBuilder.ui" line="101"/>
       <source>Box selection...</source>
-      <translation>Sélection par boîte...</translation>
+      <translation>Sélectionner par une boîte...</translation>
     </message>
     <message>
       <location filename="../../TaskShapeBuilder.ui" line="121"/>
@@ -5561,7 +5600,7 @@ in the 3D view for the sweep path.</source>
       <location filename="../../TaskThickness.cpp" line="273"/>
       <location filename="../../TaskThickness.cpp" line="283"/>
       <source>Thickness</source>
-      <translation>Coque</translation>
+      <translation>Evidement</translation>
     </message>
     <message>
       <location filename="../../TaskThickness.cpp" line="171"/>
@@ -5633,21 +5672,21 @@ in the 3D view for the sweep path.</source>
       <translation>Modifier %1</translation>
     </message>
     <message>
-      <location filename="../../AppPartGui.cpp" line="224"/>
+      <location filename="../../AppPartGui.cpp" line="227"/>
       <source>Part and Part Design workbench</source>
       <translation>Ateliers Part et Part Design</translation>
     </message>
     <message>
-      <location filename="../../AppPartGui.cpp" line="225"/>
-      <location filename="../../AppPartGui.cpp" line="226"/>
-      <location filename="../../AppPartGui.cpp" line="227"/>
       <location filename="../../AppPartGui.cpp" line="228"/>
+      <location filename="../../AppPartGui.cpp" line="229"/>
+      <location filename="../../AppPartGui.cpp" line="230"/>
+      <location filename="../../AppPartGui.cpp" line="231"/>
       <source>Part/Part Design</source>
       <translation>Part/Part Design</translation>
     </message>
     <message>
-      <location filename="../../AppPartGui.cpp" line="229"/>
-      <location filename="../../AppPartGui.cpp" line="230"/>
+      <location filename="../../AppPartGui.cpp" line="232"/>
+      <location filename="../../AppPartGui.cpp" line="233"/>
       <source>Import-Export</source>
       <translation>Importer-Exporter</translation>
     </message>
@@ -6088,7 +6127,7 @@ Voulez-vous continuer ?</translation>
     <message>
       <location filename="../../ViewProviderAttachExtension.cpp" line="118"/>
       <source>Attachment editor</source>
-      <translation>Éditeur de pièces jointes</translation>
+      <translation>Éditeur de l'accrochage</translation>
     </message>
     <message>
       <location filename="../../../BasicShapes/CommandShapes.py" line="52"/>
@@ -6430,7 +6469,7 @@ Cela créera un "filtre composé" pour chaque forme.</translation>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="91"/>
       <source>Failed to parse link (more than one colon encountered)</source>
-      <translation>Échec de l'analyse du lien (plus d'un deux-points rencontré)</translation>
+      <translation>Échec de l'analyse du lien (plus d'un double point rencontré)</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="204"/>

@@ -193,12 +193,14 @@ class Shape2DView(DraftObject):
             objs = [o for o in objs if not(o.Name in obj.ExclusionNames)]
             return objs
 
-    def execute(self,obj):
+    def execute(self, obj):
+        if self.props_changed_placement_only() \
+                or not getattr(obj, "AutoUpdate", True):
+            obj.positionBySupport()
+            self.props_changed_clear()
+            return
 
-        if not getattr(obj,"AutoUpdate", True):
-            return True
         import Part, DraftGeomUtils
-        obj.positionBySupport()
         pl = obj.Placement
         if obj.Base:
             if utils.get_type(obj.Base) in ["BuildingPart","SectionPlane"]:
@@ -352,8 +354,13 @@ class Shape2DView(DraftObject):
                                 obj.Shape = Part.makeCompound(views)
                     else:
                         App.Console.PrintWarning(obj.ProjectionMode+" mode not implemented\n")
-        if not DraftGeomUtils.isNull(pl):
-            obj.Placement = pl
+
+        obj.Placement = pl
+        obj.positionBySupport()
+        self.props_changed_clear()
+
+    def onChanged(self, obj, prop):
+        self.props_changed_store(prop)
 
 
 # Alias for compatibility with v0.18 and earlier

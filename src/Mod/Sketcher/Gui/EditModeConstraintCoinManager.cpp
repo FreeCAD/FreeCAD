@@ -1223,7 +1223,7 @@ void EditModeConstraintCoinManager::updateConstraintColor(const std::vector<Sket
     std::vector<int> CurvNum;
     std::vector<SbColor *> color;   // curve color
 
-    for(int l=0; l<geometryLayerParameters.CoinLayers; l++) {
+    for(int l=0; l<geometryLayerParameters.getCoinLayerCount(); l++) {
         PtNum.push_back(editModeScenegraphNodes.PointsMaterials[l]->diffuseColor.getNum());
         pcolor.push_back(editModeScenegraphNodes.PointsMaterials[l]->diffuseColor.startEditing());
         CurvNum.push_back(editModeScenegraphNodes.CurvesMaterials[l]->diffuseColor.getNum());
@@ -1356,7 +1356,7 @@ void EditModeConstraintCoinManager::updateConstraintColor(const std::vector<Sket
         }
     }
 
-    for(int l=0; l<geometryLayerParameters.CoinLayers; l++) {
+    for(int l=0; l<geometryLayerParameters.getCoinLayerCount(); l++) {
         editModeScenegraphNodes.PointsMaterials[l]->diffuseColor.finishEditing();
         editModeScenegraphNodes.CurvesMaterials[l]->diffuseColor.finishEditing();
     }
@@ -1440,7 +1440,7 @@ void EditModeConstraintCoinManager::rebuildConstraintNodes(const GeoListFacade &
                                             drawingParameters.ConstrDimColor
                                             :drawingParameters.NonDrivingConstrDimColor)
                                         :drawingParameters.DeactivatedConstrDimColor;
-                text->size.setValue(drawingParameters.coinFontSize);
+                text->size.setValue(drawingParameters.labelFontSize);
                 text->lineWidth = 2 * drawingParameters.pixelScalingFactor;
                 text->useAntialiasing = false;
                 SoAnnotation *anno = new SoAnnotation();

@@ -55,6 +55,11 @@ set(PartDesign_TestScripts
     PartDesignTests/TestInvoluteGear.py
 )
 
+set(PartDesign_TestFixtures
+    PartDesignTests/Fixtures/InvoluteGear_v0-20.FCStd
+    PartDesignTests/Fixtures/InternalInvoluteGear_v0-20.FCStd
+)
+
 set(PartDesign_GearScripts
     fcgear/__init__.py
     fcgear/fcgear.py
@@ -85,6 +90,7 @@ add_custom_target(PartDesignScripts ALL SOURCES
     ${PartDesign_Scripts}
     ${PartDesign_OtherScripts}
     ${PartDesign_TestScripts}
+    ${PartDesign_TestFixtures}
     ${PartDesign_GearScripts}
     ${PartDesign_SprocketScripts}
 )
@@ -95,6 +101,7 @@ fc_target_copy_resource(PartDesignScripts
     ${PartDesign_Scripts}
     ${PartDesign_OtherScripts}
     ${PartDesign_TestScripts}
+    ${PartDesign_TestFixtures}
     ${PartDesign_GearScripts}
     ${PartDesign_SprocketScripts}
 )
@@ -119,7 +126,14 @@ INSTALL(
     DESTINATION
         Mod/PartDesign/PartDesignTests
        )
-        
+
+INSTALL(
+    FILES
+        ${PartDesign_TestFixtures}
+    DESTINATION
+        Mod/PartDesign/PartDesignTests/Fixtures
+       )
+
 INSTALL(
     FILES
         ${PartDesign_GearScripts}

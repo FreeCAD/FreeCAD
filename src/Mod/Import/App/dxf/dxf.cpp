@@ -1118,7 +1118,7 @@ void CDxfWrite::writeLinearDim(const double* textMidPoint, const double* lineDef
 //    (*m_ssEntity) << " 71"          << endl;    // not R12
 //    (*m_ssEntity) << 1              << endl;    // attachPoint ??1 = topleft
     (*m_ssEntity) << "  1"          << endl;
-    (*m_ssEntity) << dimText        << endl;    
+    (*m_ssEntity) << dimText        << endl;
     (*m_ssEntity) << "  3"          << endl;
     (*m_ssEntity) << "STANDARD"     << endl;    //style
 //linear dims
@@ -1704,7 +1704,7 @@ void CDxfWrite::writeBlocksSection(void)
         std::string fileSpec = m_dataDir + ss.str();
         (*m_ofs) << getPlateFile(fileSpec);
     }
-    
+
     //write blocks content
     (*m_ofs) << (*m_ssBlock).str();
 
@@ -1721,7 +1721,7 @@ void CDxfWrite::writeEntitiesSection(void)
     ss << "entities" << m_version << ".rub";
     std::string fileSpec = m_dataDir + ss.str();
     (*m_ofs) << getPlateFile(fileSpec);
-    
+
     //write entities content
     (*m_ofs) << (*m_ssEntity).str();
 

@@ -80,6 +80,46 @@ so that self intersection is avoided.</source>
       <translation>Jeśli fałsz, narzędzie zaproponuje wartość początkową skoku na podstawie ramki otaczającej profil,
 aby uniknąć samoprzecięcia.</translation>
     </message>
+    <message>
+      <location filename="../../../InvoluteGearFeature.py" line="98"/>
+      <source>Number of gear teeth</source>
+      <translation type="unfinished">Number of gear teeth</translation>
+    </message>
+    <message>
+      <location filename="../../../InvoluteGearFeature.py" line="101"/>
+      <source>Modules of the gear</source>
+      <translation type="unfinished">Modules of the gear</translation>
+    </message>
+    <message>
+      <location filename="../../../InvoluteGearFeature.py" line="104"/>
+      <source>Pressure angle of gear teeth</source>
+      <translation type="unfinished">Pressure angle of gear teeth</translation>
+    </message>
+    <message>
+      <location filename="../../../InvoluteGearFeature.py" line="108"/>
+      <source>True=2 curves with each 3 control points False=1 curve with 4 control points.</source>
+      <translation type="unfinished">True=2 curves with each 3 control points False=1 curve with 4 control points.</translation>
+    </message>
+    <message>
+      <location filename="../../../InvoluteGearFeature.py" line="111"/>
+      <source>True=external Gear False=internal Gear</source>
+      <translation type="unfinished">True=external Gear False=internal Gear</translation>
+    </message>
+    <message>
+      <location filename="../../../InvoluteGearFeature.py" line="115"/>
+      <source>The height of the tooth from the pitch circle up to its tip, normalized by the module.</source>
+      <translation type="unfinished">The height of the tooth from the pitch circle up to its tip, normalized by the module.</translation>
+    </message>
+    <message>
+      <location filename="../../../InvoluteGearFeature.py" line="119"/>
+      <source>The height of the tooth from the pitch circle down to its root, normalized by the module.</source>
+      <translation type="unfinished">The height of the tooth from the pitch circle down to its root, normalized by the module.</translation>
+    </message>
+    <message>
+      <location filename="../../../InvoluteGearFeature.py" line="123"/>
+      <source>The radius of the fillet at the root of the tooth, normalized by the module.</source>
+      <translation type="unfinished">The radius of the fillet at the root of the tooth, normalized by the module.</translation>
+    </message>
   </context>
   <context>
     <name>CmdPartDesignAdditiveHelix</name>
@@ -608,7 +648,7 @@ aby uniknąć samoprzecięcia.</translation>
     <message>
       <location filename="../../Command.cpp" line="278"/>
       <source>PartDesign</source>
-      <translation>Projekt części</translation>
+      <translation>Part Design</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="279"/>
@@ -626,7 +666,7 @@ aby uniknąć samoprzecięcia.</translation>
     <message>
       <location filename="../../Command.cpp" line="344"/>
       <source>PartDesign</source>
-      <translation>Part Design</translation>
+      <translation>Projekt części</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="345"/>
@@ -1014,6 +1054,21 @@ aby uniknąć samoprzecięcia.</translation>
       <location filename="../../../InvoluteGearFeature.ui" line="152"/>
       <source>External gear:</source>
       <translation>Zębatka zewnętrzna:</translation>
+    </message>
+    <message>
+      <location filename="../../../InvoluteGearFeature.ui" line="179"/>
+      <source>Addendum Coefficient</source>
+      <translation>Współczynnik wysokości głowy zęba</translation>
+    </message>
+    <message>
+      <location filename="../../../InvoluteGearFeature.ui" line="199"/>
+      <source>Dedendum Coefficient</source>
+      <translation>Współczynnik wysokości stopy zęba</translation>
+    </message>
+    <message>
+      <location filename="../../../InvoluteGearFeature.ui" line="219"/>
+      <source>Root Fillet Coefficient</source>
+      <translation>Główny współczynnik zaokrąglenia</translation>
     </message>
   </context>
   <context>
@@ -1425,7 +1480,7 @@ Jeśli wartość wynosi zero, jest równa wartości promienia 2</translation>
     <message>
       <location filename="../../TaskBooleanParameters.cpp" line="81"/>
       <source>Remove</source>
-      <translation>Skasuj</translation>
+      <translation>Usuń</translation>
     </message>
   </context>
   <context>
@@ -1497,7 +1552,7 @@ kliknij ponownie, aby zakończyć wybór</translation>
     <message>
       <location filename="../../TaskChamferParameters.ui" line="40"/>
       <source>Remove</source>
-      <translation>Skasuj</translation>
+      <translation>Usuń</translation>
     </message>
     <message>
       <location filename="../../TaskChamferParameters.ui" line="52"/>
@@ -1704,7 +1759,7 @@ kliknij ponownie, aby zakończyć wybór</translation>
     <message>
       <location filename="../../TaskDressUpParameters.cpp" line="293"/>
       <source>Remove</source>
-      <translation>Skasuj</translation>
+      <translation>Usuń</translation>
     </message>
     <message>
       <location filename="../../TaskDressUpParameters.cpp" line="303"/>
@@ -1870,7 +1925,7 @@ kliknij ponownie, aby zakończyć wybór</translation>
     <message>
       <location filename="../../TaskFilletParameters.ui" line="40"/>
       <source>Remove</source>
-      <translation>Skasuj</translation>
+      <translation>Usuń</translation>
     </message>
     <message>
       <location filename="../../TaskFilletParameters.ui" line="52"/>
@@ -2166,7 +2221,7 @@ kliknij ponownie, aby zakończyć wybór</translation>
     <message>
       <location filename="../../TaskLinearPatternParameters.cpp" line="108"/>
       <source>Remove</source>
-      <translation>Skasuj</translation>
+      <translation>Usuń</translation>
     </message>
     <message>
       <location filename="../../TaskLinearPatternParameters.cpp" line="336"/>
@@ -2194,7 +2249,7 @@ kliknij ponownie, aby zakończyć wybór</translation>
     <message>
       <location filename="../../TaskLoftParameters.ui" line="34"/>
       <source>Profile</source>
-      <translation>Kontur</translation>
+      <translation>Profil</translation>
     </message>
     <message>
       <location filename="../../TaskLoftParameters.ui" line="42"/>
@@ -2229,7 +2284,7 @@ kliknij ponownie, aby zakończyć wybór</translation>
     <message>
       <location filename="../../TaskLoftParameters.cpp" line="72"/>
       <source>Remove</source>
-      <translation>Skasuj</translation>
+      <translation>Usuń</translation>
     </message>
   </context>
   <context>
@@ -2272,7 +2327,7 @@ kliknij ponownie, aby zakończyć wybór</translation>
     <message>
       <location filename="../../TaskMirroredParameters.cpp" line="101"/>
       <source>Remove</source>
-      <translation>Skasuj</translation>
+      <translation>Usuń</translation>
     </message>
     <message>
       <location filename="../../TaskMirroredParameters.cpp" line="245"/>
@@ -2315,7 +2370,7 @@ kliknij ponownie, aby zakończyć wybór</translation>
     <message>
       <location filename="../../TaskMultiTransformParameters.cpp" line="75"/>
       <source>Remove</source>
-      <translation>Skasuj</translation>
+      <translation>Usuń</translation>
     </message>
     <message>
       <location filename="../../TaskMultiTransformParameters.cpp" line="89"/>
@@ -2611,7 +2666,7 @@ mierzona wzdłuż podanego kierunku</translation>
     <message>
       <location filename="../../TaskPipeOrientation.ui" line="83"/>
       <source>Profile</source>
-      <translation>Kontur</translation>
+      <translation>Profil</translation>
     </message>
     <message>
       <location filename="../../TaskPipeOrientation.ui" line="91"/>
@@ -2656,7 +2711,7 @@ mierzona wzdłuż podanego kierunku</translation>
     <message>
       <location filename="../../TaskPipeParameters.cpp" line="566"/>
       <source>Remove</source>
-      <translation>Skasuj</translation>
+      <translation>Usuń</translation>
     </message>
   </context>
   <context>
@@ -2669,7 +2724,7 @@ mierzona wzdłuż podanego kierunku</translation>
     <message>
       <location filename="../../TaskPipeParameters.ui" line="20"/>
       <source>Profile</source>
-      <translation>Kontur</translation>
+      <translation>Profil</translation>
     </message>
     <message>
       <location filename="../../TaskPipeParameters.ui" line="28"/>
@@ -2720,7 +2775,7 @@ mierzona wzdłuż podanego kierunku</translation>
     <message>
       <location filename="../../TaskPipeParameters.cpp" line="85"/>
       <source>Remove</source>
-      <translation>Skasuj</translation>
+      <translation>Usuń</translation>
     </message>
     <message>
       <location filename="../../TaskPipeParameters.cpp" line="425"/>
@@ -2779,7 +2834,7 @@ mierzona wzdłuż podanego kierunku</translation>
     <message>
       <location filename="../../TaskPipeParameters.cpp" line="824"/>
       <source>Remove</source>
-      <translation>Skasuj</translation>
+      <translation>Usuń</translation>
     </message>
   </context>
   <context>
@@ -2880,7 +2935,7 @@ mierzona wzdłuż podanego kierunku</translation>
     <message>
       <location filename="../../TaskPolarPatternParameters.cpp" line="114"/>
       <source>Remove</source>
-      <translation>Skasuj</translation>
+      <translation>Usuń</translation>
     </message>
     <message>
       <location filename="../../TaskPolarPatternParameters.cpp" line="335"/>
@@ -3008,7 +3063,7 @@ mierzona wzdłuż podanego kierunku</translation>
     <message>
       <location filename="../../TaskScaledParameters.cpp" line="92"/>
       <source>Remove</source>
-      <translation>Skasuj</translation>
+      <translation>Usuń</translation>
     </message>
   </context>
   <context>
@@ -3041,7 +3096,7 @@ mierzona wzdłuż podanego kierunku</translation>
     <message>
       <location filename="../../TaskShapeBinder.cpp" line="132"/>
       <source>Remove</source>
-      <translation>Skasuj</translation>
+      <translation>Usuń</translation>
     </message>
   </context>
   <context>
@@ -4375,7 +4430,7 @@ Migracja będzie możliwa w każdej chwili za pomocą "Projekt części -&gt; Mi
     <message>
       <location filename="../../TaskHoleParameters.ui" line="39"/>
       <source>Profile</source>
-      <translation>Kontur</translation>
+      <translation>Profil</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="62"/>
@@ -4723,12 +4778,12 @@ powyżej 90°: większy promień otworu u dołu</translation>
   <context>
     <name>PartDesign_InvoluteGear</name>
     <message>
-      <location filename="../../../InvoluteGearFeature.py" line="57"/>
+      <location filename="../../../InvoluteGearFeature.py" line="58"/>
       <source>Involute gear...</source>
-      <translation>Przekładnia ewolwentowa ...</translation>
+      <translation>Koło zębate ewolwentowe ...</translation>
     </message>
     <message>
-      <location filename="../../../InvoluteGearFeature.py" line="61"/>
+      <location filename="../../../InvoluteGearFeature.py" line="62"/>
       <source>Creates or edit the involute gear definition.</source>
       <translation>Tworzy lub edytuje przekładnię ewolwentową.</translation>
     </message>

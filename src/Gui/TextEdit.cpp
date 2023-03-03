@@ -35,6 +35,7 @@
 #include "TextEdit.h"
 #include "SyntaxHighlighter.h"
 #include "Tools.h"
+#include <App/Color.h>
 
 
 using namespace Gui;
@@ -291,7 +292,7 @@ void TextEditor::highlightCurrentLine()
     if (!isReadOnly()) {
         QTextEdit::ExtraSelection selection;
         QColor lineColor = d->colormap[QLatin1String("Current line highlight")];
-        unsigned int col = (lineColor.red() << 24) | (lineColor.green() << 16) | (lineColor.blue() << 8);
+        unsigned int col = App::Color::asPackedRGB<QColor>(lineColor);
         ParameterGrp::handle hPrefGrp = getWindowParameter();
         auto value = static_cast<unsigned long>(col);
         value = hPrefGrp->GetUnsigned( "Current line highlight", value);
@@ -456,7 +457,7 @@ void TextEditor::OnChange(Base::Subject<const char*> &rCaller,const char* sReaso
         QMap<QString, QColor>::Iterator it = d->colormap.find(QString::fromLatin1(sReason));
         if (it != d->colormap.end()) {
             QColor color = it.value();
-            unsigned int col = (color.red() << 24) | (color.green() << 16) | (color.blue() << 8);
+            unsigned int col = App::Color::asPackedRGB<QColor>(color);
             auto value = static_cast<unsigned long>(col);
             value = hPrefGrp->GetUnsigned(sReason, value);
             col = static_cast<unsigned int>(value);
@@ -535,8 +536,8 @@ CompletionList::CompletionList(QPlainTextEdit* parent)
     pal.setColor(QPalette::Inactive, QPalette::HighlightedText, pal.color(QPalette::Active, QPalette::HighlightedText));
     parent->setPalette( pal );
 
-    connect(this, SIGNAL(itemActivated(QListWidgetItem *)),
-            this, SLOT(completionItem(QListWidgetItem *)));
+    connect(this, &CompletionList::itemActivated,
+            this, &CompletionList::completionItem);
 }
 
 CompletionList::~CompletionList()

@@ -171,6 +171,8 @@
 #include <Base/Exception.h>
 #include <Base/Placement.h>
 #include <Base/Tools.h>
+#include <Base/Reader.h>
+#include <Base/Writer.h>
 
 #include "TopoShape.h"
 #include "BRepOffsetAPI_MakeOffsetFix.h"
@@ -994,7 +996,7 @@ void TopoShape::exportBrep(std::ostream& out) const
     SS.Write(this->_Shape, out);
 }
 
-void TopoShape::exportBinary(std::ostream& out)
+void TopoShape::exportBinary(std::ostream& out) const
 {
     // See BinTools_FormatVersion of OCCT 7.6
     enum {
@@ -1172,50 +1174,118 @@ Base::BoundBox3d TopoShape::getBoundBox() const
     return box;
 }
 
+namespace {
+bool getShapeProperties(const TopoDS_Shape& shape, GProp_GProps& prop)
+{
+    TopExp_Explorer xpSolid(shape, TopAbs_SOLID);
+    if (xpSolid.More()) {
+        BRepGProp::VolumeProperties(shape, prop);
+        return true;
+    }
+
+    TopExp_Explorer xpFace(shape, TopAbs_FACE);
+    if (xpFace.More()) {
+        BRepGProp::SurfaceProperties(shape, prop);
+        return true;
+    }
+
+    TopExp_Explorer xpEdge(shape, TopAbs_EDGE);
+    if (xpEdge.More()) {
+        BRepGProp::LinearProperties(shape, prop);
+        return true;
+    }
+
+    TopExp_Explorer xpVert(shape, TopAbs_VERTEX);
+    if (xpVert.More()) {
+        gp_Pnt pnts;
+        int count = 0;
+        for (; xpVert.More(); xpVert.Next()) {
+            count++;
+            gp_Pnt pnt = BRep_Tool::Pnt(TopoDS::Vertex(xpVert.Current()));
+            pnts.SetX(pnts.X() + pnt.X());
+            pnts.SetY(pnts.Y() + pnt.Y());
+            pnts.SetZ(pnts.Z() + pnt.Z());
+        }
+
+        pnts.SetX(pnts.X() / count);
+        pnts.SetY(pnts.Y() / count);
+        pnts.SetZ(pnts.Z() / count);
+        prop = GProp_GProps(pnts);
+
+        return true;
+    }
+
+    return false;
+}
+}
+
 bool TopoShape::getCenterOfGravity(Base::Vector3d& center) const
 {
     if (_Shape.IsNull())
         return false;
 
     // Computing of CentreOfMass
-    gp_Pnt pnt;
-
-    if (_Shape.ShapeType() == TopAbs_VERTEX) {
-        pnt = BRep_Tool::Pnt(TopoDS::Vertex(_Shape));
+    GProp_GProps prop;
+    if (getShapeProperties(_Shape, prop)) {
+        gp_Pnt pnt = prop.CentreOfMass();
+        center.Set(pnt.X(), pnt.Y(), pnt.Z());
+        return true;
     }
-    else {
-        GProp_GProps prop;
-        if (_Shape.ShapeType() == TopAbs_EDGE || _Shape.ShapeType() == TopAbs_WIRE) {
-            BRepGProp::LinearProperties(_Shape, prop);
-        }
-        else if (_Shape.ShapeType() == TopAbs_FACE || _Shape.ShapeType() == TopAbs_SHELL) {
-            BRepGProp::SurfaceProperties(_Shape, prop);
+
+    return false;
+}
+
+void TopoShape::Save (Base::Writer& writer) const
+{
+    if(!writer.isForceXML()) {
+        //See SaveDocFile(), RestoreDocFile()
+        // add a filename to the writer's list.  Each file on the list is eventually
+        // processed by SaveDocFile().
+        if (writer.getMode("BinaryBrep")) {
+            writer.Stream() << writer.ind() << "<TopoShape file=\""
+                            << writer.addFile("TopoShape.bin", this)
+                            << "\"/>" << std::endl;
         }
         else {
-            BRepGProp::VolumeProperties(_Shape, prop);
+            writer.Stream() << writer.ind() << "<TopoShape file=\""
+                            << writer.addFile("TopoShape.brp", this)
+                            << "\"/>" << std::endl;
         }
+    }}
 
-        pnt = prop.CentreOfMass();
+void TopoShape::Restore(Base::XMLReader& reader)
+{
+    reader.readElement("TopoShape");
+    std::string file (reader.getAttribute("file") );
+
+    if (!file.empty()) {
+        // add a filename to the writer's list.  Each file on the list is eventually
+        // processed by RestoreDocFile().
+        reader.addFile(file.c_str(),this);
     }
-
-    center.Set(pnt.X(), pnt.Y(), pnt.Z());
-    return true;
 }
 
-void TopoShape::Save (Base::Writer & ) const
+void TopoShape::SaveDocFile (Base::Writer& writer) const
 {
+    if (getShape().IsNull()) {
+        return;
+    }
+    //the writer has already opened a stream with the appropriate filename
+    if (writer.getMode("BinaryBrep")) {
+        exportBinary(writer.Stream());
+    } else {
+        exportBrep(writer.Stream());
+    }
 }
 
-void TopoShape::Restore(Base::XMLReader &)
+void TopoShape::RestoreDocFile(Base::Reader& reader)
 {
-}
-
-void TopoShape::SaveDocFile (Base::Writer &) const
-{
-}
-
-void TopoShape::RestoreDocFile(Base::Reader &)
-{
+    Base::FileInfo brep(reader.getFileName());
+    if (brep.hasExtension("bin")) {
+        importBinary(reader);
+    } else {
+        importBrep(reader);
+    }
 }
 
 unsigned int TopoShape_RefCountShapes(const TopoDS_Shape& aShape)

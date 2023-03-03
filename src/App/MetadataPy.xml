@@ -28,7 +28,10 @@ Copy constructor.
 metadata : App.Metadata\n
 Metadata(file)
 Reads the XML file and provides access to the metadata it specifies.
-file : str\n    XML file name.</UserDocu>
+file : str\n    XML file name.\n
+Metadata(bytes)
+Treats the bytes as UTF-8-encoded XML data and provides access to the metadata it specifies.
+bytes : bytes\n    Python bytes-like object.</UserDocu>
             <DeveloperDocu>Metadata</DeveloperDocu>
         </Documentation>
 

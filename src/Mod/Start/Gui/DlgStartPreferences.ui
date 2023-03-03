@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>482</width>
-    <height>795</height>
+    <width>401</width>
+    <height>690</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -42,10 +42,25 @@
       <string>Contents</string>
      </property>
      <layout class="QGridLayout" name="gridLayout_2">
-      <item row="0" column="0">
-       <widget class="QLabel" name="label_17">
+      <item row="4" column="1">
+       <widget class="Gui::PrefCheckBox" name="checkBox_7">
+        <property name="toolTip">
+         <string>Displays help tips in the Start workbench Documents tab</string>
+        </property>
+        <property name="layoutDirection">
+         <enum>Qt::RightToLeft</enum>
+        </property>
         <property name="text">
-         <string>Show notepad</string>
+         <string/>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>ShowTips</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/Start</cstring>
         </property>
        </widget>
       </item>
@@ -62,6 +77,63 @@
         </property>
         <property name="prefEntry" stdset="0">
          <cstring>ShowNotes</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/Start</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="0">
+       <widget class="QLabel" name="label_17">
+        <property name="text">
+         <string>Show notepad</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="1">
+       <widget class="Gui::PrefFileChooser" name="fileChooser_3">
+        <property name="toolTip">
+         <string>An optional custom folder to be displayed at the bottom of the first page.
+By using &quot;;;&quot; to separate paths, you can add several folders here</string>
+        </property>
+        <property name="mode">
+         <enum>Gui::FileChooser::Directory</enum>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>ShowCustomFolder</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/Start</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="4" column="0">
+       <widget class="QLabel" name="label_19">
+        <property name="text">
+         <string>Show tips</string>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="0">
+       <widget class="QLabel" name="label_14">
+        <property name="text">
+         <string>Show forum</string>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="1">
+       <widget class="Gui::PrefCheckBox" name="checkBox_4">
+        <property name="toolTip">
+         <string>If this is checked, the latest posts from the FreeCAD forum will be displayed on the Activity tab</string>
+        </property>
+        <property name="layoutDirection">
+         <enum>Qt::RightToLeft</enum>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>ShowForum</cstring>
         </property>
         <property name="prefPath" stdset="0">
          <cstring>Mod/Start</cstring>
@@ -104,63 +176,17 @@
         </property>
        </widget>
       </item>
-      <item row="2" column="1">
-       <widget class="Gui::PrefFileChooser" name="fileChooser_3">
-        <property name="toolTip">
-         <string>An optional custom folder to be displayed at the bottom of the first page.
-By using ";;" to separate paths, you can add several folders here</string>
-        </property>
-        <property name="mode">
-         <enum>Gui::FileChooser::Directory</enum>
-        </property>
-        <property name="prefEntry" stdset="0">
-         <cstring>ShowCustomFolder</cstring>
-        </property>
-        <property name="prefPath" stdset="0">
-         <cstring>Mod/Start</cstring>
-        </property>
-       </widget>
-      </item>
-      <item row="3" column="0">
-       <widget class="QLabel" name="label_14">
+      <item row="5" column="0">
+       <widget class="QLabel" name="label_20">
         <property name="text">
-         <string>Show forum</string>
+         <string>Show scrollbars</string>
         </property>
        </widget>
       </item>
-      <item row="3" column="1">
-       <widget class="Gui::PrefCheckBox" name="checkBox_4">
-        <property name="toolTip">
-         <string>If this is checked, the latest posts from the FreeCAD forum will be displayed on the Activity tab</string>
-        </property>
+      <item row="5" column="1">
+       <widget class="Gui::PrefCheckBox" name="checkBox_8">
         <property name="layoutDirection">
          <enum>Qt::RightToLeft</enum>
-        </property>
-        <property name="text">
-         <string/>
-        </property>
-        <property name="prefEntry" stdset="0">
-         <cstring>ShowForum</cstring>
-        </property>
-        <property name="prefPath" stdset="0">
-         <cstring>Mod/Start</cstring>
-        </property>
-       </widget>
-      </item>
-      <item row="4" column="0">
-       <widget class="QLabel" name="label_19">
-        <property name="text">
-         <string>Show tips</string>
-        </property>
-       </widget>
-      </item>
-      <item row="4" column="1">
-       <widget class="Gui::PrefCheckBox" name="checkBox_7">
-        <property name="layoutDirection">
-         <enum>Qt::RightToLeft</enum>
-        </property>
-        <property name="toolTip">
-         <string>Displays help tips in the Start workbench Documents tab</string>
         </property>
         <property name="text">
          <string/>
@@ -169,7 +195,7 @@ By using ";;" to separate paths, you can add several folders here</string>
          <bool>true</bool>
         </property>
         <property name="prefEntry" stdset="0">
-         <cstring>ShowTips</cstring>
+         <cstring>ShowScrollBars</cstring>
         </property>
         <property name="prefPath" stdset="0">
          <cstring>Mod/Start</cstring>

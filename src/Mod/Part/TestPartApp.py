@@ -28,6 +28,7 @@ from FreeCAD import Base
 App = FreeCAD
 
 from parttests.regression_tests import RegressionTests
+from parttests.TopoShapeListTest import TopoShapeListTest
 
 #---------------------------------------------------------------------------
 # define the test cases to test the FreeCAD Part module
@@ -174,6 +175,48 @@ class PartTestBSplineCurve(unittest.TestCase):
     def tearDown(self):
         #closing doc
         FreeCAD.closeDocument("PartTest")
+
+class PartTestCurveToNurbs(unittest.TestCase):
+    def testCircleToNurbs(self):
+        mat = Base.Matrix()
+        mat.rotateX(1)
+        mat.rotateY(1)
+        mat.rotateZ(1)
+
+        circle = Part.Circle()
+        circle.Radius = 5
+
+        circle.transform(mat)
+        nurbs = circle.toNurbs()
+        self.assertEqual(circle.value(0), nurbs.value(0))
+
+        arc = circle.trim(0, 2)
+        nurbs = arc.toNurbs()
+        self.assertEqual(circle.value(0), nurbs.value(0))
+
+        spline = circle.toBSpline()
+        self.assertAlmostEqual(circle.value(0).distanceToPoint(spline.value(0)), 0)
+
+    def testEllipseToNurbs(self):
+        mat = Base.Matrix()
+        mat.rotateX(1)
+        mat.rotateY(1)
+        mat.rotateZ(1)
+
+        ellipse = Part.Ellipse()
+        ellipse.MajorRadius = 5
+        ellipse.MinorRadius = 3
+
+        ellipse.transform(mat)
+        nurbs = ellipse.toNurbs()
+        self.assertEqual(ellipse.value(0), nurbs.value(0))
+
+        arc = ellipse.trim(0, 2)
+        nurbs = arc.toNurbs()
+        self.assertEqual(ellipse.value(0), nurbs.value(0))
+
+        spline = ellipse.toBSpline()
+        self.assertAlmostEqual(ellipse.value(0).distanceToPoint(spline.value(0)), 0)
 
 class PartTestBSplineSurface(unittest.TestCase):
     def testTorusToSpline(self):

@@ -120,9 +120,10 @@ DlgCheckableMessageBox::DlgCheckableMessageBox(QWidget *parent) :
     setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
     m_d->ui.setupUi(this);
     m_d->ui.pixmapLabel->setVisible(false);
-    connect(m_d->ui.buttonBox, SIGNAL(accepted()), this, SLOT(accept()));
-    connect(m_d->ui.buttonBox, SIGNAL(rejected()), this, SLOT(reject()));
-    connect(m_d->ui.buttonBox, SIGNAL(clicked(QAbstractButton*)), this, SLOT(slotClicked(QAbstractButton*)));
+    connect(m_d->ui.buttonBox, &QDialogButtonBox::accepted, this, &DlgCheckableMessageBox::accept);
+    connect(m_d->ui.buttonBox, &QDialogButtonBox::rejected, this, &DlgCheckableMessageBox::reject); 
+    connect(m_d->ui.buttonBox, &QDialogButtonBox::clicked,
+        this, &DlgCheckableMessageBox::slotClicked);
 }
 
 DlgCheckableMessageBox::~DlgCheckableMessageBox()

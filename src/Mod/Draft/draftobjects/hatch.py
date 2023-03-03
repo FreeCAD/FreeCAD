@@ -28,9 +28,10 @@ import FreeCAD as App
 from draftutils.translate import translate, QT_TRANSLATE_NOOP
 from draftgeoutils.general import geomType
 
+from draftobjects.base import DraftObject
 
 
-class Hatch:
+class Hatch(DraftObject):
 
 
     def __init__(self,obj):
@@ -76,23 +77,19 @@ class Hatch:
 
     def execute(self,obj):
 
+        if self.props_changed_placement_only() \
+                or not obj.Base \
+                or not obj.File \
+                or not obj.Pattern \
+                or not obj.Scale \
+                or not obj.Pattern in self.getPatterns(obj.File) \
+                or not obj.Base.isDerivedFrom("Part::Feature") \
+                or not obj.Base.Shape.Faces:
+            self.props_changed_clear()
+            return
+
         import Part
         import TechDraw
-
-        if not obj.Base:
-            return
-        if not obj.File:
-            return
-        if not obj.Pattern:
-            return
-        if not obj.Scale:
-            return
-        if not obj.Pattern in self.getPatterns(obj.File):
-            return
-        if not obj.Base.isDerivedFrom("Part::Feature"):
-            return
-        if not obj.Base.Shape.Faces:
-            return
 
         shapes = []
         for face in obj.Base.Shape.Faces:
@@ -132,6 +129,11 @@ class Hatch:
                 shapes.append(shape)
         if shapes:
             obj.Shape = Part.makeCompound(shapes)
+        self.props_changed_clear()
+
+    def onChanged(self, obj, prop):
+
+        self.props_changed_store(prop)
 
     def getPatterns(self,filename):
 

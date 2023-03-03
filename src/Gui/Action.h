@@ -161,6 +161,12 @@ public Q_SLOTS:
     void onActivated (QAction*);
     void onHovered   (QAction*);
 
+Q_SIGNALS:
+    /// When drop down menu is enabled, the signal is triggered just before hiding the menu
+    void aboutToHide(QMenu*);
+    /// When drop down menu is enabled, the signal is triggered just before showing the menu
+    void aboutToShow(QMenu*);
+
 private:
     QActionGroup* _group;
     bool _dropDown;

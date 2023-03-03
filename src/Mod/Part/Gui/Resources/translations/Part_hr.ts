@@ -85,7 +85,7 @@
       <location filename="../../AttacherTexts.cpp" line="329"/>
       <source>Revolve</source>
       <comment>Attacher reference type</comment>
-      <translation>Oblik generiran okretanjem</translation>
+      <translation>Zakreni</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="330"/>
@@ -1481,7 +1481,7 @@ na njihove X, Y ,Z komponente.</translation>
     <message>
       <location filename="../../Command.cpp" line="804"/>
       <source>Compound tools: working with lists of shapes.</source>
-      <translation>Alati složenih materijala: rad s popisima oblika.</translation>
+      <translation>Alati složenih materijala: rad s listama oblika.</translation>
     </message>
   </context>
   <context>
@@ -1534,8 +1534,8 @@ na njihove X, Y ,Z komponente.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="686"/>
-      <source>Shape splitting tools. Compsolid creation tools. OCC 6.9.0 or later is required.</source>
-      <translation>Alat podjele oblika. Compsolid alati za stvaranje. OCC 6.9.0 ili kasnije je potrebno.</translation>
+      <source>Shape splitting and Compsolid creation tools.</source>
+      <translation type="unfinished">Shape splitting and Compsolid creation tools.</translation>
     </message>
   </context>
   <context>
@@ -1919,7 +1919,7 @@ na njihove X, Y ,Z komponente.</translation>
     <message>
       <location filename="../../CommandSimple.cpp" line="133"/>
       <source>Create selectable points object from selected mesh object</source>
-      <translation>Iz odabranog mrežnog objekta Izradite izabirite točke objekt 
+      <translation>Iz odabranog objekta mreže izradite objekt selektiranih točaka
 </translation>
     </message>
   </context>
@@ -2013,12 +2013,12 @@ projekcije.</translation>
     <message>
       <location filename="../../Command.cpp" line="1426"/>
       <source>Revolve...</source>
-      <translation>Oblik generiran okretanjem ...</translation>
+      <translation>Zakreni...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1427"/>
       <source>Revolve a selected shape</source>
-      <translation>Generiraj oblik okretanjem</translation>
+      <translation>Zakreće odabrani oblik</translation>
     </message>
   </context>
   <context>
@@ -2156,12 +2156,12 @@ projekcije.</translation>
     <message>
       <location filename="../../Command.cpp" line="1635"/>
       <source>Sweep...</source>
-      <translation>Sweep...</translation>
+      <translation>Zamah...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1636"/>
       <source>Utility to sweep</source>
-      <translation>Alat za Sweep</translation>
+      <translation>Alat za zamah</translation>
     </message>
   </context>
   <context>
@@ -2372,7 +2372,7 @@ projekcije.</translation>
     <message>
       <location filename="../../TaskSweep.cpp" line="367"/>
       <source>Sweep</source>
-      <translation>Sweep</translation>
+      <translation>Zamah</translation>
     </message>
     <message>
       <location filename="../../ViewProviderMirror.cpp" line="198"/>
@@ -2976,7 +2976,7 @@ If both lengths are zero, magnitude of direction is used.</source>
     <message>
       <location filename="../../DlgExtrusion.cpp" line="632"/>
       <source>Direction mode is to use an edge, but no edge is linked.</source>
-      <translation>Mod Smjera je, koristiti na rubu, ali nijedan rub nije povezan.</translation>
+      <translation>Način rada Smjera je, koristi rub, ali nijedan rub nije povezan.</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.cpp" line="655"/>
@@ -3555,19 +3555,19 @@ tijekom čitanja datoteke (sporije, ali veći detalji).</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="33"/>
-      <location filename="../../DlgPrimitives.cpp" line="275"/>
+      <location filename="../../DlgPrimitives.cpp" line="274"/>
       <source>Plane</source>
       <translation>Površina</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="42"/>
-      <location filename="../../DlgPrimitives.cpp" line="351"/>
+      <location filename="../../DlgPrimitives.cpp" line="349"/>
       <source>Box</source>
       <translation>Kutija</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="51"/>
-      <location filename="../../DlgPrimitives.cpp" line="442"/>
+      <location filename="../../DlgPrimitives.cpp" line="439"/>
       <source>Cylinder</source>
       <translation>Valjak</translation>
     </message>
@@ -3579,55 +3579,55 @@ tijekom čitanja datoteke (sporije, ali veći detalji).</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="69"/>
-      <location filename="../../DlgPrimitives.cpp" line="627"/>
+      <location filename="../../DlgPrimitives.cpp" line="626"/>
       <source>Sphere</source>
       <translation>Kugla</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="78"/>
-      <location filename="../../DlgPrimitives.cpp" line="732"/>
+      <location filename="../../DlgPrimitives.cpp" line="730"/>
       <source>Ellipsoid</source>
       <translation>Elipsoid</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="87"/>
-      <location filename="../../DlgPrimitives.cpp" line="840"/>
+      <location filename="../../DlgPrimitives.cpp" line="837"/>
       <source>Torus</source>
       <translation>Zavojnica</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="96"/>
-      <location filename="../../DlgPrimitives.cpp" line="939"/>
+      <location filename="../../DlgPrimitives.cpp" line="935"/>
       <source>Prism</source>
       <translation>Prizma</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="105"/>
-      <location filename="../../DlgPrimitives.cpp" line="1082"/>
+      <location filename="../../DlgPrimitives.cpp" line="1077"/>
       <source>Wedge</source>
       <translation>Klin</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="114"/>
-      <location filename="../../DlgPrimitives.cpp" line="1209"/>
+      <location filename="../../DlgPrimitives.cpp" line="1203"/>
       <source>Helix</source>
       <translation>Spirala</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="123"/>
-      <location filename="../../DlgPrimitives.cpp" line="1299"/>
+      <location filename="../../DlgPrimitives.cpp" line="1292"/>
       <source>Spiral</source>
       <translation>Spirala</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="132"/>
-      <location filename="../../DlgPrimitives.cpp" line="1380"/>
+      <location filename="../../DlgPrimitives.cpp" line="1372"/>
       <source>Circle</source>
       <translation>Krug</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="141"/>
-      <location filename="../../DlgPrimitives.cpp" line="1467"/>
+      <location filename="../../DlgPrimitives.cpp" line="1458"/>
       <source>Ellipse</source>
       <translation>Elipsa</translation>
     </message>
@@ -3638,15 +3638,15 @@ tijekom čitanja datoteke (sporije, ali veći detalji).</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="159"/>
-      <location filename="../../DlgPrimitives.cpp" line="1645"/>
+      <location filename="../../DlgPrimitives.cpp" line="1634"/>
       <source>Line</source>
       <translation>Linija</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="168"/>
-      <location filename="../../DlgPrimitives.cpp" line="1545"/>
+      <location filename="../../DlgPrimitives.cpp" line="1535"/>
       <source>Regular polygon</source>
-      <translation>Pravilni poligon</translation>
+      <translation>Pravilni višekutnik</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="180"/>
@@ -3763,7 +3763,7 @@ tijekom čitanja datoteke (sporije, ali veći detalji).</translation>
       <location filename="../../DlgPrimitives.ui" line="1376"/>
       <location filename="../../DlgPrimitives.ui" line="2418"/>
       <source>Polygon:</source>
-      <translation>Poligon:</translation>
+      <translation>Višekutnik:</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="1399"/>
@@ -3882,25 +3882,25 @@ tijekom čitanja datoteke (sporije, ali veći detalji).</translation>
       <translation>Konačna točka</translation>
     </message>
     <message>
-      <location filename="../../DlgPrimitives.cpp" line="1744"/>
+      <location filename="../../DlgPrimitives.cpp" line="1732"/>
       <source>Vertex</source>
       <translation>Vrh</translation>
     </message>
     <message>
-      <location filename="../../DlgPrimitives.cpp" line="1924"/>
-      <location filename="../../DlgPrimitives.cpp" line="1934"/>
-      <location filename="../../DlgPrimitives.cpp" line="1949"/>
-      <location filename="../../DlgPrimitives.cpp" line="1953"/>
+      <location filename="../../DlgPrimitives.cpp" line="1912"/>
+      <location filename="../../DlgPrimitives.cpp" line="1922"/>
+      <location filename="../../DlgPrimitives.cpp" line="1937"/>
+      <location filename="../../DlgPrimitives.cpp" line="1941"/>
       <source>Create %1</source>
       <translation>Napravi %1</translation>
     </message>
     <message>
-      <location filename="../../DlgPrimitives.cpp" line="1925"/>
+      <location filename="../../DlgPrimitives.cpp" line="1913"/>
       <source>No active document</source>
       <translation>Nema aktivnog dokumenta</translation>
     </message>
     <message>
-      <location filename="../../DlgPrimitives.cpp" line="2228"/>
+      <location filename="../../DlgPrimitives.cpp" line="2216"/>
       <source>&amp;Create</source>
       <translation>&amp;Izradi</translation>
     </message>
@@ -4005,7 +4005,7 @@ tijekom čitanja datoteke (sporije, ali veći detalji).</translation>
     <message>
       <location filename="../../DlgRevolution.ui" line="20"/>
       <source>Revolve</source>
-      <translation>Oblik generiran okretanjem</translation>
+      <translation>Zakreni</translation>
     </message>
     <message>
       <location filename="../../DlgRevolution.ui" line="42"/>
@@ -4121,7 +4121,8 @@ tijekom čitanja datoteke (sporije, ali veći detalji).</translation>
       <source>Creating Revolve failed.
 
 %1</source>
-      <translation>Stvaranje zakretanja nije uspjelo. %1</translation>
+      <translation>Stvaranje zakretanja neuspješno.
+%1</translation>
     </message>
     <message>
       <location filename="../../DlgRevolution.cpp" line="444"/>
@@ -4660,64 +4661,89 @@ u suprotnom koristit će se normalni vektor ravnine skice
     </message>
     <message>
       <location filename="../../SectionCutting.ui" line="254"/>
+      <location filename="../../SectionCutting.ui" line="394"/>
       <source>Color of cut face</source>
       <translation>Boja rezne površine</translation>
     </message>
     <message>
       <location filename="../../SectionCutting.ui" line="257"/>
+      <location filename="../../SectionCutting.ui" line="397"/>
       <source>Color</source>
       <translation>Boja</translation>
     </message>
     <message>
       <location filename="../../SectionCutting.ui" line="302"/>
+      <location filename="../../SectionCutting.ui" line="445"/>
       <source>If checked, the color and transparency
 will be taken from the cut objects.
-Works only if all objects have the same values.</source>
-      <translation>Ako je označeno, boja i prozirnost
-uzet će se iz izrezanih predmeta.
-Radi samo ako svi objekti imaju iste vrijednosti.
-
-</translation>
+Works only properly if all objects
+have the same values.</source>
+      <translation type="unfinished">If checked, the color and transparency
+will be taken from the cut objects.
+Works only properly if all objects
+have the same values.</translation>
     </message>
     <message>
-      <location filename="../../SectionCutting.ui" line="307"/>
+      <location filename="../../SectionCutting.ui" line="308"/>
+      <location filename="../../SectionCutting.ui" line="451"/>
       <source>Auto</source>
       <translation>Automatski</translation>
     </message>
     <message>
-      <location filename="../../SectionCutting.ui" line="329"/>
+      <location filename="../../SectionCutting.ui" line="330"/>
+      <location filename="../../SectionCutting.ui" line="473"/>
       <source>Transparency of cut face</source>
       <translation>Prozirnost rezne površine</translation>
     </message>
     <message>
-      <location filename="../../SectionCutting.ui" line="332"/>
+      <location filename="../../SectionCutting.ui" line="333"/>
+      <location filename="../../SectionCutting.ui" line="476"/>
       <source>Transparency</source>
       <translation>Prozirnost</translation>
     </message>
     <message>
-      <location filename="../../SectionCutting.ui" line="367"/>
+      <location filename="../../SectionCutting.ui" line="371"/>
+      <source>Allows to cut objects intersecting each other
+for the price that all cut objects
+will get the same color</source>
+      <translation type="unfinished">Allows to cut objects intersecting each other
+for the price that all cut objects
+will get the same color</translation>
+    </message>
+    <message>
+      <location filename="../../SectionCutting.ui" line="376"/>
+      <source>Cut intersecting objects</source>
+      <translation type="unfinished">Cut intersecting objects</translation>
+    </message>
+    <message>
+      <location filename="../../SectionCutting.ui" line="419"/>
+      <source>Color for all objects</source>
+      <translation type="unfinished">Color for all objects</translation>
+    </message>
+    <message>
+      <location filename="../../SectionCutting.ui" line="511"/>
       <source>Refreshes the list of visible objects</source>
       <translation>Osvježava popis vidljivih objekata</translation>
     </message>
     <message>
-      <location filename="../../SectionCutting.ui" line="370"/>
+      <location filename="../../SectionCutting.ui" line="514"/>
       <source>Refresh view</source>
       <translation>Osvježava pogled</translation>
     </message>
     <message>
-      <location filename="../../SectionCutting.ui" line="400"/>
+      <location filename="../../SectionCutting.ui" line="544"/>
       <source>When the dialog is closed,
 only created cuts will be visible</source>
       <translation>Kada se dijaloški okvir zatvori,
 bit će vidljivi samo stvoreni rezovi</translation>
     </message>
     <message>
-      <location filename="../../SectionCutting.ui" line="404"/>
+      <location filename="../../SectionCutting.ui" line="548"/>
       <source>Keep only cuts visible when closing</source>
       <translation>Pri zatvaranju neka budu vidljivi samo rezovi</translation>
     </message>
     <message>
-      <location filename="../../SectionCutting.cpp" line="429"/>
+      <location filename="../../SectionCutting.cpp" line="520"/>
       <source>Sliders are disabled for assemblies</source>
       <translation>Klizači su onemogućeni za sklopove</translation>
     </message>
@@ -4884,13 +4910,13 @@ bit će vidljivi samo stvoreni rezovi</translation>
       <location filename="../../TaskSweep.cpp" line="436"/>
       <location filename="../../TaskSweep.cpp" line="444"/>
       <source>Sweep path</source>
-      <translation>utanja za sweep</translation>
+      <translation>Staza zamaha</translation>
     </message>
     <message>
       <location filename="../../TaskSweep.cpp" line="436"/>
       <location filename="../../TaskSweep.cpp" line="444"/>
       <source>The selected sweep path is invalid.</source>
-      <translation>Odabrani doseg puta je nevažeći.</translation>
+      <translation>Odabrani zamah puta je nevažeći.</translation>
     </message>
     <message>
       <location filename="../../TaskSweep.cpp" line="456"/>
@@ -4900,7 +4926,7 @@ bit će vidljivi samo stvoreni rezovi</translation>
     <message>
       <location filename="../../TaskSweep.cpp" line="457"/>
       <source>Sweep</source>
-      <translation>Sweep</translation>
+      <translation>Zamah</translation>
     </message>
   </context>
   <context>
@@ -5531,12 +5557,12 @@ povlačenjem pravokutnika odabira u 3D prikazu</translation>
     <message>
       <location filename="../../TaskSweep.ui" line="14"/>
       <source>Sweep</source>
-      <translation>Sweep</translation>
+      <translation>Zamah</translation>
     </message>
     <message>
       <location filename="../../TaskSweep.ui" line="23"/>
       <source>Sweep Path</source>
-      <translation>Sweep put</translation>
+      <translation>Staza Zamaha</translation>
     </message>
     <message>
       <location filename="../../TaskSweep.ui" line="53"/>
@@ -5553,7 +5579,7 @@ povlačenjem pravokutnika odabira u 3D prikazu</translation>
       <source>Select one or more profiles and select an edge or wire
 in the 3D view for the sweep path.</source>
       <translation>Odaberi jedan ili više profila i odaberi rub ili žicu
-u 3D pogledu kao putanju za Sweep.</translation>
+u 3D pogledu kao putanju za zamah.</translation>
     </message>
   </context>
   <context>
@@ -5663,21 +5689,21 @@ u 3D pogledu kao putanju za Sweep.</translation>
       <translation>Uređivanje %1</translation>
     </message>
     <message>
-      <location filename="../../AppPartGui.cpp" line="224"/>
+      <location filename="../../AppPartGui.cpp" line="227"/>
       <source>Part and Part Design workbench</source>
       <translation>Radni stol Djelovi i Izrada djelova</translation>
     </message>
     <message>
-      <location filename="../../AppPartGui.cpp" line="225"/>
-      <location filename="../../AppPartGui.cpp" line="226"/>
-      <location filename="../../AppPartGui.cpp" line="227"/>
       <location filename="../../AppPartGui.cpp" line="228"/>
+      <location filename="../../AppPartGui.cpp" line="229"/>
+      <location filename="../../AppPartGui.cpp" line="230"/>
+      <location filename="../../AppPartGui.cpp" line="231"/>
       <source>Part/Part Design</source>
       <translation>Djelovi/Izrada djelova</translation>
     </message>
     <message>
-      <location filename="../../AppPartGui.cpp" line="229"/>
-      <location filename="../../AppPartGui.cpp" line="230"/>
+      <location filename="../../AppPartGui.cpp" line="232"/>
+      <location filename="../../AppPartGui.cpp" line="233"/>
       <source>Import-Export</source>
       <translation>Uvoz / izvoz</translation>
     </message>
@@ -6198,7 +6224,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../../BasicShapes/CommandShapes.py" line="50"/>
       <source>Creates a tube</source>
-      <translation>Pravi cijev</translation>
+      <translation>Pravi jednu cijev</translation>
     </message>
   </context>
   <context>
@@ -6461,7 +6487,7 @@ za koliziju ili filtriranje udaljenosti.</translation>
       <source>Split up a compound of shapes into separate objects.
 It will create a 'Compound Filter' for each shape.</source>
       <translation>Podijelite složeni spoj oblika u zasebne predmete.
-Stvorit će 'Složeni filtar' za svaki oblik.
+Stvorit će 'Filter sastavljanja' za svaki oblik.
 
 </translation>
     </message>

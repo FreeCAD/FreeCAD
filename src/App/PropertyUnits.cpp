@@ -20,9 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
-
 #ifndef _PreComp_
 # include <cfloat>
 #endif
@@ -42,7 +40,6 @@ using namespace std;
 const PropertyQuantityConstraint::Constraints LengthStandard = {0.0,DBL_MAX,1.0};
 const PropertyQuantityConstraint::Constraints AngleStandard = {-360,360,1.0};
 
-//**************************************************************************
 //**************************************************************************
 // PropertyQuantity
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -88,7 +85,6 @@ Base::Quantity PropertyQuantity::createQuantityFromPy(PyObject *value)
     return quant;
 }
 
-
 void PropertyQuantity::setPyObject(PyObject *value)
 {
     // Set the unit if Unit object supplied, else check the unit
@@ -133,12 +129,10 @@ const boost::any PropertyQuantity::getPathValue(const ObjectIdentifier & /*path*
 }
 
 //**************************************************************************
-//**************************************************************************
 // PropertyQuantityConstraint
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 TYPESYSTEM_SOURCE(App::PropertyQuantityConstraint, App::PropertyQuantity)
-
 
 
 void PropertyQuantityConstraint::setConstraints(const Constraints* sConstrain)
@@ -150,7 +144,6 @@ const char* PropertyQuantityConstraint::getEditorName() const
 {
     return "Gui::PropertyEditor::PropertyUnitConstraintItem";
 }
-
 
 const PropertyQuantityConstraint::Constraints*  PropertyQuantityConstraint::getConstraints() const
 {
@@ -203,7 +196,10 @@ void PropertyQuantityConstraint::setPyObject(PyObject *value)
     PropertyFloat::setValue(quant.getValue()); // clazy:exclude=skipped-base-method
 }
 
-//**************************************************************************
+// ------------------------------------------------------
+// now all properties
+// ------------------------------------------------------
+
 //**************************************************************************
 // PropertyAcceleration
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -216,6 +212,16 @@ PropertyAcceleration::PropertyAcceleration()
 }
 
 //**************************************************************************
+// PropertyAmountOfSubstance
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+TYPESYSTEM_SOURCE(App::PropertyAmountOfSubstance, App::PropertyQuantity)
+
+PropertyAmountOfSubstance::PropertyAmountOfSubstance()
+{
+    setUnit(Base::Unit::AmountOfSubstance);
+}
+
 //**************************************************************************
 // PropertyAngle
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -229,7 +235,6 @@ PropertyAngle::PropertyAngle()
 }
 
 //**************************************************************************
-//**************************************************************************
 // PropertyArea
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
@@ -242,6 +247,49 @@ PropertyArea::PropertyArea()
 }
 
 //**************************************************************************
+// PropertyCompressiveStrength
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+TYPESYSTEM_SOURCE(App::PropertyCompressiveStrength, App::PropertyQuantity)
+
+PropertyCompressiveStrength::PropertyCompressiveStrength()
+{
+    setUnit(Base::Unit::CompressiveStrength);
+}
+
+//**************************************************************************
+// PropertyCurrentDensity
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+TYPESYSTEM_SOURCE(App::PropertyCurrentDensity, App::PropertyQuantity)
+
+PropertyCurrentDensity::PropertyCurrentDensity()
+{
+    setUnit(Base::Unit::CurrentDensity);
+}
+
+//**************************************************************************
+// PropertyDensity
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+TYPESYSTEM_SOURCE(App::PropertyDensity, App::PropertyQuantity)
+
+PropertyDensity::PropertyDensity()
+{
+    setUnit(Base::Unit::Density);
+}
+
+//**************************************************************************
+// PropertyDissipationRate
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+TYPESYSTEM_SOURCE(App::PropertyDissipationRate, App::PropertyQuantity)
+
+PropertyDissipationRate::PropertyDissipationRate()
+{
+    setUnit(Base::Unit::DissipationRate);
+}
+
 //**************************************************************************
 // PropertyDistance
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -254,6 +302,93 @@ PropertyDistance::PropertyDistance()
 }
 
 //**************************************************************************
+// PropertyDynamicViscosity
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+TYPESYSTEM_SOURCE(App::PropertyDynamicViscosity, App::PropertyQuantity)
+
+PropertyDynamicViscosity::PropertyDynamicViscosity()
+{
+    setUnit(Base::Unit::DynamicViscosity);
+}
+
+//**************************************************************************
+// PropertyElectricalCapacitance
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+TYPESYSTEM_SOURCE(App::PropertyElectricalCapacitance, App::PropertyQuantity)
+
+PropertyElectricalCapacitance::PropertyElectricalCapacitance()
+{
+    setUnit(Base::Unit::ElectricalCapacitance);
+}
+
+//**************************************************************************
+// PropertyElectricalInductance
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+TYPESYSTEM_SOURCE(App::PropertyElectricalInductance, App::PropertyQuantity)
+
+PropertyElectricalInductance::PropertyElectricalInductance()
+{
+    setUnit(Base::Unit::ElectricalInductance);
+}
+
+//**************************************************************************
+// PropertyElectricalConductance
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+TYPESYSTEM_SOURCE(App::PropertyElectricalConductance, App::PropertyQuantity)
+
+PropertyElectricalConductance::PropertyElectricalConductance()
+{
+    setUnit(Base::Unit::ElectricalConductance);
+}
+
+//**************************************************************************
+// PropertyElectricalConductivity
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+TYPESYSTEM_SOURCE(App::PropertyElectricalConductivity, App::PropertyQuantity)
+
+PropertyElectricalConductivity::PropertyElectricalConductivity()
+{
+    setUnit(Base::Unit::ElectricalConductivity);
+}
+
+//**************************************************************************
+// PropertyElectricalResistance
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+TYPESYSTEM_SOURCE(App::PropertyElectricalResistance, App::PropertyQuantity)
+
+PropertyElectricalResistance::PropertyElectricalResistance()
+{
+    setUnit(Base::Unit::ElectricalResistance);
+}
+
+//**************************************************************************
+// PropertyElectricCharge
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+TYPESYSTEM_SOURCE(App::PropertyElectricCharge, App::PropertyQuantity)
+
+PropertyElectricCharge::PropertyElectricCharge()
+{
+    setUnit(Base::Unit::ElectricCharge);
+}
+
+//**************************************************************************
+// PropertyElectricCurrent
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+TYPESYSTEM_SOURCE(App::PropertyElectricCurrent, App::PropertyQuantity)
+
+PropertyElectricCurrent::PropertyElectricCurrent()
+{
+    setUnit(Base::Unit::ElectricCurrent);
+}
+
 //**************************************************************************
 // PropertyElectricPotential
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -266,7 +401,6 @@ PropertyElectricPotential::PropertyElectricPotential()
 }
 
 //**************************************************************************
-//**************************************************************************
 // PropertyFrequency
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
@@ -277,7 +411,6 @@ PropertyFrequency::PropertyFrequency()
     setUnit(Base::Unit::Frequency);
 }
 
-//**************************************************************************
 //**************************************************************************
 // PropertyForce
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -290,6 +423,60 @@ PropertyForce::PropertyForce()
 }
 
 //**************************************************************************
+// PropertyHeatFlux
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+TYPESYSTEM_SOURCE(App::PropertyHeatFlux, App::PropertyQuantity)
+
+PropertyHeatFlux::PropertyHeatFlux()
+{
+    setUnit(Base::Unit::HeatFlux);
+}
+
+//**************************************************************************
+// PropertyInverseArea
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+TYPESYSTEM_SOURCE(App::PropertyInverseArea, App::PropertyQuantity)
+
+PropertyInverseArea::PropertyInverseArea()
+{
+    setUnit(Base::Unit::InverseArea);
+}
+
+//**************************************************************************
+// PropertyInverseLength
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+TYPESYSTEM_SOURCE(App::PropertyInverseLength, App::PropertyQuantity)
+
+PropertyInverseLength::PropertyInverseLength()
+{
+    setUnit(Base::Unit::InverseLength);
+}
+
+//**************************************************************************
+// PropertyInverseVolume
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+TYPESYSTEM_SOURCE(App::PropertyInverseVolume, App::PropertyQuantity)
+
+PropertyInverseVolume::PropertyInverseVolume()
+{
+    setUnit(Base::Unit::InverseVolume);
+}
+
+//**************************************************************************
+// PropertyKinematicViscosity
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+TYPESYSTEM_SOURCE(App::PropertyKinematicViscosity, App::PropertyQuantity)
+
+PropertyKinematicViscosity::PropertyKinematicViscosity()
+{
+    setUnit(Base::Unit::KinematicViscosity);
+}
+
 //**************************************************************************
 // PropertyLength
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -302,8 +489,72 @@ PropertyLength::PropertyLength()
     setConstraints(&LengthStandard);
 }
 
+//**************************************************************************
+// PropertyLuminousIntensity
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+TYPESYSTEM_SOURCE(App::PropertyLuminousIntensity, App::PropertyQuantity)
+
+PropertyLuminousIntensity::PropertyLuminousIntensity()
+{
+    setUnit(Base::Unit::LuminousIntensity);
+}
 
 //**************************************************************************
+// PropertyMagneticFieldStrength
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+TYPESYSTEM_SOURCE(App::PropertyMagneticFieldStrength, App::PropertyQuantity)
+
+PropertyMagneticFieldStrength::PropertyMagneticFieldStrength()
+{
+    setUnit(Base::Unit::MagneticFieldStrength);
+}
+
+//**************************************************************************
+// PropertyMagneticFlux
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+TYPESYSTEM_SOURCE(App::PropertyMagneticFlux, App::PropertyQuantity)
+
+PropertyMagneticFlux::PropertyMagneticFlux()
+{
+    setUnit(Base::Unit::MagneticFlux);
+}
+
+//**************************************************************************
+// PropertyMagneticFluxDensity
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+TYPESYSTEM_SOURCE(App::PropertyMagneticFluxDensity, App::PropertyQuantity)
+
+PropertyMagneticFluxDensity::PropertyMagneticFluxDensity()
+{
+    setUnit(Base::Unit::MagneticFluxDensity);
+}
+
+//**************************************************************************
+// PropertyMagnetization
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+TYPESYSTEM_SOURCE(App::PropertyMagnetization, App::PropertyQuantity)
+
+PropertyMagnetization::PropertyMagnetization()
+{
+    setUnit(Base::Unit::Magnetization);
+}
+
+//**************************************************************************
+// PropertyMass
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+TYPESYSTEM_SOURCE(App::PropertyMass, App::PropertyQuantity)
+
+PropertyMass::PropertyMass()
+{
+    setUnit(Base::Unit::Mass);
+}
+
 //**************************************************************************
 // PropertyPressure
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -316,6 +567,38 @@ PropertyPressure::PropertyPressure()
 }
 
 //**************************************************************************
+// PropertyPower
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+TYPESYSTEM_SOURCE(App::PropertyPower, App::PropertyQuantity)
+
+PropertyPower::PropertyPower()
+{
+    setUnit(Base::Unit::Power);
+}
+
+//**************************************************************************
+// PropertySpecificEnergy
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+TYPESYSTEM_SOURCE(App::PropertySpecificEnergy, App::PropertyQuantity)
+
+PropertySpecificEnergy::PropertySpecificEnergy()
+{
+    setUnit(Base::Unit::SpecificEnergy);
+}
+
+//**************************************************************************
+// PropertySpecificHeat
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+TYPESYSTEM_SOURCE(App::PropertySpecificHeat, App::PropertyQuantity)
+
+PropertySpecificHeat::PropertySpecificHeat()
+{
+    setUnit(Base::Unit::SpecificHeat);
+}
+
 //**************************************************************************
 // PropertySpeed
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -328,7 +611,6 @@ PropertySpeed::PropertySpeed()
 }
 
 //**************************************************************************
-//**************************************************************************
 // PropertyStiffness
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
@@ -340,6 +622,94 @@ PropertyStiffness::PropertyStiffness()
 }
 
 //**************************************************************************
+// PropertyTemperature
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+TYPESYSTEM_SOURCE(App::PropertyTemperature, App::PropertyQuantity)
+
+PropertyTemperature::PropertyTemperature()
+{
+    setUnit(Base::Unit::Temperature);
+}
+
+//**************************************************************************
+// PropertyThermalConductivity
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+TYPESYSTEM_SOURCE(App::PropertyThermalConductivity, App::PropertyQuantity)
+
+PropertyThermalConductivity::PropertyThermalConductivity()
+{
+    setUnit(Base::Unit::ThermalConductivity);
+}
+
+//**************************************************************************
+// PropertyThermalExpansionCoefficient
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+TYPESYSTEM_SOURCE(App::PropertyThermalExpansionCoefficient, App::PropertyQuantity)
+
+PropertyThermalExpansionCoefficient::PropertyThermalExpansionCoefficient()
+{
+    setUnit(Base::Unit::ThermalExpansionCoefficient);
+}
+
+
+//**************************************************************************
+// PropertyThermalTransferCoefficient
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+TYPESYSTEM_SOURCE(App::PropertyThermalTransferCoefficient, App::PropertyQuantity)
+
+PropertyThermalTransferCoefficient::PropertyThermalTransferCoefficient()
+{
+    setUnit(Base::Unit::ThermalTransferCoefficient);
+}
+
+//**************************************************************************
+// PropertyTime
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+TYPESYSTEM_SOURCE(App::PropertyTime, App::PropertyQuantity)
+
+PropertyTime::PropertyTime()
+{
+    setUnit(Base::Unit::TimeSpan);
+}
+
+//**************************************************************************
+// PropertyShearModulus
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+TYPESYSTEM_SOURCE(App::PropertyShearModulus, App::PropertyQuantity)
+
+PropertyShearModulus::PropertyShearModulus()
+{
+    setUnit(Base::Unit::ShearModulus);
+}
+
+//**************************************************************************
+// PropertyStress
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+TYPESYSTEM_SOURCE(App::PropertyStress, App::PropertyQuantity)
+
+PropertyStress::PropertyStress()
+{
+    setUnit(Base::Unit::Stress);
+}
+
+//**************************************************************************
+// PropertyUltimateTensileStrength
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+TYPESYSTEM_SOURCE(App::PropertyUltimateTensileStrength, App::PropertyQuantity)
+
+PropertyUltimateTensileStrength::PropertyUltimateTensileStrength()
+{
+    setUnit(Base::Unit::UltimateTensileStrength);
+}
+
 //**************************************************************************
 // PropertyVacuumPermittivity
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -352,6 +722,16 @@ PropertyVacuumPermittivity::PropertyVacuumPermittivity()
 }
 
 //**************************************************************************
+// PropertyVelocity
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+TYPESYSTEM_SOURCE(App::PropertyVelocity, App::PropertyQuantity)
+
+PropertyVelocity::PropertyVelocity()
+{
+    setUnit(Base::Unit::Velocity);
+}
+
 //**************************************************************************
 // PropertyVolume
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -362,4 +742,59 @@ PropertyVolume::PropertyVolume()
 {
     setUnit(Base::Unit::Volume);
     setConstraints(&LengthStandard);
+}
+
+//**************************************************************************
+// PropertyVolumeFlowRate
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+TYPESYSTEM_SOURCE(App::PropertyVolumeFlowRate, App::PropertyQuantity)
+
+PropertyVolumeFlowRate::PropertyVolumeFlowRate()
+{
+    setUnit(Base::Unit::VolumeFlowRate);
+}
+
+//**************************************************************************
+// PropertyVolumetricThermalExpansionCoefficient
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+TYPESYSTEM_SOURCE(App::PropertyVolumetricThermalExpansionCoefficient, App::PropertyQuantity)
+
+PropertyVolumetricThermalExpansionCoefficient::PropertyVolumetricThermalExpansionCoefficient()
+{
+    setUnit(Base::Unit::VolumetricThermalExpansionCoefficient);
+}
+
+//**************************************************************************
+// PropertyWork
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+TYPESYSTEM_SOURCE(App::PropertyWork, App::PropertyQuantity)
+
+PropertyWork::PropertyWork()
+{
+    setUnit(Base::Unit::Work);
+}
+
+//**************************************************************************
+// PropertyYieldStrength
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+TYPESYSTEM_SOURCE(App::PropertyYieldStrength, App::PropertyQuantity)
+
+PropertyYieldStrength::PropertyYieldStrength()
+{
+    setUnit(Base::Unit::YieldStrength);
+}
+
+//**************************************************************************
+// PropertyYoungsModulus
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+TYPESYSTEM_SOURCE(App::PropertyYoungsModulus, App::PropertyQuantity)
+
+PropertyYoungsModulus::PropertyYoungsModulus()
+{
+    setUnit(Base::Unit::YoungsModulus);
 }

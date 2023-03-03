@@ -17,6 +17,10 @@ SET (MaterialTools_Files
     materialtools/__init__.py
     materialtools/cardutils.py
 )
+SET (Material_Icon_Files
+    Resources/icons/preview-rendered.svg
+    Resources/icons/preview-vector.svg
+)
 
 # collect all the material cards:
 #FILE( GLOB MaterialLib_Files ./StandardMaterial/*.FCMat ./StandardMaterial/*.txt  )
@@ -37,6 +41,7 @@ SET (MaterialLib_Files
     StandardMaterial/Glass-Generic.FCMat
     StandardMaterial/Glass-S2-GlassFibre.FCMat
     StandardMaterial/Graphite.FCMat
+    StandardMaterial/Iron-Generic.FCMat
     StandardMaterial/Invar-Generic.FCMat
     StandardMaterial/PA6-Generic.FCMat
     StandardMaterial/PET-Generic.FCMat
@@ -138,6 +143,7 @@ SET (MaterialLib_Files
     StandardMaterial/Steel-X5CrNiMo17-12-2.FCMat
     StandardMaterial/Steel-X6CrNiTi18-10.FCMat
     StandardMaterial/TEMPLATE.FCMat
+    StandardMaterial/Ti-6Al-4V.FCMat
     StandardMaterial/Wood-Generic.FCMat
     StandardMaterial/Readme.txt
 )
@@ -147,6 +153,7 @@ SET (FluidMaterial_Files
     FluidMaterial/None.FCMat
     FluidMaterial/Air.FCMat
     FluidMaterial/Argon.FCMat
+    FluidMaterial/Carbon_dioxide.FCMat
     FluidMaterial/Nitrogen.FCMat
     FluidMaterial/Water.FCMat
     FluidMaterial/Readme.md
@@ -157,7 +164,7 @@ ADD_CUSTOM_TARGET(Material ALL
     SOURCES ${Material_SRCS} ${Material_QRC_SRCS}
 )
 
-fc_target_copy_resource(Material 
+fc_target_copy_resource(Material
     ${CMAKE_CURRENT_SOURCE_DIR}
     ${CMAKE_BINARY_DIR}/Mod/Material
     ${Material_SRCS})
@@ -167,13 +174,22 @@ ADD_CUSTOM_TARGET(MaterialToolsLib ALL
     SOURCES ${MaterialTools_Files}
 )
 
-fc_target_copy_resource(MaterialToolsLib 
+ADD_CUSTOM_TARGET(MaterialIconsLib ALL
+    SOURCES ${Material_Icon_Files}
+)
+
+fc_target_copy_resource(MaterialToolsLib
     ${CMAKE_CURRENT_SOURCE_DIR}
     ${CMAKE_BINARY_DIR}/Mod/Material
     ${MaterialTools_Files})
 
-INSTALL(FILES ${MaterialTools_Files} DESTINATION Mod/Material/materialtools)
+fc_target_copy_resource(MaterialIconsLib
+    ${CMAKE_CURRENT_SOURCE_DIR}
+    ${CMAKE_BINARY_DIR}/Mod/Material
+    ${Material_Icon_Files})
 
+INSTALL(FILES ${MaterialTools_Files} DESTINATION Mod/Material/materialtools)
+INSTALL(FILES ${Material_Icon_Files} DESTINATION Mod/Material/Resources/icons)
 
 IF (BUILD_GUI)
     fc_target_copy_resource(Material
@@ -191,11 +207,11 @@ ADD_CUSTOM_TARGET(FluidMaterialLib ALL
 
 # When a target copies files to different output directories then apparently it always builds the project
 # which is very annoying. So, the trick is to split this into two targets to avoid this behaviour.
-fc_target_copy_resource(MaterialLib 
+fc_target_copy_resource(MaterialLib
     ${CMAKE_CURRENT_SOURCE_DIR}
     ${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DATADIR}/Mod/Material
     ${MaterialLib_Files})
-fc_target_copy_resource(FluidMaterialLib 
+fc_target_copy_resource(FluidMaterialLib
     ${CMAKE_CURRENT_SOURCE_DIR}
     ${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DATADIR}/Mod/Material
     ${FluidMaterial_Files})

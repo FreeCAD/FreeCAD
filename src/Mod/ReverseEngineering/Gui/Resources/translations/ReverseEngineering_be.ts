@@ -142,7 +142,7 @@
     <message>
       <location filename="../../Command.cpp" line="375"/>
       <source>Create mesh segments</source>
-      <translation type="unfinished">Create mesh segments</translation>
+      <translation>Стварыць адрэзкі паліганальнай сеткі</translation>
     </message>
   </context>
   <context>
@@ -305,7 +305,7 @@
     <message>
       <location filename="../../FitBSplineSurface.ui" line="238"/>
       <source>Smoothing</source>
-      <translation type="unfinished">Smoothing</translation>
+      <translation>Згладжванне</translation>
     </message>
     <message>
       <location filename="../../FitBSplineSurface.ui" line="247"/>
@@ -412,12 +412,12 @@
     <message>
       <location filename="../../Segmentation.ui" line="14"/>
       <source>Mesh segmentation</source>
-      <translation type="unfinished">Mesh segmentation</translation>
+      <translation>Сегментацыя паліганальнай сеткі</translation>
     </message>
     <message>
       <location filename="../../Segmentation.ui" line="20"/>
       <source>Smooth mesh</source>
-      <translation type="unfinished">Smooth mesh</translation>
+      <translation>Згладзіць паліганальную сетку</translation>
     </message>
     <message>
       <location filename="../../Segmentation.ui" line="37"/>
@@ -437,7 +437,7 @@
     <message>
       <location filename="../../Segmentation.ui" line="80"/>
       <source>Minimum number of faces</source>
-      <translation type="unfinished">Minimum number of faces</translation>
+      <translation>Найменшая колькасць граняў</translation>
     </message>
     <message>
       <location filename="../../Segmentation.ui" line="100"/>
@@ -460,12 +460,12 @@
     <message>
       <location filename="../../SegmentationManual.ui" line="20"/>
       <source>Select</source>
-      <translation type="unfinished">Select</translation>
+      <translation>Абраць</translation>
     </message>
     <message>
       <location filename="../../SegmentationManual.ui" line="41"/>
       <source>Region</source>
-      <translation type="unfinished">Region</translation>
+      <translation>Вобласць</translation>
     </message>
     <message>
       <location filename="../../SegmentationManual.ui" line="61"/>
@@ -475,22 +475,22 @@
     <message>
       <location filename="../../SegmentationManual.ui" line="81"/>
       <source>Components</source>
-      <translation type="unfinished">Components</translation>
+      <translation>Кампаненты</translation>
     </message>
     <message>
       <location filename="../../SegmentationManual.ui" line="88"/>
       <source>&lt; faces than</source>
-      <translation type="unfinished">&lt; faces than</translation>
+      <translation>&lt; чым граней</translation>
     </message>
     <message>
       <location filename="../../SegmentationManual.ui" line="98"/>
       <source>Pick triangle</source>
-      <translation type="unfinished">Pick triangle</translation>
+      <translation>Выберыце трыкутнік</translation>
     </message>
     <message>
       <location filename="../../SegmentationManual.ui" line="105"/>
       <source>Select whole component</source>
-      <translation type="unfinished">Select whole component</translation>
+      <translation>Абярыце ўсе кампаненты</translation>
     </message>
     <message>
       <location filename="../../SegmentationManual.ui" line="112"/>
@@ -514,14 +514,14 @@
       <location filename="../../SegmentationManual.ui" line="188"/>
       <location filename="../../SegmentationManual.ui" line="241"/>
       <source>Tolerance</source>
-      <translation type="unfinished">Tolerance</translation>
+      <translation>Дакладнасць</translation>
     </message>
     <message>
       <location filename="../../SegmentationManual.ui" line="155"/>
       <location filename="../../SegmentationManual.ui" line="208"/>
       <location filename="../../SegmentationManual.ui" line="261"/>
       <source>Minimum number of faces</source>
-      <translation type="unfinished">Minimum number of faces</translation>
+      <translation>Найменшая колькасць граняў</translation>
     </message>
     <message>
       <location filename="../../SegmentationManual.ui" line="175"/>
@@ -536,17 +536,17 @@
     <message>
       <location filename="../../SegmentationManual.ui" line="281"/>
       <source>Region options</source>
-      <translation type="unfinished">Region options</translation>
+      <translation>Налады вобласці</translation>
     </message>
     <message>
       <location filename="../../SegmentationManual.ui" line="287"/>
       <source>Respect only visible triangles</source>
-      <translation type="unfinished">Respect only visible triangles</translation>
+      <translation>Прымаць толькі бачныя трыкутнікі</translation>
     </message>
     <message>
       <location filename="../../SegmentationManual.ui" line="297"/>
       <source>Respect only triangles with normals facing screen</source>
-      <translation type="unfinished">Respect only triangles with normals facing screen</translation>
+      <translation>Прымаць толькі трыкутнікі з павернутымі вектарамі нармалі да экрану</translation>
     </message>
     <message>
       <location filename="../../SegmentationManual.ui" line="310"/>

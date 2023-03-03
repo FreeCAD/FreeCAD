@@ -1176,6 +1176,14 @@ NaviCube* View3DInventorViewer::getNavigationCube() const
     return naviCube;
 }
 
+void View3DInventorViewer::updateNavigationCube()
+{
+    if (naviCube) {
+        delete naviCube;
+        naviCube = new NaviCube(this);
+    }
+}
+
 void View3DInventorViewer::setAxisCross(bool on)
 {
     SoNode* scene = getSceneGraph();
@@ -2166,15 +2174,29 @@ void View3DInventorViewer::setSeekMode(SbBool on)
                                 NavigationStyle::IDLE : NavigationStyle::INTERACT));
 }
 
-void View3DInventorViewer::printDimension()
-{
+SbVec3f View3DInventorViewer::getCenterPointOnFocalPlane() const {
+    SoCamera* cam = getSoRenderManager()->getCamera();
+    if (!cam)
+        return SbVec3f(0. ,0. ,0. );
+
+    SbVec3f direction;
+    cam->orientation.getValue().multVec(SbVec3f(0, 0, -1), direction);
+    return cam->position.getValue() + cam->focalDistance.getValue() * direction;
+}
+
+float View3DInventorViewer::getMaxDimension() const {
+    float fHeight = -1.0;
+    float fWidth = -1.0;
+    getDimensions(fHeight, fWidth);
+    return std::max(fHeight, fWidth);
+}
+
+void View3DInventorViewer::getDimensions(float& fHeight, float& fWidth) const {
     SoCamera* camera = getSoRenderManager()->getCamera();
     if (!camera) // no camera there
         return;
 
     float aspectRatio = getViewportRegion().getViewportAspectRatio();
-    float fHeight = -1.0;
-    float fWidth = -1.0;
 
     SoType type = camera->getTypeId();
     if (type.isDerivedFrom(SoOrthographicCamera::getClassTypeId())) {
@@ -2193,6 +2215,13 @@ void View3DInventorViewer::printDimension()
     else {
         fHeight *= aspectRatio;
     }
+}
+
+void View3DInventorViewer::printDimension()
+{
+    float fHeight = -1.0;
+    float fWidth = -1.0;
+    getDimensions(fHeight, fWidth);
 
     QString dim;
 
@@ -2618,7 +2647,7 @@ void View3DInventorViewer::moveCameraTo(const SbRotation& rot, const SbVec3f& po
     anim.setEndValue(steps);
 
     QEventLoop loop;
-    QObject::connect(&anim, SIGNAL(finished()), &loop, SLOT(quit()));
+    QObject::connect(&anim, &CameraAnimation::finished, &loop, &QEventLoop::quit);
     anim.start();
     loop.exec(QEventLoop::ExcludeUserInputEvents);
 
@@ -2676,7 +2705,7 @@ void View3DInventorViewer::animatedViewAll(int steps, int ms)
     QEventLoop loop;
     QTimer timer;
     timer.setSingleShot(true);
-    QObject::connect(&timer, SIGNAL(timeout()), &loop, SLOT(quit()));
+    QObject::connect(&timer, &QTimer::timeout, &loop, &QEventLoop::quit);
 
     for (int i=0; i<steps; i++) {
         float s = float(i)/float(steps);
@@ -3341,7 +3370,9 @@ SoPath* View3DInventorViewer::pickFilterCB(void* viewer, const SoPickedPoint* pp
         std::string e = vp->getElement(pp->getDetail());
         vp->getSelectionShape(e.c_str());
         static char buf[513];
-        snprintf(buf,512,"Hovered: %s (%f,%f,%f)"
+        snprintf(buf,
+                 sizeof(buf),
+                 "Hovered: %s (%f,%f,%f)"
                  ,e.c_str()
                  ,pp->getPoint()[0]
                  ,pp->getPoint()[1]

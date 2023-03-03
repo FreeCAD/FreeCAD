@@ -623,7 +623,7 @@
     <message>
       <location filename="../../Command.cpp" line="1830"/>
       <source>Split selected mesh into its components</source>
-      <translation>Éclater le maillage sélectionné en composants</translation>
+      <translation>Éclater le maillage sélectionné en ses composants</translation>
     </message>
   </context>
   <context>
@@ -851,7 +851,7 @@
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="1052"/>
       <source>Remove folds</source>
-      <translation>Enlever les plis</translation>
+      <translation>Supprimer des plis</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="1092"/>
@@ -1385,7 +1385,7 @@ Please run the command to repair folds first</source>
     <message>
       <location filename="../../DlgRegularSolid.ui" line="828"/>
       <source>Alt+O</source>
-      <translation>Alt+F</translation>
+      <translation>Alt+O</translation>
     </message>
   </context>
   <context>
@@ -1534,7 +1534,7 @@ sera utilisée soit du noir.</translation>
     <message>
       <location filename="../../DlgSettingsMeshView.ui" line="276"/>
       <source>Show bounding-box for highlighted or selected meshes</source>
-      <translation>Afficher la boîte englobante du maillage mis en évidence ou sélectionné</translation>
+      <translation>Afficher la boîte englobante du maillage sélectionné ou mis en surbrillance</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsMeshView.ui" line="313"/>
@@ -1771,7 +1771,7 @@ Avec l'ombrage à plat les normales de surface ne sont pas définies par un somm
     <message>
       <location filename="../../RemeshGmsh.ui" line="14"/>
       <source>Remesh by Gmsh</source>
-      <translation>Remaillage(remesh) par Gmsh</translation>
+      <translation>Remaillage par Gmsh</translation>
     </message>
     <message>
       <location filename="../../RemeshGmsh.ui" line="26"/>
@@ -1781,17 +1781,17 @@ Avec l'ombrage à plat les normales de surface ne sont pas définies par un somm
     <message>
       <location filename="../../RemeshGmsh.ui" line="32"/>
       <source>Meshing:</source>
-      <translation>Maillage:</translation>
+      <translation>Maillage :</translation>
     </message>
     <message>
       <location filename="../../RemeshGmsh.ui" line="42"/>
       <source>Max element size (0.0 = Auto):</source>
-      <translation>Taille maximale de l'élément (0.0 = Auto):</translation>
+      <translation>Taille maximale de l'élément (0.0 = Auto) :</translation>
     </message>
     <message>
       <location filename="../../RemeshGmsh.ui" line="68"/>
       <source>Min element size (0.0 = Auto):</source>
-      <translation>Taille minimale de l'élément (0.0 = Auto):</translation>
+      <translation>Taille minimale de l'élément (0.0 = Auto) :</translation>
     </message>
     <message>
       <location filename="../../RemeshGmsh.ui" line="94"/>
@@ -1806,7 +1806,7 @@ Avec l'ombrage à plat les normales de surface ne sont pas définies par un somm
     <message>
       <location filename="../../RemeshGmsh.ui" line="134"/>
       <source>Path</source>
-      <translation>Trajectoire</translation>
+      <translation>Parcours</translation>
     </message>
     <message>
       <location filename="../../RemeshGmsh.ui" line="154"/>
@@ -2145,7 +2145,7 @@ Avec l'ombrage à plat les normales de surface ne sont pas définies par un somm
     <message>
       <location filename="../../Command.cpp" line="1577"/>
       <source>Boundings of %1:</source>
-      <translation>Límites de %1:</translation>
+      <translation>Límites de %1 :</translation>
     </message>
   </context>
   <context>

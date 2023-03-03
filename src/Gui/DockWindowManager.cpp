@@ -145,10 +145,10 @@ QDockWidget* DockWindowManager::addDockWindow(const char* name, QWidget* widget,
     default:
         break;
     }
-    connect(dw, SIGNAL(destroyed(QObject*)),
-            this, SLOT(onDockWidgetDestroyed(QObject*)));
-    connect(widget, SIGNAL(destroyed(QObject*)),
-            this, SLOT(onWidgetDestroyed(QObject*)));
+    connect(dw, &QObject::destroyed,
+            this, &DockWindowManager::onDockWidgetDestroyed);
+    connect(widget, &QObject::destroyed,
+            this, &DockWindowManager::onWidgetDestroyed);
 
     // add the widget to the dock widget
     widget->setParent(dw);
@@ -205,10 +205,10 @@ QWidget* DockWindowManager::removeDockWindow(const char* name)
             widget = dw->widget();
             widget->setParent(nullptr);
             dw->setWidget(nullptr);
-            disconnect(dw, SIGNAL(destroyed(QObject*)),
-                       this, SLOT(onDockWidgetDestroyed(QObject*)));
-            disconnect(widget, SIGNAL(destroyed(QObject*)),
-                       this, SLOT(onWidgetDestroyed(QObject*)));
+            disconnect(dw, &QObject::destroyed,
+                       this, &DockWindowManager::onDockWidgetDestroyed);
+            disconnect(widget, &QObject::destroyed,
+                       this, &DockWindowManager::onWidgetDestroyed);
             delete dw; // destruct the QDockWidget, i.e. the parent of the widget
             break;
         }
@@ -231,10 +231,10 @@ void DockWindowManager::removeDockWindow(QWidget* widget)
             // avoid to destruct the embedded widget
             widget->setParent(nullptr);
             dw->setWidget(nullptr);
-            disconnect(dw, SIGNAL(destroyed(QObject*)),
-                       this, SLOT(onDockWidgetDestroyed(QObject*)));
-            disconnect(widget, SIGNAL(destroyed(QObject*)),
-                       this, SLOT(onWidgetDestroyed(QObject*)));
+            disconnect(dw, &QObject::destroyed,
+                       this, &DockWindowManager::onDockWidgetDestroyed);
+            disconnect(widget, &QObject::destroyed,
+                       this, &DockWindowManager::onWidgetDestroyed);
             delete dw; // destruct the QDockWidget, i.e. the parent of the widget
             break;
         }
@@ -427,8 +427,8 @@ void DockWindowManager::onWidgetDestroyed(QObject* widget)
     for (QList<QDockWidget*>::Iterator it = d->_dockedWindows.begin(); it != d->_dockedWindows.end(); ++it) {
         // make sure that the dock widget is not about to being deleted
         if ((*it)->metaObject() != &QDockWidget::staticMetaObject) {
-            disconnect(*it, SIGNAL(destroyed(QObject*)),
-                       this, SLOT(onDockWidgetDestroyed(QObject*)));
+            disconnect(*it, &QObject::destroyed,
+                       this, &DockWindowManager::onDockWidgetDestroyed);
             d->_dockedWindows.erase(it);
             break;
         }

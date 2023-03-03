@@ -347,7 +347,7 @@
       <translation>Задаць уласцівасці клеткі</translation>
     </message>
     <message>
-      <location filename="../../SheetModel.cpp" line="468"/>
+      <location filename="../../SheetModel.cpp" line="510"/>
       <source>Edit cell</source>
       <translation>Змяніць клетку</translation>
     </message>
@@ -373,7 +373,7 @@
       <location filename="../../SheetTableView.cpp" line="632"/>
       <location filename="../../SpreadsheetView.cpp" line="159"/>
       <source>Clear cell(s)</source>
-      <translation>Ачысціць клетку(і)</translation>
+      <translation>Ачысціць клеткі</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="132"/>
@@ -472,7 +472,7 @@ Useful to avoid cyclic dependencies, but use with caution!</source>
     <message>
       <location filename="../../DlgBindSheet.ui" line="147"/>
       <source>Cancel</source>
-      <translation type="unfinished">Cancel</translation>
+      <translation>Скасаваць</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.ui" line="154"/>
@@ -564,7 +564,7 @@ switch the design configuration. The property will be created if not exist.</sou
     <message>
       <location filename="../../DlgSheetConf.ui" line="95"/>
       <source>Cancel</source>
-      <translation type="unfinished">Cancel</translation>
+      <translation>Скасаваць</translation>
     </message>
     <message>
       <location filename="../../DlgSheetConf.ui" line="102"/>
@@ -587,7 +587,7 @@ switch the design configuration. The property will be created if not exist.</sou
     <message>
       <location filename="../../PropertiesDialog.ui" line="33"/>
       <source>Text</source>
-      <translation type="unfinished">Text</translation>
+      <translation>Тэкст</translation>
     </message>
     <message>
       <location filename="../../PropertiesDialog.ui" line="43"/>
@@ -607,7 +607,7 @@ switch the design configuration. The property will be created if not exist.</sou
     <message>
       <location filename="../../PropertiesDialog.ui" line="95"/>
       <source>Left</source>
-      <translation type="unfinished">Left</translation>
+      <translation>Злева</translation>
     </message>
     <message>
       <location filename="../../PropertiesDialog.ui" line="102"/>
@@ -618,7 +618,7 @@ switch the design configuration. The property will be created if not exist.</sou
     <message>
       <location filename="../../PropertiesDialog.ui" line="109"/>
       <source>Right</source>
-      <translation type="unfinished">Right</translation>
+      <translation>Справа</translation>
     </message>
     <message>
       <location filename="../../PropertiesDialog.ui" line="141"/>
@@ -628,12 +628,12 @@ switch the design configuration. The property will be created if not exist.</sou
     <message>
       <location filename="../../PropertiesDialog.ui" line="148"/>
       <source>Top</source>
-      <translation type="unfinished">Top</translation>
+      <translation>Зверху</translation>
     </message>
     <message>
       <location filename="../../PropertiesDialog.ui" line="162"/>
       <source>Bottom</source>
-      <translation type="unfinished">Bottom</translation>
+      <translation>Знізу</translation>
     </message>
     <message>
       <location filename="../../PropertiesDialog.ui" line="188"/>
@@ -687,44 +687,44 @@ switch the design configuration. The property will be created if not exist.</sou
     <message>
       <location filename="../../Command.cpp" line="187"/>
       <source>Import file</source>
-      <translation type="unfinished">Import file</translation>
+      <translation>Імпартаваць файл</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="243"/>
       <source>Export file</source>
-      <translation type="unfinished">Export file</translation>
+      <translation>Экспартаваць файл</translation>
     </message>
     <message>
       <location filename="../../ViewProviderSpreadsheet.cpp" line="129"/>
       <source>Show spreadsheet</source>
-      <translation>Адлюстраваць аркуш</translation>
+      <translation>Паказаць аркуш</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="91"/>
       <location filename="../../Workbench.cpp" line="93"/>
       <source>Set cell(s) foreground color</source>
-      <translation>Задаць колер зместу клеткі(ак)</translation>
+      <translation>Задаць колер зместу клетак</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="92"/>
       <source>Sets the Spreadsheet cell(s) foreground color</source>
-      <translation>Задаць колер зместу клеткі(ак) аркуша</translation>
+      <translation>Задаць колер зместу клетак аркуша</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="106"/>
       <location filename="../../Workbench.cpp" line="108"/>
       <source>Set cell(s) background color</source>
-      <translation>Задаць колер фону клеткі(ак)</translation>
+      <translation>Задаць колер фону клетак</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="107"/>
       <source>Sets the Spreadsheet cell(s) background color</source>
-      <translation>Задаць колер фону клеткі(ак) аркуша</translation>
+      <translation>Задаць колер фону клетак аркуша</translation>
     </message>
     <message>
       <location filename="../../SheetTableView.cpp" line="752"/>
       <source>Copy &amp; Paste failed</source>
-      <translation>Не атрымалася скапіяваць і ўставіць</translation>
+      <translation>Не атрымалася скапіраваць і ўставіць</translation>
     </message>
     <message>
       <location filename="../../SpreadsheetView.cpp" line="426"/>
@@ -746,13 +746,13 @@ Spreadsheet.my_alias_name instead of Spreadsheet.B1</source>
       <location filename="../../qtcolorpicker.cpp" line="412"/>
       <location filename="../../qtcolorpicker.cpp" line="522"/>
       <source>Black</source>
-      <translation type="unfinished">Black</translation>
+      <translation>Чорны</translation>
     </message>
     <message>
       <location filename="../../qtcolorpicker.cpp" line="413"/>
       <location filename="../../qtcolorpicker.cpp" line="523"/>
       <source>White</source>
-      <translation type="unfinished">White</translation>
+      <translation>Белы</translation>
     </message>
     <message>
       <location filename="../../qtcolorpicker.cpp" line="414"/>
@@ -918,41 +918,69 @@ Do you want to continue?</source>
     </message>
     <message>
       <location filename="../../DlgSettings.ui" line="26"/>
+      <source>Display Settings</source>
+      <translation>Налады дысплея</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettings.ui" line="32"/>
+      <source>If checked, use the custom presentation to display cell string.</source>
+      <translation>Калі ўключана, ужывае сваю ўласную прэзентацыю для адлюстравання радка клетак.</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettings.ui" line="35"/>
+      <source>Show alias in cell with format</source>
+      <translation>Паказаць псеўданім у клетцы з фарматам</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettings.ui" line="64"/>
+      <source>The format of the custom cell string presentation.
+Defaults to: %V = %A
+
+%A - alias name
+%V - cell value</source>
+      <translation>Фармат прадстаўлення карыстальніцкага радка клетак.
+Першапачатковае значэнне: %V = %A
+
+%A - імя псеўданіма
+%V - значэнне клеткі</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettings.ui" line="84"/>
       <source>Import/Export Settings</source>
       <translation>Імпарт/Экспарт налад</translation>
     </message>
     <message>
-      <location filename="../../DlgSettings.ui" line="38"/>
+      <location filename="../../DlgSettings.ui" line="96"/>
       <source>Delimiter Character: </source>
       <translation>Знакі падзельнікі: </translation>
     </message>
     <message>
-      <location filename="../../DlgSettings.ui" line="58"/>
+      <location filename="../../DlgSettings.ui" line="116"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Character to use as field delimiter.  Default is tab, but also commonly used are commas (,) and semicolons (;). Select from the list or enter your own in the field. Must be a single character or the words &lt;span style=" font-style:italic;"&gt;tab&lt;/span&gt;, &lt;span style=" font-style:italic;"&gt;comma&lt;/span&gt;, or &lt;span style=" font-style:italic;"&gt;semicolon&lt;/span&gt;.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
       <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Знак, які ўжываецца ў якасці падзельніка палёў. Першапачаткова ўжываецца табуляцыя, але таксама часта ўжываюцца коскі (,) і кропкі з коскай (;). Абярыце з спісу ці ўвядзіце свой уласны падзельнік у поле. Ён павінен складацца з аднаго знака альбо  слоў &lt;span style=" font-style:italic;"&gt;табуляцыя&lt;/span&gt;, &lt;span style=" font-style:italic;"&gt;коска&lt;/span&gt; ці &lt;span style=" font-style:italic;"&gt;кропка з коскай&lt;/span&gt;.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-      <location filename="../../DlgSettings.ui" line="74"/>
+      <location filename="../../DlgSettings.ui" line="132"/>
       <source>tab</source>
       <translation>табуляцыя</translation>
     </message>
     <message>
-      <location filename="../../DlgSettings.ui" line="98"/>
+      <location filename="../../DlgSettings.ui" line="156"/>
       <source>Quote Character: </source>
       <translation>Знак цытаты: </translation>
     </message>
     <message>
-      <location filename="../../DlgSettings.ui" line="105"/>
+      <location filename="../../DlgSettings.ui" line="163"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Character used to delimit strings, typically is single quote (') or double quote (&amp;quot;). Must be a single character.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
       <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Знак, які ўжываецца для падзелу радкоў, звычайна ўяўляе сабой адзінарнае двукоссе (') ці падвоенае двукоссе (&amp;quot;). Павінен складацца з аднаго знака.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-      <location filename="../../DlgSettings.ui" line="130"/>
+      <location filename="../../DlgSettings.ui" line="188"/>
       <source>Escape Character: </source>
       <translation>Знак экранавання: </translation>
     </message>
     <message>
-      <location filename="../../DlgSettings.ui" line="137"/>
+      <location filename="../../DlgSettings.ui" line="195"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Escape character, typically the backslash (\), used to indicate special unprintable characters, e.g. \t = tab. Must be a single character.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
       <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Знак Escape-паслядоўнасці, звычайна гэта зваротная касая рыса (\), ужываецца для абазначэння спецыяльных недрукаваных сімвалаў, напрыклад \t = tab. Павінен складацца з аднаго знака.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
@@ -1098,13 +1126,13 @@ Do you want to continue?</source>
       <location filename="../../SheetTableView.cpp" line="205"/>
       <location filename="../../SheetTableView.cpp" line="618"/>
       <source>Copy</source>
-      <translation type="unfinished">Copy</translation>
+      <translation>Скапіраваць</translation>
     </message>
     <message>
       <location filename="../../SheetTableView.cpp" line="207"/>
       <location filename="../../SheetTableView.cpp" line="619"/>
       <source>Paste</source>
-      <translation type="unfinished">Paste</translation>
+      <translation>Уставіць</translation>
     </message>
     <message>
       <location filename="../../SheetTableView.cpp" line="209"/>
@@ -1118,7 +1146,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../SpreadsheetView.cpp" line="254"/>
       <source>Export PDF</source>
-      <translation type="unfinished">Export PDF</translation>
+      <translation>Экспартаваць у PDF</translation>
     </message>
     <message>
       <location filename="../../SpreadsheetView.cpp" line="255"/>
@@ -1165,7 +1193,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../../App/Spreadsheet_legacy.py" line="751"/>
       <source>Apply</source>
-      <translation type="unfinished">Apply</translation>
+      <translation>Прымяніць</translation>
     </message>
     <message>
       <location filename="../../../App/Spreadsheet_legacy.py" line="753"/>
@@ -1185,7 +1213,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../../App/Spreadsheet_legacy.py" line="759"/>
       <source>Compute</source>
-      <translation type="unfinished">Compute</translation>
+      <translation>Вылічыць</translation>
     </message>
     <message>
       <location filename="../../../App/Spreadsheet_legacy.py" line="761"/>
@@ -1253,7 +1281,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../AppSpreadsheetGui.cpp" line="79"/>
       <source>Unnamed</source>
-      <translation type="unfinished">Unnamed</translation>
+      <translation>Без назвы</translation>
     </message>
   </context>
 </TS>

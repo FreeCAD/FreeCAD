@@ -190,7 +190,7 @@ macro(find_pip_package PACKAGE)
                 STRING(SUBSTRING "${LINE}" 9 -1 PIP_PACKAGE_LOCATION)
             endif()
         endforeach()
-        file(TO_NATIVE_PATH "${PIP_PACKAGE_LOCATION}/${PIP_PACKAGE_NAME}/include" INCLUDE_DIR) 
+        file(TO_NATIVE_PATH "${PIP_PACKAGE_LOCATION}/${PIP_PACKAGE_NAME}/include" INCLUDE_DIR)
         file(TO_NATIVE_PATH "${PIP_PACKAGE_LOCATION}/${PIP_PACKAGE_NAME}/lib" LIBRARY)
         set(${PACKAGE}_INCLUDE_DIRS ${INCLUDE_DIR} PARENT_SCOPE)
         set(${PACKAGE}_LIBRARIES ${LIBRARY} PARENT_SCOPE)
@@ -200,7 +200,7 @@ macro(find_pip_package PACKAGE)
 endmacro()
 
 
-# Macros similar to FindQt4.cmake's WRAP_UI and WRAP_RC, for the automatic generation of Python 
+# Macros similar to FindQt4.cmake's WRAP_UI and WRAP_RC, for the automatic generation of Python
 # code from Qt4's user interface ('.ui') and resource ('.qrc') files. These macros are called:
 # - PYSIDE_WRAP_UI
 # - PYSIDE_WRAP_RC

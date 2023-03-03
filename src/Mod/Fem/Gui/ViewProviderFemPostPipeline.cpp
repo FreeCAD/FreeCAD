@@ -79,16 +79,18 @@ void ViewProviderFemPostPipeline::updateData(const App::Property* prop) {
 
 void ViewProviderFemPostPipeline::updateFunctionSize() {
 
-    //we need to get the bounding box and set the function provider size
+    // we need to get the bounding box and set the function provider size
     Fem::FemPostPipeline* obj = static_cast<Fem::FemPostPipeline*>(getObject());
 
     if (!obj->Functions.getValue()
-        || !obj->Functions.getValue()->isDerivedFrom(Fem::FemPostFunctionProvider::getClassTypeId()))
+        || !obj->Functions.getValue()->isDerivedFrom(
+            Fem::FemPostFunctionProvider::getClassTypeId()))
         return;
 
-    //get the function provider
-    FemGui::ViewProviderFemPostFunctionProvider* vp = static_cast<FemGui::ViewProviderFemPostFunctionProvider*>(
-        Gui::Application::Instance->getViewProvider(obj->Functions.getValue()));
+    // get the function provider
+    FemGui::ViewProviderFemPostFunctionProvider* vp =
+        static_cast<FemGui::ViewProviderFemPostFunctionProvider*>(
+            Gui::Application::Instance->getViewProvider(obj->Functions.getValue()));
 
     if (obj->Data.getValue() && obj->Data.getValue()->IsA("vtkDataSet")) {
         vtkBoundingBox box = obj->getBoundingBox();
@@ -105,8 +107,8 @@ void ViewProviderFemPostPipeline::onSelectionChanged(const Gui::SelectionChanges
         ViewProviderFemAnalysis* analyzeView = nullptr;
         App::DocumentObject* grp = App::GroupExtension::getGroupOfObject(obj);
         if (Fem::FemAnalysis* analyze = Base::freecad_dynamic_cast<Fem::FemAnalysis>(grp)) {
-            analyzeView = Base::freecad_dynamic_cast<ViewProviderFemAnalysis>
-                                                   (Gui::Application::Instance->getViewProvider(analyze));
+            analyzeView = Base::freecad_dynamic_cast<ViewProviderFemAnalysis>(
+                Gui::Application::Instance->getViewProvider(analyze));
         }
         return analyzeView;
     };
@@ -131,7 +133,7 @@ void ViewProviderFemPostPipeline::onSelectionChanged(const Gui::SelectionChanges
 
 void ViewProviderFemPostPipeline::updateColorBars()
 {
-    
+
     // take all visible childs and update its shape coloring
     auto children = claimChildren();
     for (auto& child : children) {
@@ -153,10 +155,9 @@ void ViewProviderFemPostPipeline::transformField(char *FieldName, double FieldFa
     Fem::FemPostPipeline *obj = static_cast<Fem::FemPostPipeline *>(getObject());
 
     vtkSmartPointer<vtkDataObject> data = obj->Data.getValue();
-    if (!data || !data->IsA("vtkDataSet"))
-        return;
-    
     vtkDataSet *dset = vtkDataSet::SafeDownCast(data);
+    if (!dset)
+        return;
     vtkDataArray *pdata = dset->GetPointData()->GetArray(FieldName);
     if (!pdata)
         return;
@@ -182,9 +183,10 @@ void ViewProviderFemPostPipeline::transformField(char *FieldName, double FieldFa
         scaleField(dset, pdata, FieldFactor);
 }
 
-void ViewProviderFemPostPipeline::scaleField(vtkDataSet *dset, vtkDataArray *pdata, double FieldFactor)
+void ViewProviderFemPostPipeline::scaleField(vtkDataSet* dset, vtkDataArray* pdata,
+                                             double FieldFactor)
 {
-    //safe guard
+    // safe guard
     if (!dset || !pdata)
         return;
 

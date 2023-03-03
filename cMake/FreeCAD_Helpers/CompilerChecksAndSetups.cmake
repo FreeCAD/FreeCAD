@@ -53,7 +53,7 @@ macro(CompilerChecksAndSetups)
 
     if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_COMPILER_IS_CLANGXX)
         include(${CMAKE_SOURCE_DIR}/cMake/ConfigureChecks.cmake)
-        configure_file(${CMAKE_SOURCE_DIR}/config.h.cmake ${CMAKE_CURRENT_BINARY_DIR}/config.h)
+        configure_file(${CMAKE_SOURCE_DIR}/src/config.h.cmake ${CMAKE_CURRENT_BINARY_DIR}/config.h)
         add_definitions(-DHAVE_CONFIG_H)
 
         # For now only set pedantic option for clang

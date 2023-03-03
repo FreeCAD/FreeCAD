@@ -253,7 +253,7 @@ def getDefaultIcon():
 
 def buildCard(filename,method,arg=None):
 
-    """builds an html <li> element representing a file. 
+    """builds an html <li> element representing a file.
     method is a script + a keyword, for ex. url.py?key="""
 
     result = ""
@@ -563,6 +563,7 @@ def handle():
     BOXCOLOR  = gethexcolor(p.GetUnsigned("BoxColor",3722305023))
     TEXTCOLOR = gethexcolor(p.GetUnsigned("PageTextColor",255))
     BGTCOLOR = gethexcolor(p.GetUnsigned("BackgroundTextColor",4294703103))
+    OVERFLOW = "" if p.GetBool("ShowScrollBars",True) else "body::-webkit-scrollbar {display: none;}"
     SHADOW = "#888888"
     if QtGui.QColor(BASECOLOR).valueF() < 0.5: # dark page - we need to make darker shadows
         SHADOW = "#000000"
@@ -579,6 +580,7 @@ def handle():
     HTML = HTML.replace("SHADOW",SHADOW)
     HTML = HTML.replace("FONTFAMILY",FONTFAMILY)
     HTML = HTML.replace("FONTSIZE",str(FONTSIZE)+"px")
+    HTML = HTML.replace("OVERFLOW",OVERFLOW)
 
     # enable web access if permitted
 

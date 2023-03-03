@@ -1863,8 +1863,8 @@ void StdViewScreenShot::activated(int iMsg)
         fd.setOptionsWidget(FileOptionsDialog::ExtensionRight, opt);
         fd.setOption(QFileDialog::DontConfirmOverwrite, false);
         opt->onSelectedFilter(fd.selectedNameFilter());
-        QObject::connect(&fd, SIGNAL(filterSelected(const QString&)),
-                         opt, SLOT(onSelectedFilter(const QString&)));
+        QObject::connect(&fd, &FileOptionsDialog::filterSelected,
+                         opt, &DlgSettingsImageImp::onSelectedFilter);
 
         if (fd.exec() == QDialog::Accepted) {
             selFilter = fd.selectedNameFilter();

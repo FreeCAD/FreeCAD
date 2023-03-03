@@ -119,8 +119,8 @@ void DlgSettings3DViewImp::loadSettings()
     index = Base::clamp(index, 0, ui->comboAliasing->count()-1);
     ui->comboAliasing->setCurrentIndex(index);
     // connect after setting current item of the combo box
-    connect(ui->comboAliasing, SIGNAL(currentIndexChanged(int)),
-            this, SLOT(onAliasingChanged(int)));
+    connect(ui->comboAliasing, qOverload<int>(&QComboBox::currentIndexChanged),
+            this, &DlgSettings3DViewImp::onAliasingChanged);
 
     index = hGrp->GetInt("RenderCache", 0);
     ui->renderCache->setCurrentIndex(index);

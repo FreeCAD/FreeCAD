@@ -22,7 +22,7 @@
 
 #include "PreCompiled.h"
 
-#include <App/DocumentObjectPy.h>
+#include <App/GeoFeaturePy.h>
 #include <App/FeaturePythonPyImp.h>
 #include <Base/Placement.h>
 
@@ -39,7 +39,8 @@ PROPERTY_SOURCE(Fem::FemMeshObject, App::GeoFeature)
 FemMeshObject::FemMeshObject()
 {
     ADD_PROPERTY_TYPE(FemMesh,(), "FEM Mesh",Prop_NoRecompute,"FEM Mesh object");
-    // in the regard of recomputes see: https://forum.freecadweb.org/viewtopic.php?f=18&t=33329#p279203
+    // in the regard of recomputes see:
+    // https://forum.freecadweb.org/viewtopic.php?f=18&t=33329#p279203
 }
 
 FemMeshObject::~FemMeshObject()
@@ -55,7 +56,7 @@ PyObject *FemMeshObject::getPyObject()
 {
     if (PythonObject.is(Py::_None())){
         // ref counter is set to 1
-        PythonObject = Py::Object(new DocumentObjectPy(this), true);
+        PythonObject = Py::asObject(new GeoFeaturePy(this));
     }
     return Py::new_reference_to(PythonObject);
 }
@@ -83,7 +84,7 @@ template<> const char* Fem::FemMeshObjectPython::getViewProviderName() const {
 template<> PyObject* Fem::FemMeshObjectPython::getPyObject() {
     if (PythonObject.is(Py::_None())) {
         // ref counter is set to 1
-        PythonObject = Py::Object(new App::FeaturePythonPyT<App::DocumentObjectPy>(this), true);
+        PythonObject = Py::asObject(new App::FeaturePythonPyT<App::GeoFeaturePy>(this));
     }
     return Py::new_reference_to(PythonObject);
 }

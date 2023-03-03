@@ -1321,8 +1321,8 @@ PyObject* SketchObjectPy::addRectangularArray(PyObject *args)
         std::vector<int> geoIdList;
         Py::Sequence list(pcObj);
         for (Py::Sequence::iterator it = list.begin(); it != list.end(); ++it) {
-	    if (PyLong_Check((*it).ptr()))
-		geoIdList.push_back(PyLong_AsLong((*it).ptr()));
+        if (PyLong_Check((*it).ptr()))
+        geoIdList.push_back(PyLong_AsLong((*it).ptr()));
         }
 
         try {

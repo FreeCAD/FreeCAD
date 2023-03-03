@@ -398,7 +398,7 @@ ProgressBar::ProgressBar (SequencerBar* s, QWidget * parent)
     d->minimumDuration = 2000; // 2 seconds
     d->delayShowTimer = new QTimer(this);
     d->delayShowTimer->setSingleShot(true);
-    connect(d->delayShowTimer, SIGNAL(timeout()), this, SLOT(delayedShow()));
+    connect(d->delayShowTimer, &QTimer::timeout, this, &ProgressBar::delayedShow);
     d->observeEventFilter = 0;
 
     setFixedWidth(120);
@@ -410,7 +410,7 @@ ProgressBar::ProgressBar (SequencerBar* s, QWidget * parent)
 
 ProgressBar::~ProgressBar ()
 {
-    disconnect(d->delayShowTimer, SIGNAL(timeout()), this, SLOT(delayedShow()));
+    disconnect(d->delayShowTimer, &QTimer::timeout, this, &ProgressBar::delayedShow);
     delete d->delayShowTimer;
     delete d;
 }

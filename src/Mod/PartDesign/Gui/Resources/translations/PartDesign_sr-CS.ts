@@ -80,6 +80,46 @@ so that self intersection is avoided.</source>
       <translation type="unfinished">If false, the tool will propose an initial value for the pitch based on the profile bounding box,
 so that self intersection is avoided.</translation>
     </message>
+    <message>
+      <location filename="../../../InvoluteGearFeature.py" line="98"/>
+      <source>Number of gear teeth</source>
+      <translation type="unfinished">Number of gear teeth</translation>
+    </message>
+    <message>
+      <location filename="../../../InvoluteGearFeature.py" line="101"/>
+      <source>Modules of the gear</source>
+      <translation type="unfinished">Modules of the gear</translation>
+    </message>
+    <message>
+      <location filename="../../../InvoluteGearFeature.py" line="104"/>
+      <source>Pressure angle of gear teeth</source>
+      <translation type="unfinished">Pressure angle of gear teeth</translation>
+    </message>
+    <message>
+      <location filename="../../../InvoluteGearFeature.py" line="108"/>
+      <source>True=2 curves with each 3 control points False=1 curve with 4 control points.</source>
+      <translation type="unfinished">True=2 curves with each 3 control points False=1 curve with 4 control points.</translation>
+    </message>
+    <message>
+      <location filename="../../../InvoluteGearFeature.py" line="111"/>
+      <source>True=external Gear False=internal Gear</source>
+      <translation type="unfinished">True=external Gear False=internal Gear</translation>
+    </message>
+    <message>
+      <location filename="../../../InvoluteGearFeature.py" line="115"/>
+      <source>The height of the tooth from the pitch circle up to its tip, normalized by the module.</source>
+      <translation type="unfinished">The height of the tooth from the pitch circle up to its tip, normalized by the module.</translation>
+    </message>
+    <message>
+      <location filename="../../../InvoluteGearFeature.py" line="119"/>
+      <source>The height of the tooth from the pitch circle down to its root, normalized by the module.</source>
+      <translation type="unfinished">The height of the tooth from the pitch circle down to its root, normalized by the module.</translation>
+    </message>
+    <message>
+      <location filename="../../../InvoluteGearFeature.py" line="123"/>
+      <source>The radius of the fillet at the root of the tooth, normalized by the module.</source>
+      <translation type="unfinished">The radius of the fillet at the root of the tooth, normalized by the module.</translation>
+    </message>
   </context>
   <context>
     <name>CmdPartDesignAdditiveHelix</name>
@@ -163,7 +203,7 @@ so that self intersection is avoided.</translation>
     <message>
       <location filename="../../Command.cpp" line="2308"/>
       <source>Boolean operation</source>
-      <translation>Bulova operacija</translation>
+      <translation>Bulova Operacija</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2309"/>
@@ -199,7 +239,7 @@ so that self intersection is avoided.</translation>
     <message>
       <location filename="../../Command.cpp" line="1708"/>
       <source>Chamfer</source>
-      <translation>Obori ivice</translation>
+      <translation>Obaranje ivica</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1709"/>
@@ -235,7 +275,7 @@ so that self intersection is avoided.</translation>
     <message>
       <location filename="../../Command.cpp" line="1737"/>
       <source>Draft</source>
-      <translation>Crtež</translation>
+      <translation>Zakošenje</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1738"/>
@@ -704,7 +744,7 @@ so that self intersection is avoided.</translation>
     <message>
       <location filename="../../Command.cpp" line="1796"/>
       <source>Make a thick solid</source>
-      <translation>Napravi tankozidno telo</translation>
+      <translation>Napravi tankozidno puno telo</translation>
     </message>
   </context>
   <context>
@@ -1014,6 +1054,21 @@ so that self intersection is avoided.</translation>
       <location filename="../../../InvoluteGearFeature.ui" line="152"/>
       <source>External gear:</source>
       <translation>Spoljašnji zupčanik:</translation>
+    </message>
+    <message>
+      <location filename="../../../InvoluteGearFeature.ui" line="179"/>
+      <source>Addendum Coefficient</source>
+      <translation type="unfinished">Addendum Coefficient</translation>
+    </message>
+    <message>
+      <location filename="../../../InvoluteGearFeature.ui" line="199"/>
+      <source>Dedendum Coefficient</source>
+      <translation type="unfinished">Dedendum Coefficient</translation>
+    </message>
+    <message>
+      <location filename="../../../InvoluteGearFeature.ui" line="219"/>
+      <source>Root Fillet Coefficient</source>
+      <translation type="unfinished">Root Fillet Coefficient</translation>
     </message>
   </context>
   <context>
@@ -1361,7 +1416,7 @@ nula, onda je jednak poluprečniku 2</translation>
     <message>
       <location filename="../../DlgReference.ui" line="20"/>
       <source>You selected geometries which are not part of the active body. Please define how to handle those selections. If you do not want those references, cancel the command.</source>
-      <translation>Izabrao si geometriju koja nije deo aktivnog tela. Definiši kako postupati sa tim izborom. Ako ne želiš te reference, poništi komandu.</translation>
+      <translation>Izabrao si geometriju koja nije deo aktivnog tela. Definiši kako postupati sa tim izborom. Ako ne želiš te reference, otkaži komandu.</translation>
     </message>
     <message>
       <location filename="../../DlgReference.ui" line="42"/>
@@ -1412,7 +1467,7 @@ nula, onda je jednak poluprečniku 2</translation>
     <message>
       <location filename="../../TaskBooleanParameters.ui" line="53"/>
       <source>Cut</source>
-      <translation>Razlika</translation>
+      <translation>Isecanje</translation>
     </message>
     <message>
       <location filename="../../TaskBooleanParameters.ui" line="58"/>
@@ -3110,7 +3165,7 @@ klikni ponovo da bi završio izbor</translation>
     <message>
       <location filename="../../TaskThicknessParameters.ui" line="112"/>
       <source>Recto Verso</source>
-      <translation>Recto Verso</translation>
+      <translation>Napred-nazad</translation>
     </message>
     <message>
       <location filename="../../TaskThicknessParameters.ui" line="120"/>
@@ -3120,7 +3175,7 @@ klikni ponovo da bi završio izbor</translation>
     <message>
       <location filename="../../TaskThicknessParameters.ui" line="128"/>
       <source>Arc</source>
-      <translation>Zaobljenje</translation>
+      <translation>Kružni luk</translation>
     </message>
     <message>
       <location filename="../../TaskThicknessParameters.ui" line="133"/>
@@ -3548,12 +3603,12 @@ klikni ponovo da bi završio izbor</translation>
     <message>
       <location filename="../../Command.cpp" line="775"/>
       <source>Cannot use this command as there is no solid to subtract from.</source>
-      <translation>Ne može se koristiti ova naredba jer nema tela od kog možemo oduzeti.</translation>
+      <translation>Ne može se koristiti ova naredba jer nema punog tela od kog možemo oduzeti.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="776"/>
       <source>Ensure that the body contains a feature before attempting a subtractive command.</source>
-      <translation>Uveri se da telo sadrži tipski oblik pre nego što pokušaš da primeniš alatku koja pravi udubljenje.</translation>
+      <translation>Uveri se da telo sadrži bar osnovni tipski oblik pre nego što pokušaš da primeniš alatku koja pravi udubljenje.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="797"/>
@@ -3676,7 +3731,7 @@ klikni ponovo da bi završio izbor</translation>
       <location filename="../../CommandBody.cpp" line="158"/>
       <source>The selected shape consists of multiple solids.
 This may lead to unexpected results.</source>
-      <translation>Izabrani oblik se sastoji od više tela.
+      <translation>Izabrani oblik se sastoji od više punih tela.
 Ovo može dovesti do neočekivanih rezultata.</translation>
     </message>
     <message>
@@ -3697,7 +3752,7 @@ Ovo može dovesti do neočekivanih rezultata.</translation>
       <location filename="../../CommandBody.cpp" line="170"/>
       <source>The selected shape consists of multiple solids or shells.
 This may lead to unexpected results.</source>
-      <translation>Izabrani oblik se sastoji od više tela i ljuski tela.
+      <translation>Izabrani oblik se sastoji od više punih tela i ljuski punih tela.
 Ovo može dovesti do neočekivanih rezultata.</translation>
     </message>
     <message>
@@ -3888,7 +3943,7 @@ Ako imaš nasleđeni dokument sa PartDesign objektima bez tela, koristi funkciju
     <message>
       <location filename="../../ViewProvider.cpp" line="78"/>
       <source>Set colors...</source>
-      <translation>Podesi boje...</translation>
+      <translation>Ofarbaj stranice</translation>
     </message>
     <message>
       <location filename="../../ViewProviderBoolean.cpp" line="64"/>
@@ -4725,12 +4780,12 @@ iznad 90: veći poluprečnik rupe na dnu</translation>
   <context>
     <name>PartDesign_InvoluteGear</name>
     <message>
-      <location filename="../../../InvoluteGearFeature.py" line="57"/>
+      <location filename="../../../InvoluteGearFeature.py" line="58"/>
       <source>Involute gear...</source>
       <translation>Evolventno ozubljenje...</translation>
     </message>
     <message>
-      <location filename="../../../InvoluteGearFeature.py" line="61"/>
+      <location filename="../../../InvoluteGearFeature.py" line="62"/>
       <source>Creates or edit the involute gear definition.</source>
       <translation>Napravi ili uređuje definiciju evolventnog zupčanika.</translation>
     </message>

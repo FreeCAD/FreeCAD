@@ -110,8 +110,8 @@ TechDraw::CosmeticVertex* CosmeticExtension::getCosmeticVertexBySelection(std::s
     TechDraw::VertexPtr v = dvp->getProjVertexByIndex(idx);
     if (!v)
         return result;
-    if (!v->cosmeticTag.empty())
-        result = getCosmeticVertex(v->cosmeticTag);
+    if (!v->getCosmeticTag().empty())
+        result = getCosmeticVertex(v->getCosmeticTag());
     return result;
 }
 

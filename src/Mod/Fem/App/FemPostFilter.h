@@ -23,9 +23,12 @@
 #ifndef Fem_FemPostFilter_H
 #define Fem_FemPostFilter_H
 
+#include <vtkContourFilter.h>
 #include <vtkCutter.h>
 #include <vtkExtractGeometry.h>
+#include <vtkExtractVectorComponents.h>
 #include <vtkLineSource.h>
+#include <vtkVectorNorm.h>
 #include <vtkPointSource.h>
 #include <vtkProbeFilter.h>
 #include <vtkSmartPointer.h>
@@ -72,33 +75,15 @@ private:
     std::string m_activePipeline;
 };
 
-class FemExport FemPostClipFilter : public FemPostFilter {
+// ***************************************************************************
+// in the following, the different filters sorted alphabetically
+// ***************************************************************************
 
-    PROPERTY_HEADER_WITH_OVERRIDE(Fem::FemPostClipFilter);
 
-public:
-    FemPostClipFilter();
-    ~FemPostClipFilter() override;
-
-    App::PropertyLink           Function;
-    App::PropertyBool           InsideOut;
-    App::PropertyBool           CutCells;
-
-    const char* getViewProviderName() const override {
-        return "FemGui::ViewProviderFemPostClip";
-    }
-    short int mustExecute() const override;
-    App::DocumentObjectExecReturn* execute() override;
-
-protected:
-    void onChanged(const App::Property* prop) override;
-
-private:
-    vtkSmartPointer<vtkTableBasedClipDataSet>   m_clipper;
-    vtkSmartPointer<vtkExtractGeometry>         m_extractor;
-};
-
-class FemExport FemPostDataAlongLineFilter : public FemPostFilter {
+// ***************************************************************************
+// data along line filter
+class FemExport FemPostDataAlongLineFilter: public FemPostFilter
+{
 
     PROPERTY_HEADER_WITH_OVERRIDE(Fem::FemPostDataAlongLineFilter);
 
@@ -113,8 +98,9 @@ public:
     App::PropertyFloatList      YAxisData;
     App::PropertyString         PlotData;
 
-    const char* getViewProviderName() const override {
-        return "FemGui::ViewProviderFemPostDataAlongLine";
+    const char* getViewProviderName() const override
+    {
+       return "FemGui::ViewProviderFemPostDataAlongLine";
     }
     short int mustExecute() const override;
     void GetAxisData();
@@ -122,16 +108,19 @@ public:
 protected:
     App::DocumentObjectExecReturn* execute() override;
     void onChanged(const App::Property* prop) override;
-    void handleChangedPropertyType(Base::XMLReader& reader, const char* TypeName, App::Property* prop) override;
+    void handleChangedPropertyType(Base::XMLReader& reader, const char* TypeName,
+                                   App::Property* prop) override;
 
 private:
-
-    vtkSmartPointer<vtkLineSource>              m_line;
-    vtkSmartPointer<vtkProbeFilter>             m_probe;
-
+    vtkSmartPointer<vtkLineSource> m_line;
+    vtkSmartPointer<vtkProbeFilter> m_probe;
 };
 
-class FemExport FemPostDataAtPointFilter : public FemPostFilter {
+
+// ***************************************************************************
+// data at point filter
+class FemExport FemPostDataAtPointFilter: public FemPostFilter
+{
 
     PROPERTY_HEADER_WITH_OVERRIDE(Fem::FemPostDataAtPointFilter);
 
@@ -145,8 +134,9 @@ public:
     App::PropertyFloatList        PointData;
     App::PropertyString           Unit;
 
-    const char* getViewProviderName() const override {
-        return "FemGui::ViewProviderFemPostDataAtPoint";
+    const char* getViewProviderName() const override
+    {
+       return "FemGui::ViewProviderFemPostDataAtPoint";
     }
     short int mustExecute() const override;
 
@@ -156,13 +146,115 @@ protected:
     void GetPointData();
 
 private:
-
-    vtkSmartPointer<vtkPointSource>             m_point;
-    vtkSmartPointer<vtkProbeFilter>             m_probe;
-
+    vtkSmartPointer<vtkPointSource> m_point;
+    vtkSmartPointer<vtkProbeFilter> m_probe;
 };
 
-class FemExport FemPostScalarClipFilter : public FemPostFilter {
+
+// ***************************************************************************
+// clip filter
+class FemExport FemPostClipFilter: public FemPostFilter
+{
+
+    PROPERTY_HEADER_WITH_OVERRIDE(Fem::FemPostClipFilter);
+
+public:
+    FemPostClipFilter();
+    ~FemPostClipFilter() override;
+
+    App::PropertyLink Function;
+    App::PropertyBool InsideOut;
+    App::PropertyBool CutCells;
+
+    const char* getViewProviderName() const override
+    {
+       return "FemGui::ViewProviderFemPostClip";
+    }
+    short int mustExecute() const override;
+    App::DocumentObjectExecReturn* execute() override;
+
+protected:
+    void onChanged(const App::Property* prop) override;
+
+private:
+    vtkSmartPointer<vtkTableBasedClipDataSet> m_clipper;
+    vtkSmartPointer<vtkExtractGeometry> m_extractor;
+};
+
+
+// ***************************************************************************
+// contours filter
+class FemExport FemPostContoursFilter: public FemPostFilter
+{
+
+    PROPERTY_HEADER_WITH_OVERRIDE(Fem::FemPostContoursFilter);
+
+public:
+    FemPostContoursFilter();
+    ~FemPostContoursFilter() override;
+
+    App::PropertyEnumeration Field;
+    App::PropertyIntegerConstraint NumberOfContours;
+    App::PropertyEnumeration VectorMode;
+    App::PropertyBool NoColor;
+
+    const char* getViewProviderName() const override
+    {
+        return "FemGui::ViewProviderFemPostContours";
+    }
+    short int mustExecute() const override;
+
+protected:
+    App::DocumentObjectExecReturn* execute() override;
+    void onChanged(const App::Property* prop) override;
+    void recalculateContours(double min, double max);
+    void refreshFields();
+    void refreshVectors();
+    bool m_blockPropertyChanges = false;
+    std::string contourFieldName;
+
+private:
+    vtkSmartPointer<vtkContourFilter> m_contours;
+    vtkSmartPointer<vtkExtractVectorComponents> m_extractor;
+    vtkSmartPointer<vtkVectorNorm> m_norm;
+    App::Enumeration m_fields;
+    App::Enumeration m_vectors;
+    App::PropertyIntegerConstraint::Constraints m_contourConstraints;
+};
+
+
+// ***************************************************************************
+// cut filter
+class FemExport FemPostCutFilter: public FemPostFilter
+{
+
+    PROPERTY_HEADER_WITH_OVERRIDE(Fem::FemPostCutFilter);
+
+public:
+    FemPostCutFilter();
+    ~FemPostCutFilter() override;
+
+    App::PropertyLink Function;
+
+    const char* getViewProviderName() const override
+    {
+        return "FemGui::ViewProviderFemPostCut";
+    }
+    short int mustExecute() const override;
+    App::DocumentObjectExecReturn* execute() override;
+
+protected:
+    void onChanged(const App::Property* prop) override;
+
+private:
+    vtkSmartPointer<vtkCutter> m_cutter;
+};
+
+
+// ***************************************************************************
+// scalar clip filter
+class FemExport FemPostScalarClipFilter: public FemPostFilter
+{
 
     PROPERTY_HEADER_WITH_OVERRIDE(Fem::FemPostScalarClipFilter);
 
@@ -170,11 +262,12 @@ public:
     FemPostScalarClipFilter();
     ~FemPostScalarClipFilter() override;
 
-    App::PropertyBool            InsideOut;
+    App::PropertyBool InsideOut;
     App::PropertyFloatConstraint Value;
-    App::PropertyEnumeration     Scalars;
+    App::PropertyEnumeration Scalars;
 
-    const char* getViewProviderName() const override {
+    const char* getViewProviderName() const override
+    {
         return "FemGui::ViewProviderFemPostScalarClip";
     }
     short int mustExecute() const override;
@@ -185,11 +278,14 @@ protected:
     void setConstraintForField();
 
 private:
-    vtkSmartPointer<vtkTableBasedClipDataSet>   m_clipper;
-    App::Enumeration                            m_scalarFields;
-    App::PropertyFloatConstraint::Constraints   m_constraints;
+    vtkSmartPointer<vtkTableBasedClipDataSet> m_clipper;
+    App::Enumeration m_scalarFields;
+    App::PropertyFloatConstraint::Constraints m_constraints;
 };
 
+
+// ***************************************************************************
+// warp vector filter
 class FemExport FemPostWarpVectorFilter : public FemPostFilter {
 
     PROPERTY_HEADER_WITH_OVERRIDE(Fem::FemPostWarpVectorFilter);
@@ -213,29 +309,6 @@ protected:
 private:
     vtkSmartPointer<vtkWarpVector>   m_warp;
     App::Enumeration                 m_vectorFields;
-};
-
-class FemExport FemPostCutFilter : public FemPostFilter {
-
-    PROPERTY_HEADER_WITH_OVERRIDE(Fem::FemPostCutFilter);
-
-public:
-    FemPostCutFilter();
-    ~FemPostCutFilter() override;
-
-    App::PropertyLink  Function;
-
-    const char* getViewProviderName() const override {
-        return "FemGui::ViewProviderFemPostCut";
-    }
-    short int mustExecute() const override;
-    App::DocumentObjectExecReturn* execute() override;
-
-protected:
-    void onChanged(const App::Property* prop) override;
-
-private:
-    vtkSmartPointer<vtkCutter>   m_cutter;
 };
 
 } //namespace Fem

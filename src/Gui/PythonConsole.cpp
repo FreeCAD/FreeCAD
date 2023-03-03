@@ -36,6 +36,7 @@
 #endif
 
 #include <Base/Interpreter.h>
+#include <App/Color.h>
 
 #include "PythonConsole.h"
 #include "PythonConsolePy.h"
@@ -528,7 +529,7 @@ void PythonConsole::OnChange(Base::Subject<const char*> &rCaller, const char* sR
         QMap<QString, QColor>::Iterator it = d->colormap.find(QString::fromLatin1(sReason));
         if (it != d->colormap.end()) {
             QColor color = it.value();
-            unsigned int col = (color.red() << 24) | (color.green() << 16) | (color.blue() << 8);
+            unsigned int col = App::Color::asPackedRGB<QColor>(color);
             auto value = static_cast<unsigned long>(col);
             value = rGrp.GetUnsigned(sReason, value);
             col = static_cast<unsigned int>(value);
@@ -954,14 +955,13 @@ void PythonConsole::changeEvent(QEvent *e)
     if (e->type() == QEvent::ParentChange) {
         auto dw = qobject_cast<QDockWidget*>(this->parentWidget());
         if (dw) {
-            connect(dw, SIGNAL(visibilityChanged(bool)),
-                    this, SLOT(visibilityChanged(bool)));
+            connect(dw, &QDockWidget::visibilityChanged, this, &PythonConsole::visibilityChanged);
         }
     }
     else if (e->type() == QEvent::StyleChange) {
         QPalette pal = qApp->palette();
         QColor color = pal.windowText().color();
-        unsigned int text = (color.red() << 24) | (color.green() << 16) | (color.blue() << 8);
+        unsigned int text = App::Color::asPackedRGB<QColor>(color);
         auto value = static_cast<unsigned long>(text);
         // if this parameter is not already set use the style's window text color
         value = getWindowParameter()->GetUnsigned("Text", value);
@@ -1312,16 +1312,16 @@ void PythonConsole::contextMenuEvent ( QContextMenuEvent * e )
     QAction *a;
     bool mayPasteHere = cursorBeyond( this->textCursor(), this->inputBegin() );
 
-    a = menu.addAction(tr("&Copy"), this, SLOT(copy()), QKeySequence(QString::fromLatin1("CTRL+C")));
+    a = menu.addAction(tr("&Copy"), this, &PythonConsole::copy, QKeySequence(QString::fromLatin1("CTRL+C")));
     a->setEnabled(textCursor().hasSelection());
 
-    a = menu.addAction(tr("&Copy command"), this, SLOT(onCopyCommand()));
+    a = menu.addAction(tr("&Copy command"), this, &PythonConsole::onCopyCommand);
     a->setEnabled(textCursor().hasSelection());
 
-    a = menu.addAction(tr("&Copy history"), this, SLOT(onCopyHistory()));
+    a = menu.addAction(tr("&Copy history"), this, &PythonConsole::onCopyHistory);
     a->setEnabled(!d->history.isEmpty());
 
-    a = menu.addAction( tr("Save history as..."), this, SLOT(onSaveHistoryAs()));
+    a = menu.addAction( tr("Save history as..."), this, &PythonConsole::onSaveHistoryAs);
     a->setEnabled(!d->history.isEmpty());
 
     QAction* saveh = menu.addAction(tr("Save history"));
@@ -1331,18 +1331,18 @@ void PythonConsole::contextMenuEvent ( QContextMenuEvent * e )
 
     menu.addSeparator();
 
-    a = menu.addAction(tr("&Paste"), this, SLOT(paste()), QKeySequence(QString::fromLatin1("CTRL+V")));
+    a = menu.addAction(tr("&Paste"), this, &PythonConsole::paste, QKeySequence(QString::fromLatin1("CTRL+V")));
     const QMimeData *md = QApplication::clipboard()->mimeData();
     a->setEnabled( mayPasteHere && md && canInsertFromMimeData(md));
 
-    a = menu.addAction(tr("Select All"), this, SLOT(selectAll()), QKeySequence(QString::fromLatin1("CTRL+A")));
+    a = menu.addAction(tr("Select All"), this, &PythonConsole::selectAll, QKeySequence(QString::fromLatin1("CTRL+A")));
     a->setEnabled(!document()->isEmpty());
 
-    a = menu.addAction(tr("Clear console"), this, SLOT(onClearConsole()));
+    a = menu.addAction(tr("Clear console"), this, &PythonConsole::onClearConsole);
     a->setEnabled(!document()->isEmpty());
 
     menu.addSeparator();
-    menu.addAction( tr("Insert file name..."), this, SLOT(onInsertFileName()));
+    menu.addAction( tr("Insert file name..."), this, &PythonConsole::onInsertFileName);
     menu.addSeparator();
 
     QAction* wrap = menu.addAction(tr("Word wrap"));
@@ -1430,7 +1430,7 @@ QString PythonConsole::readline( )
     printPrompt(PythonConsole::Special);
     this->_sourceDrain = &inputBuffer;     //< enable source drain ...
     // ... and wait until we get notified about pendingSource
-    QObject::connect( this, SIGNAL(pendingSource()), &loop, SLOT(quit()) );
+    QObject::connect( this, &PythonConsole::pendingSource, &loop, &QEventLoop::quit);
     // application is about to quit
     if (loop.exec() != 0) {
         PyErr_SetInterrupt();

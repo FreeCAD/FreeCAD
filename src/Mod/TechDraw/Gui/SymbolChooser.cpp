@@ -43,10 +43,10 @@ SymbolChooser::SymbolChooser(QWidget *parent,
     m_source(source)
 {
     ui->setupUi(this);
-    connect(ui->fcSymbolDir, SIGNAL(fileNameChanged(const QString&)),
-            this, SLOT(onDirectoryChanged(const QString&)));
-    connect(ui->lwSymbols, SIGNAL(itemClicked(QListWidgetItem*)),    //double click?
-            this, SLOT(onItemClicked(QListWidgetItem*)));
+    connect(ui->fcSymbolDir, &FileChooser::fileNameChanged,
+            this, &SymbolChooser::onDirectoryChanged);
+    connect(ui->lwSymbols, &QListWidget::itemClicked,    //double click?
+            this, &SymbolChooser::onItemClicked);
 
     setUiPrimary();
 }

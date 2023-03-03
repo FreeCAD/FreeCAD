@@ -128,7 +128,7 @@ MeasureType Measurement::getType()
             }
             catch (Standard_Failure& e) {
                 std::stringstream errorMsg;
-        
+
                 errorMsg << "Measurement - getType - " << e.GetMessageString() << std::endl;
                 throw Base::CADKernelError(e.GetMessageString());
             }

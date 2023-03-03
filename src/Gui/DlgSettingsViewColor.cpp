@@ -21,7 +21,6 @@
  ***************************************************************************/
 
 #include "PreCompiled.h"
-
 #ifndef _PreComp_
 # include <QPushButton>
 #endif
@@ -45,7 +44,8 @@ DlgSettingsViewColor::DlgSettingsViewColor(QWidget* parent)
     ui->setupUi(this);
     ui->HighlightColor->setEnabled(ui->checkBoxPreselection->isChecked());
     ui->SelectionColor->setEnabled(ui->checkBoxSelection->isChecked());
-    connect(ui->SwitchGradientColors, &QPushButton::pressed, this, &DlgSettingsViewColor::onSwitchGradientColorsPressed);
+    connect(ui->SwitchGradientColors, &QPushButton::pressed, this,
+        &DlgSettingsViewColor::onSwitchGradientColorsPressed);
 }
 
 /**

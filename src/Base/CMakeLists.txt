@@ -102,16 +102,10 @@ endif(SWIG_FOUND)
 if (EXISTS ${CMAKE_SOURCE_DIR}/src/zipios++ AND NOT FREECAD_USE_EXTERNAL_ZIPIOS)
 SET(zipios_SRCS
     ../zipios++/backbuffer.h
-    ../zipios++/basicentry.cpp
-    ../zipios++/basicentry.h
     ../zipios++/collcoll.cpp
     ../zipios++/collcoll.h
     ../zipios++/deflateoutputstreambuf.cpp
     ../zipios++/deflateoutputstreambuf.h
-    ../zipios++/dircoll.cpp
-    ../zipios++/dircoll.h
-    ../zipios++/directory.cpp
-    ../zipios++/directory.h
     ../zipios++/fcoll.cpp
     ../zipios++/fcoll.h
     ../zipios++/fcollexceptions.cpp
@@ -200,7 +194,6 @@ SET(FreeCADBase_UNITAPI_SRCS
     Unit.h
     Unit.cpp
     UnitPyImp.cpp
-    
 )
 SOURCE_GROUP("Units" FILES ${FreeCADBase_UNITAPI_SRCS})
 
@@ -229,8 +222,6 @@ SET(FreeCADBase_CPP_SRCS
     FileInfo.cpp
     FileTemplate.cpp
     FutureWatcherProgress.cpp
-    gzstream.cpp
-    gzstream.h
     GeometryPyCXX.cpp
     Handle.cpp
     InputSource.cpp
@@ -300,8 +291,6 @@ SET(FreeCADBase_HPP_SRCS
     FileInfo.h
     FileTemplate.h
     FutureWatcherProgress.h
-    fdstream.hpp
-    gzstream.h
     GeometryPyCXX.h
     Handle.h
     InputSource.h

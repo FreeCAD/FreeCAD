@@ -11,7 +11,7 @@
     <message>
       <location filename="../../Command.cpp" line="101"/>
       <source>Create image plane...</source>
-      <translation>Crear el pla d'imatge...</translation>
+      <translation>Crea el pla d'imatge...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="102"/>

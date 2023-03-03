@@ -6,7 +6,7 @@
     <message>
       <location filename="../../Command.cpp" line="46"/>
       <source>Path</source>
-      <translation>Trajectoire</translation>
+      <translation>Parcours</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="47"/>
@@ -24,7 +24,7 @@
     <message>
       <location filename="../../Command.cpp" line="128"/>
       <source>Path</source>
-      <translation>Trajectoire</translation>
+      <translation>Parcours</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="129"/>
@@ -42,7 +42,7 @@
     <message>
       <location filename="../../Command.cpp" line="218"/>
       <source>Path</source>
-      <translation>Trajectoire</translation>
+      <translation>Parcours</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="219"/>
@@ -60,7 +60,7 @@
     <message>
       <location filename="../../Command.cpp" line="270"/>
       <source>Path</source>
-      <translation>Trajectoire</translation>
+      <translation>Parcours</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="271"/>
@@ -78,12 +78,12 @@
     <message>
       <location filename="../../Command.cpp" line="97"/>
       <source>Create Path Area View</source>
-      <translation>Créer une vue de la zone de la trajectoire</translation>
+      <translation>Créer une vue de la surface</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="106"/>
       <source>Create Path Area</source>
-      <translation>Créer une zone de la trajectoire</translation>
+      <translation>Créer une surface</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="194"/>
@@ -106,7 +106,7 @@
     <message>
       <location filename="../panels/DlgJobCreate.ui" line="14"/>
       <source>Create Job</source>
-      <translation>Créer tâche</translation>
+      <translation>Créer une tâche</translation>
     </message>
     <message>
       <location filename="../panels/DlgJobCreate.ui" line="23"/>
@@ -346,7 +346,7 @@
     <message>
       <location filename="../panels/DlgToolEdit.ui" line="14"/>
       <source>Tool Editor</source>
-      <translation>Éditeur d'outil</translation>
+      <translation>Éditeur d'outils</translation>
     </message>
     <message>
       <location filename="../panels/PropertyCreate.ui" line="14"/>
@@ -660,7 +660,7 @@
     <message>
       <location filename="../panels/DressupPathBoundary.ui" line="216"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Length of the Box.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Longueur de la boite.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Longueur de la boîte.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/DressupPathBoundary.ui" line="223"/>
@@ -670,12 +670,12 @@
     <message>
       <location filename="../panels/DressupPathBoundary.ui" line="230"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Width of the Box.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Largeur de la boite.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Largeur de la boîte.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/DressupPathBoundary.ui" line="244"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Height of the Box.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Hauteur de la boite.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Hauteur de la boîte.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/DressupPathBoundary.ui" line="257"/>
@@ -746,7 +746,7 @@
     <message>
       <location filename="../panels/PageBaseHoleGeometryEdit.ui" line="22"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Table of hole features and the determined radius of the associated hole.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;You can add feature for processing by selecting them and then pressing Add. If a feature is accidentally added to the list it can be removed through Remove and will no longer be processed.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Reset deletes all current items from the list and fills the list with all circular holes eligible for the operation from the model. You can again refine the list afterwards by enabling/disabling, removing and adding features.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Table des caractéristiques de trous et du rayon calculé des trous associé.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Vous pouvez ajouter une fonctionnalité de traitement en les sélectionnant puis en appuyant sur Ajouter. Si une fonctionnalité est ajoutée accidentellement à la liste, elle peut être supprimée par Supprimer et ne sera plus traitée.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Réinitialiser supprime tous les éléments en cours de la liste et remplit la liste avec tous les trous circulaires éligibles pour l'opération du modèle. Vous pouvez à nouveau affiner la liste par la suite en activer/désactiver, supprimer et ajouter des fonctionnalités.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Tableau des fonctions des trous et du rayon défini du trou associé.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Vous pouvez ajouter des fonctions à traiter en les sélectionnant puis en appuyant sur Ajouter. Si une fonction est accidentellement ajoutée à la liste, elle peut être supprimée en appuyant sur Supprimer et ne sera plus traitée.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Réinitialiser supprime tous les éléments en cours de la liste et remplit la liste avec tous les trous circulaires éligibles pour l'opération à partir du modèle. Vous pouvez à nouveau affiner la liste par la suite en activant/désactivant, supprimant et ajoutant des fonctions.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PageBaseHoleGeometryEdit.ui" line="29"/>
@@ -1363,7 +1363,7 @@
     <message>
       <location filename="../panels/PageOpPocketFullEdit.ui" line="70"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Specify if the facing should be restricted by the actual shape of the selected face (or the part if no face is selected), or if the bounding box should be faced off.&lt;/p&gt;&lt;p&gt;The latter can be used to face of the entire stock area to ensure uniform heights for the following operations.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Spécifiez si le parement doit être limité par la forme réelle de la face sélectionnée (ou de la pièce si aucune face n'est sélectionnée), ou si le parement doit être décalé par rapport à la boîte de délimitation&lt;/p&gt;&lt;p&gt;Ce dernier peut être utilisé pour surfacer l'ensemble de la zone du brut afin de garantir des hauteurs uniformes pour les opérations suivantes.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Spécifiez si le parement doit être limité par la forme réelle de la face sélectionnée (ou de la pièce si aucune face n'est sélectionnée) ou si le parement doit être décalé par rapport à la boîte englobante&lt;/p&gt;&lt;p&gt;Ce dernier peut être utilisé pour surfacer l'ensemble de la zone du brut afin de garantir des hauteurs uniformes pour les opérations suivantes.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PageOpPocketFullEdit.ui" line="86"/>
@@ -1748,7 +1748,7 @@
       <location filename="../panels/PageOpSurfaceEdit.ui" line="63"/>
       <location filename="../panels/PageOpWaterlineEdit.ui" line="79"/>
       <source>BoundBox</source>
-      <translation>Boîte de délimitation</translation>
+      <translation>Boîte englobante</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="70"/>
@@ -1806,12 +1806,12 @@
     <message>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="162"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Additional offset to the selected bounding box along the X axis."&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Décalage supplémentaire de la boîte de délimitation sélectionnée le long de l'axe X.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Décalage supplémentaire de la boîte englobante sélectionnée le long de l'axe X.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="172"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Additional offset to the selected bounding box along the Y axis."&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Décalage supplémentaire de la boîte de délimitation sélectionnée le long de l'axe Y.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Décalage supplémentaire de la boîte englobante sélectionnée le long de l'axe Y.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="184"/>
@@ -2274,7 +2274,7 @@
     <message>
       <location filename="../preferences/PathJob.ui" line="44"/>
       <source>Path</source>
-      <translation>Trajectoire</translation>
+      <translation>Parcours</translation>
     </message>
     <message>
       <location filename="../preferences/PathJob.ui" line="51"/>
@@ -2583,12 +2583,12 @@
     <message>
       <location filename="../../DlgSettingsPathColor.ui" line="252"/>
       <source>Bounding Box Normal Color</source>
-      <translation>Couleur normale de la boîte de délimitation</translation>
+      <translation>Couleur normale de la boîte englobante</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsPathColor.ui" line="285"/>
       <source>Bounding Box Selection Color</source>
-      <translation>Couleur de sélection de la boîte de délimitation</translation>
+      <translation>Couleur de la sélection de la boîte englobante</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsPathColor.ui" line="352"/>
@@ -2613,7 +2613,7 @@
     <message>
       <location filename="../../DlgSettingsPathColor.ui" line="389"/>
       <source>Bounding Box</source>
-      <translation>Boîte de délimitation</translation>
+      <translation>Boîte englobante</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsPathColor.ui" line="394"/>
@@ -2755,7 +2755,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/DressUpLeadInOutEdit.ui" line="106"/>
       <source>Extend In:</source>
-      <translation>Étendre dans :</translation>
+      <translation>Plage d'entrée :</translation>
     </message>
     <message>
       <location filename="../panels/DressUpLeadInOutEdit.ui" line="127"/>
@@ -2775,7 +2775,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/DressUpLeadInOutEdit.ui" line="186"/>
       <source>Extend Out:</source>
-      <translation>Étendre :</translation>
+      <translation>Plage de sortie :</translation>
     </message>
     <message>
       <location filename="../panels/DressUpLeadInOutEdit.ui" line="207"/>
@@ -2828,7 +2828,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../../TaskDlgPathCompound.ui" line="20"/>
       <source>Reorder children by dragging and dropping them to their correct location</source>
-      <translation>Réordonnez des enfants en les glissant-déposer à leur emplacement correct</translation>
+      <translation>Réorganiser les enfants en les faisant glisser et en les déposant à leur emplacement correct</translation>
     </message>
   </context>
   <context>
@@ -3119,7 +3119,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/SurfaceEdit.ui" line="51"/>
       <source>Drag to reorder, then update.</source>
-      <translation>Faites glisser pour réorganiser, puis mettez à jour.</translation>
+      <translation>Faire glisser pour réorganiser, puis mettre à jour.</translation>
     </message>
     <message>
       <location filename="../panels/SurfaceEdit.ui" line="67"/>
@@ -3144,7 +3144,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/SurfaceEdit.ui" line="87"/>
       <source>Update the path with the removed and reordered items.</source>
-      <translation>Mettez à jour la trajectoire avec les éléments supprimés et réorganisés.</translation>
+      <translation>Mettre à jour le parcours avec les éléments supprimés et réorganisés.</translation>
     </message>
     <message>
       <location filename="../panels/SurfaceEdit.ui" line="90"/>
@@ -3258,7 +3258,7 @@ p, li { white-space: pre-wrap; }
       <location filename="../panels/TaskPathCamoticsSim.ui" line="14"/>
       <location filename="../panels/TaskPathSimulator.ui" line="14"/>
       <source>Path Simulator</source>
-      <translation>Simulateur de trajectoire</translation>
+      <translation>Simulateur de parcours</translation>
     </message>
     <message>
       <location filename="../panels/TaskPathSimulator.ui" line="35"/>
@@ -3396,7 +3396,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/ToolBitEditor.ui" line="99"/>
       <source>path</source>
-      <translation>trajectoire</translation>
+      <translation>parcours</translation>
     </message>
     <message>
       <location filename="../panels/ToolBitEditor.ui" line="106"/>

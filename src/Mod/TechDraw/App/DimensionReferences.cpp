@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2022 WandererFan <wandererfan@gmail.com                 *
+ *   Copyright (c) 2022 WandererFan <wandererfan@gmail.com>                *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -42,10 +42,10 @@ TopoDS_Shape ReferenceEntry::getGeometry() const
         std::string gType = geomType();
         if (gType == "Vertex") {
             auto vgeom = dvp->getVertex(getSubName());
-            return vgeom->occVertex;
+            return vgeom->getOCCVertex();
         } else if (gType == "Edge") {
             auto egeom = dvp->getEdge(getSubName());
-            return egeom->occEdge;
+            return egeom->getOCCEdge();
         } else if (gType == "Face") {
             auto fgeom = dvp->getFace(getSubName());
             return fgeom->toOccFace();

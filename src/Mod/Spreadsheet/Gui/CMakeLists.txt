@@ -66,6 +66,8 @@ SET(SpreadsheetGui_SRCS
     SpreadsheetDelegate.cpp
     SheetTableView.cpp
     SheetTableView.h
+    SheetTableViewAccessibleInterface.h
+    SheetTableViewAccessibleInterface.cpp
     SheetModel.h
     SheetModel.cpp
     PreCompiled.cpp

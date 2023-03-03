@@ -19,7 +19,7 @@ def cpfile(pathFrom, pathTo, maxfileload=maxfileload):
         #bytesFrom.close()
     else:
         fileFrom = open(pathFrom, 'rb')           # read big files in chunks
-        fileTo   = open(pathTo,   'wb')           # need b mode here too 
+        fileTo   = open(pathTo,   'wb')           # need b mode here too
         while 1:
             bytesFrom = fileFrom.read(blksize)    # get one block, less at end
             if not bytesFrom: break               # empty after last chunk
@@ -97,11 +97,11 @@ def cpallWithFilter(dirFrom, dirTo,MatchList):
 
 ################################################################
 # Use: "python rmall.py directoryPath directoryPath..."
-# recursive directory tree deletion: removes all files and 
+# recursive directory tree deletion: removes all files and
 # directories at and below directoryPaths; recurs into subdirs
-# and removes parent dir last, because os.rmdir requires that 
-# directory is empty; like a Unix "rm -rf directoryPath" 
-################################################################ 
+# and removes parent dir last, because os.rmdir requires that
+# directory is empty; like a Unix "rm -rf directoryPath"
+################################################################
 
 fcount = dcount = 0
 

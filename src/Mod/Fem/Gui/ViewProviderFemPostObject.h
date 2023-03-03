@@ -28,6 +28,7 @@
 #include <Mod/Fem/FemGlobal.h>
 
 #include <vtkAppendPolyData.h>
+#include <vtkDataObject.h>
 #include <vtkExtractEdges.h>
 #include <vtkGeometryFilter.h>
 #include <vtkOutlineCornerFilter.h>
@@ -103,7 +104,7 @@ public:
     // handling when object is deleted
     bool onDelete(const std::vector<std::string>&) override;
     bool canDelete(App::DocumentObject* obj) const override;
-    virtual void onSelectionChanged(const Gui::SelectionChanges &sel);
+    virtual void onSelectionChanged(const Gui::SelectionChanges& sel);
 
       /** @name Selection handling
       * This group of methods do the selection handling.
@@ -137,7 +138,7 @@ protected:
     SoNormalBinding*            m_normalBinding;
     SoNormal*                   m_normals;
     SoDrawStyle*                m_drawStyle;
-    SoSeparator*                m_seperator;
+    SoSeparator*                m_separator;
     Gui::SoFCColorBar*          m_colorBar;
     SoSeparator*                m_colorRoot;
     SoDrawStyle*                m_colorStyle;
@@ -150,12 +151,14 @@ protected:
     vtkSmartPointer<vtkVertexGlyphFilter>       m_points, m_pointsSurface;
 
 private:
+    void filterArtifacts(vtkDataSet* data);
     void updateProperties();
     void update3D();
     void WritePointData(vtkPoints *points, vtkDataArray *normals,
                         vtkDataArray *tcoords);
     void WriteColorData(bool ResetColorBarRange);
     void WriteTransparency();
+    void addAbsoluteField(vtkDataSet* dset, std::string FieldName);
 
     App::Enumeration m_coloringEnum, m_vectorEnum;
     bool m_blockPropertyChanges;

@@ -129,13 +129,13 @@ Model::Model(QObject *parentIn, const Gui::Document &documentIn) : QGraphicsScen
 #ifndef Q_OS_MAC
   renameAction->setShortcut(Qt::Key_F2);
 #endif
-  connect(renameAction, SIGNAL(triggered()), this, SLOT(onRenameSlot()));
+  connect(renameAction, &QAction::triggered, this, &Model::renameAcceptedSlot);
 
   editingFinishedAction = new QAction(this);
   editingFinishedAction->setText(tr("Finish editing"));
   editingFinishedAction->setStatusTip(tr("Finish editing object"));
-  connect(this->editingFinishedAction, SIGNAL(triggered()),
-          this, SLOT(editingFinishedSlot()));
+  connect(this->editingFinishedAction, &QAction::triggered,
+          this, &Model::editingFinishedSlot);
 
   connectNewObject = documentIn.signalNewObject.connect(boost::bind(&Model::slotNewObject, this, bp::_1));
   connectDelObject = documentIn.signalDeletedObject.connect(boost::bind(&Model::slotDeleteObject, this, bp::_1));
@@ -1102,14 +1102,14 @@ void Model::onRenameSlot()
   auto lineEdit = new LineEdit();
   auto text = (*theGraph)[selections.front()].text.get();
   lineEdit->setText(text->toPlainText());
-  connect(lineEdit, SIGNAL(acceptedSignal()), this, SLOT(renameAcceptedSlot()));
-  connect(lineEdit, SIGNAL(rejectedSignal()), this, SLOT(renameRejectedSlot()));
+  connect(lineEdit, &LineEdit::acceptedSignal, this, &Model::renameAcceptedSlot);
+  connect(lineEdit, &LineEdit::rejectedSignal, this, &Model::renameRejectedSlot);
 
   proxy = this->addWidget(lineEdit);
   proxy->setGeometry(text->sceneBoundingRect());
 
   lineEdit->selectAll();
-  QTimer::singleShot(0, lineEdit, SLOT(setFocus()));
+  QTimer::singleShot(0, lineEdit, qOverload<>(&QLineEdit::setFocus));
 }
 
 void Model::renameAcceptedSlot()

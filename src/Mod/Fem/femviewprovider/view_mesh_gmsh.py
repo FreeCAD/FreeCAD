@@ -36,7 +36,6 @@ import FemGui
 from PySide import QtGui
 from femtaskpanels import task_mesh_gmsh
 from femtools.femutils import is_of_type
-# from . import view_base_femobject
 
 
 # TODO use VPBaseFemObject from view_base_femobject
@@ -64,21 +63,21 @@ class VPMeshGmsh:
 
     def setEdit(self, vobj, mode):
         # hide all FEM meshes and VTK FemPost* objects
-        for o in vobj.Object.Document.Objects:
+        for obj in vobj.Object.Document.Objects:
             if (
-                o.isDerivedFrom("Fem::FemMeshObject")
-                or o.isDerivedFrom("Fem::FemPostPipeline")
-                or o.isDerivedFrom("Fem::FemPostClipFilter")
-                or o.isDerivedFrom("Fem::FemPostScalarClipFilter")
-                or o.isDerivedFrom("Fem::FemPostWarpVectorFilter")
-                or o.isDerivedFrom("Fem::FemPostDataAlongLineFilter")
-                or o.isDerivedFrom("Fem::FemPostDataAtPointFilter")
-                or o.isDerivedFrom("Fem::FemPostCutFilter")
-                or o.isDerivedFrom("Fem::FemPostDataAlongLineFilter")
-                or o.isDerivedFrom("Fem::FemPostPlaneFunction")
-                or o.isDerivedFrom("Fem::FemPostSphereFunction")
+                obj.isDerivedFrom("Fem::FemMeshObject")
+                or obj.isDerivedFrom("Fem::FemPostClipFilter")
+                or obj.isDerivedFrom("Fem::FemPostContoursFilter")
+                or obj.isDerivedFrom("Fem::FemPostCutFilter")
+                or obj.isDerivedFrom("Fem::FemPostDataAlongLineFilter")
+                or obj.isDerivedFrom("Fem::FemPostDataAtPointFilter")
+                or obj.isDerivedFrom("Fem::FemPostPipeline")
+                or obj.isDerivedFrom("Fem::FemPostPlaneFunction")
+                or obj.isDerivedFrom("Fem::FemPostScalarClipFilter")
+                or obj.isDerivedFrom("Fem::FemPostSphereFunction")
+                or obj.isDerivedFrom("Fem::FemPostWarpVectorFilter")
             ):
-                o.ViewObject.hide()
+                obj.ViewObject.hide()
         # show the mesh we like to edit
         self.ViewObject.show()
         # show task panel

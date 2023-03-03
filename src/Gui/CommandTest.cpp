@@ -603,7 +603,7 @@ void CmdTestProgress5::activated(int iMsg)
     QEventLoop loop;
 
     auto thr1 = new BarThread(2000);
-    QObject::connect(thr1, SIGNAL(finished()), &loop, SLOT(quit()));
+    QObject::connect(thr1, &QThread::finished, &loop, &QEventLoop::quit);
     thr1->start();
     loop.exec();
 
@@ -611,7 +611,7 @@ void CmdTestProgress5::activated(int iMsg)
 
     QTimer timer;
     timer.setSingleShot(true);
-    QObject::connect(&timer, SIGNAL(timeout()), &loop, SLOT(quit()));
+    QObject::connect(&timer, &QTimer::timeout, &loop, &QEventLoop::quit);
     thr2->start();
     timer.start(2000); // 2s timeout
     loop.exec();

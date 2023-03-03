@@ -163,7 +163,7 @@ CommandBase::~CommandBase()
     //command manager hence before any command object. So the action pointer is a dangling pointer
     //at this state.
 
-    // Command can be destroyed before the the MainWindow, for example, dynamic
+    // Command can be destroyed before the MainWindow, for example, dynamic
     // command created (and later deleted) by user for a pie menu.
     if (getMainWindow())
         delete _pcAction;

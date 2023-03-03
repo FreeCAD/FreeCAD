@@ -49,13 +49,13 @@
     <message>
       <location filename="../../Command.cpp" line="1602"/>
       <source>Regular solid...</source>
-      <translation>Pravilno telo...</translation>
+      <translation>Pravilno puno telo...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1603"/>
       <location filename="../../Command.cpp" line="1605"/>
       <source>Builds a regular solid</source>
-      <translation>Pravi pravilno telo</translation>
+      <translation>Pravi pravilno puno telo</translation>
     </message>
   </context>
   <context>
@@ -152,13 +152,13 @@
     <message>
       <location filename="../../Command.cpp" line="1360"/>
       <source>Check solid mesh</source>
-      <translation>Proveri mrežu tela</translation>
+      <translation>Proveri mrežu punog tela</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1361"/>
       <location filename="../../Command.cpp" line="1363"/>
       <source>Checks whether the mesh is a solid</source>
-      <translation>Proverava da li je mreža telo</translation>
+      <translation>Proverava da li je mreža puno telo</translation>
     </message>
   </context>
   <context>
@@ -867,7 +867,7 @@
       <location filename="../../ViewProvider.cpp" line="919"/>
       <location filename="../../ViewProvider.cpp" line="974"/>
       <source>Cut</source>
-      <translation>Razlika</translation>
+      <translation>Isecanje</translation>
     </message>
     <message>
       <location filename="../../ViewProvider.cpp" line="928"/>
@@ -1273,12 +1273,12 @@ Pokreni prvo komandu za popravku nabora</translation>
     <message>
       <location filename="../../DlgRegularSolid.ui" line="14"/>
       <source>Regular Solid</source>
-      <translation>Telo</translation>
+      <translation>Pravilno puno telo</translation>
     </message>
     <message>
       <location filename="../../DlgRegularSolid.ui" line="29"/>
       <source>Solid:</source>
-      <translation>Telo:</translation>
+      <translation>Puno telo:</translation>
     </message>
     <message>
       <location filename="../../DlgRegularSolid.ui" line="42"/>
@@ -2329,17 +2329,17 @@ Poseti http://www.openscad.org/index.html da instaliraš.</translation>
     <message>
       <location filename="../../Command.cpp" line="1374"/>
       <source>The mesh '%1' is not a solid.</source>
-      <translation>Mreža '%1' nije telo.</translation>
+      <translation>Mreža '%1' nije puno telo.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1377"/>
       <source>The mesh '%1' is a solid.</source>
-      <translation>Mreža '%1' je telo.</translation>
+      <translation>Mreža '%1' je puno telo.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1379"/>
       <source>Solid Mesh</source>
-      <translation>Mreža tela</translation>
+      <translation>Mreža punog tela</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1582"/>

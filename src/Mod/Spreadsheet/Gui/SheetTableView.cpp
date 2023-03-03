@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) Eivind Kvedalen (eivind@kvedalen.name) 2015             *
+ *   Copyright (c) 2015 Eivind Kvedalen <eivind@kvedalen.name>             *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -127,7 +127,7 @@ SheetTableView::SheetTableView(QWidget *parent)
                     The number refers to how many lines are selected and will be inserted. */
                 auto insertBefore = menu.addAction(tr("Insert %n row(s) above", "", selection.size()));
                 connect(insertBefore, &QAction::triggered, this, &SheetTableView::insertRows);
-    
+
                 if (max < model()->rowCount() - 1) {
                     auto insertAfter = menu.addAction(tr("Insert %n row(s) below", "", selection.size()));
                     connect(insertAfter, &QAction::triggered, this, &SheetTableView::insertRowsAfter);
@@ -165,10 +165,10 @@ SheetTableView::SheetTableView(QWidget *parent)
             connect(remove, &QAction::triggered, this, &SheetTableView::removeColumns);
             menu.exec(horizontalHeader()->mapToGlobal(point));
        });
-       
+
     actionProperties = new QAction(tr("Properties..."), this);
     addAction(actionProperties);
-    
+
     horizontalHeader()->setContextMenuPolicy(Qt::CustomContextMenu);
     verticalHeader()->setContextMenuPolicy(Qt::CustomContextMenu);
 
@@ -609,7 +609,7 @@ bool SheetTableView::event(QEvent* event)
             kevent->accept();
         }
     }
-    else if (event->type() == QEvent::LanguageChange) {
+    else if (event && event->type() == QEvent::LanguageChange) {
         actionProperties->setText(tr("Properties..."));
         actionRecompute->setText(tr("Recompute"));
         actionConf->setText(tr("Configuration table..."));
@@ -709,7 +709,7 @@ void SheetTableView::pasteClipboard()
             return;
 
         if(!copy) {
-            for(auto range : ranges) {
+            for(auto &range : ranges) {
                 do {
                     sheet->clear(*range);
                 } while (range.next());
@@ -814,7 +814,7 @@ void SheetTableView::finishEditWithMove(int keyPressed, Qt::KeyboardModifiers mo
 
     case Qt::Key_Home:
         // Home: row 1, same column
-        // Ctrl-Home: row 1, column 1 
+        // Ctrl-Home: row 1, column 1
         targetRow = 0;
         if (modifiers == Qt::ControlModifier)
             targetColumn = 0;
@@ -931,7 +931,7 @@ void SheetTableView::finishEditWithMove(int keyPressed, Qt::KeyboardModifiers mo
         // With shift down, this motion becomes a block selection command, rather than just simple motion:
         ModifyBlockSelection(targetRow, targetColumn);
     }
-        
+
 }
 
 void SheetTableView::ModifyBlockSelection(int targetRow, int targetCol)
@@ -989,7 +989,7 @@ void SheetTableView::splitCell() {
 }
 
 void SheetTableView::closeEditor(QWidget * editor, QAbstractItemDelegate::EndEditHint hint)
-{ 
+{
     QTableView::closeEditor(editor, hint);
 }
 

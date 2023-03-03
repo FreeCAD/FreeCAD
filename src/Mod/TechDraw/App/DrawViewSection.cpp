@@ -56,7 +56,8 @@
 #include <BRepTools.hxx>
 #include <BRep_Builder.hxx>
 #include <Bnd_Box.hxx>
-#include <QtConcurrentRun>
+#include <ShapeAnalysis.hxx>
+#include <ShapeFix_Shape.hxx>
 #include <TopExp.hxx>
 #include <TopExp_Explorer.hxx>
 #include <TopoDS.hxx>
@@ -71,6 +72,7 @@
 #include <gp_Pln.hxx>
 #include <gp_Pnt.hxx>
 #include <sstream>
+#include <QtConcurrentRun>
 #endif
 
 #include <App/Application.h>
@@ -264,19 +266,28 @@ void DrawViewSection::onChanged(const App::Property* prop)
 
 TopoDS_Shape DrawViewSection::getShapeToCut()
 {
-    //    Base::Console().Message("DVS::getShapeToCut()\n");
-    App::DocumentObject* base = BaseView.getValue();
-    TechDraw::DrawViewPart* dvp = nullptr;
-    if (!base || !base->getTypeId().isDerivedFrom(TechDraw::DrawViewPart::getClassTypeId())) {
-        //this can probably only happen with scripting
+//    Base::Console().Message("DVS::getShapeToCut()\n");
+    App::DocumentObject *base = BaseView.getValue();
+    TechDraw::DrawViewPart *dvp = nullptr;
+    TechDraw::DrawViewSection *dvs = nullptr;
+    if (!base) {
         return TopoDS_Shape();
     }
-    else {
-        dvp = static_cast<TechDraw::DrawViewPart*>(base);
-    }
-    TopoDS_Shape shapeToCut = dvp->getSourceShape();
-    if (FuseBeforeCut.getValue()) {
-        shapeToCut = dvp->getSourceShapeFused();
+
+    TopoDS_Shape shapeToCut;
+    if (base->getTypeId().isDerivedFrom(TechDraw::DrawViewSection::getClassTypeId())) {
+        dvs = static_cast<TechDraw::DrawViewSection *>(base);
+        shapeToCut = dvs->getCutShape();
+    } else if (base->getTypeId().isDerivedFrom(TechDraw::DrawViewPart::getClassTypeId())) {
+        dvp = static_cast<TechDraw::DrawViewPart *>(base);
+        shapeToCut = dvp->getSourceShape();
+        if (FuseBeforeCut.getValue()) {
+            shapeToCut = dvp->getSourceShapeFused();
+        }
+
+    } else {
+        Base::Console().Message("DVS::getShapeToCut - base is weird\n");
+        return TopoDS_Shape();
     }
     return shapeToCut;
 }
@@ -399,7 +410,8 @@ void DrawViewSection::makeSectionCut(TopoDS_Shape& baseShape)
         BRepTools::Write(m_cuttingTool, "DVSTool.brep");//debug
     }
 
-    // perform cut
+    //perform the cut. We cut each solid in myShape individually to avoid issues where
+    //a compound BaseShape does not cut correctly.
     BRep_Builder builder;
     TopoDS_Compound cutPieces;
     builder.MakeCompound(cutPieces);
@@ -543,6 +555,9 @@ void DrawViewSection::postHlrTasks(void)
         requestPaint();
         return;
     }
+    if (debugSection()) {
+        BRepTools::Write(faceIntersections, "DVSFaceIntersections.brep");//debug
+    }
 
     TopoDS_Shape centeredFaces = TechDraw::moveShape(faceIntersections, m_saveCentroid * -1.0);
 
@@ -601,10 +616,10 @@ gp_Pln DrawViewSection::getSectionPlane() const
 //! case is a compound of individual cuts) with the "effective" (flattened) section plane.
 TopoDS_Compound DrawViewSection::findSectionPlaneIntersections(const TopoDS_Shape& shape)
 {
-    //    Base::Console().Message("DVS::findSectionPlaneIntersections() - %s\n", getNameInDocument());
+//    Base::Console().Message("DVS::findSectionPlaneIntersections() - %s\n", getNameInDocument());
     if (shape.IsNull()) {
         // this shouldn't happen
-        //        Base::Console().Warning("DrawViewSection::findSectionPlaneInter - %s - input shape is Null\n", getNameInDocument());
+        Base::Console().Warning("DrawViewSection::findSectionPlaneInter - %s - input shape is Null\n", getNameInDocument());
         return TopoDS_Compound();
     }
 
@@ -637,7 +652,9 @@ TopoDS_Compound DrawViewSection::findSectionPlaneIntersections(const TopoDS_Shap
 //move section faces to line up with cut shape
 TopoDS_Compound DrawViewSection::alignSectionFaces(TopoDS_Shape faceIntersections)
 {
-    //    Base::Console().Message("DVS::alignSectionFaces()\n");
+//    Base::Console().Message("DVS::alignSectionFaces() - %s - faceIntersection.isnull: %d\n",
+//                            getNameInDocument(),
+//                            faceIntersections.IsNull());
     TopoDS_Compound sectionFaces;
     TopoDS_Shape centeredShape =
         TechDraw::moveShape(faceIntersections, getOriginalCentroid() * -1.0);
@@ -657,7 +674,11 @@ TopoDS_Compound DrawViewSection::mapToPage(TopoDS_Shape& shapeToAlign)
     // needs to be aligned to paper plane (origin, stdZ);
     //project the faces in the shapeToAlign, build new faces from the resulting wires and
     //combine everything into a compound of faces
-    //    Base::Console().Message("DVS::mapToPage() - shapeToAlign.null: %d\n", shapeToAlign.IsNull());
+//    Base::Console().Message("DVS::mapToPage() - shapeToAlign.null: %d\n", shapeToAlign.IsNull());
+    if (debugSection()) {
+        BRepTools::Write(shapeToAlign, "DVSShapeToAlign.brep");   //debug
+    }
+
     BRep_Builder builder;
     TopoDS_Compound result;
     builder.MakeCompound(result);
@@ -682,22 +703,87 @@ TopoDS_Compound DrawViewSection::mapToPage(TopoDS_Shape& shapeToAlign)
             faceWires.push_back(cleanWire);
         }
 
-        //first wire should be the outer boundary of the face
-        BRepBuilderAPI_MakeFace mkFace(faceWires.front());
-        int wireCount = faceWires.size();
-        for (int iWire = 1; iWire < wireCount; iWire++) {
-            //make holes in the face with the rest of the wires
-            mkFace.Add(faceWires.at(iWire));
+        //validate section face wires
+        std::vector<TopoDS_Wire> goodWires;
+        constexpr double minWireArea = 0.000001; //arbitrary very small face size
+        for (auto &wire : faceWires) {
+            if (wire.IsNull()) {
+                continue;
+            }
+            if (!BRep_Tool::IsClosed(wire)) {
+                continue; //can not make a face from open wire
+            }
+            double area = ShapeAnalysis::ContourArea(wire);
+            if (area <= minWireArea) {
+                continue; //can not make a face from wire with no area
+            }
+            goodWires.push_back(wire);
         }
-        builder.Add(result, mkFace.Face());
+
+        if (goodWires.empty()) {
+            Base::Console().Warning("DVS::mapToPage - %s - section face has no valid wires.\n",
+                                    getNameInDocument());
+            continue;
+        }
+
+        TopoDS_Shape holeyShape = makeFaceFromWires(goodWires);
+        if (holeyShape.IsNull()) {
+            continue;
+        }
+
+        builder.Add(result, TopoDS::Face(holeyShape));
         if (debugSection()) {
             std::stringstream ss;
             ss << "DVSFaceFromWires" << iFace << ".brep";
-            BRepTools::Write(mkFace.Face(), ss.str().c_str());//debug
+            BRepTools::Write(holeyShape, ss.str().c_str()); //debug
         }
     }
 
     return result;
+}
+
+//makes a [perforated] face from an outer wire and wires describing the holes.  Open wires
+//and wires with zero area are assumed to already have been removed.
+TopoDS_Shape DrawViewSection::makeFaceFromWires(std::vector<TopoDS_Wire> &inWires)
+{
+    //make sure the largest wire is the first
+    EdgeWalker eWalker;
+    std::vector<TopoDS_Wire> goodWires = eWalker.sortWiresBySize(inWires);
+
+    // make a face from the good wires
+    //first good wire should be the outer boundary of the face
+    TopoDS_Face faceToFix;
+    TopoDS_Shape orientedShape = goodWires.at(0).Oriented(TopAbs_FORWARD);
+    TopoDS_Wire orientedWire = TopoDS::Wire(orientedShape);
+    orientedWire.Orientation(TopAbs_FORWARD);
+    TopoDS_Face blankFace = BRepBuilderAPI_MakeFace(orientedWire);
+    int wireCount = goodWires.size();
+    if (wireCount < 2) {
+        faceToFix = blankFace;
+    } else {
+        //add the holes
+        BRepBuilderAPI_MakeFace mkFace(blankFace);
+        for (int iWire = 1; iWire < wireCount; iWire++) {
+            //make holes in the face with the rest of the wires
+            orientedShape = goodWires.at(iWire).Oriented(TopAbs_REVERSED);
+            orientedWire = TopoDS::Wire(orientedShape);
+            mkFace.Add(orientedWire);
+        }
+
+        if (!mkFace.IsDone()) {
+            Base::Console().Warning("DVS::makeFaceFromWires - %s - failed to make section face.\n",
+                                    getNameInDocument());
+            return TopoDS_Shape();
+        }
+        faceToFix = mkFace.Face();
+    }
+
+    //setting the wire orientation above should generate a valid face, but sometimes
+    //does not, so we fix the shape to resolve any issues
+    Handle(ShapeFix_Shape) sfs = new ShapeFix_Shape;
+    sfs->Init(faceToFix);
+    sfs->Perform();
+    return sfs->Shape();
 }
 
 //turn OCC section faces into TD geometry

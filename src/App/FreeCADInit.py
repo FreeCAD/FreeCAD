@@ -806,7 +806,9 @@ App.Units.Gauss         = App.Units.Quantity('G')
 
 App.Units.Weber         = App.Units.Quantity('Wb')
 
-App.Units.Oersted       = App.Units.Quantity('Oe')
+# disable Oersted because people need to input e.g. a field strength of
+# 1 ampere per meter -> 1 A/m and not get the recalculation to Oersted
+# App.Units.Oersted       = App.Units.Quantity('Oe')
 
 App.Units.PicoFarad     = App.Units.Quantity('pF')
 App.Units.NanoFarad     = App.Units.Quantity('nF')
@@ -841,61 +843,63 @@ App.Units.Gon           = App.Units.Quantity('gon')
 App.Units.AngularMinute = App.Units.Quantity().AngularMinute
 App.Units.AngularSecond = App.Units.Quantity().AngularSecond
 
-App.Units.Length        = App.Units.Unit(1)
-App.Units.Area          = App.Units.Unit(2)
-App.Units.Volume        = App.Units.Unit(3)
-App.Units.Mass          = App.Units.Unit(0,1)
+
+# SI base units
 # (length, weight, time, current, temperature, amount of substance, luminous intensity, angle)
+App.Units.AmountOfSubstance           = App.Units.Unit(0,0,0,0,0,1)
+App.Units.ElectricCurrent             = App.Units.Unit(0,0,0,1)
+App.Units.Length                      = App.Units.Unit(1)
+App.Units.LuminousIntensity           = App.Units.Unit(0,0,0,0,0,0,1)
+App.Units.Mass                        = App.Units.Unit(0,1)
+App.Units.Temperature                 = App.Units.Unit(0,0,0,0,1)
+App.Units.TimeSpan                    = App.Units.Unit(0,0,1)
 
-# Angle
-App.Units.Angle            = App.Units.Unit(0,0,0,0,0,0,0,1)
-App.Units.AngleOfFriction  = App.Units.Unit(0,0,0,0,0,0,0,1)
+# all other combined units
+App.Units.Acceleration                = App.Units.Unit(1,0,-2)
+App.Units.Angle                       = App.Units.Unit(0,0,0,0,0,0,0,1)
+App.Units.AngleOfFriction             = App.Units.Unit(0,0,0,0,0,0,0,1)
+App.Units.Area                        = App.Units.Unit(2)
+App.Units.CompressiveStrength         = App.Units.Unit(-1,1,-2)
+App.Units.CurrentDensity              = App.Units.Unit(-2,0,0,1)
+App.Units.Density                     = App.Units.Unit(-3,1)
+App.Units.DissipationRate             = App.Units.Unit(2,0,-3)
+App.Units.DynamicViscosity            = App.Units.Unit(-1,1,-1)
+App.Units.Frequency                   = App.Units.Unit(0,0,-1)
+App.Units.MagneticFluxDensity         = App.Units.Unit(0,1,-2,-1)
+App.Units.Magnetization               = App.Units.Unit(-1,0,0,1)
+App.Units.ElectricalCapacitance       = App.Units.Unit(-2,-1,4,2)
+App.Units.ElectricalConductance       = App.Units.Unit(-2,-1,3,2)
+App.Units.ElectricalConductivity      = App.Units.Unit(-3,-1,3,2)
+App.Units.ElectricalInductance        = App.Units.Unit(2,1,-2,-2)
+App.Units.ElectricalResistance        = App.Units.Unit(2,1,-3,-2)
+App.Units.ElectricCharge              = App.Units.Unit(0,0,1,1)
+App.Units.ElectricPotential           = App.Units.Unit(2,1,-3,-1)
+App.Units.Force                       = App.Units.Unit(1,1,-2)
+App.Units.HeatFlux                    = App.Units.Unit(0,1,-3,0,0)
+App.Units.InverseArea                 = App.Units.Unit(-2)
+App.Units.InverseLength               = App.Units.Unit(-1)
+App.Units.InverseVolume               = App.Units.Unit(-3)
+App.Units.KinematicViscosity          = App.Units.Unit(2,0,-1)
+App.Units.Pressure                    = App.Units.Unit(-1,1,-2)
+App.Units.Power                       = App.Units.Unit(2,1,-3)
+App.Units.ShearModulus                = App.Units.Unit(-1,1,-2)
+App.Units.SpecificEnergy              = App.Units.Unit(2,0,-2)
+App.Units.SpecificHeat                = App.Units.Unit(2,0,-2,0,-1)
+App.Units.Stiffness                   = App.Units.Unit(0,1,-2)
+App.Units.Stress                      = App.Units.Unit(-1,1,-2)
+App.Units.ThermalConductivity         = App.Units.Unit(1,1,-3,0,-1)
+App.Units.ThermalExpansionCoefficient = App.Units.Unit(0,0,0,0,-1)
+App.Units.ThermalTransferCoefficient  = App.Units.Unit(0,1,-3,0,-1)
+App.Units.UltimateTensileStrength     = App.Units.Unit(-1,1,-2)
+App.Units.Velocity                    = App.Units.Unit(1,0,-1)
+App.Units.VacuumPermittivity          = App.Units.Unit(-3,-1,4,2)
+App.Units.Volume                      = App.Units.Unit(3)
+App.Units.VolumeFlowRate              = App.Units.Unit(3,0,-1)
+App.Units.VolumetricThermalExpansionCoefficient = App.Units.Unit(0,0,0,0,-1)
+App.Units.Work                        = App.Units.Unit(2,1,-2)
+App.Units.YieldStrength               = App.Units.Unit(-1,1,-2)
+App.Units.YoungsModulus               = App.Units.Unit(-1,1,-2)
 
-App.Units.Density       = App.Units.Unit(-3,1)
-
-App.Units.TimeSpan      = App.Units.Unit(0,0,1)
-App.Units.Frequency     = App.Units.Unit(0,0,-1)
-App.Units.Velocity      = App.Units.Unit(1,0,-1)
-App.Units.Acceleration  = App.Units.Unit(1,0,-2)
-App.Units.Temperature   = App.Units.Unit(0,0,0,0,1)
-
-App.Units.ElectricCurrent       = App.Units.Unit(0,0,0,1)
-App.Units.ElectricPotential     = App.Units.Unit(2,1,-3,-1)
-App.Units.ElectricCharge        = App.Units.Unit(0,0,1,1)
-App.Units.MagneticFluxDensity   = App.Units.Unit(0,1,-2,-1)
-App.Units.ElectricalCapacitance = App.Units.Unit(-2,-1,4,2)
-App.Units.ElectricalInductance  = App.Units.Unit(2,1,-2,-2)
-App.Units.ElectricalConductance = App.Units.Unit(-2,-1,3,2)
-App.Units.ElectricalResistance  = App.Units.Unit(2,1,-3,-2)
-App.Units.ElectricalConductivity = App.Units.Unit(-3,-1,3,2)
-App.Units.AmountOfSubstance = App.Units.Unit(0,0,0,0,0,1)
-App.Units.LuminousIntensity = App.Units.Unit(0,0,0,0,0,0,1)
-
-# Pressure
-App.Units.CompressiveStrength     = App.Units.Unit(-1,1,-2)
-App.Units.Pressure                = App.Units.Unit(-1,1,-2)
-App.Units.ShearModulus            = App.Units.Unit(-1,1,-2)
-App.Units.Stress                  = App.Units.Unit(-1,1,-2)
-App.Units.UltimateTensileStrength = App.Units.Unit(-1,1,-2)
-App.Units.YieldStrength           = App.Units.Unit(-1,1,-2)
-App.Units.YoungsModulus           = App.Units.Unit(-1,1,-2)
-
-App.Units.Force         = App.Units.Unit(1,1,-2)
-App.Units.Work          = App.Units.Unit(2,1,-2)
-App.Units.Power         = App.Units.Unit(2,1,-3)
-
-App.Units.Stiffness     = App.Units.Unit(0,1,-2)
-
-App.Units.SpecificEnergy               = App.Units.Unit(2,0,-2)
-App.Units.ThermalConductivity          = App.Units.Unit(1,1,-3,0,-1)
-App.Units.ThermalExpansionCoefficient  = App.Units.Unit(0,0,0,0,-1)
-App.Units.VolumetricThermalExpansionCoefficient  = App.Units.Unit(0,0,0,0,-1)
-App.Units.SpecificHeat                 = App.Units.Unit(2,0,-2,0,-1)
-App.Units.ThermalTransferCoefficient   = App.Units.Unit(0,1,-3,0,-1)
-App.Units.HeatFlux                     = App.Units.Unit(0,1,-3,0,0)
-App.Units.DynamicViscosity             = App.Units.Unit(-1,1,-1)
-App.Units.KinematicViscosity           = App.Units.Unit(2,0,-1)
-App.Units.VacuumPermittivity           = App.Units.Unit(-3,-1,4,2)
 
 # Add an enum for the different unit schemes
 from enum import IntEnum
@@ -941,6 +945,17 @@ class PropertyType(IntEnum):
     Prop_NoPersist = 32
 
 App.PropertyType = PropertyType
+
+class ReturnType(IntEnum):
+    PyObject = 0
+    DocObject = 1
+    DocAndPyObject = 2
+    Placement = 3
+    Matrix = 4
+    LinkAndPlacement = 5
+    LinkAndMatrix = 6
+
+App.ReturnType = ReturnType
 
 # clean up namespace
 del(InitApplications)

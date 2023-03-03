@@ -1,6 +1,5 @@
 #/***************************************************************************
-# *   Copyright (c) Victor Titov (DeepSOIC)                                 *
-# *                                           (vv.titov@gmail.com) 2019     *
+# *   Copyright (c) 2019 Victor Titov (DeepSOIC) <vv.titov@gmail.com>       *
 # *                                                                         *
 # *   This file is part of the FreeCAD CAx development system.              *
 # *                                                                         *
@@ -20,11 +19,11 @@
 # *   Suite 330, Boston, MA  02111-1307, USA                                *
 # *                                                                         *
 # ***************************************************************************/
-    
+
 def is3DObject(obj):
-    """is3DObject(obj): tests if the object has some 3d geometry. 
+    """is3DObject(obj): tests if the object has some 3d geometry.
     TempoVis is made only for objects in 3d view, so all objects that don't pass this check are ignored by TempoVis."""
-    
+
     # See "Gui Problem Sketcher and TechDraw" https://forum.freecadweb.org/viewtopic.php?f=3&t=22797
 
     # observation: all viewproviders have transform node, then a switch node. If that switch node contains something, the object has something in 3d view.

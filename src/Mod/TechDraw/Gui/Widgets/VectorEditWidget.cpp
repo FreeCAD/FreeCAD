@@ -65,10 +65,10 @@ VectorEditWidget::VectorEditWidget(QWidget* parent) : QWidget(parent),
     setObjectName(QString::fromUtf8("VectorEdit"));
     buildWidget();
 
-    connect(tbExpand, SIGNAL(toggled(bool)), this, SLOT(slotExpandButtonToggled(bool)));
-    connect(dsbX, SIGNAL(valueChanged(double)), this, SLOT(slotXValueChanged(double)));
-    connect(dsbY, SIGNAL(valueChanged(double)), this, SLOT(slotYValueChanged(double)));
-    connect(dsbZ, SIGNAL(valueChanged(double)), this, SLOT(slotZValueChanged(double)));
+    connect(tbExpand, &QToolButton::toggled, this, &VectorEditWidget::slotExpandButtonToggled);
+    connect(dsbX, qOverload<double>(&Gui::DoubleSpinBox::valueChanged), this, &VectorEditWidget::slotXValueChanged);
+    connect(dsbY, qOverload<double>(&Gui::DoubleSpinBox::valueChanged), this, &VectorEditWidget::slotYValueChanged);
+    connect(dsbZ, qOverload<double>(&Gui::DoubleSpinBox::valueChanged), this, &VectorEditWidget::slotZValueChanged);
 
     dsbX->installEventFilter(this);
     dsbY->installEventFilter(this);

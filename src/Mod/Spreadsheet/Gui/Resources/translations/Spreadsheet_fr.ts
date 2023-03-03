@@ -34,7 +34,7 @@
     <message>
       <location filename="../../Command.cpp" line="494"/>
       <source>Bottom-align contents of selected cells</source>
-      <translation>Aligne le contenu des cellules sélectionnées en bas</translation>
+      <translation>Aligner en bas le contenu des cellules sélectionnées</translation>
     </message>
   </context>
   <context>
@@ -47,12 +47,12 @@
     <message>
       <location filename="../../Command.cpp" line="337"/>
       <source>Align center</source>
-      <translation>Alignement au centre</translation>
+      <translation>Aligner au centre</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="338"/>
       <source>Center-align contents of selected cells</source>
-      <translation>Aligne le contenu des cellules sélectionnées au centre</translation>
+      <translation>Aligner au centre le contenu des cellules sélectionnées</translation>
     </message>
   </context>
   <context>
@@ -65,12 +65,12 @@
     <message>
       <location filename="../../Command.cpp" line="285"/>
       <source>Align left</source>
-      <translation>Alignement à gauche</translation>
+      <translation>Aligner à gauche</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="286"/>
       <source>Left-align contents of selected cells</source>
-      <translation>Aligne le contenu des cellules sélectionnées à gauche</translation>
+      <translation>Aligner à gauche le contenu des cellules sélectionnées</translation>
     </message>
   </context>
   <context>
@@ -83,12 +83,12 @@
     <message>
       <location filename="../../Command.cpp" line="389"/>
       <source>Align right</source>
-      <translation>Alignement à droite</translation>
+      <translation>Aligner à droite</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="390"/>
       <source>Right-align contents of selected cells</source>
-      <translation>Aligne le contenu des cellules sélectionnées à droite</translation>
+      <translation>Aligner à droite le contenu des cellules sélectionnées</translation>
     </message>
   </context>
   <context>
@@ -101,12 +101,12 @@
     <message>
       <location filename="../../Command.cpp" line="441"/>
       <source>Align top</source>
-      <translation>Alignement en haut</translation>
+      <translation>Aligner en haut</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="442"/>
       <source>Top-align contents of selected cells</source>
-      <translation>Aligne le contenu des cellules sélectionnées en haut</translation>
+      <translation>Aligner en haut le contenu des cellules sélectionnées</translation>
     </message>
   </context>
   <context>
@@ -119,12 +119,12 @@
     <message>
       <location filename="../../Command.cpp" line="545"/>
       <source>Vertically center-align</source>
-      <translation>Alignement vertical au centre</translation>
+      <translation>Aligner au centre verticalement</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="546"/>
       <source>Vertically center-align contents of selected cells</source>
-      <translation>Aligne verticalement au centre le contenu des cellules sélectionnées</translation>
+      <translation>Aligner au centre verticalement le contenu des cellules sélectionnées</translation>
     </message>
   </context>
   <context>
@@ -191,12 +191,12 @@
     <message>
       <location filename="../../Command.cpp" line="818"/>
       <source>Set alias</source>
-      <translation>Alias</translation>
+      <translation>Définir un alias</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="819"/>
       <source>Set alias for selected cell</source>
-      <translation>Alias de la cellule sélectionnée</translation>
+      <translation>Définir un alias de la cellule sélectionnée</translation>
     </message>
   </context>
   <context>
@@ -214,7 +214,7 @@
     <message>
       <location filename="../../Command.cpp" line="116"/>
       <source>Split previously merged cells</source>
-      <translation>Scinder les cellules précédemment fusionnées</translation>
+      <translation>Diviser les cellules précédemment fusionnées</translation>
     </message>
   </context>
   <context>
@@ -294,32 +294,32 @@
     <message>
       <location filename="../../Command.cpp" line="306"/>
       <source>Left-align cell</source>
-      <translation>Aligner la cellule à gauche</translation>
+      <translation>Aligner à gauche de la cellule</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="358"/>
       <source>Center cell</source>
-      <translation>Centrer la cellule</translation>
+      <translation>Aligner au centre de la cellule</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="410"/>
       <source>Right-align cell</source>
-      <translation>Aligner la cellule à droite</translation>
+      <translation>Aligner à droite de la cellule</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="462"/>
       <source>Top-align cell</source>
-      <translation>Aligner la cellule en haut</translation>
+      <translation>Aligner en haut de la cellule</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="514"/>
       <source>Bottom-align cell</source>
-      <translation>Aligner la cellule en bas</translation>
+      <translation>Aligner en bas de la cellule</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="566"/>
       <source>Vertically center cells</source>
-      <translation>Centrer les cellules verticalement</translation>
+      <translation>Aligner au centre de la cellule verticalement</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="635"/>
@@ -347,7 +347,7 @@
       <translation>Modifier les propriétés des cellules</translation>
     </message>
     <message>
-      <location filename="../../SheetModel.cpp" line="468"/>
+      <location filename="../../SheetModel.cpp" line="510"/>
       <source>Edit cell</source>
       <translation>Modifier la cellule</translation>
     </message>
@@ -401,7 +401,7 @@
     <message>
       <location filename="../../DlgBindSheet.ui" line="117"/>
       <source>Sheet:</source>
-      <translation>Tableur:</translation>
+      <translation>Feuille :</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.ui" line="22"/>
@@ -434,7 +434,7 @@
 Type '=' if you want to use an expression.
 The expression must evaluate to a string of some cell address.</source>
       <translation>Adresse de la cellule de départ à laquelle se lier.
-Tapez '=' si vous voulez utiliser une expression.
+Tapez "=" si vous voulez utiliser une expression.
 L'expression doit être interprétée comme une chaîne de caractères d'une certaine adresse de cellule.</translation>
     </message>
     <message>
@@ -443,7 +443,7 @@ L'expression doit être interprétée comme une chaîne de caractères d'une cer
 Type '=' if you want to use an expression.
 The expression must evaluate to a string of some cell address.</source>
       <translation>Adresse de la cellule de fin à laquelle se lier.
-Tapez '=' si vous voulez utiliser une expression.
+Tapez "=" si vous voulez utiliser une expression.
 L'expression doit être interprétée comme une chaîne de caractères d'une certaine adresse de cellule.</translation>
     </message>
     <message>
@@ -538,19 +538,18 @@ par cette propriété.
     <message>
       <location filename="../../DlgSheetConf.ui" line="57"/>
       <source>Property:</source>
-      <translation>Propriété:</translation>
+      <translation>Propriété :</translation>
     </message>
     <message>
       <location filename="../../DlgSheetConf.ui" line="64"/>
       <source>Type in an expression to specify the object and property name to dynamically
 switch the design configuration. The property will be created if not exist.</source>
-      <translation>Tapez une expression pour spécifier le nom de l'objet et de la propriété qui permettront de
-la configuration de la conception. La propriété sera créée si elle n'existe pas.</translation>
+      <translation>Saisissez une expression pour spécifier le nom de l'objet et de la propriété pour changer dynamiquement la configuration de la conception. La propriété sera créée si elle n'existe pas.</translation>
     </message>
     <message>
       <location filename="../../DlgSheetConf.ui" line="72"/>
       <source>Group:</source>
-      <translation>Groupe:</translation>
+      <translation>Groupe :</translation>
     </message>
     <message>
       <location filename="../../DlgSheetConf.ui" line="79"/>
@@ -560,7 +559,7 @@ la configuration de la conception. La propriété sera créée si elle n'existe 
     <message>
       <location filename="../../DlgSheetConf.ui" line="88"/>
       <source>Unsetup</source>
-      <translation>Dé-paramétrer</translation>
+      <translation>Réinitialiser</translation>
     </message>
     <message>
       <location filename="../../DlgSheetConf.ui" line="95"/>
@@ -598,7 +597,7 @@ la configuration de la conception. La propriété sera créée si elle n'existe 
     <message>
       <location filename="../../PropertiesDialog.ui" line="80"/>
       <source>&amp;Alignment</source>
-      <translation>&amp;Alignement</translation>
+      <translation>&amp;Aligner</translation>
     </message>
     <message>
       <location filename="../../PropertiesDialog.ui" line="88"/>
@@ -659,12 +658,12 @@ la configuration de la conception. La propriété sera créée si elle n'existe 
     <message>
       <location filename="../../PropertiesDialog.ui" line="233"/>
       <source>&amp;Display unit</source>
-      <translation>&amp;Affichage unités</translation>
+      <translation>&amp;Affichage des unités</translation>
     </message>
     <message>
       <location filename="../../PropertiesDialog.ui" line="239"/>
       <source>Unit string</source>
-      <translation>Chaîne de caractères de l'unité</translation>
+      <translation>Texte pour l'unité</translation>
     </message>
     <message>
       <location filename="../../PropertiesDialog.ui" line="263"/>
@@ -704,28 +703,28 @@ la configuration de la conception. La propriété sera créée si elle n'existe 
       <location filename="../../Workbench.cpp" line="91"/>
       <location filename="../../Workbench.cpp" line="93"/>
       <source>Set cell(s) foreground color</source>
-      <translation>Définit la couleur de premier plan des cellules</translation>
+      <translation>Définir la couleur de premier plan de la ou des cellules</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="92"/>
       <source>Sets the Spreadsheet cell(s) foreground color</source>
-      <translation>Définit la couleur de premier plan des cellules de la feuille de calcul</translation>
+      <translation>Définit la couleur de premier plan de la ou des cellules de la feuille de calcul</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="106"/>
       <location filename="../../Workbench.cpp" line="108"/>
       <source>Set cell(s) background color</source>
-      <translation>Définit la couleur d'arrière-plan des cellules</translation>
+      <translation>Définir la couleur d'arrière-plan de la ou des cellules</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="107"/>
       <source>Sets the Spreadsheet cell(s) background color</source>
-      <translation>Définit la couleur d'arrière-plan des cellules de la feuille de calcul</translation>
+      <translation>Définit la couleur d'arrière-plan de la ou des cellules de la feuille de calcul</translation>
     </message>
     <message>
       <location filename="../../SheetTableView.cpp" line="752"/>
       <source>Copy &amp; Paste failed</source>
-      <translation>Copier-coller a failli</translation>
+      <translation>Le copier-coller a échoué</translation>
     </message>
     <message>
       <location filename="../../SpreadsheetView.cpp" line="426"/>
@@ -860,12 +859,12 @@ Spreadsheet.my_alias_name instead of Spreadsheet.B1</source>
     <message>
       <location filename="../../Sheet.ui" line="22"/>
       <source>&amp;Content:</source>
-      <translation>&amp;Contenu:</translation>
+      <translation>&amp;Contenu :</translation>
     </message>
     <message>
       <location filename="../../Sheet.ui" line="39"/>
       <source>&amp;Alias:</source>
-      <translation>&amp;Alias:</translation>
+      <translation>&amp;Alias :</translation>
     </message>
     <message>
       <location filename="../../Sheet.ui" line="52"/>
@@ -917,41 +916,69 @@ Voulez-vous continuer ?</translation>
     </message>
     <message>
       <location filename="../../DlgSettings.ui" line="26"/>
+      <source>Display Settings</source>
+      <translation>Paramètres d'affichage</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettings.ui" line="32"/>
+      <source>If checked, use the custom presentation to display cell string.</source>
+      <translation>Si cette case est cochée, utiliser la présentation personnalisée pour afficher la chaîne de caractères dans la cellule.</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettings.ui" line="35"/>
+      <source>Show alias in cell with format</source>
+      <translation>Afficher l'alias dans la cellule avec le format</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettings.ui" line="64"/>
+      <source>The format of the custom cell string presentation.
+Defaults to: %V = %A
+
+%A - alias name
+%V - cell value</source>
+      <translation>Le format de la présentation personnalisée de la chaîne de caractères dans la cellule.
+Par défaut : %V = %A
+
+%A - nom d'alias
+%V - valeur de la cellule</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettings.ui" line="84"/>
       <source>Import/Export Settings</source>
       <translation>Paramètres d'importation/exportation</translation>
     </message>
     <message>
-      <location filename="../../DlgSettings.ui" line="38"/>
+      <location filename="../../DlgSettings.ui" line="96"/>
       <source>Delimiter Character: </source>
-      <translation>Caractère de séparation :</translation>
+      <translation>Caractère de séparation : </translation>
     </message>
     <message>
-      <location filename="../../DlgSettings.ui" line="58"/>
+      <location filename="../../DlgSettings.ui" line="116"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Character to use as field delimiter.  Default is tab, but also commonly used are commas (,) and semicolons (;). Select from the list or enter your own in the field. Must be a single character or the words &lt;span style=" font-style:italic;"&gt;tab&lt;/span&gt;, &lt;span style=" font-style:italic;"&gt;comma&lt;/span&gt;, or &lt;span style=" font-style:italic;"&gt;semicolon&lt;/span&gt;.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Caractère à utiliser comme séparateur de champ. La valeur par défaut est la tabulation, mais la virgule (,) et le point-virgule (;) sont également couramment utiilsés. Sélectionnez la valeur dans la liste ou entrez la vôtre dans le champ. Cela doit être un caractère unique ou les mots &lt;span style=" font-style:italic;"&gt;onglet&lt;/span&gt;, &lt;span style=" font-style:italic;"&gt;virgule&lt;/span&gt;, ou &lt;span style=" font-style:italic;"&gt;point-virgule&lt;/span&gt;.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Caractère à utiliser comme séparateur de champ. La valeur par défaut est la tabulation mais la virgule (,) et le point-virgule (;) sont également couramment utilsés. Sélectionnez la valeur dans la liste ou entrez la vôtre dans le champ. Cela doit être un caractère unique ou les mots &lt;span style=" font-style:italic;"&gt;onglet&lt;/span&gt;, &lt;span style=" font-style:italic;"&gt;virgule&lt;/span&gt; ou &lt;span style=" font-style:italic;"&gt;point-virgule&lt;/span&gt;.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-      <location filename="../../DlgSettings.ui" line="74"/>
+      <location filename="../../DlgSettings.ui" line="132"/>
       <source>tab</source>
       <translation>onglet</translation>
     </message>
     <message>
-      <location filename="../../DlgSettings.ui" line="98"/>
+      <location filename="../../DlgSettings.ui" line="156"/>
       <source>Quote Character: </source>
-      <translation>Caractère guillemet :</translation>
+      <translation>Caractère guillemet : </translation>
     </message>
     <message>
-      <location filename="../../DlgSettings.ui" line="105"/>
+      <location filename="../../DlgSettings.ui" line="163"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Character used to delimit strings, typically is single quote (') or double quote (&amp;quot;). Must be a single character.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
       <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Caractère utilisé pour séparer les chaînes de caractères, en général c'est un simple guillemet (') ou un double guillemet (&amp;quot;). Ce doit être un seul caractère.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-      <location filename="../../DlgSettings.ui" line="130"/>
+      <location filename="../../DlgSettings.ui" line="188"/>
       <source>Escape Character: </source>
       <translation>Caractère d’échappement : </translation>
     </message>
     <message>
-      <location filename="../../DlgSettings.ui" line="137"/>
+      <location filename="../../DlgSettings.ui" line="195"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Escape character, typically the backslash (\), used to indicate special unprintable characters, e.g. \t = tab. Must be a single character.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
       <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Caractère d'échappement, généralement l'antislash (\), utilisé pour indiquer des caractères non imprimables spéciaux, par exemple \t = tab. Doit être un caractère unique.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
@@ -966,7 +993,7 @@ Voulez-vous continuer ?</translation>
     <message>
       <location filename="../../DlgSheetConf.cpp" line="294"/>
       <source>Unsetup configuration table</source>
-      <translation>Dérégler la table de configuration</translation>
+      <translation>Réinitialiser la table de configuration</translation>
     </message>
   </context>
   <context>
@@ -1031,7 +1058,7 @@ Voulez-vous continuer ?</translation>
       <location filename="../../SheetTableView.cpp" line="164"/>
       <source>Remove column(s)</source>
       <translation>
-        <numerusform>Supprimer une/des colonne</numerusform>
+        <numerusform>Supprimer une ou plusieurs colonnes</numerusform>
         <numerusform>Supprimer une/des colonnes</numerusform>
       </translation>
     </message>
@@ -1069,7 +1096,7 @@ Voulez-vous continuer ?</translation>
       <location filename="../../SheetTableView.cpp" line="199"/>
       <location filename="../../SheetTableView.cpp" line="617"/>
       <source>Split cells</source>
-      <translation>Fractionner les cellules</translation>
+      <translation>Diviser les cellules</translation>
     </message>
     <message>
       <location filename="../../SheetTableView.cpp" line="203"/>
@@ -1124,7 +1151,7 @@ Voulez-vous continuer ?</translation>
     <message>
       <location filename="../../Workbench.cpp" line="52"/>
       <source>&amp;Alignment</source>
-      <translation>&amp;Alignement</translation>
+      <translation>&amp;Aligner</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="53"/>

@@ -598,8 +598,8 @@ private:
         std::vector<TechDraw::BaseGeomPtr> geoms = dvp->getEdgeGeometry();
         std::vector<TopoDS_Edge> cosmeticEdges;
         for (auto& g : geoms) {
-            if (g->hlrVisible && g->cosmetic) {
-                cosmeticEdges.push_back(g->occEdge);
+            if (g->getHlrVisible() && g->getCosmetic()) {
+                cosmeticEdges.push_back(g->getOCCEdge());
             }
         }
         if (!cosmeticEdges.empty()) {

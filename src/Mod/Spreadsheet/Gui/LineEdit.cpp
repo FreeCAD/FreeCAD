@@ -76,7 +76,7 @@ bool LineEdit::event(QEvent *event)
     else if (event && event->type() == QEvent::KeyPress && !completerActive()) {
         QKeyEvent * kevent = static_cast<QKeyEvent*>(event);
         lastKeyPressed = kevent->key();
-        lastModifiers = kevent->modifiers(); 
+        lastModifiers = kevent->modifiers();
     }
     return Gui::ExpressionLineEdit::event(event);
 }

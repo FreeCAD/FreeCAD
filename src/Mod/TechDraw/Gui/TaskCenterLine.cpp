@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2019 WandererFan <wandererfan@gmail.com                 *
+ *   Copyright (c) 2019 WandererFan <wandererfan@gmail.com>                *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -148,14 +148,18 @@ void TaskCenterLine::setUiConnect()
         ui->rbAligned->setEnabled(true);
 
     // now connection
-    connect(ui->cpLineColor, SIGNAL(changed()), this, SLOT(onColorChanged()));
-    connect(ui->dsbWeight, SIGNAL(valueChanged(double)), this, SLOT(onWeightChanged()));
-    connect(ui->cboxStyle, SIGNAL(currentIndexChanged(int)), this, SLOT(onStyleChanged()));
-    connect(ui->qsbVertShift, SIGNAL(valueChanged(double)), this, SLOT(onShiftVertChanged()));
-    connect(ui->qsbHorizShift, SIGNAL(valueChanged(double)), this, SLOT(onShiftHorizChanged()));
-    connect(ui->qsbExtend, SIGNAL(valueChanged(double)), this, SLOT(onExtendChanged()));
-    connect(ui->qsbRotate, SIGNAL(valueChanged(double)), this, SLOT(onRotationChanged()));
-    connect(ui->bgOrientation, SIGNAL(buttonClicked(int)), this, SLOT(onOrientationChanged()));
+    connect(ui->cpLineColor, &ColorButton::changed, this, &TaskCenterLine::onColorChanged);
+    connect(ui->dsbWeight, qOverload<double>(&QuantitySpinBox::valueChanged), this, &TaskCenterLine::onWeightChanged);
+    connect(ui->cboxStyle, qOverload<int>(&QComboBox::currentIndexChanged), this, &TaskCenterLine::onStyleChanged);
+    connect(ui->qsbVertShift, qOverload<double>(&QuantitySpinBox::valueChanged), this, &TaskCenterLine::onShiftVertChanged);
+    connect(ui->qsbHorizShift, qOverload<double>(&QuantitySpinBox::valueChanged), this, &TaskCenterLine::onShiftHorizChanged);
+    connect(ui->qsbExtend, qOverload<double>(&QuantitySpinBox::valueChanged), this, &TaskCenterLine::onExtendChanged);
+    connect(ui->qsbRotate, qOverload<double>(&QuantitySpinBox::valueChanged), this, &TaskCenterLine::onRotationChanged);
+#if QT_VERSION < QT_VERSION_CHECK(5,15,0)
+    connect(ui->bgOrientation, qOverload<int>(&QButtonGroup::buttonClicked), this, &TaskCenterLine::onOrientationChanged);
+#else
+    connect(ui->bgOrientation, &QButtonGroup::idClicked, this, &TaskCenterLine::onOrientationChanged);
+#endif
 }
 
 void TaskCenterLine::setUiPrimary()

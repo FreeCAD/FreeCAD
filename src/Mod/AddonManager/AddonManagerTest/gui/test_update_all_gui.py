@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
 # ***************************************************************************
 # *                                                                         *
 # *   Copyright (c) 2022 FreeCAD Project Association                        *
@@ -129,7 +130,7 @@ class TestUpdateAllGui(unittest.TestCase):
                     sleep(0.01)
                 self.limit_reached = True
         worker = Worker()
-        self.factory.work_function = worker.run 
+        self.factory.work_function = worker.run
         self.test_object.run()
         cancel_timer = QtCore.QTimer()
         cancel_timer.timeout.connect(

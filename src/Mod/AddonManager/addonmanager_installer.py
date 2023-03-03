@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
 # ***************************************************************************
 # *                                                                         *
 # *   Copyright (c) 2022 FreeCAD Project Association                        *
@@ -52,7 +53,7 @@ translate = FreeCAD.Qt.translate
 class InstallationMethod(IntEnum):
     """For packages installed from a git repository, in most cases it is possible to either use git
     or to download a zip archive of the addon. For a local repository, a direct copy may be used
-    instead. If "ANY" is given, the the internal code decides which to use."""
+    instead. If "ANY" is given, the internal code decides which to use."""
 
     GIT = auto()
     COPY = auto()
@@ -115,7 +116,7 @@ class AddonInstaller(QtCore.QObject):
 
     allowed_packages = set()
 
-    def __init__(self, addon: object, allow_list: List[str] = None):
+    def __init__(self, addon: Addon, allow_list: List[str] = None):
         """Initialize the installer with an optional list of addons. If provided, then installation
         by name is supported, as long as the objects in the list contain a "name" and "url"
         property. In most use cases it is expected that addons is a List of Addon objects, but that

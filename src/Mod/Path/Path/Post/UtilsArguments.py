@@ -413,8 +413,8 @@ def init_shared_values(values):
     #
     values["OUTPUT_COMMENTS"] = True
     #
-    # if False duplicate axis values are suppressed if they are the same
-    # as the previous line.
+    # if False duplicate axis values or feeds are suppressed
+    # if they are the same as the previous line.
     #
     values["OUTPUT_DOUBLES"] = True
     #

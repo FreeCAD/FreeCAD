@@ -572,7 +572,7 @@ void PartGui::TaskMeasureLinear::onSelectionChanged(const Gui::SelectionChanges&
       newSelection.z = msg.z;
       selections1.selections.clear();//we only want one item.
       selections1.selections.push_back(newSelection);
-      QTimer::singleShot(0, this, SLOT(selectionClearDelayedSlot()));
+      QTimer::singleShot(0, this, &PartGui::TaskMeasureLinear::selectionClearDelayedSlot);
       stepped->getButton(1)->setEnabled(true);
       stepped->getButton(1)->setChecked(true);
       return;
@@ -594,7 +594,7 @@ void PartGui::TaskMeasureLinear::onSelectionChanged(const Gui::SelectionChanges&
       selections2.selections.push_back(newSelection);
       buildDimension();
       clearSelectionStrings();
-      QTimer::singleShot(0, this, SLOT(selectionClearDelayedSlot()));
+      QTimer::singleShot(0, this, &PartGui::TaskMeasureLinear::selectionClearDelayedSlot);
       stepped->getButton(0)->setChecked(true);
       stepped->getButton(1)->setEnabled(false);
       return;
@@ -1597,7 +1597,7 @@ void PartGui::TaskMeasureAngular::onSelectionChanged(const Gui::SelectionChanges
         assert(selections1.selections.at(0).shapeType == DimSelections::Vertex);
         assert(selections1.selections.at(1).shapeType == DimSelections::Vertex);
 
-        QTimer::singleShot(0, this, SLOT(selectionClearDelayedSlot()));
+        QTimer::singleShot(0, this, &PartGui::TaskMeasureAngular::selectionClearDelayedSlot);
         stepped->getButton(1)->setEnabled(true);
         stepped->getButton(1)->setChecked(true);
         return;
@@ -1618,7 +1618,7 @@ void PartGui::TaskMeasureAngular::onSelectionChanged(const Gui::SelectionChanges
         selections1.selections.push_back(newSelection);
       }
 
-      QTimer::singleShot(0, this, SLOT(selectionClearDelayedSlot()));
+      QTimer::singleShot(0, this, &PartGui::TaskMeasureAngular::selectionClearDelayedSlot);
       stepped->getButton(1)->setEnabled(true);
       stepped->getButton(1)->setChecked(true);
       return;
@@ -1651,7 +1651,7 @@ void PartGui::TaskMeasureAngular::onSelectionChanged(const Gui::SelectionChanges
 
         buildDimension();
         clearSelection();
-        QTimer::singleShot(0, this, SLOT(selectionClearDelayedSlot()));
+        QTimer::singleShot(0, this, &PartGui::TaskMeasureAngular::selectionClearDelayedSlot);
         stepped->getButton(0)->setChecked(true);
         stepped->getButton(1)->setEnabled(false);
         return;
@@ -1673,7 +1673,7 @@ void PartGui::TaskMeasureAngular::onSelectionChanged(const Gui::SelectionChanges
 
       buildDimension();
       clearSelection();
-      QTimer::singleShot(0, this, SLOT(selectionClearDelayedSlot()));
+      QTimer::singleShot(0, this, &PartGui::TaskMeasureAngular::selectionClearDelayedSlot);
       stepped->getButton(0)->setChecked(true);
       stepped->getButton(1)->setEnabled(false);
       return;

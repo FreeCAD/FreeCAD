@@ -28,6 +28,7 @@
 #include <vector>
 
 #include <SMESH_Version.h>
+#include <SMDSAbs_ElementType.hxx>
 
 #include <App/ComplexGeoData.h>
 #include <Base/Quantity.h>
@@ -84,6 +85,10 @@ public:
     unsigned long countSubElements(const char* Type) const override;
     /// get the subelement by type and number
     Data::Segment* getSubElement(const char* Type, unsigned long) const override;
+    /** Get points from object with given accuracy */
+    void getPoints(std::vector<Base::Vector3d> &Points,
+        std::vector<Base::Vector3d> &Normals,
+        double Accuracy, uint16_t flags=0) const override;
     //@}
 
     /** @name search and retrieval */
@@ -100,6 +105,8 @@ public:
     std::set<int> getNodesByVertex(const TopoDS_Vertex &vertex) const;
     /// retrieving node IDs by element ID
     std::list<int> getElementNodes(int id) const;
+    /// retrieving elements IDs by node ID
+    std::list<int> getNodeElements(int id, SMDSAbs_ElementType type=SMDSAbs_All) const;
     /// retrieving face IDs number by face
     std::list<int> getFacesByFace(const TopoDS_Face &face) const;
     /// retrieving edge IDs number by edge

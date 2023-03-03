@@ -30,13 +30,13 @@
     <message>
       <location filename="../../Command.cpp" line="524"/>
       <source>&amp;Clip</source>
-      <translation>&amp;Зрэз</translation>
+      <translation>&amp;Выгляд</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="525"/>
       <location filename="../../Command.cpp" line="527"/>
       <source>Inserts a clip group in the active drawing</source>
-      <translation>Уставіць групу зрэзаў у бягучы чарцёж</translation>
+      <translation>Уставіць суполку выглядаў у бягучы чарцёж</translation>
     </message>
   </context>
   <context>
@@ -55,7 +55,7 @@
       <location filename="../../Command.cpp" line="716"/>
       <location filename="../../Command.cpp" line="718"/>
       <source>Inserts a Draft view of the selected object(s) in the active drawing</source>
-      <translation>Уставіць выгляд Чарнавіка абранага аб'екта(аў) у бягучы чарцёж</translation>
+      <translation>Уставіць выгляд Чарнавіка абраных аб'ектаў у бягучы чарцёж</translation>
     </message>
   </context>
   <context>
@@ -285,7 +285,7 @@
     <message>
       <location filename="../../DrawingView.cpp" line="462"/>
       <source>Export PDF</source>
-      <translation type="unfinished">Export PDF</translation>
+      <translation>Экспартаваць у PDF</translation>
     </message>
     <message>
       <location filename="../../DrawingView.cpp" line="463"/>
@@ -361,7 +361,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../DrawingView.cpp" line="602"/>
       <source>Can't open file '%1' for writing.</source>
-      <translation>Немагчыма адчыніць файл '%1' для запісу.</translation>
+      <translation>Не атрымалася адчыніць файл '%1' для запісу.</translation>
     </message>
   </context>
   <context>
@@ -490,12 +490,12 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskOrthoViews.ui" line="681"/>
       <source>Show hidden lines</source>
-      <translation>Адлюстраваць схаваныя лініі</translation>
+      <translation>Паказаць схаваныя лініі</translation>
     </message>
     <message>
       <location filename="../../TaskOrthoViews.ui" line="688"/>
       <source>Show smooth lines</source>
-      <translation>Адлюстраваць плыўныя лініі</translation>
+      <translation>Паказаць плыўныя лініі</translation>
     </message>
     <message>
       <location filename="../../TaskOrthoViews.ui" line="699"/>
@@ -515,7 +515,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskOrthoViews.ui" line="723"/>
       <source>Dimetric</source>
-      <translation>Дзіметрычны</translation>
+      <translation>Дыметрычны</translation>
     </message>
     <message>
       <location filename="../../TaskOrthoViews.ui" line="728"/>
@@ -614,22 +614,22 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskDialog.cpp" line="88"/>
       <source>No active document</source>
-      <translation>Няма бягучага дакумента</translation>
+      <translation>Без бягучага дакумента</translation>
     </message>
     <message>
       <location filename="../../TaskDialog.cpp" line="89"/>
       <source>There is currently no active document to complete the operation</source>
-      <translation>У бягучы час няма бягучага дакумента для завяршэння аперацыі</translation>
+      <translation>У бягучы час адсутнічае бягучы дакумент для завяршэння аперацыі</translation>
     </message>
     <message>
       <location filename="../../TaskDialog.cpp" line="94"/>
       <source>No active view</source>
-      <translation>Няма бягучага выгляду</translation>
+      <translation>Без бягучага выгляду</translation>
     </message>
     <message>
       <location filename="../../TaskDialog.cpp" line="95"/>
       <source>There is currently no active view to complete the operation</source>
-      <translation>У бягучы час няма бягучага выгляд для завяршэння аперацыі</translation>
+      <translation>У бягучы час адсутнічае бягучы выгляд для завяршэння аперацыі</translation>
     </message>
   </context>
   <context>
@@ -761,7 +761,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../ViewProviderPage.cpp" line="141"/>
       <source>Show drawing</source>
-      <translation>Адлюстраваць чарцёж</translation>
+      <translation>Паказаць чарцёж</translation>
     </message>
   </context>
   <context>

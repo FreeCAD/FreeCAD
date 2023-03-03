@@ -45,20 +45,11 @@ UrlLabel::UrlLabel ( QWidget * parent, Qt::WindowFlags f )
 {
     _url = "http://localhost";
     setToolTip(this->_url);
+    setCursor(Qt::PointingHandCursor);
 }
 
 UrlLabel::~UrlLabel()
 {
-}
-
-void UrlLabel::enterEvent ( QEvent * )
-{
-    setCursor(Qt::PointingHandCursor);
-}
-
-void UrlLabel::leaveEvent ( QEvent * )
-{
-    setCursor(Qt::ArrowCursor);
 }
 
 void UrlLabel::mouseReleaseEvent ( QMouseEvent * )
@@ -151,8 +142,7 @@ FileChooser::FileChooser( QWidget *parent )
     lineEdit = new QLineEdit( this );
     layout->addWidget( lineEdit );
 
-    connect(lineEdit, SIGNAL(textChanged(const QString &)),
-            this, SIGNAL(fileNameChanged(const QString &)));
+    connect(lineEdit, &QLineEdit::textChanged, this, &FileChooser::fileNameChanged);
 
     button = new QPushButton( "...", this );
 #if QT_VERSION >= QT_VERSION_CHECK(5, 11, 0)
@@ -162,7 +152,7 @@ FileChooser::FileChooser( QWidget *parent )
 #endif
     layout->addWidget( button );
 
-    connect(button, SIGNAL(clicked()), this, SLOT(chooseFile()));
+    connect(button, &QPushButton::clicked, this, &FileChooser::chooseFile);
 
     setFocusProxy( lineEdit );
 }
@@ -877,10 +867,8 @@ QuantitySpinBox::QuantitySpinBox(QWidget *parent)
 {
     d_ptr->locale = locale();
     this->setContextMenuPolicy(Qt::DefaultContextMenu);
-    QObject::connect(lineEdit(), SIGNAL(textChanged(QString)),
-                     this, SLOT(userInput(QString)));
-    QObject::connect(this, SIGNAL(editingFinished()),
-                     this, SLOT(handlePendingEmit()));
+    connect(lineEdit(), &QLineEdit::textChanged, this, &QuantitySpinBox::userInput);
+    connect(this, &QuantitySpinBox::editingFinished, this, &QuantitySpinBox::handlePendingEmit);
 }
 
 QuantitySpinBox::~QuantitySpinBox()
@@ -1412,8 +1400,7 @@ void PrefQuantitySpinBox::setParamGrpPath(const QByteArray& name)
 CommandIconView::CommandIconView ( QWidget * parent )
   : QListWidget(parent)
 {
-    connect(this, SIGNAL (currentItemChanged(QListWidgetItem *, QListWidgetItem *)), 
-            this, SLOT (onSelectionChanged(QListWidgetItem *, QListWidgetItem *)) );
+    connect(this, &QListWidget::currentItemChanged, this, &CommandIconView::onSelectionChanged);
 }
 
 CommandIconView::~CommandIconView ()
@@ -1439,7 +1426,7 @@ void CommandIconView::startDrag ( Qt::DropActions /*supportedActions*/ )
 
     QDrag *drag = new QDrag(this);
     drag->setMimeData(mimeData);
-    drag->setHotSpot(QPoint(pixmap.width()/2, pixmap.height()/2));
+    drag->setHotSpot(QPoint(pixmap.width() / 2, pixmap.height() / 2));
     drag->setPixmap(pixmap);
     drag->exec(Qt::MoveAction);
 }
@@ -1581,8 +1568,7 @@ UIntSpinBox::UIntSpinBox (QWidget* parent)
 {
     d = new UIntSpinBoxPrivate;
     d->mValidator =  new UnsignedValidator(this->minimum(), this->maximum(), this);
-    connect(this, SIGNAL(valueChanged(int)),
-            this, SLOT(valueChange(int)));
+    connect(this, qOverload<int>(&QSpinBox::valueChanged), this, &UIntSpinBox::valueChange);
     setRange(0, 99);
     setValue(0);
     updateValidator();
@@ -1619,7 +1605,7 @@ void UIntSpinBox::setValue(uint value)
 
 void UIntSpinBox::valueChange(int value)
 {
-    valueChanged(d->mapToUInt(value));
+    unsignedChanged(d->mapToUInt(value));
 }
 
 uint UIntSpinBox::minimum() const
@@ -1762,10 +1748,13 @@ void PrefDoubleSpinBox::setParamGrpPath ( const QByteArray& name )
 // -------------------------------------------------------------
 
 ColorButton::ColorButton(QWidget* parent)
-    : QPushButton( parent ), _allowChange(true), _drawFrame(true)
+    : QPushButton(parent)
+    ,  _allowChange(true)
+    , _allowTransparency(false)
+    , _drawFrame(true)
 {
     _col = palette().color(QPalette::Active,QPalette::Midlight);
-    connect( this, SIGNAL( clicked() ), SLOT( onChooseColor() ));
+    connect(this, &ColorButton::clicked, this, &ColorButton::onChooseColor);
 }
 
 ColorButton::~ColorButton()
@@ -1791,6 +1780,16 @@ void ColorButton::setAllowChangeColor(bool ok)
 bool ColorButton::allowChangeColor() const
 {
     return _allowChange;
+}
+
+void ColorButton::setAllowTransparency(bool ok)
+{
+    _allowTransparency = ok;
+}
+
+bool ColorButton::allowTransparency() const
+{
+    return _allowTransparency;
 }
 
 void ColorButton::setDrawFrame(bool ok)

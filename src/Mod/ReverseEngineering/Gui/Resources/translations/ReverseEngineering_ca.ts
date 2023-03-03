@@ -225,7 +225,7 @@
     <message>
       <location filename="../../Command.cpp" line="595"/>
       <source>View triangulation</source>
-      <translation>Veure triangulació</translation>
+      <translation>Visualitza la triangulació</translation>
     </message>
     <message>
       <location filename="../../FitBSplineSurface.cpp" line="148"/>

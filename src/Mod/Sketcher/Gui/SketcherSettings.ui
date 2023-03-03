@@ -15,13 +15,6 @@
   </property>
   <layout class="QGridLayout" name="gridLayout">
    <item row="0" column="0">
-    <widget class="QGroupBox" name="placeholder">
-     <property name="title">
-      <string>Sketcher</string>
-     </property>
-    </widget>
-   </item>
-   <item row="1" column="0">
     <widget class="QGroupBox" name="groupBox_2">
      <property name="title">
       <string>Task Panel Widgets</string>
@@ -67,7 +60,7 @@
      </layout>
     </widget>
    </item>
-   <item row="2" column="0">
+   <item row="1" column="0">
     <widget class="QGroupBox" name="groupBox_4">
      <property name="title">
       <string>Dragging performance</string>
@@ -96,7 +89,7 @@ Requires to re-enter edit mode to take effect.</string>
      </layout>
     </widget>
    </item>
-   <item row="3" column="0">
+   <item row="2" column="0">
     <widget class="QGroupBox" name="groupBox_5">
      <property name="enabled">
       <bool>true</bool>
@@ -189,7 +182,7 @@ Requires to re-enter edit mode to take effect.</string>
      </layout>
     </widget>
    </item>
-   <item row="4" column="0">
+   <item row="3" column="0">
     <spacer name="verticalSpacer">
      <property name="orientation">
       <enum>Qt::Vertical</enum>

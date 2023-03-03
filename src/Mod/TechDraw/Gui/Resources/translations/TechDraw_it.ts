@@ -75,12 +75,12 @@
   <context>
     <name>CmdTechDraw3PtAngleDimension</name>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1036"/>
+      <location filename="../../CommandCreateDims.cpp" line="775"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1037"/>
+      <location filename="../../CommandCreateDims.cpp" line="776"/>
       <source>Insert 3-Point Angle Dimension</source>
       <translation>Angolo da 3 punti</translation>
     </message>
@@ -101,12 +101,12 @@
   <context>
     <name>CmdTechDrawAngleDimension</name>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="943"/>
+      <location filename="../../CommandCreateDims.cpp" line="679"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="944"/>
+      <location filename="../../CommandCreateDims.cpp" line="680"/>
       <source>Insert Angle Dimension</source>
       <translation>Angolo</translation>
     </message>
@@ -308,12 +308,12 @@
   <context>
     <name>CmdTechDrawDiameterDimension</name>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="347"/>
+      <location filename="../../CommandCreateDims.cpp" line="258"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="348"/>
+      <location filename="../../CommandCreateDims.cpp" line="259"/>
       <source>Insert Diameter Dimension</source>
       <translation>Diametro</translation>
     </message>
@@ -321,12 +321,12 @@
   <context>
     <name>CmdTechDrawDimension</name>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="104"/>
+      <location filename="../../CommandCreateDims.cpp" line="102"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="105"/>
+      <location filename="../../CommandCreateDims.cpp" line="103"/>
       <source>Insert Dimension</source>
       <translation>Quota</translation>
     </message>
@@ -1392,22 +1392,22 @@
   <context>
     <name>CmdTechDrawExtentGroup</name>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1208"/>
+      <location filename="../../CommandCreateDims.cpp" line="952"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1209"/>
+      <location filename="../../CommandCreateDims.cpp" line="953"/>
       <source>Insert Extent Dimension</source>
       <translation>Dimensione di estensione</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1275"/>
+      <location filename="../../CommandCreateDims.cpp" line="1021"/>
       <source>Horizontal Extent</source>
       <translation>Estensione orizzontale</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1279"/>
+      <location filename="../../CommandCreateDims.cpp" line="1026"/>
       <source>Vertical Extent</source>
       <translation>Estensione verticale</translation>
     </message>
@@ -1454,12 +1454,12 @@
   <context>
     <name>CmdTechDrawHorizontalDimension</name>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="664"/>
+      <location filename="../../CommandCreateDims.cpp" line="483"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="665"/>
+      <location filename="../../CommandCreateDims.cpp" line="484"/>
       <source>Insert Horizontal Dimension</source>
       <translation>Quota orizzontale</translation>
     </message>
@@ -1467,12 +1467,12 @@
   <context>
     <name>CmdTechDrawHorizontalExtentDimension</name>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1301"/>
+      <location filename="../../CommandCreateDims.cpp" line="1049"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1302"/>
+      <location filename="../../CommandCreateDims.cpp" line="1050"/>
       <source>Insert Horizontal Extent Dimension</source>
       <translation>Estensione orizzontale</translation>
     </message>
@@ -1509,12 +1509,12 @@
   <context>
     <name>CmdTechDrawLandmarkDimension</name>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1507"/>
+      <location filename="../../CommandCreateDims.cpp" line="1257"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1508"/>
+      <location filename="../../CommandCreateDims.cpp" line="1258"/>
       <source>Insert Landmark Dimension - EXPERIMENTAL</source>
       <translation>Quota da punti di riferimento - SPERIMENTALE</translation>
     </message>
@@ -1535,12 +1535,12 @@
   <context>
     <name>CmdTechDrawLengthDimension</name>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="569"/>
+      <location filename="../../CommandCreateDims.cpp" line="384"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="570"/>
+      <location filename="../../CommandCreateDims.cpp" line="385"/>
       <source>Insert Length Dimension</source>
       <translation>Lunghezza</translation>
     </message>
@@ -1548,12 +1548,12 @@
   <context>
     <name>CmdTechDrawLinkDimension</name>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1131"/>
+      <location filename="../../CommandCreateDims.cpp" line="872"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1132"/>
+      <location filename="../../CommandCreateDims.cpp" line="873"/>
       <source>Link Dimension to 3D Geometry</source>
       <translation>Link alla geometria 3D</translation>
     </message>
@@ -1667,12 +1667,12 @@
   <context>
     <name>CmdTechDrawRadiusDimension</name>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="226"/>
+      <location filename="../../CommandCreateDims.cpp" line="132"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="227"/>
+      <location filename="../../CommandCreateDims.cpp" line="133"/>
       <source>Insert Radius Dimension</source>
       <translation>Raggio</translation>
     </message>
@@ -1908,12 +1908,12 @@
   <context>
     <name>CmdTechDrawVerticalDimension</name>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="759"/>
+      <location filename="../../CommandCreateDims.cpp" line="582"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="760"/>
+      <location filename="../../CommandCreateDims.cpp" line="583"/>
       <source>Insert Vertical Dimension</source>
       <translation>Quota verticale</translation>
     </message>
@@ -1921,12 +1921,12 @@
   <context>
     <name>CmdTechDrawVerticalExtentDimension</name>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1416"/>
+      <location filename="../../CommandCreateDims.cpp" line="1162"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1417"/>
+      <location filename="../../CommandCreateDims.cpp" line="1163"/>
       <source>Insert Vertical Extent Dimension</source>
       <translation>Estensione verticale</translation>
     </message>
@@ -2037,8 +2037,8 @@
       <translation>Crea annotazione</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1552"/>
-      <location filename="../../CommandCreateDims.cpp" line="1632"/>
+      <location filename="../../CommandCreateDims.cpp" line="1305"/>
+      <location filename="../../CommandCreateDims.cpp" line="1385"/>
       <source>Create Dimension</source>
       <translation>Crea quota</translation>
     </message>
@@ -2088,7 +2088,7 @@
       <translation>Crea vista attiva</translation>
     </message>
     <message>
-      <location filename="../../TaskCenterLine.cpp" line="294"/>
+      <location filename="../../TaskCenterLine.cpp" line="298"/>
       <source>Create CenterLine</source>
       <translation>Crea linea di mezzeria</translation>
     </message>
@@ -2138,12 +2138,12 @@
       <translation>Crea vista di sezione</translation>
     </message>
     <message>
-      <location filename="../../TaskComplexSection.cpp" line="560"/>
+      <location filename="../../TaskComplexSection.cpp" line="559"/>
       <source>Create ComplexSection</source>
       <translation>Crea Sezione Complessa</translation>
     </message>
     <message>
-      <location filename="../../TaskComplexSection.cpp" line="643"/>
+      <location filename="../../TaskComplexSection.cpp" line="642"/>
       <location filename="../../TaskSectionView.cpp" line="561"/>
       <source>Edit SectionView</source>
       <translation>Modifica Vista Sezione</translation>
@@ -2338,13 +2338,18 @@
       <source>Surface Finish Symbols</source>
       <translation>Simboli di finitura superficiale</translation>
     </message>
+    <message>
+      <location filename="../../TaskDimRepair.cpp" line="239"/>
+      <source>Repair Dimension</source>
+      <translation>Ripara Quota</translation>
+    </message>
   </context>
   <context>
     <name>CompassWidget</name>
     <message>
       <location filename="../../Widgets/CompassWidget.cpp" line="158"/>
       <source>View Direction as Angle</source>
-      <translation type="unfinished">View Direction as Angle</translation>
+      <translation>Visualizza la Direzione come Angolo</translation>
     </message>
     <message>
       <location filename="../../Widgets/CompassWidget.cpp" line="160"/>
@@ -2572,27 +2577,27 @@
       <translation>Modifica sorgente documento</translation>
     </message>
     <message>
-      <location filename="../../mrichtextedit.cpp" line="263"/>
+      <location filename="../../mrichtextedit.cpp" line="269"/>
       <source>Document source</source>
       <translation>Sorgente documento</translation>
     </message>
     <message>
-      <location filename="../../mrichtextedit.cpp" line="366"/>
+      <location filename="../../mrichtextedit.cpp" line="372"/>
       <source>Create a link</source>
       <translation>Crea un link</translation>
     </message>
     <message>
-      <location filename="../../mrichtextedit.cpp" line="367"/>
+      <location filename="../../mrichtextedit.cpp" line="373"/>
       <source>Link URL:</source>
       <translation>URL link:</translation>
     </message>
     <message>
-      <location filename="../../mrichtextedit.cpp" line="696"/>
+      <location filename="../../mrichtextedit.cpp" line="702"/>
       <source>Select an image</source>
       <translation>Seleziona un'immagine</translation>
     </message>
     <message>
-      <location filename="../../mrichtextedit.cpp" line="698"/>
+      <location filename="../../mrichtextedit.cpp" line="704"/>
       <source>JPEG (*.jpg);; GIF (*.gif);; PNG (*.png);; BMP (*.bmp);; All (*)</source>
       <translation>JPEG (*.jpg);; GIF (*.gif);; PNG (*.png);; BMP (*.bmp);; Tutti (*)</translation>
     </message>
@@ -2608,8 +2613,8 @@
       <location filename="../../CommandAnnotate.cpp" line="1349"/>
       <location filename="../../CommandAnnotate.cpp" line="1356"/>
       <location filename="../../CommandAnnotate.cpp" line="1420"/>
-      <location filename="../../CommandCreateDims.cpp" line="1525"/>
-      <location filename="../../CommandCreateDims.cpp" line="1533"/>
+      <location filename="../../CommandCreateDims.cpp" line="1277"/>
+      <location filename="../../CommandCreateDims.cpp" line="1286"/>
       <location filename="../../Command.cpp" line="375"/>
       <location filename="../../Command.cpp" line="601"/>
       <location filename="../../Command.cpp" line="718"/>
@@ -2661,17 +2666,17 @@
       <location filename="../../CommandDecorate.cpp" line="345"/>
       <location filename="../../CommandDecorate.cpp" line="352"/>
       <location filename="../../CommandDecorate.cpp" line="359"/>
-      <location filename="../../CommandCreateDims.cpp" line="252"/>
-      <location filename="../../CommandCreateDims.cpp" line="373"/>
-      <location filename="../../CommandCreateDims.cpp" line="595"/>
-      <location filename="../../CommandCreateDims.cpp" line="691"/>
-      <location filename="../../CommandCreateDims.cpp" line="786"/>
-      <location filename="../../CommandCreateDims.cpp" line="969"/>
-      <location filename="../../CommandCreateDims.cpp" line="1062"/>
-      <location filename="../../CommandCreateDims.cpp" line="1335"/>
-      <location filename="../../CommandCreateDims.cpp" line="1674"/>
-      <location filename="../../CommandCreateDims.cpp" line="1681"/>
-      <location filename="../../CommandCreateDims.cpp" line="1688"/>
+      <location filename="../../CommandCreateDims.cpp" line="166"/>
+      <location filename="../../CommandCreateDims.cpp" line="292"/>
+      <location filename="../../CommandCreateDims.cpp" line="418"/>
+      <location filename="../../CommandCreateDims.cpp" line="518"/>
+      <location filename="../../CommandCreateDims.cpp" line="617"/>
+      <location filename="../../CommandCreateDims.cpp" line="713"/>
+      <location filename="../../CommandCreateDims.cpp" line="809"/>
+      <location filename="../../CommandCreateDims.cpp" line="1084"/>
+      <location filename="../../CommandCreateDims.cpp" line="1437"/>
+      <location filename="../../CommandCreateDims.cpp" line="1445"/>
+      <location filename="../../CommandCreateDims.cpp" line="1454"/>
       <location filename="../../Command.cpp" line="951"/>
       <location filename="../../Command.cpp" line="958"/>
       <location filename="../../Command.cpp" line="966"/>
@@ -2680,32 +2685,32 @@
       <translation>Selezione non corretta</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1675"/>
+      <location filename="../../CommandCreateDims.cpp" line="1438"/>
       <location filename="../../Command.cpp" line="952"/>
       <source>Select an object first</source>
       <translation>Prima selezionare un oggetto</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1682"/>
+      <location filename="../../CommandCreateDims.cpp" line="1446"/>
       <location filename="../../Command.cpp" line="959"/>
       <source>Too many objects selected</source>
       <translation>Troppi oggetti selezionati</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1689"/>
+      <location filename="../../CommandCreateDims.cpp" line="1455"/>
       <location filename="../../Command.cpp" line="967"/>
       <source>Create a page first.</source>
       <translation>Prima creare una pagina.</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="253"/>
-      <location filename="../../CommandCreateDims.cpp" line="374"/>
-      <location filename="../../CommandCreateDims.cpp" line="596"/>
-      <location filename="../../CommandCreateDims.cpp" line="692"/>
-      <location filename="../../CommandCreateDims.cpp" line="787"/>
-      <location filename="../../CommandCreateDims.cpp" line="970"/>
-      <location filename="../../CommandCreateDims.cpp" line="1063"/>
-      <location filename="../../CommandCreateDims.cpp" line="1336"/>
+      <location filename="../../CommandCreateDims.cpp" line="167"/>
+      <location filename="../../CommandCreateDims.cpp" line="293"/>
+      <location filename="../../CommandCreateDims.cpp" line="419"/>
+      <location filename="../../CommandCreateDims.cpp" line="519"/>
+      <location filename="../../CommandCreateDims.cpp" line="618"/>
+      <location filename="../../CommandCreateDims.cpp" line="714"/>
+      <location filename="../../CommandCreateDims.cpp" line="810"/>
+      <location filename="../../CommandCreateDims.cpp" line="1085"/>
       <location filename="../../Command.cpp" line="979"/>
       <source>No View of a Part in selection.</source>
       <translation>Nessuna vista di una Parte nella selezione.</translation>
@@ -2796,176 +2801,176 @@
       <translation>La pagina contiene una DrawViewArch che non verrà esportata. Continuare?</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="300"/>
-      <location filename="../../CommandCreateDims.cpp" line="421"/>
+      <location filename="../../CommandCreateDims.cpp" line="212"/>
+      <location filename="../../CommandCreateDims.cpp" line="338"/>
       <source>Ellipse Curve Warning</source>
       <translation>Attenzione Curva ellittica</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="301"/>
+      <location filename="../../CommandCreateDims.cpp" line="213"/>
       <source>Selected edge is an Ellipse.  Radius will be approximate. Continue?</source>
       <translation>Il bordo selezionato è un'ellisse. Il raggio sarà approssimativo. Continuare?</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="310"/>
-      <location filename="../../CommandCreateDims.cpp" line="431"/>
+      <location filename="../../CommandCreateDims.cpp" line="223"/>
+      <location filename="../../CommandCreateDims.cpp" line="349"/>
       <source>BSpline Curve Warning</source>
       <translation>Attenzione Curva BSpline</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="311"/>
+      <location filename="../../CommandCreateDims.cpp" line="224"/>
       <source>Selected edge is a BSpline.  Radius will be approximate. Continue?</source>
       <translation>Il bordo selezionato è una BSpline. Il raggio sarà approssimativo. Continuare?</translation>
     </message>
     <message>
       <location filename="../../CommandDecorate.cpp" line="366"/>
       <location filename="../../CommandDecorate.cpp" line="372"/>
-      <location filename="../../CommandCreateDims.cpp" line="273"/>
-      <location filename="../../CommandCreateDims.cpp" line="289"/>
-      <location filename="../../CommandCreateDims.cpp" line="394"/>
-      <location filename="../../CommandCreateDims.cpp" line="410"/>
-      <location filename="../../CommandCreateDims.cpp" line="617"/>
-      <location filename="../../CommandCreateDims.cpp" line="634"/>
-      <location filename="../../CommandCreateDims.cpp" line="712"/>
-      <location filename="../../CommandCreateDims.cpp" line="728"/>
-      <location filename="../../CommandCreateDims.cpp" line="807"/>
-      <location filename="../../CommandCreateDims.cpp" line="823"/>
-      <location filename="../../CommandCreateDims.cpp" line="990"/>
-      <location filename="../../CommandCreateDims.cpp" line="1006"/>
-      <location filename="../../CommandCreateDims.cpp" line="1083"/>
-      <location filename="../../CommandCreateDims.cpp" line="1099"/>
-      <location filename="../../CommandCreateDims.cpp" line="1169"/>
-      <location filename="../../CommandCreateDims.cpp" line="1175"/>
-      <location filename="../../CommandCreateDims.cpp" line="1364"/>
-      <location filename="../../CommandCreateDims.cpp" line="1379"/>
-      <location filename="../../CommandCreateDims.cpp" line="1469"/>
-      <location filename="../../TaskDimRepair.cpp" line="145"/>
-      <location filename="../../TaskDimRepair.cpp" line="159"/>
-      <location filename="../../TaskDimRepair.cpp" line="174"/>
+      <location filename="../../CommandCreateDims.cpp" line="187"/>
+      <location filename="../../CommandCreateDims.cpp" line="202"/>
+      <location filename="../../CommandCreateDims.cpp" line="313"/>
+      <location filename="../../CommandCreateDims.cpp" line="328"/>
+      <location filename="../../CommandCreateDims.cpp" line="440"/>
+      <location filename="../../CommandCreateDims.cpp" line="456"/>
+      <location filename="../../CommandCreateDims.cpp" line="538"/>
+      <location filename="../../CommandCreateDims.cpp" line="554"/>
+      <location filename="../../CommandCreateDims.cpp" line="637"/>
+      <location filename="../../CommandCreateDims.cpp" line="652"/>
+      <location filename="../../CommandCreateDims.cpp" line="733"/>
+      <location filename="../../CommandCreateDims.cpp" line="748"/>
+      <location filename="../../CommandCreateDims.cpp" line="829"/>
+      <location filename="../../CommandCreateDims.cpp" line="844"/>
+      <location filename="../../CommandCreateDims.cpp" line="912"/>
+      <location filename="../../CommandCreateDims.cpp" line="919"/>
+      <location filename="../../CommandCreateDims.cpp" line="1112"/>
+      <location filename="../../CommandCreateDims.cpp" line="1126"/>
+      <location filename="../../CommandCreateDims.cpp" line="1218"/>
+      <location filename="../../TaskDimRepair.cpp" line="126"/>
+      <location filename="../../TaskDimRepair.cpp" line="138"/>
+      <location filename="../../TaskDimRepair.cpp" line="149"/>
       <location filename="../../TaskDimension.cpp" line="400"/>
       <source>Incorrect Selection</source>
       <translation>Selezione non corretta</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="274"/>
+      <location filename="../../CommandCreateDims.cpp" line="188"/>
       <source>Can not make 2d radius dimension from selection</source>
       <translation type="unfinished">Can not make 2d radius dimension from selection</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="290"/>
+      <location filename="../../CommandCreateDims.cpp" line="203"/>
       <source>Can not make 3d radius dimension from selection</source>
       <translation type="unfinished">Can not make 3d radius dimension from selection</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="319"/>
-      <location filename="../../CommandCreateDims.cpp" line="440"/>
+      <location filename="../../CommandCreateDims.cpp" line="234"/>
+      <location filename="../../CommandCreateDims.cpp" line="360"/>
       <source>BSpline Curve Error</source>
       <translation>Errore curva BSpline</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="320"/>
+      <location filename="../../CommandCreateDims.cpp" line="235"/>
       <source>Selected edge is a BSpline and a radius can not be calculated.</source>
       <translation>Il bordo selezionato è un BSpline e un raggio non può essere calcolato.</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="395"/>
+      <location filename="../../CommandCreateDims.cpp" line="314"/>
       <source>Can not make 2d diameter dimension from selection</source>
       <translation type="unfinished">Can not make 2d diameter dimension from selection</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="411"/>
+      <location filename="../../CommandCreateDims.cpp" line="329"/>
       <source>Can not make 3d diameter dimension from selection</source>
       <translation type="unfinished">Can not make 3d diameter dimension from selection</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="422"/>
+      <location filename="../../CommandCreateDims.cpp" line="339"/>
       <source>Selected edge is an Ellipse.  Diameter will be approximate. Continue?</source>
       <translation>Il bordo selezionato è un'ellisse. Il diametro sarà approssimativo. Continuare?</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="432"/>
+      <location filename="../../CommandCreateDims.cpp" line="350"/>
       <source>Selected edge is a BSpline.  Diameter will be approximate. Continue?</source>
       <translation>Il bordo selezionato è una BSpline. Il diametro sarà approssimativo. Continuare?</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="441"/>
+      <location filename="../../CommandCreateDims.cpp" line="361"/>
       <source>Selected edge is a BSpline and a diameter can not be calculated.</source>
       <translation>Il bordo selezionato è un BSpline e il diametro non può essere calcolato.</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="618"/>
+      <location filename="../../CommandCreateDims.cpp" line="441"/>
       <source>Can not make 2d linear dimension from selection</source>
       <translation type="unfinished">Can not make 2d linear dimension from selection</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="635"/>
+      <location filename="../../CommandCreateDims.cpp" line="457"/>
       <source>Can not make 3d linear dimension from selection</source>
       <translation type="unfinished">Can not make 3d linear dimension from selection</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="713"/>
+      <location filename="../../CommandCreateDims.cpp" line="539"/>
       <source>Can not make 2d horizontal dimension from selection</source>
       <translation type="unfinished">Can not make 2d horizontal dimension from selection</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="729"/>
+      <location filename="../../CommandCreateDims.cpp" line="555"/>
       <source>Can not make 3d horizontal dimension from selection</source>
       <translation type="unfinished">Can not make 3d horizontal dimension from selection</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="808"/>
+      <location filename="../../CommandCreateDims.cpp" line="638"/>
       <source>Can not make 2d vertical dimension from selection</source>
       <translation type="unfinished">Can not make 2d vertical dimension from selection</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="824"/>
+      <location filename="../../CommandCreateDims.cpp" line="653"/>
       <source>Can not make 3d vertical dimension from selection</source>
       <translation type="unfinished">Can not make 3d vertical dimension from selection</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="991"/>
-      <location filename="../../CommandCreateDims.cpp" line="1084"/>
+      <location filename="../../CommandCreateDims.cpp" line="734"/>
+      <location filename="../../CommandCreateDims.cpp" line="830"/>
       <source>Can not make 2d angle dimension from selection</source>
       <translation type="unfinished">Can not make 2d angle dimension from selection</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1007"/>
-      <location filename="../../CommandCreateDims.cpp" line="1100"/>
+      <location filename="../../CommandCreateDims.cpp" line="749"/>
+      <location filename="../../CommandCreateDims.cpp" line="845"/>
       <source>Can not make 3d angle dimension from selection</source>
       <translation type="unfinished">Can not make 3d angle dimension from selection</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1365"/>
+      <location filename="../../CommandCreateDims.cpp" line="1113"/>
       <source>Can not make 2d extent dimension from selection</source>
       <translation type="unfinished">Can not make 2d extent dimension from selection</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1380"/>
+      <location filename="../../CommandCreateDims.cpp" line="1127"/>
       <source>Can not make 3d extent dimension from selection</source>
       <translation type="unfinished">Can not make 3d extent dimension from selection</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1470"/>
+      <location filename="../../CommandCreateDims.cpp" line="1219"/>
       <source>There is no Dimension in your selection</source>
       <translation>Non ci sono Quote nella tua selezione</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1170"/>
+      <location filename="../../CommandCreateDims.cpp" line="913"/>
       <source>There is no 3D object in your selection</source>
       <translation>Nella selezione non esiste alcun oggetto 3D</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1176"/>
+      <location filename="../../CommandCreateDims.cpp" line="920"/>
       <source>There are no 3D Edges or Vertices in your selection</source>
       <translation>Nella selezione non esistono spigoli o vertici 3D</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1526"/>
+      <location filename="../../CommandCreateDims.cpp" line="1278"/>
       <source>Select 2 point objects and 1 View. (1)</source>
       <translation>Selezionare 2 oggetti punti e 1 vista. (1)</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1534"/>
+      <location filename="../../CommandCreateDims.cpp" line="1287"/>
       <source>Select 2 point objects and 1 View. (2)</source>
       <translation>Selezionare 2 oggetti punti e 1 vista. (2)</translation>
     </message>
@@ -2986,11 +2991,15 @@
       <location filename="../../CommandAnnotate.cpp" line="1336"/>
       <location filename="../../CommandAnnotate.cpp" line="1402"/>
       <location filename="../../CommandCreateDims.cpp" line="146"/>
-      <location filename="../../CommandCreateDims.cpp" line="479"/>
-      <location filename="../../CommandCreateDims.cpp" line="865"/>
-      <location filename="../../CommandCreateDims.cpp" line="1221"/>
-      <location filename="../../CommandCreateDims.cpp" line="1315"/>
-      <location filename="../../CommandCreateDims.cpp" line="1430"/>
+      <location filename="../../CommandCreateDims.cpp" line="272"/>
+      <location filename="../../CommandCreateDims.cpp" line="398"/>
+      <location filename="../../CommandCreateDims.cpp" line="498"/>
+      <location filename="../../CommandCreateDims.cpp" line="597"/>
+      <location filename="../../CommandCreateDims.cpp" line="693"/>
+      <location filename="../../CommandCreateDims.cpp" line="789"/>
+      <location filename="../../CommandCreateDims.cpp" line="966"/>
+      <location filename="../../CommandCreateDims.cpp" line="1064"/>
+      <location filename="../../CommandCreateDims.cpp" line="1177"/>
       <location filename="../../CommandStack.cpp" line="75"/>
       <location filename="../../CommandStack.cpp" line="191"/>
       <location filename="../../CommandStack.cpp" line="251"/>
@@ -3031,11 +3040,15 @@
       <location filename="../../CommandAnnotate.cpp" line="1337"/>
       <location filename="../../CommandAnnotate.cpp" line="1403"/>
       <location filename="../../CommandCreateDims.cpp" line="147"/>
-      <location filename="../../CommandCreateDims.cpp" line="480"/>
-      <location filename="../../CommandCreateDims.cpp" line="866"/>
-      <location filename="../../CommandCreateDims.cpp" line="1222"/>
-      <location filename="../../CommandCreateDims.cpp" line="1316"/>
-      <location filename="../../CommandCreateDims.cpp" line="1431"/>
+      <location filename="../../CommandCreateDims.cpp" line="273"/>
+      <location filename="../../CommandCreateDims.cpp" line="399"/>
+      <location filename="../../CommandCreateDims.cpp" line="499"/>
+      <location filename="../../CommandCreateDims.cpp" line="598"/>
+      <location filename="../../CommandCreateDims.cpp" line="694"/>
+      <location filename="../../CommandCreateDims.cpp" line="790"/>
+      <location filename="../../CommandCreateDims.cpp" line="967"/>
+      <location filename="../../CommandCreateDims.cpp" line="1065"/>
+      <location filename="../../CommandCreateDims.cpp" line="1178"/>
       <location filename="../../CommandStack.cpp" line="76"/>
       <location filename="../../CommandStack.cpp" line="192"/>
       <location filename="../../CommandStack.cpp" line="252"/>
@@ -3383,12 +3396,12 @@
       <translation>Impossibile trovare un visualizzatore 3D</translation>
     </message>
     <message>
-      <location filename="../../TaskCenterLine.cpp" line="163"/>
+      <location filename="../../TaskCenterLine.cpp" line="167"/>
       <source>Create Center Line</source>
       <translation>Crea linea centrale</translation>
     </message>
     <message>
-      <location filename="../../TaskCenterLine.cpp" line="193"/>
+      <location filename="../../TaskCenterLine.cpp" line="197"/>
       <source>Edit Center Line</source>
       <translation>Modifica linea centrale</translation>
     </message>
@@ -3425,7 +3438,7 @@
       <translation type="unfinished">The view direction in BaseView coordinates</translation>
     </message>
     <message>
-      <location filename="../../TaskComplexSection.cpp" line="691"/>
+      <location filename="../../TaskComplexSection.cpp" line="690"/>
       <location filename="../../TaskSectionView.cpp" line="608"/>
       <source>Operation Failed</source>
       <translation>Operazione non riuscita</translation>
@@ -3621,22 +3634,22 @@
       <translation type="unfinished">Maximum roughness grade number</translation>
     </message>
     <message>
-      <location filename="../../TaskDimRepair.cpp" line="79"/>
+      <location filename="../../TaskDimRepair.cpp" line="67"/>
       <source>Dimension Repair</source>
       <translation>Riparazione Quota</translation>
     </message>
     <message>
-      <location filename="../../TaskDimRepair.cpp" line="146"/>
+      <location filename="../../TaskDimRepair.cpp" line="127"/>
       <source>Can not use references from a different View</source>
       <translation type="unfinished">Can not use references from a different View</translation>
     </message>
     <message>
-      <location filename="../../TaskDimRepair.cpp" line="160"/>
+      <location filename="../../TaskDimRepair.cpp" line="139"/>
       <source>Can not make a dimension from selection</source>
       <translation type="unfinished">Can not make a dimension from selection</translation>
     </message>
     <message>
-      <location filename="../../TaskDimRepair.cpp" line="175"/>
+      <location filename="../../TaskDimRepair.cpp" line="150"/>
       <source>Can not make dimension from selection</source>
       <translation>Non è possibile creare una quota dalla selezione</translation>
     </message>
@@ -3816,7 +3829,7 @@ it has a tile weld that would become broken.</source>
   <context>
     <name>TaskPojGroup</name>
     <message>
-      <location filename="../../TaskComplexSection.cpp" line="488"/>
+      <location filename="../../TaskComplexSection.cpp" line="487"/>
       <location filename="../../TaskSectionView.cpp" line="428"/>
       <source> updates pending</source>
       <translation type="unfinished"> updates pending</translation>
@@ -5852,7 +5865,7 @@ Do you want to continue?</source>
       <translation>Aggiorna Ora</translation>
     </message>
     <message>
-      <location filename="../../TaskComplexSection.cpp" line="690"/>
+      <location filename="../../TaskComplexSection.cpp" line="689"/>
       <source>Can not continue. Object * %1 or %2 not found.</source>
       <translation type="unfinished">Can not continue. Object * %1 or %2 not found.</translation>
     </message>
@@ -7782,7 +7795,7 @@ usando la spaziatura X/Y specificata</translation>
     <message>
       <location filename="../../TaskSurfaceFinishSymbols.ui" line="98"/>
       <source>Symbol angle:</source>
-      <translation type="unfinished">Symbol angle:</translation>
+      <translation>Simbolo angolo:</translation>
     </message>
     <message>
       <location filename="../../TaskSurfaceFinishSymbols.ui" line="105"/>
@@ -7808,6 +7821,83 @@ usando la spaziatura X/Y specificata</translation>
       <location filename="../../TaskSurfaceFinishSymbols.ui" line="131"/>
       <source>ASME</source>
       <translation>ASME</translation>
+    </message>
+    <message>
+      <location filename="../../TaskHoleShaftFit.ui" line="29"/>
+      <source>Hole /Shaft Fit ISO 286</source>
+      <translation type="unfinished">Hole /Shaft Fit ISO 286</translation>
+    </message>
+    <message>
+      <location filename="../../TaskHoleShaftFit.ui" line="37"/>
+      <source>shaft fit</source>
+      <translation type="unfinished">shaft fit</translation>
+    </message>
+    <message>
+      <location filename="../../TaskHoleShaftFit.ui" line="47"/>
+      <source>hole fit</source>
+      <translation type="unfinished">hole fit</translation>
+    </message>
+    <message>
+      <location filename="../../TaskHoleShaftFit.ui" line="62"/>
+      <source>c11</source>
+      <translation type="unfinished">c11</translation>
+    </message>
+    <message>
+      <location filename="../../TaskHoleShaftFit.ui" line="67"/>
+      <source>f7</source>
+      <translation type="unfinished">f7</translation>
+    </message>
+    <message>
+      <location filename="../../TaskHoleShaftFit.ui" line="72"/>
+      <location filename="../../TaskHoleShaftFit.ui" line="97"/>
+      <location filename="../../TaskHoleShaftFit.ui" line="102"/>
+      <location filename="../../TaskHoleShaftFit.ui" line="107"/>
+      <location filename="../../TaskHoleShaftFit.ui" line="112"/>
+      <location filename="../../TaskHoleShaftFit.ui" line="117"/>
+      <source>h6</source>
+      <translation type="unfinished">h6</translation>
+    </message>
+    <message>
+      <location filename="../../TaskHoleShaftFit.ui" line="77"/>
+      <source>h7</source>
+      <translation type="unfinished">h7</translation>
+    </message>
+    <message>
+      <location filename="../../TaskHoleShaftFit.ui" line="82"/>
+      <location filename="../../TaskHoleShaftFit.ui" line="87"/>
+      <location filename="../../TaskHoleShaftFit.ui" line="92"/>
+      <source>h9</source>
+      <translation type="unfinished">h9</translation>
+    </message>
+    <message>
+      <location filename="../../TaskHoleShaftFit.ui" line="122"/>
+      <source>k6</source>
+      <translation type="unfinished">k6</translation>
+    </message>
+    <message>
+      <location filename="../../TaskHoleShaftFit.ui" line="127"/>
+      <source>n6</source>
+      <translation type="unfinished">n6</translation>
+    </message>
+    <message>
+      <location filename="../../TaskHoleShaftFit.ui" line="132"/>
+      <source>r6</source>
+      <translation type="unfinished">r6</translation>
+    </message>
+    <message>
+      <location filename="../../TaskHoleShaftFit.ui" line="137"/>
+      <source>s6</source>
+      <translation type="unfinished">s6</translation>
+    </message>
+    <message>
+      <location filename="../../TaskHoleShaftFit.ui" line="145"/>
+      <source>loose fit</source>
+      <translation type="unfinished">loose fit</translation>
+    </message>
+    <message>
+      <location filename="../../TaskHoleShaftFit.ui" line="152"/>
+      <source>             H11/</source>
+      <translation type="unfinished">             H11/</translation>
     </message>
   </context>
   <context>
@@ -7910,7 +8000,7 @@ usando la spaziatura X/Y specificata</translation>
   <context>
     <name>TechDraw_HorizontalExtent</name>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1276"/>
+      <location filename="../../CommandCreateDims.cpp" line="1023"/>
       <source>Insert Horizontal Extent Dimension</source>
       <translation>Estensione orizzontale</translation>
     </message>
@@ -7974,7 +8064,7 @@ usando la spaziatura X/Y specificata</translation>
   <context>
     <name>TechDraw_VerticalExtentDimension</name>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1280"/>
+      <location filename="../../CommandCreateDims.cpp" line="1027"/>
       <source>Insert Vertical Extent Dimension</source>
       <translation>Estensione verticale</translation>
     </message>
@@ -8184,37 +8274,37 @@ usando la spaziatura X/Y specificata</translation>
       <translation>Etichetta</translation>
     </message>
     <message>
-      <location filename="../../TaskDimRepair.ui" line="68"/>
+      <location filename="../../TaskDimRepair.ui" line="86"/>
       <source>Replace References with Current Selection</source>
-      <translation type="unfinished">Replace References with Current Selection</translation>
+      <translation>Sostituisci i Riferimenti con la Selezione Corrente</translation>
     </message>
     <message>
-      <location filename="../../TaskDimRepair.ui" line="80"/>
+      <location filename="../../TaskDimRepair.ui" line="98"/>
       <source>References 2D</source>
       <translation>Riferimenti 2D</translation>
     </message>
     <message>
-      <location filename="../../TaskDimRepair.ui" line="88"/>
+      <location filename="../../TaskDimRepair.ui" line="106"/>
       <source>Object</source>
       <translation>Oggetto</translation>
     </message>
     <message>
-      <location filename="../../TaskDimRepair.ui" line="95"/>
+      <location filename="../../TaskDimRepair.ui" line="119"/>
       <source>The View that owns this Dimension</source>
       <translation>La vista che ospita questa quota</translation>
     </message>
     <message>
-      <location filename="../../TaskDimRepair.ui" line="114"/>
+      <location filename="../../TaskDimRepair.ui" line="138"/>
       <source>Geometry</source>
       <translation>Geometria</translation>
     </message>
     <message>
-      <location filename="../../TaskDimRepair.ui" line="139"/>
+      <location filename="../../TaskDimRepair.ui" line="163"/>
       <source>The subelements of the View that define the geometry for this Dimension</source>
       <translation type="unfinished">The subelements of the View that define the geometry for this Dimension</translation>
     </message>
     <message>
-      <location filename="../../TaskDimRepair.ui" line="163"/>
+      <location filename="../../TaskDimRepair.ui" line="187"/>
       <source>References 3D</source>
       <translation>Riferimenti 3D</translation>
     </message>
@@ -8233,144 +8323,14 @@ usando la spaziatura X/Y specificata</translation>
     </message>
   </context>
   <context>
-    <name>CmdTechDrawRadialGroup</name>
-    <message>
-      <location filename="../../CommandCreateDims.cpp" line="134"/>
-      <source>TechDraw</source>
-      <translation>TechDraw</translation>
-    </message>
-    <message>
-      <location filename="../../CommandCreateDims.cpp" line="135"/>
-      <source>Insert Radius Dimension</source>
-      <translation>Raggio</translation>
-    </message>
-    <message>
-      <location filename="../../CommandCreateDims.cpp" line="200"/>
-      <source>Radius Dimension</source>
-      <translation type="unfinished">Radius Dimension</translation>
-    </message>
-    <message>
-      <location filename="../../CommandCreateDims.cpp" line="204"/>
-      <source>Diameter Linear</source>
-      <translation type="unfinished">Diameter Linear</translation>
-    </message>
-  </context>
-  <context>
-    <name>TechDraw_RadiusDimension</name>
-    <message>
-      <location filename="../../CommandCreateDims.cpp" line="201"/>
-      <source>Insert Radius Dimension</source>
-      <translation>Raggio</translation>
-    </message>
-  </context>
-  <context>
-    <name>TechDraw_DiameterDimension</name>
-    <message>
-      <location filename="../../CommandCreateDims.cpp" line="205"/>
-      <source>Insert Diameter Dimension</source>
-      <translation>Diametro</translation>
-    </message>
-  </context>
-  <context>
-    <name>CmdTechDrawLinearGroup</name>
-    <message>
-      <location filename="../../CommandCreateDims.cpp" line="467"/>
-      <source>TechDraw</source>
-      <translation>TechDraw</translation>
-    </message>
-    <message>
-      <location filename="../../CommandCreateDims.cpp" line="468"/>
-      <source>Insert Linear Dimension</source>
-      <translation type="unfinished">Insert Linear Dimension</translation>
-    </message>
-    <message>
-      <location filename="../../CommandCreateDims.cpp" line="540"/>
-      <source>Linear Dimension</source>
-      <translation type="unfinished">Linear Dimension</translation>
-    </message>
-    <message>
-      <location filename="../../CommandCreateDims.cpp" line="543"/>
-      <source>Horizontal Linear</source>
-      <translation type="unfinished">Horizontal Linear</translation>
-    </message>
-    <message>
-      <location filename="../../CommandCreateDims.cpp" line="547"/>
-      <source>Vertical Linear</source>
-      <translation type="unfinished">Vertical Linear</translation>
-    </message>
-  </context>
-  <context>
-    <name>TechDraw_LengthDimension</name>
-    <message>
-      <location filename="../../CommandCreateDims.cpp" line="541"/>
-      <source>Insert Linear Dimension</source>
-      <translation type="unfinished">Insert Linear Dimension</translation>
-    </message>
-  </context>
-  <context>
-    <name>TechDraw_HorizontalLinear</name>
-    <message>
-      <location filename="../../CommandCreateDims.cpp" line="544"/>
-      <source>Insert Horizontal Linear Dimension</source>
-      <translation type="unfinished">Insert Horizontal Linear Dimension</translation>
-    </message>
-  </context>
-  <context>
-    <name>TechDraw_VerticalDimension</name>
-    <message>
-      <location filename="../../CommandCreateDims.cpp" line="548"/>
-      <source>Insert Vertical Linear Dimension</source>
-      <translation type="unfinished">Insert Vertical Linear Dimension</translation>
-    </message>
-  </context>
-  <context>
-    <name>CmdTechDrawAngularGroup</name>
-    <message>
-      <location filename="../../CommandCreateDims.cpp" line="853"/>
-      <source>TechDraw</source>
-      <translation>TechDraw</translation>
-    </message>
-    <message>
-      <location filename="../../CommandCreateDims.cpp" line="854"/>
-      <source>Insert Angular Dimension</source>
-      <translation type="unfinished">Insert Angular Dimension</translation>
-    </message>
-    <message>
-      <location filename="../../CommandCreateDims.cpp" line="919"/>
-      <source>Angular Dimension</source>
-      <translation type="unfinished">Angular Dimension</translation>
-    </message>
-    <message>
-      <location filename="../../CommandCreateDims.cpp" line="922"/>
-      <source>3Pt Angular Dimension</source>
-      <translation type="unfinished">3Pt Angular Dimension</translation>
-    </message>
-  </context>
-  <context>
-    <name>TechDraw_AngleDimension</name>
-    <message>
-      <location filename="../../CommandCreateDims.cpp" line="920"/>
-      <source>Insert Angle Dimension</source>
-      <translation>Angolo</translation>
-    </message>
-  </context>
-  <context>
-    <name>TechDraw_3PtAngleDimension</name>
-    <message>
-      <location filename="../../CommandCreateDims.cpp" line="923"/>
-      <source>Insert 3-Point Angle Dimension</source>
-      <translation>Angolo da 3 punti</translation>
-    </message>
-  </context>
-  <context>
     <name>CmdTechDrawDimensionRepair</name>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1455"/>
+      <location filename="../../CommandCreateDims.cpp" line="1202"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1456"/>
+      <location filename="../../CommandCreateDims.cpp" line="1203"/>
       <source>Repair Dimension References</source>
       <translation type="unfinished">Repair Dimension References</translation>
     </message>
@@ -8378,19 +8338,81 @@ usando la spaziatura X/Y specificata</translation>
   <context>
     <name>TechDrawGui::TaskDimRepair</name>
     <message>
-      <location filename="../../TaskDimRepair.cpp" line="95"/>
+      <location filename="../../TaskDimRepair.cpp" line="82"/>
       <source>Object Name</source>
-      <translation type="unfinished">Object Name</translation>
+      <translation>Nome oggetto</translation>
     </message>
     <message>
-      <location filename="../../TaskDimRepair.cpp" line="96"/>
+      <location filename="../../TaskDimRepair.cpp" line="82"/>
       <source>Object Label</source>
-      <translation type="unfinished">Object Label</translation>
+      <translation>Etichetta Oggetto</translation>
     </message>
     <message>
-      <location filename="../../TaskDimRepair.cpp" line="97"/>
+      <location filename="../../TaskDimRepair.cpp" line="82"/>
       <source>SubElement</source>
-      <translation type="unfinished">SubElement</translation>
+      <translation>Sottoelemento</translation>
+    </message>
+  </context>
+  <context>
+    <name>TechDraw_AxoLengthDimension</name>
+    <message>
+      <location filename="../../../TechDrawTools/CommandAxoLengthDimension.py" line="50"/>
+      <source>Axonometric length dimension</source>
+      <translation type="unfinished">Axonometric length dimension</translation>
+    </message>
+    <message>
+      <location filename="../../../TechDrawTools/CommandAxoLengthDimension.py" line="57"/>
+      <source>Create an axonometric length dimension&lt;br&gt;
+                - select first edge to define direction and length of the dimension line&lt;br&gt;
+                - select second edge to define the direction of the extension lines&lt;br&gt;
+                - optional: select two more vertexes which define the measurement instead of the length&lt;br&gt;
+                  of the first selected edge</source>
+      <translation type="unfinished">Create an axonometric length dimension&lt;br&gt;
+                - select first edge to define direction and length of the dimension line&lt;br&gt;
+                - select second edge to define the direction of the extension lines&lt;br&gt;
+                - optional: select two more vertexes which define the measurement instead of the length&lt;br&gt;
+                  of the first selected edge</translation>
+    </message>
+  </context>
+  <context>
+    <name>TechDraw_HoleShaftFit</name>
+    <message>
+      <location filename="../../../TechDrawTools/CommandHoleShaftFit.py" line="43"/>
+      <source>Add hole or shaft fit</source>
+      <translation type="unfinished">Add hole or shaft fit</translation>
+    </message>
+    <message>
+      <location filename="../../../TechDrawTools/CommandHoleShaftFit.py" line="50"/>
+      <source>Add a hole or shaft fit to a dimension&lt;br&gt;
+                - select one length dimension or diameter dimension&lt;br&gt;
+                - click the tool button, a panel openes&lt;br&gt;
+                - select shaft fit / hole fit&lt;br&gt;
+                - select the desired ISO 286 fit field using the combo box</source>
+      <translation type="unfinished">Add a hole or shaft fit to a dimension&lt;br&gt;
+                - select one length dimension or diameter dimension&lt;br&gt;
+                - click the tool button, a panel openes&lt;br&gt;
+                - select shaft fit / hole fit&lt;br&gt;
+                - select the desired ISO 286 fit field using the combo box</translation>
+    </message>
+    <message>
+      <location filename="../../../TechDrawTools/TaskHoleShaftFit.py" line="42"/>
+      <source>loose</source>
+      <translation type="unfinished">loose</translation>
+    </message>
+    <message>
+      <location filename="../../../TechDrawTools/TaskHoleShaftFit.py" line="43"/>
+      <source>snug</source>
+      <translation type="unfinished">snug</translation>
+    </message>
+    <message>
+      <location filename="../../../TechDrawTools/TaskHoleShaftFit.py" line="44"/>
+      <source>press</source>
+      <translation type="unfinished">press</translation>
+    </message>
+    <message>
+      <location filename="../../../TechDrawTools/TaskHoleShaftFit.py" line="59"/>
+      <source>Hole / Shaft Fit ISO 286</source>
+      <translation type="unfinished">Hole / Shaft Fit ISO 286</translation>
     </message>
   </context>
 </TS>

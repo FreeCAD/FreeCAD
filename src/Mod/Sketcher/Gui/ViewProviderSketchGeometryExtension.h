@@ -29,7 +29,7 @@
 
 namespace SketcherGui {
 
-class SketcherGuiExport ViewProviderSketchGeometryExtension : public Part::GeometryExtension
+class SketcherGuiExport ViewProviderSketchGeometryExtension : public Part::GeometryPersistenceExtension
 {
     TYPESYSTEM_HEADER_WITH_OVERRIDE();
 public:
@@ -49,17 +49,23 @@ public:
     // Applicability: General abstract concepts embodied in a geometry, in practice B-Spline poles.
     // Why not in SketchGeometryExtension? Because it is merely representation related. It has no place in
     // a console application.
-    virtual double getRepresentationFactor() const {return RepresentationFactor;}
-    virtual void setRepresentationFactor(double representationFactor) {RepresentationFactor = representationFactor;}
+    double getRepresentationFactor() const {return RepresentationFactor;}
+    void setRepresentationFactor(double representationFactor) {RepresentationFactor = representationFactor;}
+
+    int getVisualLayerId() const {return VisualLayerId;}
+    void setVisualLayerId(int visuallayerid) {VisualLayerId = visuallayerid;}
 
 protected:
     void copyAttributes(Part::GeometryExtension * cpy) const override;
+    void restoreAttributes(Base::XMLReader &reader) override;
+    void saveAttributes(Base::Writer &writer) const override;
 
 private:
     ViewProviderSketchGeometryExtension(const ViewProviderSketchGeometryExtension&) = default;
 
 private:
     double RepresentationFactor;
+    int VisualLayerId;
 };
 
 } //namespace SketcherGui

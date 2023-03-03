@@ -36,6 +36,7 @@
 #include "DlgSettingsNavigation.h"
 #include "ui_DlgSettingsNavigation.h"
 #include "MainWindow.h"
+#include "NaviCube.h"
 #include "NavigationStyle.h"
 #include "View3DInventor.h"
 #include "View3DInventorViewer.h"
@@ -56,6 +57,7 @@ DlgSettingsNavigation::DlgSettingsNavigation(QWidget* parent)
     , q0(0), q1(0), q2(0), q3(1)
 {
     ui->setupUi(this);
+    ui->naviCubeButtonColor->setAllowTransparency(true);
     retranslate();
 }
 
@@ -72,7 +74,8 @@ void DlgSettingsNavigation::saveSettings()
     // where we set some attributes afterwards
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath
         ("User parameter:BaseApp/Preferences/View");
-    QVariant data = ui->comboNavigationStyle->itemData(ui->comboNavigationStyle->currentIndex(), Qt::UserRole);
+    QVariant data = ui->comboNavigationStyle->itemData(ui->comboNavigationStyle->currentIndex(),
+        Qt::UserRole);
     hGrp->SetASCII("NavigationStyle", (const char*)data.toByteArray());
 
     int index = ui->comboOrbitStyle->currentIndex();
@@ -90,11 +93,14 @@ void DlgSettingsNavigation::saveSettings()
     ui->naviCubeCorner->onSave();
     ui->naviCubeToNearest->onSave();
     ui->prefCubeSize->onSave();
+    ui->naviCubeFontSize->onSave();
+    ui->naviCubeButtonColor->onSave();
 
     bool showNaviCube = ui->groupBoxNaviCube->isChecked();
     hGrp->SetBool("ShowNaviCube", showNaviCube);
 
-    QVariant camera = ui->comboNewDocView->itemData(ui->comboNewDocView->currentIndex(), Qt::UserRole);
+    QVariant camera = ui->comboNewDocView->itemData(ui->comboNewDocView->currentIndex(),
+        Qt::UserRole);
     hGrp->SetASCII("NewDocumentCameraOrientation", (const char*)camera.toByteArray());
     if (camera == QByteArray("Custom")) {
         ParameterGrp::handle hCustom = hGrp->GetGroup("Custom");
@@ -102,6 +108,25 @@ void DlgSettingsNavigation::saveSettings()
         hCustom->SetFloat("Q1", q1);
         hCustom->SetFloat("Q2", q2);
         hCustom->SetFloat("Q3", q3);
+    }
+
+    hGrp = App::GetApplication().GetParameterGroupByPath(
+        "User parameter:BaseApp/Preferences/NaviCube");
+    hGrp->SetASCII("FontString", ui->naviCubeFontName->currentText().toLatin1());
+
+    recreateNaviCubes();
+}
+
+void DlgSettingsNavigation::recreateNaviCubes()
+{
+    // we changed the cube's layout, therefore we must re-initialize it
+    // by deleting and the subsequently recreating
+    auto views = getMainWindow()->windows();
+    for (auto view : views) {
+        if (auto view3d = qobject_cast<View3DInventor*>(view)) {
+            auto viewer = view3d->getViewer();
+            viewer->updateNavigationCube();
+        }
     }
 }
 
@@ -117,10 +142,12 @@ void DlgSettingsNavigation::loadSettings()
     ui->naviCubeCorner->onRestore();
     ui->naviCubeToNearest->onRestore();
     ui->prefCubeSize->onRestore();
+    ui->naviCubeFontSize->onRestore();
+    ui->naviCubeButtonColor->onRestore();
 
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath
         ("User parameter:BaseApp/Preferences/View");
-    std::string model = hGrp->GetASCII("NavigationStyle",CADNavigationStyle::getClassTypeId().getName());
+    std::string model = hGrp->GetASCII("NavigationStyle", CADNavigationStyle::getClassTypeId().getName());
     int index = ui->comboNavigationStyle->findData(QByteArray(model.c_str()));
     if (index > -1) ui->comboNavigationStyle->setCurrentIndex(index);
 
@@ -155,20 +182,52 @@ void DlgSettingsNavigation::loadSettings()
         q3 = hCustom->GetFloat("Q3", q3);
     }
 
-    connect(ui->comboNewDocView, SIGNAL(currentIndexChanged(int)),
-            this, SLOT(onNewDocViewChanged(int)));
+    connect(ui->comboNewDocView, qOverload<int>(&QComboBox::currentIndexChanged),
+        this, &DlgSettingsNavigation::onNewDocViewChanged);
+    connect(ui->mouseButton, &QPushButton::clicked,
+        this, &DlgSettingsNavigation::onMouseButtonClicked);
+
+    // fill up font styles
+    hGrp = App::GetApplication().GetParameterGroupByPath(
+        "User parameter:BaseApp/Preferences/NaviCube");
+    std::string defaultSansserifFont = NaviCube::getDefaultSansserifFont().toStdString();
+
+    // we purposely allow all available fonts on the system
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
+    QStringList familyNames = QFontDatabase().families(QFontDatabase::Any);
+#else
+    QStringList familyNames = QFontDatabase::families(QFontDatabase::Any);
+#endif
+    ui->naviCubeFontName->addItems(familyNames);
+
+    int indexFamilyNames = familyNames.indexOf(
+        QString::fromStdString(hGrp->GetASCII("FontString", defaultSansserifFont.c_str())));
+    if (indexFamilyNames < 0)
+        indexFamilyNames = 0;
+    ui->naviCubeFontName->setCurrentIndex(indexFamilyNames);
+
+    // if the FontSize parameter does not yet exist, set the default value
+    // the default is defined in NaviCubeImplementation::getDefaultFontSize()
+    // but not accessible if there is no cube yet drawn
+    if (hGrp->GetInt("FontSize", 0) == 0) {
+        // the "4" is the hardcoded m_OverSample from getDefaultFontSize()
+        hGrp->SetInt("FontSize", int(0.18 * 4 * ui->prefCubeSize->value()));
+        ui->naviCubeFontSize->onRestore();
+    }
 }
 
-void DlgSettingsNavigation::on_mouseButton_clicked()
+void DlgSettingsNavigation::onMouseButtonClicked()
 {
     QDialog dlg(this);
     Ui_MouseButtons uimb;
     uimb.setupUi(&dlg);
 
-    QVariant data = ui->comboNavigationStyle->itemData(ui->comboNavigationStyle->currentIndex(), Qt::UserRole);
+    QVariant data =
+        ui->comboNavigationStyle->itemData(ui->comboNavigationStyle->currentIndex(), Qt::UserRole);
     void* instance = Base::Type::createInstanceByName((const char*)data.toByteArray());
     std::unique_ptr<UserNavigationStyle> ns(static_cast<UserNavigationStyle*>(instance));
-    uimb.groupBox->setTitle(uimb.groupBox->title()+QString::fromLatin1(" ")+ui->comboNavigationStyle->currentText());
+    uimb.groupBox->setTitle(uimb.groupBox->title() + QString::fromLatin1(" ")
+                            + ui->comboNavigationStyle->currentText());
     QString descr;
     descr = qApp->translate((const char*)data.toByteArray(),ns->mouseButtons(NavigationStyle::SELECTION));
     descr.replace(QLatin1String("\n"), QLatin1String("<p>"));
@@ -300,8 +359,8 @@ CameraDialog::CameraDialog(QWidget* parent)
     currentViewButton->setObjectName(QString::fromLatin1("currentView"));
     layout->addWidget(currentViewButton, 4, 1, 2, 1);
 
-    QObject::connect(buttonBox, SIGNAL(accepted()), this, SLOT(accept()));
-    QObject::connect(buttonBox, SIGNAL(rejected()), this, SLOT(reject()));
+    connect(buttonBox, &QDialogButtonBox::accepted, this, &QDialog::accept);
+    connect(buttonBox, &QDialogButtonBox::rejected, this, &QDialog::reject);
     QMetaObject::connectSlotsByName(this);
 }
 

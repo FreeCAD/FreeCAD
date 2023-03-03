@@ -59,7 +59,9 @@ class BaseExport Unit
 {
 public:
     /// default constructor
-    Unit(int8_t Length,int8_t Mass=0,int8_t Time=0,int8_t ElectricCurrent=0,int8_t ThermodynamicTemperature=0,int8_t AmountOfSubstance=0,int8_t LuminousIntensity=0,int8_t Angle=0);
+    explicit Unit(int8_t Length,int8_t Mass=0,int8_t Time=0,int8_t ElectricCurrent=0,
+                  int8_t ThermodynamicTemperature=0, int8_t AmountOfSubstance=0,
+                  int8_t LuminousIntensity=0, int8_t Angle=0);
     Unit();
     Unit(const Unit&);
     explicit Unit(const QString& expr);
@@ -76,7 +78,7 @@ public:
     bool operator ==(const Unit&) const;
     bool operator !=(const Unit&that) const {return !(*this == that);}
     Unit& operator =(const Unit&);
-    Unit pow(signed char exp)const;
+    Unit pow(double exp)const;
     //@}
     /// get the unit signature
     const UnitSignature & getSignature()const {return Sig;}
@@ -107,12 +109,14 @@ public:
     static Unit Acceleration;
     static Unit Temperature;
 
+    static Unit CurrentDensity;
     static Unit ElectricCurrent;
     static Unit ElectricPotential;
     static Unit ElectricCharge;
     static Unit MagneticFieldStrength;
     static Unit MagneticFlux;
     static Unit MagneticFluxDensity;
+    static Unit Magnetization;
     static Unit ElectricalCapacitance;
     static Unit ElectricalInductance;
     static Unit ElectricalConductance;
@@ -146,6 +150,12 @@ public:
     static Unit DynamicViscosity;
     static Unit KinematicViscosity;
     static Unit VacuumPermittivity;
+    static Unit VolumeFlowRate;
+    static Unit DissipationRate;
+
+    static Unit InverseLength;
+    static Unit InverseArea;
+    static Unit InverseVolume;
 
     //@}
 protected:

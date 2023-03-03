@@ -33,5 +33,8 @@ from .TDToolsMovers import *
 from .TDToolsUtil import *
 from .CommandShareView import CommandShareView
 from .CommandMoveView import CommandMoveView
+from .CommandAxoLengthDimension import CommandAxoLengthDimension
+from .CommandHoleShaftFit import CommandHoleShaftFit
 from .TaskShareView import TaskShareView
 from .TaskMoveView import TaskMoveView
+from .TaskHoleShaftFit import TaskHoleShaftFit

@@ -172,7 +172,13 @@ public:
     /// is called by the framework if the user press the help button 
     void helpRequested() override;
 
+    /// event handling
+    bool eventFilter(QObject *watched, QEvent *event) override;
+
 private:
+    bool tryLoadUiFile();
+    bool tryLoadForm();
+    void appendForm(QWidget* widget, const QPixmap& icon);
     void clearForm();
 
 private:

@@ -40,7 +40,7 @@ def get_information():
         "constraints": ["fixed", "initial temperature", "temperature", "heatflux"],
         "solvers": ["calculix", "ccxtools"],
         "material": "solid",
-        "equation": "thermomechanical"
+        "equations": ["thermomechanical"]
     }
 
 
@@ -93,7 +93,7 @@ def setup(doc=None, solvertype="ccxtools"):
     #     analysis.addObject(ObjectsFem.makeSolverElmer(doc, "SolverElmer"))
     else:
         FreeCAD.Console.PrintWarning(
-            "Not known or not supported solver type: {}. "
+            "Unknown or unsupported solver type: {}. "
             "No solver object was created.\n".format(solvertype)
         )
     if solvertype == "calculix" or solvertype == "ccxtools":

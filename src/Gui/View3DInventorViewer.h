@@ -387,9 +387,14 @@ public:
     bool isEnabledNaviCube() const;
     void setNaviCubeCorner(int);
     NaviCube* getNavigationCube() const;
+    void updateNavigationCube();
     void setEnabledVBO(bool b);
     bool isEnabledVBO() const;
     void setRenderCache(int);
+
+    void getDimensions(float& fHeight, float& fWidth) const;
+    float getMaxDimension() const;
+    SbVec3f getCenterPointOnFocalPlane() const;
 
     NavigationStyle* navigationStyle() const;
 

@@ -1,22 +1,23 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
 # ***************************************************************************
 # *                                                                         *
-# *   Copyright (c) 2022 FreeCAD Project Association                        *
+# *   Copyright (c) 2022-2023 FreeCAD Project Association                   *
 # *                                                                         *
-# *   This program is free software; you can redistribute it and/or modify  *
-# *   it under the terms of the GNU Lesser General Public License (LGPL)    *
-# *   as published by the Free Software Foundation; either version 2 of     *
-# *   the License, or (at your option) any later version.                   *
-# *   for detail see the LICENCE text file.                                 *
+# *   This file is part of FreeCAD.                                         *
 # *                                                                         *
-# *   This program is distributed in the hope that it will be useful,       *
-# *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
-# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
-# *   GNU Library General Public License for more details.                  *
+# *   FreeCAD is free software: you can redistribute it and/or modify it    *
+# *   under the terms of the GNU Lesser General Public License as           *
+# *   published by the Free Software Foundation, either version 2.1 of the  *
+# *   License, or (at your option) any later version.                       *
 # *                                                                         *
-# *   You should have received a copy of the GNU Library General Public     *
-# *   License along with this program; if not, write to the Free Software   *
-# *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
-# *   USA                                                                   *
+# *   FreeCAD is distributed in the hope that it will be useful, but        *
+# *   WITHOUT ANY WARRANTY; without even the implied warranty of            *
+# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU      *
+# *   Lesser General Public License for more details.                       *
+# *                                                                         *
+# *   You should have received a copy of the GNU Lesser General Public      *
+# *   License along with FreeCAD. If not, see                               *
+# *   <https://www.gnu.org/licenses/>.                                      *
 # *                                                                         *
 # ***************************************************************************
 
@@ -26,7 +27,7 @@ import os
 from urllib.parse import urlparse
 from typing import Dict, Set, List
 from threading import Lock
-from enum import IntEnum
+from enum import IntEnum, auto
 
 import FreeCAD
 
@@ -39,22 +40,23 @@ from addonmanager_utilities import construct_git_url
 
 translate = FreeCAD.Qt.translate
 
-INTERNAL_WORKBENCHES = {}
-INTERNAL_WORKBENCHES["arch"] = "Arch"
-INTERNAL_WORKBENCHES["draft"] = "Draft"
-INTERNAL_WORKBENCHES["fem"] = "FEM"
-INTERNAL_WORKBENCHES["mesh"] = "Mesh"
-INTERNAL_WORKBENCHES["openscad"] = "OpenSCAD"
-INTERNAL_WORKBENCHES["part"] = "Part"
-INTERNAL_WORKBENCHES["partdesign"] = "PartDesign"
-INTERNAL_WORKBENCHES["path"] = "Path"
-INTERNAL_WORKBENCHES["plot"] = "Plot"
-INTERNAL_WORKBENCHES["points"] = "Points"
-INTERNAL_WORKBENCHES["raytracing"] = "Raytracing"
-INTERNAL_WORKBENCHES["robot"] = "Robot"
-INTERNAL_WORKBENCHES["sketcher"] = "Sketcher"
-INTERNAL_WORKBENCHES["spreadsheet"] = "Spreadsheet"
-INTERNAL_WORKBENCHES["techdraw"] = "TechDraw"
+INTERNAL_WORKBENCHES = {
+    "arch": "Arch",
+    "draft": "Draft",
+    "fem": "FEM",
+    "mesh": "Mesh",
+    "openscad": "OpenSCAD",
+    "part": "Part",
+    "partdesign": "PartDesign",
+    "path": "Path",
+    "plot": "Plot",
+    "points": "Points",
+    "raytracing": "Raytracing",
+    "robot": "Robot",
+    "sketcher": "Sketcher",
+    "spreadsheet": "Spreadsheet",
+    "techdraw": "TechDraw",
+}
 
 
 class Addon:
@@ -85,6 +87,7 @@ class Addon:
         UPDATE_AVAILABLE = 3
         PENDING_RESTART = 4
         CANNOT_CHECK = 5  # If we don't have git, etc.
+        UNKNOWN = 100
 
         def __lt__(self, other):
             if self.__class__ is other.__class__:
@@ -92,7 +95,6 @@ class Addon:
             return NotImplemented
 
         def __str__(self) -> str:
-            result = ""
             if self.value == 0:
                 result = "Not installed"
             elif self.value == 1:
@@ -121,6 +123,16 @@ class Addon:
             self.python_optional: Set[str] = set()
             self.python_min_version = {"major": 3, "minor": 0}
 
+    class DependencyType(IntEnum):
+        """Several types of dependency information is stored"""
+
+        INTERNAL_WORKBENCH = auto()
+        REQUIRED_ADDON = auto()
+        BLOCKED_ADDON = auto()
+        REPLACED_ADDON = auto()
+        REQUIRED_PYTHON = auto()
+        OPTIONAL_PYTHON = auto()
+
     class ResolutionFailed(RuntimeError):
         """An exception type for dependency resolution failure."""
 
@@ -130,7 +142,13 @@ class Addon:
     # The location of the Mod directory: overridden by testing code
     mod_directory = os.path.join(FreeCAD.getUserAppDataDir(), "Mod")
 
-    def __init__(self, name: str, url: str, status: Status, branch: str):
+    def __init__(
+        self,
+        name: str,
+        url: str = "",
+        status: Status = Status.UNKNOWN,
+        branch: str = "",
+    ):
         self.name = name.strip()
         self.display_name = self.name
         self.url = url.strip()
@@ -141,13 +159,14 @@ class Addon:
         self.repo_type = Addon.Kind.WORKBENCH
         self.description = None
         self.tags = set()  # Just a cache, loaded from Metadata
+        self.last_updated = None
 
         # To prevent multiple threads from running git actions on this repo at the same time
         self.git_lock = Lock()
 
         # To prevent multiple threads from accessing the status at the same time
         self.status_lock = Lock()
-        self.set_status(status)
+        self.update_status = status
 
         # The url should never end in ".git", so strip it if it's there
         parsed_url = urlparse(self.url)
@@ -165,8 +184,9 @@ class Addon:
         else:
             self.metadata_url = None
         self.metadata = None
-        self.icon = None
-        self.cached_icon_filename = ""
+        self.icon = None  # Relative path to remote icon file
+        self.icon_file: str = ""  # Absolute local path to cached icon file
+        self.best_icon_relative_path = ""
         self.macro = None  # Bridge to Gaël Écorchard's macro management class
         self.updated_timestamp = None
         self.installed_version = None
@@ -180,6 +200,8 @@ class Addon:
         self.python_requires: Set[str] = set()
         self.python_optional: Set[str] = set()
         self.python_min_version = {"major": 3, "minor": 0}
+
+        self._icon_file = None
 
     def __str__(self) -> str:
         result = f"FreeCAD {self.repo_type}\n"
@@ -208,7 +230,8 @@ class Addon:
 
     @classmethod
     def from_cache(cls, cache_dict: Dict):
-        """Load basic data from cached dict data. Does not include Macro or Metadata information, which must be populated separately."""
+        """Load basic data from cached dict data. Does not include Macro or Metadata
+        information, which must be populated separately."""
 
         mod_dir = os.path.join(cls.mod_directory, cache_dict["name"])
         if os.path.isdir(mod_dir):
@@ -242,7 +265,8 @@ class Addon:
         return instance
 
     def to_cache(self) -> Dict:
-        """Returns a dictionary with cache information that can be used later with from_cache to recreate this object."""
+        """Returns a dictionary with cache information that can be used later with
+        from_cache to recreate this object."""
 
         return {
             "name": self.name,
@@ -252,6 +276,7 @@ class Addon:
             "repo_type": int(self.repo_type),
             "description": self.description,
             "cached_icon_filename": self.get_cached_icon_filename(),
+            "best_icon_relative_path": self.get_best_icon_relative_path(),
             "python2": self.python2,
             "obsolete": self.obsolete,
             "rejected": self.rejected,
@@ -272,7 +297,8 @@ class Addon:
 
     def set_metadata(self, metadata: FreeCAD.Metadata) -> None:
         """Set the given metadata object as this object's metadata, updating the object's display name
-        and package type information to match, as well as updating any dependency information, etc."""
+        and package type information to match, as well as updating any dependency information, etc.
+        """
 
         self.metadata = metadata
         self.display_name = metadata.Name
@@ -345,7 +371,8 @@ class Addon:
                     self.python_min_version["major"] = int(split_version_string[0])
                     self.python_min_version["minor"] = int(split_version_string[1])
                     FreeCAD.Console.PrintLog(
-                        f"Package {self.name}: Requires Python {split_version_string[0]}.{split_version_string[1]} or greater\n"
+                        f"Package {self.name}: Requires Python "
+                        f"{split_version_string[0]}.{split_version_string[1]} or greater\n"
                     )
                 except ValueError:
                     FreeCAD.Console.PrintWarning(
@@ -473,10 +500,38 @@ class Addon:
             return "preferencepack" in content
         return False
 
-    def get_cached_icon_filename(self) -> str:
-        """Get the filename for the locally-cached copy of the icon"""
+    def get_best_icon_relative_path(self) -> str:
+        """Get the path within the repo the addon's icon. Usually specified by top-level metadata,
+        but some authors omit it and specify only icons for the contents. Find the first one of
+        those, in such cases."""
 
-        if self.cached_icon_filename:
+        if self.best_icon_relative_path:
+            return self.best_icon_relative_path
+
+        if not self.metadata:
+            return ""
+
+        real_icon = self.metadata.Icon
+        if not real_icon:
+            # If there is no icon set for the entire package, see if there are any workbenches, which
+            # are required to have icons, and grab the first one we find:
+            content = self.metadata.Content
+            if "workbench" in content:
+                wb = content["workbench"][0]
+                if wb.Icon:
+                    if wb.Subdirectory:
+                        subdir = wb.Subdirectory
+                    else:
+                        subdir = wb.Name
+                    real_icon = subdir + wb.Icon
+
+        self.best_icon_relative_path = real_icon
+        return self.best_icon_relative_path
+
+    def get_cached_icon_filename(self) -> str:
+        """NOTE: This function is deprecated and will be removed in a coming update."""
+
+        if hasattr(self, "cached_icon_filename") and self.cached_icon_filename:
             return self.cached_icon_filename
 
         if not self.metadata:
@@ -530,7 +585,7 @@ class Addon:
 
         for dep in self.requires:
             if dep in all_repos:
-                if not dep in deps.required_external_addons:
+                if dep not in deps.required_external_addons:
                     deps.required_external_addons.append(all_repos[dep])
                     all_repos[dep].walk_dependency_tree(all_repos, deps)
             else:
@@ -597,7 +652,6 @@ class MissingDependencies:
     """
 
     def __init__(self, repo: Addon, all_repos: List[Addon]):
-
         deps = Addon.Dependencies()
         repo_name_dict = {}
         for r in all_repos:

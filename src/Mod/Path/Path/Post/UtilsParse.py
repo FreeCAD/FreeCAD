@@ -35,28 +35,96 @@ from FreeCAD import Units
 import Path
 import Path.Post.Utils as PostUtils
 
-
-def create_comment(comment_string, comment_symbol):
+def create_comment(values, comment_string):
     """Create a comment from a string using the correct comment symbol."""
-    if comment_symbol == "(":
+    if values["COMMENT_SYMBOL"] == "(":
         return f"({comment_string})"
     else:
-        return comment_symbol + comment_string
+        return values["COMMENT_SYMBOL"] + comment_string
 
 
-def drill_translate(values, outstring, cmd, params):
+def default_axis_parameter(values, command, param, param_value, currLocation):
+    """Process an axis parameter."""
+    if (
+        not values["OUTPUT_DOUBLES"]
+        and param in currLocation
+        and currLocation[param] == param_value
+    ):
+        return None
+    return format_for_axis(values, Units.Quantity(param_value, Units.Length))
+
+
+def default_D_parameter(values, command, param, param_value, currLocation):
+    """Process the D parameter."""
+    if command in ("G41", "G42"):
+        return str(int(param_value))
+    if command in ("G41.1", "G42.1"):
+        return format_for_axis(values, Units.Quantity(param_value, Units.Length))
+    if command in ("G96", "G97"):
+        return format_for_spindle(values, param_value)
+    # anything else that is supported
+    return str(float(param_value))
+
+
+def default_F_parameter(values, command, param, param_value, currLocation):
+    """Process the F parameter."""
+    if (
+        not values["OUTPUT_DOUBLES"]
+        and param in currLocation
+        and currLocation[param] == param_value
+    ):
+        return None
+    # Many posts don't use rapid speeds, but eventually
+    # there will be refactored posts that do, so this
+    # "if statement" is being kept separate to make it
+    # more obvious where to put that check.
+    if command in values["RAPID_MOVES"]:
+        return None
+    feed = Units.Quantity(param_value, Units.Velocity)
+    if feed.getValueAs(values["UNIT_SPEED_FORMAT"]) <= 0.0:
+        return None
+    return format_for_feed(values, feed)
+
+
+def default_int_parameter(values, command, param, param_value, currLocation):
+    """Process a parameter that is treated like an integer."""
+    return str(int(param_value))
+
+
+def default_length_parameter(values, command, param, param_value, currLocation):
+    """Process a parameter that is treated like a length."""
+    return format_for_axis(values, Units.Quantity(param_value, Units.Length))
+
+
+def default_P_parameter(values, command, param, param_value, currLocation):
+    """Process the P parameter."""
+    if command in ("G2", "G02", "G3", "G03", "G5.2", "G5.3", "G10", "G54.1", "G59"):
+        return str(int(param_value))
+    if command in ("G4", "G04", "G76", "G82", "G86", "G89"):
+        return str(float(param_value))
+    if command in ("G5", "G05", "G64"):
+        return format_for_axis(values, Units.Quantity(param_value, Units.Length))
+    # anything else that is supported
+    return str(param_value)
+
+
+def default_Q_parameter(values, command, param, param_value, currLocation):
+    """Process the Q parameter."""
+    if command == "G10":
+        return str(int(param_value))
+    if command in ("G64", "G73", "G83"):
+        return format_for_axis(values, Units.Quantity(param_value, Units.Length))
+
+
+def default_S_parameter(values, command, param, param_value, currLocation):
+    """Process the S parameter."""
+    return format_for_spindle(values, param_value)
+
+
+def drill_translate(values, cmd, params):
     """Translate drill cycles."""
     trBuff = ""
     nl = "\n"
-
-    if values["OUTPUT_COMMENTS"]:  # Comment the original command
-        comment = create_comment(
-            values["COMMAND_SPACE"]
-            + format_outstring(values, outstring)
-            + values["COMMAND_SPACE"],
-            values["COMMENT_SYMBOL"],
-        )
-        trBuff += f"{linenumber(values)}{comment}{nl}"
 
     # cycle conversion
     # currently only cycles in XY are provided (G17)
@@ -67,9 +135,7 @@ def drill_translate(values, outstring, cmd, params):
     RETRACT_Z = Units.Quantity(params["R"], Units.Length)
     # R less than Z is error
     if RETRACT_Z < drill_Z:
-        comment = create_comment(
-            "Drill cycle error: R less than Z", values["COMMENT_SYMBOL"]
-        )
+        comment = create_comment(values, "Drill cycle error: R less than Z")
         trBuff += f"{linenumber(values)}{comment}{nl}"
         return trBuff
 
@@ -175,6 +241,11 @@ def format_for_feed(values, number):
     )
 
 
+def format_for_spindle(values, number):
+    """Format a number using the precision for a spindle speed."""
+    return format(float(number), f'.{str(values["SPINDLE_DECIMALS"])}f')
+
+
 def format_outstring(values, strTable):
     """Construct the line for the final output."""
     s = ""
@@ -195,294 +266,246 @@ def linenumber(values, space=None):
     return ""
 
 
-def parse(values, pathobj):
-    """Parse a Path."""
+#
+# These functions are called in the parse_a_path function
+# to return the appropriate parameter value.
+#
+parameter_functions = {
+    "A": default_axis_parameter,
+    "B": default_axis_parameter,
+    "C": default_axis_parameter,
+    "D": default_D_parameter,
+    "E": default_length_parameter,
+    "F": default_F_parameter,
+    # "G" is reserved for G-code commands
+    "H": default_int_parameter,
+    "I": default_length_parameter,
+    "J": default_length_parameter,
+    "K": default_length_parameter,
+    "L": default_int_parameter,
+    # "M" is reserved for M-code commands
+    # "N" is reserved for the beginning of line numbers
+    # "O" is reserved for the beginning of line numbers for subroutines
+    "P": default_P_parameter,
+    "Q": default_Q_parameter,
+    "R": default_length_parameter,
+    "S": default_S_parameter,
+    "T": default_int_parameter,
+    "U": default_axis_parameter,
+    "V": default_axis_parameter,
+    "W": default_axis_parameter,
+    "X": default_axis_parameter,
+    "Y": default_axis_parameter,
+    "Z": default_axis_parameter,
+    # "$" is used by LinuxCNC (and others?) to designate which spindle
+}
+
+
+def parse_a_group(values, pathobj):
+    """Parse a Group (compound, project, or simple path)."""
     nl = "\n"
     out = ""
-    lastcommand = None
-
-    currLocation = {}  # keep track for no doubles
-    firstmove = Path.Command("G0", {"X": -1, "Y": -1, "Z": -1, "F": 0.0})
-    currLocation.update(firstmove.Parameters)  # set First location Parameters
 
     if hasattr(pathobj, "Group"):  # We have a compound or project.
         if values["OUTPUT_COMMENTS"]:
-            comment = create_comment(
-                "Compound: " + pathobj.Label, values["COMMENT_SYMBOL"]
-            )
+            comment = create_comment(values, f"Compound: {pathobj.Label}")
             out += f"{linenumber(values)}{comment}{nl}"
         for p in pathobj.Group:
-            out += parse(values, p)
-        return out
+            out += parse_a_group(values, p)
     else:  # parsing simple path
-
         # groups might contain non-path things like stock.
         if not hasattr(pathobj, "Path"):
             return out
-
         if values["OUTPUT_PATH_LABELS"] and values["OUTPUT_COMMENTS"]:
-            comment = create_comment("Path: " + pathobj.Label, values["COMMENT_SYMBOL"])
+            comment = create_comment(values, f"Path: {pathobj.Label}")
             out += f"{linenumber(values)}{comment}{nl}"
+        out += parse_a_path(values, pathobj)
+    return out
 
-        if values["OUTPUT_ADAPTIVE"]:
-            adaptiveOp = False
-            opHorizRapid = 0
-            opVertRapid = 0
-            if "Adaptive" in pathobj.Name:
-                adaptiveOp = True
-                if hasattr(pathobj, "ToolController"):
-                    if (
-                        hasattr(pathobj.ToolController, "HorizRapid")
-                        and pathobj.ToolController.HorizRapid > 0
-                    ):
-                        opHorizRapid = Units.Quantity(
-                            pathobj.ToolController.HorizRapid, Units.Velocity
-                        )
-                    else:
-                        FreeCAD.Console.PrintWarning(
-                            "Tool Controller Horizontal Rapid Values are unset\n"
-                        )
-                    if (
-                        hasattr(pathobj.ToolController, "VertRapid")
-                        and pathobj.ToolController.VertRapid > 0
-                    ):
-                        opVertRapid = Units.Quantity(
-                            pathobj.ToolController.VertRapid, Units.Velocity
-                        )
-                    else:
-                        FreeCAD.Console.PrintWarning(
-                            "Tool Controller Vertical Rapid Values are unset\n"
-                        )
 
-        for c in pathobj.Path.Commands:
+def parse_a_path(values, pathobj):
+    """Parse a simple Path."""
+    nl = "\n"
+    out = ""
 
-            # List of elements in the command, code, and params.
+    adaptiveOp = False
+    opHorizRapid = 0
+    opVertRapid = 0
+
+    lastcommand = None
+    firstmove = Path.Command("G0", {"X": -1, "Y": -1, "Z": -1, "F": 0.0})
+    currLocation = {}  # keep track for no doubles
+    currLocation.update(firstmove.Parameters)  # set First location Parameters
+
+    if values["OUTPUT_ADAPTIVE"] and "Adaptive" in pathobj.Name:
+        adaptiveOp = True
+        if hasattr(pathobj, "ToolController"):
+            tc = pathobj.ToolController
+            if hasattr(tc, "HorizRapid") and tc.HorizRapid > 0:
+                opHorizRapid = Units.Quantity(tc.HorizRapid, Units.Velocity)
+            else:
+                FreeCAD.Console.PrintWarning(
+                    f"Tool Controller Horizontal Rapid Values are unset{nl}"
+                )
+            if hasattr(tc, "VertRapid") and tc.VertRapid > 0:
+                opVertRapid = Units.Quantity(tc.VertRapid, Units.Velocity)
+            else:
+                FreeCAD.Console.PrintWarning(
+                    f"Tool Controller Vertical Rapid Values are unset{nl}"
+                )
+
+    for c in pathobj.Path.Commands:
+
+        # List of elements in the command, code, and params.
+        outstring = []
+        # command may contain M code, G code, comment string, etc.
+        command = c.Name
+        if command[0] == "(":
+            if not values["OUTPUT_COMMENTS"]:
+                continue
+            if values["COMMENT_SYMBOL"] != "(" and len(command) > 2:
+                command = create_comment(values, command[1:-1])
+        if (
+            values["OUTPUT_ADAPTIVE"]
+            and adaptiveOp
+            and command in values["RAPID_MOVES"]
+        ):
+            if opHorizRapid and opVertRapid:
+                command = "G1"
+            else:
+                outstring.append(f"(Tool Controller Rapid Values are unset){nl}")
+
+        outstring.append(command)
+
+        # if modal: suppress the command if it is the same as the last one
+        if values["MODAL"] and command == lastcommand:
+            outstring.pop(0)
+
+        # Now add the remaining parameters in order
+        for parameter in values["PARAMETER_ORDER"]:
+            if parameter in c.Parameters:
+                parameter_value = parameter_functions[parameter](
+                    values, command, parameter, c.Parameters[parameter], currLocation
+                )
+                if parameter_value:
+                    outstring.append(f"{parameter}{parameter_value}")
+
+        if (
+            values["OUTPUT_ADAPTIVE"]
+            and adaptiveOp
+            and command in values["RAPID_MOVES"]
+            and opHorizRapid
+            and opVertRapid
+        ):
+            if "Z" not in c.Parameters:
+                param_num = format_for_feed(values, opHorizRapid)
+            else:
+                param_num = format_for_feed(values, opVertRapid)
+            outstring.append(f"F{param_num}")
+
+        # store the latest command
+        lastcommand = command
+        currLocation.update(c.Parameters)
+        # Memorizes the current position for calculating the related movements
+        # and the withdrawal plan
+        if command in values["MOTION_COMMANDS"]:
+            if "X" in c.Parameters:
+                values["CURRENT_X"] = Units.Quantity(c.Parameters["X"], Units.Length)
+            if "Y" in c.Parameters:
+                values["CURRENT_Y"] = Units.Quantity(c.Parameters["Y"], Units.Length)
+            if "Z" in c.Parameters:
+                values["CURRENT_Z"] = Units.Quantity(c.Parameters["Z"], Units.Length)
+
+        if command in ("G98", "G99"):
+            values["DRILL_RETRACT_MODE"] = command
+        elif command in ("G90", "G91"):
+            values["MOTION_MODE"] = command
+
+        if (
+            values["TRANSLATE_DRILL_CYCLES"]
+            and command in values["DRILL_CYCLES_TO_TRANSLATE"]
+        ):
+            if values["OUTPUT_COMMENTS"]:  # Comment the original command
+                comment = create_comment(
+                    values,
+                    values["COMMAND_SPACE"]
+                    + format_outstring(values, outstring)
+                    + values["COMMAND_SPACE"],
+                )
+                out += f"{linenumber(values)}{comment}{nl}"
+            out += drill_translate(values, command, c.Parameters)
+            # Erase the line we just translated
             outstring = []
-            # command M or G code or comment string
-            command = c.Name
-            if command[0] == "(":
-                if values["OUTPUT_COMMENTS"]:
-                    if values["COMMENT_SYMBOL"] != "(":
-                        command = PostUtils.fcoms(command, values["COMMENT_SYMBOL"])
-                else:
-                    continue
-            if (
-                values["OUTPUT_ADAPTIVE"]
-                and adaptiveOp
-                and command in values["RAPID_MOVES"]
-            ):
-                if opHorizRapid and opVertRapid:
-                    command = "G1"
-                else:
-                    outstring.append("(Tool Controller Rapid Values are unset)\n")
 
-            outstring.append(command)
+        if values["SPINDLE_WAIT"] > 0 and command in ("M3", "M03", "M4", "M04"):
+            out += f"{linenumber(values)}{format_outstring(values, outstring)}{nl}"
+            num = format_outstring(values, ["G4", f'P{values["SPINDLE_WAIT"]}'])
+            out += f"{linenumber(values)}{num}{nl}"
+            outstring = []
 
-            # if modal: suppress the command if it is the same as the last one
-            if values["MODAL"] and command == lastcommand:
-                outstring.pop(0)
-
-            # Now add the remaining parameters in order
-            for param in values["PARAMETER_ORDER"]:
-                if param in c.Parameters:
-                    if param == "F" and (
-                        currLocation[param] != c.Parameters[param]
-                        or values["OUTPUT_DOUBLES"]
-                    ):
-                        # centroid and linuxcnc don't use rapid speeds
-                        if command not in values["RAPID_MOVES"]:
-                            speed = Units.Quantity(c.Parameters["F"], Units.Velocity)
-                            if speed.getValueAs(values["UNIT_SPEED_FORMAT"]) > 0.0:
-                                param_num = format_for_feed(values, speed)
-                                outstring.append(f"{param}{param_num}")
-                        else:
-                            continue
-                    elif param in ("H", "L", "T"):
-                        outstring.append(f"{param}{str(int(c.Parameters[param]))}")
-                    elif param == "D":
-                        if command in ("G41", "G42"):
-                            outstring.append(f"{param}{str(int(c.Parameters[param]))}")
-                        elif command in ("G41.1", "G42.1"):
-                            pos = Units.Quantity(c.Parameters[param], Units.Length)
-                            param_num = format_for_axis(values, pos)
-                            outstring.append(f"{param}{param_num}")
-                        elif command in ("G96", "G97"):
-                            param_num = PostUtils.fmt(
-                                c.Parameters[param],
-                                values["SPINDLE_DECIMALS"],
-                                "G21",
-                            )
-                            outstring.append(f"{param}{param_num}")
-                        else:  # anything else that is supported
-                            outstring.append(
-                                f"{param}{str(float(c.Parameters[param]))}"
-                            )
-                    elif param == "P":
-                        if command in (
-                            "G2",
-                            "G02",
-                            "G3",
-                            "G03",
-                            "G5.2",
-                            "G5.3",
-                            "G10",
-                            "G54.1",
-                            "G59",
-                        ):
-                            outstring.append(f"{param}{str(int(c.Parameters[param]))}")
-                        elif command in ("G4", "G04", "G76", "G82", "G86", "G89"):
-                            outstring.append(
-                                f"{param}{str(float(c.Parameters[param]))}"
-                            )
-                        elif command in ("G5", "G05", "G64"):
-                            pos = Units.Quantity(c.Parameters[param], Units.Length)
-                            param_num = format_for_axis(values, pos)
-                            outstring.append(f"{param}{param_num}")
-                        else:  # anything else that is supported
-                            outstring.append(f"{param}{str(c.Parameters[param])}")
-                    elif param == "Q":
-                        if command == "G10":
-                            outstring.append(f"{param}{str(int(c.Parameters[param]))}")
-                        elif command in ("G64", "G73", "G83"):
-                            pos = Units.Quantity(c.Parameters[param], Units.Length)
-                            param_num = format_for_axis(values, pos)
-                            outstring.append(f"{param}{param_num}")
-                    elif param == "S":
-                        param_num = PostUtils.fmt(
-                            c.Parameters[param], values["SPINDLE_DECIMALS"], "G21"
-                        )
-                        outstring.append(f"{param}{param_num}")
-                    else:
-                        if (
-                            (not values["OUTPUT_DOUBLES"])
-                            and (param in currLocation)
-                            and (currLocation[param] == c.Parameters[param])
-                        ):
-                            continue
-                        else:
-                            pos = Units.Quantity(c.Parameters[param], Units.Length)
-                            param_num = format_for_axis(values, pos)
-                            outstring.append(f"{param}{param_num}")
-
-            if (
-                values["OUTPUT_ADAPTIVE"]
-                and adaptiveOp
-                and command in values["RAPID_MOVES"]
-                and opHorizRapid
-                and opVertRapid
-            ):
-                if "Z" not in c.Parameters:
-                    param_num = format_for_axis(values, opHorizRapid)
-                    outstring.append(f"F{param_num}")
-                else:
-                    param_num = format_for_axis(values, opVertRapid)
-                    outstring.append(f"F{param_num}")
-
-            # store the latest command
-            lastcommand = command
-
-            currLocation.update(c.Parameters)
-            # Memorizes the current position for calculating the related movements
-            # and the withdrawal plan
-            if command in values["MOTION_COMMANDS"]:
-                if "X" in c.Parameters:
-                    values["CURRENT_X"] = Units.Quantity(
-                        c.Parameters["X"], Units.Length
-                    )
-                if "Y" in c.Parameters:
-                    values["CURRENT_Y"] = Units.Quantity(
-                        c.Parameters["Y"], Units.Length
-                    )
-                if "Z" in c.Parameters:
-                    values["CURRENT_Z"] = Units.Quantity(
-                        c.Parameters["Z"], Units.Length
-                    )
-
-            if command in ("G98", "G99"):
-                values["DRILL_RETRACT_MODE"] = command
-            elif command in ("G90", "G91"):
-                values["MOTION_MODE"] = command
-
-            if (
-                values["TRANSLATE_DRILL_CYCLES"]
-                and command in values["DRILL_CYCLES_TO_TRANSLATE"]
-            ):
-                out += drill_translate(values, outstring, command, c.Parameters)
-                # Erase the line we just translated
+        # Check for Tool Change:
+        if command in ("M6", "M06"):
+            if values["OUTPUT_COMMENTS"]:
+                comment = create_comment(values, "Begin toolchange")
+                out += f"{linenumber(values)}{comment}{nl}"
+            if values["OUTPUT_TOOL_CHANGE"]:
+                if values["STOP_SPINDLE_FOR_TOOL_CHANGE"]:
+                    # stop the spindle
+                    out += f"{linenumber(values)}M5{nl}"
+                for line in values["TOOL_CHANGE"].splitlines(False):
+                    out += f"{linenumber(values)}{line}{nl}"
+            elif values["OUTPUT_COMMENTS"]:
+                # convert the tool change to a comment
+                comment = create_comment(
+                    values,
+                    values["COMMAND_SPACE"]
+                    + format_outstring(values, outstring)
+                    + values["COMMAND_SPACE"],
+                )
+                out += f"{linenumber(values)}{comment}{nl}"
                 outstring = []
 
-            if values["SPINDLE_WAIT"] > 0 and command in ("M3", "M03", "M4", "M04"):
-                out += f"{linenumber(values)}{format_outstring(values, outstring)}{nl}"
-                num = format_outstring(values, ["G4", f'P{values["SPINDLE_WAIT"]}'])
-                out += f"{linenumber(values)}{num}{nl}"
-                outstring = []
+        if command == "message" and values["REMOVE_MESSAGES"]:
+            if values["OUTPUT_COMMENTS"] is False:
+                out = []
+            else:
+                outstring.pop(0)  # remove the command
 
-            # Check for Tool Change:
-            if command in ("M6", "M06"):
-                if values["OUTPUT_COMMENTS"]:
-                    comment = create_comment(
-                        "Begin toolchange", values["COMMENT_SYMBOL"]
-                    )
-                    out += f"{linenumber(values)}{comment}{nl}"
-                if values["OUTPUT_TOOL_CHANGE"]:
-                    if values["STOP_SPINDLE_FOR_TOOL_CHANGE"]:
-                        # stop the spindle
-                        out += f"{linenumber(values)}M5{nl}"
-                    for line in values["TOOL_CHANGE"].splitlines(False):
-                        out += f"{linenumber(values)}{line}{nl}"
-                elif values["OUTPUT_COMMENTS"]:
-                    # convert the tool change to a comment
-                    comment = create_comment(
-                        values["COMMAND_SPACE"]
-                        + format_outstring(values, outstring)
-                        + values["COMMAND_SPACE"],
-                        values["COMMENT_SYMBOL"],
-                    )
-                    out += f"{linenumber(values)}{comment}{nl}"
-                    outstring = []
+        if command in values["SUPPRESS_COMMANDS"]:
+            if values["OUTPUT_COMMENTS"]:
+                # convert the command to a comment
+                comment = create_comment(
+                    values,
+                    values["COMMAND_SPACE"]
+                    + format_outstring(values, outstring)
+                    + values["COMMAND_SPACE"],
+                )
+                out += f"{linenumber(values)}{comment}{nl}"
+            # remove the command
+            outstring = []
 
-            if command == "message" and values["REMOVE_MESSAGES"]:
-                if values["OUTPUT_COMMENTS"] is False:
-                    out = []
-                else:
-                    outstring.pop(0)  # remove the command
+        # prepend a line number and append a newline
+        if len(outstring) >= 1:
+            if values["OUTPUT_LINE_NUMBERS"]:
+                # In this case we don't want a space after the line number
+                # because the space is added in the join just below.
+                outstring.insert(0, (linenumber(values, "")))
 
-            if command in values["SUPPRESS_COMMANDS"]:
-                if values["OUTPUT_COMMENTS"]:
-                    # convert the command to a comment
-                    comment = create_comment(
-                        values["COMMAND_SPACE"]
-                        + format_outstring(values, outstring)
-                        + values["COMMAND_SPACE"],
-                        values["COMMENT_SYMBOL"],
-                    )
-                    out += f"{linenumber(values)}{comment}{nl}"
-                # remove the command
-                outstring = []
+            # append the line to the final output
+            out += values["COMMAND_SPACE"].join(outstring)
+            # Note: Do *not* strip `out`, since that forces the allocation
+            # of a contiguous string & thus quadratic complexity.
+            out += f"{nl}"
 
-            # prepend a line number and append a newline
-            if len(outstring) >= 1:
-                if values["OUTPUT_LINE_NUMBERS"]:
-                    # In this case we don't want a space after the line number
-                    # because the space is added in the join just below.
-                    outstring.insert(0, (linenumber(values, "")))
+        # add height offset
+        if command in ("M6", "M06") and values["USE_TLO"]:
+            out += f'{linenumber(values)}G43 H{str(int(c.Parameters["T"]))}{nl}'
 
-                # append the line to the final output
-                out += values["COMMAND_SPACE"].join(outstring)
-                # Note: Do *not* strip `out`, since that forces the allocation
-                # of a contiguous string & thus quadratic complexity.
-                out += f"{nl}"
-
-            # add height offset
-            if command in ("M6", "M06") and values["USE_TLO"]:
-                out += f'{linenumber(values)}G43 H{str(int(c.Parameters["T"]))}{nl}'
-
-            # Check for comments containing machine-specific commands
-            # to pass literally to the controller
-            if values["ENABLE_MACHINE_SPECIFIC_COMMANDS"]:
-                m = re.match(r"^\(MC_RUN_COMMAND: ([^)]+)\)$", command)
-                if m:
-                    raw_command = m.group(1)
-                    out += f"{linenumber(values)}{raw_command}{nl}"
-
-        return out
+        # Check for comments containing machine-specific commands
+        # to pass literally to the controller
+        if values["ENABLE_MACHINE_SPECIFIC_COMMANDS"]:
+            m = re.match(r"^\(MC_RUN_COMMAND: ([^)]+)\)$", command)
+            if m:
+                raw_command = m.group(1)
+                out += f"{linenumber(values)}{raw_command}{nl}"
+    return out

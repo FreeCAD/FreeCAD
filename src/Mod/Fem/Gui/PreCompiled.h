@@ -86,6 +86,7 @@
 #include <QFileInfo>
 #include <QApplication>
 #include <QMessageBox>
+#include <QMetaMethod>
 #include <QAction>
 #include <QString>
 #include <QSlider>
@@ -170,10 +171,11 @@
 #include <SMDSAbs_ElementType.hxx>
 
 // VTK
-#include <vtkPointData.h>
 #include <vtkCellArray.h>
 #include <vtkCellData.h>
+#include <vtkDoubleArray.h>
 #include <vtkLookupTable.h>
+#include <vtkPointData.h>
 
 #endif //_PreComp_
 

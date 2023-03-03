@@ -31,6 +31,7 @@
 #include <Inventor/SbColor.h>
 #include <Inventor/nodes/SoDrawStyle.h>
 #include <Inventor/nodes/SoCoordinate3.h>
+#include <Inventor/nodes/SoFont.h>
 #include <Inventor/nodes/SoGroup.h>
 #include <Inventor/nodes/SoLineSet.h>
 #include <Inventor/nodes/SoMarkerSet.h>
@@ -39,8 +40,11 @@
 #include <Inventor/nodes/SoText2.h>
 #include <Inventor/nodes/SoTranslation.h>
 
+
 #include <Gui/Inventor/SmSwitchboard.h>
 #include <Mod/Sketcher/App/GeoList.h>
+
+#include "ViewProviderSketchGeometryExtension.h"
 
 
 namespace Part {
@@ -112,12 +116,14 @@ struct DrawingParameters {
     static SbColor NonDrivingConstrDimColor;                    // Color used for non-driving (reference) dimensional constraints
     static SbColor ExprBasedConstrDimColor;                     // Color used for expression based dimensional constraints
     static SbColor DeactivatedConstrDimColor;                   // Color used for deactivated dimensional constraints
+    static SbColor CursorTextColor;                              // Color used by the edit mode cursor
     //@}
 
     /** @name Rendering sizes (also to support HDPI monitors) **/
     //@{
     double pixelScalingFactor = 1.0;    // Scaling factor to be used for pixels
     int coinFontSize = 17;              // Font size to be used by coin
+    int labelFontSize = 17;             // Font size to be used by SoDatumLabel, which uses a QPainter and a QFont internally
     int constraintIconSize = 15;        // Size of constraint icons
     int markerSize = 7;                 // Size used for markers
     //@}
@@ -223,22 +229,26 @@ private:
 public:
     void reset() {
         CoinLayers = 1;
-        logicalLayer2CoinLayer.clear();
-        logicalLayer2CoinLayer.push_back(Default); // Logical layer 1 always maps to CoinLayer 1
     }
 
-    int getCoinLayer(int logicallayer) {
-        if(logicallayer < int(logicalLayer2CoinLayer.size()))
-            return logicalLayer2CoinLayer[logicallayer];
+    inline int getSafeCoinLayer(int coinlayer) {
+        if(coinlayer < CoinLayers) {
+            return coinlayer;
+        }
 
         return Default;
     }
 
-    int CoinLayers = 1; // defaults to a single Coin Geometry Layer.
+    int inline getCoinLayerCount() const {
+        return CoinLayers;
+    }
+
+    void setCoinLayerCount(int layernumber) {
+        CoinLayers = layernumber;
+    }
 
 private:
-    /// This maps a logicalLayer (the one of GeometryFacade) to a CoinLayer (the ones created in the scenegraph)
-    std::vector<int> logicalLayer2CoinLayer;
+    int CoinLayers = 1; // defaults to a single Coin Geometry Layer.
 };
 
 /** @brief     Struct to hold the results of analysis performed on geometry
@@ -326,6 +336,8 @@ struct EditModeScenegraphNodes {
     //@{
     SoText2       *textX;
     SoTranslation *textPos;
+    SoFont        *textFont;
+    SoMaterial    *textMaterial;
     //@}
 
     /** @name Constraint nodes*/
@@ -397,7 +409,6 @@ struct CoinMapping {
     /// This maps GeoElementId index {GeoId, PointPos} to a {coin layer and MF index} of a curve or point.
     std::map<Sketcher::GeoElementId,MultiFieldId> GeoElementId2SetId;
 };
-
 
 } // namespace SketcherGui
 

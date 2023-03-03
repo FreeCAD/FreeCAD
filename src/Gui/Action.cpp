@@ -221,7 +221,7 @@ void Action::setToolTip(const QString & text, const QString & title)
     _tooltip = text;
     _title = title;
     _action->setToolTip(createToolTip(text,
-                title.isEmpty() ? _action->text() : title, 
+                title.isEmpty() ? _action->text() : title,
                 _action->font(),
                 _action->shortcut().toString(QKeySequence::NativeText),
                 command()));
@@ -461,6 +461,14 @@ void ActionGroup::addTo(QWidget *widget)
             item->setMenuRole(action()->menuRole());
             menu->setTitle(action()->text());
             menu->addActions(groupAction()->actions());
+
+            QObject::connect(menu, &QMenu::aboutToShow, [this, menu]() {
+                Q_EMIT aboutToShow(menu);
+            });
+
+            QObject::connect(menu, &QMenu::aboutToHide, [this, menu]() {
+                Q_EMIT aboutToHide(menu);
+            });
         }
         else if (widget->inherits("QToolBar")) {
             widget->addAction(action());
@@ -471,6 +479,14 @@ void ActionGroup::addTo(QWidget *widget)
             auto menu = new QMenu(tb);
             menu->addActions(acts);
             tb->setMenu(menu);
+
+            QObject::connect(menu, &QMenu::aboutToShow, [this, menu]() {
+                Q_EMIT aboutToShow(menu);
+            });
+
+            QObject::connect(menu, &QMenu::aboutToHide, [this, menu]() {
+                Q_EMIT aboutToHide(menu);
+            });
         }
         else {
             widget->addActions(groupAction()->actions()); // no drop-down
@@ -918,6 +934,22 @@ public:
         }
     }
 
+    void trySaveUserParameter()
+    {
+        // update the XML structure and save the user parameter to disk (#0001989)
+        bool saveParameter = App::GetApplication().GetParameterGroupByPath
+            ("User parameter:BaseApp/Preferences/General")->GetBool("SaveUserParameter", true);
+        if (saveParameter) {
+            saveUserParameter();
+        }
+    }
+
+    void saveUserParameter()
+    {
+        ParameterManager* parmgr = App::GetApplication().GetParameterSet("User parameter");
+        parmgr->SaveDocument(App::Application::Config()["UserParameter"].c_str());
+    }
+
 public:
     RecentFilesAction *master;
     ParameterGrp::handle handle;
@@ -954,13 +986,7 @@ void RecentFilesAction::appendFile(const QString& filename)
     setFiles(files);
     save();
 
-    // update the XML structure and save the user parameter to disk (#0001989)
-    bool saveParameter = App::GetApplication().GetParameterGroupByPath
-        ("User parameter:BaseApp/Preferences/General")->GetBool("SaveUserParameter", true);
-    if (saveParameter) {
-        ParameterManager* parmgr = App::GetApplication().GetParameterSet("User parameter");
-        parmgr->SaveDocument(App::Application::Config()["UserParameter"].c_str());
-    }
+    _pimpl->trySaveUserParameter();
 }
 
 /**
@@ -1022,6 +1048,7 @@ void RecentFilesAction::activateFile(int id)
         QMessageBox::critical(getMainWindow(), tr("File not found"), tr("The file '%1' cannot be opened.").arg(filename));
         files.removeAll(filename);
         setFiles(files);
+        save();
     }
     else {
         // invokes appendFile()
