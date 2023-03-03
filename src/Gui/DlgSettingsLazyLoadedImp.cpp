@@ -40,10 +40,10 @@ const uint DlgSettingsLazyLoadedImp::WorkbenchNameRole = Qt::UserRole;
 
 // this enum defines the order of the columns
 enum Column {
-    Icon,
-    Name,
+    Load,
     CheckBox,
-    Load
+    Icon,
+    Name
 };
 
 /* TRANSLATOR Gui::Dialog::DlgSettingsLazyLoadedImp */
