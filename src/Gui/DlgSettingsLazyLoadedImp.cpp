@@ -69,11 +69,11 @@ DlgSettingsLazyLoadedImp::~DlgSettingsLazyLoadedImp()
 void DlgSettingsLazyLoadedImp::saveSettings()
 {
     std::ostringstream csv;
-    for (const auto& checkbox : _autoloadCheckboxes) {
-        if (checkbox.second->isChecked()) {
+    for (const auto& checkBox : _autoloadCheckBoxes) {
+        if (checkBox.second->isChecked()) {
             if (!csv.str().empty())
                 csv << ",";
-            csv << checkbox.first.toStdString();
+            csv << checkBox.first.toStdString();
         }
     }
     App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/General")->
@@ -134,7 +134,7 @@ void DlgSettingsLazyLoadedImp::buildUnloadedWorkbenchList()
 
     ui->workbenchTable->horizontalHeader()->setDefaultAlignment(Qt::AlignLeft);
     ui->workbenchTable->setRowCount(0);
-    _autoloadCheckboxes.clear(); // setRowCount(0) just invalidated all of these pointers
+    _autoloadCheckBoxes.clear(); // setRowCount(0) just invalidated all of these pointers
     ui->workbenchTable->setColumnCount(4);
     ui->workbenchTable->setSelectionMode(QAbstractItemView::SelectionMode::NoSelection);
     ui->workbenchTable->horizontalHeader()->setSectionResizeMode(Icon, QHeaderView::ResizeMode::ResizeToContents);
@@ -174,30 +174,30 @@ void DlgSettingsLazyLoadedImp::buildUnloadedWorkbenchList()
         textLabel->setToolTip(wbTooltip);
         ui->workbenchTable->setCellWidget(rowNumber, Name, textLabel);
 
-        // Column 3: Autoloaded checkbox
+        // Column 3: Autoloaded checkBox
         //
-        // To get the checkbox centered, we have to jump through some hoops...
+        // To get the checkBox centered, we have to jump through some hoops...
         auto checkWidget = new QWidget(this);
-        auto autoloadCheckbox = new QCheckBox(this);
-        autoloadCheckbox->setToolTip(tr("If checked, %1 will be loaded automatically when FreeCAD starts up").arg(wbDisplayName));
+        auto autoloadCheckBox = new QCheckBox(this);
+        autoloadCheckBox->setToolTip(tr("If checked, %1 will be loaded automatically when FreeCAD starts up").arg(wbDisplayName));
         auto checkLayout = new QHBoxLayout(checkWidget);
-        checkLayout->addWidget(autoloadCheckbox);
+        checkLayout->addWidget(autoloadCheckBox);
         checkLayout->setAlignment(Qt::AlignCenter);
         checkLayout->setContentsMargins(0, 0, 0, 0);
 
-        // Figure out whether to check and/or disable this checkbox:
+        // Figure out whether to check and/or disable this checkBox:
         if (wbName.toStdString() == _startupModule) {
-            autoloadCheckbox->setChecked(true);
-            autoloadCheckbox->setEnabled(false);
-            autoloadCheckbox->setToolTip(tr("This is the current startup module, and must be autoloaded. See Preferences/General/Autoload to change."));
+            autoloadCheckBox->setChecked(true);
+            autoloadCheckBox->setEnabled(false);
+            autoloadCheckBox->setToolTip(tr("This is the current startup module, and must be autoloaded. See Preferences/General/Autoload to change."));
         }
         else if (std::find(_backgroundAutoloadedModules.begin(), _backgroundAutoloadedModules.end(),
                            wbName.toStdString()) != _backgroundAutoloadedModules.end()) {
-            autoloadCheckbox->setChecked(true);
-            _autoloadCheckboxes.insert(std::make_pair(wbName, autoloadCheckbox));
+            autoloadCheckBox->setChecked(true);
+            _autoloadCheckBoxes.insert(std::make_pair(wbName, autoloadCheckBox));
         }
         else {
-            _autoloadCheckboxes.insert(std::make_pair(wbName, autoloadCheckbox));
+            _autoloadCheckBoxes.insert(std::make_pair(wbName, autoloadCheckBox));
         }
         ui->workbenchTable->setCellWidget(rowNumber, CheckBox, checkWidget);
 
