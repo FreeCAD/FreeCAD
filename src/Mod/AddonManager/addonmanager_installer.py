@@ -194,7 +194,7 @@ class AddonInstaller(QtCore.QObject):
             FreeCAD.Console.PrintLog(
                 "Overriding local ALLOWED_PYTHON_PACKAGES.txt with newer remote version\n"
             )
-            p = p.data().decode("utf8")
+            p = p.decode("utf8")
             lines = p.split("\n")
             cls.allowed_packages.clear()  # Unset the locally-defined list
             for line in lines:
@@ -407,7 +407,7 @@ class AddonInstaller(QtCore.QObject):
         if hasattr(self.addon_to_install, "metadata") and os.path.isfile(package_xml):
             self.addon_to_install.load_metadata_file(package_xml)
             self.addon_to_install.installed_version = (
-                self.addon_to_install.metadata.Version
+                self.addon_to_install.metadata.version
             )
             self.addon_to_install.updated_timestamp = os.path.getmtime(package_xml)
 

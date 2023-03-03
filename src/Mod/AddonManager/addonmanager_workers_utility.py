@@ -27,7 +27,7 @@ from typing import Optional
 
 import FreeCAD
 from PySide import QtCore
-import NetworkManager
+import addonmanager_utilities as utils
 
 translate = FreeCAD.Qt.translate
 
@@ -67,7 +67,7 @@ class ConnectionChecker(QtCore.QThread):
         """The main work of this object: returns the decoded result of the connection request, or
         None if the request failed"""
         url = "https://api.github.com/zen"
-        result = NetworkManager.AM_NETWORK_MANAGER.blocking_get(url)
+        result = utils.blocking_get(url)
         if result:
-            return result.data().decode("utf8")
+            return result.decode("utf8")
         return None
