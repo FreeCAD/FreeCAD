@@ -39,10 +39,10 @@ namespace Base {
 class BaseExport ConsoleObserverFile : public ILogger
 {
 public:
-    ConsoleObserverFile(const char *sFileName);
+    explicit ConsoleObserverFile(const char *sFileName);
     ~ConsoleObserverFile() override;
 
-    void SendLog(const std::string& message, LogStyle level) override;
+    void SendLog(const std::string& notifiername, const std::string& message, LogStyle level) override;
     const char* Name() override {return "File";}
 
 protected:
@@ -57,15 +57,16 @@ class BaseExport ConsoleObserverStd: public ILogger
 public:
     ConsoleObserverStd();
     ~ConsoleObserverStd() override;
-    void SendLog(const std::string& message, LogStyle level) override;
+    void SendLog(const std::string& notifiername, const std::string& message, LogStyle level) override;
     const char* Name() override {return "Console";}
 protected:
     bool useColorStderr;
 private:
-    void Warning(const char *sWarn);
-    void Message(const char *sMsg);
-    void Error  (const char *sErr);
-    void Log    (const char *sErr);
+    void Warning        (const char *sWarn);
+    void Message        (const char *sMsg);
+    void Error          (const char *sErr);
+    void Log            (const char *sLog);
+    void Critical(const char *sCritical);
 };
 
 /** The ILoggerBlocker class
@@ -77,7 +78,8 @@ class BaseExport ILoggerBlocker
 public:
     // Constructor that will block message types passed as parameter. By default, all types are blocked.
     inline explicit ILoggerBlocker(const char* co, ConsoleMsgFlags msgTypes =
-        ConsoleSingleton::MsgType_Txt | ConsoleSingleton::MsgType_Log | ConsoleSingleton::MsgType_Wrn | ConsoleSingleton::MsgType_Err);
+        ConsoleSingleton::MsgType_Txt | ConsoleSingleton::MsgType_Log | ConsoleSingleton::MsgType_Wrn | ConsoleSingleton::MsgType_Err |
+        ConsoleSingleton::MsgType_Critical | ConsoleSingleton::MsgType_Notification | ConsoleSingleton::MsgType_TranslatedNotification);
     // Disable copy & move constructors
     ILoggerBlocker(ILoggerBlocker const&) = delete;
     ILoggerBlocker(ILoggerBlocker const &&) = delete;

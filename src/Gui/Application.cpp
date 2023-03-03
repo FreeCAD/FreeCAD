@@ -1117,7 +1117,7 @@ void Application::setActiveDocument(Gui::Document* pcDocument)
     // May be useful for error detection
     if (d->activeDocument) {
         App::Document* doc = d->activeDocument->getDocument();
-        Base::Console().Log("Active document is %s (at %p)\n",doc->getName(), doc);
+        Base::Console().Log("Active document is %s (at %p)\n",doc->getName(), static_cast<void *>(doc));
     }
     else {
         Base::Console().Log("No active document\n");
@@ -1192,7 +1192,7 @@ void Application::viewActivated(MDIView* pcView)
 #ifdef FC_DEBUG
     // May be useful for error detection
     Base::Console().Log("Active view is %s (at %p)\n",
-                 (const char*)pcView->windowTitle().toUtf8(),pcView);
+                 (const char*)pcView->windowTitle().toUtf8(),static_cast<void *>(pcView));
 #endif
 
     signalActivateView(pcView);

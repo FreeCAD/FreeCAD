@@ -147,7 +147,7 @@ static void printLabel(TDF_Label label, Handle(XCAFDoc_ShapeTool) aShapeTool,
     }
 
     ss << std::endl;
-    Base::Console().NotifyLog(ss.str().c_str());
+    Base::Console().Notify<Base::LogStyle::Log>("ImportOCAF2",ss.str().c_str());
 }
 
 static void dumpLabels(TDF_Label label, Handle(XCAFDoc_ShapeTool) aShapeTool,

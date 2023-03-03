@@ -2596,7 +2596,7 @@ PyObject* TopoShapePy::distToShape(PyObject *args)
                     break;
                 default:
                     Base::Console().Message("distToShape: supportType1 is unknown: %d \n",
-                                            supportType1);
+                                            static_cast<int>(supportType1));
                     suppType1 = Py::String("Unknown");
                     suppIndex1 = -1;
                     param1 = Py::None();
@@ -2631,7 +2631,7 @@ PyObject* TopoShapePy::distToShape(PyObject *args)
                     break;
                 default:
                     Base::Console().Message("distToShape: supportType2 is unknown: %d \n",
-                                            supportType2);
+                                            static_cast<int>(supportType2));
                     suppType2 = Py::String("Unknown");
                     suppIndex2 = -1;
                     param2 = Py::None();

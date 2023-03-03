@@ -302,6 +302,9 @@ Log = FreeCAD.Console.PrintLog
 Msg = FreeCAD.Console.PrintMessage
 Err = FreeCAD.Console.PrintError
 Wrn = FreeCAD.Console.PrintWarning
+Crt = FreeCAD.Console.PrintCritical
+Ntf = FreeCAD.Console.PrintNotification
+Tnf = FreeCAD.Console.PrintTranslatedNotification
 test_ascii = lambda s: all(ord(c) < 128 for c in s)
 
 #store the cmake variales
