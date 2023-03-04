@@ -2517,7 +2517,9 @@ Py::Object FunctionExpression::evaluate(const Expression *expr, int f, const std
     case ROTATIONX:
     case ROTATIONY:
     case ROTATIONZ:
-        return Py::asObject(new Base::RotationPy(Base::Rotation(Vector3d(f == ROTATIONX, f == ROTATIONY, f == ROTATIONZ), value)));
+        return Py::asObject(new Base::RotationPy(Base::Rotation(
+            Vector3d(static_cast<double>(f == ROTATIONX), static_cast<double>(f == ROTATIONY), static_cast<double>(f == ROTATIONZ)),
+            value)));
     case TRANSLATIONM:
         return translationMatrix(v1.getValue(), v2.getValue(), v3.getValue());
     default:
