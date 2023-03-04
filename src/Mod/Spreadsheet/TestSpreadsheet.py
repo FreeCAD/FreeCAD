@@ -953,6 +953,11 @@ class SpreadsheetCases(unittest.TestCase):
         sheet.set('F7', '=mtranslate(A7; vector(1; 2; 3))')
         sheet.set('G7', '=mtranslate(A7; 1; 2; 3)')
 
+        # Compatibility with old syntax.
+        sheet.set('A8', '=create(<<vector>>, 2, 1, 2)')
+        sheet.set('B8', '=create(<<rotation>>, create(<<vector>>, 0, 1, 0), 45)')
+        sheet.set('C8', '=create(<<placement>>, A8, B8)')
+
         self.doc.recompute()
 
         self.assertEqual(sheet.A1,vec)
@@ -1030,6 +1035,10 @@ class SpreadsheetCases(unittest.TestCase):
         self.assertTrue(sheet.E7.Base.isEqual(FreeCAD.Vector(-2, 1, 3.0), tol))
         self.assertTrue(sheet.F7.Base.isEqual(FreeCAD.Vector(2, 4, 6), tol))
         self.assertTrue(sheet.G7.Base.isEqual(FreeCAD.Vector(2, 4, 6), tol))
+
+        self.assertEqual(sheet.A8, vec)
+        self.assertEqual(sheet.B8, rot)
+        self.assertEqual(sheet.C8, pla)
 
     def testIssue3128(self):
         """ Regression test for issue 3128; mod should work with arbitrary units for both arguments """
