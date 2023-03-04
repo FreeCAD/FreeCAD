@@ -14,11 +14,9 @@ set(_TEMPLATE_Gui_LIBS
     FreeCADGui
 )
 
-if (BUILD_QT5)
-    qt5_add_resources(_TEMPLATE__QRC_SRCS Resources/_TEMPLATE_.qrc)
-else()
-    qt4_add_resources(_TEMPLATE__QRC_SRCS Resources/_TEMPLATE_.qrc)
-endif()
+
+qt5_add_resources(_TEMPLATE__QRC_SRCS Resources/_TEMPLATE_.qrc)
+
 
 SET(_TEMPLATE_Gui_SRCS
     ${_TEMPLATE__QRC_SRCS}
