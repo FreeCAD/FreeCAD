@@ -57,6 +57,7 @@
 #include "FemSettings.h"
 #include "TaskPostBoxes.h"
 
+#include "ui_CylinderWidget.h"
 #include "ui_PlaneWidget.h"
 #include "ui_SphereWidget.h"
 
@@ -380,6 +381,164 @@ void ViewProviderFemPostFunction::onChanged(const App::Property* prop) {
 
 // ***************************************************************************
 
+PROPERTY_SOURCE(FemGui::ViewProviderFemPostCylinderFunction, FemGui::ViewProviderFemPostFunction)
+
+ViewProviderFemPostCylinderFunction::ViewProviderFemPostCylinderFunction()
+{
+    sPixmap = "fem-post-geo-cylinder";
+
+    setAutoScale(false);
+
+    getGeometryNode()->addChild(ShapeNodes::postCylinder());
+}
+
+ViewProviderFemPostCylinderFunction::~ViewProviderFemPostCylinderFunction()
+{
+}
+
+void ViewProviderFemPostCylinderFunction::draggerUpdate(SoDragger* m)
+{
+    Fem::FemPostCylinderFunction* func = static_cast<Fem::FemPostCylinderFunction*>(getObject());
+    SoJackDragger* dragger = static_cast<SoJackDragger*>(m);
+    const SbVec3f& center = dragger->translation.getValue();
+    SbVec3f norm(0, 0, 1);
+    dragger->rotation.getValue().multVec(norm, norm);
+    func->Center.setValue(center[0], center[1], center[2]);
+    func->Radius.setValue(dragger->scaleFactor.getValue()[0]);
+    func->Axis.setValue(norm[0], norm[1], norm[2]);
+}
+
+void ViewProviderFemPostCylinderFunction::updateData(const App::Property* p) {
+
+    Fem::FemPostCylinderFunction* func = static_cast<Fem::FemPostCylinderFunction*>(getObject());
+    if (!isDragging() && (p == &func->Center || p == &func->Radius || p == &func->Axis)) {
+        Base::Vector3d trans = func->Center.getValue();
+        Base::Vector3d axis = func->Axis.getValue();
+        double radius = func->Radius.getValue();
+
+        SbMatrix translate;
+        SbRotation rot(SbVec3f(0,0,1), SbVec3f(axis.x, axis.y, axis.z));
+        translate.setTransform(SbVec3f(trans.x, trans.y, trans.z), rot, SbVec3f(radius,radius,radius));
+        getManipulator()->setMatrix(translate);
+    }
+
+    Gui::ViewProviderDocumentObject::updateData(p);
+}
+
+SoTransformManip* ViewProviderFemPostCylinderFunction::setupManipulator()
+{
+    return new SoJackManip;
+}
+
+FunctionWidget* ViewProviderFemPostCylinderFunction::createControlWidget()
+{
+    return new CylinderWidget();
+}
+
+CylinderWidget::CylinderWidget()
+{
+    ui = new Ui_CylinderWidget();
+    ui->setupUi(this);
+
+    QSize size = ui->centerX->sizeForText(QStringLiteral("000000000000"));
+    ui->centerX->setMinimumWidth(size.width());
+    ui->centerY->setMinimumWidth(size.width());
+    ui->centerZ->setMinimumWidth(size.width());
+    ui->axisX->setMinimumWidth(size.width());
+    ui->axisY->setMinimumWidth(size.width());
+    ui->axisZ->setMinimumWidth(size.width());
+    ui->radius->setMinimumWidth(size.width());
+
+    int UserDecimals = Base::UnitsApi::getDecimals();
+    ui->centerX->setDecimals(UserDecimals);
+    ui->centerY->setDecimals(UserDecimals);
+    ui->centerZ->setDecimals(UserDecimals);
+    ui->axisX->setDecimals(UserDecimals);
+    ui->axisY->setDecimals(UserDecimals);
+    ui->axisZ->setDecimals(UserDecimals);
+
+    connect(ui->centerX, qOverload<double>(&Gui::QuantitySpinBox::valueChanged), this, &CylinderWidget::centerChanged);
+    connect(ui->centerY, qOverload<double>(&Gui::QuantitySpinBox::valueChanged), this, &CylinderWidget::centerChanged);
+    connect(ui->centerZ, qOverload<double>(&Gui::QuantitySpinBox::valueChanged), this, &CylinderWidget::centerChanged);
+    connect(ui->axisX, qOverload<double>(&Gui::QuantitySpinBox::valueChanged), this, &CylinderWidget::axisChanged);
+    connect(ui->axisY, qOverload<double>(&Gui::QuantitySpinBox::valueChanged), this, &CylinderWidget::axisChanged);
+    connect(ui->axisZ, qOverload<double>(&Gui::QuantitySpinBox::valueChanged), this, &CylinderWidget::axisChanged);
+    connect(ui->radius, qOverload<double>(&Gui::QuantitySpinBox::valueChanged), this, &CylinderWidget::radiusChanged);
+}
+
+CylinderWidget::~CylinderWidget()
+{
+}
+
+void CylinderWidget::applyPythonCode()
+{
+}
+
+void CylinderWidget::setViewProvider(ViewProviderFemPostFunction* view)
+{
+    FemGui::FunctionWidget::setViewProvider(view);
+    setBlockObjectUpdates(true);
+    Base::Unit unit = static_cast<Fem::FemPostCylinderFunction*>(getObject())->Center.getUnit();
+    ui->centerX->setUnit(unit);
+    ui->centerY->setUnit(unit);
+    ui->centerZ->setUnit(unit);
+    unit = static_cast<Fem::FemPostCylinderFunction*>(getObject())->Radius.getUnit();
+    ui->radius->setUnit(unit);
+    setBlockObjectUpdates(false);
+    onChange(static_cast<Fem::FemPostCylinderFunction*>(getObject())->Center);
+    onChange(static_cast<Fem::FemPostCylinderFunction*>(getObject())->Radius);
+    onChange(static_cast<Fem::FemPostCylinderFunction*>(getObject())->Axis);
+}
+
+void CylinderWidget::onChange(const App::Property& p)
+{
+    setBlockObjectUpdates(true);
+    if (strcmp(p.getName(), "Axis") == 0) {
+        const Base::Vector3d& vec = static_cast<const App::PropertyVector*>(&p)->getValue();
+        ui->axisX->setValue(vec.x);
+        ui->axisY->setValue(vec.y);
+        ui->axisZ->setValue(vec.z);
+    }
+    else if (strcmp(p.getName(), "Center") == 0) {
+        const Base::Vector3d& vec = static_cast<const App::PropertyVectorDistance*>(&p)->getValue();
+        ui->centerX->setValue(vec.x);
+        ui->centerY->setValue(vec.y);
+        ui->centerZ->setValue(vec.z);
+    }
+    else if (strcmp(p.getName(), "Radius") == 0) {
+        double val = static_cast<const App::PropertyDistance*>(&p)->getValue();
+        ui->radius->setValue(val);
+    }
+    setBlockObjectUpdates(false);
+}
+
+void CylinderWidget::centerChanged(double) {
+    if (!blockObjectUpdates()) {
+        Base::Vector3d vec(ui->centerX->value().getValue(), ui->centerY->value().getValue(),
+            ui->centerZ->value().getValue());
+        static_cast<Fem::FemPostCylinderFunction*>(getObject())->Center.setValue(vec);
+    }
+}
+
+void CylinderWidget::axisChanged(double)
+{
+    if (!blockObjectUpdates()) {
+        Base::Vector3d vec(ui->axisX->value().getValue(), ui->axisY->value().getValue(),
+            ui->axisZ->value().getValue());
+        static_cast<Fem::FemPostCylinderFunction*>(getObject())->Axis.setValue(vec);
+    }
+}
+
+void CylinderWidget::radiusChanged(double)
+{
+    if (!blockObjectUpdates()) {
+        static_cast<Fem::FemPostCylinderFunction*>(getObject())->Radius.setValue(ui->radius->value().getValue());
+    }
+}
+
+
+// ***************************************************************************
+
 PROPERTY_SOURCE(FemGui::ViewProviderFemPostPlaneFunction, FemGui::ViewProviderFemPostFunction)
 //NOTE: The technical lower limit is at 1e-4 that the Coin3D manipulator can handle
 static const App::PropertyFloatConstraint::Constraints scaleConstraint = {1e-4, DBL_MAX, 1.0};
@@ -395,16 +554,7 @@ ViewProviderFemPostPlaneFunction::ViewProviderFemPostPlaneFunction()
     setAutoScale(true);
 
     //setup the visualisation geometry
-    SoCoordinate3* points = new SoCoordinate3();
-    points->point.setNum(4);
-    points->point.set1Value(0, -0.5, -0.5, 0);
-    points->point.set1Value(1, -0.5, 0.5, 0);
-    points->point.set1Value(2, 0.5, 0.5, 0);
-    points->point.set1Value(3, 0.5, -0.5, 0);
-    points->point.set1Value(4, -0.5, -0.5, 0);
-    SoLineSet* line = new SoLineSet();
-    getGeometryNode()->addChild(points);
-    getGeometryNode()->addChild(line);
+    getGeometryNode()->addChild(ShapeNodes::postPlane());
 }
 
 ViewProviderFemPostPlaneFunction::~ViewProviderFemPostPlaneFunction() {
@@ -588,29 +738,7 @@ ViewProviderFemPostSphereFunction::ViewProviderFemPostSphereFunction() {
     setAutoScale(false);
 
     //setup the visualisation geometry
-    SoCoordinate3* points = new SoCoordinate3();
-    points->point.setNum(2 * 84);
-    int idx = 0;
-    for (int i = 0; i < 4; i++) {
-        for (int j = 0; j < 21; j++) {
-            points->point.set1Value(idx, SbVec3f(std::sin(2 * M_PI / 20 * j) * std::cos(M_PI / 4 * i),
-                std::sin(2 * M_PI / 20 * j) * std::sin(M_PI / 4 * i),
-                std::cos(2 * M_PI / 20 * j)));
-            ++idx;
-        }
-    }
-    for (int i = 0; i < 4; i++) {
-        for (int j = 0; j < 21; j++) {
-            points->point.set1Value(idx, SbVec3f(std::sin(M_PI / 4 * i) * std::cos(2 * M_PI / 20 * j),
-                std::sin(M_PI / 4 * i) * std::sin(2 * M_PI / 20 * j),
-                std::cos(M_PI / 4 * i)));
-            ++idx;
-        }
-    }
-
-    SoLineSet* line = new SoLineSet();
-    getGeometryNode()->addChild(points);
-    getGeometryNode()->addChild(line);
+    getGeometryNode()->addChild(ShapeNodes::postSphere());
 }
 
 ViewProviderFemPostSphereFunction::~ViewProviderFemPostSphereFunction() {
@@ -746,5 +874,110 @@ void SphereWidget::radiusChanged(double) {
         static_cast<Fem::FemPostSphereFunction*>(getObject())->Radius.setValue(ui->radius->value().getValue());
     }
 }
+
+namespace FemGui
+{
+
+namespace ShapeNodes
+{
+
+SoGroup* postCylinder()
+{
+    SoCoordinate3* points = new SoCoordinate3();
+    int nCirc = 20;
+    int nSide = 8;
+    float h = 3.;
+    points->point.setNum(2*(nCirc + 1 + nSide));
+
+    int idx = 0;
+    // top and bottom
+    for (int i = 0; i < 2; ++i) {
+        for (int j = 0; j < nCirc + 1; ++j) {
+            points->point.set1Value(idx, SbVec3f(std::cos(2*M_PI/nCirc*j),
+               std::sin(2*M_PI/nCirc*j),
+                -h/2. + h*i));
+            ++idx;
+        }
+
+    }
+    // sides
+    for (int i = 0; i < nSide; ++i) {
+        for (int j = 0; j < 2; ++j) {
+            points->point.set1Value(idx, SbVec3f(std::cos(2*M_PI/nSide*i),
+                std::sin(2*M_PI/nSide*i),
+                -h/2. + h*j));
+            ++idx;
+        }
+    }
+    // numVertices
+    int vert[nSide + 2];
+    vert[0] = nCirc + 1;
+    vert[1] = nCirc + 1;
+    for (int i = 0; i < nSide; ++i) {
+        vert[i+2] = 2;
+    }
+
+    SoLineSet* line = new SoLineSet();
+    SoGroup* group = new SoGroup();
+    line->numVertices.setValues(0,nSide + 2, vert);
+
+    group->addChild(points);
+    group->addChild(line);
+
+    return group;
+}
+
+SoGroup* postPlane()
+{
+    SoCoordinate3* points = new SoCoordinate3();
+    points->point.setNum(4);
+    points->point.set1Value(0, -0.5, -0.5, 0);
+    points->point.set1Value(1, -0.5, 0.5, 0);
+    points->point.set1Value(2, 0.5, 0.5, 0);
+    points->point.set1Value(3, 0.5, -0.5, 0);
+    points->point.set1Value(4, -0.5, -0.5, 0);
+    SoGroup* group = new SoGroup();
+    SoLineSet* line = new SoLineSet();
+
+    group->addChild(points);
+    group->addChild(line);
+
+    return group;
+}
+
+SoGroup* postSphere()
+{
+    SoCoordinate3* points = new SoCoordinate3();
+    points->point.setNum(2 * 84);
+    int idx = 0;
+    for (int i = 0; i < 4; i++) {
+        for (int j = 0; j < 21; j++) {
+            points->point.set1Value(idx, SbVec3f(std::sin(2 * M_PI / 20 * j) * std::cos(M_PI / 4 * i),
+                std::sin(2 * M_PI / 20 * j) * std::sin(M_PI / 4 * i),
+                std::cos(2 * M_PI / 20 * j)));
+            ++idx;
+        }
+    }
+    for (int i = 0; i < 4; i++) {
+        for (int j = 0; j < 21; j++) {
+            points->point.set1Value(idx, SbVec3f(std::sin(M_PI / 4 * i) * std::cos(2 * M_PI / 20 * j),
+                std::sin(M_PI / 4 * i) * std::sin(2 * M_PI / 20 * j),
+                std::cos(M_PI / 4 * i)));
+            ++idx;
+        }
+    }
+
+    SoGroup* group = new SoGroup();
+    SoLineSet* line = new SoLineSet();
+
+    group->addChild(points);
+    group->addChild(line);
+
+    return group;
+}
+
+} //namespace ShapeNodes
+
+} //namespace FemGui
 
 #include "moc_ViewProviderFemPostFunction.cpp"
