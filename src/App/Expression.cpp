@@ -81,8 +81,6 @@ FC_LOG_LEVEL_INIT("Expression", true, true)
 #pragma warning(disable : 4065)
 #endif
 
-#define INVALID_ARGUMENT_COUNT_PREFIX "Invalid number of arguments: "
-
 #define __EXPR_THROW(_e,_msg,_expr) do {\
     std::ostringstream ss;\
     ss << _msg << (_expr);\
@@ -108,17 +106,19 @@ FC_LOG_LEVEL_INIT("Expression", true, true)
     _e.raiseException();\
 }while(0)
 
-#define EXPR_PY_THROW(_expr) _EXPR_PY_THROW("",_expr)
+#define EXPR_PY_THROW(_expr) _EXPR_PY_THROW("", _expr)
 
-#define EXPR_THROW(_msg) _EXPR_THROW(_msg,this)
+#define EXPR_THROW(_msg) _EXPR_THROW(_msg, this)
 
-#define RUNTIME_THROW(_msg) __EXPR_THROW(Base::RuntimeError,_msg, static_cast<Expression*>(nullptr))
+#define ARGUMENT_THROW(_msg) EXPR_THROW("Invalid number of arguments: " ## _msg)
 
-#define TYPE_THROW(_msg) __EXPR_THROW(Base::TypeError,_msg, static_cast<Expression*>(nullptr))
+#define RUNTIME_THROW(_msg) __EXPR_THROW(Base::RuntimeError, _msg, static_cast<Expression*>(nullptr))
 
-#define PARSER_THROW(_msg) __EXPR_THROW(Base::ParserError,_msg, static_cast<Expression*>(nullptr))
+#define TYPE_THROW(_msg) __EXPR_THROW(Base::TypeError, _msg, static_cast<Expression*>(nullptr))
 
-#define PY_THROW(_msg) __EXPR_THROW(Py::RuntimeError,_msg, static_cast<Expression*>(nullptr))
+#define PARSER_THROW(_msg) __EXPR_THROW(Base::ParserError, _msg, static_cast<Expression*>(nullptr))
+
+#define PY_THROW(_msg) __EXPR_THROW(Py::RuntimeError, _msg, static_cast<Expression*>(nullptr))
 
 static inline std::ostream &operator<<(std::ostream &os, const App::Expression *expr) {
     if(expr) {
@@ -1758,15 +1758,15 @@ FunctionExpression::FunctionExpression(const DocumentObject *_owner, Function _f
     case TANH:
     case TRUNC:
         if (args.size() != 1)
-            EXPR_THROW(INVALID_ARGUMENT_COUNT_PREFIX "exactly one required.");
+            ARGUMENT_THROW("exactly one required.");
         break;
     case PLACEMENT:
         if (args.size() > 3)
-            EXPR_THROW(INVALID_ARGUMENT_COUNT_PREFIX "exactly one, two, or three required.");
+            ARGUMENT_THROW("exactly one, two, or three required.");
         break;
     case TRANSLATIONM:
         if (args.size() != 1 && args.size() != 3)
-            EXPR_THROW(INVALID_ARGUMENT_COUNT_PREFIX "exactly one or three required.");
+            ARGUMENT_THROW("exactly one or three required.");
         break;
     case ATAN2:
     case MOD:
@@ -1775,30 +1775,30 @@ FunctionExpression::FunctionExpression(const DocumentObject *_owner, Function _f
     case MROTATEZ:
     case POW:
         if (args.size() != 2)
-            EXPR_THROW(INVALID_ARGUMENT_COUNT_PREFIX "exactly two required.");
+            ARGUMENT_THROW("exactly two required.");
         break;
     case CATH:
     case HYPOT:
     case ROTATION:
         if (args.size() < 2 || args.size() > 3)
-            EXPR_THROW(INVALID_ARGUMENT_COUNT_PREFIX "exactly two, or three required.");
+            ARGUMENT_THROW("exactly two, or three required.");
         break;
     case MTRANSLATE:
     case MSCALE:
         if (args.size() != 2 && args.size() != 4)
-            EXPR_THROW(INVALID_ARGUMENT_COUNT_PREFIX "exactly two or four required.");
+            ARGUMENT_THROW("exactly two or four required.");
         break;
     case MROTATE:
         if (args.size() < 2 || args.size() > 4)
-            EXPR_THROW(INVALID_ARGUMENT_COUNT_PREFIX "exactly two, three, or four required.");
+            ARGUMENT_THROW("exactly two, three, or four required.");
         break;
     case VECTOR:
         if (args.size() != 3)
-            EXPR_THROW(INVALID_ARGUMENT_COUNT_PREFIX "exactly three required.");
+            ARGUMENT_THROW("exactly three required.");
         break;
     case MATRIX:
         if (args.size() > 16)
-            EXPR_THROW(INVALID_ARGUMENT_COUNT_PREFIX "exactly 16 or less required.");
+            ARGUMENT_THROW("exactly 16 or less required.");
         break;
     case AVERAGE:
     case COUNT:
@@ -1808,7 +1808,7 @@ FunctionExpression::FunctionExpression(const DocumentObject *_owner, Function _f
     case STDDEV:
     case SUM:
         if (args.empty())
-            EXPR_THROW(INVALID_ARGUMENT_COUNT_PREFIX "at least one required.");
+            ARGUMENT_THROW("at least one required.");
         break;
     case LIST:
     case TUPLE:
