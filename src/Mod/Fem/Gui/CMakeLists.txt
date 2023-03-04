@@ -99,6 +99,7 @@ if(BUILD_FEM_VTK)
         TaskPostScalarClip.ui
         TaskPostWarpVector.ui
         TaskPostCut.ui
+        CylinderWidget.ui
         PlaneWidget.ui
         SphereWidget.ui
     )
@@ -269,6 +270,7 @@ SET(FemGui_SRCS_TaskBoxes
 if(BUILD_FEM_VTK)
     SET(FemGui_SRCS_TaskBoxes
         ${FemGui_SRCS_TaskBoxes}
+        CylinderWidget.ui
         PlaneWidget.ui
         SphereWidget.ui
         TaskPostClip.ui

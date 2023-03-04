@@ -59,6 +59,44 @@ DocumentObjectExecReturn* FemPostFunction::execute() {
     return DocumentObject::StdReturn;
 }
 
+// ***************************************************************************
+// cylinder function
+PROPERTY_SOURCE(Fem::FemPostCylinderFunction, Fem::FemPostFunction)
+
+FemPostCylinderFunction::FemPostCylinderFunction() : FemPostFunction()
+{
+    ADD_PROPERTY(Center, (Base::Vector3d(0.0, 0.0, 0.0)));
+    ADD_PROPERTY(Axis, (Base::Vector3d(0.0, 0.0, 1.0)));
+    ADD_PROPERTY(Radius, (5.));
+
+    m_cylinder = vtkSmartPointer<vtkCylinder>::New();
+    m_implicit = m_cylinder;
+
+    m_cylinder->SetAxis(0., 0., 1.);
+    m_cylinder->SetCenter(0., 0., 0.);
+    m_cylinder->SetRadius(5.);
+}
+
+FemPostCylinderFunction::~FemPostCylinderFunction()
+{
+}
+
+void FemPostCylinderFunction::onChanged(const Property* prop)
+{
+    if (prop == &Axis) {
+        const Base::Vector3d& vec = Axis.getValue();
+        m_cylinder->SetAxis(vec[0], vec[1], vec[2]);
+    }
+    else if (prop == &Center) {
+        const Base::Vector3d& vec = Center.getValue();
+        m_cylinder->SetCenter(vec[0], vec[1], vec[2]);
+    }
+    else if (prop == &Radius) {
+        m_cylinder->SetRadius(Radius.getValue());
+    }
+
+    Fem::FemPostFunction::onChanged(prop);
+}
 
 // ***************************************************************************
 // plane function

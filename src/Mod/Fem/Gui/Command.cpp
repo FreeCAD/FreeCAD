@@ -2104,6 +2104,8 @@ void CmdFemPostFunctions::activated(int iMsg)
         name = "Plane";
     else if (iMsg == 1)
         name = "Sphere";
+    else if (iMsg == 2)
+        name = "Cylinder";
     else
         return;
 
@@ -2170,6 +2172,18 @@ void CmdFemPostFunctions::activated(int iMsg)
                       FeatName.c_str(),
                       box.GetDiagonalLength() / 2);
         }
+        else if (iMsg == 2) {
+            doCommand(Doc,
+                      "App.ActiveDocument.%s.Center = App.Vector(%f, %f, %f)",
+                      FeatName.c_str(),
+                      center[0],
+                      center[1] + box.GetLength(1) / 2,
+                      center[2] + box.GetLength(2) / 2);
+            doCommand(Doc,
+                      "App.ActiveDocument.%s.Radius = %f",
+                      FeatName.c_str(),
+                      box.GetDiagonalLength() / 2);
+        }
 
 
         this->updateActive();
@@ -2204,6 +2218,9 @@ Gui::Action* CmdFemPostFunctions::createAction()
     QAction* cmd1 = pcAction->addAction(QString());
     cmd1->setIcon(Gui::BitmapFactory().iconFromTheme("fem-post-geo-sphere"));
 
+    QAction* cmd2 = pcAction->addAction(QString());
+    cmd2->setIcon(Gui::BitmapFactory().iconFromTheme("fem-post-geo-cylinder"));
+
     _pcAction = pcAction;
     languageChange();
 
@@ -2235,6 +2252,11 @@ void CmdFemPostFunctions::languageChange()
         "FEM_PostCreateFunctions", "Create a sphere function, defined by its center and radius"));
     cmd->setStatusTip(cmd->toolTip());
 
+    cmd = a[2];
+    cmd->setText(QApplication::translate("CmdFemPostFunctions", "Cylinder"));
+    cmd->setToolTip(QApplication::translate(
+        "FEM_PostCreateFunctions", "Create a cylinder function, defined by its center, axis and radius"));
+    cmd->setStatusTip(cmd->toolTip());
 }
 
 bool CmdFemPostFunctions::isActive()
