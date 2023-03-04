@@ -2041,7 +2041,7 @@ Base::Vector3d FunctionExpression::evaluateSecondVectorArgument(const Expression
             _EXPR_THROW("Second parameter is not a sequence type: '" << secondParameter.as_string() << "'.", expression);
         if (PySequence_Size(secondParameter.ptr()) != 3)
             _EXPR_THROW("Second parameter provided has " << PySequence_Size(secondParameter.ptr()) << " elements instead of 3.", expression);
-            
+
         vectorValues = Py::Tuple(Py::Sequence(secondParameter));
     } else {
         vectorValues = Py::Tuple(3);
@@ -2059,7 +2059,7 @@ Base::Vector3d FunctionExpression::evaluateSecondVectorArgument(const Expression
     return vector;
 }
 
-void FunctionExpression::initialiseObject(const Py::Object *object, const std::vector<Expression*> &arguments, const int offset)
+void FunctionExpression::initialiseObject(const Py::Object *object, const std::vector<Expression*> &arguments, const unsigned long offset)
 {
     if (arguments.size() > offset) {
         Py::Tuple constructorArguments(arguments.size() - offset);
@@ -2426,7 +2426,7 @@ Py::Object FunctionExpression::evaluate(const Expression *expr, int f, const std
         unit = v1.getUnit();
         break;
     case TRANSLATIONM:
-        if (v1.isDimensionlessOrUnit(Unit::Length) && v1.isDimensionlessOrUnit(Unit::Length) && v3.isDimensionlessOrUnit(Unit::Length))
+        if (v1.isDimensionlessOrUnit(Unit::Length) && v2.isDimensionlessOrUnit(Unit::Length) && v3.isDimensionlessOrUnit(Unit::Length))
             break;
         _EXPR_THROW("Translation units must be a length or dimensionless.", expr);
     default:

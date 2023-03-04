@@ -328,7 +328,7 @@ public:
 protected:
     static Py::Object evalAggregate(const Expression *owner, int type, const std::vector<Expression*> &args);
     static Base::Vector3d evaluateSecondVectorArgument(const Expression *expression, const std::vector<Expression*> &arguments);
-    static void initialiseObject(const Py::Object *object, const std::vector<Expression*> &arguments, const int offset = 0);
+    static void initialiseObject(const Py::Object *object, const std::vector<Expression*> &arguments, const unsigned long offset = 0);
     static Py::Object transformFirstArgument(
         const Expression *expression,
         const std::vector<Expression*> &arguments,
