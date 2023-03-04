@@ -493,7 +493,7 @@ EditModeCoinManager::PreselectionResult EditModeCoinManager::detectPreselection(
     SoPath *path = Point->getPath();
     SoNode *tail = path->getTail(); // Tail is directly the node containing points and curves
 
-    for(int l = 0; l < geometryLayerParameters.CoinLayers; l++) {
+    for(int l = 0; l < geometryLayerParameters.getCoinLayerCount(); l++) {
         // checking for a hit in the points
         if (tail == editModeScenegraphNodes.PointSet[l]) {
             const SoDetail *point_detail = Point->getDetail(editModeScenegraphNodes.PointSet[l]);
@@ -636,6 +636,12 @@ void EditModeCoinManager::updateColor(const GeoListFacade & geolistfacade)
 void EditModeCoinManager::setConstraintSelectability(bool enabled /* = true */)
 {
     pEditModeConstraintCoinManager->setConstraintSelectability(enabled);
+}
+
+
+void EditModeCoinManager::updateGeometryLayersConfiguration()
+{
+    pEditModeGeometryCoinManager->updateGeometryLayersConfiguration();
 }
 
 void EditModeCoinManager::createEditModeInventorNodes()
@@ -806,10 +812,12 @@ int EditModeCoinManager::getApplicationLogicalDPIX() const {
 
 void EditModeCoinManager::updateInventorNodeSizes()
 {
-    for(int l = 0; l < geometryLayerParameters.CoinLayers; l++) {
+    auto layersconfiguration = viewProvider.VisualLayerList.getValues();
+
+    for(int l = 0; l < geometryLayerParameters.getCoinLayerCount(); l++) {
         editModeScenegraphNodes.PointsDrawStyle[l]->pointSize = 8 * drawingParameters.pixelScalingFactor;
         editModeScenegraphNodes.PointSet[l]->markerIndex = Gui::Inventor::MarkerBitmaps::getMarkerIndex("CIRCLE_FILLED", drawingParameters.markerSize);
-        editModeScenegraphNodes.CurvesDrawStyle[l]->lineWidth = 3 * drawingParameters.pixelScalingFactor;
+        editModeScenegraphNodes.CurvesDrawStyle[l]->lineWidth = layersconfiguration[l].getLineWidth() * drawingParameters.pixelScalingFactor;
     }
 
     editModeScenegraphNodes.RootCrossDrawStyle->lineWidth = 2 * drawingParameters.pixelScalingFactor;

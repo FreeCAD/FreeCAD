@@ -215,13 +215,18 @@ def p_render_action(p):
 def p_group_action1(p):
     'group_action1 : group LPAREN RPAREN OBRACE block_list EBRACE'
     if printverbose: print("Group")
-# Test if need for implicit fuse
+    # Test need for implicit fuse
     if p[5] is None:
         p[0] = []
         return
-    if (len(p[5]) > 1):
+    if len(p[5]) > 1:
+        if printverbose: print('Fuse Group')
+        for obj in p[5]:
+            checkObjShape(obj)
         p[0] = [fuse(p[5], "Group")]
     else:
+        if printverbose: print(f"Group {p[5]} type {type(p[5])}")
+        checkObjShape(p[5])
         p[0] = p[5]
 
 
@@ -474,9 +479,17 @@ def p_offset_action(p):
 
 def checkObjShape(obj):
     if printverbose: print('Check Object Shape')
-    if obj.Shape.isNull():
-       if printverbose: print('Shape is Null - recompute')
-       obj.recompute()
+    if hasattr(obj, 'Shape'):
+        if obj.Shape.isNull():
+            if printverbose: print('Shape is Null - recompute')
+            obj.recompute()
+        if obj.Shape.isNull():
+            print(f'Recompute failed : {obj.Name}')
+    else:
+        if hasattr(obj, 'Name'):
+            print(f"obj {obj.Name} has no Shape")
+        else:
+            print(f"obj {obj} has no Name & Shape")
 
 def p_hull_action(p):
     'hull_action : hull LPAREN RPAREN OBRACE block_list EBRACE'

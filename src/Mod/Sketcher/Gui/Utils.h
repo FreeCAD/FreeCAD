@@ -29,6 +29,7 @@
 #include <Mod/Sketcher/App/GeoEnum.h>
 
 #include "AutoConstraint.h"
+#include "ViewProviderSketchGeometryExtension.h"
 
 
 namespace App {
@@ -70,6 +71,9 @@ bool ReleaseHandler(Gui::Document* doc);
 std::string getStrippedPythonExceptionString(const Base::Exception&);
 
 void getIdsFromName(const std::string &name, const Sketcher::SketchObject* Obj, int &GeoId, Sketcher::PointPos &PosId);
+
+/// Returns ONLY the geometry elements when the "Edge" is selected (including GeomPoints)
+std::vector<int> getGeoIdsOfEdgesFromNames(const Sketcher::SketchObject* Obj, const std::vector<std::string> & names);
 
 bool checkBothExternal(int GeoId1, int GeoId2);
 
@@ -154,6 +158,41 @@ auto toPointerVector(const std::vector<std::unique_ptr<T>> & vector) {
     std::transform(vector.begin(), vector.end(), vp.begin(), [](auto &p) {return p.get();});
 
     return vp;
+}
+
+/** returns the visual layer id (not the one of the GeometryFacade, but the index to PropertyVisualLayerList) from a geometry or GeometryFacade.
+ * NOTE: If the geometry or geometryfacade does not have a corresponding ViewProviderSketchGeometryExtension, the default layer (layer 0) is returned.
+ * */
+template <typename T>
+auto getSafeGeomLayerId(T geom)
+{
+    int layerId = 0;
+
+    if(geom->hasExtension(SketcherGui::ViewProviderSketchGeometryExtension::getClassTypeId())) {
+        auto vpext = std::static_pointer_cast<const SketcherGui::ViewProviderSketchGeometryExtension>(
+                                                geom->getExtension(SketcherGui::ViewProviderSketchGeometryExtension::getClassTypeId()).lock());
+
+        layerId = vpext->getVisualLayerId();
+    }
+
+    return layerId;
+}
+
+/** sets the visual layer id (not the one of the GeometryFacade, but the index to PropertyVisualLayerList) for a geometry or GeometryFacade.
+ * NOTE: If no ViewProviderSketchGeometryExtension is present, one is created.
+ * */
+template <typename T>
+void setSafeGeomLayerId(T geom, int layerindex)
+{
+    // create extension if none existing
+    if(!geom->hasExtension(SketcherGui::ViewProviderSketchGeometryExtension::getClassTypeId())) {
+        geom->setExtension(std::make_unique<SketcherGui::ViewProviderSketchGeometryExtension>());
+    }
+
+    auto vpext = std::static_pointer_cast<SketcherGui::ViewProviderSketchGeometryExtension>(
+                                          geom->getExtension(SketcherGui::ViewProviderSketchGeometryExtension::getClassTypeId()).lock());
+
+    vpext->setVisualLayerId(layerindex);
 }
 
 #endif // SKETCHERGUI_Recompute_H

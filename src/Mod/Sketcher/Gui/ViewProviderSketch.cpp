@@ -321,6 +321,16 @@ ViewProviderSketch::ViewProviderSketch()
     ADD_PROPERTY_TYPE(ForceOrtho,(false),"Visibility automation",(App::PropertyType)(App::Prop_ReadOnly),"If true, camera type will be forced to orthographic view when entering editing mode.");
     ADD_PROPERTY_TYPE(SectionView,(false),"Visibility automation",(App::PropertyType)(App::Prop_ReadOnly),"If true, only objects (or part of) located behind the sketch plane are visible.");
     ADD_PROPERTY_TYPE(EditingWorkbench,("SketcherWorkbench"),"Visibility automation",(App::PropertyType)(App::Prop_ReadOnly),"Name of the workbench to activate when editing this sketch.");
+    ADD_PROPERTY_TYPE(VisualLayerList, (VisualLayer()), "Layers", (App::PropertyType)(App::Prop_ReadOnly), "Information about the Visual Representation of layers");
+
+    // TODO: This is part of a naive minimal implementation to substitute rendering order
+    // Three equally visual layers to enable/disable layer.
+    std::vector<VisualLayer> layers;
+    layers.emplace_back(); // Normal layer
+    layers.emplace_back(0x7E7E); // Discontinuous line layer
+    layers.emplace_back(0xFFFF,3,false); // Hidden layer
+
+    VisualLayerList.setValues(std::move(layers));
 
     // Default values that will be overridden by preferences (if existing)
     PointSize.setValue(4);
@@ -2617,17 +2627,6 @@ void ViewProviderSketch::scaleBSplinePoleCirclesAndUpdateSolverAndSketchObjectGe
                                 tempGeo[GeoId] = GeometryFacade::getFacade(tmpcircle, true); // this is the circle that will be drawn, with the updated vradius, the facade takes ownership and will deallocate.
                             }
 
-                            // save scale factor for any prospective dragging operation
-                            // 1. Solver must be updated, in case a dragging operation starts
-                            // 2. if temp geometry is being used (with memory allocation), then the copy we have here must be updated. If
-                            //    no temp geometry is being used, then the normal geometry must be updated.
-                            {// make solver be ready for a dragging operation
-                                auto vpext = std::make_unique<SketcherGui::ViewProviderSketchGeometryExtension>();
-                                vpext->setRepresentationFactor(scalefactor);
-
-                                getSketchObject()->updateSolverExtension(GeoId, std::move(vpext));
-                            }
-
                             if(!circle->hasExtension(SketcherGui::ViewProviderSketchGeometryExtension::getClassTypeId()))
                             {
                                 // It is ok to add this kind of extension to a const geometry because:
@@ -2641,6 +2640,16 @@ void ViewProviderSketch::scaleBSplinePoleCirclesAndUpdateSolverAndSketchObjectGe
                                                 circle->getExtension(SketcherGui::ViewProviderSketchGeometryExtension::getClassTypeId()).lock()));
 
                             vpext->setRepresentationFactor(scalefactor);
+
+                            // save scale factor for any prospective dragging operation
+                            // 1. Solver must be updated, in case a dragging operation starts
+                            // 2. if temp geometry is being used (with memory allocation), then the copy we have here must be updated. If
+                            //    no temp geometry is being used, then the normal geometry must be updated.
+                            // make solver be ready for a dragging operation
+                            auto solverext = vpext->copy();
+
+                            getSketchObject()->updateSolverExtension(GeoId, std::move(solverext));
+
                         }
                         break;
                     }
@@ -2759,6 +2768,13 @@ void ViewProviderSketch::updateData(const App::Property *prop)
 
 void ViewProviderSketch::onChanged(const App::Property *prop)
 {
+    if (prop == &VisualLayerList) {
+        if(isInEditMode()) {
+            // Configure and rebuild Coin SceneGraph
+            editCoinManager->updateGeometryLayersConfiguration();
+        }
+        return;
+    }
     // call father
     ViewProviderPart::onChanged(prop);
 }

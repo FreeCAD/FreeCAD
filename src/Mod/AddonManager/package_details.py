@@ -564,7 +564,7 @@ class PackageDetails(QtWidgets.QWidget):
                 sibling = article.previousSibling;
             }
         }
-    } else if (url.hostname === "wiki.fci.org" ||
+    } else if (url.hostname === "wiki.freecad.org" ||
                url.hostname === "wiki.freecadweb.org") {
         const first_heading = document.getElementById('firstHeading');
         const body_content = document.getElementById('bodyContent');
@@ -653,7 +653,7 @@ class PackageDetails(QtWidgets.QWidget):
             "<h3>"
             + translate(
                 "AddonsInstaller",
-                "This Addon will be enabled next time you restart fci.",
+                "This Addon will be enabled next time you restart FreeCAD.",
             )
             + "</h3>"
         )
@@ -670,7 +670,7 @@ class PackageDetails(QtWidgets.QWidget):
             "<h3>"
             + translate(
                 "AddonsInstaller",
-                "This Addon will be disabled next time you restart fci.",
+                "This Addon will be disabled next time you restart FreeCAD.",
             )
             + "</h3>"
         )
@@ -731,7 +731,7 @@ if HAS_QTWEBENGINE:
             if _type == QtWebEngineWidgets.QWebEnginePage.NavigationTypeLinkClicked:
                 # See if the link is to a FreeCAD Wiki page -- if so, follow it, otherwise ask the OS to open it
                 if (
-                    requested_url.host() == "wiki.fci.org"
+                    requested_url.host() == "wiki.freecad.org"
                     or requested_url.host() == "wiki.freecadweb.org"
                 ):
                     return super().acceptNavigationRequest(

@@ -94,10 +94,17 @@ public:
 
     void updateGeometryColor(const GeoListFacade & geolistfacade, bool issketchinvalid);
 
+    void updateGeometryLayersConfiguration();
+
     /** @name coin nodes creation*/
     void createEditModeInventorNodes();
     //@}
 
+private:
+    void createGeometryRootNodes();
+    void emptyGeometryRootNodes();
+    void createEditModePointInventorNodes();
+    void createEditModeCurveInventorNodes();
 
 private:
     ViewProviderSketch & viewProvider;

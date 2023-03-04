@@ -27,10 +27,11 @@ set(SketcherGui_LIBS
 
 qt_add_resources(SketcherGui_SRCS Resources/Sketcher.qrc)
 
+generate_from_xml(ViewProviderSketchGeometryExtensionPy)
+
 set(SketcherGui_UIC_SRCS
     TaskSketcherConstraints.ui
     TaskSketcherElements.ui
-    TaskSketcherGeneral.ui
     TaskSketcherMessages.ui
     TaskSketcherSolverAdvanced.ui
     TaskSketcherValidation.ui
@@ -98,9 +99,6 @@ SET(SketcherGui_SRCS
     TaskSketcherElements.h
     TaskSketcherCreateCommands.cpp
     TaskSketcherCreateCommands.h
-    TaskSketcherGeneral.ui
-    TaskSketcherGeneral.cpp
-    TaskSketcherGeneral.h
     TaskSketcherMessages.ui
     TaskSketcherMessages.cpp
     TaskSketcherMessages.h
@@ -134,6 +132,8 @@ SET(SketcherGui_SRCS
     Workbench.h
     EditDatumDialog.cpp
     EditDatumDialog.h
+    PropertyVisualLayerList.cpp
+    PropertyVisualLayerList.h
     SketchOrientationDialog.cpp
     SketchOrientationDialog.h
     SketchMirrorDialog.cpp
@@ -150,6 +150,19 @@ SET(SketcherGui_SRCS
     ViewProviderPython.h
     ViewProviderSketchGeometryExtension.h
     ViewProviderSketchGeometryExtension.cpp
+    VisualLayer.cpp
+    VisualLayer.h
+)
+
+SET(Python_SRCS
+    ViewProviderSketchGeometryExtensionPy.xml
+    ViewProviderSketchGeometryExtensionPyImp.cpp
+)
+SOURCE_GROUP("Python" FILES ${Python_SRCS})
+
+SET(SketcherGui_SRCS
+    ${SketcherGui_SRCS}
+    ${Python_SRCS}
 )
 
 if(FREECAD_USE_PCH)

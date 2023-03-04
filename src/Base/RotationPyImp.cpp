@@ -92,8 +92,14 @@ int RotationPy::PyInit(PyObject* args, PyObject* kwds)
 
     PyErr_Clear();
     if (PyArg_ParseTuple(args, "O!", &(Base::MatrixPy::Type), &o)) {
-      getRotationPtr()->setValue(static_cast<Base::MatrixPy*>(o)->value());
-      return 0;
+        try {
+            getRotationPtr()->setValue(static_cast<Base::MatrixPy*>(o)->value());
+            return 0;
+        }
+        catch (const Base::Exception& e) {
+            PyErr_SetString(e.getPyExceptionType(), e.what());
+            return -1;
+        }
     }
 
     PyErr_Clear();
@@ -134,12 +140,18 @@ int RotationPy::PyInit(PyObject* args, PyObject* kwds)
       &a31, &a32, &a33, &a34,
       &a41, &a42, &a43, &a44))
     {
-      Matrix4D mtx(a11, a12, a13, a14,
-        a21, a22, a23, a24,
-        a31, a32, a33, a34,
-        a41, a42, a43, a44);
-      getRotationPtr()->setValue(mtx);
-      return 0;
+        try {
+            Matrix4D mtx(a11, a12, a13, a14,
+                         a21, a22, a23, a24,
+                         a31, a32, a33, a34,
+                         a41, a42, a43, a44);
+            getRotationPtr()->setValue(mtx);
+            return 0;
+        }
+        catch (const Base::Exception& e) {
+            PyErr_SetString(e.getPyExceptionType(), e.what());
+            return -1;
+        }
     }
 
     // try read a 3x3 matrix
@@ -149,14 +161,19 @@ int RotationPy::PyInit(PyObject* args, PyObject* kwds)
       &a21, &a22, &a23,
       &a31, &a32, &a33))
     {
-      Matrix4D mtx(a11, a12, a13, a14,
-        a21, a22, a23, a24,
-        a31, a32, a33, a34,
-        a41, a42, a43, a44);
-      getRotationPtr()->setValue(mtx);
-      return 0;
+        try {
+            Matrix4D mtx(a11, a12, a13, a14,
+                         a21, a22, a23, a24,
+                         a31, a32, a33, a34,
+                         a41, a42, a43, a44);
+            getRotationPtr()->setValue(mtx);
+            return 0;
+        }
+        catch (const Base::Exception& e) {
+            PyErr_SetString(e.getPyExceptionType(), e.what());
+            return -1;
+        }
     }
-
 
     PyErr_Clear();
     PyObject *v1, *v2;
@@ -485,8 +502,14 @@ int RotationPy::setCustomAttributes(const char* attr, PyObject* obj)
 {
     if (strcmp(attr, "Matrix") == 0) {
         if (PyObject_TypeCheck(obj, &(MatrixPy::Type))) {
-            this->getRotationPtr()->setValue(*static_cast<MatrixPy*>(obj)->getMatrixPtr());
-            return 1;
+            try {
+                this->getRotationPtr()->setValue(*static_cast<MatrixPy*>(obj)->getMatrixPtr());
+                return 1;
+            }
+            catch (const Base::Exception& e) {
+                PyErr_SetString(e.getPyExceptionType(), e.what());
+                return -1;
+            }
         }
     }
     else if (strcmp(attr, "Axes") == 0) {

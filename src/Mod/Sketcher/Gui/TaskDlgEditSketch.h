@@ -29,7 +29,6 @@
 
 #include "TaskSketcherConstraints.h"
 #include "TaskSketcherElements.h"
-#include "TaskSketcherGeneral.h"
 #include "TaskSketcherMessages.h"
 #include "TaskSketcherSolverAdvanced.h"
 #include "ViewProviderSketch.h"
@@ -75,7 +74,6 @@ protected:
     ViewProviderSketch      *sketchView;
     TaskSketcherConstraints *Constraints;
     TaskSketcherElements    *Elements;
-    TaskSketcherGeneral     *General;
     TaskSketcherMessages    *Messages;
     TaskSketcherSolverAdvanced *SolverAdvanced;
 };

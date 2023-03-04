@@ -222,8 +222,6 @@ SET(FreeCADBase_CPP_SRCS
     FileInfo.cpp
     FileTemplate.cpp
     FutureWatcherProgress.cpp
-    gzstream.cpp
-    gzstream.h
     GeometryPyCXX.cpp
     Handle.cpp
     InputSource.cpp
@@ -293,8 +291,6 @@ SET(FreeCADBase_HPP_SRCS
     FileInfo.h
     FileTemplate.h
     FutureWatcherProgress.h
-    fdstream.hpp
-    gzstream.h
     GeometryPyCXX.h
     Handle.h
     InputSource.h

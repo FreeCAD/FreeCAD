@@ -51,6 +51,9 @@ public:
     }
     short mustExecute() const override;
     PyObject *getPyObject() override;
+    const App::PropertyComplexGeoData* getPropertyOfGeometry() const override {
+        return &FemMesh;
+    }
 
     PropertyFemMesh FemMesh;
 

@@ -88,7 +88,7 @@ std::vector<TopoDS_Edge> DrawProjectSplit::getEdgesForWalker(TopoDS_Shape shape,
     TechDraw::GeometryObjectPtr go = buildGeometryObject(scaledShape, viewAxis);
     const std::vector<TechDraw::BaseGeomPtr>& goEdges = go->getVisibleFaceEdges(false, false);
     for (auto& e: goEdges){
-        edgesIn.push_back(e->occEdge);
+        edgesIn.push_back(e->getOCCEdge());
     }
 
     std::vector<TopoDS_Edge> nonZero;
@@ -126,7 +126,7 @@ std::vector<TopoDS_Edge> DrawProjectSplit::getEdges(TechDraw::GeometryObject* ge
     std::vector<TechDraw::BaseGeomPtr>::const_iterator itEdge = goEdges.begin();
     std::vector<TopoDS_Edge> origEdges;
     for (;itEdge != goEdges.end(); itEdge++) {
-        origEdges.push_back((*itEdge)->occEdge);
+        origEdges.push_back((*itEdge)->getOCCEdge());
     }
 
     std::vector<TopoDS_Edge> faceEdges;
@@ -499,8 +499,8 @@ std::vector<TopoDS_Edge> DrawProjectSplit::scrubEdges(const std::vector<TechDraw
     bool copyGeometry = true;
     bool copyMesh = false;
     for (const auto& tdEdge: origEdges) {
-        if (!DrawUtil::isZeroEdge(tdEdge->occEdge, 2.0 * EWTOLERANCE)) {
-            BRepBuilderAPI_Copy copier(tdEdge->occEdge, copyGeometry, copyMesh);
+        if (!DrawUtil::isZeroEdge(tdEdge->getOCCEdge(), 2.0 * EWTOLERANCE)) {
+            BRepBuilderAPI_Copy copier(tdEdge->getOCCEdge(), copyGeometry, copyMesh);
             copyEdges.push_back(TopoDS::Edge(copier.Shape()));
         }
     }

@@ -85,6 +85,10 @@ public:
     unsigned long countSubElements(const char* Type) const override;
     /// get the subelement by type and number
     Data::Segment* getSubElement(const char* Type, unsigned long) const override;
+    /** Get points from object with given accuracy */
+    void getPoints(std::vector<Base::Vector3d> &Points,
+        std::vector<Base::Vector3d> &Normals,
+        double Accuracy, uint16_t flags=0) const override;
     //@}
 
     /** @name search and retrieval */
