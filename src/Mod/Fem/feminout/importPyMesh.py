@@ -38,7 +38,7 @@ from femmesh import meshtools
 # names are fix given from FreeCAD, these methods are called from FreeCAD
 # they are set in FEM modules Init.py
 
-ipyopen = open
+pyopen = open
 
 
 # export mesh to python
