@@ -21,7 +21,6 @@
 # *                                                                         *
 # ***************************************************************************
 
-from __future__ import print_function
 
 TOOLTIP = """
 This is an example postprocessor file for the Path workbench. It is used

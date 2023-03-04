@@ -20,7 +20,6 @@
 # *                                                                         *
 # ***************************************************************************
 
-from __future__ import print_function
 import FreeCAD
 import Path
 import Path.Base.Gui.Util as PathGuiUtil

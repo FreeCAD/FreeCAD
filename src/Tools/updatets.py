@@ -35,7 +35,6 @@
 #     Add "no obsolete" flags in order to fix 'ghost strings' in Crowdin
 # 0.1 Initial Release
 
-from __future__ import print_function
 
 Usage = """updatets - update all .ts files found in the source directories
 

@@ -28,7 +28,6 @@ Internally it uses IfcOpenShell, which must be installed before using.
 #
 #  This module provides tools to import IFC files.
 
-from __future__ import print_function
 
 import os
 import math

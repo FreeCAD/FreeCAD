@@ -28,7 +28,6 @@ Path projects.  Ideally, the user could execute these utilities from an icon
 to make sure tools are selected and configured and defaults have been revised
 """
 
-from __future__ import print_function
 from PySide import QtCore, QtGui
 import FreeCAD
 import FreeCADGui

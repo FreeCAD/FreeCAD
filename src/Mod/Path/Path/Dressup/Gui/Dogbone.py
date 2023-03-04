@@ -20,7 +20,6 @@
 # *                                                                         *
 # ***************************************************************************
 
-from __future__ import print_function
 
 from PySide import QtCore
 from PySide.QtCore import QT_TRANSLATE_NOOP

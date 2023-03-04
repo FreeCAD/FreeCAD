@@ -21,7 +21,6 @@
 # *                                                                         *
 # ***************************************************************************
 
-from __future__ import print_function
 import FreeCAD
 
 __title__ = "Path Waterline Operation"

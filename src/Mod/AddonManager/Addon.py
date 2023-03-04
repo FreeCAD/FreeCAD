@@ -153,7 +153,6 @@ class Addon:
         self.display_name = self.name
         self.url = url.strip()
         self.branch = branch.strip()
-        self.python2 = False
         self.obsolete = False
         self.rejected = False
         self.repo_type = Addon.Kind.WORKBENCH
@@ -277,7 +276,6 @@ class Addon:
             "description": self.description,
             "cached_icon_filename": self.get_cached_icon_filename(),
             "best_icon_relative_path": self.get_best_icon_relative_path(),
-            "python2": self.python2,
             "obsolete": self.obsolete,
             "rejected": self.rejected,
             "requires": list(self.requires),
