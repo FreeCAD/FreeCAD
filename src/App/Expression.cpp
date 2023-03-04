@@ -2174,7 +2174,7 @@ Py::Object FunctionExpression::evaluate(const Expression *expr, int f, const std
     {
         Py::Object rotationAngleParameter = args[1]->getPyValue();
         Quantity rotationAngle = pyToQuantity(rotationAngleParameter, expr, "Invalid rotation angle.");
-        
+
         if (!(rotationAngle.isDimensionlessOrUnit(Unit::Angle)))
             _EXPR_THROW("Unit must be either empty or an angle.", expr);
 
