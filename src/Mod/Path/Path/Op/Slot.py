@@ -21,8 +21,6 @@
 # ***************************************************************************
 
 
-from __future__ import print_function
-
 __title__ = "Path Slot Operation"
 __author__ = "russ4262 (Russell Johnson)"
 __url__ = "http://www.freecadweb.org"

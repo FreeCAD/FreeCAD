@@ -361,9 +361,7 @@ def main():
     path = sys.argv[1]
     bundle_path = os.path.abspath(os.path.join(path, "Contents"))
     graph = DepsGraph()
-    dir_filter = ["MacOS", "lib", "Mod", 
-                  "lib/python2.7/site-packages",
-                  "lib/python2.7/lib-dynload"]
+    dir_filter = ["MacOS", "lib", "Mod"]
     search_paths = [bundle_path + "/lib"] + sys.argv[2:]
 
     #change to level to logging.DEBUG for diagnostic messages

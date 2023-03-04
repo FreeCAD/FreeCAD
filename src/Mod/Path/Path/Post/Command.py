@@ -22,7 +22,6 @@
 
 """Post Process command that will make use of the Output File and Post Processor entries in PathJob """
 
-from __future__ import print_function
 
 import FreeCAD
 import FreeCADGui

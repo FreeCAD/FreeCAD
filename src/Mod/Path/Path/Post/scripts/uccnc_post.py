@@ -29,7 +29,7 @@
 #      https://wiki.freecadweb.org/Path_Postprocessor_Customization
 #      for details on post processors like this one.
 
-from __future__ import print_function
+
 import FreeCAD
 from FreeCAD import Units
 import Path

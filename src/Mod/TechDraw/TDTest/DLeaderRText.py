@@ -5,7 +5,7 @@
 # creates a page and a view
 # adds 1 leader to view1
 # adds 1 RTA to leader1
-from __future__ import print_function
+
 
 import FreeCAD
 import os

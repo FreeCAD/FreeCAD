@@ -24,7 +24,6 @@
 # *                                                                         *
 # ***************************************************************************
 
-from __future__ import print_function
 
 import Path.Post.UtilsArguments as PostUtilsArguments
 import Path.Post.UtilsExport as PostUtilsExport

@@ -574,7 +574,7 @@ static PyCodeObject* PyFrame_GetCode(PyFrameObject *frame)
 // http://www.koders.com/cpp/fidBA6CD8A0FE5F41F1464D74733D9A711DA257D20B.aspx?s=PyEval_SetTrace
 // http://code.google.com/p/idapython/source/browse/trunk/python.cpp
 // http://www.koders.com/cpp/fid191F7B13CF73133935A7A2E18B7BF43ACC6D1784.aspx?s=PyEval_SetTrace
-// http://stuff.mit.edu/afs/sipb/project/python/src/python2.2-2.2.2/Modules/_hotshot.c
+
 int PythonDebugger::tracer_callback(PyObject *obj, PyFrameObject *frame, int what, PyObject * /*arg*/)
 {
     auto self = static_cast<PythonDebuggerPy*>(obj);
@@ -582,10 +582,6 @@ int PythonDebugger::tracer_callback(PyObject *obj, PyFrameObject *frame, int wha
     if (dbg->d->trystop)
         PyErr_SetInterrupt();
     QCoreApplication::processEvents();
-    //int no;
-
-    //no = frame->f_tstate->recursion_depth;
-    //std::string funcname = PyString_AsString(frame->f_code->co_name);
     PyCodeObject* code = PyFrame_GetCode(frame);
     QString file = QString::fromUtf8(PyUnicode_AsUTF8(code->co_filename));
     Py_DECREF(code);
@@ -599,18 +595,11 @@ int PythonDebugger::tracer_callback(PyObject *obj, PyFrameObject *frame, int wha
         return 0;
     case PyTrace_LINE:
         {
-            //PyObject *str;
-            //str = PyObject_Str(frame->f_code->co_filename);
-            //no = frame->f_lineno;
             PyCodeObject* f_code = PyFrame_GetCode(frame);
             int f_lasti = PyFrame_GetLineNumber(frame);
             int line = PyCode_Addr2Line(f_code, f_lasti);
             Py_DECREF(f_code);
-            //if (str) {
-            //    Base::Console().Message("PROFILING: %s:%d\n", PyString_AsString(str), frame->f_lineno);
-            //    Py_DECREF(str);
-            //}
-    // For testing only
+
             if (!dbg->d->trystop) {
                 Breakpoint bp = dbg->getBreakpoint(file);
                 if (bp.checkLine(line)) {

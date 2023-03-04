@@ -347,16 +347,6 @@ class PackageDetails(QtWidgets.QWidget):
             self.ui.labelWarningInfo.setStyleSheet(
                 "color:" + utils.warning_color_string()
             )
-        elif repo.python2:
-            self.ui.labelWarningInfo.show()
-            self.ui.labelWarningInfo.setText(
-                "<h1>"
-                + translate("AddonsInstaller", "WARNING: This addon is Python 2 Only")
-                + "</h1>"
-            )
-            self.ui.labelWarningInfo.setStyleSheet(
-                "color:" + utils.warning_color_string()
-            )
         elif required_version:
             self.ui.labelWarningInfo.show()
             self.ui.labelWarningInfo.setText(

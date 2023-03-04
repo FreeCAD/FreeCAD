@@ -47,7 +47,7 @@ TODO
 Many other OpenSBP commands not handled
 
 """
-from __future__ import print_function
+
 import FreeCAD
 import Path
 import Path.Base.Util as PathUtil

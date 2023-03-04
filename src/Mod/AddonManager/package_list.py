@@ -615,13 +615,6 @@ class PackageListFilter(QtCore.QSortFilterProxyModel):
             if data.status() != Addon.Status.UPDATE_AVAILABLE:
                 return False
 
-        # If it's not installed, check to see if it's Py2 only
-        if (
-            data.status() == Addon.Status.NOT_INSTALLED
-            and self.hide_py2
-            and data.python2
-        ):
-            return False
 
         # If it's not installed, check to see if it's marked obsolete
         if (

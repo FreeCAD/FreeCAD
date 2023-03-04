@@ -67,9 +67,6 @@ class CreateAddonListWorker(QtCore.QThread):
         # These addons will print an additional message informing the user
         self.obsolete = []
 
-        # These addons will print an additional message informing the user Python2 only
-        self.py2only = []
-
         self.package_names = []
         self.moddir = os.path.join(FreeCAD.getUserAppDataDir(), "Mod")
         self.current_thread = None
@@ -242,8 +239,6 @@ class CreateAddonListWorker(QtCore.QThread):
                 repo.updated_timestamp = os.path.getmtime(md_file)
                 repo.verify_url_and_branch(url, branch)
 
-            if name in self.py2only:
-                repo.python2 = True
             if name in self.mod_reject_list:
                 repo.rejected = True
             if name in self.obsolete:

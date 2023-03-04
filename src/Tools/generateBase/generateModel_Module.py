@@ -7,7 +7,6 @@
 # WARNING! All changes made in this file will be lost!
 #
 
-from __future__ import print_function # this allows py2 to print(str1,str2) correctly
 
 import sys
 import getopt

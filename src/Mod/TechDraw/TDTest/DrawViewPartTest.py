@@ -3,7 +3,7 @@
 
 # basic test script for TechDraw module
 # creates a page and 1 view
-from __future__ import print_function
+
 
 import FreeCAD
 import unittest
