@@ -129,6 +129,7 @@ SET(Document_CPP_SRCS
     DocumentObjectExtensionPyImp.cpp
     ExtensionContainer.cpp
     ExtensionContainerPyImp.cpp
+    Graphviz.cpp
     GroupExtension.cpp
     GroupExtensionPyImp.cpp
     DocumentObjectFileIncluded.cpp
