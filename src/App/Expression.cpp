@@ -110,7 +110,7 @@ FC_LOG_LEVEL_INIT("Expression", true, true)
 
 #define EXPR_THROW(_msg) _EXPR_THROW(_msg, this)
 
-#define ARGUMENT_THROW(_msg) EXPR_THROW("Invalid number of arguments: " ## _msg)
+#define ARGUMENT_THROW(_msg) EXPR_THROW("Invalid number of arguments: " _msg)
 
 #define RUNTIME_THROW(_msg) __EXPR_THROW(Base::RuntimeError, _msg, static_cast<Expression*>(nullptr))
 
