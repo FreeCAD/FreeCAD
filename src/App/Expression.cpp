@@ -2178,7 +2178,9 @@ Py::Object FunctionExpression::evaluate(const Expression *expr, int f, const std
         if (!(rotationAngle.isDimensionlessOrUnit(Unit::Angle)))
             _EXPR_THROW("Unit must be either empty or an angle.", expr);
 
-        Rotation rotation = Base::Rotation(Vector3d(f == MROTATEX, f == MROTATEY, f == MROTATEZ), rotationAngle.getValue() * M_PI / 180.0);
+        Rotation rotation = Base::Rotation(
+            Vector3d(static_cast<double>(f == MROTATEX), static_cast<double>(f == MROTATEY), static_cast<double>(f == MROTATEZ)),
+            rotationAngle.getValue() * M_PI / 180.0);
         Base::Matrix4D rotationMatrix;
         rotation.getValue(rotationMatrix);
 
