@@ -274,7 +274,7 @@ bool Quantity::isDimensionless() const
 /// true if it has a specific unit or no dimension.
 bool Quantity::isDimensionlessOrUnit(const Unit& unit) const
 {
-    return isDimensionless() || _Unit == unit;
+    return isDimensionless() || myUnit == unit;
 }
 
 // true if it has a number and a valid unit
