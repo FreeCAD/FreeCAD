@@ -226,7 +226,8 @@ void ToolBarManager::setup(ToolBarItem* toolBarItems)
             toolbars.removeAt(index);
         }
 
-        bool visible = hPref->GetBool(toolbarName.c_str(), true) && (*it)->visibility == ToolBarItem::HideStyle::VISIBLE;
+        bool visible = hPref->GetBool(toolbarName.c_str(), (*it)->visibility == ToolBarItem::HideStyle::VISIBLE);
+        visible &= (*it)->visibility != ToolBarItem::HideStyle::FORCE_HIDE;
         toolbar->setVisible(visible);
         toolbar->toggleViewAction()->setVisible((*it)->visibility != ToolBarItem::HideStyle::FORCE_HIDE);
 
