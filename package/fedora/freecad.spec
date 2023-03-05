@@ -50,6 +50,7 @@ BuildRequires:  doxygen swig graphviz
 BuildRequires:  gcc-gfortran
 BuildRequires:  desktop-file-utils
 BuildRequires:  git
+BuildRequires:  fmt-devel
 
 # Development Libraries
 
@@ -117,6 +118,7 @@ Requires:       %{name}-data = %{epoch}:%{version}-%{release}
 # Obsolete old doc package since it's required for functionality.
 Obsoletes:      %{name}-doc < 0.13-5
 
+Requires:       fmt
 Requires:       hicolor-icon-theme
 Requires:       python3-collada
 Requires:       python3-matplotlib
@@ -177,7 +179,6 @@ rm -rf src/zipios++
 
 # Fix encodings
 dos2unix -k src/Mod/Test/unittestgui.py \
-            ChangeLog.txt \
             data/License.txt
 
 # Removed bundled libraries
@@ -335,7 +336,6 @@ fi
 
 %files
 %license data/License.txt
-%doc ChangeLog.txt
 %exclude %{_docdir}/%{name}/%{name}.*
 %exclude %{_docdir}/%{name}/ThirdPartyLibraries.html
 %{_bindir}/*
