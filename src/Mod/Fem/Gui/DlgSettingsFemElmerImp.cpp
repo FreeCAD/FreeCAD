@@ -24,7 +24,7 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <thread>
+# include <QThread>
 # include <QMessageBox>
 #endif
 
@@ -41,10 +41,8 @@ DlgSettingsFemElmerImp::DlgSettingsFemElmerImp(QWidget* parent)
     ui->setupUi(this);
 
     // determine number of CPU cores
-    processor_count = std::thread::hardware_concurrency();
-    // hardware check might fail and then returns 0
-    if (processor_count > 0)
-        ui->sb_elmer_num_cores->setMaximum(processor_count);
+    processor_count = QThread::idealThreadCount();
+    ui->sb_elmer_num_cores->setMaximum(processor_count);
 
     connect(ui->fc_grid_binary_path, &Gui::PrefFileChooser::fileNameChanged,
             this, &DlgSettingsFemElmerImp::onfileNameChanged);
@@ -90,62 +88,43 @@ void DlgSettingsFemElmerImp::loadSettings()
  */
 void DlgSettingsFemElmerImp::changeEvent(QEvent* e)
 {
-    if (e->type() == QEvent::LanguageChange) {
+    if (e->type() == QEvent::LanguageChange)
         ui->retranslateUi(this);
-    }
-    else {
-        QWidget::changeEvent(e);
-    }
+
+    QWidget::changeEvent(e);
 }
 
 void DlgSettingsFemElmerImp::onfileNameChanged(QString FileName)
 {
-    if (!QFileInfo::exists(FileName)) {
+    if (!QFileInfo::exists(FileName))
         QMessageBox::critical(this, tr("File does not exist"),
                               tr("The specified executable \n'%1'\n does not exist!\n"
                                  "Specify another file please.").arg(FileName));
-    }
 }
 
 void DlgSettingsFemElmerImp::onfileNameChangedMT(QString FileName)
 {
-    // reset in case it was previously set to 1
-    // (hardware check might fail and then returns 0)
-    if (processor_count > 0)
-        ui->sb_elmer_num_cores->setMaximum(processor_count);
+    QString ending = QLatin1String("_mpi.exe");
+    int temp_processor_count = processor_count;
 
-    if (ui->sb_elmer_num_cores->value() == 1)
-        return;
-
-#if defined(FC_OS_WIN32)
-    // name ends with "_mpi.exe"
-    if (!FileName.endsWith(QLatin1String("_mpi.exe"))) {
-        QMessageBox::warning(this, tr("FEM Elmer: Not suitable for multithreading"),
-            tr("Wrong Elmer setting: You use more than one CPU core.\n"
-                "Therefore an executable with the suffix '_mpi.exe' is required."));
-        ui->sb_elmer_num_cores->setValue(1);
-        ui->sb_elmer_num_cores->setMaximum(1);
-        return;
-    }
-#elif defined(FC_OS_LINUX) || defined(FC_OS_CYGWIN) || defined(FC_OS_MACOSX) || defined(FC_OS_BSD)
-    // name ends with "_mpi"
-    if (!FileName.endsWith(QLatin1String("_mpi"))) {
-        QMessageBox::warning(this, tr("FEM Elmer: Not suitable for multithreading"),
-            tr("Wrong Elmer setting: You use more than one CPU core.\n"
-                "Therefore an executable with the suffix '_mpi' is required."));
-        ui->sb_elmer_num_cores->setValue(1);
-        ui->sb_elmer_num_cores->setMaximum(1);
-        return;
-    }
+#if defined(FC_OS_LINUX) || defined(FC_OS_CYGWIN) || defined(FC_OS_MACOSX) || defined(FC_OS_BSD)
+    ending = QLatin1String("_mpi");
 #endif
+    if ( !FileName.endsWith(ending) ) {
+            QMessageBox::warning(this, tr("FEM Elmer: Not suitable for multithreading"),
+                                 tr("Wrong Elmer setting: You use more than one CPU core.\n"
+                                            "Therefore an executable with the suffix '%1' is required.").arg(ending) );
+            temp_processor_count = 1;
+    }
+
+    ui->sb_elmer_num_cores->setMaximum(temp_processor_count);
 }
 
 void DlgSettingsFemElmerImp::onCoresValueChanged(int cores)
 {
-    if (cores > 1) {
-        // check if the right executable is loaded
+    // check if the right executable is loaded
+    if (cores > 1)
         onfileNameChangedMT(ui->fc_elmer_binary_path->fileName());
-    }
 }
 
 #include "moc_DlgSettingsFemElmerImp.cpp"
