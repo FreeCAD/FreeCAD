@@ -97,6 +97,7 @@ public:
 
         if (Mode == STATUS_SEEK_FIRST_POINT) {
             BSplineKnots.push_back(onSketchPos);
+            BSplineMults.push_back(1); // NOTE: not strictly true for end-points
 
             Mode = STATUS_SEEK_ADDITIONAL_POINTS;
 
@@ -135,6 +136,7 @@ public:
         }
         else if (Mode == STATUS_SEEK_ADDITIONAL_POINTS) {
             BSplineKnots.push_back(onSketchPos);
+            BSplineMults.push_back(1); // NOTE: not strictly true for end-points
 
             // check if coincident with first knot
             for(auto & ac : sugConstr.back()) {
@@ -208,6 +210,21 @@ public:
             // FIXME: Pressing Esc here also finishes the B-Spline creation.
             // The user may only want to exit the dialog.
         }
+        if (SoKeyboardEvent::M == key && pressed) {
+            // TODO: On pressing, say, M, modify the knot's multiplicity
+            if (BSplineMults.size() > 1) {
+                BSplineMults.back() = QInputDialog::getInt(
+                    Gui::getMainWindow(),
+                    QObject::tr("Set knot multiplicity"),
+                    QObject::tr("NOTE 1: For construction by interpolation, the de facto maximum is currently 3.\n"
+                                "NOTE 2: Under certain circumstances (details WIP), this value may be ignored.\n"
+                                "Set knot multiplicity at the last point provided, between 1 and %1:")
+                    .arg(QString::number(SplineDegree)),
+                    BSplineMults.back(), 1, SplineDegree, 1);
+            }
+            // FIXME: Pressing Esc here also finishes the B-Spline creation.
+            // The user may only want to exit the dialog.
+        }
         // On pressing Backspace delete last knot
         else if (SoKeyboardEvent::BACKSPACE == key && pressed) {
             // when mouse is pressed we are in a transitional state so don't mess with it
@@ -264,7 +281,6 @@ public:
                 return;
             }
         }
-        // TODO: On pressing, say, M, modify the knot's multiplicity
 
         return;
     }
@@ -315,6 +331,7 @@ private:
         sugConstr.clear();
         knotGeoIds.clear();
         BSplineKnots.clear();
+        BSplineMults.clear();
 
         eraseEditCurve();
 
@@ -372,50 +389,104 @@ private:
             unsetCursor();
             resetPositionText();
 
-            std::stringstream stream;
-            std::string controlpoints;
+            unsigned int myDegree = 3;
 
-            // TODO: for knots compute new control points and use those instead
-            for (auto & knot : BSplineKnots) {
-                stream << "App.Vector(" << knot.x << "," << knot.y << "),";
+            BSplineMults.front() = myDegree + 1; // FIXME: This is hardcoded until degree can be changed
+            BSplineMults.back() = myDegree + 1; // FIXME: This is hardcoded until degree can be changed
+
+            std::vector<std::stringstream> streams;
+
+            for (size_t i = 0; i < BSplineKnots.size(); ++i) {
+                if (!streams.empty())
+                    streams.back() << "App.Vector(" << BSplineKnots[i].x << "," << BSplineKnots[i].y << "),";
+                if (BSplineMults[i] >= myDegree && i != (BSplineKnots.size() - 1)) {
+                    streams.emplace_back();
+                    streams.back() << "App.Vector(" << BSplineKnots[i].x << "," << BSplineKnots[i].y << "),";
+                }
             }
 
-            controlpoints = stream.str();
+            std::vector<std::string> controlpointses; // Gollum gollum
+            controlpointses.reserve(streams.size());
+            for (auto & stream: streams) {
+                // TODO: Use subset of points between C0 knots.
+                controlpointses.emplace_back(stream.str());
 
-            // remove last comma and add brackets
-            int index = controlpoints.rfind(',');
-            controlpoints.resize(index);
+                auto & controlpoints = controlpointses.back();
 
-            controlpoints.insert(0,1,'[');
-            controlpoints.append(1,']');
+                // remove last comma and add brackets
+                int index = controlpoints.rfind(',');
+                controlpoints.resize(index);
+
+                controlpoints.insert(0,1,'[');
+                controlpoints.append(1,']');
+            }
+
+            // With just 3 points provided OCCT gives a quadratic spline where
+            // the middle point is NOT a knot. This needs to be treated differently.
+            // FIXME: Decide whether to force a knot or not.
+            std::vector<bool> isBetweenC0Points(BSplineKnots.size(), false);
+            for (size_t i = 1; i < BSplineKnots.size()-1; ++i) {
+                if (BSplineMults[i-1] >= myDegree && BSplineMults[i+1] >= myDegree)
+                    isBetweenC0Points[i] = true;
+            }
 
             int currentgeoid = getHighestCurveIndex();
-
-            // TODO: Adjust this or remove condition if needed
-            unsigned int maxDegree = 1;
 
             try {
                 //Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Add B-spline curve"));
 
-                // FIXME: can we get by without naming the variable?
-                // TODO: variable degrees?
-                QString cmdstr = QString::fromLatin1("_bsp = Part.BSplineCurve()\n"
-                                                     "_bsp.interpolate(%1, PeriodicFlag=%2)\n"
-                    ).arg(QString::fromLatin1(controlpoints.c_str()),
-                          QString::fromLatin1(ConstrMethod == 0 ?"False":"True"));
-                Gui::Command::runCommand(Gui::Command::Gui, cmdstr.toLatin1());
-                Gui::cmdAppObjectArgs(sketchgui->getObject(), "addGeometry(_bsp,%s)",
-                                      geometryCreationMode==Construction?"True":"False");
-                Gui::Command::runCommand(Gui::Command::Gui, "del(_bsp)\n");
+                // TODO: Bypass this for when there are no C0 knots
+                // TODO: Create B-spline in pieces between C0 knots
+                Gui::Command::runCommand(Gui::Command::Gui, "_finalbsp_poles = []");
+                Gui::Command::runCommand(Gui::Command::Gui, "_finalbsp_knots = []");
+                Gui::Command::runCommand(Gui::Command::Gui, "_finalbsp_mults = []");
+                Gui::Command::runCommand(Gui::Command::Gui, "_bsps = []");
+                for (auto & controlpoints: controlpointses) {
+                    // FIXME: can we get by without naming the variable?
+                    // TODO: variable degrees?
+                    QString cmdstr = QString::fromLatin1("_bsps.append(Part.BSplineCurve())\n"
+                                                         "_bsps[-1].interpolate(%1, PeriodicFlag=%2)\n"
+                                                         "_bsps[-1].increaseDegree(%3)")
+                        .arg(QString::fromLatin1(controlpoints.c_str()))
+                        .arg(QString::fromLatin1(ConstrMethod == 0 ?"False":"True"))
+                        .arg(myDegree);
+                    Gui::Command::runCommand(Gui::Command::Gui, cmdstr.toLatin1());
+                    // TODO: Adjust internal knots here (raise multiplicity)
+                    // How this contributes to the final B-spline
+                    if (controlpoints == controlpointses.front()) {
+                        Gui::Command::runCommand(Gui::Command::Gui, "_finalbsp_poles.extend(_bsps[-1].getPoles())");
+                        Gui::Command::runCommand(Gui::Command::Gui, "_finalbsp_knots.extend(_bsps[-1].getKnots())");
+                        Gui::Command::runCommand(Gui::Command::Gui, "_finalbsp_mults.extend(_bsps[-1].getMultiplicities())");
+                    }
+                    else {
+                        // TODO: Adjust for periodic
+                        Gui::Command::runCommand(Gui::Command::Gui, "_finalbsp_poles.extend(_bsps[-1].getPoles()[1:])");
+                        Gui::Command::runCommand(Gui::Command::Gui, "_finalbsp_knots.extend([_finalbsp_knots[-1] + i for i in _bsps[-1].getKnots()[1:]])");
+                        Gui::Command::runCommand(Gui::Command::Gui, "_finalbsp_mults[-1] = 3"); // FIXME: Hardcoded
+                        Gui::Command::runCommand(Gui::Command::Gui, "_finalbsp_mults.extend(_bsps[-1].getMultiplicities()[1:])");
+                    }
+                }
 
+                // TODO: Join the pieces of the B-splines
+                // {"poles", "mults", "knots", "periodic", "degree", "weights", "CheckRational", NULL};
+                Gui::cmdAppObjectArgs(sketchgui->getObject(), "addGeometry(Part.BSplineCurve"
+                                      "(_finalbsp_poles,_finalbsp_mults,_finalbsp_knots,%s,%d,None,False),%s)",
+                                      ConstrMethod == 0 ?"False":"True",
+                                      myDegree,
+                                      geometryCreationMode==Construction?"True":"False");
                 currentgeoid++;
+
+                // TODO: Confirm we do not need to delete individual elements
+                Gui::Command::runCommand(Gui::Command::Gui, "del(_bsps)\n");
+                Gui::Command::runCommand(Gui::Command::Gui, "del(_finalbsp_poles)\n");
+                Gui::Command::runCommand(Gui::Command::Gui, "del(_finalbsp_knots)\n");
+                Gui::Command::runCommand(Gui::Command::Gui, "del(_finalbsp_mults)\n");
 
                 // autoconstraints were added to the knots, which is ok because they must go to the
                 // right position, or the user will freak-out if they appear out of the autoconstrained position.
                 // However, autoconstraints on the first and last knot, in non-periodic b-splines (with appropriate endpoint knot multiplicity)
                 // as the ones created by this tool are intended for the b-spline endpoints, and not for the knots,
                 // so here we retrieve any autoconstraint on those knots and mangle it to the endpoint.
-                // TODO: this will be done to the first and last knots instead for ConstrMethod==2
                 if (ConstrMethod == 0) {
                     for(auto & constr : static_cast<Sketcher::SketchObject *>(sketchgui->getObject())->Constraints.getValues()) {
                         if(constr->First == knotGeoIds[0] && constr->FirstPos == Sketcher::PointPos::start) {
@@ -434,9 +505,26 @@ private:
 
                 cstream << "conList = []\n";
 
+                int knotNumber = 0;
                 for (size_t i = 0; i < knotGeoIds.size(); i++) {
-                    cstream << "conList.append(Sketcher.Constraint('InternalAlignment:Sketcher::BSplineKnotPoint'," << knotGeoIds[0] + i
-                        << "," << static_cast<int>(Sketcher::PointPos::start) << "," << currentgeoid << "," << i << "))\n";
+                    if (isBetweenC0Points[i]) {
+                        // Constraint point on curve
+                        cstream << "conList.append(Sketcher.Constraint('PointOnObject'," << knotGeoIds[0] + i
+                                << "," << static_cast<int>(Sketcher::PointPos::start) << "," << currentgeoid << "))\n";
+                    }
+                    else {
+                        cstream << "conList.append(Sketcher.Constraint('InternalAlignment:Sketcher::BSplineKnotPoint'," << knotGeoIds[0] + i
+                                << "," << static_cast<int>(Sketcher::PointPos::start) << "," << currentgeoid << "," << knotNumber << "))\n";
+                        // NOTE: Assume here that the spline shape doesn't change on increasing knot multiplicity.
+                        // Change the knot multiplicity here because the user asked and it's not C0
+                        // NOTE: The knot number here has to be provided in the OCCT ordering.
+                        if (BSplineMults[i] > 1 && BSplineMults[i] < myDegree) {
+                            Gui::cmdAppObjectArgs(sketchgui->getObject(),
+                                                  "modifyBSplineKnotMultiplicity(%d, %d, %d) ",
+                                                  currentgeoid, knotNumber+1, BSplineMults[i] - 1);
+                        }
+                        knotNumber++;
+                    }
                 }
 
                 cstream << Gui::Command::getObjectCmd(sketchgui->getObject()) << ".addConstraint(conList)\n";
@@ -444,7 +532,7 @@ private:
 
                 Gui::Command::doCommand(Gui::Command::Doc, cstream.str().c_str());
 
-                // for showing the knots on creation
+                // for showing the rest of internal geometry on creation
                 Gui::cmdAppObjectArgs(sketchgui->getObject(), "exposeInternalGeometry(%d)", currentgeoid);
             }
             catch (const Base::Exception& e) {
@@ -491,6 +579,7 @@ protected:
 
     // Stores position of the knots of the BSpline.
     std::vector<Base::Vector2d> BSplineKnots;
+    std::vector<unsigned int> BSplineMults;
 
     // suggested autoconstraints for knots.
     // A new one must be added e.g. using addSugConstraint() before adding a new knot.
