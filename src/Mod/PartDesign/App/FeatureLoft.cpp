@@ -154,7 +154,8 @@ App::DocumentObjectExecReturn *Loft::execute()
 
         bool isLastSectionVertex = false;
 
-        for (auto &subSet : multisections) {
+        size_t subSetCnt=0;
+        for (const auto & subSet : multisections) {
             if (!subSet.first->isDerivedFrom(Part::Feature::getClassTypeId()))
                 return new App::DocumentObjectExecReturn("Loft: All sections need to be part features");
 
@@ -165,20 +166,42 @@ App::DocumentObjectExecReturn *Loft::execute()
 
             size_t numWiresAdded = addWiresToWireSections(shape, wiresections);
             if (numWiresAdded == 0) {
-                TopExp_Explorer ex;
-                size_t j = 0;
-                for (ex.Init(shape, TopAbs_VERTEX); ex.More(); ex.Next(), ++j) {
-                    if (isLastSectionVertex)
-                        return new App::DocumentObjectExecReturn("Loft: Only the profile and last section can be vertices");
-                    isLastSectionVertex = true;
-                    for (auto &wires : wiresections)
-                        wires.push_back(ex.Current());
+                // The shape of the given object doesn't contain any wires, though it still might be valid if it is a vertex (or a COMPOUND consisting a single vertex)
+                TopoDS_Shape vertexShape;
+                TopExp_Explorer ex{shape, TopAbs_VERTEX};
+                if (ex.More()) {
+                    vertexShape = ex.Current();
+                    ex.Next();
+                    if (ex.More()) { // some additional vertexes in the shape, we shouldn't use it
+                        vertexShape.Nullify();
+                    }
                 }
-                if (j > 1)
-                    return new App::DocumentObjectExecReturn("Loft: When using points for profile/sections, the sketch should have a single point");
+
+                if (vertexShape.IsNull())
+                    return new App::DocumentObjectExecReturn("Loft: A section doesn't contain any wires nor is a single vertex");
+                if (subSetCnt != multisections.size()-1)
+                    return new App::DocumentObjectExecReturn("Loft: Only the profile and the last section can be vertices");
+                if (Closed.getValue())
+                    return new App::DocumentObjectExecReturn("Loft: For closed lofts only the profile can be a vertex");
+
+                // all good; push vertex to all wiresection list
+                for (auto &wires : wiresections)
+                    wires.push_back(vertexShape);
+                isLastSectionVertex = true;
+            } else if (numWiresAdded != wiresections.size())
+                return new App::DocumentObjectExecReturn("Loft: all loft sections need to have the same amount of inner wires");
+            subSetCnt++;
+        }
+
+        if (Closed.getValue()) {
+            // For a closed loft add starting sketch again at the end
+            if (profilePoint.IsNull()) {
+                size_t numWiresAdded = addWiresToWireSections(profileShape, wiresections);
+                assert (numWiresAdded == wiresections.size());
+            } else { // !profilePoint.IsNull()
+                for (auto &wires : wiresections)
+                    wires.push_back(profilePoint);
             }
-            if (!isLastSectionVertex && numWiresAdded < wiresections.size())
-                return new App::DocumentObjectExecReturn("Loft: Sections need to have the same amount of inner wires as the base section");
         }
 
         // build all shells
@@ -214,17 +237,19 @@ App::DocumentObjectExecReturn *Loft::execute()
         // and build the final solid
         BRepBuilderAPI_Sewing sewer;
         sewer.SetTolerance(Precision::Confusion());
-        if (profilePoint.IsNull()) {
-            TopoDS_Shape front = getVerifiedFace();
-            front.Move(invObjLoc);
-            sewer.Add(front);
-        }
-        if (!isLastSectionVertex) {
-            std::vector<TopoDS_Wire> backwires;
-            for (auto& wires : wiresections)
-                backwires.push_back(TopoDS::Wire(wires.back()));
-            TopoDS_Shape back = Part::FaceMakerCheese::makeFace(backwires);
-            sewer.Add(back);
+        if (!Closed.getValue()) {
+            if (profilePoint.IsNull()) {
+                TopoDS_Shape front = getVerifiedFace();
+                front.Move(invObjLoc);
+                sewer.Add(front);
+            }
+            if (!isLastSectionVertex) {
+                std::vector<TopoDS_Wire> backwires;
+                for (auto& wires : wiresections)
+                    backwires.push_back(TopoDS::Wire(wires.back()));
+                TopoDS_Shape back = Part::FaceMakerCheese::makeFace(backwires);
+                sewer.Add(back);
+            }
         }
         for (TopoDS_Shape& s : shells)
             sewer.Add(s);
