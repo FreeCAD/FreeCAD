@@ -54,17 +54,17 @@
      </column>
      <column>
       <property name="text">
-       <string>Workbench Name</string>
+       <string/>
       </property>
      </column>
      <column>
       <property name="text">
-       <string>Autoload?</string>
+       <string/>
       </property>
      </column>
      <column>
       <property name="text">
-       <string>Load Now</string>
+       <string/>
       </property>
      </column>
     </widget>
