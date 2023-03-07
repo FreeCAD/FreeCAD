@@ -100,6 +100,7 @@ QList<QUrl> FileDialog::fetchSidebarUrls()
     QStringList list;
     list << QStandardPaths::writableLocation(QStandardPaths::DesktopLocation);
     list << QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation);
+    list << QStandardPaths::writableLocation(QStandardPaths::DownloadLocation);
     list << QStandardPaths::writableLocation(QStandardPaths::HomeLocation);
     list << QStandardPaths::writableLocation(QStandardPaths::PicturesLocation);
     list << getWorkingDirectory();
