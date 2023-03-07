@@ -24,7 +24,7 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <thread>
+# include <QThread>
 # include <QMessageBox>
 #endif
 
@@ -41,10 +41,8 @@ DlgSettingsFemElmerImp::DlgSettingsFemElmerImp(QWidget* parent)
     ui->setupUi(this);
 
     // determine number of CPU cores
-    processor_count = std::thread::hardware_concurrency();
-    // hardware check might fail and then returns 0
-    if (processor_count > 0)
-        ui->sb_elmer_num_cores->setMaximum(processor_count);
+    processor_count = QThread::idealThreadCount();
+    ui->sb_elmer_num_cores->setMaximum(processor_count);
 
     connect(ui->fc_grid_binary_path, &Gui::PrefFileChooser::fileNameChanged,
             this, &DlgSettingsFemElmerImp::onfileNameChanged);
@@ -109,10 +107,7 @@ void DlgSettingsFemElmerImp::onfileNameChanged(QString FileName)
 
 void DlgSettingsFemElmerImp::onfileNameChangedMT(QString FileName)
 {
-    // reset in case it was previously set to 1
-    // (hardware check might fail and then returns 0)
-    if (processor_count > 0)
-        ui->sb_elmer_num_cores->setMaximum(processor_count);
+    ui->sb_elmer_num_cores->setMaximum(processor_count);
 
     if (ui->sb_elmer_num_cores->value() == 1)
         return;
