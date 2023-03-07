@@ -119,7 +119,8 @@ void DlgSettingsLazyLoadedImp::onLoadClicked(const QString &wbName)
             auto label = new QLabel(tr("Loaded"));
             label->setAlignment(Qt::AlignCenter);
             ui->workbenchTable->setCellWidget(i, Load, label);
-       }
+            break;
+        }
     }
 }
 
