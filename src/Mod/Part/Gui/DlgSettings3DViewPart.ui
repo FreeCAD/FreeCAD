@@ -97,7 +97,7 @@
            <number>2</number>
           </property>
           <property name="minimum">
-           <double>0.0</double>
+           <double>1.0</double>
           </property>
           <property name="maximum">
            <double>180.000000000000000</double>
