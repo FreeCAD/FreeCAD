@@ -51,7 +51,7 @@ protected:
 
 private:
     std::unique_ptr<Ui_DlgSettingsFemElmerImp> ui;
-    unsigned int processor_count;
+    int processor_count;
 };
 
 } // namespace FemGui
