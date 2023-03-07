@@ -115,7 +115,7 @@ void DlgSettingsLazyLoadedImp::onLoadClicked(const QString &wbName)
     for (int i = 0; i < ui->workbenchTable->rowCount(); i++) {
         QWidget* widget = ui->workbenchTable->cellWidget(i, Name);
         auto textLabel = dynamic_cast<QLabel*>(widget);
-        if (textLabel->text() == wbDisplayName) {
+        if (textLabel && textLabel->text() == wbDisplayName) {
             auto label = new QLabel(tr("Loaded"));
             label->setAlignment(Qt::AlignCenter);
             ui->workbenchTable->setCellWidget(i, Load, label);
