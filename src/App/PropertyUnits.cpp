@@ -89,7 +89,7 @@ void PropertyQuantity::setPyObject(PyObject *value)
 {
     // Set the unit if Unit object supplied, else check the unit
     // and set the value
-    
+
     if (PyObject_TypeCheck(value, &(UnitPy::Type))) {
         Base::UnitPy  *pcObject = static_cast<Base::UnitPy*>(value);
         Base::Unit unit = *(pcObject->getUnitPtr());
