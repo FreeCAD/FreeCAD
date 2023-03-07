@@ -57,10 +57,7 @@ class NotificationLabel : public QLabel
 {
     Q_OBJECT
 public:
-    // Windows implementation uses QWidget w to pass the screen (see NotificationBox::showText).
-    // This screen is used as parent for QLabel.
-    // Linux implementation does not rely on a parent (w = nullptr).
-    NotificationLabel(const QString &text, const QPoint &pos, QWidget *w, int displayTime, int minShowTime = 0);
+    NotificationLabel(const QString &text, const QPoint &pos, int displayTime, int minShowTime = 0);
     /// Reuse existing notification to show a new notification (with a new text)
     void reuseNotification(const QString &text, int displayTime, const QPoint &pos);
     /// Hide notification after a hiding timer.
@@ -93,8 +90,8 @@ private:
 
 qobject_delete_later_unique_ptr<NotificationLabel> NotificationLabel::instance = nullptr;
 
-NotificationLabel::NotificationLabel(const QString &text, const QPoint &pos, QWidget *w, int displayTime, int minShowTime)
-: QLabel(w, Qt::ToolTip | Qt::BypassGraphicsProxyWidget), minShowTime(minShowTime)
+NotificationLabel::NotificationLabel(const QString &text, const QPoint &pos, int displayTime, int minShowTime)
+: QLabel(nullptr, Qt::ToolTip | Qt::BypassGraphicsProxyWidget), minShowTime(minShowTime)
 {
     instance.reset(this);
     setForegroundRole(QPalette::ToolTipText); // defaults to ToolTip QPalette
@@ -162,10 +159,12 @@ void NotificationLabel::updateSize(const QPoint &pos)
 
     // ### When the above WinRT code is fixed, windowhandle should be used to find the screen.
     QScreen *screen = QGuiApplication::screenAt(pos);
+
     if (!screen) {
         screen = QGuiApplication::primaryScreen();
     }
-    else {
+
+    if (screen) {
         const qreal screenWidth = screen->geometry().width();
         if (!wordWrap() && sh.width() > screenWidth) {
             setWordWrap(true);
@@ -299,24 +298,11 @@ void NotificationBox::showText(const QPoint &pos, const QString &text, int displ
 
     // no label can be reused, create new label:
     if (!text.isEmpty()) {
-#ifdef Q_OS_WIN32
-        // On windows, we can't use the widget as parent otherwise the window will be
-        // raised when the toollabel will be shown
-        QT_WARNING_PUSH
-        QT_WARNING_DISABLE_DEPRECATED
         new NotificationLabel(text,
                               pos,
-                              nullptr,
-                              displayTime,
-                              minShowTime);// NotificationLabel manages its own lifetime.
-        QT_WARNING_POP
-#else
-        new NotificationLabel(text,
-                              pos,
-                              nullptr,
                               displayTime,
                               minShowTime);// sets NotificationLabel::instance to itself
-#endif
+
         NotificationLabel::instance->placeNotificationLabel(pos);
         NotificationLabel::instance->setObjectName(QLatin1String("NotificationBox_label"));
 
