@@ -69,7 +69,7 @@ private:
 
 InputField::InputField(QWidget * parent)
   : ExpressionLineEdit(parent),
-    ExpressionBinding(),
+    ExpressionWidget(),
     validInput(true),
     actUnitValue(0),
     Maximum(DOUBLE_MAX),
