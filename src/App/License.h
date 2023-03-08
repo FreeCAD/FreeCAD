@@ -23,7 +23,6 @@
 #ifndef APP_LICENSE_H
 #define APP_LICENSE_H
 
-#include <FCGlobal.h>
 #include <array>
 #include <string>
 
@@ -39,21 +38,27 @@ using TLicenseArr = std::array<const char*, colsInArray>;
 constexpr int posnOfIdentifier = 0;
 constexpr int posnOfFullName = 1;
 constexpr int posnOfUrl = 2;
-constexpr int countOfLicenses {12};
+constexpr int countOfLicenses {18};
 // clang-format off
 constexpr std::array<TLicenseArr, countOfLicenses> licenseItems {{
-    { "AllRightsReserved", "All rights reserved",                                      "https://en.wikipedia.org/wiki/All_rights_reserved"  },
-    { "CC_BY_40",          "Creative Commons Attribution",                             "https://creativecommons.org/licenses/by/4.0/"       },
-    { "CC_BY_SA_40",       "Creative Commons Attribution-ShareAlike",                  "https://creativecommons.org/licenses/by-sa/4.0/"    },
-    { "CC_BY_ND_40",       "Creative Commons Attribution-NoDerivatives",               "https://creativecommons.org/licenses/by-nd/4.0/"    },
-    { "CC_BY_NC_40",       "Creative Commons Attribution-NonCommercial",               "https://creativecommons.org/licenses/by-nc/4.0/"    },
-    { "CC_BY_NC_SA_40",    "Creative Commons Attribution-NonCommercial-ShareAlike",    "https://creativecommons.org/licenses/by-nc-sa/4.0/" },
-    { "CC_BY_NC_ND_40",    "Creative Commons Attribution-NonCommercial-NoDerivatives", "https://creativecommons.org/licenses/by-nc-nd/4.0/" },
-    { "PublicDomain",      "Public Domain",                                            "https://en.wikipedia.org/wiki/Public_domain"        },
-    { "FreeArt",           "FreeArt",                                                  "https://artlibre.org/licence/lal"                   },
-    { "CERN_OHS_S",        "CERN Open Hardware Licence strongly-reciprocal",           "https://cern-ohl.web.cern.ch/"                      },
-    { "CERN_OHS_W",        "CERN Open Hardware Licence weakly-reciprocal",             "https://cern-ohl.web.cern.ch/"                      },
-    { "CERN_OHS_P",        "CERN Open Hardware Licence permissive",                    "https://cern-ohl.web.cern.ch/"                      },
+    { "AllRightsReserved", "All rights reserved",                                          "https://en.wikipedia.org/wiki/All_rights_reserved"  },
+    { "CC_BY_40",          "Creative Commons Attribution 4.0",                             "https://creativecommons.org/licenses/by/4.0/"       },
+    { "CC_BY_SA_40",       "Creative Commons Attribution-ShareAlike 4.0",                  "https://creativecommons.org/licenses/by-sa/4.0/"    },
+    { "CC_BY_ND_40",       "Creative Commons Attribution-NoDerivatives 4.0",               "https://creativecommons.org/licenses/by-nd/4.0/"    },
+    { "CC_BY_NC_40",       "Creative Commons Attribution-NonCommercial 4.0",               "https://creativecommons.org/licenses/by-nc/4.0/"    },
+    { "CC_BY_NC_SA_40",    "Creative Commons Attribution-NonCommercial-ShareAlike 4.0",    "https://creativecommons.org/licenses/by-nc-sa/4.0/" },
+    { "CC_BY_NC_ND_40",    "Creative Commons Attribution-NonCommercial-NoDerivatives 4.0", "https://creativecommons.org/licenses/by-nc-nd/4.0/" },
+    { "CC_BY_30",          "Creative Commons Attribution 3.0",                             "https://creativecommons.org/licenses/by/3.0/"       },
+    { "CC_BY_SA_30",       "Creative Commons Attribution-ShareAlike 3.0",                  "https://creativecommons.org/licenses/by-sa/3.0/"    },
+    { "CC_BY_ND_30",       "Creative Commons Attribution-NoDerivatives 3.0",               "https://creativecommons.org/licenses/by-nd/3.0/"    },
+    { "CC_BY_NC_30",       "Creative Commons Attribution-NonCommercial 3.0",               "https://creativecommons.org/licenses/by-nc/3.0/"    },
+    { "CC_BY_NC_SA_30",    "Creative Commons Attribution-NonCommercial-ShareAlike 3.0",    "https://creativecommons.org/licenses/by-nc-sa/3.0/" },
+    { "CC_BY_NC_ND_30",    "Creative Commons Attribution-NonCommercial-NoDerivatives 3.0", "https://creativecommons.org/licenses/by-nc-nd/3.0/" },
+    { "PublicDomain",      "Public Domain",                                                "https://en.wikipedia.org/wiki/Public_domain"        },
+    { "FreeArt",           "FreeArt",                                                      "https://artlibre.org/licence/lal"                   },
+    { "CERN_OHS_S",        "CERN Open Hardware Licence strongly-reciprocal",               "https://cern-ohl.web.cern.ch/"                      },
+    { "CERN_OHS_W",        "CERN Open Hardware Licence weakly-reciprocal",                 "https://cern-ohl.web.cern.ch/"                      },
+    { "CERN_OHS_P",        "CERN Open Hardware Licence permissive",                        "https://cern-ohl.web.cern.ch/"                      },
 }};
 // clang-format on
 
