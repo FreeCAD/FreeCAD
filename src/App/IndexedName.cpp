@@ -2,6 +2,7 @@
 
 /****************************************************************************
  *   Copyright (c) 2022 Zheng, Lei (realthunder) <realthunder.dev@gmail.com>*
+ *   Copyright (c) 2023 FreeCAD Project Association                         *
  *                                                                          *
  *   This file is part of FreeCAD.                                          *
  *                                                                          *
@@ -21,6 +22,7 @@
  *                                                                          *
  ***************************************************************************/
 
+// NOLINTNEXTLINE
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
@@ -28,100 +30,93 @@
 # include <unordered_set>
 #endif
 
-#include <QHash>
-
 #include "IndexedName.h"
 
 using namespace Data;
 
-struct ByteArray
+/// Check whether the input character is an underscore or an ASCII letter a-Z or A-Z
+inline bool isInvalidChar(char test)
 {
-    ByteArray(const QByteArray& b)
-        :bytes(b)
-    {}
+    return test != '_' && (test < 'a' || test > 'z' ) && (test < 'A' || test > 'Z');
+}
 
-    ByteArray(const ByteArray& other)
-        :bytes(other.bytes)
-    {}
-
-    ByteArray(ByteArray&& other)
-        :bytes(std::move(other.bytes))
-    {}
-
-    void mutate() const
-    {
-        QByteArray copy;
-        copy.append(bytes.constData(), bytes.size());
-        bytes = copy;
-    }
-
-    bool operator==(const ByteArray& other) const {
-        return bytes == other.bytes;
-    }
-
-    mutable QByteArray bytes;
-};
-
-struct ByteArrayHasher
+/// Get the integer suffix of name. Returns a tuple of (suffix, suffixPosition). Calling code
+/// should check to ensure that suffixPosition is not equal to nameLength (in which case there was no
+/// suffix).
+///
+/// \param name The name to check
+/// \param nameLength The length of the string in name
+/// \returns An integer pair of the suffix itself and the position of that suffix in name
+std::pair<int,int> getIntegerSuffix(const char *name, int nameLength)
 {
-    std::size_t operator()(const ByteArray& bytes) const
-    {
-        return qHash(bytes.bytes);
-    }
+    int suffixPosition {nameLength - 1};
 
-    std::size_t operator()(const QByteArray& bytes) const
-    {
-        return qHash(bytes);
+    for (; suffixPosition >= 0; --suffixPosition) {
+        // When we support C++20 we can use std::span<> to eliminate the clang-tidy warning
+        // NOLINTNEXTLINE cppcoreguidelines-pro-bounds-pointer-arithmetic
+        if (!isdigit(name[suffixPosition])) {
+            break;
+        }
     }
-};
+    ++suffixPosition;
+    int suffix {0};
+    if (suffixPosition < nameLength) {
+        // When we support C++20 we can use std::span<> to eliminate the clang-tidy warning
+        // NOLINTNEXTLINE cppcoreguidelines-pro-bounds-pointer-arithmetic
+        suffix = std::atoi(name + suffixPosition);
+    }
+    return std::make_pair(suffix, suffixPosition);
+}
 
 void IndexedName::set(
     const char* name,
-    int len,
-    const std::vector<const char*>& types,
+    int length,
+    const std::vector<const char*>& allowedNames,
     bool allowOthers)
 {
+    // Storage for names that we weren't given external storage for
     static std::unordered_set<ByteArray, ByteArrayHasher> NameSet;
 
-    if (len < 0)
-        len = static_cast<int>(std::strlen(name));
-    int i;
-    for (i = len - 1; i >= 0; --i) {
-        if (name[i] < '0' || name[i]>'9')
-            break;
+    if (length < 0) {
+        length = static_cast<int>(std::strlen(name));
     }
-    ++i;
-    this->index = std::atoi(name + i);
+    // Name typically ends with an integer: find that integer
+    auto [suffix, suffixPosition] = getIntegerSuffix(name, length);
+    if (suffixPosition < length) {
+        this->index = suffix;
+    }
 
-    for (int j = 0; j < i; ++j) {
-        if (name[j] == '_'
-            || (name[j] >= 'a' && name[j] <= 'z')
-            || (name[j] >= 'A' && name[j] <= 'Z'))
-            continue;
+    // Make sure that every character is either an ASCII letter (upper or lowercase), or an
+    // underscore. If any other character appears, reject the entire string.
+    // When we support C++20 we can use std::span<> to eliminate the clang-tidy warning
+    // NOLINTNEXTLINE cppcoreguidelines-pro-bounds-pointer-arithmetic
+    if (std::any_of(name, name+suffixPosition, isInvalidChar)) {
         this->type = "";
         return;
     }
 
-    for (const char* type : types) {
-        int j = 0;
-        for (const char* n = name, *t = type; *n; ++n) {
-            if (*n != *t || j >= i)
-                break;
-            ++j;
-            ++t;
-            if (!*t) {
-                this->type = type;
-                return;
-            }
+    // If a list of allowedNames was provided, see if our set name matches one of those allowedNames: if it
+    // does, reference that memory location and return.
+    for (const auto *typeName : allowedNames) {
+        if (std::strncmp(name, typeName, suffixPosition) == 0) {
+            this->type = typeName;
+            return;
         }
     }
 
+    // If the type was NOT in the list of allowedNames, but the caller has set the allowOthers flag to
+    // true, then add the new type to the static NameSet (if it is not already there).
     if (allowOthers) {
-        auto res = NameSet.insert(QByteArray::fromRawData(name, i));
-        if (res.second)
-            res.first->mutate();
+        auto res = NameSet.insert(ByteArray(QByteArray::fromRawData(name, suffixPosition)));
+        if (res.second /*The insert succeeded (the type was new)*/) {
+            // Make sure that the data in the set is a unique (unshared) copy of the text
+            res.first->ensureUnshared();
+        }
         this->type = res.first->bytes.constData();
     }
-    else
+    else {
+        // The passed-in type is not in the allowed list, and allowOthers was not true, so don't
+        // store the type
         this->type = "";
+    }
 }
