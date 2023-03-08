@@ -48,9 +48,7 @@ using namespace App;
 namespace bp = boost::placeholders;
 
 ExpressionBinding::ExpressionBinding()
-    : iconLabel(nullptr)
-    , iconHeight(-1)
-    , m_autoApply(false)
+    : m_autoApply(false)
 {
 }
 
@@ -190,22 +188,6 @@ bool ExpressionBinding::assignToProperty(const std::string & propName, double va
     return true;
 }
 
-QPixmap ExpressionBinding::getIcon(const char* name, const QSize& size) const
-{
-    QString key = QString::fromLatin1("%1_%2x%3")
-        .arg(QString::fromLatin1(name))
-        .arg(size.width())
-        .arg(size.height());
-    QPixmap icon;
-    if (QPixmapCache::find(key, &icon))
-        return icon;
-
-    icon = BitmapFactory().pixmapFromSvg(name, size);
-    if (!icon.isNull())
-        QPixmapCache::insert(key, icon);
-    return icon;
-}
-
 bool ExpressionBinding::apply(const std::string & propName)
 {
     Q_UNUSED(propName);
@@ -294,7 +276,32 @@ void ExpressionBinding::objectDeleted(const App::DocumentObject& obj)
     }
 }
 
-void ExpressionBinding::makeLabel(QLineEdit* le)
+// ----------------------------------------------------------------------------
+
+ExpressionWidget::ExpressionWidget()
+    : iconLabel(nullptr)
+    , iconHeight(-1)
+{
+
+}
+
+QPixmap ExpressionWidget::getIcon(const char* name, const QSize& size) const
+{
+    QString key = QString::fromLatin1("%1_%2x%3")
+        .arg(QString::fromLatin1(name))
+        .arg(size.width())
+        .arg(size.height());
+    QPixmap icon;
+    if (QPixmapCache::find(key, &icon))
+        return icon;
+
+    icon = BitmapFactory().pixmapFromSvg(name, size);
+    if (!icon.isNull())
+        QPixmapCache::insert(key, icon);
+    return icon;
+}
+
+void ExpressionWidget::makeLabel(QLineEdit* le)
 {
     defaultPalette = le->palette();
 
