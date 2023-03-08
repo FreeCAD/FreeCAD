@@ -984,10 +984,10 @@ Gui::Action * CmdSketcherCompCreateBSpline::createAction()
     periodicbspline->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_Create_Periodic_BSpline"));
 
     QAction* bsplinebyknot = pcAction->addAction(QString());
-    bsplinebyknot->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_Create_BSpline_By_Knot"));
+    bsplinebyknot->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CreateBSplineByInterpolation"));
 
     QAction* periodicbsplinebyknot = pcAction->addAction(QString());
-    periodicbsplinebyknot->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_Create_Periodic_BSpline_By_Knot"));
+    periodicbsplinebyknot->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_Create_Periodic_BSplineByInterpolation"));
 
     _pcAction = pcAction;
     languageChange();
