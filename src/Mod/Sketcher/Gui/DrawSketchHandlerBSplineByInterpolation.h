@@ -199,17 +199,17 @@ public:
 
     void registerPressedKey(bool pressed, int key) override
     {
-        if (SoKeyboardEvent::D == key && pressed) {
-            SplineDegree = QInputDialog::getInt(
-                Gui::getMainWindow(),
-                QObject::tr("B-Spline Degree"),
-                QObject::tr("NOTE: For construction by interpolation, this degree is ignored for now.\n"
-                            "Define B-Spline Degree, between 1 and %1:")
-                .arg(QString::number(Geom_BSplineCurve::MaxDegree())),
-                SplineDegree, 1, Geom_BSplineCurve::MaxDegree(), 1);
-            // FIXME: Pressing Esc here also finishes the B-Spline creation.
-            // The user may only want to exit the dialog.
-        }
+        // if (SoKeyboardEvent::D == key && pressed) {
+        //     SplineDegree = QInputDialog::getInt(
+        //         Gui::getMainWindow(),
+        //         QObject::tr("B-Spline Degree"),
+        //         QObject::tr("NOTE: For construction by interpolation, this degree is ignored for now.\n"
+        //                     "Define B-Spline Degree, between 1 and %1:")
+        //         .arg(QString::number(Geom_BSplineCurve::MaxDegree())),
+        //         SplineDegree, 1, Geom_BSplineCurve::MaxDegree(), 1);
+        //     // FIXME: Pressing Esc here also finishes the B-Spline creation.
+        //     // The user may only want to exit the dialog.
+        // }
         if (SoKeyboardEvent::M == key && pressed) {
             // TODO: On pressing, say, M, modify the knot's multiplicity
             if (BSplineMults.size() > 1) {
