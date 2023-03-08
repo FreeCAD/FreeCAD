@@ -1875,7 +1875,7 @@ void Application::runApplication()
 #if QT_VERSION < QT_VERSION_CHECK(6,0,0)
         QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
 #endif
-#if QT_VERSION >= QT_VERSION_CHECK(5,14,0)
+#if QT_VERSION >= QT_VERSION_CHECK(5,14,0) && defined(Q_OS_WIN)
         QGuiApplication::setHighDpiScaleFactorRoundingPolicy(Qt::HighDpiScaleFactorRoundingPolicy::PassThrough);
 #endif
     }
