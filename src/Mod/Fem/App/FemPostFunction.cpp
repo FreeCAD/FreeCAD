@@ -63,18 +63,19 @@ DocumentObjectExecReturn* FemPostFunction::execute() {
 // cylinder function
 PROPERTY_SOURCE(Fem::FemPostCylinderFunction, Fem::FemPostFunction)
 
-FemPostCylinderFunction::FemPostCylinderFunction() : FemPostFunction()
+FemPostCylinderFunction::FemPostCylinderFunction()
+    : FemPostFunction()
 {
     ADD_PROPERTY(Center, (Base::Vector3d(0.0, 0.0, 0.0)));
     ADD_PROPERTY(Axis, (Base::Vector3d(0.0, 0.0, 1.0)));
-    ADD_PROPERTY(Radius, (5.));
+    ADD_PROPERTY(Radius, (5.0));
 
     m_cylinder = vtkSmartPointer<vtkCylinder>::New();
     m_implicit = m_cylinder;
 
-    m_cylinder->SetAxis(0., 0., 1.);
-    m_cylinder->SetCenter(0., 0., 0.);
-    m_cylinder->SetRadius(5.);
+    m_cylinder->SetAxis(0.0, 0.0, 1.0);
+    m_cylinder->SetCenter(0.0, 0.0, 0.0);
+    m_cylinder->SetRadius(5.0);
 }
 
 FemPostCylinderFunction::~FemPostCylinderFunction()

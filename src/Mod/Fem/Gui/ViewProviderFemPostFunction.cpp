@@ -885,32 +885,33 @@ SoGroup* postCylinder()
 {
     SoCoordinate3* points = new SoCoordinate3();
     int nCirc = 20;
-    int nSide = 8;
-    float h = 3.;
-    points->point.setNum(2*(nCirc + 1 + nSide));
+    const int nSide = 8;
+    float h = 3.0;
+    points->point.setNum(2 * (nCirc + 1 + nSide));
 
     int idx = 0;
     // top and bottom
     for (int i = 0; i < 2; ++i) {
         for (int j = 0; j < nCirc + 1; ++j) {
-            points->point.set1Value(idx, SbVec3f(std::cos(2*M_PI/nCirc*j),
-               std::sin(2*M_PI/nCirc*j),
-                -h/2. + h*i));
+            points->point.set1Value(idx,
+                                    SbVec3f(std::cos(2 * M_PI / nCirc * j),
+                                            std::sin(2 * M_PI / nCirc * j),
+                                            -h / 2. + h * i));
             ++idx;
         }
-
     }
     // sides
     for (int i = 0; i < nSide; ++i) {
         for (int j = 0; j < 2; ++j) {
-            points->point.set1Value(idx, SbVec3f(std::cos(2*M_PI/nSide*i),
-                std::sin(2*M_PI/nSide*i),
-                -h/2. + h*j));
+            points->point.set1Value(idx,
+                                    SbVec3f(std::cos(2 * M_PI / nSide * i),
+                                            std::sin(2 * M_PI / nSide * i),
+                                            -h / 2. + h * j));
             ++idx;
         }
     }
     // numVertices
-    int vert[nSide + 2];
+    int vert[nSide + 2] {};
     vert[0] = nCirc + 1;
     vert[1] = nCirc + 1;
     for (int i = 0; i < nSide; ++i) {
