@@ -22,16 +22,16 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <memory>
-# include <mutex>
-# include <QApplication>
-# include <QEvent>
-# include <QLabel>
-# include <QScreen>
-# include <QStyleOption>
-# include <QStylePainter>
-# include <QTextDocument>
-# include <QTimer>
+#include <QApplication>
+#include <QEvent>
+#include <QLabel>
+#include <QScreen>
+#include <QStyleOption>
+#include <QStylePainter>
+#include <QTextDocument>
+#include <QTimer>
+#include <memory>
+#include <mutex>
 #endif
 
 #include "NotificationBox.h"
@@ -39,11 +39,14 @@
 
 using namespace Gui;
 
-namespace Gui {
+namespace Gui
+{
 
 // https://stackoverflow.com/questions/41402152/stdunique-ptr-and-qobjectdeletelater
-struct QObjectDeleteLater {
-    void operator()(QObject *o) {
+struct QObjectDeleteLater
+{
+    void operator()(QObject* o)
+    {
         o->deleteLater();
     }
 };
@@ -53,29 +56,31 @@ using qobject_delete_later_unique_ptr = std::unique_ptr<T, QObjectDeleteLater>;
 
 /** Class showing the notification as a label
  * */
-class NotificationLabel : public QLabel
+class NotificationLabel: public QLabel
 {
     Q_OBJECT
 public:
-    NotificationLabel(const QString &text, const QPoint &pos, int displayTime, int minShowTime = 0);
+    NotificationLabel(const QString& text, const QPoint& pos, int displayTime, int minShowTime = 0);
     /// Reuse existing notification to show a new notification (with a new text)
-    void reuseNotification(const QString &text, int displayTime, const QPoint &pos);
+    void reuseNotification(const QString& text, int displayTime, const QPoint& pos);
     /// Hide notification after a hiding timer.
     void hideNotification();
     /// Update the size of the QLabel
-    void updateSize(const QPoint &pos);
+    void updateSize(const QPoint& pos);
     /// Event filter
-    bool eventFilter(QObject *, QEvent *) override;
+    bool eventFilter(QObject*, QEvent*) override;
     /// Return true if the text provided is the same as the one of an existing notification
-    bool notificationLabelChanged(const QString &text);
+    bool notificationLabelChanged(const QString& text);
     /// Place the notification at the given position
-    void placeNotificationLabel(const QPoint &pos);
+    void placeNotificationLabel(const QPoint& pos);
 
     /// The instance
     static qobject_delete_later_unique_ptr<NotificationLabel> instance;
+
 protected:
-    void paintEvent(QPaintEvent *e) override;
-    void resizeEvent(QResizeEvent *e) override;
+    void paintEvent(QPaintEvent* e) override;
+    void resizeEvent(QResizeEvent* e) override;
+
 private:
     /// Re-start the notification expiration timer
     void restartExpireTimer(int displayTime);
@@ -90,12 +95,14 @@ private:
 
 qobject_delete_later_unique_ptr<NotificationLabel> NotificationLabel::instance = nullptr;
 
-NotificationLabel::NotificationLabel(const QString &text, const QPoint &pos, int displayTime, int minShowTime)
-: QLabel(nullptr, Qt::ToolTip | Qt::BypassGraphicsProxyWidget), minShowTime(minShowTime)
+NotificationLabel::NotificationLabel(const QString& text, const QPoint& pos, int displayTime,
+                                     int minShowTime)
+    : QLabel(nullptr, Qt::ToolTip | Qt::BypassGraphicsProxyWidget),
+      minShowTime(minShowTime)
 {
     instance.reset(this);
-    setForegroundRole(QPalette::ToolTipText); // defaults to ToolTip QPalette
-    setBackgroundRole(QPalette::ToolTipBase); // defaults to ToolTip QPalette
+    setForegroundRole(QPalette::ToolTipText);// defaults to ToolTip QPalette
+    setBackgroundRole(QPalette::ToolTipBase);// defaults to ToolTip QPalette
     setPalette(NotificationBox::palette());
     ensurePolished();
     setMargin(1 + style()->pixelMetric(QStyle::PM_ToolTipLabelFrameWidth, nullptr, this));
@@ -108,12 +115,12 @@ NotificationLabel::NotificationLabel(const QString &text, const QPoint &pos, int
     hideTimer.setSingleShot(true);
     expireTimer.setSingleShot(true);
 
-    expireTimer.callOnTimeout([this](){
+    expireTimer.callOnTimeout([this]() {
         hideTimer.stop();
         hideNotificationImmediately();
     });
 
-    hideTimer.callOnTimeout([this](){
+    hideTimer.callOnTimeout([this]() {
         expireTimer.stop();
         hideNotificationImmediately();
     });
@@ -129,21 +136,21 @@ void NotificationLabel::restartExpireTimer(int displayTime)
         time = displayTime;
     }
     else {
-        time = 10000 + 40 * qMax(0, text().length()-100);
+        time = 10000 + 40 * qMax(0, text().length() - 100);
     }
 
     expireTimer.start(time);
     hideTimer.stop();
 }
 
-void NotificationLabel::reuseNotification(const QString &text, int displayTime, const QPoint &pos)
+void NotificationLabel::reuseNotification(const QString& text, int displayTime, const QPoint& pos)
 {
     setText(text);
     updateSize(pos);
     restartExpireTimer(displayTime);
 }
 
-void NotificationLabel::updateSize(const QPoint &pos)
+void NotificationLabel::updateSize(const QPoint& pos)
 {
     // Ensure that we get correct sizeHints by placing this window on the right screen.
     QFontMetrics fm(font());
@@ -158,7 +165,7 @@ void NotificationLabel::updateSize(const QPoint &pos)
     QSize sh = sizeHint();
 
     // ### When the above WinRT code is fixed, windowhandle should be used to find the screen.
-    QScreen *screen = QGuiApplication::screenAt(pos);
+    QScreen* screen = QGuiApplication::screenAt(pos);
 
     if (!screen) {
         screen = QGuiApplication::primaryScreen();
@@ -175,7 +182,7 @@ void NotificationLabel::updateSize(const QPoint &pos)
     resize(sh + extra);
 }
 
-void NotificationLabel::paintEvent(QPaintEvent *ev)
+void NotificationLabel::paintEvent(QPaintEvent* ev)
 {
     QStylePainter p(this);
     QStyleOptionFrame opt;
@@ -185,7 +192,7 @@ void NotificationLabel::paintEvent(QPaintEvent *ev)
     QLabel::paintEvent(ev);
 }
 
-void NotificationLabel::resizeEvent(QResizeEvent *e)
+void NotificationLabel::resizeEvent(QResizeEvent* e)
 {
     QStyleHintReturnMask frameMask;
     QStyleOption option;
@@ -208,24 +215,25 @@ void NotificationLabel::hideNotification()
 
 void NotificationLabel::hideNotificationImmediately()
 {
-    close(); // to trigger QEvent::Close which stops the animation
+    close();// to trigger QEvent::Close which stops the animation
     instance = nullptr;
 }
 
-bool NotificationLabel::eventFilter(QObject *o, QEvent *e)
+bool NotificationLabel::eventFilter(QObject* o, QEvent* e)
 {
     Q_UNUSED(o)
 
     switch (e->type()) {
-        case QEvent::MouseButtonPress:
-        {
-             // If minimum on screen time has already lapsed - hide the notification no matter where the click was done
+        case QEvent::MouseButtonPress: {
+            // If minimum on screen time has already lapsed - hide the notification no matter where
+            // the click was done
             auto total = expireTimer.interval();
             auto remaining = expireTimer.remainingTime();
             auto lapsed = total - remaining;
-            // ... or if the click is inside the notification, hide it no matter if the minimum onscreen time has lapsed or not
+            // ... or if the click is inside the notification, hide it no matter if the minimum
+            // onscreen time has lapsed or not
             auto insideclick = this->underMouse();
-            if( lapsed > minShowTime || insideclick) {
+            if (lapsed > minShowTime || insideclick) {
                 hideNotification();
 
                 return insideclick;
@@ -237,10 +245,10 @@ bool NotificationLabel::eventFilter(QObject *o, QEvent *e)
     return false;
 }
 
-void NotificationLabel::placeNotificationLabel(const QPoint &pos)
+void NotificationLabel::placeNotificationLabel(const QPoint& pos)
 {
     QPoint p = pos;
-    const QScreen *screen = QGuiApplication::screenAt(pos);
+    const QScreen* screen = QGuiApplication::screenAt(pos);
     // a QScreen's handle *should* never be null, so this is a bit paranoid
     if (screen && screen->handle()) {
         const QSize cursorSize = QSize(16, 16);
@@ -271,24 +279,25 @@ void NotificationLabel::placeNotificationLabel(const QPoint &pos)
     this->move(p);
 }
 
-bool NotificationLabel::notificationLabelChanged(const QString &text)
+bool NotificationLabel::notificationLabelChanged(const QString& text)
 {
     return NotificationLabel::instance->text() != text;
 }
 
 /***************************** NotificationBox **********************************/
 
-void NotificationBox::showText(const QPoint &pos, const QString &text, int displayTime, unsigned int minShowTime)
+void NotificationBox::showText(const QPoint& pos, const QString& text, int displayTime,
+                               unsigned int minShowTime)
 {
     // a label does already exist
-    if (NotificationLabel::instance && NotificationLabel::instance->isVisible()){
-        if (text.isEmpty()){ // empty text means hide current label
+    if (NotificationLabel::instance && NotificationLabel::instance->isVisible()) {
+        if (text.isEmpty()) {// empty text means hide current label
             NotificationLabel::instance->hideNotification();
             return;
         }
         else {
             // If the label has changed, reuse the one that is showing (removes flickering)
-            if (NotificationLabel::instance->notificationLabelChanged(text)){
+            if (NotificationLabel::instance->notificationLabelChanged(text)) {
                 NotificationLabel::instance->reuseNotification(text, displayTime, pos);
                 NotificationLabel::instance->placeNotificationLabel(pos);
             }
@@ -334,18 +343,18 @@ QFont NotificationBox::font()
     return QApplication::font("NotificationLabel");
 }
 
-void NotificationBox::setPalette(const QPalette &palette)
+void NotificationBox::setPalette(const QPalette& palette)
 {
     *notificationbox_palette() = palette;
     if (NotificationLabel::instance)
         NotificationLabel::instance->setPalette(palette);
 }
 
-void NotificationBox::setFont(const QFont &font)
+void NotificationBox::setFont(const QFont& font)
 {
     QApplication::setFont(font, "NotificationLabel");
 }
 
-} // namespace Gui
+}// namespace Gui
 
 #include "NotificationBox.moc"
