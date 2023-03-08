@@ -51,22 +51,34 @@ void ExpressionBindingPy::init_type()
     add_varargs_method("setAutoApply", &ExpressionBindingPy::setAutoApply, "setAutoApply");
 }
 
-PyObject *ExpressionBindingPy::PyMake(struct _typeobject *, PyObject * args, PyObject *)
+ExpressionBinding* ExpressionBindingPy::asBinding(QWidget* obj)
 {
-    PyObject* pyObj;
-    if (!PyArg_ParseTuple(args, "O", &pyObj))
-        return nullptr;
-
     ExpressionBinding* expr = nullptr;
-    PythonWrapper wrap;
-    wrap.loadWidgetsModule();
-
-    QWidget* obj = dynamic_cast<QWidget*>(wrap.toQObject(Py::Object(pyObj)));
     if (obj) {
         do {
             auto qsb = qobject_cast<QuantitySpinBox*>(obj);
             if (qsb) {
                 expr = qsb;
+                break;
+            }
+            auto usp = qobject_cast<UIntSpinBox*>(obj);
+            if (usp) {
+                expr = usp;
+                break;
+            }
+            auto isp = qobject_cast<IntSpinBox*>(obj);
+            if (isp) {
+                expr = isp;
+                break;
+            }
+            auto dsp = qobject_cast<DoubleSpinBox*>(obj);
+            if (dsp) {
+                expr = dsp;
+                break;
+            }
+            auto exp = qobject_cast<ExpLineEdit*>(obj);
+            if (exp) {
+                expr = exp;
                 break;
             }
             auto inp = qobject_cast<InputField*>(obj);
@@ -77,6 +89,21 @@ PyObject *ExpressionBindingPy::PyMake(struct _typeobject *, PyObject * args, PyO
         }
         while (false);
     }
+
+    return expr;
+}
+
+PyObject *ExpressionBindingPy::PyMake(struct _typeobject *, PyObject * args, PyObject *)
+{
+    PyObject* pyObj;
+    if (!PyArg_ParseTuple(args, "O", &pyObj))
+        return nullptr;
+
+    PythonWrapper wrap;
+    wrap.loadWidgetsModule();
+
+    QWidget* obj = dynamic_cast<QWidget*>(wrap.toQObject(Py::Object(pyObj)));
+    ExpressionBinding* expr = asBinding(obj);
 
     if (!expr) {
         PyErr_SetString(PyExc_TypeError, "Wrong type");
