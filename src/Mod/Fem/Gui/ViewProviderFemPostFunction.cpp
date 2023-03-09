@@ -389,6 +389,7 @@ ViewProviderFemPostCylinderFunction::ViewProviderFemPostCylinderFunction()
 
     setAutoScale(false);
 
+    // setup the visualisation geometry
     getGeometryNode()->addChild(ShapeNodes::postCylinder());
 }
 
@@ -408,8 +409,8 @@ void ViewProviderFemPostCylinderFunction::draggerUpdate(SoDragger* m)
     func->Axis.setValue(norm[0], norm[1], norm[2]);
 }
 
-void ViewProviderFemPostCylinderFunction::updateData(const App::Property* p) {
-
+void ViewProviderFemPostCylinderFunction::updateData(const App::Property* p)
+{
     Fem::FemPostCylinderFunction* func = static_cast<Fem::FemPostCylinderFunction*>(getObject());
     if (!isDragging() && (p == &func->Center || p == &func->Radius || p == &func->Axis)) {
         Base::Vector3d trans = func->Center.getValue();
@@ -417,8 +418,9 @@ void ViewProviderFemPostCylinderFunction::updateData(const App::Property* p) {
         double radius = func->Radius.getValue();
 
         SbMatrix translate;
-        SbRotation rot(SbVec3f(0,0,1), SbVec3f(axis.x, axis.y, axis.z));
-        translate.setTransform(SbVec3f(trans.x, trans.y, trans.z), rot, SbVec3f(radius,radius,radius));
+        SbRotation rot(SbVec3f(0.0, 0.0, 1.0), SbVec3f(axis.x, axis.y, axis.z));
+        translate.setTransform(
+            SbVec3f(trans.x, trans.y, trans.z), rot, SbVec3f(radius, radius, radius));
         getManipulator()->setMatrix(translate);
     }
 
@@ -546,7 +548,6 @@ static const App::PropertyFloatConstraint::Constraints scaleConstraint = {1e-4, 
 ViewProviderFemPostPlaneFunction::ViewProviderFemPostPlaneFunction()
     : m_detectscale(false)
 {
-
     ADD_PROPERTY_TYPE(Scale, (1000.0), "Manipulator", App::Prop_None, "Scaling factor for the manipulator");
     Scale.setConstraints(&scaleConstraint);
     sPixmap = "fem-post-geo-plane";
@@ -570,7 +571,7 @@ void ViewProviderFemPostPlaneFunction::draggerUpdate(SoDragger* m) {
     const SbVec3f& base = dragger->translation.getValue();
     const SbVec3f& scale = dragger->scaleFactor.getValue();
 
-    SbVec3f norm(0., 1., 0.);
+    SbVec3f norm(0.0, 1.0, 0.0);
     dragger->rotation.getValue().multVec(norm, norm);
     func->Origin.setValue(base[0], base[1], base[2]);
     func->Normal.setValue(norm[0], norm[1], norm[2]);
@@ -617,7 +618,7 @@ void ViewProviderFemPostPlaneFunction::updateData(const App::Property* p) {
         Base::Vector3d norm = func->Normal.getValue();
 
         norm.Normalize();
-        SbRotation rot(SbVec3f(0., 1., 0.), SbVec3f(norm.x, norm.y, norm.z));
+        SbRotation rot(SbVec3f(0.0, 1.0, 0.0), SbVec3f(norm.x, norm.y, norm.z));
         float scale = static_cast<float>(Scale.getValue());
 
         SbMatrix mat;
