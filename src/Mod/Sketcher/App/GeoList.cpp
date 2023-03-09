@@ -358,6 +358,8 @@ template SketcherExport int GeoListModel<GeometryFacadeUniquePtr>::getVertexIdFr
 template SketcherExport GeoElementId GeoListModel<GeometryFacadeUniquePtr>::getGeoElementIdFromVertexId(int);
 template SketcherExport Base::Vector3d GeoListModel<GeometryFacadeUniquePtr>::getPoint(int geoId, Sketcher::PointPos pos) const;
 template SketcherExport Base::Vector3d GeoListModel<GeometryFacadeUniquePtr>::getPoint(const GeoElementId &) const;
+template SketcherExport GeoListModel<GeometryFacadeUniquePtr> GeoListModel<GeometryFacadeUniquePtr>::getGeoListModel
+                        (std::vector<GeometryFacadeUniquePtr>&& geometrylist, int intgeocount, bool ownerT);
 #endif
 
 
