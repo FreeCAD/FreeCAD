@@ -2178,13 +2178,12 @@ void CmdFemPostFunctions::activated(int iMsg)
                       FeatName.c_str(),
                       center[0],
                       center[1] + box.GetLength(1) / 2,
-                      center[2] + box.GetLength(2) / 2);
+                      center[2]);
             doCommand(Doc,
                       "App.ActiveDocument.%s.Radius = %f",
                       FeatName.c_str(),
-                      box.GetDiagonalLength() / 2);
+                      box.GetDiagonalLength() / 3.6); // make cylinder a bit higher than the box
         }
-
 
         this->updateActive();
         //most of the times functions are added inside of a filter, make sure this still works

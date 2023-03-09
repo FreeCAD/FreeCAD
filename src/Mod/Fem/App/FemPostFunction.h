@@ -104,7 +104,7 @@ public:
 protected:
     void onChanged(const App::Property* prop) override;
     /// get called after a document has been fully restored
-//    void onDocumentRestored() override;
+    void onDocumentRestored() override;
 
     vtkSmartPointer<vtkCylinder> m_cylinder;
 };

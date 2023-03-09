@@ -99,6 +99,13 @@ void FemPostCylinderFunction::onChanged(const Property* prop)
     Fem::FemPostFunction::onChanged(prop);
 }
 
+void FemPostCylinderFunction::onDocumentRestored()
+{
+    // This is to notify the view provider that the document has been fully restored
+    Axis.touch();
+}
+
+
 // ***************************************************************************
 // plane function
 PROPERTY_SOURCE(Fem::FemPostPlaneFunction, Fem::FemPostFunction)
