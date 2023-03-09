@@ -13,11 +13,7 @@ set(CloudGui_LIBS
     FreeCADGui
 )
 
-if (BUILD_QT5)
-    qt5_add_resources(Cloud_QRC_SRCS Resources/Cloud.qrc)
-else()
-    qt4_add_resources(Cloud_QRC_SRCS Resources/Cloud.qrc)
-endif()
+qt_add_resources(Cloud_QRC_SRCS Resources/Cloud.qrc)
 
 SET(CloudGui_SRCS
     ${Cloud_QRC_SRCS}

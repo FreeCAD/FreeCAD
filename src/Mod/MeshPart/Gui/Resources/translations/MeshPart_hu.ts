@@ -580,12 +580,12 @@ Válasszon másik alakzatot.</translation>
     <message>
       <location filename="../../MeshFlatteningCommand.py" line="47"/>
       <source>Unwrap Mesh</source>
-      <translation type="unfinished">Unwrap Mesh</translation>
+      <translation>Háló kiterítése</translation>
     </message>
     <message>
       <location filename="../../MeshFlatteningCommand.py" line="50"/>
       <source>Find a flat representation of a mesh.</source>
-      <translation type="unfinished">Find a flat representation of a mesh.</translation>
+      <translation>Háló sík ábrázolásának keresése.</translation>
     </message>
   </context>
   <context>
@@ -593,7 +593,7 @@ Válasszon másik alakzatot.</translation>
     <message>
       <location filename="../../MeshFlatteningCommand.py" line="79"/>
       <source>Unwrap Face</source>
-      <translation type="unfinished">Unwrap Face</translation>
+      <translation>Felület kiterítése</translation>
     </message>
     <message>
       <location filename="../../MeshFlatteningCommand.py" line="82"/>

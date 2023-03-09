@@ -221,7 +221,7 @@ void Action::setToolTip(const QString & text, const QString & title)
     _tooltip = text;
     _title = title;
     _action->setToolTip(createToolTip(text,
-                title.isEmpty() ? _action->text() : title, 
+                title.isEmpty() ? _action->text() : title,
                 _action->font(),
                 _action->shortcut().toString(QKeySequence::NativeText),
                 command()));
@@ -461,6 +461,14 @@ void ActionGroup::addTo(QWidget *widget)
             item->setMenuRole(action()->menuRole());
             menu->setTitle(action()->text());
             menu->addActions(groupAction()->actions());
+
+            QObject::connect(menu, &QMenu::aboutToShow, [this, menu]() {
+                Q_EMIT aboutToShow(menu);
+            });
+
+            QObject::connect(menu, &QMenu::aboutToHide, [this, menu]() {
+                Q_EMIT aboutToHide(menu);
+            });
         }
         else if (widget->inherits("QToolBar")) {
             widget->addAction(action());
@@ -471,6 +479,14 @@ void ActionGroup::addTo(QWidget *widget)
             auto menu = new QMenu(tb);
             menu->addActions(acts);
             tb->setMenu(menu);
+
+            QObject::connect(menu, &QMenu::aboutToShow, [this, menu]() {
+                Q_EMIT aboutToShow(menu);
+            });
+
+            QObject::connect(menu, &QMenu::aboutToHide, [this, menu]() {
+                Q_EMIT aboutToHide(menu);
+            });
         }
         else {
             widget->addActions(groupAction()->actions()); // no drop-down
@@ -1145,6 +1161,8 @@ void RecentMacrosAction::setFiles(const QStringList& files)
     QList<QAction*> recentFiles = groupAction()->actions();
 
     int numRecentFiles = std::min<int>(recentFiles.count(), files.count());
+    QStringList existingCommands;
+    auto accel_col = QString::fromStdString(shortcut_modifiers);
     for (int index = 0; index < numRecentFiles; index++) {
         QFileInfo fi(files[index]);
         recentFiles[index]->setText(QString::fromLatin1("%1 %2").arg(index+1).arg(fi.baseName()));
@@ -1157,9 +1175,8 @@ void RecentMacrosAction::setFiles(const QStringList& files)
             auto check = Application::Instance->commandManager().checkAcceleratorForConflicts(qPrintable(accel_tmp));
             if (check) {
                 recentFiles[index]->setShortcut(QKeySequence());
-                auto msg = QStringLiteral("Recent macros : keyboard shortcut %1 disabled because conflicting with %2")
-                                                            .arg(accel_tmp, QLatin1String(check->getName()));
-                Base::Console().Warning("%s\n", qPrintable(msg));
+                accel_col.append(accel_tmp);
+                existingCommands.append(QLatin1String(check->getName()));
             }
             else {
                 accel = accel_tmp;
@@ -1176,6 +1193,21 @@ void RecentMacrosAction::setFiles(const QStringList& files)
         recentFiles[index]->setVisible(false);
         recentFiles[index]->setText(QString());
         recentFiles[index]->setToolTip(QString());
+    }
+    // Raise a single warning no matter how many conflicts
+    if (!existingCommands.isEmpty()) {
+        auto msgMain = QStringLiteral("Recent macros : keyboard shortcut(s)");
+        for (int index = 0; index < accel_col.count(); index++) {
+            msgMain = msgMain + QStringLiteral(" %1").arg(accel_col[index]);
+        }
+        msgMain = msgMain + QStringLiteral(" disabled because of conflicts with");
+        for (int index = 0; index < existingCommands.count(); index++) {
+            msgMain = msgMain + QStringLiteral(" %1").arg(existingCommands[index]);
+        }
+        msgMain = msgMain + QStringLiteral(" respectively.\nHint: In Preferences -> Macros -> Recent Macros -> Keyboard Modifiers"
+                                           " this should be Ctrl+Shift+ by default, if this is now blank then you should revert"
+                                           " it back to Ctrl+Shift+ by pressing both keys at the same time.");
+        Base::Console().Warning("%s\n", qPrintable(msgMain));
     }
 }
 

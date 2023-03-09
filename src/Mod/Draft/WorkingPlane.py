@@ -863,7 +863,7 @@ class Plane:
             A placement, comprised of a `Base` (`Base::Vector3`),
             and a `Rotation` (`Base::Rotation`).
         """
-        m = DraftVecUtils.getPlaneRotation(self.u, self.v, self.axis)
+        m = DraftVecUtils.getPlaneRotation(self.u, self.v)
         p = FreeCAD.Placement(m)
         # Arch active container
         if FreeCAD.GuiUp:
@@ -892,17 +892,10 @@ class Plane:
             and a `Rotation` (`Base::Rotation`).
         """
         if rotated:
-            m = FreeCAD.Matrix(
-                self.u.x, self.axis.x, -self.v.x, self.position.x,
-                self.u.y, self.axis.y, -self.v.y, self.position.y,
-                self.u.z, self.axis.z, -self.v.z, self.position.z,
-                0.0, 0.0, 0.0, 1.0)
+            m = DraftVecUtils.getPlaneRotation(self.u, self.v)
         else:
-            m = FreeCAD.Matrix(
-                self.u.x, self.v.x, self.axis.x, self.position.x,
-                self.u.y, self.v.y, self.axis.y, self.position.y,
-                self.u.z, self.v.z, self.axis.z, self.position.z,
-                0.0, 0.0, 0.0, 1.0)
+            m = DraftVecUtils.getPlaneRotation(self.u, self.v)
+        m.move(self.position)
         p = FreeCAD.Placement(m)
         # Arch active container if based on App Part
         # if FreeCAD.GuiUp:

@@ -21,7 +21,6 @@
 # *                                                                         *
 # ***************************************************************************
 
-from __future__ import print_function
 
 TOOLTIP = """
 Dumper is an extremely simple postprocessor file for the Path workbench. It is used

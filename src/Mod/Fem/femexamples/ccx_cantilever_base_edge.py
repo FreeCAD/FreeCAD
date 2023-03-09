@@ -76,7 +76,7 @@ def setup_cantilever_base_edge(doc=None, solvertype="ccxtools"):
         solver_obj = ObjectsFem.makeSolverMystran(doc, "SolverMystran")
     else:
         FreeCAD.Console.PrintWarning(
-            "Not known or not supported solver type: {}. "
+            "Unknown or unsupported solver type: {}. "
             "No solver object was created.\n".format(solvertype)
         )
     if solvertype == "calculix" or solvertype == "ccxtools":

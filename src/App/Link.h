@@ -332,6 +332,8 @@ public:
      * Multiple options can be combined by bitwise or operator
      */
     enum class OnChangeCopyOptions {
+        /// No options set
+        None = 0,
         /// If set, then exclude the input from object list to copy on change, or else, include the input object.
         Exclude = 1,
         /// If set , then apply the setting to all links to the input object, or else, apply only to this link.

@@ -1042,16 +1042,15 @@ class _Stairs(ArchComponent.Component):
             self.pseudosteps.append(step)
 
         # structure
-        lProfile = []
         struct = None
         p1 = p1.add(DraftVecUtils.neg(vNose))
         p2 = p1.add(Vector(0,0,-(abs(fHeight) - obj.TreadThickness.Value)))
-        p3 = p1.add(vLength)
-        p4 = p3.add(Vector(0,0,-(abs(fHeight) - obj.TreadThickness.Value)))
+        p3 = p2.add(vLength)
+        p4 = p1.add(vLength)
 
         if obj.Structure == "Massive":
             if obj.StructureThickness.Value:
-                struct = Part.Face(Part.makePolygon([p1,p2,p4,p3,p1]))
+                struct = Part.Face(Part.makePolygon([p1,p2,p3,p4,p1]))
                 evec = vWidth
                 mvec = FreeCAD.Vector(0,0,0)
                 if obj.StructureOffset.Value:
@@ -1064,19 +1063,24 @@ class _Stairs(ArchComponent.Component):
                 struct = struct.extrude(evec)
         elif obj.Structure in ["One stringer","Two stringers"]:
             if obj.StringerWidth.Value and obj.StructureThickness.Value:
-                p1b = p1.add(Vector(0,0,-fHeight))
                 reslength = fHeight/math.tan(a)
-                p1c = p1.add(DraftVecUtils.scaleTo(vLength,reslength))
-                p5b = None
-                p5c = None
-                if obj.TreadThickness.Value and p5:
-                    reslength = obj.StructureThickness.Value/math.sin(a)
-                    p5b = p5.add(DraftVecUtils.scaleTo(vLength,-reslength))
+                p1b = p1.add(DraftVecUtils.scaleTo(vLength,reslength))
+                p1c = p1.add(Vector(0,0,-fHeight))
+                reslength = obj.StructureThickness.Value/math.cos(a)
+                p1d = p1c.add(Vector(0,0,-reslength))
+                reslength = obj.StructureThickness.Value*math.tan(a/2)
+                p2 = p1b.add(DraftVecUtils.scaleTo(vLength,reslength)).add(Vector(0,0,-obj.StructureThickness.Value))
+                p3 = p4.add(DraftVecUtils.scaleTo(vLength,reslength)).add(Vector(0,0,-obj.StructureThickness.Value))
+                if obj.TreadThickness.Value:
                     reslength = obj.TreadThickness.Value/math.tan(a)
-                    p5c = p5b.add(DraftVecUtils.scaleTo(vLength,-reslength)).add(Vector(0,0,-obj.TreadThickness.Value))
-                    pol = Part.Face(Part.makePolygon([p1c,p1b,p2,p3,p4,p5,p5b,p5c,p1c]))
+                    p3c = p4.add(DraftVecUtils.scaleTo(vLength,reslength)).add(Vector(0,0,obj.TreadThickness.Value))
+                    reslength = obj.StructureThickness.Value/math.sin(a)
+                    p3b = p3c.add(DraftVecUtils.scaleTo(vLength,reslength))
+                    pol = Part.Face(Part.makePolygon([p1b,p1c,p1d,p2,p3,p3b,p3c,p4,p1b]))
                 else:
-                    pol = Part.Face(Part.makePolygon([p1c,p1b,p2,p3,p4,p5,p1c]))
+                    reslength = obj.StructureThickness.Value/math.sin(a)
+                    p3b = p4.add(DraftVecUtils.scaleTo(vLength,reslength))
+                    pol = Part.Face(Part.makePolygon([p1b,p1c,p1d,p2,p3,p3b,p1b]))
                 evec = DraftVecUtils.scaleTo(vWidth,obj.StringerWidth.Value)
                 if obj.Structure == "One stringer":
                     if obj.StructureOffset.Value:
@@ -1331,29 +1335,25 @@ class _Stairs(ArchComponent.Component):
         if obj.NumberOfSteps < 2:
             print("Fewer than 2 steps, unable to create/update stairs")
             return
-        v = DraftGeomUtils.vec(edge)
 
+        v = DraftGeomUtils.vec(edge)
+        v_proj = Vector(v.x, v.y, 0) # Projected on XY plane.
         landing = 0
         if obj.TreadDepthEnforce == 0:
             if obj.Landings == "At center" and obj.NumberOfSteps > 3:
                 if obj.LandingDepth:
-                    reslength = edge.Length - obj.LandingDepth.Value
+                    reslength = v_proj.Length - obj.LandingDepth.Value
                 else:
-                    reslength = edge.Length - obj.Width.Value
-
+                    reslength = v_proj.Length - obj.Width.Value
                 treadDepth = reslength/(obj.NumberOfSteps-2)
-                obj.TreadDepth = treadDepth
-                vLength = DraftVecUtils.scaleTo(v,treadDepth)
             else:
-                reslength = edge.Length
+                reslength = v_proj.Length
                 treadDepth = reslength/(obj.NumberOfSteps-1)
-                obj.TreadDepth = treadDepth
-                vLength = DraftVecUtils.scaleTo(v,treadDepth)
+            obj.TreadDepth = treadDepth
+            vLength = DraftVecUtils.scaleTo(v_proj,treadDepth)
         else:
             obj.TreadDepth = obj.TreadDepthEnforce
-
-            vLength = DraftVecUtils.scaleTo(v,float(obj.TreadDepthEnforce))
-        vLength = Vector(vLength.x,vLength.y,0)
+            vLength = DraftVecUtils.scaleTo(v_proj,obj.TreadDepthEnforce.Value)
 
         vWidth = DraftVecUtils.scaleTo(vLength.cross(Vector(0,0,1)),obj.Width.Value)
         p1 = edge.Vertexes[0].Point

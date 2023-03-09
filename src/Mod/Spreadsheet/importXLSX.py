@@ -20,7 +20,6 @@
 #*   USA                                                                   *
 #***************************************************************************/
 
-from __future__ import print_function
 
 __title__  = "FreeCAD Spreadsheet Workbench - XLSX importer"
 __author__ = "Ulrich Brammer <ulrich1a@users.sourceforge.net>"

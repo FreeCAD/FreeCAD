@@ -38,9 +38,9 @@ import os
 class TaskHoleShaftFit:
     def __init__(self,sel):
 
-        loose = QT_TRANSLATE_NOOP("TechDraw_HoleShaftFit", "loose")
-        snug = QT_TRANSLATE_NOOP("TechDraw_HoleShaftFit", "snug")
-        press = QT_TRANSLATE_NOOP("TechDraw_HoleShaftFit", "press")
+        loose = QT_TRANSLATE_NOOP("TechDraw_HoleShaftFit", "loose fit")
+        snug = QT_TRANSLATE_NOOP("TechDraw_HoleShaftFit", "snug fit")
+        press = QT_TRANSLATE_NOOP("TechDraw_HoleShaftFit", "press fit")
         self.isHole = True
         self.sel = sel
         self.holeValues = [["h9","D10",loose],["h9","E9",loose],["h9","F8",loose],["h6","G7",loose],
@@ -69,7 +69,7 @@ class TaskHoleShaftFit:
         for value in self.holeValues:
             self.form.cbField.addItem(value[1])
         self.form.lbBaseField.setText('             '+self.holeValues[0][0]+" /")
-        self.form.lbFitType.setText(self.holeValues[0][2]+" fit")
+        self.form.lbFitType.setText(self.holeValues[0][2])
 
     def setShaftFields(self):
         '''set shaft fields in the combo box'''
@@ -78,7 +78,7 @@ class TaskHoleShaftFit:
         for value in self.shaftValues:
             self.form.cbField.addItem(value[1])
         self.form.lbBaseField.setText('             '+self.shaftValues[0][0]+" /")
-        self.form.lbFitType.setText(self.shaftValues[0][2]+" fit")
+        self.form.lbFitType.setText(self.shaftValues[0][2])
 
     def on_HoleShaftChanged(self,isHole):
         '''slot: change the used base fit hole/shaft'''
@@ -94,10 +94,10 @@ class TaskHoleShaftFit:
         currentIndex = self.form.cbField.currentIndex()
         if self.isHole:
             self.form.lbBaseField.setText('             '+self.shaftValues[currentIndex][0]+" /")
-            self.form.lbFitType.setText(self.shaftValues[currentIndex][2]+" fit")
+            self.form.lbFitType.setText(self.shaftValues[currentIndex][2])
         else:
             self.form.lbBaseField.setText('             '+self.holeValues[currentIndex][0]+" /")
-            self.form.lbFitType.setText(self.holeValues[currentIndex][2]+" fit")
+            self.form.lbFitType.setText(self.holeValues[currentIndex][2])
 
     def accept(self):
         '''slot: OK pressed'''
@@ -178,6 +178,11 @@ class ISO286:
         if fieldChar == 'H':
             self.upperValue = -self.lowerValue
             self.lowerValue = 0
+        # hack to print zero tolerance value as (+0.000)
+        if self.upperValue == 0:
+            self.upperValue = 0.1
+        if self.lowerValue == 0:
+            self.lowerValue = 0.1
 
     def getValues(self):
         '''return range values in mm'''

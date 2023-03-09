@@ -209,7 +209,7 @@ Do you want to continue?</source>
       <location filename="../../Command.cpp" line="340"/>
       <location filename="../../Command.cpp" line="786"/>
       <source>Cannot create a project because there is no template installed.</source>
-      <translation>Немагчыма стварыць праект, так як шаблоны не ўсталяваны.</translation>
+      <translation>Не атрымалася стварыць праект, так як шаблоны не ўсталяваны.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="771"/>

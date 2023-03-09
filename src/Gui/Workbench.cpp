@@ -226,14 +226,15 @@ void Workbench::setName(const std::string& name)
 void Workbench::setupCustomToolbars(ToolBarItem* root, const char* toolbar) const
 {
     std::string name = this->name();
-    ParameterGrp::handle hGrp = App::GetApplication().GetUserParameter().GetGroup("BaseApp")
-        ->GetGroup("Workbench");
+    const auto workbenchGroup {
+        App::GetApplication().GetUserParameter().GetGroup("BaseApp")->GetGroup("Workbench")
+    };
     // workbench specific custom toolbars
-    if (hGrp->HasGroup(name.c_str())) {
-        hGrp = hGrp->GetGroup(name.c_str());
-        if (hGrp->HasGroup(toolbar)) {
-            hGrp = hGrp->GetGroup(toolbar);
-            setupCustomToolbars(root, hGrp);
+    if (workbenchGroup->HasGroup(name.c_str())) {
+        const auto customGroup = workbenchGroup->GetGroup(name.c_str());
+        if (customGroup->HasGroup(toolbar)) {
+            const auto customToolbarGroup = customGroup->GetGroup(toolbar);
+            setupCustomToolbars(root, customToolbarGroup);
         }
     }
 
@@ -243,18 +244,16 @@ void Workbench::setupCustomToolbars(ToolBarItem* root, const char* toolbar) cons
     }
 
     // application-wide custom toolbars
-    hGrp = App::GetApplication().GetUserParameter().GetGroup("BaseApp")
-        ->GetGroup("Workbench");
-    if (hGrp->HasGroup("Global")) {
-        hGrp = hGrp->GetGroup("Global");
-        if (hGrp->HasGroup(toolbar)) {
-            hGrp = hGrp->GetGroup(toolbar);
-            setupCustomToolbars(root, hGrp);
+    if (workbenchGroup->HasGroup("Global")) {
+        const auto globalGroup = workbenchGroup->GetGroup("Global");
+        if (globalGroup->HasGroup(toolbar)) {
+            const auto customToolbarGroup = globalGroup->GetGroup(toolbar);
+            setupCustomToolbars(root, customToolbarGroup);
         }
     }
 }
 
-void Workbench::setupCustomToolbars(ToolBarItem* root, const Base::Reference<ParameterGrp>& hGrp) const
+void Workbench::setupCustomToolbars(ToolBarItem* root, const Base::Reference<ParameterGrp> hGrp) const
 {
     std::vector<Base::Reference<ParameterGrp> > hGrps = hGrp->GetGroups();
     CommandManager& rMgr = Application::Instance->commandManager();
@@ -759,10 +758,19 @@ ToolBarItem* StdWorkbench::setupToolBars() const
     // File
     auto file = new ToolBarItem( root );
     file->setCommand("File");
-    *file << "Std_New" << "Std_Open" << "Std_Save" << "Separator"
-          << "Std_Undo" << "Std_Redo" << "Separator"
-          << "Std_Refresh" << "Separator" << "Std_WhatsThis";
+    *file << "Std_New" << "Std_Open" << "Std_Save";
 
+    // Edit
+    auto edit = new ToolBarItem( root );
+    edit->setCommand("Edit");
+    *edit << "Std_Undo" << "Std_Redo"
+          << "Separator" << "Std_Refresh";
+    
+    // Clipboard
+    auto clipboard = new ToolBarItem( root , ToolBarItem::HideStyle::HIDDEN );
+    clipboard->setCommand("Clipboard");
+    *clipboard << "Std_Cut" << "Std_Copy" << "Std_Paste";
+    
     // Workbench switcher
     if (WorkbenchSwitcher::isToolbar(WorkbenchSwitcher::getValue())) {
         auto wb = new ToolBarItem(root);
@@ -790,6 +798,11 @@ ToolBarItem* StdWorkbench::setupToolBars() const
     structure->setCommand("Structure");
     *structure << "Std_Part" << "Std_Group" << "Std_LinkMake" << "Std_LinkActions";
 
+    // Help
+    auto help = new ToolBarItem( root );
+    help->setCommand("Help");
+    *help << "Std_WhatsThis";
+    
     return root;
 }
 

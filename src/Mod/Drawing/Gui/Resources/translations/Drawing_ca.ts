@@ -17,7 +17,7 @@
       <location filename="../../Command.cpp" line="477"/>
       <location filename="../../Command.cpp" line="479"/>
       <source>Inserts an Annotation view in the active drawing</source>
-      <translation>Inserta una nota en el dibuix actiu</translation>
+      <translation>Insereix una nota en el dibuix actiu</translation>
     </message>
   </context>
   <context>
@@ -30,13 +30,13 @@
     <message>
       <location filename="../../Command.cpp" line="524"/>
       <source>&amp;Clip</source>
-      <translation>&amp;Clip</translation>
+      <translation>&amp;Retalla</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="525"/>
       <location filename="../../Command.cpp" line="527"/>
       <source>Inserts a clip group in the active drawing</source>
-      <translation>Insereix un clip de grupo en l'actual dibuix</translation>
+      <translation>Insereix un grup de retall al full de disseny actiu</translation>
     </message>
   </context>
   <context>
@@ -55,7 +55,7 @@
       <location filename="../../Command.cpp" line="716"/>
       <location filename="../../Command.cpp" line="718"/>
       <source>Inserts a Draft view of the selected object(s) in the active drawing</source>
-      <translation>Inserta una vista de croquis del(s) objete(s) seleccionat(s) en el dibuix actiu</translation>
+      <translation>Insereix una vista de croquis de l'objecte o objectes seleccionats en el dibuix actiu</translation>
     </message>
   </context>
   <context>
@@ -74,7 +74,7 @@
       <location filename="../../Command.cpp" line="627"/>
       <location filename="../../Command.cpp" line="629"/>
       <source>Export a page to an SVG file</source>
-      <translation>Exportar una pàgina a un arxiu SVG</translation>
+      <translation>Exporta una pàgina a un arxiu SVG</translation>
     </message>
   </context>
   <context>
@@ -120,7 +120,7 @@
     <message>
       <location filename="../../Command.cpp" line="310"/>
       <source>Insert a new View of a Part in the active drawing</source>
-      <translation>Insertar una nueva Vista de una Pieza en el dibujo activo</translation>
+      <translation>Insereix una nova Vista d'una Part en el dibuix actiu</translation>
     </message>
   </context>
   <context>
@@ -133,7 +133,7 @@
     <message>
       <location filename="../../Command.cpp" line="59"/>
       <source>Open SVG...</source>
-      <translation>Obrir SVG...</translation>
+      <translation>Obre SVG...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="60"/>
@@ -151,7 +151,7 @@
     <message>
       <location filename="../../Command.cpp" line="438"/>
       <source>Open &amp;browser view</source>
-      <translation>Obrir &amp;vista de navegador</translation>
+      <translation>O&amp;bre una vista de navegador</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="439"/>
@@ -270,7 +270,7 @@
     <message>
       <location filename="../../DrawingView.cpp" line="269"/>
       <source>Open SVG File</source>
-      <translation>Obrir arxiu SVG</translation>
+      <translation>Obre un fitxer SVG</translation>
     </message>
     <message>
       <location filename="../../DrawingView.cpp" line="270"/>
@@ -354,12 +354,12 @@ Do you want to continue?</source>
     <message>
       <location filename="../../DrawingView.cpp" line="601"/>
       <source>Opening file failed</source>
-      <translation>No s'ha pogut obrir l'arxiu</translation>
+      <translation>No s'ha pogut obrir el fitxer</translation>
     </message>
     <message>
       <location filename="../../DrawingView.cpp" line="602"/>
       <source>Can't open file '%1' for writing.</source>
-      <translation>No s'ha pogut obrir l'arxiu '%1' per escriure-hi.</translation>
+      <translation>No s'ha pogut obrir el fitxer '%1' per escriure-hi.</translation>
     </message>
   </context>
   <context>
@@ -367,7 +367,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskOrthoViews.ui" line="26"/>
       <source>Orthographic Projection</source>
-      <translation>Projecció ortogràfica</translation>
+      <translation>Projecció ortogonal</translation>
     </message>
     <message>
       <location filename="../../TaskOrthoViews.ui" line="34"/>
@@ -377,12 +377,12 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskOrthoViews.ui" line="45"/>
       <source>Third Angle</source>
-      <translation>Tercer Angle</translation>
+      <translation>Tercer angle</translation>
     </message>
     <message>
       <location filename="../../TaskOrthoViews.ui" line="50"/>
       <source>First Angle</source>
-      <translation>Primer Angle</translation>
+      <translation>Primer angle</translation>
     </message>
     <message>
       <location filename="../../TaskOrthoViews.ui" line="62"/>
@@ -715,7 +715,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../Command.cpp" line="401"/>
       <source>Select exactly one Part object.</source>
-      <translation>Seleccioneu exactament part de objecte.</translation>
+      <translation>Seleccioneu exactament part de l'objecte.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="451"/>
@@ -736,7 +736,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../Command.cpp" line="759"/>
       <source>Select exactly one Spreadsheet object.</source>
-      <translation>Seleccioneu exactament un objecte de full de càlcul.</translation>
+      <translation>Selecciona exactament un objecte de full de càlcul.</translation>
     </message>
     <message>
       <location filename="../../TaskOrthoViews.cpp" line="46"/>
@@ -754,7 +754,7 @@ Do you want to continue?</source>
       <location filename="../../TaskOrthoViews.cpp" line="48"/>
       <location filename="../../TaskOrthoViews.cpp" line="971"/>
       <source>Make orthographic</source>
-      <translation>Fer ortogràfiques</translation>
+      <translation>Fer ortogonals</translation>
     </message>
     <message>
       <location filename="../../ViewProviderPage.cpp" line="141"/>

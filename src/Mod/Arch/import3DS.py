@@ -19,7 +19,6 @@
 #*                                                                         *
 #***************************************************************************
 
-from __future__ import print_function
 import os,FreeCAD,Mesh
 
 __title__  = "FreeCAD 3DS importer"

@@ -132,7 +132,7 @@ QPainterPath QGIViewPart::geomToPainterPath(BaseGeomPtr baseGeom, double rot)
     if (!baseGeom)
         return path;
 
-    switch (baseGeom->geomType) {
+    switch (baseGeom->getGeomType()) {
         case CIRCLE: {
             TechDraw::CirclePtr geom = std::static_pointer_cast<TechDraw::Circle>(baseGeom);
 
@@ -144,7 +144,7 @@ QPainterPath QGIViewPart::geomToPainterPath(BaseGeomPtr baseGeom, double rot)
         } break;
         case ARCOFCIRCLE: {
             TechDraw::AOCPtr geom = std::static_pointer_cast<TechDraw::AOC>(baseGeom);
-            if (baseGeom->reversed) {
+            if (baseGeom->getReversed()) {
                 path.moveTo(Rez::guiX(geom->endPnt.x), Rez::guiX(geom->endPnt.y));
                 pathArc(path, Rez::guiX(geom->radius), Rez::guiX(geom->radius), 0., geom->largeArc,
                         !geom->cw, Rez::guiX(geom->startPnt.x), Rez::guiX(geom->startPnt.y),
@@ -174,7 +174,7 @@ QPainterPath QGIViewPart::geomToPainterPath(BaseGeomPtr baseGeom, double rot)
         } break;
         case TechDraw::ARCOFELLIPSE: {
             TechDraw::AOEPtr geom = std::static_pointer_cast<TechDraw::AOE>(baseGeom);
-            if (baseGeom->reversed) {
+            if (baseGeom->getReversed()) {
                 path.moveTo(Rez::guiX(geom->endPnt.x), Rez::guiX(geom->endPnt.y));
                 pathArc(path, Rez::guiX(geom->major), Rez::guiX(geom->minor), geom->angle,
                         geom->largeArc, !geom->cw, Rez::guiX(geom->startPnt.x),
@@ -192,7 +192,7 @@ QPainterPath QGIViewPart::geomToPainterPath(BaseGeomPtr baseGeom, double rot)
         case TechDraw::BEZIER: {
             TechDraw::BezierSegmentPtr geom =
                 std::static_pointer_cast<TechDraw::BezierSegment>(baseGeom);
-            if (baseGeom->reversed) {
+            if (baseGeom->getReversed()) {
                 if (!geom->pnts.empty()) {
                     Base::Vector3d rStart = geom->pnts.back();
                     path.moveTo(Rez::guiX(rStart.x), Rez::guiX(rStart.y));
@@ -248,7 +248,7 @@ QPainterPath QGIViewPart::geomToPainterPath(BaseGeomPtr baseGeom, double rot)
         } break;
         case TechDraw::BSPLINE: {
             TechDraw::BSplinePtr geom = std::static_pointer_cast<TechDraw::BSpline>(baseGeom);
-            if (baseGeom->reversed) {
+            if (baseGeom->getReversed()) {
                 // Move painter to the end of our last segment
                 std::vector<TechDraw::BezierSegment>::const_reverse_iterator it =
                     geom->segments.rbegin();
@@ -311,7 +311,7 @@ QPainterPath QGIViewPart::geomToPainterPath(BaseGeomPtr baseGeom, double rot)
         } break;
         case TechDraw::GENERIC: {
             TechDraw::GenericPtr geom = std::static_pointer_cast<TechDraw::Generic>(baseGeom);
-            if (baseGeom->reversed) {
+            if (baseGeom->getReversed()) {
                 if (!geom->points.empty()) {
                     Base::Vector3d rStart = geom->points.back();
                     path.moveTo(Rez::guiX(rStart.x), Rez::guiX(rStart.y));
@@ -331,7 +331,7 @@ QPainterPath QGIViewPart::geomToPainterPath(BaseGeomPtr baseGeom, double rot)
         } break;
         default: {
             Base::Console().Error("Error - geomToPainterPath - UNKNOWN geomType: %d\n",
-                                  baseGeom->geomType);
+                                  static_cast<int>(baseGeom->getGeomType()));
         } break;
     }//sb end of switch
 
@@ -488,20 +488,20 @@ void QGIViewPart::drawViewPart()
     QGIEdge* item;
     for (int i = 0; itGeom != geoms.end(); itGeom++, i++) {
         bool showEdge = false;
-        if ((*itGeom)->hlrVisible) {
-            if (((*itGeom)->classOfEdge == ecHARD) || ((*itGeom)->classOfEdge == ecOUTLINE)
-                || (((*itGeom)->classOfEdge == ecSMOOTH) && viewPart->SmoothVisible.getValue())
-                || (((*itGeom)->classOfEdge == ecSEAM) && viewPart->SeamVisible.getValue())
-                || (((*itGeom)->classOfEdge == ecUVISO) && viewPart->IsoVisible.getValue())) {
+        if ((*itGeom)->getHlrVisible()) {
+            if (((*itGeom)->getClassOfEdge()  == ecHARD) || ((*itGeom)->getClassOfEdge()  == ecOUTLINE)
+                || (((*itGeom)->getClassOfEdge()  == ecSMOOTH) && viewPart->SmoothVisible.getValue())
+                || (((*itGeom)->getClassOfEdge()  == ecSEAM) && viewPart->SeamVisible.getValue())
+                || (((*itGeom)->getClassOfEdge()  == ecUVISO) && viewPart->IsoVisible.getValue())) {
                 showEdge = true;
             }
         }
         else {
-            if ((((*itGeom)->classOfEdge == ecHARD) && (viewPart->HardHidden.getValue()))
-                || (((*itGeom)->classOfEdge == ecOUTLINE) && (viewPart->HardHidden.getValue()))
-                || (((*itGeom)->classOfEdge == ecSMOOTH) && (viewPart->SmoothHidden.getValue()))
-                || (((*itGeom)->classOfEdge == ecSEAM) && (viewPart->SeamHidden.getValue()))
-                || (((*itGeom)->classOfEdge == ecUVISO) && (viewPart->IsoHidden.getValue()))) {
+            if ((((*itGeom)->getClassOfEdge()  == ecHARD) && (viewPart->HardHidden.getValue()))
+                || (((*itGeom)->getClassOfEdge()  == ecOUTLINE) && (viewPart->HardHidden.getValue()))
+                || (((*itGeom)->getClassOfEdge()  == ecSMOOTH) && (viewPart->SmoothHidden.getValue()))
+                || (((*itGeom)->getClassOfEdge()  == ecSEAM) && (viewPart->SeamHidden.getValue()))
+                || (((*itGeom)->getClassOfEdge()  == ecUVISO) && (viewPart->IsoHidden.getValue()))) {
                 showEdge = true;
             }
         }
@@ -511,7 +511,7 @@ void QGIViewPart::drawViewPart()
             item->setWidth(lineWidth);
             item->setNormalColor(edgeColor);
             item->setStyle(Qt::SolidLine);
-            if ((*itGeom)->cosmetic) {
+            if ((*itGeom)->getCosmetic()) {
                 int source = (*itGeom)->source();
                 if (source == COSMETICEDGE) {
                     std::string cTag = (*itGeom)->getCosmeticTag();
@@ -541,12 +541,12 @@ void QGIViewPart::drawViewPart()
             item->setPos(0.0, 0.0);//now at group(0, 0)
             item->setPath(drawPainterPath(*itGeom));
             item->setZValue(ZVALUE::EDGE);
-            if (!(*itGeom)->hlrVisible) {
+            if (!(*itGeom)->getHlrVisible()) {
                 item->setWidth(lineWidthHid);
                 item->setHiddenEdge(true);
                 item->setZValue(ZVALUE::HIDEDGE);
             }
-            if ((*itGeom)->classOfEdge == ecUVISO) {
+            if ((*itGeom)->getClassOfEdge()  == ecUVISO) {
                 item->setWidth(lineWidthIso);
             }
             item->setPrettyNormal();
@@ -597,7 +597,7 @@ void QGIViewPart::drawViewPart()
     double cAdjust = vp->CenterScale.getValue();
 
     for (int i = 0; vert != verts.end(); ++vert, i++) {
-        if ((*vert)->isCenter) {
+        if ((*vert)->isCenter()) {
             if (showCenterMarks) {
                 QGICMark* cmItem = new QGICMark(i);
                 addToGroup(cmItem);
@@ -1257,8 +1257,8 @@ void QGIViewPart::dumpPath(const char* text, QPainterPath path)
             typeName = "CurveData";
         }
         Base::Console().Message(">>>>> element %d: type:%d/%s pos(%.3f, %.3f) M:%d L:%d C:%d\n",
-                                iElem, elem.type, typeName, elem.x, elem.y, elem.isMoveTo(),
-                                elem.isLineTo(), elem.isCurveTo());
+                                iElem, static_cast<int>(elem.type), typeName, elem.x, elem.y, static_cast<int>(elem.isMoveTo()),
+                                static_cast<int>(elem.isLineTo()), static_cast<int>(elem.isCurveTo()));
     }
 }
 

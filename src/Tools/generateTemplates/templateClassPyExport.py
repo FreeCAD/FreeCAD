@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 # (c) 2006 Juergen Riegel 
 
-from __future__ import print_function # this allows py2 to print(str1,str2) correctly
+
 from . import template
 import os,sys
 import generateBase.generateModel_Module
@@ -14,14 +14,8 @@ class TemplateClassPyExport (template.ModelTemplate):
         #self.Namespace = "Base"
         encoding = sys.getfilesystemencoding()
         path = self.path
-        if hasattr(path,"decode"): # this is python2. Otherwise this is unicode already
-            path = path.decode(encoding)
         exportName = self.export.Name
-        if hasattr(exportName,"decode"): # this is python2. Otherwise this is unicode already
-            exportName = exportName.decode(encoding)
         dirname = self.dirname
-        if hasattr(dirname,"decode"): # this is python2. Otherwise this is unicode already
-            dirname = dirname.decode(encoding)
         print("TemplateClassPyExport",path + exportName)
         # Imp.cpp must not exist, neither in path nor in dirname
         if(not os.path.exists(path + exportName + "Imp.cpp")):

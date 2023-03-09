@@ -71,14 +71,20 @@ EditModeGeometryCoinManager::~EditModeGeometryCoinManager()
 void EditModeGeometryCoinManager::processGeometry(const GeoListFacade & geolistfacade)
 {
     // enable all layers
-    editModeScenegraphNodes.PointsGroup->enable.setNum(geometryLayerParameters.CoinLayers);
-    editModeScenegraphNodes.CurvesGroup->enable.setNum(geometryLayerParameters.CoinLayers);
+    editModeScenegraphNodes.PointsGroup->enable.setNum(geometryLayerParameters.getCoinLayerCount());
+    editModeScenegraphNodes.CurvesGroup->enable.setNum(geometryLayerParameters.getCoinLayerCount());
     SbBool *swsp = editModeScenegraphNodes.PointsGroup->enable.startEditing();
     SbBool *swsc = editModeScenegraphNodes.CurvesGroup->enable.startEditing();
 
-    for(int l=0; l<geometryLayerParameters.CoinLayers; l++){
-        swsp[l] = true; // layer defaults to enabled
-        swsc[l] = true; // layer defaults to enabled
+    auto setEnableLayer = [swsp, swsc](int l, bool enabled) {
+        swsp[l] = enabled; // layer defaults to enabled
+        swsc[l] = enabled; // layer defaults to enabled
+    };
+
+    auto layersconfigurations = viewProvider.VisualLayerList.getValues();
+
+    for(auto l=0; l<geometryLayerParameters.getCoinLayerCount(); l++){
+        setEnableLayer(l,layersconfigurations[l].isVisible());
     }
 
     editModeScenegraphNodes.PointsGroup->enable.finishEditing();
@@ -152,7 +158,7 @@ void EditModeGeometryCoinManager::updateGeometryColor(const GeoListFacade & geol
     SbColor *crosscolor = editModeScenegraphNodes.RootCrossMaterials->diffuseColor.startEditing();
     auto viewOrientationFactor = ViewProviderSketchCoinAttorney::getViewOrientationFactor(viewProvider);
 
-    for(int l=0; l<geometryLayerParameters.CoinLayers; l++) {
+    for(auto l=0; l<geometryLayerParameters.getCoinLayerCount(); l++) {
 
         int PtNum = editModeScenegraphNodes.PointsMaterials[l]->diffuseColor.getNum();
         SbColor *pcolor = editModeScenegraphNodes.PointsMaterials[l]->diffuseColor.startEditing();
@@ -409,18 +415,58 @@ void EditModeGeometryCoinManager::updateGeometryColor(const GeoListFacade & geol
     editModeScenegraphNodes.RootCrossMaterials->diffuseColor.finishEditing();
 }
 
+void EditModeGeometryCoinManager::updateGeometryLayersConfiguration()
+{
+    // Several cases:
+    // 1) The number of layers have changed
+    // 2) The number of layers is the same, but the configuration needs to be updated
+
+    // TODO: Quite some room for improvement here:
+    geometryLayerParameters.setCoinLayerCount(viewProvider.VisualLayerList.getSize());
+
+    emptyGeometryRootNodes();
+    createEditModePointInventorNodes();
+    createEditModeCurveInventorNodes();
+}
+
+auto concat (std::string string, int i)
+{
+    return string+std::to_string(i);
+};
+
 
 void EditModeGeometryCoinManager::createEditModeInventorNodes()
+{
+    createGeometryRootNodes();
+
+    geometryLayerParameters.setCoinLayerCount(viewProvider.VisualLayerList.getSize());
+
+    createEditModePointInventorNodes();
+
+    createEditModeCurveInventorNodes();
+}
+
+void EditModeGeometryCoinManager::createGeometryRootNodes()
 {
     // stuff for the points ++++++++++++++++++++++++++++++++++++++
     editModeScenegraphNodes.PointsGroup = new SmSwitchboard;
     editModeScenegraphNodes.EditRoot->addChild(editModeScenegraphNodes.PointsGroup);
 
-    auto concat = [](std::string string, int i) {
-        return string+std::to_string(i);
-    };
+    // stuff for the Curves +++++++++++++++++++++++++++++++++++++++
+    editModeScenegraphNodes.CurvesGroup = new SmSwitchboard;
+    editModeScenegraphNodes.EditRoot->addChild(editModeScenegraphNodes.CurvesGroup);
 
-    for(int i=0; i < geometryLayerParameters.CoinLayers; i++) {
+}
+
+void EditModeGeometryCoinManager::emptyGeometryRootNodes()
+{
+    Gui::coinRemoveAllChildren(editModeScenegraphNodes.PointsGroup);
+    Gui::coinRemoveAllChildren(editModeScenegraphNodes.CurvesGroup);
+}
+
+void EditModeGeometryCoinManager::createEditModePointInventorNodes()
+{
+    for(int i=0; i < geometryLayerParameters.getCoinLayerCount(); i++) {
         SoSeparator * sep = new SoSeparator;
         sep->ref();
 
@@ -454,12 +500,13 @@ void EditModeGeometryCoinManager::createEditModeInventorNodes()
         editModeScenegraphNodes.PointsGroup->addChild(sep);
         sep->unref();
     }
+}
 
-    // stuff for the Curves +++++++++++++++++++++++++++++++++++++++
-    editModeScenegraphNodes.CurvesGroup = new SmSwitchboard;
-    editModeScenegraphNodes.EditRoot->addChild(editModeScenegraphNodes.CurvesGroup);
+void EditModeGeometryCoinManager::createEditModeCurveInventorNodes()
+{
+    auto layersconfigurations = viewProvider.VisualLayerList.getValue();
 
-    for(int i=0; i < geometryLayerParameters.CoinLayers; i++) {
+    for(int i=0; i < geometryLayerParameters.getCoinLayerCount(); i++) {
         SoSeparator * sep = new SoSeparator;
         sep->ref();
 
@@ -481,13 +528,10 @@ void EditModeGeometryCoinManager::createEditModeInventorNodes()
         auto drawstyle = new SoDrawStyle;
         editModeScenegraphNodes.CurvesDrawStyle.push_back(drawstyle);
         editModeScenegraphNodes.CurvesDrawStyle[i]->setName(concat("CurvesDrawStyle",i).c_str());
-        editModeScenegraphNodes.CurvesDrawStyle[i]->lineWidth = 3 * drawingParameters.pixelScalingFactor;
 
-        /* Demo code to introduce a dashed line
-           if(i == 1) {
-            editModeScenegraphNodes.CurvesDrawStyle[i]->linePattern = 0x3CF2;
-            editModeScenegraphNodes.CurvesDrawStyle[i]->linePatternScaleFactor = 5;
-        }*/
+        editModeScenegraphNodes.CurvesDrawStyle[i]->lineWidth = layersconfigurations[i].getLineWidth() * drawingParameters.pixelScalingFactor;
+        editModeScenegraphNodes.CurvesDrawStyle[i]->linePattern = layersconfigurations[i].getLinePattern();
+        editModeScenegraphNodes.CurvesDrawStyle[i]->linePatternScaleFactor = 5;
 
         sep->addChild(editModeScenegraphNodes.CurvesDrawStyle[i]);
 
@@ -499,5 +543,4 @@ void EditModeGeometryCoinManager::createEditModeInventorNodes()
         editModeScenegraphNodes.CurvesGroup->addChild(sep);
         sep->unref();
     }
-
 }

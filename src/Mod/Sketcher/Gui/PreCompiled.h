@@ -69,26 +69,10 @@
 #include <TopoDS_Vertex.hxx>
 
 // Qt
-#include <QApplication>
-#include <QContextMenuEvent>
-#include <QCursor>
-#include <QDebug>
-#include <QEvent>
-#include <QGuiApplication>
-#include <QInputDialog>
-#include <QKeyEvent>
-#include <QLocale>
-#include <QMenu>
-#include <QMessageBox>
-#include <QPainter>
-#include <QPixmapCache>
-#include <QRegularExpression>
-#include <QRegularExpressionMatch>
-#include <QScreen>
-#include <QShortcut>
-#include <QString>
-#include <QStyledItemDelegate>
-#include <QTextStream>
+#ifndef __QtAll__
+# include <Gui/QtAll.h>
+#endif
+
 #include <QWidgetAction>
 
 // all of Inventor

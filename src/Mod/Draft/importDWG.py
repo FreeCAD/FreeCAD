@@ -44,7 +44,6 @@ https://knowledge.autodesk.com/support/autocad/downloads/
 # *                                                                         *
 # ***************************************************************************
 
-import six
 import FreeCAD
 from FreeCAD import Console as FCC
 

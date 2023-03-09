@@ -20,7 +20,7 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************/
-from __future__ import print_function
+
 import FreeCAD
 from FreeCAD import Units
 import Path

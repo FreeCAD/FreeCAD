@@ -61,6 +61,7 @@ include_directories(
 )
 list(APPEND FreeCADBase_LIBS ${QtCore_LIBRARIES})
 
+list(APPEND FreeCADBase_LIBS fmt::fmt)
 
 if (BUILD_DYNAMIC_LINK_PYTHON)
     list(APPEND FreeCADBase_LIBS ${PYTHON_LIBRARIES})
@@ -222,8 +223,6 @@ SET(FreeCADBase_CPP_SRCS
     FileInfo.cpp
     FileTemplate.cpp
     FutureWatcherProgress.cpp
-    gzstream.cpp
-    gzstream.h
     GeometryPyCXX.cpp
     Handle.cpp
     InputSource.cpp
@@ -293,8 +292,6 @@ SET(FreeCADBase_HPP_SRCS
     FileInfo.h
     FileTemplate.h
     FutureWatcherProgress.h
-    fdstream.hpp
-    gzstream.h
     GeometryPyCXX.h
     Handle.h
     InputSource.h

@@ -2596,6 +2596,23 @@ Data::Segment* FemMesh::getSubElement(const char* /*Type*/, unsigned long /*n*/)
     return nullptr;
 }
 
+void FemMesh::getPoints(std::vector<Base::Vector3d> &Points,
+                        std::vector<Base::Vector3d> & /*Normals*/,
+                        double /*Accuracy*/, uint16_t /*flags*/) const
+{
+    const SMESHDS_Mesh* data = getSMesh()->GetMeshDS();
+    std::vector<Base::Vector3d> nodes;
+    nodes.reserve(data->NbNodes());
+
+    SMDS_NodeIteratorPtr aNodeIter = data->nodesIterator();
+    for (;aNodeIter->more();) {
+        const SMDS_MeshNode* aNode = aNodeIter->next();
+        nodes.emplace_back(aNode->X(), aNode->Y(), aNode->Z());
+    }
+
+    Points = transformPointsToOutside(nodes);
+}
+
 struct Fem::FemMesh::FemMeshInfo FemMesh::getInfo() const{
 
     struct FemMeshInfo rtrn;

@@ -282,6 +282,16 @@ std::string DocumentObject::getFullName() const {
     return name;
 }
 
+std::string DocumentObject::getFullLabel() const {
+    if(!getDocument())
+        return "?";
+
+    auto name = getDocument()->Label.getStrValue();
+    name += "#";
+    name += Label.getStrValue();
+    return name;
+}
+
 const char *DocumentObject::getNameInDocument() const
 {
     // Note: It can happen that we query the internal name of an object even if it is not

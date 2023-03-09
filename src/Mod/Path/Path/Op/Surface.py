@@ -21,8 +21,6 @@
 # ***************************************************************************
 
 
-from __future__ import print_function
-
 __title__ = "Path Surface Operation"
 __author__ = "sliptonic (Brad Collette)"
 __url__ = "https://www.freecadweb.org"

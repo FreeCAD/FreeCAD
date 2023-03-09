@@ -28,9 +28,6 @@ Internally it uses IfcOpenShell, which must be installed before using.
 #
 #  This module provides tools to export IFC files.
 
-from __future__ import print_function
-
-import six
 import os
 import time
 import tempfile

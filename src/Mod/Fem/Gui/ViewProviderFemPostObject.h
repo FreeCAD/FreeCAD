@@ -151,7 +151,7 @@ protected:
     vtkSmartPointer<vtkVertexGlyphFilter>       m_points, m_pointsSurface;
 
 private:
-    void filterArtifacts(vtkDataObject* data);
+    void filterArtifacts(vtkDataSet* data);
     void updateProperties();
     void update3D();
     void WritePointData(vtkPoints *points, vtkDataArray *normals,

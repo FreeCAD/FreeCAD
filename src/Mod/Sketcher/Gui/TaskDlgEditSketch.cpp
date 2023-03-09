@@ -41,7 +41,6 @@ TaskDlgEditSketch::TaskDlgEditSketch(ViewProviderSketch *sketchView)
     assert(sketchView);
     Constraints = new TaskSketcherConstraints(sketchView);
     Elements = new TaskSketcherElements(sketchView);
-    General = new TaskSketcherGeneral(sketchView);
     Messages = new TaskSketcherMessages(sketchView);
     SolverAdvanced = new TaskSketcherSolverAdvanced(sketchView);
 
@@ -54,10 +53,6 @@ TaskDlgEditSketch::TaskDlgEditSketch(ViewProviderSketch *sketchView)
         Content.push_back(SolverAdvanced);
     }
 
-    if (hGrp->GetBool("ShowSettingsWidget", true)) {
-        Content.push_back(General);
-    }
-
     Content.push_back(Constraints);
     Content.push_back(Elements);
 
@@ -65,8 +60,6 @@ TaskDlgEditSketch::TaskDlgEditSketch(ViewProviderSketch *sketchView)
         Messages->hideGroupBox();
     if (!hGrp->GetBool("ExpandedSolverAdvancedWidget",false))
         SolverAdvanced->hideGroupBox();
-    if (!hGrp->GetBool("ExpandedEditControlWidget",false))
-        General->hideGroupBox();
     if (!hGrp->GetBool("ExpandedConstraintsWidget",true))
         Constraints->hideGroupBox();
     if (!hGrp->GetBool("ExpandedElementsWidget",true))
@@ -80,10 +73,6 @@ TaskDlgEditSketch::~TaskDlgEditSketch()
     std::vector<QWidget*>::iterator it = std::find(Content.begin(), Content.end(), SolverAdvanced);
     if (it == Content.end())
         Content.push_back(SolverAdvanced);
-    // same thing for edit control panel
-    it = std::find(Content.begin(), Content.end(), General);
-    if (it == Content.end())
-        Content.push_back(General);
 }
 
 //==== calls from the TaskView ===============================================================
@@ -109,7 +98,6 @@ bool TaskDlgEditSketch::reject()
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
     hGrp->SetBool("ExpandedMessagesWidget",Messages->isGroupVisible());
     hGrp->SetBool("ExpandedSolverAdvancedWidget",SolverAdvanced->isGroupVisible());
-    hGrp->SetBool("ExpandedEditControlWidget",General->isGroupVisible());
     hGrp->SetBool("ExpandedConstraintsWidget",Constraints->isGroupVisible());
     hGrp->SetBool("ExpandedElementsWidget",Elements->isGroupVisible());
 

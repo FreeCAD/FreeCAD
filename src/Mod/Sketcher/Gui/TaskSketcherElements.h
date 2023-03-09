@@ -43,70 +43,17 @@ class Ui_TaskSketcherElements;
 
 
 
-// helper class to store additional information about the listWidget entry.
-class ElementItem : public QListWidgetItem
-{
-    public:
-
-    enum class GeometryState {
-        Normal,
-        Construction,
-        InternalAlignment,
-        External
-    };
-
-    // Struct to identify the selection/preselection of a subelement of the item
-    enum class SubElementType {
-        edge,
-        start,
-        end,
-        mid,
-        none
-    };
-
-    ElementItem(int elementnr, int startingVertex, int midVertex, int endVertex,
-        Base::Type geometryType, GeometryState state, const QString & lab) :
-        ElementNbr(elementnr)
-        , StartingVertex(startingVertex)
-        , MidVertex(midVertex)
-        , EndVertex(endVertex)
-        , GeometryType(std::move(geometryType))
-        , State(state)
-        , isLineSelected(false)
-        , isStartingPointSelected(false)
-        , isEndPointSelected(false)
-        , isMidPointSelected(false)
-        , clickedOn(SubElementType::none)
-        , hovered(SubElementType::none)
-        , rightClicked(false)
-        , label(lab)
-    {}
-
-    ~ElementItem() override {
-    }
-
-    int ElementNbr;
-    int StartingVertex;
-    int MidVertex;
-    int EndVertex;
-
-    Base::Type GeometryType;
-    GeometryState State;
-
-    bool isLineSelected;
-    bool isStartingPointSelected;
-    bool isEndPointSelected;
-    bool isMidPointSelected;
-
-
-    SubElementType clickedOn;
-    SubElementType hovered;
-    bool rightClicked;
-
-    QString label;
-};
-
+class ElementItem;
 class ElementView;
+
+// Struct to identify the selection/preselection of a subelement of the item
+enum class SubElementType {
+    edge,
+    start,
+    end,
+    mid,
+    none
+};
 
 class ElementItemDelegate : public QStyledItemDelegate
 {
@@ -122,10 +69,12 @@ public:
 
     const int border = 1; //1px, looks good around buttons.
     const int leftMargin = 4; //4px on the left of icons, looks good.
+    mutable int customIconsMargin = 4;
     const int textBottomMargin = 5; //5px center the text.
 
 Q_SIGNALS:
     void itemHovered(QModelIndex);
+    void itemChecked(QModelIndex, Qt::CheckState state);
 };
 
 class ElementView : public QListWidget
@@ -173,9 +122,13 @@ protected Q_SLOTS:
     void deleteSelectedItems();
 
     void onIndexHovered(QModelIndex index);
+    void onIndexChecked(QModelIndex, Qt::CheckState state);
 
 Q_SIGNALS:
     void onItemHovered(QListWidgetItem *);
+
+private:
+    void changeLayer(int layer);
 };
 
 class ElementFilterList : public QListWidget
@@ -247,7 +200,6 @@ protected:
     Connection connectionElementsChanged;
 
 private:
-    using SubElementType = ElementItem::SubElementType;
     QWidget* proxy;
     std::unique_ptr<Ui_TaskSketcherElements> ui;
     int focusItemIndex;

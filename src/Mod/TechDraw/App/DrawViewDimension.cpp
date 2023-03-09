@@ -591,7 +591,7 @@ pointPair DrawViewDimension::getPointsOneEdge(ReferenceVector references)
             ssMessage << getNameInDocument() << " can not find geometry for 2d reference (1)";
             throw Base::RuntimeError(ssMessage.str());
         }
-        if (geom->geomType != TechDraw::GeomType::GENERIC) {
+        if (geom->getGeomType() != TechDraw::GeomType::GENERIC) {
             std::stringstream ssMessage;
             ssMessage << getNameInDocument() << " 2d reference is a " << geom->geomTypeName();
             throw Base::RuntimeError(ssMessage.str());
@@ -635,7 +635,7 @@ pointPair DrawViewDimension::getPointsTwoEdges(ReferenceVector references)
             ssMessage << getNameInDocument() << " can not find geometry for 2d reference (2)";
             throw Base::RuntimeError(ssMessage.str());
         }
-        return closestPoints(geom0->occEdge, geom1->occEdge);
+        return closestPoints(geom0->getOCCEdge(), geom1->getOCCEdge());
     }
 
     //this is a 3d object
@@ -671,7 +671,7 @@ pointPair DrawViewDimension::getPointsTwoVerts(ReferenceVector references)
             throw Base::RuntimeError(ssMessage.str());
         }
 
-        return {v0->pnt, v1->pnt};
+        return {v0->point(), v1->point()};
     }
 
     //this is a 3d object
@@ -716,7 +716,7 @@ pointPair DrawViewDimension::getPointsEdgeVert(ReferenceVector references)
         if (!vertex || !edge) {
             throw Base::RuntimeError("Missing geometry for dimension (4)");
         }
-        return closestPoints(edge->occEdge, vertex->occVertex);
+        return closestPoints(edge->getOCCEdge(), vertex->getOCCVertex());
     }
 
     //this is a 3d object
@@ -772,12 +772,12 @@ arcPoints DrawViewDimension::arcPointsFromBaseGeom(TechDraw::BaseGeomPtr base)
     arcPoints pts;
     pts.center = Base::Vector3d(0.0, 0.0, 0.0);
     pts.radius = 0.0;
-    if ((base && base->geomType == TechDraw::GeomType::CIRCLE)
-        || (base && base->geomType == TechDraw::GeomType::ARCOFCIRCLE)) {
+    if ((base && base->getGeomType() == TechDraw::GeomType::CIRCLE)
+        || (base && base->getGeomType() == TechDraw::GeomType::ARCOFCIRCLE)) {
         circle = std::static_pointer_cast<TechDraw::Circle>(base);
         pts.center = Base::Vector3d(circle->center.x, circle->center.y, 0.0);
         pts.radius = circle->radius;
-        if (base->geomType == TechDraw::GeomType::ARCOFCIRCLE) {
+        if (base->getGeomType() == TechDraw::GeomType::ARCOFCIRCLE) {
             TechDraw::AOCPtr aoc = std::static_pointer_cast<TechDraw::AOC>(circle);
             pts.isArc = true;
             pts.onCurve.first(Base::Vector3d(aoc->midPnt.x, aoc->midPnt.y, 0.0));
@@ -794,8 +794,8 @@ arcPoints DrawViewDimension::arcPointsFromBaseGeom(TechDraw::BaseGeomPtr base)
                 pts.center + Base::Vector3d(-1, 0, 0) * circle->radius);//arbitrary point on edge
         }
     }
-    else if ((base && base->geomType == TechDraw::GeomType::ELLIPSE)
-             || (base && base->geomType == TechDraw::GeomType::ARCOFELLIPSE)) {
+    else if ((base && base->getGeomType() == TechDraw::GeomType::ELLIPSE)
+             || (base && base->getGeomType() == TechDraw::GeomType::ARCOFELLIPSE)) {
         TechDraw::EllipsePtr ellipse = std::static_pointer_cast<TechDraw::Ellipse>(base);
         if (ellipse->closed()) {
             double r1 = ellipse->minor;
@@ -826,14 +826,14 @@ arcPoints DrawViewDimension::arcPointsFromBaseGeom(TechDraw::BaseGeomPtr base)
                                + Base::Vector3d(-1, 0, 0) * rAvg);//arbitrary point on edge
         }
     }
-    else if (base && base->geomType == TechDraw::GeomType::BSPLINE) {
+    else if (base && base->getGeomType() == TechDraw::GeomType::BSPLINE) {
         TechDraw::BSplinePtr spline = std::static_pointer_cast<TechDraw::BSpline>(base);
         if (spline->isCircle()) {
             bool arc;
             double rad;
             Base::Vector3d center;
             //bool circ =
-            GeometryUtils::getCircleParms(spline->occEdge, rad, center, arc);
+            GeometryUtils::getCircleParms(spline->getOCCEdge(), rad, center, arc);
             pts.center = Base::Vector3d(center.x, center.y, 0.0);
             pts.radius = rad;
             pts.arcEnds.first(Base::Vector3d(spline->startPnt.x, spline->startPnt.y, 0.0));
@@ -980,13 +980,13 @@ anglePoints DrawViewDimension::getAnglePointsTwoEdges(ReferenceVector references
             ssMessage << getNameInDocument() << " can not find geometry for 2d reference (5)";
             throw Base::RuntimeError(ssMessage.str());
         }
-        if (geom0->geomType != TechDraw::GeomType::GENERIC) {
+        if (geom0->getGeomType() != TechDraw::GeomType::GENERIC) {
             std::stringstream ssMessage;
             ssMessage << getNameInDocument() << " first 2d reference is a "
                       << geom0->geomTypeName();
             throw Base::RuntimeError(ssMessage.str());
         }
-        if (geom1->geomType != TechDraw::GeomType::GENERIC) {
+        if (geom1->getGeomType() != TechDraw::GeomType::GENERIC) {
             std::stringstream ssMessage;
             ssMessage << getNameInDocument() << " second 2d reference is a "
                       << geom0->geomTypeName();
@@ -1436,13 +1436,13 @@ bool DrawViewDimension::leaderIntersectsArc(Base::Vector3d s, Base::Vector3d poi
     const std::vector<std::string>& subElements = References2D.getSubValues();
     int idx = DrawUtil::getIndexFromName(subElements[0]);
     TechDraw::BaseGeomPtr base = getViewPart()->getGeomByIndex(idx);
-    if (base && base->geomType == TechDraw::GeomType::ARCOFCIRCLE) {
+    if (base && base->getGeomType() == TechDraw::GeomType::ARCOFCIRCLE) {
         TechDraw::AOCPtr aoc = std::static_pointer_cast<TechDraw::AOC>(base);
         if (aoc->intersectsArc(s, pointOnCircle)) {
             result = true;
         }
     }
-    else if (base && base->geomType == TechDraw::GeomType::BSPLINE) {
+    else if (base && base->getGeomType() == TechDraw::GeomType::BSPLINE) {
         TechDraw::BSplinePtr spline = std::static_pointer_cast<TechDraw::BSpline>(base);
         if (spline->isCircle()) {
             if (spline->intersectsArc(s, pointOnCircle)) {

@@ -27,7 +27,6 @@
 # \brief Provides functions to return the SVG representation of text elements.
 
 import math
-import six
 
 import FreeCAD as App
 import draftutils.utils as utils

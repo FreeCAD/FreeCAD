@@ -43,7 +43,7 @@ def get_information():
         "constraints": ["electrostatic potential", "magnetization"],
         "solvers": ["elmer"],
         "material": "solid",
-        "equations": ["magnetodynamic"]
+        "equations": ["electromagnetic"]
     }
 
 def get_explanation(header=""):
@@ -111,7 +111,7 @@ def setup(doc=None, solvertype="elmer"):
         eq_electrostatic.LinearPreconditioning = "None"
     else:
         FreeCAD.Console.PrintWarning(
-            "Not known or not supported solver type: {}. "
+            "Unknown or unsupported solver type: {}. "
             "No solver object was created.\n".format(solvertype)
         )
     analysis.addObject(solver_obj)
@@ -123,11 +123,9 @@ def setup(doc=None, solvertype="elmer"):
     mat = material_obj.Material
     mat["Name"] = "Air"
     mat["Density"] = "1.204 kg/m^3"
-    mat["KinematicViscosity"] = "15.11 mm^2/s"
-    mat["VolumetricThermalExpansionCoefficient"] = "0.00 mm/m/K"
     mat["ThermalConductivity"] = "0.02587 W/m/K"
-    mat["ThermalExpansionCoefficient"] = "0.00343/K"
-    mat["SpecificHeat"] = "1010.00 J/kg/K"
+    mat["ThermalExpansionCoefficient"] = "3.43e-3 1/K"
+    mat["SpecificHeat"] = "1.01 kJ/kg/K"
     mat["ElectricalConductivity"] = "1e-12 S/m"
     mat["RelativePermeability"] = "1.0"
     mat["RelativePermittivity"] = "1.00059"
@@ -138,16 +136,16 @@ def setup(doc=None, solvertype="elmer"):
     # copper wire
     material_obj = ObjectsFem.makeMaterialSolid(doc, "Copper")
     mat = material_obj.Material
-    mat["Name"] = "Copper-Generic"
+    mat["Name"] = "Copper Generic"
     mat["Density"] = "8960 kg/m^3"
     mat["PoissonRatio"] = "0.343"
-    mat["ShearModulus"] = "46 GPa"
+    mat["ShearModulus"] = "46.0 GPa"
     mat["UltimateTensileStrength"] = "210 MPa"
     mat["YoungsModulus"] = "119 GPa"
-    mat["ThermalConductivity"] = "398 W/m/K"
+    mat["ThermalConductivity"] = "398.0 W/m/K"
     mat["ThermalExpansionCoefficient"] = "16.5 µm/m/K"
-    mat["SpecificHeat"] = "385 J/kg/K"
-    mat["ElectricalConductivity"] = "59590000 S/m"
+    mat["SpecificHeat"] = "385.0 J/kg/K"
+    mat["ElectricalConductivity"] = "59.59 MS/m"
     mat["RelativePermeability"] = "0.999994"
     material_obj.Material = mat
     material_obj.References = [(BooleanFragments, "Solid1")]

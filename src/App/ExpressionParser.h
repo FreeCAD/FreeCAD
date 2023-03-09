@@ -256,6 +256,7 @@ public:
         TAN,
         TANH,
         SQRT,
+        CBRT,
         COS,
         COSH,
         ATAN2,

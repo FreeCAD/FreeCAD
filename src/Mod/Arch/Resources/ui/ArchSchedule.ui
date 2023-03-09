@@ -118,10 +118,20 @@ Leave blank to use all objects from the document</string>
      <item>
       <widget class="Gui::PrefCheckBox" name="checkDetailed">
        <property name="toolTip">
-        <string>If this is turned on, additional lines will be filled with each object considered. If not, only the totals.</string>
+        <string>If this is enabled, additional lines will be filled with each object considered. If not, only the totals.</string>
        </property>
        <property name="text">
         <string>Detailed results</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="Gui::PrefCheckBox" name="checkAutoUpdate">
+       <property name="toolTip">
+        <string>If this is enabled, the schedule and the associated spreadsheet are updated whenever the document is recomputed.</string>
+       </property>
+       <property name="text">
+        <string>Auto update</string>
        </property>
       </widget>
      </item>

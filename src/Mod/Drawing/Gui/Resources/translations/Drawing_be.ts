@@ -361,7 +361,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../DrawingView.cpp" line="602"/>
       <source>Can't open file '%1' for writing.</source>
-      <translation>Немагчыма адчыніць файл '%1' для запісу.</translation>
+      <translation>Не атрымалася адчыніць файл '%1' для запісу.</translation>
     </message>
   </context>
   <context>
@@ -515,7 +515,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskOrthoViews.ui" line="723"/>
       <source>Dimetric</source>
-      <translation>Дзіметрычны</translation>
+      <translation>Дыметрычны</translation>
     </message>
     <message>
       <location filename="../../TaskOrthoViews.ui" line="728"/>

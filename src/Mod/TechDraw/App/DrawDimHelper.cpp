@@ -207,8 +207,8 @@ DrawDimHelper::minMax(DrawViewPart* dvp, std::vector<std::string> edgeNames, int
 
     std::vector<TopoDS_Edge> inEdges;
     for (auto& bg : edgeGeomList) {
-        inEdges.push_back(bg->occEdge);
-        BRepBndLib::Add(bg->occEdge, edgeBbx);
+        inEdges.push_back(bg->getOCCEdge());
+        BRepBndLib::Add(bg->getOCCEdge(), edgeBbx);
     }
 
     double minX, minY, minZ, maxX, maxY, maxZ;
@@ -323,8 +323,8 @@ DrawDimHelper::minMax3d(DrawViewPart* dvp, ReferenceVector references, int direc
 
     std::vector<TopoDS_Edge> inEdges;
     for (auto& bg : edges) {
-        inEdges.push_back(bg->occEdge);
-        BRepBndLib::Add(bg->occEdge, shapeBbx);
+        inEdges.push_back(bg->getOCCEdge());
+        BRepBndLib::Add(bg->getOCCEdge(), shapeBbx);
     }
 
     //from here on this is the same as 2d method

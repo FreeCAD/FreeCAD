@@ -50,7 +50,7 @@
 #include "TaskSketcherElements.h"
 #include "ui_TaskSketcherElements.h"
 #include "ViewProviderSketch.h"
-
+#include "Utils.h"
 
 using namespace SketcherGui;
 using namespace Gui::TaskView;
@@ -72,6 +72,79 @@ QIcon icon_ ## FUNC( Gui::BitmapFactory().pixmap(ICONSTR) ); \
 void ElementView::FUNC(){ \
    Gui::Application::Instance->commandManager().runCommandByName(CMDSTR);}
 
+
+namespace SketcherGui {
+// helper class to store additional information about the listWidget entry.
+class ElementItem : public QListWidgetItem
+{
+    public:
+
+    enum class GeometryState {
+        Normal,
+        Construction,
+        InternalAlignment,
+        External
+    };
+
+    enum class Layer {
+        Default = 0,
+        Discontinuous = 1,
+        Hidden = 2,
+    };
+
+    ElementItem(int elementnr, int startingVertex, int midVertex, int endVertex,
+        Base::Type geometryType, GeometryState state, const QString & lab, const Part::Geometry * geo) :
+        ElementNbr(elementnr)
+        , StartingVertex(startingVertex)
+        , MidVertex(midVertex)
+        , EndVertex(endVertex)
+        , GeometryType(std::move(geometryType))
+        , State(state)
+        , isLineSelected(false)
+        , isStartingPointSelected(false)
+        , isEndPointSelected(false)
+        , isMidPointSelected(false)
+        , clickedOn(SubElementType::none)
+        , hovered(SubElementType::none)
+        , rightClicked(false)
+        , label(lab)
+        , geo(geo)
+    {
+
+    }
+
+    ~ElementItem() override {
+    }
+
+    bool isVisible() {
+        auto layer = getSafeGeomLayerId(geo);
+
+        return layer != static_cast<unsigned int>(Layer::Hidden);
+    }
+
+    int ElementNbr;
+    int StartingVertex;
+    int MidVertex;
+    int EndVertex;
+
+    Base::Type GeometryType;
+    GeometryState State;
+
+    bool isLineSelected;
+    bool isStartingPointSelected;
+    bool isEndPointSelected;
+    bool isMidPointSelected;
+
+
+    SubElementType clickedOn;
+    SubElementType hovered;
+    bool rightClicked;
+
+    QString label;
+
+    const Part::Geometry * geo;
+};
+} // SketcherGui
 
 class ElementWidgetIcons {
 
@@ -260,10 +333,51 @@ ElementView::ElementView(QWidget *parent) : QListWidget(parent)
         elementItemDelegate, &ElementItemDelegate::itemHovered,
         this, &ElementView::onIndexHovered
     );
+
+    QObject::connect(
+        elementItemDelegate, &ElementItemDelegate::itemChecked,
+        this, &ElementView::onIndexChecked
+    );
 }
 
 ElementView::~ElementView()
 {
+}
+
+void ElementView::changeLayer(int layer)
+{
+    App::Document* doc = App::GetApplication().getActiveDocument();
+    if (!doc)
+        return;
+
+    doc->openTransaction("Geometry Layer Change");
+    std::vector<Gui::SelectionObject> sel = Gui::Selection().getSelectionEx(doc->getName());
+    for (std::vector<Gui::SelectionObject>::iterator ft = sel.begin(); ft != sel.end(); ++ft) {
+        auto sketchobject = dynamic_cast<Sketcher::SketchObject *>(ft->getObject());
+
+        auto geoids = getGeoIdsOfEdgesFromNames(sketchobject, ft->getSubNames());
+
+
+        auto geometry = sketchobject->Geometry.getValues();
+        auto newgeometry(geometry);
+
+        bool anychanged = false;
+        for(auto geoid : geoids) {
+            auto currentlayer = getSafeGeomLayerId(geometry[geoid]);
+            if( currentlayer != layer) {
+                auto geo = geometry[geoid]->clone();
+                setSafeGeomLayerId(geo, layer);
+                newgeometry[geoid] = geo;
+                anychanged = true;
+            }
+        }
+
+        if(anychanged) {
+            sketchobject->Geometry.setValues(std::move(newgeometry));
+            sketchobject->solve();
+        }
+    }
+    doc->commitTransaction();
 }
 
 void ElementView::contextMenuEvent (QContextMenuEvent* event)
@@ -302,6 +416,21 @@ void ElementView::contextMenuEvent (QContextMenuEvent* event)
     CONTEXT_ITEM("Sketcher_SelectOrigin","Select Origin","Sketcher_SelectOrigin",doSelectOrigin,false)
     CONTEXT_ITEM("Sketcher_SelectHorizontalAxis","Select Horizontal Axis","Sketcher_SelectHorizontalAxis",doSelectHAxis,false)
     CONTEXT_ITEM("Sketcher_SelectVerticalAxis","Select Vertical Axis","Sketcher_SelectVerticalAxis",doSelectVAxis,false)
+
+    menu.addSeparator();
+
+    auto submenu = menu.addMenu(tr("Layer"));
+
+    auto addLayerAction = [submenu, this, items](auto && name, int layernumber){
+        auto action = submenu->addAction(tr(std::forward<decltype(name)>(name)), [this, layernumber](){changeLayer(layernumber);});
+        action->setEnabled(!items.isEmpty());
+        return action;
+    };
+
+    addLayerAction("Layer 0", 0);
+    addLayerAction("Layer 1", 1);
+    addLayerAction("Hidden", 2);
+
 
     menu.addSeparator();
 
@@ -362,6 +491,15 @@ void ElementView::onIndexHovered(QModelIndex index) {
     Q_EMIT onItemHovered(itemFromIndex(index));
 }
 
+void ElementView::onIndexChecked(QModelIndex, Qt::CheckState state) {
+    if(state == Qt::Checked) {
+        changeLayer(static_cast<int>(ElementItem::Layer::Default));
+    }
+    else {
+        changeLayer(static_cast<int>(ElementItem::Layer::Hidden));
+    }
+}
+
 ElementItem* ElementView::itemFromIndex(const QModelIndex& index) {
     return static_cast<ElementItem*>(QListWidget::itemFromIndex(index));
 }
@@ -383,9 +521,25 @@ void ElementItemDelegate::paint(QPainter* painter, const QStyleOptionViewItem& o
 
     if (item) {
 
+        QStyleOptionButton checkboxstyle;
+        checkboxstyle.rect = option.rect;
+
+        checkboxstyle.state |= QStyle::State_Enabled;
+
+        if(item->isVisible())
+            checkboxstyle.state |= QStyle::State_On;
+        else
+            checkboxstyle.state |= QStyle::State_Off;
+
+        QRect checkboxrect = QApplication::style()->subElementRect(QStyle::SE_CheckBoxIndicator, &checkboxstyle);
+
+        customIconsMargin = leftMargin + checkboxrect.width();
+
+        QApplication::style()->drawControl(QStyle::CE_CheckBox, &checkboxstyle, painter);
+
         int height = option.rect.height();
         int width = height; //icons are square.
-        int x0 = option.rect.x() + leftMargin;
+        int x0 = option.rect.x() + customIconsMargin;
         int iconsize = height - 2 * border;
         int btny = option.rect.y() + border;
 
@@ -396,7 +550,9 @@ void ElementItemDelegate::paint(QPainter* painter, const QStyleOptionViewItem& o
                 painter->fillRect(rect, option.palette.base());
             };
 
-            painter->fillRect(option.rect, option.palette.highlight()); // paint the item as selected
+            QRect selection = QRect(customIconsMargin, option.rect.y(), option.rect.width()-customIconsMargin, option.rect.height());
+
+            painter->fillRect(selection, option.palette.highlight()); // paint the item as selected
 
             // Repaint individual icons
             if (!item->isLineSelected)
@@ -431,19 +587,17 @@ void ElementItemDelegate::paint(QPainter* painter, const QStyleOptionViewItem& o
 
 bool ElementItemDelegate::editorEvent(QEvent* event, QAbstractItemModel* model, const QStyleOptionViewItem& option, const QModelIndex& index)
 {
-    using SubElementType = ElementItem::SubElementType;
-
     auto getSubElementType = [&](ElementItem* item, int xPos, int width) {
 
-        bool label = (xPos > option.rect.x() + leftMargin + width * 4 + border);
+        bool label = (xPos > option.rect.x() + customIconsMargin + width * 4 + border);
 
-        if((xPos < option.rect.x() + leftMargin + width + border) || ( item->GeometryType != Part::GeomPoint::getClassTypeId() && label))
+        if((xPos < option.rect.x() + customIconsMargin + width + border) || ( item->GeometryType != Part::GeomPoint::getClassTypeId() && label))
             return SubElementType::edge;
-        if(xPos < option.rect.x() + leftMargin + width * 2 + border || ( item->GeometryType == Part::GeomPoint::getClassTypeId() && label))
+        if(xPos < option.rect.x() + customIconsMargin + width * 2 + border || ( item->GeometryType == Part::GeomPoint::getClassTypeId() && label))
             return SubElementType::start;
-        if(xPos < option.rect.x() + leftMargin + width * 3 + border)
+        if(xPos < option.rect.x() + customIconsMargin + width * 3 + border)
             return SubElementType::end;
-        else if (xPos < option.rect.x() + leftMargin + width * 4 + border)
+        else if (xPos < option.rect.x() + customIconsMargin + width * 4 + border)
             return SubElementType::mid;
         else
             return SubElementType::none;
@@ -460,6 +614,12 @@ bool ElementItemDelegate::editorEvent(QEvent* event, QAbstractItemModel* model, 
 
         if (mEvent->button() == Qt::RightButton)
             item->rightClicked = true;
+
+        QRect checkboxrect = QRect(leftMargin, option.rect.y(), customIconsMargin-leftMargin, option.rect.height());
+
+        if (mEvent->button() == Qt::LeftButton && checkboxrect.contains(mEvent->pos())) {
+            Q_EMIT itemChecked(index, item->isVisible()?Qt::Unchecked:Qt::Checked);
+        }
     }
     else if (event->type() == QEvent::MouseMove) {
         SubElementType typeUnderMouse;
@@ -474,6 +634,7 @@ bool ElementItemDelegate::editorEvent(QEvent* event, QAbstractItemModel* model, 
         item->hovered = typeUnderMouse;
         Q_EMIT itemHovered(index);
     }
+
     return QStyledItemDelegate::editorEvent(event, model, option, index);
 }
 
@@ -1085,10 +1246,19 @@ void TaskSketcherElements::slotElementsChanged(void)
         bool construction = Sketcher::GeometryFacade::getConstruction(*it);
         bool internalAligned = Sketcher::GeometryFacade::isInternalAligned(*it);
 
+        auto layerId = getSafeGeomLayerId(*it);
+
         if (internalAligned)
             state = GeometryState::InternalAlignment;
         else if (construction) //Caution, internalAligned geos are construction too. So the 'if' and 'else if' cannot be swapped.
             state = GeometryState::Construction;
+
+        auto IdInformation = [this,i,layerId](){
+            if(sketchView->VisualLayerList.getSize() > 1)
+                return QString::fromLatin1("(Edge%1#ID%2#VL%3)").arg(i).arg(i - 1).arg(layerId);
+            else
+                return QString::fromLatin1("(Edge%1#ID%2)").arg(i).arg(i - 1);
+        };
 
         ElementItem* itemN = new ElementItem(i - 1,
             sketchView->getSketchObject()->getVertexIndexGeoPos(i - 1, Sketcher::PointPos::start),
@@ -1096,45 +1266,46 @@ void TaskSketcherElements::slotElementsChanged(void)
             sketchView->getSketchObject()->getVertexIndexGeoPos(i - 1, Sketcher::PointPos::end),
             type, state,
             type == Part::GeomPoint::getClassTypeId() ? (isNamingBoxChecked ?
-                (tr("Point") + QString::fromLatin1("(Edge%1#ID%2)").arg(i).arg(i - 1)) +
+                (tr("Point") + IdInformation()) +
                 (construction ? (QString::fromLatin1("-") + tr("Construction")) : (internalAligned ? (QString::fromLatin1("-") + tr("Internal")) : QString::fromLatin1(""))) :
                 (QString::fromLatin1("%1-").arg(i) + tr("Point"))) :
             type == Part::GeomLineSegment::getClassTypeId() ? (isNamingBoxChecked ?
-                (tr("Line") + QString::fromLatin1("(Edge%1#ID%2)").arg(i).arg(i - 1)) +
+                (tr("Line") + IdInformation()) +
                 (construction ? (QString::fromLatin1("-") + tr("Construction")) : (internalAligned ? (QString::fromLatin1("-") + tr("Internal")) : QString::fromLatin1(""))) :
                 (QString::fromLatin1("%1-").arg(i) + tr("Line"))) :
             type == Part::GeomArcOfCircle::getClassTypeId() ? (isNamingBoxChecked ?
-                (tr("Arc") + QString::fromLatin1("(Edge%1#ID%2)").arg(i).arg(i - 1)) +
+                (tr("Arc") + IdInformation()) +
                 (construction ? (QString::fromLatin1("-") + tr("Construction")) : (internalAligned ? (QString::fromLatin1("-") + tr("Internal")) : QString::fromLatin1(""))) :
                 (QString::fromLatin1("%1-").arg(i) + tr("Arc"))) :
             type == Part::GeomCircle::getClassTypeId() ? (isNamingBoxChecked ?
-                (tr("Circle") + QString::fromLatin1("(Edge%1#ID%2)").arg(i).arg(i - 1)) +
+                (tr("Circle") + IdInformation()) +
                 (construction ? (QString::fromLatin1("-") + tr("Construction")) : (internalAligned ? (QString::fromLatin1("-") + tr("Internal")) : QString::fromLatin1(""))) :
                 (QString::fromLatin1("%1-").arg(i) + tr("Circle"))) :
             type == Part::GeomEllipse::getClassTypeId() ? (isNamingBoxChecked ?
-                (tr("Ellipse") + QString::fromLatin1("(Edge%1#ID%2)").arg(i).arg(i - 1)) +
+                (tr("Ellipse") + IdInformation()) +
                 (construction ? (QString::fromLatin1("-") + tr("Construction")) : (internalAligned ? (QString::fromLatin1("-") + tr("Internal")) : QString::fromLatin1(""))) :
                 (QString::fromLatin1("%1-").arg(i) + tr("Ellipse"))) :
             type == Part::GeomArcOfEllipse::getClassTypeId() ? (isNamingBoxChecked ?
-                (tr("Elliptical Arc") + QString::fromLatin1("(Edge%1#ID%2)").arg(i).arg(i - 1)) +
+                (tr("Elliptical Arc") + IdInformation()) +
                 (construction ? (QString::fromLatin1("-") + tr("Construction")) : (internalAligned ? (QString::fromLatin1("-") + tr("Internal")) : QString::fromLatin1(""))) :
                 (QString::fromLatin1("%1-").arg(i) + tr("Elliptical Arc"))) :
             type == Part::GeomArcOfHyperbola::getClassTypeId() ? (isNamingBoxChecked ?
-                (tr("Hyperbolic Arc") + QString::fromLatin1("(Edge%1#ID%2)").arg(i).arg(i - 1)) +
+                (tr("Hyperbolic Arc") + IdInformation()) +
                 (construction ? (QString::fromLatin1("-") + tr("Construction")) : (internalAligned ? (QString::fromLatin1("-") + tr("Internal")) : QString::fromLatin1(""))) :
                 (QString::fromLatin1("%1-").arg(i) + tr("Hyperbolic Arc"))) :
             type == Part::GeomArcOfParabola::getClassTypeId() ? (isNamingBoxChecked ?
-                (tr("Parabolic Arc") + QString::fromLatin1("(Edge%1#ID%2)").arg(i).arg(i - 1)) +
+                (tr("Parabolic Arc") + IdInformation()) +
                 (construction ? (QString::fromLatin1("-") + tr("Construction")) : (internalAligned ? (QString::fromLatin1("-") + tr("Internal")) : QString::fromLatin1(""))) :
                 (QString::fromLatin1("%1-").arg(i) + tr("Parabolic Arc"))) :
             type == Part::GeomBSplineCurve::getClassTypeId() ? (isNamingBoxChecked ?
-                (tr("BSpline") + QString::fromLatin1("(Edge%1#ID%2)").arg(i).arg(i - 1)) +
+                (tr("BSpline") + IdInformation()) +
                 (construction ? (QString::fromLatin1("-") + tr("Construction")) : (internalAligned ? (QString::fromLatin1("-") + tr("Internal")) : QString::fromLatin1(""))) :
                 (QString::fromLatin1("%1-").arg(i) + tr("BSpline"))) :
             (isNamingBoxChecked ?
-                (tr("Other") + QString::fromLatin1("(Edge%1#ID%2)").arg(i).arg(i - 1)) +
+                (tr("Other") + IdInformation()) +
                 (construction ? (QString::fromLatin1("-") + tr("Construction")) : (internalAligned ? (QString::fromLatin1("-") + tr("Internal")) : QString::fromLatin1(""))) :
                 (QString::fromLatin1("%1-").arg(i) + tr("Other")))
+            , (*it) // geometry
         );
 
         ui->listWidgetElements->addItem(itemN);
@@ -1153,18 +1324,39 @@ void TaskSketcherElements::slotElementsChanged(void)
 
         if(j>2) { // we do not want the H and V axes
 
+            auto layerId = getSafeGeomLayerId(*it);
+
+            auto IdInformation = [this,j,layerId](bool link){
+                if(sketchView->VisualLayerList.getSize() > 1) {
+                    if(link) {
+                        return QString::fromLatin1("(ExternalEdge%1#ID%2#VL%3, ").arg(j-2).arg(-j).arg(layerId);
+                    }
+                    else {
+                        return QString::fromLatin1("(ExternalEdge%1#ID%2#VL%3)").arg(j-2).arg(-j).arg(layerId);
+                    }
+                }
+                else {
+                   if(link) {
+                        return QString::fromLatin1("(ExternalEdge%1#ID%2, ").arg(j-2).arg(-j);
+                    }
+                    else {
+                        return QString::fromLatin1("(ExternalEdge%1#ID%2)").arg(j-2).arg(-j);
+                    }
+                }
+            };
+
             QString linkname;
 
             if(isNamingBoxChecked) {
                 if(size_t(j-3) < linkobjs.size() && size_t(j-3) < linksubs.size()) {
-                    linkname =  QString::fromLatin1("(ExternalEdge%1#ID%2, ").arg(j-2).arg(-j) +
+                    linkname =  IdInformation(true) +
                                 QString::fromUtf8(linkobjs[j-3]->getNameInDocument()) +
                                 QString::fromLatin1(".") +
                                 QString::fromUtf8(linksubs[j-3].c_str()) +
                                 QString::fromLatin1(")");
                 }
                 else {
-                    linkname = QString::fromLatin1("(ExternalEdge%1)").arg(j-2);
+                    linkname = IdInformation(false);
                 }
             }
 
@@ -1205,6 +1397,7 @@ void TaskSketcherElements::slotElementsChanged(void)
                 (isNamingBoxChecked ?
                     (tr("Other") + linkname) :
                     (QString::fromLatin1("%1-").arg(i - 2) + tr("Other")))
+                , (*it) // geometry
             );
 
             ui->listWidgetElements->addItem(itemN);

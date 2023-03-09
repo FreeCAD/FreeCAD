@@ -27,7 +27,8 @@ import sys
 import os.path
 import time
 import getopt
-import urllib2
+from urllib.request import urlopen
+from urllib.error import HTTPError
 from xml.sax import handler, make_parser
 import xml.sax.xmlreader
 
@@ -2278,7 +2279,7 @@ class Sax%sHandler(handler.ContentHandler):
 
     def setDocumentLocator(self, locator):
         self.locator = locator
-    
+
     def showError(self, msg):
         print('*** (showError):', msg)
         sys.exit(-1)
@@ -2293,7 +2294,7 @@ SAX_FOOTER = """\
     def reportError(self, mesg):
         locator = self.locator
         sys.stderr.write('Doc: %s  Line: %d  Column: %d\\n' % \\
-            (locator.getSystemId(), locator.getLineNumber(), 
+            (locator.getSystemId(), locator.getLineNumber(),
             locator.getColumnNumber() + 1))
         sys.stderr.write(mesg)
         sys.stderr.write('\\n')
@@ -2377,7 +2378,7 @@ def collect(element, elements):
 
 
 TEMPLATE_HEADER = """\
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 #
 # Generated %s by generateDS.py.
@@ -2386,7 +2387,6 @@ TEMPLATE_HEADER = """\
 # WARNING! All changes made in this file will be lost!
 #
 
-from __future__ import print_function # this allows py2 to print(str1,str2) correctly
 
 import sys
 import getopt
@@ -2725,10 +2725,10 @@ def get_impl_body(classBehavior, baseImplUrl, implUrl):
         if baseImplUrl:
             implUrl = '%s%s' % (baseImplUrl, implUrl)
         try:
-            implFile = urllib2.urlopen(implUrl)
+            implFile = urlopen(implUrl)
             impl = implFile.read()
             implFile.close()
-        except urllib2.HTTPError:
+        except HTTPError:
             print ('*** Implementation at %s not found.' % implUrl)
     return impl
 
@@ -2745,7 +2745,7 @@ def get_impl_body(classBehavior, baseImplUrl, implUrl):
 ##        if baseImplUrl:
 ##            implUrl = '%s%s' % (baseImplUrl, implUrl)
 ##        try:
-##            implFile = urllib2.urlopen(implUrl)
+##            implFile = urlopen(implUrl)
 ##            impl = implFile.read()
 ##            implFile.close()
 ##        except:
@@ -2979,7 +2979,7 @@ Usage: python ???.py <infilename>
 \"\"\"
 
 def usage():
-    print USAGE_TEXT
+    print(USAGE_TEXT)
     sys.exit(-1)
 
 
@@ -3138,7 +3138,7 @@ def makeFile(outFileName):
     global Force
     outFile = None
     if (not Force) and os.path.exists(outFileName):
-        reply = raw_input('File %s exists.  Overwrite? (y/n): ' % outFileName)
+        reply = input('File %s exists.  Overwrite? (y/n): ' % outFileName)
         if reply == 'y':
             outFile = open(outFileName, 'w')
     else:
@@ -3191,7 +3191,7 @@ def parseAndGenerate(outfileName, subclassFilename, prefix, \
 ##    print '=' * 50
 ##    root.show(sys.stdout, 0)
 ##    print '=' * 50
-##    response = raw_input('Press Enter')
+##    response = input('Press Enter')
 ##    root.show(sys.stdout, 0)
 ##    print '=' * 50
 ##    print ']]] root: ', root, '[[['

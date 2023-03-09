@@ -1,13 +1,12 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 #
-# Generated Tue Nov 12 21:18:34 2019 by generateDS.py.
+# Generated Mon Mar  6 17:37:05 2023 by generateDS.py.
 # Update it with: python generateDS.py -o generateModel_Module.py generateMetaModel_Module.xsd
 #
 # WARNING! All changes made in this file will be lost!
 #
 
-from __future__ import print_function # this allows py2 to print(str1,str2) correctly
 
 import sys
 import getopt
@@ -221,23 +220,23 @@ class GenerateModel:
 
 class PythonExport:
     subclass = None
-    def __init__(self, FatherNamespace='', DisableNotify=0, RichCompare=0, Name='', Reference=0, FatherInclude='', Namespace='', Initialization=0, Father='', PythonName='', Twin='', Constructor=0, TwinPointer='', Include='', NumberProtocol=0, Delete=0, Documentation=None, Methode=None, Attribute=None, Sequence=None, CustomAttributes='', ClassDeclarations='', ForwardDeclarations=''):
-        self.FatherNamespace = FatherNamespace
-        self.DisableNotify = DisableNotify
-        self.RichCompare = RichCompare
+    def __init__(self, Name='', PythonName='', Include='', Father='', Twin='', Namespace='', FatherInclude='', FatherNamespace='', Constructor=0, NumberProtocol=0, RichCompare=0, TwinPointer='', Delete=0, Reference=0, Initialization=0, DisableNotify=0, Documentation=None, Methode=None, Attribute=None, Sequence=None, CustomAttributes='', ClassDeclarations='', ForwardDeclarations=''):
         self.Name = Name
-        self.Reference = Reference
-        self.FatherInclude = FatherInclude
-        self.Namespace = Namespace
-        self.Initialization = Initialization
-        self.Father = Father
         self.PythonName = PythonName
-        self.Twin = Twin
-        self.Constructor = Constructor
-        self.TwinPointer = TwinPointer
         self.Include = Include
+        self.Father = Father
+        self.Twin = Twin
+        self.Namespace = Namespace
+        self.FatherInclude = FatherInclude
+        self.FatherNamespace = FatherNamespace
+        self.Constructor = Constructor
         self.NumberProtocol = NumberProtocol
+        self.RichCompare = RichCompare
+        self.TwinPointer = TwinPointer
         self.Delete = Delete
+        self.Reference = Reference
+        self.Initialization = Initialization
+        self.DisableNotify = DisableNotify
         self.Documentation = Documentation
         if Methode is None:
             self.Methode = []
@@ -275,38 +274,38 @@ class PythonExport:
     def setClassdeclarations(self, ClassDeclarations): self.ClassDeclarations = ClassDeclarations
     def getForwarddeclarations(self): return self.ForwardDeclarations
     def setForwarddeclarations(self, ForwardDeclarations): self.ForwardDeclarations = ForwardDeclarations
-    def getFathernamespace(self): return self.FatherNamespace
-    def setFathernamespace(self, FatherNamespace): self.FatherNamespace = FatherNamespace
-    def getDisablenotify(self): return self.DisableNotify
-    def setDisablenotify(self, DisableNotify): self.DisableNotify = DisableNotify
-    def getRichcompare(self): return self.RichCompare
-    def setRichcompare(self, RichCompare): self.RichCompare = RichCompare
     def getName(self): return self.Name
     def setName(self, Name): self.Name = Name
-    def getReference(self): return self.Reference
-    def setReference(self, Reference): self.Reference = Reference
-    def getFatherinclude(self): return self.FatherInclude
-    def setFatherinclude(self, FatherInclude): self.FatherInclude = FatherInclude
-    def getNamespace(self): return self.Namespace
-    def setNamespace(self, Namespace): self.Namespace = Namespace
-    def getInitialization(self): return self.Initialization
-    def setInitialization(self, Initialization): self.Initialization = Initialization
-    def getFather(self): return self.Father
-    def setFather(self, Father): self.Father = Father
     def getPythonname(self): return self.PythonName
     def setPythonname(self, PythonName): self.PythonName = PythonName
-    def getTwin(self): return self.Twin
-    def setTwin(self, Twin): self.Twin = Twin
-    def getConstructor(self): return self.Constructor
-    def setConstructor(self, Constructor): self.Constructor = Constructor
-    def getTwinpointer(self): return self.TwinPointer
-    def setTwinpointer(self, TwinPointer): self.TwinPointer = TwinPointer
     def getInclude(self): return self.Include
     def setInclude(self, Include): self.Include = Include
+    def getFather(self): return self.Father
+    def setFather(self, Father): self.Father = Father
+    def getTwin(self): return self.Twin
+    def setTwin(self, Twin): self.Twin = Twin
+    def getNamespace(self): return self.Namespace
+    def setNamespace(self, Namespace): self.Namespace = Namespace
+    def getFatherinclude(self): return self.FatherInclude
+    def setFatherinclude(self, FatherInclude): self.FatherInclude = FatherInclude
+    def getFathernamespace(self): return self.FatherNamespace
+    def setFathernamespace(self, FatherNamespace): self.FatherNamespace = FatherNamespace
+    def getConstructor(self): return self.Constructor
+    def setConstructor(self, Constructor): self.Constructor = Constructor
     def getNumberprotocol(self): return self.NumberProtocol
     def setNumberprotocol(self, NumberProtocol): self.NumberProtocol = NumberProtocol
+    def getRichcompare(self): return self.RichCompare
+    def setRichcompare(self, RichCompare): self.RichCompare = RichCompare
+    def getTwinpointer(self): return self.TwinPointer
+    def setTwinpointer(self, TwinPointer): self.TwinPointer = TwinPointer
     def getDelete(self): return self.Delete
     def setDelete(self, Delete): self.Delete = Delete
+    def getReference(self): return self.Reference
+    def setReference(self, Reference): self.Reference = Reference
+    def getInitialization(self): return self.Initialization
+    def setInitialization(self, Initialization): self.Initialization = Initialization
+    def getDisablenotify(self): return self.DisableNotify
+    def setDisablenotify(self, DisableNotify): self.DisableNotify = DisableNotify
     def export(self, outfile, level, name_='PythonExport'):
         showIndent(outfile, level)
         outfile.write('<%s' % (name_, ))
@@ -316,30 +315,30 @@ class PythonExport:
         showIndent(outfile, level)
         outfile.write('</%s>\n' % name_)
     def exportAttributes(self, outfile, level, name_='PythonExport'):
-        outfile.write(' FatherNamespace="%s"' % (self.getFathernamespace(), ))
-        if self.getDisablenotify() is not None:
-            outfile.write(' DisableNotify="%s"' % (self.getDisablenotify(), ))
-        if self.getRichcompare() is not None:
-            outfile.write(' RichCompare="%s"' % (self.getRichcompare(), ))
         outfile.write(' Name="%s"' % (self.getName(), ))
-        if self.getReference() is not None:
-            outfile.write(' Reference="%s"' % (self.getReference(), ))
-        outfile.write(' FatherInclude="%s"' % (self.getFatherinclude(), ))
-        outfile.write(' Namespace="%s"' % (self.getNamespace(), ))
-        if self.getInitialization() is not None:
-            outfile.write(' Initialization="%s"' % (self.getInitialization(), ))
-        outfile.write(' Father="%s"' % (self.getFather(), ))
         if self.getPythonname() is not None:
             outfile.write(' PythonName="%s"' % (self.getPythonname(), ))
+        outfile.write(' Include="%s"' % (self.getInclude(), ))
+        outfile.write(' Father="%s"' % (self.getFather(), ))
         outfile.write(' Twin="%s"' % (self.getTwin(), ))
+        outfile.write(' Namespace="%s"' % (self.getNamespace(), ))
+        outfile.write(' FatherInclude="%s"' % (self.getFatherinclude(), ))
+        outfile.write(' FatherNamespace="%s"' % (self.getFathernamespace(), ))
         if self.getConstructor() is not None:
             outfile.write(' Constructor="%s"' % (self.getConstructor(), ))
-        outfile.write(' TwinPointer="%s"' % (self.getTwinpointer(), ))
-        outfile.write(' Include="%s"' % (self.getInclude(), ))
         if self.getNumberprotocol() is not None:
             outfile.write(' NumberProtocol="%s"' % (self.getNumberprotocol(), ))
+        if self.getRichcompare() is not None:
+            outfile.write(' RichCompare="%s"' % (self.getRichcompare(), ))
+        outfile.write(' TwinPointer="%s"' % (self.getTwinpointer(), ))
         if self.getDelete() is not None:
             outfile.write(' Delete="%s"' % (self.getDelete(), ))
+        if self.getReference() is not None:
+            outfile.write(' Reference="%s"' % (self.getReference(), ))
+        if self.getInitialization() is not None:
+            outfile.write(' Initialization="%s"' % (self.getInitialization(), ))
+        if self.getDisablenotify() is not None:
+            outfile.write(' DisableNotify="%s"' % (self.getDisablenotify(), ))
     def exportChildren(self, outfile, level, name_='PythonExport'):
         if self.Documentation:
             self.Documentation.export(outfile, level)
@@ -361,37 +360,37 @@ class PythonExport:
         self.exportLiteralChildren(outfile, level, name_)
     def exportLiteralAttributes(self, outfile, level, name_):
         showIndent(outfile, level)
-        outfile.write('FatherNamespace = "%s",\n' % (self.getFathernamespace(),))
-        showIndent(outfile, level)
-        outfile.write('DisableNotify = "%s",\n' % (self.getDisablenotify(),))
-        showIndent(outfile, level)
-        outfile.write('RichCompare = "%s",\n' % (self.getRichcompare(),))
-        showIndent(outfile, level)
         outfile.write('Name = "%s",\n' % (self.getName(),))
-        showIndent(outfile, level)
-        outfile.write('Reference = "%s",\n' % (self.getReference(),))
-        showIndent(outfile, level)
-        outfile.write('FatherInclude = "%s",\n' % (self.getFatherinclude(),))
-        showIndent(outfile, level)
-        outfile.write('Namespace = "%s",\n' % (self.getNamespace(),))
-        showIndent(outfile, level)
-        outfile.write('Initialization = "%s",\n' % (self.getInitialization(),))
-        showIndent(outfile, level)
-        outfile.write('Father = "%s",\n' % (self.getFather(),))
         showIndent(outfile, level)
         outfile.write('PythonName = "%s",\n' % (self.getPythonname(),))
         showIndent(outfile, level)
+        outfile.write('Include = "%s",\n' % (self.getInclude(),))
+        showIndent(outfile, level)
+        outfile.write('Father = "%s",\n' % (self.getFather(),))
+        showIndent(outfile, level)
         outfile.write('Twin = "%s",\n' % (self.getTwin(),))
+        showIndent(outfile, level)
+        outfile.write('Namespace = "%s",\n' % (self.getNamespace(),))
+        showIndent(outfile, level)
+        outfile.write('FatherInclude = "%s",\n' % (self.getFatherinclude(),))
+        showIndent(outfile, level)
+        outfile.write('FatherNamespace = "%s",\n' % (self.getFathernamespace(),))
         showIndent(outfile, level)
         outfile.write('Constructor = "%s",\n' % (self.getConstructor(),))
         showIndent(outfile, level)
-        outfile.write('TwinPointer = "%s",\n' % (self.getTwinpointer(),))
-        showIndent(outfile, level)
-        outfile.write('Include = "%s",\n' % (self.getInclude(),))
-        showIndent(outfile, level)
         outfile.write('NumberProtocol = "%s",\n' % (self.getNumberprotocol(),))
         showIndent(outfile, level)
+        outfile.write('RichCompare = "%s",\n' % (self.getRichcompare(),))
+        showIndent(outfile, level)
+        outfile.write('TwinPointer = "%s",\n' % (self.getTwinpointer(),))
+        showIndent(outfile, level)
         outfile.write('Delete = "%s",\n' % (self.getDelete(),))
+        showIndent(outfile, level)
+        outfile.write('Reference = "%s",\n' % (self.getReference(),))
+        showIndent(outfile, level)
+        outfile.write('Initialization = "%s",\n' % (self.getInitialization(),))
+        showIndent(outfile, level)
+        outfile.write('DisableNotify = "%s",\n' % (self.getDisablenotify(),))
     def exportLiteralChildren(self, outfile, level, name_):
         if self.Documentation:
             showIndent(outfile, level)
@@ -442,48 +441,22 @@ class PythonExport:
             nodeName_ = child_.nodeName.split(':')[-1]
             self.buildChildren(child_, nodeName_)
     def buildAttributes(self, attrs):
-        if attrs.get('FatherNamespace'):
-            self.FatherNamespace = attrs.get('FatherNamespace').value
-        if attrs.get('DisableNotify'):
-            if attrs.get('DisableNotify').value in ('true', '1'):
-                self.DisableNotify = 1
-            elif attrs.get('DisableNotify').value in ('false', '0'):
-                self.DisableNotify = 0
-            else:
-                raise ValueError('Bad boolean attribute (DisableNotify)')
-        if attrs.get('RichCompare'):
-            if attrs.get('RichCompare').value in ('true', '1'):
-                self.RichCompare = 1
-            elif attrs.get('RichCompare').value in ('false', '0'):
-                self.RichCompare = 0
-            else:
-                raise ValueError('Bad boolean attribute (RichCompare)')
         if attrs.get('Name'):
             self.Name = attrs.get('Name').value
-        if attrs.get('Reference'):
-            if attrs.get('Reference').value in ('true', '1'):
-                self.Reference = 1
-            elif attrs.get('Reference').value in ('false', '0'):
-                self.Reference = 0
-            else:
-                raise ValueError('Bad boolean attribute (Reference)')
-        if attrs.get('FatherInclude'):
-            self.FatherInclude = attrs.get('FatherInclude').value
-        if attrs.get('Namespace'):
-            self.Namespace = attrs.get('Namespace').value
-        if attrs.get('Initialization'):
-            if attrs.get('Initialization').value in ('true', '1'):
-                self.Initialization = 1
-            elif attrs.get('Initialization').value in ('false', '0'):
-                self.Initialization = 0
-            else:
-                raise ValueError('Bad boolean attribute (Initialization)')
-        if attrs.get('Father'):
-            self.Father = attrs.get('Father').value
         if attrs.get('PythonName'):
             self.PythonName = attrs.get('PythonName').value
+        if attrs.get('Include'):
+            self.Include = attrs.get('Include').value
+        if attrs.get('Father'):
+            self.Father = attrs.get('Father').value
         if attrs.get('Twin'):
             self.Twin = attrs.get('Twin').value
+        if attrs.get('Namespace'):
+            self.Namespace = attrs.get('Namespace').value
+        if attrs.get('FatherInclude'):
+            self.FatherInclude = attrs.get('FatherInclude').value
+        if attrs.get('FatherNamespace'):
+            self.FatherNamespace = attrs.get('FatherNamespace').value
         if attrs.get('Constructor'):
             if attrs.get('Constructor').value in ('true', '1'):
                 self.Constructor = 1
@@ -491,10 +464,6 @@ class PythonExport:
                 self.Constructor = 0
             else:
                 raise ValueError('Bad boolean attribute (Constructor)')
-        if attrs.get('TwinPointer'):
-            self.TwinPointer = attrs.get('TwinPointer').value
-        if attrs.get('Include'):
-            self.Include = attrs.get('Include').value
         if attrs.get('NumberProtocol'):
             if attrs.get('NumberProtocol').value in ('true', '1'):
                 self.NumberProtocol = 1
@@ -502,6 +471,15 @@ class PythonExport:
                 self.NumberProtocol = 0
             else:
                 raise ValueError('Bad boolean attribute (NumberProtocol)')
+        if attrs.get('RichCompare'):
+            if attrs.get('RichCompare').value in ('true', '1'):
+                self.RichCompare = 1
+            elif attrs.get('RichCompare').value in ('false', '0'):
+                self.RichCompare = 0
+            else:
+                raise ValueError('Bad boolean attribute (RichCompare)')
+        if attrs.get('TwinPointer'):
+            self.TwinPointer = attrs.get('TwinPointer').value
         if attrs.get('Delete'):
             if attrs.get('Delete').value in ('true', '1'):
                 self.Delete = 1
@@ -509,6 +487,27 @@ class PythonExport:
                 self.Delete = 0
             else:
                 raise ValueError('Bad boolean attribute (Delete)')
+        if attrs.get('Reference'):
+            if attrs.get('Reference').value in ('true', '1'):
+                self.Reference = 1
+            elif attrs.get('Reference').value in ('false', '0'):
+                self.Reference = 0
+            else:
+                raise ValueError('Bad boolean attribute (Reference)')
+        if attrs.get('Initialization'):
+            if attrs.get('Initialization').value in ('true', '1'):
+                self.Initialization = 1
+            elif attrs.get('Initialization').value in ('false', '0'):
+                self.Initialization = 0
+            else:
+                raise ValueError('Bad boolean attribute (Initialization)')
+        if attrs.get('DisableNotify'):
+            if attrs.get('DisableNotify').value in ('true', '1'):
+                self.DisableNotify = 1
+            elif attrs.get('DisableNotify').value in ('false', '0'):
+                self.DisableNotify = 0
+            else:
+                raise ValueError('Bad boolean attribute (DisableNotify)')
     def buildChildren(self, child_, nodeName_):
         if child_.nodeType == Node.ELEMENT_NODE and \
             nodeName_ == 'Documentation':
@@ -553,12 +552,12 @@ class PythonExport:
 
 class Methode:
     subclass = None
-    def __init__(self, Static=0, Const=0, Name='', Keyword=0, Class=0, Documentation=None, Parameter=None):
-        self.Static = Static
-        self.Const = Const
+    def __init__(self, Name='', Const=0, Keyword=0, Class=0, Static=0, Documentation=None, Parameter=None):
         self.Name = Name
+        self.Const = Const
         self.Keyword = Keyword
         self.Class = Class
+        self.Static = Static
         self.Documentation = Documentation
         if Parameter is None:
             self.Parameter = []
@@ -576,16 +575,16 @@ class Methode:
     def setParameter(self, Parameter): self.Parameter = Parameter
     def addParameter(self, value): self.Parameter.append(value)
     def insertParameter(self, index, value): self.Parameter[index] = value
-    def getStatic(self): return self.Static
-    def setStatic(self, Static): self.Static = Static
-    def getConst(self): return self.Const
-    def setConst(self, Const): self.Const = Const
     def getName(self): return self.Name
     def setName(self, Name): self.Name = Name
+    def getConst(self): return self.Const
+    def setConst(self, Const): self.Const = Const
     def getKeyword(self): return self.Keyword
     def setKeyword(self, Keyword): self.Keyword = Keyword
     def getClass(self): return self.Class
     def setClass(self, Class): self.Class = Class
+    def getStatic(self): return self.Static
+    def setStatic(self, Static): self.Static = Static
     def export(self, outfile, level, name_='Methode'):
         showIndent(outfile, level)
         outfile.write('<%s' % (name_, ))
@@ -595,15 +594,15 @@ class Methode:
         showIndent(outfile, level)
         outfile.write('</%s>\n' % name_)
     def exportAttributes(self, outfile, level, name_='Methode'):
-        if self.getStatic() is not None:
-            outfile.write(' Static="%s"' % (self.getStatic(), ))
+        outfile.write(' Name="%s"' % (self.getName(), ))
         if self.getConst() is not None:
             outfile.write(' Const="%s"' % (self.getConst(), ))
-        outfile.write(' Name="%s"' % (self.getName(), ))
         if self.getKeyword() is not None:
             outfile.write(' Keyword="%s"' % (self.getKeyword(), ))
         if self.getClass() is not None:
             outfile.write(' Class="%s"' % (self.getClass(), ))
+        if self.getStatic() is not None:
+            outfile.write(' Static="%s"' % (self.getStatic(), ))
     def exportChildren(self, outfile, level, name_='Methode'):
         if self.Documentation:
             self.Documentation.export(outfile, level)
@@ -615,15 +614,15 @@ class Methode:
         self.exportLiteralChildren(outfile, level, name_)
     def exportLiteralAttributes(self, outfile, level, name_):
         showIndent(outfile, level)
-        outfile.write('Static = "%s",\n' % (self.getStatic(),))
+        outfile.write('Name = "%s",\n' % (self.getName(),))
         showIndent(outfile, level)
         outfile.write('Const = "%s",\n' % (self.getConst(),))
-        showIndent(outfile, level)
-        outfile.write('Name = "%s",\n' % (self.getName(),))
         showIndent(outfile, level)
         outfile.write('Keyword = "%s",\n' % (self.getKeyword(),))
         showIndent(outfile, level)
         outfile.write('Class = "%s",\n' % (self.getClass(),))
+        showIndent(outfile, level)
+        outfile.write('Static = "%s",\n' % (self.getStatic(),))
     def exportLiteralChildren(self, outfile, level, name_):
         if self.Documentation:
             showIndent(outfile, level)
@@ -650,13 +649,8 @@ class Methode:
             nodeName_ = child_.nodeName.split(':')[-1]
             self.buildChildren(child_, nodeName_)
     def buildAttributes(self, attrs):
-        if attrs.get('Static'):
-            if attrs.get('Static').value in ('true', '1'):
-                self.Static = 1
-            elif attrs.get('Static').value in ('false', '0'):
-                self.Static = 0
-            else:
-                raise ValueError('Bad boolean attribute (Static)')
+        if attrs.get('Name'):
+            self.Name = attrs.get('Name').value
         if attrs.get('Const'):
             if attrs.get('Const').value in ('true', '1'):
                 self.Const = 1
@@ -664,8 +658,6 @@ class Methode:
                 self.Const = 0
             else:
                 raise ValueError('Bad boolean attribute (Const)')
-        if attrs.get('Name'):
-            self.Name = attrs.get('Name').value
         if attrs.get('Keyword'):
             if attrs.get('Keyword').value in ('true', '1'):
                 self.Keyword = 1
@@ -680,6 +672,13 @@ class Methode:
                 self.Class = 0
             else:
                 raise ValueError('Bad boolean attribute (Class)')
+        if attrs.get('Static'):
+            if attrs.get('Static').value in ('true', '1'):
+                self.Static = 1
+            elif attrs.get('Static').value in ('false', '0'):
+                self.Static = 0
+            else:
+                raise ValueError('Bad boolean attribute (Static)')
     def buildChildren(self, child_, nodeName_):
         if child_.nodeType == Node.ELEMENT_NODE and \
             nodeName_ == 'Documentation':
@@ -696,9 +695,9 @@ class Methode:
 
 class Attribute:
     subclass = None
-    def __init__(self, ReadOnly=0, Name='', Documentation=None, Parameter=None):
-        self.ReadOnly = ReadOnly
+    def __init__(self, Name='', ReadOnly=0, Documentation=None, Parameter=None):
         self.Name = Name
+        self.ReadOnly = ReadOnly
         self.Documentation = Documentation
         self.Parameter = Parameter
     def factory(*args_, **kwargs_):
@@ -711,10 +710,10 @@ class Attribute:
     def setDocumentation(self, Documentation): self.Documentation = Documentation
     def getParameter(self): return self.Parameter
     def setParameter(self, Parameter): self.Parameter = Parameter
-    def getReadonly(self): return self.ReadOnly
-    def setReadonly(self, ReadOnly): self.ReadOnly = ReadOnly
     def getName(self): return self.Name
     def setName(self, Name): self.Name = Name
+    def getReadonly(self): return self.ReadOnly
+    def setReadonly(self, ReadOnly): self.ReadOnly = ReadOnly
     def export(self, outfile, level, name_='Attribute'):
         showIndent(outfile, level)
         outfile.write('<%s' % (name_, ))
@@ -724,8 +723,8 @@ class Attribute:
         showIndent(outfile, level)
         outfile.write('</%s>\n' % name_)
     def exportAttributes(self, outfile, level, name_='Attribute'):
-        outfile.write(' ReadOnly="%s"' % (self.getReadonly(), ))
         outfile.write(' Name="%s"' % (self.getName(), ))
+        outfile.write(' ReadOnly="%s"' % (self.getReadonly(), ))
     def exportChildren(self, outfile, level, name_='Attribute'):
         if self.Documentation:
             self.Documentation.export(outfile, level)
@@ -737,9 +736,9 @@ class Attribute:
         self.exportLiteralChildren(outfile, level, name_)
     def exportLiteralAttributes(self, outfile, level, name_):
         showIndent(outfile, level)
-        outfile.write('ReadOnly = "%s",\n' % (self.getReadonly(),))
-        showIndent(outfile, level)
         outfile.write('Name = "%s",\n' % (self.getName(),))
+        showIndent(outfile, level)
+        outfile.write('ReadOnly = "%s",\n' % (self.getReadonly(),))
     def exportLiteralChildren(self, outfile, level, name_):
         if self.Documentation:
             showIndent(outfile, level)
@@ -760,6 +759,8 @@ class Attribute:
             nodeName_ = child_.nodeName.split(':')[-1]
             self.buildChildren(child_, nodeName_)
     def buildAttributes(self, attrs):
+        if attrs.get('Name'):
+            self.Name = attrs.get('Name').value
         if attrs.get('ReadOnly'):
             if attrs.get('ReadOnly').value in ('true', '1'):
                 self.ReadOnly = 1
@@ -767,8 +768,6 @@ class Attribute:
                 self.ReadOnly = 0
             else:
                 raise ValueError('Bad boolean attribute (ReadOnly)')
-        if attrs.get('Name'):
-            self.Name = attrs.get('Name').value
     def buildChildren(self, child_, nodeName_):
         if child_.nodeType == Node.ELEMENT_NODE and \
             nodeName_ == 'Documentation':
@@ -785,17 +784,17 @@ class Attribute:
 
 class Sequence:
     subclass = None
-    def __init__(self, sq_ass_item=0, sq_item=0, sq_concat=0, sq_inplace_repeat=0, mp_ass_subscript=0, mp_subscript=0, sq_contains=0, sq_repeat=0, sq_length=0, sq_inplace_concat=0, valueOf_=''):
-        self.sq_ass_item = sq_ass_item
-        self.sq_item = sq_item
-        self.sq_concat = sq_concat
-        self.sq_inplace_repeat = sq_inplace_repeat
-        self.mp_ass_subscript = mp_ass_subscript
-        self.mp_subscript = mp_subscript
-        self.sq_contains = sq_contains
-        self.sq_repeat = sq_repeat
+    def __init__(self, sq_length=0, sq_concat=0, sq_repeat=0, sq_item=0, mp_subscript=0, sq_ass_item=0, mp_ass_subscript=0, sq_contains=0, sq_inplace_concat=0, sq_inplace_repeat=0, valueOf_=''):
         self.sq_length = sq_length
+        self.sq_concat = sq_concat
+        self.sq_repeat = sq_repeat
+        self.sq_item = sq_item
+        self.mp_subscript = mp_subscript
+        self.sq_ass_item = sq_ass_item
+        self.mp_ass_subscript = mp_ass_subscript
+        self.sq_contains = sq_contains
         self.sq_inplace_concat = sq_inplace_concat
+        self.sq_inplace_repeat = sq_inplace_repeat
         self.valueOf_ = valueOf_
     def factory(*args_, **kwargs_):
         if Sequence.subclass:
@@ -803,26 +802,26 @@ class Sequence:
         else:
             return Sequence(*args_, **kwargs_)
     factory = staticmethod(factory)
-    def getSq_ass_item(self): return self.sq_ass_item
-    def setSq_ass_item(self, sq_ass_item): self.sq_ass_item = sq_ass_item
-    def getSq_item(self): return self.sq_item
-    def setSq_item(self, sq_item): self.sq_item = sq_item
-    def getSq_concat(self): return self.sq_concat
-    def setSq_concat(self, sq_concat): self.sq_concat = sq_concat
-    def getSq_inplace_repeat(self): return self.sq_inplace_repeat
-    def setSq_inplace_repeat(self, sq_inplace_repeat): self.sq_inplace_repeat = sq_inplace_repeat
-    def getMp_ass_subscript(self): return self.mp_ass_subscript
-    def setMp_ass_subscript(self, mp_ass_subscript): self.mp_ass_subscript = mp_ass_subscript
-    def getMp_subscript(self): return self.mp_subscript
-    def setMp_subscript(self, mp_subscript): self.mp_subscript = mp_subscript
-    def getSq_contains(self): return self.sq_contains
-    def setSq_contains(self, sq_contains): self.sq_contains = sq_contains
-    def getSq_repeat(self): return self.sq_repeat
-    def setSq_repeat(self, sq_repeat): self.sq_repeat = sq_repeat
     def getSq_length(self): return self.sq_length
     def setSq_length(self, sq_length): self.sq_length = sq_length
+    def getSq_concat(self): return self.sq_concat
+    def setSq_concat(self, sq_concat): self.sq_concat = sq_concat
+    def getSq_repeat(self): return self.sq_repeat
+    def setSq_repeat(self, sq_repeat): self.sq_repeat = sq_repeat
+    def getSq_item(self): return self.sq_item
+    def setSq_item(self, sq_item): self.sq_item = sq_item
+    def getMp_subscript(self): return self.mp_subscript
+    def setMp_subscript(self, mp_subscript): self.mp_subscript = mp_subscript
+    def getSq_ass_item(self): return self.sq_ass_item
+    def setSq_ass_item(self, sq_ass_item): self.sq_ass_item = sq_ass_item
+    def getMp_ass_subscript(self): return self.mp_ass_subscript
+    def setMp_ass_subscript(self, mp_ass_subscript): self.mp_ass_subscript = mp_ass_subscript
+    def getSq_contains(self): return self.sq_contains
+    def setSq_contains(self, sq_contains): self.sq_contains = sq_contains
     def getSq_inplace_concat(self): return self.sq_inplace_concat
     def setSq_inplace_concat(self, sq_inplace_concat): self.sq_inplace_concat = sq_inplace_concat
+    def getSq_inplace_repeat(self): return self.sq_inplace_repeat
+    def setSq_inplace_repeat(self, sq_inplace_repeat): self.sq_inplace_repeat = sq_inplace_repeat
     def getValueOf_(self): return self.valueOf_
     def setValueOf_(self, valueOf_): self.valueOf_ = valueOf_
     def export(self, outfile, level, name_='Sequence'):
@@ -834,16 +833,16 @@ class Sequence:
         showIndent(outfile, level)
         outfile.write('</%s>\n' % name_)
     def exportAttributes(self, outfile, level, name_='Sequence'):
-        outfile.write(' sq_ass_item="%s"' % (self.getSq_ass_item(), ))
-        outfile.write(' sq_item="%s"' % (self.getSq_item(), ))
-        outfile.write(' sq_concat="%s"' % (self.getSq_concat(), ))
-        outfile.write(' sq_inplace_repeat="%s"' % (self.getSq_inplace_repeat(), ))
-        outfile.write(' mp_ass_subscript="%s"' % (self.getMp_ass_subscript(), ))
-        outfile.write(' mp_subscript="%s"' % (self.getMp_subscript(), ))
-        outfile.write(' sq_contains="%s"' % (self.getSq_contains(), ))
-        outfile.write(' sq_repeat="%s"' % (self.getSq_repeat(), ))
         outfile.write(' sq_length="%s"' % (self.getSq_length(), ))
+        outfile.write(' sq_concat="%s"' % (self.getSq_concat(), ))
+        outfile.write(' sq_repeat="%s"' % (self.getSq_repeat(), ))
+        outfile.write(' sq_item="%s"' % (self.getSq_item(), ))
+        outfile.write(' mp_subscript="%s"' % (self.getMp_subscript(), ))
+        outfile.write(' sq_ass_item="%s"' % (self.getSq_ass_item(), ))
+        outfile.write(' mp_ass_subscript="%s"' % (self.getMp_ass_subscript(), ))
+        outfile.write(' sq_contains="%s"' % (self.getSq_contains(), ))
         outfile.write(' sq_inplace_concat="%s"' % (self.getSq_inplace_concat(), ))
+        outfile.write(' sq_inplace_repeat="%s"' % (self.getSq_inplace_repeat(), ))
     def exportChildren(self, outfile, level, name_='Sequence'):
         outfile.write(self.valueOf_)
     def exportLiteral(self, outfile, level, name_='Sequence'):
@@ -852,25 +851,25 @@ class Sequence:
         self.exportLiteralChildren(outfile, level, name_)
     def exportLiteralAttributes(self, outfile, level, name_):
         showIndent(outfile, level)
-        outfile.write('sq_ass_item = "%s",\n' % (self.getSq_ass_item(),))
-        showIndent(outfile, level)
-        outfile.write('sq_item = "%s",\n' % (self.getSq_item(),))
+        outfile.write('sq_length = "%s",\n' % (self.getSq_length(),))
         showIndent(outfile, level)
         outfile.write('sq_concat = "%s",\n' % (self.getSq_concat(),))
         showIndent(outfile, level)
-        outfile.write('sq_inplace_repeat = "%s",\n' % (self.getSq_inplace_repeat(),))
+        outfile.write('sq_repeat = "%s",\n' % (self.getSq_repeat(),))
         showIndent(outfile, level)
-        outfile.write('mp_ass_subscript = "%s",\n' % (self.getMp_ass_subscript(),))
+        outfile.write('sq_item = "%s",\n' % (self.getSq_item(),))
         showIndent(outfile, level)
         outfile.write('mp_subscript = "%s",\n' % (self.getMp_subscript(),))
         showIndent(outfile, level)
+        outfile.write('sq_ass_item = "%s",\n' % (self.getSq_ass_item(),))
+        showIndent(outfile, level)
+        outfile.write('mp_ass_subscript = "%s",\n' % (self.getMp_ass_subscript(),))
+        showIndent(outfile, level)
         outfile.write('sq_contains = "%s",\n' % (self.getSq_contains(),))
         showIndent(outfile, level)
-        outfile.write('sq_repeat = "%s",\n' % (self.getSq_repeat(),))
-        showIndent(outfile, level)
-        outfile.write('sq_length = "%s",\n' % (self.getSq_length(),))
-        showIndent(outfile, level)
         outfile.write('sq_inplace_concat = "%s",\n' % (self.getSq_inplace_concat(),))
+        showIndent(outfile, level)
+        outfile.write('sq_inplace_repeat = "%s",\n' % (self.getSq_inplace_repeat(),))
     def exportLiteralChildren(self, outfile, level, name_):
         showIndent(outfile, level)
         outfile.write('valueOf_ = "%s",\n' % (self.valueOf_,))
@@ -881,62 +880,6 @@ class Sequence:
             nodeName_ = child_.nodeName.split(':')[-1]
             self.buildChildren(child_, nodeName_)
     def buildAttributes(self, attrs):
-        if attrs.get('sq_ass_item'):
-            if attrs.get('sq_ass_item').value in ('true', '1'):
-                self.sq_ass_item = 1
-            elif attrs.get('sq_ass_item').value in ('false', '0'):
-                self.sq_ass_item = 0
-            else:
-                raise ValueError('Bad boolean attribute (sq_ass_item)')
-        if attrs.get('sq_item'):
-            if attrs.get('sq_item').value in ('true', '1'):
-                self.sq_item = 1
-            elif attrs.get('sq_item').value in ('false', '0'):
-                self.sq_item = 0
-            else:
-                raise ValueError('Bad boolean attribute (sq_item)')
-        if attrs.get('sq_concat'):
-            if attrs.get('sq_concat').value in ('true', '1'):
-                self.sq_concat = 1
-            elif attrs.get('sq_concat').value in ('false', '0'):
-                self.sq_concat = 0
-            else:
-                raise ValueError('Bad boolean attribute (sq_concat)')
-        if attrs.get('sq_inplace_repeat'):
-            if attrs.get('sq_inplace_repeat').value in ('true', '1'):
-                self.sq_inplace_repeat = 1
-            elif attrs.get('sq_inplace_repeat').value in ('false', '0'):
-                self.sq_inplace_repeat = 0
-            else:
-                raise ValueError('Bad boolean attribute (sq_inplace_repeat)')
-        if attrs.get('mp_ass_subscript'):
-            if attrs.get('mp_ass_subscript').value in ('true', '1'):
-                self.mp_ass_subscript = 1
-            elif attrs.get('mp_ass_subscript').value in ('false', '0'):
-                self.mp_ass_subscript = 0
-            else:
-                raise ValueError('Bad boolean attribute (mp_ass_subscript)')
-        if attrs.get('mp_subscript'):
-            if attrs.get('mp_subscript').value in ('true', '1'):
-                self.mp_subscript = 1
-            elif attrs.get('mp_subscript').value in ('false', '0'):
-                self.mp_subscript = 0
-            else:
-                raise ValueError('Bad boolean attribute (mp_subscript)')
-        if attrs.get('sq_contains'):
-            if attrs.get('sq_contains').value in ('true', '1'):
-                self.sq_contains = 1
-            elif attrs.get('sq_contains').value in ('false', '0'):
-                self.sq_contains = 0
-            else:
-                raise ValueError('Bad boolean attribute (sq_contains)')
-        if attrs.get('sq_repeat'):
-            if attrs.get('sq_repeat').value in ('true', '1'):
-                self.sq_repeat = 1
-            elif attrs.get('sq_repeat').value in ('false', '0'):
-                self.sq_repeat = 0
-            else:
-                raise ValueError('Bad boolean attribute (sq_repeat)')
         if attrs.get('sq_length'):
             if attrs.get('sq_length').value in ('true', '1'):
                 self.sq_length = 1
@@ -944,6 +887,55 @@ class Sequence:
                 self.sq_length = 0
             else:
                 raise ValueError('Bad boolean attribute (sq_length)')
+        if attrs.get('sq_concat'):
+            if attrs.get('sq_concat').value in ('true', '1'):
+                self.sq_concat = 1
+            elif attrs.get('sq_concat').value in ('false', '0'):
+                self.sq_concat = 0
+            else:
+                raise ValueError('Bad boolean attribute (sq_concat)')
+        if attrs.get('sq_repeat'):
+            if attrs.get('sq_repeat').value in ('true', '1'):
+                self.sq_repeat = 1
+            elif attrs.get('sq_repeat').value in ('false', '0'):
+                self.sq_repeat = 0
+            else:
+                raise ValueError('Bad boolean attribute (sq_repeat)')
+        if attrs.get('sq_item'):
+            if attrs.get('sq_item').value in ('true', '1'):
+                self.sq_item = 1
+            elif attrs.get('sq_item').value in ('false', '0'):
+                self.sq_item = 0
+            else:
+                raise ValueError('Bad boolean attribute (sq_item)')
+        if attrs.get('mp_subscript'):
+            if attrs.get('mp_subscript').value in ('true', '1'):
+                self.mp_subscript = 1
+            elif attrs.get('mp_subscript').value in ('false', '0'):
+                self.mp_subscript = 0
+            else:
+                raise ValueError('Bad boolean attribute (mp_subscript)')
+        if attrs.get('sq_ass_item'):
+            if attrs.get('sq_ass_item').value in ('true', '1'):
+                self.sq_ass_item = 1
+            elif attrs.get('sq_ass_item').value in ('false', '0'):
+                self.sq_ass_item = 0
+            else:
+                raise ValueError('Bad boolean attribute (sq_ass_item)')
+        if attrs.get('mp_ass_subscript'):
+            if attrs.get('mp_ass_subscript').value in ('true', '1'):
+                self.mp_ass_subscript = 1
+            elif attrs.get('mp_ass_subscript').value in ('false', '0'):
+                self.mp_ass_subscript = 0
+            else:
+                raise ValueError('Bad boolean attribute (mp_ass_subscript)')
+        if attrs.get('sq_contains'):
+            if attrs.get('sq_contains').value in ('true', '1'):
+                self.sq_contains = 1
+            elif attrs.get('sq_contains').value in ('false', '0'):
+                self.sq_contains = 0
+            else:
+                raise ValueError('Bad boolean attribute (sq_contains)')
         if attrs.get('sq_inplace_concat'):
             if attrs.get('sq_inplace_concat').value in ('true', '1'):
                 self.sq_inplace_concat = 1
@@ -951,6 +943,13 @@ class Sequence:
                 self.sq_inplace_concat = 0
             else:
                 raise ValueError('Bad boolean attribute (sq_inplace_concat)')
+        if attrs.get('sq_inplace_repeat'):
+            if attrs.get('sq_inplace_repeat').value in ('true', '1'):
+                self.sq_inplace_repeat = 1
+            elif attrs.get('sq_inplace_repeat').value in ('false', '0'):
+                self.sq_inplace_repeat = 0
+            else:
+                raise ValueError('Bad boolean attribute (sq_inplace_repeat)')
     def buildChildren(self, child_, nodeName_):
         self.valueOf_ = ''
         for child in child_.childNodes:
@@ -1477,9 +1476,9 @@ class DocObject:
 
 class Property:
     subclass = None
-    def __init__(self, Type='', Name='', StartValue='', Documentation=None):
-        self.Type = Type
+    def __init__(self, Name='', Type='', StartValue='', Documentation=None):
         self.Name = Name
+        self.Type = Type
         self.StartValue = StartValue
         self.Documentation = Documentation
     def factory(*args_, **kwargs_):
@@ -1490,10 +1489,10 @@ class Property:
     factory = staticmethod(factory)
     def getDocumentation(self): return self.Documentation
     def setDocumentation(self, Documentation): self.Documentation = Documentation
-    def getType(self): return self.Type
-    def setType(self, Type): self.Type = Type
     def getName(self): return self.Name
     def setName(self, Name): self.Name = Name
+    def getType(self): return self.Type
+    def setType(self, Type): self.Type = Type
     def getStartvalue(self): return self.StartValue
     def setStartvalue(self, StartValue): self.StartValue = StartValue
     def export(self, outfile, level, name_='Property'):
@@ -1505,8 +1504,8 @@ class Property:
         showIndent(outfile, level)
         outfile.write('</%s>\n' % name_)
     def exportAttributes(self, outfile, level, name_='Property'):
-        outfile.write(' Type="%s"' % (self.getType(), ))
         outfile.write(' Name="%s"' % (self.getName(), ))
+        outfile.write(' Type="%s"' % (self.getType(), ))
         if self.getStartvalue() is not None:
             outfile.write(' StartValue="%s"' % (self.getStartvalue(), ))
     def exportChildren(self, outfile, level, name_='Property'):
@@ -1518,9 +1517,9 @@ class Property:
         self.exportLiteralChildren(outfile, level, name_)
     def exportLiteralAttributes(self, outfile, level, name_):
         showIndent(outfile, level)
-        outfile.write('Type = "%s",\n' % (self.getType(),))
-        showIndent(outfile, level)
         outfile.write('Name = "%s",\n' % (self.getName(),))
+        showIndent(outfile, level)
+        outfile.write('Type = "%s",\n' % (self.getType(),))
         showIndent(outfile, level)
         outfile.write('StartValue = "%s",\n' % (self.getStartvalue(),))
     def exportLiteralChildren(self, outfile, level, name_):
@@ -1537,10 +1536,10 @@ class Property:
             nodeName_ = child_.nodeName.split(':')[-1]
             self.buildChildren(child_, nodeName_)
     def buildAttributes(self, attrs):
-        if attrs.get('Type'):
-            self.Type = attrs.get('Type').value
         if attrs.get('Name'):
             self.Name = attrs.get('Name').value
+        if attrs.get('Type'):
+            self.Type = attrs.get('Type').value
         if attrs.get('StartValue'):
             self.StartValue = attrs.get('StartValue').value
     def buildChildren(self, child_, nodeName_):
@@ -1633,10 +1632,10 @@ class Documentation:
 
 class Author:
     subclass = None
-    def __init__(self, Name='', Licence='', EMail='', valueOf_=''):
+    def __init__(self, Name='', EMail='', Licence='', valueOf_=''):
         self.Name = Name
-        self.Licence = Licence
         self.EMail = EMail
+        self.Licence = Licence
         self.valueOf_ = valueOf_
     def factory(*args_, **kwargs_):
         if Author.subclass:
@@ -1646,10 +1645,10 @@ class Author:
     factory = staticmethod(factory)
     def getName(self): return self.Name
     def setName(self, Name): self.Name = Name
-    def getLicence(self): return self.Licence
-    def setLicence(self, Licence): self.Licence = Licence
     def getEmail(self): return self.EMail
     def setEmail(self, EMail): self.EMail = EMail
+    def getLicence(self): return self.Licence
+    def setLicence(self, Licence): self.Licence = Licence
     def getValueOf_(self): return self.valueOf_
     def setValueOf_(self, valueOf_): self.valueOf_ = valueOf_
     def export(self, outfile, level, name_='Author'):
@@ -1662,9 +1661,9 @@ class Author:
         outfile.write('</%s>\n' % name_)
     def exportAttributes(self, outfile, level, name_='Author'):
         outfile.write(' Name="%s"' % (self.getName(), ))
+        outfile.write(' EMail="%s"' % (self.getEmail(), ))
         if self.getLicence() is not None:
             outfile.write(' Licence="%s"' % (self.getLicence(), ))
-        outfile.write(' EMail="%s"' % (self.getEmail(), ))
     def exportChildren(self, outfile, level, name_='Author'):
         outfile.write(self.valueOf_)
     def exportLiteral(self, outfile, level, name_='Author'):
@@ -1675,9 +1674,9 @@ class Author:
         showIndent(outfile, level)
         outfile.write('Name = "%s",\n' % (self.getName(),))
         showIndent(outfile, level)
-        outfile.write('Licence = "%s",\n' % (self.getLicence(),))
-        showIndent(outfile, level)
         outfile.write('EMail = "%s",\n' % (self.getEmail(),))
+        showIndent(outfile, level)
+        outfile.write('Licence = "%s",\n' % (self.getLicence(),))
     def exportLiteralChildren(self, outfile, level, name_):
         showIndent(outfile, level)
         outfile.write('valueOf_ = "%s",\n' % (self.valueOf_,))
@@ -1690,10 +1689,10 @@ class Author:
     def buildAttributes(self, attrs):
         if attrs.get('Name'):
             self.Name = attrs.get('Name').value
-        if attrs.get('Licence'):
-            self.Licence = attrs.get('Licence').value
         if attrs.get('EMail'):
             self.EMail = attrs.get('EMail').value
+        if attrs.get('Licence'):
+            self.Licence = attrs.get('Licence').value
     def buildChildren(self, child_, nodeName_):
         self.valueOf_ = ''
         for child in child_.childNodes:
@@ -1768,9 +1767,9 @@ class ViewProvider:
 
 class Parameter:
     subclass = None
-    def __init__(self, Type='', Name='', valueOf_=''):
-        self.Type = Type
+    def __init__(self, Name='', Type='', valueOf_=''):
         self.Name = Name
+        self.Type = Type
         self.valueOf_ = valueOf_
     def factory(*args_, **kwargs_):
         if Parameter.subclass:
@@ -1778,10 +1777,10 @@ class Parameter:
         else:
             return Parameter(*args_, **kwargs_)
     factory = staticmethod(factory)
-    def getType(self): return self.Type
-    def setType(self, Type): self.Type = Type
     def getName(self): return self.Name
     def setName(self, Name): self.Name = Name
+    def getType(self): return self.Type
+    def setType(self, Type): self.Type = Type
     def getValueOf_(self): return self.valueOf_
     def setValueOf_(self, valueOf_): self.valueOf_ = valueOf_
     def export(self, outfile, level, name_='Parameter'):
@@ -1793,8 +1792,8 @@ class Parameter:
         showIndent(outfile, level)
         outfile.write('</%s>\n' % name_)
     def exportAttributes(self, outfile, level, name_='Parameter'):
-        outfile.write(' Type="%s"' % (self.getType(), ))
         outfile.write(' Name="%s"' % (self.getName(), ))
+        outfile.write(' Type="%s"' % (self.getType(), ))
     def exportChildren(self, outfile, level, name_='Parameter'):
         outfile.write(self.valueOf_)
     def exportLiteral(self, outfile, level, name_='Parameter'):
@@ -1803,9 +1802,9 @@ class Parameter:
         self.exportLiteralChildren(outfile, level, name_)
     def exportLiteralAttributes(self, outfile, level, name_):
         showIndent(outfile, level)
-        outfile.write('Type = "%s",\n' % (self.getType(),))
-        showIndent(outfile, level)
         outfile.write('Name = "%s",\n' % (self.getName(),))
+        showIndent(outfile, level)
+        outfile.write('Type = "%s",\n' % (self.getType(),))
     def exportLiteralChildren(self, outfile, level, name_):
         showIndent(outfile, level)
         outfile.write('valueOf_ = "%s",\n' % (self.valueOf_,))
@@ -1816,10 +1815,10 @@ class Parameter:
             nodeName_ = child_.nodeName.split(':')[-1]
             self.buildChildren(child_, nodeName_)
     def buildAttributes(self, attrs):
-        if attrs.get('Type'):
-            self.Type = attrs.get('Type').value
         if attrs.get('Name'):
             self.Name = attrs.get('Name').value
+        if attrs.get('Type'):
+            self.Type = attrs.get('Type').value
     def buildChildren(self, child_, nodeName_):
         self.valueOf_ = ''
         for child in child_.childNodes:
@@ -1841,7 +1840,6 @@ class SaxStackElement:
 #
 class SaxGeneratemodelHandler(handler.ContentHandler):
     def __init__(self):
-        super().__init__()
         self.stack = []
         self.root = None
 
@@ -1850,7 +1848,7 @@ class SaxGeneratemodelHandler(handler.ContentHandler):
 
     def setDocumentLocator(self, locator):
         self.locator = locator
-    
+
     def showError(self, msg):
         print('*** (showError):', msg)
         sys.exit(-1)
@@ -1869,59 +1867,30 @@ class SaxGeneratemodelHandler(handler.ContentHandler):
             done = 1
         elif name == 'PythonExport':
             obj = PythonExport.factory()
-            val = attrs.get('FatherNamespace', None)
-            if val is not None:
-                obj.setFathernamespace(val)
-            val = attrs.get('DisableNotify', None)
-            if val is not None:
-                if val in ('true', '1'):
-                    obj.setDisablenotify(1)
-                elif val in ('false', '0'):
-                    obj.setDisablenotify(0)
-                else:
-                    self.reportError('"DisableNotify" attribute must be boolean ("true", "1", "false", "0")')
-            val = attrs.get('RichCompare', None)
-            if val is not None:
-                if val in ('true', '1'):
-                    obj.setRichcompare(1)
-                elif val in ('false', '0'):
-                    obj.setRichcompare(0)
-                else:
-                    self.reportError('"RichCompare" attribute must be boolean ("true", "1", "false", "0")')
             val = attrs.get('Name', None)
             if val is not None:
                 obj.setName(val)
-            val = attrs.get('Reference', None)
-            if val is not None:
-                if val in ('true', '1'):
-                    obj.setReference(1)
-                elif val in ('false', '0'):
-                    obj.setReference(0)
-                else:
-                    self.reportError('"Reference" attribute must be boolean ("true", "1", "false", "0")')
-            val = attrs.get('FatherInclude', None)
-            if val is not None:
-                obj.setFatherinclude(val)
-            val = attrs.get('Namespace', None)
-            if val is not None:
-                obj.setNamespace(val)
-            val = attrs.get('Initialization', None)
-            if val is not None:
-                if val in ('true', '1'):
-                    obj.setInitialization(1)
-                elif val in ('false', '0'):
-                    obj.setInitialization(0)
-                else:
-                    self.reportError('"Initialization" attribute must be boolean ("true", "1", "false", "0")')
-            val = attrs.get('Father', None)
-            if val is not None:
-                obj.setFather(val)
             val = attrs.get('PythonName', None)
             if val is not None:
                 obj.setPythonname(val)
+            val = attrs.get('Include', None)
+            if val is not None:
+                obj.setInclude(val)
+            val = attrs.get('Father', None)
+            if val is not None:
+                obj.setFather(val)
             val = attrs.get('Twin', None)
             if val is not None:
                 obj.setTwin(val)
+            val = attrs.get('Namespace', None)
+            if val is not None:
+                obj.setNamespace(val)
+            val = attrs.get('FatherInclude', None)
+            if val is not None:
+                obj.setFatherinclude(val)
+            val = attrs.get('FatherNamespace', None)
+            if val is not None:
+                obj.setFathernamespace(val)
             val = attrs.get('Constructor', None)
             if val is not None:
                 if val in ('true', '1'):
@@ -1930,12 +1899,6 @@ class SaxGeneratemodelHandler(handler.ContentHandler):
                     obj.setConstructor(0)
                 else:
                     self.reportError('"Constructor" attribute must be boolean ("true", "1", "false", "0")')
-            val = attrs.get('TwinPointer', None)
-            if val is not None:
-                obj.setTwinpointer(val)
-            val = attrs.get('Include', None)
-            if val is not None:
-                obj.setInclude(val)
             val = attrs.get('NumberProtocol', None)
             if val is not None:
                 if val in ('true', '1'):
@@ -1944,6 +1907,17 @@ class SaxGeneratemodelHandler(handler.ContentHandler):
                     obj.setNumberprotocol(0)
                 else:
                     self.reportError('"NumberProtocol" attribute must be boolean ("true", "1", "false", "0")')
+            val = attrs.get('RichCompare', None)
+            if val is not None:
+                if val in ('true', '1'):
+                    obj.setRichcompare(1)
+                elif val in ('false', '0'):
+                    obj.setRichcompare(0)
+                else:
+                    self.reportError('"RichCompare" attribute must be boolean ("true", "1", "false", "0")')
+            val = attrs.get('TwinPointer', None)
+            if val is not None:
+                obj.setTwinpointer(val)
             val = attrs.get('Delete', None)
             if val is not None:
                 if val in ('true', '1'):
@@ -1952,6 +1926,30 @@ class SaxGeneratemodelHandler(handler.ContentHandler):
                     obj.setDelete(0)
                 else:
                     self.reportError('"Delete" attribute must be boolean ("true", "1", "false", "0")')
+            val = attrs.get('Reference', None)
+            if val is not None:
+                if val in ('true', '1'):
+                    obj.setReference(1)
+                elif val in ('false', '0'):
+                    obj.setReference(0)
+                else:
+                    self.reportError('"Reference" attribute must be boolean ("true", "1", "false", "0")')
+            val = attrs.get('Initialization', None)
+            if val is not None:
+                if val in ('true', '1'):
+                    obj.setInitialization(1)
+                elif val in ('false', '0'):
+                    obj.setInitialization(0)
+                else:
+                    self.reportError('"Initialization" attribute must be boolean ("true", "1", "false", "0")')
+            val = attrs.get('DisableNotify', None)
+            if val is not None:
+                if val in ('true', '1'):
+                    obj.setDisablenotify(1)
+                elif val in ('false', '0'):
+                    obj.setDisablenotify(0)
+                else:
+                    self.reportError('"DisableNotify" attribute must be boolean ("true", "1", "false", "0")')
             stackObj = SaxStackElement('PythonExport', obj)
             self.stack.append(stackObj)
             done = 1
@@ -1962,14 +1960,9 @@ class SaxGeneratemodelHandler(handler.ContentHandler):
             done = 1
         elif name == 'Methode':
             obj = Methode.factory()
-            val = attrs.get('Static', None)
+            val = attrs.get('Name', None)
             if val is not None:
-                if val in ('true', '1'):
-                    obj.setStatic(1)
-                elif val in ('false', '0'):
-                    obj.setStatic(0)
-                else:
-                    self.reportError('"Static" attribute must be boolean ("true", "1", "false", "0")')
+                obj.setName(val)
             val = attrs.get('Const', None)
             if val is not None:
                 if val in ('true', '1'):
@@ -1978,9 +1971,6 @@ class SaxGeneratemodelHandler(handler.ContentHandler):
                     obj.setConst(0)
                 else:
                     self.reportError('"Const" attribute must be boolean ("true", "1", "false", "0")')
-            val = attrs.get('Name', None)
-            if val is not None:
-                obj.setName(val)
             val = attrs.get('Keyword', None)
             if val is not None:
                 if val in ('true', '1'):
@@ -1997,22 +1987,33 @@ class SaxGeneratemodelHandler(handler.ContentHandler):
                     obj.setClass(0)
                 else:
                     self.reportError('"Class" attribute must be boolean ("true", "1", "false", "0")')
+            val = attrs.get('Static', None)
+            if val is not None:
+                if val in ('true', '1'):
+                    obj.setStatic(1)
+                elif val in ('false', '0'):
+                    obj.setStatic(0)
+                else:
+                    self.reportError('"Static" attribute must be boolean ("true", "1", "false", "0")')
             stackObj = SaxStackElement('Methode', obj)
             self.stack.append(stackObj)
             done = 1
         elif name == 'Parameter':
             obj = Parameter.factory()
-            val = attrs.get('Type', None)
-            if val is not None:
-                obj.setType(val)
             val = attrs.get('Name', None)
             if val is not None:
                 obj.setName(val)
+            val = attrs.get('Type', None)
+            if val is not None:
+                obj.setType(val)
             stackObj = SaxStackElement('Parameter', obj)
             self.stack.append(stackObj)
             done = 1
         elif name == 'Attribute':
             obj = Attribute.factory()
+            val = attrs.get('Name', None)
+            if val is not None:
+                obj.setName(val)
             val = attrs.get('ReadOnly', None)
             if val is not None:
                 if val in ('true', '1'):
@@ -2021,78 +2022,11 @@ class SaxGeneratemodelHandler(handler.ContentHandler):
                     obj.setReadonly(0)
                 else:
                     self.reportError('"ReadOnly" attribute must be boolean ("true", "1", "false", "0")')
-            val = attrs.get('Name', None)
-            if val is not None:
-                obj.setName(val)
             stackObj = SaxStackElement('Attribute', obj)
             self.stack.append(stackObj)
             done = 1
         elif name == 'Sequence':
             obj = Sequence.factory()
-            val = attrs.get('sq_ass_item', None)
-            if val is not None:
-                if val in ('true', '1'):
-                    obj.setSq_ass_item(1)
-                elif val in ('false', '0'):
-                    obj.setSq_ass_item(0)
-                else:
-                    self.reportError('"sq_ass_item" attribute must be boolean ("true", "1", "false", "0")')
-            val = attrs.get('sq_item', None)
-            if val is not None:
-                if val in ('true', '1'):
-                    obj.setSq_item(1)
-                elif val in ('false', '0'):
-                    obj.setSq_item(0)
-                else:
-                    self.reportError('"sq_item" attribute must be boolean ("true", "1", "false", "0")')
-            val = attrs.get('sq_concat', None)
-            if val is not None:
-                if val in ('true', '1'):
-                    obj.setSq_concat(1)
-                elif val in ('false', '0'):
-                    obj.setSq_concat(0)
-                else:
-                    self.reportError('"sq_concat" attribute must be boolean ("true", "1", "false", "0")')
-            val = attrs.get('sq_inplace_repeat', None)
-            if val is not None:
-                if val in ('true', '1'):
-                    obj.setSq_inplace_repeat(1)
-                elif val in ('false', '0'):
-                    obj.setSq_inplace_repeat(0)
-                else:
-                    self.reportError('"sq_inplace_repeat" attribute must be boolean ("true", "1", "false", "0")')
-            val = attrs.get('mp_ass_subscript', None)
-            if val is not None:
-                if val in ('true', '1'):
-                    obj.setMp_ass_subscript(1)
-                elif val in ('false', '0'):
-                    obj.setMp_ass_subscript(0)
-                else:
-                    self.reportError('"mp_ass_subscript" attribute must be boolean ("true", "1", "false", "0")')
-            val = attrs.get('mp_subscript', None)
-            if val is not None:
-                if val in ('true', '1'):
-                    obj.setMp_subscript(1)
-                elif val in ('false', '0'):
-                    obj.setMp_subscript(0)
-                else:
-                    self.reportError('"mp_subscript" attribute must be boolean ("true", "1", "false", "0")')
-            val = attrs.get('sq_contains', None)
-            if val is not None:
-                if val in ('true', '1'):
-                    obj.setSq_contains(1)
-                elif val in ('false', '0'):
-                    obj.setSq_contains(0)
-                else:
-                    self.reportError('"sq_contains" attribute must be boolean ("true", "1", "false", "0")')
-            val = attrs.get('sq_repeat', None)
-            if val is not None:
-                if val in ('true', '1'):
-                    obj.setSq_repeat(1)
-                elif val in ('false', '0'):
-                    obj.setSq_repeat(0)
-                else:
-                    self.reportError('"sq_repeat" attribute must be boolean ("true", "1", "false", "0")')
             val = attrs.get('sq_length', None)
             if val is not None:
                 if val in ('true', '1'):
@@ -2101,6 +2035,62 @@ class SaxGeneratemodelHandler(handler.ContentHandler):
                     obj.setSq_length(0)
                 else:
                     self.reportError('"sq_length" attribute must be boolean ("true", "1", "false", "0")')
+            val = attrs.get('sq_concat', None)
+            if val is not None:
+                if val in ('true', '1'):
+                    obj.setSq_concat(1)
+                elif val in ('false', '0'):
+                    obj.setSq_concat(0)
+                else:
+                    self.reportError('"sq_concat" attribute must be boolean ("true", "1", "false", "0")')
+            val = attrs.get('sq_repeat', None)
+            if val is not None:
+                if val in ('true', '1'):
+                    obj.setSq_repeat(1)
+                elif val in ('false', '0'):
+                    obj.setSq_repeat(0)
+                else:
+                    self.reportError('"sq_repeat" attribute must be boolean ("true", "1", "false", "0")')
+            val = attrs.get('sq_item', None)
+            if val is not None:
+                if val in ('true', '1'):
+                    obj.setSq_item(1)
+                elif val in ('false', '0'):
+                    obj.setSq_item(0)
+                else:
+                    self.reportError('"sq_item" attribute must be boolean ("true", "1", "false", "0")')
+            val = attrs.get('mp_subscript', None)
+            if val is not None:
+                if val in ('true', '1'):
+                    obj.setMp_subscript(1)
+                elif val in ('false', '0'):
+                    obj.setMp_subscript(0)
+                else:
+                    self.reportError('"mp_subscript" attribute must be boolean ("true", "1", "false", "0")')
+            val = attrs.get('sq_ass_item', None)
+            if val is not None:
+                if val in ('true', '1'):
+                    obj.setSq_ass_item(1)
+                elif val in ('false', '0'):
+                    obj.setSq_ass_item(0)
+                else:
+                    self.reportError('"sq_ass_item" attribute must be boolean ("true", "1", "false", "0")')
+            val = attrs.get('mp_ass_subscript', None)
+            if val is not None:
+                if val in ('true', '1'):
+                    obj.setMp_ass_subscript(1)
+                elif val in ('false', '0'):
+                    obj.setMp_ass_subscript(0)
+                else:
+                    self.reportError('"mp_ass_subscript" attribute must be boolean ("true", "1", "false", "0")')
+            val = attrs.get('sq_contains', None)
+            if val is not None:
+                if val in ('true', '1'):
+                    obj.setSq_contains(1)
+                elif val in ('false', '0'):
+                    obj.setSq_contains(0)
+                else:
+                    self.reportError('"sq_contains" attribute must be boolean ("true", "1", "false", "0")')
             val = attrs.get('sq_inplace_concat', None)
             if val is not None:
                 if val in ('true', '1'):
@@ -2109,6 +2099,14 @@ class SaxGeneratemodelHandler(handler.ContentHandler):
                     obj.setSq_inplace_concat(0)
                 else:
                     self.reportError('"sq_inplace_concat" attribute must be boolean ("true", "1", "false", "0")')
+            val = attrs.get('sq_inplace_repeat', None)
+            if val is not None:
+                if val in ('true', '1'):
+                    obj.setSq_inplace_repeat(1)
+                elif val in ('false', '0'):
+                    obj.setSq_inplace_repeat(0)
+                else:
+                    self.reportError('"sq_inplace_repeat" attribute must be boolean ("true", "1", "false", "0")')
             stackObj = SaxStackElement('Sequence', obj)
             self.stack.append(stackObj)
             done = 1
@@ -2173,12 +2171,12 @@ class SaxGeneratemodelHandler(handler.ContentHandler):
             val = attrs.get('Name', None)
             if val is not None:
                 obj.setName(val)
-            val = attrs.get('Licence', None)
-            if val is not None:
-                obj.setLicence(val)
             val = attrs.get('EMail', None)
             if val is not None:
                 obj.setEmail(val)
+            val = attrs.get('Licence', None)
+            if val is not None:
+                obj.setLicence(val)
             stackObj = SaxStackElement('Author', obj)
             self.stack.append(stackObj)
             done = 1
@@ -2322,7 +2320,7 @@ class SaxGeneratemodelHandler(handler.ContentHandler):
     def reportError(self, mesg):
         locator = self.locator
         sys.stderr.write('Doc: %s  Line: %d  Column: %d\n' % \
-            (locator.getSystemId(), locator.getLineNumber(), 
+            (locator.getSystemId(), locator.getLineNumber(),
             locator.getColumnNumber() + 1))
         sys.stderr.write(mesg)
         sys.stderr.write('\n')
@@ -2345,7 +2343,6 @@ def usage():
 #
 class SaxSelectorHandler(handler.ContentHandler):
     def __init__(self):
-        super().__init__()
         self.topElementName = None
     def getTopElementName(self):
         return self.topElementName

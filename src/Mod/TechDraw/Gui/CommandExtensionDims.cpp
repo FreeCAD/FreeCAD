@@ -2149,7 +2149,7 @@ void CmdTechDrawExtensionCreateLengthArc::activated(int iMsg) {
     int geoId = TechDraw::DrawUtil::getIndexFromName(subNames[0]);
     TechDraw::BaseGeomPtr geom = objFeat->getGeomByIndex(geoId);
     std::string geoType = TechDraw::DrawUtil::getGeomTypeFromName(subNames[0]);
-    if (geoType == "Edge" && geom->geomType == TechDraw::ARCOFCIRCLE) {
+    if (geoType == "Edge" && geom->getGeomType() == TechDraw::ARCOFCIRCLE) {
         TechDraw::AOCPtr arcTag = std::static_pointer_cast<TechDraw::AOC>(geom);
         float radius = arcTag->radius;
         Base::Vector3d centerPt = arcTag->center;

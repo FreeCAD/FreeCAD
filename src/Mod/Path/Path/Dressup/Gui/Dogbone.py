@@ -20,7 +20,6 @@
 # *                                                                         *
 # ***************************************************************************
 
-from __future__ import print_function
 
 from PySide import QtCore
 from PySide.QtCore import QT_TRANSLATE_NOOP
@@ -30,6 +29,7 @@ import Path.Base.Util as PathUtil
 import Path.Dressup.Utils as PathDressup
 import PathScripts.PathUtils as PathUtils
 import math
+from pivy import coin
 
 # lazily loaded modules
 from lazy_loader.lazy_loader import LazyLoader

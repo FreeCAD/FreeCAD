@@ -63,6 +63,9 @@ class MaterialEditor:
 
         # load the UI file from the same directory as this script
         self.widget = FreeCADGui.PySideUic.loadUi(filePath + "materials-editor.ui")
+        # remove unused Help button
+        self.widget.setWindowFlags(self.widget.windowFlags()
+                                   & ~QtCore.Qt.WindowContextHelpButtonHint)
 
         # restore size and position
         param = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Material")
@@ -183,7 +186,7 @@ class MaterialEditor:
 
         """updates the contents of the editor with the given dictionary
            the material property keys where added to the editor already
-           not known material property keys will be added to the user defined group"""
+           unknown material property keys will be added to the user defined group"""
 
         # print(data)
         model = self.widget.treeView.model()

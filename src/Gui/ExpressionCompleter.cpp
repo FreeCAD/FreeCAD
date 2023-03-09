@@ -759,7 +759,7 @@ QStringList ExpressionCompleter::splitPath(const QString& input) const
         }
         catch (const Base::Exception& except) {
             FC_TRACE("split path " << path << " error: " << except.what());
-            if (!retry) {
+            if (retry == 0) {
                 size_t lastElemStart = path.rfind('.');
 
                 if (lastElemStart == std::string::npos) {
@@ -779,21 +779,27 @@ QStringList ExpressionCompleter::splitPath(const QString& input) const
                     lastElem = "";
                 }
                 // else... we don't reset lastElem if it's a '.' or '#' to allow chaining completions
-                char last = path[path.size() - 1];
-                if (last != '#' && last != '.' && path.find('#') != std::string::npos) {
-                    path += "._self";
-                    ++retry;
-                    continue;
+                if (!path.empty()) {
+                    char last = path[path.size() - 1];
+                    if (last != '#' && last != '.' && path.find('#') != std::string::npos) {
+                        path += "._self";
+                        ++retry;
+                        continue;
+                    }
                 }
             }
             else if (retry == 2) {
-                path.resize(path.size() - 6);
-                char last = path[path.size() - 1];
-                if (last != '.' && last != '<' && path.find("#<<") != std::string::npos) {
-                    path += ">>._self";
-                    ++retry;
-                    trim = ">>";
-                    continue;
+                if (path.size() >= 6) {
+                    path.resize(path.size() - 6);
+                }
+                if (!path.empty()) {
+                    char last = path[path.size() - 1];
+                    if (last != '.' && last != '<' && path.find("#<<") != std::string::npos) {
+                        path += ">>._self";
+                        ++retry;
+                        trim = ">>";
+                        continue;
+                    }
                 }
             }
             return QStringList() << input;
@@ -810,132 +816,25 @@ void ExpressionCompleter::slotUpdate(const QString & prefix, int pos)
 
     init();
 
-    // ExpressionParser::tokenize() only supports std::string but we need a tuple QString
-    // because due to UTF-8 encoding a std::string may be longer than a QString
-    // See https://forum.freecadweb.org/viewtopic.php?f=3&t=69931
-    auto tokenizeExpression = [](const QString& expr) {
-        std::vector<std::tuple<int, int, std::string>> result =
-            ExpressionParser::tokenize(expr.toStdString());
-        std::vector<std::tuple<int, int, QString>> tokens;
-        std::transform(result.cbegin(),
-                       result.cend(),
-                       std::back_inserter(tokens),
-                       [&](const std::tuple<int, int, std::string>& item) {
-                           return std::make_tuple(
-                                get<0>(item),
-                                QString::fromStdString(expr.toStdString().substr(0,get<1>(item))).size(),
-                                QString::fromStdString(get<2>(item))
-                                );
-                       });
-        return tokens;
-    };
-
-    QString completionPrefix;
-
-    // Compute start; if prefix starts with =, start parsing from offset 1.
-    int start = (prefix.size() > 0 && prefix.at(0) == QChar::fromLatin1('=')) ? 1 : 0;
-
-    // Tokenize prefix
-    std::vector<std::tuple<int, int, QString> > tokens = tokenizeExpression(prefix.mid(start));
-
-    // No tokens
-    if (tokens.empty()) {
+    QString completionPrefix = tokenizer.perform(prefix, pos);
+    if (completionPrefix.isEmpty()) {
         if (auto itemView = popup())
             itemView->setVisible(false);
         return;
     }
-
-    prefixEnd = prefix.size();
-
-    // Pop those trailing tokens depending on the given position, which may be
-    // in the middle of a token, and we shall include that token.
-    for (auto it = tokens.begin(); it != tokens.end(); ++it) {
-        if (get<1>(*it) >= pos) {
-            // Include the immediately followed '.' or '#', because we'll be
-            // inserting these separators too, in ExpressionCompleteModel::pathFromIndex()
-            if (it != tokens.begin() && get<0>(*it) != '.' && get<0>(*it) != '#')
-                it = it - 1;
-            tokens.resize(it - tokens.begin() + 1);
-            prefixEnd = start + get<1>(*it) + (int)get<2>(*it).size();
-            break;
-        }
-    }
-
-    int trim = 0;
-    if (prefixEnd > pos)
-        trim = prefixEnd - pos;
-
-    // Extract last tokens that can be rebuilt to a variable
-    long i = static_cast<long>(tokens.size()) - 1;
-
-    // First, check if we have unclosing string starting from the end
-    bool stringing = false;
-    for (; i >= 0; --i) {
-        int token = get<0>(tokens[i]);
-        if (token == ExpressionParser::STRING) {
-            stringing = false;
-            break;
-        }
-
-        if (token == ExpressionParser::LT && i > 0
-            && get<0>(tokens[i - 1]) == ExpressionParser::LT) {
-            --i;
-            stringing = true;
-            break;
-        }
-    }
-
-    // Not an unclosed string and the last character is a space
-    if (!stringing && !prefix.isEmpty() &&
-            prefixEnd > 0 && prefixEnd <= prefix.size() &&
-            prefix[prefixEnd-1] == QChar(32)) {
-        if (auto itemView = popup())
-            itemView->setVisible(false);
-        return;
-    }
-
-    if (!stringing) {
-        i = static_cast<long>(tokens.size()) - 1;
-        for (; i >= 0; --i) {
-            int token = get<0>(tokens[i]);
-            if (token != '.' &&
-                token != '#' &&
-                token != ExpressionParser::IDENTIFIER &&
-                token != ExpressionParser::STRING &&
-                token != ExpressionParser::UNIT)
-                break;
-        }
-        ++i;
-    }
-
-    // Set prefix start for use when replacing later
-    if (i == static_cast<long>(tokens.size()))
-        prefixStart = prefixEnd;
-    else
-        prefixStart = start + get<1>(tokens[i]);
-
-    // Build prefix from tokens
-    while (i < static_cast<long>(tokens.size())) {
-        completionPrefix += get<2>(tokens[i]);
-        ++i;
-    }
-
-    if (trim && trim < int(completionPrefix.size()))
-        completionPrefix.resize(completionPrefix.size() - trim);
 
     FC_TRACE("Completion Prefix:" << completionPrefix.toUtf8().constData());
     // Set completion prefix
     setCompletionPrefix(completionPrefix);
 
-    if (!completionPrefix.isEmpty() && widget()->hasFocus()) {
+    if (widget()->hasFocus()) {
         FC_TRACE("Complete on Prefix" << completionPrefix.toUtf8().constData());
         complete();
         FC_TRACE("Complete Done");
 
     }
-    else {
-        if (auto itemView = popup())
-            itemView->setVisible(false);
+    else if (auto itemView = popup()) {
+        itemView->setVisible(false);
     }
 }
 

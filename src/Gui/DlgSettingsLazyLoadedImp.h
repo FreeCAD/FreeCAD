@@ -63,7 +63,7 @@ private:
 
     std::vector<std::string> _backgroundAutoloadedModules;
     std::string _startupModule;
-    std::map<QString, QCheckBox*> _autoloadCheckboxes;
+    std::map<QString, QCheckBox*> _autoloadCheckBoxes;
 };
 
 } // namespace Dialog
