@@ -391,26 +391,33 @@ private:
 
             unsigned int myDegree = 3;
 
-            BSplineMults.front() = myDegree + 1; // FIXME: This is hardcoded until degree can be changed
-            BSplineMults.back() = myDegree + 1; // FIXME: This is hardcoded until degree can be changed
+            if (ConstrMethod == 0) {
+                BSplineMults.front() = myDegree + 1; // FIXME: This is hardcoded until degree can be changed
+                BSplineMults.back() = myDegree + 1; // FIXME: This is hardcoded until degree can be changed
+            }
 
             std::vector<std::stringstream> streams;
 
-            for (size_t i = 0; i < BSplineKnots.size(); ++i) {
-                if (!streams.empty())
-                    streams.back() << "App.Vector(" << BSplineKnots[i].x << "," << BSplineKnots[i].y << "),";
-                if (BSplineMults[i] >= myDegree && i != (BSplineKnots.size() - 1)) {
+            // The first point
+            streams.emplace_back();
+            streams.back() << "App.Vector(" << BSplineKnots.front().x << "," << BSplineKnots.front().y << "),";
+            // Middle points
+            for (size_t i = 1; i < BSplineKnots.size() - 1; ++i) {
+                streams.back() << "App.Vector(" << BSplineKnots[i].x << "," << BSplineKnots[i].y << "),";
+                if (BSplineMults[i] >= myDegree) {
                     streams.emplace_back();
                     streams.back() << "App.Vector(" << BSplineKnots[i].x << "," << BSplineKnots[i].y << "),";
                 }
             }
+            // The last point
+            streams.back() << "App.Vector(" << BSplineKnots.back().x << "," << BSplineKnots.back().y << "),";
 
             std::vector<std::string> controlpointses; // Gollum gollum
             controlpointses.reserve(streams.size());
             for (auto & stream: streams) {
                 // TODO: Use subset of points between C0 knots.
                 controlpointses.emplace_back(stream.str());
-
+
                 auto & controlpoints = controlpointses.back();
 
                 // remove last comma and add brackets

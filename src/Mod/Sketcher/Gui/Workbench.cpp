@@ -212,8 +212,8 @@ inline void SketcherAddWorkspaceArcs<Gui::MenuItem>(Gui::MenuItem& geom)
             << "Sketcher_CreateArcOfParabola"
             << "Sketcher_CreateBSpline"
             << "Sketcher_CreatePeriodicBSpline"
-            << "Sketcher_CreateBSplineByInterpolation";
-            // << "Sketcher_CreatePeriodicBSplineByInterpolation";
+            << "Sketcher_CreateBSplineByInterpolation"
+            << "Sketcher_CreatePeriodicBSplineByInterpolation";
 }
 
 template <>
