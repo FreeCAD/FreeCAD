@@ -47,7 +47,6 @@ jobs:
     continue-on-error: ${{ inputs.allowedToFail }}
     env:
       CCACHE_DIR: ${{ github.workspace }}/ccache
-      CCACHE_CONFIGPATH: ${{ github.workspace }}/ccache/config
       CCACHE_MAXSIZE: 1G
       CCACHE_COMPILERCHECK: "%compiler% -dumpfullversion -dumpversion" # default:mtime
       CCACHE_COMPRESS: true
@@ -151,7 +150,6 @@ jobs:
         id: Init
         run: |
           mkdir -p ${{ env.CCACHE_DIR }}
-          mkdir -p ${{ env.CCACHE_CONFIGPATH }}
           mkdir -p ${{ env.builddir }}
           mkdir -p ${{ env.logdir }}
           mkdir -p ${{ env.reportdir }}
@@ -161,13 +159,25 @@ jobs:
         uses: ./.github/workflows/actions/linux/generateCacheKey
         with:
           compiler: ${{ env.CXX }}
-      - name: Restore Compiler Cache
-        uses: pat-s/always-upload-cache@v3
+      - name: Restore compiler cache for PR # for PR, if no cache available yet, try to use base ref (target branch)
+        id: restoreCachePR
+        if: github.event_name == 'pull_request'
+        uses: actions/cache/restore@v3
         with:
           path: ${{ env.CCACHE_DIR }}
-          key: FC-${{ steps.genCacheKey.outputs.cacheKey }}-${{ github.ref }}-${{ github.run_id }}
+          key: FC-${{ steps.genCacheKey.outputs.cacheKey }}-PR${{ github.ref_name }}
           restore-keys: |
-            FC-${{ steps.genCacheKey.outputs.cacheKey }}-${{ github.ref }}-
+            FC-${{ steps.genCacheKey.outputs.cacheKey }}-${{ github.base_ref }}-
+            FC-${{ steps.genCacheKey.outputs.cacheKey }}-
+      - name: Restore compiler cache for other cases
+        id: restoreCacheOther
+        if: steps.restoreCachePR.conclusion == 'skipped'
+        uses: actions/cache/restore@v3
+        with:
+          path: ${{ env.CCACHE_DIR }}
+          key: FC-${{ steps.genCacheKey.outputs.cacheKey }}-${{ github.ref_name }}-${{ github.run_id }} # do not exist but used at cache saving step
+          restore-keys: |
+            FC-${{ steps.genCacheKey.outputs.cacheKey }}-${{ github.ref_name }}-
             FC-${{ steps.genCacheKey.outputs.cacheKey }}-
       - name: Print CCache statistics before build, reset stats and print config
         run: |
@@ -182,6 +192,7 @@ jobs:
           errorFile: ${{ env.logdir }}CmakeErrors.log
           reportFile: ${{env.reportdir}}${{ env.reportfilename }}
       - name: CMake Build
+        id: build
         uses: ./.github/workflows/actions/linux/build
         with:
           builddir: ${{ env.builddir }}
@@ -247,3 +258,16 @@ jobs:
           name: ${{ env.reportfilename }}
           path: |
             ${{env.reportdir}}${{ env.reportfilename }}
+      - name: Save compiler cache for PR # for PR, only one cache is used and overwritten if needed
+        id: saveCachePR
+        if: github.event_name == 'pull_request' && steps.build.conclusion != 'skipped' && always()
+        uses: actions/cache/save@v3
+        with:
+          path: ${{ env.CCACHE_DIR }}
+          key: ${{ steps.restoreCachePR.outputs.cache-primary-key }}
+      - name: Save compiler cache for other cases
+        if: steps.saveCachePR.conclusion == 'skipped' && steps.build.conclusion != 'skipped' && always()
+        uses: actions/cache/save@v3
+        with:
+          path: ${{ env.CCACHE_DIR }}
+          key: ${{ steps.restoreCacheOther.outputs.cache-primary-key }}
