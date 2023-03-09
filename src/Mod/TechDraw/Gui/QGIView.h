@@ -187,7 +187,8 @@ private:
 
     QHash<QString, QGraphicsItem*> alignHash;
     bool m_locked;
-    bool m_innerView;                                                  //View is inside another View
+    //View is inside another View
+    bool m_innerView;
 
     QPen m_pen;
     QBrush m_brush;

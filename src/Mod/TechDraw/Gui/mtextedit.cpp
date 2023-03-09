@@ -62,7 +62,8 @@ void MTextEdit::insertFromMimeData(const QMimeData *source) {
             }
         if (!format.isEmpty()) {
 //          dropImage(qvariant_cast<QImage>(source->imageData()), format);
-            dropImage(qvariant_cast<QImage>(source->imageData()), QString::fromLatin1("JPG")); // Sorry, ale cokoli jiného dlouho trvá
+            // Sorry, ale cokoli jiného dlouho trvá
+            dropImage(qvariant_cast<QImage>(source->imageData()), QString::fromLatin1("JPG"));
             return;
             }
         }
@@ -102,4 +103,3 @@ void MTextEdit::dropImage(const QImage& image, const QString& format) {
 }
 
 #include <Mod/TechDraw/Gui/moc_mtextedit.cpp>
-

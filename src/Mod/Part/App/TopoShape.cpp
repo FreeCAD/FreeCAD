@@ -2644,7 +2644,8 @@ TopoDS_Shape TopoShape::makeLoft(const TopTools_ListOfShape& profiles,
     }
 
     Standard_Boolean anIsCheck = Standard_True;
-    aGenerator.CheckCompatibility (anIsCheck);   // use BRepFill_CompatibleWires on profiles. force #edges, orientation, "origin" to match.
+    // use BRepFill_CompatibleWires on profiles. force #edges, orientation, "origin" to match.
+    aGenerator.CheckCompatibility (anIsCheck);
     aGenerator.Build();
     if (!aGenerator.IsDone())
         Standard_Failure::Raise("Failed to create loft face");

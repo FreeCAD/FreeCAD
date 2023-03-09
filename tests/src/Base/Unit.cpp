@@ -55,7 +55,8 @@ TEST(Unit, TestTypeString)
     EXPECT_EQ(toString(Base::Unit::MagneticFieldStrength), "MagneticFieldStrength");
     EXPECT_EQ(toString(Base::Unit::MagneticFlux), "MagneticFlux");
     EXPECT_EQ(toString(Base::Unit::MagneticFluxDensity), "MagneticFluxDensity");
-    EXPECT_EQ(toString(Base::Unit::Magnetization), "MagneticFieldStrength"); // same as MagneticFieldStrength
+    // same as MagneticFieldStrength
+    EXPECT_EQ(toString(Base::Unit::Magnetization), "MagneticFieldStrength");
     EXPECT_EQ(toString(Base::Unit::Mass), "Mass");
     EXPECT_EQ(toString(Base::Unit::Pressure), "Pressure");
     EXPECT_EQ(toString(Base::Unit::Power), "Power");

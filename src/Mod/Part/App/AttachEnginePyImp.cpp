@@ -281,7 +281,8 @@ PyObject* AttachEnginePy::getModeInfo(PyObject* args)
             Py::Module module(PyImport_ImportModule("PartGui"),true);
             if (module.isNull() || !module.hasAttr("AttachEngineResources")) {
                 // in v0.14+, the GUI module can be loaded in console mode (but doesn't have all its document methods)
-                throw Py::RuntimeError("Gui is not up");//DeepSOIC: wanted to throw ImportError here, but it's not defined, so I don't know...
+                //DeepSOIC: wanted to throw ImportError here, but it's not defined, so I don't know...
+                throw Py::RuntimeError("Gui is not up");
             }
             Py::Object submod(module.getAttr("AttachEngineResources"));
             Py::Callable method(submod.getAttr("getModeStrings"));
@@ -367,7 +368,8 @@ PyObject* AttachEnginePy::getRefTypeInfo(PyObject* args)
             Py::Module module(PyImport_ImportModule("PartGui"),true);
             if (module.isNull() || !module.hasAttr("AttachEngineResources")) {
                 // in v0.14+, the GUI module can be loaded in console mode (but doesn't have all its document methods)
-                throw Py::RuntimeError("Gui is not up");//DeepSOIC: wanted to throw ImportError here, but it's not defined, so I don't know...
+                //DeepSOIC: wanted to throw ImportError here, but it's not defined, so I don't know...
+                throw Py::RuntimeError("Gui is not up");
             }
             Py::Object submod(module.getAttr("AttachEngineResources"));
             Py::Callable method(submod.getAttr("getRefTypeUserFriendlyName"));
@@ -561,4 +563,3 @@ int AttachEnginePy::setCustomAttributes(const char*,PyObject*)
 {
     return 0;
 }
-

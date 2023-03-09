@@ -156,12 +156,14 @@ std::vector<TopoDS_Shape> ShapeExtractor::getXShapes(const App::Link* xLink)
 
     bool needsTransform = false;
     std::vector<App::DocumentObject*> children = xLink->getLinkedChildren();
-    Base::Placement linkPlm;  // default constructor is an identity placement, i.e. no rotation nor translation
+    // default constructor is an identity placement, i.e. no rotation nor translation
+    Base::Placement linkPlm;
     if (xLink->hasPlacement()) {
         linkPlm = xLink->getLinkPlacementProperty()->getValue();
         needsTransform = true;
     }
-    Base::Matrix4D linkScale;  // default constructor is an identity matrix, possibly scale it with link's scale
+    // default constructor is an identity matrix, possibly scale it with link's scale
+    Base::Matrix4D linkScale;
     if(xLink->getScaleProperty() || xLink->getScaleVectorProperty()) {
         linkScale.scale(xLink->getScaleVector());
         needsTransform = true;
@@ -421,4 +423,3 @@ bool ShapeExtractor::prefAdd2d()
     bool result = hGrp->GetBool("ShowLoose2d", false);
     return result;
 }
-

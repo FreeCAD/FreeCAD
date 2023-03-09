@@ -46,8 +46,10 @@ namespace e57
       virtual float bitsPerRecord() = 0;
       virtual bool registerFlushToOutput() = 0;
 
-      virtual size_t outputAvailable() const = 0;                        /// number of bytes that can be read
-      virtual void outputRead( char *dest, const size_t byteCount ) = 0; /// get data from encoder
+      /// number of bytes that can be read
+      virtual size_t outputAvailable() const = 0;
+      /// get data from encoder
+      virtual void outputRead( char *dest, const size_t byteCount ) = 0;
       virtual void outputClear() = 0;
 
       virtual void sourceBufferSetNew( std::vector<SourceDestBuffer> &sbufs ) = 0;

@@ -552,7 +552,8 @@ void ElementItemDelegate::paint(QPainter* painter, const QStyleOptionViewItem& o
 
             QRect selection = QRect(customIconsMargin, option.rect.y(), option.rect.width()-customIconsMargin, option.rect.height());
 
-            painter->fillRect(selection, option.palette.highlight()); // paint the item as selected
+            // paint the item as selected
+            painter->fillRect(selection, option.palette.highlight());
 
             // Repaint individual icons
             if (!item->isLineSelected)
@@ -664,7 +665,8 @@ enum class GeoFilterType {
 ElementFilterList::ElementFilterList(QWidget* parent) : QListWidget(parent)
 {
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher/General");
-    int filterState = hGrp->GetInt("ElementFilterState", INT_MAX); //INT_MAX = 1111111111111111111111111111111 in binary.
+    //INT_MAX = 1111111111111111111111111111111 in binary.
+    int filterState = hGrp->GetInt("ElementFilterState", INT_MAX);
 
     for (auto const &filterItem:filterItems) {
         Q_UNUSED(filterItem);
@@ -864,7 +866,8 @@ void TaskSketcherElements::onListMultiFilterItemChanged(QListWidgetItem* item)
     int filterState = INT_MIN; //INT_MIN = 000000000000000000000000000000 in binary.
     for (int i = filterList->count() - 1; i >= 0 ; i--) {
         bool isChecked = filterList->item(i)->checkState() == Qt::Checked;
-        filterState = filterState << 1; //we shift left first, else the list is shifted at the end.
+        //we shift left first, else the list is shifted at the end.
+        filterState = filterState << 1;
         filterState = filterState | isChecked;
     }
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher/General");
@@ -989,7 +992,8 @@ void TaskSketcherElements::onSelectionChanged(const Gui::SelectionChanges& msg)
                     for (int i = 0; i < ui->listWidgetElements->count(); i++) {
                         ElementItem* item = static_cast<ElementItem*>(ui->listWidgetElements->item(i));
                         if(item->isSelected())
-                            item->setSelected(false); //if already selected, we need to reset setSelected or it won't draw subelements correctly if selecting several.
+                            //if already selected, we need to reset setSelected or it won't draw subelements correctly if selecting several.
+                            item->setSelected(false);
                         item->setSelected(item->isLineSelected || item->isStartingPointSelected || item->isEndPointSelected || item->isMidPointSelected);
                     }
                 }
@@ -1098,7 +1102,8 @@ void TaskSketcherElements::onListWidgetElementsItemPressed(QListWidgetItem* it) 
                 QSignalBlocker sigblk(ui->listWidgetElements);
 
                 if (item->isSelected() && selected) {
-                    item->setSelected(false);// if already selected and changing or adding subelement, ensure selection change is triggered, which ensures timely repaint
+                    // if already selected and changing or adding subelement, ensure selection change is triggered, which ensures timely repaint
+                    item->setSelected(false);
                     item->setSelected(selected);
                 }
                 else {

@@ -369,7 +369,8 @@ void AboutDialog::setupLabels()
     it = config.find("BuildRevisionHash");
     if (it != config.end()) {
         QString hash = ui->labelBuildHash->text();
-        hash.replace(QString::fromLatin1("Unknown"), QString::fromLatin1(it->second.c_str()).left(7)); // Use the 7-char abbreviated hash
+        // Use the 7-char abbreviated hash
+        hash.replace(QString::fromLatin1("Unknown"), QString::fromLatin1(it->second.c_str()).left(7));
         ui->labelBuildHash->setText(hash);
         if (auto url_itr = config.find("BuildRepositoryURL"); url_itr != config.end()) {
             auto url = QString::fromStdString(url_itr->second);
@@ -423,7 +424,7 @@ void AboutDialog::showCredits()
     creditsHTML += tr("Credits");
     creditsHTML += QString::fromLatin1("</h1><p>");
     creditsHTML += tr("FreeCAD would not be possible without the contributions of");
-    creditsHTML += QString::fromLatin1(":</p><h2>"); 
+    creditsHTML += QString::fromLatin1(":</p><h2>");
     //: Header for the list of individual people in the Credits list.
     creditsHTML += tr("Individuals");
     creditsHTML += QString::fromLatin1("</h2><ul>");
@@ -816,7 +817,7 @@ void AboutDialog::on_copyButton_clicked()
             auto disablingFile = mod.path() / "ADDON_DISABLED";
             if (fs::exists(disablingFile))
                 str << " (Disabled)";
-            
+
             str << "\n";
         }
     }

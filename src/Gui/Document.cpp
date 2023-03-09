@@ -160,7 +160,8 @@ void MessageManager::slotUserMessage(const App::DocumentObject& obj, const QStri
 
 void MessageManager::pushAutoClosingMessage(const QString & msg, App::Document::NotificationType notificationtype)
 {
-    std::lock_guard<std::mutex> g(mutexAutoClosingMessages); // guard to avoid creating new messages while closing old messages (via timer)
+    // guard to avoid creating new messages while closing old messages (via timer)
+    std::lock_guard<std::mutex> g(mutexAutoClosingMessages);
 
     auto msgBox = createNonModalMessage(msg, notificationtype);
 
@@ -173,7 +174,8 @@ void MessageManager::pushAutoClosingMessage(const QString & msg, App::Document::
     reorderAutoClosingMessages();
 
     QTimer::singleShot(autoClosingTimeout*numberOpenAutoClosingMessages, [msgBox, this](){
-        std::lock_guard<std::mutex> g(mutexAutoClosingMessages); // guard to avoid closing old messages while creating new ones
+        // guard to avoid closing old messages while creating new ones
+        std::lock_guard<std::mutex> g(mutexAutoClosingMessages);
         if(msgBox) {
             msgBox->done(0);
             openAutoClosingMessages.erase(

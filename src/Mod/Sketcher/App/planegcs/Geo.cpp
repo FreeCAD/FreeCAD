@@ -409,7 +409,8 @@ DeriVector2 Hyperbola::CalculateNormal(const Point &p, const double* derivparam)
     DeriVector2 f2v = cv.linCombi(2.0, f1v, -1.0); // 2*cv - f1v
 
     //pf1, pf2 = vectors from p to focus1,focus2
-    DeriVector2 pf1 = f1v.subtr(pv).mult(-1.0);  // <--- differs from ellipse normal calculation code by inverting this vector
+    // <--- differs from ellipse normal calculation code by inverting this vector
+    DeriVector2 pf1 = f1v.subtr(pv).mult(-1.0);
     DeriVector2 pf2 = f2v.subtr(pv);
     //return sum of normalized pf2, pf2
     DeriVector2 ret = pf1.getNormalized().sum(pf2.getNormalized());

@@ -74,7 +74,8 @@ Constraint::Constraint()
 {
     ADD_PROPERTY_TYPE(References, (nullptr, nullptr), "Constraint", (App::PropertyType)(App::Prop_None), "Elements where the constraint is applied");
     ADD_PROPERTY_TYPE(NormalDirection, (Base::Vector3d(0, 0, 1)), "Constraint", App::PropertyType(App::Prop_ReadOnly | App::Prop_Output), "Normal direction pointing outside of solid");
-    ADD_PROPERTY_TYPE(Scale, (1), "Base", App::PropertyType(App::Prop_Output), "Scale used for drawing constraints"); //OvG: Add scale parameter inherited by all derived constraints
+    //OvG: Add scale parameter inherited by all derived constraints
+    ADD_PROPERTY_TYPE(Scale, (1), "Base", App::PropertyType(App::Prop_Output), "Scale used for drawing constraints");
 
     References.setScope(App::LinkScope::Global);
 }
@@ -187,7 +188,8 @@ bool Constraint::getPoints(std::vector<Base::Vector3d> &points, std::vector<Base
             GProp_GProps props;
             BRepGProp::VolumeProperties(toposhape.getShape(), props);
             double lx = props.Mass();
-            *scale = this->calcDrawScaleFactor(sqrt(lx)*0.5); //OvG: setup draw scale for constraint
+            //OvG: setup draw scale for constraint
+            *scale = this->calcDrawScaleFactor(sqrt(lx)*0.5);
         }
         else if (sh.ShapeType() == TopAbs_EDGE) {
             BRepAdaptor_Curve curve(TopoDS::Edge(sh));
@@ -215,7 +217,8 @@ bool Constraint::getPoints(std::vector<Base::Vector3d> &points, std::vector<Base
                 *scale = this->calcDrawScaleFactor(); //OvG: setup draw scale for constraint
             }
 
-            steps = steps>CONSTRAINTSTEPLIMIT?CONSTRAINTSTEPLIMIT:steps; //OvG: Place upper limit on number of steps
+            //OvG: Place upper limit on number of steps
+            steps = steps>CONSTRAINTSTEPLIMIT?CONSTRAINTSTEPLIMIT:steps;
             double step = (lp - fp) / steps;
             for (int i = 0; i < steps + 1; i++) {
                 // Parameter values must be in the range [fp, lp] (#0003683)
@@ -304,7 +307,8 @@ bool Constraint::getPoints(std::vector<Base::Vector3d> &points, std::vector<Base
                 *scale = this->calcDrawScaleFactor(); //OvG: setup draw scale for constraint
             }
 
-            stepsv = stepsv>CONSTRAINTSTEPLIMIT?CONSTRAINTSTEPLIMIT:stepsv; //OvG: Place upper limit on number of steps
+            //OvG: Place upper limit on number of steps
+            stepsv = stepsv>CONSTRAINTSTEPLIMIT?CONSTRAINTSTEPLIMIT:stepsv;
             int stepsu;
             if (lu >= 30) //OvG: Increase 10 units distance proportionately to lu for larger objects.
             {
@@ -323,7 +327,8 @@ bool Constraint::getPoints(std::vector<Base::Vector3d> &points, std::vector<Base
                 *scale = this->calcDrawScaleFactor(); //OvG: setup draw scale for constraint
             }
 
-            stepsu = stepsu>CONSTRAINTSTEPLIMIT?CONSTRAINTSTEPLIMIT:stepsu; //OvG: Place upper limit on number of steps
+            //OvG: Place upper limit on number of steps
+            stepsu = stepsu>CONSTRAINTSTEPLIMIT?CONSTRAINTSTEPLIMIT:stepsu;
             double stepv = (vlp - vfp) / stepsv;
             double stepu = (ulp - ufp) / stepsu;
             // Create points and normals

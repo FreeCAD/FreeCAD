@@ -171,7 +171,8 @@ void TaskFemConstraint::onButtonWizOk()
     for (int b = 0; b < buttons->count(); b++)
         buttons->itemAt(b)->widget()->show();
 
-    Gui::Application::Instance->activeDocument()->resetEdit(); // Reaches ViewProviderFemConstraint::unsetEdit() eventually
+    // Reaches ViewProviderFemConstraint::unsetEdit() eventually
+    Gui::Application::Instance->activeDocument()->resetEdit();
 }
 
 void TaskFemConstraint::onButtonWizCancel()
@@ -241,7 +242,8 @@ bool TaskFemConstraint::KeyEvent(QEvent *e)
 void TaskDlgFemConstraint::open()
 {
     ConstraintView->setVisible(true);
-    Gui::Command::runCommand(Gui::Command::Doc,ViewProviderFemConstraint::gethideMeshShowPartStr((static_cast<Fem::Constraint*>(ConstraintView->getObject()))->getNameInDocument()).c_str()); //OvG: Hide meshes and show parts
+    //OvG: Hide meshes and show parts
+    Gui::Command::runCommand(Gui::Command::Doc,ViewProviderFemConstraint::gethideMeshShowPartStr((static_cast<Fem::Constraint*>(ConstraintView->getObject()))->getNameInDocument()).c_str());
 }
 
 bool TaskDlgFemConstraint::accept()

@@ -707,7 +707,8 @@ Hole::Hole()
     ADD_PROPERTY_TYPE(ThreadDepthType, (0L), "Hole", App::Prop_None, "Thread depth type");
     ThreadDepthType.setEnums(ThreadDepthTypeEnums);
 
-    ADD_PROPERTY_TYPE(ThreadDepth, (23.5), "Hole", App::Prop_None, "Thread Length"); // default is assuming an M1
+    // default is assuming an M1
+    ADD_PROPERTY_TYPE(ThreadDepth, (23.5), "Hole", App::Prop_None, "Thread Length");
 
     ADD_PROPERTY_TYPE(UseCustomThreadClearance, (false), "Hole", App::Prop_None, "Use custom thread clearance");
 
@@ -2023,9 +2024,11 @@ TopoDS_Shape Hole::makeThread(const gp_Vec& xDir, const gp_Vec& zDir, double len
     // Note that in the ISO standard, Dmaj is called D, which has been followed here.
     double D = threadDescription[threadType][threadSize].diameter;  // Major diameter
     double P = getThreadPitch();
-    double H = sqrt(3) / 2 * P;                                                           // Height of fundamental triangle
+    // Height of fundamental triangle
+    double H = sqrt(3) / 2 * P;
 
-    double clearance;                                                                     // clearance to be added on the diameter
+    // clearance to be added on the diameter
+    double clearance;
     if (UseCustomThreadClearance.getValue())
         clearance = CustomThreadClearance.getValue();
     else

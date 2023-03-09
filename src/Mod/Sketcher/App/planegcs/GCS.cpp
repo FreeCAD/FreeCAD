@@ -122,9 +122,11 @@ namespace Eigen {
         // can't accumulate on-the-fly because that will be done in reverse order for the rows.
         m_rowsTranspositions.resize(matrix.rows());
         m_colsTranspositions.resize(matrix.cols());
-        Index number_of_transpositions = 0; // number of NONTRIVIAL transpositions, i.e. m_rowsTranspositions[i]!=i
+        // number of NONTRIVIAL transpositions, i.e. m_rowsTranspositions[i]!=i
+        Index number_of_transpositions = 0;
 
-        m_nonzero_pivots = size; // the generic case is that in which all pivots are nonzero (invertible case)
+        // the generic case is that in which all pivots are nonzero (invertible case)
+        m_nonzero_pivots = size;
         m_maxpivot = RealScalar(0);
         RealScalar cutoff(0);
 
@@ -138,8 +140,10 @@ namespace Eigen {
             biggest_in_corner = m_lu.bottomRightCorner(rows-k, cols-k)
             .cwiseAbs()
             .maxCoeff(&row_of_biggest_in_corner, &col_of_biggest_in_corner);
-            row_of_biggest_in_corner += k; // correct the values! since they were computed in the corner,
-            col_of_biggest_in_corner += k; // need to add k to them.
+            // correct the values! since they were computed in the corner,
+            row_of_biggest_in_corner += k;
+            // need to add k to them.
+            col_of_biggest_in_corner += k;
 
             // when k==0, biggest_in_corner is the biggest coeff absolute value in the original matrix
             if(k == 0) cutoff = biggest_in_corner * NumTraits<Scalar>::epsilon();
@@ -300,7 +304,8 @@ void SolverReportingManager::LogToFile(const std::string& str)
 
     flushStream();
     #else
-    (void)(str); // silence unused parameter
+    // silence unused parameter
+    (void)(str);
     LogToConsole("Debugging to file not enabled!");
     #endif
 }
@@ -1450,9 +1455,12 @@ void System::calculateNormalAtPoint(const Curve &crv, const Point &p, double &rt
 
 double System::calculateConstraintErrorByTag(int tagId)
 {
-    int cnt = 0; //how many constraints have been accumulated
-    double sqErr = 0.0; //accumulator of squared errors
-    double err = 0.0;//last computed signed error value
+    //how many constraints have been accumulated
+    int cnt = 0;
+    //accumulator of squared errors
+    double sqErr = 0.0;
+    //last computed signed error value
+    double err = 0.0;
 
     for (std::vector<Constraint *>::const_iterator
          constr=clist.begin(); constr != clist.end(); ++constr) {
@@ -1556,9 +1564,11 @@ void System::initSolution(Algorithm alg)
         componentsSize = boost::connected_components(g, &components[0]);
 
     // identification of equality constraints and parameter reduction
-    std::set<Constraint *> reducedConstrs;  // constraints that will be eliminated through reduction
+    // constraints that will be eliminated through reduction
+    std::set<Constraint *> reducedConstrs;
     reductionmaps.clear(); // destroy any maps
-    reductionmaps.resize(componentsSize); // create empty maps to be filled in
+    // create empty maps to be filled in
+    reductionmaps.resize(componentsSize);
     {
         VEC_pD reducedParams=plist;
 
@@ -1587,7 +1597,8 @@ void System::initSolution(Algorithm alg)
     }
 
     clists.clear(); // destroy any lists
-    clists.resize(componentsSize); // create empty lists to be filled in
+    // create empty lists to be filled in
+    clists.resize(componentsSize);
     int i = int(plist.size());
     for (std::vector<Constraint *>::const_iterator constr=clistR.begin();
          constr != clistR.end(); ++constr, i++) {
@@ -1598,7 +1609,8 @@ void System::initSolution(Algorithm alg)
     }
 
     plists.clear(); // destroy any lists
-    plists.resize(componentsSize); // create empty lists to be filled in
+    // create empty lists to be filled in
+    plists.resize(componentsSize);
     for (int i=0; i < int(plist.size()); ++i) {
         int cid = components[i];
         plists[cid].push_back(plist[i]);
@@ -1837,8 +1849,10 @@ int System::solve_LM(SubSystem* subsys, bool isRedundantsolving)
     if (xsize == 0)
         return Success;
 
-    Eigen::VectorXd e(csize), e_new(csize); // vector of all function errors (every constraint is one function)
-    Eigen::MatrixXd J(csize, xsize);        // Jacobi of the subsystem
+    // vector of all function errors (every constraint is one function)
+    Eigen::VectorXd e(csize), e_new(csize);
+    // Jacobi of the subsystem
+    Eigen::MatrixXd J(csize, xsize);
     Eigen::MatrixXd A(xsize, xsize);
     Eigen::VectorXd x(xsize), h(xsize), x_new(xsize), g(xsize), diag_A(xsize);
 
@@ -1894,7 +1908,8 @@ int System::solve_LM(SubSystem* subsys, bool isRedundantsolving)
 
         // Compute ||J^T e||_inf
         double g_inf = g.lpNorm<Eigen::Infinity>();
-        diag_A = A.diagonal(); // save diagonal entries so that augmentation can be later canceled
+        // save diagonal entries so that augmentation can be later canceled
+        diag_A = A.diagonal();
 
         // check for convergence
         if (g_inf <= eps1) {
@@ -2205,7 +2220,8 @@ int System::solve_DL(SubSystem* subsys, bool isRedundantsolving)
 #ifdef _GCS_EXTRACT_SOLVER_SUBSYSTEM_
 void System::extractSubsystem(SubSystem *subsys, bool isRedundantsolving)
 {
-    VEC_pD plistout; //std::vector<double *>
+    //std::vector<double *>
+    VEC_pD plistout;
     std::vector<Constraint *> clist_;
     VEC_pD clist_params_;
 
@@ -2221,14 +2237,18 @@ void System::extractSubsystem(SubSystem *subsys, bool isRedundantsolving)
     int ip=0;
 
     subsystemfile << "GCS::VEC_pD plist_;" <<  std::endl; // all SYSTEM params
-    subsystemfile << "std::vector<GCS::Constraint *> clist_;" <<  std::endl; // SUBSYSTEM constraints
-    subsystemfile << "GCS::VEC_pD plistsub_;" <<  std::endl; // all SUBSYSTEM params
-    subsystemfile << "GCS::VEC_pD clist_params_;" <<  std::endl; // constraint params not within SYSTEM params
+    // SUBSYSTEM constraints
+    subsystemfile << "std::vector<GCS::Constraint *> clist_;" <<  std::endl;
+    // all SUBSYSTEM params
+    subsystemfile << "GCS::VEC_pD plistsub_;" <<  std::endl;
+    // constraint params not within SYSTEM params
+    subsystemfile << "GCS::VEC_pD clist_params_;" <<  std::endl;
 
     // these are all the parameters, including those not in the subsystem to
     // which constraints in the subsystem may make reference.
     for( VEC_pD::iterator it = plist.begin(); it != plist.end(); ++it, ++ip) {
-        subsystemfile << "plist_.push_back(new double("<< *(*it) <<")); // "<< ip <<" address: " << (void *)(*it) << std::endl;
+        // "<< ip <<" address: " << (void *)(*it) << std::endl;
+        subsystemfile << "plist_.push_back(new double("<< *(*it) <<"));
     }
 
     int ips=0;
@@ -2264,7 +2284,8 @@ void System::extractSubsystem(SubSystem *subsys, bool isRedundantsolving)
                     if(ni1 == clist_params_.size()) {
                         subsystemfile << "// Address not in System params...rebuilding into clist_params_" << std::endl;
                         clist_params_.push_back((*it)->pvec[0]);
-                        subsystemfile << "clist_params_.push_back(new double("<< *((*it)->pvec[0]) <<")); // "<< icp <<" address: " << (void *)(*it)->pvec[0] << std::endl;
+                        // "<< icp <<" address: " << (void *)(*it)->pvec[0] << std::endl;
+                        subsystemfile << "clist_params_.push_back(new double("<< *((*it)->pvec[0]) <<"));
                         icp++;
                     }
                     npb1=true;
@@ -2278,14 +2299,16 @@ void System::extractSubsystem(SubSystem *subsys, bool isRedundantsolving)
                     if(ni2 == clist_params_.size()) {
                         subsystemfile << "// Address not in System params...rebuilding into clist_params_" << std::endl;
                         clist_params_.push_back((*it)->pvec[1]);
-                        subsystemfile << "clist_params_.push_back(new double("<< *((*it)->pvec[1]) <<")); // "<< icp <<" address: " << (void *)(*it)->pvec[1] << std::endl;
+                        // "<< icp <<" address: " << (void *)(*it)->pvec[1] << std::endl;
+                        subsystemfile << "clist_params_.push_back(new double("<< *((*it)->pvec[1]) <<"));
                         icp++;
                     }
                     npb2=true;
                 }
 
                 subsystemfile << "clist_.push_back(new ConstraintEqual(" << (npb1?("clist_params_["):("plist_[")) << (npb1?ni1:i1) << "]," \
-                << (npb2?("clist_params_["):("plist_[")) << (npb2?ni2:i2) << "])); // addresses = "<< (*it)->pvec[0] << "," << (*it)->pvec[1] << std::endl;
+                // addresses = "<< (*it)->pvec[0] << "," << (*it)->pvec[1] << std::endl;
+                << (npb2?("clist_params_["):("plist_[")) << (npb2?ni2:i2) << "]));
                 break;
             }
             case Difference:
@@ -2305,7 +2328,8 @@ void System::extractSubsystem(SubSystem *subsys, bool isRedundantsolving)
                     if(ni1 == clist_params_.size()) {
                         subsystemfile << "// Address not in System params...rebuilding into clist_params_" << std::endl;
                         clist_params_.push_back((*it)->pvec[0]);
-                        subsystemfile << "clist_params_.push_back(new double("<< *((*it)->pvec[0]) <<")); // "<< icp <<" address: " << (void *)(*it)->pvec[0] << std::endl;
+                        // "<< icp <<" address: " << (void *)(*it)->pvec[0] << std::endl;
+                        subsystemfile << "clist_params_.push_back(new double("<< *((*it)->pvec[0]) <<"));
                         icp++;
                     }
                     npb1=true;
@@ -2319,7 +2343,8 @@ void System::extractSubsystem(SubSystem *subsys, bool isRedundantsolving)
                     if(ni2 == clist_params_.size()) {
                         subsystemfile << "// Address not in System params...rebuilding into clist_params_" << std::endl;
                         clist_params_.push_back((*it)->pvec[1]);
-                        subsystemfile << "clist_params_.push_back(new double("<< *((*it)->pvec[1]) <<")); // "<< icp <<" address: " << (void *)(*it)->pvec[1] << std::endl;
+                        // "<< icp <<" address: " << (void *)(*it)->pvec[1] << std::endl;
+                        subsystemfile << "clist_params_.push_back(new double("<< *((*it)->pvec[1]) <<"));
                         icp++;
                     }
                     npb2=true;
@@ -2333,7 +2358,8 @@ void System::extractSubsystem(SubSystem *subsys, bool isRedundantsolving)
                     if(ni3 == clist_params_.size()) {
                         subsystemfile << "// Address not in System params...rebuilding into clist_params_" << std::endl;
                         clist_params_.push_back((*it)->pvec[2]);
-                        subsystemfile << "clist_params_.push_back(new double("<< *((*it)->pvec[2]) <<")); // "<< icp <<" address: " << (void *)(*it)->pvec[2] << std::endl;
+                        // "<< icp <<" address: " << (void *)(*it)->pvec[2] << std::endl;
+                        subsystemfile << "clist_params_.push_back(new double("<< *((*it)->pvec[2]) <<"));
                         icp++;
                     }
                     npb3=true;
@@ -2341,7 +2367,8 @@ void System::extractSubsystem(SubSystem *subsys, bool isRedundantsolving)
 
                 subsystemfile << "clist_.push_back(new ConstraintDifference(" << (npb1?("clist_params_["):("plist_[")) << (npb1?ni1:i1) << "]," \
                 << (npb2?("clist_params_["):("plist_[")) << (npb2?ni2:i2) << "]," \
-                << (npb3?("clist_params_["):("plist_[")) << (npb3?ni3:i3) << "])); // addresses = "<< (*it)->pvec[0] << "," << (*it)->pvec[1] << "," << (*it)->pvec[2] << std::endl;
+                // addresses = "<< (*it)->pvec[0] << "," << (*it)->pvec[1] << "," << (*it)->pvec[2] << std::endl;
+                << (npb3?("clist_params_["):("plist_[")) << (npb3?ni3:i3) << "]));
                 break;
             }
             case P2PDistance:
@@ -2365,7 +2392,8 @@ void System::extractSubsystem(SubSystem *subsys, bool isRedundantsolving)
                     if(ni1 == clist_params_.size()) {
                         subsystemfile << "// Address not in System params...rebuilding into clist_params_" << std::endl;
                         clist_params_.push_back((*it)->pvec[0]);
-                        subsystemfile << "clist_params_.push_back(new double("<< *((*it)->pvec[0]) <<")); // "<< icp <<" address: " << (void *)(*it)->pvec[0] << std::endl;
+                        // "<< icp <<" address: " << (void *)(*it)->pvec[0] << std::endl;
+                        subsystemfile << "clist_params_.push_back(new double("<< *((*it)->pvec[0]) <<"));
                         icp++;
                     }
                     npb1=true;
@@ -2379,7 +2407,8 @@ void System::extractSubsystem(SubSystem *subsys, bool isRedundantsolving)
                     if(ni2 == clist_params_.size()) {
                         subsystemfile << "// Address not in System params...rebuilding into clist_params_" << std::endl;
                         clist_params_.push_back((*it)->pvec[1]);
-                        subsystemfile << "clist_params_.push_back(new double("<< *((*it)->pvec[1]) <<")); // "<< icp <<" address: " << (void *)(*it)->pvec[1] << std::endl;
+                        // "<< icp <<" address: " << (void *)(*it)->pvec[1] << std::endl;
+                        subsystemfile << "clist_params_.push_back(new double("<< *((*it)->pvec[1]) <<"));
                         icp++;
                     }
                     npb2=true;
@@ -2393,7 +2422,8 @@ void System::extractSubsystem(SubSystem *subsys, bool isRedundantsolving)
                     if(ni3 == clist_params_.size()) {
                         subsystemfile << "// Address not in System params...rebuilding into clist_params_" << std::endl;
                         clist_params_.push_back((*it)->pvec[2]);
-                        subsystemfile << "clist_params_.push_back(new double("<< *((*it)->pvec[2]) <<")); // "<< icp <<" address: " << (void *)(*it)->pvec[2] << std::endl;
+                        // "<< icp <<" address: " << (void *)(*it)->pvec[2] << std::endl;
+                        subsystemfile << "clist_params_.push_back(new double("<< *((*it)->pvec[2]) <<"));
                         icp++;
                     }
                     npb3=true;
@@ -2407,7 +2437,8 @@ void System::extractSubsystem(SubSystem *subsys, bool isRedundantsolving)
                     if(ni4 == clist_params_.size()) {
                         subsystemfile << "// Address not in System params...rebuilding into clist_params_" << std::endl;
                         clist_params_.push_back((*it)->pvec[3]);
-                        subsystemfile << "clist_params_.push_back(new double("<< *((*it)->pvec[3]) <<")); // "<< icp <<" address: " << (void *)(*it)->pvec[3] << std::endl;
+                        // "<< icp <<" address: " << (void *)(*it)->pvec[3] << std::endl;
+                        subsystemfile << "clist_params_.push_back(new double("<< *((*it)->pvec[3]) <<"));
                         icp++;
                     }
                     npb4=true;
@@ -2421,7 +2452,8 @@ void System::extractSubsystem(SubSystem *subsys, bool isRedundantsolving)
                     if(ni5 == clist_params_.size()) {
                         subsystemfile << "// Address not in System params...rebuilding into clist_params_" << std::endl;
                         clist_params_.push_back((*it)->pvec[4]);
-                        subsystemfile << "clist_params_.push_back(new double("<< *((*it)->pvec[4]) <<")); // "<< icp <<" address: " << (void *)(*it)->pvec[4] << std::endl;
+                        // "<< icp <<" address: " << (void *)(*it)->pvec[4] << std::endl;
+                        subsystemfile << "clist_params_.push_back(new double("<< *((*it)->pvec[4]) <<"));
                         icp++;
                     }
                     npb5=true;
@@ -2435,7 +2467,8 @@ void System::extractSubsystem(SubSystem *subsys, bool isRedundantsolving)
                 subsystemfile << "c" << ic << "->pvec.push_back(" << (npb5?("clist_params_["):("plist_[")) << (npb5?ni5:i5) <<"]);" << std::endl;
                 subsystemfile << "c" << ic << "->origpvec=c" << ic << "->pvec;" << std::endl;
                 subsystemfile << "c" << ic << "->rescale();" << std::endl;
-                subsystemfile << "clist_.push_back(c" << ic << "); // addresses = "<< (*it)->pvec[0] << "," << (*it)->pvec[1] << "," << (*it)->pvec[2] << "," << (*it)->pvec[3] << "," << (*it)->pvec[4] << std::endl;
+                // addresses = "<< (*it)->pvec[0] << "," << (*it)->pvec[1] << "," << (*it)->pvec[2] << "," << (*it)->pvec[3] << "," << (*it)->pvec[4] << std::endl;
+                subsystemfile << "clist_.push_back(c" << ic << ");
                 break;
             }
             case P2PAngle:
@@ -2459,7 +2492,8 @@ void System::extractSubsystem(SubSystem *subsys, bool isRedundantsolving)
                     if(ni1 == clist_params_.size()) {
                         subsystemfile << "// Address not in System params...rebuilding into clist_params_" << std::endl;
                         clist_params_.push_back((*it)->pvec[0]);
-                        subsystemfile << "clist_params_.push_back(new double("<< *((*it)->pvec[0]) <<")); // "<< icp <<" address: " << (void *)(*it)->pvec[0] << std::endl;
+                        // "<< icp <<" address: " << (void *)(*it)->pvec[0] << std::endl;
+                        subsystemfile << "clist_params_.push_back(new double("<< *((*it)->pvec[0]) <<"));
                         icp++;
                     }
                     npb1=true;
@@ -2473,7 +2507,8 @@ void System::extractSubsystem(SubSystem *subsys, bool isRedundantsolving)
                     if(ni2 == clist_params_.size()) {
                         subsystemfile << "// Address not in System params...rebuilding into clist_params_" << std::endl;
                         clist_params_.push_back((*it)->pvec[1]);
-                        subsystemfile << "clist_params_.push_back(new double("<< *((*it)->pvec[1]) <<")); // "<< icp <<" address: " << (void *)(*it)->pvec[1] << std::endl;
+                        // "<< icp <<" address: " << (void *)(*it)->pvec[1] << std::endl;
+                        subsystemfile << "clist_params_.push_back(new double("<< *((*it)->pvec[1]) <<"));
                         icp++;
                     }
                     npb2=true;
@@ -2487,7 +2522,8 @@ void System::extractSubsystem(SubSystem *subsys, bool isRedundantsolving)
                     if(ni3 == clist_params_.size()) {
                         subsystemfile << "// Address not in System params...rebuilding into clist_params_" << std::endl;
                         clist_params_.push_back((*it)->pvec[2]);
-                        subsystemfile << "clist_params_.push_back(new double("<< *((*it)->pvec[2]) <<")); // "<< icp <<" address: " << (void *)(*it)->pvec[2] << std::endl;
+                        // "<< icp <<" address: " << (void *)(*it)->pvec[2] << std::endl;
+                        subsystemfile << "clist_params_.push_back(new double("<< *((*it)->pvec[2]) <<"));
                         icp++;
                     }
                     npb3=true;
@@ -2501,7 +2537,8 @@ void System::extractSubsystem(SubSystem *subsys, bool isRedundantsolving)
                     if(ni4 == clist_params_.size()) {
                         subsystemfile << "// Address not in System params...rebuilding into clist_params_" << std::endl;
                         clist_params_.push_back((*it)->pvec[3]);
-                        subsystemfile << "clist_params_.push_back(new double("<< *((*it)->pvec[3]) <<")); // "<< icp <<" address: " << (void *)(*it)->pvec[3] << std::endl;
+                        // "<< icp <<" address: " << (void *)(*it)->pvec[3] << std::endl;
+                        subsystemfile << "clist_params_.push_back(new double("<< *((*it)->pvec[3]) <<"));
                         icp++;
                     }
                     npb4=true;
@@ -2515,7 +2552,8 @@ void System::extractSubsystem(SubSystem *subsys, bool isRedundantsolving)
                     if(ni5 == clist_params_.size()) {
                         subsystemfile << "// Address not in System params...rebuilding into clist_params_" << std::endl;
                         clist_params_.push_back((*it)->pvec[4]);
-                        subsystemfile << "clist_params_.push_back(new double("<< *((*it)->pvec[4]) <<")); // "<< icp <<" address: " << (void *)(*it)->pvec[4] << std::endl;
+                        // "<< icp <<" address: " << (void *)(*it)->pvec[4] << std::endl;
+                        subsystemfile << "clist_params_.push_back(new double("<< *((*it)->pvec[4]) <<"));
                         icp++;
                     }
                     npb5=true;
@@ -2529,7 +2567,8 @@ void System::extractSubsystem(SubSystem *subsys, bool isRedundantsolving)
                 subsystemfile << "c" << ic << "->pvec.push_back(" << (npb5?("clist_params_["):("plist_[")) << (npb5?ni5:i5) <<"]);" << std::endl;
                 subsystemfile << "c" << ic << "->origpvec=c" << ic << "->pvec;" << std::endl;
                 subsystemfile << "c" << ic << "->rescale();" << std::endl;
-                subsystemfile << "clist_.push_back(c" << ic << "); // addresses = "<< (*it)->pvec[0] << "," << (*it)->pvec[1] << "," << (*it)->pvec[2] << "," << (*it)->pvec[3] << "," << (*it)->pvec[4] << std::endl;
+                // addresses = "<< (*it)->pvec[0] << "," << (*it)->pvec[1] << "," << (*it)->pvec[2] << "," << (*it)->pvec[3] << "," << (*it)->pvec[4] << std::endl;
+                subsystemfile << "clist_.push_back(c" << ic << ");
                 break;
             }
             case P2LDistance:
@@ -2557,7 +2596,8 @@ void System::extractSubsystem(SubSystem *subsys, bool isRedundantsolving)
                     if(ni1 == clist_params_.size()) {
                         subsystemfile << "// Address not in System params...rebuilding into clist_params_" << std::endl;
                         clist_params_.push_back((*it)->pvec[0]);
-                        subsystemfile << "clist_params_.push_back(new double("<< *((*it)->pvec[0]) <<")); // "<< icp <<" address: " << (void *)(*it)->pvec[0] << std::endl;
+                        // "<< icp <<" address: " << (void *)(*it)->pvec[0] << std::endl;
+                        subsystemfile << "clist_params_.push_back(new double("<< *((*it)->pvec[0]) <<"));
                         icp++;
                     }
                     npb1=true;
@@ -2571,7 +2611,8 @@ void System::extractSubsystem(SubSystem *subsys, bool isRedundantsolving)
                     if(ni2 == clist_params_.size()) {
                         subsystemfile << "// Address not in System params...rebuilding into clist_params_" << std::endl;
                         clist_params_.push_back((*it)->pvec[1]);
-                        subsystemfile << "clist_params_.push_back(new double("<< *((*it)->pvec[1]) <<")); // "<< icp <<" address: " << (void *)(*it)->pvec[1] << std::endl;
+                        // "<< icp <<" address: " << (void *)(*it)->pvec[1] << std::endl;
+                        subsystemfile << "clist_params_.push_back(new double("<< *((*it)->pvec[1]) <<"));
                         icp++;
                     }
                     npb2=true;
@@ -2585,7 +2626,8 @@ void System::extractSubsystem(SubSystem *subsys, bool isRedundantsolving)
                     if(ni3 == clist_params_.size()) {
                         subsystemfile << "// Address not in System params...rebuilding into clist_params_" << std::endl;
                         clist_params_.push_back((*it)->pvec[2]);
-                        subsystemfile << "clist_params_.push_back(new double("<< *((*it)->pvec[2]) <<")); // "<< icp <<" address: " << (void *)(*it)->pvec[2] << std::endl;
+                        // "<< icp <<" address: " << (void *)(*it)->pvec[2] << std::endl;
+                        subsystemfile << "clist_params_.push_back(new double("<< *((*it)->pvec[2]) <<"));
                         icp++;
                     }
                     npb3=true;
@@ -2599,7 +2641,8 @@ void System::extractSubsystem(SubSystem *subsys, bool isRedundantsolving)
                     if(ni4 == clist_params_.size()) {
                         subsystemfile << "// Address not in System params...rebuilding into clist_params_" << std::endl;
                         clist_params_.push_back((*it)->pvec[3]);
-                        subsystemfile << "clist_params_.push_back(new double("<< *((*it)->pvec[3]) <<")); // "<< icp <<" address: " << (void *)(*it)->pvec[3] << std::endl;
+                        // "<< icp <<" address: " << (void *)(*it)->pvec[3] << std::endl;
+                        subsystemfile << "clist_params_.push_back(new double("<< *((*it)->pvec[3]) <<"));
                         icp++;
                     }
                     npb4=true;
@@ -2613,7 +2656,8 @@ void System::extractSubsystem(SubSystem *subsys, bool isRedundantsolving)
                     if(ni5 == clist_params_.size()) {
                         subsystemfile << "// Address not in System params...rebuilding into clist_params_" << std::endl;
                         clist_params_.push_back((*it)->pvec[4]);
-                        subsystemfile << "clist_params_.push_back(new double("<< *((*it)->pvec[4]) <<")); // "<< icp <<" address: " << (void *)(*it)->pvec[4] << std::endl;
+                        // "<< icp <<" address: " << (void *)(*it)->pvec[4] << std::endl;
+                        subsystemfile << "clist_params_.push_back(new double("<< *((*it)->pvec[4]) <<"));
                         icp++;
                     }
                     npb5=true;
@@ -2627,7 +2671,8 @@ void System::extractSubsystem(SubSystem *subsys, bool isRedundantsolving)
                     if(ni6 == clist_params_.size()) {
                         subsystemfile << "// Address not in System params...rebuilding into clist_params_" << std::endl;
                         clist_params_.push_back((*it)->pvec[5]);
-                        subsystemfile << "clist_params_.push_back(new double("<< *((*it)->pvec[5]) <<")); // "<< icp <<" address: " << (void *)(*it)->pvec[5] << std::endl;
+                        // "<< icp <<" address: " << (void *)(*it)->pvec[5] << std::endl;
+                        subsystemfile << "clist_params_.push_back(new double("<< *((*it)->pvec[5]) <<"));
                         icp++;
                     }
                     npb6=true;
@@ -2641,7 +2686,8 @@ void System::extractSubsystem(SubSystem *subsys, bool isRedundantsolving)
                     if(ni7 == clist_params_.size()) {
                         subsystemfile << "// Address not in System params...rebuilding into clist_params_" << std::endl;
                         clist_params_.push_back((*it)->pvec[6]);
-                        subsystemfile << "clist_params_.push_back(new double("<< *((*it)->pvec[6]) <<")); // "<< icp <<" address: " << (void *)(*it)->pvec[6] << std::endl;
+                        // "<< icp <<" address: " << (void *)(*it)->pvec[6] << std::endl;
+                        subsystemfile << "clist_params_.push_back(new double("<< *((*it)->pvec[6]) <<"));
                         icp++;
                     }
                     npb7=true;
@@ -2657,7 +2703,8 @@ void System::extractSubsystem(SubSystem *subsys, bool isRedundantsolving)
                 subsystemfile << "c" << ic << "->pvec.push_back(" << (npb7?("clist_params_["):("plist_[")) << (npb7?ni7:i7) <<"]);" << std::endl;
                 subsystemfile << "c" << ic << "->origpvec=c" << ic << "->pvec;" << std::endl;
                 subsystemfile << "c" << ic << "->rescale();" << std::endl;
-                subsystemfile << "clist_.push_back(c" << ic << "); // addresses = "<< (*it)->pvec[0] << "," << (*it)->pvec[1] << "," << (*it)->pvec[2] << "," << (*it)->pvec[3] << "," << (*it)->pvec[4] << "," << (*it)->pvec[5] << "," << (*it)->pvec[6] << std::endl;
+                // addresses = "<< (*it)->pvec[0] << "," << (*it)->pvec[1] << "," << (*it)->pvec[2] << "," << (*it)->pvec[3] << "," << (*it)->pvec[4] << "," << (*it)->pvec[5] << "," << (*it)->pvec[6] << std::endl;
+                subsystemfile << "clist_.push_back(c" << ic << ");
                 break;
             }
             case PointOnLine:
@@ -2683,7 +2730,8 @@ void System::extractSubsystem(SubSystem *subsys, bool isRedundantsolving)
                     if(ni1 == clist_params_.size()) {
                         subsystemfile << "// Address not in System params...rebuilding into clist_params_" << std::endl;
                         clist_params_.push_back((*it)->pvec[0]);
-                        subsystemfile << "clist_params_.push_back(new double("<< *((*it)->pvec[0]) <<")); // "<< icp <<" address: " << (void *)(*it)->pvec[0] << std::endl;
+                        // "<< icp <<" address: " << (void *)(*it)->pvec[0] << std::endl;
+                        subsystemfile << "clist_params_.push_back(new double("<< *((*it)->pvec[0]) <<"));
                         icp++;
                     }
                     npb1=true;
@@ -2697,7 +2745,8 @@ void System::extractSubsystem(SubSystem *subsys, bool isRedundantsolving)
                     if(ni2 == clist_params_.size()) {
                         subsystemfile << "// Address not in System params...rebuilding into clist_params_" << std::endl;
                         clist_params_.push_back((*it)->pvec[1]);
-                        subsystemfile << "clist_params_.push_back(new double("<< *((*it)->pvec[1]) <<")); // "<< icp <<" address: " << (void *)(*it)->pvec[1] << std::endl;
+                        // "<< icp <<" address: " << (void *)(*it)->pvec[1] << std::endl;
+                        subsystemfile << "clist_params_.push_back(new double("<< *((*it)->pvec[1]) <<"));
                         icp++;
                     }
                     npb2=true;
@@ -2711,7 +2760,8 @@ void System::extractSubsystem(SubSystem *subsys, bool isRedundantsolving)
                     if(ni3 == clist_params_.size()) {
                         subsystemfile << "// Address not in System params...rebuilding into clist_params_" << std::endl;
                         clist_params_.push_back((*it)->pvec[2]);
-                        subsystemfile << "clist_params_.push_back(new double("<< *((*it)->pvec[2]) <<")); // "<< icp <<" address: " << (void *)(*it)->pvec[2] << std::endl;
+                        // "<< icp <<" address: " << (void *)(*it)->pvec[2] << std::endl;
+                        subsystemfile << "clist_params_.push_back(new double("<< *((*it)->pvec[2]) <<"));
                         icp++;
                     }
                     npb3=true;
@@ -2725,7 +2775,8 @@ void System::extractSubsystem(SubSystem *subsys, bool isRedundantsolving)
                     if(ni4 == clist_params_.size()) {
                         subsystemfile << "// Address not in System params...rebuilding into clist_params_" << std::endl;
                         clist_params_.push_back((*it)->pvec[3]);
-                        subsystemfile << "clist_params_.push_back(new double("<< *((*it)->pvec[3]) <<")); // "<< icp <<" address: " << (void *)(*it)->pvec[3] << std::endl;
+                        // "<< icp <<" address: " << (void *)(*it)->pvec[3] << std::endl;
+                        subsystemfile << "clist_params_.push_back(new double("<< *((*it)->pvec[3]) <<"));
                         icp++;
                     }
                     npb4=true;
@@ -2739,7 +2790,8 @@ void System::extractSubsystem(SubSystem *subsys, bool isRedundantsolving)
                     if(ni5 == clist_params_.size()) {
                         subsystemfile << "// Address not in System params...rebuilding into clist_params_" << std::endl;
                         clist_params_.push_back((*it)->pvec[4]);
-                        subsystemfile << "clist_params_.push_back(new double("<< *((*it)->pvec[4]) <<")); // "<< icp <<" address: " << (void *)(*it)->pvec[4] << std::endl;
+                        // "<< icp <<" address: " << (void *)(*it)->pvec[4] << std::endl;
+                        subsystemfile << "clist_params_.push_back(new double("<< *((*it)->pvec[4]) <<"));
                         icp++;
                     }
                     npb5=true;
@@ -2753,7 +2805,8 @@ void System::extractSubsystem(SubSystem *subsys, bool isRedundantsolving)
                     if(ni6 == clist_params_.size()) {
                         subsystemfile << "// Address not in System params...rebuilding into clist_params_" << std::endl;
                         clist_params_.push_back((*it)->pvec[5]);
-                        subsystemfile << "clist_params_.push_back(new double("<< *((*it)->pvec[5]) <<")); // "<< icp <<" address: " << (void *)(*it)->pvec[5] << std::endl;
+                        // "<< icp <<" address: " << (void *)(*it)->pvec[5] << std::endl;
+                        subsystemfile << "clist_params_.push_back(new double("<< *((*it)->pvec[5]) <<"));
                         icp++;
                     }
                     npb6=true;
@@ -2768,7 +2821,8 @@ void System::extractSubsystem(SubSystem *subsys, bool isRedundantsolving)
                 subsystemfile << "c" << ic << "->pvec.push_back(" << (npb6?("clist_params_["):("plist_[")) << (npb6?ni6:i6) <<"]);" << std::endl;
                 subsystemfile << "c" << ic << "->origpvec=c" << ic << "->pvec;" << std::endl;
                 subsystemfile << "c" << ic << "->rescale();" << std::endl;
-                subsystemfile << "clist_.push_back(c" << ic << "); // addresses = "<< (*it)->pvec[0] << "," << (*it)->pvec[1] << "," << (*it)->pvec[2] << "," << (*it)->pvec[3] << "," << (*it)->pvec[4] << "," << (*it)->pvec[5] << std::endl;
+                // addresses = "<< (*it)->pvec[0] << "," << (*it)->pvec[1] << "," << (*it)->pvec[2] << "," << (*it)->pvec[3] << "," << (*it)->pvec[4] << "," << (*it)->pvec[5] << std::endl;
+                subsystemfile << "clist_.push_back(c" << ic << ");
                 break;
             }
             case PointOnPerpBisector:
@@ -2794,7 +2848,8 @@ void System::extractSubsystem(SubSystem *subsys, bool isRedundantsolving)
                     if(ni1 == clist_params_.size()) {
                         subsystemfile << "// Address not in System params...rebuilding into clist_params_" << std::endl;
                         clist_params_.push_back((*it)->pvec[0]);
-                        subsystemfile << "clist_params_.push_back(new double("<< *((*it)->pvec[0]) <<")); // "<< icp <<" address: " << (void *)(*it)->pvec[0] << std::endl;
+                        // "<< icp <<" address: " << (void *)(*it)->pvec[0] << std::endl;
+                        subsystemfile << "clist_params_.push_back(new double("<< *((*it)->pvec[0]) <<"));
                         icp++;
                     }
                     npb1=true;
@@ -2808,7 +2863,8 @@ void System::extractSubsystem(SubSystem *subsys, bool isRedundantsolving)
                     if(ni2 == clist_params_.size()) {
                         subsystemfile << "// Address not in System params...rebuilding into clist_params_" << std::endl;
                         clist_params_.push_back((*it)->pvec[1]);
-                        subsystemfile << "clist_params_.push_back(new double("<< *((*it)->pvec[1]) <<")); // "<< icp <<" address: " << (void *)(*it)->pvec[1] << std::endl;
+                        // "<< icp <<" address: " << (void *)(*it)->pvec[1] << std::endl;
+                        subsystemfile << "clist_params_.push_back(new double("<< *((*it)->pvec[1]) <<"));
                         icp++;
                     }
                     npb2=true;
@@ -2822,7 +2878,8 @@ void System::extractSubsystem(SubSystem *subsys, bool isRedundantsolving)
                     if(ni3 == clist_params_.size()) {
                         subsystemfile << "// Address not in System params...rebuilding into clist_params_" << std::endl;
                         clist_params_.push_back((*it)->pvec[2]);
-                        subsystemfile << "clist_params_.push_back(new double("<< *((*it)->pvec[2]) <<")); // "<< icp <<" address: " << (void *)(*it)->pvec[2] << std::endl;
+                        // "<< icp <<" address: " << (void *)(*it)->pvec[2] << std::endl;
+                        subsystemfile << "clist_params_.push_back(new double("<< *((*it)->pvec[2]) <<"));
                         icp++;
                     }
                     npb3=true;
@@ -2836,7 +2893,8 @@ void System::extractSubsystem(SubSystem *subsys, bool isRedundantsolving)
                     if(ni4 == clist_params_.size()) {
                         subsystemfile << "// Address not in System params...rebuilding into clist_params_" << std::endl;
                         clist_params_.push_back((*it)->pvec[3]);
-                        subsystemfile << "clist_params_.push_back(new double("<< *((*it)->pvec[3]) <<")); // "<< icp <<" address: " << (void *)(*it)->pvec[3] << std::endl;
+                        // "<< icp <<" address: " << (void *)(*it)->pvec[3] << std::endl;
+                        subsystemfile << "clist_params_.push_back(new double("<< *((*it)->pvec[3]) <<"));
                         icp++;
                     }
                     npb4=true;
@@ -2850,7 +2908,8 @@ void System::extractSubsystem(SubSystem *subsys, bool isRedundantsolving)
                     if(ni5 == clist_params_.size()) {
                         subsystemfile << "// Address not in System params...rebuilding into clist_params_" << std::endl;
                         clist_params_.push_back((*it)->pvec[4]);
-                        subsystemfile << "clist_params_.push_back(new double("<< *((*it)->pvec[4]) <<")); // "<< icp <<" address: " << (void *)(*it)->pvec[4] << std::endl;
+                        // "<< icp <<" address: " << (void *)(*it)->pvec[4] << std::endl;
+                        subsystemfile << "clist_params_.push_back(new double("<< *((*it)->pvec[4]) <<"));
                         icp++;
                     }
                     npb5=true;
@@ -2864,7 +2923,8 @@ void System::extractSubsystem(SubSystem *subsys, bool isRedundantsolving)
                     if(ni6 == clist_params_.size()) {
                         subsystemfile << "// Address not in System params...rebuilding into clist_params_" << std::endl;
                         clist_params_.push_back((*it)->pvec[5]);
-                        subsystemfile << "clist_params_.push_back(new double("<< *((*it)->pvec[5]) <<")); // "<< icp <<" address: " << (void *)(*it)->pvec[5] << std::endl;
+                        // "<< icp <<" address: " << (void *)(*it)->pvec[5] << std::endl;
+                        subsystemfile << "clist_params_.push_back(new double("<< *((*it)->pvec[5]) <<"));
                         icp++;
                     }
                     npb6=true;
@@ -2879,7 +2939,8 @@ void System::extractSubsystem(SubSystem *subsys, bool isRedundantsolving)
                 subsystemfile << "c" << ic << "->pvec.push_back(" << (npb6?("clist_params_["):("plist_[")) << (npb6?ni6:i6) <<"]);" << std::endl;
                 subsystemfile << "c" << ic << "->origpvec=c" << ic << "->pvec;" << std::endl;
                 subsystemfile << "c" << ic << "->rescale();" << std::endl;
-                subsystemfile << "clist_.push_back(c" << ic << "); // addresses = "<< (*it)->pvec[0] << "," << (*it)->pvec[1] << "," << (*it)->pvec[2] << "," << (*it)->pvec[3] << "," << (*it)->pvec[4] << "," << (*it)->pvec[5] << std::endl;
+                // addresses = "<< (*it)->pvec[0] << "," << (*it)->pvec[1] << "," << (*it)->pvec[2] << "," << (*it)->pvec[3] << "," << (*it)->pvec[4] << "," << (*it)->pvec[5] << std::endl;
+                subsystemfile << "clist_.push_back(c" << ic << ");
                 break;
             }
             case Parallel:
@@ -2909,7 +2970,8 @@ void System::extractSubsystem(SubSystem *subsys, bool isRedundantsolving)
                     if(ni1 == clist_params_.size()) {
                         subsystemfile << "// Address not in System params...rebuilding into clist_params_" << std::endl;
                         clist_params_.push_back((*it)->pvec[0]);
-                        subsystemfile << "clist_params_.push_back(new double("<< *((*it)->pvec[0]) <<")); // "<< icp <<" address: " << (void *)(*it)->pvec[0] << std::endl;
+                        // "<< icp <<" address: " << (void *)(*it)->pvec[0] << std::endl;
+                        subsystemfile << "clist_params_.push_back(new double("<< *((*it)->pvec[0]) <<"));
                         icp++;
                     }
                     npb1=true;
@@ -2923,7 +2985,8 @@ void System::extractSubsystem(SubSystem *subsys, bool isRedundantsolving)
                     if(ni2 == clist_params_.size()) {
                         subsystemfile << "// Address not in System params...rebuilding into clist_params_" << std::endl;
                         clist_params_.push_back((*it)->pvec[1]);
-                        subsystemfile << "clist_params_.push_back(new double("<< *((*it)->pvec[1]) <<")); // "<< icp <<" address: " << (void *)(*it)->pvec[1] << std::endl;
+                        // "<< icp <<" address: " << (void *)(*it)->pvec[1] << std::endl;
+                        subsystemfile << "clist_params_.push_back(new double("<< *((*it)->pvec[1]) <<"));
                         icp++;
                     }
                     npb2=true;
@@ -2937,7 +3000,8 @@ void System::extractSubsystem(SubSystem *subsys, bool isRedundantsolving)
                     if(ni3 == clist_params_.size()) {
                         subsystemfile << "// Address not in System params...rebuilding into clist_params_" << std::endl;
                         clist_params_.push_back((*it)->pvec[2]);
-                        subsystemfile << "clist_params_.push_back(new double("<< *((*it)->pvec[2]) <<")); // "<< icp <<" address: " << (void *)(*it)->pvec[2] << std::endl;
+                        // "<< icp <<" address: " << (void *)(*it)->pvec[2] << std::endl;
+                        subsystemfile << "clist_params_.push_back(new double("<< *((*it)->pvec[2]) <<"));
                         icp++;
                     }
                     npb3=true;
@@ -2951,7 +3015,8 @@ void System::extractSubsystem(SubSystem *subsys, bool isRedundantsolving)
                     if(ni4 == clist_params_.size()) {
                         subsystemfile << "// Address not in System params...rebuilding into clist_params_" << std::endl;
                         clist_params_.push_back((*it)->pvec[3]);
-                        subsystemfile << "clist_params_.push_back(new double("<< *((*it)->pvec[3]) <<")); // "<< icp <<" address: " << (void *)(*it)->pvec[3] << std::endl;
+                        // "<< icp <<" address: " << (void *)(*it)->pvec[3] << std::endl;
+                        subsystemfile << "clist_params_.push_back(new double("<< *((*it)->pvec[3]) <<"));
                         icp++;
                     }
                     npb4=true;
@@ -2965,7 +3030,8 @@ void System::extractSubsystem(SubSystem *subsys, bool isRedundantsolving)
                     if(ni5 == clist_params_.size()) {
                         subsystemfile << "// Address not in System params...rebuilding into clist_params_" << std::endl;
                         clist_params_.push_back((*it)->pvec[4]);
-                        subsystemfile << "clist_params_.push_back(new double("<< *((*it)->pvec[4]) <<")); // "<< icp <<" address: " << (void *)(*it)->pvec[4] << std::endl;
+                        // "<< icp <<" address: " << (void *)(*it)->pvec[4] << std::endl;
+                        subsystemfile << "clist_params_.push_back(new double("<< *((*it)->pvec[4]) <<"));
                         icp++;
                     }
                     npb5=true;
@@ -2979,7 +3045,8 @@ void System::extractSubsystem(SubSystem *subsys, bool isRedundantsolving)
                     if(ni6 == clist_params_.size()) {
                         subsystemfile << "// Address not in System params...rebuilding into clist_params_" << std::endl;
                         clist_params_.push_back((*it)->pvec[5]);
-                        subsystemfile << "clist_params_.push_back(new double("<< *((*it)->pvec[5]) <<")); // "<< icp <<" address: " << (void *)(*it)->pvec[5] << std::endl;
+                        // "<< icp <<" address: " << (void *)(*it)->pvec[5] << std::endl;
+                        subsystemfile << "clist_params_.push_back(new double("<< *((*it)->pvec[5]) <<"));
                         icp++;
                     }
                     npb6=true;
@@ -2993,7 +3060,8 @@ void System::extractSubsystem(SubSystem *subsys, bool isRedundantsolving)
                     if(ni7 == clist_params_.size()) {
                         subsystemfile << "// Address not in System params...rebuilding into clist_params_" << std::endl;
                         clist_params_.push_back((*it)->pvec[6]);
-                        subsystemfile << "clist_params_.push_back(new double("<< *((*it)->pvec[6]) <<")); // "<< icp <<" address: " << (void *)(*it)->pvec[6] << std::endl;
+                        // "<< icp <<" address: " << (void *)(*it)->pvec[6] << std::endl;
+                        subsystemfile << "clist_params_.push_back(new double("<< *((*it)->pvec[6]) <<"));
                         icp++;
                     }
                     npb7=true;
@@ -3007,7 +3075,8 @@ void System::extractSubsystem(SubSystem *subsys, bool isRedundantsolving)
                     if(ni8 == clist_params_.size()) {
                         subsystemfile << "// Address not in System params...rebuilding into clist_params_" << std::endl;
                         clist_params_.push_back((*it)->pvec[7]);
-                        subsystemfile << "clist_params_.push_back(new double("<< *((*it)->pvec[7]) <<")); // "<< icp <<" address: " << (void *)(*it)->pvec[7] << std::endl;
+                        // "<< icp <<" address: " << (void *)(*it)->pvec[7] << std::endl;
+                        subsystemfile << "clist_params_.push_back(new double("<< *((*it)->pvec[7]) <<"));
                         icp++;
                     }
                     npb8=true;
@@ -3024,7 +3093,8 @@ void System::extractSubsystem(SubSystem *subsys, bool isRedundantsolving)
                 subsystemfile << "c" << ic << "->pvec.push_back(" << (npb8?("clist_params_["):("plist_[")) << (npb8?ni8:i8) <<"]);" << std::endl;
                 subsystemfile << "c" << ic << "->origpvec=c" << ic << "->pvec;" << std::endl;
                 subsystemfile << "c" << ic << "->rescale();" << std::endl;
-                subsystemfile << "clist_.push_back(c" << ic << "); // addresses = "<< (*it)->pvec[0] << "," << (*it)->pvec[1] << "," << (*it)->pvec[2] << "," << (*it)->pvec[3] << "," << (*it)->pvec[4] << "," << (*it)->pvec[5] << "," << (*it)->pvec[6] << "," << (*it)->pvec[7] << std::endl;
+                // addresses = "<< (*it)->pvec[0] << "," << (*it)->pvec[1] << "," << (*it)->pvec[2] << "," << (*it)->pvec[3] << "," << (*it)->pvec[4] << "," << (*it)->pvec[5] << "," << (*it)->pvec[6] << "," << (*it)->pvec[7] << std::endl;
+                subsystemfile << "clist_.push_back(c" << ic << ");
                 break;
             }
             case Perpendicular:
@@ -3054,7 +3124,8 @@ void System::extractSubsystem(SubSystem *subsys, bool isRedundantsolving)
                     if(ni1 == clist_params_.size()) {
                         subsystemfile << "// Address not in System params...rebuilding into clist_params_" << std::endl;
                         clist_params_.push_back((*it)->pvec[0]);
-                        subsystemfile << "clist_params_.push_back(new double("<< *((*it)->pvec[0]) <<")); // "<< icp <<" address: " << (void *)(*it)->pvec[0] << std::endl;
+                        // "<< icp <<" address: " << (void *)(*it)->pvec[0] << std::endl;
+                        subsystemfile << "clist_params_.push_back(new double("<< *((*it)->pvec[0]) <<"));
                         icp++;
                     }
                     npb1=true;
@@ -3068,7 +3139,8 @@ void System::extractSubsystem(SubSystem *subsys, bool isRedundantsolving)
                     if(ni2 == clist_params_.size()) {
                         subsystemfile << "// Address not in System params...rebuilding into clist_params_" << std::endl;
                         clist_params_.push_back((*it)->pvec[1]);
-                        subsystemfile << "clist_params_.push_back(new double("<< *((*it)->pvec[1]) <<")); // "<< icp <<" address: " << (void *)(*it)->pvec[1] << std::endl;
+                        // "<< icp <<" address: " << (void *)(*it)->pvec[1] << std::endl;
+                        subsystemfile << "clist_params_.push_back(new double("<< *((*it)->pvec[1]) <<"));
                         icp++;
                     }
                     npb2=true;
@@ -3082,7 +3154,8 @@ void System::extractSubsystem(SubSystem *subsys, bool isRedundantsolving)
                     if(ni3 == clist_params_.size()) {
                         subsystemfile << "// Address not in System params...rebuilding into clist_params_" << std::endl;
                         clist_params_.push_back((*it)->pvec[2]);
-                        subsystemfile << "clist_params_.push_back(new double("<< *((*it)->pvec[2]) <<")); // "<< icp <<" address: " << (void *)(*it)->pvec[2] << std::endl;
+                        // "<< icp <<" address: " << (void *)(*it)->pvec[2] << std::endl;
+                        subsystemfile << "clist_params_.push_back(new double("<< *((*it)->pvec[2]) <<"));
                         icp++;
                     }
                     npb3=true;
@@ -3096,7 +3169,8 @@ void System::extractSubsystem(SubSystem *subsys, bool isRedundantsolving)
                     if(ni4 == clist_params_.size()) {
                         subsystemfile << "// Address not in System params...rebuilding into clist_params_" << std::endl;
                         clist_params_.push_back((*it)->pvec[3]);
-                        subsystemfile << "clist_params_.push_back(new double("<< *((*it)->pvec[3]) <<")); // "<< icp <<" address: " << (void *)(*it)->pvec[3] << std::endl;
+                        // "<< icp <<" address: " << (void *)(*it)->pvec[3] << std::endl;
+                        subsystemfile << "clist_params_.push_back(new double("<< *((*it)->pvec[3]) <<"));
                         icp++;
                     }
                     npb4=true;
@@ -3110,7 +3184,8 @@ void System::extractSubsystem(SubSystem *subsys, bool isRedundantsolving)
                     if(ni5 == clist_params_.size()) {
                         subsystemfile << "// Address not in System params...rebuilding into clist_params_" << std::endl;
                         clist_params_.push_back((*it)->pvec[4]);
-                        subsystemfile << "clist_params_.push_back(new double("<< *((*it)->pvec[4]) <<")); // "<< icp <<" address: " << (void *)(*it)->pvec[4] << std::endl;
+                        // "<< icp <<" address: " << (void *)(*it)->pvec[4] << std::endl;
+                        subsystemfile << "clist_params_.push_back(new double("<< *((*it)->pvec[4]) <<"));
                         icp++;
                     }
                     npb5=true;
@@ -3124,7 +3199,8 @@ void System::extractSubsystem(SubSystem *subsys, bool isRedundantsolving)
                     if(ni6 == clist_params_.size()) {
                         subsystemfile << "// Address not in System params...rebuilding into clist_params_" << std::endl;
                         clist_params_.push_back((*it)->pvec[5]);
-                        subsystemfile << "clist_params_.push_back(new double("<< *((*it)->pvec[5]) <<")); // "<< icp <<" address: " << (void *)(*it)->pvec[5] << std::endl;
+                        // "<< icp <<" address: " << (void *)(*it)->pvec[5] << std::endl;
+                        subsystemfile << "clist_params_.push_back(new double("<< *((*it)->pvec[5]) <<"));
                         icp++;
                     }
                     npb6=true;
@@ -3138,7 +3214,8 @@ void System::extractSubsystem(SubSystem *subsys, bool isRedundantsolving)
                     if(ni7 == clist_params_.size()) {
                         subsystemfile << "// Address not in System params...rebuilding into clist_params_" << std::endl;
                         clist_params_.push_back((*it)->pvec[6]);
-                        subsystemfile << "clist_params_.push_back(new double("<< *((*it)->pvec[6]) <<")); // "<< icp <<" address: " << (void *)(*it)->pvec[6] << std::endl;
+                        // "<< icp <<" address: " << (void *)(*it)->pvec[6] << std::endl;
+                        subsystemfile << "clist_params_.push_back(new double("<< *((*it)->pvec[6]) <<"));
                         icp++;
                     }
                     npb7=true;
@@ -3152,7 +3229,8 @@ void System::extractSubsystem(SubSystem *subsys, bool isRedundantsolving)
                     if(ni8 == clist_params_.size()) {
                         subsystemfile << "// Address not in System params...rebuilding into clist_params_" << std::endl;
                         clist_params_.push_back((*it)->pvec[7]);
-                        subsystemfile << "clist_params_.push_back(new double("<< *((*it)->pvec[7]) <<")); // "<< icp <<" address: " << (void *)(*it)->pvec[7] << std::endl;
+                        // "<< icp <<" address: " << (void *)(*it)->pvec[7] << std::endl;
+                        subsystemfile << "clist_params_.push_back(new double("<< *((*it)->pvec[7]) <<"));
                         icp++;
                     }
                     npb8=true;
@@ -3169,7 +3247,8 @@ void System::extractSubsystem(SubSystem *subsys, bool isRedundantsolving)
                 subsystemfile << "c" << ic << "->pvec.push_back(" << (npb8?("clist_params_["):("plist_[")) << (npb8?ni8:i8) <<"]);" << std::endl;
                 subsystemfile << "c" << ic << "->origpvec=c" << ic << "->pvec;" << std::endl;
                 subsystemfile << "c" << ic << "->rescale();" << std::endl;
-                subsystemfile << "clist_.push_back(c" << ic << "); // addresses = "<< (*it)->pvec[0] << "," << (*it)->pvec[1] << "," << (*it)->pvec[2] << "," << (*it)->pvec[3] << "," << (*it)->pvec[4] << "," << (*it)->pvec[5] << "," << (*it)->pvec[6] << "," << (*it)->pvec[7] << std::endl;
+                // addresses = "<< (*it)->pvec[0] << "," << (*it)->pvec[1] << "," << (*it)->pvec[2] << "," << (*it)->pvec[3] << "," << (*it)->pvec[4] << "," << (*it)->pvec[5] << "," << (*it)->pvec[6] << "," << (*it)->pvec[7] << std::endl;
+                subsystemfile << "clist_.push_back(c" << ic << ");
                 break;
             }
             case L2LAngle:
@@ -3201,7 +3280,8 @@ void System::extractSubsystem(SubSystem *subsys, bool isRedundantsolving)
                     if(ni1 == clist_params_.size()) {
                         subsystemfile << "// Address not in System params...rebuilding into clist_params_" << std::endl;
                         clist_params_.push_back((*it)->pvec[0]);
-                        subsystemfile << "clist_params_.push_back(new double("<< *((*it)->pvec[0]) <<")); // "<< icp <<" address: " << (void *)(*it)->pvec[0] << std::endl;
+                        // "<< icp <<" address: " << (void *)(*it)->pvec[0] << std::endl;
+                        subsystemfile << "clist_params_.push_back(new double("<< *((*it)->pvec[0]) <<"));
                         icp++;
                     }
                     npb1=true;
@@ -3215,7 +3295,8 @@ void System::extractSubsystem(SubSystem *subsys, bool isRedundantsolving)
                     if(ni2 == clist_params_.size()) {
                         subsystemfile << "// Address not in System params...rebuilding into clist_params_" << std::endl;
                         clist_params_.push_back((*it)->pvec[1]);
-                        subsystemfile << "clist_params_.push_back(new double("<< *((*it)->pvec[1]) <<")); // "<< icp <<" address: " << (void *)(*it)->pvec[1] << std::endl;
+                        // "<< icp <<" address: " << (void *)(*it)->pvec[1] << std::endl;
+                        subsystemfile << "clist_params_.push_back(new double("<< *((*it)->pvec[1]) <<"));
                         icp++;
                     }
                     npb2=true;
@@ -3229,7 +3310,8 @@ void System::extractSubsystem(SubSystem *subsys, bool isRedundantsolving)
                     if(ni3 == clist_params_.size()) {
                         subsystemfile << "// Address not in System params...rebuilding into clist_params_" << std::endl;
                         clist_params_.push_back((*it)->pvec[2]);
-                        subsystemfile << "clist_params_.push_back(new double("<< *((*it)->pvec[2]) <<")); // "<< icp <<" address: " << (void *)(*it)->pvec[2] << std::endl;
+                        // "<< icp <<" address: " << (void *)(*it)->pvec[2] << std::endl;
+                        subsystemfile << "clist_params_.push_back(new double("<< *((*it)->pvec[2]) <<"));
                         icp++;
                     }
                     npb3=true;
@@ -3243,7 +3325,8 @@ void System::extractSubsystem(SubSystem *subsys, bool isRedundantsolving)
                     if(ni4 == clist_params_.size()) {
                         subsystemfile << "// Address not in System params...rebuilding into clist_params_" << std::endl;
                         clist_params_.push_back((*it)->pvec[3]);
-                        subsystemfile << "clist_params_.push_back(new double("<< *((*it)->pvec[3]) <<")); // "<< icp <<" address: " << (void *)(*it)->pvec[3] << std::endl;
+                        // "<< icp <<" address: " << (void *)(*it)->pvec[3] << std::endl;
+                        subsystemfile << "clist_params_.push_back(new double("<< *((*it)->pvec[3]) <<"));
                         icp++;
                     }
                     npb4=true;
@@ -3257,7 +3340,8 @@ void System::extractSubsystem(SubSystem *subsys, bool isRedundantsolving)
                     if(ni5 == clist_params_.size()) {
                         subsystemfile << "// Address not in System params...rebuilding into clist_params_" << std::endl;
                         clist_params_.push_back((*it)->pvec[4]);
-                        subsystemfile << "clist_params_.push_back(new double("<< *((*it)->pvec[4]) <<")); // "<< icp <<" address: " << (void *)(*it)->pvec[4] << std::endl;
+                        // "<< icp <<" address: " << (void *)(*it)->pvec[4] << std::endl;
+                        subsystemfile << "clist_params_.push_back(new double("<< *((*it)->pvec[4]) <<"));
                         icp++;
                     }
                     npb5=true;
@@ -3271,7 +3355,8 @@ void System::extractSubsystem(SubSystem *subsys, bool isRedundantsolving)
                     if(ni6 == clist_params_.size()) {
                         subsystemfile << "// Address not in System params...rebuilding into clist_params_" << std::endl;
                         clist_params_.push_back((*it)->pvec[5]);
-                        subsystemfile << "clist_params_.push_back(new double("<< *((*it)->pvec[5]) <<")); // "<< icp <<" address: " << (void *)(*it)->pvec[5] << std::endl;
+                        // "<< icp <<" address: " << (void *)(*it)->pvec[5] << std::endl;
+                        subsystemfile << "clist_params_.push_back(new double("<< *((*it)->pvec[5]) <<"));
                         icp++;
                     }
                     npb6=true;
@@ -3285,7 +3370,8 @@ void System::extractSubsystem(SubSystem *subsys, bool isRedundantsolving)
                     if(ni7 == clist_params_.size()) {
                         subsystemfile << "// Address not in System params...rebuilding into clist_params_" << std::endl;
                         clist_params_.push_back((*it)->pvec[6]);
-                        subsystemfile << "clist_params_.push_back(new double("<< *((*it)->pvec[6]) <<")); // "<< icp <<" address: " << (void *)(*it)->pvec[6] << std::endl;
+                        // "<< icp <<" address: " << (void *)(*it)->pvec[6] << std::endl;
+                        subsystemfile << "clist_params_.push_back(new double("<< *((*it)->pvec[6]) <<"));
                         icp++;
                     }
                     npb7=true;
@@ -3299,7 +3385,8 @@ void System::extractSubsystem(SubSystem *subsys, bool isRedundantsolving)
                     if(ni8 == clist_params_.size()) {
                         subsystemfile << "// Address not in System params...rebuilding into clist_params_" << std::endl;
                         clist_params_.push_back((*it)->pvec[7]);
-                        subsystemfile << "clist_params_.push_back(new double("<< *((*it)->pvec[7]) <<")); // "<< icp <<" address: " << (void *)(*it)->pvec[7] << std::endl;
+                        // "<< icp <<" address: " << (void *)(*it)->pvec[7] << std::endl;
+                        subsystemfile << "clist_params_.push_back(new double("<< *((*it)->pvec[7]) <<"));
                         icp++;
                     }
                     npb8=true;
@@ -3313,7 +3400,8 @@ void System::extractSubsystem(SubSystem *subsys, bool isRedundantsolving)
                     if(ni9 == clist_params_.size()) {
                         subsystemfile << "// Address not in System params...rebuilding into clist_params_" << std::endl;
                         clist_params_.push_back((*it)->pvec[8]);
-                        subsystemfile << "clist_params_.push_back(new double("<< *((*it)->pvec[8]) <<")); // "<< icp <<" address: " << (void *)(*it)->pvec[8] << std::endl;
+                        // "<< icp <<" address: " << (void *)(*it)->pvec[8] << std::endl;
+                        subsystemfile << "clist_params_.push_back(new double("<< *((*it)->pvec[8]) <<"));
                         icp++;
                     }
                     npb9=true;
@@ -3331,7 +3419,8 @@ void System::extractSubsystem(SubSystem *subsys, bool isRedundantsolving)
                 subsystemfile << "c" << ic << "->pvec.push_back(" << (npb9?("clist_params_["):("plist_[")) << (npb9?ni9:i9) <<"]);" << std::endl;
                 subsystemfile << "c" << ic << "->origpvec=c" << ic << "->pvec;" << std::endl;
                 subsystemfile << "c" << ic << "->rescale();" << std::endl;
-                subsystemfile << "clist_.push_back(c" << ic << "); // addresses = "<< (*it)->pvec[0] << "," << (*it)->pvec[1] << "," << (*it)->pvec[2] << "," << (*it)->pvec[3] << "," << (*it)->pvec[4] << "," << (*it)->pvec[5] << "," << (*it)->pvec[6] << "," << (*it)->pvec[7] << "," << (*it)->pvec[8] << std::endl;
+                // addresses = "<< (*it)->pvec[0] << "," << (*it)->pvec[1] << "," << (*it)->pvec[2] << "," << (*it)->pvec[3] << "," << (*it)->pvec[4] << "," << (*it)->pvec[5] << "," << (*it)->pvec[6] << "," << (*it)->pvec[7] << "," << (*it)->pvec[8] << std::endl;
+                subsystemfile << "clist_.push_back(c" << ic << ");
                 break;
             }
             case MidpointOnLine:
@@ -3361,7 +3450,8 @@ void System::extractSubsystem(SubSystem *subsys, bool isRedundantsolving)
                     if(ni1 == clist_params_.size()) {
                         subsystemfile << "// Address not in System params...rebuilding into clist_params_" << std::endl;
                         clist_params_.push_back((*it)->pvec[0]);
-                        subsystemfile << "clist_params_.push_back(new double("<< *((*it)->pvec[0]) <<")); // "<< icp <<" address: " << (void *)(*it)->pvec[0] << std::endl;
+                        // "<< icp <<" address: " << (void *)(*it)->pvec[0] << std::endl;
+                        subsystemfile << "clist_params_.push_back(new double("<< *((*it)->pvec[0]) <<"));
                         icp++;
                     }
                     npb1=true;
@@ -3375,7 +3465,8 @@ void System::extractSubsystem(SubSystem *subsys, bool isRedundantsolving)
                     if(ni2 == clist_params_.size()) {
                         subsystemfile << "// Address not in System params...rebuilding into clist_params_" << std::endl;
                         clist_params_.push_back((*it)->pvec[1]);
-                        subsystemfile << "clist_params_.push_back(new double("<< *((*it)->pvec[1]) <<")); // "<< icp <<" address: " << (void *)(*it)->pvec[1] << std::endl;
+                        // "<< icp <<" address: " << (void *)(*it)->pvec[1] << std::endl;
+                        subsystemfile << "clist_params_.push_back(new double("<< *((*it)->pvec[1]) <<"));
                         icp++;
                     }
                     npb2=true;
@@ -3389,7 +3480,8 @@ void System::extractSubsystem(SubSystem *subsys, bool isRedundantsolving)
                     if(ni3 == clist_params_.size()) {
                         subsystemfile << "// Address not in System params...rebuilding into clist_params_" << std::endl;
                         clist_params_.push_back((*it)->pvec[2]);
-                        subsystemfile << "clist_params_.push_back(new double("<< *((*it)->pvec[2]) <<")); // "<< icp <<" address: " << (void *)(*it)->pvec[2] << std::endl;
+                        // "<< icp <<" address: " << (void *)(*it)->pvec[2] << std::endl;
+                        subsystemfile << "clist_params_.push_back(new double("<< *((*it)->pvec[2]) <<"));
                         icp++;
                     }
                     npb3=true;
@@ -3403,7 +3495,8 @@ void System::extractSubsystem(SubSystem *subsys, bool isRedundantsolving)
                     if(ni4 == clist_params_.size()) {
                         subsystemfile << "// Address not in System params...rebuilding into clist_params_" << std::endl;
                         clist_params_.push_back((*it)->pvec[3]);
-                        subsystemfile << "clist_params_.push_back(new double("<< *((*it)->pvec[3]) <<")); // "<< icp <<" address: " << (void *)(*it)->pvec[3] << std::endl;
+                        // "<< icp <<" address: " << (void *)(*it)->pvec[3] << std::endl;
+                        subsystemfile << "clist_params_.push_back(new double("<< *((*it)->pvec[3]) <<"));
                         icp++;
                     }
                     npb4=true;
@@ -3417,7 +3510,8 @@ void System::extractSubsystem(SubSystem *subsys, bool isRedundantsolving)
                     if(ni5 == clist_params_.size()) {
                         subsystemfile << "// Address not in System params...rebuilding into clist_params_" << std::endl;
                         clist_params_.push_back((*it)->pvec[4]);
-                        subsystemfile << "clist_params_.push_back(new double("<< *((*it)->pvec[4]) <<")); // "<< icp <<" address: " << (void *)(*it)->pvec[4] << std::endl;
+                        // "<< icp <<" address: " << (void *)(*it)->pvec[4] << std::endl;
+                        subsystemfile << "clist_params_.push_back(new double("<< *((*it)->pvec[4]) <<"));
                         icp++;
                     }
                     npb5=true;
@@ -3431,7 +3525,8 @@ void System::extractSubsystem(SubSystem *subsys, bool isRedundantsolving)
                     if(ni6 == clist_params_.size()) {
                         subsystemfile << "// Address not in System params...rebuilding into clist_params_" << std::endl;
                         clist_params_.push_back((*it)->pvec[5]);
-                        subsystemfile << "clist_params_.push_back(new double("<< *((*it)->pvec[5]) <<")); // "<< icp <<" address: " << (void *)(*it)->pvec[5] << std::endl;
+                        // "<< icp <<" address: " << (void *)(*it)->pvec[5] << std::endl;
+                        subsystemfile << "clist_params_.push_back(new double("<< *((*it)->pvec[5]) <<"));
                         icp++;
                     }
                     npb6=true;
@@ -3445,7 +3540,8 @@ void System::extractSubsystem(SubSystem *subsys, bool isRedundantsolving)
                     if(ni7 == clist_params_.size()) {
                         subsystemfile << "// Address not in System params...rebuilding into clist_params_" << std::endl;
                         clist_params_.push_back((*it)->pvec[6]);
-                        subsystemfile << "clist_params_.push_back(new double("<< *((*it)->pvec[6]) <<")); // "<< icp <<" address: " << (void *)(*it)->pvec[6] << std::endl;
+                        // "<< icp <<" address: " << (void *)(*it)->pvec[6] << std::endl;
+                        subsystemfile << "clist_params_.push_back(new double("<< *((*it)->pvec[6]) <<"));
                         icp++;
                     }
                     npb7=true;
@@ -3459,7 +3555,8 @@ void System::extractSubsystem(SubSystem *subsys, bool isRedundantsolving)
                     if(ni8 == clist_params_.size()) {
                         subsystemfile << "// Address not in System params...rebuilding into clist_params_" << std::endl;
                         clist_params_.push_back((*it)->pvec[7]);
-                        subsystemfile << "clist_params_.push_back(new double("<< *((*it)->pvec[7]) <<")); // "<< icp <<" address: " << (void *)(*it)->pvec[7] << std::endl;
+                        // "<< icp <<" address: " << (void *)(*it)->pvec[7] << std::endl;
+                        subsystemfile << "clist_params_.push_back(new double("<< *((*it)->pvec[7]) <<"));
                         icp++;
                     }
                     npb8=true;
@@ -3476,7 +3573,8 @@ void System::extractSubsystem(SubSystem *subsys, bool isRedundantsolving)
                 subsystemfile << "c" << ic << "->pvec.push_back(" << (npb8?("clist_params_["):("plist_[")) << (npb8?ni8:i8) <<"]);" << std::endl;
                 subsystemfile << "c" << ic << "->origpvec=c" << ic << "->pvec;" << std::endl;
                 subsystemfile << "c" << ic << "->rescale();" << std::endl;
-                subsystemfile << "clist_.push_back(c" << ic << "); // addresses = "<< (*it)->pvec[0] << "," << (*it)->pvec[1] << "," << (*it)->pvec[2] << "," << (*it)->pvec[3] << "," << (*it)->pvec[4] << "," << (*it)->pvec[5] << "," << (*it)->pvec[6] << "," << (*it)->pvec[7] << std::endl;
+                // addresses = "<< (*it)->pvec[0] << "," << (*it)->pvec[1] << "," << (*it)->pvec[2] << "," << (*it)->pvec[3] << "," << (*it)->pvec[4] << "," << (*it)->pvec[5] << "," << (*it)->pvec[6] << "," << (*it)->pvec[7] << std::endl;
+                subsystemfile << "clist_.push_back(c" << ic << ");
                 break;
             }
             case TangentCircumf:
@@ -3502,7 +3600,8 @@ void System::extractSubsystem(SubSystem *subsys, bool isRedundantsolving)
                     if(ni1 == clist_params_.size()) {
                         subsystemfile << "// Address not in System params...rebuilding into clist_params_" << std::endl;
                         clist_params_.push_back((*it)->pvec[0]);
-                        subsystemfile << "clist_params_.push_back(new double("<< *((*it)->pvec[0]) <<")); // "<< icp <<" address: " << (void *)(*it)->pvec[0] << std::endl;
+                        // "<< icp <<" address: " << (void *)(*it)->pvec[0] << std::endl;
+                        subsystemfile << "clist_params_.push_back(new double("<< *((*it)->pvec[0]) <<"));
                         icp++;
                     }
                     npb1=true;
@@ -3516,7 +3615,8 @@ void System::extractSubsystem(SubSystem *subsys, bool isRedundantsolving)
                     if(ni2 == clist_params_.size()) {
                         subsystemfile << "// Address not in System params...rebuilding into clist_params_" << std::endl;
                         clist_params_.push_back((*it)->pvec[1]);
-                        subsystemfile << "clist_params_.push_back(new double("<< *((*it)->pvec[1]) <<")); // "<< icp <<" address: " << (void *)(*it)->pvec[1] << std::endl;
+                        // "<< icp <<" address: " << (void *)(*it)->pvec[1] << std::endl;
+                        subsystemfile << "clist_params_.push_back(new double("<< *((*it)->pvec[1]) <<"));
                         icp++;
                     }
                     npb2=true;
@@ -3530,7 +3630,8 @@ void System::extractSubsystem(SubSystem *subsys, bool isRedundantsolving)
                     if(ni3 == clist_params_.size()) {
                         subsystemfile << "// Address not in System params...rebuilding into clist_params_" << std::endl;
                         clist_params_.push_back((*it)->pvec[2]);
-                        subsystemfile << "clist_params_.push_back(new double("<< *((*it)->pvec[2]) <<")); // "<< icp <<" address: " << (void *)(*it)->pvec[2] << std::endl;
+                        // "<< icp <<" address: " << (void *)(*it)->pvec[2] << std::endl;
+                        subsystemfile << "clist_params_.push_back(new double("<< *((*it)->pvec[2]) <<"));
                         icp++;
                     }
                     npb3=true;
@@ -3544,7 +3645,8 @@ void System::extractSubsystem(SubSystem *subsys, bool isRedundantsolving)
                     if(ni4 == clist_params_.size()) {
                         subsystemfile << "// Address not in System params...rebuilding into clist_params_" << std::endl;
                         clist_params_.push_back((*it)->pvec[3]);
-                        subsystemfile << "clist_params_.push_back(new double("<< *((*it)->pvec[3]) <<")); // "<< icp <<" address: " << (void *)(*it)->pvec[3] << std::endl;
+                        // "<< icp <<" address: " << (void *)(*it)->pvec[3] << std::endl;
+                        subsystemfile << "clist_params_.push_back(new double("<< *((*it)->pvec[3]) <<"));
                         icp++;
                     }
                     npb4=true;
@@ -3558,7 +3660,8 @@ void System::extractSubsystem(SubSystem *subsys, bool isRedundantsolving)
                     if(ni5 == clist_params_.size()) {
                         subsystemfile << "// Address not in System params...rebuilding into clist_params_" << std::endl;
                         clist_params_.push_back((*it)->pvec[4]);
-                        subsystemfile << "clist_params_.push_back(new double("<< *((*it)->pvec[4]) <<")); // "<< icp <<" address: " << (void *)(*it)->pvec[4] << std::endl;
+                        // "<< icp <<" address: " << (void *)(*it)->pvec[4] << std::endl;
+                        subsystemfile << "clist_params_.push_back(new double("<< *((*it)->pvec[4]) <<"));
                         icp++;
                     }
                     npb5=true;
@@ -3572,7 +3675,8 @@ void System::extractSubsystem(SubSystem *subsys, bool isRedundantsolving)
                     if(ni6 == clist_params_.size()) {
                         subsystemfile << "// Address not in System params...rebuilding into clist_params_" << std::endl;
                         clist_params_.push_back((*it)->pvec[5]);
-                        subsystemfile << "clist_params_.push_back(new double("<< *((*it)->pvec[5]) <<")); // "<< icp <<" address: " << (void *)(*it)->pvec[5] << std::endl;
+                        // "<< icp <<" address: " << (void *)(*it)->pvec[5] << std::endl;
+                        subsystemfile << "clist_params_.push_back(new double("<< *((*it)->pvec[5]) <<"));
                         icp++;
                     }
                     npb6=true;
@@ -3587,7 +3691,8 @@ void System::extractSubsystem(SubSystem *subsys, bool isRedundantsolving)
                 subsystemfile << "c" << ic << "->pvec.push_back(" << (npb6?("clist_params_["):("plist_[")) << (npb6?ni6:i6) <<"]);" << std::endl;
                 subsystemfile << "c" << ic << "->origpvec=c" << ic << "->pvec;" << std::endl;
                 subsystemfile << "c" << ic << "->rescale();" << std::endl;
-                subsystemfile << "clist_.push_back(c" << ic << "); // addresses = "<< (*it)->pvec[0] << "," << (*it)->pvec[1] << "," << (*it)->pvec[2] << "," << (*it)->pvec[3] << "," << (*it)->pvec[4] << "," << (*it)->pvec[5] << std::endl;
+                // addresses = "<< (*it)->pvec[0] << "," << (*it)->pvec[1] << "," << (*it)->pvec[2] << "," << (*it)->pvec[3] << "," << (*it)->pvec[4] << "," << (*it)->pvec[5] << std::endl;
+                subsystemfile << "clist_.push_back(c" << ic << ");
                 break;
             }
             case PointOnEllipse:
@@ -3615,7 +3720,8 @@ void System::extractSubsystem(SubSystem *subsys, bool isRedundantsolving)
                     if(ni1 == clist_params_.size()) {
                         subsystemfile << "// Address not in System params...rebuilding into clist_params_" << std::endl;
                         clist_params_.push_back((*it)->pvec[0]);
-                        subsystemfile << "clist_params_.push_back(new double("<< *((*it)->pvec[0]) <<")); // "<< icp <<" address: " << (void *)(*it)->pvec[0] << std::endl;
+                        // "<< icp <<" address: " << (void *)(*it)->pvec[0] << std::endl;
+                        subsystemfile << "clist_params_.push_back(new double("<< *((*it)->pvec[0]) <<"));
                         icp++;
                     }
                     npb1=true;
@@ -3629,7 +3735,8 @@ void System::extractSubsystem(SubSystem *subsys, bool isRedundantsolving)
                     if(ni2 == clist_params_.size()) {
                         subsystemfile << "// Address not in System params...rebuilding into clist_params_" << std::endl;
                         clist_params_.push_back((*it)->pvec[1]);
-                        subsystemfile << "clist_params_.push_back(new double("<< *((*it)->pvec[1]) <<")); // "<< icp <<" address: " << (void *)(*it)->pvec[1] << std::endl;
+                        // "<< icp <<" address: " << (void *)(*it)->pvec[1] << std::endl;
+                        subsystemfile << "clist_params_.push_back(new double("<< *((*it)->pvec[1]) <<"));
                         icp++;
                     }
                     npb2=true;
@@ -3643,7 +3750,8 @@ void System::extractSubsystem(SubSystem *subsys, bool isRedundantsolving)
                     if(ni3 == clist_params_.size()) {
                         subsystemfile << "// Address not in System params...rebuilding into clist_params_" << std::endl;
                         clist_params_.push_back((*it)->pvec[2]);
-                        subsystemfile << "clist_params_.push_back(new double("<< *((*it)->pvec[2]) <<")); // "<< icp <<" address: " << (void *)(*it)->pvec[2] << std::endl;
+                        // "<< icp <<" address: " << (void *)(*it)->pvec[2] << std::endl;
+                        subsystemfile << "clist_params_.push_back(new double("<< *((*it)->pvec[2]) <<"));
                         icp++;
                     }
                     npb3=true;
@@ -3657,7 +3765,8 @@ void System::extractSubsystem(SubSystem *subsys, bool isRedundantsolving)
                     if(ni4 == clist_params_.size()) {
                         subsystemfile << "// Address not in System params...rebuilding into clist_params_" << std::endl;
                         clist_params_.push_back((*it)->pvec[3]);
-                        subsystemfile << "clist_params_.push_back(new double("<< *((*it)->pvec[3]) <<")); // "<< icp <<" address: " << (void *)(*it)->pvec[3] << std::endl;
+                        // "<< icp <<" address: " << (void *)(*it)->pvec[3] << std::endl;
+                        subsystemfile << "clist_params_.push_back(new double("<< *((*it)->pvec[3]) <<"));
                         icp++;
                     }
                     npb4=true;
@@ -3671,7 +3780,8 @@ void System::extractSubsystem(SubSystem *subsys, bool isRedundantsolving)
                     if(ni5 == clist_params_.size()) {
                         subsystemfile << "// Address not in System params...rebuilding into clist_params_" << std::endl;
                         clist_params_.push_back((*it)->pvec[4]);
-                        subsystemfile << "clist_params_.push_back(new double("<< *((*it)->pvec[4]) <<")); // "<< icp <<" address: " << (void *)(*it)->pvec[4] << std::endl;
+                        // "<< icp <<" address: " << (void *)(*it)->pvec[4] << std::endl;
+                        subsystemfile << "clist_params_.push_back(new double("<< *((*it)->pvec[4]) <<"));
                         icp++;
                     }
                     npb5=true;
@@ -3685,7 +3795,8 @@ void System::extractSubsystem(SubSystem *subsys, bool isRedundantsolving)
                     if(ni6 == clist_params_.size()) {
                         subsystemfile << "// Address not in System params...rebuilding into clist_params_" << std::endl;
                         clist_params_.push_back((*it)->pvec[5]);
-                        subsystemfile << "clist_params_.push_back(new double("<< *((*it)->pvec[5]) <<")); // "<< icp <<" address: " << (void *)(*it)->pvec[5] << std::endl;
+                        // "<< icp <<" address: " << (void *)(*it)->pvec[5] << std::endl;
+                        subsystemfile << "clist_params_.push_back(new double("<< *((*it)->pvec[5]) <<"));
                         icp++;
                     }
                     npb6=true;
@@ -3699,7 +3810,8 @@ void System::extractSubsystem(SubSystem *subsys, bool isRedundantsolving)
                     if(ni7 == clist_params_.size()) {
                         subsystemfile << "// Address not in System params...rebuilding into clist_params_" << std::endl;
                         clist_params_.push_back((*it)->pvec[6]);
-                        subsystemfile << "clist_params_.push_back(new double("<< *((*it)->pvec[6]) <<")); // "<< icp <<" address: " << (void *)(*it)->pvec[6] << std::endl;
+                        // "<< icp <<" address: " << (void *)(*it)->pvec[6] << std::endl;
+                        subsystemfile << "clist_params_.push_back(new double("<< *((*it)->pvec[6]) <<"));
                         icp++;
                     }
                     npb7=true;
@@ -3715,7 +3827,8 @@ void System::extractSubsystem(SubSystem *subsys, bool isRedundantsolving)
                 subsystemfile << "c" << ic << "->pvec.push_back(" << (npb7?("clist_params_["):("plist_[")) << (npb7?ni7:i7) <<"]);" << std::endl;
                 subsystemfile << "c" << ic << "->origpvec=c" << ic << "->pvec;" << std::endl;
                 subsystemfile << "c" << ic << "->rescale();" << std::endl;
-                subsystemfile << "clist_.push_back(c" << ic << "); // addresses = "<< (*it)->pvec[0] << "," << (*it)->pvec[1] << "," << (*it)->pvec[2] << "," << (*it)->pvec[3] << "," << (*it)->pvec[4] << "," << (*it)->pvec[5] << "," << (*it)->pvec[6] << std::endl;
+                // addresses = "<< (*it)->pvec[0] << "," << (*it)->pvec[1] << "," << (*it)->pvec[2] << "," << (*it)->pvec[3] << "," << (*it)->pvec[4] << "," << (*it)->pvec[5] << "," << (*it)->pvec[6] << std::endl;
+                subsystemfile << "clist_.push_back(c" << ic << ");
                 break;
             }
             CASE_NOT_IMP(TangentEllipseLine)
@@ -3774,7 +3887,8 @@ int System::solve(SubSystem *subsysA, SubSystem *subsysB, bool /*isFine*/, bool 
 
     subsysB->getParams(plistAB,x);
     subsysA->getParams(plistAB,x);
-    subsysB->setParams(plistAB,x);  // just to ensure that A and B are synchronized
+    // just to ensure that A and B are synchronized
+    subsysB->setParams(plistAB,x);
 
     subsysB->calcGrad(plistAB,grad);
     subsysA->calcJacobi(plistAB,JA);
@@ -4081,7 +4195,8 @@ SolverReportingManager::Manager().LogToFile("GCS::System::diagnose()\n");
         Base::TimeInfo DenseQR_start_time;
     #endif
         if (J.rows() > 0) {
-            int rank = 0; // rank is not cheap to retrieve from qrJT in DenseQR
+            // rank is not cheap to retrieve from qrJT in DenseQR
+            int rank = 0;
             Eigen::MatrixXd R;
             Eigen::FullPivHouseholderQR<Eigen::MatrixXd> qrJT;
             // Here we give the system the possibility to run the two QR decompositions in parallel, depending on the load of the system
@@ -4107,7 +4222,8 @@ SolverReportingManager::Manager().LogToFile("GCS::System::diagnose()\n");
 
             fut.wait(); // wait for the execution of identifyDependentParametersSparseQR to finish
 
-            dofs = paramsNum - rank; // unless overconstraint, which will be overridden below
+            // unless overconstraint, which will be overridden below
+            dofs = paramsNum - rank;
 
             // Detecting conflicting or redundant constraints
             if (constrNum > rank) { // conflicting or redundant constraints
@@ -4160,7 +4276,8 @@ SolverReportingManager::Manager().LogToFile("GCS::System::diagnose()\n");
 
             fut.wait(); // wait for the execution of identifyDependentParametersSparseQR to finish
 
-            dofs = paramsNum - rank; // unless overconstraint, which will be overridden below
+            // unless overconstraint, which will be overridden below
+            dofs = paramsNum - rank;
 
             // Detecting conflicting or redundant constraints
             if (constrNum > rank) { // conflicting or redundant constraints
@@ -4200,8 +4317,10 @@ void System::makeDenseQRDecomposition(  const Eigen::MatrixXd &J,
 #endif
 
 #ifdef _GCS_DEBUG_SOLVER_JACOBIAN_QR_DECOMPOSITION_TRIANGULAR_MATRIX
-    Eigen::MatrixXd Q; // Obtaining the Q matrix with Sparse QR is buggy, see comments below
-    Eigen::MatrixXd R2; // Intended for a trapezoidal matrix, where R is the top triangular matrix of the R2 trapezoidal matrix
+    // Obtaining the Q matrix with Sparse QR is buggy, see comments below
+    Eigen::MatrixXd Q;
+    // Intended for a trapezoidal matrix, where R is the top triangular matrix of the R2 trapezoidal matrix
+    Eigen::MatrixXd R2;
 #endif
 
     // For a transposed J SJG rows are paramsNum and cols are constrNum
@@ -4279,8 +4398,10 @@ void System::makeSparseQRDecomposition( const Eigen::MatrixXd &J,
     #endif
 
     #ifdef _GCS_DEBUG_SOLVER_JACOBIAN_QR_DECOMPOSITION_TRIANGULAR_MATRIX
-    Eigen::MatrixXd Q; // Obtaining the Q matrix with Sparse QR is buggy, see comments below
-    Eigen::MatrixXd R2; // Intended for a trapezoidal matrix, where R is the top triangular matrix of the R2 trapezoidal matrix
+    // Obtaining the Q matrix with Sparse QR is buggy, see comments below
+    Eigen::MatrixXd Q;
+    // Intended for a trapezoidal matrix, where R is the top triangular matrix of the R2 trapezoidal matrix
+    Eigen::MatrixXd R2;
     #endif
 
     // For a transposed J SJG rows are paramsNum and cols are constrNum
@@ -4370,7 +4491,8 @@ void System::identifyDependentParametersSparseQR( const Eigen::MatrixXd &J,
 
     int nontransprank;
 
-    makeSparseQRDecomposition( J, jacobianconstraintmap, SqrJ, nontransprank, Rparams, false, true); // do not transpose allow to diagnose parameters
+    // do not transpose allow to diagnose parameters
+    makeSparseQRDecomposition( J, jacobianconstraintmap, SqrJ, nontransprank, Rparams, false, true);
 
     identifyDependentParameters(SqrJ, Rparams, nontransprank, pdiagnoselist, silent);
 }
@@ -4383,9 +4505,11 @@ void System::identifyDependentParameters(   T & qrJ,
                                             const GCS::VEC_pD &pdiagnoselist,
                                             bool silent)
 {
-    (void) silent; // silent is only used in debug code, but it is important as Base::Console is not thread-safe. Removes warning in non Debug mode.
+    // silent is only used in debug code, but it is important as Base::Console is not thread-safe. Removes warning in non Debug mode.
+    (void) silent;
 
-    //int constrNum = SqrJ.rows(); // this is the other way around than for the transposed J
+    // this is the other way around than for the transposed J
+    //int constrNum = SqrJ.rows();
     //int paramsNum = SqrJ.cols();
 
     eliminateNonZerosOverPivotInUpperTriangularMatrix(Rparams, rank);
@@ -4586,7 +4710,8 @@ void System::identifyConflictingRedundantConstraints(   Algorithm alg,
         for (std::map< Constraint *, SET_I >::const_iterator it=conflictingMap.begin();
                 it != conflictingMap.end(); ++it) {
 
-            int numberofsets =  static_cast<int>(it->second.size()); // number of sets in which the constraint appears
+            // number of sets in which the constraint appears
+            int numberofsets =  static_cast<int>(it->second.size());
 
             /* This is a heuristic algorithm to propose the user which constraints from a redundant/conflicting set should be removed. It is based on the following principles:
              * 1. if the current constraint is more popular than previous ones (appears in more sets), take it. This prioritises removal of constraints that cause several independent groups of constraints to be conflicting/redundant. It is based on the observation that the redundancy/conflict is caused by the lesser amount of constraints.

@@ -100,7 +100,8 @@ void finishDatumConstraint (Gui::Command* cmd, Sketcher::SketchObject* sketch, b
     float labelPositionRandomness = 0.0;
 
     if (lastConstraintType == Radius || lastConstraintType == Diameter) {
-        labelPosition = hGrp->GetFloat("RadiusDiameterConstraintDisplayBaseAngle", 15.0) * (M_PI / 180); // Get radius/diameter constraint display angle
+        // Get radius/diameter constraint display angle
+        labelPosition = hGrp->GetFloat("RadiusDiameterConstraintDisplayBaseAngle", 15.0) * (M_PI / 180);
         labelPositionRandomness = hGrp->GetFloat("RadiusDiameterConstraintDisplayAngleRandomness", 0.0) * (M_PI / 180); // Get randomness
 
         // Adds a random value around the base angle, so that possibly overlapping labels get likely a different position.
@@ -200,7 +201,8 @@ void SketcherGui::makeTangentToEllipseviaNewPoint(Sketcher::SketchObject* Obj,
         center2= (static_cast<const Part::GeomArcOfCircle *>(geom2))->getCenter();
 
     Base::Vector3d direction=center2-center;
-    double tapprox=atan2(direction.y,direction.x)-phi; // we approximate the eccentric anomaly by the polar
+    // we approximate the eccentric anomaly by the polar
+    double tapprox=atan2(direction.y,direction.x)-phi;
 
     Base::Vector3d PoE = Base::Vector3d(center.x+majord*cos(tapprox)*cos(phi)-minord*sin(tapprox)*sin(phi),
                                         center.y+majord*cos(tapprox)*sin(phi)+minord*sin(tapprox)*cos(phi), 0);
@@ -213,10 +215,12 @@ void SketcherGui::makeTangentToEllipseviaNewPoint(Sketcher::SketchObject* Obj,
 
         // Point on first object
         Gui::cmdAppObjectArgs(Obj, "addConstraint(Sketcher.Constraint('PointOnObject',%d,%d,%d)) ",
-            GeoIdPoint,static_cast<int>(Sketcher::PointPos::start),geoId1); // constrain major axis
+            // constrain major axis
+            GeoIdPoint,static_cast<int>(Sketcher::PointPos::start),geoId1);
         // Point on second object
         Gui::cmdAppObjectArgs(Obj,"addConstraint(Sketcher.Constraint('PointOnObject',%d,%d,%d)) ",
-            GeoIdPoint,static_cast<int>(Sketcher::PointPos::start),geoId2); // constrain major axis
+            // constrain major axis
+            GeoIdPoint,static_cast<int>(Sketcher::PointPos::start),geoId2);
         // tangent via point
         Gui::cmdAppObjectArgs(Obj, "addConstraint(Sketcher.Constraint('TangentViaPoint',%d,%d,%d,%d))",
             geoId1, geoId2 ,GeoIdPoint, static_cast<int>(Sketcher::PointPos::start));
@@ -264,7 +268,8 @@ void SketcherGui::makeTangentToArcOfEllipseviaNewPoint(Sketcher::SketchObject* O
         center2= (static_cast<const Part::GeomArcOfCircle *>(geom2))->getCenter();
 
     Base::Vector3d direction=center2-center;
-    double tapprox=atan2(direction.y,direction.x)-phi; // we approximate the eccentric anomaly by the polar
+    // we approximate the eccentric anomaly by the polar
+    double tapprox=atan2(direction.y,direction.x)-phi;
 
     Base::Vector3d PoE = Base::Vector3d(center.x+majord*cos(tapprox)*cos(phi)-minord*sin(tapprox)*sin(phi),
                                         center.y+majord*cos(tapprox)*sin(phi)+minord*sin(tapprox)*cos(phi), 0);
@@ -277,10 +282,12 @@ void SketcherGui::makeTangentToArcOfEllipseviaNewPoint(Sketcher::SketchObject* O
 
         // Point on first object
         Gui::cmdAppObjectArgs(Obj,"addConstraint(Sketcher.Constraint('PointOnObject',%d,%d,%d)) ",
-            GeoIdPoint,static_cast<int>(Sketcher::PointPos::start),geoId1); // constrain major axis
+            // constrain major axis
+            GeoIdPoint,static_cast<int>(Sketcher::PointPos::start),geoId1);
         // Point on second object
         Gui::cmdAppObjectArgs(Obj,"addConstraint(Sketcher.Constraint('PointOnObject',%d,%d,%d)) ",
-            GeoIdPoint,static_cast<int>(Sketcher::PointPos::start),geoId2); // constrain major axis
+            // constrain major axis
+            GeoIdPoint,static_cast<int>(Sketcher::PointPos::start),geoId2);
         // tangent via point
         Gui::cmdAppObjectArgs(Obj, "addConstraint(Sketcher.Constraint('TangentViaPoint',%d,%d,%d,%d))",
             geoId1, geoId2 ,GeoIdPoint, static_cast<int>(Sketcher::PointPos::start));
@@ -358,10 +365,12 @@ void SketcherGui::makeTangentToArcOfHyperbolaviaNewPoint(Sketcher::SketchObject*
 
         // Point on first object
         Gui::cmdAppObjectArgs(Obj,"addConstraint(Sketcher.Constraint('PointOnObject',%d,%d,%d)) ",
-                              GeoIdPoint,static_cast<int>(Sketcher::PointPos::start),geoId1); // constrain major axis
+                              // constrain major axis
+                              GeoIdPoint,static_cast<int>(Sketcher::PointPos::start),geoId1);
         // Point on second object
         Gui::cmdAppObjectArgs(Obj,"addConstraint(Sketcher.Constraint('PointOnObject',%d,%d,%d)) ",
-                              GeoIdPoint,static_cast<int>(Sketcher::PointPos::start),geoId2); // constrain major axis
+                              // constrain major axis
+                              GeoIdPoint,static_cast<int>(Sketcher::PointPos::start),geoId2);
         // tangent via point
         Gui::cmdAppObjectArgs(Obj, "addConstraint(Sketcher.Constraint('TangentViaPoint',%d,%d,%d,%d))",
                               geoId1, geoId2 ,GeoIdPoint, static_cast<int>(Sketcher::PointPos::start));
@@ -434,10 +443,12 @@ void SketcherGui::makeTangentToArcOfParabolaviaNewPoint(Sketcher::SketchObject* 
 
         // Point on first object
         Gui::cmdAppObjectArgs(Obj,"addConstraint(Sketcher.Constraint('PointOnObject',%d,%d,%d)) ",
-                              GeoIdPoint,static_cast<int>(Sketcher::PointPos::start),geoId1); // constrain major axis
+                              // constrain major axis
+                              GeoIdPoint,static_cast<int>(Sketcher::PointPos::start),geoId1);
         // Point on second object
         Gui::cmdAppObjectArgs(Obj,"addConstraint(Sketcher.Constraint('PointOnObject',%d,%d,%d)) ",
-                              GeoIdPoint,static_cast<int>(Sketcher::PointPos::start),geoId2); // constrain major axis
+                              // constrain major axis
+                              GeoIdPoint,static_cast<int>(Sketcher::PointPos::start),geoId2);
         // tangent via point
         Gui::cmdAppObjectArgs(Obj, "addConstraint(Sketcher.Constraint('TangentViaPoint',%d,%d,%d,%d))",
                               geoId1, geoId2 ,GeoIdPoint, static_cast<int>(Sketcher::PointPos::start));
@@ -2001,7 +2012,8 @@ void CmdSketcherConstrainCoincident::activated(int iMsg)
         return;
     }
 
-    bool allConicsEdges = true; //If user selects only conics (circle, ellipse, arc, arcOfEllipse) then we make concentric constraint.
+    //If user selects only conics (circle, ellipse, arc, arcOfEllipse) then we make concentric constraint.
+    bool allConicsEdges = true;
     bool atLeastOneEdge = false;
     for (std::vector<std::string>::const_iterator it = SubNames.begin(); it != SubNames.end(); ++it) {
         int GeoId;
@@ -2013,7 +2025,8 @@ void CmdSketcherConstrainCoincident::activated(int iMsg)
                 allConicsEdges = false;
         }
         else
-            allConicsEdges = false; //at least one point is selected, so concentric can't be applied.
+            //at least one point is selected, so concentric can't be applied.
+            allConicsEdges = false;
 
         if (atLeastOneEdge && !allConicsEdges) {
             QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
@@ -3682,7 +3695,8 @@ void CmdSketcherConstrainPerpendicular::activated(int iMsg)
                 }
                 else {
                     Base::Vector3d direction=point1-center;
-                    double tapprox=atan2(direction.y,direction.x)-phi; // we approximate the eccentric anomaly by the polar
+                    // we approximate the eccentric anomaly by the polar
+                    double tapprox=atan2(direction.y,direction.x)-phi;
 
                     PoO = Base::Vector3d(center.x+majord*cos(tapprox)*cos(phi)-minord*sin(tapprox)*sin(phi),
                                                         center.y+majord*cos(tapprox)*sin(phi)+minord*sin(tapprox)*cos(phi), 0);
@@ -3863,7 +3877,8 @@ void CmdSketcherConstrainPerpendicular::applyConstraint(std::vector<SelIdPair> &
             }
             else {
                 Base::Vector3d direction=point1-center;
-                double tapprox=atan2(direction.y,direction.x)-phi; // we approximate the eccentric anomaly by the polar
+                // we approximate the eccentric anomaly by the polar
+                double tapprox=atan2(direction.y,direction.x)-phi;
 
                 PoO = Base::Vector3d(center.x+majord*cos(tapprox)*cos(phi)-minord*sin(tapprox)*sin(phi),
                                                     center.y+majord*cos(tapprox)*sin(phi)+minord*sin(tapprox)*cos(phi), 0);
@@ -4056,7 +4071,8 @@ bool CmdSketcherConstrainTangent::substituteConstraintCombinations(SketchObject 
             Gui::cmdAppObjectArgs(Obj, "delConstraintOnPoint(%i,%i)", first, firstpos);
 
             commitCommand();
-            Obj->solve(); // The substitution requires a solve() so that the autoremove redundants works when Autorecompute not active.
+            // The substitution requires a solve() so that the autoremove redundants works when Autorecompute not active.
+            Obj->solve();
             tryAutoRecomputeIfNotSolve(Obj);
 
             notifyConstraintSubstitutions(QObject::tr("Endpoint to endpoint tangency was applied. The coincident constraint was deleted."));
@@ -4072,7 +4088,8 @@ bool CmdSketcherConstrainTangent::substituteConstraintCombinations(SketchObject 
 
             doEndpointToEdgeTangency(Obj, (*it)->First, (*it)->FirstPos, (*it)->Second);
 
-            Gui::cmdAppObjectArgs(Obj, "delConstraint(%i)", cid); // remove the preexisting point on object constraint.
+            // remove the preexisting point on object constraint.
+            Gui::cmdAppObjectArgs(Obj, "delConstraint(%i)", cid);
 
             commitCommand();
 
@@ -4955,7 +4972,8 @@ void CmdSketcherConstrainRadius::activated(int iMsg)
         commitCommand();
 
     if(updateNeeded) {
-        tryAutoRecomputeIfNotSolve(Obj); // we have to update the solver after this aborted addition.
+        // we have to update the solver after this aborted addition.
+        tryAutoRecomputeIfNotSolve(Obj);
     }
 }
 
@@ -5007,7 +5025,8 @@ void CmdSketcherConstrainRadius::applyConstraint(std::vector<SelIdPair> &selSeq,
             Gui::cmdAppObjectArgs(Obj, "setDriving(%i,%s)",
                                   ConStr.size()-1, "False");
 
-            updateNeeded=true; // We do need to update the solver DoF after setting the constraint driving.
+            // We do need to update the solver DoF after setting the constraint driving.
+            updateNeeded=true;
         }
 
         finishDatumConstraint (this, Obj, constraintCreationMode==Driving && !fixed);
@@ -5018,7 +5037,8 @@ void CmdSketcherConstrainRadius::applyConstraint(std::vector<SelIdPair> &selSeq,
         commitCommand();
 
         if(updateNeeded) {
-            tryAutoRecomputeIfNotSolve(Obj); // we have to update the solver after this aborted addition.
+            // we have to update the solver after this aborted addition.
+            tryAutoRecomputeIfNotSolve(Obj);
         }
     }
     }
@@ -5232,7 +5252,8 @@ void CmdSketcherConstrainDiameter::activated(int iMsg)
         commitCommand();
 
     if(updateNeeded) {
-        tryAutoRecomputeIfNotSolve(Obj); // we have to update the solver after this aborted addition.
+        // we have to update the solver after this aborted addition.
+        tryAutoRecomputeIfNotSolve(Obj);
     }
 }
 
@@ -5281,7 +5302,8 @@ void CmdSketcherConstrainDiameter::applyConstraint(std::vector<SelIdPair> &selSe
             bool fixed = isPointOrSegmentFixed(Obj,GeoId);
             if(fixed || constraintCreationMode==Reference) {
                 Gui::cmdAppObjectArgs(Obj, "setDriving(%i,%s)", ConStr.size()-1, "False");
-                updateNeeded=true; // We do need to update the solver DoF after setting the constraint driving.
+                // We do need to update the solver DoF after setting the constraint driving.
+                updateNeeded=true;
             }
 
             finishDatumConstraint (this, Obj, constraintCreationMode==Driving && !fixed);
@@ -5292,7 +5314,8 @@ void CmdSketcherConstrainDiameter::applyConstraint(std::vector<SelIdPair> &selSe
             commitCommand();
 
             if(updateNeeded) {
-                tryAutoRecomputeIfNotSolve(Obj); // we have to update the solver after this aborted addition.
+                // we have to update the solver after this aborted addition.
+                tryAutoRecomputeIfNotSolve(Obj);
             }
         }
     }
@@ -5537,7 +5560,8 @@ void CmdSketcherConstrainRadiam::activated(int iMsg)
         commitCommand();
 
     if(updateNeeded) {
-        tryAutoRecomputeIfNotSolve(Obj); // we have to update the solver after this aborted addition.
+        // we have to update the solver after this aborted addition.
+        tryAutoRecomputeIfNotSolve(Obj);
     }
 }
 
@@ -5594,7 +5618,8 @@ void CmdSketcherConstrainRadiam::applyConstraint(std::vector<SelIdPair> &selSeq,
             bool fixed = isPointOrSegmentFixed(Obj,GeoId);
             if(fixed || constraintCreationMode==Reference) {
                 Gui::cmdAppObjectArgs(Obj, "setDriving(%i,%s)", ConStr.size()-1, "False");
-                updateNeeded=true; // We do need to update the solver DoF after setting the constraint driving.
+                // We do need to update the solver DoF after setting the constraint driving.
+                updateNeeded=true;
             }
 
             finishDatumConstraint (this, Obj, constraintCreationMode==Driving && !fixed);
@@ -5605,7 +5630,8 @@ void CmdSketcherConstrainRadiam::applyConstraint(std::vector<SelIdPair> &selSeq,
             commitCommand();
 
             if(updateNeeded) {
-                tryAutoRecomputeIfNotSolve(Obj); // we have to update the solver after this aborted addition.
+                // we have to update the solver after this aborted addition.
+                tryAutoRecomputeIfNotSolve(Obj);
             }
         }
     }
@@ -6314,7 +6340,8 @@ CmdSketcherConstrainEqual::CmdSketcherConstrainEqual()
     eType           = ForEdit;
 
     allowedSelSequences = {{SelEdge, SelEdge}, {SelEdge, SelExternalEdge},
-                           {SelExternalEdge, SelEdge}}; // Only option for equal constraint
+                           // Only option for equal constraint
+                           {SelExternalEdge, SelEdge}};
 }
 
 void CmdSketcherConstrainEqual::activated(int iMsg)

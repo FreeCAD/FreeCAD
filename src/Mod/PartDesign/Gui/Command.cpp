@@ -139,7 +139,8 @@ void UnifiedDatumCommand(Gui::Command &cmd, Base::Type type, std::string name)
                     QMessageBox::information(Gui::getMainWindow(),QObject::tr("Invalid selection"), QObject::tr("There are no attachment modes that fit selected objects. Select something else."));
                 }
             }
-            cmd.doCommand(Gui::Command::Doc,"App.activeDocument().recompute()");  // recompute the feature based on its references
+            // recompute the feature based on its references
+            cmd.doCommand(Gui::Command::Doc,"App.activeDocument().recompute()");
             PartDesignGui::setEdit(Feat,pcActiveBody);
         } else {
             QMessageBox::warning(Gui::getMainWindow(),QObject::tr("Error"), QObject::tr("There is no active body. Please make a body active before inserting a datum entity."));
@@ -1862,7 +1863,8 @@ void prepareTransformed(PartDesign::Body *pcActiveBody, Gui::Command* cmd, const
         FCMD_OBJ_CMD(pcActiveBody, "newObject('PartDesign::" << which << "','" << FeatName << "')");
         // FIXME: There seems to be kind of a race condition here, leading to sporadic errors like
         // Exception (Thu Sep  6 11:52:01 2012): 'App.Document' object has no attribute 'Mirrored'
-        Gui::Command::updateActive(); // Helps to ensure that the object already exists when the next command comes up
+        // Helps to ensure that the object already exists when the next command comes up
+        Gui::Command::updateActive();
         Gui::Command::doCommand(Gui::Command::Doc, str.str().c_str());
 
         auto Feat = pcActiveBody->getDocument()->getObject(FeatName.c_str());

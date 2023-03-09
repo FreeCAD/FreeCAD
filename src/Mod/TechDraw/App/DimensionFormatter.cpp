@@ -276,7 +276,8 @@ std::string DimensionFormatter::getFormattedDimensionValue(int partial)
         QString labelText = QString::fromUtf8(formatValue(m_dimension->getDimValue(),
                                                           qFormatSpec,
                                                           1,
-                                                          true).c_str()); //just the number pref/spec[unit]/suf
+                                                          //just the number pref/spec[unit]/suf
+                                                          true).c_str());
         QString unitText = QString::fromUtf8(formatValue(m_dimension->getDimValue(),
                                                          qFormatSpec,
                                                          2,
@@ -330,11 +331,13 @@ QStringList DimensionFormatter::getPrefixSuffixSpec(QString fSpec)
 {
     QStringList result;
     //find the %x.y tag in FormatSpec
-    QRegularExpression rxFormat(QStringLiteral("%[+-]?[0-9]*\\.*[0-9]*[aefgwAEFGW]")); //printf double format spec
+    //printf double format spec
+    QRegularExpression rxFormat(QStringLiteral("%[+-]?[0-9]*\\.*[0-9]*[aefgwAEFGW]"));
     QRegularExpressionMatch rxMatch;
     int pos = fSpec.indexOf(rxFormat, 0, &rxMatch);
     if (pos != -1)  {
-        QString match = rxMatch.captured(0);                                  //entire capture of rx
+        //entire capture of rx
+        QString match = rxMatch.captured(0);
         QString formatPrefix = fSpec.left(pos);
         result.append(formatPrefix);
         QString formatSuffix = fSpec.right(fSpec.size() - pos - match.size());
@@ -396,7 +399,8 @@ bool DimensionFormatter::isTooSmall(double value, QString formatSpec)
         return false;
     }
 
-    QRegularExpression rxFormat(QStringLiteral("%[+-]?[0-9]*\\.*([0-9]*)[aefgwAEFGW]")); //printf double format spec
+    //printf double format spec
+    QRegularExpression rxFormat(QStringLiteral("%[+-]?[0-9]*\\.*([0-9]*)[aefgwAEFGW]"));
     QRegularExpressionMatch rxMatch = rxFormat.match(formatSpec);
     if (rxMatch.hasMatch()) {
         QString decimalGroup = rxMatch.captured(1);

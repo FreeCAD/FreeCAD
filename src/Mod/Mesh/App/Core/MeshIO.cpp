@@ -1428,7 +1428,8 @@ bool MeshInput::LoadNastran (std::istream &rstrIn)
                 badElementCounter++;
                 continue;
             }
-            index = indexCheck.get() - 1; // Minus one so we are zero-indexed to match existing code
+            // Minus one so we are zero-indexed to match existing code
+            index = indexCheck.get() - 1;
 
             // Get the high-precision versions first
             auto x = boost::convert<double>(xString, converter);
@@ -1488,7 +1489,8 @@ bool MeshInput::LoadNastran (std::istream &rstrIn)
                     badElementCounter++;
                     continue;
                 }
-                index = indexCheck.get() - 1; // Minus one so we are zero-indexed to match existing code
+                // Minus one so we are zero-indexed to match existing code
+                index = indexCheck.get() - 1;
 
                 auto x = boost::convert<float>(xString, converter);
                 auto y = boost::convert<float>(yString, converter);

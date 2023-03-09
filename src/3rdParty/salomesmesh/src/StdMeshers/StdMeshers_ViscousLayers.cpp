@@ -216,7 +216,7 @@ namespace VISCOUS_3D
       mesh->GetSubMesh(solid)->DeleteEventListener( _ViscousListener::Get() );
     }
   };
-  
+
   //================================================================================
   /*!
    * \brief sets a sub-mesh event listener to clear sub-meshes of sub-shapes of
@@ -441,8 +441,8 @@ namespace VISCOUS_3D
       double D = _dir.Crossed( hp._dir );
       if ( fabs(D) < std::numeric_limits<double>::min())
         return false;
-      gp_XY vec21 = _pos - hp._pos; 
-      double u = hp._dir.Crossed( vec21 ) / D; 
+      gp_XY vec21 = _pos - hp._pos;
+      double u = hp._dir.Crossed( vec21 ) / D;
       intPnt = _pos + _dir * u;
       return true;
     }
@@ -542,7 +542,7 @@ namespace VISCOUS_3D
 
   //--------------------------------------------------------------------------------
   /*!
-   * \brief Convex FACE whose radius of curvature is less than the thickness of 
+   * \brief Convex FACE whose radius of curvature is less than the thickness of
    *        layers. It is used to detect distortion of prisms based on a convex
    *        FACE and to update normals to enable further increasing the thickness
    */
@@ -1550,7 +1550,7 @@ SMESH_ComputeErrorPtr _ViscousBuilder::Compute(SMESH_Mesh&         theMesh,
 
   PyDump debugDump( theMesh );
 
-  // TODO: ignore already computed SOLIDs 
+  // TODO: ignore already computed SOLIDs
   if ( !findSolidsWithLayers())
     return _error;
 
@@ -1564,7 +1564,7 @@ SMESH_ComputeErrorPtr _ViscousBuilder::Compute(SMESH_Mesh&         theMesh,
 
     if ( _sdVec[i]._n2eMap.size() == 0 )
       continue;
-    
+
     if ( ! inflate(_sdVec[i]) )
       return _error;
 
@@ -1665,7 +1665,7 @@ bool _ViscousBuilder::findSolidsWithLayers()
 
 //================================================================================
 /*!
- * \brief 
+ * \brief
  */
 //================================================================================
 
@@ -3097,7 +3097,7 @@ gp_XYZ _ViscousBuilder::getFaceNormal(const SMDS_MeshNode* node,
     GeomAPI_ProjectPointOnSurf& projector = helper.GetProjector( face, loc, 1e-7 );
 
     if ( !loc.IsIdentity() ) p.Transform( loc.Transformation().Inverted() );
-    
+
     projector.Perform( p );
     if ( !projector.IsDone() || projector.NbPoints() < 1 )
     {
@@ -3485,7 +3485,7 @@ void _LayerEdge::SetCosin( double cosin )
 
 //================================================================================
 /*!
- * \brief Fills a vector<_Simplex > 
+ * \brief Fills a vector<_Simplex >
  */
 //================================================================================
 
@@ -4485,7 +4485,7 @@ bool _ViscousBuilder::updateNormals( _SolidData&         data,
   for ( size_t iS = 0; iS < data._edgesOnShape.size(); ++iS )
   {
     _EdgesOnShape& eos = data._edgesOnShape[ iS ];
-    if (( eos.ShapeType() != TopAbs_EDGE ) && 
+    if (( eos.ShapeType() != TopAbs_EDGE ) &&
         ( eos._sWOL.IsNull() || eos.SWOLType() != TopAbs_FACE ))
       continue;
     for ( size_t i = 0; i < eos._edges.size(); ++i )
@@ -5158,7 +5158,7 @@ bool _CentralCurveOnEdge::FindNewNormal( const gp_Pnt& center, gp_XYZ& newNormal
     double d1 = center.SquareDistance( _curvaCenters[ i ]);
     if ( d1 > sl2 )
       continue;
-    
+
     double d2 = center.SquareDistance( _curvaCenters[ i+1 ]);
     if ( d2 > sl2 || d2 + d1 < 1e-100 )
       continue;
@@ -5340,7 +5340,7 @@ gp_Ax1 _LayerEdge::LastSegment(double& segLen, _EdgesOnShape& eos) const
 
 //================================================================================
 /*!
- * \brief Return the last position of the target node on a FACE. 
+ * \brief Return the last position of the target node on a FACE.
  *  \param [in] F - the FACE this _LayerEdge is inflated along
  *  \return gp_XY - result UV
  */
@@ -5444,7 +5444,7 @@ bool _LayerEdge::SmoothOnEdge(Handle(Geom_Surface)& surface,
   SMDS_MeshNode* tgtNode = const_cast<SMDS_MeshNode*>( _nodes.back() );
   SMESH_TNodeXYZ oldPos( tgtNode );
   double dist01, distNewOld;
-  
+
   SMESH_TNodeXYZ p0( _2neibors->tgtNode(0));
   SMESH_TNodeXYZ p1( _2neibors->tgtNode(1));
   dist01 = p0.Distance( _2neibors->tgtNode(1) );
@@ -6924,8 +6924,10 @@ bool _ViscousBuilder::prepareEdgeToShrink( _LayerEdge&            edge,
 
   if ( eos.SWOLType() == TopAbs_FACE )
   {
-    gp_XY srcUV ( edge._pos[0].X(), edge._pos[0].Y() );          //helper.GetNodeUV( F, srcNode );
-    gp_XY tgtUV = edge.LastUV( TopoDS::Face( eos._sWOL ), eos ); //helper.GetNodeUV( F, tgtNode );
+    //helper.GetNodeUV( F, srcNode );
+    gp_XY srcUV ( edge._pos[0].X(), edge._pos[0].Y() );
+    //helper.GetNodeUV( F, tgtNode );
+    gp_XY tgtUV = edge.LastUV( TopoDS::Face( eos._sWOL ), eos );
     gp_Vec2d uvDir( srcUV, tgtUV );
     double uvLen = uvDir.Magnitude();
     uvDir /= uvLen;
@@ -7081,7 +7083,7 @@ void _ViscousBuilder::fixBadFaces(const TopoDS_Face&          F,
   // find couples of faces to swap diagonal
 
   typedef pair < const SMDS_MeshElement* , const SMDS_MeshElement* > T2Trias;
-  vector< T2Trias > triaCouples; 
+  vector< T2Trias > triaCouples;
 
   TIDSortedElemSet involvedFaces, emptySet;
   for ( size_t iTia = 0; iTia < badTrias.size(); ++iTia )
@@ -7587,7 +7589,7 @@ void _Shrinker1D::Compute(bool set3D, SMESH_MesherHelper& helper)
       f = helper.GetNodeU( _geomEdge, _edges[0]->_nodes.back(), _nodes[0] );
     if ( _edges[1] )
       l = helper.GetNodeU( _geomEdge, _edges[1]->_nodes.back(), _nodes.back() );
-    
+
     for ( size_t i = 0; i < _nodes.size(); ++i )
     {
       if ( !_nodes[i] ) continue;
@@ -7719,7 +7721,7 @@ bool _ViscousBuilder::addBoundaryElements()
       // Find out orientation and type of face to create
 
       bool reverse = false, isOnFace;
-      
+
       map< TGeomID, TopoDS_Shape >::iterator e2f =
         data._shrinkShape2Shape.find( getMeshDS()->ShapeToIndex( E ));
       TopoDS_Shape F;

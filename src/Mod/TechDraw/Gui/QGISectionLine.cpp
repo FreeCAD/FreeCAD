@@ -56,7 +56,8 @@ QGISectionLine::QGISectionLine() :
     m_symbol = "";
     m_symSize = 0.0;
 
-    m_extLen = 1.5 * Rez::guiX(QGIArrow::getPrefArrowSize());   //is there a standard for this??
+    //is there a standard for this??
+    m_extLen = 1.5 * Rez::guiX(QGIArrow::getPrefArrowSize());
     m_arrowSize = QGIArrow::getPrefArrowSize();
 
     m_line = new QGraphicsPathItem();
@@ -148,7 +149,8 @@ void QGISectionLine::makeArrowsISO()
 
     if (m_arrowMode == SINGLEDIRECTIONMODE) {
         double arrowRotation = getArrowRotation(m_arrowDir);
-        m_arrow1->setRotation(arrowRotation);                   //rotation = 0  ==>  ->  horizontal, pointing right
+        //rotation = 0  ==>  ->  horizontal, pointing right
+        m_arrow1->setRotation(arrowRotation);
         m_arrow2->setRotation(arrowRotation);
     } else {
         double arrowRotation1 = getArrowRotation(m_arrowDir1);
@@ -170,7 +172,8 @@ void QGISectionLine::makeArrowsTrad()
 
     if (m_arrowMode == SINGLEDIRECTIONMODE) {
         double arrowRotation = getArrowRotation(m_arrowDir);
-        m_arrow1->setRotation(arrowRotation);                   //rotation = 0  ==>  ->  horizontal, pointing right
+        //rotation = 0  ==>  ->  horizontal, pointing right
+        m_arrow1->setRotation(arrowRotation);
         m_arrow2->setRotation(arrowRotation);
         m_arrowPos1 = getArrowPosition(m_arrowDir, m_start);
         m_arrow1->setPos(m_arrowPos1);
@@ -402,7 +405,8 @@ double QGISectionLine::getArrowRotation(Base::Vector3d arrowDir)
     if (angle < 0.0) {
         angle = 2 * M_PI + angle;
     }
-    double arrowRotation = 360.0 - angle * (180.0/M_PI);   //convert to Qt rotation (clockwise degrees)
+    //convert to Qt rotation (clockwise degrees)
+    double arrowRotation = 360.0 - angle * (180.0/M_PI);
     return arrowRotation;
 }
 

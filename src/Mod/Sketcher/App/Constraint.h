@@ -98,7 +98,8 @@ public:
 
     ~Constraint() override = default;
 
-    Constraint *clone() const; // does copy the tag, it will be treated as a rename by the expression engine.
+    // does copy the tag, it will be treated as a rename by the expression engine.
+    Constraint *clone() const;
     Constraint *copy() const; // does not copy the tag, but generates a new one
 
     // from base class
@@ -161,7 +162,8 @@ public:
     float LabelDistance;
     float LabelPosition;
     bool isDriving;
-    int InternalAlignmentIndex; // Note: for InternalAlignment Type this index indexes equal internal geometry elements (e.g. index of pole in a bspline). It is not a GeoId!!
+    // Note: for InternalAlignment Type this index indexes equal internal geometry elements (e.g. index of pole in a bspline). It is not a GeoId!!
+    int InternalAlignmentIndex;
     bool isInVirtualSpace;
 
     bool isActive;

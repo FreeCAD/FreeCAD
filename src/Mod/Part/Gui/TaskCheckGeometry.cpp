@@ -97,40 +97,74 @@ QString shapeEnumToString(const int &index)
 QVector<QString> buildCheckStatusStringVector()
 {
     QVector<QString>names;
-    names.push_back(QObject::tr("No Error"));                           //    BRepCheck_NoError
-    names.push_back(QObject::tr("Invalid Point On Curve"));             //    BRepCheck_InvalidPointOnCurve
-    names.push_back(QObject::tr("Invalid Point On Curve On Surface"));  //    BRepCheck_InvalidPointOnCurveOnSurface
-    names.push_back(QObject::tr("Invalid Point On Surface"));           //    BRepCheck_InvalidPointOnSurface
-    names.push_back(QObject::tr("No 3D Curve"));                        //    BRepCheck_No3DCurve
-    names.push_back(QObject::tr("Multiple 3D Curve"));                  //    BRepCheck_Multiple3DCurve
-    names.push_back(QObject::tr("Invalid 3D Curve"));                   //    BRepCheck_Invalid3DCurve
-    names.push_back(QObject::tr("No Curve On Surface"));                //    BRepCheck_NoCurveOnSurface
-    names.push_back(QObject::tr("Invalid Curve On Surface"));           //    BRepCheck_InvalidCurveOnSurface
-    names.push_back(QObject::tr("Invalid Curve On Closed Surface"));    //    BRepCheck_InvalidCurveOnClosedSurface
-    names.push_back(QObject::tr("Invalid Same Range Flag"));            //    BRepCheck_InvalidSameRangeFlag
-    names.push_back(QObject::tr("Invalid Same Parameter Flag"));        //    BRepCheck_InvalidSameParameterFlag
-    names.push_back(QObject::tr("Invalid Degenerated Flag"));           //    BRepCheck_InvalidDegeneratedFlag
-    names.push_back(QObject::tr("Free Edge"));                          //    BRepCheck_FreeEdge
-    names.push_back(QObject::tr("Invalid MultiConnexity"));             //    BRepCheck_InvalidMultiConnexity
-    names.push_back(QObject::tr("Invalid Range"));                      //    BRepCheck_InvalidRange
-    names.push_back(QObject::tr("Empty Wire"));                         //    BRepCheck_EmptyWire
-    names.push_back(QObject::tr("Redundant Edge"));                     //    BRepCheck_RedundantEdge
-    names.push_back(QObject::tr("Self Intersecting Wire"));             //    BRepCheck_SelfIntersectingWire
-    names.push_back(QObject::tr("No Surface"));                         //    BRepCheck_NoSurface
-    names.push_back(QObject::tr("Invalid Wire"));                       //    BRepCheck_InvalidWire
-    names.push_back(QObject::tr("Redundant Wire"));                     //    BRepCheck_RedundantWire
-    names.push_back(QObject::tr("Intersecting Wires"));                 //    BRepCheck_IntersectingWires
-    names.push_back(QObject::tr("Invalid Imbrication Of Wires"));       //    BRepCheck_InvalidImbricationOfWires
-    names.push_back(QObject::tr("Empty Shell"));                        //    BRepCheck_EmptyShell
-    names.push_back(QObject::tr("Redundant Face"));                     //    BRepCheck_RedundantFace
-    names.push_back(QObject::tr("Unorientable Shape"));                 //    BRepCheck_UnorientableShape
-    names.push_back(QObject::tr("Not Closed"));                         //    BRepCheck_NotClosed
-    names.push_back(QObject::tr("Not Connected"));                      //    BRepCheck_NotConnected
-    names.push_back(QObject::tr("Sub Shape Not In Shape"));             //    BRepCheck_SubshapeNotInShape
-    names.push_back(QObject::tr("Bad Orientation"));                    //    BRepCheck_BadOrientation
-    names.push_back(QObject::tr("Bad Orientation Of Sub Shape"));       //    BRepCheck_BadOrientationOfSubshape
-    names.push_back(QObject::tr("Invalid Tolerance Value"));            //    BRepCheck_InvalidToleranceValue
-    names.push_back(QObject::tr("Check Failed"));                       //    BRepCheck_CheckFail
+    //    BRepCheck_NoError
+    names.push_back(QObject::tr("No Error"));
+    //    BRepCheck_InvalidPointOnCurve
+    names.push_back(QObject::tr("Invalid Point On Curve"));
+    //    BRepCheck_InvalidPointOnCurveOnSurface
+    names.push_back(QObject::tr("Invalid Point On Curve On Surface"));
+    //    BRepCheck_InvalidPointOnSurface
+    names.push_back(QObject::tr("Invalid Point On Surface"));
+    //    BRepCheck_No3DCurve
+    names.push_back(QObject::tr("No 3D Curve"));
+    //    BRepCheck_Multiple3DCurve
+    names.push_back(QObject::tr("Multiple 3D Curve"));
+    //    BRepCheck_Invalid3DCurve
+    names.push_back(QObject::tr("Invalid 3D Curve"));
+    //    BRepCheck_NoCurveOnSurface
+    names.push_back(QObject::tr("No Curve On Surface"));
+    //    BRepCheck_InvalidCurveOnSurface
+    names.push_back(QObject::tr("Invalid Curve On Surface"));
+    //    BRepCheck_InvalidCurveOnClosedSurface
+    names.push_back(QObject::tr("Invalid Curve On Closed Surface"));
+    //    BRepCheck_InvalidSameRangeFlag
+    names.push_back(QObject::tr("Invalid Same Range Flag"));
+    //    BRepCheck_InvalidSameParameterFlag
+    names.push_back(QObject::tr("Invalid Same Parameter Flag"));
+    //    BRepCheck_InvalidDegeneratedFlag
+    names.push_back(QObject::tr("Invalid Degenerated Flag"));
+    //    BRepCheck_FreeEdge
+    names.push_back(QObject::tr("Free Edge"));
+    //    BRepCheck_InvalidMultiConnexity
+    names.push_back(QObject::tr("Invalid MultiConnexity"));
+    //    BRepCheck_InvalidRange
+    names.push_back(QObject::tr("Invalid Range"));
+    //    BRepCheck_EmptyWire
+    names.push_back(QObject::tr("Empty Wire"));
+    //    BRepCheck_RedundantEdge
+    names.push_back(QObject::tr("Redundant Edge"));
+    //    BRepCheck_SelfIntersectingWire
+    names.push_back(QObject::tr("Self Intersecting Wire"));
+    //    BRepCheck_NoSurface
+    names.push_back(QObject::tr("No Surface"));
+    //    BRepCheck_InvalidWire
+    names.push_back(QObject::tr("Invalid Wire"));
+    //    BRepCheck_RedundantWire
+    names.push_back(QObject::tr("Redundant Wire"));
+    //    BRepCheck_IntersectingWires
+    names.push_back(QObject::tr("Intersecting Wires"));
+    //    BRepCheck_InvalidImbricationOfWires
+    names.push_back(QObject::tr("Invalid Imbrication Of Wires"));
+    //    BRepCheck_EmptyShell
+    names.push_back(QObject::tr("Empty Shell"));
+    //    BRepCheck_RedundantFace
+    names.push_back(QObject::tr("Redundant Face"));
+    //    BRepCheck_UnorientableShape
+    names.push_back(QObject::tr("Unorientable Shape"));
+    //    BRepCheck_NotClosed
+    names.push_back(QObject::tr("Not Closed"));
+    //    BRepCheck_NotConnected
+    names.push_back(QObject::tr("Not Connected"));
+    //    BRepCheck_SubshapeNotInShape
+    names.push_back(QObject::tr("Sub Shape Not In Shape"));
+    //    BRepCheck_BadOrientation
+    names.push_back(QObject::tr("Bad Orientation"));
+    //    BRepCheck_BadOrientationOfSubshape
+    names.push_back(QObject::tr("Bad Orientation Of Sub Shape"));
+    //    BRepCheck_InvalidToleranceValue
+    names.push_back(QObject::tr("Invalid Tolerance Value"));
+    //    BRepCheck_CheckFail
+    names.push_back(QObject::tr("Check Failed"));
 
     return names;
 }
@@ -156,17 +190,26 @@ QString checkStatusToString(const int &index)
 QVector<QString> buildBOPCheckResultVector()
 {
   QVector<QString> results;
-  results.push_back(QObject::tr("BOPAlgo CheckUnknown"));               //BOPAlgo_CheckUnknown
+  //BOPAlgo_CheckUnknown
+  results.push_back(QObject::tr("BOPAlgo CheckUnknown"));
   results.push_back(QObject::tr("BOPAlgo BadType"));                    //BOPAlgo_BadType
-  results.push_back(QObject::tr("BOPAlgo SelfIntersect"));              //BOPAlgo_SelfIntersect
-  results.push_back(QObject::tr("BOPAlgo TooSmallEdge"));               //BOPAlgo_TooSmallEdge
-  results.push_back(QObject::tr("BOPAlgo NonRecoverableFace"));         //BOPAlgo_NonRecoverableFace
-  results.push_back(QObject::tr("BOPAlgo IncompatibilityOfVertex"));    //BOPAlgo_IncompatibilityOfVertex
-  results.push_back(QObject::tr("BOPAlgo IncompatibilityOfEdge"));      //BOPAlgo_IncompatibilityOfEdge
-  results.push_back(QObject::tr("BOPAlgo IncompatibilityOfFace"));      //BOPAlgo_IncompatibilityOfFace
-  results.push_back(QObject::tr("BOPAlgo OperationAborted"));           //BOPAlgo_OperationAborted
+  //BOPAlgo_SelfIntersect
+  results.push_back(QObject::tr("BOPAlgo SelfIntersect"));
+  //BOPAlgo_TooSmallEdge
+  results.push_back(QObject::tr("BOPAlgo TooSmallEdge"));
+  //BOPAlgo_NonRecoverableFace
+  results.push_back(QObject::tr("BOPAlgo NonRecoverableFace"));
+  //BOPAlgo_IncompatibilityOfVertex
+  results.push_back(QObject::tr("BOPAlgo IncompatibilityOfVertex"));
+  //BOPAlgo_IncompatibilityOfEdge
+  results.push_back(QObject::tr("BOPAlgo IncompatibilityOfEdge"));
+  //BOPAlgo_IncompatibilityOfFace
+  results.push_back(QObject::tr("BOPAlgo IncompatibilityOfFace"));
+  //BOPAlgo_OperationAborted
+  results.push_back(QObject::tr("BOPAlgo OperationAborted"));
   results.push_back(QObject::tr("BOPAlgo GeomAbs_C0"));                 //BOPAlgo_GeomAbs_C0
-  results.push_back(QObject::tr("BOPAlgo_InvalidCurveOnSurface"));      //BOPAlgo_InvalidCurveOnSurface
+  //BOPAlgo_InvalidCurveOnSurface
+  results.push_back(QObject::tr("BOPAlgo_InvalidCurveOnSurface"));
   results.push_back(QObject::tr("BOPAlgo NotValid"));                   //BOPAlgo_NotValid
 
   return results;
@@ -667,7 +710,8 @@ int TaskCheckGeometryResults::goBOPSingleCheck(const TopoDS_Shape& shapeIn, Resu
   BOPCheck.RebuildFaceMode() = rebuildFaceMode;
   BOPCheck.ContinuityMode() = continuityMode;
 
-  BOPCheck.SetParallelMode(!runSingleThreaded); //this doesn't help for speed right now(occt 6.9.1).
+  //this doesn't help for speed right now(occt 6.9.1).
+  BOPCheck.SetParallelMode(!runSingleThreaded);
   BOPCheck.SetRunParallel(!runSingleThreaded); //performance boost, use all available cores
   BOPCheck.TangentMode() = tangentMode; //these 4 new tests add about 5% processing time.
   BOPCheck.MergeVertexMode() = mergeVertexMode;
@@ -762,7 +806,8 @@ void TaskCheckGeometryResults::dispatchError(ResultEntry *entry, const BRepCheck
     goSetupResultBoundingBox(entry);
     ParameterGrp::handle group = App::GetApplication().GetUserParameter().
     GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod")->GetGroup("Part")->GetGroup("CheckGeometry");
-    bool logErrors = group->GetBool("LogErrors", true); //log errors to report view
+    //log errors to report view
+    bool logErrors = group->GetBool("LogErrors", true);
 
     /*log BRepCheck errors to report view*/
     if (logErrors){

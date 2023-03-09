@@ -133,7 +133,8 @@ SbBool MayaGestureNavigationStyle::processSoEvent(const SoEvent * const ev)
     bool evIsButton = type.isDerivedFrom(SoMouseButtonEvent::getClassTypeId());
     bool evIsKeyboard = type.isDerivedFrom(SoKeyboardEvent::getClassTypeId());
     bool evIsLoc2 = type.isDerivedFrom(SoLocation2Event::getClassTypeId());//mouse movement
-    bool evIsLoc3 = type.isDerivedFrom(SoMotion3Event::getClassTypeId());//spaceball/joystick movement
+    //spaceball/joystick movement
+    bool evIsLoc3 = type.isDerivedFrom(SoMotion3Event::getClassTypeId());
     bool evIsGesture = type.isDerivedFrom(SoGestureEvent::getClassTypeId());//touchscreen gesture
 
     const SbVec2f prevnormalized = this->lastmouseposition;
@@ -217,7 +218,8 @@ SbBool MayaGestureNavigationStyle::processSoEvent(const SoEvent * const ev)
                   +(comboAfter & BUTTON2DOWN ? 1 : 0 )
                   +(comboAfter & BUTTON3DOWN ? 1 : 0 );
     if (cntMBAfter>=2) this->thisClickIsComplex = true;
-    //if (cntMBAfter==0) this->thisClickIsComplex = false;//don't reset the flag now, we need to know that this mouseUp was an end of a click that was complex. The flag will reset by the before-check in the next event.
+    //don't reset the flag now, we need to know that this mouseUp was an end of a click that was complex. The flag will reset by the before-check in the next event.
+    //if (cntMBAfter==0) this->thisClickIsComplex = false;
 
     //test for move detection
     if (evIsLoc2 || evIsButton){
@@ -251,8 +253,10 @@ SbBool MayaGestureNavigationStyle::processSoEvent(const SoEvent * const ev)
     }
     if (evIsButton) {
         if(inGesture){
-            inGesture = false;//reset the flag when mouse clicks are received, to ensure enabling mouse navigation back.
-            setViewingMode(NavigationStyle::SELECTION);//exit navigation asap, to proceed with regular processing of the click
+            //reset the flag when mouse clicks are received, to ensure enabling mouse navigation back.
+            inGesture = false;
+            //exit navigation asap, to proceed with regular processing of the click
+            setViewingMode(NavigationStyle::SELECTION);
         }
     }
 
@@ -264,8 +268,10 @@ SbBool MayaGestureNavigationStyle::processSoEvent(const SoEvent * const ev)
 
     //----------all this were preparations. Now comes the event handling! ----------
 
-    SbBool processed = false;//a return value for the  BlahblahblahNavigationStyle::processSoEvent
-    bool propagated = false;//an internal flag indicating that the event has been already passed to inherited, to suppress the automatic doing of this at the end.
+    //a return value for the  BlahblahblahNavigationStyle::processSoEvent
+    SbBool processed = false;
+    //an internal flag indicating that the event has been already passed to inherited, to suppress the automatic doing of this at the end.
+    bool propagated = false;
     //goto finalize = return processed. Might be important to do something before done (none now).
 
     // give the nodes in the foreground root the chance to handle events (e.g color bar)
@@ -369,13 +375,15 @@ SbBool MayaGestureNavigationStyle::processSoEvent(const SoEvent * const ev)
                         this->mouseMoveThresholdBroken = false;
                         pan(viewer->getSoRenderManager()->getCamera());//set up panningplane
                         int &cnt = this->mousedownConsumedCount;
-                        this->mousedownConsumedEvents[cnt] = *event;//hopefully, a shallow copy is enough. There are no pointers stored in events, apparently. Will lose a subclass, though.
+                        //hopefully, a shallow copy is enough. There are no pointers stored in events, apparently. Will lose a subclass, though.
+                        this->mousedownConsumedEvents[cnt] = *event;
                         cnt++;
                         assert(cnt<=2);
                         if(cnt>static_cast<int>(sizeof(mousedownConsumedEvents))){
                             cnt=sizeof(mousedownConsumedEvents);//we are in trouble
                         }
-                        processed = true;//just consume this event, and wait for the move threshold to be broken to start dragging/panning
+                        //just consume this event, and wait for the move threshold to be broken to start dragging/panning
+                        processed = true;
                     }
                 } else {//release
                     if (button == SoMouseButtonEvent::BUTTON2 && !this->thisClickIsComplex) {
@@ -387,10 +395,12 @@ SbBool MayaGestureNavigationStyle::processSoEvent(const SoEvent * const ev)
                     if(! processed) {
                         //re-synthesize all previously-consumed mouseDowns, if any. They might have been re-synthesized already when threshold was broken.
                         for( int i=0;   i < this->mousedownConsumedCount;   i++ ){
-                            inherited::processSoEvent(& (this->mousedownConsumedEvents[i]));//simulate the previously-comsumed mousedown.
+                            //simulate the previously-comsumed mousedown.
+                            inherited::processSoEvent(& (this->mousedownConsumedEvents[i]));
                         }
                         this->mousedownConsumedCount = 0;
-                        processed = inherited::processSoEvent(ev);//explicitly, just for clarity that we are sending a full click sequence.
+                        //explicitly, just for clarity that we are sending a full click sequence.
+                        processed = inherited::processSoEvent(ev);
                         propagated = true;
                     }
                 }
@@ -432,15 +442,18 @@ SbBool MayaGestureNavigationStyle::processSoEvent(const SoEvent * const ev)
                     //no, we are not entering navigation.
                     //re-synthesize all previously-consumed mouseDowns, if any, and propagate this mousemove.
                     for( int i=0;   i < this->mousedownConsumedCount;   i++ ){
-                        inherited::processSoEvent(& (this->mousedownConsumedEvents[i]));//simulate the previously-comsumed mousedown.
+                        //simulate the previously-comsumed mousedown.
+                        inherited::processSoEvent(& (this->mousedownConsumedEvents[i]));
                     }
                     this->mousedownConsumedCount = 0;
-                    processed = inherited::processSoEvent(ev);//explicitly, just for clarity that we are sending a full click sequence.
+                    //explicitly, just for clarity that we are sending a full click sequence.
+                    processed = inherited::processSoEvent(ev);
                     propagated = true;
                 }
             }
             if (mousedownConsumedCount  > 0)
-                processed = true;//if we are still deciding if it's a drag or not, consume mouseMoves.
+                //if we are still deciding if it's a drag or not, consume mouseMoves.
+                processed = true;
         }
 
         //gesture start

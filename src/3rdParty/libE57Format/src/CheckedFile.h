@@ -42,7 +42,8 @@ namespace e57
    class CheckedFile
    {
    public:
-      static constexpr size_t physicalPageSizeLog2 = 10; // physical page size is 2 raised to this power
+      // physical page size is 2 raised to this power
+      static constexpr size_t physicalPageSizeLog2 = 10;
       static constexpr size_t physicalPageSize = 1 << physicalPageSizeLog2;
       static constexpr uint64_t physicalPageSizeMask = physicalPageSize - 1;
       static constexpr size_t logicalPageSize = physicalPageSize - 4;

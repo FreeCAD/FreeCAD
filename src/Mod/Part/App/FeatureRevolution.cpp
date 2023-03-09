@@ -50,7 +50,8 @@ Revolution::Revolution()
     Angle.setConstraints(&angleRangeU);
     ADD_PROPERTY_TYPE(Symmetric,(false),"Revolve",App::Prop_None,"Extend revolution symmetrically from the profile.");
     ADD_PROPERTY_TYPE(Solid,(false),"Revolve",App::Prop_None,"Make revolution a solid if possible");
-    ADD_PROPERTY_TYPE(FaceMakerClass,(""),"Revolve",App::Prop_None,"Facemaker to use if Solid is true."); //default for old documents. For default for new objects, refer to setupObject().
+    //default for old documents. For default for new objects, refer to setupObject().
+    ADD_PROPERTY_TYPE(FaceMakerClass,(""),"Revolve",App::Prop_None,"Facemaker to use if Solid is true.");
 }
 
 short Revolution::mustExecute() const
@@ -179,7 +180,8 @@ App::DocumentObjectExecReturn *Revolution::execute()
             myShape = mkFace->Shape();
             sourceShape = TopoShape(myShape);
 
-            makeSolid = Standard_False;//don't ask TopoShape::revolve to make solid, as we've made faces...
+            //don't ask TopoShape::revolve to make solid, as we've made faces...
+            makeSolid = Standard_False;
         }
 
         // actual revolution!
@@ -200,5 +202,6 @@ App::DocumentObjectExecReturn *Revolution::execute()
 void Part::Revolution::setupObject()
 {
     Part::Feature::setupObject();
-    this->FaceMakerClass.setValue("Part::FaceMakerBullseye"); //default for newly created features
+    //default for newly created features
+    this->FaceMakerClass.setValue("Part::FaceMakerBullseye");
 }

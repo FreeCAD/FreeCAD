@@ -79,7 +79,8 @@ std::vector<App::DocumentObject*> ViewProviderGeoFeatureGroupExtension::extensio
 
     auto* group = getExtendedViewProvider()->getObject()->getExtensionByType<App::GeoFeatureGroupExtension>();
     const std::vector<App::DocumentObject*> &model = group->Group.getValues ();
-    std::set<App::DocumentObject*> outSet; //< set of objects not to claim (childrens of childrens)
+    //< set of objects not to claim (childrens of childrens)
+    std::set<App::DocumentObject*> outSet;
 
     // search for objects handled (claimed) by the features
     for (auto obj: model) {

@@ -425,7 +425,8 @@ QPointF TaskRichAnno::calcTextStartPos(double scale)
             double h = Rez::guiX(m_basePage->getPageHeight() / 2.0);
             return QPointF(w, h);
         } else {
-            Base::Console().Message("TRA::calcStartPos - no m_basePage\n"); //shouldn't happen. caught elsewhere
+            //shouldn't happen. caught elsewhere
+            Base::Console().Message("TRA::calcStartPos - no m_basePage\n");
         }
     }
 

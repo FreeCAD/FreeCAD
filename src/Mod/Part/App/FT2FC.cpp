@@ -167,7 +167,8 @@ PyObject* FT2FC(const Py_UNICODE *PyUString,
         throw std::runtime_error(ErrorMsg.str());
     }
 
-    scalefactor = (stringheight/float(FTFace->height))/10;  // divide scale by 10 to offset the 10X increased scale in FT_Set_Char_Size above
+    // divide scale by 10 to offset the 10X increased scale in FT_Set_Char_Size above
+    scalefactor = (stringheight/float(FTFace->height))/10;
     for (i=0; i<length; i++) {
         currchar = PyUString[i];
         error = FT_Load_Char(FTFace,

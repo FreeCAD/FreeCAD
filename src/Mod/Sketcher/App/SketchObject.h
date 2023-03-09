@@ -691,7 +691,8 @@ private:
 
     bool internaltransaction;
 
-    bool managedoperation; // indicates whether changes to properties are the deed of SketchObject or not (for input validation)
+    // indicates whether changes to properties are the deed of SketchObject or not (for input validation)
+    bool managedoperation;
 };
 
 inline int SketchObject::initTemporaryMove(int geoId, PointPos pos, bool fine/*=true*/)

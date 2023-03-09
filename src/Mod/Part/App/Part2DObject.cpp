@@ -202,7 +202,8 @@ bool Part2DObject::seekTrimPoints(const std::vector<Geometry *> &geomlist,
                             p1 = p;
                             geometryIndex1 = id;
                         }
-                        param -= period; // transfer param into the interval (pickedParam pickedParam+period]
+                        // transfer param into the interval (pickedParam pickedParam+period]
+                        param -= period;
                         if (param < param2) {
                             param2 = param;
                             p2 = p;

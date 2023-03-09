@@ -43,11 +43,15 @@ public:
     DrawViewDimExtent();
     ~DrawViewDimExtent() = default;
 
-    App::PropertyLinkSubList       Source;                       //DrawViewPart & SubElements(Edges)
+    //DrawViewPart & SubElements(Edges)
+    App::PropertyLinkSubList       Source;
                                                                  //Cosmetic End points are stored in DVD::References2d
-    App::PropertyLinkSubList       Source3d;                     //Part::Feature & SubElements  TBI
-    App::PropertyInteger           DirExtent;                    //Horizontal, Vertical, TBD
-    App::PropertyStringList        CosmeticTags;                 //id of cosmetic end points.  obsolete!
+    //Part::Feature & SubElements  TBI
+    App::PropertyLinkSubList       Source3d;
+    //Horizontal, Vertical, TBD
+    App::PropertyInteger           DirExtent;
+    //id of cosmetic end points.  obsolete!
+    App::PropertyStringList        CosmeticTags;
 
     App::DocumentObjectExecReturn *execute() override;
 

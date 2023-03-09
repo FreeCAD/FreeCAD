@@ -3199,7 +3199,8 @@ void View3DInventorViewer::drawAxisCross()
 
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-    glPixelZoom((float)axiscrossSize/30, (float)axiscrossSize/30); // 30 = 3 (character pixmap ratio) * 10 (default axiscrossSize)
+    // 30 = 3 (character pixmap ratio) * 10 (default axiscrossSize)
+    glPixelZoom((float)axiscrossSize/30, (float)axiscrossSize/30);
     glRasterPos2d(xpos[0], xpos[1]);
     glDrawPixels(XPM_WIDTH, XPM_HEIGHT, GL_RGBA, GL_UNSIGNED_BYTE, XPM_PIXEL_DATA);
     glRasterPos2d(ypos[0], ypos[1]);

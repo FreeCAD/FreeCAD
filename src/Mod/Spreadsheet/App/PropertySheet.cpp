@@ -320,7 +320,8 @@ void PropertySheet::Paste(const Property &from)
             *cell = *(ifrom->second); // Exists; assign cell directly
         }
         else {
-            cell = new Cell(this, *(ifrom->second)); // Doesn't exist, copy using Cell's copy constructor
+            // Doesn't exist, copy using Cell's copy constructor
+            cell = new Cell(this, *(ifrom->second));
             if (cell->getSpans(rows, cols))
                 spanChanges.push_back(ifrom->first);
         }

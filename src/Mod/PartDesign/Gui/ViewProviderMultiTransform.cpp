@@ -40,7 +40,8 @@ TaskDlgFeatureParameters *ViewProviderMultiTransform::getEditDialog() {
 void ViewProviderMultiTransform::setupContextMenu(QMenu* menu, QObject* receiver, const char* member)
 {
     this->addDefaultAction(menu, QObject::tr("Edit %1").arg(QString::fromStdString(featureName)));
-    PartDesignGui::ViewProvider::setupContextMenu(menu, receiver, member); // clazy:exclude=skipped-base-method
+    // clazy:exclude=skipped-base-method
+    PartDesignGui::ViewProvider::setupContextMenu(menu, receiver, member);
 }
 
 std::vector<App::DocumentObject*> ViewProviderMultiTransform::claimChildren() const

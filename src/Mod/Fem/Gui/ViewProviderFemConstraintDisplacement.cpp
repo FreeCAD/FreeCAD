@@ -98,7 +98,8 @@ void ViewProviderFemConstraintDisplacement::updateData(const App::Property* prop
     // Gets called whenever a property of the attached object changes
     Fem::ConstraintDisplacement *pcConstraint =
         static_cast<Fem::ConstraintDisplacement *>(this->getObject());
-    float scaledwidth = WIDTH * pcConstraint->Scale.getValue(); //OvG: Calculate scaled values once only
+    //OvG: Calculate scaled values once only
+    float scaledwidth = WIDTH * pcConstraint->Scale.getValue();
     float scaledheight = HEIGHT * pcConstraint->Scale.getValue();
     bool xFree = pcConstraint->xFree.getValue();
     bool yFree = pcConstraint->yFree.getValue();

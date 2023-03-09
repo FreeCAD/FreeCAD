@@ -527,10 +527,12 @@ bool View3DInventor::setCamera(const char* pCamera)
     SoOrthographicCamera * CamViewerO = nullptr;
 
     if (CamViewer->getTypeId() == SoPerspectiveCamera::getClassTypeId()) {
-        CamViewerP = static_cast<SoPerspectiveCamera *>(CamViewer);  // safe downward cast, knows the type
+        // safe downward cast, knows the type
+        CamViewerP = static_cast<SoPerspectiveCamera *>(CamViewer);
     }
     else if (CamViewer->getTypeId() == SoOrthographicCamera::getClassTypeId()) {
-        CamViewerO = static_cast<SoOrthographicCamera *>(CamViewer);  // safe downward cast, knows the type
+        // safe downward cast, knows the type
+        CamViewerO = static_cast<SoOrthographicCamera *>(CamViewer);
     }
 
     if (Cam->getTypeId() == SoPerspectiveCamera::getClassTypeId()) {

@@ -467,7 +467,8 @@ Note: your changes will be applied when you next switch workbenches\n"));
         return;
 
     QString fn = item->text(0);
-    QString bareFileName = QFileInfo(fn).baseName(); //for use as default menu text (filename without extension)
+    //for use as default menu text (filename without extension)
+    QString bareFileName = QFileInfo(fn).baseName();
 
     /** check if user already has custom toolbar, so we can tailor instructions accordingly **/
     bool hasCustomToolbar = true;
@@ -532,7 +533,8 @@ Note: your changes will be applied when you next switch workbenches\n"));
             Base::Console().Warning("Toolbar walkthrough: Unable to find actionMacros combo box\n");
         } else {
             int macroIndex = macroListBox->findText(fn); //fn is the macro filename
-            macroListBox->setCurrentIndex(macroIndex); //select it for the user so they don't have to
+            //select it for the user so they don't have to
+            macroListBox->setCurrentIndex(macroIndex);
         }
 
         auto menuText = setupCustomMacrosPage->findChild<QLineEdit*>(QString::fromLatin1("actionMenu"));
@@ -768,7 +770,8 @@ void DlgMacroExecuteImp::on_duplicateButton_clicked()
     QString last3 = baseName.right(3);
     bool ok = true; //was conversion to int successful?
     int nLast3 = last3.toInt(&ok);
-    last3 = QString::fromStdString("001"); //increment beginning with 001 unless from001 = false
+    //increment beginning with 001 unless from001 = false
+    last3 = QString::fromStdString("001");
     if (ok ){
         //last3 were all digits, so we strip them from the base name
         if (baseName.size()>3){ //if <= 3 leave be (e.g. 2.py becomes 2@001.py)
@@ -777,7 +780,8 @@ void DlgMacroExecuteImp::on_duplicateButton_clicked()
             }
             baseName = baseName.left(baseName.size()-3); //strip digits
             if (baseName.endsWith(neutralSymbol)){
-                baseName = baseName.left(baseName.size()-1); //trim the "@", will be added back later
+                //trim the "@", will be added back later
+                baseName = baseName.left(baseName.size()-1);
             }
         }
     }
@@ -824,7 +828,7 @@ void DlgMacroExecuteImp::on_duplicateButton_clicked()
 
     // give user a chance to pick a different name from digitized name suggested
     QString fn = QInputDialog::getText(this, tr("Duplicate Macro"),
-        tr("Enter new name:"), QLineEdit::Normal, oldNameDigitized, 
+        tr("Enter new name:"), QLineEdit::Normal, oldNameDigitized,
         nullptr, Qt::MSWindowsFixedSizeDialogHint);
     if (replaceSpaces){
         fn = fn.replace(QString::fromStdString(" "),QString::fromStdString("_"));

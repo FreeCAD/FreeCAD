@@ -60,8 +60,10 @@ public:
 protected:
   /** Subsamples the mesh. */
   void SampleAllFacets ();
-  inline bool CheckDistToFacet (const MeshFacet &rclF);     // check distance to facet, add points inner radius
-  bool AccumulateNeighbours (const MeshFacet &rclF, FacetIndex ulFIdx); // accumulate the sample neighbours facet
+  // check distance to facet, add points inner radius
+  inline bool CheckDistToFacet (const MeshFacet &rclF);
+  // accumulate the sample neighbours facet
+  bool AccumulateNeighbours (const MeshFacet &rclF, FacetIndex ulFIdx);
   inline bool InnerPoint (const Base::Vector3f &rclPt) const;
   inline bool TriangleCutsSphere (const MeshFacet &rclF) const;
   bool ExpandRadius (unsigned long ulMinPoints);
@@ -198,4 +200,3 @@ private:
 
 
 #endif  // MESH_TOOLS_H
-

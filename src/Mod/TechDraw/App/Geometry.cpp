@@ -1206,11 +1206,13 @@ BSpline::BSpline(const TopoDS_Edge &e)
          endAngle += 2.0 * M_PI;
     }
 
-    Standard_Real tol3D = 0.001;                                   //1/1000 of a mm? screen can't resolve this
+    //1/1000 of a mm? screen can't resolve this
+    Standard_Real tol3D = 0.001;
     Standard_Integer maxDegree = 3, maxSegment = 200;
     Handle(BRepAdaptor_HCurve) hCurve = new BRepAdaptor_HCurve(c);
     // approximate the curve using a tolerance
-    //Approx_Curve3d approx(hCurve, tol3D, GeomAbs_C2, maxSegment, maxDegree);   //gives degree == 5  ==> too many poles ==> buffer overrun
+    //gives degree == 5  ==> too many poles ==> buffer overrun
+    //Approx_Curve3d approx(hCurve, tol3D, GeomAbs_C2, maxSegment, maxDegree);
     Approx_Curve3d approx(hCurve, tol3D, GeomAbs_C0, maxSegment, maxDegree);
     if (approx.IsDone() && approx.HasResult()) {
         spline = approx.Curve();

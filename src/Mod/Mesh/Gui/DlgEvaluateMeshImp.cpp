@@ -1107,7 +1107,8 @@ void DlgEvaluateMeshImp::on_repairAllTogether_clicked()
                         run = true;
                     }
                     else {
-                        self = false; // once no self-intersections found do not repeat it later on
+                        // once no self-intersections found do not repeat it later on
+                        self = false;
                     }
                     qApp->processEvents();
                 }
@@ -1319,4 +1320,3 @@ QSize DockEvaluateMeshImp::sizeHint () const
 }
 
 #include "moc_DlgEvaluateMeshImp.cpp"
-

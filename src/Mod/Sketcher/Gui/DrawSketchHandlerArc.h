@@ -177,7 +177,8 @@ public:
                     "(Part.Circle(App.Vector(%f,%f,0),App.Vector(0,0,1),%f),%f,%f),%s)",
                           CenterPoint.x, CenterPoint.y, sqrt(rx*rx + ry*ry),
                           startAngle, endAngle,
-                          geometryCreationMode==Construction?"True":"False"); //arcAngle > 0 ? 0 : 1);
+                          //arcAngle > 0 ? 0 : 1);
+                          geometryCreationMode==Construction?"True":"False");
 
                 Gui::Command::commitCommand();
             }
@@ -222,7 +223,8 @@ public:
                 * right button of the mouse */
             }
             else{
-                sketchgui->purgeHandler(); // no code after this line, Handler get deleted in ViewProvider
+                // no code after this line, Handler get deleted in ViewProvider
+                sketchgui->purgeHandler();
             }
         }
         return true;
@@ -279,7 +281,8 @@ public:
             // Build a 32 point circle ignoring already constructed points
             for (int i=1; i <= 32; i++) {
                 // Start at current angle
-                double angle = (i-1)*2*M_PI/32.0 + lineAngle; // N point closed circle has N segments
+                // N point closed circle has N segments
+                double angle = (i-1)*2*M_PI/32.0 + lineAngle;
                 if (i != 1 && i != 17 ) {
                     EditCurve[i] = Base::Vector2d(CenterPoint.x + radius*cos(angle),
                                                   CenterPoint.y + radius*sin(angle));
@@ -470,7 +473,8 @@ public:
                 * right button of the mouse */
             }
             else{
-                sketchgui->purgeHandler(); // no code after this line, Handler get deleted in ViewProvider
+                // no code after this line, Handler get deleted in ViewProvider
+                sketchgui->purgeHandler();
             }
         }
         return true;
@@ -495,4 +499,3 @@ protected:
 
 
 #endif // SKETCHERGUI_DrawSketchHandlerArc_H
-

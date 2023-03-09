@@ -633,7 +633,8 @@ bool CallTipsList::eventFilter(QObject * watched, QEvent * event)
             }
             else if (ke->key() == Qt::Key_Tab) {
                 // enable call completion for activating items
-                Temporary<bool> tmp( this->doCallCompletion, true ); //< previous state restored on scope exit
+                //< previous state restored on scope exit
+                Temporary<bool> tmp( this->doCallCompletion, true );
                 Q_EMIT itemActivated( currentItem() );
                 return true;
             }
@@ -701,14 +702,16 @@ void CallTipsList::callTipItemActivated(QListWidgetItem *item)
     if (this->doCallCompletion
      && (callTip.type == CallTip::Method || callTip.type == CallTip::Class))
     {
-      cursor.insertText( QLatin1String("()") ); //< just append parenthesis to identifier even inserted.
+      //< just append parenthesis to identifier even inserted.
+      cursor.insertText( QLatin1String("()") );
 
       /**
        * Try to find out if call needs arguments.
        * For this we search the description for appropriate hints ...
        */
       QRegularExpression argumentMatcher( QRegularExpression::escape( callTip.name ) + QLatin1String("\\s*\\(\\s*\\w+.*\\)") );
-      argumentMatcher.setPatternOptions( QRegularExpression::InvertedGreedinessOption ); //< set regex non-greedy!
+      //< set regex non-greedy!
+      argumentMatcher.setPatternOptions( QRegularExpression::InvertedGreedinessOption );
       if (argumentMatcher.match( callTip.description ).hasMatch())
       {
         // if arguments are needed, we just move the cursor one left, to between the parentheses.

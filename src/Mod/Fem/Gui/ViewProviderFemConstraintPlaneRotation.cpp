@@ -102,7 +102,8 @@ void ViewProviderFemConstraintPlaneRotation::updateData(const App::Property* pro
     // Gets called whenever a property of the attached object changes
     Fem::ConstraintPlaneRotation *pcConstraint =
         static_cast<Fem::ConstraintPlaneRotation *>(this->getObject());
-    float scaledradius = RADIUS * pcConstraint->Scale.getValue(); //OvG: Calculate scaled values once only
+    //OvG: Calculate scaled values once only
+    float scaledradius = RADIUS * pcConstraint->Scale.getValue();
     float scaledheight = HEIGHT * pcConstraint->Scale.getValue();
 
     if (strcmp(prop->getName(),"Points") == 0) {
@@ -147,7 +148,8 @@ void ViewProviderFemConstraintPlaneRotation::updateData(const App::Property* pro
             //define color of shape
             SoMaterial *myMaterial = new SoMaterial;
             myMaterial->diffuseColor.set1Value(0, SbColor(0, 1, 0)); //RGB
-            //myMaterial->diffuseColor.set1Value(1,SbColor(0,0,1));//possible to adjust sides separately
+            //possible to adjust sides separately
+            //myMaterial->diffuseColor.set1Value(1,SbColor(0,0,1));
             sep->addChild(myMaterial);
 
             //draw a sphere

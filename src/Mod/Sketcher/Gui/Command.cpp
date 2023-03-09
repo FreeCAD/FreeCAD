@@ -217,10 +217,12 @@ void CmdSketcherNewSketch::activated(int iMsg)
         else
             assert(0 /* mapmode index out of range */);
         doCommand(Gui,"App.activeDocument().%s.Support = %s", FeatName.c_str(), supportString.c_str());
-        doCommand(Gui,"App.activeDocument().recompute()");  // recompute the sketch placement based on its support
+        // recompute the sketch placement based on its support
+        doCommand(Gui,"App.activeDocument().recompute()");
         doCommand(Gui,"Gui.activeDocument().setEdit('%s')", FeatName.c_str());
 
-        Part::Feature *part = static_cast<Part::Feature*>(support.getValue());  // if multi-part support, this will return 0
+        // if multi-part support, this will return 0
+        Part::Feature *part = static_cast<Part::Feature*>(support.getValue());
         if (part){
             App::DocumentObjectGroup* grp = part->getGroup();
             if (grp) {

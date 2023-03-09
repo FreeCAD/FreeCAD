@@ -136,7 +136,8 @@ void QGIViewClip::drawClip()
                 qgiv->show();
             }
         } else {
-            Base::Console().Warning("Logic error? - drawClip() - qgiv for %s not found\n", (*it).c_str());   //gview for feature !exist
+            //gview for feature !exist
+            Base::Console().Warning("Logic error? - drawClip() - qgiv for %s not found\n", (*it).c_str());
         }
     }
 

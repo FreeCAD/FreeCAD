@@ -509,7 +509,8 @@ QGIViewDimension::QGIViewDimension() : dvDimension(nullptr), hasHover(false), m_
 
     QObject::connect(datumLabel, &QGIDatumLabel::setPretty, this, &QGIViewDimension::onPrettyChanged);
 
-    setZValue(ZVALUE::DIMENSION);//note: this won't paint dimensions over another View if it stacks
+    //note: this won't paint dimensions over another View if it stacks
+    setZValue(ZVALUE::DIMENSION);
                                  //above this Dimension's parent view.   need Layers?
     hideFrame();
 }
@@ -652,7 +653,8 @@ void QGIViewDimension::updateDim()
     }
 
     QString labelText =
-        QString::fromUtf8(dim->getFormattedDimensionValue(1).c_str());// pre value [unit] post
+        // pre value [unit] post
+        QString::fromUtf8(dim->getFormattedDimensionValue(1).c_str());
     if (dim->isMultiValueSchema()) {
         labelText =
             QString::fromUtf8(dim->getFormattedDimensionValue(0).c_str());//don't format multis

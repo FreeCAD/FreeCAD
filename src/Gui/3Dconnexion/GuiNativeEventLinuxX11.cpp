@@ -248,7 +248,8 @@ bool Gui::GuiNativeEvent::x11EventFilter(XEvent *event)
         flushEvent.format = 8;
         flushEvent.message_type = motion_flush_event;
 
-        XSendEvent (display, flushEvent.window, False, 0, (XEvent*)&flushEvent); // siehe spnavd, False, 0
+        // siehe spnavd, False, 0
+        XSendEvent (display, flushEvent.window, False, 0, (XEvent*)&flushEvent);
 
         return true;
     }

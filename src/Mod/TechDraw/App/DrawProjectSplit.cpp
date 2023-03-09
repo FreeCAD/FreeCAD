@@ -232,12 +232,15 @@ bool DrawProjectSplit::isOnEdge(TopoDS_Edge e, TopoDS_Vertex v, double& param, b
                 Base::Console().Error("DPS::isOnEdge - simpleMinDist failed: %.3f\n", dist);
                 result = false;
             } else if (dist < Precision::Confusion()) {
-                const gp_Pnt pt = BRep_Tool::Pnt(v);                         //have to duplicate method 3 to get param
+                //have to duplicate method 3 to get param
+                const gp_Pnt pt = BRep_Tool::Pnt(v);
                 BRepAdaptor_Curve adapt(e);
                 const Handle(Geom_Curve) c = adapt.Curve().Curve();
-                double maxDist = 0.000001;     //magic number.  less than this gives false positives.
+                //magic number.  less than this gives false positives.
+                double maxDist = 0.000001;
                 //bool found =
-                (void) GeomLib_Tool::Parameter(c, pt, maxDist, param);  //already know point it on curve
+                //already know point it on curve
+                (void) GeomLib_Tool::Parameter(c, pt, maxDist, param);
                 result = true;
             }
             if (result) {

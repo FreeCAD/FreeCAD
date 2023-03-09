@@ -79,7 +79,8 @@ TaskScaledParameters::TaskScaledParameters(TaskMultiTransformParameters *parentT
     ui->listWidgetFeatures->hide();
     ui->checkBoxUpdateView->hide();
 
-    blockUpdate = false; // Hack, sometimes it is NOT false although set to false in Transformed::Transformed()!!
+    // Hack, sometimes it is NOT false although set to false in Transformed::Transformed()!!
+    blockUpdate = false;
     setupUI();
 }
 

@@ -445,7 +445,8 @@ void ViewProviderSketch::moveCursorToSketchPoint(Base::Vector2d point) {
 
     short x,y; screencoords.getValue(x,y);
 
-    short height = viewer->getGLWidget()->height(); // Coin3D origin bottom left, QT origin top left
+    // Coin3D origin bottom left, QT origin top left
+    short height = viewer->getGLWidget()->height();
 
     QPoint newPos = viewer->getGLWidget()->mapToGlobal(QPoint(x,height-y));
 
@@ -721,7 +722,8 @@ bool ViewProviderSketch::mouseButtonPressed(int Button, bool pressed, const SbVe
                         editDoubleClicked();
                         // Reset Double Click Static Variables
                         DoubleClick::prvClickTime = SbTime();
-                        DoubleClick::prvClickPos = SbVec2s(-16000,-16000); //certainly far away from any clickable place, to avoid re-trigger of double-click if next click happens fast.
+                        //certainly far away from any clickable place, to avoid re-trigger of double-click if next click happens fast.
+                        DoubleClick::prvClickPos = SbVec2s(-16000,-16000);
 
                         Mode = STATUS_NONE;
                     } else {
@@ -1957,12 +1959,14 @@ void ViewProviderSketch::doBoxSelection(const SbVec2s &startPos, const SbVec2s &
     int intGeoCount = sketchObject->getHighestCurveIndex() + 1;
     int extGeoCount = sketchObject->getExternalGeometryCount();
 
-    const std::vector<Part::Geometry *> geomlist = sketchObject->getCompleteGeometry(); // without memory allocation
+    // without memory allocation
+    const std::vector<Part::Geometry *> geomlist = sketchObject->getCompleteGeometry();
     assert(int(geomlist.size()) == extGeoCount + intGeoCount);
     assert(int(geomlist.size()) >= 2);
 
     Base::Vector3d pnt0, pnt1, pnt2, pnt;
-    int VertexId = -1; // the loop below should be in sync with the main loop in ViewProviderSketch::draw
+    // the loop below should be in sync with the main loop in ViewProviderSketch::draw
+    int VertexId = -1;
                        // so that the vertex indices are calculated correctly
     int GeoId = 0;
 
@@ -2624,7 +2628,8 @@ void ViewProviderSketch::scaleBSplinePoleCirclesAndUpdateSolverAndSketchObjectGe
                             else { // without memory allocation
                                 tmpcircle = static_cast<Part::GeomCircle *>(circle->clone());
                                 tmpcircle->setRadius(vradius);
-                                tempGeo[GeoId] = GeometryFacade::getFacade(tmpcircle, true); // this is the circle that will be drawn, with the updated vradius, the facade takes ownership and will deallocate.
+                                // this is the circle that will be drawn, with the updated vradius, the facade takes ownership and will deallocate.
+                                tempGeo[GeoId] = GeometryFacade::getFacade(tmpcircle, true);
                             }
 
                             if(!circle->hasExtension(SketcherGui::ViewProviderSketchGeometryExtension::getClassTypeId()))
@@ -2750,7 +2755,8 @@ void ViewProviderSketch::updateData(const App::Property *prop)
 
         // solver information is also updated when no matching geometry, so that if a solving fails
         // this failed solving info is presented to the user
-        UpdateSolverInformation(); // just update the solver window with the last SketchObject solving information
+        // just update the solver window with the last SketchObject solving information
+        UpdateSolverInformation();
 
         if(getSketchObject()->getExternalGeometryCount()+getSketchObject()->getHighestCurveIndex() + 1 ==
             getSolvedSketch().getGeometrySize()) {
@@ -3272,7 +3278,8 @@ void ViewProviderSketch::onCameraChanged(SoCamera* cam)
 {
     auto rotSk = Base::Rotation(getDocument()->getEditingTransform()); //sketch orientation
     auto rotc = cam->orientation.getValue().getValue();
-    auto rotCam = Base::Rotation(rotc[0], rotc[1], rotc[2], rotc[3]); // camera orientation (needed because float to double conversion)
+    // camera orientation (needed because float to double conversion)
+    auto rotCam = Base::Rotation(rotc[0], rotc[1], rotc[2], rotc[3]);
 
     // Is camera in the same hemisphere as positive sketch normal ?
     auto orientation = (rotCam.invert() * rotSk).multVec(Base::Vector3d(0, 0, 1));
@@ -3630,7 +3637,8 @@ const std::vector<Sketcher::Constraint *> ViewProviderSketch::getConstraints() c
 
 const GeoList ViewProviderSketch::getGeoList() const
 {
-    const std::vector<Part::Geometry *> tempGeo = getSketchObject()->getCompleteGeometry(); // without memory allocation
+    // without memory allocation
+    const std::vector<Part::Geometry *> tempGeo = getSketchObject()->getCompleteGeometry();
 
     int intGeoCount = getSketchObject()->getHighestCurveIndex() + 1;
 

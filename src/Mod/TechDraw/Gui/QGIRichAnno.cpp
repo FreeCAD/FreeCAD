@@ -206,7 +206,8 @@ void QGIRichAnno::setTextItem()
 
         QString plainText = QTextDocumentFragment::fromHtml( inHtml ).toPlainText();
         m_text->setPlainText(plainText);
-        setLineSpacing(100);       //this doesn't appear in the generated Svg, but does space the lines!
+        //this doesn't appear in the generated Svg, but does space the lines!
+        setLineSpacing(100);
         m_rect->hide();
         m_rect->update();
     }

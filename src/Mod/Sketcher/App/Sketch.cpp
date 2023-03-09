@@ -192,8 +192,10 @@ int Sketch::setUpSketch(const std::vector<Part::Geometry *> &GeoList,
     for (int i=int(GeoList.size())-extGeoCount; i < int(GeoList.size()); i++)
         extGeoList.push_back(GeoList[i]);
 
-    std::vector<bool> onlyBlockedGeometry(intGeoList.size(),false); // these geometries are blocked, frozen and sent as fixed parameters to the solver
-    std::vector<bool> unenforceableConstraints(ConstraintList.size(),false); // these constraints are unenforceable due to a Blocked constraint
+    // these geometries are blocked, frozen and sent as fixed parameters to the solver
+    std::vector<bool> onlyBlockedGeometry(intGeoList.size(),false);
+    // these constraints are unenforceable due to a Blocked constraint
+    std::vector<bool> unenforceableConstraints(ConstraintList.size(),false);
 
     /* This implements the old block constraint. I have decided not to remove it at this time while the new is tested, just in case the change
      * needs to be reverted */
@@ -1468,7 +1470,8 @@ GeoListFacade Sketch::extractGeoListFacade() const
     temp.reserve(Geoms.size());
     int internalGeometryCount = 0;
     for (std::vector<GeoDef>::const_iterator it=Geoms.begin(); it != Geoms.end(); ++it) {
-        auto gf = GeometryFacade::getFacade(it->geo->clone(), true); // GeometryFacade is the owner of this allocation
+        // GeometryFacade is the owner of this allocation
+        auto gf = GeometryFacade::getFacade(it->geo->clone(), true);
         if(!it->external)
             internalGeometryCount++;
 
@@ -2515,7 +2518,8 @@ int Sketch::addTangentLineAtBSplineKnotConstraint(int checkedlinegeoId, int chec
         }
     }
     else {
-        int tag = Sketch::addPointOnObjectConstraint(checkedknotgeoid, PointPos::start, checkedlinegeoId);//increases ConstraintsCounter
+        //increases ConstraintsCounter
+        int tag = Sketch::addPointOnObjectConstraint(checkedknotgeoid, PointPos::start, checkedlinegeoId);
         GCSsys.addConstraintTangentAtBSplineKnot(b, l, knotindex, tag);
         return ConstraintsCounter;
     }
@@ -2647,8 +2651,10 @@ int Sketch::addAngleAtPointConstraint(
     {
         //The same functionality is implemented in SketchObject.cpp, where
         // it is used to permanently lock down the autodecision.
-        double angleOffset = 0.0;//the difference between the datum value and the actual angle to apply. (datum=angle+offset)
-        double angleDesire = 0.0;//the desired angle value (and we are to decide if 180* should be added to it)
+        //the difference between the datum value and the actual angle to apply. (datum=angle+offset)
+        double angleOffset = 0.0;
+        //the desired angle value (and we are to decide if 180* should be added to it)
+        double angleDesire = 0.0;
         if (cTyp == Tangent) {angleOffset = -M_PI/2; angleDesire = 0.0;}
         if (cTyp == Perpendicular) {angleOffset = 0; angleDesire = M_PI/2;}
 
@@ -2670,7 +2676,8 @@ int Sketch::addAngleAtPointConstraint(
 
     int tag = -1;
     if(e2c)
-        tag = Sketch::addPointOnObjectConstraint(geoId1, pos1, geoId2, driving);//increases ConstraintsCounter
+        //increases ConstraintsCounter
+        tag = Sketch::addPointOnObjectConstraint(geoId1, pos1, geoId2, driving);
     if (e2e){
         tag = ++ConstraintsCounter;
         GCSsys.addConstraintP2PCoincident(p, *p2, tag, driving);
@@ -3144,7 +3151,8 @@ int Sketch::addSnellsLawConstraint(int geoIdRay1, PointPos posRay1,
     }
 
     int tag = -1;
-    //tag = Sketch::addPointOnObjectConstraint(geoIdRay1, posRay1, geoIdBnd);//increases ConstraintsCounter
+    //increases ConstraintsCounter
+    //tag = Sketch::addPointOnObjectConstraint(geoIdRay1, posRay1, geoIdBnd);
     tag = ++ConstraintsCounter;
     //GCSsys.addConstraintP2PCoincident(p1, p2, tag);
     GCSsys.addConstraintSnellsLaw(*ray1, *ray2,
@@ -4586,4 +4594,3 @@ void Sketch::Restore(XMLReader &)
 {
 
 }
-

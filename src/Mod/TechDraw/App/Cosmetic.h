@@ -93,12 +93,14 @@ public:
     CosmeticVertex* clone() const;
 
     Base::Vector3d permaPoint;           //permanent, unscaled value
-    int            linkGeom;             //connection to corresponding "geom" Vertex (fragile - index based!)
+    //connection to corresponding "geom" Vertex (fragile - index based!)
+    int            linkGeom;
                                          //better to do reverse search for CosmeticTag in vertex geometry
     App::Color     color;
     double         size;
     int            style;
-    bool           visible;              //base class vertex also has visible property
+    //base class vertex also has visible property
+    bool           visible;
 
     boost::uuids::uuid getTag() const;
     std::string getTagAsString() const override;
@@ -148,7 +150,8 @@ public:
     CosmeticEdge* copy() const;
     CosmeticEdge* clone() const;
 
-    Base::Vector3d permaStart;         //persistent unscaled start/end points in View coords
+    //persistent unscaled start/end points in View coords
+    Base::Vector3d permaStart;
     Base::Vector3d permaEnd;
     double permaRadius;
 //    void unscaleEnds(double scale);

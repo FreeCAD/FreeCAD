@@ -602,7 +602,8 @@ void PythonConsole::keyPressEvent(QKeyEvent * e)
          *   - roam the history by Up/Down keys
          *   - show call tips on period
          */
-        QTextBlock inputBlock = inputLineBegin.block();              //< get the last paragraph's text
+        //< get the last paragraph's text
+        QTextBlock inputBlock = inputLineBegin.block();
         QString    inputLine  = inputBlock.text();
         QString    inputStrg  = stripPromptFrom( inputLine );
         if (this->_sourceDrain && !this->_sourceDrain->isEmpty()) {
@@ -616,8 +617,10 @@ void PythonConsole::keyPressEvent(QKeyEvent * e)
               // disable current input string - i.e. put it to history but don't execute it.
               if (!inputStrg.isEmpty())
               {
-                  d->history.append( QLatin1String("# ") + inputStrg );  //< put commented string to history ...
-                  inputLineBegin.insertText( QString::fromLatin1("# ") ); //< and comment it on console
+                  //< put commented string to history ...
+                  d->history.append( QLatin1String("# ") + inputStrg );
+                  //< and comment it on console
+                  inputLineBegin.insertText( QString::fromLatin1("# ") );
                   setTextCursor( inputLineBegin );
                   printPrompt(d->interpreter->hasPendingInput()          //< print adequate prompt
                       ? PythonConsole::Incomplete
@@ -1298,7 +1301,8 @@ void PythonConsole::overrideCursor(const QString& txt)
     QTextCursor cursor = this->inputBegin();
     int blockLength = this->textCursor().block().text().length();
 
-    cursor.movePosition( QTextCursor::Right, QTextCursor::KeepAnchor, blockLength ); //<< select text to override
+    //<< select text to override
+    cursor.movePosition( QTextCursor::Right, QTextCursor::KeepAnchor, blockLength );
     cursor.removeSelectedText();
     cursor.insertText(txt);
     // move cursor to the end
@@ -1436,7 +1440,8 @@ QString PythonConsole::readline( )
         PyErr_SetInterrupt();
     }            //< send SIGINT to python
     this->_sourceDrain = nullptr;             //< disable source drain
-    return inputBuffer.append(QChar::fromLatin1('\n')); //< pass a newline here, since the readline-caller may need it!
+    //< pass a newline here, since the readline-caller may need it!
+    return inputBuffer.append(QChar::fromLatin1('\n'));
 }
 
 /**

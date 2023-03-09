@@ -276,7 +276,8 @@ void GeomFillSurface::createBezierSurface(TopoDS_Wire& aWire)
         const TopoDS_Edge hedge = TopoDS::Edge (anExp.Current());
         TopLoc_Location heloc; // this will be output
         Handle(Geom_Curve) c_geom = BRep_Tool::Curve(hedge, heloc, u1, u2); //The geometric curve
-        Handle(Geom_BezierCurve) bezier = Handle(Geom_BezierCurve)::DownCast(c_geom); //Try to get Bezier curve
+        //Try to get Bezier curve
+        Handle(Geom_BezierCurve) bezier = Handle(Geom_BezierCurve)::DownCast(c_geom);
 
         if (!bezier.IsNull()) {
             gp_Trsf transf = heloc.Transformation();
@@ -324,7 +325,8 @@ void GeomFillSurface::createBSplineSurface(TopoDS_Wire& aWire)
         const TopoDS_Edge& edge = TopoDS::Edge (anExp.Current());
         TopLoc_Location heloc; // this will be output
         Handle(Geom_Curve) c_geom = BRep_Tool::Curve(edge, heloc, u1, u2); //The geometric curve
-        Handle(Geom_BSplineCurve) bspline = Handle(Geom_BSplineCurve)::DownCast(c_geom); //Try to get BSpline curve
+        //Try to get BSpline curve
+        Handle(Geom_BSplineCurve) bspline = Handle(Geom_BSplineCurve)::DownCast(c_geom);
         gp_Trsf transf = heloc.Transformation();
         if (!bspline.IsNull()) {
             bspline->Transform(transf); // apply original transformation to control points
@@ -340,7 +342,8 @@ void GeomFillSurface::createBSplineSurface(TopoDS_Wire& aWire)
             Convert_ParameterisationType paratype = Convert_Polynomial;
             Handle(Geom_BSplineCurve) bspline2 = conv.CurveToBSplineCurve(trim, paratype);
             if (!bspline2.IsNull()) {
-                bspline2->Transform(transf); // apply original transformation to control points
+                // apply original transformation to control points
+                bspline2->Transform(transf);
                 curves.push_back(bspline2);
             }
             else {

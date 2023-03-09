@@ -279,7 +279,8 @@ public:
                 * right button of the mouse */
             }
             else {
-                sketchgui->purgeHandler(); // no code after this line, Handler get deleted in ViewProvider
+                // no code after this line, Handler get deleted in ViewProvider
+                sketchgui->purgeHandler();
             }
             SnapMode = SNAP_MODE_Straight;
         }
@@ -306,4 +307,3 @@ protected:
 
 
 #endif // SKETCHERGUI_DrawSketchHandlerSlot_H
-

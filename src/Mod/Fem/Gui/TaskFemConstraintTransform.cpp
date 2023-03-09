@@ -229,7 +229,8 @@ void TaskFemConstraintTransform::Cyl() {
 void TaskFemConstraintTransform::addToSelection()
 {
     int rows = ui->lw_Rect->model()->rowCount();
-    std::vector<Gui::SelectionObject> selection = Gui::Selection().getSelectionEx(); //gets vector of selected objects of active document
+    //gets vector of selected objects of active document
+    std::vector<Gui::SelectionObject> selection = Gui::Selection().getSelectionEx();
     if (selection.empty()) {
         QMessageBox::warning(this, tr("Selection error"), tr("Nothing selected!"));
         return;
@@ -349,7 +350,8 @@ void TaskFemConstraintTransform::addToSelection()
 
 void TaskFemConstraintTransform::removeFromSelection()
 {
-    std::vector<Gui::SelectionObject> selection = Gui::Selection().getSelectionEx(); //gets vector of selected objects of active document
+    //gets vector of selected objects of active document
+    std::vector<Gui::SelectionObject> selection = Gui::Selection().getSelectionEx();
     if (selection.empty()) {
         QMessageBox::warning(this, tr("Selection error"), tr("Nothing selected!"));
         return;
@@ -490,7 +492,8 @@ void TaskDlgFemConstraintTransform::open()
         QString msg = QObject::tr("Constraint transform");
         Gui::Command::openCommand((const char*)msg.toUtf8());
         ConstraintView->setVisible(true);
-        Gui::Command::doCommand(Gui::Command::Doc, ViewProviderFemConstraint::gethideMeshShowPartStr((static_cast<Fem::Constraint*>(ConstraintView->getObject()))->getNameInDocument()).c_str()); //OvG: Hide meshes and show parts
+        //OvG: Hide meshes and show parts
+        Gui::Command::doCommand(Gui::Command::Doc, ViewProviderFemConstraint::gethideMeshShowPartStr((static_cast<Fem::Constraint*>(ConstraintView->getObject()))->getNameInDocument()).c_str());
     }
 }
 
@@ -510,7 +513,8 @@ bool TaskDlgFemConstraintTransform::accept()
         Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.%s.TransformType = %s",
             name.c_str(), parameters->get_transform_type().c_str());
         std::string scale = parameters->getScale();  //OvG: determine modified scale
-        Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.%s.Scale = %s", name.c_str(), scale.c_str()); //OvG: implement modified scale
+        //OvG: implement modified scale
+        Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.%s.Scale = %s", name.c_str(), scale.c_str());
 
     }
     catch (const Base::Exception& e) {

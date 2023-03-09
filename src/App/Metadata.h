@@ -66,7 +66,8 @@ struct AppExport License {
     License() = default;
     License(std::string name, boost::filesystem::path file);
     explicit License(const XERCES_CPP_NAMESPACE::DOMElement* elem);
-    std::string name;//< Short name of license, e.g. "LGPL2", "MIT", "Mozilla Public License", etc.
+    //< Short name of license, e.g. "LGPL2", "MIT", "Mozilla Public License", etc.
+    std::string name;
     boost::filesystem::path
         file;//< Optional path to the license file, relative to the XML file's location
     bool operator==(const License& rhs) const;
@@ -146,11 +147,13 @@ struct AppExport Dependency {
     std::string
         version_lt;//< Optional: The dependency to the package is restricted to versions less than the stated version number.
     std::string
-        version_lte;//< Optional: The dependency to the package is restricted to versions less or equal than the stated version number.
+        //< Optional: The dependency to the package is restricted to versions less or equal than the stated version number.
+        version_lte;
     std::string
         version_eq;//< Optional: The dependency to the package is restricted to a version equal than the stated version number.
     std::string
-        version_gte;//< Optional: The dependency to the package is restricted to versions greater or equal than the stated version number.
+        //< Optional: The dependency to the package is restricted to versions greater or equal than the stated version number.
+        version_gte;
     std::string
         version_gt;//< Optional: The dependency to the package is restricted to versions greater than the stated version number.
     std::string condition;        //< Optional: Conditional expression as documented in REP149.

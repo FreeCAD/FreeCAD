@@ -428,7 +428,8 @@ protected:
         Part::Geometry  * geo;             // pointer to the geometry
         GeoType           type;            // type of the geometry
         bool              external;        // flag for external geometries
-        int               index;           // index in the corresponding storage vector (Lines, Arcs, Circles, ...)
+        // index in the corresponding storage vector (Lines, Arcs, Circles, ...)
+        int               index;
         int               startPointId;    // index in Points of the start point of this geometry
         int               midPointId;      // index in Points of the start point of this geometry
         int               endPointId;      // index in Points of the end point of this geometry

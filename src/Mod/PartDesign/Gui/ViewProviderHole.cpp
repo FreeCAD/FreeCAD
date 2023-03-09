@@ -61,7 +61,8 @@ std::vector<App::DocumentObject*> ViewProviderHole::claimChildren()const
 void ViewProviderHole::setupContextMenu(QMenu* menu, QObject* receiver, const char* member)
 {
     addDefaultAction(menu, QObject::tr("Edit hole"));
-    PartGui::ViewProviderPart::setupContextMenu(menu, receiver, member); // clazy:exclude=skipped-base-method
+    // clazy:exclude=skipped-base-method
+    PartGui::ViewProviderPart::setupContextMenu(menu, receiver, member);
 }
 
 bool ViewProviderHole::setEdit(int ModNum)

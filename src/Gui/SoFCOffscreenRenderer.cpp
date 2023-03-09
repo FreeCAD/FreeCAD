@@ -585,7 +585,8 @@ SoQtOffscreenRenderer::makeFrameBuffer(int width, int height, int samples)
     fmt.setInternalTextureFormat(this->texFormat);
 
     framebuffer = new QtGLFramebufferObject(width, height, fmt);
-    cache_context = SoGLCacheContextElement::getUniqueCacheContext(); // unique per pixel buffer object, just to be sure
+    // unique per pixel buffer object, just to be sure
+    cache_context = SoGLCacheContextElement::getUniqueCacheContext();
 }
 
 SbBool

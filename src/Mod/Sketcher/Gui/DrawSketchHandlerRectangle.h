@@ -281,7 +281,8 @@ public:
                 * right button of the mouse */
             }
             else{
-                sketchgui->purgeHandler(); // no code after this line, Handler get deleted in ViewProvider
+                // no code after this line, Handler get deleted in ViewProvider
+                sketchgui->purgeHandler();
             }
 
 
@@ -338,7 +339,8 @@ public:
             signX = Base::sgn(distanceX);
             signY = Base::sgn(distanceY);
             if (fabs(distanceX) > fabs(distanceY)) {
-                radius = fabs(distanceY) / 4; // we use a fourth of the smaller distance as default radius
+                // we use a fourth of the smaller distance as default radius
+                radius = fabs(distanceY) / 4;
             }
             else {
                 radius = fabs(distanceX) / 4;
@@ -571,7 +573,8 @@ public:
                 * right button of the mouse */
             }
             else {
-                sketchgui->purgeHandler(); // no code after this line, Handler get deleted in ViewProvider
+                // no code after this line, Handler get deleted in ViewProvider
+                sketchgui->purgeHandler();
             }
         }
         return true;
@@ -597,4 +600,3 @@ protected:
 
 
 #endif // SKETCHERGUI_DrawSketchHandlerRectangle_H
-

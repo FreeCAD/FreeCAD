@@ -204,7 +204,8 @@ public:
      * a traditional scale and a value of 1.0 is a good place to start.
      */
     SoSFFloat draggerSize;
-    SoSFFloat autoScaleResult; //!< result of autoscale calculation and used by childdraggers. Don't use.
+    //!< result of autoscale calculation and used by childdraggers. Don't use.
+    SoSFFloat autoScaleResult;
 
     SoIdleSensor idleSensor; //!< might be overkill, but want to make sure of performance.
     void setUpAutoScale(SoCamera *cameraIn); //!< used to setup the auto scaling of dragger.
@@ -250,7 +251,8 @@ protected:
     static void rotationSensorCB(void *f, SoSensor *);
     static void valueChangedCB(void *, SoDragger *d);
     static void cameraCB(void *data, SoSensor *);
-    static void idleCB(void *data, SoSensor *); //!< scheduled from cameraCB to auto scale dragger.
+    //!< scheduled from cameraCB to auto scale dragger.
+    static void idleCB(void *data, SoSensor *);
     static void finishDragCB(void *data, SoDragger *);
 
 

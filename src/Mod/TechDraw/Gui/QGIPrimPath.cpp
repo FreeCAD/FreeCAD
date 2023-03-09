@@ -255,7 +255,8 @@ Qt::PenCapStyle QGIPrimPath::prefCapStyle()
         .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/General");
     Qt::PenCapStyle result;
     int newStyle;
-    newStyle = hGrp->GetInt("EdgeCapStyle", 32);    //0x00 FlatCap, 0x10 SquareCap, 0x20 RoundCap
+    //0x00 FlatCap, 0x10 SquareCap, 0x20 RoundCap
+    newStyle = hGrp->GetInt("EdgeCapStyle", 32);
     switch (newStyle) {
         case 0:
             result = static_cast<Qt::PenCapStyle>(0x20);   //round;
@@ -334,4 +335,3 @@ void QGIPrimPath::paint ( QPainter * painter, const QStyleOptionGraphicsItem * o
 
     QGraphicsPathItem::paint (painter, &myOption, widget);
 }
-

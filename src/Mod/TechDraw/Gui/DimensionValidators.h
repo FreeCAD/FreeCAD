@@ -37,7 +37,8 @@ using StringVector = std::vector<std::string>;
 using GeomCount = std::pair<std::string, int>;           //geometry descriptor ("Edge") + counter pair
 using GeomCountVector = std::vector<GeomCount>;
 using GeomCountMap = std::map<std::string, int>;
-using GeometrySet = std::unordered_set<std::string>;    //queryable unique set of geometrty descriptors
+//queryable unique set of geometrty descriptors
+using GeometrySet = std::unordered_set<std::string>;
 
 using DimensionGeometryType = int;
 
@@ -68,12 +69,14 @@ DimensionGeometryType validateDimSelection(
     ReferenceVector references,
     StringVector acceptableGeometry,//"Edge", "Vertex", etc
     std::vector<int> minimumCounts, //how many of each geometry are needed for a good dimension
-    std::vector<DimensionGeometryType> acceptableDimensionGeometrys);//isVertical, isHorizontal, ...
+    //isVertical, isHorizontal, ...
+    std::vector<DimensionGeometryType> acceptableDimensionGeometrys);
 DimensionGeometryType validateDimSelection3d(
     DrawViewPart* dvp, ReferenceVector references,
     StringVector acceptableGeometry,//"Edge", "Vertex", etc
     std::vector<int> minimumCounts, //how many of each geometry are needed for a good dimension
-    std::vector<DimensionGeometryType> acceptableDimensionGeometrys);//isVertical, isHorizontal, ...
+    //isVertical, isHorizontal, ...
+    std::vector<DimensionGeometryType> acceptableDimensionGeometrys);
 
 bool validateSubnameList(StringVector subNames, GeometrySet acceptableGeometrySet);
 
@@ -99,4 +102,3 @@ long int mapGeometryTypeToDimType(long int dimType, DimensionGeometryType geomet
                                                  DimensionGeometryType geometry3d);
 }
 #endif //TECHDRAW_DIMENSIONVALIDATORS_H
-

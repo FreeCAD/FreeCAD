@@ -58,7 +58,8 @@ std::unique_ptr<GeometryFacade> GeometryFacade::getFacade(Part::Geometry * geome
         return std::unique_ptr<GeometryFacade>(new GeometryFacade(geometry, owner));
     else
         return std::unique_ptr<GeometryFacade>(nullptr);
-    //return std::make_unique<GeometryFacade>(geometry); // make_unique has no access to private constructor
+    // make_unique has no access to private constructor
+    //return std::make_unique<GeometryFacade>(geometry);
 }
 
 std::unique_ptr<const GeometryFacade> GeometryFacade::getFacade(const Part::Geometry * geometry)
@@ -67,7 +68,8 @@ std::unique_ptr<const GeometryFacade> GeometryFacade::getFacade(const Part::Geom
         return std::unique_ptr<const GeometryFacade>(new GeometryFacade(geometry));
      else
         return std::unique_ptr<const GeometryFacade>(nullptr);
-    //return std::make_unique<const GeometryFacade>(geometry); // make_unique has no access to private constructor
+    // make_unique has no access to private constructor
+    //return std::make_unique<const GeometryFacade>(geometry);
 }
 
 void GeometryFacade::setGeometry(Part::Geometry *geometry)
@@ -84,7 +86,8 @@ void GeometryFacade::initExtension()
 {
     if(!Geo->hasExtension(SketchGeometryExtension::getClassTypeId())) {
 
-        getGeo()->setExtension(std::make_unique<SketchGeometryExtension>()); // Create getExtension
+        // Create getExtension
+        getGeo()->setExtension(std::make_unique<SketchGeometryExtension>());
 
         //Base::Console().Warning("%s\nSketcher Geometry without Extension: %s \n", boost::uuids::to_string(Geo->getTag()).c_str());
     }
@@ -117,7 +120,8 @@ void GeometryFacade::ensureSketchGeometryExtension(Part::Geometry * geometry)
     throwOnNullPtr(geometry);
 
     if(!geometry->hasExtension(SketchGeometryExtension::getClassTypeId())) {
-        geometry->setExtension(std::make_unique<SketchGeometryExtension>()); // Create getExtension
+        // Create getExtension
+        geometry->setExtension(std::make_unique<SketchGeometryExtension>());
     }
 }
 

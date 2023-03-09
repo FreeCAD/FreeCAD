@@ -71,7 +71,8 @@ enum DimensionType {
     App::PropertyEnumeration        MeasureType;           //True/Projected
     App::PropertyLinkSubList        References2D;          //Points to Projection SubFeatures
     App::PropertyLinkSubList        References3D;          //Points to 3D Geometry SubFeatures
-    App::PropertyEnumeration        Type;                  //DistanceX, DistanceY, Diameter, etc.
+    //DistanceX, DistanceY, Diameter, etc.
+    App::PropertyEnumeration        Type;
 
     App::PropertyBool               TheoreticalExact;
     App::PropertyBool               Inverted;
@@ -130,7 +131,8 @@ enum DimensionType {
     virtual DrawViewPart* getViewPart() const;
     QRectF getRect() const override { return {0, 0, 1, 1}; }          //pretend dimensions always fit!
     virtual int getRefType() const;             //Vertex-Vertex, Edge, Edge-Edge
-    static int getRefTypeSubElements(const std::vector<std::string> &);             //Vertex-Vertex, Edge, Edge-Edge
+    //Vertex-Vertex, Edge, Edge-Edge
+    static int getRefTypeSubElements(const std::vector<std::string> &);
 
     void setReferences2d(ReferenceVector refs);
     void setReferences3d(ReferenceVector refs);

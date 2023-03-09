@@ -222,7 +222,8 @@ void ViewProviderMeshCurvature::slotChangedObject(const App::DocumentObject& Obj
             const Mesh::MeshObject& kernel = mesh.getValue();
             pcColorMat->diffuseColor.setNum((int)kernel.countPoints());
             pcColorMat->transparency.setNum((int)kernel.countPoints());
-            static_cast<Mesh::Curvature*>(pcObject)->Source.touch(); // make sure to recompute the feature
+            // make sure to recompute the feature
+            static_cast<Mesh::Curvature*>(pcObject)->Source.touch();
         }
     }
 }

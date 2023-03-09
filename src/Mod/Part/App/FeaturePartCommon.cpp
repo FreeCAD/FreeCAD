@@ -177,9 +177,11 @@ App::DocumentObjectExecReturn *MultiCommon::execute()
                     for(std::pair<const int,ShapeHistory::List> &histitem: history[iChild].shapeMap){ //loop over elements of history - that is - over faces of the child of source compound
                         int iFaceInChild = histitem.first;
                         ShapeHistory::List &iFacesInResult = histitem.second;
-                        TopoDS_Shape srcFace = facesOfChild(iFaceInChild + 1); //+1 to convert our 0-based to OCC 1-bsed conventions
+                        //+1 to convert our 0-based to OCC 1-bsed conventions
+                        TopoDS_Shape srcFace = facesOfChild(iFaceInChild + 1);
                         int iFaceInCompound = facesOfCompound.FindIndex(srcFace)-1;
-                        overallHist.shapeMap[iFaceInCompound] = iFacesInResult; //this may overwrite existing info if the same face is used in several children of compound. This shouldn't be a problem, because the histories should match anyway...
+                        //this may overwrite existing info if the same face is used in several children of compound. This shouldn't be a problem, because the histories should match anyway...
+                        overallHist.shapeMap[iFaceInCompound] = iFacesInResult;
                     }
                 }
                 history.clear();

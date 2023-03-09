@@ -225,7 +225,8 @@ void GLImageBox::drawImage()
 
         // Draw in the back buffer, using the following parameters
         //glDrawBuffer(GL_BACK); // this is an invalid call!
-        glPixelStorei(GL_UNPACK_ROW_LENGTH, _image.getWidth()); // defines number of pixels in a row
+        // defines number of pixels in a row
+        glPixelStorei(GL_UNPACK_ROW_LENGTH, _image.getWidth());
         glPixelStorei(GL_UNPACK_ALIGNMENT, 1); // defines byte alignment of rows
         glPixelZoom(_zoomFactor, -_zoomFactor); // defines the zoom factors to draw at
 

@@ -105,7 +105,8 @@ PROPERTY_SOURCE(Part::Offset2D, Part::Offset)
 Offset2D::Offset2D()
 {
     this->SelfIntersection.setStatus(App::Property::Status::Hidden, true);
-    this->Mode.setValue(1); //switch to Pipe mode by default, because skin mode does not function properly on closed profiles.
+    //switch to Pipe mode by default, because skin mode does not function properly on closed profiles.
+    this->Mode.setValue(1);
 }
 
 Offset2D::~Offset2D()

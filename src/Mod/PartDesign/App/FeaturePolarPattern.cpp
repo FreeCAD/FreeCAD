@@ -93,7 +93,8 @@ const std::list<gp_Trsf> PolarPattern::getTransformations(const std::vector<App:
     bool reversed = Reversed.getValue();
     double offset;
     if (std::fabs(angle - 360.0) < Precision::Confusion())
-        offset = radians / occurrences; // Because e.g. two occurrences in 360 degrees need to be 180 degrees apart
+        // Because e.g. two occurrences in 360 degrees need to be 180 degrees apart
+        offset = radians / occurrences;
     else
         offset = radians / (occurrences - 1);
 

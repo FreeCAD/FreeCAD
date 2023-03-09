@@ -265,7 +265,8 @@ public:
         }
 
         if (VtId < 0 && GeoId < 0) // exit the fillet tool if the user clicked on empty space
-            sketchgui->purgeHandler(); // no code after this line, Handler get deleted in ViewProvider
+            // no code after this line, Handler get deleted in ViewProvider
+            sketchgui->purgeHandler();
 
         return true;
     }
@@ -289,4 +290,3 @@ protected:
 
 
 #endif // SKETCHERGUI_DrawSketchHandlerFillet_H
-

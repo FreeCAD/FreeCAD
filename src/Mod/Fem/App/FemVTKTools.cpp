@@ -783,11 +783,14 @@ std::map<std::string, std::string> _getFreeCADMechResultScalarProperties() {
     // but there are needed anyway because the pipeline in FreeCAD needs the principal stress values
     // https://forum.freecadweb.org/viewtopic.php?f=18&t=33106&p=416006#p412800
     resFCScalProp["PrincipalMax"] =
-        "Major Principal Stress";// can be plotted in Paraview as THE MAJOR PRINCIPAL STRESS MAGNITUDE
+        // can be plotted in Paraview as THE MAJOR PRINCIPAL STRESS MAGNITUDE
+        "Major Principal Stress";
     resFCScalProp["PrincipalMed"] =
-        "Intermediate Principal Stress";// can be plotted in Paraview as THE INTERMEDIATE PRINCIPAL STRESS MAGNITUDE
+        // can be plotted in Paraview as THE INTERMEDIATE PRINCIPAL STRESS MAGNITUDE
+        "Intermediate Principal Stress";
     resFCScalProp["PrincipalMin"] =
-        "Minor Principal Stress";// can be plotted in Paraview as THE MINOR PRINCIPAL STRESS MAGNITUDE
+        // can be plotted in Paraview as THE MINOR PRINCIPAL STRESS MAGNITUDE
+        "Minor Principal Stress";
     resFCScalProp["vonMises"] = "von Mises Stress";
     resFCScalProp["Temperature"] = "Temperature";
     resFCScalProp["MohrCoulomb"] = "MohrCoulomb";
@@ -935,7 +938,8 @@ void FemVTKTools::exportFreeCADResult(const App::DocumentObject* result,
     // vectors
     for (std::map<std::string, std::string>::iterator it = vectors.begin(); it != vectors.end();
          ++it) {
-        const int dim = 3;//Fixme, detect dim, but FreeCAD PropertyVectorList ATM only has DIM of 3
+        //Fixme, detect dim, but FreeCAD PropertyVectorList ATM only has DIM of 3
+        const int dim = 3;
         App::PropertyVectorList* field = nullptr;
         if (res->getPropertyByName(it->first.c_str()))
             field =

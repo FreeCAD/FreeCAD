@@ -49,16 +49,26 @@ namespace Path
         virtual void Restore(Base::XMLReader &/*reader*/);
 
         // specific methods
-        Base::Placement getPlacement (const Base::Vector3d pos = Base::Vector3d()) const; // returns a placement from the x,y,z,a,b,c parameters
-        Base::Vector3d getCenter (void) const; // returns a 3d vector from the i,j,k parameters
-        void setCenter(const Base::Vector3d&, bool clockwise=true); // sets the center coordinates and the command name
-        std::string toGCode (int precision=6, bool padzero=true) const; // returns a GCode string representation of the command
-        void setFromGCode (const std::string&); // sets the parameters from the contents of the given GCode string
-        void setFromPlacement (const Base::Placement&); // sets the parameters from the contents of the given placement
-        bool has(const std::string&) const; // returns true if the given string exists in the parameters
-        Command transform(const Base::Placement&); // returns a transformed copy of this command
-        double getValue(const std::string &name) const; // returns the value of a given parameter
-        void scaleBy(double factor); // scales the receiver - use for imperial/metric conversions
+        // returns a placement from the x,y,z,a,b,c parameters
+        Base::Placement getPlacement (const Base::Vector3d pos = Base::Vector3d()) const;
+        // returns a 3d vector from the i,j,k parameters
+        Base::Vector3d getCenter (void) const;
+        // sets the center coordinates and the command name
+        void setCenter(const Base::Vector3d&, bool clockwise=true);
+        // returns a GCode string representation of the command
+        std::string toGCode (int precision=6, bool padzero=true) const;
+        // sets the parameters from the contents of the given GCode string
+        void setFromGCode (const std::string&);
+        // sets the parameters from the contents of the given placement
+        void setFromPlacement (const Base::Placement&);
+        // returns true if the given string exists in the parameters
+        bool has(const std::string&) const;
+        // returns a transformed copy of this command
+        Command transform(const Base::Placement&);
+        // returns the value of a given parameter
+        double getValue(const std::string &name) const;
+        // scales the receiver - use for imperial/metric conversions
+        void scaleBy(double factor);
 
         // this assumes the name is upper case
         inline double getParam(const std::string &name, double fallback = 0.0) const {

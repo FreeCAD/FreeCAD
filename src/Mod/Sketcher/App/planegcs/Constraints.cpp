@@ -797,7 +797,8 @@ double ConstraintP2LDistance::error()
     double dx = x2-x1;
     double dy = y2-y1;
     double d = sqrt(dx*dx+dy*dy);
-    double area = std::abs(-x0*dy+y0*dx+x1*y2-x2*y1); // = x1y2 - x2y1 - x0y2 + x2y0 + x0y1 - x1y0 = 2*(triangle area)
+    // = x1y2 - x2y1 - x0y2 + x2y0 + x0y1 - x1y0 = 2*(triangle area)
+    double area = std::abs(-x0*dy+y0*dx+x1*y2-x2*y1);
     return scale * (area/d - dist);
 }
 
@@ -913,7 +914,8 @@ double ConstraintPointOnLine::error()
     double dx = x2-x1;
     double dy = y2-y1;
     double d = sqrt(dx*dx+dy*dy);
-    double area = -x0*dy+y0*dx+x1*y2-x2*y1; // = x1y2 - x2y1 - x0y2 + x2y0 + x0y1 - x1y0 = 2*(triangle area)
+    // = x1y2 - x2y1 - x0y2 + x2y0 + x0y1 - x1y0 = 2*(triangle area)
+    double area = -x0*dy+y0*dx+x1*y2-x2*y1;
     return scale * area/d;
 }
 
@@ -1295,7 +1297,8 @@ double ConstraintMidpointOnLine::error()
     double dx = x2-x1;
     double dy = y2-y1;
     double d = sqrt(dx*dx+dy*dy);
-    double area = -x0*dy+y0*dx+x1*y2-x2*y1; // = x1y2 - x2y1 - x0y2 + x2y0 + x0y1 - x1y0 = 2*(triangle area)
+    // = x1y2 - x2y1 - x0y2 + x2y0 + x0y1 - x1y0 = 2*(triangle area)
+    double area = -x0*dy+y0*dx+x1*y2-x2*y1;
     return scale * area/d;
 }
 
@@ -1631,7 +1634,8 @@ void ConstraintInternalAlignmentPoint2Ellipse::errorgrad(double *err, double *gr
     a = e.getRadMaj(c,f1,b,db,da);
 
     DeriVector2 poa;//point to align to
-    bool by_y_not_by_x = false;//a flag to indicate if the alignment error function is for y (false - x, true - y).
+    //a flag to indicate if the alignment error function is for y (false - x, true - y).
+    bool by_y_not_by_x = false;
 
     switch(AlignmentType){
         case EllipsePositiveMajorX:
@@ -1759,7 +1763,8 @@ void ConstraintInternalAlignmentPoint2Hyperbola::errorgrad(double *err, double *
     a = e.getRadMaj(c,f1,b,db,da);
 
     DeriVector2 poa;//point to align to
-    bool by_y_not_by_x = false;//a flag to indicate if the alignment error function is for y (false - x, true - y).
+    //a flag to indicate if the alignment error function is for y (false - x, true - y).
+    bool by_y_not_by_x = false;
 
     switch(AlignmentType){
         case HyperbolaPositiveMajorX:

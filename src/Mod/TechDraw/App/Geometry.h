@@ -213,7 +213,8 @@ class TechDrawExport AOE: public Ellipse
         ~AOE() override = default;
 
     public:
-        Base::Vector3d startPnt;  //TODO: The points are used for drawing, the angles for bounding box calcs - seems redundant
+        //TODO: The points are used for drawing, the angles for bounding box calcs - seems redundant
+        Base::Vector3d startPnt;
         Base::Vector3d endPnt;
         Base::Vector3d midPnt;
 

@@ -93,39 +93,66 @@ struct DrawingParameters {
 
     /** @name Rendering Coin Colors **/
     //@{
-    static SbColor InformationColor;                            // Information Overlay Color
-    static SbColor CreateCurveColor;                            // Color for Edit Curves during creation
-    static SbColor CrossColorH;                                 // Color for the Horizontal Axis
-    static SbColor CrossColorV;                                 // Color for the Vertical Axis
-    static SbColor InvalidSketchColor;                          // Color for rendering an invalid sketch
-    static SbColor FullyConstrainedColor;                       // Color for a fully constrained sketch
-    static SbColor FullyConstraintInternalAlignmentColor;       // Color for fully constrained internal alignment geometry
-    static SbColor InternalAlignedGeoColor;                     // Color for non-fully constrained internal alignment geometry
-    static SbColor FullyConstraintConstructionPointColor;       // Color for fully constrained construction points
+    // Information Overlay Color
+    static SbColor InformationColor;
+    // Color for Edit Curves during creation
+    static SbColor CreateCurveColor;
+    // Color for the Horizontal Axis
+    static SbColor CrossColorH;
+    // Color for the Vertical Axis
+    static SbColor CrossColorV;
+    // Color for rendering an invalid sketch
+    static SbColor InvalidSketchColor;
+    // Color for a fully constrained sketch
+    static SbColor FullyConstrainedColor;
+    // Color for fully constrained internal alignment geometry
+    static SbColor FullyConstraintInternalAlignmentColor;
+    // Color for non-fully constrained internal alignment geometry
+    static SbColor InternalAlignedGeoColor;
+    // Color for fully constrained construction points
+    static SbColor FullyConstraintConstructionPointColor;
     static SbColor VertexColor;                                 // Color for vertices
-    static SbColor FullyConstraintElementColor;                 // Color for a fully constrained element
+    // Color for a fully constrained element
+    static SbColor FullyConstraintElementColor;
     static SbColor CurveColor;                                  // Color for curves
-    static SbColor PreselectColor;                              // Color used for pre-selection
-    static SbColor PreselectSelectedColor;                      // Color used for pre-selection when geometry is already selected
-    static SbColor SelectColor;                                 // Color used for selected geometry
-    static SbColor CurveExternalColor;                          // Color used for external geometry
-    static SbColor CurveDraftColor;                             // Color used for construction geometry
-    static SbColor FullyConstraintConstructionElementColor;     // Color used for a fully constrained construction element
-    static SbColor ConstrDimColor;                              // Color used for a dimensional constraints
-    static SbColor ConstrIcoColor;                              // Color used for constraint icons
-    static SbColor NonDrivingConstrDimColor;                    // Color used for non-driving (reference) dimensional constraints
-    static SbColor ExprBasedConstrDimColor;                     // Color used for expression based dimensional constraints
-    static SbColor DeactivatedConstrDimColor;                   // Color used for deactivated dimensional constraints
-    static SbColor CursorTextColor;                              // Color used by the edit mode cursor
+    // Color used for pre-selection
+    static SbColor PreselectColor;
+    // Color used for pre-selection when geometry is already selected
+    static SbColor PreselectSelectedColor;
+    // Color used for selected geometry
+    static SbColor SelectColor;
+    // Color used for external geometry
+    static SbColor CurveExternalColor;
+    // Color used for construction geometry
+    static SbColor CurveDraftColor;
+    // Color used for a fully constrained construction element
+    static SbColor FullyConstraintConstructionElementColor;
+    // Color used for a dimensional constraints
+    static SbColor ConstrDimColor;
+    // Color used for constraint icons
+    static SbColor ConstrIcoColor;
+    // Color used for non-driving (reference) dimensional constraints
+    static SbColor NonDrivingConstrDimColor;
+    // Color used for expression based dimensional constraints
+    static SbColor ExprBasedConstrDimColor;
+    // Color used for deactivated dimensional constraints
+    static SbColor DeactivatedConstrDimColor;
+    // Color used by the edit mode cursor
+    static SbColor CursorTextColor;
     //@}
 
     /** @name Rendering sizes (also to support HDPI monitors) **/
     //@{
-    double pixelScalingFactor = 1.0;    // Scaling factor to be used for pixels
-    int coinFontSize = 17;              // Font size to be used by coin
-    int labelFontSize = 17;             // Font size to be used by SoDatumLabel, which uses a QPainter and a QFont internally
-    int constraintIconSize = 15;        // Size of constraint icons
-    int markerSize = 7;                 // Size used for markers
+    // Scaling factor to be used for pixels
+    double pixelScalingFactor = 1.0;
+    // Font size to be used by coin
+    int coinFontSize = 17;
+    // Font size to be used by SoDatumLabel, which uses a QPainter and a QFont internally
+    int labelFontSize = 17;
+    // Size of constraint icons
+    int constraintIconSize = 15;
+    // Size used for markers
+    int markerSize = 7;
     //@}
 };
 
@@ -134,14 +161,18 @@ struct DrawingParameters {
 struct GeometryLayerNodes {
     /** @name Point nodes*/
     //@{
-    std::vector<SoMaterial *> &     PointsMaterials;    // The materials for the points/vertices
-    std::vector<SoCoordinate3 *>&   PointsCoordinate;   // The coordinates of the points/vertices
+    // The materials for the points/vertices
+    std::vector<SoMaterial *> &     PointsMaterials;
+    // The coordinates of the points/vertices
+    std::vector<SoCoordinate3 *>&   PointsCoordinate;
     //@}
 
     /** @name Curve nodes*/
     //@{
-    std::vector<SoMaterial *> &     CurvesMaterials;    // The materials for the curves
-    std::vector<SoCoordinate3 *> &  CurvesCoordinate;   // The coordinates of the segments of the curves
+    // The materials for the curves
+    std::vector<SoMaterial *> &     CurvesMaterials;
+    // The coordinates of the segments of the curves
+    std::vector<SoCoordinate3 *> &  CurvesCoordinate;
     std::vector<SoLineSet *> &      CurveSet;           // The set of curves
     //@}
 };
@@ -248,15 +279,19 @@ public:
     }
 
 private:
-    int CoinLayers = 1; // defaults to a single Coin Geometry Layer.
+    // defaults to a single Coin Geometry Layer.
+    int CoinLayers = 1;
 };
 
 /** @brief     Struct to hold the results of analysis performed on geometry
 */
 struct AnalysisResults { // TODO: This needs to be refactored
-    double combRepresentationScale = 0;     // used for information overlay (BSpline comb)
-    float boundingBoxMagnitudeOrder = 0;    // used for grid extension
-    std::vector<int> bsplineGeoIds;         // used for information overlay
+    // used for information overlay (BSpline comb)
+    double combRepresentationScale = 0;
+    // used for grid extension
+    float boundingBoxMagnitudeOrder = 0;
+    // used for information overlay
+    std::vector<int> bsplineGeoIds;
 };
 
 /** @brief      Struct adapted to store the parameters necessary to create and update
@@ -279,9 +314,12 @@ struct OverlayParameters {
  *  constraints.
  */
 struct ConstraintParameters {
-    bool bHideUnits;                    // whether units should be hidden or not
-    bool bShowDimensionalName;          // whether the name of dimensional constraints should be shown or not
-    QString sDimensionalStringFormat;   // how to code strings of dimensional constraints
+    // whether units should be hidden or not
+    bool bHideUnits;
+    // whether the name of dimensional constraints should be shown or not
+    bool bShowDimensionalName;
+    // how to code strings of dimensional constraints
+    QString sDimensionalStringFormat;
 };
 
 /** @brief      Helper struct adapted to store the pointer to edit mode scenegraph objects.
@@ -413,4 +451,3 @@ struct CoinMapping {
 } // namespace SketcherGui
 
 #endif // SKETCHERGUI_EditModeCoinManagerParameters_H
-

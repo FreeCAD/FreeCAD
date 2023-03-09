@@ -254,7 +254,8 @@ void TaskMultiTransformParameters::onTransformEdit()
 {
     if (editHint)
         return; // Can't edit the hint...
-    closeSubTask(); // For example if user is editing one subTask and then double-clicks on another without OK'ing first
+    // For example if user is editing one subTask and then double-clicks on another without OK'ing first
+    closeSubTask();
     ui->listTransformFeatures->currentItem()->setSelected(true);
     int row = ui->listTransformFeatures->currentIndex().row();
     PartDesign::MultiTransform* pcMultiTransform = static_cast<PartDesign::MultiTransform*>(TransformedView->getObject());

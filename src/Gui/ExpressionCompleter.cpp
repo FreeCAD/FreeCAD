@@ -563,7 +563,8 @@ public:
                         //      |- element (PROP) - (row 0, [parent.row,-1,-1,1]) = encode as element => [parent.row,-1,parent.row,1]
 
                         info.doc = parentInfo.doc;
-                        info.obj = -1;// object information is determined by the DOC index actually
+                        // object information is determined by the DOC index actually
+                        info.obj = -1;
                         info.prop = element.row();
                         info.contextualHierarchy = 1;
                     }

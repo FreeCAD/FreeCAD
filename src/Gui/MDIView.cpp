@@ -394,7 +394,8 @@ void MDIView::setCurrentViewMode(ViewMode mode)
                         showNormal();
 
 #if defined(Q_WS_X11)
-                    //extern void qt_x11_wait_for_window_manager( QWidget* w ); // defined in qwidget_x11.cpp
+                    // defined in qwidget_x11.cpp
+                    //extern void qt_x11_wait_for_window_manager( QWidget* w );
                     qt_x11_wait_for_window_manager(this);
 #endif
                     activateWindow();

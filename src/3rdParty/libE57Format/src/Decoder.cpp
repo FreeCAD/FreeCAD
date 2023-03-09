@@ -64,7 +64,8 @@ std::shared_ptr<Decoder> Decoder::DecoderFactory( unsigned bytestreamNumber, //!
             std::static_pointer_cast<IntegerNodeImpl>( decodeNode ); // downcast to correct type
 
          /// Get pointer to parent ImageFileImpl, to call bitsNeeded()
-         ImageFileImplSharedPtr imf( decodeNode->destImageFile_ ); //??? should be function for this,
+         //??? should be function for this,
+         ImageFileImplSharedPtr imf( decodeNode->destImageFile_ );
                                                                    // imf->parentFile()
                                                                    //--> ImageFile?
 
@@ -109,10 +110,12 @@ std::shared_ptr<Decoder> Decoder::DecoderFactory( unsigned bytestreamNumber, //!
       case E57_SCALED_INTEGER:
       {
          std::shared_ptr<ScaledIntegerNodeImpl> sini =
-            std::static_pointer_cast<ScaledIntegerNodeImpl>( decodeNode ); // downcast to correct type
+            // downcast to correct type
+            std::static_pointer_cast<ScaledIntegerNodeImpl>( decodeNode );
 
          /// Get pointer to parent ImageFileImpl, to call bitsNeeded()
-         ImageFileImplSharedPtr imf( decodeNode->destImageFile_ ); //??? should be function for this,
+         //??? should be function for this,
+         ImageFileImplSharedPtr imf( decodeNode->destImageFile_ );
                                                                    // imf->parentFile()
                                                                    //--> ImageFile?
 

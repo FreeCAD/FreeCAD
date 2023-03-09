@@ -201,7 +201,8 @@ void AttachExtension::extensionOnChanged(const App::Property* prop)
             this->MapPathParameter.setStatus(App::Property::Status::Hidden, !bAttached || !(modeIsPointOnCurve && hasOneRef));
             this->MapReversed.setStatus(App::Property::Status::Hidden, !bAttached);
             this->AttachmentOffset.setStatus(App::Property::Status::Hidden, !bAttached);
-            getPlacement().setReadOnly(bAttached && mmode != mmTranslate); //for mmTranslate, orientation should remain editable even when attached.
+            //for mmTranslate, orientation should remain editable even when attached.
+            getPlacement().setReadOnly(bAttached && mmode != mmTranslate);
         }
 
     }
@@ -246,7 +247,8 @@ void AttachExtension::onExtendedDocumentRestored()
         this->MapPathParameter.setStatus(App::Property::Status::Hidden, !bAttached || !(modeIsPointOnCurve && hasOneRef));
         this->MapReversed.setStatus(App::Property::Status::Hidden, !bAttached);
         this->AttachmentOffset.setStatus(App::Property::Status::Hidden, !bAttached);
-        getPlacement().setReadOnly(bAttached && mmode != mmTranslate); //for mmTranslate, orientation should remain editable even when attached.
+        //for mmTranslate, orientation should remain editable even when attached.
+        getPlacement().setReadOnly(bAttached && mmode != mmTranslate);
     }
     catch (Base::Exception&) {
     }
@@ -309,4 +311,3 @@ namespace App {
 // explicit template instantiation
   template class PartExport ExtensionPythonT<Part::AttachExtension>;
 }
-

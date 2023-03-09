@@ -102,7 +102,8 @@ public:
                     EditMarkers.emplace_back( end.x, end.y);
                 }
 
-                drawEditMarkers(EditMarkers, 2); // maker augmented by two sizes (see supported marker sizes)
+                // maker augmented by two sizes (see supported marker sizes)
+                drawEditMarkers(EditMarkers, 2);
             }
         }
         else {
@@ -143,7 +144,8 @@ public:
             drawEditMarkers(EditMarkers);
         }
         else // exit the trimming tool if the user clicked on empty space
-            sketchgui->purgeHandler(); // no code after this line, Handler get deleted in ViewProvider
+            // no code after this line, Handler get deleted in ViewProvider
+            sketchgui->purgeHandler();
 
         return true;
     }
@@ -170,4 +172,3 @@ private:
 
 
 #endif // SKETCHERGUI_DrawSketchHandlerTrimming_H
-

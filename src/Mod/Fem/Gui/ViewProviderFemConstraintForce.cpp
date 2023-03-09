@@ -112,7 +112,8 @@ void ViewProviderFemConstraintForce::updateData(const App::Property* prop)
 {
     // Gets called whenever a property of the attached object changes
     Fem::ConstraintForce* pcConstraint = static_cast<Fem::ConstraintForce*>(this->getObject());
-    float scaledheadradius = ARROWHEADRADIUS * pcConstraint->Scale.getValue(); //OvG: Calculate scaled values once only
+    //OvG: Calculate scaled values once only
+    float scaledheadradius = ARROWHEADRADIUS * pcConstraint->Scale.getValue();
     float scaledlength = ARROWLENGTH * pcConstraint->Scale.getValue();
 
 #ifdef USE_MULTIPLE_COPY

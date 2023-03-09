@@ -42,7 +42,8 @@ namespace GCS
         VEC_D pvals;       // current variables vector (psize)
 //        JacobianMatrix jacobi;  // jacobi matrix of the residuals
         std::map<Constraint *,VEC_pD > c2p; // constraint to parameter adjacency list
-        std::map<double *,std::vector<Constraint *> > p2c; // parameter to constraint adjacency list
+        // parameter to constraint adjacency list
+        std::map<double *,std::vector<Constraint *> > p2c;
         void initialize(VEC_pD &params, MAP_pD_pD &reductionmap); // called by the constructors
     public:
         SubSystem(std::vector<Constraint *> &clist_, VEC_pD &params);

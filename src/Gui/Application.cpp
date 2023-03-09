@@ -659,7 +659,8 @@ void Application::importFrom(const char* FileName, const char* DocName, const ch
             QString filename = QString::fromUtf8(File.filePath().c_str());
             auto parameterGroup = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/General");
             bool addToRecent = parameterGroup->GetBool("RecentIncludesImported", true);
-            parameterGroup->SetBool("RecentIncludesImported", addToRecent); // Make sure it gets added to the parameter list
+            // Make sure it gets added to the parameter list
+            parameterGroup->SetBool("RecentIncludesImported", addToRecent);
             if (addToRecent) {
                 getMainWindow()->appendRecentFile(filename);
             }
@@ -720,7 +721,8 @@ void Application::exportTo(const char* FileName, const char* DocName, const char
 
             auto parameterGroup = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/General");
             bool addToRecent = parameterGroup->GetBool("RecentIncludesExported", false);
-            parameterGroup->SetBool("RecentIncludesExported", addToRecent); // Make sure it gets added to the parameter list
+            // Make sure it gets added to the parameter list
+            parameterGroup->SetBool("RecentIncludesExported", addToRecent);
             if (addToRecent) {
                 // search for a module that is able to open the exported file because otherwise
                 // it doesn't need to be added to the recent files list (#0002047)

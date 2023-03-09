@@ -79,14 +79,16 @@ void ExternalGeometryFacade::initExtensions()
 {
     if(!Geo->hasExtension(SketchGeometryExtension::getClassTypeId())) {
 
-        getGeo()->setExtension(std::make_unique<SketchGeometryExtension>()); // Create getExtension
+        // Create getExtension
+        getGeo()->setExtension(std::make_unique<SketchGeometryExtension>());
 
         Base::Console().Warning("%s\nSketcher External Geometry without Geometry Extension: %s \n", boost::uuids::to_string(Geo->getTag()).c_str());
     }
 
     if(!Geo->hasExtension(ExternalGeometryExtension::getClassTypeId())) {
 
-        getGeo()->setExtension(std::make_unique<ExternalGeometryExtension>()); // Create getExtension
+        // Create getExtension
+        getGeo()->setExtension(std::make_unique<ExternalGeometryExtension>());
 
         Base::Console().Warning("%s\nSketcher External Geometry without ExternalGeometryExtension: %s \n", boost::uuids::to_string(Geo->getTag()).c_str());
     }
@@ -122,11 +124,13 @@ void ExternalGeometryFacade::initExtensions() const
 void ExternalGeometryFacade::ensureSketchGeometryExtensions(Part::Geometry * geometry)
 {
     if(!geometry->hasExtension(SketchGeometryExtension::getClassTypeId())) {
-        geometry->setExtension(std::make_unique<SketchGeometryExtension>()); // Create geoExtension
+        // Create geoExtension
+        geometry->setExtension(std::make_unique<SketchGeometryExtension>());
     }
 
     if(!geometry->hasExtension(ExternalGeometryExtension::getClassTypeId())) {
-        geometry->setExtension(std::make_unique<ExternalGeometryExtension>()); // Create external geoExtension
+        // Create external geoExtension
+        geometry->setExtension(std::make_unique<ExternalGeometryExtension>());
     }
 }
 

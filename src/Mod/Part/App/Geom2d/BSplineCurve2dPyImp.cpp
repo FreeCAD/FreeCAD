@@ -1146,7 +1146,8 @@ PyObject* BSplineCurve2dPy::buildFromPolesMultsKnots(PyObject *args, PyObject *k
             for (Py::Sequence::iterator it = multssq.begin(); it != multssq.end() && index <= occmults.Length(); ++it) {
                 Py::Long mult(*it);
                 if (index < occmults.Length() || !Base::asBoolean(periodic)) {
-                    sum_of_mults += (int)mult; //sum up the mults to compare them against the number of poles later
+                    //sum up the mults to compare them against the number of poles later
+                    sum_of_mults += (int)mult;
                 }
                 occmults(index++) = mult;
             }

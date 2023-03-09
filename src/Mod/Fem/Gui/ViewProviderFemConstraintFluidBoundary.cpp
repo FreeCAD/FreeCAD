@@ -115,10 +115,12 @@ void ViewProviderFemConstraintFluidBoundary::updateData(const App::Property* pro
 {
     // Gets called whenever a property of the attached object changes
     Fem::ConstraintFluidBoundary* pcConstraint = static_cast<Fem::ConstraintFluidBoundary*>(this->getObject());
-    float scaledwidth = WIDTH * pcConstraint->Scale.getValue(); //OvG: Calculate scaled values once only
+    //OvG: Calculate scaled values once only
+    float scaledwidth = WIDTH * pcConstraint->Scale.getValue();
     float scaledheight = HEIGHT * pcConstraint->Scale.getValue();
 
-    float scaledheadradius = ARROWHEADRADIUS * pcConstraint->Scale.getValue(); //OvG: Calculate scaled values once only
+    //OvG: Calculate scaled values once only
+    float scaledheadradius = ARROWHEADRADIUS * pcConstraint->Scale.getValue();
     float scaledlength = ARROWLENGTH * pcConstraint->Scale.getValue();
 
     std::string boundaryType = pcConstraint->BoundaryType.getValueAsString();

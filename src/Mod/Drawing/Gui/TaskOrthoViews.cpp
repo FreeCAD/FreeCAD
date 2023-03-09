@@ -82,11 +82,13 @@ void pagesize(string & page_template, int dims[4], int block[4])
         {
             if (line.find("<!-- Working space") != string::npos)
             {
-                (void)sscanf(line.c_str(), "%*s %*s %*s %d %d %d %d", &dims[0], &dims[1], &dims[2], &dims[3]);        //eg "    <!-- Working space 10 10 410 287 -->"
+                //eg "    <!-- Working space 10 10 410 287 -->"
+                (void)sscanf(line.c_str(), "%*s %*s %*s %d %d %d %d", &dims[0], &dims[1], &dims[2], &dims[3]);
                 getline (file,line);
 
                 if (line.find("<!-- Title block") != string::npos)
-                    (void)sscanf(line.c_str(), "%*s %*s %*s %d %d %d %d", &t0, &t1, &t2, &t3);    //eg "    <!-- Working space 10 10 410 287 -->"
+                    //eg "    <!-- Working space 10 10 410 287 -->"
+                    (void)sscanf(line.c_str(), "%*s %*s %*s %d %d %d %d", &t0, &t1, &t2, &t3);
 
                 break;
             }
@@ -164,7 +166,8 @@ void orthoview::set_data(int r_x, int r_y)
     rel_y = r_y;
 
     char label[15];
-    sprintf(label, "Ortho_%i_%i", rel_x, rel_y);         // label name for view, based on relative position
+    // label name for view, based on relative position
+    sprintf(label, "Ortho_%i_%i", rel_x, rel_y);
 
     this_view->Label.setValue(label);
     ortho = ((rel_x * rel_y) == 0);
@@ -393,12 +396,16 @@ void OrthoViews::calc_layout_size()                         // calculate the rea
 
 void OrthoViews::choose_page()                              // chooses which bit of page space to use depending upon layout & titleblock
 {
-    int   h = abs(*horiz);                                                                  // how many views in direction of title block  (horiz points to min_r_x or max_r_x)
+    // how many views in direction of title block  (horiz points to min_r_x or max_r_x)
+    int   h = abs(*horiz);
     int   v = abs(*vert);
-    float layout_corner_width = (1 + floor(h / 2.0)) * width + ceil(h / 2.0) * depth;       // from (0, 0) view inclusively, how wide and tall is the layout in the direction of the title block
+    // from (0, 0) view inclusively, how wide and tall is the layout in the direction of the title block
+    float layout_corner_width = (1 + floor(h / 2.0)) * width + ceil(h / 2.0) * depth;
     float layout_corner_height = (1 + floor(v / 2.0)) * height + ceil(v / 2.0) * depth;
-    float rel_space_x = layout_corner_width / layout_width - 1.0 * block[2] / large[2];     // relative to respective sizes, how much space between (0, 0) and title block,
-    float rel_space_y = layout_corner_height / layout_height - 1.0 * block[3] / large[3];   //                      can be -ve if block extends into / beyond (0, 0) view
+    // relative to respective sizes, how much space between (0, 0) and title block,
+    float rel_space_x = layout_corner_width / layout_width - 1.0 * block[2] / large[2];
+    //                      can be -ve if block extends into / beyond (0, 0) view
+    float rel_space_y = layout_corner_height / layout_height - 1.0 * block[3] / large[3];
     float view_x, view_y, v_x_r, v_y_r;
     bool  interferes = false;
     float a, b;
@@ -407,10 +414,13 @@ void OrthoViews::choose_page()                              // chooses which bit
         for (int j = min_r_y; j <= max_r_y; j++)
             if (index(i, j) != -1)                                    // is there a view in this position?
             {
-                a = i * block[0] * 0.5;                                 // reflect i and j so as +ve is in direction of title block ##
+                // reflect i and j so as +ve is in direction of title block ##
+                a = i * block[0] * 0.5;
                 b = j * block[1] * 0.5;
-                view_x = ceil(a + 0.5) * width + ceil(a) * depth;       // extreme coords of view in direction of block, measured from far corner of (0, 0) view,
-                view_y = ceil(b + 0.5) * height + ceil(b) * depth;      //                      can be -ve if view is on opposite side of (0, 0) from title block
+                // extreme coords of view in direction of block, measured from far corner of (0, 0) view,
+                view_x = ceil(a + 0.5) * width + ceil(a) * depth;
+                //                      can be -ve if view is on opposite side of (0, 0) from title block
+                view_y = ceil(b + 0.5) * height + ceil(b) * depth;
                 v_x_r = view_x / layout_width;                          // make relative
                 v_y_r = view_y / layout_height;
                 if (v_x_r > rel_space_x && v_y_r > rel_space_y)         // ## so that can use > in this condition regardless of position of block
@@ -440,17 +450,21 @@ void OrthoViews::calc_scale()                               // compute scale req
     //which gives the largest scale for which the min_space requirements can be met, but we want a 'sensible' scale, rather than 0.28457239...
     //eg if working_scale = 0.115, then we want to use 0.1, similarly 7.65 -> 5, and 76.5 -> 50
 
-    float exponent = floor(log10(working_scale));                       //if working_scale = a * 10^b, what is b?
-    working_scale *= pow(10, -exponent);                                //now find what 'a' is.
+    //if working_scale = a * 10^b, what is b?
+    float exponent = floor(log10(working_scale));
+    //now find what 'a' is.
+    working_scale *= pow(10, -exponent);
 
     float valid_scales[2][8] = {{1, 1.25, 2, 2.5, 3.75, 5, 7.5, 10},    //equate to 1:10, 1:8, 1:5, 1:4, 3:8, 1:2, 3:4, 1:1
-                                {1, 1.5, 2, 3, 4, 5, 8, 10}};           //equate to 1:1, 3:2, 2:1, 3:1, 4:1, 5:1, 8:1, 10:1
+                                //equate to 1:1, 3:2, 2:1, 3:1, 4:1, 5:1, 8:1, 10:1
+                                {1, 1.5, 2, 3, 4, 5, 8, 10}};
 
     int i = 7;
     while (valid_scales[(exponent>=0)][i] > working_scale)              //choose closest value smaller than 'a' from list.
         i -= 1;                                                         //choosing top list if exponent -ve, bottom list for +ve exponent
 
-    scale = valid_scales[(exponent>=0)][i] * pow(10, exponent);         //now have the appropriate scale, reapply the *10^b
+    //now have the appropriate scale, reapply the *10^b
+    scale = valid_scales[(exponent>=0)][i] * pow(10, exponent);
 }
 
 void OrthoViews::calc_offsets()                             // calcs SVG coords for centre of upper left view
@@ -545,7 +559,8 @@ void OrthoViews::set_primary(gp_Dir facing, gp_Dir right)   // set the orientati
     else
     {
         views[0]->set_projection(primary);
-        set_all_orientations();                 // reorient all other views appropriately
+        // reorient all other views appropriately
+        set_all_orientations();
         process_views();
     }
 }
@@ -554,7 +569,8 @@ void OrthoViews::set_orientation(int index)                 // set orientation o
 {
     double  rotation;
     int     n;                                              // how many 90* rotations from primary view?
-    gp_Dir  dir;                                            // rotate about primary x axis (if in a relative y position) or y axis?
+    // rotate about primary x axis (if in a relative y position) or y axis?
+    gp_Dir  dir;
     gp_Ax2  cs;
 
     if (views[index]->ortho)
@@ -570,7 +586,8 @@ void OrthoViews::set_orientation(int index)                 // set orientation o
             n = -views[index]->rel_y;
         }
 
-        rotation = n * rotate_coeff * M_PI / 2;             // rotate_coeff is -1 or 1 for 1st or 3rd angle
+        // rotate_coeff is -1 or 1 for 1st or 3rd angle
+        rotation = n * rotate_coeff * M_PI / 2;
         cs = primary.Rotated(gp_Ax1(gp_Pnt(0, 0, 0), dir), rotation);
         views[index]->set_projection(cs);
     }
@@ -645,7 +662,8 @@ void OrthoViews::del_view(int rel_x, int rel_y)             // remove a view fro
 
         for (unsigned int i = 1; i < views.size(); i++)              // start from 1 - the 0 is the primary view
         {
-            min_r_x = min(min_r_x, views[i]->rel_x);                // calculate extremes from remaining views
+            // calculate extremes from remaining views
+            min_r_x = min(min_r_x, views[i]->rel_x);
             max_r_x = max(max_r_x, views[i]->rel_x);
             min_r_y = min(min_r_y, views[i]->rel_y);
             max_r_y = max(max_r_y, views[i]->rel_y);
@@ -763,7 +781,8 @@ void OrthoViews::set_Axo(int rel_x, int rel_y)              // set view to defau
 
     if (num != -1)
     {
-        gp_Dir up = primary.YDirection();                   // default to view from up and right
+        // default to view from up and right
+        gp_Dir up = primary.YDirection();
         gp_Dir right = primary.XDirection();
         bool away = false;
 
@@ -1072,14 +1091,17 @@ void TaskOrthoViews::projectionChanged(int index)
 
 void TaskOrthoViews::setPrimary(int /*dir*/)
 {
-    int p_sel = ui->view_from->currentIndex();      // index for entry selected for 'view from'
-    int r_sel = ui->axis_right->currentIndex();     // index for entry selected for 'rightwards axis'
+    // index for entry selected for 'view from'
+    int p_sel = ui->view_from->currentIndex();
+    // index for entry selected for 'rightwards axis'
+    int r_sel = ui->axis_right->currentIndex();
 
     int p_vec[3] = {0, 0, 0};                       // will be the vector for 'view from'
     int r_vec[3] = {0, 0, 0};                       // will be vector for 'rightwards axis'
     int r[2] = {0, 1};
 
-    int pos = 1 - 2 * int(p_sel / 3);               // 1 if p_sel = 0, 1, 2  or -1 if p_sel = 3, 4, 5
+    // 1 if p_sel = 0, 1, 2  or -1 if p_sel = 3, 4, 5
+    int pos = 1 - 2 * int(p_sel / 3);
     p_sel = p_sel % 3;                              // p_sel = 0, 1, 2
     p_vec[p_sel] = pos;
 
@@ -1228,7 +1250,8 @@ void TaskOrthoViews::setup_axo_tab()
 void TaskOrthoViews::change_axo(int /*p*/)
 {
     int u_sel = ui->axoUp->currentIndex();        // index for entry selected for 'view from'
-    int r_sel = ui->axoRight->currentIndex();         // index for entry selected for 'rightwards axis'
+    // index for entry selected for 'rightwards axis'
+    int r_sel = ui->axoRight->currentIndex();
 
     int u_vec[3] = {0, 0, 0};               // will be the vector for 'view from'
     int r_vec[3] = {0, 0, 0};               // will be vector for 'rightwards axis'
@@ -1298,7 +1321,8 @@ bool TaskOrthoViews::user_input()
         return true;                    // return that we were editing
     }
     else
-        return false;                   // return that we weren't editing ---> treat as clicking OK... we can close the GUI
+        // return that we weren't editing ---> treat as clicking OK... we can close the GUI
+        return false;
 }
 
 void TaskOrthoViews::text_return()

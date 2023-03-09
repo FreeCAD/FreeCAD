@@ -126,7 +126,8 @@ void SelectionView::onSelectionChanged(const SelectionChanges &Reason)
     ParameterGrp::handle hGrp = App::GetApplication().GetUserParameter().GetGroup("BaseApp")
         ->GetGroup("Preferences")->GetGroup("Selection");
     bool autoShow = hGrp->GetBool("AutoShowSelectionView", false);
-    hGrp->SetBool("AutoShowSelectionView", autoShow); // Remove this line once the preferences window item is implemented
+    // Remove this line once the preferences window item is implemented
+    hGrp->SetBool("AutoShowSelectionView", autoShow);
 
     if (autoShow) {
         if (!parentWidget()->isVisible() && Selection().hasSelection()) {

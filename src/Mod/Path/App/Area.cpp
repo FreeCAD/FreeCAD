@@ -903,7 +903,8 @@ struct WireJoiner {
 
         for (int iteration = 1; !edgesToVisit.empty(); ++iteration) {
             EdgeInfo* currentInfo = *edgesToVisit.begin();
-            int currentIdx = 1; // used to tell whether search connection from the start(0) or end(1)
+            // used to tell whether search connection from the start(0) or end(1)
+            int currentIdx = 1;
             TopoDS_Edge& e = currentInfo->edge;
             edgesToVisit.erase(edgesToVisit.begin());
             gp_Pnt pstart = currentInfo->p1;

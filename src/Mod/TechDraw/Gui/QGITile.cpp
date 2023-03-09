@@ -115,11 +115,13 @@ void QGITile::draw()
     } else if (m_row == -1) {    //otherSide
         if (getAltWeld()) {
             if (isTailRight()) {
-                double x = m_origin.x() + (0.5 * totalWidth); //move to right 1/2 tile width
+                //move to right 1/2 tile width
+                double x = m_origin.x() + (0.5 * totalWidth);
                 double y = m_origin.y() +  (m_high * 0.5);    //inverted y!!
                 setPos(x, y);
             } else {
-                double x = m_origin.x() - (0.5 * totalWidth); //move to left 1/2 tile width
+                //move to left 1/2 tile width
+                double x = m_origin.x() - (0.5 * totalWidth);
                 double y = m_origin.y() +  (m_high * 0.5);    //inverted y!!
                 setPos(x, y);
             }
@@ -380,4 +382,3 @@ QRectF QGITile::boundingRect() const
 {
     return childrenBoundingRect();
 }
-

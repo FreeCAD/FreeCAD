@@ -145,8 +145,10 @@ enum eRefType {
 };
 
 
-using refTypeString = std::vector<eRefType>; //a sequence of ref types, according to Support contents for example
-using refTypeStringList = std::vector<refTypeString>; //a set of type strings, defines which selection sets are supported by a certain mode
+//a sequence of ref types, according to Support contents for example
+using refTypeString = std::vector<eRefType>;
+//a set of type strings, defines which selection sets are supported by a certain mode
+using refTypeStringList = std::vector<refTypeString>;
 
 
 /**
@@ -377,7 +379,8 @@ public: //members
      */
     std::vector<bool> modeEnabled;
 
-    std::vector<refTypeStringList> modeRefTypes; //a complete data structure, containing info on which modes support what selection
+    //a complete data structure, containing info on which modes support what selection
+    std::vector<refTypeStringList> modeRefTypes;
 
 protected:
     refTypeString cat(eRefType rt1){

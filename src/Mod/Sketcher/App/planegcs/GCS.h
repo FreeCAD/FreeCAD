@@ -119,9 +119,12 @@ namespace GCS
         void setReference();     // copies the current parameter values to reference
         void resetToReference(); // reverts all parameter values to the stored reference
 
-        std::vector< VEC_pD > plists;                    // partitioned plist except equality constraints
-        std::vector< std::vector<Constraint *> > clists; // partitioned clist except equality constraints
-        std::vector< MAP_pD_pD > reductionmaps;          // for simplification of equality constraints
+        // partitioned plist except equality constraints
+        std::vector< VEC_pD > plists;
+        // partitioned clist except equality constraints
+        std::vector< std::vector<Constraint *> > clists;
+        // for simplification of equality constraints
+        std::vector< MAP_pD_pD > reductionmaps;
 
         int dofs;
         std::set<Constraint *> redundant;
@@ -197,7 +200,8 @@ namespace GCS
     public:
         int maxIter;
         int maxIterRedundant;
-        bool sketchSizeMultiplier; // if true note that the total number of iterations allowed is MaxIterations *xLength
+        // if true note that the total number of iterations allowed is MaxIterations *xLength
+        bool sketchSizeMultiplier;
         bool sketchSizeMultiplierRedundant;
         double convergence;
         double convergenceRedundant;

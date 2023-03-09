@@ -115,7 +115,8 @@ ViewProviderPartExt::ViewProviderPartExt()
     NormalsFromUV = true;
 
     // get default line color
-    unsigned long lcol = Gui::ViewParams::instance()->getDefaultShapeLineColor(); // dark grey (25,25,25)
+    // dark grey (25,25,25)
+    unsigned long lcol = Gui::ViewParams::instance()->getDefaultShapeLineColor();
     float lr,lg,lb;
     lr = ((lcol >> 24) & 0xff) / 255.0; lg = ((lcol >> 16) & 0xff) / 255.0; lb = ((lcol >> 8) & 0xff) / 255.0;
     // get default vertex color
@@ -1287,4 +1288,3 @@ void ViewProviderPartExt::forceUpdate(bool enable) {
     }else if(forceUpdateCount)
         --forceUpdateCount;
 }
-

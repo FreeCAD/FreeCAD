@@ -211,7 +211,8 @@ TaskFemConstraintFluidBoundary::TaskFemConstraintFluidBoundary(ViewProviderFemCo
                 else if (shapeType == TopAbs_EDGE || shapeType == TopAbs_WIRE)
                     dimension = 1;
                 else
-                    dimension = -1;  // Vertex (0D) can not make mesh, Compound type might contain any types
+                    // Vertex (0D) can not make mesh, Compound type might contain any types
+                    dimension = -1;
             }
         }
     }
@@ -293,7 +294,8 @@ TaskFemConstraintFluidBoundary::TaskFemConstraintFluidBoundary(ViewProviderFemCo
 
     // Fill data into dialog elements
     double f = pcConstraint->BoundaryValue.getValue();
-    ui->spinBoundaryValue->setMinimum(FLOAT_MIN);  // previous set the min to ZERO is not flexible
+    // previous set the min to ZERO is not flexible
+    ui->spinBoundaryValue->setMinimum(FLOAT_MIN);
     ui->spinBoundaryValue->setMaximum(FLOAT_MAX);
     ui->spinBoundaryValue->setValue(f);
     ui->listReferences->clear();
@@ -343,7 +345,8 @@ void TaskFemConstraintFluidBoundary::updateBoundaryTypeUI()
     else if (boundaryType == "inlet") {
         ui->tabBasicBoundary->setEnabled(true);
         pcConstraint->Subtype.setEnums(InletSubtypes);
-        ui->labelBoundaryValue->setText(QString::fromUtf8("Pressure [Pa]")); // default to pressure
+        // default to pressure
+        ui->labelBoundaryValue->setText(QString::fromUtf8("Pressure [Pa]"));
         pcConstraint->Reversed.setValue(true); // inlet must point into volume
     }
     else if (boundaryType == "outlet") {
@@ -517,7 +520,8 @@ void TaskFemConstraintFluidBoundary::onBoundaryTypeChanged(void)
 
 void TaskFemConstraintFluidBoundary::onSubtypeChanged(void)
 {
-    updateSubtypeUI();  // todo: change color for different kind of subtype,  Fem::ConstraintFluidBoundary::onChanged() and viewProvider
+    // todo: change color for different kind of subtype,  Fem::ConstraintFluidBoundary::onChanged() and viewProvider
+    updateSubtypeUI();
 }
 
 void TaskFemConstraintFluidBoundary::onBoundaryValueChanged(double)
@@ -539,7 +543,8 @@ void TaskFemConstraintFluidBoundary::onThermalBoundaryTypeChanged(void)
 }
 
 void TaskFemConstraintFluidBoundary::onReferenceDeleted() {
-    TaskFemConstraintFluidBoundary::removeFromSelection(); //On right-click face is automatically selected, so just remove
+    //On right-click face is automatically selected, so just remove
+    TaskFemConstraintFluidBoundary::removeFromSelection();
 }
 
 void TaskFemConstraintFluidBoundary::onButtonDirection(const bool pressed)
@@ -726,7 +731,8 @@ TaskFemConstraintFluidBoundary::~TaskFemConstraintFluidBoundary()
 
 void TaskFemConstraintFluidBoundary::addToSelection()
 {
-    std::vector<Gui::SelectionObject> selection = Gui::Selection().getSelectionEx(); //gets vector of selected objects of active document
+    //gets vector of selected objects of active document
+    std::vector<Gui::SelectionObject> selection = Gui::Selection().getSelectionEx();
     if (selection.empty()) {
         QMessageBox::warning(this, tr("Selection error"), tr("Nothing selected!"));
         return;
@@ -784,7 +790,8 @@ void TaskFemConstraintFluidBoundary::addToSelection()
 
 void TaskFemConstraintFluidBoundary::removeFromSelection()
 {
-    std::vector<Gui::SelectionObject> selection = Gui::Selection().getSelectionEx(); //gets vector of selected objects of active document
+    //gets vector of selected objects of active document
+    std::vector<Gui::SelectionObject> selection = Gui::Selection().getSelectionEx();
     if (selection.empty()) {
         QMessageBox::warning(this, tr("Selection error"), tr("Nothing selected!"));
         return;
@@ -920,7 +927,8 @@ bool TaskDlgFemConstraintFluidBoundary::accept()
         //Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Reversed = %s", name.c_str(), boundary->getReverse() ? "True" : "False");
 
         std::string scale = boundary->getScale();  //OvG: determine modified scale
-        Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.%s.Scale = %s", name.c_str(), scale.c_str()); //OvG: implement modified scale
+        //OvG: implement modified scale
+        Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.%s.Scale = %s", name.c_str(), scale.c_str());
 
         // solver specific setting, physical model selection
         const Fem::FemSolverObject* pcSolver = boundary->getFemSolver();

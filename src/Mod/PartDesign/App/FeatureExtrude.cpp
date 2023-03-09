@@ -235,8 +235,10 @@ void FeatureExtrude::generateTaperedPrism(TopoDS_Shape& prism,
                                           const bool midplane)
 {
     std::list<TopoDS_Shape> drafts;
-    bool isSolid = true; // in PD we only generate solids, while Part Extrude can also create only shells
-    bool isPartDesign = true; // there is an OCC bug with single-edge wires (circles) we need to treat differently for PD and Part
+    // in PD we only generate solids, while Part Extrude can also create only shells
+    bool isSolid = true;
+    // there is an OCC bug with single-edge wires (circles) we need to treat differently for PD and Part
+    bool isPartDesign = true;
     if (method == "ThroughAll") {
         Part::ExtrusionHelper::makeDraft(sketchshape, direction, getThroughAllLength(),
             0.0, Base::toRadians(angle), 0.0, isSolid, drafts, isPartDesign);

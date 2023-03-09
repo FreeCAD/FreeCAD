@@ -313,7 +313,8 @@ void CmdFemConstraintBearing::activated(int)
               Analysis->getNameInDocument(),
               FeatName.c_str());
 
-    doCommand(Doc, "%s", gethideMeshShowPartStr(FeatName).c_str());//OvG: Hide meshes and show parts
+    //OvG: Hide meshes and show parts
+    doCommand(Doc, "%s", gethideMeshShowPartStr(FeatName).c_str());
 
     updateActive();
 
@@ -360,13 +361,15 @@ void CmdFemConstraintContact::activated(int)
               "App.activeDocument().%s.Friction = 0.0",
               FeatName.c_str());//OvG: set default not equal to 0
     doCommand(
-        Doc, "App.activeDocument().%s.Scale = 1", FeatName.c_str());//OvG: set initial scale to 1
+        //OvG: set initial scale to 1
+        Doc, "App.activeDocument().%s.Scale = 1", FeatName.c_str());
     doCommand(Doc,
               "App.activeDocument().%s.addObject(App.activeDocument().%s)",
               Analysis->getNameInDocument(),
               FeatName.c_str());
 
-    doCommand(Doc, "%s", gethideMeshShowPartStr(FeatName).c_str());//OvG: Hide meshes and show parts
+    //OvG: Hide meshes and show parts
+    doCommand(Doc, "%s", gethideMeshShowPartStr(FeatName).c_str());
 
     updateActive();
 
@@ -409,13 +412,15 @@ void CmdFemConstraintDisplacement::activated(int)
               "App.activeDocument().addObject(\"Fem::ConstraintDisplacement\",\"%s\")",
               FeatName.c_str());
     doCommand(
-        Doc, "App.activeDocument().%s.Scale = 1", FeatName.c_str());//OvG: set initial scale to 1
+        //OvG: set initial scale to 1
+        Doc, "App.activeDocument().%s.Scale = 1", FeatName.c_str());
     doCommand(Doc,
               "App.activeDocument().%s.addObject(App.activeDocument().%s)",
               Analysis->getNameInDocument(),
               FeatName.c_str());
 
-    doCommand(Doc, "%s", gethideMeshShowPartStr(FeatName).c_str());//OvG: Hide meshes and show parts
+    //OvG: Hide meshes and show parts
+    doCommand(Doc, "%s", gethideMeshShowPartStr(FeatName).c_str());
 
     updateActive();
 
@@ -456,13 +461,15 @@ void CmdFemConstraintFixed::activated(int)
     doCommand(
         Doc, "App.activeDocument().addObject(\"Fem::ConstraintFixed\",\"%s\")", FeatName.c_str());
     doCommand(
-        Doc, "App.activeDocument().%s.Scale = 1", FeatName.c_str());//OvG: set initial scale to 1
+        //OvG: set initial scale to 1
+        Doc, "App.activeDocument().%s.Scale = 1", FeatName.c_str());
     doCommand(Doc,
               "App.activeDocument().%s.addObject(App.activeDocument().%s)",
               Analysis->getNameInDocument(),
               FeatName.c_str());
 
-    doCommand(Doc, "%s", gethideMeshShowPartStr(FeatName).c_str());//OvG: Hide meshes and show parts
+    //OvG: Hide meshes and show parts
+    doCommand(Doc, "%s", gethideMeshShowPartStr(FeatName).c_str());
 
     updateActive();
 
@@ -505,14 +512,16 @@ void CmdFemConstraintFluidBoundary::activated(int)
               "App.activeDocument().addObject(\"Fem::ConstraintFluidBoundary\",\"%s\")",
               FeatName.c_str());
     doCommand(
-        Doc, "App.activeDocument().%s.Scale = 1", FeatName.c_str());//OvG: set initial scale to 1
+        //OvG: set initial scale to 1
+        Doc, "App.activeDocument().%s.Scale = 1", FeatName.c_str());
     //BoundaryValue is already the default value, zero is acceptable
     doCommand(Doc,
               "App.activeDocument().%s.addObject(App.activeDocument().%s)",
               Analysis->getNameInDocument(),
               FeatName.c_str());
 
-    doCommand(Doc, "%s", gethideMeshShowPartStr(FeatName).c_str());//OvG: Hide meshes and show parts
+    //OvG: Hide meshes and show parts
+    doCommand(Doc, "%s", gethideMeshShowPartStr(FeatName).c_str());
     updateActive();
 
     doCommand(Gui, "Gui.activeDocument().setEdit('%s')", FeatName.c_str());
@@ -558,13 +567,15 @@ void CmdFemConstraintForce::activated(int)
               "App.activeDocument().%s.Reversed = False",
               FeatName.c_str());//OvG: set default to False
     doCommand(
-        Doc, "App.activeDocument().%s.Scale = 1", FeatName.c_str());//OvG: set initial scale to 1
+        //OvG: set initial scale to 1
+        Doc, "App.activeDocument().%s.Scale = 1", FeatName.c_str());
     doCommand(Doc,
               "App.activeDocument().%s.addObject(App.activeDocument().%s)",
               Analysis->getNameInDocument(),
               FeatName.c_str());
 
-    doCommand(Doc, "%s", gethideMeshShowPartStr(FeatName).c_str());//OvG: Hide meshes and show parts
+    //OvG: Hide meshes and show parts
+    doCommand(Doc, "%s", gethideMeshShowPartStr(FeatName).c_str());
 
     updateActive();
 
@@ -609,7 +620,8 @@ void CmdFemConstraintGear::activated(int)
               Analysis->getNameInDocument(),
               FeatName.c_str());
 
-    doCommand(Doc, "%s", gethideMeshShowPartStr(FeatName).c_str());//OvG: Hide meshes and show parts
+    //OvG: Hide meshes and show parts
+    doCommand(Doc, "%s", gethideMeshShowPartStr(FeatName).c_str());
 
     updateActive();
 
@@ -657,13 +669,15 @@ void CmdFemConstraintHeatflux::activated(int)
               "App.activeDocument().%s.FilmCoef = 10.0",
               FeatName.c_str());//OvG: set default not equal to 0
     doCommand(
-        Doc, "App.activeDocument().%s.Scale = 1", FeatName.c_str());//OvG: set initial scale to 1
+        //OvG: set initial scale to 1
+        Doc, "App.activeDocument().%s.Scale = 1", FeatName.c_str());
     doCommand(Doc,
               "App.activeDocument().%s.addObject(App.activeDocument().%s)",
               Analysis->getNameInDocument(),
               FeatName.c_str());
 
-    doCommand(Doc, "%s", gethideMeshShowPartStr().c_str());//OvG: Hide meshes and show parts
+    //OvG: Hide meshes and show parts
+    doCommand(Doc, "%s", gethideMeshShowPartStr().c_str());
 
     updateActive();
 
@@ -705,13 +719,15 @@ void CmdFemConstraintInitialTemperature::activated(int)
               "App.activeDocument().addObject(\"Fem::ConstraintInitialTemperature\",\"%s\")",
               FeatName.c_str());
     doCommand(
-        Doc, "App.activeDocument().%s.Scale = 1", FeatName.c_str());//OvG: set initial scale to 1
+        //OvG: set initial scale to 1
+        Doc, "App.activeDocument().%s.Scale = 1", FeatName.c_str());
     doCommand(Doc,
               "App.activeDocument().%s.addObject(App.activeDocument().%s)",
               Analysis->getNameInDocument(),
               FeatName.c_str());
 
-    doCommand(Doc, "%s", gethideMeshShowPartStr().c_str());//OvG: Hide meshes and show parts
+    //OvG: Hide meshes and show parts
+    doCommand(Doc, "%s", gethideMeshShowPartStr().c_str());
 
     updateActive();
 
@@ -753,13 +769,15 @@ void CmdFemConstraintPlaneRotation::activated(int)
               "App.activeDocument().addObject(\"Fem::ConstraintPlaneRotation\",\"%s\")",
               FeatName.c_str());
     doCommand(
-        Doc, "App.activeDocument().%s.Scale = 1", FeatName.c_str());//OvG: set initial scale to 1
+        //OvG: set initial scale to 1
+        Doc, "App.activeDocument().%s.Scale = 1", FeatName.c_str());
     doCommand(Doc,
               "App.activeDocument().%s.addObject(App.activeDocument().%s)",
               Analysis->getNameInDocument(),
               FeatName.c_str());
 
-    doCommand(Doc, "%s", gethideMeshShowPartStr(FeatName).c_str());//OvG: Hide meshes and show parts
+    //OvG: Hide meshes and show parts
+    doCommand(Doc, "%s", gethideMeshShowPartStr(FeatName).c_str());
 
     updateActive();
 
@@ -807,13 +825,15 @@ void CmdFemConstraintPressure::activated(int)
               "App.activeDocument().%s.Reversed = False",
               FeatName.c_str());//OvG: set default to False
     doCommand(
-        Doc, "App.activeDocument().%s.Scale = 1", FeatName.c_str());//OvG: set initial scale to 1
+        //OvG: set initial scale to 1
+        Doc, "App.activeDocument().%s.Scale = 1", FeatName.c_str());
     doCommand(Doc,
               "App.activeDocument().%s.addObject(App.activeDocument().%s)",
               Analysis->getNameInDocument(),
               FeatName.c_str());
 
-    doCommand(Doc, "%s", gethideMeshShowPartStr(FeatName).c_str());//OvG: Hide meshes and show parts
+    //OvG: Hide meshes and show parts
+    doCommand(Doc, "%s", gethideMeshShowPartStr(FeatName).c_str());
 
     updateActive();
 
@@ -860,13 +880,15 @@ void CmdFemConstraintSpring::activated(int)
               "App.activeDocument().%s.tangentialStiffness = 0.0",
               FeatName.c_str());//OvG: set default to False
     doCommand(
-        Doc, "App.activeDocument().%s.Scale = 1", FeatName.c_str());//OvG: set initial scale to 1
+        //OvG: set initial scale to 1
+        Doc, "App.activeDocument().%s.Scale = 1", FeatName.c_str());
     doCommand(Doc,
               "App.activeDocument().%s.addObject(App.activeDocument().%s)",
               Analysis->getNameInDocument(),
               FeatName.c_str());
 
-    doCommand(Doc, "%s", gethideMeshShowPartStr(FeatName).c_str());//OvG: Hide meshes and show parts
+    //OvG: Hide meshes and show parts
+    doCommand(Doc, "%s", gethideMeshShowPartStr(FeatName).c_str());
 
     updateActive();
 
@@ -916,7 +938,8 @@ void CmdFemConstraintPulley::activated(int)
               Analysis->getNameInDocument(),
               FeatName.c_str());
 
-    doCommand(Doc, "%s", gethideMeshShowPartStr(FeatName).c_str());//OvG: Hide meshes and show parts
+    //OvG: Hide meshes and show parts
+    doCommand(Doc, "%s", gethideMeshShowPartStr(FeatName).c_str());
 
     updateActive();
 
@@ -959,13 +982,15 @@ void CmdFemConstraintTemperature::activated(int)
               "App.activeDocument().addObject(\"Fem::ConstraintTemperature\",\"%s\")",
               FeatName.c_str());
     doCommand(
-        Doc, "App.activeDocument().%s.Scale = 1", FeatName.c_str());//OvG: set initial scale to 1
+        //OvG: set initial scale to 1
+        Doc, "App.activeDocument().%s.Scale = 1", FeatName.c_str());
     doCommand(Doc,
               "App.activeDocument().%s.addObject(App.activeDocument().%s)",
               Analysis->getNameInDocument(),
               FeatName.c_str());
 
-    doCommand(Doc, "%s", gethideMeshShowPartStr().c_str());//OvG: Hide meshes and show parts
+    //OvG: Hide meshes and show parts
+    doCommand(Doc, "%s", gethideMeshShowPartStr().c_str());
 
     updateActive();
 
@@ -1015,7 +1040,8 @@ void CmdFemConstraintTransform::activated(int)
               Analysis->getNameInDocument(),
               FeatName.c_str());
 
-    doCommand(Doc, "%s", gethideMeshShowPartStr(FeatName).c_str());//OvG: Hide meshes and show parts
+    //OvG: Hide meshes and show parts
+    doCommand(Doc, "%s", gethideMeshShowPartStr(FeatName).c_str());
 
     updateActive();
 

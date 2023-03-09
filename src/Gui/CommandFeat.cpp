@@ -175,7 +175,8 @@ void StdCmdSendToPythonConsole::activated(int iMsg)
             const auto geoObj = static_cast<const App::GeoFeature*>(obj);
             const App::PropertyGeometry* geo = geoObj->getPropertyOfGeometry();
             if (geo){
-                cmd = QString::fromLatin1("shp = obj.") + QLatin1String(geo->getName()); //"Shape", "Mesh", "Points", etc.
+                //"Shape", "Mesh", "Points", etc.
+                cmd = QString::fromLatin1("shp = obj.") + QLatin1String(geo->getName());
                 Gui::Command::runCommand(Gui::Command::Gui, cmd.toLatin1());
                 if (sels[0].hasSubNames()) {
                     std::vector<std::string> subnames = sels[0].getSubNames();

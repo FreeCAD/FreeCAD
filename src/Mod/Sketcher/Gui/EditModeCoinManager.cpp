@@ -222,14 +222,16 @@ void EditModeCoinManager::ParameterObserver::updateElementSizeParameters(const s
 
     int markersize = hGrp->GetInt("MarkerSize", 7);
 
-    int defaultFontSizePixels = Client.defaultApplicationFontSizePixels(); // returns height in pixels, not points
+    // returns height in pixels, not points
+    int defaultFontSizePixels = Client.defaultApplicationFontSizePixels();
 
     int sketcherfontSize = hGrp->GetInt("EditSketcherFontSize", defaultFontSizePixels);
 
     int dpi = Client.getApplicationLogicalDPIX();
 
     // simple scaling factor for hardcoded pixel values in the Sketcher
-    Client.drawingParameters.pixelScalingFactor = viewScalingFactor * dpi / 96; // 96 ppi is the standard pixel density for which pixel quantities were calculated
+    // 96 ppi is the standard pixel density for which pixel quantities were calculated
+    Client.drawingParameters.pixelScalingFactor = viewScalingFactor * dpi / 96;
 
     // About sizes:
     // SoDatumLabel takes the size in points, not in pixels. This is because it uses QFont internally.
@@ -249,7 +251,8 @@ void EditModeCoinManager::ParameterObserver::updateElementSizeParameters(const s
     // HDPI monitors.
 
     Client.drawingParameters.coinFontSize = std::lround(sketcherfontSize * 96.0f / dpi); // this is in pixels
-    Client.drawingParameters.labelFontSize = std::lround(sketcherfontSize * 72.0f / dpi); // this is in points, as SoDatumLabel uses points
+    // this is in points, as SoDatumLabel uses points
+    Client.drawingParameters.labelFontSize = std::lround(sketcherfontSize * 72.0f / dpi);
     Client.drawingParameters.constraintIconSize = std::lround(0.8 * sketcherfontSize);
 
     // For marker size the global default is used.
@@ -500,7 +503,8 @@ EditModeCoinManager::PreselectionResult EditModeCoinManager::detectPreselection(
             if (point_detail && point_detail->getTypeId() == SoPointDetail::getClassTypeId()) {
                 // get the index
                 int pindex = static_cast<const SoPointDetail *>(point_detail)->getCoordinateIndex();
-                result.PointIndex = coinMapping.getPointVertexId(pindex, l); // returns -1 for root, global VertexId for the rest of vertices.
+                // returns -1 for root, global VertexId for the rest of vertices.
+                result.PointIndex = coinMapping.getPointVertexId(pindex, l);
 
                 if (result.PointIndex == -1)
                     result.Cross = PreselectionResult::Axes::RootPoint;
@@ -648,7 +652,8 @@ void EditModeCoinManager::createEditModeInventorNodes()
 {
     // 1 - Create the edit root node
     editModeScenegraphNodes.EditRoot = new SoSeparator;
-    editModeScenegraphNodes.EditRoot->ref(); // Node is unref in the destructor of EditModeCoinManager
+    // Node is unref in the destructor of EditModeCoinManager
+    editModeScenegraphNodes.EditRoot->ref();
     editModeScenegraphNodes.EditRoot->setName("Sketch_EditRoot");
     ViewProviderSketchCoinAttorney::addNodeToRoot(viewProvider, editModeScenegraphNodes.EditRoot);
     editModeScenegraphNodes.EditRoot->renderCaching = SoSeparator::OFF ;

@@ -115,7 +115,8 @@ public:
 
 class GesturesDevice : public Quarter::InputDevice {
 public:
-    explicit GesturesDevice(QWidget* widget);//it needs to know the widget to do coordinate translation
+    //it needs to know the widget to do coordinate translation
+    explicit GesturesDevice(QWidget* widget);
 
     ~GesturesDevice() override  {}
     const SoEvent* translateEvent(QEvent* event) override;

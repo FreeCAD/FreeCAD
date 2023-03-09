@@ -64,7 +64,8 @@ bool MeshTopoAlgorithm::InsertVertex(FacetIndex ulFacetPos, const Base::Vector3f
   FacetIndex ulSize  = _rclMesh._aclFacetArray.size();
 
   if ( ulPtInd < ulPtCnt )
-    return false; // the given point is already part of the mesh => creating new facets would be an illegal operation
+    // the given point is already part of the mesh => creating new facets would be an illegal operation
+    return false;
 
   // adjust the facets
   //
@@ -726,7 +727,8 @@ bool MeshTopoAlgorithm::SplitOpenEdge(FacetIndex ulFacetPos, unsigned short uSid
     FacetIndex ulSize = _rclMesh._aclFacetArray.size();
 
     if (uPtInd < uPtCnt)
-        return false; // the given point is already part of the mesh => creating new facets would be an illegal operation
+        // the given point is already part of the mesh => creating new facets would be an illegal operation
+        return false;
 
     // adjust the neighbourhood
     if (rclF._aulNeighbours[(uSide+1)%3] != FACET_INDEX_MAX)

@@ -35,7 +35,8 @@ using namespace e57;
 NodeImpl::NodeImpl( ImageFileImplWeakPtr destImageFile ) : destImageFile_( destImageFile ), isAttached_( false )
 {
    checkImageFileOpen( __FILE__, __LINE__,
-                       static_cast<const char *>( __FUNCTION__ ) ); // does checking for all node type ctors
+                       // does checking for all node type ctors
+                       static_cast<const char *>( __FUNCTION__ ) );
 }
 
 void NodeImpl::checkImageFileOpen( const char *srcFileName, int srcLineNumber, const char *srcFunctionName ) const

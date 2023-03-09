@@ -469,7 +469,7 @@ int SMESH_MeshEditor::Remove (const list< int >& theIDs,
 /*!
  * \brief Create 0D elements on all nodes of the given object except those
  *        nodes on which a 0D element already exists.
- *  \param elements - Elements on whose nodes to create 0D elements; if empty, 
+ *  \param elements - Elements on whose nodes to create 0D elements; if empty,
  *                    the all mesh is treated
  *  \param all0DElems - returns all 0D elements found or created on nodes of \a elements
  */
@@ -636,7 +636,7 @@ static int nbEdgeConnectivity(const SMDS_MeshNode* theNode)
 
 //=======================================================================
 //function : getNodesFromTwoTria
-//purpose  : 
+//purpose  :
 //=======================================================================
 
 static bool getNodesFromTwoTria(const SMDS_MeshElement * theTria1,
@@ -867,7 +867,7 @@ static bool findTriangles(const SMDS_MeshNode *    theNode1,
       {
         theTria1 = elem;
       }
-      else  
+      else
       {
         theTria2 = elem;
         // theTria1 must be element with minimum ID
@@ -1607,7 +1607,7 @@ void SMESH_MeshEditor::QuadTo4Tri (TIDSortedElemSet & theElems)
     // create 4 triangles
 
     GetMeshDS()->RemoveFreeElement( quad, subMeshDS, /*fromGroups=*/false );
-    
+
     helper.SetIsQuadratic  ( nodes.size() > 4 );
     helper.SetIsBiQuadratic( nodes.size() == 9 );
     if ( helper.GetIsQuadratic() )
@@ -2460,7 +2460,7 @@ void SMESH_MeshEditor::SplitVolumes (const TFacetOfElem & theElems,
           GetMeshDS()->RemoveNode( volNodes[i] );
     }
   } // loop on volumes to split
-  
+
   myLastCreatedNodes = newNodes;
   myLastCreatedElems = newElems;
 }
@@ -2617,7 +2617,7 @@ void SMESH_MeshEditor::GetHexaFacetsToSplit( TIDSortedElemSet& theHexas,
       fIt = facetsToCheck.begin();
 
       vTool.Set( hex );
-      if ( vTool.IsFreeFace( lateralFacet, &curHex ) || 
+      if ( vTool.IsFreeFace( lateralFacet, &curHex ) ||
            curHex->GetGeomType() != SMDSGeom_HEXA )
         continue;
       if ( !allHex && !theHexas.count( curHex ))
@@ -7182,7 +7182,7 @@ SMESH_MeshEditor::generateGroups(const SMESH_SequenceOfElemPtr& nodeGens,
  *  \param [in,out] theNodes - the nodes to treat
  *  \param [in]     theTolerance - the tolerance
  *  \param [out]    theGroupsOfNodes - the result groups of coincident nodes
- *  \param [in]     theSeparateCornersAndMedium - if \c true, in quadratic mesh puts 
+ *  \param [in]     theSeparateCornersAndMedium - if \c true, in quadratic mesh puts
  *         corner and medium nodes in separate groups
  */
 //================================================================================
@@ -7442,7 +7442,7 @@ void SMESH_MeshEditor::MergeNodes (TListOfListOfNodes & theGroupsOfNodes)
             SMDS_MeshCell::applyInterlace // interlace medium and corner nodes
               ( SMDS_MeshCell::interlacedSmdsOrder( SMDSEntity_Quad_Polygon, nbNodes ), curNodes );
 #else
-            throw SALOME_Exception("Quadratic polygon not supported with VTK <6.2");  
+            throw SALOME_Exception("Quadratic polygon not supported with VTK <6.2");
 #endif
           }
 
@@ -7472,7 +7472,7 @@ void SMESH_MeshEditor::MergeNodes (TListOfListOfNodes & theGroupsOfNodes)
                     ( SMDS_MeshCell::interlacedSmdsOrder( SMDSEntity_Quad_Polygon,
                                                           nbNewNodes ), face_nodes );
 #else
-                throw SALOME_Exception("Quadratic polygon not supported with VTK <6.2");  
+                throw SALOME_Exception("Quadratic polygon not supported with VTK <6.2");
 #endif
               }
               elemType.SetPoly(( nbNewNodes / ( elemType.myIsQuad + 1 ) > 4 ));
@@ -9444,7 +9444,7 @@ void SMESH_MeshEditor::ConvertToQuadratic(const bool theForce3d, const bool theT
     {
       const SMDS_MeshFace* face = aFaceItr->next();
       if ( !face ) continue;
-      
+
       const SMDSAbs_EntityType type = face->GetEntityType();
       bool alreadyOK;
       switch( type )
@@ -11222,9 +11222,11 @@ bool SMESH_MeshEditor::DoubleNodesOnGroupBoundaries( const std::vector<TIDSorted
   //     build the list of cells with only a node or an edge on the border, with their domain and volume indexes
   //     build the list of nodes shared by 2 or more domains, with their domain indexes
 
-  std::map<DownIdType, std::map<int,int>, DownIdCompare> faceDomains; // face --> (id domain --> id volume)
+  // face --> (id domain --> id volume)
+  std::map<DownIdType, std::map<int,int>, DownIdCompare> faceDomains;
   std::map<int,int>celldom; // cell vtkId --> domain
-  std::map<DownIdType, std::map<int,int>, DownIdCompare> cellDomains;  // oldNode --> (id domain --> id cell)
+  // oldNode --> (id domain --> id cell)
+  std::map<DownIdType, std::map<int,int>, DownIdCompare> cellDomains;
   std::map<int, std::map<int,int> > nodeDomains; // oldId -->  (domainId --> newId)
   faceDomains.clear();
   celldom.clear();
@@ -11298,7 +11300,8 @@ bool SMESH_MeshEditor::DoubleNodesOnGroupBoundaries( const std::vector<TIDSorted
                   {
                     // MESSAGE("Domain " << idombis);
                     const TIDSortedElemSet& domainbis = theElems[idombis];
-                    if ( domainbis.count(elem)) ok = true ; // neighbor is in a correct domain : face is kept
+                    // neighbor is in a correct domain : face is kept
+                    if ( domainbis.count(elem)) ok = true ;
                   }
                   if ( ok || onAllBoundaries ) // the characteristics of the face is stored
                   {
@@ -11380,9 +11383,11 @@ bool SMESH_MeshEditor::DoubleNodesOnGroupBoundaries( const std::vector<TIDSorted
   //     junction elements of type prism or hexa. the key is the pair of nodesId (lower first)
   //     the value is the ordered domain ids. (more than 4 domains not taken into account)
 
-  std::map<std::vector<int>, std::vector<int> > edgesMultiDomains; // nodes of edge --> ordered domains
+  // nodes of edge --> ordered domains
+  std::map<std::vector<int>, std::vector<int> > edgesMultiDomains;
   std::map<int, std::vector<int> > mutipleNodes; // nodes multi domains with domain order
-  std::map<int, std::vector<int> > mutipleNodesToFace; // nodes multi domains with domain order to transform in Face (junction between 3 or more 2D domains)
+  // nodes multi domains with domain order to transform in Face (junction between 3 or more 2D domains)
+  std::map<int, std::vector<int> > mutipleNodesToFace;
 
   MESSAGE(".. Duplication of the nodes");
   for (int idomain = idom0; idomain < nbDomains; idomain++)
@@ -11509,8 +11514,10 @@ bool SMESH_MeshEditor::DoubleNodesOnGroupBoundaries( const std::vector<TIDSorted
                               gp_Pnt p1(coords[0], coords[1], coords[2]);
                               gp_Pnt gref;
                               int vtkVolIds[1000];  // an edge can belong to a lot of volumes
-                              map<int, SMDS_VtkVolume*> domvol; // domain --> a volume with the edge
-                              map<int, double> angleDom; // oriented angles between planes defined by edge and volume centers
+                              // domain --> a volume with the edge
+                              map<int, SMDS_VtkVolume*> domvol;
+                              // oriented angles between planes defined by edge and volume centers
+                              map<int, double> angleDom;
                               int nbvol = grid->GetParentVolumes(vtkVolIds, downEdgeIds[ie], edgeType[ie]);
                               for (int id=0; id < doms.size(); id++)
                                 {
@@ -11695,7 +11702,8 @@ bool SMESH_MeshEditor::DoubleNodesOnGroupBoundaries( const std::vector<TIDSorted
   //     associate these faces or edges to their corresponding domain.
   //     only the first domain found is kept when a face or edge is shared
 
-  std::map<DownIdType, std::map<int,int>, DownIdCompare> faceOrEdgeDom; // cellToModify --> (id domain --> id cell)
+  // cellToModify --> (id domain --> id cell)
+  std::map<DownIdType, std::map<int,int>, DownIdCompare> faceOrEdgeDom;
   std::map<int,int> feDom; // vtk id of cell to modify --> id domain
   faceOrEdgeDom.clear();
   feDom.clear();
@@ -11725,7 +11733,8 @@ bool SMESH_MeshEditor::DoubleNodesOnGroupBoundaries( const std::vector<TIDSorted
                     {
                       feDom[vtkId] = idomain;
                       faceOrEdgeDom[aCell] = emptyMap;
-                      faceOrEdgeDom[aCell][idomain] = vtkId; // affect face or edge to the first domain only
+                      // affect face or edge to the first domain only
+                      faceOrEdgeDom[aCell][idomain] = vtkId;
                       //MESSAGE("affect cell " << this->GetMeshDS()->fromVtkToSmds(vtkId) << " domain " << idomain
                       //        << " type " << vtkType << " downId " << downId);
                     }
@@ -11782,7 +11791,8 @@ bool SMESH_MeshEditor::DoubleNodesOnGroupBoundaries( const std::vector<TIDSorted
       myMesh->RemoveGroup( name_group->second->GetGroupDS()->GetID() );
   }
 
-  meshDS->CleanDownWardConnectivity(); // Mesh has been modified, downward connectivity is no more usable, free memory
+  // Mesh has been modified, downward connectivity is no more usable, free memory
+  meshDS->CleanDownWardConnectivity();
   grid->BuildLinks();
 
   CHRONOSTOP(50);
@@ -12279,8 +12289,10 @@ void SMESH_MeshEditor::CreateHoleSkin(double radius,
   //     fill group of SMDS faces inside the volume (when several volume shapes)
   //     fill group of SMDS faces on the skin of the global volume (if skin)
 
-  std::map<DownIdType, int, DownIdCompare> boundaryFaces; // boundary faces inside the volume --> corresponding cell
-  std::map<DownIdType, int, DownIdCompare> skinFaces;     // faces on the skin of the global volume --> corresponding cell
+  // boundary faces inside the volume --> corresponding cell
+  std::map<DownIdType, int, DownIdCompare> boundaryFaces;
+  // faces on the skin of the global volume --> corresponding cell
+  std::map<DownIdType, int, DownIdCompare> skinFaces;
   std::set<int>::iterator it = setOfInsideVol.begin();
   for (; it != setOfInsideVol.end(); ++it)
     {
@@ -12351,7 +12363,8 @@ void SMESH_MeshEditor::CreateHoleSkin(double radius,
       shapeIdToVtkIdSet[shapeId].insert(vtkId);
     }
 
-  std::map<int, std::set<DownIdType, DownIdCompare> > shapeIdToEdges; // shapeId --> set of downward edges
+  // shapeId --> set of downward edges
+  std::map<int, std::set<DownIdType, DownIdCompare> > shapeIdToEdges;
   std::set<DownIdType, DownIdCompare> emptyEdges;
   emptyEdges.clear();
 
@@ -12399,7 +12412,8 @@ void SMESH_MeshEditor::CreateHoleSkin(double radius,
       order.clear();
       if (nodesEdges.size() > 0)
         {
-          order.push_back(nodesEdges[0]); MESSAGE("       --- back " << order.back()+1); // SMDS id = VTK id + 1;
+          // SMDS id = VTK id + 1;
+          order.push_back(nodesEdges[0]); MESSAGE("       --- back " << order.back()+1);
           nodesEdges[0] = -1;
           order.push_back(nodesEdges[1]); MESSAGE("       --- back " << order.back()+1);
           nodesEdges[1] = -1; // do not reuse this edge
@@ -12746,7 +12760,7 @@ int SMESH_MeshEditor::MakeBoundaryMesh(const TIDSortedElemSet& elements,
                                                                    missType,
                                                                    /*noMedium=*/false))
           continue;
-        SMDS_MeshElement* newElem = 
+        SMDS_MeshElement* newElem =
           tgtEditor.AddElement( nodes, elemKind.SetPoly( nodes.size()/(iQuad+1) > 4 ));
         nbAddedBnd += bool( newElem );
 

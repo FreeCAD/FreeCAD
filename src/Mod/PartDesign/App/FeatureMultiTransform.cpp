@@ -142,7 +142,8 @@ const std::list<gp_Trsf> MultiTransform::getTransformations(const std::vector<Ap
                         double factor = nt->ScaleFactor(); // extract scale factor
 
                         if (factor > Precision::Confusion()) {
-                            trans.SetScale(*oc, factor); // recreate the scaled transformation to use the correct COG
+                            // recreate the scaled transformation to use the correct COG
+                            trans.SetScale(*oc, factor);
                             trans = trans * (*ot);
                             cogs.push_back(*oc); // Scaling does not affect the COG
                         } else {

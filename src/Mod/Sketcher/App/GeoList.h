@@ -221,7 +221,8 @@ private:
     int intGeoCount;
     bool OwnerT;
     mutable bool indexInit;
-    mutable std::vector<Sketcher::GeoElementId> VertexId2GeoElementId; // these maps a lazy initialised on first demand.
+    // these maps a lazy initialised on first demand.
+    mutable std::vector<Sketcher::GeoElementId> VertexId2GeoElementId;
     mutable std::map<Sketcher::GeoElementId, int> GeoElementId2VertexId;
 };
 
@@ -237,4 +238,3 @@ GeoListFacade getGeoListFacade(const GeoList & geolist);
 
 
 #endif // SKETCHER_GeoList_H
-

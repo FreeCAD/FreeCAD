@@ -206,7 +206,8 @@ std::vector<TopoDS_Wire> EdgeWalker::getResultWires()
             TopoDS_Edge e = m_saveInEdges.at((*iEdge).idx);
             topoEdges.push_back(e);
         }
-    TopoDS_Wire w = makeCleanWire(topoEdges, EWTOLERANCE);             //make 1 clean wire from its edges
+    //make 1 clean wire from its edges
+    TopoDS_Wire w = makeCleanWire(topoEdges, EWTOLERANCE);
     fw.push_back(w);
     }
     return fw;
@@ -231,7 +232,8 @@ std::vector<TopoDS_Wire> EdgeWalker::getResultNoDups()
             TopoDS_Edge e = m_saveInEdges.at((*iEdge).idx);
             topoEdges.push_back(e);
         }
-        TopoDS_Wire w = makeCleanWire(topoEdges, EWTOLERANCE);             //make 1 clean wire from its edges
+        //make 1 clean wire from its edges
+        TopoDS_Wire w = makeCleanWire(topoEdges, EWTOLERANCE);
         fw.push_back(w);
     }
     return fw;
@@ -349,7 +351,8 @@ size_t EdgeWalker::findUniqueVert(TopoDS_Vertex vx, std::vector<TopoDS_Vertex> &
 
 std::vector<TopoDS_Wire> EdgeWalker::sortStrip(std::vector<TopoDS_Wire> fw, bool includeBiggest)
 {
-    std::vector<TopoDS_Wire> closedWires;                  //all the wires should be closed, but anomalies happen
+    //all the wires should be closed, but anomalies happen
+    std::vector<TopoDS_Wire> closedWires;
     for (auto& w: fw) {
         if (!w.IsNull() && BRep_Tool::IsClosed(w)) {
             closedWires.push_back(w);
@@ -400,7 +403,8 @@ std::vector<embedItem> EdgeWalker::makeEmbedding(const std::vector<TopoDS_Edge> 
     //for each vertex v
     //  find all the edges that have v as first or last vertex
     for (auto& v: uniqueVList) {
-        TopoDS_Vertex cv = v;               //v is const but we need non-const for vertexEqual
+        //v is const but we need non-const for vertexEqual
+        TopoDS_Vertex cv = v;
         std::size_t iEdge = 0;
         std::vector<incidenceItem> iiList;
         for (auto& e: edges) {

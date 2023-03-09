@@ -157,7 +157,8 @@ private:
 
     // measurements
     float boundingBoxMaxMagnitude = 100;
-    double combrepscale = 0; // the repscale that would correspond to this comb based only on this calculation.
+    // the repscale that would correspond to this comb based only on this calculation.
+    double combrepscale = 0;
     std::vector<int> bsplineGeoIds;
 
 };
@@ -167,4 +168,3 @@ private:
 
 
 #endif // SKETCHERGUI_GeometryCoinConverter_H
-

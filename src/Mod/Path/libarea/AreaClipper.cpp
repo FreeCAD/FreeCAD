@@ -317,7 +317,8 @@ static void MakePoly(const CCurve& curve, TPolygon &p, bool reverse = false)
 	p.resize(pts_for_AddVertex.size());
     if(reverse)
     {
-        std::size_t i = pts_for_AddVertex.size() - 1;// clipper wants them the opposite way to CArea
+        // clipper wants them the opposite way to CArea
+        std::size_t i = pts_for_AddVertex.size() - 1;
         for(std::list<DoubleAreaPoint>::iterator It = pts_for_AddVertex.begin(); It != pts_for_AddVertex.end(); It++, i--)
         {
             p[i] = It->int_point();
@@ -336,7 +337,7 @@ static void MakePoly(const CCurve& curve, TPolygon &p, bool reverse = false)
 static void MakePolyPoly( const CArea& area, TPolyPolygon &pp, bool reverse = true ){
 	pp.clear();
 
-	for(std::list<CCurve>::const_iterator It = area.m_curves.begin(); It != area.m_curves.end(); It++) 
+	for(std::list<CCurve>::const_iterator It = area.m_curves.begin(); It != area.m_curves.end(); It++)
     {
         pp.push_back(TPolygon());
         MakePoly(*It,pp.back(),reverse);
@@ -368,7 +369,7 @@ static void SetFromResult( CCurve& curve, TPolygon& p, bool reverse = true, bool
 static void SetFromResult( CArea& area, TPolyPolygon& pp, bool reverse=true, bool is_closed=true, bool clear=true)
 {
 	// delete existing geometry
-    if(clear) 
+    if(clear)
 	    area.m_curves.clear();
 
 	for(unsigned int i = 0; i < pp.size(); i++)
@@ -487,7 +488,7 @@ void CArea::PopulateClipper(Clipper &c, PolyType type) const
 		MakePoly(curve, p, false);
         c.AddPath(p, type, closed);
 	}
-    if(skipped) 
+    if(skipped)
         std::cout << "libarea: warning skipped " << skipped << " open wires" << std::endl;
 }
 
@@ -509,7 +510,7 @@ void CArea::Clip(ClipType op, const CArea *a,
 	SetFromResult(*this, solution, false, false, false);
 }
 
-void CArea::OffsetWithClipper(double offset, 
+void CArea::OffsetWithClipper(double offset,
                               JoinType joinType/* =jtRound */,
                               EndType endType/* =etOpenRound */,
                               double miterLimit/*  = 5.0 */,
@@ -533,7 +534,7 @@ void CArea::OffsetWithClipper(double offset,
 	TPolyPolygon pp, pp2;
 	MakePolyPoly(*this, pp, false);
     int i=0;
-    for(const CCurve &c : m_curves) 
+    for(const CCurve &c : m_curves)
         clipper.AddPath(pp[i++],joinType,c.IsClosed()?etClosedPolygon:endType);
     clipper.Execute(pp2,(long64)(offset));
 	SetFromResult(*this, pp2, false);

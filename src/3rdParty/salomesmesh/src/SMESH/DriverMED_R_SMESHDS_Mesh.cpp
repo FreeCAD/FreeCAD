@@ -110,7 +110,8 @@ Driver_Mesh::Status DriverMED_R_SMESHDS_Mesh::Perform()
 #endif
     myFamilies.clear();
     if(MYDEBUG) MESSAGE("Perform - myFile : "<<myFile);
-    PWrapper aMed = CrWrapper(myFile,false); // We are using the internal MED file version checker instead of an external reader
+    // We are using the internal MED file version checker instead of an external reader
+    PWrapper aMed = CrWrapper(myFile,false);
 
     aResult = DRS_EMPTY;
     TInt aNbMeshes = aMed->GetNbMeshes();
@@ -423,13 +424,13 @@ Driver_Mesh::Status DriverMED_R_SMESHDS_Mesh::Perform()
                 {
                   aNodeIds[iNode++] = aConnSlice[iConn];
                 }
-#endif          
+#endif
               }
 
               bool isRenum = false;
               SMDS_MeshElement* anElement = NULL;
               TInt aFamNum = aPolyedreInfo->GetFamNum(iElem);
-                
+
 #ifndef _DEXCEPT_
               try{
 #endif
@@ -450,7 +451,7 @@ Driver_Mesh::Status DriverMED_R_SMESHDS_Mesh::Perform()
               }catch(...){
                 aResult = DRS_FAIL;
               }
-#endif          
+#endif
               if(!anElement){
                 aResult = DRS_WARN_SKIP_ELEM;
               }else{
@@ -527,7 +528,7 @@ Driver_Mesh::Status DriverMED_R_SMESHDS_Mesh::Perform()
                 INFOS("Unknown exception was caught !!!");
                 aResult = addMessage( "Unknown exception", /*isFatal=*/true );
               }
-#endif          
+#endif
               if(!anIsValidConnect)
                 continue;
 
@@ -1237,7 +1238,7 @@ bool DriverMED::buildMeshGrille(const MED::PWrapper&  theWrapper,
           aFamily->SetType(SMDSAbs_Node);
         }
     }
-    
+
   }
 
   SMDS_MeshElement* anElement = NULL;

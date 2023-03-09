@@ -275,7 +275,8 @@ QPainterPath QGIViewPart::geomToPainterPath(BaseGeomPtr baseGeom, double rot)
                         Base::Console().Error(
                             "Bad pole count (%d) for BezierSegment of B-spline geometry\n",
                             it->poles);
-                        path.lineTo(it->pnts[1].x, it->pnts[1].y);//show something for debugging
+                        //show something for debugging
+                        path.lineTo(it->pnts[1].x, it->pnts[1].y);
                     }
                 }
             }
@@ -304,7 +305,8 @@ QPainterPath QGIViewPart::geomToPainterPath(BaseGeomPtr baseGeom, double rot)
                         Base::Console().Error(
                             "Bad pole count (%d) for BezierSegment of B-spline geometry\n",
                             it->poles);
-                        path.lineTo(it->pnts[1].x, it->pnts[1].y);//show something for debugging
+                        //show something for debugging
+                        path.lineTo(it->pnts[1].x, it->pnts[1].y);
                     }
                 }
             }
@@ -818,7 +820,8 @@ void QGIViewPart::drawSectionLine(TechDraw::DrawViewSection* viewSection, bool b
 
         //which way do the arrows point?
         Base::Vector3d arrowDir = viewSection->SectionNormal.getValue();
-        arrowDir = -viewPart->projectPoint(arrowDir);      //arrows point reverse of sectionNormal
+        //arrows point reverse of sectionNormal
+        arrowDir = -viewPart->projectPoint(arrowDir);
         sectionLine->setDirection(arrowDir.x, -arrowDir.y);//3d direction needs Y inversion
 
         if (vp->SectionLineMarks.getValue()) {
@@ -1173,7 +1176,8 @@ void QGIViewPart::toggleCache(bool state)
 {
     QList<QGraphicsItem*> items = childItems();
     for (QList<QGraphicsItem*>::iterator it = items.begin(); it != items.end(); it++) {
-        //(*it)->setCacheMode((state)? DeviceCoordinateCache : NoCache);        //TODO: fiddle cache settings if req'd for performance
+        //TODO: fiddle cache settings if req'd for performance
+        //(*it)->setCacheMode((state)? DeviceCoordinateCache : NoCache);
         Q_UNUSED(state);
         (*it)->setCacheMode(NoCache);
         (*it)->update();
@@ -1300,6 +1304,7 @@ bool QGIViewPart::prefPrintCenters()
                                              .GetGroup("BaseApp")
                                              ->GetGroup("Preferences")
                                              ->GetGroup("Mod/TechDraw/Decorations");
-    bool printCenters = hGrp->GetBool("PrintCenterMarks", false);//true matches v0.18 behaviour
+    //true matches v0.18 behaviour
+    bool printCenters = hGrp->GetBool("PrintCenterMarks", false);
     return printCenters;
 }

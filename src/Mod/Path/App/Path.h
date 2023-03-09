@@ -59,9 +59,11 @@ namespace Path
             void insertCommand(const Command &Cmd, int); // inserts a command
             void deleteCommand(int); // deletes a command
             double getLength(void); // return the Length (mm) of the Path
-            double getCycleTime(double, double, double, double); // return the Cycle Time (s) of the Path
+            // return the Cycle Time (s) of the Path
+            double getCycleTime(double, double, double, double);
             void recalculate(void); // recalculates the points
-            void setFromGCode(const std::string); // sets the path from the contents of the given GCode string
+            // sets the path from the contents of the given GCode string
+            void setFromGCode(const std::string);
             std::string toGCode(void) const; // gets a gcode string representation from the Path
             Base::BoundBox3d getBoundBox(void) const;
 

@@ -110,7 +110,8 @@ void ViewProviderFemConstraintFixed::updateData(const App::Property* prop)
 {
     // Gets called whenever a property of the attached object changes
     Fem::ConstraintFixed *pcConstraint = static_cast<Fem::ConstraintFixed *>(this->getObject());
-    float scaledwidth = WIDTH * pcConstraint->Scale.getValue(); //OvG: Calculate scaled values once only
+    //OvG: Calculate scaled values once only
+    float scaledwidth = WIDTH * pcConstraint->Scale.getValue();
     float scaledheight = HEIGHT * pcConstraint->Scale.getValue();
 
 #ifdef USE_MULTIPLE_COPY

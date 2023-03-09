@@ -111,7 +111,8 @@ public:
                 poleGeoIds.push_back(getHighestCurveIndex());
 
                 Gui::cmdAppObjectArgs(sketchgui->getObject(), "addConstraint(Sketcher.Constraint('Weight',%d,%f)) ",
-                                      poleGeoIds.back(), 1.0 ); // First pole defaults to 1.0 weight
+                                      // First pole defaults to 1.0 weight
+                                      poleGeoIds.back(), 1.0 );
             }
             catch (const Base::Exception& e) {
                 Base::Console().Error("%s\n", e.what());
@@ -480,7 +481,8 @@ private:
                  * right button of the mouse */
             }
             else{
-                sketchgui->purgeHandler(); // no code after this line, Handler get deleted in ViewProvider
+                // no code after this line, Handler get deleted in ViewProvider
+                sketchgui->purgeHandler();
             }
         }
         else {
@@ -513,4 +515,3 @@ protected:
 
 
 #endif // SKETCHERGUI_DrawSketchHandlerBSpline_H
-

@@ -126,7 +126,8 @@ void EditModeInformationOverlayCoinConverter::calculate(const Part::Geometry * g
         if (spline->isPeriodic())
             controlPolygon.coordinates.emplace_back(poles[0]);
 
-        controlPolygon.indices.push_back(nvertices); // single continuous polygon starting at index 0
+        // single continuous polygon starting at index 0
+        controlPolygon.indices.push_back(nvertices);
     }
     else if constexpr (calculation == CalculationType::BSplineCurvatureComb ) {
 
@@ -195,8 +196,10 @@ void EditModeInformationOverlayCoinConverter::calculate(const Part::Geometry * g
             pointatcomblist.emplace_back(pointatcurvelist[i] - overlayParameters.currentBSplineCombRepresentationScale * curvaturelist[i] * normallist[i]);
         }
 
-        curvatureComb.coordinates.reserve(3*ndiv); // 2*ndiv +1 points of ndiv separate segments + ndiv points for last segment
-        curvatureComb.indices.reserve(ndiv+1); // ndiv separate segments of radials + 1 segment connecting at comb end
+        // 2*ndiv +1 points of ndiv separate segments + ndiv points for last segment
+        curvatureComb.coordinates.reserve(3*ndiv);
+        // ndiv separate segments of radials + 1 segment connecting at comb end
+        curvatureComb.indices.reserve(ndiv+1);
 
         auto zInfoH = ViewProviderSketchCoinAttorney::getViewOrientationFactor(viewProvider) * drawingParameters.zInfo;
 
@@ -209,7 +212,8 @@ void EditModeInformationOverlayCoinConverter::calculate(const Part::Geometry * g
         }
 
         for (int i = 0; i < ndiv; i++)
-            curvatureComb.coordinates.emplace_back(pointatcomblist[i].x, pointatcomblist[i].y, zInfoH); // // comb endpoint closing segment
+            // // comb endpoint closing segment
+            curvatureComb.coordinates.emplace_back(pointatcomblist[i].x, pointatcomblist[i].y, zInfoH);
 
         curvatureComb.indices.emplace_back(ndiv); // Comb line
     }

@@ -653,9 +653,11 @@ QPixmap QGIFace::textureFromSvg(std::string fileSpec)
     if (ffi.isReadable()) {
         QSvgRenderer renderer(qs);
         QPixmap pixMap(renderer.defaultSize());
-        pixMap.fill(Qt::white);                                            //try  Qt::transparent?
+        //try  Qt::transparent?
+        pixMap.fill(Qt::white);
         QPainter painter(&pixMap);
-        renderer.render(&painter);                                         //svg texture -> bitmap
+        //svg texture -> bitmap
+        renderer.render(&painter);
         result = pixMap.scaled(m_fillScale, m_fillScale);
     }  //else return empty pixmap
     return result;

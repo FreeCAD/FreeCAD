@@ -437,7 +437,8 @@ void ViewProviderFemPostPlaneFunction::onChanged(const App::Property* prop)
             // get current matrix
             SbVec3f t, s;
             SbRotation r, so;
-            SbMatrix matrix = getManipulator()->getDragger()->getMotionMatrix(); // clazy:exclude=rule-of-two-soft
+            // clazy:exclude=rule-of-two-soft
+            SbMatrix matrix = getManipulator()->getDragger()->getMotionMatrix();
             matrix.getTransform(t, r, s, so);
 
             float scale = static_cast<float>(Scale.getValue());

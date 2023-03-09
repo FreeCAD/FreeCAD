@@ -150,7 +150,8 @@ CoinRiftWidget::CoinRiftWidget() : QGLWidget()
     cfg.OGL.Header.Multisample = backBufferMultisample;
     cfg.OGL.Window = reinterpret_cast<HWND>(winId());
     makeCurrent();
-    //cfg.OGL.WglContext = wglGetCurrentContext(); // http://stackoverflow.com/questions/17532033/qglwidget-get-gl-contextes-for-windows
+    //cfg.OGL.WglContext = wglGetCurrentContext();
+    // http://stackoverflow.com/questions/17532033/qglwidget-get-gl-contextes-for-windows
     cfg.OGL.DC = wglGetCurrentDC();
     qDebug() << "Window:" << cfg.OGL.Window;
     //qDebug() << "Context:" << cfg.OGL.WglContext;
@@ -376,7 +377,8 @@ void CoinRiftWidget::paintGL()
 #endif
 #ifdef USE_FRAMEBUFFER
         // Clear state pollution from OVR SDK.
-        glBindTexture(GL_TEXTURE_2D, 0); // You need this, at least if (hmdDesc.DistortionCaps & ovrDistortion_Chromatic).
+        glBindTexture(GL_TEXTURE_2D, 0);
+        // You need this, at least if (hmdDesc.DistortionCaps & ovrDistortion_Chromatic).
         OVR::CAPI::GL::glUseProgram(0); // You need this even more.
 
         GLint oldfb;

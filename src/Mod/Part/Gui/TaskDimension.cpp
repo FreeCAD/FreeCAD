@@ -371,7 +371,8 @@ void PartGui::ensureSomeDimensionVisible()
   bool visibilityDelta = group->GetBool("DimensionsDeltaVisible", true);
 
   if (!visibility3d && !visibilityDelta) //both turned off.
-    group->SetBool("Dimensions3dVisible", true); //turn on 3d, so something is visible.
+    //turn on 3d, so something is visible.
+    group->SetBool("Dimensions3dVisible", true);
 }
 
 void PartGui::ensure3dDimensionVisible()

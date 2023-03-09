@@ -220,7 +220,7 @@ void Rotation::setValue(const double q[4])
 
 void Rotation::setValue(const Matrix4D & m)
 {
-    
+
     auto type = m.hasScale();
     if (type == Base::ScaleType::Other) {
         THROWM(Base::ValueError, "setValue(matrix): Could not determine the rotation.");
@@ -609,7 +609,8 @@ Rotation Rotation::makeRotationByAxes(Vector3d xdir, Vector3d ydir, Vector3d zdi
         else
             dropPriority(1);
         if (i == 1)
-            hintDir = Vector3d(); //no vector can be used as hint direction. Zero it out, to indicate that a guess is needed.
+            //no vector can be used as hint direction. Zero it out, to indicate that a guess is needed.
+            hintDir = Vector3d();
     }
     if (hintDir.Length() == 0.0){
         switch (order[0]){
@@ -811,8 +812,8 @@ bool Rotation::isNull() const
 namespace { // anonymous namespace
 //=======================================================================
 //function : translateEulerSequence
-//purpose  : 
-// Code supporting conversion between quaternion and generalized 
+//purpose  :
+// Code supporting conversion between quaternion and generalized
 // Euler angles (sequence of three rotations) is based on
 // algorithm by Ken Shoemake, published in Graphics Gems IV, p. 222-22
 // http://tog.acm.org/resources/GraphicsGems/gemsiv/euler_angle/EulerAngles.c
@@ -824,18 +825,18 @@ struct EulerSequence_Parameters
     int j;           // next axis of rotation
     int k;           // third axis
     bool isOdd;       // true if order of two first rotation axes is odd permutation, e.g. XZ
-    bool isTwoAxes;   // true if third rotation is about the same axis as first 
+    bool isTwoAxes;   // true if third rotation is about the same axis as first
     bool isExtrinsic; // true if rotations are made around fixed axes
 
-    EulerSequence_Parameters (int theAx1, 
-                              bool theisOdd, 
+    EulerSequence_Parameters (int theAx1,
+                              bool theisOdd,
                               bool theisTwoAxes,
                               bool theisExtrinsic)
-        : i(theAx1), 
-        j(1 + (theAx1 + (theisOdd ? 1 : 0)) % 3), 
-        k(1 + (theAx1 + (theisOdd ? 0 : 1)) % 3), 
-        isOdd(theisOdd), 
-        isTwoAxes(theisTwoAxes), 
+        : i(theAx1),
+        j(1 + (theAx1 + (theisOdd ? 1 : 0)) % 3),
+        k(1 + (theAx1 + (theisOdd ? 0 : 1)) % 3),
+        isOdd(theisOdd),
+        isTwoAxes(theisTwoAxes),
         isExtrinsic(theisExtrinsic)
         {}
 };
@@ -978,36 +979,36 @@ void Rotation::setEulerAngles(EulerSequence theOrder,
     if ( o.isOdd )
         b = -b;
 
-    double ti = 0.5 * a; 
-    double tj = 0.5 * b; 
+    double ti = 0.5 * a;
+    double tj = 0.5 * b;
     double th = 0.5 * c;
-    double ci = cos (ti);  
-    double cj = cos (tj);  
+    double ci = cos (ti);
+    double cj = cos (tj);
     double ch = cos (th);
     double si = sin (ti);
     double sj = sin (tj);
     double sh = sin (th);
-    double cc = ci * ch; 
-    double cs = ci * sh; 
-    double sc = si * ch; 
+    double cc = ci * ch;
+    double cs = ci * sh;
+    double sc = si * ch;
     double ss = si * sh;
 
     double values[4]; // w, x, y, z
-    if ( o.isTwoAxes ) 
+    if ( o.isTwoAxes )
     {
         values[o.i] = cj * (cs + sc);
         values[o.j] = sj * (cc + ss);
         values[o.k] = sj * (cs - sc);
         values[0]   = cj * (cc - ss);
-    } 
-    else 
+    }
+    else
     {
         values[o.i] = cj * sc - sj * cs;
         values[o.j] = cj * ss + sj * cc;
         values[o.k] = cj * cs - sj * sc;
         values[0]   = cj * cc + sj * ss;
     }
-    if ( o.isOdd ) 
+    if ( o.isOdd )
         values[o.j] = -values[o.j];
 
     quat[0] = values[1];
@@ -1025,45 +1026,45 @@ void Rotation::getEulerAngles(EulerSequence theOrder,
     getValue(M);
 
     EulerSequence_Parameters o = translateEulerSequence (theOrder);
-    if ( o.isTwoAxes ) 
+    if ( o.isTwoAxes )
     {
         double sy = sqrt (M(o.i, o.j) * M(o.i, o.j) + M(o.i, o.k) * M(o.i, o.k));
-        if (sy > 16 * DBL_EPSILON) 
+        if (sy > 16 * DBL_EPSILON)
         {
             theAlpha = atan2 (M(o.i, o.j),  M(o.i, o.k));
             theGamma = atan2 (M(o.j, o.i), -M(o.k, o.i));
-        } 
-        else 
+        }
+        else
         {
             theAlpha = atan2 (-M(o.j, o.k), M(o.j, o.j));
             theGamma = 0.;
         }
         theBeta = atan2 (sy, M(o.i, o.i));
-    } 
-    else 
+    }
+    else
     {
         double cy = sqrt (M(o.i, o.i) * M(o.i, o.i) + M(o.j, o.i) * M(o.j, o.i));
-        if (cy > 16 * DBL_EPSILON) 
+        if (cy > 16 * DBL_EPSILON)
         {
             theAlpha = atan2 (M(o.k, o.j), M(o.k, o.k));
             theGamma = atan2 (M(o.j, o.i), M(o.i, o.i));
-        } 
-        else 
+        }
+        else
         {
             theAlpha = atan2 (-M(o.j, o.k), M(o.j, o.j));
             theGamma = 0.;
         }
         theBeta = atan2 (-M(o.k, o.i), cy);
     }
-    if ( o.isOdd ) 
+    if ( o.isOdd )
     {
         theAlpha = -theAlpha;
         theBeta  = -theBeta;
         theGamma = -theGamma;
     }
-    if ( ! o.isExtrinsic ) 
-    { 
-        double aFirst = theAlpha; 
+    if ( ! o.isExtrinsic )
+    {
+        double aFirst = theAlpha;
         theAlpha = theGamma;
         theGamma = aFirst;
     }

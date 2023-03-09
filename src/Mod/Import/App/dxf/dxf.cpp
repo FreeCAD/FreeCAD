@@ -1113,7 +1113,8 @@ void CDxfWrite::writeLinearDim(const double* textMidPoint, const double* lineDef
     if ( (type == HORIZONTAL) ||
          (type == VERTICAL) ) {
         (*m_ssEntity) << " 70"          << endl;
-        (*m_ssEntity) << 32             << endl;  // dimType0 = Aligned + 32 (bit for unique block)?
+        // dimType0 = Aligned + 32 (bit for unique block)?
+        (*m_ssEntity) << 32             << endl;
     }
 //    (*m_ssEntity) << " 71"          << endl;    // not R12
 //    (*m_ssEntity) << 1              << endl;    // attachPoint ??1 = topleft

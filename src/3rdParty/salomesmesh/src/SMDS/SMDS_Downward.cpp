@@ -236,7 +236,8 @@ void SMDS_Down1D::compactStorage()
     sizeUpCells += _upCellIdsVector[i].size();
   _upCellIds.resize(sizeUpCells, -1);
   _upCellTypes.resize(sizeUpCells);
-  _upCellIndex.resize(_maxId + 1, -1); // id and types of rank i correspond to [ _upCellIndex[i], _upCellIndex[i+1] [
+  // id and types of rank i correspond to [ _upCellIndex[i], _upCellIndex[i+1] [
+  _upCellIndex.resize(_maxId + 1, -1);
   int current = 0;
   for (int i = 0; i < _maxId; i++)
     {
@@ -2242,4 +2243,3 @@ void SMDS_DownQuadHexa::computeFacesWithNodes(int cellId, ListElemByNodesType& f
 }
 
 // ---------------------------------------------------------------------------
-

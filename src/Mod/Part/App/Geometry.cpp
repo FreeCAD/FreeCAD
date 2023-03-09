@@ -1835,7 +1835,8 @@ double GeomConic::getAngleXU() const
     gp_Dir xdir = conic->XAxis().Direction();
 
 
-    gp_Ax2 xdirref(center, normal); // this is a reference system, might be CCW or CW depending on the creation method
+    // this is a reference system, might be CCW or CW depending on the creation method
+    gp_Ax2 xdirref(center, normal);
 
     return -xdir.AngleWithRef(xdirref.XDirection(),normal);
 
@@ -2128,7 +2129,8 @@ double GeomArcOfConic::getAngleXU() const
     gp_Dir normal = conic->Axis().Direction();
     gp_Dir xdir = conic->XAxis().Direction();
 
-    gp_Ax2 xdirref(center, normal); // this is a reference system, might be CCW or CW depending on the creation method
+    // this is a reference system, might be CCW or CW depending on the creation method
+    gp_Ax2 xdirref(center, normal);
 
     return -xdir.AngleWithRef(xdirref.XDirection(),normal);
 }
@@ -2472,7 +2474,8 @@ void GeomArcOfCircle::getRange(double& u, double& v, bool emulateCCWXY) const
     if (emulateCCWXY){
         Handle(Geom_Conic) conic = Handle(Geom_Conic)::DownCast(curve->BasisCurve());
         double angleXU = -conic->Position().XDirection().AngleWithRef(gp_Dir(1.0,0.0,0.0), gp_Dir(0.0,0.0,1.0));
-        double u1 = u, v1 = v;//the true arc curve parameters, cached. u,v will contain the rotation-corrected and swapped angles.
+        //the true arc curve parameters, cached. u,v will contain the rotation-corrected and swapped angles.
+        double u1 = u, v1 = v;
         if (conic->Axis().Direction().Z() > 0.0){
             //normal CCW arc
             u = u1 + angleXU;
@@ -2507,7 +2510,8 @@ void GeomArcOfCircle::setRange(double u, double v, bool emulateCCWXY)
         if (emulateCCWXY){
             Handle(Geom_Conic) conic = Handle(Geom_Conic)::DownCast(curve->BasisCurve());
             double angleXU = -conic->Position().XDirection().AngleWithRef(gp_Dir(1.0,0.0,0.0), gp_Dir(0.0,0.0,1.0));
-            double u1 = u, v1 = v;//the values that were passed, ccw angles from X axis. u,v will contain the rotation-corrected and swapped angles.
+            //the values that were passed, ccw angles from X axis. u,v will contain the rotation-corrected and swapped angles.
+            double u1 = u, v1 = v;
             if (conic->Axis().Direction().Z() > 0.0){
                 //normal CCW arc
                 u = u1 - angleXU;
@@ -2776,7 +2780,8 @@ void GeomEllipse::setMajorAxisDir(Base::Vector3d newdir)
         return;//zero vector was passed. Keep the old orientation.
     try {
         gp_Ax2 pos = myCurve->Position();
-        pos.SetXDirection(gp_Dir(newdir.x, newdir.y, newdir.z));//OCC should keep the old main Direction (Z), and change YDirection to accommodate the new XDirection.
+        //OCC should keep the old main Direction (Z), and change YDirection to accommodate the new XDirection.
+        pos.SetXDirection(gp_Dir(newdir.x, newdir.y, newdir.z));
         myCurve->SetPosition(pos);
     }
     catch (Standard_Failure& e) {
@@ -2991,7 +2996,8 @@ void GeomArcOfEllipse::setMajorAxisDir(Base::Vector3d newdir)
         return;//zero vector was passed. Keep the old orientation.
     try {
         gp_Ax2 pos = c->Position();
-        pos.SetXDirection(gp_Dir(newdir.x, newdir.y, newdir.z));//OCC should keep the old main Direction (Z), and change YDirection to accommodate the new XDirection.
+        //OCC should keep the old main Direction (Z), and change YDirection to accommodate the new XDirection.
+        pos.SetXDirection(gp_Dir(newdir.x, newdir.y, newdir.z));
         c->SetPosition(pos);
     }
     catch (Standard_Failure& e) {
@@ -3426,7 +3432,8 @@ void GeomArcOfHyperbola::setMajorAxisDir(Base::Vector3d newdir)
 
     try {
         gp_Ax2 pos = c->Position();
-        pos.SetXDirection(gp_Dir(newdir.x, newdir.y, newdir.z));//OCC should keep the old main Direction (Z), and change YDirection to accommodate the new XDirection.
+        //OCC should keep the old main Direction (Z), and change YDirection to accommodate the new XDirection.
+        pos.SetXDirection(gp_Dir(newdir.x, newdir.y, newdir.z));
         c->SetPosition(pos);
     }
     catch (Standard_Failure& e) {

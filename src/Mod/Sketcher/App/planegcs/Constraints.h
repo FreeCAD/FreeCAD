@@ -110,7 +110,8 @@ namespace GCS
         VEC_pD pvec;
         double scale;
         int tag;
-        bool pvecChangedFlag;  //indicates that pvec has changed and saved pointers must be reconstructed (currently used only in AngleViaPoint)
+        //indicates that pvec has changed and saved pointers must be reconstructed (currently used only in AngleViaPoint)
+        bool pvecChangedFlag;
         bool driving;
         Alignment internalAlignment;
 
@@ -533,8 +534,10 @@ namespace GCS
     private:
         Line l;
         Ellipse e;
-        void ReconstructGeomPointers(); //writes pointers in pvec to the parameters of crv1, crv2 and poa
-        void errorgrad(double* err, double* grad, double *param); //error and gradient combined. Values are returned through pointers.
+        //writes pointers in pvec to the parameters of crv1, crv2 and poa
+        void ReconstructGeomPointers();
+        //error and gradient combined. Values are returned through pointers.
+        void errorgrad(double* err, double* grad, double *param);
     public:
         ConstraintEllipseTangentLine(Line &l, Ellipse &e);
         ConstraintType getTypeId() override;
@@ -552,8 +555,10 @@ namespace GCS
         double error() override;
         double grad(double *) override;
     private:
-        void errorgrad(double* err, double* grad, double *param); //error and gradient combined. Values are returned through pointers.
-        void ReconstructGeomPointers(); //writes pointers in pvec to the parameters of crv1, crv2 and poa
+        //error and gradient combined. Values are returned through pointers.
+        void errorgrad(double* err, double* grad, double *param);
+        //writes pointers in pvec to the parameters of crv1, crv2 and poa
+        void ReconstructGeomPointers();
         Ellipse e;
         Point p;
         InternalAlignmentType AlignmentType;
@@ -568,8 +573,10 @@ namespace GCS
         double error() override;
         double grad(double *) override;
     private:
-        void errorgrad(double* err, double* grad, double *param); //error and gradient combined. Values are returned through pointers.
-        void ReconstructGeomPointers(); //writes pointers in pvec to the parameters of crv1, crv2 and poa
+        //error and gradient combined. Values are returned through pointers.
+        void errorgrad(double* err, double* grad, double *param);
+        //writes pointers in pvec to the parameters of crv1, crv2 and poa
+        void ReconstructGeomPointers();
         Hyperbola e;
         Point p;
         InternalAlignmentType AlignmentType;
@@ -580,8 +587,10 @@ namespace GCS
     private:
         MajorRadiusConic * e1;
         MajorRadiusConic * e2;
-        void ReconstructGeomPointers(); //writes pointers in pvec to the parameters of crv1, crv2 and poa
-        void errorgrad(double* err, double* grad, double *param); //error and gradient combined. Values are returned through pointers.
+        //writes pointers in pvec to the parameters of crv1, crv2 and poa
+        void ReconstructGeomPointers();
+        //error and gradient combined. Values are returned through pointers.
+        void errorgrad(double* err, double* grad, double *param);
     public:
         ConstraintEqualMajorAxesConic(MajorRadiusConic * a1, MajorRadiusConic * a2);
         ConstraintType getTypeId() override;
@@ -595,8 +604,10 @@ namespace GCS
     private:
         ArcOfParabola * e1;
         ArcOfParabola * e2;
-        void ReconstructGeomPointers(); //writes pointers in pvec to the parameters of crv1, crv2 and poa
-        void errorgrad(double* err, double* grad, double *param); //error and gradient combined. Values are returned through pointers.
+        //writes pointers in pvec to the parameters of crv1, crv2 and poa
+        void ReconstructGeomPointers();
+        //error and gradient combined. Values are returned through pointers.
+        void errorgrad(double* err, double* grad, double *param);
     public:
         ConstraintEqualFocalDistance(ArcOfParabola * a1, ArcOfParabola * a2);
         ConstraintType getTypeId() override;
@@ -610,8 +621,10 @@ namespace GCS
     private:
         inline double* pcoord() { return pvec[2]; } //defines, which coordinate of point is being constrained by this constraint
         inline double* u() { return pvec[3]; }
-        void errorgrad(double* err, double* grad, double *param); //error and gradient combined. Values are returned through pointers.
-        void ReconstructGeomPointers(); //writes pointers in pvec to the parameters of crv1, crv2 and poa
+        //error and gradient combined. Values are returned through pointers.
+        void errorgrad(double* err, double* grad, double *param);
+        //writes pointers in pvec to the parameters of crv1, crv2 and poa
+        void ReconstructGeomPointers();
         Curve* crv;
         Point p;
     public:
@@ -658,8 +671,10 @@ namespace GCS
     class ConstraintPointOnParabola : public Constraint
     {
     private:
-        void errorgrad(double* err, double* grad, double *param); //error and gradient combined. Values are returned through pointers.
-        void ReconstructGeomPointers(); //writes pointers in pvec to the parameters of crv1, crv2 and poa
+        //error and gradient combined. Values are returned through pointers.
+        void errorgrad(double* err, double* grad, double *param);
+        //writes pointers in pvec to the parameters of crv1, crv2 and poa
+        void ReconstructGeomPointers();
         Parabola* parab;
         Point p;
     public:
@@ -690,7 +705,8 @@ namespace GCS
         //The pointers in the curves need to be reconstructed if pvec was redirected
         // (test pvecChangedFlag variable before use!)
         Point poa;//poa=point of angle //needs to be reconstructed if pvec was redirected/reverted. The point is easily shallow-copied by C++, so no pointer type here and no delete is necessary.
-        void ReconstructGeomPointers(); //writes pointers in pvec to the parameters of crv1, crv2 and poa
+        //writes pointers in pvec to the parameters of crv1, crv2 and poa
+        void ReconstructGeomPointers();
     public:
         ConstraintAngleViaPoint(Curve &acrv1, Curve &acrv2, Point p, double* angle);
         ~ConstraintAngleViaPoint() override;
@@ -718,8 +734,10 @@ namespace GCS
         // (test pvecChangedFlag variable before use!)
         Point poa;//poa=point of refraction //needs to be reconstructed if pvec was redirected/reverted. The point is easily shallow-copied by C++, so no pointer type here and no delete is necessary.
         bool flipn1, flipn2;
-        void ReconstructGeomPointers(); //writes pointers in pvec to the parameters of crv1, crv2 and poa
-        void errorgrad(double* err, double* grad, double *param); //error and gradient combined. Values are returned through pointers.
+        //writes pointers in pvec to the parameters of crv1, crv2 and poa
+        void ReconstructGeomPointers();
+        //error and gradient combined. Values are returned through pointers.
+        void errorgrad(double* err, double* grad, double *param);
     public:
         //n1dn2 = n1 divided by n2. from n1 to n2. flipn1 = true instructs to flip ray1's tangent
         ConstraintSnell(Curve &ray1, Curve &ray2, Curve &boundary, Point p, double* n1, double* n2, bool flipn1, bool flipn2);
@@ -735,8 +753,10 @@ namespace GCS
     private:
         Line l1;
         Line l2;
-        void ReconstructGeomPointers(); //writes pointers in pvec to the parameters of line1, line2
-        void errorgrad(double* err, double* grad, double *param); //error and gradient combined. Values are returned through pointers.
+        //writes pointers in pvec to the parameters of line1, line2
+        void ReconstructGeomPointers();
+        //error and gradient combined. Values are returned through pointers.
+        void errorgrad(double* err, double* grad, double *param);
     public:
         ConstraintEqualLineLength(Line &l1, Line &l2);
         ConstraintType getTypeId() override;

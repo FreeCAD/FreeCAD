@@ -3354,7 +3354,8 @@ std::string Application::FindHomePath(const char* call)
         uint32_t sz = 0;
         char *buf;
 
-        _NSGetExecutablePath(NULL, &sz); //function only returns "sz" if first arg is to small to hold value
+        //function only returns "sz" if first arg is to small to hold value
+        _NSGetExecutablePath(NULL, &sz);
         buf = new char[++sz];
 
         if (_NSGetExecutablePath(buf, &sz) == 0) {

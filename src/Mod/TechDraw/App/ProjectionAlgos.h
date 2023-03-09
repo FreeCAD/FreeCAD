@@ -64,7 +64,8 @@ public:
                        XmlAttributes H_style=XmlAttributes(),
                        XmlAttributes H0_style=XmlAttributes(),
                        XmlAttributes H1_style=XmlAttributes());
-    std::string getDXF(ExtractionType type, double scale, double tolerance);//added by Dan Falck 2011/09/25
+    //added by Dan Falck 2011/09/25
+    std::string getDXF(ExtractionType type, double scale, double tolerance);
 
 
     const TopoDS_Shape &Input;

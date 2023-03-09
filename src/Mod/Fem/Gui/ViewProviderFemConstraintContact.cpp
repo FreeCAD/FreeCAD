@@ -100,7 +100,8 @@ void ViewProviderFemConstraintContact::updateData(const App::Property* prop)
 {
     // Gets called whenever a property of the attached object changes
     Fem::ConstraintContact* pcConstraint = static_cast<Fem::ConstraintContact*>(this->getObject());
-    float scaledlength = LENGTH * pcConstraint->Scale.getValue(); //OvG: Calculate scaled values once only
+    //OvG: Calculate scaled values once only
+    float scaledlength = LENGTH * pcConstraint->Scale.getValue();
     float scaledheight = HEIGHT * pcConstraint->Scale.getValue();
     float scaledwidth = WIDTH * pcConstraint->Scale.getValue();
 
@@ -137,7 +138,8 @@ void ViewProviderFemConstraintContact::updateData(const App::Property* prop)
             //define color of shape
             SoMaterial *myMaterial = new SoMaterial;
             myMaterial->diffuseColor.set1Value(0, SbColor(1, 1, 1));//RGB
-            //myMaterial->diffuseColor.set1Value(1,SbColor(0,0,1));//possible to adjust sides separately
+            //possible to adjust sides separately
+            //myMaterial->diffuseColor.set1Value(1,SbColor(0,0,1));
             sep->addChild(myMaterial);
 
             //draw a cube

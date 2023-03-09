@@ -339,7 +339,8 @@ void PreferencePackManager::toggleVisibility(const std::string& addonName, const
     }
     else {
         auto groupName = (*hiddenPack)->GetGroupName();
-        hiddenPacks.clear(); // To decrement the reference count of the group we are about the remove...
+        // To decrement the reference count of the group we are about the remove...
+        hiddenPacks.clear();
         pref->RemoveGrp(groupName);
     }
     rescan();

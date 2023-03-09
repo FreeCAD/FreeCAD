@@ -536,7 +536,8 @@ void QGIView::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, Q
 QRectF QGIView::customChildrenBoundingRect() const
 {
     QList<QGraphicsItem*> children = childItems();
-    int dimItemType = QGraphicsItem::UserType + 106;  // TODO: Get magic number from include by name
+    // TODO: Get magic number from include by name
+    int dimItemType = QGraphicsItem::UserType + 106;
     int borderItemType = QGraphicsItem::UserType + 136;  // TODO: Magic number warning
     int labelItemType = QGraphicsItem::UserType + 135;  // TODO: Magic number warning
     int captionItemType = QGraphicsItem::UserType + 180;  // TODO: Magic number warning
@@ -569,7 +570,8 @@ QRectF QGIView::customChildrenBoundingRect() const
 
 QRectF QGIView::boundingRect() const
 {
-    return m_border->rect().adjusted(-2., -2., 2., 2.);     //allow for border line width  //TODO: fiddle brect if border off?
+    //allow for border line width  //TODO: fiddle brect if border off?
+    return m_border->rect().adjusted(-2., -2., 2., 2.);
 }
 
 QGIView* QGIView::getQGIVByName(std::string name)

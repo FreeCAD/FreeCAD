@@ -413,7 +413,8 @@ TopoDS_Shape Helix::generateHelixPath(double startOffset0)
     gp_Dir dir(axisVector.x, axisVector.y, axisVector.z);
 
     Base::Vector3d normal = getProfileNormal();
-    Base::Vector3d start = axisVector.Cross(normal);  // pointing towards the desired helix start point.
+    // pointing towards the desired helix start point.
+    Base::Vector3d start = axisVector.Cross(normal);
 
     // if our axis is (nearly) aligned with the profile's normal, we're only interested in the "twist"
     // of the helix. The actual starting point, and thus the radius, isn't important as long as it's
@@ -508,7 +509,8 @@ TopoDS_Shape Helix::generateHelixPath(double startOffset0)
 double Helix::safePitch()
 {
     Base::Vector3d axisVec = Axis.getValue();
-    Base::Vector3d startVec = axisVec.Cross(getProfileNormal()); // pointing towards the helix start point
+    // pointing towards the helix start point
+    Base::Vector3d startVec = axisVec.Cross(getProfileNormal());
     HelixMode mode = static_cast<HelixMode>(Mode.getValue());
     double growthValue = Growth.getValue();
     double turnsValue = Turns.getValue();

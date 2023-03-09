@@ -137,7 +137,8 @@ public:
     DashSpec          getDashSpec() { return m_hatchLine.getDashParms();}
     Base::Vector3d    calcApparentStart(TechDraw::BaseGeomPtr g);
     Base::Vector3d    findAtomStart();
-    Base::Vector3d    getLineOrigin();                              //point corresponding to pattern origin for this line (O + n*intervalX)
+    //point corresponding to pattern origin for this line (O + n*intervalX)
+    Base::Vector3d    getLineOrigin();
     Base::Vector3d    getPatternStartPoint(TechDraw::BaseGeomPtr g, double &offset, double scale = 1.0);
 
     Bnd_Box getBBox() {return m_box;}

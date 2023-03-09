@@ -269,18 +269,30 @@ public:
     // python exports goes here +++++++++++++++++++++++++++++++++++++++++++
     //---------------------------------------------------------------------
     // static python wrapper of the exported functions
-    static PyObject* sActivateWorkbenchHandler (PyObject *self,PyObject *args); // activates a workbench object
-    static PyObject* sAddWorkbenchHandler      (PyObject *self,PyObject *args); // adds a new workbench handler to a list
-    static PyObject* sRemoveWorkbenchHandler   (PyObject *self,PyObject *args); // removes a workbench handler from the list
-    static PyObject* sGetWorkbenchHandler      (PyObject *self,PyObject *args); // retrieves the workbench handler
-    static PyObject* sListWorkbenchHandlers    (PyObject *self,PyObject *args); // retrieves a list of all workbench handlers
-    static PyObject* sActiveWorkbenchHandler   (PyObject *self,PyObject *args); // retrieves the active workbench object
-    static PyObject* sAddResPath               (PyObject *self,PyObject *args); // adds a path where to find resources
-    static PyObject* sAddLangPath              (PyObject *self,PyObject *args); // adds a path to a qm file
-    static PyObject* sAddIconPath              (PyObject *self,PyObject *args); // adds a path to an icon file
-    static PyObject* sAddIcon                  (PyObject *self,PyObject *args); // adds an icon to the cache
-    static PyObject* sGetIcon                  (PyObject *self,PyObject *args); // get an icon from the cache
-    static PyObject* sIsIconCached             (PyObject *self,PyObject *args); // check if an icon is cached
+    // activates a workbench object
+    static PyObject* sActivateWorkbenchHandler (PyObject *self,PyObject *args);
+    // adds a new workbench handler to a list
+    static PyObject* sAddWorkbenchHandler      (PyObject *self,PyObject *args);
+    // removes a workbench handler from the list
+    static PyObject* sRemoveWorkbenchHandler   (PyObject *self,PyObject *args);
+    // retrieves the workbench handler
+    static PyObject* sGetWorkbenchHandler      (PyObject *self,PyObject *args);
+    // retrieves a list of all workbench handlers
+    static PyObject* sListWorkbenchHandlers    (PyObject *self,PyObject *args);
+    // retrieves the active workbench object
+    static PyObject* sActiveWorkbenchHandler   (PyObject *self,PyObject *args);
+    // adds a path where to find resources
+    static PyObject* sAddResPath               (PyObject *self,PyObject *args);
+    // adds a path to a qm file
+    static PyObject* sAddLangPath              (PyObject *self,PyObject *args);
+    // adds a path to an icon file
+    static PyObject* sAddIconPath              (PyObject *self,PyObject *args);
+    // adds an icon to the cache
+    static PyObject* sAddIcon                  (PyObject *self,PyObject *args);
+    // get an icon from the cache
+    static PyObject* sGetIcon                  (PyObject *self,PyObject *args);
+    // check if an icon is cached
+    static PyObject* sIsIconCached             (PyObject *self,PyObject *args);
 
     static PyObject* sSendActiveView           (PyObject *self,PyObject *args);
     static PyObject* sSendFocusView            (PyObject *self,PyObject *args);
@@ -299,14 +311,19 @@ public:
 
     static PyObject* sHide                     (PyObject *self,PyObject *args); // deprecated
     static PyObject* sShow                     (PyObject *self,PyObject *args); // deprecated
-    static PyObject* sHideObject               (PyObject *self,PyObject *args); // hide view provider object
-    static PyObject* sShowObject               (PyObject *self,PyObject *args); // show view provider object
+    // hide view provider object
+    static PyObject* sHideObject               (PyObject *self,PyObject *args);
+    // show view provider object
+    static PyObject* sShowObject               (PyObject *self,PyObject *args);
 
-    static PyObject* sOpen                     (PyObject *self,PyObject *args); // open Python scripts
-    static PyObject* sInsert                   (PyObject *self,PyObject *args); // open Python scripts
+    // open Python scripts
+    static PyObject* sOpen                     (PyObject *self,PyObject *args);
+    // open Python scripts
+    static PyObject* sInsert                   (PyObject *self,PyObject *args);
     static PyObject* sExport                   (PyObject *self,PyObject *args);
     static PyObject* sReload                   (PyObject *self,PyObject *args); // reload FCStd file
-    static PyObject* sLoadFile                 (PyObject *self,PyObject *args); // open all types of files
+    // open all types of files
+    static PyObject* sLoadFile                 (PyObject *self,PyObject *args);
 
     static PyObject* sCoinRemoveAllChildren    (PyObject *self,PyObject *args);
 

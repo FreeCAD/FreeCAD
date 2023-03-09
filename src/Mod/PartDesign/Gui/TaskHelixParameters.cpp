@@ -354,7 +354,8 @@ void TaskHelixParameters::adaptVisibilityToMode()
 void TaskHelixParameters::assignToolTipsFromPropertyDocs()
 {
     auto pcHelix = static_cast<PartDesign::Helix*>(vp->getObject());
-    const char* propCategory = "App::Property"; // cf. https://tracker.freecadweb.org/view.php?id=0002524
+    // cf. https://tracker.freecadweb.org/view.php?id=0002524
+    const char* propCategory = "App::Property";
     QString toolTip;
 
     // Beware that "Axis" in the GUI actually represents the property "ReferenceAxis"!

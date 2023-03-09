@@ -116,7 +116,8 @@ bool ViewProviderTransformed::setEdit(int ModNum)
     pcRejectedRoot->addChild(rejectedMaterial);
     pcRejectedRoot->addChild(rejectedHints);
     pcRejectedRoot->addChild(rejectedFaceStyle);
-    pcRejectedRoot->addChild(rejectedNormb); // NOTE: The code relies on the last child added here being index 6
+    // NOTE: The code relies on the last child added here being index 6
+    pcRejectedRoot->addChild(rejectedNormb);
     pcRoot->addChild(pcRejectedRoot);
 
     recomputeFeature(false);

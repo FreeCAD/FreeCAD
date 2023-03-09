@@ -447,7 +447,8 @@ void TaskExtrudeParameters::setCheckboxes(Modes mode, Type type)
     }
     else if (mode == Modes::ThroughAll && type == Type::Pocket) {
         isOffsetEditVisible = true;
-        isOffsetEditEnabled = false; // offset may have some meaning for through all but it doesn't work
+        // offset may have some meaning for through all but it doesn't work
+        isOffsetEditEnabled = false;
         isMidplaneEnabled = true;
         isMidplaneVisible = true;
         isReversedEnabled = !ui->checkBoxMidplane->isChecked();

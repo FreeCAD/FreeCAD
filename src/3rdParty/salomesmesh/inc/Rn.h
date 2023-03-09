@@ -62,7 +62,7 @@ typedef char Nom[1+24];
 //=========
 #ifndef PCLINUX64
 typedef unsigned long int N;
-#else 
+#else
 typedef unsigned int N;
 #endif
 
@@ -80,11 +80,12 @@ typedef double R;
 
 //le type XPoint  des coordonnees d'un pixel dans une fenetre
 //==============
-//typedef struct { short int x,y } XPoint;  //en fait ce type est defini dans X11-Window
+//en fait ce type est defini dans X11-Window
+//typedef struct { short int x,y } XPoint;
                                             // #include <X11/Xlib.h>
 //la classe R2
 //============
-class R2 
+class R2
 {
   friend std::ostream& operator << (std::ostream& f, const R2 & P)
   { f << P.x << ' ' << P.y ; return f; }
@@ -135,9 +136,9 @@ class R3
   friend std::istream& operator >> (std::istream& f, R3 * P)
   { f >> P->x >> P->y >> P->z ; return f; }
 
-public:  
+public:
   R  x,y,z;  //les 3 coordonnees
- 
+
   R3 () :x(0),y(0),z(0) {}  //les constructeurs
   R3 (R a,R b,R c):x(a),y(b),z(c)  {}                  //Point ou Vecteur (a,b,c)
   R3 (R3 A,R3 B):x(B.x-A.x),y(B.y-A.y),z(B.z-A.z)  {}  //Vecteur AB
@@ -188,9 +189,9 @@ class R4: public R3
   friend std::istream& operator >>(std::istream& f,  R4 * P)
   { f >> P->x >>  P->y >>  P->z >> P->omega ; return f; }
 
-public:  
+public:
   R  omega;  //la donnee du poids supplementaire
- 
+
   R4 () :omega(1.0) {}  //les constructeurs
   R4 (R a,R b,R c,R d):R3(a,b,c),omega(d) {}
   R4 (R4 A,R4 B) :R3(B.x-A.x,B.y-A.y,B.z-A.z),omega(B.omega-A.omega) {}
@@ -212,7 +213,7 @@ public:
 
 //quelques fonctions supplementaires sur ces classes
 //==================================================
-inline R Aire2d(const R2 A,const R2 B,const R2 C){return (B-A)^(C-A);} 
+inline R Aire2d(const R2 A,const R2 B,const R2 C){return (B-A)^(C-A);}
 inline R Angle2d(R2 P){ return atan2(P.y,P.x);}
 
 inline R Norme2_2(const R2 & A){ return (A,A);}
@@ -228,9 +229,9 @@ inline R Norme2(const R4 & A){ return sqrt((A,A));}
 inline R NormeInfinie(const R4 & A){return Max(Abs(A.x),Abs(A.y),Abs(A.z),Abs(A.omega));}
 
 inline R2 XY(R3 P) {return R2(P.x, P.y);}  //restriction a R2 d'un R3 par perte de z
-inline R3 Min(R3 P, R3 Q) 
+inline R3 Min(R3 P, R3 Q)
 {return R3(P.x<Q.x ? P.x : Q.x, P.y<Q.y ? P.y : Q.y, P.z<Q.z ? P.z : Q.z);} //Pt de xyz Min
-inline R3 Max(R3 P, R3 Q) 
+inline R3 Max(R3 P, R3 Q)
 {return R3(P.x>Q.x ? P.x : Q.x, P.y>Q.y ? P.y : Q.y, P.z>Q.z ? P.z : Q.z);} //Pt de xyz Max
 
 #endif

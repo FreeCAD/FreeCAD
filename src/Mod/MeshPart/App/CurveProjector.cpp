@@ -125,7 +125,8 @@ void CurveProjectorShape::projectCurve( const TopoDS_Edge& aEdge,
                                               (float)gpPt.Z());
   Base::Vector3f cResultPoint, cSplitPoint, cPlanePnt, cPlaneNormal;
   MeshCore::FacetIndex uStartFacetIdx,uCurFacetIdx;
-  MeshCore::FacetIndex uLastFacetIdx=MeshCore::FACET_INDEX_MAX-1; // use another value as FACET_INDEX_MAX
+  // use another value as FACET_INDEX_MAX
+  MeshCore::FacetIndex uLastFacetIdx=MeshCore::FACET_INDEX_MAX-1;
   MeshCore::FacetIndex auNeighboursIdx[3];
   bool GoOn;
 
@@ -415,7 +416,8 @@ void CurveProjectorSimple::projectCurve( const TopoDS_Edge& aEdge,
   Base::Vector3f cStartPoint = Base::Vector3f(gpPt.X(),gpPt.Y(),gpPt.Z());
   Base::Vector3f cResultPoint, cSplitPoint, cPlanePnt, cPlaneNormal,TempResultPoint;
   MeshCore::FacetIndex uStartFacetIdx,uCurFacetIdx;
-  MeshCore::FacetIndex uLastFacetIdx=MeshCore::FACET_INDEX_MAX-1; // use another value as FACET_INDEX_MAX
+  // use another value as FACET_INDEX_MAX
+  MeshCore::FacetIndex uLastFacetIdx=MeshCore::FACET_INDEX_MAX-1;
   MeshCore::FacetIndex auNeighboursIdx[3];
   bool GoOn;
 
@@ -501,7 +503,8 @@ void CurveProjectorSimple::projectCurve( const TopoDS_Edge& aEdge,
   Base::Vector3f cStartPoint = Base::Vector3f(gpPt.X(),gpPt.Y(),gpPt.Z());
   Base::Vector3f cResultPoint, cSplitPoint, cPlanePnt, cPlaneNormal;
   MeshCore::FacetIndex uStartFacetIdx,uCurFacetIdx;
-  MeshCore::FacetIndex uLastFacetIdx=MeshCore::FACET_INDEX_MAX-1; // use another value as FACET_INDEX_MAX
+  // use another value as FACET_INDEX_MAX
+  MeshCore::FacetIndex uLastFacetIdx=MeshCore::FACET_INDEX_MAX-1;
   MeshCore::FacetIndex auNeighboursIdx[3];
   bool GoOn;
 

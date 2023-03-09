@@ -118,19 +118,32 @@ namespace Gui
 
     //! @name View Constants for spacing
     //@{
-      float fontHeight;                           //!< height of the current qApp default font.
-      float direction;                            //!< controls top to bottom or bottom to top direction.
-      float verticalSpacing;                      //!< pixels between top and bottom of text to background rectangle.
-      float rowHeight;                            //!< height of background rectangle.
-      float iconSize;                             //!< size of icon to match font.
-      float pointSize;                            //!< size of the connection point.
-      float pointSpacing;                         //!< spacing between pofloat columns.
-      float pointToIcon;                          //!< spacing from last column points to first icon.
-      float iconToIcon;                           //!< spacing between icons.
-      float iconToText;                           //!< spacing between last icon and text.
-      float rowPadding;                           //!< spaces added to rectangle background width ends.
-      std::vector<QBrush> backgroundBrushes;      //!< brushes to paint background rectangles.
-      std::vector<QBrush> forgroundBrushes;       //!< brushes to paint points, connectors, text.
+      //!< height of the current qApp default font.
+      float fontHeight;
+      //!< controls top to bottom or bottom to top direction.
+      float direction;
+      //!< pixels between top and bottom of text to background rectangle.
+      float verticalSpacing;
+      //!< height of background rectangle.
+      float rowHeight;
+      //!< size of icon to match font.
+      float iconSize;
+      //!< size of the connection point.
+      float pointSize;
+      //!< spacing between pofloat columns.
+      float pointSpacing;
+      //!< spacing from last column points to first icon.
+      float pointToIcon;
+      //!< spacing between icons.
+      float iconToIcon;
+      //!< spacing between last icon and text.
+      float iconToText;
+      //!< spaces added to rectangle background width ends.
+      float rowPadding;
+      //!< brushes to paint background rectangles.
+      std::vector<QBrush> backgroundBrushes;
+      //!< brushes to paint points, connectors, text.
+      std::vector<QBrush> forgroundBrushes;
       void setupViewConstants();
     //@}
 
@@ -143,7 +156,8 @@ namespace Gui
       };
       SelectionMode selectionMode;
       std::vector<Vertex> getAllSelected();
-      void visiblyIsolate(Vertex sourceIn); //!< hide any connected feature and turn on sourceIn.
+      //!< hide any connected feature and turn on sourceIn.
+      void visiblyIsolate(Vertex sourceIn);
 
       QPointF lastPick;
       bool lastPickValid = false;
@@ -153,7 +167,8 @@ namespace Gui
       QPixmap passPixmap;
       QPixmap failPixmap;
       QPixmap pendingPixmap;
-      Vertex lastAddedVertex = Graph::null_vertex(); //!< needed because python objects are not ready.
+      //!< needed because python objects are not ready.
+      Vertex lastAddedVertex = Graph::null_vertex();
 
       QAction *renameAction;
       QAction *editingFinishedAction;

@@ -314,12 +314,14 @@ public:
                          sugConstr1[i].PosId == Sketcher::PointPos::end)) {
                         previousCurve = sugConstr1[i].GeoId;
                         previousPosId = sugConstr1[i].PosId;
-                        updateTransitionData(previousCurve,previousPosId); // -> dirVec, EditCurve[0]
+                        // -> dirVec, EditCurve[0]
+                        updateTransitionData(previousCurve,previousPosId);
                         if (geom->getTypeId() == Part::GeomArcOfCircle::getClassTypeId()) {
                             TransitionMode = TRANSITION_MODE_Tangent;
                             SnapMode = SNAP_MODE_Free;
                         }
-                        sugConstr1.erase(sugConstr1.begin()+i); // actually we should clear the vector completely
+                        // actually we should clear the vector completely
+                        sugConstr1.erase(sugConstr1.begin()+i);
                         break;
                     }
                 }
@@ -367,7 +369,8 @@ public:
                     return true;
                 }
                 else{
-                    sketchgui->purgeHandler(); // no code after this line, Handler get deleted in ViewProvider
+                    // no code after this line, Handler get deleted in ViewProvider
+                    sketchgui->purgeHandler();
                     return true;
                 }
             }
@@ -530,7 +533,8 @@ public:
                     * right button of the mouse */
                 }
                 else{
-                    sketchgui->purgeHandler(); // no code after this line, Handler get deleted in ViewProvider
+                    // no code after this line, Handler get deleted in ViewProvider
+                    sketchgui->purgeHandler();
                 }
             }
             else {
@@ -552,7 +556,8 @@ public:
                     }
                 }
 
-                virtualsugConstr1 = sugConstr2; // these are the initial constraints for the next iteration.
+                // these are the initial constraints for the next iteration.
+                virtualsugConstr1 = sugConstr2;
 
                 if (!sugConstr2.empty()) {
                     createAutoConstraints(sugConstr2, getHighestCurveIndex(),
@@ -566,7 +571,8 @@ public:
                 // remember the vertex for the next rounds constraint..
                 previousCurve = getHighestCurveIndex();
                 previousPosId = (SegmentMode == SEGMENT_MODE_Arc && startAngle > endAngle) ?
-                                 Sketcher::PointPos::start : Sketcher::PointPos::end; // cw arcs are rendered in reverse
+                                 // cw arcs are rendered in reverse
+                                 Sketcher::PointPos::start : Sketcher::PointPos::end;
 
                 // setup for the next line segment
                 // calculate dirVec and EditCurve[0]
@@ -691,4 +697,3 @@ protected:
 
 
 #endif // SKETCHERGUI_DrawSketchHandlerLineSet_H
-

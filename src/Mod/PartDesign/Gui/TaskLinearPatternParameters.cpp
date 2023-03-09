@@ -69,7 +69,8 @@ TaskLinearPatternParameters::TaskLinearPatternParameters(ViewProviderTransformed
 
     selectionMode = none;
 
-    blockUpdate = false; // Hack, sometimes it is NOT false although set to false in Transformed::Transformed()!!
+    // Hack, sometimes it is NOT false although set to false in Transformed::Transformed()!!
+    blockUpdate = false;
     setupUI();
 }
 

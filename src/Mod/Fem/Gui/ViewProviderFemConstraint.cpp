@@ -548,7 +548,8 @@ void ViewProviderFemConstraint::checkForWizard()
     QScrollArea* sa = sw->findChild<QScrollArea*>();
     if (!sa)
         return;
-    QWidget* wd = sa->widget(); // This is the reason why we cannot use findChildByName() right away!!!
+    // This is the reason why we cannot use findChildByName() right away!!!
+    QWidget* wd = sa->widget();
     if (!wd)
         return;
     QObject* wiz = findChildByName(wd, QString::fromLatin1("ShaftWizard"));

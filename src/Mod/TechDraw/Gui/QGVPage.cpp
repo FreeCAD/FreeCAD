@@ -328,7 +328,8 @@ void QGVPage::drawBackground(QPainter* painter, const QRectF&)
 
     painter->setBrush(*bkgBrush);
     painter->drawRect(
-        viewport()->rect().adjusted(-2, -2, 2, 2));//just bigger than viewport to prevent artifacts
+        //just bigger than viewport to prevent artifacts
+        viewport()->rect().adjusted(-2, -2, 2, 2));
 
     // Default to A3 landscape, though this is currently relevant
     // only for opening corrupt docs, etc.
@@ -357,7 +358,8 @@ void QGVPage::setRenderer(RendererType type)
 
     if (m_renderer == OpenGL) {
 #ifndef QT_NO_OPENGL
-        //        setViewport(new QGLWidget(QGLFormat(QGL::SampleBuffers))); //QGLWidget is obsolete
+        //QGLWidget is obsolete
+        //        setViewport(new QGLWidget(QGLFormat(QGL::SampleBuffers)));
         setViewport(new QOpenGLWidget);
         setViewportUpdateMode(QGraphicsView::SmartViewportUpdate);
 #endif

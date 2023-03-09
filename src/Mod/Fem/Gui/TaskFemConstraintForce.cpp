@@ -123,7 +123,8 @@ void TaskFemConstraintForce::updateUI()
 
 void TaskFemConstraintForce::addToSelection()
 {
-    std::vector<Gui::SelectionObject> selection = Gui::Selection().getSelectionEx(); //gets vector of selected objects of active document
+    //gets vector of selected objects of active document
+    std::vector<Gui::SelectionObject> selection = Gui::Selection().getSelectionEx();
     if (selection.empty()) {
         QMessageBox::warning(this, tr("Selection error"), tr("Nothing selected!"));
         return;
@@ -181,7 +182,8 @@ void TaskFemConstraintForce::addToSelection()
 
 void TaskFemConstraintForce::removeFromSelection()
 {
-    std::vector<Gui::SelectionObject> selection = Gui::Selection().getSelectionEx(); //gets vector of selected objects of active document
+    //gets vector of selected objects of active document
+    std::vector<Gui::SelectionObject> selection = Gui::Selection().getSelectionEx();
     if (selection.empty()) {
         QMessageBox::warning(this, tr("Selection error"), tr("Nothing selected!"));
         return;
@@ -234,7 +236,8 @@ void TaskFemConstraintForce::onForceChanged(double f)
 }
 
 void TaskFemConstraintForce::onReferenceDeleted() {
-    TaskFemConstraintForce::removeFromSelection(); //OvG: On right-click face is automatically selected, so just remove
+    //OvG: On right-click face is automatically selected, so just remove
+    TaskFemConstraintForce::removeFromSelection();
 }
 
 std::pair<App::DocumentObject*, std::string>
@@ -413,7 +416,8 @@ void TaskDlgFemConstraintForce::open()
         QString msg = QObject::tr("Constraint force");
         Gui::Command::openCommand((const char*)msg.toUtf8());
         ConstraintView->setVisible(true);
-        Gui::Command::doCommand(Gui::Command::Doc, ViewProviderFemConstraint::gethideMeshShowPartStr((static_cast<Fem::Constraint*>(ConstraintView->getObject()))->getNameInDocument()).c_str()); //OvG: Hide meshes and show parts
+        //OvG: Hide meshes and show parts
+        Gui::Command::doCommand(Gui::Command::Doc, ViewProviderFemConstraint::gethideMeshShowPartStr((static_cast<Fem::Constraint*>(ConstraintView->getObject()))->getNameInDocument()).c_str());
     }
 }
 
@@ -453,7 +457,8 @@ bool TaskDlgFemConstraintForce::accept()
         Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.%s.Reversed = %s", name.c_str(), parameterForce->getReverse() ? "True" : "False");
 
         scale = parameterForce->getScale();  //OvG: determine modified scale
-        Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.%s.Scale = %s", name.c_str(), scale.c_str()); //OvG: implement modified scale
+        //OvG: implement modified scale
+        Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.%s.Scale = %s", name.c_str(), scale.c_str());
     }
     catch (const Base::Exception& e) {
         QMessageBox::warning(parameter, tr("Input error"), QString::fromLatin1(e.what()));

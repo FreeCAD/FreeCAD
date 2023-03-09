@@ -61,7 +61,8 @@ void QGIArrow::draw() {
         if (m_dirMode) {
             path = makeFilledTriangle(getDirection(), m_size, m_size/6.0);
         } else {
-            path = makeFilledTriangle(m_size, m_size/6.0, isFlipped());     //"arrow l/w sb 3/1" ??
+            //"arrow l/w sb 3/1" ??
+            path = makeFilledTriangle(m_size, m_size/6.0, isFlipped());
         }
     } else if (m_style == ArrowType::OPEN_ARROW) {
         if (m_dirMode) {
@@ -92,7 +93,8 @@ void QGIArrow::draw() {
             path = makePyramid(m_size, isFlipped());
         }
     }else {
-        path = makeFilledTriangle(m_size, m_size/6.0, isFlipped());     //sb a question mark or ???
+        //sb a question mark or ???
+        path = makeFilledTriangle(m_size, m_size/6.0, isFlipped());
     }
     setPath(path);
 }

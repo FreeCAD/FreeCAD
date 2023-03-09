@@ -120,7 +120,8 @@ public:
                  * expand.
                  */
                 bool inCurve = (projection.Length() < recenteredLine.Length()
-                    && projection.GetAngle(recenteredLine) < 0.1); // Two possible values here, M_PI and 0, but 0.1 is to avoid floating point problems.
+                    // Two possible values here, M_PI and 0, but 0.1 is to avoid floating point problems.
+                    && projection.GetAngle(recenteredLine) < 0.1);
                 if (inCurve) {
                     Increment = SavedExtendFromStart ? -1 * projection.Length() : projection.Length() - recenteredLine.Length();
                     ExtendFromStart = SavedExtendFromStart;
@@ -232,7 +233,8 @@ public:
                     Base::Vector2d angle = Base::Vector2d(onSketchPos.x - center.x, onSketchPos.y - center.y);
                     double angleToStart = angle.GetAngle(Base::Vector2d(cos(start), sin(start)));
                     double angleToEnd = angle.GetAngle(Base::Vector2d(cos(end), sin(end)));
-                    ExtendFromStart = (angleToStart < angleToEnd); // move start point if closer to angle than end point
+                    // move start point if closer to angle than end point
+                    ExtendFromStart = (angleToStart < angleToEnd);
                     EditCurve.resize(31);
                     Mode = STATUS_SEEK_Second;
                 }
@@ -270,7 +272,8 @@ public:
                     * handler is destroyed by the quit() method on pressing the
                     * right button of the mouse */
                 } else{
-                    sketchgui->purgeHandler(); // no code after this line, Handler get deleted in ViewProvider
+                    // no code after this line, Handler get deleted in ViewProvider
+                    sketchgui->purgeHandler();
                 }
             }
             catch (const Base::Exception& e) {
@@ -280,7 +283,8 @@ public:
 
         } else { // exit extension tool if user clicked on empty space
             BaseGeoId = -1;
-            sketchgui->purgeHandler(); // no code after this line, Handler get deleted in ViewProvider
+            // no code after this line, Handler get deleted in ViewProvider
+            sketchgui->purgeHandler();
         }
         return true;
     }
@@ -319,4 +323,3 @@ private:
 
 
 #endif // SKETCHERGUI_DrawSketchHandlerExtend_H
-

@@ -818,7 +818,8 @@ void GraphicsView3D::OnChange(ParameterGrp::SubjectType &rCaller,ParameterGrp::M
     const ParameterGrp& rGrp = static_cast<ParameterGrp&>(rCaller);
 #if 0
     if (strcmp(Reason,"HeadlightColor") == 0) {
-        unsigned long headlight = rGrp.GetUnsigned("HeadlightColor",ULONG_MAX); // default color (white)
+        // default color (white)
+        unsigned long headlight = rGrp.GetUnsigned("HeadlightColor",ULONG_MAX);
         float transparency;
         SbColor headlightColor;
         headlightColor.setPackedValue((uint32_t)headlight, transparency);
@@ -843,7 +844,8 @@ void GraphicsView3D::OnChange(ParameterGrp::SubjectType &rCaller,ParameterGrp::M
         _viewer->setBacklight(rGrp.GetBool("EnableBacklight", false));
     }
     else if (strcmp(Reason,"BacklightColor") == 0) {
-        unsigned long backlight = rGrp.GetUnsigned("BacklightColor",ULONG_MAX); // default color (white)
+        // default color (white)
+        unsigned long backlight = rGrp.GetUnsigned("BacklightColor",ULONG_MAX);
         float transparency;
         SbColor backlightColor;
         backlightColor.setPackedValue((uint32_t)backlight, transparency);
@@ -972,9 +974,12 @@ void GraphicsView3D::OnChange(ParameterGrp::SubjectType &rCaller,ParameterGrp::M
     if (strcmp(Reason, "BackgroundColor") == 0)
     {
         unsigned long col1 = rGrp.GetUnsigned("BackgroundColor",3940932863UL);
-        //unsigned long col2 = rGrp.GetUnsigned("BackgroundColor2",859006463UL); // default color (dark blue)
-        //unsigned long col3 = rGrp.GetUnsigned("BackgroundColor3",2880160255UL); // default color (blue/grey)
-        //unsigned long col4 = rGrp.GetUnsigned("BackgroundColor4",1869583359UL); // default color (blue/grey)
+        // default color (dark blue)
+        //unsigned long col2 = rGrp.GetUnsigned("BackgroundColor2",859006463UL);
+        // default color (blue/grey)
+        //unsigned long col3 = rGrp.GetUnsigned("BackgroundColor3",2880160255UL);
+        // default color (blue/grey)
+        //unsigned long col4 = rGrp.GetUnsigned("BackgroundColor4",1869583359UL);
         float r1,g1,b1;
         //float r2,g2,b2;
         //float r3,g3,b3;

@@ -849,7 +849,8 @@ void SheetTableView::finishEditWithMove(int keyPressed, Qt::KeyboardModifiers mo
                  modifiers == (Qt::ControlModifier | Qt::ShiftModifier))
             scanForRegionBoundary(targetRow, targetColumn, 0, -1);
         else
-            targetColumn--; //Unrecognized modifier combination: default to just moving one cell
+            //Unrecognized modifier combination: default to just moving one cell
+            targetColumn--;
         tabCounter = 0;
         break;
     case Qt::Key_Right:
@@ -861,7 +862,8 @@ void SheetTableView::finishEditWithMove(int keyPressed, Qt::KeyboardModifiers mo
                  modifiers == (Qt::ControlModifier | Qt::ShiftModifier))
             scanForRegionBoundary(targetRow, targetColumn, 0, 1);
         else
-            targetColumn += colSpan; //Unrecognized modifier combination: default to just moving one cell
+            //Unrecognized modifier combination: default to just moving one cell
+            targetColumn += colSpan;
         tabCounter = 0;
         break;
     case Qt::Key_Up:
@@ -873,7 +875,8 @@ void SheetTableView::finishEditWithMove(int keyPressed, Qt::KeyboardModifiers mo
                  modifiers == (Qt::ControlModifier | Qt::ShiftModifier))
             scanForRegionBoundary(targetRow, targetColumn, -1, 0);
         else
-            targetRow--; //Unrecognized modifier combination: default to just moving one cell
+            //Unrecognized modifier combination: default to just moving one cell
+            targetRow--;
         tabCounter = 0;
         break;
     case Qt::Key_Down:
@@ -885,7 +888,8 @@ void SheetTableView::finishEditWithMove(int keyPressed, Qt::KeyboardModifiers mo
                  modifiers == (Qt::ControlModifier | Qt::ShiftModifier))
             scanForRegionBoundary(targetRow, targetColumn, 1, 0);
         else
-            targetRow += rowSpan; //Unrecognized modifier combination: default to just moving one cell
+            //Unrecognized modifier combination: default to just moving one cell
+            targetRow += rowSpan;
         tabCounter = 0;
         break;
     case Qt::Key_Tab:

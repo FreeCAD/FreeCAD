@@ -1371,7 +1371,8 @@ PyObject* BSplineSurfacePy::buildFromPolesMultsKnots(PyObject *args, PyObject *k
                 Base::Vector3d pnt = v.toVector();
                 gp_Pnt newPoint(pnt.x,pnt.y,pnt.z);
                 occpoles.SetValue(index1, index2, newPoint);
-                if (genweights) occweights.SetValue(index1, index2, 1.0); //set weights if they are not given
+                //set weights if they are not given
+                if (genweights) occweights.SetValue(index1, index2, 1.0);
             }
         }
         if (occpoles.RowLength() < 2 || occpoles.ColLength() < 2) {
@@ -1413,7 +1414,8 @@ PyObject* BSplineSurfacePy::buildFromPolesMultsKnots(PyObject *args, PyObject *k
         for (Py::Sequence::iterator it = umultssq.begin(); it != umultssq.end() && index <= occumults.Length(); ++it) {
             Py::Long mult(*it);
             if (index < occumults.Length() || !Base::asBoolean(uperiodic)) {
-                sum_of_umults += static_cast<int>(mult); //sum up the mults to compare them against the number of poles later
+                //sum up the mults to compare them against the number of poles later
+                sum_of_umults += static_cast<int>(mult);
             }
             occumults(index++) = static_cast<int>(mult);
         }
@@ -1422,7 +1424,8 @@ PyObject* BSplineSurfacePy::buildFromPolesMultsKnots(PyObject *args, PyObject *k
         for (Py::Sequence::iterator it = vmultssq.begin(); it != vmultssq.end() && index <= occvmults.Length(); ++it) {
             Py::Long mult(*it);
             if (index < occvmults.Length() || !Base::asBoolean(vperiodic)) {
-                sum_of_vmults += static_cast<int>(mult); //sum up the mults to compare them against the number of poles later
+                //sum up the mults to compare them against the number of poles later
+                sum_of_vmults += static_cast<int>(mult);
             }
             occvmults(index++) = static_cast<int>(mult);
         }

@@ -651,21 +651,26 @@ void Model::updateSlot()
       cheat = rowHeight;
 
     auto visiblePixmap = (*theGraph)[currentVertex].visibleIcon.get();
-    visiblePixmap->setTransform(QTransform::fromTranslate(0.0, rowHeight * currentRow + cheat)); //calculate x location later.
+    //calculate x location later.
+    visiblePixmap->setTransform(QTransform::fromTranslate(0.0, rowHeight * currentRow + cheat));
 
     auto statePixmap = (*theGraph)[currentVertex].stateIcon.get();
-    statePixmap->setTransform(QTransform::fromTranslate(0.0, rowHeight * currentRow + cheat)); //calculate x location later.
+    //calculate x location later.
+    statePixmap->setTransform(QTransform::fromTranslate(0.0, rowHeight * currentRow + cheat));
 
     auto pixmap = (*theGraph)[currentVertex].icon.get();
-    pixmap->setTransform(QTransform::fromTranslate(0.0, rowHeight * currentRow + cheat)); //calculate x location later.
+    //calculate x location later.
+    pixmap->setTransform(QTransform::fromTranslate(0.0, rowHeight * currentRow + cheat));
 
     auto text = (*theGraph)[currentVertex].text.get();
     text->setPlainText(QString::fromUtf8(findRecord(currentVertex, *graphLink).DObject->Label.getValue()));
     text->setDefaultTextColor(currentBrush.color());
     maxTextLength = std::max(maxTextLength, static_cast<float>(text->boundingRect().width()));
     text->setTransform(QTransform::fromTranslate
-      (0.0, rowHeight * currentRow - verticalSpacing * 2.0 + cheat)); //calculate x location later.
-    (*theGraph)[currentVertex].lastVisibleState = VisibilityState::None; //force visual update for color.
+      //calculate x location later.
+      (0.0, rowHeight * currentRow - verticalSpacing * 2.0 + cheat));
+    //force visual update for color.
+    (*theGraph)[currentVertex].lastVisibleState = VisibilityState::None;
 
     //store column and row int the graph. use for connectors later.
     (*theGraph)[currentVertex].row = currentRow;

@@ -865,7 +865,8 @@ Base::Matrix4D PropertyMeshKernel::getTransform() const
 PyObject *PropertyMeshKernel::getPyObject()
 {
     if (!meshPyObject) {
-        meshPyObject = new MeshPy(&*_meshObject); // Lgtm[cpp/resource-not-released-in-destructor] ** Not destroyed in this class because it is reference-counted and destroyed elsewhere
+        // Lgtm[cpp/resource-not-released-in-destructor] ** Not destroyed in this class because it is reference-counted and destroyed elsewhere
+        meshPyObject = new MeshPy(&*_meshObject);
         meshPyObject->setConst(); // set immutable
         meshPyObject->parentProperty = this;
     }

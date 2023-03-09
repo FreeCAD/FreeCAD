@@ -517,8 +517,10 @@ int DrawProjGroup::removeProjection(const char* viewProjType)
             auto projPtr(dynamic_cast<TechDraw::DrawProjGroupItem*>(it));
             if (projPtr) {
                 if (strcmp(viewProjType, projPtr->Type.getValueAsString()) == 0) {
-                    removeView(projPtr);                                 // Remove from collection
-                    getDocument()->removeObject(it->getNameInDocument());// Remove from the document
+                    // Remove from collection
+                    removeView(projPtr);
+                    // Remove from the document
+                    getDocument()->removeObject(it->getNameInDocument());
                     return Views.getValues().size();
                 }
             }
@@ -1011,7 +1013,8 @@ void DrawProjGroup::makeViewBbs(std::array<DrawProjGroupItem*, MAXPROJECTIONCOUN
             bboxes[i] = viewPtrs[i]->getBoundingBox();
             if (!scaled) {
                 double scale = 1.0 / viewPtrs[i]->getScale();//convert bbx to 1:1 scale
-                //                double scale = 1.0 / viewPtrs[i]->getLastScale();    //convert bbx to 1:1 scale
+                //convert bbx to 1:1 scale
+                //                double scale = 1.0 / viewPtrs[i]->getLastScale();
                 bboxes[i].ScaleX(scale);
                 bboxes[i].ScaleY(scale);
                 bboxes[i].ScaleZ(scale);

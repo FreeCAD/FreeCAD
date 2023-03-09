@@ -136,10 +136,12 @@ ViewProviderPath::ViewProviderPath()
     :pt0Index(-1),blockPropertyChange(false),edgeStart(-1),coordStart(-1),coordEnd(-1)
 {
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Path");
-    unsigned long lcol = hGrp->GetUnsigned("DefaultNormalPathColor",11141375UL); // dark green (0,170,0)
+    // dark green (0,170,0)
+    unsigned long lcol = hGrp->GetUnsigned("DefaultNormalPathColor",11141375UL);
     float lr,lg,lb;
     lr = ((lcol >> 24) & 0xff) / 255.0; lg = ((lcol >> 16) & 0xff) / 255.0; lb = ((lcol >> 8) & 0xff) / 255.0;
-    unsigned long mcol = hGrp->GetUnsigned("DefaultPathMarkerColor",1442775295UL); // lime green (85,255,0)
+    // lime green (85,255,0)
+    unsigned long mcol = hGrp->GetUnsigned("DefaultPathMarkerColor",1442775295UL);
     float mr,mg,mb;
     mr = ((mcol >> 24) & 0xff) / 255.0; mg = ((mcol >> 16) & 0xff) / 255.0; mb = ((mcol >> 8) & 0xff) / 255.0;
     int lwidth = hGrp->GetInt("DefaultPathLineWidth",1);
@@ -403,7 +405,8 @@ void ViewProviderPath::showBoundingBox(bool show) {
 unsigned long ViewProviderPath::getBoundColor() const {
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Path");
     if(SelectionStyle.getValue() == 0 || !Selectable.getValue())
-        return hGrp->GetUnsigned("DefaultBBoxNormalColor",4294967295UL); // white (255,255,255)
+        // white (255,255,255)
+        return hGrp->GetUnsigned("DefaultBBoxNormalColor",4294967295UL);
     else
         return hGrp->GetUnsigned("DefaultBBoxSelectionColor",0xc8ffff00UL); // rgb(0,85,255)
 }

@@ -41,11 +41,15 @@ public:
     Filling();
 
     //Properties of Curves
-    App::PropertyLinkSubList BoundaryEdges;         // Boundary Edges (C0 is required for edges without a corresponding face)
-    App::PropertyStringList  BoundaryFaces;         // Boundary Faces (C0, G1 and G2 are possible)
+    // Boundary Edges (C0 is required for edges without a corresponding face)
+    App::PropertyLinkSubList BoundaryEdges;
+    // Boundary Faces (C0, G1 and G2 are possible)
+    App::PropertyStringList  BoundaryFaces;
     App::PropertyIntegerList BoundaryOrder;         // Order of constraint on border faces
-    App::PropertyLinkSubList UnboundEdges;          // Unbound constraint edges (C0 is required for edges without a corresponding face)
-    App::PropertyStringList  UnboundFaces;          // Unbound constraint faces (C0, G1 and G2 are possible)
+    // Unbound constraint edges (C0 is required for edges without a corresponding face)
+    App::PropertyLinkSubList UnboundEdges;
+    // Unbound constraint faces (C0, G1 and G2 are possible)
+    App::PropertyStringList  UnboundFaces;
     App::PropertyIntegerList UnboundOrder;          // Order of constraint on curve faces
     App::PropertyLinkSubList FreeFaces;             // Free constraint faces
     App::PropertyIntegerList FreeOrder;             // Order of constraint on free faces

@@ -115,7 +115,8 @@ void TaskFemConstraintPlaneRotation::addToSelection()
         return;
     }
     else {
-        std::vector<Gui::SelectionObject> selection = Gui::Selection().getSelectionEx(); //gets vector of selected objects of active document
+        //gets vector of selected objects of active document
+        std::vector<Gui::SelectionObject> selection = Gui::Selection().getSelectionEx();
         if (selection.empty()) {
             QMessageBox::warning(this, tr("Selection error"), tr("Nothing selected!"));
             return;
@@ -176,7 +177,8 @@ void TaskFemConstraintPlaneRotation::addToSelection()
 
 void TaskFemConstraintPlaneRotation::removeFromSelection()
 {
-    std::vector<Gui::SelectionObject> selection = Gui::Selection().getSelectionEx(); //gets vector of selected objects of active document
+    //gets vector of selected objects of active document
+    std::vector<Gui::SelectionObject> selection = Gui::Selection().getSelectionEx();
     if (selection.empty()) {
         QMessageBox::warning(this, tr("Selection error"), tr("Nothing selected!"));
         return;
@@ -267,7 +269,8 @@ void TaskDlgFemConstraintPlaneRotation::open()
         QString msg = QObject::tr("Constraint planerotation");
         Gui::Command::openCommand((const char*)msg.toUtf8());
         ConstraintView->setVisible(true);
-        Gui::Command::doCommand(Gui::Command::Doc, ViewProviderFemConstraint::gethideMeshShowPartStr((static_cast<Fem::Constraint*>(ConstraintView->getObject()))->getNameInDocument()).c_str()); //OvG: Hide meshes and show parts
+        //OvG: Hide meshes and show parts
+        Gui::Command::doCommand(Gui::Command::Doc, ViewProviderFemConstraint::gethideMeshShowPartStr((static_cast<Fem::Constraint*>(ConstraintView->getObject()))->getNameInDocument()).c_str());
     }
 }
 
@@ -276,7 +279,8 @@ bool TaskDlgFemConstraintPlaneRotation::accept()
     std::string name = ConstraintView->getObject()->getNameInDocument();
     const TaskFemConstraintPlaneRotation* parameters = static_cast<const TaskFemConstraintPlaneRotation*>(parameter);
     std::string scale = parameters->getScale();  //OvG: determine modified scale
-    Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.%s.Scale = %s", name.c_str(), scale.c_str()); //OvG: implement modified scale
+    //OvG: implement modified scale
+    Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.%s.Scale = %s", name.c_str(), scale.c_str());
     return TaskDlgFemConstraint::accept();
 }
 

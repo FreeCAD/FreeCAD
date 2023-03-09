@@ -784,7 +784,8 @@ double DrawUtil::sensibleScale(double working_scale)
     //which gives the largest scale for which the min_space requirements can be met, but we want a 'sensible' scale, rather than 0.28457239...
     //eg if working_scale = 0.115, then we want to use 0.1, similarly 7.65 -> 5, and 76.5 -> 50
 
-    float exponent = std::floor(std::log10(working_scale));//if working_scale = a * 10^b, what is b?
+    //if working_scale = a * 10^b, what is b?
+    float exponent = std::floor(std::log10(working_scale));
     working_scale *= std::pow(10, -exponent);              //now find what 'a' is.
 
     //int choices = 10;

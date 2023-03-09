@@ -190,8 +190,10 @@ namespace e57
       /// Prepare CompressedVectorSectionHeader
       CompressedVectorSectionHeader header;
       header.sectionLogicalLength = sectionLogicalLength_;
-      header.dataPhysicalOffset = dataPhysicalOffset_;      ///??? can be zero, if no data written ???not set yet
-      header.indexPhysicalOffset = topIndexPhysicalOffset_; ///??? can be zero, if no data written ???not set
+      ///??? can be zero, if no data written ???not set yet
+      header.dataPhysicalOffset = dataPhysicalOffset_;
+      ///??? can be zero, if no data written ???not set
+      header.indexPhysicalOffset = topIndexPhysicalOffset_;
                                                             /// yet
 #ifdef E57_MAX_VERBOSE
       std::cout << "  CompressedVectorSectionHeader:" << std::endl;
@@ -369,7 +371,8 @@ namespace e57
             {
                //!!! For now, process up to 50 records at a time
                uint64_t recordCount = endRecordIndex - bytestream->currentRecordIndex();
-               recordCount = ( recordCount < 50ULL ) ? recordCount : 50ULL; // min(recordCount, 50ULL);
+               // min(recordCount, 50ULL);
+               recordCount = ( recordCount < 50ULL ) ? recordCount : 50ULL;
                bytestream->processRecords( static_cast<unsigned>( recordCount ) );
             }
          }

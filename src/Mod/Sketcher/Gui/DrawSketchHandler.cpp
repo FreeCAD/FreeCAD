@@ -519,7 +519,8 @@ int DrawSketchHandler::seekAutoConstraint(std::vector<AutoConstraint> &suggested
     if (!sketchgui->Autoconstraints.getValue())
         return 0; // If Autoconstraints property is not set quit
 
-    Base::Vector3d hitShapeDir = Base::Vector3d(0,0,0); // direction of hit shape (if it is a line, the direction of the line)
+    // direction of hit shape (if it is a line, the direction of the line)
+    Base::Vector3d hitShapeDir = Base::Vector3d(0,0,0);
 
     // Get Preselection
     int preSelPnt = getPreselectPoint();
@@ -678,7 +679,8 @@ int DrawSketchHandler::seekAutoConstraint(std::vector<AutoConstraint> &suggested
 
             double distancetoline = norm*(tmpPos - focus1P); // distance focus1 to line
 
-            Base::Vector3d focus1PMirrored = focus1P + 2*distancetoline*norm; // mirror of focus1 with respect to the line
+            // mirror of focus1 with respect to the line
+            Base::Vector3d focus1PMirrored = focus1P + 2*distancetoline*norm;
 
             double error = fabs((focus1PMirrored-focus2P).Length() - 2*a);
 
@@ -733,7 +735,8 @@ int DrawSketchHandler::seekAutoConstraint(std::vector<AutoConstraint> &suggested
 
             double distancetoline = norm*(tmpPos - focus1P); // distance focus1 to line
 
-            Base::Vector3d focus1PMirrored = focus1P + 2*distancetoline*norm; // mirror of focus1 with respect to the line
+            // mirror of focus1 with respect to the line
+            Base::Vector3d focus1PMirrored = focus1P + 2*distancetoline*norm;
 
             double error = fabs((focus1PMirrored-focus2P).Length() - 2*a);
 
@@ -887,7 +890,8 @@ void DrawSketchHandler::createAutoConstraints(const std::vector<AutoConstraint> 
             if(createowncommand) {
                 Gui::Command::commitCommand();
             }
-            //Gui::Command::updateActive(); // There is already an recompute in each command creation, this is redundant.
+            // There is already an recompute in each command creation, this is redundant.
+            //Gui::Command::updateActive();
         }
     }
 }
@@ -991,4 +995,3 @@ Sketcher::SketchObject * DrawSketchHandler::getSketchObject()
 {
     return sketchgui->getSketchObject();
 }
-

@@ -115,7 +115,7 @@ StdMeshers_Quadrangle_2D::~StdMeshers_Quadrangle_2D()
 
 //=============================================================================
 /*!
- *  
+ *
  */
 //=============================================================================
 
@@ -161,7 +161,7 @@ bool StdMeshers_Quadrangle_2D::CheckHypothesis
     }
     else if (strcmp("TrianglePreference", aHyp->GetName()) == 0){
       isFirstParams = false;
-      myTrianglePreference = true; 
+      myTrianglePreference = true;
     }
     else {
       isFirstParams = false;
@@ -174,17 +174,17 @@ bool StdMeshers_Quadrangle_2D::CheckHypothesis
     if (isFirstParams) {
       if (strcmp("QuadranglePreference", aHyp->GetName()) == 0) {
         myQuadranglePreference = true;
-        myTrianglePreference = false; 
+        myTrianglePreference = false;
         myQuadType = QUAD_STANDARD;
       }
       else if (strcmp("TrianglePreference", aHyp->GetName()) == 0){
         myQuadranglePreference = false;
-        myTrianglePreference = true; 
+        myTrianglePreference = true;
         myQuadType = QUAD_STANDARD;
       }
     }
     else {
-      const StdMeshers_QuadrangleParams* aHyp2 = 
+      const StdMeshers_QuadrangleParams* aHyp2 =
         (const StdMeshers_QuadrangleParams*)aHyp;
       myTriaVertexID = aHyp2->GetTriaVertex();
 
@@ -206,7 +206,7 @@ bool StdMeshers_Quadrangle_2D::CheckHypothesis
 
 //=============================================================================
 /*!
- *  
+ *
  */
 //=============================================================================
 
@@ -441,7 +441,7 @@ bool StdMeshers_Quadrangle_2D::computeQuadDominant(SMESH_Mesh&         aMesh,
       uvPnt.node        = meshDS->AddNode(P.X(), P.Y(), P.Z());
       meshDS->SetNodeOnFace( uvPnt.node, geomFaceID, uvPnt.u, uvPnt.v );
     }
-  
+
   // mesh faces
 
   //             [2]
@@ -455,15 +455,15 @@ bool StdMeshers_Quadrangle_2D::computeQuadDominant(SMESH_Mesh&         aMesh,
   //     0 > > > > > > > > nbhoriz
   //              i
   //             [0]
-  
+
   int ilow = 0;
   int iup = nbhoriz - 1;
   if (quad->nbNodeOut(3)) { ilow++; } else { if (quad->nbNodeOut(1)) iup--; }
-  
+
   int jlow = 0;
   int jup = nbvertic - 1;
   if (quad->nbNodeOut(0)) { jlow++; } else { if (quad->nbNodeOut(2)) jup--; }
-  
+
   // regular quadrangles
   for (i = ilow; i < iup; i++) {
     for (j = jlow; j < jup; j++) {
@@ -477,7 +477,7 @@ bool StdMeshers_Quadrangle_2D::computeQuadDominant(SMESH_Mesh&         aMesh,
   }
 
   // Boundary elements (must always be on an outer boundary of the FACE)
-  
+
   const vector<UVPtStruct>& uv_e0 = quad->side[0].grid->GetUVPtStruct();
   const vector<UVPtStruct>& uv_e1 = quad->side[1].grid->GetUVPtStruct();
   const vector<UVPtStruct>& uv_e2 = quad->side[2].grid->GetUVPtStruct();
@@ -496,18 +496,18 @@ bool StdMeshers_Quadrangle_2D::computeQuadDominant(SMESH_Mesh&         aMesh,
   if (quad->nbNodeOut(0) && nbvertic == 2) // this should not occure
   {
     // Down edge is out
-    // 
+    //
     // |___|___|___|___|___|___|
     // |   |   |   |   |   |   |
     // |___|___|___|___|___|___|
     // |   |   |   |   |   |   |
     // |___|___|___|___|___|___| __ first row of the regular grid
     // .  .  .  .  .  .  .  .  . __ down edge nodes
-    // 
+    //
     // >->->->->->->->->->->->-> -- direction of processing
-      
+
     int g = 0; // number of last processed node in the regular grid
-    
+
     // number of last node of the down edge to be processed
     int stop = nbdown - 1;
     // if right edge is out, we will stop at a node, previous to the last one
@@ -524,7 +524,7 @@ bool StdMeshers_Quadrangle_2D::computeQuadDominant(SMESH_Mesh&         aMesh,
       a = uv_e0[i].node;
       b = uv_e0[i + 1].node;
       gp_Pnt pb (b->X(), b->Y(), b->Z());
-      
+
       // find node c in the regular grid, which will be linked with node b
       int near = g;
       if (i == stop - 1) {
@@ -536,7 +536,7 @@ bool StdMeshers_Quadrangle_2D::computeQuadDominant(SMESH_Mesh&         aMesh,
         // find in the grid node c, nearest to the b
         double mind = RealLast();
         for (int k = g; k <= iup; k++) {
-          
+
           const SMDS_MeshNode *nk;
           if (k < ilow) // this can be, if left edge is out
             nk = uv_e3[1].node; // get node from the left edge
@@ -564,7 +564,7 @@ bool StdMeshers_Quadrangle_2D::computeQuadDominant(SMESH_Mesh&         aMesh,
         else
           d = quad->uv_grid[nbhoriz + near - 1].node;
         //SMDS_MeshFace* face = meshDS->AddFace(a, b, c, d);
-        
+
         if (!myTrianglePreference){
           myHelper->AddFace(a, b, c, d);
         }
@@ -590,9 +590,9 @@ bool StdMeshers_Quadrangle_2D::computeQuadDominant(SMESH_Mesh&         aMesh,
     if (quad->nbNodeOut(2) && nbvertic == 2)
     {
       // Up edge is out
-      // 
+      //
       // <-<-<-<-<-<-<-<-<-<-<-<-< -- direction of processing
-      // 
+      //
       // .  .  .  .  .  .  .  .  . __ up edge nodes
       //  ___ ___ ___ ___ ___ ___  __ first row of the regular grid
       // |   |   |   |   |   |   |
@@ -1045,7 +1045,7 @@ static bool twoEdgesMeatAtVertex(const TopoDS_Edge& e1,
 
 //=============================================================================
 /*!
- *  
+ *
  */
 //=============================================================================
 
@@ -1174,7 +1174,7 @@ FaceQuadStruct::Ptr StdMeshers_Quadrangle_2D::CheckNbEdges(SMESH_Mesh &         
 
 //=============================================================================
 /*!
- *  
+ *
  */
 //=============================================================================
 
@@ -1403,7 +1403,7 @@ namespace
 
 //=============================================================================
 /*!
- *  
+ *
  */
 //=============================================================================
 
@@ -2534,7 +2534,7 @@ bool StdMeshers_Quadrangle_2D::evaluateQuadPref(SMESH_Mesh &        aMesh,
 
   if (dh>=dv) {
     if (nt>nb) {
-      // it is a base case => not shift 
+      // it is a base case => not shift
     }
     else {
       // we have to shift on 2
@@ -2585,7 +2585,7 @@ bool StdMeshers_Quadrangle_2D::evaluateQuadPref(SMESH_Mesh &        aMesh,
     // insert to left
     dl = nbv - nl;
   }
-  
+
   int nnn = Min(nr,nl);
 
   int nbNodes = 0;
@@ -2639,7 +2639,7 @@ bool StdMeshers_Quadrangle_2D::evaluateQuadPref(SMESH_Mesh &        aMesh,
 
 //=============================================================================
 /*! Split quadrangle in to 2 triangles by smallest diagonal
- *   
+ *
  */
 //=============================================================================
 
@@ -2683,7 +2683,7 @@ namespace
     double xBot = uv_eb[ iBot ].normParam + ( rBot - iBot ) * ( uv_eb[ iBot+1 ].normParam - uv_eb[ iBot ].normParam );
     double xTop = uv_et[ iTop ].normParam + ( rTop - iTop ) * ( uv_et[ iTop+1 ].normParam - uv_et[ iTop ].normParam );
     double x = xBot + y * ( xTop - xBot );
-    
+
     gp_UV uv = calcUV(/*x,y=*/x, y,
                       /*a0,...=*/UVs[UV_A0], UVs[UV_A1], UVs[UV_A2], UVs[UV_A3],
                       /*p0=*/quad->side[QUAD_BOTTOM_SIDE].grid->Value2d( x ).XY(),
@@ -3016,7 +3016,7 @@ bool StdMeshers_Quadrangle_2D::computeReduced (SMESH_Mesh &        aMesh,
     for (i=1; i<=dl; i++) {
       npl.InsertAfter(1,npl.Value(2)-dpr);
     }
-  
+
     gp_XY a0 (uv_eb.front().u, uv_eb.front().v);
     gp_XY a1 (uv_eb.back().u,  uv_eb.back().v);
     gp_XY a2 (uv_et.back().u,  uv_et.back().v);
@@ -3037,7 +3037,7 @@ bool StdMeshers_Quadrangle_2D::computeReduced (SMESH_Mesh &        aMesh,
       NodesL.SetValue(1,j,uv_el[j-1].node);
     if (dl>0) {
       // add top nodes
-      for (i=1; i<=dl; i++) 
+      for (i=1; i<=dl; i++)
         NodesL.SetValue(i+1,nl,uv_et[i].node);
       // create and add needed nodes
       TColgp_SequenceOfXY UVtmp;
@@ -3082,15 +3082,15 @@ bool StdMeshers_Quadrangle_2D::computeReduced (SMESH_Mesh &        aMesh,
         UVL.Append(gp_UV (uv_el[i].u, uv_el[i].v));
       }
     }
-    
+
     // step2: create faces for right domain
     StdMeshers_Array2OfNode NodesR(1,dr+1,1,nr);
     // add right nodes
-    for (j=1; j<=nr; j++) 
+    for (j=1; j<=nr; j++)
       NodesR.SetValue(1,j,uv_er[nr-j].node);
     if (dr>0) {
       // add top nodes
-      for (i=1; i<=dr; i++) 
+      for (i=1; i<=dr; i++)
         NodesR.SetValue(i+1,1,uv_et[nt-1-i].node);
       // create and add needed nodes
       TColgp_SequenceOfXY UVtmp;
@@ -3135,7 +3135,7 @@ bool StdMeshers_Quadrangle_2D::computeReduced (SMESH_Mesh &        aMesh,
         UVR.Append(gp_UV(uv_er[i].u, uv_er[i].v));
       }
     }
-    
+
     // step3: create faces for central domain
     StdMeshers_Array2OfNode NodesC(1,nb,1,nbv);
     // add first line using NodesL
@@ -3149,7 +3149,7 @@ bool StdMeshers_Quadrangle_2D::computeReduced (SMESH_Mesh &        aMesh,
     for (i=1; i<nr; i++)
       NodesC.SetValue(nb,dr+i+1,NodesR(dr+1,nr-i));
     // add top nodes (last columns)
-    for (i=dl+2; i<nbh-dr; i++) 
+    for (i=dl+2; i<nbh-dr; i++)
       NodesC.SetValue(i-dl,nbv,uv_et[i-1].node);
     // add bottom nodes (first columns)
     for (i=2; i<nb; i++)
@@ -3231,7 +3231,8 @@ bool StdMeshers_Quadrangle_2D::computeReduced (SMESH_Mesh &        aMesh,
     // maximum number of bottom elements for "tree" simple reduce 4->2
     int max_tree42 = 0;
     // number of rows needed to reduce ncol_bot to ncol_top using simple 4->2 "tree"
-    int nrows_tree42 = int( log( (double)(ncol_bot / ncol_top) )/log((double)2)  ); // needed to avoid overflow at pow(2) while computing max_tree42
+    // needed to avoid overflow at pow(2) while computing max_tree42
+    int nrows_tree42 = int( log( (double)(ncol_bot / ncol_top) )/log((double)2)  );
     if (nrows_tree42 < nrows) {
       max_tree42 = npair_top * pow(2.0, nrows + 1);
       if ( ncol_top > npair_top * 2 ) {
@@ -3549,7 +3550,7 @@ bool StdMeshers_Quadrangle_2D::computeReduced (SMESH_Mesh &        aMesh,
           const SMDS_MeshNode*& Nf = next_base[++next_base_len].node;
           if ( !Nf )
             Nf = makeNode( next_base[ next_base_len ], y, quad, uv, myHelper, S );
-          
+
           myHelper->AddFace(curr_base[ j ].node,
                             curr_base[ j+1 ].node,
                             Nf,
@@ -4313,7 +4314,7 @@ int StdMeshers_Quadrangle_2D::getCorners(const TopoDS_Face&          theFace,
       if ( myTriaVertexID < 1 )
         return error(COMPERR_BAD_PARMETERS,
                      "No Base vertex provided for a trilateral geometrical face");
-        
+
       TComm comment("Invalid Base vertex: ");
       comment << myTriaVertexID << " its ID is not among [ ";
       multimap<double, TopoDS_Vertex>::iterator a2v = vertexByAngle.begin();

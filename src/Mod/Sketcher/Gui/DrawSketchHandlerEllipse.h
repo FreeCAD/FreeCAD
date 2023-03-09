@@ -380,10 +380,12 @@ private:
             }
             else if (mode == STATUS_SEEK_B) {
                 // Get the closest distance from onSketchPos to apse line, as a 'requested' value for b
-                Base::Vector2d cursor = Base::Vector2d(onSketchPos - f); // vector from f to cursor pos
+                // vector from f to cursor pos
+                Base::Vector2d cursor = Base::Vector2d(onSketchPos - f);
                 // decompose cursor with a projection, then length of w_2 will give us b
                 Base::Vector2d w_1 = cursor;
-                w_1.ProjectToLine(cursor, (periapsis - apoapsis)); // projection of cursor line onto apse line
+                // projection of cursor line onto apse line
+                w_1.ProjectToLine(cursor, (periapsis - apoapsis));
                 Base::Vector2d w_2 = (cursor - w_1);
                 b = w_2.Length();
 
@@ -440,10 +442,12 @@ private:
                 // while looking for the last click, we may switch back and forth
                 // between looking for a b point and looking for periapsis, so ensure
                 // we are in the right mode
-                Base::Vector2d cursor = Base::Vector2d(onSketchPos - centroid); // vector from centroid to cursor pos
+                // vector from centroid to cursor pos
+                Base::Vector2d cursor = Base::Vector2d(onSketchPos - centroid);
                 // decompose cursor with a projection, then length of w_2 will give us b
                 Base::Vector2d w_1 = cursor;
-                w_1.ProjectToLine(cursor, (fixedAxis - centroid)); // projection of cursor line onto fixed axis line
+                // projection of cursor line onto fixed axis line
+                w_1.ProjectToLine(cursor, (fixedAxis - centroid));
                 Base::Vector2d w_2 = (cursor - w_1);
                 if (w_2.Length() > fixedAxisLength) {
                     // b is fixed, we are seeking a
@@ -810,7 +814,8 @@ private:
             * right button of the mouse */
         }
         else{
-            sketchgui->purgeHandler(); // no code after this line, Handler get deleted in ViewProvider
+            // no code after this line, Handler get deleted in ViewProvider
+            sketchgui->purgeHandler();
         }
 
     }
@@ -820,4 +825,3 @@ private:
 
 
 #endif // SKETCHERGUI_DrawSketchHandlerEllipse_H
-

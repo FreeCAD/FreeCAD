@@ -144,7 +144,8 @@ protected:
     virtual void languageChange();
 
 private:
-    using filterItemRepr =  std::pair<const char *, const int>; // {filter item text, filter item level}
+    // {filter item text, filter item level}
+    using filterItemRepr =  std::pair<const char *, const int>;
     inline static const std::vector<filterItemRepr> filterItems = {
         {QT_TR_NOOP("Normal"),0},
         {QT_TR_NOOP("Construction"),0},

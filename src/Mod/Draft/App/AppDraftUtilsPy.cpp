@@ -39,7 +39,8 @@ public:
             "NOTE: DraftUtils.readDXF is removed. "
             "Use Import.readDxf instead."
         );
-        initialize("The DraftUtils module contains utility functions for the Draft module."); // register with Python
+        // register with Python
+        initialize("The DraftUtils module contains utility functions for the Draft module.");
     }
 
     ~Module() override {}

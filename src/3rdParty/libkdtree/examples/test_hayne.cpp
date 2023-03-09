@@ -8,7 +8,7 @@
 
 using namespace std;
 
-struct duplet 
+struct duplet
 {
    typedef int value_type;
 
@@ -95,7 +95,8 @@ int main()
 
       assert(*will == *should);
 
-      dupl_tree_test.erase(element_to_erase); //erase() : will probably erase wrong element sooner or later
+      //erase() : will probably erase wrong element sooner or later
+      dupl_tree_test.erase(element_to_erase);
       //dupl_tree_test.erase_exact(element_to_erase); --> this works
 
       // now check that it cannot find the element UNLESS there is another one with the identical location in the list...

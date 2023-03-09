@@ -59,7 +59,8 @@ bool LineEdit::eventFilter(QObject* object, QEvent* event)
             }
         }
     }
-    return false; // We don't usually actually "handle" the tab event, we just keep track of it
+    // We don't usually actually "handle" the tab event, we just keep track of it
+    return false;
 }
 
 bool LineEdit::event(QEvent *event)

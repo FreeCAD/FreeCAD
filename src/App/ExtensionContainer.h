@@ -120,11 +120,14 @@ public:
     ~ExtensionContainer() override;
 
     void registerExtension(Base::Type extension, App::Extension* ext);
-    bool hasExtension(Base::Type, bool derived=true) const; //returns first of type (or derived from if set to true) and throws otherwise
-    bool hasExtension(const std::string& name) const; //this version does not check derived classes
+    //returns first of type (or derived from if set to true) and throws otherwise
+    bool hasExtension(Base::Type, bool derived=true) const;
+    //this version does not check derived classes
+    bool hasExtension(const std::string& name) const;
     bool hasExtensions() const;
     App::Extension* getExtension(Base::Type, bool derived = true, bool no_except=false) const;
-    App::Extension* getExtension(const std::string& name) const; //this version does not check derived classes
+    //this version does not check derived classes
+    App::Extension* getExtension(const std::string& name) const;
 
     //returns first of type (or derived from) and throws otherwise
     template<typename ExtensionT>

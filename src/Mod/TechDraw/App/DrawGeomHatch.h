@@ -56,7 +56,8 @@ public:
     DrawGeomHatch();
     ~DrawGeomHatch() = default;
 
-    App::PropertyLinkSub     Source;                                   //the dvX & face(s) this crosshatch belongs to
+    //the dvX & face(s) this crosshatch belongs to
+    App::PropertyLinkSub     Source;
     App::PropertyFile        FilePattern;
     App::PropertyFileIncluded PatIncluded;
     App::PropertyString      NamePattern;

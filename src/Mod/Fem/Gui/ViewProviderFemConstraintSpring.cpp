@@ -96,7 +96,8 @@ void ViewProviderFemConstraintSpring::updateData(const App::Property* prop)
 {
     // Gets called whenever a property of the attached object changes
     Fem::ConstraintSpring *pcConstraint = static_cast<Fem::ConstraintSpring *>(this->getObject());
-    float scaledwidth = WIDTH * pcConstraint->Scale.getValue(); //OvG: Calculate scaled values once only
+    //OvG: Calculate scaled values once only
+    float scaledwidth = WIDTH * pcConstraint->Scale.getValue();
     float scaledlength = LENGTH * pcConstraint->Scale.getValue();
 
 #ifdef USE_MULTIPLE_COPY

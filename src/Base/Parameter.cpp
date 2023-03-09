@@ -625,7 +625,7 @@ void ParameterGrp::_Notify(ParamType Type, const char *Name, const char *Value)
 }
 
 void ParameterGrp::_SetAttribute(ParamType T, const char *Name, const char *Value)
-{ 
+{
     const char *Type = TypeName(T);
     if (!Type)
         return;
@@ -1012,7 +1012,8 @@ std::vector<std::string> ParameterGrp::GetASCIIs(const char * sFilter) const
             if (pcElem2)
                 vrValues.emplace_back(StrXUTF8(pcElem2->getNodeValue()).c_str() );
             else
-                vrValues.emplace_back(""); // For a string, an empty value is possible and allowed
+                // For a string, an empty value is possible and allowed
+                vrValues.emplace_back("");
         }
         pcTemp = FindNextElement(pcTemp,"FCText");
     }
@@ -1038,7 +1039,8 @@ std::vector<std::pair<std::string,std::string> > ParameterGrp::GetASCIIMap(const
             if (pcElem2)
                 vrValues.emplace_back(Name, std::string(StrXUTF8(pcElem2->getNodeValue()).c_str()));
             else
-                vrValues.emplace_back(Name, std::string()); // For a string, an empty value is possible and allowed
+                // For a string, an empty value is possible and allowed
+                vrValues.emplace_back(Name, std::string());
         }
         pcTemp = FindNextElement(pcTemp,"FCText");
     }

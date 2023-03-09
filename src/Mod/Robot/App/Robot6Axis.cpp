@@ -51,7 +51,7 @@ using namespace KDL;
 // some default roboter
 
 AxisDefinition KukaIR500[6] = {
-//   a    ,alpha ,d    ,theta ,rotDir ,maxAngle ,minAngle ,AxisVelocity 
+//   a    ,alpha ,d    ,theta ,rotDir ,maxAngle ,minAngle ,AxisVelocity
     {500  ,-90   ,1045 ,0     , -1    ,+185     ,-185     ,156         }, // Axis 1
     {1300 ,0     ,0    ,0     , 1     ,+35      ,-155     ,156         }, // Axis 2
     {55   ,+90   ,0    ,-90   , 1     ,+154     ,-130     ,156         }, // Axis 3
@@ -171,7 +171,7 @@ void Robot6Axis::Save (Writer &writer) const
     for(unsigned int i=0;i<6;i++){
         Base::Placement Tip = toPlacement(Kinematic.getSegment(i).getFrameToTip());
         writer.Stream() << writer.ind() << "<Axis "
-                        << "Px=\""          <<  Tip.getPosition().x  << "\" " 
+                        << "Px=\""          <<  Tip.getPosition().x  << "\" "
                         << "Py=\""          <<  Tip.getPosition().y  << "\" "
                         << "Pz=\""          <<  Tip.getPosition().z  << "\" "
                         << "Q0=\""          <<  Tip.getRotation()[0] << "\" "
@@ -229,7 +229,8 @@ bool Robot6Axis::setTo(const Placement &To)
     //Creation of the solvers:
     ChainFkSolverPos_recursive fksolver1(Kinematic);//Forward position solver
     ChainIkSolverVel_pinv iksolver1v(Kinematic);//Inverse velocity solver
-    ChainIkSolverPos_NR_JL iksolver1(Kinematic,Min,Max,fksolver1,iksolver1v,100,1e-6);//Maximum 100 iterations, stop at accuracy 1e-6
+    //Maximum 100 iterations, stop at accuracy 1e-6
+    ChainIkSolverPos_NR_JL iksolver1(Kinematic,Min,Max,fksolver1,iksolver1v,100,1e-6);
 
     //Creation of jntarrays:
     JntArray result(Kinematic.getNrOfJoints());
@@ -261,8 +262,8 @@ bool Robot6Axis::calcTcp()
     ChainFkSolverPos_recursive fksolver = ChainFkSolverPos_recursive(Kinematic);
 
      // Create the frame that will contain the results
-    KDL::Frame cartpos;    
- 
+    KDL::Frame cartpos;
+
     // Calculate forward position kinematics
     int kinematics_status;
     kinematics_status = fksolver.JntToCart(Actual,cartpos);

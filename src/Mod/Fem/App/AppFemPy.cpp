@@ -234,7 +234,8 @@ private:
             FemVTKTools::readResult(EncodedName.c_str(), obj);
         }
         else
-            FemVTKTools::readResult(EncodedName.c_str());  // assuming activeObject can hold Result
+            // assuming activeObject can hold Result
+            FemVTKTools::readResult(EncodedName.c_str());
 
         return Py::None();
     }

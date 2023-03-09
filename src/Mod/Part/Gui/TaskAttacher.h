@@ -134,9 +134,12 @@ private:
     VisibilityFunction visibilityFunc;
 
     // TODO fix documentation here (2015-11-10, Fat-Zer)
-    int iActiveRef; //what reference is being picked in 3d view now? -1 means no one, 0-3 means a reference is being picked.
-    bool autoNext;//if we should automatically switch to next reference (true after dialog launch, false afterwards)
-    std::vector<Attacher::eMapMode> modesInList; //this list is synchronous to what is populated into listOfModes widget.
+    //what reference is being picked in 3d view now? -1 means no one, 0-3 means a reference is being picked.
+    int iActiveRef;
+    //if we should automatically switch to next reference (true after dialog launch, false afterwards)
+    bool autoNext;
+    //this list is synchronous to what is populated into listOfModes widget.
+    std::vector<Attacher::eMapMode> modesInList;
     Attacher::SuggestResult lastSuggestResult;
     bool completed;
 

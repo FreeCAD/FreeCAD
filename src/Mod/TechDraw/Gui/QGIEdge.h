@@ -54,7 +54,8 @@ public:
     double getEdgeFuzz(void) const;
 
 protected:
-    int projIndex;                                                     //index of edge in Projection. must exist.
+    //index of edge in Projection. must exist.
+    int projIndex;
 
     bool isCosmetic;
     bool isHiddenEdge;

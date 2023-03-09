@@ -94,7 +94,8 @@ void ChainIdSolver_Vereshchagin::initial_upwards_sweep(const JntArray &q, const 
         //The total velocity of the segment expressed in the segments reference frame (tip)
         if (i != 0)
         {
-            s.v = s.F.Inverse(results[i].v) + vj; // recursive velocity of each link in segment frame
+            // recursive velocity of each link in segment frame
+            s.v = s.F.Inverse(results[i].v) + vj;
             //s.A=s.F.Inverse(results[i].A)+aj;
             s.A = s.F.M.Inverse(results[i].A);
         }
@@ -106,7 +107,8 @@ void ChainIdSolver_Vereshchagin::initial_upwards_sweep(const JntArray &q, const 
         //c[i] = cj + v[i]xvj (remark: cj=0, since our S is not time dependent in local coordinates)
         //The velocity product acceleration
         //std::cout << i << " Initial upward" << s.v << std::endl;
-        s.C = s.v*vj; //This is a cross product: cartesian space BIAS acceleration in local link coord.
+        //This is a cross product: cartesian space BIAS acceleration in local link coord.
+        s.C = s.v*vj;
         //Put C in the joint root reference frame
         s.C = s.F * s.C; //+F_total.M.Inverse(acc_root));
         //The rigid body inertia of the segment, expressed in the segments reference frame (tip)
@@ -316,7 +318,8 @@ void ChainIdSolver_Vereshchagin::final_upwards_sweep(JntArray &q_dotdot, JntArra
         //total joint space acceleration resulting from accelerations of parent joints, constraint forces and
         // nullspace forces.
         q_dotdot(j) = (s.nullspaceAccComp + parentAccComp + s.constAccComp);
-        s.acc = s.F.Inverse(a_p + s.Z * q_dotdot(j) + s.C);//returns acceleration in link distal tip coordinates. For use needs to be transformed
+        //returns acceleration in link distal tip coordinates. For use needs to be transformed
+        s.acc = s.F.Inverse(a_p + s.Z * q_dotdot(j) + s.C);
         if (chain.getSegment(i - 1).getJoint().getType() != Joint::None)
             j++;
     }

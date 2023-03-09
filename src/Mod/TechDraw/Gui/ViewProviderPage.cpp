@@ -348,7 +348,8 @@ void ViewProviderPage::removeMDIView(void)
             m_graphicsView = nullptr;//will take m_graphicsView with it
             Gui::MDIView* aw =
                 Gui::getMainWindow()
-                    ->activeWindow();//WF: this bit should be in the remove window logic, not here.
+                    //WF: this bit should be in the remove window logic, not here.
+                    ->activeWindow();
             if (aw)
                 aw->showMaximized();
         }

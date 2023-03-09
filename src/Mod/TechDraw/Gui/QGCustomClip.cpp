@@ -37,7 +37,8 @@ using namespace TechDrawGui;
 
 QGCustomClip::QGCustomClip()
 {
-    setHandlesChildEvents(false);                //not sure if needs to handle events for Views in Group???
+    //not sure if needs to handle events for Views in Group???
+    setHandlesChildEvents(false);
     setCacheMode(QGraphicsItem::NoCache);
     setAcceptHoverEvents(false);
     setFlag(QGraphicsItem::ItemIsSelectable, false);
@@ -107,5 +108,3 @@ void QGCustomClip::makeMark(Base::Vector3d v)
 {
     makeMark(v.x, v.y);
 }
-
-

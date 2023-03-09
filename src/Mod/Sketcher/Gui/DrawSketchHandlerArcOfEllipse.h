@@ -132,7 +132,8 @@ public:
 
             double rxs = startingPoint.x - centerPoint.x;
             double rys = startingPoint.y - centerPoint.y;
-            startAngle = atan2(a*(rys*cos(phi)-rxs*sin(phi)), b*(rxs*cos(phi)+rys*sin(phi))); // eccentric anomaly angle
+            // eccentric anomaly angle
+            startAngle = atan2(a*(rys*cos(phi)-rxs*sin(phi)), b*(rxs*cos(phi)+rys*sin(phi)));
 
             double angle1 = atan2(a*((onSketchPos.y - centerPoint.y)*cos(phi)-(onSketchPos.x - centerPoint.x)*sin(phi)),
                                   b*((onSketchPos.x - centerPoint.x)*cos(phi)+(onSketchPos.y - centerPoint.y)*sin(phi)))- startAngle;
@@ -325,7 +326,8 @@ public:
                 * right button of the mouse */
             }
             else{
-                sketchgui->purgeHandler(); // no code after this line, Handler get deleted in ViewProvider
+                // no code after this line, Handler get deleted in ViewProvider
+                sketchgui->purgeHandler();
             }
         }
         return true;
@@ -348,4 +350,3 @@ protected:
 
 
 #endif // SKETCHERGUI_DrawSketchHandlerArcOfEllipse_H
-

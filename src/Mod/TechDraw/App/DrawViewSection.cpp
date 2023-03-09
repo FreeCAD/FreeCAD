@@ -141,7 +141,8 @@ DrawViewSection::DrawViewSection() : m_waitingForCut(false), m_shapeSize(0.0)
                       "2D View source for this Section");
     BaseView.setScope(App::LinkScope::Global);
     ADD_PROPERTY_TYPE(SectionNormal, (0, 0, 1.0), sgroup, App::Prop_None,
-                      "Section Plane normal direction");//direction of extrusion of cutting prism
+                      //direction of extrusion of cutting prism
+                      "Section Plane normal direction");
     ADD_PROPERTY_TYPE(SectionOrigin, (0, 0, 0), sgroup, App::Prop_None, "Section Plane Origin");
 
     //TODO: SectionDirection is a legacy from when SectionViews were only available along
@@ -578,7 +579,8 @@ void DrawViewSection::postHlrTasks(void)
     if (dvp) {
         dvp->requestPaint();//to refresh section line
     }
-    requestPaint();//this will be a duplicate paint if we are making a standalone ComplexSection
+    //this will be a duplicate paint if we are making a standalone ComplexSection
+    requestPaint();
 }
 
 //activities that depend on a valid section cut

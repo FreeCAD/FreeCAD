@@ -1156,7 +1156,8 @@ void RecentMacrosAction::setFiles(const QStringList& files)
     ParameterGrp::handle hGrp = App::GetApplication().GetUserParameter().GetGroup("BaseApp")
                                 ->GetGroup("Preferences")->GetGroup("RecentMacros");
     this->shortcut_modifiers = hGrp->GetASCII("ShortcutModifiers","Ctrl+Shift+");
-    this->shortcut_count = std::min<int>(hGrp->GetInt("ShortcutCount",3),9);//max = 9, e.g. Ctrl+Shift+9
+    //max = 9, e.g. Ctrl+Shift+9
+    this->shortcut_count = std::min<int>(hGrp->GetInt("ShortcutCount",3),9);
     this->visibleItems = hGrp->GetInt("RecentMacros",12);
     QList<QAction*> recentFiles = groupAction()->actions();
 

@@ -68,7 +68,8 @@ std::shared_ptr<Encoder> Encoder::EncoderFactory( unsigned bytestreamNumber,
             std::static_pointer_cast<IntegerNodeImpl>( encodeNode ); // downcast to correct type
 
          /// Get pointer to parent ImageFileImpl, to call bitsNeeded()
-         ImageFileImplSharedPtr imf( encodeNode->destImageFile_ ); //??? should be function for this,
+         //??? should be function for this,
+         ImageFileImplSharedPtr imf( encodeNode->destImageFile_ );
                                                                    // imf->parentFile()
                                                                    //--> ImageFile?
 
@@ -113,10 +114,12 @@ std::shared_ptr<Encoder> Encoder::EncoderFactory( unsigned bytestreamNumber,
       case E57_SCALED_INTEGER:
       {
          std::shared_ptr<ScaledIntegerNodeImpl> sini =
-            std::static_pointer_cast<ScaledIntegerNodeImpl>( encodeNode ); // downcast to correct type
+            // downcast to correct type
+            std::static_pointer_cast<ScaledIntegerNodeImpl>( encodeNode );
 
          /// Get pointer to parent ImageFileImpl, to call bitsNeeded()
-         ImageFileImplSharedPtr imf( encodeNode->destImageFile_ ); //??? should be function for this,
+         //??? should be function for this,
+         ImageFileImplSharedPtr imf( encodeNode->destImageFile_ );
                                                                    // imf->parentFile()
                                                                    //--> ImageFile?
 
@@ -165,7 +168,8 @@ std::shared_ptr<Encoder> Encoder::EncoderFactory( unsigned bytestreamNumber,
       case E57_FLOAT:
       {
          std::shared_ptr<FloatNodeImpl> fni =
-            std::static_pointer_cast<FloatNodeImpl>( encodeNode ); // downcast to correct type
+            // downcast to correct type
+            std::static_pointer_cast<FloatNodeImpl>( encodeNode );
 
          //!!! need to pick smarter channel buffer sizes, here and elsewhere
          std::shared_ptr<Encoder> encoder(

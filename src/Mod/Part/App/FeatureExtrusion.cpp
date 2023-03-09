@@ -68,7 +68,8 @@ Extrusion::Extrusion()
     ADD_PROPERTY_TYPE(Symmetric, (false), "Extrude", App::Prop_None, "If true, extrusion is done in both directions to a total of LengthFwd. LengthRev is ignored.");
     ADD_PROPERTY_TYPE(TaperAngle, (0.0), "Extrude", App::Prop_None, "Sets the angle of slope (draft) to apply to the sides. The angle is for outward taper; negative value yields inward tapering.");
     ADD_PROPERTY_TYPE(TaperAngleRev, (0.0), "Extrude", App::Prop_None, "Taper angle of reverse part of extrusion.");
-    ADD_PROPERTY_TYPE(FaceMakerClass, ("Part::FaceMakerExtrusion"), "Extrude", App::Prop_None, "If Solid is true, this sets the facemaker class to use when converting wires to faces. Otherwise, ignored."); //default for old documents. See setupObject for default for new extrusions.
+    //default for old documents. See setupObject for default for new extrusions.
+    ADD_PROPERTY_TYPE(FaceMakerClass, ("Part::FaceMakerExtrusion"), "Extrude", App::Prop_None, "If Solid is true, this sets the facemaker class to use when converting wires to faces. Otherwise, ignored.");
 }
 
 short Extrusion::mustExecute() const
@@ -232,7 +233,8 @@ Base::Vector3d Extrusion::calculateShapeNormal(const App::PropertyLink& shapeLin
 TopoShape Extrusion::extrudeShape(const TopoShape& source, const Extrusion::ExtrusionParameters& params)
 {
     TopoDS_Shape result;
-    gp_Vec vec = gp_Vec(params.dir).Multiplied(params.lengthFwd + params.lengthRev);//total vector of extrusion
+    //total vector of extrusion
+    gp_Vec vec = gp_Vec(params.dir).Multiplied(params.lengthFwd + params.lengthRev);
 
     if (std::fabs(params.taperAngleFwd) >= Precision::Angular() ||
         std::fabs(params.taperAngleRev) >= Precision::Angular()) {
@@ -247,7 +249,8 @@ TopoShape Extrusion::extrudeShape(const TopoShape& source, const Extrusion::Extr
         myShape = BRepBuilderAPI_Copy(myShape).Shape();
 
         std::list<TopoDS_Shape> drafts;
-        bool isPartDesign = false; // there is an OCC bug with single-edge wires (circles) we need to treat differently for PD and Part
+        // there is an OCC bug with single-edge wires (circles) we need to treat differently for PD and Part
+        bool isPartDesign = false;
         ExtrusionHelper::makeDraft(myShape, params.dir, params.lengthFwd, params.lengthRev,
                                    params.taperAngleFwd, params.taperAngleRev, params.solid, drafts, isPartDesign);
         if (drafts.empty()) {
@@ -406,5 +409,6 @@ void FaceMakerExtrusion::Build()
 void Part::Extrusion::setupObject()
 {
     Part::Feature::setupObject();
-    this->FaceMakerClass.setValue("Part::FaceMakerBullseye"); //default for newly created features
+    //default for newly created features
+    this->FaceMakerClass.setValue("Part::FaceMakerBullseye");
 }

@@ -68,7 +68,8 @@ public:     // these aren't used by orthoView, but just informational, hence pub
     int     rel_x, rel_y;   // relative position of this view
     bool    away, tri;      // binary parameters for axonometric view
     int     axo;            // 0 / 1 / 2 = iso / di / tri metric
-    gp_Dir  up, right;      // directions prior to rotations (ie, what was used to orientate the projection)
+    // directions prior to rotations (ie, what was used to orientate the projection)
+    gp_Dir  up, right;
 
 private:
     App::Document *             parent_doc;
@@ -79,7 +80,8 @@ private:
     float   cx, cy, cz;             // coords of bbox centre in 3D space
     float   pageX, pageY;           // required coords of centre of bbox projection on page
     float   scale;                  // scale of projection
-    gp_Dir  X_dir, Y_dir, Z_dir;    // directions of projection, X_dir makes x on page, Y_dir is y on page, Z_dir is out of page
+    // directions of projection, X_dir makes x on page, Y_dir is y on page, Z_dir is out of page
+    gp_Dir  X_dir, Y_dir, Z_dir;
 };
 
 
@@ -109,9 +111,12 @@ public:
 private:
     void    set_orientation(int index);
     void    load_page();                        // get page / titleblock dims from template
-    void    choose_page();                      // determine correct portion of page to use to avoid interference with title block
-    void    set_all_orientations();             // update orientations of all views following change in primary view
-    void    calc_layout_size();                 // what's the real world size of chosen layout, excluding spaces
+    // determine correct portion of page to use to avoid interference with title block
+    void    choose_page();
+    // update orientations of all views following change in primary view
+    void    set_all_orientations();
+    // what's the real world size of chosen layout, excluding spaces
+    void    calc_layout_size();
     void    calc_offsets();
     void    set_views();
     void    calc_scale();
@@ -127,12 +132,17 @@ private:
     App::DocumentObject *   part;
     App::DocumentObject *   page;
 
-    int     large[4];                       // arrays containing page size info [margin_x, margin_y, size_x, size_y] = [x1, y1, x2-x1, y2-y1]
-    int     small_h[4], small_v[4];         // page size avoiding title block, using maximum horizontal / vertical space
-    int *   page_dims;                      // points to one of above arrays for which set of page dimensions to use
-    int     block[4];                       // title block info [corner x, corner y, width, height], eg [-1, 1, w, h] is in top left corner
+    // arrays containing page size info [margin_x, margin_y, size_x, size_y] = [x1, y1, x2-x1, y2-y1]
+    int     large[4];
+    // page size avoiding title block, using maximum horizontal / vertical space
+    int     small_h[4], small_v[4];
+    // points to one of above arrays for which set of page dimensions to use
+    int *   page_dims;
+    // title block info [corner x, corner y, width, height], eg [-1, 1, w, h] is in top left corner
+    int     block[4];
     bool    title;
-    int *   horiz, * vert;                  // points to min or max r_x / r_y depending upon which corner title block is in
+    // points to min or max r_x / r_y depending upon which corner title block is in
+    int *   horiz, * vert;
 
     int     rotate_coeff;                   // 1st (= -1) or 3rd (= 1) angle
     int     min_r_x, max_r_x;               // extreme relative positions of views
@@ -142,7 +152,8 @@ private:
     float   gap_x, gap_y, min_space;        // required spacing between views
     float   offset_x, offset_y;             // coords of centre of upper left view
     float   scale;
-    int     num_gaps_x, num_gaps_y;         // how many gaps between views/edges? = num of views in given direction + 1
+    // how many gaps between views/edges? = num of views in given direction + 1
+    int     num_gaps_x, num_gaps_y;
     gp_Ax2  primary;                        // coord system of primary view
 
     bool    hidden, smooth;
@@ -195,7 +206,8 @@ private:
 
     float   data[5];                    // scale, x_pos, y_pos, horiz, vert
     int     axo_r_x, axo_r_y;           // relative position of axo view currently being edited
-    bool    txt_return;                 // flag to show if return was pressed while editing a text box;
+    // flag to show if return was pressed while editing a text box;
+    bool    txt_return;
 };
 
 
@@ -227,4 +239,3 @@ private:
 
 
 #endif // GUI_TASKVIEW_OrthoViews_H
-

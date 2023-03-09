@@ -173,7 +173,7 @@ public:
 
     /**
      * Calculates the function values of the basic functions that do not vanish at fParam.
-     * It must be ensured that the list for d (= degree of the B-spline) 
+     * It must be ensured that the list for d (= degree of the B-spline)
      * elements (0, ..., d-1) is sufficient (from: Piegl/Tiller 96 The NURBS-Book)
      * @param fParam Parameter
      * @param vFuncVals List of function values
@@ -258,7 +258,8 @@ public:
     explicit ParameterCorrection(unsigned usUOrder=4,               //Order in u-direction (order = degree + 1)
                         unsigned usVOrder=4,               //Order in v-direction
                         unsigned usUCtrlpoints=6,          //Qty. of the control points in the u-direction
-                        unsigned usVCtrlpoints=6);         //Qty. of the control points in the v-direction
+                        //Qty. of the control points in the v-direction
+                        unsigned usVCtrlpoints=6);
 
     virtual ~ParameterCorrection()
     {
@@ -346,12 +347,15 @@ protected:
     unsigned                _usVCtrlpoints;    //! Number of control points in the v-direction
     Base::Vector3d          _clU;              //! u-direction
     Base::Vector3d          _clV;              //! v-direction
-    Base::Vector3d          _clW;              //! w-direction (perpendicular to u & v directions)
+    //! w-direction (perpendicular to u & v directions)
+    Base::Vector3d          _clW;
     TColgp_Array1OfPnt*     _pvcPoints;        //! Raw data point list
     TColgp_Array1OfPnt2d*   _pvcUVParam;       //! Parameter value for the points in the list
     TColgp_Array2OfPnt      _vCtrlPntsOfSurf;  //! Array of control points
-    TColStd_Array1OfReal    _vUKnots;          //! Knot vector of the B-spline surface in the u-direction
-    TColStd_Array1OfReal    _vVKnots;          //! Knot vector of the B-spline surface in the v-direction
+    //! Knot vector of the B-spline surface in the u-direction
+    TColStd_Array1OfReal    _vUKnots;
+    //! Knot vector of the B-spline surface in the v-direction
+    TColStd_Array1OfReal    _vVKnots;
     TColStd_Array1OfInteger _vUMults;          //! Multiplicity of the knots in the knot vector
     TColStd_Array1OfInteger _vVMults;          //! Multiplicity of the knots in the knot vector
 };
@@ -373,7 +377,8 @@ public:
     explicit BSplineParameterCorrection(unsigned usUOrder=4,               //Order in u-direction (order = degree + 1)
                                unsigned usVOrder=4,               //Order in the v-direction
                                unsigned usUCtrlpoints=6,          //Qty. of the control points in u-direction
-                               unsigned usVCtrlpoints=6);         //Qty. of the control points in v-direction
+                               //Qty. of the control points in v-direction
+                               unsigned usVCtrlpoints=6);
 
     ~BSplineParameterCorrection() override{}
 

@@ -99,7 +99,8 @@ void EditModeConstraintCoinManager::updateVirtualSpace()
         SbBool *sws = editModeScenegraphNodes.constrGroup->enable.startEditing();
 
         for (size_t i = 0; i < constrlist.size(); i++)
-            sws[i] = !(constrlist[i]->isInVirtualSpace != isshownvirtualspace); // XOR of constraint mode and VP mode
+            // XOR of constraint mode and VP mode
+            sws[i] = !(constrlist[i]->isInVirtualSpace != isshownvirtualspace);
 
 
         editModeScenegraphNodes.constrGroup->enable.finishEditing();
@@ -228,7 +229,8 @@ Restart:
                             }
                             else {
                                 double ra=0,rb=0;
-                                double angle,angleplus=0.;//angle = rotation of object as a whole; angleplus = arc angle (t parameter for ellipses).
+                                //angle = rotation of object as a whole; angleplus = arc angle (t parameter for ellipses).
+                                double angle,angleplus=0.;
                                 if (geo->getTypeId() == Part::GeomCircle::getClassTypeId()) {
                                     const Part::GeomCircle *circle = static_cast<const Part::GeomCircle *>(geo);
                                     ra = circle->getRadius();
@@ -286,13 +288,16 @@ Restart:
                                     geo->getTypeId() == Part::GeomArcOfHyperbola::getClassTypeId()){
 
                                     Base::Vector3d majDir, minDir, rvec;
-                                    majDir = Base::Vector3d(cos(angle),sin(angle),0);//direction of major axis of ellipse
-                                    minDir = Base::Vector3d(-majDir.y,majDir.x,0);//direction of minor axis of ellipse
+                                    //direction of major axis of ellipse
+                                    majDir = Base::Vector3d(cos(angle),sin(angle),0);
+                                    //direction of minor axis of ellipse
+                                    minDir = Base::Vector3d(-majDir.y,majDir.x,0);
                                     rvec = (ra*cos(angleplus)) * majDir   +   (rb*sin(angleplus)) * minDir;
                                     midpos += rvec;
                                     rvec.Normalize();
                                     norm = rvec;
-                                    dir = Base::Vector3d(-rvec.y,rvec.x,0);//DeepSOIC: I'm not sure what dir is supposed to mean.
+                                    //DeepSOIC: I'm not sure what dir is supposed to mean.
+                                    dir = Base::Vector3d(-rvec.y,rvec.x,0);
                                 }
                                 else {
                                     norm = Base::Vector3d(cos(angle),sin(angle),0);
@@ -353,7 +358,8 @@ Restart:
 
                         Base::Vector3d midpos1, dir1, norm1;
                         Base::Vector3d midpos2, dir2, norm2;
-                        bool twoIcons = false;//a very local flag. It's set to true to indicate that the second dir+norm are valid and should be used
+                        //a very local flag. It's set to true to indicate that the second dir+norm are valid and should be used
+                        bool twoIcons = false;
 
 
                         if (Constr->Third != GeoEnum::GeoUndef || //perpty via point
@@ -463,7 +469,8 @@ Restart:
                             geo2->getTypeId() != Part::GeomLineSegment::getClassTypeId()) {
                             if (Constr->Type == Equal) {
                                 double r1a=0,r1b=0,r2a=0,r2b=0;
-                                double angle1,angle1plus=0.,  angle2, angle2plus=0.;//angle1 = rotation of object as a whole; angle1plus = arc angle (t parameter for ellipses).
+                                //angle1 = rotation of object as a whole; angle1plus = arc angle (t parameter for ellipses).
+                                double angle1,angle1plus=0.,  angle2, angle2plus=0.;
                                 if (geo1->getTypeId() == Part::GeomCircle::getClassTypeId()) {
                                     const Part::GeomCircle *circle = static_cast<const Part::GeomCircle *>(geo1);
                                     r1a = circle->getRadius();
@@ -573,13 +580,16 @@ Restart:
                                     geo1->getTypeId() == Part::GeomArcOfHyperbola::getClassTypeId() ){
 
                                     Base::Vector3d majDir, minDir, rvec;
-                                    majDir = Base::Vector3d(cos(angle1),sin(angle1),0);//direction of major axis of ellipse
-                                    minDir = Base::Vector3d(-majDir.y,majDir.x,0);//direction of minor axis of ellipse
+                                    //direction of major axis of ellipse
+                                    majDir = Base::Vector3d(cos(angle1),sin(angle1),0);
+                                    //direction of minor axis of ellipse
+                                    minDir = Base::Vector3d(-majDir.y,majDir.x,0);
                                     rvec = (r1a*cos(angle1plus)) * majDir   +   (r1b*sin(angle1plus)) * minDir;
                                     midpos1 += rvec;
                                     rvec.Normalize();
                                     norm1 = rvec;
-                                    dir1 = Base::Vector3d(-rvec.y,rvec.x,0);//DeepSOIC: I'm not sure what dir is supposed to mean.
+                                    //DeepSOIC: I'm not sure what dir is supposed to mean.
+                                    dir1 = Base::Vector3d(-rvec.y,rvec.x,0);
                                 }
                                 else {
                                     norm1 = Base::Vector3d(cos(angle1),sin(angle1),0);
@@ -593,8 +603,10 @@ Restart:
                                     geo2->getTypeId() == Part::GeomArcOfHyperbola::getClassTypeId()) {
 
                                     Base::Vector3d majDir, minDir, rvec;
-                                    majDir = Base::Vector3d(cos(angle2),sin(angle2),0);//direction of major axis of ellipse
-                                    minDir = Base::Vector3d(-majDir.y,majDir.x,0);//direction of minor axis of ellipse
+                                    //direction of major axis of ellipse
+                                    majDir = Base::Vector3d(cos(angle2),sin(angle2),0);
+                                    //direction of minor axis of ellipse
+                                    minDir = Base::Vector3d(-majDir.y,majDir.x,0);
                                     rvec = (r2a*cos(angle2plus)) * majDir   +   (r2b*sin(angle2plus)) * minDir;
                                     midpos2 += rvec;
                                     rvec.Normalize();
@@ -964,7 +976,8 @@ Restart:
                                 dir1 = getNormal(geolistfacade, Constr->First, p);
                                 // TODO: Check
                                 // dir1 = getSolvedSketch().calculateNormalAtPoint(Constr->First, p.x, p.y);
-                                dir1.RotateZ(-M_PI/2);//convert to vector of tangency by rotating
+                                //convert to vector of tangency by rotating
+                                dir1.RotateZ(-M_PI/2);
                                 dir2 = getNormal(geolistfacade, Constr->Second, p);
                                 // TODO: Check
                                 // dir2 = getSolvedSketch().calculateNormalAtPoint(Constr->Second, p.x, p.y);
@@ -1185,7 +1198,8 @@ Base::Vector3d EditModeConstraintCoinManager::seekConstraintPosition(const Base:
         rp->setPickAll(true);
         rp->setRay(SbVec3f(freePos.x, freePos.y, -1.f), SbVec3f(0, 0, 1) );
         //problem
-        rp->apply(editModeScenegraphNodes.constrGroup); // We could narrow it down to just the SoGroup containing the constraints
+        // We could narrow it down to just the SoGroup containing the constraints
+        rp->apply(editModeScenegraphNodes.constrGroup);
 
         // returns a copy of the point
         SoPickedPoint *pp = rp->getPickedPoint();
@@ -1635,8 +1649,10 @@ QString EditModeConstraintCoinManager::getPresentationString(const Constraint *c
             if (QString::compare(baseUnitStr, unitStr)==0)
             {
                 // Example code from: Mod/TechDraw/App/DrawViewDimension.cpp:372
-                QRegularExpression rxUnits(QString::fromUtf8(" \\D*$"));  //space + any non digits at end of string
-                valueStr.remove(rxUnits);                      //getUserString(defaultDecimals) without units
+                //space + any non digits at end of string
+                QRegularExpression rxUnits(QString::fromUtf8(" \\D*$"));
+                //getUserString(defaultDecimals) without units
+                valueStr.remove(rxUnits);
             }
         }
     }
@@ -2183,10 +2199,12 @@ QImage EditModeConstraintCoinManager::renderConstrIcon(const QString &type,
 
     QPixmap pxMap;
     std::stringstream constraintName;
-    constraintName << type.toLatin1().data() << drawingParameters.constraintIconSize; // allow resizing by embedding size
+    // allow resizing by embedding size
+    constraintName << type.toLatin1().data() << drawingParameters.constraintIconSize;
     if (! Gui::BitmapFactory().findPixmapInCache(constraintName.str().c_str(), pxMap)) {
         pxMap = Gui::BitmapFactory().pixmapFromSvg(type.toLatin1().data(),QSizeF(drawingParameters.constraintIconSize, drawingParameters.constraintIconSize));
-        Gui::BitmapFactory().addPixmapToCache(constraintName.str().c_str(), pxMap); // Cache for speed, avoiding pixmapFromSvg
+        // Cache for speed, avoiding pixmapFromSvg
+        Gui::BitmapFactory().addPixmapToCache(constraintName.str().c_str(), pxMap);
     }
     QImage icon = pxMap.toImage();
 
@@ -2383,7 +2401,8 @@ void EditModeConstraintCoinManager::createEditModeInventorNodes()
     editModeScenegraphNodes.EditRoot->addChild(editModeScenegraphNodes.ConstraintDrawStyle);
 
     // add the group where all the constraints has its SoSeparator
-    editModeScenegraphNodes.constrGrpSelect = new SoPickStyle(); // used to toggle constraints selectability
+    // used to toggle constraints selectability
+    editModeScenegraphNodes.constrGrpSelect = new SoPickStyle();
     editModeScenegraphNodes.constrGrpSelect->style.setValue(SoPickStyle::SHAPE);
     editModeScenegraphNodes.EditRoot->addChild(editModeScenegraphNodes.constrGrpSelect);
     setConstraintSelectability(); // Ensure default value;

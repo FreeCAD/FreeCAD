@@ -44,7 +44,8 @@ ConstraintForce::ConstraintForce()
                       "Points where arrows are drawn");
     ADD_PROPERTY_TYPE(DirectionVector,(Base::Vector3d(0,0,1)),"ConstraintForce",App::PropertyType(App::Prop_ReadOnly|App::Prop_Output),
                       "Direction of arrows");
-    naturalDirectionVector = Base::Vector3d(0,0,0); // by default use the null vector to indicate an invalid value
+    // by default use the null vector to indicate an invalid value
+    naturalDirectionVector = Base::Vector3d(0,0,0);
     Points.setValues(std::vector<Base::Vector3d>());
 }
 
@@ -64,7 +65,8 @@ void ConstraintForce::onChanged(const App::Property* prop)
         std::vector<Base::Vector3d> normals;
         int scale = 1; //OvG: Enforce use of scale
         if (getPoints(points, normals, &scale)) {
-            Points.setValues(points); // We don't use the normals because all arrows should have the same direction
+            // We don't use the normals because all arrows should have the same direction
+            Points.setValues(points);
             Scale.setValue(scale); //OvG Scale
             Points.touch();
         }

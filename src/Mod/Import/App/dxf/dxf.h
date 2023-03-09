@@ -158,7 +158,7 @@ protected:
     int m_blockHandle;
     int m_blkRecordHandle;
     bool m_polyOverride;
-    
+
     std::string m_saveModelSpaceHandle;
     std::string m_savePaperSpaceHandle;
     std::string m_saveBlockRecordTableHandle;
@@ -173,7 +173,7 @@ protected:
 public:
     ImportExport CDxfWrite(const char* filepath);
     ImportExport ~CDxfWrite();
-    
+
     ImportExport void init(void);
     ImportExport void endRun(void);
 
@@ -290,7 +290,8 @@ public:
     ImportExport virtual ~CDxfRead(); // this closes the file
 
     ImportExport bool Failed(){return m_fail;}
-    ImportExport void DoRead(const bool ignore_errors = false); // this reads the file and calls the following functions
+    // this reads the file and calls the following functions
+    ImportExport void DoRead(const bool ignore_errors = false);
 
     ImportExport double mm( double value ) const;
 

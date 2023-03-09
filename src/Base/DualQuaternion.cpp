@@ -151,7 +151,8 @@ Base::DualQuat Base::DualQuat::pow(double t, bool shorten) const
     //to screw coordinates
     double theta = self.theta();
     double pitch = -2.0 * self.w.du * normmult;
-    DualQuat l = self.real().vec() * normmult; //abusing DualQuat to store vectors. Very handy in this case.
+    //abusing DualQuat to store vectors. Very handy in this case.
+    DualQuat l = self.real().vec() * normmult;
     DualQuat m = (self.dual().vec() - pitch/2*cos(theta/2)*l)*normmult;
 
     //interpolate

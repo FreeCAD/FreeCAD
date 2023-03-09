@@ -115,7 +115,8 @@ private:
     QPointF            m_beginExt2;     //start of extension line 2
     QPointF            m_endExt2;       //end of extension line 1
     bool               m_pathMode;      //use external path for line
-    int                m_arrowMode;     //0 = 1 direction for both arrows, 1 = direction for each arrow
+    //0 = 1 direction for both arrows, 1 = direction for each arrow
+    int                m_arrowMode;
     Base::Vector3d     m_arrowDir1;
     Base::Vector3d     m_arrowDir2;
     QPointF            m_arrowPos1;

@@ -325,7 +325,8 @@ double DrawProjGroupItem::getScale(void) const
     if (pgroup) {
         result = pgroup->getScale();
         if (!(result > 0.0)) {
-            result = 1.0;                                   //kludgy protective fix. autoscale sometimes serves up 0.0!
+            //kludgy protective fix. autoscale sometimes serves up 0.0!
+            result = 1.0;
         }
     }
     return result;
@@ -347,7 +348,8 @@ void DrawProjGroupItem::unsetupObject()
          !getPGroup()->isUnsetting() )         {
            Base::Console().Warning("Warning - DPG (%s/%s) may be corrupt - Anchor deleted\n",
                                    getPGroup()->getNameInDocument(), getPGroup()->Label.getValue());
-           getPGroup()->Anchor.setValue(nullptr);    //this catches situation where DPGI is deleted w/o DPG::removeProjection
+           //this catches situation where DPGI is deleted w/o DPG::removeProjection
+           getPGroup()->Anchor.setValue(nullptr);
     }
 
     DrawViewPart::unsetupObject();

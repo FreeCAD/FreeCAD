@@ -99,7 +99,8 @@ void ViewProviderFemConstraintHeatflux::updateData(const App::Property* prop)
 {
     // Gets called whenever a property of the attached object changes
     Fem::ConstraintHeatflux* pcConstraint = static_cast<Fem::ConstraintHeatflux*>(this->getObject());
-    float scaledradius = RADIUS * pcConstraint->Scale.getValue(); //OvG: Calculate scaled values once only
+    //OvG: Calculate scaled values once only
+    float scaledradius = RADIUS * pcConstraint->Scale.getValue();
     float scaledheight = HEIGHT * pcConstraint->Scale.getValue();
     //float ambienttemp = pcConstraint->AmbientTemp.getValue();
     // //float facetemp = pcConstraint->FaceTemp.getValue();
@@ -139,7 +140,8 @@ void ViewProviderFemConstraintHeatflux::updateData(const App::Property* prop)
             //define color of shape
             SoMaterial *myMaterial = new SoMaterial;
             myMaterial->diffuseColor.set1Value(0, SbColor(0.65f, 0.1f, 0.25f));//RGB
-            //myMaterial->diffuseColor.set1Value(1,SbColor(.1,.1,.1));//possible to adjust sides separately
+            //possible to adjust sides separately
+            //myMaterial->diffuseColor.set1Value(1,SbColor(.1,.1,.1));
             sep->addChild(myMaterial);
 
             //draw a sphere

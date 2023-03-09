@@ -245,7 +245,8 @@ class BRepFeatModule : public Py::ExtensionModule<BRepFeatModule>
 public:
     BRepFeatModule() : Py::ExtensionModule<BRepFeatModule>("BRepFeat")
     {
-        initialize("This is a module working with the BRepFeat package."); // register with Python
+        // register with Python
+        initialize("This is a module working with the BRepFeat package.");
     }
 
     ~BRepFeatModule() override {}
@@ -256,7 +257,8 @@ class BRepOffsetAPIModule : public Py::ExtensionModule<BRepOffsetAPIModule>
 public:
     BRepOffsetAPIModule() : Py::ExtensionModule<BRepOffsetAPIModule>("BRepOffsetAPI")
     {
-        initialize("This is a module working with the BRepOffsetAPI package."); // register with Python
+        // register with Python
+        initialize("This is a module working with the BRepOffsetAPI package.");
     }
 
     ~BRepOffsetAPIModule() override {}
@@ -278,7 +280,8 @@ class GeomPlateModule : public Py::ExtensionModule<GeomPlateModule>
 public:
     GeomPlateModule() : Py::ExtensionModule<GeomPlateModule>("GeomPlate")
     {
-        initialize("This is a module working with the GeomPlate framework."); // register with Python
+        // register with Python
+        initialize("This is a module working with the GeomPlate framework.");
     }
 
     ~GeomPlateModule() override {}
@@ -289,7 +292,8 @@ class HLRBRepModule : public Py::ExtensionModule<HLRBRepModule>
 public:
     HLRBRepModule() : Py::ExtensionModule<HLRBRepModule>("HLRBRep")
     {
-        initialize("This is a module working with the HLRBRep framework."); // register with Python
+        // register with Python
+        initialize("This is a module working with the HLRBRep framework.");
     }
 
     ~HLRBRepModule() override {}
@@ -318,7 +322,8 @@ public:
             "leastEdgeSize(shape)\n"
             "Calculate size of least edge"
         );
-        initialize("This is a module working with the ShapeFix framework."); // register with Python
+        // register with Python
+        initialize("This is a module working with the ShapeFix framework.");
     }
 
     ~ShapeFixModule() override {}
@@ -388,7 +393,8 @@ class ShapeUpgradeModule : public Py::ExtensionModule<ShapeUpgradeModule>
 public:
     ShapeUpgradeModule() : Py::ExtensionModule<ShapeUpgradeModule>("ShapeUpgrade")
     {
-        initialize("This is a module working with the ShapeUpgrade framework."); // register with Python
+        // register with Python
+        initialize("This is a module working with the ShapeUpgrade framework.");
     }
 
     ~ShapeUpgradeModule() override {}
@@ -399,7 +405,8 @@ class ChFi2dModule : public Py::ExtensionModule<ChFi2dModule>
 public:
     ChFi2dModule() : Py::ExtensionModule<ChFi2dModule>("ChFi2d")
     {
-        initialize("This is a module working with the ChFi2d framework."); // register with Python
+        // register with Python
+        initialize("This is a module working with the ChFi2d framework.");
     }
 
     ~ChFi2dModule() override {}
@@ -636,7 +643,8 @@ public:
         add_varargs_method("joinSubname",&Module::joinSubname,
             "joinSubname(sub,mapped,subElement) -> subname\n"
         );
-        initialize("This is a module working with shapes."); // register with Python
+        // register with Python
+        initialize("This is a module working with shapes.");
 
         PyModule_AddObject(m_module, "BRepFeat", brepFeat.module().ptr());
         PyModule_AddObject(m_module, "BRepOffsetAPI", brepOffsetApi.module().ptr());

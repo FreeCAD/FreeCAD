@@ -81,7 +81,8 @@ void EditModeGeometryCoinConverter::convert(const Sketcher::GeoListFacade & geol
     // empty layer.
     Points[0].emplace_back(0.,0.,0.);
     coinMapping.PointIdToGeoId[0].push_back(-1); // root point
-    coinMapping.PointIdToVertexId[0].push_back(-1); // VertexId is the reference used for point selection/preselection
+    // VertexId is the reference used for point selection/preselection
+    coinMapping.PointIdToVertexId[0].push_back(-1);
 
     coinMapping.GeoElementId2SetId.emplace( std::piecewise_construct,
                                             std::forward_as_tuple(Sketcher::GeoElementId::RtPnt),
@@ -345,7 +346,8 @@ void EditModeGeometryCoinConverter::convert(const Sketcher::GeometryFacade * geo
                     // terminating here would mean that the other shapes would not be drawn.
                     // Solution: Report the issue and set dummy curvature to 0
                     e.ReportException();
-                    Base::Console().Error("Curvature graph for B-Spline with GeoId=%d could not be calculated.\n", geoid); // TODO: Fix identification of curve.
+                    // TODO: Fix identification of curve.
+                    Base::Console().Error("Curvature graph for B-Spline with GeoId=%d could not be calculated.\n", geoid);
                     curvaturelist[i] = 0;
                 }
 
@@ -361,7 +363,8 @@ void EditModeGeometryCoinConverter::convert(const Sketcher::GeometryFacade * geo
 
             double temprepscale = 0;
             if (maxcurv > 0)
-                temprepscale = (0.5 * maxdisttocenterofmass) / maxcurv; // just a factor to make a comb reasonably visible
+                // just a factor to make a comb reasonably visible
+                temprepscale = (0.5 * maxdisttocenterofmass) / maxcurv;
 
             if (temprepscale > combrepscale)
                 combrepscale = temprepscale;

@@ -48,9 +48,11 @@ PyObject* DrawViewClipPy::addView(PyObject* args)
         return nullptr;
     }
 
-    DrawViewClip* clip = getDrawViewClipPtr();                         //get DrawViewClip for pyClip
+    //get DrawViewClip for pyClip
+    DrawViewClip* clip = getDrawViewClipPtr();
     DrawViewPy* pyView = static_cast<TechDraw::DrawViewPy*>(pcDocObj);
-    DrawView* view = pyView->getDrawViewPtr();                 //get DrawView for pyView
+    //get DrawView for pyView
+    DrawView* view = pyView->getDrawViewPtr();
     clip->addView(view);
 
     Py_Return;
@@ -63,7 +65,8 @@ PyObject* DrawViewClipPy::removeView(PyObject* args)
         return nullptr;
     }
 
-    DrawViewClip* clip = getDrawViewClipPtr();                         //get DrawViewClip for pyClip
+    //get DrawViewClip for pyClip
+    DrawViewClip* clip = getDrawViewClipPtr();
     DrawViewPy* pyView = static_cast<TechDraw::DrawViewPy*>(pcDocObj);
     DrawView* view = pyView->getDrawViewPtr();                 //get DrawView for pyView
     clip->removeView(view);

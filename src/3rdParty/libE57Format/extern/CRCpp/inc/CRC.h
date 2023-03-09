@@ -52,7 +52,7 @@
                                                           multiplication in the bit-by-bit calculation instead of a small conditional. The branchless implementation
                                                           may be faster on processor architectures which support single-instruction integer multiplication.
         #define CRCPP_USE_CPP11                         - Define to enables C++11 features (move semantics, constexpr, static_assert, etc.).
-        #define CRCPP_INCLUDE_ESOTERIC_CRC_DEFINITIONS  - Define to include definitions for little-used CRCs. 
+        #define CRCPP_INCLUDE_ESOTERIC_CRC_DEFINITIONS  - Define to include definitions for little-used CRCs.
 */
 
 #ifndef CRCPP_CRC_H_
@@ -156,7 +156,8 @@ public:
         CRCType initialValue; ///< Initial CRC value
         CRCType finalXOR;     ///< Value to XOR with the final CRC
         bool reflectInput;    ///< true to reflect all input bytes
-        bool reflectOutput;   ///< true to reflect the output CRC (reflection occurs before the final XOR)
+        ///< true to reflect the output CRC (reflection occurs before the final XOR)
+        bool reflectOutput;
 
         Table<CRCType, CRCWidth> MakeTable() const;
     };

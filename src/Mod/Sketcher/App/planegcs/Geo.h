@@ -60,12 +60,14 @@ namespace GCS
         double y, dy;
 
         double length() const {return sqrt(x*x + y*y);}
-        double length(double &dlength) const; //returns length and writes length deriv into the dlength argument.
+        //returns length and writes length deriv into the dlength argument.
+        double length(double &dlength) const;
 
 
         //unlike other vectors in FreeCAD, this normalization creates a new vector instead of modifying existing one.
         DeriVector2 getNormalized() const; //returns zero vector if the original is zero.
-        double scalarProd(const DeriVector2 &v2, double* dprd=nullptr) const;//calculates scalar product of two vectors and returns the result. The derivative of the result is written into argument dprd.
+        //calculates scalar product of two vectors and returns the result. The derivative of the result is written into argument dprd.
+        double scalarProd(const DeriVector2 &v2, double* dprd=nullptr) const;
         DeriVector2 sum(const DeriVector2 &v2) const {//adds two vectors and returns result
             return DeriVector2(x + v2.x, y + v2.y,
                                dx + v2.dx, dy + v2.dy);}
@@ -76,7 +78,8 @@ namespace GCS
             return DeriVector2(x*val, y*val, dx*val, dy*val);}//multiplies the vector by a number. Derivatives are scaled.
         DeriVector2 multD(double val, double dval) const {//multiply vector by a variable with a derivative.
             return DeriVector2(x*val, y*val, dx*val+x*dval, dy*val+y*dval);}
-        DeriVector2 divD(double val, double dval) const;//divide vector by a variable with a derivative
+        //divide vector by a variable with a derivative
+        DeriVector2 divD(double val, double dval) const;
         DeriVector2 rotate90ccw() const {return DeriVector2(-y,x,-dy,dx);}
         DeriVector2 rotate90cw() const {return DeriVector2(y,-x,dy,-dx);}
         DeriVector2 linCombi(double m1, const DeriVector2 &v2, double m2) const {//linear combination of two vectors
@@ -116,7 +119,8 @@ namespace GCS
         //recunstruct curve's parameters reading them from pvec starting from index cnt.
         //cnt will be incremented by the same value as returned by PushOwnParams()
         virtual void ReconstructOnNewPvec (VEC_pD &pvec, int &cnt) = 0;
-        virtual Curve* Copy() = 0; //DeepSOIC: I haven't found a way to simply copy a curve object provided pointer to a curve object.
+        //DeepSOIC: I haven't found a way to simply copy a curve object provided pointer to a curve object.
+        virtual Curve* Copy() = 0;
     };
 
     class Line: public Curve
@@ -292,7 +296,8 @@ namespace GCS
         int degree;
         bool periodic;
         VEC_I knotpointGeoids; // geoids of knotpoints as to index Geom array
-        VEC_D flattenedknots; // knot vector with repetitions for multiplicity and "padding" for periodic spline
+        // knot vector with repetitions for multiplicity and "padding" for periodic spline
+        VEC_D flattenedknots;
         // interface helpers
         DeriVector2 CalculateNormal(const Point &p, const double* derivparam = nullptr) const override;
         DeriVector2 Value(double u, double du, const double* derivparam = nullptr) const override;

@@ -274,11 +274,13 @@ private:
         bool isDragCurveValid() { return DragCurve > InvalidCurve;}
 
         double xInit, yInit;                // starting point of the dragging operation
-        bool relative;                      // whether the dragging move vector is relative or absolute
+        // whether the dragging move vector is relative or absolute
+        bool relative;
 
 
         int DragPoint;                      // dragged point id (only positive integers)
-        int DragCurve;                      // dragged curve id (only positive integers), negative external curves cannot be dragged.
+        // dragged curve id (only positive integers), negative external curves cannot be dragged.
+        int DragCurve;
         std::set<int> DragConstraintSet;    // dragged constraints ids
     };
 
@@ -337,8 +339,10 @@ private:
         int getPreselectionEdgeIndex() const { return PreselectCurve + 1;}
         int getPreselectionExternalEdgeIndex() const { return -PreselectCurve - 2;}
 
-        int PreselectPoint;                     // VertexN, with N = PreselectPoint + 1, same as DragPoint indexing (NOTE -1 is NOT the root point)
-        int PreselectCurve;                     // EdgeN, with N = PreselectCurve + 1 for positive values ; ExternalEdgeN, with N = -PreselectCurve - 2
+        // VertexN, with N = PreselectPoint + 1, same as DragPoint indexing (NOTE -1 is NOT the root point)
+        int PreselectPoint;
+        // EdgeN, with N = PreselectCurve + 1 for positive values ; ExternalEdgeN, with N = -PreselectCurve - 2
+        int PreselectCurve;
         Axes PreselectCross;                    // 0 => rootPoint, 1 => HAxis, 2 => VAxis
         std::set<int> PreselectConstraintSet;   // ConstraintN, N = index + 1
         bool blockedPreselection;
@@ -372,7 +376,8 @@ private:
             SelConstraintSet.clear();
         }
 
-        std::set<int> SelPointSet;              // Indices as PreselectPoint (and -1 for rootpoint)
+        // Indices as PreselectPoint (and -1 for rootpoint)
+        std::set<int> SelPointSet;
         std::set<int> SelCurvSet;               // also holds cross axes at -1 and -2
         std::set<int> SelConstraintSet;         // ConstraintN, N = index + 1.
     };
@@ -394,7 +399,8 @@ private:
         bool autoRecompute = false;
         bool recalculateInitialSolutionWhileDragging = false;
 
-        bool isShownVirtualSpace = false; // indicates whether the present virtual space view is the Real Space or the Virtual Space (virtual space 1 or 2)
+        // indicates whether the present virtual space view is the Real Space or the Virtual Space (virtual space 1 or 2)
+        bool isShownVirtualSpace = false;
         bool buttonPress = false;
     };
 
@@ -800,4 +806,3 @@ private:
 
 
 #endif // SKETCHERGUI_VIEWPROVIDERSKETCH_H
-

@@ -221,7 +221,8 @@ void SVGOutput::printCircle(const BRepAdaptor_Curve& c, std::ostream& out)
         // See also https://developer.mozilla.org/en/SVG/Tutorial/Paths
         char xar = '0'; // x-axis-rotation
         char las = (l-f > M_PI) ? '1' : '0'; // large-arc-flag
-        char swp = (a < 0) ? '1' : '0'; // sweep-flag, i.e. clockwise (0) or counter-clockwise (1)
+        // sweep-flag, i.e. clockwise (0) or counter-clockwise (1)
+        char swp = (a < 0) ? '1' : '0';
         out << "<path d=\"M" << s.X() <<  " " << s.Y()
             << " A" << r << " " << r << " "
             << xar << " " << las << " " << swp << " "
@@ -268,7 +269,8 @@ void SVGOutput::printEllipse(const BRepAdaptor_Curve& c, int id, std::ostream& o
     // arc of ellipse
     else {
         char las = (l-f > M_PI) ? '1' : '0'; // large-arc-flag
-        char swp = (a < 0) ? '1' : '0'; // sweep-flag, i.e. clockwise (0) or counter-clockwise (1)
+        // sweep-flag, i.e. clockwise (0) or counter-clockwise (1)
+        char swp = (a < 0) ? '1' : '0';
         out << "<path d=\"M" << s.X() <<  " " << s.Y()
             << " A" << r1 << " " << r2 << " "
             << angle << " " << las << " " << swp << " "
@@ -522,7 +524,8 @@ void DXFOutput::printCircle(const BRepAdaptor_Curve& c, std::ostream& out)
         // See also https://developer.mozilla.org/en/SVG/Tutorial/Paths
         /*char xar = '0'; // x-axis-rotation
         char las = (l-f > M_PI) ? '1' : '0'; // large-arc-flag
-        char swp = (a < 0) ? '1' : '0'; // sweep-flag, i.e. clockwise (0) or counter-clockwise (1)
+        // sweep-flag, i.e. clockwise (0) or counter-clockwise (1)
+        char swp = (a < 0) ? '1' : '0';
         out << "<path d=\"M" << s.X() <<  " " << s.Y()
             << " A" << r << " " << r << " "
             << xar << " " << las << " " << swp << " "
@@ -584,7 +587,8 @@ void DXFOutput::printEllipse(const BRepAdaptor_Curve& c, int /*id*/, std::ostrea
         Standard_Real angle = xaxis.Angle(gp_Dir(1, 0,0));
         angle = Base::toDegrees<double>(angle);
         char las = (l-f > D_PI) ? '1' : '0'; // large-arc-flag
-        char swp = (a < 0) ? '1' : '0'; // sweep-flag, i.e. clockwise (0) or counter-clockwise (1)
+        // sweep-flag, i.e. clockwise (0) or counter-clockwise (1)
+        char swp = (a < 0) ? '1' : '0';
         out << "<path d=\"M" << s.X() <<  " " << s.Y()
             << " A" << r1 << " " << r2 << " "
             << angle << " " << las << " " << swp << " "

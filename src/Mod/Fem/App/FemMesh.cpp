@@ -1109,7 +1109,8 @@ std::set<int> FemMesh::getEdgesOnly() const
             std::set_intersection(aFaceNodes.begin(), aFaceNodes.end(),
                                   aEdgeNodes.begin(), aEdgeNodes.end(),
                                   std::back_inserter(inodes));
-            std::set<int> intersection_nodes(inodes.begin(), inodes.end());  // convert vector to set
+            // convert vector to set
+            std::set<int> intersection_nodes(inodes.begin(), inodes.end());
             if (aEdgeNodes == intersection_nodes) {
                 edgeBelongsToAFace = true;
                 break;
@@ -1168,7 +1169,8 @@ std::set<int> FemMesh::getFacesOnly() const
             std::set_intersection(aVolNodes.begin(), aVolNodes.end(),
                                   aFaceNodes.begin(), aFaceNodes.end(),
                                   std::back_inserter(inodes));
-            std::set<int> intersection_nodes(inodes.begin(), inodes.end());  // convert vector to set
+            // convert vector to set
+            std::set<int> intersection_nodes(inodes.begin(), inodes.end());
             if (aFaceNodes == intersection_nodes) {
                 faceBelongsToAVolume = true;
                 break;
@@ -1821,7 +1823,8 @@ void FemMesh::readAbaqus(const std::string &FileName)
         if (PyObject_TypeCheck(mesh.ptr(), &FemMeshPy::Type)) {
             FemMeshPy* fempy = static_cast<FemMeshPy*>(mesh.ptr());
             FemMesh* fem = fempy->getFemMeshPtr();
-            *this = *fem; // the deep copy should be avoided, a pointer swap method could be implemented
+            // the deep copy should be avoided, a pointer swap method could be implemented
+            *this = *fem;
                           // see https://forum.freecadweb.org/viewtopic.php?f=10&t=31999&start=10#p274241
         }
         else {
@@ -1857,7 +1860,8 @@ void FemMesh::readZ88(const std::string &FileName)
         if (PyObject_TypeCheck(mesh.ptr(), &FemMeshPy::Type)) {
             FemMeshPy* fempy = static_cast<FemMeshPy*>(mesh.ptr());
             FemMesh* fem = fempy->getFemMeshPtr();
-            *this = *fem; // the deep copy should be avoided, a pointer swap method could be implemented
+            // the deep copy should be avoided, a pointer swap method could be implemented
+            *this = *fem;
                           // see https://forum.freecadweb.org/viewtopic.php?f=10&t=31999&start=10#p274241
         }
         else {
@@ -2816,4 +2820,3 @@ bool FemMesh::removeGroup(int GroupId)
 {
     return this->getSMesh()->RemoveGroup(GroupId);
 }
-

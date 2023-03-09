@@ -642,7 +642,8 @@ bool DlgExtrusion::validate()
         errmsg.clear();
         try {
             App::PropertyLink lnk;
-            lnk.setValue(&this->getShapeToExtrude()); //simplified - check only for the first shape.
+            //simplified - check only for the first shape.
+            lnk.setValue(&this->getShapeToExtrude());
             Part::Extrusion::calculateShapeNormal(lnk);
         } catch(Base::Exception &err) {
             errmsg = QString::fromUtf8(err.what());

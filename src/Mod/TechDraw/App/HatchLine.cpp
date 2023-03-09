@@ -163,11 +163,13 @@ Base::Vector3d LineSet::getPatternStartPoint(TechDraw::BaseGeomPtr g, double &of
 
 //figure out which line this is in the overlay
     if (angle == 0.0) {      //odd case - horizontal line
-        distY = (thisStart.y - atomStart.y);                                       //this is patternscaled
+        //this is patternscaled
+        distY = (thisStart.y - atomStart.y);
         overlayIndex = (int) round(distY/(scale * getIntervalY()));                //this is +/-
         lineOrigin = getOrigin() + distY * Base::Vector3d(0.0, 1.0, 0.0);                    //move u/d
     } else {
-        distX = (thisStart.x - atomStart.x);                                       //this is patternscaled
+        //this is patternscaled
+        distX = (thisStart.x - atomStart.x);
         overlayIndex = (int) round(distX/(scale * getIntervalX()));
         lineOrigin = getOrigin() + overlayIndex * (scale * getInterval()) * getUnitOrtho();
     }
@@ -190,7 +192,8 @@ Base::Vector3d LineSet::getPatternStartPoint(TechDraw::BaseGeomPtr g, double &of
         offset = 0.0;
     } else {
         //find a point where pattern repeats within g
-        double patsStartOrg = lenStartOrg/patternLength;                   //# pattern repeats from lineOrigin to start
+        //# pattern repeats from lineOrigin to start
+        double patsStartOrg = lenStartOrg/patternLength;
         double patsEndOrg = lenEndOrg/patternLength;
         if (lenStartOrg < lenEndOrg) {                                  //origin is before start
             double c = ceil(patsStartOrg);
@@ -200,7 +203,8 @@ Base::Vector3d LineSet::getPatternStartPoint(TechDraw::BaseGeomPtr g, double &of
             } else {
 //                //ugly case - partial pattern
                 result = gStart;
-                offset = patsStartOrg - (int)patsStartOrg;        //fraction of a patternLength
+                //fraction of a patternLength
+                offset = patsStartOrg - (int)patsStartOrg;
                 offset = offset * patternLength;
             }
         } else if (lenStartOrg > lenEndOrg) {                          //origin is after end
@@ -210,7 +214,8 @@ Base::Vector3d LineSet::getPatternStartPoint(TechDraw::BaseGeomPtr g, double &of
                 offset = 0.0;
             } else {
                 result = gStart;
-                offset = ceil(patsStartOrg) - patsStartOrg;      //fraction of a patternLength patstartorg to repeat point
+                //fraction of a patternLength patstartorg to repeat point
+                offset = ceil(patsStartOrg) - patsStartOrg;
                 offset = offset * patternLength;
             }
         }
@@ -483,8 +488,3 @@ void DashSpec::dump(const char* title)
     }
     Base::Console().Message("DUMP - DashSpec - %s\n", ss.str().c_str());
 }
-
-
-
-
-

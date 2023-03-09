@@ -69,13 +69,15 @@ TaskFemConstraintSpring::TaskFemConstraintSpring(ViewProviderFemConstraintSpring
     std::vector<std::string> SubElements = pcConstraint->References.getSubValues();
 
     // Fill data into dialog elements
-    ui->if_norm->setMinimum(0); // TODO fix this -------------------------------------------------------------------
+    // TODO fix this -------------------------------------------------------------------
+    ui->if_norm->setMinimum(0);
     ui->if_norm->setMaximum(FLOAT_MAX);
     Base::Quantity ns = Base::Quantity((pcConstraint->normalStiffness.getValue()), Base::Unit::Stiffness);
     ui->if_norm->setValue(ns);
 
     // Fill data into dialog elements
-    ui->if_tan->setMinimum(0); // TODO fix this -------------------------------------------------------------------
+    // TODO fix this -------------------------------------------------------------------
+    ui->if_tan->setMinimum(0);
     ui->if_tan->setMaximum(FLOAT_MAX);
     Base::Quantity ts = Base::Quantity((pcConstraint->tangentialStiffness.getValue()), Base::Unit::Stiffness);
     ui->if_tan->setValue(ts);
@@ -114,7 +116,8 @@ void TaskFemConstraintSpring::updateUI()
 
 void TaskFemConstraintSpring::addToSelection()
 {
-    std::vector<Gui::SelectionObject> selection = Gui::Selection().getSelectionEx(); //gets vector of selected objects of active document
+    //gets vector of selected objects of active document
+    std::vector<Gui::SelectionObject> selection = Gui::Selection().getSelectionEx();
     if (selection.empty()) {
         QMessageBox::warning(this, tr("Selection error"), tr("Nothing selected!"));
         return;
@@ -160,7 +163,8 @@ void TaskFemConstraintSpring::addToSelection()
 
 void TaskFemConstraintSpring::removeFromSelection()
 {
-    std::vector<Gui::SelectionObject> selection = Gui::Selection().getSelectionEx(); //gets vector of selected objects of active document
+    //gets vector of selected objects of active document
+    std::vector<Gui::SelectionObject> selection = Gui::Selection().getSelectionEx();
     if (selection.empty()) {
         QMessageBox::warning(this, tr("Selection error"), tr("Nothing selected!"));
         return;
@@ -275,7 +279,8 @@ void TaskDlgFemConstraintSpring::open()
         QString msg = QObject::tr("Constraint spring");
         Gui::Command::openCommand((const char*)msg.toUtf8());
         ConstraintView->setVisible(true);
-        Gui::Command::doCommand(Gui::Command::Doc, ViewProviderFemConstraint::gethideMeshShowPartStr((static_cast<Fem::Constraint*>(ConstraintView->getObject()))->getNameInDocument()).c_str()); //OvG: Hide meshes and show parts
+        //OvG: Hide meshes and show parts
+        Gui::Command::doCommand(Gui::Command::Doc, ViewProviderFemConstraint::gethideMeshShowPartStr((static_cast<Fem::Constraint*>(ConstraintView->getObject()))->getNameInDocument()).c_str());
     }
 }
 
@@ -292,7 +297,8 @@ bool TaskDlgFemConstraintSpring::accept()
         Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.%s.tangentialStiffness = %f",
             name.c_str(), parameterStiffness->get_tangentialStiffness());
         std::string scale = parameterStiffness->getScale();  //OvG: determine modified scale
-        Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.%s.Scale = %s", name.c_str(), scale.c_str()); //OvG: implement modified scale
+        //OvG: implement modified scale
+        Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.%s.Scale = %s", name.c_str(), scale.c_str());
     }
     catch (const Base::Exception& e) {
         QMessageBox::warning(parameter, tr("Input error"), QString::fromLatin1(e.what()));

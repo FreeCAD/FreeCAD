@@ -39,7 +39,8 @@ class QGCustomSvg;
 class QGCustomRect;
 class QGCustomImage;
 
-    const double SVGSIZEW = 64.0;                     //width and height of standard FC SVG pattern
+    //width and height of standard FC SVG pattern
+    const double SVGSIZEW = 64.0;
     const double SVGSIZEH = 64.0;
     const std::string SVGCOLDEFAULT = "#000000";
 
@@ -127,7 +128,8 @@ protected:
     QPainterPath dashedPPath(const std::vector<double> dv, const Base::Vector3d start, const Base::Vector3d end);
     double dashRemain(const std::vector<double> dv, const double offset);
     double calcOffset(TechDraw::BaseGeomPtr g, TechDraw::LineSet ls);
-    int projIndex;                              //index of face in Projection. -1 for SectionFace.
+    //index of face in Projection. -1 for SectionFace.
+    int projIndex;
     QGCustomRect* m_svgHatchArea;
 
     QByteArray m_svgXML;

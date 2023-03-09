@@ -77,7 +77,8 @@ std::unique_ptr<Part::GeometryExtension> GeometryDefaultExtension<T>::copy() con
 template <typename T>
 PyObject * GeometryDefaultExtension<T>::getPyObject()
 {
-    THROWM(Base::NotImplementedError,"Python object not implemented for default geometry extension template type. Template Specialisation missing."); // use template specialisation to provide the actual object
+    // use template specialisation to provide the actual object
+    THROWM(Base::NotImplementedError,"Python object not implemented for default geometry extension template type. Template Specialisation missing.");
 }
 
 namespace Part {

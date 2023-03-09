@@ -715,7 +715,8 @@ private:
                             sDimText = dvd->getFormattedDimensionValue(1);
                         }
                         char* dimText = &sDimText[0u];                  //hack for const-ness
-                        float gap = 5.0;                                //hack. don't know font size here.
+                        //hack. don't know font size here.
+                        float gap = 5.0;
                         layerName = dvd->getNameInDocument();
                         writer.setLayerName(layerName);
                         int type = 0;                                   //Aligned/Distance

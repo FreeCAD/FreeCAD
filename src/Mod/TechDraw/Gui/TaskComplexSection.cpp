@@ -89,7 +89,8 @@ TaskComplexSection::TaskComplexSection(TechDraw::DrawPage* page, TechDraw::DrawV
     saveSectionState();
     setUiPrimary();
 
-    m_applyDeferred = 0;//setting the direction widgets causes an increment of the deferred count,
+    //setting the direction widgets causes an increment of the deferred count,
+    m_applyDeferred = 0;
                         //so we reset the counter and the message.
 }
 
@@ -126,7 +127,8 @@ TaskComplexSection::TaskComplexSection(TechDraw::DrawComplexSection* complexSect
     saveSectionState();
     setUiEdit();
 
-    m_applyDeferred = 0;//setting the direction widgets causes an increment of the deferred count,
+    //setting the direction widgets causes an increment of the deferred count,
+    m_applyDeferred = 0;
                         //so we reset the counter and the message.
     ui->lPendingUpdates->setText(QString());
 }
@@ -163,7 +165,8 @@ void TaskComplexSection::setUiPrimary()
         std::pair<Base::Vector3d, Base::Vector3d> dirs = DrawGuiUtil::get3DDirAndRot();
         m_saveNormal = dirs.first;
         m_saveXDir = dirs.second;
-        m_viewDirectionWidget->setValue(m_saveNormal * -1.0);//this will propagate to m_compass
+        //this will propagate to m_compass
+        m_viewDirectionWidget->setValue(m_saveNormal * -1.0);
     }
 
     //don't allow updates until a direction is picked

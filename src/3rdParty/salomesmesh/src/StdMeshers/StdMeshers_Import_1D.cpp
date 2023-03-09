@@ -698,7 +698,8 @@ bool StdMeshers_Import_1D::Compute(SMESH_Mesh & theMesh, const TopoDS_Shape & th
     SMDS_ElemIteratorPtr srcElems = srcGroup->GetElements();
     vector<const SMDS_MeshNode*> newNodes;
     SMDS_MeshNode *tmpNode = helper.AddNode(0,0,0);
-    double u = 0.314159; // "random" value between 0 and 1, avoid 0 and 1, false detection possible on edge restrictions
+    // "random" value between 0 and 1, avoid 0 and 1, false detection possible on edge restrictions
+    double u = 0.314159;
     while ( srcElems->more() ) // loop on group contents
     {
       const SMDS_MeshElement* edge = srcElems->next();
@@ -1098,4 +1099,3 @@ SMESH_subMesh* StdMeshers_Import_1D::getSubMeshOfCopiedMesh( SMESH_Mesh& tgtMesh
   SMESH_subMesh* sm = tgtMesh.GetSubMeshContaining( iData->_importMeshSubID );
   return sm;
 }
-

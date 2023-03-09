@@ -46,8 +46,10 @@ PROPERTY_SOURCE(TechDraw::DrawViewDimExtent, TechDraw::DrawViewDimension)
 
 DrawViewDimExtent::DrawViewDimExtent(void)
 {
-    App::PropertyLinkSubList       Source;                       //DrawViewPart & SubElements(Edges)
-    App::PropertyLinkSubList       Source3d;                     //Part::Feature(s) & SubElements
+    //DrawViewPart & SubElements(Edges)
+    App::PropertyLinkSubList       Source;
+    //Part::Feature(s) & SubElements
+    App::PropertyLinkSubList       Source3d;
 
     ADD_PROPERTY_TYPE(Source, (nullptr, nullptr), "", (App::PropertyType)(App::Prop_Output), "View containing the  dimension");
     Source.setScope(App::LinkScope::Global);

@@ -826,10 +826,12 @@ void PrefFontBox::restorePreferences()
   QFont currFont = currentFont();                         //QFont from selector widget
   QString currName = currFont.family();
 
-  std::string prefName = getWindowParameter()->GetASCII(entryName(), currName.toUtf8());  //font name from cfg file
+  //font name from cfg file
+  std::string prefName = getWindowParameter()->GetASCII(entryName(), currName.toUtf8());
 
   currFont.setFamily(QString::fromStdString(prefName));
-  setCurrentFont(currFont);                               //set selector widget to name from cfg file
+  //set selector widget to name from cfg file
+  setCurrentFont(currFont);
 }
 
 void PrefFontBox::savePreferences()

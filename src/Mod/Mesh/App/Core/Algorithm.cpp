@@ -1420,7 +1420,8 @@ bool MeshAlgorithm::CutWithPlane (const Base::Vector3f &clBase, const Base::Vect
   aulFacets.erase(std::unique(aulFacets.begin(), aulFacets.end()), aulFacets.end());
 
   // intersect all facets with plane
-  std::list<std::pair<Base::Vector3f, Base::Vector3f> > clTempPoly;  // Field with intersection lines (unsorted, not chained)
+  // Field with intersection lines (unsorted, not chained)
+  std::list<std::pair<Base::Vector3f, Base::Vector3f> > clTempPoly;
 
   for (std::vector<FacetIndex>::iterator pF = aulFacets.begin(); pF != aulFacets.end(); ++pF)
   {

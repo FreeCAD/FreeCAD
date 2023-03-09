@@ -229,7 +229,8 @@ int SketchAnalysis::detectMissingPointOnPointConstraints(double precision, bool 
         // TODO take into account single vertices ?
     }
 
-    std::sort(vertexIds.begin(), vertexIds.end(), Vertex_Less(precision)); // Sort points in geographic order
+    // Sort points in geographic order
+    std::sort(vertexIds.begin(), vertexIds.end(), Vertex_Less(precision));
 
     // Build a list of all coincidence in the sketch
 
@@ -256,7 +257,8 @@ int SketchAnalysis::detectMissingPointOnPointConstraints(double precision, bool 
         vt = std::adjacent_find(vt, vertexIds.end(), pred);
         if (vt < vertexIds.end()) { // If one found
             std::vector<VertexIds>::iterator vn;
-            std::set<VertexIds, VertexID_Less> vertexGrp; // Holds a single group of adjacent vertices
+            // Holds a single group of adjacent vertices
+            std::set<VertexIds, VertexID_Less> vertexGrp;
             // Extract the group of adjacent vertices
             vertexGrp.insert(*vt);
             for (vn = vt+1; vn < vertexIds.end(); ++vn) {
@@ -268,7 +270,8 @@ int SketchAnalysis::detectMissingPointOnPointConstraints(double precision, bool 
                 }
             }
 
-            std::vector<std::set<VertexIds, VertexID_Less>> coincVertexGrps; // Holds groups of coincident vertices
+            // Holds groups of coincident vertices
+            std::vector<std::set<VertexIds, VertexID_Less>> coincVertexGrps;
 
             // Decompose the group of adjacent vertices into groups of coincident vertices
             for (auto &coincidence:coincidences) { // Going through existent coincidences

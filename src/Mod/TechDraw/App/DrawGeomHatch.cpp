@@ -320,7 +320,8 @@ std::vector<LineSet> DrawGeomHatch::getTrimmedLines(DrawViewPart* source,
 
     for (auto& ls: lineSets) {
         PATLineSpec hl = ls.getPATLineSpec();
-        std::vector<TopoDS_Edge> candidates = DrawGeomHatch::makeEdgeOverlay(hl, bBox, scale);   //completely cover face bbox with lines
+        //completely cover face bbox with lines
+        std::vector<TopoDS_Edge> candidates = DrawGeomHatch::makeEdgeOverlay(hl, bBox, scale);
 
         //make Compound for this linespec
         BRep_Builder builder;
@@ -453,7 +454,8 @@ std::vector<TopoDS_Edge> DrawGeomHatch::makeEdgeOverlay(PATLineSpec hl, Bnd_Box 
     } else if (angle > 0) {      //oblique  (bottom left -> top right)
         //ex: 60, 0,0, 0,4.0, 25, -25
 //        Base::Console().Message("TRACE - DGH-makeEdgeOverlay - making angle > 0\n");
-        double xLeftAtom = origin.x + (minY - origin.y)/slope;                  //the "atom" is the fill line that passes through the
+        //the "atom" is the fill line that passes through the
+        double xLeftAtom = origin.x + (minY - origin.y)/slope;
                                                                                 //pattern-origin (not necc. R2 origin)
         double xRightAtom = origin.x + (maxY - origin.y)/slope;
         int repeatRight = (int) fabs((maxX - xLeftAtom)/interval);
@@ -473,10 +475,14 @@ std::vector<TopoDS_Edge> DrawGeomHatch::makeEdgeOverlay(PATLineSpec hl, Bnd_Box 
     } else {    //oblique (bottom right -> top left)
         // ex: -60, 0,0, 0,4.0, 25.0, -12.5, 12.5, -6
 //        Base::Console().Message("TRACE - DGH-makeEdgeOverlay - making angle < 0\n");
-        double xRightAtom = origin.x + ((minY - origin.y)/slope);         //x-coord of left end of Atom line
-        double xLeftAtom = origin.x + ((maxY - origin.y)/slope);          //x-coord of right end of Atom line
-        int repeatRight = (int) fabs((maxX - xLeftAtom)/interval);        //number of lines to Right of Atom
-        int repeatLeft  = (int) fabs((xRightAtom - minX)/interval);       //number of lines to Left of Atom
+        //x-coord of left end of Atom line
+        double xRightAtom = origin.x + ((minY - origin.y)/slope);
+        //x-coord of right end of Atom line
+        double xLeftAtom = origin.x + ((maxY - origin.y)/slope);
+        //number of lines to Right of Atom
+        int repeatRight = (int) fabs((maxX - xLeftAtom)/interval);
+        //number of lines to Left of Atom
+        int repeatLeft  = (int) fabs((xRightAtom - minX)/interval);
         double leftEndX = xLeftAtom - (repeatLeft * interval);
         double leftStartX   = xRightAtom - (repeatLeft * interval);
         int repeatTotal = repeatRight + repeatLeft + 1;
@@ -563,7 +569,8 @@ TopoDS_Face DrawGeomHatch::extractFace(DrawViewPart* source, int iface )
     gp_Pln plane(gOrg, gDir);
 
     BRepBuilderAPI_MakeFace mkFace(plane, faceWires.front(), true);
-    std::vector<TopoDS_Wire>::iterator itWire = ++faceWires.begin();            //starting with second wire
+    //starting with second wire
+    std::vector<TopoDS_Wire>::iterator itWire = ++faceWires.begin();
     for (; itWire != faceWires.end(); itWire++) {
         mkFace.Add(*itWire);
     }

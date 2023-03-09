@@ -547,7 +547,8 @@ double DrawViewDimension::getDimValue()
         else if (Type.isValue("Radius")) {
             arcPoints pts = m_arcPoints;
             result =
-                pts.radius / getViewPart()->getScale();//Projected BaseGeom is scaled for drawing
+                //Projected BaseGeom is scaled for drawing
+                pts.radius / getViewPart()->getScale();
         }
         else if (Type.isValue("Diameter")) {
             arcPoints pts = m_arcPoints;
@@ -789,9 +790,11 @@ arcPoints DrawViewDimension::arcPointsFromBaseGeom(TechDraw::BaseGeomPtr base)
         else {
             pts.isArc = false;
             pts.onCurve.first(pts.center
-                              + Base::Vector3d(1, 0, 0) * circle->radius);//arbitrary point on edge
+                              //arbitrary point on edge
+                              + Base::Vector3d(1, 0, 0) * circle->radius);
             pts.onCurve.second(
-                pts.center + Base::Vector3d(-1, 0, 0) * circle->radius);//arbitrary point on edge
+                //arbitrary point on edge
+                pts.center + Base::Vector3d(-1, 0, 0) * circle->radius);
         }
     }
     else if ((base && base->getGeomType() == TechDraw::GeomType::ELLIPSE)
@@ -804,9 +807,11 @@ arcPoints DrawViewDimension::arcPointsFromBaseGeom(TechDraw::BaseGeomPtr base)
             pts.center = Base::Vector3d(ellipse->center.x, ellipse->center.y, 0.0);
             pts.radius = rAvg;
             pts.isArc = false;
-            pts.onCurve.first(pts.center + Base::Vector3d(1, 0, 0) * rAvg);//arbitrary point on edge
+            //arbitrary point on edge
+            pts.onCurve.first(pts.center + Base::Vector3d(1, 0, 0) * rAvg);
             pts.onCurve.second(pts.center
-                               + Base::Vector3d(-1, 0, 0) * rAvg);//arbitrary point on edge
+                               //arbitrary point on edge
+                               + Base::Vector3d(-1, 0, 0) * rAvg);
         }
         else {
             TechDraw::AOEPtr aoe = std::static_pointer_cast<TechDraw::AOE>(base);
@@ -823,7 +828,8 @@ arcPoints DrawViewDimension::arcPointsFromBaseGeom(TechDraw::BaseGeomPtr base)
             pts.onCurve.first(Base::Vector3d(aoe->midPnt.x, aoe->midPnt.y, 0.0));//for radius
             //            pts.onCurve.first(pts.center + Base::Vector3d(1, 0,0) * rAvg);   //for diameter
             pts.onCurve.second(pts.center
-                               + Base::Vector3d(-1, 0, 0) * rAvg);//arbitrary point on edge
+                               //arbitrary point on edge
+                               + Base::Vector3d(-1, 0, 0) * rAvg);
         }
     }
     else if (base && base->getGeomType() == TechDraw::GeomType::BSPLINE) {
@@ -846,9 +852,11 @@ arcPoints DrawViewDimension::arcPointsFromBaseGeom(TechDraw::BaseGeomPtr base)
             }
             else {
                 pts.onCurve.first(pts.center
-                                  + Base::Vector3d(1, 0, 0) * rad);//arbitrary point on edge
+                                  //arbitrary point on edge
+                                  + Base::Vector3d(1, 0, 0) * rad);
                 pts.onCurve.second(pts.center
-                                   + Base::Vector3d(-1, 0, 0) * rad);//arbitrary point on edge
+                                   //arbitrary point on edge
+                                   + Base::Vector3d(-1, 0, 0) * rad);
             }
         }
         else {
@@ -899,9 +907,11 @@ arcPoints DrawViewDimension::arcPointsFromEdge(TopoDS_Edge occEdge)
         else {
             //full circle
             pts.onCurve.first(pts.center
-                              + Base::Vector3d(1, 0, 0) * pts.radius);//arbitrary point on edge
+                              //arbitrary point on edge
+                              + Base::Vector3d(1, 0, 0) * pts.radius);
             pts.onCurve.second(pts.center
-                               + Base::Vector3d(-1, 0, 0) * pts.radius);//arbitrary point on edge
+                               //arbitrary point on edge
+                               + Base::Vector3d(-1, 0, 0) * pts.radius);
         }
     }
     else if (adapt.GetType() == GeomAbs_Ellipse) {
@@ -919,9 +929,11 @@ arcPoints DrawViewDimension::arcPointsFromEdge(TopoDS_Edge occEdge)
         else {
             //full ellipse
             pts.onCurve.first(pts.center
-                              + Base::Vector3d(1, 0, 0) * pts.radius);//arbitrary point on edge
+                              //arbitrary point on edge
+                              + Base::Vector3d(1, 0, 0) * pts.radius);
             pts.onCurve.second(pts.center
-                               + Base::Vector3d(-1, 0, 0) * pts.radius);//arbitrary point on edge
+                               //arbitrary point on edge
+                               + Base::Vector3d(-1, 0, 0) * pts.radius);
         }
     }
     else if (adapt.GetType() == GeomAbs_BSplineCurve) {
@@ -948,9 +960,11 @@ arcPoints DrawViewDimension::arcPointsFromEdge(TopoDS_Edge occEdge)
             else {
                 //full circle
                 pts.onCurve.first(pts.center
-                                  + Base::Vector3d(1, 0, 0) * pts.radius);//arbitrary point on edge
+                                  //arbitrary point on edge
+                                  + Base::Vector3d(1, 0, 0) * pts.radius);
                 pts.onCurve.second(
-                    pts.center + Base::Vector3d(-1, 0, 0) * pts.radius);//arbitrary point on edge
+                    //arbitrary point on edge
+                    pts.center + Base::Vector3d(-1, 0, 0) * pts.radius);
             }
         }
         else {

@@ -102,7 +102,8 @@ void TaskFemConstraintFixed::updateUI()
 
 void TaskFemConstraintFixed::addToSelection()
 {
-    std::vector<Gui::SelectionObject> selection = Gui::Selection().getSelectionEx(); //gets vector of selected objects of active document
+    //gets vector of selected objects of active document
+    std::vector<Gui::SelectionObject> selection = Gui::Selection().getSelectionEx();
     if (selection.empty()) {
         QMessageBox::warning(this, tr("Selection error"), tr("Nothing selected!"));
         return;
@@ -159,7 +160,8 @@ void TaskFemConstraintFixed::addToSelection()
 
 void TaskFemConstraintFixed::removeFromSelection()
 {
-    std::vector<Gui::SelectionObject> selection = Gui::Selection().getSelectionEx(); //gets vector of selected objects of active document
+    //gets vector of selected objects of active document
+    std::vector<Gui::SelectionObject> selection = Gui::Selection().getSelectionEx();
     if (selection.empty()) {
         QMessageBox::warning(this, tr("Selection error"), tr("Nothing selected!"));
         return;
@@ -258,7 +260,8 @@ void TaskDlgFemConstraintFixed::open()
         QString msg = QObject::tr("Constraint fixed");
         Gui::Command::openCommand((const char*)msg.toUtf8());
         ConstraintView->setVisible(true);
-        Gui::Command::doCommand(Gui::Command::Doc, ViewProviderFemConstraint::gethideMeshShowPartStr((static_cast<Fem::Constraint*>(ConstraintView->getObject()))->getNameInDocument()).c_str()); //OvG: Hide meshes and show parts
+        //OvG: Hide meshes and show parts
+        Gui::Command::doCommand(Gui::Command::Doc, ViewProviderFemConstraint::gethideMeshShowPartStr((static_cast<Fem::Constraint*>(ConstraintView->getObject()))->getNameInDocument()).c_str());
     }
 }
 
@@ -267,7 +270,8 @@ bool TaskDlgFemConstraintFixed::accept()
     std::string name = ConstraintView->getObject()->getNameInDocument();
     const TaskFemConstraintFixed* parameters = static_cast<const TaskFemConstraintFixed*>(parameter);
     std::string scale = parameters->getScale();  //OvG: determine modified scale
-    Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.%s.Scale = %s", name.c_str(), scale.c_str()); //OvG: implement modified scale
+    //OvG: implement modified scale
+    Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.%s.Scale = %s", name.c_str(), scale.c_str());
     return TaskDlgFemConstraint::accept();
 }
 

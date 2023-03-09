@@ -225,7 +225,8 @@ void DrawViewDetail::makeDetailShape(TopoDS_Shape& shape, DrawViewPart* dvp, Dra
 
 
     m_viewAxis = dvp->getProjectionCS(shapeCenter);//save the CS for later
-    Base::Vector3d anchor = AnchorPoint.getValue();//this is a 2D point in base view local coords
+    //this is a 2D point in base view local coords
+    Base::Vector3d anchor = AnchorPoint.getValue();
     //    double baseRotationRad = dvp->Rotation.getValue() * M_PI / 180.0;
     //    anchor.RotateZ(baseRotationRad);
 
@@ -237,7 +238,8 @@ void DrawViewDetail::makeDetailShape(TopoDS_Shape& shape, DrawViewPart* dvp, Dra
     BRepBndLib::AddOptimal(copyShape, bbxSource);
     double diag = sqrt(bbxSource.SquareExtent());
 
-    Base::Vector3d toolPlaneOrigin = anchor + dirDetail * diag * -1.0;//center tool about anchor
+    //center tool about anchor
+    Base::Vector3d toolPlaneOrigin = anchor + dirDetail * diag * -1.0;
     double extrudeLength = 2.0 * toolPlaneOrigin.Length();
 
     gp_Pnt gpnt(toolPlaneOrigin.x, toolPlaneOrigin.y, toolPlaneOrigin.z);

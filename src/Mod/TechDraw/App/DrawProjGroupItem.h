@@ -91,7 +91,8 @@ public:
 
     //DPGI always fits on page since DPG handles scaling
     bool checkFit() const override { return true; }
-    bool checkFit(DrawPage* page) const override { (void) page;         //avoid unused variable warning
+    //avoid unused variable warning
+    bool checkFit(DrawPage* page) const override { (void) page;
                                                    return true; }
 
     int countParentPages() const override;

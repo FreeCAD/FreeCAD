@@ -58,7 +58,8 @@ void SubSystem::initialize(VEC_pD &params, MAP_pD_pD &reductionmap)
         SET_pD s2;
         for (std::vector<Constraint *>::iterator constr=clist.begin();
              constr != clist.end(); ++constr) {
-            (*constr)->revertParams(); // ensure that the constraint points to the original parameters
+            // ensure that the constraint points to the original parameters
+            (*constr)->revertParams();
             VEC_pD constr_params = (*constr)->params();
             s2.insert(constr_params.begin(), constr_params.end());
         }
@@ -109,7 +110,8 @@ void SubSystem::initialize(VEC_pD &params, MAP_pD_pD &reductionmap)
     p2c.clear();
     for (std::vector<Constraint *>::iterator constr=clist.begin();
          constr != clist.end(); ++constr) {
-        (*constr)->revertParams(); // ensure that the constraint points to the original parameters
+        // ensure that the constraint points to the original parameters
+        (*constr)->revertParams();
         VEC_pD constr_params_orig = (*constr)->params();
         SET_pD constr_params;
         for (VEC_pD::const_iterator p=constr_params_orig.begin();

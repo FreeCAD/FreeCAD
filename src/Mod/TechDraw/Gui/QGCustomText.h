@@ -86,7 +86,8 @@ protected:
     Base::Reference<ParameterGrp> getParmGroup(void);
 
     bool isHighlighted;
-    bool tightBounding;  // Option to use tighter boundingRect(), works only for plaintext QGCustomText
+    // Option to use tighter boundingRect(), works only for plaintext QGCustomText
+    bool tightBounding;
     QColor m_colCurrent;
     QColor m_colNormal;
 

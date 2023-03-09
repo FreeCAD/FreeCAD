@@ -114,19 +114,28 @@ namespace e57
 
       //??? verify alignment
       ImageFileImplWeakPtr destImageFile_;
-      ustring pathName_;                          /// Pathname from CompressedVectorNode to source/dest
+      /// Pathname from CompressedVectorNode to source/dest
+      ustring pathName_;
                                                   /// object, e.g. "Indices/0"
-      MemoryRepresentation memoryRepresentation_; /// Type of element (e.g. E57_INT8, E57_UINT64,
+      /// Type of element (e.g. E57_INT8, E57_UINT64,
+      MemoryRepresentation memoryRepresentation_;
                                                   /// DOUBLE...)
-      char *base_ = nullptr;                      /// Address of first element, for non-ustring buffers
-      size_t capacity_ = 0;                       /// Total number of elements in array
-      bool doConversion_ = false;                 /// Convert memory representation to/from disk representation
-      bool doScaling_ = false;                    /// Apply scale factor for integer type
-      size_t stride_ = 0;                         /// Distance between each element (different than size_
+      /// Address of first element, for non-ustring buffers
+      char *base_ = nullptr;
+      /// Total number of elements in array
+      size_t capacity_ = 0;
+      /// Convert memory representation to/from disk representation
+      bool doConversion_ = false;
+      /// Apply scale factor for integer type
+      bool doScaling_ = false;
+      /// Distance between each element (different than size_
+      size_t stride_ = 0;
                                                   /// if elements not contiguous)
-      unsigned nextIndex_ = 0;                    /// Number of elements that have been set (dest
+      /// Number of elements that have been set (dest
+      unsigned nextIndex_ = 0;
                                                   /// buffer) or read (source buffer) since rewind().
-      StringList *ustrings_ = nullptr;            /// Optional array of ustrings (used if
+      /// Optional array of ustrings (used if
+      StringList *ustrings_ = nullptr;
                                                   /// memoryRepresentation_==E57_USTRING) ???ownership
    };
 }

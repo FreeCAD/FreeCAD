@@ -169,7 +169,8 @@ public:
         };
 
         int PointIndex = InvalidPoint;
-        int GeoIndex = InvalidCurve; // valid values are 0,1,2,... for normal geometry and -3,-4,-5,... for external geometry
+        // valid values are 0,1,2,... for normal geometry and -3,-4,-5,... for external geometry
+        int GeoIndex = InvalidCurve;
         Axes Cross = Axes::None;
         std::set<int> ConstrIndices;
 
@@ -225,7 +226,8 @@ public:
     /** @name update coin colors*/
     //@{
     void updateColor();
-    void updateColor(const GeoListFacade & geolistfacade); // overload to be used with temporal geometry.
+    // overload to be used with temporal geometry.
+    void updateColor(const GeoListFacade & geolistfacade);
     //@}
 
     /** @name change constraints selectability*/
@@ -292,4 +294,3 @@ private:
 
 
 #endif // SKETCHERGUI_EditModeCoinManager_H
-

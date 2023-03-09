@@ -797,7 +797,8 @@ void MDIViewPage::preSelectionChanged(const QPoint& pos)
     }
     else if (face) {
         ss << "Face"
-           << face->getProjIndex();//TODO: SectionFaces have ProjIndex = -1. (but aren't selectable?) Problem?
+           //TODO: SectionFaces have ProjIndex = -1. (but aren't selectable?) Problem?
+           << face->getProjIndex();
         //bool accepted =
         static_cast<void>(Gui::Selection().setPreselect(viewObj->getDocument()->getName(),
                                                         viewObj->getNameInDocument(),
@@ -901,7 +902,8 @@ void MDIViewPage::sceneSelectionManager()
     QList<QGraphicsItem*> sceneSel = m_scene->selectedItems();
 
     if (sceneSel.isEmpty()) {
-        m_qgSceneSelected.clear();//TODO: need to signal somebody?  Tree? handled elsewhere
+        //TODO: need to signal somebody?  Tree? handled elsewhere
+        m_qgSceneSelected.clear();
         //clearSelection
         return;
     }
@@ -965,7 +967,8 @@ void MDIViewPage::sceneSelectionChanged()
 void MDIViewPage::setTreeToSceneSelect()
 {
     //    Base::Console().Message("MDIVP::setTreeToSceneSelect()\n");
-    bool saveBlock = blockSelection(true);// block selectionChanged signal from Tree/Observer
+    // block selectionChanged signal from Tree/Observer
+    bool saveBlock = blockSelection(true);
     blockSceneSelection(true);
     Gui::Selection().clearSelection();
     QList<QGraphicsItem*> sceneSel = m_qgSceneSelected;

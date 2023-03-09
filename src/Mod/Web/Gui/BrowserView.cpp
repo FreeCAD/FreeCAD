@@ -102,7 +102,8 @@ public:
         if (info.navigationType() == QWebEngineUrlRequestInfo::NavigationTypeLink) {
             // wash out windows file:///C:/something ->file://C:/something
             QUrl url = info.requestUrl();
-            QRegularExpression re(QLatin1String("^/([a-zA-Z]\\:.*)")); // match & catch drive letter forward
+            // match & catch drive letter forward
+            QRegularExpression re(QLatin1String("^/([a-zA-Z]\\:.*)"));
             QRegularExpressionMatch match = re.match(url.path());
 
             if (url.host().isEmpty() && url.isLocalFile() && match.hasMatch())
@@ -914,4 +915,3 @@ PyObject* BrowserView::getPyObject()
     return new BrowserViewPy(this);
 }
 #include "moc_BrowserView.cpp"
-

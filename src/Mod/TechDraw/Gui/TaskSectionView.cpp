@@ -78,7 +78,8 @@ TaskSectionView::TaskSectionView(TechDraw::DrawViewPart* base) :
     ui->setupUi(this);
     setUiPrimary();
 
-    m_applyDeferred = 0;//setting the direction widgets causes an increment of the deferred count,
+    //setting the direction widgets causes an increment of the deferred count,
+    m_applyDeferred = 0;
                         //so we reset the counter and the message.
 }
 
@@ -114,7 +115,8 @@ TaskSectionView::TaskSectionView(TechDraw::DrawViewSection* section) :
     saveSectionState();
     setUiEdit();
 
-    m_applyDeferred = 0;//setting the direction widgets causes an increment of the deferred count,
+    //setting the direction widgets causes an increment of the deferred count,
+    m_applyDeferred = 0;
                         //so we reset the counter and the message.
     ui->lPendingUpdates->setText(QString());
 }

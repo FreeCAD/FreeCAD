@@ -65,7 +65,8 @@ TaskMirroredParameters::TaskMirroredParameters(ViewProviderTransformed *Transfor
 
     selectionMode = none;
 
-    blockUpdate = false; // Hack, sometimes it is NOT false although set to false in Transformed::Transformed()!!
+    // Hack, sometimes it is NOT false although set to false in Transformed::Transformed()!!
+    blockUpdate = false;
     setupUI();
 }
 
@@ -88,7 +89,8 @@ TaskMirroredParameters::TaskMirroredParameters(TaskMultiTransformParameters *par
 
     selectionMode = none;
 
-    blockUpdate = false; // Hack, sometimes it is NOT false although set to false in Transformed::Transformed()!!
+    // Hack, sometimes it is NOT false although set to false in Transformed::Transformed()!!
+    blockUpdate = false;
     setupUI();
 }
 

@@ -407,7 +407,8 @@ int ConstraintPy::PyInit(PyObject* args, PyObject* /*kwd*/)
                 //valid = true;//non-standard assignment
                 this->getConstraintPtr()->First     = intArg1;
                 this->getConstraintPtr()->FirstPos  = Sketcher::PointPos::none;
-                this->getConstraintPtr()->Second    = intArg2; //let's goof up all the terminology =)
+                //let's goof up all the terminology =)
+                this->getConstraintPtr()->Second    = intArg2;
                 this->getConstraintPtr()->SecondPos = Sketcher::PointPos::none;
                 this->getConstraintPtr()->Third     = intArg3;
                 this->getConstraintPtr()->ThirdPos  = static_cast<Sketcher::PointPos>(intArg4);

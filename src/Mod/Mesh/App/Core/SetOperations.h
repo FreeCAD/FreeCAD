@@ -134,7 +134,8 @@ private:
   //    std::map<Edge, EdgeInfo>   &_edges;
   //    int                         _side;
   //    float                       _mult;
-  //    int                         _addFacets; // 0: add facets to the result 1: do not add facets to the result
+  // 0: add facets to the result 1: do not add facets to the result
+  //    int                         _addFacets;
   //    Base::Builder3D& _builder;
 
   //    CollectFacetVisitor (MeshKernel& mesh, std::vector<unsigned long>& facets, std::map<Edge, EdgeInfo>& edges, int side, float mult, Base::Builder3D& builder);
@@ -150,7 +151,8 @@ private:
       std::map<Edge, EdgeInfo>   &_edges;
       int                         _side;
       float                       _mult;
-      int                         _addFacets; // 0: add facets to the result 1: do not add facets to the result
+      // 0: add facets to the result 1: do not add facets to the result
+      int                         _addFacets;
       Base::Builder3D& _builder;
 
       CollectFacetVisitor (const MeshKernel& mesh, std::vector<FacetIndex>& facets, std::map<Edge, EdgeInfo>& edges, int side, float mult, Base::Builder3D& builder);

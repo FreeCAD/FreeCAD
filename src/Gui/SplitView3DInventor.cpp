@@ -140,7 +140,8 @@ void AbstractSplitView::OnChange(ParameterGrp::SubjectType &rCaller,ParameterGrp
 {
     const ParameterGrp& rGrp = static_cast<ParameterGrp&>(rCaller);
     if (strcmp(Reason,"HeadlightColor") == 0) {
-        unsigned long headlight = rGrp.GetUnsigned("HeadlightColor",ULONG_MAX); // default color (white)
+        // default color (white)
+        unsigned long headlight = rGrp.GetUnsigned("HeadlightColor",ULONG_MAX);
         float transparency;
         SbColor headlightColor;
         headlightColor.setPackedValue((uint32_t)headlight, transparency);
@@ -168,7 +169,8 @@ void AbstractSplitView::OnChange(ParameterGrp::SubjectType &rCaller,ParameterGrp
             (*it)->setBacklight(rGrp.GetBool("EnableBacklight", false));
     }
     else if (strcmp(Reason,"BacklightColor") == 0) {
-        unsigned long backlight = rGrp.GetUnsigned("BacklightColor",ULONG_MAX); // default color (white)
+        // default color (white)
+        unsigned long backlight = rGrp.GetUnsigned("BacklightColor",ULONG_MAX);
         float transparency;
         SbColor backlightColor;
         backlightColor.setPackedValue((uint32_t)backlight, transparency);
@@ -293,9 +295,12 @@ void AbstractSplitView::OnChange(ParameterGrp::SubjectType &rCaller,ParameterGrp
     }
     else {
         unsigned long col1 = rGrp.GetUnsigned("BackgroundColor",3940932863UL);
-        unsigned long col2 = rGrp.GetUnsigned("BackgroundColor2",859006463UL); // default color (dark blue)
-        unsigned long col3 = rGrp.GetUnsigned("BackgroundColor3",2880160255UL); // default color (blue/grey)
-        unsigned long col4 = rGrp.GetUnsigned("BackgroundColor4",1869583359UL); // default color (blue/grey)
+        // default color (dark blue)
+        unsigned long col2 = rGrp.GetUnsigned("BackgroundColor2",859006463UL);
+        // default color (blue/grey)
+        unsigned long col3 = rGrp.GetUnsigned("BackgroundColor3",2880160255UL);
+        // default color (blue/grey)
+        unsigned long col4 = rGrp.GetUnsigned("BackgroundColor4",1869583359UL);
         float r1,g1,b1,r2,g2,b2,r3,g3,b3,r4,g4,b4;
         r1 = ((col1 >> 24) & 0xff) / 255.0; g1 = ((col1 >> 16) & 0xff) / 255.0; b1 = ((col1 >> 8) & 0xff) / 255.0;
         r2 = ((col2 >> 24) & 0xff) / 255.0; g2 = ((col2 >> 16) & 0xff) / 255.0; b2 = ((col2 >> 8) & 0xff) / 255.0;

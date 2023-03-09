@@ -70,13 +70,14 @@ ViewProviderGeometryObject::ViewProviderGeometryObject()
         b = (float)rand() / fMax;
     }
     else {
-        unsigned long shcol = hGrp->GetUnsigned("DefaultShapeColor", 3435973887UL); // light gray (204,204,204)
+        // light gray (204,204,204)
+        unsigned long shcol = hGrp->GetUnsigned("DefaultShapeColor", 3435973887UL);
         r = ((shcol >> 24) & 0xff) / 255.0;
         g = ((shcol >> 16) & 0xff) / 255.0;
         b = ((shcol >> 8) & 0xff) / 255.0;
     }
 
-    int initialTransparency = hGrp->GetInt("DefaultShapeTransparency", 0); 
+    int initialTransparency = hGrp->GetInt("DefaultShapeTransparency", 0);
 
     static const char *dogroup = "Display Options";
     static const char *sgroup = "Selection";
@@ -224,14 +225,16 @@ SoPickedPoint* ViewProviderGeometryObject::getPickedPoint(const SbVec2s& pos, co
 
     // returns a copy of the point
     SoPickedPoint* pick = rp.getPickedPoint();
-    //return (pick ? pick->copy() : 0); // needs the same instance of CRT under MS Windows
+    // needs the same instance of CRT under MS Windows
+    //return (pick ? pick->copy() : 0);
     return (pick ? new SoPickedPoint(*pick) : nullptr);
 }
 
 unsigned long ViewProviderGeometryObject::getBoundColor() const
 {
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
-    unsigned long bbcol = hGrp->GetUnsigned("BoundingBoxColor",4294967295UL); // white (255,255,255)
+    // white (255,255,255)
+    unsigned long bbcol = hGrp->GetUnsigned("BoundingBoxColor",4294967295UL);
     return bbcol;
 }
 

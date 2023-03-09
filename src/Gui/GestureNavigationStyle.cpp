@@ -256,7 +256,8 @@ public:
         switch (ns.getViewingMode()) {
             case NavigationStyle::SEEK_WAIT_MODE:{
                 if (ev.isPress(1)) {
-                    ns.seekToPoint(ev.inventor_event->getPosition()); // implicitly calls interactiveCountInc()
+                    // implicitly calls interactiveCountInc()
+                    ns.seekToPoint(ev.inventor_event->getPosition());
                     ns.setViewingMode(NavigationStyle::SEEK_MODE);
                     ev.flags->processed = true;
                     return transit<NS::AwaitingReleaseState>();
@@ -588,7 +589,8 @@ public:
     }
     virtual ~StickyPanState(){
         auto &ns = this->outermost_context().ns;
-        ns.button2down = false; //a workaround for dealing with Qt not sending UP event after a tap-hold-drag sequence.
+        //a workaround for dealing with Qt not sending UP event after a tap-hold-drag sequence.
+        ns.button2down = false;
     }
 
     sc::result react(const NS::Event& ev){
@@ -1011,7 +1013,8 @@ void GestureNavigationStyle::onRollGesture(int direction)
 void GestureNavigationStyle::onSetRotationCenter(SbVec2s cursor){
     SbBool ret = NavigationStyle::lookAtPoint(cursor);
     if(!ret){
-        this->interactiveCountDec(); //this was in original gesture nav. Not sure what is it needed for --DeepSOIC
+        //this was in original gesture nav. Not sure what is it needed for --DeepSOIC
+        this->interactiveCountDec();
         Base::Console().Log(
             "No object under cursor! Can't set new center of rotation.\n");
     }

@@ -86,7 +86,8 @@ void TaskLineDecor::initUi()
     }
     ui->le_Lines->setText(Base::Tools::fromStdString(temp));
 
-    ui->cb_Style->setCurrentIndex(m_style - 1);          //combobox does not have 0:NoLine choice
+    //combobox does not have 0:NoLine choice
+    ui->cb_Style->setCurrentIndex(m_style - 1);
     ui->cc_Color->setColor(m_color.asValue<QColor>());
     ui->dsb_Weight->setValue(m_weight);
     ui->dsb_Weight->setSingleStep(0.1);

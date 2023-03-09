@@ -291,7 +291,8 @@ void GridExtensionP::createGridPart(int numberSubdiv, bool subDivLines, bool div
     grid->vertexProperty = vts;
 
     float gridDimension = 1.5 * camMaxDimension;
-    int vlines = static_cast<int>(gridDimension / computedGridValue); // total number of vertical lines
+    // total number of vertical lines
+    int vlines = static_cast<int>(gridDimension / computedGridValue);
     int nlines = 2 * vlines; // total number of lines
 
     if (nlines > 2000) {

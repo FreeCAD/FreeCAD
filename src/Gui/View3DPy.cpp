@@ -88,7 +88,8 @@ void View3DInventorPy::init_type()
     add_varargs_method("viewRear",&View3DInventorPy::viewRear,"viewRear()");
     add_varargs_method("viewRight",&View3DInventorPy::viewRight,"viewRight()");
     add_varargs_method("viewTop",&View3DInventorPy::viewTop,"viewTop()");
-    add_varargs_method("viewAxometric",&View3DInventorPy::viewIsometric,"viewAxonometric()"); // for backward compatibility
+    // for backward compatibility
+    add_varargs_method("viewAxometric",&View3DInventorPy::viewIsometric,"viewAxonometric()");
     add_varargs_method("viewAxonometric",&View3DInventorPy::viewIsometric,"viewAxonometric()");
     add_varargs_method("viewIsometric",&View3DInventorPy::viewIsometric,"viewIsometric()");
     add_varargs_method("viewDimetric",&View3DInventorPy::viewDimetric,"viewDimetric()");
@@ -2685,7 +2686,8 @@ Py::Object View3DInventorPy::setCornerCrossVisible(const Py::Tuple& args)
     if (!PyArg_ParseTuple(args.ptr(), "i", &ok))
         throw Py::Exception();
     getView3DIventorPtr()->getViewer()->setFeedbackVisibility(ok!=0);
-    getView3DIventorPtr()->getViewer()->redraw(); // added because isViewing() returns False when focus is in Python Console
+    // added because isViewing() returns False when focus is in Python Console
+    getView3DIventorPtr()->getViewer()->redraw();
     return Py::None();
 }
 
@@ -2703,7 +2705,8 @@ Py::Object View3DInventorPy::setCornerCrossSize(const Py::Tuple& args)
     if (!PyArg_ParseTuple(args.ptr(), "i", &size))
         throw Py::Exception();
     getView3DIventorPtr()->getViewer()->setFeedbackSize(size);
-    getView3DIventorPtr()->getViewer()->redraw(); // added because isViewing() returns False when focus is in Python Console
+    // added because isViewing() returns False when focus is in Python Console
+    getView3DIventorPtr()->getViewer()->redraw();
     return Py::None();
 }
 

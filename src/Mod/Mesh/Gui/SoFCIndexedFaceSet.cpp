@@ -756,7 +756,8 @@ void SoFCIndexedFaceSet::generateGLArrays(SoGLRenderAction * action)
     SoNormalBindingElement::Binding normbind = SoNormalBindingElement::get(state);
     if (normbind == SoNormalBindingElement::PER_VERTEX_INDEXED) {
         if (matbind == SoMaterialBindingElement::PER_FACE) {
-            face_vertices.reserve(3 * numTria * 10); // duplicate each vertex (rgba, normal, vertex)
+            // duplicate each vertex (rgba, normal, vertex)
+            face_vertices.reserve(3 * numTria * 10);
             face_indices.resize(3 * numTria);
 
             if (numcolors != static_cast<int>(numTria)) {
@@ -794,7 +795,8 @@ void SoFCIndexedFaceSet::generateGLArrays(SoGLRenderAction * action)
             }
         }
         else if (matbind == SoMaterialBindingElement::PER_VERTEX_INDEXED) {
-            face_vertices.reserve(3 * numTria * 10); // duplicate each vertex (rgba, normal, vertex)
+            // duplicate each vertex (rgba, normal, vertex)
+            face_vertices.reserve(3 * numTria * 10);
             face_indices.resize(3 * numTria);
 
             if (numcolors != coords->getNum()) {
@@ -967,8 +969,10 @@ void SoFCIndexedFaceSet::startSelection(SoAction * action)
     int bufSize = 5*(this->coordIndex.getNum()/4); // make the buffer big enough
     this->selectBuf = new GLuint[bufSize];
 
-    SbMatrix view = SoViewingMatrixElement::get(action->getState()); // clazy:exclude=rule-of-two-soft
-    SbMatrix proj = SoProjectionMatrixElement::get(action->getState()); // clazy:exclude=rule-of-two-soft
+    // clazy:exclude=rule-of-two-soft
+    SbMatrix view = SoViewingMatrixElement::get(action->getState());
+    // clazy:exclude=rule-of-two-soft
+    SbMatrix proj = SoProjectionMatrixElement::get(action->getState());
 
     glSelectBuffer(bufSize, selectBuf);
     glRenderMode(GL_SELECT);
@@ -1050,8 +1054,10 @@ void SoFCIndexedFaceSet::renderSelectionGeometry(const SbVec3f * coords3d)
 
 void SoFCIndexedFaceSet::startVisibility(SoAction * action)
 {
-    SbMatrix view = SoViewingMatrixElement::get(action->getState()); // clazy:exclude=rule-of-two-soft
-    SbMatrix proj = SoProjectionMatrixElement::get(action->getState()); // clazy:exclude=rule-of-two-soft
+    // clazy:exclude=rule-of-two-soft
+    SbMatrix view = SoViewingMatrixElement::get(action->getState());
+    // clazy:exclude=rule-of-two-soft
+    SbMatrix proj = SoProjectionMatrixElement::get(action->getState());
 
     glMatrixMode(GL_PROJECTION);
     glPushMatrix();

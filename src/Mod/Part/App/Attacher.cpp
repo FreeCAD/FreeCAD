@@ -345,7 +345,8 @@ void AttachEngine::suggestMapModes(SuggestResult &result) const
             continue;
         const refTypeStringList &listStrings = modeRefTypes[iMode];
         for (std::size_t iStr = 0; iStr < listStrings.size(); ++iStr) {
-            int score = 1; //-1 = topo incompatible, 0 = topo compatible, geom incompatible; 1+ = compatible (the higher - the more specific is the mode for the support)
+            //-1 = topo incompatible, 0 = topo compatible, geom incompatible; 1+ = compatible (the higher - the more specific is the mode for the support)
+            int score = 1;
             const refTypeString &str = listStrings[iStr];
             for (std::size_t iChr = 0; iChr < str.size() && iChr < typeStr.size(); ++iChr) {
                 int match = AttachEngine::isShapeOfType(typeStr[iChr], str[iChr]);
@@ -431,7 +432,8 @@ eRefType AttachEngine::getShapeType(const TopoDS_Shape& sh)
     break;
     case TopAbs_COMPOUND:{
         const TopoDS_Compound &cmpd = TopoDS::Compound(sh);
-        TopoDS_Iterator it (cmpd, Standard_False, Standard_False);//don't mess with placements, to hopefully increase speed
+        //don't mess with placements, to hopefully increase speed
+        TopoDS_Iterator it (cmpd, Standard_False, Standard_False);
         if (! it.More())//empty compound
             return rtAnything;
         const TopoDS_Shape &sh1 = it.Value();
@@ -981,7 +983,8 @@ Base::Placement AttachEngine3D::calculateAttachedPlacement(const Base::Placement
 {
     const eMapMode mmode = this->mapMode;
     if (mmode == mmDeactivated)
-        throw ExceptionCancel();//to be handled in positionBySupport, to not do anything if disabled
+        //to be handled in positionBySupport, to not do anything if disabled
+        throw ExceptionCancel();
     std::vector<App::GeoFeature*> parts;
     std::vector<const TopoDS_Shape*> shapes;
     std::vector<TopoDS_Shape> copiedShapeStorage;
@@ -1291,7 +1294,8 @@ Base::Placement AttachEngine3D::calculateAttachedPlacement(const Base::Placement
 
             gp_Vec T,N,B;//Frenet?Serret axes: tangent, normal, binormal
             T = d.Normalized();
-            N = dd.Subtracted(T.Multiplied(dd.Dot(T)));//take away the portion of dd that is along tangent
+            //take away the portion of dd that is along tangent
+            N = dd.Subtracted(T.Multiplied(dd.Dot(T)));
             if (N.Magnitude() > Precision::SquareConfusion()) {
                 N.Normalize();
                 B = T.Crossed(N);
@@ -1305,7 +1309,8 @@ Base::Placement AttachEngine3D::calculateAttachedPlacement(const Base::Placement
             switch (mmode){
             case mmFrenetNB:
             case mmRevolutionSection:
-                SketchNormal = T.Reversed();//to avoid sketches upside-down for regular curves like circles
+                //to avoid sketches upside-down for regular curves like circles
+                SketchNormal = T.Reversed();
                 SketchXAxis = N.Reversed();
                 break;
             case mmFrenetTN:
@@ -1318,7 +1323,8 @@ Base::Placement AttachEngine3D::calculateAttachedPlacement(const Base::Placement
             case mmFrenetTB:
                 if (N.Magnitude() == 0.0)
                     throw Base::ValueError("AttachEngine3D::calculateAttachedPlacement: Frenet-Serret normal is undefined. Can't align to TB plane.");
-                SketchNormal = N.Reversed();//it is more convenient to sketch on something looking at it so it is convex.
+                //it is more convenient to sketch on something looking at it so it is convex.
+                SketchNormal = N.Reversed();
                 SketchXAxis = T;
                 break;
             default:
@@ -1330,13 +1336,15 @@ Base::Placement AttachEngine3D::calculateAttachedPlacement(const Base::Placement
                     throw Base::ValueError("AttachEngine3D::calculateAttachedPlacement: path has infinite radius of curvature at the point. Can't align for revolving.");
                 double curvature = dd.Dot(N) / pow(d.Magnitude(), 2);
                 gp_Vec pv (p.XYZ());
-                pv.Add(N.Multiplied(1/curvature));//shift the point along curvature by radius of curvature
+                //shift the point along curvature by radius of curvature
+                pv.Add(N.Multiplied(1/curvature));
                 SketchBasePoint = gp_Pnt(pv.XYZ());
                 //it would have been cool to have the curve attachment point available inside sketch... Leave for future.
             }
         } else if (mmode == mmNormalToPath){//mmNormalToPath
             //align sketch origin to the origin of support
-            SketchNormal = gp_Dir(d.Reversed());//sketch normal looks at user. It is natural to have the curve directed away from user, so reversed.
+            //sketch normal looks at user. It is natural to have the curve directed away from user, so reversed.
+            SketchNormal = gp_Dir(d.Reversed());
         }
 
     } break;
@@ -1391,7 +1399,8 @@ Base::Placement AttachEngine3D::calculateAttachedPlacement(const Base::Placement
             //SketchBasePoint = (p0+p1+p2)/3.0
             SketchBasePoint = gp_Pnt(gp_Vec(p0.XYZ()).Added(p1.XYZ()).Added(p2.XYZ()).Multiplied(1.0/3.0).XYZ());
         } else if (mmode == mmThreePointsNormal) {
-            norm = vec02.Subtracted(vec01.Multiplied(vec02.Dot(vec01))).Reversed();//norm = vec02 forced perpendicular to vec01.
+            //norm = vec02 forced perpendicular to vec01.
+            norm = vec02.Subtracted(vec01.Multiplied(vec02.Dot(vec01))).Reversed();
             if (norm.Magnitude() < Precision::Confusion())
                 throw Base::ValueError("AttachEngine3D::calculateAttachedPlacement: points are collinear. Can't make a plane");
             //SketchBasePoint = (p0+p1)/2.0
@@ -1433,7 +1442,8 @@ Base::Placement AttachEngine3D::calculateAttachedPlacement(const Base::Placement
 
         //figure out the common starting point (variable p)
         gp_Pnt p, p1, p2, p3, p4;
-        double signs[4] = {0,0,0,0};//flags whether to reverse line directions, for all directions to point away from the common vertex
+        //flags whether to reverse line directions, for all directions to point away from the common vertex
+        double signs[4] = {0,0,0,0};
         p1 = adapts[0].Value(adapts[0].FirstParameter());
         p2 = adapts[0].Value(adapts[0].LastParameter());
         p3 = adapts[1].Value(adapts[1].FirstParameter());
@@ -1713,7 +1723,8 @@ Base::Placement AttachEngineLine::calculateAttachedPlacement(const Base::Placeme
     Base::Placement presuperPlacement;
     switch(mmode){
     case mmDeactivated:
-        throw ExceptionCancel();//to be handled in positionBySupport, to not do anything if disabled
+        //to be handled in positionBySupport, to not do anything if disabled
+        throw ExceptionCancel();
     case mm1AxisX:
         mmode = mmObjectYZ;
         break;
@@ -1921,7 +1932,8 @@ Base::Placement AttachEngineLine::calculateAttachedPlacement(const Base::Placeme
         AttachEngine3D attacher3D;
         attacher3D.setUp(*this);
         attacher3D.mapMode = mmode;
-        attacher3D.attachmentOffset = Base::Placement(); //AttachmentOffset is applied separately here, afterwards. So we are resetting it in sub-attacher to avoid applying it twice!
+        //AttachmentOffset is applied separately here, afterwards. So we are resetting it in sub-attacher to avoid applying it twice!
+        attacher3D.attachmentOffset = Base::Placement();
         plm = attacher3D.calculateAttachedPlacement(origPlacement);
         plm *= presuperPlacement;
     }
@@ -1981,7 +1993,8 @@ Base::Placement AttachEnginePoint::calculateAttachedPlacement(const Base::Placem
     bool bReUsed = true;
     switch(mmode){
     case mmDeactivated:
-        throw ExceptionCancel();//to be handled in positionBySupport, to not do anything if disabled
+        //to be handled in positionBySupport, to not do anything if disabled
+        throw ExceptionCancel();
     case mm0Origin:
         mmode = mmObjectXY;
         break;
@@ -2090,7 +2103,8 @@ Base::Placement AttachEnginePoint::calculateAttachedPlacement(const Base::Placem
         AttachEngine3D attacher3D;
         attacher3D.setUp(*this);
         attacher3D.mapMode = mmode;
-        attacher3D.attachmentOffset = Base::Placement(); //AttachmentOffset is applied separately here, afterwards. So we are resetting it in sub-attacher to avoid applying it twice!
+        //AttachmentOffset is applied separately here, afterwards. So we are resetting it in sub-attacher to avoid applying it twice!
+        attacher3D.attachmentOffset = Base::Placement();
         plm = attacher3D.calculateAttachedPlacement(origPlacement);
     }
     plm *= this->attachmentOffset;

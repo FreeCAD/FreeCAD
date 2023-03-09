@@ -130,7 +130,8 @@ void UnitsApi::setSchema(UnitSystem system)
         currentSystem = UnitSystem::SI1;
     }
 
-    UserPrefSystem->setSchemaUnits(); // if necessary a unit schema can change the constants in Quantity (e.g. mi=1.8km rather then 1.6km).
+    // if necessary a unit schema can change the constants in Quantity (e.g. mi=1.8km rather then 1.6km).
+    UserPrefSystem->setSchemaUnits();
 }
 
 QString UnitsApi::toString(const Base::Quantity& quantity, const QuantityFormat& format)

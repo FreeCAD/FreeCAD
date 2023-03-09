@@ -91,7 +91,8 @@ public:
                 * right button of the mouse */
             }
             else{
-                sketchgui->purgeHandler(); // no code after this line, Handler get deleted in ViewProvider
+                // no code after this line, Handler get deleted in ViewProvider
+                sketchgui->purgeHandler();
             }
         }
         return true;
@@ -114,4 +115,3 @@ protected:
 
 
 #endif // SKETCHERGUI_DrawSketchHandlerPoint_H
-

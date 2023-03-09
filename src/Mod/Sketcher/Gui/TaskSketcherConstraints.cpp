@@ -633,7 +633,8 @@ ConstraintFilterList::ConstraintFilterList(QWidget* parent)
     : QListWidget(parent)
 {
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher/General");
-    int filterState = hGrp->GetInt("ConstraintFilterState", INT_MAX); //INT_MAX = 1111111111111111111111111111111 in binary.
+    //INT_MAX = 1111111111111111111111111111111 in binary.
+    int filterState = hGrp->GetInt("ConstraintFilterState", INT_MAX);
 
     normalFilterCount = filterItems.size() - 2; //All filter but selected and associated
     selectedFilterIndex = normalFilterCount;
@@ -672,7 +673,7 @@ void ConstraintFilterList::languageChange()
     int i = 0;
     for (auto const& filterItem : filterItems) {
         auto text = QStringLiteral("  ").repeated(filterItem.second - 1) +
-            (filterItem.second > 0 ? QStringLiteral("- ") : QStringLiteral("")) + 
+            (filterItem.second > 0 ? QStringLiteral("- ") : QStringLiteral("")) +
             tr(filterItem.first);
         item(i++)->setText(text);
     }
@@ -1199,14 +1200,16 @@ void TaskSketcherConstraints::updateAssociatedConstraintsFilter()
 
 void TaskSketcherConstraints::updateList()
 {
-    multiFilterStatus = filterList->getMultiFilter(); //moved here in case the filter is changed programmatically.
+    //moved here in case the filter is changed programmatically.
+    multiFilterStatus = filterList->getMultiFilter();
 
     // enforce constraint visibility
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
     bool visibilityTracksFilter = hGrp->GetBool("VisualisationTrackingFilter",false);
 
     if(visibilityTracksFilter)
-        change3DViewVisibilityToTrackFilter(); // it will call slotConstraintChanged via update mechanism
+        // it will call slotConstraintChanged via update mechanism
+        change3DViewVisibilityToTrackFilter();
     else
         slotConstraintsChanged();
 }
@@ -1262,7 +1265,8 @@ void TaskSketcherConstraints::onSelectionChanged(const Gui::SelectionChanges& ms
 
                         if(specialFilterMode == SpecialFilterType::Selected) {
                             updateSelectionFilter();
-                            bool block = this->blockSelection(true); // avoid to be notified by itself
+                            // avoid to be notified by itself
+                            bool block = this->blockSelection(true);
                             updateList();
                             this->blockSelection(block);
                         }
@@ -1610,7 +1614,7 @@ void TaskSketcherConstraints::on_filterList_itemChanged(QListWidgetItem* item)
 
         auto itemAggregate = filterAggregates[filterindex];
 
-        /*First, if this is a group, we need to set the same state to all of its children. 
+        /*First, if this is a group, we need to set the same state to all of its children.
         ie any filter comprised on the filter of the activated item, gets the same check state.*/
         for (int i = 0; i < filterList->normalFilterCount; i++) {
             if (itemAggregate[i])
@@ -1623,7 +1627,8 @@ void TaskSketcherConstraints::on_filterList_itemChanged(QListWidgetItem* item)
     else if (filterindex == filterList->selectedFilterIndex) { //Selected constraints
         if (item->checkState() == Qt::Checked) {
             specialFilterMode = SpecialFilterType::Selected;
-            filterList->item(filterList->associatedFilterIndex)->setCheckState(Qt::Unchecked); //Disable 'associated'
+            //Disable 'associated'
+            filterList->item(filterList->associatedFilterIndex)->setCheckState(Qt::Unchecked);
             updateSelectionFilter();
         }
         else
@@ -1645,7 +1650,8 @@ void TaskSketcherConstraints::on_filterList_itemChanged(QListWidgetItem* item)
     int filterState = 0;
     for (int i = filterList->count() - 1; i >= 0; i--) {
         bool isChecked = filterList->item(i)->checkState() == Qt::Checked;
-        filterState = filterState << 1; //we shift left first, else the list is shifted at the end.
+        //we shift left first, else the list is shifted at the end.
+        filterState = filterState << 1;
         filterState = filterState | isChecked;
     }
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher/General");
@@ -1657,4 +1663,3 @@ void TaskSketcherConstraints::on_filterList_itemChanged(QListWidgetItem* item)
 
 
 #include "moc_TaskSketcherConstraints.cpp"
-

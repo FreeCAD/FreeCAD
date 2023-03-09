@@ -232,7 +232,8 @@ void PathSegmentWalker::walk(PathSegmentVisitor &cb, const Base::Vector3d &start
 
             double amax = std::max(fmod(fabs(a - A), 360), std::max(fmod(fabs(b - B), 360), fmod(fabs(c - C), 360)));
 
-            int segments = std::max(ARC_MIN_SEGMENTS, 3.0/(deviation/std::max(angle, amax))); //we use a rather simple rule here, provisorily
+            //we use a rather simple rule here, provisorily
+            int segments = std::max(ARC_MIN_SEGMENTS, 3.0/(deviation/std::max(angle, amax)));
             double dZ = (next.*pz - last.*pz)/segments; //How far each segment will helix in Z
 
             double dangle = angle/segments;

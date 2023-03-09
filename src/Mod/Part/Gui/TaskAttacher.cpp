@@ -401,7 +401,8 @@ void TaskAttacher::onSelectionChanged(const Gui::SelectionChanges& msg)
         try {
             pcAttach->Support.setValues(refs, refnames);
             updateListOfModes();
-            eMapMode mmode = getActiveMapMode();//will be mmDeactivated, if selected or if no modes are available
+            //will be mmDeactivated, if selected or if no modes are available
+            eMapMode mmode = getActiveMapMode();
             if(mmode == mmDeactivated){
                 //error = true;
                 this->completed = false;
@@ -793,7 +794,8 @@ void TaskAttacher::updateListOfModes()
     if (pcAttach->Support.getSize() > 0){
         pcAttach->attacher().suggestMapModes(this->lastSuggestResult);
         modesInList = this->lastSuggestResult.allApplicableModes;
-        modesInList.insert(modesInList.begin(), mmDeactivated); // always have the option to choose Deactivated mode
+        // always have the option to choose Deactivated mode
+        modesInList.insert(modesInList.begin(), mmDeactivated);
 
         //add reachable modes to the list, too, but gray them out (using lastValidModeItemIndex, later)
         lastValidModeItemIndex = modesInList.size()-1;
