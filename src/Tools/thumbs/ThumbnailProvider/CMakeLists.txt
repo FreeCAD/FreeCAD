@@ -29,16 +29,16 @@ set(THUMBS_LIBS
 set(zipios_DIR ../../..)
 SET(zipios_SRCS
     ${zipios_DIR}/zipios++/backbuffer.h
-    ${zipios_DIR}/zipios++/basicentry.cpp
-    ${zipios_DIR}/zipios++/basicentry.h
+    #${zipios_DIR}/zipios++/basicentry.cpp
+    #${zipios_DIR}/zipios++/basicentry.h
     ${zipios_DIR}/zipios++/collcoll.cpp
     ${zipios_DIR}/zipios++/collcoll.h
     ${zipios_DIR}/zipios++/deflateoutputstreambuf.cpp
     ${zipios_DIR}/zipios++/deflateoutputstreambuf.h
-    ${zipios_DIR}/zipios++/dircoll.cpp
-    ${zipios_DIR}/zipios++/dircoll.h
-    ${zipios_DIR}/zipios++/directory.cpp
-    ${zipios_DIR}/zipios++/directory.h
+    #${zipios_DIR}/zipios++/dircoll.cpp
+    #${zipios_DIR}/zipios++/dircoll.h
+    #${zipios_DIR}/zipios++/directory.cpp
+    #${zipios_DIR}/zipios++/directory.h
     ${zipios_DIR}/zipios++/fcoll.cpp
     ${zipios_DIR}/zipios++/fcoll.h
     ${zipios_DIR}/zipios++/fcollexceptions.cpp
