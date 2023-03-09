@@ -1397,9 +1397,9 @@ int System::addConstraintInternalAlignmentKnotPoint(BSpline &b, Point &p, unsign
 
     // Calculate the factors to be passed to weighted linear combination constraint.
     // The if condition has a small performance benefit, but that is not why it is here.
-    // One case when numpoles <= 2 is for the last knot of a non-periodic B-spline.
+    // One case when numpoles <= 1 is for the last knot of a non-periodic B-spline.
     // In this case, the interval `k` passed to `getLinCombFactor` is degenerate, and this is the cleanest way to handle it.
-    if (numpoles > 2)
+    if (numpoles > 1)
         for (size_t i = 0; i < numpoles; ++i)
             factors[i] = b.getLinCombFactor(*(b.knots[knotindex]), startpole + b.degree, startpole + i);
 
