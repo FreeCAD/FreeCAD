@@ -920,7 +920,7 @@ SoGroup* postCylinder()
 
     SoLineSet* line = new SoLineSet();
     SoGroup* group = new SoGroup();
-    line->numVertices.setValues(0,nSide + 2, vert);
+    line->numVertices.setValues(0, nSide + 2, vert);
 
     group->addChild(points);
     group->addChild(line);
@@ -932,11 +932,11 @@ SoGroup* postPlane()
 {
     SoCoordinate3* points = new SoCoordinate3();
     points->point.setNum(4);
-    points->point.set1Value(0, -0.5, -0.5, 0);
-    points->point.set1Value(1, -0.5, 0.5, 0);
-    points->point.set1Value(2, 0.5, 0.5, 0);
-    points->point.set1Value(3, 0.5, -0.5, 0);
-    points->point.set1Value(4, -0.5, -0.5, 0);
+    points->point.set1Value(0, -0.5, -0.5, 0.0);
+    points->point.set1Value(1, -0.5, 0.5, 0.0);
+    points->point.set1Value(2, 0.5, 0.5, 0.0);
+    points->point.set1Value(3, 0.5, -0.5, 0.0);
+    points->point.set1Value(4, -0.5, -0.5, 0.0);
     SoGroup* group = new SoGroup();
     SoLineSet* line = new SoLineSet();
 
