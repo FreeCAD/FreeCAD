@@ -434,13 +434,6 @@
      </layout>
     </widget>
    </item>
-   <item row="3" column="0">
-    <widget class="QDialogButtonBox" name="buttonBox">
-     <property name="standardButtons">
-      <set>QDialogButtonBox::Close</set>
-     </property>
-    </widget>
-   </item>
   </layout>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
@@ -528,22 +521,6 @@
     <hint type="destinationlabel">
      <x>98</x>
      <y>404</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>buttonBox</sender>
-   <signal>rejected()</signal>
-   <receiver>Gui::Dialog::DlgDisplayProperties</receiver>
-   <slot>reject()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>150</x>
-     <y>461</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>144</x>
-     <y>243</y>
     </hint>
    </hints>
   </connection>
