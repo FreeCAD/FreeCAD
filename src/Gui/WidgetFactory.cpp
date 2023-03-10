@@ -461,11 +461,10 @@ void PyResource::load(const char* name)
 
     QWidget* w=nullptr;
     try {
-        UiLoader loader;
-        loader.setLanguageChangeEnabled(true);
+        auto loader = UiLoader::newInstance();
         QFile file(fn);
         if (file.open(QFile::ReadOnly))
-            w = loader.load(&file, QApplication::activeWindow());
+            w = loader->load(&file, QApplication::activeWindow());
         file.close();
     }
     catch (...) {
