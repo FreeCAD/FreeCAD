@@ -28,35 +28,35 @@
 #define FC_GLOBAL_H
 
 
-#if defined(WIN64) || defined(_WIN64) || defined(__WIN64__) || defined(__CYGWIN__)
-#  define FREECAD_DECL_EXPORT __declspec(dllexport)
-#  define FREECAD_DECL_IMPORT __declspec(dllimport)
-#else
-#  define FREECAD_DECL_EXPORT
-#  define FREECAD_DECL_IMPORT
-#endif
+	#if defined(WIN64) || defined(_WIN64) || defined(__WIN64__) || defined(__CYGWIN__)
+		#define FREECAD_DECL_EXPORT __declspec(dllexport)
+		#define FREECAD_DECL_IMPORT __declspec(dllimport)
+	#else
+		#define FREECAD_DECL_EXPORT
+		#define FREECAD_DECL_IMPORT
+	#endif
 
 // FreeCADBase
-#ifdef FreeCADBase_EXPORTS
-#  define BaseExport  FREECAD_DECL_EXPORT
-#else
-#  define BaseExport  FREECAD_DECL_IMPORT
-#endif
+	#ifdef FreeCADBase_EXPORTS
+		#define BaseExport  FREECAD_DECL_EXPORT
+	#else
+		#define BaseExport  FREECAD_DECL_IMPORT
+	#endif
 
 // FreeCADApp
-#ifdef FreeCADApp_EXPORTS
-#       define AppExport   FREECAD_DECL_EXPORT
-#       define DataExport  FREECAD_DECL_EXPORT
-#else
-#       define AppExport   FREECAD_DECL_IMPORT
-#       define DataExport  FREECAD_DECL_IMPORT
-#endif
+	#ifdef FreeCADApp_EXPORTS
+		#define AppExport   FREECAD_DECL_EXPORT
+		#define DataExport  FREECAD_DECL_EXPORT
+	#else
+		#define AppExport   FREECAD_DECL_IMPORT
+		#define DataExport  FREECAD_DECL_IMPORT
+	#endif
 
 // FreeCADGui
-#ifdef FreeCADGui_EXPORTS
-#  define GuiExport   FREECAD_DECL_EXPORT
-#else
-#  define GuiExport   FREECAD_DECL_IMPORT
-#endif
+	#ifdef FreeCADGui_EXPORTS
+		#define GuiExport   FREECAD_DECL_EXPORT
+	#else
+		#define GuiExport   FREECAD_DECL_IMPORT
+	#endif
 
 #endif //FC_GLOBAL_H
