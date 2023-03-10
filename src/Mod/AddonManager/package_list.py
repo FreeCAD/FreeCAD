@@ -36,7 +36,7 @@ from compact_view import Ui_CompactView
 from expanded_view import Ui_ExpandedView
 
 import addonmanager_utilities as utils
-from addonmanager_metadata import get_first_supported_freecad_version
+from addonmanager_metadata import get_first_supported_freecad_version, Version
 
 translate = FreeCAD.Qt.translate
 
@@ -650,15 +650,9 @@ class PackageListFilter(QtCore.QSortFilterProxyModel):
 
             first_supported_version = get_first_supported_freecad_version(data.metadata)
             if first_supported_version is not None:
-                required_version = first_supported_version.split(".")
-                fc_major = int(FreeCAD.Version()[0])
-                fc_minor = int(FreeCAD.Version()[1])
-
-                if int(required_version[0]) > fc_major:
+                current_fc_version = Version(from_list=FreeCAD.Version())
+                if first_supported_version > current_fc_version:
                     return False
-                if int(required_version[0]) == fc_major and len(required_version) > 1:
-                    if int(required_version[1]) > fc_minor:
-                        return False
 
         name = data.display_name
         desc = data.description
