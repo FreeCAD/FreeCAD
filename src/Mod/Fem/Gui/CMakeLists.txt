@@ -101,7 +101,7 @@ if(BUILD_FEM_VTK)
         TaskPostDataAtPoint.ui
         TaskPostDisplay.ui
         TaskPostScalarClip.ui
-        TaskPostWarpVector.ui   
+        TaskPostWarpVector.ui
     )
 endif(BUILD_FEM_VTK)
 
@@ -282,7 +282,7 @@ if(BUILD_FEM_VTK)
         TaskPostDataAtPoint.ui
         TaskPostDisplay.ui
         TaskPostScalarClip.ui
-        TaskPostWarpVector.ui        
+        TaskPostWarpVector.ui
     )
 endif(BUILD_FEM_VTK)
 SOURCE_GROUP("Task_Boxes" FILES ${FemGui_SRCS_TaskBoxes})
