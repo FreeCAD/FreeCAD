@@ -80,6 +80,9 @@ public:
 		: data(other.data), postfix(other.postfix), raw(other.raw)
 	{}
 
+    //FIXME if you pass a raw MappedName into these constructors they will 
+    //reset raw to false and things will break. is this intended?
+
 	MappedName(const MappedName & other, int startpos, int size = -1)
         : raw(false)
     {
@@ -276,6 +279,7 @@ public:
 
     void append(const char * d, int size = -1)
     {
+        //FIXME raw not assigned?
         if (d && size) {
             if (size < 0)
                 size = qstrlen(d);
@@ -288,26 +292,41 @@ public:
 
     void append(const MappedName & other, int startpos = 0, int size = -1)
     {
+        // enforce 0 <= startpos <= other.size
         if (startpos < 0)
             startpos = 0;
         else if (startpos > other.size())
             return;
-        if (size < 0 || size + startpos > other.size())
+
+        // enforce 0 <= size <= other.size - startpos
+        if (size < 0 || size > other.size() - startpos)
             size = other.size() - startpos;
 
-        int count = size;
-        if (startpos < other.data.size()) {
-            if (count > other.data.size() - startpos)
+       
+        if (startpos < other.data.size()) // if starting inside data
+        { 
+            int count = size;
+            //make sure count doesn't exceed data size and end up in postfix
+            if (count > other.data.size() - startpos) 
                 count = other.data.size() - startpos;
+                
+            //if this is empty append in data else append in postfix
             if (startpos == 0 && count == other.data.size() && this->empty()) {
                 this->data = other.data;
                 this->raw = other.raw;
             } else
                 append(other.data.constData() + startpos, count);
+
+            //setup startpos and count to contiune appending the remainder to postfix
             startpos = 0;
             size -= count;
-        } else
+        } 
+        else //else starting inside postfix
+        {
             startpos -= other.data.size();
+        }
+
+        //if there is still data to be added to postfix
         if (size) {
             if (startpos == 0 && size == other.postfix.size()) {
                 if (this->empty())
