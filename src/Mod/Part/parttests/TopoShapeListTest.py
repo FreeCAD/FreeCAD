@@ -48,14 +48,14 @@ class TopoShapeListTest(unittest.TestCase):
         self.assertLessEqual(error, maxError, "TopoShapeList entry 1 has wrong volume: {0}".format(boxes[1].Volume))
         error = abs(3.0 - boxes[2].Volume)
         self.assertLessEqual(error, maxError, "TopoShapeList entry 2 has wrong volume: {0}".format(boxes[2].Volume))
-        
+
         twoboxes = [boxes[1], boxes[2]]
         doc.openTransaction("Change shapes")
         obj.Shapes = twoboxes
-        doc.commitTransaction()       
+        doc.commitTransaction()
         self.assertEqual(len(obj.Shapes), 2, "TopoShapeList has wrong entry count (1): {0}".format(len(obj.Shapes)))
 
         doc.undo()
-        
+
         self.assertEqual(len(obj.Shapes), 3, "TopoShapeList has wrong entry count (2): {0}".format(len(obj.Shapes)))
 

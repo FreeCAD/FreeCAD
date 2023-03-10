@@ -34,7 +34,7 @@
 # include <TopoDS_Face.hxx>
 #endif
 
-// neccessary for the feature despite not all are necessary for compilation
+// necessary for the feature despite not all are necessary for compilation
 #include <pybind11/eigen.h>
 #include <pybind11/numpy.h>
 #include <pybind11/operators.h>

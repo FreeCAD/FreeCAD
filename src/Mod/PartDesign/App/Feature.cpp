@@ -256,7 +256,7 @@ App::DocumentObject *Feature::getSubObject(const char *subname,
                         // supposed to be contained inside a body. It makes
                         // little sense to transform its sub-object. So if 'no
                         // transform' is requested, we need to actively apply
-                        // an inverse trasnform.
+                        // an inverse transform.
                         _mat = Placement.getValue().inverse().toMatrix();
                         if (pmat)
                             *pmat *= _mat; 

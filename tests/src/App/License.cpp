@@ -24,7 +24,7 @@ TEST(License, direct)
 TEST(License, findLicenseByIdent)
 {
     App::TLicenseArr arr {App::licenseItems.at(App::findLicense("CC_BY_40"))};
-    
+
     EXPECT_STREQ(arr.at(App::posnOfIdentifier), "CC_BY_40");
     EXPECT_STREQ(arr.at(App::posnOfFullName), "Creative Commons Attribution");
     EXPECT_STREQ(arr.at(App::posnOfUrl), "https://creativecommons.org/licenses/by/4.0/");
