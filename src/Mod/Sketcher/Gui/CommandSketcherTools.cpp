@@ -573,9 +573,7 @@ CmdSketcherSelectMalformedConstraints::CmdSketcherSelectMalformedConstraints()
     sToolTipText    = QT_TR_NOOP("Select malformed constraints");
     sWhatsThis      = "Sketcher_SelectMalformedConstraints";
     sStatusTip      = sToolTipText;
-    sPixmap         = "Sketcher_SelectMalformedConstraints";
-    sAccel          = "Z, P, M";
-    eType           = ForEdit;
+    eType = ForEdit;
 }
 
 void CmdSketcherSelectMalformedConstraints::activated(int iMsg)
@@ -629,9 +627,7 @@ CmdSketcherSelectPartiallyRedundantConstraints::CmdSketcherSelectPartiallyRedund
     sToolTipText    = QT_TR_NOOP("Select partially redundant constraints");
     sWhatsThis      = "Sketcher_SelectPartiallyRedundantConstraints";
     sStatusTip      = sToolTipText;
-    sPixmap         = "Sketcher_SelectPartiallyRedundantConstraints";
-    sAccel          = "Z, P, P";
-    eType           = ForEdit;
+    eType = ForEdit;
 }
 
 void CmdSketcherSelectPartiallyRedundantConstraints::activated(int iMsg)
