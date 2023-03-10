@@ -934,7 +934,7 @@ CmdSketcherCreateBSplineByInterpolation::CmdSketcherCreateBSplineByInterpolation
     sWhatsThis      = "Sketcher_CreateBSplineByInterpolation";
     sStatusTip      = sToolTipText;
     sPixmap         = "Sketcher_CreateBSplineByInterpolation";
-    sAccel          = "G, B, I"; // TODO: Finalize this. What about Periodic?
+    sAccel          = "G, B, I";
     eType           = ForEdit;
 }
 
@@ -964,7 +964,7 @@ CmdSketcherCreatePeriodicBSplineByInterpolation::CmdSketcherCreatePeriodicBSplin
     sWhatsThis      = "Sketcher_Create_Periodic_BSplineByInterpolation";
     sStatusTip      = sToolTipText;
     sPixmap         = "Sketcher_Create_Periodic_BSplineByInterpolation";
-    sAccel          = "G, B, O"; // TODO: Finalize this. What about Periodic?
+    sAccel          = "G, B, O";
     eType           = ForEdit;
 }
 
