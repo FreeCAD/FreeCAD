@@ -21,6 +21,9 @@
  ***************************************************************************/
 
 #include "PreCompiled.h"
+#ifndef _PreComp_
+# include <QAction>
+#endif
 
 #include <Gui/Application.h>
 #include <Gui/BitmapFactory.h>
@@ -36,29 +39,16 @@ using namespace SketcherGui;
 using namespace Gui::TaskView;
 namespace bp = boost::placeholders;
 
-TaskSketcherMessages::TaskSketcherMessages(ViewProviderSketch *sketchView) :
-    TaskBox(Gui::BitmapFactory().pixmap("document-new"), tr("Solver messages"), true, nullptr),
+TaskSketcherMessages::TaskSketcherMessages(ViewProviderSketch* sketchView) :
+    QWidget(),
     sketchView(sketchView),
     ui(new Ui_TaskSketcherMessages)
 {
-    // we need a separate container widget to add all controls to
-    proxy = new QWidget(this);
-    ui->setupUi(proxy);
-    QMetaObject::connectSlotsByName(this);
-
-    this->groupLayout()->addWidget(proxy);
+    ui->setupUi(this);
 
     connectionSetUp = sketchView->signalSetUp.connect(boost::bind(&SketcherGui::TaskSketcherMessages::slotSetUp, this, bp::_1, bp::_2, bp::_3, bp::_4));
 
     ui->labelConstrainStatus->setOpenExternalLinks(false);
-
-    ui->autoUpdate->onRestore();
-    ui->autoRemoveRedundants->onRestore();
-
-    if(ui->autoUpdate->isChecked())
-        sketchView->getSketchObject()->noRecomputes=false;
-    else
-        sketchView->getSketchObject()->noRecomputes=true;
 
     // Set up the possible state values for the status label
     ui->labelConstrainStatus->setParameterGroup("User parameter:BaseApp/Preferences/Mod/Sketcher/General");
@@ -77,13 +67,26 @@ TaskSketcherMessages::TaskSketcherMessages(ViewProviderSketch *sketchView) :
     connect(ui->labelConstrainStatusLink, &Gui::UrlLabel::linkClicked,
             this, &TaskSketcherMessages::on_labelConstrainStatusLink_linkClicked);
 
+    //Set Auto Update in the 'Manual Update' button menu.
+    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
+    bool state = hGrp->GetBool("AutoRecompute", false);
+    
+    sketchView->getSketchObject()->noRecomputes = !state;
+
+    QAction* action = new QAction(tr("Auto update"), this);
+    action->setToolTip(tr("Executes a recomputation of active document after every sketch action"));
+    action->setCheckable(true);
+    action->setChecked(state);
+    ui->manualUpdate->addAction(action);
+
+    QObject::connect(
+        qAsConst(ui->manualUpdate)->actions()[0], &QAction::changed,
+        this, &TaskSketcherMessages::onAutoUpdateStateChanged
+    );
+
     /*QObject::connect(
         ui->labelConstrainStatus, SIGNAL(linkActivated(const QString &)),
         this                     , SLOT  (on_labelConstrainStatus_linkActivated(const QString &))
-       );
-    QObject::connect(
-        ui->autoUpdate, SIGNAL(stateChanged(int)),
-        this                     , SLOT  (on_autoUpdate_stateChanged(int))
        );
     QObject::connect(
         ui->manualUpdate, SIGNAL(clicked(bool)),
@@ -123,22 +126,13 @@ void TaskSketcherMessages::on_labelConstrainStatusLink_linkClicked(const QString
 
 }
 
-void TaskSketcherMessages::on_autoUpdate_stateChanged(int state)
+void TaskSketcherMessages::onAutoUpdateStateChanged()
 {
-    if(state==Qt::Checked) {
-        sketchView->getSketchObject()->noRecomputes=false;
-        ui->autoUpdate->onSave();
-    }
-    else if (state==Qt::Unchecked) {
-        sketchView->getSketchObject()->noRecomputes=true;
-        ui->autoUpdate->onSave();
-    }
-}
+    bool state = qAsConst(ui->manualUpdate)->actions()[0]->isChecked();
 
-void TaskSketcherMessages::on_autoRemoveRedundants_stateChanged(int state)
-{
-    Q_UNUSED(state);
-    ui->autoRemoveRedundants->onSave();
+    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
+    hGrp->SetBool("AutoRecompute", state);
+    sketchView->getSketchObject()->noRecomputes = !state;
 }
 
 void TaskSketcherMessages::on_manualUpdate_clicked(bool checked)

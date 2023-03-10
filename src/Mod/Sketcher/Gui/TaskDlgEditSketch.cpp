@@ -56,8 +56,6 @@ TaskDlgEditSketch::TaskDlgEditSketch(ViewProviderSketch *sketchView)
     Content.push_back(Constraints);
     Content.push_back(Elements);
 
-    if (!hGrp->GetBool("ExpandedMessagesWidget",true))
-        Messages->hideGroupBox();
     if (!hGrp->GetBool("ExpandedSolverAdvancedWidget",false))
         SolverAdvanced->hideGroupBox();
     if (!hGrp->GetBool("ExpandedConstraintsWidget",true))
@@ -96,7 +94,6 @@ bool TaskDlgEditSketch::accept()
 bool TaskDlgEditSketch::reject()
 {
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
-    hGrp->SetBool("ExpandedMessagesWidget",Messages->isGroupVisible());
     hGrp->SetBool("ExpandedSolverAdvancedWidget",SolverAdvanced->isGroupVisible());
     hGrp->SetBool("ExpandedConstraintsWidget",Constraints->isGroupVisible());
     hGrp->SetBool("ExpandedElementsWidget",Elements->isGroupVisible());
