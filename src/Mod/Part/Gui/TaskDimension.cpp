@@ -1804,7 +1804,7 @@ void PartGui::TaskMeasureAngular::setUpGui()
   controlTaskBox->groupLayout()->addLayout(controlLayout);
   QObject::connect(control->resetButton, &QPushButton::clicked, this, &TaskMeasureAngular::resetDialogSlot);
 
-  this->setButtonPosition(TaskDialog::South);
+  this->setButtonPosition(TaskDialog::North);
   Content.push_back(selectionTaskBox);
   Content.push_back(controlTaskBox);
 
