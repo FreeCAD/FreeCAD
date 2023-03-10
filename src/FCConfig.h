@@ -83,28 +83,8 @@
 			#define HAVE_INTPTR_T
 			#define HAVE_UINTPTR_T
 		#endif
-//#elif defined(sun) || defined(__sun) || defined(__sun__)
-//# if defined(__SVR4)
-//#     define _FC_OS_SOLARIS
-//# else
-//#     define _FC_OS_SUN_
-//# endif
-//#elif defined(hpux) || defined(__hpux) || defined(__hpux__)
-//# define FC_OS_HPUX_
-//#elif defined(__FreeBSD__)
-//# define FC_OS_FREEBSD
-//#elif defined(__NetBSD__)
-//# define FC_OS_NETBSD
-//#elif defined(__OpenBSD__)
-//# define FC_OS_OPENBSD
-//#elif defined(sgi) || defined(__sgi)
-//# define FC_OS_IRIX
-//#elif defined(_AIX)
-//# define FC_OS_AIX
-//#elif defined(__GNU__)
-//# define FC_OS_GNU
 	#else
-		#error "FreeCAD is not ported to this OS yet. For help see www.freecadweb.org"
+		#error "FreeCAD is not ported to this OS yet. For help see www.freecad.org"
 	#endif
 
 	#ifdef FC_OS_WIN32
@@ -267,8 +247,6 @@
 		#endif
 	#endif
 
-// stops inclusion of the QT 3 header through the SoQT header...
-//#define __Qt3All__
 
 //**************************************************************************
 // Boost
@@ -300,15 +278,11 @@
 // point at which warnings of overly long specifiers disabled (needed for VC6)
 	#ifdef _MSC_VER
 		#pragma warning( disable : 4251 )
-//#   pragma warning( disable : 4503 )
-//#   pragma warning( disable : 4786 )  // specifier longer then 255 chars
-//#   pragma warning( disable : 4290 )  // not implemented throw specification
 		#pragma warning( disable : 4996 )  // suppress deprecated warning for e.g. open()
 		#if defined(WIN64) || defined(_WIN64) || defined(__WIN64__)
 			#pragma warning( disable : 4244 )
 			#pragma warning( disable : 4267 )
 		#endif
-//#	define _PreComp_                  // use precompiled header
 	#endif
 
 #endif //FC_CONFIG_H
