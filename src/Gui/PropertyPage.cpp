@@ -119,12 +119,11 @@ void PreferencePage::changeEvent(QEvent *e)
 PreferenceUiForm::PreferenceUiForm(const QString& fn, QWidget* parent)
   : PreferencePage(parent), form(nullptr)
 {
-    UiLoader loader;
-    loader.setLanguageChangeEnabled(true);
-    loader.setWorkingDirectory(QFileInfo(fn).absolutePath());
+    auto loader = UiLoader::newInstance();
+    loader->setWorkingDirectory(QFileInfo(fn).absolutePath());
     QFile file(fn);
     if (file.open(QFile::ReadOnly))
-        form = loader.load(&file, this);
+        form = loader->load(&file, this);
     file.close();
     if (form) {
         this->setWindowTitle(form->windowTitle());

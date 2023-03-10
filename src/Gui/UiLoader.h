@@ -106,8 +106,29 @@ private:
  */
 class UiLoader : public QUiLoader
 {
-public:
+protected:
+    /**
+     * A protected construct for UiLoader.
+     * To create an instance of UiLoader @see UiLoader::newInstance()
+     */
     explicit UiLoader(QObject* parent=nullptr);
+
+public:
+    /**
+     * Creates a new instance of a UiLoader.
+     *
+     * Due to its flaw the QUiLoader upon creation loads every available Qt
+     * designer plugin it can find in QApplication::libraryPaths(). Some of
+     * those plugins may perform some unexpected actions upon load which may
+     * interfere with FreeCAD's functionality. Only way to avoid such behaviour
+     * is to reset QApplication::libraryPaths, create a QUiLoader and then
+     * restore the libs paths. Hence need for this function to wrap
+     * construction.
+     *
+     * @see https://github.com/FreeCAD/FreeCAD/issues/8708
+     */
+    static std::unique_ptr<UiLoader> newInstance(QObject *parent=0);
+
     ~UiLoader() override;
 
     /**
@@ -149,7 +170,7 @@ private:
     static PyObject *PyMake(struct _typeobject *, PyObject *, PyObject *);
 
 private:
-    UiLoader loader;
+    std::unique_ptr<UiLoader> loader;
 };
 
 } // namespace Gui
