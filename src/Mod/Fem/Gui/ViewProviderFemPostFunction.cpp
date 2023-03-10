@@ -57,6 +57,7 @@
 #include "FemSettings.h"
 #include "TaskPostBoxes.h"
 
+#include "ui_BoxWidget.h"
 #include "ui_CylinderWidget.h"
 #include "ui_PlaneWidget.h"
 #include "ui_SphereWidget.h"
@@ -376,6 +377,183 @@ void ViewProviderFemPostFunction::onChanged(const App::Property* prop) {
 
     if (m_autoscale)
         m_scale->scaleFactor = SbVec3f(AutoScaleFactorX.getValue(), AutoScaleFactorY.getValue(), AutoScaleFactorZ.getValue());
+}
+
+
+// ***************************************************************************
+
+PROPERTY_SOURCE(FemGui::ViewProviderFemPostBoxFunction, FemGui::ViewProviderFemPostFunction)
+
+ViewProviderFemPostBoxFunction::ViewProviderFemPostBoxFunction()
+{
+    sPixmap = "fem-post-geo-box";
+
+    setAutoScale(false);
+
+    // setup the visualisation geometry
+    getGeometryNode()->addChild(ShapeNodes::postBox());
+}
+
+ViewProviderFemPostBoxFunction::~ViewProviderFemPostBoxFunction()
+{
+}
+
+void ViewProviderFemPostBoxFunction::draggerUpdate(SoDragger* m)
+{
+    Fem::FemPostBoxFunction* func = static_cast<Fem::FemPostBoxFunction*>(getObject());
+    SoHandleBoxDragger* dragger = static_cast<SoHandleBoxDragger*>(m);
+
+    const SbVec3f& center = dragger->translation.getValue();
+    SbVec3f scale = dragger->scaleFactor.getValue();
+
+    func->Center.setValue(center[0], center[1], center[2]);
+    func->Length.setValue(scale[0]);
+    func->Width.setValue(scale[1]);
+    func->Height.setValue(scale[2]);
+}
+
+void ViewProviderFemPostBoxFunction::updateData(const App::Property* p)
+{
+    Fem::FemPostBoxFunction* func = static_cast<Fem::FemPostBoxFunction*>(getObject());
+    if (!isDragging() &&
+        (p == &func->Center || p == &func->Length || p == &func->Width || p == &func->Height)) {
+        const Base::Vector3d& center = func->Center.getValue();
+        float l = func->Length.getValue();
+        float w = func->Width.getValue();
+        float h = func->Height.getValue();
+
+        SbMatrix s, t;
+        s.setScale(SbVec3f(l, w, h));
+        t.setTranslate(SbVec3f(center.x, center.y, center.z));
+        s.multRight(t);
+        getManipulator()->setMatrix(s);
+    }
+    Gui::ViewProviderDocumentObject::updateData(p);
+}
+
+SoTransformManip* ViewProviderFemPostBoxFunction::setupManipulator()
+{
+    return new SoHandleBoxManip;
+}
+
+FunctionWidget* ViewProviderFemPostBoxFunction::createControlWidget()
+{
+    return new BoxWidget();
+}
+
+BoxWidget::BoxWidget()
+{
+    ui = new Ui_BoxWidget();
+    ui->setupUi(this);
+
+    QSize size = ui->centerX->sizeForText(QStringLiteral("000000000000"));
+    ui->centerX->setMinimumWidth(size.width());
+    ui->centerY->setMinimumWidth(size.width());
+    ui->centerZ->setMinimumWidth(size.width());
+    ui->length->setMinimumWidth(size.width());
+    ui->width->setMinimumWidth(size.width());
+    ui->height->setMinimumWidth(size.width());
+
+    int UserDecimals = Base::UnitsApi::getDecimals();
+    ui->centerX->setDecimals(UserDecimals);
+    ui->centerY->setDecimals(UserDecimals);
+    ui->centerZ->setDecimals(UserDecimals);
+    ui->length->setDecimals(UserDecimals);
+    ui->width->setDecimals(UserDecimals);
+    ui->height->setDecimals(UserDecimals);
+
+    connect(ui->centerX, qOverload<double>(&Gui::QuantitySpinBox::valueChanged), this, &BoxWidget::centerChanged);
+    connect(ui->centerY, qOverload<double>(&Gui::QuantitySpinBox::valueChanged), this, &BoxWidget::centerChanged);
+    connect(ui->centerZ, qOverload<double>(&Gui::QuantitySpinBox::valueChanged), this, &BoxWidget::centerChanged);
+    connect(ui->length, qOverload<double>(&Gui::QuantitySpinBox::valueChanged), this, &BoxWidget::lengthChanged);
+    connect(ui->width, qOverload<double>(&Gui::QuantitySpinBox::valueChanged), this, &BoxWidget::widthChanged);
+    connect(ui->height, qOverload<double>(&Gui::QuantitySpinBox::valueChanged), this, &BoxWidget::heightChanged);
+}
+
+BoxWidget::~BoxWidget()
+{
+}
+
+void BoxWidget::applyPythonCode()
+{
+}
+
+void BoxWidget::setViewProvider(ViewProviderFemPostFunction* view)
+{
+    FemGui::FunctionWidget::setViewProvider(view);
+    setBlockObjectUpdates(true);
+    Base::Unit unit = static_cast<Fem::FemPostBoxFunction*>(getObject())->Center.getUnit();
+    ui->centerX->setUnit(unit);
+    ui->centerY->setUnit(unit);
+    ui->centerZ->setUnit(unit);
+    unit = static_cast<Fem::FemPostBoxFunction*>(getObject())->Length.getUnit();
+    ui->length->setUnit(unit);
+    unit = static_cast<Fem::FemPostBoxFunction*>(getObject())->Width.getUnit();
+    ui->width->setUnit(unit);
+    unit = static_cast<Fem::FemPostBoxFunction*>(getObject())->Height.getUnit();
+    ui->height->setUnit(unit);
+    setBlockObjectUpdates(false);
+    onChange(static_cast<Fem::FemPostBoxFunction*>(getObject())->Center);
+    onChange(static_cast<Fem::FemPostBoxFunction*>(getObject())->Length);
+    onChange(static_cast<Fem::FemPostBoxFunction*>(getObject())->Width);
+    onChange(static_cast<Fem::FemPostBoxFunction*>(getObject())->Height);
+}
+
+void BoxWidget::onChange(const App::Property& p)
+{
+    setBlockObjectUpdates(true);
+    Fem::FemPostBoxFunction* func = static_cast<Fem::FemPostBoxFunction*>(getObject());
+    if (&p == &func->Center) {
+        const Base::Vector3d& vec = static_cast<const App::PropertyVector*>(&p)->getValue();
+        ui->centerX->setValue(vec.x);
+        ui->centerY->setValue(vec.y);
+        ui->centerZ->setValue(vec.z);
+    }
+    else if (&p == &func->Length) {
+        double l = static_cast<const App::PropertyDistance*>(&p)->getValue();
+        ui->length->setValue(l);
+    }
+    else if (&p == &func->Width) {
+        double w = static_cast<const App::PropertyDistance*>(&p)->getValue();
+        ui->width->setValue(w);
+    }
+    else if (&p == &func->Height) {
+        double h = static_cast<const App::PropertyDistance*>(&p)->getValue();
+        ui->height->setValue(h);
+    }
+    setBlockObjectUpdates(false);
+}
+
+void BoxWidget::centerChanged(double) {
+    if (!blockObjectUpdates()) {
+        Base::Vector3d vec(ui->centerX->value().getValue(), ui->centerY->value().getValue(),
+            ui->centerZ->value().getValue());
+        static_cast<Fem::FemPostBoxFunction*>(getObject())->Center.setValue(vec);
+    }
+}
+
+void BoxWidget::lengthChanged(double)
+{
+    if (!blockObjectUpdates()) {
+        double l = ui->length->value().getValue();
+        static_cast<Fem::FemPostBoxFunction*>(getObject())->Length.setValue(l);
+    }
+}
+
+void BoxWidget::widthChanged(double)
+{
+    if (!blockObjectUpdates()) {
+        double w = ui->width->value().getValue();
+        static_cast<Fem::FemPostBoxFunction*>(getObject())->Width.setValue(w);
+    }
+}
+
+void BoxWidget::heightChanged(double)
+{
+    if (!blockObjectUpdates()) {
+        double h = ui->height->value().getValue();
+        static_cast<Fem::FemPostBoxFunction*>(getObject())->Height.setValue(h);
+    }
 }
 
 
@@ -881,6 +1059,48 @@ namespace FemGui
 
 namespace ShapeNodes
 {
+
+SoGroup* postBox()
+{
+    SoCoordinate3* points = new SoCoordinate3();
+    points->point.setNum(18);
+    points->point.set1Value(0, -0.5, -0.5, -0.5);
+    points->point.set1Value(1, 0.5, -0.5, -0.5);
+    points->point.set1Value(2, 0.5, 0.5, -0.5);
+    points->point.set1Value(3, -0.5, 0.5, -0.5);
+    points->point.set1Value(4, -0.5, -0.5, -0.5);
+    points->point.set1Value(5, -0.5, -0.5, 0.5);
+    points->point.set1Value(6, 0.5, -0.5, 0.5);
+    points->point.set1Value(7, 0.5, 0.5, 0.5);
+    points->point.set1Value(8, -0.5, 0.5, 0.5);
+    points->point.set1Value(9, -0.5, -0.5, 0.5);
+    points->point.set1Value(10, -0.5, -0.5, -0.5);
+    points->point.set1Value(11, -0.5, -0.5, 0.5);
+    points->point.set1Value(12, 0.5, -0.5, -0.5);
+    points->point.set1Value(13, 0.5, -0.5, 0.5);
+    points->point.set1Value(14, 0.5, 0.5, -0.5);
+    points->point.set1Value(15, 0.5, 0.5, 0.5);
+    points->point.set1Value(16, -0.5, 0.5, -0.5);
+    points->point.set1Value(17, -0.5, 0.5, 0.5);
+
+    int vert[6];
+    vert[0] = 5;
+    vert[1] = 5;
+    vert[2] = 2;
+    vert[3] = 2;
+    vert[4] = 2;
+    vert[5] = 2;
+
+    SoGroup* group = new SoGroup();
+    SoLineSet* line = new SoLineSet();
+
+    line->numVertices.setValues(0, 6, vert);
+
+    group->addChild(points);
+    group->addChild(line);
+
+    return group;
+}
 
 SoGroup* postCylinder()
 {
