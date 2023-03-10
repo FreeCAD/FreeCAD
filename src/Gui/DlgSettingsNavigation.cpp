@@ -94,7 +94,6 @@ void DlgSettingsNavigation::saveSettings()
     ui->naviCubeToNearest->onSave();
     ui->prefCubeSize->onSave();
     ui->naviCubeFontSize->onSave();
-    ui->naviCubeButtonColor->onSave();
 
     bool showNaviCube = ui->groupBoxNaviCube->isChecked();
     hGrp->SetBool("ShowNaviCube", showNaviCube);
@@ -113,6 +112,9 @@ void DlgSettingsNavigation::saveSettings()
     hGrp = App::GetApplication().GetParameterGroupByPath(
         "User parameter:BaseApp/Preferences/NaviCube");
     hGrp->SetASCII("FontString", ui->naviCubeFontName->currentText().toLatin1());
+
+    hGrp->SetUnsigned("ButtonColor",
+                      App::Color::asPackedRGBA<QColor>(ui->naviCubeButtonColor->color()));
 
     recreateNaviCubes();
 }
@@ -143,7 +145,6 @@ void DlgSettingsNavigation::loadSettings()
     ui->naviCubeToNearest->onRestore();
     ui->prefCubeSize->onRestore();
     ui->naviCubeFontSize->onRestore();
-    ui->naviCubeButtonColor->onRestore();
 
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath
         ("User parameter:BaseApp/Preferences/View");
@@ -215,6 +216,11 @@ void DlgSettingsNavigation::loadSettings()
         // we purposely don't write to the parameters because the writing would
         // also be done when the user cancels the preferences dialog
     }
+
+    // we cannot just  use ui->naviCubeButtonColor->onRestore(); because this would not read the
+    // transparency
+    unsigned long buttonColor = hGrp->GetUnsigned("ButtonColor", 3806916480);
+    ui->naviCubeButtonColor->setColor(App::Color::fromPackedRGBA<QColor>(buttonColor));
 }
 
 void DlgSettingsNavigation::onMouseButtonClicked()
