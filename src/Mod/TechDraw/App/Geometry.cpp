@@ -1775,11 +1775,8 @@ TopoDS_Edge GeometryUtils::asCircle(TopoDS_Edge occEdge, bool& arc)
             }
         }
     }
-    catch (const Standard_Failure& e) {
-        // return null shape to indicate that we could not make a circle from this bspline
-        return TopoDS_Edge();
-    }
     catch (...) {
+        // return null shape to indicate that we could not make a circle from this bspline
         return TopoDS_Edge();
     }
     return result;
