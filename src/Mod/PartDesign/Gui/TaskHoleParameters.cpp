@@ -456,7 +456,7 @@ void TaskHoleParameters::holeCutDepthChanged(double value)
 
         // store current depth
         double DepthDifference = value - pcHole->HoleCutDepth.getValue();
-        // new diameter is the old one + 2*tan(angle/2)*DepthDifference
+        // new diameter is the old one + 2 * tan(angle / 2) * DepthDifference
         double newDiameter = pcHole->HoleCutDiameter.getValue()
             + 2 * tan(Base::toRadians(pcHole->HoleCutCountersinkAngle.getValue() / 2)) * DepthDifference;
         // only apply if the result is not smaller than the hole diameter
