@@ -120,10 +120,6 @@ public:
                 return false;
             }
 
-            //Gui::Command::commitCommand();
-
-            //static_cast<Sketcher::SketchObject *>(sketchgui->getObject())->solve();
-
             // add auto constraints on knot
             if (!sugConstr.back().empty()) {
                 createAutoConstraints(sugConstr.back(), knotGeoIds.back(), Sketcher::PointPos::start, false);
@@ -149,7 +145,6 @@ public:
                 Mode = STATUS_CLOSE;
 
                 if (ConstrMethod == 1) { // if periodic we do not need the last pole
-                    // FIXME: Look at `interpolate` and check if we need to do this for knots. Periodic splines are as of writing not tested.
                     BSplineKnots.pop_back();
                     sugConstr.pop_back();
 
@@ -211,16 +206,19 @@ public:
         //     // The user may only want to exit the dialog.
         // }
         if (SoKeyboardEvent::M == key && pressed) {
-            // TODO: On pressing, say, M, modify the knot's multiplicity
             if (BSplineMults.size() > 1) {
                 BSplineMults.back() = QInputDialog::getInt(
                     Gui::getMainWindow(),
                     QObject::tr("Set knot multiplicity"),
-                    QObject::tr("NOTE 1: For construction by interpolation, the de facto maximum is currently 3.\n"
-                                "NOTE 2: Under certain circumstances (details WIP), this value may be ignored.\n"
-                                "Set knot multiplicity at the last point provided, between 1 and %1:")
-                    .arg(QString::number(SplineDegree)),
-                    BSplineMults.back(), 1, SplineDegree, 1);
+                    QObject::tr(
+                        "Set knot multiplicity at the last point provided, between 1 and %1:"
+                        "Note that multiplicity may be ignored under certain circumstances."
+                        "Please refer to documentation for details")
+                        .arg(QString::number(SplineDegree)),
+                    BSplineMults.back(),
+                    1,
+                    SplineDegree,
+                    1);
             }
             // FIXME: Pressing Esc here also finishes the B-Spline creation.
             // The user may only want to exit the dialog.
@@ -385,7 +383,6 @@ private:
     bool finishCommand(Base::Vector2d position)
     {
         if (Mode==STATUS_CLOSE) {
-            // TODO: make modifications for construction by knots
             unsetCursor();
             resetPositionText();
 
@@ -398,6 +395,7 @@ private:
 
             std::vector<std::stringstream> streams;
 
+            // Create subsets of points between C0 knots.
             // The first point
             streams.emplace_back();
             streams.back() << "App.Vector(" << BSplineKnots.front().x << "," << BSplineKnots.front().y << "),";
@@ -412,10 +410,10 @@ private:
             // The last point
             streams.back() << "App.Vector(" << BSplineKnots.back().x << "," << BSplineKnots.back().y << "),";
 
-            std::vector<std::string> controlpointses; // Gollum gollum
+            // Note the plural of plurals. Each element is a separate sequence.
+            std::vector<std::string> controlpointses;
             controlpointses.reserve(streams.size());
             for (auto & stream: streams) {
-                // TODO: Use subset of points between C0 knots.
                 controlpointses.emplace_back(stream.str());
 
                 auto & controlpoints = controlpointses.back();
@@ -440,16 +438,13 @@ private:
             int currentgeoid = getHighestCurveIndex();
 
             try {
-                //Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Add B-spline curve"));
-
                 // TODO: Bypass this for when there are no C0 knots
-                // TODO: Create B-spline in pieces between C0 knots
+                // Create B-spline in pieces between C0 knots
                 Gui::Command::runCommand(Gui::Command::Gui, "_finalbsp_poles = []");
                 Gui::Command::runCommand(Gui::Command::Gui, "_finalbsp_knots = []");
                 Gui::Command::runCommand(Gui::Command::Gui, "_finalbsp_mults = []");
                 Gui::Command::runCommand(Gui::Command::Gui, "_bsps = []");
                 for (auto & controlpoints: controlpointses) {
-                    // FIXME: can we get by without naming the variable?
                     // TODO: variable degrees?
                     QString cmdstr = QString::fromLatin1("_bsps.append(Part.BSplineCurve())\n"
                                                          "_bsps[-1].interpolate(%1, PeriodicFlag=%2)\n"
@@ -458,7 +453,7 @@ private:
                         .arg(QString::fromLatin1(ConstrMethod == 0 ?"False":"True"))
                         .arg(myDegree);
                     Gui::Command::runCommand(Gui::Command::Gui, cmdstr.toLatin1());
-                    // TODO: Adjust internal knots here (raise multiplicity)
+                    // Adjust internal knots here (raise multiplicity)
                     // How this contributes to the final B-spline
                     if (controlpoints == controlpointses.front()) {
                         Gui::Command::runCommand(Gui::Command::Gui, "_finalbsp_poles.extend(_bsps[-1].getPoles())");
@@ -466,7 +461,6 @@ private:
                         Gui::Command::runCommand(Gui::Command::Gui, "_finalbsp_mults.extend(_bsps[-1].getMultiplicities())");
                     }
                     else {
-                        // TODO: Adjust for periodic
                         Gui::Command::runCommand(Gui::Command::Gui, "_finalbsp_poles.extend(_bsps[-1].getPoles()[1:])");
                         Gui::Command::runCommand(Gui::Command::Gui, "_finalbsp_knots.extend([_finalbsp_knots[-1] + i for i in _bsps[-1].getKnots()[1:]])");
                         Gui::Command::runCommand(Gui::Command::Gui, "_finalbsp_mults[-1] = 3"); // FIXME: Hardcoded
@@ -474,7 +468,6 @@ private:
                     }
                 }
 
-                // TODO: Join the pieces of the B-splines
                 // {"poles", "mults", "knots", "periodic", "degree", "weights", "CheckRational", NULL};
                 Gui::cmdAppObjectArgs(sketchgui->getObject(), "addGeometry(Part.BSplineCurve"
                                       "(_finalbsp_poles,_finalbsp_mults,_finalbsp_knots,%s,%d,None,False),%s)",
