@@ -187,6 +187,7 @@ PyMOD_INIT_FUNC(Fem)
 
     Fem::FemPostFunction                      ::init();
     Fem::FemPostFunctionProvider              ::init();
+    Fem::FemPostBoxFunction                   ::init();
     Fem::FemPostCylinderFunction              ::init();
     Fem::FemPostPlaneFunction                 ::init();
     Fem::FemPostSphereFunction                ::init();

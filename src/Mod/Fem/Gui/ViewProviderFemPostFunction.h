@@ -39,6 +39,7 @@ class SoScale;
 class SoSphere;
 class SoSurroundScale;
 class SoTransformManip;
+class Ui_BoxWidget;
 class Ui_CylinderWidget;
 class Ui_PlaneWidget;
 class Ui_SphereWidget;
@@ -152,6 +153,45 @@ private:
     SoTransform*        m_transform;
     bool                m_autoscale, m_isDragging, m_autoRecompute;
 };
+
+// ***************************************************************************
+class FemGuiExport BoxWidget : public FunctionWidget {
+
+    Q_OBJECT
+public:
+    BoxWidget();
+    ~BoxWidget() override;
+
+    void applyPythonCode() override;
+    void onChange(const App::Property& p) override;
+    void setViewProvider(ViewProviderFemPostFunction* view) override;
+
+private Q_SLOTS:
+    void centerChanged(double);
+    void lengthChanged(double);
+    void widthChanged(double);
+    void heightChanged(double);
+
+private:
+    Ui_BoxWidget* ui;
+};
+
+class FemGuiExport ViewProviderFemPostBoxFunction : public ViewProviderFemPostFunction
+{
+    PROPERTY_HEADER_WITH_OVERRIDE(FemGui::ViewProviderFemPostBoxFunction);
+
+public:
+    ViewProviderFemPostBoxFunction();
+    ~ViewProviderFemPostBoxFunction() override;
+
+    SoTransformManip* setupManipulator() override;
+    FunctionWidget* createControlWidget() override;
+
+protected:
+    void draggerUpdate(SoDragger* mat) override;
+    void updateData(const App::Property*) override;
+};
+
 
 // ***************************************************************************
 class FemGuiExport CylinderWidget : public FunctionWidget {
@@ -273,6 +313,7 @@ protected:
 namespace ShapeNodes
 {
 
+    SoGroup* postBox();
     SoGroup* postCylinder();
     SoGroup* postPlane();
     SoGroup* postSphere();
