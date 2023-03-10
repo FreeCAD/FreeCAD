@@ -43,8 +43,6 @@ public:
      ~ViewProviderProjGroupItem() override;
 
     bool useNewSelectionModel() const override {return false;}
-    /// returns a list of all possible modes
-    std::vector<std::string> getDisplayModes() const override;
 
     /// Is called by the tree if the user double click on the object
     bool doubleClicked() override;

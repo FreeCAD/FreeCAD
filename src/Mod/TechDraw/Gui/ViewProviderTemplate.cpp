@@ -62,6 +62,8 @@ ViewProviderTemplate::ViewProviderTemplate() : m_myName(std::string())
 
     sPixmap = "TechDraw_TreePageTemplate";
 
+    // Do not show in property editor   why? wf  WF: because DisplayMode applies only to coin and we
+    // don't use coin.
     DisplayMode.setStatus(App::Property::Hidden, true);
 }
 
