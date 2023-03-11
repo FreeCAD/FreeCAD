@@ -93,11 +93,9 @@ public:
 		: data(other.data + other.postfix), postfix(postfix), raw(false)
 	{}
 
-#if QT_VERSION  >= 0x050200
     MappedName(MappedName &&other)
         : data(std::move(other.data)), postfix(std::move(other.postfix)), raw(other.raw)
     {}
-#endif
 
     static MappedName fromRawData(const char * name, int size = -1)
     {
@@ -165,7 +163,6 @@ public:
     }
 
 
-#if QT_VERSION  >= 0x050200
     MappedName & operator=(MappedName &&other)
     {
         this->data = std::move(other.data);
@@ -173,7 +170,6 @@ public:
         this->raw  = other.raw;
         return *this;
     }
-#endif
 
     friend std::ostream & operator<<(std::ostream & s, const MappedName & n)
     {
@@ -368,6 +364,8 @@ public:
         return s.c_str() + offset;
     }
 
+    //if offset is inside data return data, if offset is > data.size 
+    //(ends up in postfix) return postfix
     const char * toConstString(int offset, int &size) const
     {
         if (offset < 0)
@@ -486,6 +484,7 @@ public:
 
 	char operator[](int index) const
 	{
+        //FIXME overflow underflow checks?
         if (index >= this->data.size())
             return this->postfix[index - this->data.size()];
 		return this->data[index];
@@ -558,7 +557,7 @@ public:
     {
         if (!d)
             return -1;
-        if (startpos < 0 || startpos > this->postfix.size()) {
+        if (startpos < 0 || startpos > this->postfix.size()) { //FIXME should be this->data.size
             if (startpos > postfix.size())
                 startpos -= postfix.size();
             int res = this->postfix.lastIndexOf(d, startpos);
@@ -613,11 +612,7 @@ public:
 
     std::size_t hash() const
     {
-#if QT_VERSION  >= 0x050000
         return qHash(data, qHash(postfix));
-#else
-        return qHash(data) ^ qHash(postfix);
-#endif
     }
 
 private:
