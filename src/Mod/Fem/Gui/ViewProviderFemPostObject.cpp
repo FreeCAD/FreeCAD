@@ -624,7 +624,8 @@ void ViewProviderFemPostObject::WriteTransparency()
 
 void ViewProviderFemPostObject::updateData(const App::Property* p)
 {
-    if (strcmp(p->getName(), "Data") == 0) {
+    Fem::FemPostObject* postObject = static_cast<Fem::FemPostObject*>(getObject());
+    if (p == &postObject->Data) {
         updateVtk();
     }
 }

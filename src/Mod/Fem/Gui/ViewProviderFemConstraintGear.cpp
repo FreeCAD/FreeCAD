@@ -110,7 +110,7 @@ void ViewProviderFemConstraintGear::updateData(const App::Property* prop)
     Fem::ConstraintGear* pcConstraint = static_cast<Fem::ConstraintGear*>(this->getObject());
 
     // Gets called whenever a property of the attached object changes
-    if (strcmp(prop->getName(),"BasePoint") == 0) {
+    if (prop == &pcConstraint->BasePoint) {
         if (pcConstraint->Height.getValue() > Precision::Confusion()) {
             // Remove and recreate the symbol
             Gui::coinRemoveAllChildren(pShapeSep);
@@ -136,7 +136,7 @@ void ViewProviderFemConstraintGear::updateData(const App::Property* prop)
             createPlacement(pShapeSep, SbVec3f(dia/2 * sin(angle), 0, dia/2 * cos(angle)), SbRotation(ax, dir));
             pShapeSep->addChild(createArrow(dia/2, dia/8));
         }
-    } else if (strcmp(prop->getName(),"Diameter") == 0) {
+    } else if (prop == &pcConstraint->Diameter) {
         if (pShapeSep->getNumChildren() > 0) {
             // Change the symbol
             Base::Vector3d axis = pcConstraint->Axis.getValue();
@@ -158,7 +158,7 @@ void ViewProviderFemConstraintGear::updateData(const App::Property* prop)
             sep = static_cast<SoSeparator*>(pShapeSep->getChild(5));
             updateArrow(sep, 0, dia/2, dia/8);
         }
-    } else if ((strcmp(prop->getName(),"DirectionVector") == 0) || (strcmp(prop->getName(),"ForceAngle") == 0))  {
+    } else if ((prop == &pcConstraint->DirectionVector) || (prop == &pcConstraint->ForceAngle))  {
         // Note: "Reversed" also triggers "DirectionVector"
         if (pShapeSep->getNumChildren() > 0) {
             // Re-orient the symbol
