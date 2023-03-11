@@ -1070,9 +1070,9 @@ class DraftToolBar:
                 if self.callback:
                     self.callback()
                 return True
-        FreeCADGui.Control.closeDialog()
+        todo.delay(FreeCADGui.Control.closeDialog,None)
         panel = TaskPanel(extra, on_close_call)
-        FreeCADGui.Control.showDialog(panel)
+        todo.delay(FreeCADGui.Control.showDialog,panel)
 
 
 #---------------------------------------------------------------------------
