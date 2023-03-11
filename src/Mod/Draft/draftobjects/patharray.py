@@ -124,6 +124,14 @@ class PathArray(DraftLink):
         It defaults to `False`.
         If it is `True`, and `AlignMode` is `'Original'` or `'Tangent'`,
         it will use the vector in `VerticalVector` as the `Z` axis.
+
+    StartOffset: float
+        It defaults to 0.0.
+        It is the length from the start of the path to the first copy.
+
+    EndOffset: float
+        It defaults to 0.0.
+        It is the length from the end of the path to the last copy.
     """
 
     def __init__(self, obj):
@@ -255,6 +263,22 @@ class PathArray(DraftLink):
             obj.AlignMode = ['Original', 'Frenet', 'Tangent']
             obj.AlignMode = 'Original'
 
+        if "StartOffset" not in properties:
+            _tip = QT_TRANSLATE_NOOP("App::Property","Length from the start of the path to the first copy.")
+            obj.addProperty("App::PropertyLength",
+                            "StartOffset",
+                            "Alignment",
+                            _tip)
+            obj.StartOffset = 0.0
+
+        if "EndOffset" not in properties:
+            _tip = QT_TRANSLATE_NOOP("App::Property","Length from the end of the path to the last copy.")
+            obj.addProperty("App::PropertyLength",
+                            "EndOffset",
+                            "Alignment",
+                            _tip)
+            obj.EndOffset = 0.0
+
         # The Align property must be attached after other align properties
         # so that onChanged works properly
         if "Align" not in properties:
@@ -304,7 +328,9 @@ class PathArray(DraftLink):
                                              obj.ExtraTranslation,
                                              obj.Align, obj.AlignMode,
                                              obj.ForceVertical,
-                                             obj.VerticalVector)
+                                             obj.VerticalVector,
+                                             obj.StartOffset.Value,
+                                             obj.EndOffset.Value)
 
         self.buildShape(obj, array_placement, copy_placements)
         self.props_changed_clear()
@@ -410,7 +436,8 @@ _PathArray = PathArray
 
 def placements_on_path(shapeRotation, pathwire, count, xlate, align,
                        mode="Original", forceNormal=False,
-                       normalOverride=None):
+                       normalOverride=None,
+                       startOffset=0.0, endOffset=0.0):
     """Calculate the placements of a shape along a given path.
 
     Copies will be distributed evenly.
@@ -434,9 +461,22 @@ def placements_on_path(shapeRotation, pathwire, count, xlate, align,
         cdist += e.Length
         ends.append(cdist)
 
-    step = cdist / (count if DraftGeomUtils.isReallyClosed(pathwire) else count - 1)
+    if startOffset > (cdist - 1e-6):
+        _wrn(translate("draft", "Start Offset too large for path length. Using zero instead."))
+        start = 0
+    else:
+        start = startOffset
+
+    if endOffset > (cdist - start - 1e-6):
+        _wrn(translate("draft", "End Offset too large for path length minus Start Offset. Using zero instead."))
+        end = 0
+    else:
+        end = endOffset
+
+    cdist = cdist - start - end
+    step = cdist / (count if (DraftGeomUtils.isReallyClosed(pathwire) and not (start or end)) else count - 1)
     remains = 0
-    travel = 0
+    travel = start
     placements = []
 
     for i in range(0, count):
