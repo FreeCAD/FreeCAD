@@ -2155,14 +2155,15 @@ void CmdFemPostFunctions::activated(int iMsg)
         double center[3];
         box.GetCenter(center);
 
-        if (iMsg == 0)
+        if (iMsg == 0) { // Plane
             doCommand(Doc,
                       "App.ActiveDocument.%s.Origin = App.Vector(%f, %f, %f)",
                       FeatName.c_str(),
                       center[0],
                       center[1],
                       center[2]);
-        else if (iMsg == 1) {
+        }
+        else if (iMsg == 1) { // Sphere
             doCommand(Doc,
                       "App.ActiveDocument.%s.Center = App.Vector(%f, %f, %f)",
                       FeatName.c_str(),
@@ -2174,7 +2175,7 @@ void CmdFemPostFunctions::activated(int iMsg)
                       FeatName.c_str(),
                       box.GetDiagonalLength() / 2);
         }
-        else if (iMsg == 2) {
+        else if (iMsg == 2) { // Cylinder
             doCommand(Doc,
                       "App.ActiveDocument.%s.Center = App.Vector(%f, %f, %f)",
                       FeatName.c_str(),
@@ -2186,13 +2187,13 @@ void CmdFemPostFunctions::activated(int iMsg)
                       FeatName.c_str(),
                       box.GetDiagonalLength() / 3.6); // make cylinder a bit higher than the box
         }
-        else if (iMsg == 3) {
+        else if (iMsg == 3) { // Box
             doCommand(Doc,
                       "App.ActiveDocument.%s.Center = App.Vector(%f, %f, %f)",
                       FeatName.c_str(),
-                      center[0],
+                      center[0] + box.GetLength(0) / 2,
                       center[1] + box.GetLength(1) / 2,
-                      center[2] + box.GetLength(2) / 2);
+                      center[2]);
             doCommand(Doc,
                       "App.ActiveDocument.%s.Length = %f",
                       FeatName.c_str(),
@@ -2204,7 +2205,8 @@ void CmdFemPostFunctions::activated(int iMsg)
             doCommand(Doc,
                       "App.ActiveDocument.%s.Height = %f",
                       FeatName.c_str(),
-                      box.GetLength(2));
+                      // purposely a bit higher to avoid rendering artifacts at the box border
+                      1.1 * box.GetLength(2));
         }
 
         this->updateActive();
