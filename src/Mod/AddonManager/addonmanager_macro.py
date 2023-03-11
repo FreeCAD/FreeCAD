@@ -31,6 +31,7 @@ import codecs
 import shutil
 from html import unescape
 from typing import Dict, Tuple, List, Union, Optional
+import urllib.parse
 
 from addonmanager_macro_parser import MacroParser
 import addonmanager_utilities as utils
@@ -231,12 +232,13 @@ class Macro:
         copy, potentially updating the internal icon location to that local storage."""
         if self.icon.startswith("http://") or self.icon.startswith("https://"):
             self._console.PrintLog(f"Attempting to fetch macro icon from {self.icon}\n")
+            parsed_url = urllib.parse.urlparse(self.icon)
             p = Macro.blocking_get(self.icon)
             if p:
                 cache_path = fci.DataPaths().cache_dir
                 am_path = os.path.join(cache_path, "AddonManager", "MacroIcons")
                 os.makedirs(am_path, exist_ok=True)
-                _, _, filename = self.icon.rpartition("/")
+                _, _, filename = parsed_url.path.rpartition("/")
                 base, _, extension = filename.rpartition(".")
                 if base.lower().startswith("file:"):
                     self._console.PrintMessage(
