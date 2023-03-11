@@ -17,7 +17,7 @@
    <item>
     <layout class="QGridLayout" name="gridLayout">
      <item row="0" column="1">
-      <widget class="QLabel" name="label_7">
+      <widget class="QLabel" name="xLabel">
        <property name="text">
         <string>x</string>
        </property>
@@ -27,7 +27,7 @@
       </widget>
      </item>
      <item row="0" column="2">
-      <widget class="QLabel" name="label_8">
+      <widget class="QLabel" name="yLabel">
        <property name="text">
         <string>y</string>
        </property>
@@ -37,7 +37,7 @@
       </widget>
      </item>
      <item row="0" column="3">
-      <widget class="QLabel" name="label_9">
+      <widget class="QLabel" name="zLabel">
        <property name="text">
         <string>z</string>
        </property>
@@ -47,7 +47,7 @@
       </widget>
      </item>
      <item row="1" column="0">
-      <widget class="QLabel" name="label_2">
+      <widget class="QLabel" name="centerLabel">
        <property name="sizePolicy">
         <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
          <horstretch>0</horstretch>
@@ -99,7 +99,7 @@
       </widget>
      </item>
      <item row="2" column="0">
-      <widget class="QLabel" name="label">
+      <widget class="QLabel" name="lengthLabel">
        <property name="sizePolicy">
         <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
          <horstretch>0</horstretch>
@@ -125,7 +125,7 @@
       </widget>
      </item>
      <item row="3" column="0">
-      <widget class="QLabel" name="label">
+      <widget class="QLabel" name="widthLabel">
        <property name="sizePolicy">
         <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
          <horstretch>0</horstretch>
@@ -151,7 +151,7 @@
       </widget>
      </item>
      <item row="4" column="0">
-      <widget class="QLabel" name="label">
+      <widget class="QLabel" name="heightLabel">
        <property name="sizePolicy">
         <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
          <horstretch>0</horstretch>
