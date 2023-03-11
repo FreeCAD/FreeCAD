@@ -66,8 +66,8 @@
 using namespace FemGui;
 namespace bp = boost::placeholders;
 
-void FunctionWidget::setViewProvider(ViewProviderFemPostFunction* view) {
-
+void FunctionWidget::setViewProvider(ViewProviderFemPostFunction* view)
+{
     m_view = view;
     m_object = static_cast<Fem::FemPostFunction*>(view->getObject());
     m_connection = m_object->getDocument()->signalChangedObject.connect(boost::bind(&FunctionWidget::onObjectsChanged, this, bp::_1, bp::_2));
@@ -82,30 +82,33 @@ void FunctionWidget::onObjectsChanged(const App::DocumentObject& obj, const App:
 
 PROPERTY_SOURCE(FemGui::ViewProviderFemPostFunctionProvider, Gui::ViewProviderDocumentObject)
 
-ViewProviderFemPostFunctionProvider::ViewProviderFemPostFunctionProvider() {
-
+ViewProviderFemPostFunctionProvider::ViewProviderFemPostFunctionProvider()
+{
 }
 
-ViewProviderFemPostFunctionProvider::~ViewProviderFemPostFunctionProvider() {
-
+ViewProviderFemPostFunctionProvider::~ViewProviderFemPostFunctionProvider()
+{
 }
 
-std::vector< App::DocumentObject* > ViewProviderFemPostFunctionProvider::claimChildren() const {
-
+std::vector< App::DocumentObject* > ViewProviderFemPostFunctionProvider::claimChildren() const
+{
     return static_cast<Fem::FemPostFunctionProvider*>(getObject())->Functions.getValues();
 }
 
-std::vector< App::DocumentObject* > ViewProviderFemPostFunctionProvider::claimChildren3D() const {
+std::vector< App::DocumentObject* > ViewProviderFemPostFunctionProvider::claimChildren3D() const
+{
     return claimChildren();
 }
 
-void ViewProviderFemPostFunctionProvider::onChanged(const App::Property* prop) {
+void ViewProviderFemPostFunctionProvider::onChanged(const App::Property* prop)
+{
     Gui::ViewProviderDocumentObject::onChanged(prop);
 
     updateSize();
 }
 
-void ViewProviderFemPostFunctionProvider::updateData(const App::Property* prop) {
+void ViewProviderFemPostFunctionProvider::updateData(const App::Property* prop)
+{
     Gui::ViewProviderDocumentObject::updateData(prop);
 
     if (strcmp(prop->getName(), "Functions") == 0) {
@@ -113,8 +116,8 @@ void ViewProviderFemPostFunctionProvider::updateData(const App::Property* prop) 
     }
 }
 
-void ViewProviderFemPostFunctionProvider::updateSize() {
-
+void ViewProviderFemPostFunctionProvider::updateSize()
+{
     std::vector< App::DocumentObject* > vec = claimChildren();
     for (std::vector< App::DocumentObject* >::iterator it = vec.begin(); it != vec.end(); ++it) {
 
@@ -322,9 +325,8 @@ void ViewProviderFemPostFunction::dragMotionCallback(void* data, SoDragger* drag
 }
 
 
-bool ViewProviderFemPostFunction::setEdit(int ModNum) {
-
-
+bool ViewProviderFemPostFunction::setEdit(int ModNum)
+{
     if (ModNum == ViewProvider::Default || ModNum == 1) {
 
         Gui::TaskView::TaskDialog* dlg = Gui::Control().activeDialog();
@@ -360,8 +362,8 @@ bool ViewProviderFemPostFunction::setEdit(int ModNum) {
     }
 }
 
-void ViewProviderFemPostFunction::unsetEdit(int ModNum) {
-
+void ViewProviderFemPostFunction::unsetEdit(int ModNum)
+{
     if (ModNum == ViewProvider::Default) {
         // when pressing ESC make sure to close the dialog
         Gui::Control().closeDialog();
@@ -371,8 +373,8 @@ void ViewProviderFemPostFunction::unsetEdit(int ModNum) {
     }
 }
 
-void ViewProviderFemPostFunction::onChanged(const App::Property* prop) {
-
+void ViewProviderFemPostFunction::onChanged(const App::Property* prop)
+{
     Gui::ViewProviderDocumentObject::onChanged(prop);
 
     if (m_autoscale)
@@ -482,21 +484,22 @@ void BoxWidget::setViewProvider(ViewProviderFemPostFunction* view)
 {
     FemGui::FunctionWidget::setViewProvider(view);
     setBlockObjectUpdates(true);
-    Base::Unit unit = static_cast<Fem::FemPostBoxFunction*>(getObject())->Center.getUnit();
+    Fem::FemPostBoxFunction* func = static_cast<Fem::FemPostBoxFunction*>(getObject());
+    Base::Unit unit = func->Center.getUnit();
     ui->centerX->setUnit(unit);
     ui->centerY->setUnit(unit);
     ui->centerZ->setUnit(unit);
-    unit = static_cast<Fem::FemPostBoxFunction*>(getObject())->Length.getUnit();
+    unit = func->Length.getUnit();
     ui->length->setUnit(unit);
-    unit = static_cast<Fem::FemPostBoxFunction*>(getObject())->Width.getUnit();
+    unit = func->Width.getUnit();
     ui->width->setUnit(unit);
-    unit = static_cast<Fem::FemPostBoxFunction*>(getObject())->Height.getUnit();
+    unit = func->Height.getUnit();
     ui->height->setUnit(unit);
     setBlockObjectUpdates(false);
-    onChange(static_cast<Fem::FemPostBoxFunction*>(getObject())->Center);
-    onChange(static_cast<Fem::FemPostBoxFunction*>(getObject())->Length);
-    onChange(static_cast<Fem::FemPostBoxFunction*>(getObject())->Width);
-    onChange(static_cast<Fem::FemPostBoxFunction*>(getObject())->Height);
+    onChange(func->Center);
+    onChange(func->Length);
+    onChange(func->Width);
+    onChange(func->Height);
 }
 
 void BoxWidget::onChange(const App::Property& p)
@@ -524,7 +527,8 @@ void BoxWidget::onChange(const App::Property& p)
     setBlockObjectUpdates(false);
 }
 
-void BoxWidget::centerChanged(double) {
+void BoxWidget::centerChanged(double)
+{
     if (!blockObjectUpdates()) {
         Base::Vector3d vec(ui->centerX->value().getValue(), ui->centerY->value().getValue(),
             ui->centerZ->value().getValue());
@@ -658,41 +662,44 @@ void CylinderWidget::setViewProvider(ViewProviderFemPostFunction* view)
 {
     FemGui::FunctionWidget::setViewProvider(view);
     setBlockObjectUpdates(true);
-    Base::Unit unit = static_cast<Fem::FemPostCylinderFunction*>(getObject())->Center.getUnit();
+    Fem::FemPostCylinderFunction* func = static_cast<Fem::FemPostCylinderFunction*>(getObject());
+    Base::Unit unit = func->Center.getUnit();
     ui->centerX->setUnit(unit);
     ui->centerY->setUnit(unit);
     ui->centerZ->setUnit(unit);
-    unit = static_cast<Fem::FemPostCylinderFunction*>(getObject())->Radius.getUnit();
+    unit = func->Radius.getUnit();
     ui->radius->setUnit(unit);
     setBlockObjectUpdates(false);
-    onChange(static_cast<Fem::FemPostCylinderFunction*>(getObject())->Center);
-    onChange(static_cast<Fem::FemPostCylinderFunction*>(getObject())->Radius);
-    onChange(static_cast<Fem::FemPostCylinderFunction*>(getObject())->Axis);
+    onChange(func->Center);
+    onChange(func->Radius);
+    onChange(func->Axis);
 }
 
 void CylinderWidget::onChange(const App::Property& p)
 {
     setBlockObjectUpdates(true);
-    if (strcmp(p.getName(), "Axis") == 0) {
+    Fem::FemPostCylinderFunction* func = static_cast<Fem::FemPostCylinderFunction*>(getObject());
+    if (&p == &func->Axis) {
         const Base::Vector3d& vec = static_cast<const App::PropertyVector*>(&p)->getValue();
         ui->axisX->setValue(vec.x);
         ui->axisY->setValue(vec.y);
         ui->axisZ->setValue(vec.z);
     }
-    else if (strcmp(p.getName(), "Center") == 0) {
+    else if (&p == &func->Center) {
         const Base::Vector3d& vec = static_cast<const App::PropertyVectorDistance*>(&p)->getValue();
         ui->centerX->setValue(vec.x);
         ui->centerY->setValue(vec.y);
         ui->centerZ->setValue(vec.z);
     }
-    else if (strcmp(p.getName(), "Radius") == 0) {
+    else if (&p == &func->Radius) {
         double val = static_cast<const App::PropertyDistance*>(&p)->getValue();
         ui->radius->setValue(val);
     }
     setBlockObjectUpdates(false);
 }
 
-void CylinderWidget::centerChanged(double) {
+void CylinderWidget::centerChanged(double)
+{
     if (!blockObjectUpdates()) {
         Base::Vector3d vec(ui->centerX->value().getValue(), ui->centerY->value().getValue(),
             ui->centerZ->value().getValue());
@@ -736,12 +743,12 @@ ViewProviderFemPostPlaneFunction::ViewProviderFemPostPlaneFunction()
     getGeometryNode()->addChild(ShapeNodes::postPlane());
 }
 
-ViewProviderFemPostPlaneFunction::~ViewProviderFemPostPlaneFunction() {
-
+ViewProviderFemPostPlaneFunction::~ViewProviderFemPostPlaneFunction()
+{
 }
 
-void ViewProviderFemPostPlaneFunction::draggerUpdate(SoDragger* m) {
-
+void ViewProviderFemPostPlaneFunction::draggerUpdate(SoDragger* m)
+{
     Fem::FemPostPlaneFunction* func = static_cast<Fem::FemPostPlaneFunction*>(getObject());
     SoJackDragger* dragger = static_cast<SoJackDragger*>(m);
 
@@ -779,8 +786,8 @@ void ViewProviderFemPostPlaneFunction::onChanged(const App::Property* prop)
     ViewProviderFemPostFunction::onChanged(prop);
 }
 
-void ViewProviderFemPostPlaneFunction::updateData(const App::Property* p) {
-
+void ViewProviderFemPostPlaneFunction::updateData(const App::Property* p)
+{
     Fem::FemPostPlaneFunction* func = static_cast<Fem::FemPostPlaneFunction*>(getObject());
 
     if (!isDragging() && (p == &func->Origin || p == &func->Normal)) {
@@ -813,13 +820,14 @@ SoTransformManip* ViewProviderFemPostPlaneFunction::setupManipulator()
 }
 
 
-FunctionWidget* ViewProviderFemPostPlaneFunction::createControlWidget() {
+FunctionWidget* ViewProviderFemPostPlaneFunction::createControlWidget()
+{
     return new PlaneWidget();
 }
 
 
-PlaneWidget::PlaneWidget() {
-
+PlaneWidget::PlaneWidget()
+{
     ui = new Ui_PlaneWidget();
     ui->setupUi(this);
 
@@ -847,38 +855,40 @@ PlaneWidget::PlaneWidget() {
     connect(ui->normalZ, qOverload<double>(&Gui::QuantitySpinBox::valueChanged), this, &PlaneWidget::normalChanged);
 }
 
-PlaneWidget::~PlaneWidget() {
-
+PlaneWidget::~PlaneWidget()
+{
 }
 
-void PlaneWidget::applyPythonCode() {
-
+void PlaneWidget::applyPythonCode()
+{
 }
 
-void PlaneWidget::setViewProvider(ViewProviderFemPostFunction* view) {
-
+void PlaneWidget::setViewProvider(ViewProviderFemPostFunction* view)
+{
     FemGui::FunctionWidget::setViewProvider(view);
-    const Base::Unit unit = static_cast<Fem::FemPostPlaneFunction*>(getObject())->Origin.getUnit();
+    Fem::FemPostPlaneFunction* func = static_cast<Fem::FemPostPlaneFunction*>(getObject());
+    const Base::Unit unit = func->Origin.getUnit();
     setBlockObjectUpdates(true);
     ui->originX->setUnit(unit);
     ui->originY->setUnit(unit);
     ui->originZ->setUnit(unit);
     setBlockObjectUpdates(false);
     // The normal vector is unitless. It uses nevertheless Gui::PrefQuantitySpinBox to keep dialog uniform.
-    onChange(static_cast<Fem::FemPostPlaneFunction*>(getObject())->Normal);
-    onChange(static_cast<Fem::FemPostPlaneFunction*>(getObject())->Origin);
+    onChange(func->Normal);
+    onChange(func->Origin);
 }
 
-void PlaneWidget::onChange(const App::Property& p) {
-
+void PlaneWidget::onChange(const App::Property& p)
+{
     setBlockObjectUpdates(true);
-    if (strcmp(p.getName(), "Normal") == 0) {
+    Fem::FemPostPlaneFunction* func = static_cast<Fem::FemPostPlaneFunction*>(getObject());
+    if (&p == &func->Normal) {
         const Base::Vector3d& vec = static_cast<const App::PropertyVector*>(&p)->getValue();
         ui->normalX->setValue(vec.x);
         ui->normalY->setValue(vec.y);
         ui->normalZ->setValue(vec.z);
     }
-    else if (strcmp(p.getName(), "Origin") == 0) {
+    else if (&p == &func->Origin) {
         const Base::Vector3d& vec = static_cast<const App::PropertyVectorDistance*>(&p)->getValue();
         ui->originX->setValue(vec.x);
         ui->originY->setValue(vec.y);
@@ -887,8 +897,8 @@ void PlaneWidget::onChange(const App::Property& p) {
     setBlockObjectUpdates(false);
 }
 
-void PlaneWidget::normalChanged(double) {
-
+void PlaneWidget::normalChanged(double)
+{
     if (!blockObjectUpdates()) {
         Base::Vector3d vec(ui->normalX->value().getValue(), ui->normalY->value().getValue(),
             ui->normalZ->value().getValue());
@@ -896,8 +906,8 @@ void PlaneWidget::normalChanged(double) {
     }
 }
 
-void PlaneWidget::originChanged(double) {
-
+void PlaneWidget::originChanged(double)
+{
     if (!blockObjectUpdates()) {
         Base::Vector3d vec(ui->originX->value().getValue(), ui->originY->value().getValue(),
             ui->originZ->value().getValue());
@@ -910,8 +920,8 @@ void PlaneWidget::originChanged(double) {
 
 PROPERTY_SOURCE(FemGui::ViewProviderFemPostSphereFunction, FemGui::ViewProviderFemPostFunction)
 
-ViewProviderFemPostSphereFunction::ViewProviderFemPostSphereFunction() {
-
+ViewProviderFemPostSphereFunction::ViewProviderFemPostSphereFunction()
+{
     sPixmap = "fem-post-geo-sphere";
 
     setAutoScale(false);
@@ -920,10 +930,12 @@ ViewProviderFemPostSphereFunction::ViewProviderFemPostSphereFunction() {
     getGeometryNode()->addChild(ShapeNodes::postSphere());
 }
 
-ViewProviderFemPostSphereFunction::~ViewProviderFemPostSphereFunction() {
+ViewProviderFemPostSphereFunction::~ViewProviderFemPostSphereFunction()
+{
 }
 
-SoTransformManip* ViewProviderFemPostSphereFunction::setupManipulator() {
+SoTransformManip* ViewProviderFemPostSphereFunction::setupManipulator()
+{
     SoHandleBoxManip* manip = new SoHandleBoxManip();
     manip->getDragger()->setPart("extruder1", new SoSeparator);
     manip->getDragger()->setPart("extruder2", new SoSeparator);
@@ -941,8 +953,8 @@ SoTransformManip* ViewProviderFemPostSphereFunction::setupManipulator() {
     return manip;
 }
 
-void ViewProviderFemPostSphereFunction::draggerUpdate(SoDragger* m) {
-
+void ViewProviderFemPostSphereFunction::draggerUpdate(SoDragger* m)
+{
     Fem::FemPostSphereFunction* func = static_cast<Fem::FemPostSphereFunction*>(getObject());
     SoHandleBoxDragger* dragger = static_cast<SoHandleBoxDragger*>(m);
 
@@ -955,8 +967,8 @@ void ViewProviderFemPostSphereFunction::draggerUpdate(SoDragger* m) {
     func->Radius.setValue(dragger->scaleFactor.getValue()[0]);
 }
 
-void ViewProviderFemPostSphereFunction::updateData(const App::Property* p) {
-
+void ViewProviderFemPostSphereFunction::updateData(const App::Property* p)
+{
     Fem::FemPostSphereFunction* func = static_cast<Fem::FemPostSphereFunction*>(getObject());
 
     if (!isDragging() && (p == &func->Center || p == &func->Radius)) {
@@ -973,12 +985,13 @@ void ViewProviderFemPostSphereFunction::updateData(const App::Property* p) {
     Gui::ViewProviderDocumentObject::updateData(p);
 }
 
-FunctionWidget* ViewProviderFemPostSphereFunction::createControlWidget() {
+FunctionWidget* ViewProviderFemPostSphereFunction::createControlWidget()
+{
     return new SphereWidget();
 }
 
-SphereWidget::SphereWidget() {
-
+SphereWidget::SphereWidget()
+{
     ui = new Ui_SphereWidget();
     ui->setupUi(this);
 
@@ -999,37 +1012,39 @@ SphereWidget::SphereWidget() {
     connect(ui->radius, qOverload<double>(&Gui::QuantitySpinBox::valueChanged), this, &SphereWidget::radiusChanged);
 }
 
-SphereWidget::~SphereWidget() {
-
+SphereWidget::~SphereWidget()
+{
 }
 
-void SphereWidget::applyPythonCode() {
-
+void SphereWidget::applyPythonCode()
+{
 }
 
-void SphereWidget::setViewProvider(ViewProviderFemPostFunction* view) {
-
+void SphereWidget::setViewProvider(ViewProviderFemPostFunction* view)
+{
     FemGui::FunctionWidget::setViewProvider(view);
     setBlockObjectUpdates(true);
-    Base::Unit unit = static_cast<Fem::FemPostSphereFunction*>(getObject())->Center.getUnit();
+    Fem::FemPostSphereFunction* func = static_cast<Fem::FemPostSphereFunction*>(getObject());
+    Base::Unit unit = func->Center.getUnit();
     ui->centerX->setUnit(unit);
     ui->centerY->setUnit(unit);
     ui->centerZ->setUnit(unit);
-    unit = static_cast<Fem::FemPostSphereFunction*>(getObject())->Radius.getUnit();
+    unit = func->Radius.getUnit();
     ui->radius->setUnit(unit);
     setBlockObjectUpdates(false);
-    onChange(static_cast<Fem::FemPostSphereFunction*>(getObject())->Center);
-    onChange(static_cast<Fem::FemPostSphereFunction*>(getObject())->Radius);
+    onChange(func->Center);
+    onChange(func->Radius);
 }
 
-void SphereWidget::onChange(const App::Property& p) {
-
+void SphereWidget::onChange(const App::Property& p)
+{
     setBlockObjectUpdates(true);
-    if (strcmp(p.getName(), "Radius") == 0) {
+    Fem::FemPostSphereFunction* func = static_cast<Fem::FemPostSphereFunction*>(getObject());
+    if (&p == &func->Radius) {
         double val = static_cast<const App::PropertyDistance*>(&p)->getValue();
         ui->radius->setValue(val);
     }
-    else if (strcmp(p.getName(), "Center") == 0) {
+    else if (&p == &func->Center) {
         const Base::Vector3d& vec = static_cast<const App::PropertyVectorDistance*>(&p)->getValue();
         ui->centerX->setValue(vec.x);
         ui->centerY->setValue(vec.y);
@@ -1038,8 +1053,8 @@ void SphereWidget::onChange(const App::Property& p) {
     setBlockObjectUpdates(false);
 }
 
-void SphereWidget::centerChanged(double) {
-
+void SphereWidget::centerChanged(double)
+{
     if (!blockObjectUpdates()) {
         Base::Vector3d vec(ui->centerX->value().getValue(), ui->centerY->value().getValue(),
             ui->centerZ->value().getValue());
@@ -1047,8 +1062,8 @@ void SphereWidget::centerChanged(double) {
     }
 }
 
-void SphereWidget::radiusChanged(double) {
-
+void SphereWidget::radiusChanged(double)
+{
     if (!blockObjectUpdates()) {
         static_cast<Fem::FemPostSphereFunction*>(getObject())->Radius.setValue(ui->radius->value().getValue());
     }
