@@ -231,6 +231,7 @@ SET(FreeCADBase_CPP_SRCS
     MatrixPyImp.cpp
     MemDebug.cpp
     Mutex.cpp
+    Observer.cpp
     Parameter.xsd
     Parameter.cpp
     ParameterPy.cpp
