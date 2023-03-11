@@ -2291,25 +2291,28 @@ void CmdSketcherConstrainDistance::activated(int iMsg)
         && geom2->getTypeId() == Part::GeomCircle::getClassTypeId() ) {
             auto circleSeg1 = static_cast<const Part::GeomCircle*>(geom1);
             double radius1 = circleSeg1->getRadius();
-            Base::Vector3<double> center1 = circleSeg1->getCenter();
+            Base::Vector3d center1 = circleSeg1->getCenter();
 
             auto circleSeg2 = static_cast<const Part::GeomCircle*>(geom2);
             double radius2 = circleSeg2->getRadius();
-            Base::Vector3<double> center2 = circleSeg2->getCenter();
+            Base::Vector3d center2 = circleSeg2->getCenter();
 
             double ActDist = 0.;
-            if (center1 == center2)             // concentric case
-                ActDist = radius1 - radius2;
-            else {
-                Base::Vector3<double> v = center1 - center2;
-                if (v.Length() <= radius1)      //inner case 1
-                    ActDist = radius1 - radius2 - v.Length();
-                else if (v.Length() <= radius2) //inner case 2
-                    ActDist = radius2 - radius1 - v.Length();
-                else                            // outer case
-                    ActDist = v.Length() - radius1 - radius2;
+
+            Base::Vector3d intercenter = center1 - center2;
+            double intercenterdistance = intercenter.Length();
+
+            if( intercenterdistance >= radius1 &&
+                intercenterdistance >= radius2 ) {
+
+                ActDist = intercenterdistance - radius1 - radius2;
             }
-            ActDist = std::abs(ActDist);
+            else {
+                double bigradius = std::max(radius1,radius2);
+                double smallradius = std::min(radius1,radius2);
+
+                ActDist = bigradius - smallradius - intercenterdistance;
+            }
 
             openCommand(QT_TRANSLATE_NOOP("Command", "Add circle to circle distance constraint"));
             Gui::cmdAppObjectArgs(selection[0].getObject(),
