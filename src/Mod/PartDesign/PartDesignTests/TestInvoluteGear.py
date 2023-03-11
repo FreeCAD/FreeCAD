@@ -23,6 +23,7 @@ import unittest
 import pathlib
 
 import FreeCAD
+from FreeCAD import Vector
 from Part import makeCircle, Precision
 import InvoluteGearFeature
 
@@ -59,6 +60,25 @@ class TestInvoluteGear(unittest.TestCase):
         gear.HighPrecision = False
         self.assertSuccessfulRecompute(gear)
         self.assertClosedWire(gear.Shape)
+
+    def testExternalGearProfileOrientation(self):
+        gear = InvoluteGearFeature.makeInvoluteGear('TestGear')
+        self.assertSuccessfulRecompute(gear)
+        tip_diameter = (gear.NumberOfTeeth + 2 * gear.AddendumCoefficient) * gear.Modules
+        delta = 0.01 # yes, we do not reach micrometer precision
+        tip_probe = makeCircle(delta, Vector(tip_diameter/2, 0, 0))
+        self.assertIntersection(gear.Shape, tip_probe,
+            msg=f"First tooth tip does not lay on the positive X-axis")
+
+    def testInternalGearProfileOrientation(self):
+        gear = InvoluteGearFeature.makeInvoluteGear('TestGear')
+        gear.ExternalGear = False
+        self.assertSuccessfulRecompute(gear)
+        tip_diameter = (gear.NumberOfTeeth - 2 * gear.AddendumCoefficient) * gear.Modules
+        delta = 0.01 # yes, we do not reach micrometer precision
+        tip_probe = makeCircle(delta, Vector(tip_diameter/2, 0, 0))
+        self.assertIntersection(gear.Shape, tip_probe,
+            msg=f"First tooth tip does not lay on the positive X-axis")
 
     def testCustomizedGearProfile(self):
         gear = InvoluteGearFeature.makeInvoluteGear('InvoluteGear')
