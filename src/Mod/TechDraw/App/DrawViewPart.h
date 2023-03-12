@@ -167,6 +167,9 @@ public:
     gp_Ax2 localVectorToCS(const Base::Vector3d localUnit) const;
     Base::Vector3d localVectorToDirection(const Base::Vector3d localUnit) const;
 
+    Base::Vector3d getLocalOrigin3d() const;
+    Base::Vector3d getLocalOrigin2d() const;
+
     bool handleFaces();
     bool newFaceFinder();
 
@@ -282,6 +285,7 @@ private:
     QMetaObject::Connection connectFaceWatcher;
     QFutureWatcher<void> m_faceWatcher;
     QFuture<void> m_faceFuture;
+
 };
 
 using DrawViewPartPython = App::FeaturePythonT<DrawViewPart>;
