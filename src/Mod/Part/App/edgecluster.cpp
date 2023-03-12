@@ -58,19 +58,12 @@ void Edgecluster::Perform()
         return;
 
     //adds all the vertices to a map, and store the associated edges
-    Standard_Integer nbEdges = 0;
-    Standard_Integer nbNonEdges = 0;
     std::vector<TopoDS_Edge>::iterator aVectorIt;
     for (aVectorIt = m_unsortededges.begin();aVectorIt != m_unsortededges.end();++aVectorIt)
     {
         if (IsValidEdge(*aVectorIt))
         {
             Perform(*aVectorIt);
-            nbEdges++;
-        }
-        else
-        {
-            nbNonEdges++;
         }
     }
 

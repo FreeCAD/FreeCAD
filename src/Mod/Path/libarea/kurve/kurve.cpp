@@ -1214,6 +1214,7 @@ return;
 
 			for(int j = 0; j < (int)p0.size(); j++) all.push_back(p0[j]);
 		}
+		(void)totalPoints;
 		//FILE* d;
 		//d = fopen("\\temp\\test.txt", "w");
 		//		for(int l = 0; l < all.size(); l++) all[l].print(d, "all","\n");

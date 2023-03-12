@@ -1275,9 +1275,12 @@ void ViewProviderPartExt::updateVisual()
         // printing some information
         Base::Console().Log("ViewProvider update time: %f s\n",Base::TimeInfo::diffTimeF(start_time,Base::TimeInfo()));
         Base::Console().Log("Shape tria info: Faces:%d Edges:%d Nodes:%d Triangles:%d IdxVec:%d\n",numFaces,numEdges,numNodes,numTriangles,numLines);
+#   else
+    (void)numEdges;
 #   endif
     VisualTouched = false;
 }
+
 void ViewProviderPartExt::forceUpdate(bool enable) {
     if(enable) {
         if(++forceUpdateCount == 1) {
