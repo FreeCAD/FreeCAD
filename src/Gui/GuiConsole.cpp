@@ -83,6 +83,8 @@ GUIConsole::~GUIConsole (void)
 
 void GUIConsole::SendLog(const std::string& notifiername, const std::string& msg, Base::LogStyle level)
 {
+    (void) notifiername;
+
     int color = -1;
     switch(level){
         case Base::LogStyle::Warning:
@@ -100,6 +102,8 @@ void GUIConsole::SendLog(const std::string& notifiername, const std::string& msg
         case Base::LogStyle::Critical:
             color = FOREGROUND_RED | FOREGROUND_GREEN;
             break;
+        default:
+            break;
     }
 
     ::SetConsoleTextAttribute(::GetStdHandle(STD_OUTPUT_HANDLE), color);
@@ -115,7 +119,7 @@ GUIConsole::~GUIConsole () {}
 void GUIConsole::SendLog(const std::string& notifiername, const std::string& msg, Base::LogStyle level)
 {
     (void) notifiername;
-    
+
     switch(level){
         case Base::LogStyle::Warning:
             std::cerr << "Warning: " << msg;
