@@ -439,20 +439,7 @@ void DlgEvaluateMeshImp::on_analyzeOrientationButton_clicked()
         const MeshKernel& rMesh = d->meshFeature->Mesh.getValue().getKernel();
         MeshEvalOrientation eval(rMesh);
         std::vector<MeshCore::FacetIndex> inds = eval.GetIndices();
-#if 0
-        if (inds.empty() && !eval.Evaluate()) {
-            d->ui.checkOrientationButton->setText(tr("Flipped normals found"));
-            MeshEvalFoldOversOnSurface f_eval(rMesh);
-            if (!f_eval.Evaluate()) {
-                qApp->restoreOverrideCursor();
-                QMessageBox::warning(this, tr("Orientation"),
-                    tr("Check failed due to folds on the surface.\n"
-                    "Please run the command to repair folds first"));
-                qApp->setOverrideCursor(Qt::WaitCursor);
-            }
-        }
-        else
-#endif
+
         if (inds.empty()) {
             d->ui.checkOrientationButton->setText( tr("No flipped normals") );
             d->ui.checkOrientationButton->setChecked(false);
@@ -958,26 +945,12 @@ void DlgEvaluateMeshImp::on_repairSelfIntersectionButton_clicked()
 {
     if (d->meshFeature) {
         const char* docName = App::GetApplication().getDocumentName(d->meshFeature->getDocument());
-#if 0
-        const char* objName = d->meshFeature->getNameInDocument();
-#endif
         Gui::Document* doc = Gui::Application::Instance->getDocument(docName);
         doc->openCommand(QT_TRANSLATE_NOOP("Command", "Fix self-intersections"));
-#if 0
-        try {
-            Gui::Application::Instance->runCommand(
-                true, "App.getDocument(\"%s\").getObject(\"%s\").fixSelfIntersections()"
-                    , docName, objName);
-        }
-        catch (const Base::Exception& e) {
-            QMessageBox::warning(this, tr("Self-intersections"), QString::fromLatin1(e.what()));
-        }
-#else
+
         Mesh::MeshObject* mesh = d->meshFeature->Mesh.startEditing();
         mesh->removeSelfIntersections(d->self_intersections);
         d->meshFeature->Mesh.finishEditing();
-#endif
-
         doc->commitCommand();
         doc->getDocument()->recompute();
 
@@ -1283,7 +1256,6 @@ DockEvaluateMeshImp::DockEvaluateMeshImp( QWidget* parent, Qt::WindowFlags fl )
     // use Qt macro for preparing for translation stuff (but not translating yet)
     QDockWidget* dw = pDockMgr->addDockWindow("Evaluate & Repair Mesh",
         scrollArea, Qt::RightDockWidgetArea);
-    //dw->setAttribute(Qt::WA_DeleteOnClose);
     dw->setFeatures(QDockWidget::DockWidgetMovable|QDockWidget::DockWidgetFloatable);
     dw->show();
 }

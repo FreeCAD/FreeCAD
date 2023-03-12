@@ -255,30 +255,6 @@ void MeshRenderer::Private::generateGLArrays(SoGLRenderAction*,
 
 void MeshRenderer::Private::renderFacesGLArray(SoGLRenderAction *action)
 {
-#if 0 // use Inventor's coordIndex saves memory but the rendering is very slow then
-    const cc_glglue * glue = cc_glglue_instance(action->getCacheContext());
-    PFNGLPRIMITIVERESTARTINDEXPROC glPrimitiveRestartIndex = (PFNGLPRIMITIVERESTARTINDEXPROC)
-        cc_glglue_getprocaddress(glue, "glPrimitiveRestartIndex");
-
-    int cnt = coordIndex.getNum();
-
-    glEnableClientState(GL_NORMAL_ARRAY);
-    glEnableClientState(GL_VERTEX_ARRAY);
-
-    // https://www.opengl.org/discussion_boards/archive/index.php/t-180767.html
-    // https://www.khronos.org/opengl/wiki/Vertex_Rendering#Primitive_Restart
-    glPrimitiveRestartIndex(0xffffffff);
-    glEnable(GL_PRIMITIVE_RESTART);
-    //glEnable(GL_PRIMITIVE_RESTART_FIXED_INDEX);
-
-    glInterleavedArrays(GL_N3F_V3F, 0, &(vertex_array[0]));
-    glDrawElements(GL_TRIANGLES, cnt, GL_UNSIGNED_INT, coordIndex.getValues(0));
-
-    glDisable(GL_PRIMITIVE_RESTART);
-    //glDisable(GL_PRIMITIVE_RESTART_FIXED_INDEX);
-    glDisableClientState(GL_VERTEX_ARRAY);
-    glDisableClientState(GL_NORMAL_ARRAY);
-#else // Needs more memory but makes it very fast
     (void)action;
     int cnt = index_array.size();
 
@@ -293,7 +269,7 @@ void MeshRenderer::Private::renderFacesGLArray(SoGLRenderAction *action)
 
     glDisableClientState(GL_VERTEX_ARRAY);
     glDisableClientState(GL_NORMAL_ARRAY);
-#endif
+
 }
 
 void MeshRenderer::Private::renderCoordsGLArray(SoGLRenderAction *)
@@ -616,9 +592,6 @@ void SoFCIndexedFaceSet::drawFaces(SoGLRenderAction *action)
         drawCoords(static_cast<const SoGLCoordinateElement*>(coords), cindices, numindices,
                    normals, nindices, &mb, mindices, binding, &tb, tindices);
 
-        // getVertexData() internally calls readLockNormalCache() that read locks
-        // the normal cache. When the cache is not needed any more we must call
-        // readUnlockNormalCache()
         if (normalCacheUsed)
             this->readUnlockNormalCache();
 
@@ -976,15 +949,13 @@ void SoFCIndexedFaceSet::startSelection(SoAction * action)
     glInitNames();
     glPushName(-1);
 
-    //double mp[16];
     GLint viewport[4];
     glGetIntegerv(GL_VIEWPORT,viewport);
     glMatrixMode(GL_PROJECTION);
-    //glGetDoublev(GL_PROJECTION_MATRIX ,mp);
+
     glPushMatrix();
     glLoadIdentity();
-    // See https://www.opengl.org/discussion_boards/showthread.php/184308-gluPickMatrix-Implementation?p=1259884&viewfull=1#post1259884
-    //gluPickMatrix(x, y, w, h, viewport);
+
     if (w > 0 && h > 0) {
         glTranslatef((viewport[2] - 2 * (x - viewport[0])) / w, (viewport[3] - 2 * (y - viewport[1])) / h, 0);
         glScalef(viewport[2] / w, viewport[3] / h, 1.0);
@@ -1074,11 +1045,6 @@ void SoFCIndexedFaceSet::stopVisibility(SoAction * /*action*/)
 
 void SoFCIndexedFaceSet::renderVisibleFaces(const SbVec3f * coords3d)
 {
-    //GLint redBits, greenBits, blueBits;
-
-    //glGetIntegerv (GL_RED_BITS, &redBits);
-    //glGetIntegerv (GL_GREEN_BITS, &greenBits);
-    //glGetIntegerv (GL_BLUE_BITS, &blueBits);
     glDisable (GL_BLEND);
     glDisable (GL_DITHER);
     glDisable (GL_FOG);
