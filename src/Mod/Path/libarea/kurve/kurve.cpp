@@ -22,7 +22,7 @@ namespace geoff_geometry {
 	}
 
 	SpanVertex::~SpanVertex() {
-#ifndef PEPSDLL 
+#ifndef PEPSDLL
 		// don't know what peps did about this?
 		for(int i = 0; i < SPANSTORAGE; i++) {
 			if(index[i] != NULL) {
@@ -33,7 +33,7 @@ namespace geoff_geometry {
 	}
 
 	const SpanVertex& SpanVertex::operator= (const SpanVertex& spv ){
-		/// 
+		///
 		if (this == &spv)
 			return *this;
 
@@ -85,7 +85,7 @@ namespace geoff_geometry {
 	void SpanVertex::Add(int offset, const SpanDataObject* Index ) {
 		index[offset] = Index;
 	}
-		
+
 	const SpanDataObject* SpanVertex::GetIndex(int offset) const{
 		return index[offset];
 	}
@@ -261,20 +261,20 @@ namespace geoff_geometry {
 			double dx0 = dx + radius;		// 0deg
 
 			if( dir * (dx0 * dy1 - dx1 * dy) > 0) {
-				if(pc.x + radius > max.x) max.x = pc.x + radius;	
+				if(pc.x + radius > max.x) max.x = pc.x + radius;
 			}
 			dx0 = dx - radius;				// 180deg
 			if( dir * (dx0 * dy1 - dx1 * dy) > 0) {
-				if(pc.x - radius < min.x) min.x = pc.x - radius;	
+				if(pc.x - radius < min.x) min.x = pc.x - radius;
 			}
 			double dy0 = dy + radius;		// 90deg
 			if( dir * (dx * dy1 - dx1 * dy0) > 0) {
-				if(pc.y + radius > max.y) max.y = pc.y + radius;	
+				if(pc.y + radius > max.y) max.y = pc.y + radius;
 			}
 
 			dy0 = dy - radius;				// 270deg
 			if( dir * (dx * dy1 - dx1 * dy0) > 0) {
-				if(pc.y - radius < min.y) min.y = pc.y - radius;	
+				if(pc.y - radius < min.y) min.y = pc.y - radius;
 			}
 		}
 	}
@@ -298,20 +298,20 @@ namespace geoff_geometry {
 			double dx0 = dx + radius;		// 0deg
 
 			if( dir * (dx0 * dy1 - dx1 * dy) > 0) {
-				if(pc.x + radius > max.x) max.x = pc.x + radius;	
+				if(pc.x + radius > max.x) max.x = pc.x + radius;
 			}
 			dx0 = dx - radius;				// 180deg
 			if( dir * (dx0 * dy1 - dx1 * dy) > 0) {
-				if(pc.x - radius < min.x) min.x = pc.x - radius;	
+				if(pc.x - radius < min.x) min.x = pc.x - radius;
 			}
 			double dy0 = dy + radius;		// 90deg
 			if( dir * (dx * dy1 - dx1 * dy0) > 0) {
-				if(pc.y + radius > max.y) max.y = pc.y + radius;	
+				if(pc.y + radius > max.y) max.y = pc.y + radius;
 			}
 
 			dy0 = dy - radius;				// 270deg
 			if( dir * (dx * dy1 - dx1 * dy0) > 0) {
-				if(pc.y - radius < min.y) min.y = pc.y - radius;	
+				if(pc.y - radius < min.y) min.y = pc.y - radius;
 			}
 		}
 	}
@@ -323,7 +323,7 @@ namespace geoff_geometry {
 	}
 
 	Point Span::Near(const Point& p)const{
-		// returns the near point to span from p 
+		// returns the near point to span from p
 		if(this->dir == LINEAR) {
 			double t;
 			t = (Vector2d(this->p0, p) * this->vs);		// t parametrised 0 - line length
@@ -610,7 +610,7 @@ return;
 			p = new SpanVertex;
 			m_spans.push_back(p);
 		}
-		else 
+		else
 			p = (SpanVertex*) m_spans[m_nVertices / SPANSTORAGE];
 
 		p->Add(m_nVertices % SPANSTORAGE, span_type, p0, pc);
@@ -663,7 +663,7 @@ return;
 					Get(nSpans(), spLast, false, false);
 					if(spLast.p1.Dist(sp.p0) <= geoff_geometry::TOLERANCE) AddFirstVertex = false;
 				}
-				if(AddFirstVertex) { 
+				if(AddFirstVertex) {
 					Add(sp.p0, AddNullSpans);
 					#ifndef PEPSDLL
 					if(obj != NULL) {
@@ -673,7 +673,7 @@ return;
 					#endif
 				}
 			}
-			
+
 			Add(sp.dir, sp.p1, sp.pc, AddNullSpans);
 			#ifndef PEPSDLL
 				if(obj != NULL) {
@@ -851,7 +851,7 @@ return;
 				if(FNE(radius, radCheck, geoff_geometry::TOLERANCE)){
 					FAILURE(getMessage(L"Invalid Geometry - Radii mismatch - SetProperties"));
 				}
-				
+
 				length = 0.0;
 				angle = 0.0;
 				if(radius > geoff_geometry::TOLERANCE) {
@@ -966,7 +966,7 @@ return;
 
 		Matrix inv_mat = *this;
 		inv_mat.Inverse();
-		
+
 		Point tp = p;
 		if(!m_unit)	tp = tp.Transform(inv_mat); // Inverse transform point (rather than transform each vertex!)
 
@@ -1000,7 +1000,7 @@ return;
 			    return;
 		}
 		Kurve temp;
-		
+
 		bool wrapped = false;
 		int spanno = startSpanno;
 		Span sp;
@@ -1047,7 +1047,7 @@ return;
 			    return;
 		}
 		Kurve temp;
-	
+
 		Span sp;
 
 		for(int spanno = 1; spanno != (endSpanno + 1); spanno++)
@@ -1090,7 +1090,7 @@ return;
 	void Kurve::StoreAllSpans(std::vector<Span>& kSpans)const {	// store all kurve spans in array, normally when fast access is reqd
 		Span span;
 		for(int i = 1; i <= this->nSpans(); i++) {
-			this->Get(i, span, true, false);					
+			this->Get(i, span, true, false);
 			kSpans.push_back(span);
 		}
 	}
@@ -1143,7 +1143,7 @@ return;
 
 		if(Closed()) {
 			if(!GetScale(xscale)) FAILURE(getMessage(L"Differential Scale not allowed for this method"));	// differential scale
-			for(int i = 1; i < m_nVertices; i++) {			
+			for(int i = 1; i < m_nVertices; i++) {
 				if(Get(i, sp, true))
 					area += ( 0.5 * ((sp.pc.x - sp.p0.x) * (sp.pc.y + sp.p0.y) - (sp.pc.x - sp.p1.x) * (sp.pc.y + sp.p1.y) - sp.angle * sp.radius * sp.radius));
 				else
@@ -1221,7 +1221,7 @@ return;
 
 
 		for(int i = 0; i < (int)all.size(); i++) {
-			if(i == 0) 
+			if(i == 0)
 				p.push_back(all[0]);
 			else
 				if(all[i-1].Dist(all[i]) > geoff_geometry::TOLERANCE) p.push_back(all[i]);
@@ -1252,7 +1252,7 @@ return;
 						sp.SplitMatrix(nSplits, &m);
 						for(int j = 1; j < nSplits; j++) {
 							sp.p0 = sp.p0.Transform(m);
-							ko.Add(sp.p0);	
+							ko.Add(sp.p0);
 						}
 
 						sp.dir = LINEAR;
@@ -1265,7 +1265,7 @@ return;
 
 			sp.p0 = sp.p1;
 
-		}		
+		}
 		// copy kurve
 		if(changed) *this = ko;
 		return changed;
@@ -1356,7 +1356,7 @@ return;
 		}
 		return m_nVertices - kReduced.m_nVertices;
 
-#else 
+#else
 		int dir1, dir2 = 0;
 		Point p0, p1, p2, pc0, pc1, pc2;
 		int vertex = 0;
@@ -1416,7 +1416,7 @@ Kurve Kurve::Part(int fromSpanno, const Point& fromPt, int toSpanno, const Point
             Span span;
             Point ps,pe;
             int iStartSpanNr,iEndSpanNr,i;
-            
+
             // get start point and start spannumber
             if(fromSpanno == 0)
                   ps = Near(fromPt,iStartSpanNr);
@@ -1435,7 +1435,7 @@ Kurve Kurve::Part(int fromSpanno, const Point& fromPt, int toSpanno, const Point
                   pe = span.p1;
                   iEndSpanNr = toSpanno;
             }
-            
+
             kPart.Start(ps);
             Get(iStartSpanNr,span,true,true);
 
@@ -1510,7 +1510,7 @@ Kurve Kurve::Part(int fromSpanno, const Point& fromPt, int toSpanno, const Point
 					double d = toPerim - perimLast;
 					sp.p1 = sp.MidPerim(d);
 					k.Add(sp);
-				}				
+				}
 				break;
 			}
 			if(k.m_started)
