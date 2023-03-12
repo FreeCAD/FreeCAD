@@ -751,7 +751,8 @@ namespace GCS
     private:
         Circle c1;
         Circle c2;
-        double d;
+        double *d;
+        inline double* distance() { return pvec[0]; }
         void ReconstructGeomPointers(); //writes pointers in pvec to the parameters of c1, c2
         void errorgrad(double* err, double* grad, double *param); //error and gradient combined. Values are returned through pointers.
     public:
