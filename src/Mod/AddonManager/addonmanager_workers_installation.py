@@ -40,6 +40,7 @@ from PySide import QtCore
 
 import FreeCAD
 import addonmanager_utilities as utils
+from addonmanager_metadata import MetadataReader
 from Addon import Addon
 import NetworkManager
 
@@ -166,7 +167,7 @@ class UpdateMetadataCacheWorker(QtCore.QThread):
         new_xml_file = os.path.join(package_cache_directory, "package.xml")
         with open(new_xml_file, "wb") as f:
             f.write(data.data())
-        metadata = FreeCAD.Metadata(new_xml_file)
+        metadata = MetadataReader.from_file(new_xml_file)
         repo.set_metadata(metadata)
         FreeCAD.Console.PrintLog(f"Downloaded package.xml for {repo.name}\n")
         self.status_message.emit(
@@ -177,21 +178,21 @@ class UpdateMetadataCacheWorker(QtCore.QThread):
 
         # Grab a new copy of the icon as well: we couldn't enqueue this earlier because
         # we didn't know the path to it, which is stored in the package.xml file.
-        icon = metadata.Icon
+        icon = metadata.icon
         if not icon:
             # If there is no icon set for the entire package, see if there are
             # any workbenches, which are required to have icons, and grab the first
             # one we find:
-            content = repo.metadata.Content
+            content = repo.metadata.content
             if "workbench" in content:
                 wb = content["workbench"][0]
-                if wb.Icon:
-                    if wb.Subdirectory:
-                        subdir = wb.Subdirectory
+                if wb.icon:
+                    if wb.subdirectory:
+                        subdir = wb.subdirectory
                     else:
-                        subdir = wb.Name
-                    repo.Icon = subdir + wb.Icon
-                    icon = repo.Icon
+                        subdir = wb.name
+                    repo.icon = subdir + wb.icon
+                    icon = repo.icon
 
         icon_url = utils.construct_git_url(repo, icon)
         index = NetworkManager.AM_NETWORK_MANAGER.submit_unmonitored_get(icon_url)

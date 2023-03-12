@@ -51,14 +51,6 @@ ViewProviderProjGroupItem::~ViewProviderProjGroupItem()
 {
 }
 
-std::vector<std::string> ViewProviderProjGroupItem::getDisplayModes() const
-{
-    // get the modes of the father
-    std::vector<std::string> StrList = ViewProviderViewPart::getDisplayModes();
-    StrList.emplace_back("Drawing");
-    return StrList;
-}
-
 void ViewProviderProjGroupItem::updateData(const App::Property* prop)
 {
     Gui::ViewProviderDocumentObject::updateData(prop);

@@ -742,12 +742,12 @@ def getPlaneRotation(u, v, _ = None):
     v : Base::Vector3
         Hint for the second vector.
     _ : Ignored. For backwards compatibility
- 
+
     Returns
     -------
     Base::Matrix4D
         The new rotation matrix defining a new coordinate system,
-        or `None` if `u` or `v` is `None` or 
+        or `None` if `u` or `v` is `None` or
         if `u` and `v` are parallel.
     """
     if (not u) or (not v):

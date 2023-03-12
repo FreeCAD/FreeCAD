@@ -25,6 +25,7 @@
 
 #include <CXX/Extensions.hxx>
 
+class QWidget;
 namespace Gui {
 class ExpressionBinding;
 
@@ -47,6 +48,7 @@ public:
 
 private:
     static PyObject *PyMake(struct _typeobject *, PyObject *, PyObject *);
+    static ExpressionBinding* asBinding(QWidget*);
 
 private:
     ExpressionBinding* expr;

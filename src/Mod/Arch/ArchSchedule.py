@@ -20,7 +20,6 @@
 #*                                                                         *
 #***************************************************************************
 
-from __future__ import print_function
 import FreeCAD
 if FreeCAD.GuiUp:
     import FreeCADGui

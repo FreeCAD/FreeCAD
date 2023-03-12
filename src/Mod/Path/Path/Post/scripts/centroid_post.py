@@ -23,7 +23,6 @@
 # *                                                                         *
 # ***************************************************************************
 
-from __future__ import print_function
 import os
 import FreeCAD
 from FreeCAD import Units

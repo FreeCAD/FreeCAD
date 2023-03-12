@@ -1670,13 +1670,13 @@ void DrawUtil::dumpEdge(const char* label, int i, TopoDS_Edge e)
         vEnd.X(),
         vEnd.Y(),
         vEnd.Z(),
-        e.Orientation());
+        static_cast<int>(e.Orientation()));
     double edgeLength = GCPnts_AbscissaPoint::Length(adapt, Precision::Confusion());
     Base::Console().Message(">>>>>>> length: %.3f  distance: %.3f ration: %.3f type: %d\n",
                             edgeLength,
                             vStart.Distance(vEnd),
                             edgeLength / vStart.Distance(vEnd),
-                            adapt.GetType());
+                            static_cast<int>(adapt.GetType()));
 }
 
 const char* DrawUtil::printBool(bool b)

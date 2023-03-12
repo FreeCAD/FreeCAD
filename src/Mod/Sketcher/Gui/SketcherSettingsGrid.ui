@@ -436,12 +436,12 @@ The grid spacing change if it becomes smaller than this number of pixel.</string
    <class>Gui::QuantitySpinBox</class>
    <extends>QAbstractSpinBox</extends>
    <header>Gui/QuantitySpinBox.h</header>
-  </customwidget> 
+  </customwidget>
   <customwidget>
    <class>Gui::PrefColorButton</class>
    <extends>Gui::ColorButton</extends>
    <header>Gui/PrefWidgets.h</header>
-  </customwidget> 
+  </customwidget>
   <customwidget>
    <class>Gui::ColorButton</class>
    <extends>QPushButton</extends>

@@ -2,8 +2,6 @@
 # -*- coding: utf-8 -*-
 # (c) 2006 Jürgen Riegel  GPL
 
-from __future__ import print_function # this allows py2 to print(str1, str2) correctly
-
 import os,sys,getopt
 import generateBase.generateModel_Module
 import generateTemplates.templateModule

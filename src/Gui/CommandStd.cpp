@@ -177,6 +177,7 @@ StdCmdRecentMacros::StdCmdRecentMacros()
     sToolTipText  = QT_TR_NOOP("Recent macro list");
     sWhatsThis    = "Std_RecentMacros";
     sStatusTip    = QT_TR_NOOP("Recent macro list");
+    sPixmap       = "Std_RecentMacros";
     eType         = NoTransaction;
 }
 

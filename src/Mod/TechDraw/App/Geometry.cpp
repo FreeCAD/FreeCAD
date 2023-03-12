@@ -1775,13 +1775,9 @@ TopoDS_Edge GeometryUtils::asCircle(TopoDS_Edge occEdge, bool& arc)
             }
         }
     }
-    catch (const Standard_Failure& e) {
-        Base::Console().Error("asCircle - OCC error - %s - while approx spline as circle\n",
-                              e.GetMessageString());
-        throw Base::RuntimeError("Failed to make circle from bspline");
-    }
     catch (...) {
-        Base::Console().Error("asCircle - unknown error occurred while approx spline as circle\n");
+        // return null shape to indicate that we could not make a circle from this bspline
+        return TopoDS_Edge();
     }
     return result;
 }

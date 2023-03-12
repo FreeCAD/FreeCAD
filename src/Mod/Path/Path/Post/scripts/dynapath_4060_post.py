@@ -25,7 +25,6 @@
 # *   and modifications (c) luvtofish (luvtofish@gmail.com) 2022            *
 # ***************************************************************************
 
-from __future__ import print_function
 import FreeCAD
 from FreeCAD import Units
 import Path

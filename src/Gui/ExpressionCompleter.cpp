@@ -759,7 +759,7 @@ QStringList ExpressionCompleter::splitPath(const QString& input) const
         }
         catch (const Base::Exception& except) {
             FC_TRACE("split path " << path << " error: " << except.what());
-            if (!retry) {
+            if (retry == 0) {
                 size_t lastElemStart = path.rfind('.');
 
                 if (lastElemStart == std::string::npos) {
@@ -779,21 +779,27 @@ QStringList ExpressionCompleter::splitPath(const QString& input) const
                     lastElem = "";
                 }
                 // else... we don't reset lastElem if it's a '.' or '#' to allow chaining completions
-                char last = path[path.size() - 1];
-                if (last != '#' && last != '.' && path.find('#') != std::string::npos) {
-                    path += "._self";
-                    ++retry;
-                    continue;
+                if (!path.empty()) {
+                    char last = path[path.size() - 1];
+                    if (last != '#' && last != '.' && path.find('#') != std::string::npos) {
+                        path += "._self";
+                        ++retry;
+                        continue;
+                    }
                 }
             }
             else if (retry == 2) {
-                path.resize(path.size() - 6);
-                char last = path[path.size() - 1];
-                if (last != '.' && last != '<' && path.find("#<<") != std::string::npos) {
-                    path += ">>._self";
-                    ++retry;
-                    trim = ">>";
-                    continue;
+                if (path.size() >= 6) {
+                    path.resize(path.size() - 6);
+                }
+                if (!path.empty()) {
+                    char last = path[path.size() - 1];
+                    if (last != '.' && last != '<' && path.find("#<<") != std::string::npos) {
+                        path += ">>._self";
+                        ++retry;
+                        trim = ">>";
+                        continue;
+                    }
                 }
             }
             return QStringList() << input;

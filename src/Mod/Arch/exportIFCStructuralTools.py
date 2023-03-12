@@ -19,8 +19,6 @@
 # *                                                                         *
 # ***************************************************************************
 
-from __future__ import print_function
-
 
 __title__ =  "FreeCAD structural IFC export tools"
 __author__ = "Yorik van Havre"

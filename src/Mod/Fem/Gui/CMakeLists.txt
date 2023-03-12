@@ -91,16 +91,18 @@ set(FemGui_UIC_SRCS
 if(BUILD_FEM_VTK)
     set(FemGui_UIC_SRCS
         ${FemGui_UIC_SRCS}
-        TaskPostDisplay.ui
-        TaskPostClip.ui
-        TaskPostContours.ui
-        TaskPostDataAlongLine.ui
-        TaskPostDataAtPoint.ui
-        TaskPostScalarClip.ui
-        TaskPostWarpVector.ui
-        TaskPostCut.ui
+        BoxWidget.ui
+        CylinderWidget.ui
         PlaneWidget.ui
         SphereWidget.ui
+        TaskPostClip.ui
+        TaskPostContours.ui
+        TaskPostCut.ui
+        TaskPostDataAlongLine.ui
+        TaskPostDataAtPoint.ui
+        TaskPostDisplay.ui
+        TaskPostScalarClip.ui
+        TaskPostWarpVector.ui
     )
 endif(BUILD_FEM_VTK)
 
@@ -269,18 +271,20 @@ SET(FemGui_SRCS_TaskBoxes
 if(BUILD_FEM_VTK)
     SET(FemGui_SRCS_TaskBoxes
         ${FemGui_SRCS_TaskBoxes}
+        BoxWidget.ui
+        CylinderWidget.ui
         PlaneWidget.ui
         SphereWidget.ui
-        TaskPostClip.ui
-        TaskPostContours.ui
-        TaskPostDataAlongLine.ui
-        TaskPostDataAtPoint.ui
-        TaskPostScalarClip.ui
-        TaskPostDisplay.ui
-        TaskPostWarpVector.ui
-        TaskPostCut.ui
         TaskPostBoxes.h
         TaskPostBoxes.cpp
+        TaskPostClip.ui
+        TaskPostContours.ui
+        TaskPostCut.ui
+        TaskPostDataAlongLine.ui
+        TaskPostDataAtPoint.ui
+        TaskPostDisplay.ui
+        TaskPostScalarClip.ui
+        TaskPostWarpVector.ui
     )
 endif(BUILD_FEM_VTK)
 SOURCE_GROUP("Task_Boxes" FILES ${FemGui_SRCS_TaskBoxes})

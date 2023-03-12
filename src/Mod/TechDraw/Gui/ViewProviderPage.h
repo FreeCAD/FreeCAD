@@ -66,7 +66,6 @@ public:
     App::PropertyDistance GridSpacing;
 
     void attach(App::DocumentObject*) override;
-    void setDisplayMode(const char* ModeName) override;
 
     bool canDragObjects() const override;
     bool canDragObject(App::DocumentObject* docObj) const override;
@@ -79,8 +78,6 @@ public:
                          const std::vector<std::string>& elements) const override;
 
     bool useNewSelectionModel() const override { return false; }
-    /// returns a list of all possible modes
-    std::vector<std::string> getDisplayModes() const override;
     /// Hides the view provider
     void hide() override;
     /// Shows the view provider

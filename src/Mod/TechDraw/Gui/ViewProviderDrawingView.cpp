@@ -83,7 +83,12 @@ void ViewProviderDrawingView::attach(App::DocumentObject *pcFeat)
     auto bndProgressMessage = boost::bind(&ViewProviderDrawingView::onProgressMessage, this, bp::_1, bp::_2, bp::_3);
     auto feature = getViewObject();
     if (feature) {
-        m_myName = feature->getNameInDocument();
+        const char* temp = feature->getNameInDocument();
+        if (temp) {
+            // it could happen that feature is not completely in the document yet and getNameInDocument returns
+            // nullptr, so we only update m_myName if we got a valid string.
+            m_myName = temp;
+        }
         connectGuiRepaint = feature->signalGuiPaint.connect(bnd);
         connectProgressMessage = feature->signalProgressMessage.connect(bndProgressMessage);
         //TODO: would be good to start the QGIV creation process here, but no guarantee we actually have

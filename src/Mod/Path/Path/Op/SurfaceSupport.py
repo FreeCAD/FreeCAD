@@ -20,7 +20,6 @@
 # *                                                                         *
 # ***************************************************************************
 
-from __future__ import print_function
 
 __title__ = "Path Surface Support Module"
 __author__ = "russ4262 (Russell Johnson)"

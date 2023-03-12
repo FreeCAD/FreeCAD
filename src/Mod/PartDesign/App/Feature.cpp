@@ -234,6 +234,44 @@ Body* Feature::getFeatureBody() const {
     return nullptr;
 }
 
+App::DocumentObject *Feature::getSubObject(const char *subname, 
+        PyObject **pyObj, Base::Matrix4D *pmat, bool transform, int depth) const
+{
+    if (subname && subname != Data::ComplexGeoData::findElementName(subname)) {
+        const char * dot = strchr(subname,'.');
+        if (dot) {
+            auto body = PartDesign::Body::findBodyOf(this);
+            if (body) {
+                auto feat = body->Group.find(std::string(subname, dot));
+                if (feat) {
+                    Base::Matrix4D _mat;
+                    if (!transform) {
+                        // Normally the parent object is supposed to transform
+                        // the sub-object using its own placement. So, if no
+                        // transform is requested, (i.e. no parent
+                        // transformation), we just need to NOT apply the
+                        // transformation.
+                        //
+                        // But PartDesign features (including sketch) are
+                        // supposed to be contained inside a body. It makes
+                        // little sense to transform its sub-object. So if 'no
+                        // transform' is requested, we need to actively apply
+                        // an inverse transform.
+                        _mat = Placement.getValue().inverse().toMatrix();
+                        if (pmat)
+                            *pmat *= _mat; 
+                        else
+                            pmat = &_mat;
+                    }
+                    return feat->getSubObject(dot+1, pyObj, pmat, true, depth+1);
+                }
+            }
+        }
+    }
+    return Part::Feature::getSubObject(subname, pyObj, pmat, transform, depth);
+}
+
+
 }//namespace PartDesign
 
 namespace App {

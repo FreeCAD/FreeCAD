@@ -336,7 +336,7 @@ void MeshFastBuilder::Finish ()
     }
 
     //std::sort(verts.begin(), verts.end());
-    int threads = std::max(1, QThread::idealThreadCount());
+    int threads = QThread::idealThreadCount();
     MeshCore::parallel_sort(verts.begin(), verts.end(), std::less<Private::Vertex>(), threads);
 
     QVector<FacetIndex> indices(ulCtPts);

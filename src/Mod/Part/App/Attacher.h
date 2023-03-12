@@ -28,7 +28,6 @@
 #ifndef PARTATTACHER_H
 #define PARTATTACHER_H
 
-#include <gp_Vec.hxx>
 #include <GProp_GProps.hxx>
 
 #include <App/GeoFeature.h>

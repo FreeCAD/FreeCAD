@@ -362,7 +362,7 @@ void ExtrusionHelper::checkInnerWires(std::vector<bool>& isInnerWire, const gp_D
         }
         if (saveIsInnerWireIterator == *isInnerWireIterator)
             // nothing was changed and we can remove it from the list to be checked
-            // but we cannot do this before the foor loop was fully run
+            // but we cannot do this before the for loop was fully run
             toDisable[outer] = true;
         ++isInnerWireIterator;
         ++toCheckIterator;

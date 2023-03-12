@@ -19,7 +19,6 @@
 #*                                                                         *
 #***************************************************************************
 
-from __future__ import print_function
 __title__  = "FreeCAD SweetHome3D Importer"
 __author__ = "Yorik van Havre"
 __url__    = "https://www.freecadweb.org"

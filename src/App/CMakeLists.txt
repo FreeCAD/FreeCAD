@@ -129,6 +129,7 @@ SET(Document_CPP_SRCS
     DocumentObjectExtensionPyImp.cpp
     ExtensionContainer.cpp
     ExtensionContainerPyImp.cpp
+    Graphviz.cpp
     GroupExtension.cpp
     GroupExtensionPyImp.cpp
     DocumentObjectFileIncluded.cpp
@@ -165,7 +166,6 @@ SET(Document_CPP_SRCS
     TextDocument.cpp
     Link.cpp
     LinkBaseExtensionPyImp.cpp
-    License.cpp
     License.h
 )
 

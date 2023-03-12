@@ -38,6 +38,14 @@ using namespace Gui::Dialog;
 
 const uint DlgSettingsLazyLoadedImp::WorkbenchNameRole = Qt::UserRole;
 
+// this enum defines the order of the columns
+enum Column {
+    Load,
+    CheckBox,
+    Icon,
+    Name
+};
+
 /* TRANSLATOR Gui::Dialog::DlgSettingsLazyLoadedImp */
 
 /**
@@ -61,11 +69,11 @@ DlgSettingsLazyLoadedImp::~DlgSettingsLazyLoadedImp()
 void DlgSettingsLazyLoadedImp::saveSettings()
 {
     std::ostringstream csv;
-    for (const auto& checkbox : _autoloadCheckboxes) {
-        if (checkbox.second->isChecked()) {
+    for (const auto& checkBox : _autoloadCheckBoxes) {
+        if (checkBox.second->isChecked()) {
             if (!csv.str().empty())
                 csv << ",";
-            csv << checkbox.first.toStdString();
+            csv << checkBox.first.toStdString();
         }
     }
     App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/General")->
@@ -97,10 +105,23 @@ void DlgSettingsLazyLoadedImp::loadSettings()
 
 void DlgSettingsLazyLoadedImp::onLoadClicked(const QString &wbName)
 {
+    // activate selected workbench
     Workbench* originalActiveWB = WorkbenchManager::instance()->active();
     Application::Instance->activateWorkbench(wbName.toStdString().c_str());
     Application::Instance->activateWorkbench(originalActiveWB->name().c_str());
-    buildUnloadedWorkbenchList();
+
+    // replace load button with loaded indicator
+    auto wbDisplayName = Application::Instance->workbenchMenuText(wbName);
+    for (int i = 0; i < ui->workbenchTable->rowCount(); i++) {
+        QWidget* widget = ui->workbenchTable->cellWidget(i, Name);
+        auto textLabel = dynamic_cast<QLabel*>(widget);
+        if (textLabel && textLabel->text() == wbDisplayName) {
+            auto label = new QLabel(tr("Loaded"));
+            label->setAlignment(Qt::AlignCenter);
+            ui->workbenchTable->setCellWidget(i, Load, label);
+            break;
+        }
+    }
 }
 
 
@@ -114,15 +135,22 @@ void DlgSettingsLazyLoadedImp::buildUnloadedWorkbenchList()
 
     ui->workbenchTable->horizontalHeader()->setDefaultAlignment(Qt::AlignLeft);
     ui->workbenchTable->setRowCount(0);
-    _autoloadCheckboxes.clear(); // setRowCount(0) just invalidated all of these pointers
+    _autoloadCheckBoxes.clear(); // setRowCount(0) just invalidated all of these pointers
     ui->workbenchTable->setColumnCount(4);
     ui->workbenchTable->setSelectionMode(QAbstractItemView::SelectionMode::NoSelection);
-    ui->workbenchTable->horizontalHeader()->setSectionResizeMode(0, QHeaderView::ResizeMode::ResizeToContents);
-    ui->workbenchTable->horizontalHeader()->setSectionResizeMode(1, QHeaderView::ResizeMode::Stretch);
-    ui->workbenchTable->horizontalHeader()->setSectionResizeMode(2, QHeaderView::ResizeMode::ResizeToContents);
-    ui->workbenchTable->horizontalHeader()->setSectionResizeMode(3, QHeaderView::ResizeMode::ResizeToContents);
+    ui->workbenchTable->horizontalHeader()->setSectionResizeMode(Icon, QHeaderView::ResizeMode::ResizeToContents);
+    ui->workbenchTable->horizontalHeader()->setSectionResizeMode(Name, QHeaderView::ResizeMode::Stretch);
+    ui->workbenchTable->horizontalHeader()->setSectionResizeMode(CheckBox, QHeaderView::ResizeMode::ResizeToContents);
+    ui->workbenchTable->horizontalHeader()->setSectionResizeMode(Load, QHeaderView::ResizeMode::ResizeToContents);
     QStringList columnHeaders;
-    columnHeaders << QString() << tr("Workbench") << tr("Autoload") << QString();
+    for (int i = 0; i < 4; i++) {
+        switch (i) {
+            case Icon    : columnHeaders << QString();            break;
+            case Name    : columnHeaders << tr("Workbench Name"); break;
+            case CheckBox: columnHeaders << tr("Autoload?");      break;
+            case Load    : columnHeaders << QString();            break;
+        }
+    }
     ui->workbenchTable->setHorizontalHeaderLabels(columnHeaders);
 
     unsigned int rowNumber = 0;
@@ -139,53 +167,51 @@ void DlgSettingsLazyLoadedImp::buildUnloadedWorkbenchList()
         iconLabel->setPixmap(wbIcon.scaled(QSize(20,20), Qt::AspectRatioMode::KeepAspectRatio, Qt::TransformationMode::SmoothTransformation));
         iconLabel->setToolTip(wbTooltip);
         iconLabel->setContentsMargins(5, 3, 3, 3); // Left, top, right, bottom
-        ui->workbenchTable->setCellWidget(rowNumber, 0, iconLabel);
+        ui->workbenchTable->setCellWidget(rowNumber, Icon, iconLabel);
 
         // Column 2: Workbench Display Name
         auto wbDisplayName = Application::Instance->workbenchMenuText(wbName);
         auto textLabel = new QLabel(wbDisplayName);
         textLabel->setToolTip(wbTooltip);
-        ui->workbenchTable->setCellWidget(rowNumber, 1, textLabel);
+        ui->workbenchTable->setCellWidget(rowNumber, Name, textLabel);
 
-        // Column 3: Autoloaded checkbox
+        // Column 3: Autoloaded checkBox
         //
-        // To get the checkbox centered, we have to jump through some hoops...
+        // To get the checkBox centered, we have to jump through some hoops...
         auto checkWidget = new QWidget(this);
-        auto autoloadCheckbox = new QCheckBox(this);
-        autoloadCheckbox->setToolTip(tr("If checked") +
-                                     QString::fromUtf8(", ") + wbDisplayName + QString::fromUtf8(" ") +
-                                     tr("will be loaded automatically when FreeCAD starts up"));
+        auto autoloadCheckBox = new QCheckBox(this);
+        autoloadCheckBox->setToolTip(tr("If checked, %1 will be loaded automatically when FreeCAD starts up").arg(wbDisplayName));
         auto checkLayout = new QHBoxLayout(checkWidget);
-        checkLayout->addWidget(autoloadCheckbox);
+        checkLayout->addWidget(autoloadCheckBox);
         checkLayout->setAlignment(Qt::AlignCenter);
         checkLayout->setContentsMargins(0, 0, 0, 0);
 
-        // Figure out whether to check and/or disable this checkbox:
+        // Figure out whether to check and/or disable this checkBox:
         if (wbName.toStdString() == _startupModule) {
-            autoloadCheckbox->setChecked(true);
-            autoloadCheckbox->setEnabled(false);
-            autoloadCheckbox->setToolTip(tr("This is the current startup module, and must be autoloaded. See Preferences/General/Autoload to change."));
+            autoloadCheckBox->setChecked(true);
+            autoloadCheckBox->setEnabled(false);
+            autoloadCheckBox->setToolTip(tr("This is the current startup module, and must be autoloaded. See Preferences/General/Autoload to change."));
         }
         else if (std::find(_backgroundAutoloadedModules.begin(), _backgroundAutoloadedModules.end(),
                            wbName.toStdString()) != _backgroundAutoloadedModules.end()) {
-            autoloadCheckbox->setChecked(true);
-            _autoloadCheckboxes.insert(std::make_pair(wbName, autoloadCheckbox));
+            autoloadCheckBox->setChecked(true);
+            _autoloadCheckBoxes.insert(std::make_pair(wbName, autoloadCheckBox));
         }
         else {
-            _autoloadCheckboxes.insert(std::make_pair(wbName, autoloadCheckbox));
+            _autoloadCheckBoxes.insert(std::make_pair(wbName, autoloadCheckBox));
         }
-        ui->workbenchTable->setCellWidget(rowNumber, 2, checkWidget);
+        ui->workbenchTable->setCellWidget(rowNumber, CheckBox, checkWidget);
 
         // Column 4: Load button/loaded indicator
         if (WorkbenchManager::instance()->getWorkbench(wbName.toStdString())) {
             auto label = new QLabel(tr("Loaded"));
             label->setAlignment(Qt::AlignCenter);
-            ui->workbenchTable->setCellWidget(rowNumber, 3, label);
+            ui->workbenchTable->setCellWidget(rowNumber, Load, label);
         }
         else {
             auto button = new QPushButton(tr("Load now"));
             connect(button, &QPushButton::clicked, this, [this,wbName]() { onLoadClicked(wbName); });
-            ui->workbenchTable->setCellWidget(rowNumber, 3, button);
+            ui->workbenchTable->setCellWidget(rowNumber, Load, button);
         }
 
         ++rowNumber;

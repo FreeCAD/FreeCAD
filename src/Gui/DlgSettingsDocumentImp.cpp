@@ -151,28 +151,33 @@ void DlgSettingsDocumentImp::changeEvent(QEvent *e)
 
 void DlgSettingsDocumentImp::addLicenseTypes()
 {
+    auto add = [&](const char* what) {
+        ui->prefLicenseType->addItem(
+            QApplication::translate("Gui::Dialog::DlgSettingsDocument", what));
+    };
+
     ui->prefLicenseType->clear();
-    auto rawLicenses = App::License::getLicenses();
-    for (const auto& it : rawLicenses) {
-        QString text = QApplication::translate("Gui::Dialog::DlgSettingsDocument", it.c_str());
-        ui->prefLicenseType->addItem(text);
+    for (const auto& licenseItem : App::licenseItems) {
+        add(licenseItem.at(App::posnOfFullName));
     }
+    add("Other");
 }
 
 /**
- * Set the correct URL depending on the license type
+ * Fix Url according to changed type
  */
 void DlgSettingsDocumentImp::onLicenseTypeChanged(int index)
 {
-    App::License license{index};
-    std::string url = license.getUrl();
-    if (license.getType() == App::License::Type::Other) {
-        ui->prefLicenseUrl->clear();
-        ui->prefLicenseUrl->setReadOnly(false);
+    if (index >= 0 && index < App::countOfLicenses) {
+        // existing license
+        const char* url {App::licenseItems.at(index).at(App::posnOfUrl)};
+        ui->prefLicenseUrl->setText(QString::fromLatin1(url));
+        ui->prefLicenseUrl->setReadOnly(true);
     }
     else {
-        ui->prefLicenseUrl->setReadOnly(true);
-        ui->prefLicenseUrl->setText(QString::fromStdString(url));
+        // Other
+        ui->prefLicenseUrl->clear();
+        ui->prefLicenseUrl->setReadOnly(false);
     }
 }
 
