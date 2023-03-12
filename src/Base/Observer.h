@@ -217,7 +217,7 @@ protected:
 };
 
 // Workaround for MSVC
-#ifdef FreeCADBase_EXPORTS
+#if defined (FreeCADBase_EXPORTS) && defined(_MSC_VER)
 #  define Base_EXPORT
 #else
 #  define Base_EXPORT  BaseExport
