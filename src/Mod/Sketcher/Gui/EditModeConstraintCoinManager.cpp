@@ -62,6 +62,7 @@
 #include "SoZoomTranslation.h"
 #include "ViewProviderSketch.h"
 #include "ViewProviderSketchCoinAttorney.h"
+#include "Utils.h"
 
 
 using namespace SketcherGui;
@@ -654,24 +655,33 @@ Restart:
                         if (Constr->SecondPos != Sketcher::PointPos::none) { // point to point distance
                             pnt1 = geolistfacade.getPoint(Constr->First, Constr->FirstPos);
                             pnt2 = geolistfacade.getPoint(Constr->Second, Constr->SecondPos);
-                        } else if (Constr->Second != GeoEnum::GeoUndef) { // point to line distance
+                        } else if (Constr->Second != GeoEnum::GeoUndef) {
                             pnt1 = geolistfacade.getPoint(Constr->First, Constr->FirstPos);
 
                             const Part::Geometry *geo = geolistfacade.getGeometryFromGeoId(Constr->Second);
-                            if (geo->getTypeId() == Part::GeomLineSegment::getClassTypeId()) {
+                            if (geo->getTypeId() == Part::GeomLineSegment::getClassTypeId()) { // point to line distance
                                 const Part::GeomLineSegment *lineSeg = static_cast<const Part::GeomLineSegment *>(geo);
                                 Base::Vector3d l2p1 = lineSeg->getStartPoint();
                                 Base::Vector3d l2p2 = lineSeg->getEndPoint();
                                 // calculate the projection of p1 onto line2
                                 pnt2.ProjectToLine(pnt1-l2p1, l2p2-l2p1);
                                 pnt2 += pnt1;
+
+                            } else if (geo->getTypeId() == Part::GeomCircle::getClassTypeId()) { // circle to circle distance
+                                const Part::Geometry *geo1 = geolistfacade.getGeometryFromGeoId(Constr->First);
+                                if (geo1->getTypeId() == Part::GeomCircle::getClassTypeId()) {
+                                    const Part::GeomCircle *circleSeg1 = static_cast<const Part::GeomCircle*>(geo1);
+                                    auto circleSeg2 = static_cast<const Part::GeomCircle*>(geo);
+                                    GetCirclesMinimalDistance(circleSeg1, circleSeg2, pnt1, pnt2);
+                                }
+
                             } else
                                 break;
                         } else if (Constr->FirstPos != Sketcher::PointPos::none) {
                             pnt2 = geolistfacade.getPoint(Constr->First, Constr->FirstPos);
                         } else if (Constr->First != GeoEnum::GeoUndef) {
                             const Part::Geometry *geo = geolistfacade.getGeometryFromGeoId(Constr->First);
-                            if (geo->getTypeId() == Part::GeomLineSegment::getClassTypeId()) {
+                            if (geo->getTypeId() == Part::GeomLineSegment::getClassTypeId()) { // segment distance
                                 const Part::GeomLineSegment *lineSeg = static_cast<const Part::GeomLineSegment *>(geo);
                                 pnt1 = lineSeg->getStartPoint();
                                 pnt2 = lineSeg->getEndPoint();

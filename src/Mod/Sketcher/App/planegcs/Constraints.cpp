@@ -2585,5 +2585,109 @@ double ConstraintEqualLineLength::grad(double *param)
     return deriv*scale;
 }
 
+// ConstraintC2CDistance
+ConstraintC2CDistance::ConstraintC2CDistance(Circle &c1, Circle &c2, double *d)
+{
+    this->d = d;
+    pvec.push_back(d);
+
+    this->c1 = c1;
+    this->c1.PushOwnParams(pvec);
+
+    this->c2 = c2;
+    this->c2.PushOwnParams(pvec);
+
+    origpvec = pvec;
+    pvecChangedFlag = true;
+    rescale();
+}
+
+void ConstraintC2CDistance::ReconstructGeomPointers()
+{
+    int i=0;
+    i++; // skip the first parameter as there is the inline function distance for it
+    c1.ReconstructOnNewPvec(pvec, i);
+    c2.ReconstructOnNewPvec(pvec, i);
+    pvecChangedFlag = false;
+}
+
+ConstraintType ConstraintC2CDistance::getTypeId()
+{
+    return C2CDistance;
+}
+
+void ConstraintC2CDistance::rescale(double coef)
+{
+    scale = coef * 1;
+}
+
+void ConstraintC2CDistance::errorgrad(double *err, double *grad, double *param)
+{
+    if (pvecChangedFlag) ReconstructGeomPointers();
+
+    DeriVector2 ct1 (c1.center, param);
+    DeriVector2 ct2 (c2.center, param);
+
+    DeriVector2 vector_ct12 = ct1.subtr(ct2);
+
+    double length_ct12, dlength_ct12;
+    length_ct12 = vector_ct12.length(dlength_ct12);
+
+    // outer case (defined as the centers of the circles are outside the center of the other circles)
+    // it may well be that the circles intersect.
+    if( length_ct12 >= *c1.rad &&
+        length_ct12 >= *c2.rad ) {
+        if (err) {
+            *err = length_ct12 - (*c2.rad + *c1.rad + *distance());
+        }
+        else if (grad) {
+            double drad = (param == c2.rad || param == c1.rad || param == distance())?-1.0:0.0;
+            *grad = dlength_ct12 + drad;
+        }
+    }
+    else {
+        double * bigradius = (*c1.rad >= *c2.rad)?c1.rad:c2.rad;
+        double * smallradius = (*c1.rad >= *c2.rad)?c2.rad:c1.rad;
+
+        double smallspan = *smallradius + length_ct12 + *distance();
+
+        if (err) {
+            *err = *bigradius - smallspan;
+        }
+        else if (grad) {
+            double drad = 0.0;
+
+            if(param == bigradius) {
+                drad = 1.0;
+            }
+            else if(param == smallradius) {
+                drad = -1.0;
+            }
+            else if(param == distance()) {
+                drad = (*distance()<0.)?1.0:-1.0;
+            }
+
+            *grad = -dlength_ct12 + drad;
+        }
+    }
+}
+
+double ConstraintC2CDistance::error()
+{
+    double err;
+    errorgrad(&err,nullptr,nullptr);
+    return scale * err;
+}
+
+double ConstraintC2CDistance::grad(double *param)
+{
+    if ( findParamInPvec(param) == -1 )
+        return 0.0;
+
+    double deriv;
+    errorgrad(nullptr, &deriv, param);
+
+    return deriv*scale;
+}
 
 } //namespace GCS

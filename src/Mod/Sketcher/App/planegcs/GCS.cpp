@@ -817,6 +817,14 @@ int System::addConstraintTangentAtBSplineKnot(BSpline &b, Line &l, unsigned int 
     return addConstraint(constr);
 }
 
+int System::addConstraintC2CDistance(Circle &c1, Circle &c2, double *dist, int tagId, bool driving)
+{
+    Constraint *constr = new ConstraintC2CDistance(c1, c2, dist);
+    constr->setTag(tagId);
+    constr->setDriving(driving);
+    return addConstraint(constr);
+}
+
 // derived constraints
 
 int System::addConstraintP2PCoincident(Point &p1, Point &p2, int tagId, bool driving)
