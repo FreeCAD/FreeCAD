@@ -24,7 +24,7 @@ import FreeCAD
 import FreeCADGui
 import Path
 import PathScripts
-from PathScripts.PathUtils import applyPlacementToPath
+import PathScripts.PathUtils as PathUtils
 from Path.Dressup.Utils import toolController
 from PySide import QtCore
 import math
@@ -349,7 +349,7 @@ class PathArray:
                 for b in base:
                     pl = FreeCAD.Placement()
                     pl.move(pos)
-                    np = Path.Path([cm.transform(pl) for cm in b.Path.Commands])
+                    np = Path.Path([cm.transform(pl) for cm in PathUtils.getPathWithPlacement(b).Commands])
                     output += np.toGCode()
 
         elif self.arrayType == "Linear2D":
@@ -376,7 +376,7 @@ class PathArray:
                             if not (i == 0 and j == 0):
                                 pl.move(pos)
                                 np = Path.Path(
-                                    [cm.transform(pl) for cm in b.Path.Commands]
+                                    [cm.transform(pl) for cm in PathUtils.getPathWithPlacement(b).Commands]
                                 )
                                 output += np.toGCode()
             else:
@@ -402,7 +402,7 @@ class PathArray:
                             if not (i == 0 and j == 0):
                                 pl.move(pos)
                                 np = Path.Path(
-                                    [cm.transform(pl) for cm in b.Path.Commands]
+                                    [cm.transform(pl) for cm in PathUtils.getPathWithPlacement(b).Commands]
                                 )
                                 output += np.toGCode()
             # Eif
@@ -415,7 +415,7 @@ class PathArray:
 
                     pl = FreeCAD.Placement()
                     pl.rotate(self.centre, FreeCAD.Vector(0, 0, 1), ang)
-                    np = applyPlacementToPath(pl, b.Path)
+                    np = PathUtils.applyPlacementToPath(pl, PathUtils.getPathWithPlacement(b))
                     output += np.toGCode()
 
         # return output
