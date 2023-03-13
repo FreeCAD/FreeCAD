@@ -53,6 +53,7 @@ class QGCustomText;
 class QGIArrow;
 class QGIDimLines;
 class QGIViewDimension;
+class QGCustomSvg;
 class ViewProviderDimension;
 
 class QGIDatumLabel : public QGraphicsObject
@@ -134,6 +135,7 @@ private:
     QGCustomText* m_tolTextOver;
     QGCustomText* m_tolTextUnder;
     QGCustomText* m_unitText;
+    QGCustomText* m_referenceFlag;
     QColor m_colNormal;
     bool m_ctrl;
 
@@ -303,6 +305,9 @@ private:
     QGIArrow* aHead1;
     QGIArrow* aHead2;
     double m_lineWidth;
+
+    QGCustomSvg* m_refFlag;
+
 };
 
 } // namespace MDIViewPageGui

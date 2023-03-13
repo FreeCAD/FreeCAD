@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2022 WandererFan <wandererfan@gmail.com>                *
+ *   Copyright (c) 2023 WandererFan <wandererfan@gmail.com>                *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -19,69 +19,46 @@
  *   Suite 330, Boston, MA  02111-1307, USA                                *
  *                                                                         *
  ***************************************************************************/
+// a class to handle changes to dimension reference geometry
 
-#ifndef TECHDRAW_DIMENSIONREFERENCES_H
-#define TECHDRAW_DIMENSIONREFERENCES_H
+#ifndef GEOMETRYMATCHER_H
+#define GEOMETRYMATCHER_H
 
 #include <Mod/TechDraw/TechDrawGlobal.h>
 
-#include <string>
-#include <vector>
-
-#include <TopoDS_Shape.hxx>
-#include <TopoDS_Edge.hxx>
-#include <TopoDS_Vertex.hxx>
-
-#include <Mod/Part/App/TopoShape.h>
-
-namespace App
-{
-class DocumentObject;
-}
+#include <DrawViewDimension.h>
 
 namespace Part
 {
 class TopoShape;
 }
 
-namespace TechDraw
-{
+namespace TechDraw {
 
-//a convenient way of handling object+subName references
-class TechDrawExport ReferenceEntry
-{
+class TechDrawExport GeometryMatcher {
 public:
-    ReferenceEntry( App::DocumentObject* docObject, std::string subName ) {
-        setObject(docObject);
-        setSubName(subName);
-    }
-    ReferenceEntry(const ReferenceEntry& other) {
-        setObject(other.getObject());
-        setSubName(other.getSubName());
-    }
-    ~ReferenceEntry() = default;
+    GeometryMatcher() {}
+    GeometryMatcher(DrawViewDimension* dim) { m_dimension = dim; }
+    ~GeometryMatcher() = default;
 
-    App::DocumentObject* getObject() const;
-    void setObject(App::DocumentObject* docObj) { m_object = docObj; }
-    std::string getSubName(bool longForm = false) const;
-    void setSubName(std::string subName) { m_subName = subName; }
-    TopoDS_Shape getGeometry() const;
-    std::string geomType() const;
-    bool isWholeObject() const;
+    bool compareGeometry(Part::TopoShape geom1,  Part::TopoShape geom2);
+    bool comparePoints(TopoDS_Shape shape1,  TopoDS_Shape shape2);
+    bool compareEdges(TopoDS_Shape shape1,  TopoDS_Shape shape2);
 
-    Part::TopoShape asTopoShape();
-    Part::TopoShape asTopoShapeVertex(TopoDS_Vertex vert);
-    Part::TopoShape asTopoShapeEdge(TopoDS_Edge edge);
-
-    bool is3d() const;
+    bool compareLines(TopoDS_Edge edge1, TopoDS_Edge edge2);
+    bool compareCircles(TopoDS_Edge edge1, TopoDS_Edge edge2);
+    bool compareEllipses(TopoDS_Edge edge1, TopoDS_Edge edge2);
+    bool compareBSplines(TopoDS_Edge edge1, TopoDS_Edge edge2);
+    bool compareDifferent(TopoDS_Edge edge1, TopoDS_Edge edge2);
+    bool compareCircleArcs(TopoDS_Edge edge1, TopoDS_Edge edge2);
+    bool compareEllipseArcs(TopoDS_Edge edge1, TopoDS_Edge edge2);
 
 private:
-    App::DocumentObject* m_object;
-    std::string m_subName;
+    bool compareEndPoints(TopoDS_Edge edge1, TopoDS_Edge edge2);
+
+    DrawViewDimension* m_dimension;
 };
 
-using ReferenceVector = std::vector<ReferenceEntry>;
+} //end namespace TechDraw
+#endif
 
-} // end namespace
-
-#endif //TECHDRAW_DIMENSIONREFERENCES_H

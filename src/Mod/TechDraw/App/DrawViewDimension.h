@@ -27,6 +27,8 @@
 
 #include <App/DocumentObject.h>
 #include <Base/UnitsApi.h>
+#include <Mod/Part/App/PropertyTopoShapeList.h>
+
 #include <Mod/TechDraw/TechDrawGlobal.h>
 
 #include "DimensionGeometry.h"
@@ -34,7 +36,6 @@
 #include "DrawUtil.h"
 #include "DrawView.h"
 #include "DrawViewPart.h"
-
 
 class TopoDS_Shape;
 
@@ -45,6 +46,7 @@ namespace TechDraw
 {
 class DrawViewPart;
 class DimensionFormatter;
+class GeometryMatcher;
 
 class TechDrawExport DrawViewDimension : public TechDraw::DrawView
 {
@@ -87,6 +89,8 @@ enum DimensionType {
     App::PropertyBool               AngleOverride;
     App::PropertyAngle              LineAngle;
     App::PropertyAngle              ExtensionAngle;
+
+    Part::PropertyTopoShapeList     SavedGeometry;
 
     enum RefType{
             invalidRef,
@@ -157,6 +161,7 @@ enum DimensionType {
     bool useDecimals() const;
     bool isExtentDim() const;
     virtual ReferenceVector getEffectiveReferences() const;
+    bool goodReferenceGeometry() const { return m_referencesCorrect; }
 
 protected:
     void handleChangedPropertyType(Base::XMLReader &, const char * , App::Property * ) override;
@@ -177,7 +182,6 @@ protected:
     virtual anglePoints getAnglePointsTwoEdges(ReferenceVector references);
     virtual anglePoints getAnglePointsThreeVerts(ReferenceVector references);
 
-protected:
     Measure::Measurement *measurement;
     double dist2Segs(Base::Vector3d s1,
                      Base::Vector3d e1,
@@ -189,6 +193,21 @@ protected:
     void resetLinear();
     void resetAngular();
     void resetArc();
+
+    bool okToProceed();
+    void updateSavedGeometry();
+    bool compareSavedGeometry();
+    bool fixExactMatch();
+    void handleNoExactMatch();
+    std::string recoverChangedEdge2d(int iReference);
+    std::string recoverChangedEdge3d(int iReference);
+    std::string recoverChangedVertex2d(int iReference);
+    std::string recoverChangedVertex3d(int iReference);
+    void replaceReferenceSubElement2d(int iRef, std::string newSubelement);
+    void replaceReferenceSubElement3d(int iRef, std::string newSubelement);
+
+    std::vector<Part::TopoShape> getEdges(const Part::TopoShape& inShape);
+    std::vector<Part::TopoShape> getVertexes(const Part::TopoShape& inShape);
 
 private:
     static const char* TypeEnums[];
@@ -203,6 +222,9 @@ private:
 
     friend class DimensionFormatter;
     DimensionFormatter* m_formatter;
+    GeometryMatcher* m_matcher;
+
+    bool m_referencesCorrect;
 };
 
 } //namespace TechDraw

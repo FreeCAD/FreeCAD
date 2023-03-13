@@ -53,10 +53,8 @@ void pointPair::move(Base::Vector3d offset)
 // project the points onto the dvp's paper plane.  Points are still in R3 coords.
 void pointPair::project(DrawViewPart* dvp)
 {
-    Base::Vector3d normal = DrawUtil::toVector3d(dvp->getProjectionCS().Direction());
-    Base::Vector3d stdOrigin(0.0, 0.0, 0.0);
-    m_first = m_first.ProjectToPlane(stdOrigin, normal) * dvp->getScale();
-    m_second = m_second.ProjectToPlane(stdOrigin, normal) * dvp->getScale();
+    m_first = dvp->projectPoint(m_first) * dvp->getScale();
+    m_second = dvp->projectPoint(m_second) * dvp->getScale();
 }
 
 // map the points onto the dvp's XY coordinate system
@@ -111,10 +109,8 @@ void anglePoints::move(Base::Vector3d offset)
 // project the points onto the dvp's paper plane.  Points are still in R3 coords.
 void anglePoints::project(DrawViewPart* dvp)
 {
-    Base::Vector3d normal = DrawUtil::toVector3d(dvp->getProjectionCS().Direction());
-    Base::Vector3d stdOrigin(0.0, 0.0, 0.0);
     m_ends.project(dvp);
-    m_vertex = m_vertex.ProjectToPlane(stdOrigin, normal) * dvp->getScale();
+    m_vertex = dvp->projectPoint(m_vertex) * dvp->getScale();
 }
 
 // map the points onto the dvp's XY coordinate system
@@ -187,14 +183,12 @@ void arcPoints::move(Base::Vector3d offset)
 void arcPoints::project(DrawViewPart* dvp)
 {
     radius = radius * dvp->getScale();
-    Base::Vector3d normal = DrawUtil::toVector3d(dvp->getProjectionCS().Direction());
-    Base::Vector3d stdOrigin(0.0, 0.0, 0.0);
-    center = center.ProjectToPlane(stdOrigin, normal) * dvp->getScale();
-    onCurve.first(onCurve.first().ProjectToPlane(stdOrigin, normal) * dvp->getScale());
-    onCurve.second(onCurve.second().ProjectToPlane(stdOrigin, normal) * dvp->getScale());
-    arcEnds.first(arcEnds.first().ProjectToPlane(stdOrigin, normal) * dvp->getScale());
-    arcEnds.second(arcEnds.second().ProjectToPlane(stdOrigin, normal) * dvp->getScale());
-    midArc = midArc.ProjectToPlane(stdOrigin, normal) * dvp->getScale();
+    center = dvp->projectPoint(center) * dvp->getScale();
+    onCurve.first(dvp->projectPoint(onCurve.first()) * dvp->getScale());
+    onCurve.second(dvp->projectPoint(onCurve.second()) * dvp->getScale());
+    arcEnds.first(dvp->projectPoint(arcEnds.first()) * dvp->getScale());
+    arcEnds.second(dvp->projectPoint(arcEnds.second()) * dvp->getScale());
+    midArc = dvp->projectPoint(midArc) * dvp->getScale();
 }
 
 void arcPoints::mapToPage(DrawViewPart* dvp)

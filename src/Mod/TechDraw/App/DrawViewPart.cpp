@@ -1336,9 +1336,8 @@ Base::Vector3d DrawViewPart::getXDirection() const
             Base::Vector3d dir = Direction.getValue();   //make a sensible default
             Base::Vector3d org(0.0, 0.0, 0.0);
             result = getLegacyX(org, dir);
-        }
-        else {
-            result = propVal;//normal case.  XDirection is set.
+        } else {
+            result = propVal;	//normal case.  XDirection is set.
         }
     }
     else {                                        //no Property.  can this happen?
