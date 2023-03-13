@@ -555,3 +555,14 @@ App::Color Preferences::getAccessibleColor(App::Color orig)
     }
     return orig;
 }
+
+bool Preferences::autoCorrectDimRefs()
+{
+    Base::Reference<ParameterGrp> hGrp = App::GetApplication()
+                                             .GetUserParameter()
+                                             .GetGroup("BaseApp")
+                                             ->GetGroup("Preferences")
+                                             ->GetGroup("Mod/TechDraw/Dimensions");
+    bool correct = hGrp->GetBool("AutoCorrectRefs", true);
+    return correct;
+}
