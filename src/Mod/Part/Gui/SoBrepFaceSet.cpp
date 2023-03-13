@@ -140,7 +140,6 @@ public:
             const cc_glglue * glue = cc_glglue_instance((int) context);
             PFNGLDELETEBUFFERSARBPROC glDeleteBuffersARB = (PFNGLDELETEBUFFERSARBPROC)cc_glglue_getprocaddress(glue, "glDeleteBuffersARB");
 #endif
-            //cc_glglue_glDeleteBuffers(glue, buffer.size(), buffer.data());
             auto &buffer = it->second;
             glDeleteBuffersARB(2, buffer.myvbo);
             self->vbomap.erase(it);
@@ -436,12 +435,8 @@ void SoBrepFaceSet::GLRender(SoGLRenderAction *action)
         if(normalCacheUsed)
             this->readUnlockNormalCache();
     }
-
-    // Workaround for #0000433
-//#if !defined(FC_OS_WIN32)
     renderHighlight(action,ctx);
     renderSelection(action,ctx);
-//#endif
 }
 
 //****************************************************************************
@@ -458,13 +453,8 @@ void SoBrepFaceSet::renderSimpleArray()
     glEnableClientState(GL_NORMAL_ARRAY);
     glEnableClientState(GL_VERTEX_ARRAY);
 
-#if 0
-    glInterleavedArrays(GL_N3F_V3F, 0, vertex_array.data());
-    glDrawElements(GL_TRIANGLES, cnt, GL_UNSIGNED_INT, index_array.data());
-#else
     glInterleavedArrays(GL_N3F_V3F, 0, &(vertex_array[0]));
     glDrawElements(GL_TRIANGLES, cnt, GL_UNSIGNED_INT, &(index_array[0]));
-#endif
 
     glDisableClientState(GL_VERTEX_ARRAY);
     glDisableClientState(GL_NORMAL_ARRAY);
@@ -485,13 +475,8 @@ void SoBrepFaceSet::renderColoredArray(SoMaterialBundle *const materials)
     glEnableClientState(GL_NORMAL_ARRAY);
     glEnableClientState(GL_VERTEX_ARRAY);
 
-#if 0
-    glInterleavedArrays(GL_N3F_V3F, 0, vertex_array.data());
-    const int32_t* ptr = index_array.data();
-#else
     glInterleavedArrays(GL_N3F_V3F, 0, &(vertex_array[0]));
     const int32_t* ptr = &(index_array[0]);
-#endif
 
     for (int part_id = 0; part_id < num_parts; part_id++) {
         int tris = partIndex[part_id];
@@ -651,19 +636,9 @@ void SoBrepFaceSet::GLRender(SoGLRenderAction *action)
         if (hasVBO) {
             // get the VBO status of the viewer
             Gui::SoGLVBOActivatedElement::get(state, hasVBO);
-            //
-            //if (SoGLVBOElement::shouldCreateVBO(state, numindices)) {
-            //    this->startVertexArray(action, coords, normals, false, false);
-            //}
         }
         renderShape(action, hasVBO, static_cast<const SoGLCoordinateElement*>(coords), cindices, numindices,
             pindices, numparts, normals, nindices, &mb, mindices, &tb, tindices, nbind, mbind, doTextures?1:0);
-
-        // if (!hasVBO) {
-        //     // Disable caching for this node
-        //     SoGLCacheContextElement::shouldAutoCache(state, SoGLCacheContextElement::DONT_AUTO_CACHE);
-        // }else
-        //     SoGLCacheContextElement::setAutoCacheBits(state, SoGLCacheContextElement::DO_AUTO_CACHE);
 
         if (normalCacheUsed)
             this->readUnlockNormalCache();
@@ -971,10 +946,6 @@ void SoBrepFaceSet::getBoundingBox(SoGetBoundingBoxAction * action) {
 
 void SoBrepFaceSet::generatePrimitives(SoAction * action)
 {
-    //TODO
-#if 0
-    inherited::generatePrimitives(action);
-#else
     //This is highly experimental!!!
 
     if (this->coordIndex.getNum() < 3)
@@ -1203,7 +1174,6 @@ void SoBrepFaceSet::generatePrimitives(SoAction * action)
     if (this->vertexProperty.getValue()) {
         state->pop();
     }
-#endif
 }
 
 #undef DO_VERTEX
@@ -1386,7 +1356,6 @@ void SoBrepFaceSet::renderSelection(SoGLRenderAction *action, SelContextPtr ctx,
     }
     if (push) {
         state->pop();
-        // SoCacheElement::invalidate(state);
     }
 
     if (normalCacheUsed)
