@@ -536,6 +536,7 @@ void QGIView::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, Q
 QRectF QGIView::customChildrenBoundingRect() const
 {
     QList<QGraphicsItem*> children = childItems();
+    // exceptions not to be included in determining the frame rectangle
     int dimItemType = QGraphicsItem::UserType + 106;  // TODO: Get magic number from include by name
     int borderItemType = QGraphicsItem::UserType + 136;  // TODO: Magic number warning
     int labelItemType = QGraphicsItem::UserType + 135;  // TODO: Magic number warning
@@ -563,7 +564,6 @@ QRectF QGIView::customChildrenBoundingRect() const
              (child->type() != centerMarkItemType)) {
             QRectF childRect = mapFromItem(child, child->boundingRect()).boundingRect();
             result = result.united(childRect);
-            //result = result.united((*it)->boundingRect());
         }
     }
     return result;

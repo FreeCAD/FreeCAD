@@ -87,6 +87,7 @@ using Import::ImpExpDxfWrite;
 using TechDraw::ProjectionAlgos;
 
 using namespace std;
+using namespace Part;
 
 namespace TechDraw {
 
@@ -271,7 +272,7 @@ private:
         }
         else {
             for (auto& w : sortedWires) {
-                PyObject* wire = new TopoShapeWirePy(new TopoShape(w));
+                PyObject* wire = new TopoShapeWirePy(new Part::TopoShape(w));
                 result.append(Py::asObject(wire));
             }
         }
