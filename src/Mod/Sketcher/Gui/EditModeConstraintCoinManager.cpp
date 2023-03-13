@@ -62,6 +62,7 @@
 #include "SoZoomTranslation.h"
 #include "ViewProviderSketch.h"
 #include "ViewProviderSketchCoinAttorney.h"
+#include "Utils.h"
 
 
 using namespace SketcherGui;
@@ -669,29 +670,9 @@ Restart:
                                 const Part::Geometry *geo1 = geolistfacade.getGeometryFromGeoId(Constr->First);
                                 auto circleSeg1 = static_cast<const Part::GeomCircle*>(geo1);
                                 auto circleSeg2 = static_cast<const Part::GeomCircle*>(geo);
-                                auto center1 = circleSeg1->getCenter();
-                                auto center2 = circleSeg2->getCenter();
-                                double radius1 = circleSeg1->getRadius();
-                                double radius2 = circleSeg2->getRadius();
-                                Base::Vector3d v = center1 - center2;
-                                double length = v.Length();
-                                v = v.Normalize();
-                                if (v.IsNull()) { //concentric case
-                                    pnt1 = center1 + radius1 * Base::Vector3d(1.,0.,0.);
-                                    pnt2 = center1 + radius2 * Base::Vector3d(1.,0.,0.);
-                                } else {
-                                    if (length <= radius1){ //inner case 1
-                                        pnt1 = center1 - v * radius1;
-                                        pnt2 = center2 - v * radius2;
-                                    } else if (length <= radius2) { // inner case 2
-                                        pnt1 = center2 + v * radius2;
-                                        pnt2 = center1 + v * radius1;
-                                    } else { //outer case
-                                        pnt1 = center1 - v * radius1;
-                                        pnt2 = center2 + v * radius2;
-                                    }
-                                }
-                                //TODO allow to move the label
+
+                                GetCirclesMinimalDistance(circleSeg1, circleSeg2, &pnt1, &pnt2);
+
                             } else
                                 break;
                         } else if (Constr->FirstPos != Sketcher::PointPos::none) {

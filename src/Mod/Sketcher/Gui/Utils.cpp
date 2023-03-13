@@ -327,6 +327,48 @@ double SketcherGui::GetPointAngle(const Base::Vector2d& p1, const Base::Vector2d
     return dY >= 0 ? atan2(dY, dX) : atan2(dY, dX) + 2 * M_PI;
 }
 
+// Set the two points on circles at minimal distance
+// in concentric case return false and set points on relative X axis
+bool SketcherGui::GetCirclesMinimalDistance(const Part::GeomCircle *circle1, const Part::GeomCircle *circle2, Base::Vector3d *point1, Base::Vector3d *point2)
+{
+    auto center1 = circle1->getCenter();
+    auto center2 = circle2->getCenter();
+    double radius1 = circle1->getRadius();
+    double radius2 = circle2->getRadius();
+    Base::Vector3d v = center2 - center1;
+    double length = v.Length();
+    auto p1 = Base::Vector3d(0., 0., 0.);
+    auto p2 = Base::Vector3d(0., 0., 0.);
+    bool retval = false;
+
+    v = v.Normalize();
+    if (length == 0) { //concentric case
+        p1 = center1 + radius1 * Base::Vector3d(1.,0.,0.);
+        p2 = center1 + radius2 * Base::Vector3d(1.,0.,0.);
+    } else {
+        if (length <= std::max(radius1, radius2)){ //inner case
+            if (radius1 > radius2){
+                p1 = center1 + v * radius1;
+                p2 = center2 + v * radius2;
+            } else {
+                p1 = center1 - v * radius1;
+                p2 = center2 - v * radius2;
+            }
+        } else { //outer case
+            p1 = center1 + v * radius1;
+            p2 = center2 - v * radius2;
+        }
+        retval = true;
+    }
+
+    point1->x = p1.x;
+    point1->y = p1.y;
+    point2->x = p2.x;
+    point2->y = p2.y;
+
+    return retval;
+}
+
 void SketcherGui::ActivateHandler(Gui::Document* doc, DrawSketchHandler* handler)
 {
     std::unique_ptr<DrawSketchHandler> ptr(handler);
