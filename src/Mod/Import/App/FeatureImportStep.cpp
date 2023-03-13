@@ -42,23 +42,10 @@ void FeatureImportStep::InitLabel(const TDF_Label &rcLabel)
 
 }
 
-/*
-bool FeaturePartImportStep::MustExecute(void)
-{
-    Base::Console().Log("PartBoxFeature::MustExecute()\n");
-    return false;
-}
-*/
+
 Standard_Integer FeatureImportStep::Execute(void)
 {
     Base::Console().Log("FeaturePartImportStep::Execute()\n");
-
-/*  cout << GetFloatProperty("x") << endl;
-  cout << GetFloatProperty("y") << endl;
-  cout << GetFloatProperty("z") << endl;
-  cout << GetFloatProperty("l") << endl;
-  cout << GetFloatProperty("h") << endl;
-  cout << GetFloatProperty("w") << endl;*/
 
   try{
 
@@ -92,7 +79,7 @@ Standard_Integer FeatureImportStep::Execute(void)
   
     // Root transfers
     Standard_Integer nbr = aReader.NbRootsForTransfer();
-    //aReader.PrintCheckTransfer (failsonly, IFSelect_ItemsByEntity);
+
     for ( Standard_Integer n = 1; n<= nbr; n++)
     {
       printf("STEP: Transferring Root %d\n",n);
@@ -123,17 +110,4 @@ Standard_Integer FeatureImportStep::Execute(void)
 
   return 0;
 }
-
-/*
-void FeatureImportStep::Validate(void)
-{
-  Base::Console().Log("FeaturePartImportStep::Validate()\n");
-
-  // We validate the object label ( Label() ), all the arguments and the results of the object:
-  log.SetValid(Label(), Standard_True);
-
-
-}
-*/
-
 

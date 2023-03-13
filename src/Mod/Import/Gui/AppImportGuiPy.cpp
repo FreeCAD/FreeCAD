@@ -180,15 +180,12 @@ void OCAFBrowser::load(const TDF_Label& label, QTreeWidgetItem* item, const QStr
         item->setText(0, text);
     }
 
-#if 0
-    TDF_IDList localList = myList;
-#else
+
     TDF_IDList localList;
     TDF_AttributeIterator itr (label);
     for ( ; itr.More(); itr.Next()) {
         localList.Append(itr.Value()->ID());
     }
-#endif
 
     for (TDF_ListIteratorOfIDList it(localList); it.More(); it.Next()) {
         Handle(TDF_Attribute) attr;
@@ -260,15 +257,6 @@ void OCAFBrowser::load(const TDF_Label& label, QTreeWidgetItem* item, const QStr
         }
     }
 
-    //TDF_ChildIDIterator nodeIterator(label, XCAFDoc::ShapeRefGUID());
-    //for (; nodeIterator.More(); nodeIterator.Next()) {
-    //    Handle(TDataStd_TreeNode) node = Handle(TDataStd_TreeNode)::DownCast(nodeIterator.Value());
-    //    //if (node->HasFather())
-    //    //    ;
-    //    QTreeWidgetItem* child = new QTreeWidgetItem();
-    //    child->setText(0, QString::fromLatin1("TDataStd_TreeNode"));
-    //    item->addChild(child);
-    //}
 
     int i=1;
     for (TDF_ChildIterator it(label); it.More(); it.Next(),i++) {
@@ -295,12 +283,9 @@ private:
         if (!vp)
             return;
         if(colors.empty()) {
-            // vp->MapFaceColor.setValue(true);
-            // vp->MapLineColor.setValue(true);
-            // vp->updateColors(0,true);
             return;
         }
-        // vp->MapFaceColor.setValue(false);
+
         if(colors.size() == 1) {
             vp->ShapeColor.setValue(colors.front());
             vp->Transparency.setValue(100 * colors.front().a);
@@ -313,7 +298,6 @@ private:
         auto vp = dynamic_cast<PartGui::ViewProviderPartExt*>(Gui::Application::Instance->getViewProvider(part));
         if (!vp)
             return;
-        // vp->MapLineColor.setValue(false);
         if(colors.size() == 1)
             vp->LineColor.setValue(colors.front());
         else
@@ -344,7 +328,6 @@ private:
         if(!vp)
             return;
         (void)colors;
-        // vp->setElementColors(colors);
     }
 };
 
@@ -411,7 +394,6 @@ private:
         std::string name8bit = Part::encodeFilename(Utf8Name);
 
         try {
-            //Base::Console().Log("Insert in Part with %s",Name);
             Base::FileInfo file(Utf8Name.c_str());
 
             App::Document *pcDoc = nullptr;
@@ -666,10 +648,7 @@ private:
                 ocaf.getPartColors(hierarchical_part,FreeLabels,part_id,Colors);
                 ocaf.reallocateFreeShape(hierarchical_part,FreeLabels,part_id,Colors);
 
-#if OCC_VERSION_HEX >= 0x070200
-                // Update is not performed automatically anymore: https://tracker.dev.opencascade.org/view.php?id=28055
                 XCAFDoc_DocumentTool::ShapeTool(hDoc->Main())->UpdateAssemblies();
-#endif
             }
 
             Base::FileInfo file(Utf8Name.c_str());
@@ -682,7 +661,6 @@ private:
 
                 STEPCAFControl_Writer writer;
                 Part::Interface::writeStepAssembly(Part::Interface::Assembly::On);
-                // writer.SetColorMode(Standard_False);
                 writer.Transfer(hDoc, STEPControl_AsIs);
 
                 // edit STEP header
@@ -691,8 +669,6 @@ private:
                 Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
                     .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/Part")->GetGroup("STEP");
 
-                // https://forum.freecadweb.org/viewtopic.php?f=8&t=52967
-                //makeHeader.SetName(new TCollection_HAsciiString((Standard_CString)Utf8Name.c_str()));
                 makeHeader.SetAuthorValue (1, new TCollection_HAsciiString(hGrp->GetASCII("Author", "Author").c_str()));
                 makeHeader.SetOrganizationValue (1, new TCollection_HAsciiString(hGrp->GetASCII("Company").c_str()));
                 makeHeader.SetOriginatingSystem(new TCollection_HAsciiString(App::Application::getExecutableName().c_str()));
@@ -758,7 +734,6 @@ private:
             throw Py::Exception();
 
         try {
-            //Base::Console().Log("Insert in Part with %s",Name);
             Base::FileInfo file(Name);
 
             Handle(XCAFApp_Application) hApp = XCAFApp_Application::GetApplication();
