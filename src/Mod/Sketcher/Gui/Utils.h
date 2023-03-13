@@ -119,6 +119,9 @@ inline bool isEdge(int GeoId, Sketcher::PointPos PosId)
 // Return counter-clockwise angle from horizontal out of p1 to p2 in radians.
 double GetPointAngle (const Base::Vector2d &p1, const Base::Vector2d &p2);
 
+// Set the two points on circles at minimal distance
+void GetCirclesMinimalDistance(const Part::GeomCircle *circle1, const Part::GeomCircle *circle2, Base::Vector3d &point1, Base::Vector3d &point2);
+
 void ActivateHandler(Gui::Document *doc, DrawSketchHandler *handler);
 
 /// Returns if a sketch is in edit mode
