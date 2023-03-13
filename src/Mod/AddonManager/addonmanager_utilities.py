@@ -143,7 +143,7 @@ def remove_directory_if_empty(dir_to_remove):
 
 def restart_freecad():
     """Shuts down and restarts FreeCAD"""
-    
+
     if not QtCore or not QtWidgets:
         return
 
