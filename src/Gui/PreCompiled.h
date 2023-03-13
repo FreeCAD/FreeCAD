@@ -96,8 +96,9 @@
 #include <xercesc/util/TranscodingException.hpp>
 #include <xercesc/util/XMLString.hpp>
 
-#include "InventorAll.h"
+// Keep this order to avoid compiler warnings
 #include "QtAll.h"
+#include "InventorAll.h"
 
 #elif defined(FC_OS_WIN32)
 #include <windows.h>

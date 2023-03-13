@@ -41,9 +41,9 @@ ViewProviderViewClip::ViewProviderViewClip()
 {
     sPixmap = "actions/TechDraw_ClipGroup";
 
-    // Do not show in property editor
-    //DisplayMode.StatusBits.set(3, true);
-    DisplayMode.setStatus(App::Property::ReadOnly, true);
+    // Do not show in property editor   why? wf  WF: because DisplayMode applies only to coin and we
+    // don't use coin.
+    DisplayMode.setStatus(App::Property::Hidden, true);
 }
 
 ViewProviderViewClip::~ViewProviderViewClip()

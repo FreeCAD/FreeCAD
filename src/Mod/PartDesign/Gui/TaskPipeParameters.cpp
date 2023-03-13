@@ -482,7 +482,6 @@ bool TaskPipeParameters::accept()
             }
 
             std::vector<App::PropertyLinkSubList::SubSet> subSets;
-            int index = 0;
             for (auto &subSet : pcPipe->Sections.getSubListValues()) {
                 if (!pcActiveBody->hasObject(subSet.first) &&
                     !pcActiveBody->getOrigin()->hasObject(subSet.first)) {
@@ -495,8 +494,6 @@ bool TaskPipeParameters::accept()
                 else {
                     subSets.push_back(subSet);
                 }
-
-                index++;
             }
 
             pcPipe->Sections.setSubListValues(subSets);

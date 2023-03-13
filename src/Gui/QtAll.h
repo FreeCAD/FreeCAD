@@ -191,6 +191,7 @@
 #include <QStackedWidget>
 #include <QTableWidgetItem>
 #include <QWidget>
+#include <QWidgetAction>
 
 // QtXML
 #include <QDomDocument>

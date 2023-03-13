@@ -547,8 +547,7 @@ PrefColorButton::~PrefColorButton()
 
 void PrefColorButton::restorePreferences()
 {
-  if (getWindowParameter().isNull())
-  {
+  if (getWindowParameter().isNull()) {
     failedToRestore(objectName());
     return;
   }
@@ -559,11 +558,11 @@ void PrefColorButton::restorePreferences()
   unsigned int icol = App::Color::asPackedRGBA<QColor>(m_Default);
 
   unsigned long lcol = static_cast<unsigned long>(icol);
-  lcol = getWindowParameter()->GetUnsigned( entryName(), lcol );
+  lcol = getWindowParameter()->GetUnsigned(entryName(), lcol);
   icol = static_cast<unsigned int>(lcol);
-  QColor value = App::Color::fromPackedRGB<QColor>(icol);
+  QColor value = App::Color::fromPackedRGBA<QColor>(icol);
   if (!this->allowTransparency())
-      value.setAlpha(0xff);
+    value.setAlpha(0xff);
   setColor(value);
 }
 

@@ -70,7 +70,7 @@ void DlgPreferencePackManagementImp::showEvent(QShowEvent* event)
         for (const auto& mod : fs::directory_iterator(modDirectory)) {
             auto packs = getPacksFromDirectory(mod);
             if (!packs.empty()) {
-                auto modName = mod.path().leaf().string();
+                auto modName = mod.path().filename().string();
                 installedPacks.emplace(modName, packs);
             }
         }

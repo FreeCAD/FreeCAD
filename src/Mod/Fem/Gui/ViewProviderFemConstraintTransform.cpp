@@ -110,7 +110,7 @@ void ViewProviderFemConstraintTransform::updateData(const App::Property* prop)
     std::string transform_type = pcConstraint->TransformType.getValueAsString();
     if (transform_type == "Rectangular") {
 
-    if (strcmp(prop->getName(),"Points") == 0) {
+    if (prop == &pcConstraint->Points) {
         const std::vector<Base::Vector3d>& points = pcConstraint->Points.getValues();
         const std::vector<Base::Vector3d>& normals = pcConstraint->Normals.getValues();
         if (points.size() != normals.size())

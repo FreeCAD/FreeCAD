@@ -71,6 +71,14 @@ bool QGCustomSvg::load(QByteArray *svgBytes)
     return(success);
 }
 
+bool QGCustomSvg::load(QString filename)
+{
+    bool success = m_svgRender->load(filename);
+    prepareGeometryChange();
+    setSharedRenderer(m_svgRender);
+    return(success);
+}
+
 void QGCustomSvg::paint ( QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget) {
     QStyleOptionGraphicsItem myOption(*option);
     myOption.state &= ~QStyle::State_Selected;
