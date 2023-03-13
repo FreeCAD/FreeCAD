@@ -110,8 +110,8 @@ void ViewProviderFemPostFunctionProvider::onChanged(const App::Property* prop)
 void ViewProviderFemPostFunctionProvider::updateData(const App::Property* prop)
 {
     Gui::ViewProviderDocumentObject::updateData(prop);
-
-    if (strcmp(prop->getName(), "Functions") == 0) {
+    Fem::FemPostFunctionProvider* obj = static_cast<Fem::FemPostFunctionProvider*>(getObject());
+    if (prop == &obj->Functions) {
         updateSize();
     }
 }
