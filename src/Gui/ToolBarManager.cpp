@@ -183,13 +183,13 @@ void ToolBarManager::setup(ToolBarItem* toolBarItems)
     if (!_ActionWidget) {
         _ActionWidget = new QWidget(getMainWindow());
         _ActionWidget->setObjectName(QStringLiteral("_fc_action_widget_"));
-		/* TODO This is a temporary hack until a longterm solution
-		is found, thanks to @realthunder for this pointer.
-		Although _ActionWidget has zero size, it somehow has a
-		'phantom' size without any visible content and will block the top
-		left tool buttons and menus of the application main window.
-		Therefore it is moved out of the way. */
-		_ActionWidget->move(QPoint(-100,-100));
+        /* TODO This is a temporary hack until a longterm solution
+        is found, thanks to @realthunder for this pointer.
+        Although _ActionWidget has zero size, it somehow has a
+        'phantom' size without any visible content and will block the top
+        left tool buttons and menus of the application main window.
+        Therefore it is moved out of the way. */
+        _ActionWidget->move(QPoint(-100,-100));
     }
     else {
         for (auto action : _ActionWidget->actions())
