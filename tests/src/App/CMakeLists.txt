@@ -4,5 +4,9 @@ target_sources(
             ${CMAKE_CURRENT_SOURCE_DIR}/Branding.cpp
             ${CMAKE_CURRENT_SOURCE_DIR}/Expression.cpp
             ${CMAKE_CURRENT_SOURCE_DIR}/License.cpp
+)
+target_sources(
+    Tests_slow_run
+        PRIVATE
             ${CMAKE_CURRENT_SOURCE_DIR}/Metadata.cpp
 )

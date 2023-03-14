@@ -35,6 +35,8 @@ endif()
 
 
 add_executable(Tests_run)
+add_executable(Tests_slow_run)
 add_subdirectory(lib)
 add_subdirectory(src)
-target_link_libraries(Tests_run gtest_main ${Google_Tests_LIBS} FreeCADApp)
+target_link_libraries(Tests_run PRIVATE gtest_main ${Google_Tests_LIBS} FreeCADApp)
+target_link_libraries(Tests_slow_run PRIVATE gtest_main FreeCADApp)
