@@ -194,12 +194,14 @@ class UpdateAllGUI(QtCore.QObject):
         text = translate("Addons installer", "Finished updating the following addons")
         self._set_dialog_to_final_state(text)
         self.running = False
+        self.finished.emit()
 
     def _setup_cancelled_state(self):
         text1 = translate("AddonsInstaller", "Update was cancelled")
         text2 = translate("AddonsInstaller", "some addons may have been updated")
         self._set_dialog_to_final_state(text1 + ": " + text2)
         self.running = False
+        self.finished.emit()
 
     def _set_dialog_to_final_state(self,new_content):
         self.dialog.buttonBox.clear()
