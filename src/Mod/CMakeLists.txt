@@ -10,10 +10,6 @@ if(BUILD_CLOUD)
     add_subdirectory(Cloud)
 endif(BUILD_CLOUD)
 
-if(BUILD_COMPLETE)
-  add_subdirectory(Complete)
-endif(BUILD_COMPLETE)
-
 if(BUILD_DRAFT)
   add_subdirectory(Draft)
 endif(BUILD_DRAFT)
