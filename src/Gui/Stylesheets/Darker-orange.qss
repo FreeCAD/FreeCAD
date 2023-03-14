@@ -1621,7 +1621,7 @@ QSint--ActionGroup QToolButton::menu-button {
 }
 
 QSint--ActionGroup QToolButton#settingsButton,
-QSint--ActionGroup QToolButton#filterButton
+QSint--ActionGroup QToolButton#filterButton,
 QSint--ActionGroup QToolButton#manualUpdate {
     padding: 2px;
     padding-right: 20px; /* make way for the popup button */
