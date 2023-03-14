@@ -1624,20 +1624,6 @@ QWidget#Form QPushButton:pressed {
     background-color: #557BB6;
 }
 
-/* Sketcher Manual Update Button */
-
-QPushButton#manualUpdate {
-    padding: 4px;
-    margin: 0px;
-    border: 1px solid #494949;
-}
-
-QPushButton:pressed#manualUpdate {
-    color: #ffffff;
-    border: 1px solid #3c3c3c;
-    background-color: #48699a;
-}
-
 /* Addon Manager */
 
 QDialog#Dialog QPushButton {
