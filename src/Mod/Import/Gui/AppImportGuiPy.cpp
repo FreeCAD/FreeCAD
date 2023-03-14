@@ -669,6 +669,8 @@ private:
                 Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
                     .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/Part")->GetGroup("STEP");
 
+                // Don't set name because STEP doesn't support UTF-8
+                // https://forum.freecadweb.org/viewtopic.php?f=8&t=52967
                 makeHeader.SetAuthorValue (1, new TCollection_HAsciiString(hGrp->GetASCII("Author", "Author").c_str()));
                 makeHeader.SetOrganizationValue (1, new TCollection_HAsciiString(hGrp->GetASCII("Company").c_str()));
                 makeHeader.SetOriginatingSystem(new TCollection_HAsciiString(App::Application::getExecutableName().c_str()));

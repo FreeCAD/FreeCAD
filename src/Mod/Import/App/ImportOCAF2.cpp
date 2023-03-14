@@ -1175,8 +1175,11 @@ void ExportOCAF2::exportObjects(std::vector<App::DocumentObject*> &objs, const c
         setName(label,nullptr,name);
     }
 
-    if(FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG))
+    if(FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG)) {
         dumpLabels(pDoc->Main(),aShapeTool,aColorTool);
+    }
+
+    // Update is not performed automatically anymore: https://tracker.dev.opencascade.org/view.php?id=28055
     aShapeTool->UpdateAssemblies();
 }
 
