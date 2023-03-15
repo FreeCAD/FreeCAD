@@ -188,7 +188,8 @@ inline void SketcherAddWorkbenchSketchEditModeActions(Gui::ToolBarItem& sketch)
     sketch  << "Sketcher_LeaveSketch"
             << "Sketcher_ViewSketch"
             << "Sketcher_ViewSection"
-            << "Sketcher_Grid";
+            << "Sketcher_Grid"
+            << "Sketcher_Snap";
 }
 
 template <typename T>
