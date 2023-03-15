@@ -21,6 +21,8 @@
 # ***************************************************************************
 
 import FreeCAD
+import FreeCADGui
+import os
 import Path
 import Path.Op.Base as PathOp
 
@@ -48,20 +50,76 @@ class ObjectCustom(PathOp.ObjectOp):
 
     def initOperation(self, obj):
         obj.addProperty(
+            "App::PropertyEnumeration",
+            "Source",
+            "Path",
+            "Source of gcode (text, file, ...)"
+        )
+
+        obj.addProperty(
+            "App::PropertyFile",
+            "GcodeFile",
+            "Path",
+            "File containing gcode to be inserted",
+        )
+
+        obj.addProperty(
             "App::PropertyStringList",
             "Gcode",
             "Path",
             QT_TRANSLATE_NOOP("App::Property", "The gcode to be inserted"),
         )
 
+        obj.Source = [ "Text", "File" ]
         obj.Proxy = self
+        self.setEditorModes(obj)
+
+    def onChanged(self, obj, prop):
+        if prop == "Source":
+            self.setEditorModes(obj)
+
+    def onDocumentRestore(self, obj):
+        self.setEditorModes(self, obj)
+
+    def setEditorModes(self, obj, features=None):
+        if not hasattr(obj, "Source"):
+            return
+
+        if obj.Source == "Text":
+          obj.setEditorMode("GcodeFile", 2)
+          obj.setEditorMode("Gcode", 0)
+        elif obj.Source == "File":
+          obj.setEditorMode("GcodeFile", 0)
+          obj.setEditorMode("Gcode", 2)
+
+    def findGcodeFile(self, filename):
+        if os.path.exists(filename):
+            # probably absolute, just return
+            return filename
+
+        doc_path = os.path.dirname(FreeCAD.ActiveDocument.FileName)
+        prospective_path = os.path.join(doc_path, filename)
+
+        if os.path.exists(prospective_path):
+            return prospective_path
 
     def opExecute(self, obj):
         self.commandlist.append(Path.Command("(Begin Custom)"))
-        if obj.Gcode:
+
+        if obj.Source == "Text" and obj.Gcode:
             for l in obj.Gcode:
                 newcommand = Path.Command(str(l))
                 self.commandlist.append(newcommand)
+        elif obj.Source == "File" and len(obj.GcodeFile) > 0:
+            gcode_file = self.findGcodeFile(obj.GcodeFile)
+
+            # could not determine the path
+            if not gcode_file: return
+
+            with open(gcode_file) as fd:
+                for l in fd.readlines():
+                  newcommand = Path.Command(str(l))
+                  self.commandlist.append(newcommand)
 
         self.commandlist.append(Path.Command("(End Custom)"))
 
