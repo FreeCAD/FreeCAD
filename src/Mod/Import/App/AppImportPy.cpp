@@ -104,9 +104,6 @@ public:
         add_keyword_method("insert",&Module::importer,
             "insert(string,string) -- Insert the file into the given document."
         );
-//        add_varargs_method("openAssembly",&Module::importAssembly,
-//            "openAssembly(string) -- Open the assembly file and create a new document."
-//        );
         add_keyword_method("export",&Module::exporter,
             "export(list,string) -- Export a list of objects into a single file."
         );
@@ -144,7 +141,6 @@ private:
         std::string name8bit = Part::encodeFilename(Utf8Name);
 
         try {
-            //Base::Console().Log("Insert in Part with %s",Name);
             Base::FileInfo file(Utf8Name.c_str());
 
             App::Document *pcDoc = nullptr;
@@ -231,7 +227,6 @@ private:
                 throw Py::Exception(PyExc_IOError, "no supported file format");
             }
 
-#if 1
             ImportOCAFExt ocaf(hDoc, pcDoc, file.fileNamePure());
             ocaf.setImportOptions(ImportOCAFExt::customImportOptions());
             if (merge != Py_None)
@@ -243,14 +238,7 @@ private:
             if (mode >= 0)
                 ocaf.setMode(mode);
             ocaf.loadShapes();
-#elif 1
-            Import::ImportOCAFCmd ocaf(hDoc, pcDoc, file.fileNamePure());
-            ocaf.loadShapes();
-#else
-            Import::ImportXCAF xcaf(hDoc, pcDoc, file.fileNamePure());
-            xcaf.loadShapes();
-            pcDoc->recompute();
-#endif
+
             hApp->Close(hDoc);
 
             if (!ocaf.partColors.empty()) {
@@ -326,7 +314,6 @@ private:
                 ocaf.exportObjects(objs);
             }
             else {
-                //bool keepExplicitPlacement = objs.size() > 1;
                 bool keepExplicitPlacement = Standard_True;
                 ExportOCAF ocaf(hDoc, keepExplicitPlacement);
                 // That stuff is exporting a list of selected objects into FreeCAD Tree
@@ -340,26 +327,22 @@ private:
                 std::vector <TDF_Label> FreeLabels;
                 std::vector <int> part_id;
                 ocaf.getFreeLabels(hierarchical_label,FreeLabels, part_id);
-#if OCC_VERSION_HEX >= 0x070200
                 // Update is not performed automatically anymore: https://tracker.dev.opencascade.org/view.php?id=28055
                 XCAFDoc_DocumentTool::ShapeTool(hDoc->Main())->UpdateAssemblies();
-#endif
             }
 
             Base::FileInfo file(Utf8Name.c_str());
             if (file.hasExtension("stp") || file.hasExtension("step")) {
-                //Interface_Static::SetCVal("write.step.schema", "AP214IS");
                 STEPCAFControl_Writer writer;
                 Part::Interface::writeStepAssembly(Part::Interface::Assembly::On);
-                // writer.SetColorMode(Standard_False);
                 writer.Transfer(hDoc, STEPControl_AsIs);
 
                 APIHeaderSection_MakeHeader makeHeader(writer.ChangeWriter().Model());
                 Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
                     .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/Part")->GetGroup("STEP");
 
+                // Don't set name because STEP doesn't support UTF-8
                 // https://forum.freecadweb.org/viewtopic.php?f=8&t=52967
-                //makeHeader.SetName(new TCollection_HAsciiString((Standard_CString)Utf8Name.c_str()));
                 makeHeader.SetAuthorValue (1, new TCollection_HAsciiString(hGrp->GetASCII("Author", "Author").c_str()));
                 makeHeader.SetOrganizationValue (1, new TCollection_HAsciiString(hGrp->GetASCII("Company").c_str()));
                 makeHeader.SetOriginatingSystem(new TCollection_HAsciiString(App::Application::getExecutableName().c_str()));
@@ -690,111 +673,7 @@ private:
         throw Py::TypeError("expected ([DocObject],path");
     }
 };
-/*
-static PyObject * importAssembly(PyObject *self, PyObject *args)
-{
-    char* Name;
-    PyObject* TargetObjectPy=0;
-    if (!PyArg_ParseTuple(args, "et|O!","utf-8",&Name,&(App::DocumentObjectPy::Type),&TargetObjectPy))
-        return 0;
-    std::string Utf8Name = std::string(Name);
-    PyMem_Free(Name);
-    std::string name8bit = Part::encodeFilename(Utf8Name);
 
-    PY_TRY {
-        //Base::Console().Log("Insert in Part with %s",Name);
-        Base::FileInfo file(name8bit);
-
-        App::DocumentObject* target = nullptr;
-
-        if(TargetObjectPy)
-            target = static_cast<App::DocumentObjectPy*>(TargetObjectPy)->getDocumentObjectPtr();
-       
-
-        App::Document *pcDoc = 0;
-
-        pcDoc = App::GetApplication().getActiveDocument();
-
-        if (!pcDoc) 
-            pcDoc = App::GetApplication().newDocument("ImportedAssembly");
-        
-
-        Handle(XCAFApp_Application) hApp = XCAFApp_Application::GetApplication();
-        Handle(TDocStd_Document) hDoc;
-        hApp->NewDocument(TCollection_ExtendedString("MDTV-CAF"), hDoc);
-
-        if (file.hasExtension("stp") || file.hasExtension("step")) {
-            try {
-                STEPCAFControl_Reader aReader;
-                aReader.SetColorMode(true);
-                aReader.SetNameMode(true);
-                aReader.SetLayerMode(true);
-                if (aReader.ReadFile((Standard_CString)(name8bit.c_str())) != IFSelect_RetDone) {
-                    PyErr_SetString(PyExc_IOError, "cannot read STEP file");
-                    return 0;
-                }
-
-                Handle(Message_ProgressIndicator) pi = new Part::ProgressIndicator(100);
-                aReader.Reader().WS()->MapReader()->SetProgress(pi);
-                pi->NewScope(100, "Reading STEP file...");
-                pi->Show();
-                aReader.Transfer(hDoc);
-                pi->EndScope();
-            }
-            catch (OSD_Exception& e) {
-                Base::Console().Error("%s\n", e.GetMessageString());
-                Base::Console().Message("Try to load STEP file without colors...\n");
-
-                Part::ImportStepParts(pcDoc,Name);
-                pcDoc->recompute();
-            }
-        }
-        else if (file.hasExtension("igs") || file.hasExtension("iges")) {
-            try {
-                IGESControl_Controller::Init();
-                Interface_Static::SetIVal("read.surfacecurve.mode",3);
-                IGESCAFControl_Reader aReader;
-                aReader.SetColorMode(true);
-                aReader.SetNameMode(true);
-                aReader.SetLayerMode(true);
-                if (aReader.ReadFile((Standard_CString)(name8bit.c_str())) != IFSelect_RetDone) {
-                    PyErr_SetString(PyExc_IOError, "cannot read IGES file");
-                    return 0;
-                }
-
-                Handle(Message_ProgressIndicator) pi = new Part::ProgressIndicator(100);
-                aReader.WS()->MapReader()->SetProgress(pi);
-                pi->NewScope(100, "Reading IGES file...");
-                pi->Show();
-                aReader.Transfer(hDoc);
-                pi->EndScope();
-            }
-            catch (OSD_Exception& e) {
-                Base::Console().Error("%s\n", e.GetMessageString());
-                Base::Console().Message("Try to load IGES file without colors...\n");
-
-                Part::ImportIgesParts(pcDoc,Name);
-                pcDoc->recompute();
-            }
-        }
-        else {
-            PyErr_SetString(PyExc_RuntimeError, "no supported file format");
-            return 0;
-        }
-
-        Import::ImportOCAFAssembly ocaf(hDoc, pcDoc, file.fileNamePure(),target);
-        ocaf.loadAssembly();
-        pcDoc->recompute();
-
-    }
-    catch (Standard_Failure& e) {
-        PyErr_SetString(PyExc_RuntimeError, e.GetMessageString());
-        return 0;
-    }
-    PY_CATCH
-
-    Py_Return;
-}*/
 
 PyObject* initModule()
 {
