@@ -114,6 +114,11 @@ inline int ViewProviderSketchDrawSketchHandlerAttorney::getPreselectCross(const 
     return vp.getPreselectCross();
 }
 
+inline void ViewProviderSketchDrawSketchHandlerAttorney::setAngleSnapping(ViewProviderSketch &vp, bool enable, Base::Vector2d referencePoint)
+{
+    vp.setAngleSnapping(enable, referencePoint);
+}
+
 
 /**************************** CurveConverter **********************************************/
 
@@ -250,6 +255,7 @@ void DrawSketchHandler::deactivate()
     drawEditMarkers(std::vector<Base::Vector2d>());
     resetPositionText();
     unsetCursor();
+    setAngleSnapping(false);
 }
 
 void DrawSketchHandler::preActivated()
@@ -992,3 +998,7 @@ Sketcher::SketchObject * DrawSketchHandler::getSketchObject()
     return sketchgui->getSketchObject();
 }
 
+void DrawSketchHandler::setAngleSnapping(bool enable, Base::Vector2d referencePoint)
+{
+    ViewProviderSketchDrawSketchHandlerAttorney::setAngleSnapping(*sketchgui, enable, referencePoint);
+}
