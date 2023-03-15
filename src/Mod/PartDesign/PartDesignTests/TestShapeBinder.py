@@ -22,6 +22,9 @@
 import unittest
 
 import FreeCAD
+from FreeCAD import Base
+import Part
+import Sketcher
 
 class TestShapeBinder(unittest.TestCase):
     def setUp(self):
@@ -77,3 +80,55 @@ class TestSubShapeBinder(unittest.TestCase):
         self.Doc.recompute()
 
         self.assertAlmostEqual(binder.Shape.Length, 80)
+
+    def testBinderBeforeOrAfterPad(self):
+        """ Test case for PR #8763 """
+        body = self.Doc.addObject('PartDesign::Body','Body')
+        sketch = body.newObject('Sketcher::SketchObject','Sketch')
+        sketch.Support = (self.Doc.XZ_Plane,[''])
+        sketch.MapMode = 'FlatFace'
+        self.Doc.recompute()
+
+        geoList = []
+        geoList.append(Part.LineSegment(Base.Vector(-21.762587,19.904083,0),Base.Vector(32.074337,19.904083,0)))
+        geoList.append(Part.LineSegment(Base.Vector(32.074337,19.904083,0),Base.Vector(32.074337,-27.458027,0)))
+        geoList.append(Part.LineSegment(Base.Vector(32.074337,-27.458027,0),Base.Vector(-21.762587,-27.458027,0)))
+        geoList.append(Part.LineSegment(Base.Vector(-21.762587,-27.458027,0),Base.Vector(-21.762587,19.904083,0)))
+        sketch.addGeometry(geoList,False)
+
+        conList = []
+        conList.append(Sketcher.Constraint('Coincident',0,2,1,1))
+        conList.append(Sketcher.Constraint('Coincident',1,2,2,1))
+        conList.append(Sketcher.Constraint('Coincident',2,2,3,1))
+        conList.append(Sketcher.Constraint('Coincident',3,2,0,1))
+        conList.append(Sketcher.Constraint('Horizontal',0))
+        conList.append(Sketcher.Constraint('Horizontal',2))
+        conList.append(Sketcher.Constraint('Vertical',1))
+        conList.append(Sketcher.Constraint('Vertical',3))
+        sketch.addConstraint(conList)
+        del geoList, conList
+
+        self.Doc.recompute()
+
+        binder1 = body.newObject('PartDesign::SubShapeBinder','Binder')
+        binder1.Support = sketch
+        self.Doc.recompute()
+        pad = body.newObject('PartDesign::Pad','Pad')
+        pad.Profile = sketch
+        pad.Length = 10
+        self.Doc.recompute()
+        pad.ReferenceAxis = (sketch,['N_Axis'])
+        sketch.Visibility = False
+        self.Doc.recompute()
+
+        binder2 = body.newObject('PartDesign::SubShapeBinder','Binder001')
+        binder2.Support = [pad, "Sketch."]
+        self.Doc.recompute()
+
+        self.assertAlmostEqual(binder1.Shape.BoundBox.XLength, binder2.Shape.BoundBox.XLength, 2)
+        self.assertAlmostEqual(binder1.Shape.BoundBox.YLength, binder2.Shape.BoundBox.YLength, 2)
+        self.assertAlmostEqual(binder1.Shape.BoundBox.ZLength, binder2.Shape.BoundBox.ZLength, 2)
+
+        nor1 = binder1.Shape.Face1.normalAt(0,0)
+        nor2 = binder2.Shape.Face1.normalAt(0,0)
+        self.assertAlmostEqual(nor1.getAngle(nor2), 0.0, 2)

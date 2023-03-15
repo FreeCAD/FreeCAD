@@ -180,7 +180,7 @@ def setup(doc=None, solvertype="elmer"):
         equation_magnetodynamic2D.CalculateMagneticFieldStrength = True
     else:
         FreeCAD.Console.PrintWarning(
-            "Not known or not supported solver type: {}. "
+            "Unknown or unsupported solver type: {}. "
             "No solver object was created.\n".format(solvertype)
         )
         return doc

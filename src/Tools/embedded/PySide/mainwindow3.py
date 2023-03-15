@@ -15,7 +15,7 @@ class MainWindow(QtGui.QMainWindow):
         # when setting up the internally used network interface. Doing this before
         # creating the icons fixes the issue.
         QtNetwork.QNetworkConfigurationManager()
-    
+
     @QtCore.Slot()
     def on_actionEmbed_triggered(self):
         FreeCADGui.showMainWindow()
@@ -33,11 +33,11 @@ class MainWindow(QtGui.QMainWindow):
                 return "Gui::BlankWorkbench"
         FreeCADGui.addWorkbench(BlankWorkbench)
         FreeCADGui.activateWorkbench("BlankWorkbench")
-    
+
     @QtCore.Slot()
     def on_actionDocument_triggered(self):
         FreeCAD.newDocument()
-    
+
     @QtCore.Slot()
     def on_actionCube_triggered(self):
         FreeCAD.ActiveDocument.addObject("Part::Box")

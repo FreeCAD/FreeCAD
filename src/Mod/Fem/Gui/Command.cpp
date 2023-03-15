@@ -2106,6 +2106,8 @@ void CmdFemPostFunctions::activated(int iMsg)
         name = "Sphere";
     else if (iMsg == 2)
         name = "Cylinder";
+    else if (iMsg == 3)
+        name = "Box";
     else
         return;
 
@@ -2153,14 +2155,15 @@ void CmdFemPostFunctions::activated(int iMsg)
         double center[3];
         box.GetCenter(center);
 
-        if (iMsg == 0)
+        if (iMsg == 0) { // Plane
             doCommand(Doc,
                       "App.ActiveDocument.%s.Origin = App.Vector(%f, %f, %f)",
                       FeatName.c_str(),
                       center[0],
                       center[1],
                       center[2]);
-        else if (iMsg == 1) {
+        }
+        else if (iMsg == 1) { // Sphere
             doCommand(Doc,
                       "App.ActiveDocument.%s.Center = App.Vector(%f, %f, %f)",
                       FeatName.c_str(),
@@ -2172,7 +2175,7 @@ void CmdFemPostFunctions::activated(int iMsg)
                       FeatName.c_str(),
                       box.GetDiagonalLength() / 2);
         }
-        else if (iMsg == 2) {
+        else if (iMsg == 2) { // Cylinder
             doCommand(Doc,
                       "App.ActiveDocument.%s.Center = App.Vector(%f, %f, %f)",
                       FeatName.c_str(),
@@ -2183,6 +2186,27 @@ void CmdFemPostFunctions::activated(int iMsg)
                       "App.ActiveDocument.%s.Radius = %f",
                       FeatName.c_str(),
                       box.GetDiagonalLength() / 3.6); // make cylinder a bit higher than the box
+        }
+        else if (iMsg == 3) { // Box
+            doCommand(Doc,
+                      "App.ActiveDocument.%s.Center = App.Vector(%f, %f, %f)",
+                      FeatName.c_str(),
+                      center[0] + box.GetLength(0) / 2,
+                      center[1] + box.GetLength(1) / 2,
+                      center[2]);
+            doCommand(Doc,
+                      "App.ActiveDocument.%s.Length = %f",
+                      FeatName.c_str(),
+                      box.GetLength(0));
+            doCommand(Doc,
+                      "App.ActiveDocument.%s.Width = %f",
+                      FeatName.c_str(),
+                      box.GetLength(1));
+            doCommand(Doc,
+                      "App.ActiveDocument.%s.Height = %f",
+                      FeatName.c_str(),
+                      // purposely a bit higher to avoid rendering artifacts at the box border
+                      1.1 * box.GetLength(2));
         }
 
         this->updateActive();
@@ -2220,6 +2244,9 @@ Gui::Action* CmdFemPostFunctions::createAction()
     QAction* cmd2 = pcAction->addAction(QString());
     cmd2->setIcon(Gui::BitmapFactory().iconFromTheme("fem-post-geo-cylinder"));
 
+    QAction* cmd3 = pcAction->addAction(QString());
+    cmd3->setIcon(Gui::BitmapFactory().iconFromTheme("fem-post-geo-box"));
+
     _pcAction = pcAction;
     languageChange();
 
@@ -2255,6 +2282,12 @@ void CmdFemPostFunctions::languageChange()
     cmd->setText(QApplication::translate("CmdFemPostFunctions", "Cylinder"));
     cmd->setToolTip(QApplication::translate(
         "FEM_PostCreateFunctions", "Create a cylinder function, defined by its center, axis and radius"));
+    cmd->setStatusTip(cmd->toolTip());
+
+    cmd = a[3];
+    cmd->setText(QApplication::translate("CmdFemPostFunctions", "Box"));
+    cmd->setToolTip(QApplication::translate(
+        "FEM_PostCreateFunctions", "Create a box function, defined by its center, length, width and height"));
     cmd->setStatusTip(cmd->toolTip());
 }
 

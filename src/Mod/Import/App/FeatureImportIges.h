@@ -36,21 +36,12 @@ public:
 
     virtual void InitLabel(const TDF_Label &rcLabel);
 
-//  virtual bool MustExecute(void);
-
     virtual Standard_Integer Execute(void);
 
-//  virtual void Validate(void);
-
-  /// Returns the Name/Type of the feature
-  virtual const char *Type(void){return "PartImportIges";}
+    /// Returns the Name/Type of the feature
+    virtual const char *Type(void){return "PartImportIges";}
 };
 
-
-
 }
-
-
-
 
 #endif // __FeaturePartImportIges_H__

@@ -74,57 +74,6 @@ class MockConsole:
         return counter
 
 
-class MockMetadata:
-    """Minimal implementation of a Metadata-like object."""
-
-    def __init__(self):
-        self.Name = "MockMetadata"
-        self.Urls = {"repository": {"location": "file://localhost/", "branch": "main"}}
-        self.Description = "Mock metadata object for testing"
-        self.Icon = None
-        self.Version = "1.2.3beta"
-        self.Content = {}
-
-    def minimal_file_scan(self, file: Union[os.PathLike, bytes]):
-        """Don't use the real metadata class, but try to read in the parameters we care about
-        from the given metadata file (or file-like object, as the case probably is). This
-        allows us to test whether the data is being passed around correctly."""
-
-        # pylint: disable=too-many-branches
-        xml = None
-        root = None
-        try:
-            if os.path.exists(file):
-                xml = ElemTree.parse(file)
-                root = xml.getroot()
-        except TypeError:
-            pass
-        if xml is None:
-            root = ElemTree.fromstring(file)
-        if root is None:
-            raise RuntimeError("Failed to parse XML data")
-
-        accepted_namespaces = ["", "{https://wiki.freecad.org/Package_Metadata}"]
-
-        for ns in accepted_namespaces:
-            for child in root:
-                if child.tag == ns + "name":
-                    self.Name = child.text
-                elif child.tag == ns + "description":
-                    self.Description = child.text
-                elif child.tag == ns + "icon":
-                    self.Icon = child.text
-                elif child.tag == ns + "url":
-                    if "type" in child.attrib and child.attrib["type"] == "repository":
-                        url = child.text
-                        if "branch" in child.attrib:
-                            branch = child.attrib["branch"]
-                        else:
-                            branch = "master"
-                        self.Urls["repository"]["location"] = url
-                        self.Urls["repository"]["branch"] = branch
-
-
 class MockAddon:
     """Minimal Addon class"""
 
@@ -160,18 +109,6 @@ class MockAddon:
 
     def set_status(self, status):
         self.update_status = status
-
-    def set_metadata(self, metadata_like: MockMetadata):
-        """Set (some) of the metadata, but don't use a real Metadata object"""
-        self.metadata = metadata_like
-        if "repository" in self.metadata.Urls:
-            self.branch = self.metadata.Urls["repository"]["branch"]
-            self.url = self.metadata.Urls["repository"]["location"]
-
-    def load_metadata_file(self, metadata_file: os.PathLike):
-        if os.path.exists(metadata_file):
-            self.metadata = MockMetadata()
-            self.metadata.minimal_file_scan(metadata_file)
 
     @staticmethod
     def get_best_icon_relative_path():

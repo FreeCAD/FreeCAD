@@ -60,6 +60,51 @@ DocumentObjectExecReturn* FemPostFunction::execute() {
 }
 
 // ***************************************************************************
+// box function
+PROPERTY_SOURCE(Fem::FemPostBoxFunction, Fem::FemPostFunction)
+
+FemPostBoxFunction::FemPostBoxFunction()
+    : FemPostFunction()
+{
+    ADD_PROPERTY(Center, (Base::Vector3d(0.0, 0.0, 0.0)));
+    ADD_PROPERTY(Length, (10.0));
+    ADD_PROPERTY(Width, (10.0));
+    ADD_PROPERTY(Height, (10.0));
+
+    m_box = vtkSmartPointer<vtkBox>::New();
+    m_implicit = m_box;
+
+    m_box->SetBounds(-5.0, 5.0, -5.0, 5.0, -5.0, 5.0);
+}
+
+FemPostBoxFunction::~FemPostBoxFunction()
+{
+}
+
+void FemPostBoxFunction::onChanged(const Property* prop)
+{
+    if (prop == &Center || prop == &Length || prop == &Width || prop == &Height) {
+        const Base::Vector3d& vec = Center.getValue();
+        float l = Length.getValue();
+        float w = Width.getValue();
+        float h = Height.getValue();
+        m_box->SetBounds(
+            vec[0] - l/2, vec[0] + l/2,
+            vec[1] - w/2, vec[1] + w/2,
+            vec[2] - h/2, vec[2] + h/2);
+    }
+
+    Fem::FemPostFunction::onChanged(prop);
+}
+
+void FemPostBoxFunction::onDocumentRestored()
+{
+    // This is to notify the view provider that the document has been fully restored
+    Center.touch();
+}
+
+
+// ***************************************************************************
 // cylinder function
 PROPERTY_SOURCE(Fem::FemPostCylinderFunction, Fem::FemPostFunction)
 

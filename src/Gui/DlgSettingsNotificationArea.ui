@@ -1,0 +1,240 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Gui::Dialog::DlgSettingsNotificationArea</class>
+ <widget class="QWidget" name="Gui::Dialog::DlgSettingsNotificationArea">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>654</width>
+    <height>356</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Notification Area</string>
+  </property>
+  <layout class="QGridLayout" name="gridLayout_2">
+   <item row="1" column="0">
+    <widget class="QGroupBox" name="groupBox">
+     <property name="title">
+      <string>Non-Intrusive Notifications</string>
+     </property>
+     <layout class="QGridLayout" name="gridLayout_3">
+      <item row="1" column="0">
+       <widget class="QLabel" name="label_2">
+        <property name="text">
+         <string>Minimum Duration:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="0">
+       <widget class="QLabel" name="label">
+        <property name="toolTip">
+         <string/>
+        </property>
+        <property name="text">
+         <string>Maximum Duration:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="Gui::PrefSpinBox" name="maxDuration">
+        <property name="toolTip">
+         <string>Duration during which the notification will be shown (unless mouse buttons are clicked)</string>
+        </property>
+        <property name="suffix">
+         <string>s</string>
+        </property>
+        <property name="minimum">
+         <number>0</number>
+        </property>
+        <property name="maximum">
+         <number>120</number>
+        </property>
+        <property name="value">
+         <number>20</number>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>NotificationTime</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>NotificationArea</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="1">
+       <widget class="Gui::PrefSpinBox" name="minDuration">
+        <property name="toolTip">
+         <string>Minimum duration during which the notification will be shown (unless notification clicked)</string>
+        </property>
+        <property name="suffix">
+         <string>s</string>
+        </property>
+        <property name="value">
+         <number>5</number>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>MinimumOnScreenTime</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>NotificationArea</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="0">
+       <widget class="QLabel" name="label_3">
+        <property name="text">
+         <string>Maximum Number of Notifications:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="1">
+       <widget class="Gui::PrefSpinBox" name="maxNotifications">
+        <property name="toolTip">
+         <string>Maximum number of notifications that will be simultaneously present on the screen</string>
+        </property>
+        <property name="value">
+         <number>15</number>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>MaxOpenNotifications</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>NotificationArea</cstring>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item row="0" column="0">
+    <widget class="QGroupBox" name="GroupBox11">
+     <property name="title">
+      <string>Settings</string>
+     </property>
+     <layout class="QGridLayout" name="gridLayout">
+      <item row="0" column="0">
+       <widget class="Gui::PrefCheckBox" name="NotificationAreaEnabled">
+        <property name="toolTip">
+         <string>The Notification area will appear in the status bar</string>
+        </property>
+        <property name="text">
+         <string>Enable Notification Area</string>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>NotificationAreaEnabled</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>NotificationArea</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="Gui::PrefCheckBox" name="NonIntrusiveNotificationsEnabled">
+        <property name="toolTip">
+         <string>Non-intrusive notifications will appear next to the notification area in the status bar</string>
+        </property>
+        <property name="text">
+         <string>Enable non-intrusive notifications</string>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>NonIntrusiveNotificationsEnabled</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>NotificationArea</cstring>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item row="6" column="0">
+    <spacer name="verticalSpacer">
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>20</width>
+       <height>63</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+   <item row="2" column="0">
+    <widget class="QGroupBox" name="groupBox_2">
+     <property name="title">
+      <string>Message List</string>
+     </property>
+     <layout class="QGridLayout" name="gridLayout_4">
+      <item row="0" column="1">
+       <widget class="Gui::PrefSpinBox" name="maxWidgetMessages">
+        <property name="toolTip">
+         <string>Limit the number of messages that will be kept in the list. If 0 there is no limit.</string>
+        </property>
+        <property name="maximum">
+         <number>10000</number>
+        </property>
+        <property name="value">
+         <number>1000</number>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>MaxWidgetMessages</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>NotificationArea</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="0">
+       <widget class="QLabel" name="label_4">
+        <property name="text">
+         <string>Maximum Messages (0 = no limit):</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="Gui::PrefCheckBox" name="autoRemoveUserNotifications">
+        <property name="toolTip">
+         <string>Removes the user notifications from the message list after the non-intrusive maximum duration has lapsed.</string>
+        </property>
+        <property name="text">
+         <string>Auto-remove User Notifications</string>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>AutoRemoveUserNotifications</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>NotificationArea</cstring>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>Gui::PrefCheckBox</class>
+   <extends>QCheckBox</extends>
+   <header>Gui/PrefWidgets.h</header>
+  </customwidget>
+  <customwidget>
+   <class>Gui::PrefSpinBox</class>
+   <extends>QSpinBox</extends>
+   <header>Gui/PrefWidgets.h</header>
+  </customwidget>
+ </customwidgets>
+ <resources/>
+ <connections/>
+</ui>

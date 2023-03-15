@@ -41,23 +41,10 @@ void FeatureImportIges::InitLabel(const TDF_Label &rcLabel)
     addProperty("String","FileName");
 }
 
-/*
-bool FeaturePartImportStep::MustExecute(void)
-{
-    Base::Console().Log("PartBoxFeature::MustExecute()\n");
-    return false;
-}
-*/
+
 Standard_Integer FeatureImportIges::Execute(void)
 {
     Base::Console().Log("FeaturePartImportIges::Execute()\n");
-
-/*  cout << GetFloatProperty("x") << endl;
-  cout << GetFloatProperty("y") << endl;
-  cout << GetFloatProperty("z") << endl;
-  cout << GetFloatProperty("l") << endl;
-  cout << GetFloatProperty("h") << endl;
-  cout << GetFloatProperty("w") << endl;*/
 
   try{
 
@@ -83,10 +70,6 @@ Standard_Integer FeatureImportIges::Execute(void)
     if (aReader.ReadFile((const Standard_CString)FileName.c_str()) != IFSelect_RetDone)
       throw Base::FileException("IGES read failed (load file)");
 
-    // check iges-file (memory)
-    //if (!aReader.Check(Standard_True))
-    //  Base::Console().Warning( "IGES model contains errors! try loading anyway....\n" );
-
     // make brep
     aReader.TransferRoots();
     // one shape, who contain's all subshapes
@@ -103,18 +86,4 @@ Standard_Integer FeatureImportIges::Execute(void)
 
   return 0;
 }
-
-/*
-void FeatureImportIges::Validate(void)
-{
-  Base::Console().Log("FeaturePartImportStep::Validate()\n");
- 
-  // We validate the object label ( Label() ), all the arguments and the results of the object:
-  log.SetValid(Label(), Standard_True);
-
-
-}
-*/
-
-
 

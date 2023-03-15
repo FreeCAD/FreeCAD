@@ -54,9 +54,7 @@ public:
     App::PropertyEnumeration        LineStyle;
     App::PropertyColor              Color;
 
-/*    virtual void setDisplayMode(const char* ModeName);*/
     bool useNewSelectionModel() const override {return false;}
-/*    virtual std::vector<std::string> getDisplayModes(void) const;*/
     void updateData(const App::Property*) override;
     void onChanged(const App::Property* p) override;
     bool setEdit(int ModNum) override;

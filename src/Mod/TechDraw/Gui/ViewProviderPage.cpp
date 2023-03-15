@@ -91,6 +91,8 @@ ViewProviderPage::ViewProviderPage()
                       (App::PropertyType::Prop_None), "Grid line spacing in mm");
 
     ShowFrames.setStatus(App::Property::Hidden, true);
+    // Do not show in property editor   why? wf  WF: because DisplayMode applies only to coin and we
+    // don't use coin.
     DisplayMode.setStatus(App::Property::Hidden, true);
 
     m_graphicsScene = new QGSPage(this);
@@ -115,22 +117,14 @@ void ViewProviderPage::attach(App::DocumentObject* pcFeat)
     TechDraw::DrawPage* feature = dynamic_cast<TechDraw::DrawPage*>(pcFeat);
     if (feature) {
         connectGuiRepaint = feature->signalGuiPaint.connect(bnd);
-        m_pageName = feature->getNameInDocument();
+        const char* temp = feature->getNameInDocument();
+        if (temp) {
+            // it could happen that feature is not completely in the document yet and getNameInDocument returns
+            // nullptr, so we only update m_myName if we got a valid string.
+            m_pageName = temp;
+        }
         m_graphicsScene->setObjectName(QString::fromLocal8Bit(m_pageName.c_str()));
     }
-}
-
-void ViewProviderPage::setDisplayMode(const char* ModeName)
-{
-    ViewProviderDocumentObject::setDisplayMode(ModeName);
-}
-
-std::vector<std::string> ViewProviderPage::getDisplayModes() const
-{
-    // get the modes of the father
-    std::vector<std::string> StrList = ViewProviderDocumentObject::getDisplayModes();
-    StrList.emplace_back("Drawing");
-    return StrList;
 }
 
 void ViewProviderPage::onChanged(const App::Property* prop)

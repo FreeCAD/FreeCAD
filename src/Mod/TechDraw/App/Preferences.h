@@ -94,6 +94,8 @@ public:
     static App::Color lightTextColor();
     static App::Color lightenColor(App::Color orig);
     static App::Color getAccessibleColor(App::Color orig);
+
+    static bool autoCorrectDimRefs();
 };
 
 }//end namespace TechDraw

@@ -801,14 +801,14 @@ void AboutDialog::on_copyButton_clicked()
     bool firstMod = true;
     if (fs::exists(modDir) && fs::is_directory(modDir)) {
         for (const auto& mod : fs::directory_iterator(modDir)) {
-            auto dirName = mod.path().leaf().string();
+            auto dirName = mod.path().filename().string();
             if (dirName[0] == '.') // Ignore dot directories
                 continue;
             if (firstMod) {
                 firstMod = false;
                 str << "Installed mods: \n";
             }
-            str << "  * " << QString::fromStdString(mod.path().leaf().string());
+            str << "  * " << QString::fromStdString(mod.path().filename().string());
             auto metadataFile = mod.path() / "package.xml";
             if (fs::exists(metadataFile)) {
                 App::Metadata metadata(metadataFile);

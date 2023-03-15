@@ -729,7 +729,7 @@ void prepareProfileBased(PartDesign::Body *pcActiveBody, Gui::Command* cmd, cons
 
             // `ProfileBased::getProfileShape()` and other methods will return
             // just the sub-shapes if they are set. So when whole sketches are
-            // desired, don not set sub-values.
+            // desired, don't set sub-values.
             if (feature->isDerivedFrom(Part::Part2DObject::getClassTypeId()) &&
                 subName.compare(0, 6, "Vertex") != 0)
                 runProfileCmd();

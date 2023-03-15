@@ -952,8 +952,8 @@ void TopoShape::exportStep(const char *filename) const
             throw Base::FileException("Error in transferring STEP");
 
         APIHeaderSection_MakeHeader makeHeader(aWriter.Model());
+        // Don't set name because STEP doesn't support UTF-8
         // https://forum.freecadweb.org/viewtopic.php?f=8&t=52967
-        //makeHeader.SetName(new TCollection_HAsciiString((Standard_CString)(encodeFilename(filename).c_str())));
         makeHeader.SetAuthorValue (1, new TCollection_HAsciiString("FreeCAD"));
         makeHeader.SetOrganizationValue (1, new TCollection_HAsciiString("FreeCAD"));
         makeHeader.SetOriginatingSystem(new TCollection_HAsciiString("FreeCAD"));

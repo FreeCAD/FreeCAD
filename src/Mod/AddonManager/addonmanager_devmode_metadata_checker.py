@@ -28,12 +28,13 @@ from typing import List
 import FreeCAD
 
 from Addon import Addon
+from addonmanager_metadata import Metadata
 import NetworkManager
 
 
 class MetadataValidators:
-    """A collection of tools for validating various pieces of metadata. Prints validation
-    information to the console."""
+    """A collection of tools for validating various pieces of metadata. Prints
+    validation information to the console."""
 
     def validate_all(self, repos):
         """Developer tool: check all repos for validity and print report"""
@@ -64,9 +65,9 @@ class MetadataValidators:
         if addon.metadata is None:
             return
 
-        # The package.xml standard has some required elements that the basic XML reader is not
-        # actually checking for. In developer mode, actually make sure that all the rules are
-        # being followed for each element.
+        # The package.xml standard has some required elements that the basic XML
+        # reader is not actually checking for. In developer mode, actually make sure
+        # that all the rules are being followed for each element.
 
         errors = []
 
@@ -83,15 +84,15 @@ class MetadataValidators:
     def validate_content(self, addon: Addon) -> List[str]:
         """Validate the Content items for this Addon"""
         errors = []
-        contents = addon.metadata.Content
+        contents = addon.metadata.content
 
         missing_icon = True
-        if addon.metadata.Icon and len(addon.metadata.Icon) > 0:
+        if addon.metadata.icon and len(addon.metadata.icon) > 0:
             missing_icon = False
         else:
             if "workbench" in contents:
                 wb = contents["workbench"][0]
-                if wb.Icon:
+                if wb.icon:
                     missing_icon = False
         if missing_icon:
             errors.append("No <icon> element found, or <icon> element is invalid")
@@ -106,38 +107,37 @@ class MetadataValidators:
 
         return errors
 
-    def validate_top_level(self, addon) -> List[str]:
+    def validate_top_level(self, addon:Addon) -> List[str]:
         """Check for the presence of the required top-level elements"""
         errors = []
-        if not addon.metadata.Name or len(addon.metadata.Name) == 0:
+        if not addon.metadata.name or len(addon.metadata.name) == 0:
             errors.append(
                 "No top-level <name> element found, or <name> element is empty"
             )
-        if not addon.metadata.Version or addon.metadata.Version == "0.0.0":
+        if not addon.metadata.version:
             errors.append(
                 "No top-level <version> element found, or <version> element is invalid"
             )
-        # if not addon.metadata.Date or len(addon.metadata.Date) == 0:
-        #    errors.append(f"No top-level <date> element found, or <date> element is invalid")
-        if not addon.metadata.Description or len(addon.metadata.Description) == 0:
+        if not addon.metadata.description or len(addon.metadata.description) == 0:
             errors.append(
-                "No top-level <description> element found, or <description> element is invalid"
+                "No top-level <description> element found, or <description> element "
+                "is invalid"
             )
 
-        maintainers = addon.metadata.Maintainer
+        maintainers = addon.metadata.maintainer
         if len(maintainers) == 0:
             errors.append("No top-level <maintainers> found, at least one is required")
         for maintainer in maintainers:
-            if len(maintainer["email"]) == 0:
+            if len(maintainer.email) == 0:
                 errors.append(
-                    f"No email address specified for maintainer '{maintainer['name']}'"
+                    f"No email address specified for maintainer '{maintainer.name}'"
                 )
 
-        licenses = addon.metadata.License
+        licenses = addon.metadata.license
         if len(licenses) == 0:
             errors.append("No top-level <license> found, at least one is required")
 
-        urls = addon.metadata.Urls
+        urls = addon.metadata.url
         errors.extend(self.validate_urls(urls))
         return errors
 
@@ -185,17 +185,17 @@ class MetadataValidators:
         return errors
 
     @staticmethod
-    def validate_workbench_metadata(workbench) -> List[str]:
+    def validate_workbench_metadata(workbench:Metadata) -> List[str]:
         """Validate the required element(s) for a workbench"""
         errors = []
-        if not workbench.Classname or len(workbench.Classname) == 0:
+        if not workbench.classname or len(workbench.classname) == 0:
             errors.append("No <classname> specified for workbench")
         return errors
 
     @staticmethod
-    def validate_preference_pack_metadata(pack) -> List[str]:
+    def validate_preference_pack_metadata(pack:Metadata) -> List[str]:
         """Validate the required element(s) for a preference pack"""
         errors = []
-        if not pack.Name or len(pack.Name) == 0:
+        if not pack.name or len(pack.name) == 0:
             errors.append("No <name> specified for preference pack")
         return errors

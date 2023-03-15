@@ -23,7 +23,6 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-
 # include <TopoDS_Wire.hxx>
 # include <TopExp_Explorer.hxx>
 # include <BRepAlgoAPI_Cut.hxx>
@@ -35,6 +34,8 @@
 # include <TopoDS.hxx>
 # include <Precision.hxx>
 #endif
+
+#include <boost/core/ignore_unused.hpp>
 
 #include <App/Document.h>
 #include <Base/Exception.h>
@@ -198,6 +199,7 @@ App::DocumentObjectExecReturn *Loft::execute()
             if (profilePoint.IsNull()) {
                 size_t numWiresAdded = addWiresToWireSections(profileShape, wiresections);
                 assert (numWiresAdded == wiresections.size());
+                boost::ignore_unused(numWiresAdded);
             } else { // !profilePoint.IsNull()
                 for (auto &wires : wiresections)
                     wires.push_back(profilePoint);

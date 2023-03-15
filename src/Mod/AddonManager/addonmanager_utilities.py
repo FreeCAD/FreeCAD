@@ -35,12 +35,15 @@ from typing import Optional, Any
 
 from urllib.parse import urlparse
 
-from PySide import QtCore, QtWidgets
+try:
+    from PySide import QtCore, QtWidgets
+except ImportError:
+    QtCore = None
+    QtWidgets = None
 
-import FreeCAD
+import addonmanager_freecad_interface as fci
 
-if FreeCAD.GuiUp:
-    import FreeCADGui
+if fci.FreeCADGui:
 
     # If the GUI is up, we can use the NetworkManager to handle our downloads. If there is no event
     # loop running this is not possible, so fall back to requests (if available), or the native
@@ -60,7 +63,7 @@ else:
 #  @{
 
 
-translate = FreeCAD.Qt.translate
+translate = fci.translate
 
 
 class ProcessInterrupted(RuntimeError):
@@ -116,7 +119,7 @@ def update_macro_details(old_macro, new_macro):
     """
 
     if old_macro.on_git and new_macro.on_git:
-        FreeCAD.Console.PrintLog(
+        fci.Console.PrintLog(
             f'The macro "{old_macro.name}" is present twice in github, please report'
         )
     # We don't report macros present twice on the wiki because a link to a
@@ -132,7 +135,7 @@ def remove_directory_if_empty(dir_to_remove):
     """Remove the directory if it is empty, with one exception: the directory returned by
     FreeCAD.getUserMacroDir(True) will not be removed even if it is empty."""
 
-    if dir_to_remove == FreeCAD.getUserMacroDir(True):
+    if dir_to_remove == fci.DataPaths().macro_dir:
         return
     if not os.listdir(dir_to_remove):
         os.rmdir(dir_to_remove)
@@ -141,8 +144,11 @@ def remove_directory_if_empty(dir_to_remove):
 def restart_freecad():
     """Shuts down and restarts FreeCAD"""
 
+    if not QtCore or not QtWidgets:
+        return
+
     args = QtWidgets.QApplication.arguments()[1:]
-    if FreeCADGui.getMainWindow().close():
+    if fci.FreeCADGui.getMainWindow().close():
         QtCore.QProcess.startDetached(
             QtWidgets.QApplication.applicationFilePath(), args
         )
@@ -156,7 +162,7 @@ def get_zip_url(repo):
         return f"{repo.url}/archive/{repo.branch}.zip"
     if parsed_url.netloc in ["gitlab.com", "framagit.org", "salsa.debian.org"]:
         return f"{repo.url}/-/archive/{repo.branch}/{repo.name}-{repo.branch}.zip"
-    FreeCAD.Console.PrintLog(
+    fci.Console.PrintLog(
         "Debug: addonmanager_utilities.get_zip_url: Unknown git host fetching zip URL:"
         + parsed_url.netloc
         + "\n"
@@ -185,7 +191,7 @@ def construct_git_url(repo, filename):
         return f"{repo.url}/raw/{repo.branch}/{filename}"
     if parsed_url.netloc in ["gitlab.com", "framagit.org", "salsa.debian.org"]:
         return f"{repo.url}/-/raw/{repo.branch}/{filename}"
-    FreeCAD.Console.PrintLog(
+    fci.Console.PrintLog(
         "Debug: addonmanager_utilities.construct_git_url: Unknown git host:"
         + parsed_url.netloc
         + f" for file {filename}\n"
@@ -215,7 +221,7 @@ def get_desc_regex(repo):
         return r'<meta property="og:description" content="(.*?)"'
     if parsed_url.netloc in ["gitlab.com", "salsa.debian.org", "framagit.org"]:
         return r'<meta.*?content="(.*?)".*?og:description.*?>'
-    FreeCAD.Console.PrintLog(
+    fci.Console.PrintLog(
         "Debug: addonmanager_utilities.get_desc_regex: Unknown git host:",
         repo.url,
         "\n",
@@ -231,7 +237,7 @@ def get_readme_html_url(repo):
         return f"{repo.url}/blob/{repo.branch}/README.md"
     if parsed_url.netloc in ["gitlab.com", "salsa.debian.org", "framagit.org"]:
         return f"{repo.url}/-/blob/{repo.branch}/README.md"
-    FreeCAD.Console.PrintLog(
+    fci.Console.PrintLog(
         "Unrecognized git repo location '' -- guessing it is a GitLab instance..."
     )
     return f"{repo.url}/-/blob/{repo.branch}/README.md"
@@ -239,7 +245,7 @@ def get_readme_html_url(repo):
 
 def is_darkmode() -> bool:
     """Heuristics to determine if we are in a darkmode stylesheet"""
-    pl = FreeCADGui.getMainWindow().palette()
+    pl = fci.FreeCADGui.getMainWindow().palette()
     return pl.color(pl.Background).lightness() < 128
 
 
@@ -296,7 +302,7 @@ def get_macro_version_from_file(filename: str) -> str:
                     if date:
                         return date
                     # pylint: disable=line-too-long,consider-using-f-string
-                    FreeCAD.Console.PrintWarning(
+                    fci.Console.PrintWarning(
                         translate(
                             "AddonsInstaller",
                             "Macro {} specified '__version__ = __date__' prior to setting a value for __date__".format(
@@ -315,11 +321,11 @@ def update_macro_installation_details(repo) -> None:
     """Determine if a given macro is installed, either in its plain name,
     or prefixed with "Macro_" """
     if repo is None or not hasattr(repo, "macro") or repo.macro is None:
-        FreeCAD.Console.PrintLog("Requested macro details for non-macro object\n")
+        fci.Console.PrintLog("Requested macro details for non-macro object\n")
         return
-    test_file_one = os.path.join(FreeCAD.getUserMacroDir(True), repo.macro.filename)
+    test_file_one = os.path.join(fci.DataPaths().macro_dir, repo.macro.filename)
     test_file_two = os.path.join(
-        FreeCAD.getUserMacroDir(True), "Macro_" + repo.macro.filename
+        fci.DataPaths().macro_dir, "Macro_" + repo.macro.filename
     )
     if os.path.exists(test_file_one):
         repo.updated_timestamp = os.path.getmtime(test_file_one)
@@ -341,10 +347,6 @@ def is_float(element: Any) -> bool:
     except ValueError:
         return False
 
-
-#  @}
-
-
 def get_python_exe() -> str:
     """Find Python. In preference order
     A) The value of the PythonExecutableForPip user preference
@@ -352,9 +354,9 @@ def get_python_exe() -> str:
     C) The executable located in the same bin directory as FreeCAD and called "python"
     D) The result of a shutil search for your system's "python3" executable
     E) The result of a shutil search for your system's "python" executable"""
-    prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Addons")
+    prefs = fci.ParamGet("User parameter:BaseApp/Preferences/Addons")
     python_exe = prefs.GetString("PythonExecutableForPip", "Not set")
-    fc_dir = FreeCAD.getHomePath()
+    fc_dir = fci.DataPaths().home_dir
     if not python_exe or python_exe == "Not set" or not os.path.exists(python_exe):
         python_exe = os.path.join(fc_dir, "bin", "python3")
         if "Windows" in platform.system():
@@ -383,36 +385,37 @@ def get_pip_target_directory():
     # Get the default location to install new pip packages
     major, minor, _ = platform.python_version_tuple()
     vendor_path = os.path.join(
-        FreeCAD.getUserAppDataDir(), "AdditionalPythonPackages", f"py{major}{minor}"
+        fci.DataPaths().mod_dir, "..", "AdditionalPythonPackages", f"py{major}{minor}"
     )
     return vendor_path
 
 
 def get_cache_file_name(file: str) -> str:
     """Get the full path to a cache file with a given name."""
-    cache_path = FreeCAD.getUserCachePath()
+    cache_path = fci.DataPaths().cache_dir
     am_path = os.path.join(cache_path, "AddonManager")
     os.makedirs(am_path, exist_ok=True)
     return os.path.join(am_path, file)
 
 
-def blocking_get(url: str, method=None) -> str:
+def blocking_get(url: str, method=None) -> bytes:
     """Wrapper around three possible ways of accessing data, depending on the current run mode and
     Python installation. Blocks until complete, and returns the text results of the call if it
     succeeded, or an empty string if it failed, or returned no data. The method argument is
     provided mainly for testing purposes."""
-    p = ""
-    if FreeCAD.GuiUp and method is None or method == "networkmanager":
+    p = b""
+    if fci.FreeCADGui and method is None or method == "networkmanager":
         NetworkManager.InitializeNetworkManager()
         p = NetworkManager.AM_NETWORK_MANAGER.blocking_get(url)
+        p = p.data()
     elif requests and method is None or method == "requests":
         response = requests.get(url)
         if response.status_code == 200:
-            p = response.text
+            p = response.content
     else:
         ctx = ssl.create_default_context()
         with urllib.request.urlopen(url, context=ctx) as f:
-            p = f.read().decode("utf-8")
+            p = f.read()
     return p
 
 

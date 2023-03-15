@@ -192,11 +192,6 @@ void DlgDisplayPropertiesImp::setupConnections()
     connect(d->ui.buttonColorPlot, &ColorButton::clicked, this, &DlgDisplayPropertiesImp::onButtonColorPlotClicked);
 }
 
-void DlgDisplayPropertiesImp::showDefaultButtons(bool ok)
-{
-    d->ui.buttonBox->setVisible(ok);
-}
-
 void DlgDisplayPropertiesImp::changeEvent(QEvent *e)
 {
     if (e->type() == QEvent::LanguageChange) {
@@ -630,7 +625,6 @@ TaskDisplayProperties::TaskDisplayProperties()
 {
     this->setButtonPosition(TaskDisplayProperties::North);
     widget = new DlgDisplayPropertiesImp(false);
-    widget->showDefaultButtons(false);
     taskbox = new Gui::TaskView::TaskBox(QPixmap(), widget->windowTitle(),true, nullptr);
     taskbox->groupLayout()->addWidget(widget);
     Content.push_back(taskbox);

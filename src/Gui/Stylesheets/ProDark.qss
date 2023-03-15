@@ -1624,20 +1624,6 @@ QWidget#Form QPushButton:pressed {
     background-color: #557BB6;
 }
 
-/* Sketcher Manual Update Button */
-
-QPushButton#manualUpdate {
-    padding: 4px;
-    margin: 0px;
-    border: 1px solid #494949;
-}
-
-QPushButton:pressed#manualUpdate {
-    color: #ffffff;
-    border: 1px solid #3c3c3c;
-    background-color: #48699a;
-}
-
 /* Addon Manager */
 
 QDialog#Dialog QPushButton {
@@ -1815,6 +1801,32 @@ QSint--ActionGroup QFrame[class="content"] QToolButton:pressed {
     background-color: #557BB6;
 }
 
+/* QToolButtons with a menu found in Sketcher task panel*/
+QSint--ActionGroup QToolButton::menu-button {
+    border: none;
+    border-top-right-radius: 4px;
+    border-bottom-right-radius: 4px;
+    padding: 2px;
+    width: 16px; /* 16px width + 4px for border = 20px allocated above */
+    outline: none;
+    background-color: transparent;
+}
+
+QSint--ActionGroup QToolButton#settingsButton,
+QSint--ActionGroup QToolButton#filterButton,
+QSint--ActionGroup QToolButton#manualUpdate {
+    padding: 2px;
+    padding-right: 20px; /* make way for the popup button */
+    margin: 0px;
+}
+
+/* to give widget inside the menu same look as regular menu */
+QSint--ActionGroup QToolButton#filterButton QListWidget {
+    color: #f5f5f5;
+    background: #2a2a2a;
+    padding: 0px;
+    margin: 0px;
+}
 
 /*==================================================================================================
 QComboBox inside Task Panel content
@@ -1824,7 +1836,7 @@ QComboBox inside Task Panel content
 /* TODO: external border not working, in the rest of GUI works setting up Qmenu background color but inside Task Panel it doesn't... */
 QSint--ActionGroup QFrame[class="content"] QMenu,
 QSint--ActionGroup QFrame[class="content"] QMenu::item {
-    background-color: #696969;
+    background-color: #2a2a2a;
 }
 
 QSint--ActionGroup QFrame[class="content"] QComboBox QAbstractItemView {

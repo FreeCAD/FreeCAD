@@ -106,17 +106,19 @@ FC_LOG_LEVEL_INIT("Expression", true, true)
     _e.raiseException();\
 }while(0)
 
-#define EXPR_PY_THROW(_expr) _EXPR_PY_THROW("",_expr)
+#define EXPR_PY_THROW(_expr) _EXPR_PY_THROW("", _expr)
 
-#define EXPR_THROW(_msg) _EXPR_THROW(_msg,this)
+#define EXPR_THROW(_msg) _EXPR_THROW(_msg, this)
 
-#define RUNTIME_THROW(_msg) __EXPR_THROW(Base::RuntimeError,_msg, static_cast<Expression*>(nullptr))
+#define ARGUMENT_THROW(_msg) EXPR_THROW("Invalid number of arguments: " _msg)
 
-#define TYPE_THROW(_msg) __EXPR_THROW(Base::TypeError,_msg, static_cast<Expression*>(nullptr))
+#define RUNTIME_THROW(_msg) __EXPR_THROW(Base::RuntimeError, _msg, static_cast<Expression*>(nullptr))
 
-#define PARSER_THROW(_msg) __EXPR_THROW(Base::ParserError,_msg, static_cast<Expression*>(nullptr))
+#define TYPE_THROW(_msg) __EXPR_THROW(Base::TypeError, _msg, static_cast<Expression*>(nullptr))
 
-#define PY_THROW(_msg) __EXPR_THROW(Py::RuntimeError,_msg, static_cast<Expression*>(nullptr))
+#define PARSER_THROW(_msg) __EXPR_THROW(Base::ParserError, _msg, static_cast<Expression*>(nullptr))
+
+#define PY_THROW(_msg) __EXPR_THROW(Py::RuntimeError, _msg, static_cast<Expression*>(nullptr))
 
 static inline std::ostream &operator<<(std::ostream &os, const App::Expression *expr) {
     if(expr) {
@@ -1729,60 +1731,91 @@ FunctionExpression::FunctionExpression(const DocumentObject *_owner, Function _f
     , args(_args)
 {
     switch (f) {
+    case ABS:
     case ACOS:
     case ASIN:
     case ATAN:
-    case ABS:
-    case EXP:
-    case LOG:
-    case LOG10:
-    case SIN:
-    case SINH:
-    case TAN:
-    case TANH:
-    case SQRT:
     case CBRT:
+    case CEIL:
     case COS:
     case COSH:
-    case ROUND:
-    case TRUNC:
-    case CEIL:
+    case EXP:
     case FLOOR:
-    case MINVERT:
-    case STR:
     case HIDDENREF:
     case HREF:
+    case LOG:
+    case LOG10:
+    case MINVERT:
+    case ROTATIONX:
+    case ROTATIONY:
+    case ROTATIONZ:
+    case ROUND:
+    case SIN:
+    case SINH:
+    case SQRT:
+    case STR:
+    case TAN:
+    case TANH:
+    case TRUNC:
         if (args.size() != 1)
-            EXPR_THROW("Invalid number of arguments: exactly one required.");
+            ARGUMENT_THROW("exactly one required.");
         break;
-    case MOD:
+    case PLACEMENT:
+        if (args.size() > 3)
+            ARGUMENT_THROW("exactly one, two, or three required.");
+        break;
+    case TRANSLATIONM:
+        if (args.size() != 1 && args.size() != 3)
+            ARGUMENT_THROW("exactly one or three required.");
+        break;
     case ATAN2:
+    case MOD:
+    case MROTATEX:
+    case MROTATEY:
+    case MROTATEZ:
     case POW:
         if (args.size() != 2)
-            EXPR_THROW("Invalid number of arguments: exactly two required.");
+            ARGUMENT_THROW("exactly two required.");
         break;
-    case HYPOT:
     case CATH:
+    case HYPOT:
+    case ROTATION:
         if (args.size() < 2 || args.size() > 3)
-            EXPR_THROW("Invalid number of arguments: exactly two, or three required.");
+            ARGUMENT_THROW("exactly two, or three required.");
         break;
-    case STDDEV:
-    case SUM:
+    case MTRANSLATE:
+    case MSCALE:
+        if (args.size() != 2 && args.size() != 4)
+            ARGUMENT_THROW("exactly two or four required.");
+        break;
+    case MROTATE:
+        if (args.size() < 2 || args.size() > 4)
+            ARGUMENT_THROW("exactly two, three, or four required.");
+        break;
+    case VECTOR:
+        if (args.size() != 3)
+            ARGUMENT_THROW("exactly three required.");
+        break;
+    case MATRIX:
+        if (args.size() > 16)
+            ARGUMENT_THROW("exactly 16 or less required.");
+        break;
     case AVERAGE:
     case COUNT:
-    case MIN:
-    case MAX:
     case CREATE:
-    case MSCALE:
+    case MAX:
+    case MIN:
+    case STDDEV:
+    case SUM:
         if (args.empty())
-            EXPR_THROW("Invalid number of arguments: at least one required.");
+            ARGUMENT_THROW("at least one required.");
         break;
     case LIST:
     case TUPLE:
         break;
-    case NONE:
     case AGGREGATES:
     case LAST:
+    case NONE:
     default:
         PARSER_THROW("Unknown function");
         break;
@@ -1998,6 +2031,76 @@ Py::Object FunctionExpression::evalAggregate(
     return pyFromQuantity(c->getQuantity());
 }
 
+Base::Vector3d FunctionExpression::evaluateSecondVectorArgument(const Expression *expression, const std::vector<Expression*> &arguments)
+{
+    Py::Tuple vectorValues;
+    Py::Object secondParameter = arguments[1]->getPyValue();
+
+    if (arguments.size() == 2) {
+        if (!secondParameter.isSequence())
+            _EXPR_THROW("Second parameter is not a sequence type: '" << secondParameter.as_string() << "'.", expression);
+        if (PySequence_Size(secondParameter.ptr()) != 3)
+            _EXPR_THROW("Second parameter provided has " << PySequence_Size(secondParameter.ptr()) << " elements instead of 3.", expression);
+
+        vectorValues = Py::Tuple(Py::Sequence(secondParameter));
+    } else {
+        vectorValues = Py::Tuple(3);
+        vectorValues.setItem(0, secondParameter);
+        vectorValues.setItem(1, arguments[2]->getPyValue());
+        vectorValues.setItem(2, arguments[3]->getPyValue());
+    }
+
+    Vector3d vector;
+    if (!PyArg_ParseTuple(vectorValues.ptr(), "ddd", &vector.x, &vector.y, &vector.z)) {
+        PyErr_Clear();
+        _EXPR_THROW("Error parsing scale values.", expression);
+    }
+
+    return vector;
+}
+
+void FunctionExpression::initialiseObject(const Py::Object *object, const std::vector<Expression*> &arguments, const unsigned long offset)
+{
+    if (arguments.size() > offset) {
+        Py::Tuple constructorArguments(arguments.size() - offset);
+        for (unsigned i = offset; i < arguments.size(); ++i)
+            constructorArguments.setItem(i - offset, arguments[i]->getPyValue());
+        Py::Dict kwd;
+        PyObjectBase::__PyInit(object->ptr(), constructorArguments.ptr(), kwd.ptr());
+    }
+}
+
+Py::Object FunctionExpression::transformFirstArgument(
+    const Expression* expression,
+    const std::vector<Expression*> &arguments,
+    const Base::Matrix4D* transformationMatrix
+)
+{
+    Py::Object target = arguments[0]->getPyValue();
+
+    if (PyObject_TypeCheck(target.ptr(), &Base::MatrixPy::Type)) {
+        Base::Matrix4D matrix = static_cast<Base::MatrixPy*>(target.ptr())->value();
+        return Py::asObject(new Base::MatrixPy(*transformationMatrix * matrix));
+    } else if (PyObject_TypeCheck(target.ptr(), &Base::PlacementPy::Type)) {
+        Base::Matrix4D placementMatrix =
+            static_cast<Base::PlacementPy*>(target.ptr())->getPlacementPtr()->toMatrix();
+        return Py::asObject(new Base::PlacementPy(Base::Placement(*transformationMatrix * placementMatrix)));
+    } else if (PyObject_TypeCheck(target.ptr(), &Base::RotationPy::Type)) {
+        Base::Matrix4D rotatioMatrix;
+        static_cast<Base::RotationPy*>(target.ptr())->getRotationPtr()->getValue(rotatioMatrix);
+        return Py::asObject(new Base::RotationPy(Base::Rotation(*transformationMatrix * rotatioMatrix)));
+    }
+
+    _EXPR_THROW("Function requires the first argument to be either Matrix, Placement or Rotation.", expression);
+}
+
+Py::Object FunctionExpression::translationMatrix(double x, double y, double z)
+{
+    Base::Matrix4D matrix;
+    matrix.move(x, y, z);
+    return Py::asObject(new Base::MatrixPy(matrix));
+}
+
 Py::Object FunctionExpression::evaluate(const Expression *expr, int f, const std::vector<Expression*> &args)
 {
     if(!expr || !expr->getOwner())
@@ -2007,103 +2110,163 @@ Py::Object FunctionExpression::evaluate(const Expression *expr, int f, const std
     if (f > AGGREGATES)
         return evalAggregate(expr, f, args);
 
-    if(f == LIST) {
-        if(args.size() == 1 && args[0]->isDerivedFrom(RangeExpression::getClassTypeId()))
+    switch (f) {
+    case LIST: {
+        if (args.size() == 1 && args[0]->isDerivedFrom(RangeExpression::getClassTypeId()))
             return args[0]->getPyValue();
         Py::List list(args.size());
-        int i=0;
-        for(auto &arg : args)
-            list.setItem(i++,arg->getPyValue());
+        int i = 0;
+        for (auto &arg : args)
+            list.setItem(i++, arg->getPyValue());
         return list;
-    } else if (f == TUPLE) {
-        if(args.size() == 1 && args[0]->isDerivedFrom(RangeExpression::getClassTypeId()))
+    }
+    case TUPLE: {
+        if (args.size() == 1 && args[0]->isDerivedFrom(RangeExpression::getClassTypeId()))
             return Py::Tuple(args[0]->getPyValue());
         Py::Tuple tuple(args.size());
-        int i=0;
-        for(auto &arg : args)
-            tuple.setItem(i++,arg->getPyValue());
+        int i = 0;
+        for (auto &arg : args)
+            tuple.setItem(i++, arg->getPyValue());
         return tuple;
-    } else if (f == MSCALE) {
-        if(args.size() < 2)
-            _EXPR_THROW("Function requires at least two arguments.",expr);
-        Py::Object pymat = args[0]->getPyValue();
-        Py::Object pyscale;
-        if(PyObject_TypeCheck(pymat.ptr(),&Base::MatrixPy::Type)) {
-            if(args.size() == 2) {
-                Py::Object obj = args[1]->getPyValue();
-                if(obj.isSequence() && PySequence_Size(obj.ptr())==3)
-                    pyscale = Py::Tuple(Py::Sequence(obj));
-            } else if(args.size() == 4) {
-                Py::Tuple tuple(3);
-                tuple.setItem(0,args[1]->getPyValue());
-                tuple.setItem(1,args[2]->getPyValue());
-                tuple.setItem(2,args[3]->getPyValue());
-                pyscale = tuple;
-            }
-        }
-        if(!pyscale.isNone()) {
-            Base::Vector3d vec;
-            if (!PyArg_ParseTuple(pyscale.ptr(), "ddd", &vec.x,&vec.y,&vec.z))
-                PyErr_Clear();
-            else {
-                auto mat = static_cast<Base::MatrixPy*>(pymat.ptr())->value();
-                mat.scale(vec);
-                return Py::asObject(new Base::MatrixPy(mat));
-            }
-        }
-        _EXPR_THROW("Function requires arguments to be either "
-                "(matrix,vector) or (matrix,number,number,number).", expr);
+    }
     }
 
     if(args.empty())
         _EXPR_THROW("Function requires at least one argument.",expr);
 
-    if (f == MINVERT) {
+    switch (f) {
+    case MINVERT: {
         Py::Object pyobj = args[0]->getPyValue();
-        if (PyObject_TypeCheck(pyobj.ptr(),&Base::MatrixPy::Type)) {
+        if (PyObject_TypeCheck(pyobj.ptr(), &Base::MatrixPy::Type)) {
             auto m = static_cast<Base::MatrixPy*>(pyobj.ptr())->value();
             if (fabs(m.determinant()) <= DBL_EPSILON)
-                _EXPR_THROW("Cannot invert singular matrix.",expr);
+                _EXPR_THROW("Cannot invert singular matrix.", expr);
             m.inverseGauss();
             return Py::asObject(new Base::MatrixPy(m));
-
-        } else if (PyObject_TypeCheck(pyobj.ptr(),&Base::PlacementPy::Type)) {
+        } else if (PyObject_TypeCheck(pyobj.ptr(), &Base::PlacementPy::Type)) {
             const auto &pla = *static_cast<Base::PlacementPy*>(pyobj.ptr())->getPlacementPtr();
             return Py::asObject(new Base::PlacementPy(pla.inverse()));
-
-        } else if (PyObject_TypeCheck(pyobj.ptr(),&Base::RotationPy::Type)) {
+        } else if (PyObject_TypeCheck(pyobj.ptr(), &Base::RotationPy::Type)) {
             const auto &rot = *static_cast<Base::RotationPy*>(pyobj.ptr())->getRotationPtr();
             return Py::asObject(new Base::RotationPy(rot.inverse()));
         }
-         _EXPR_THROW("Function requires the first argument to be either Matrix, Placement or Rotation.",expr);
+        _EXPR_THROW(
+            "Function requires the first argument to be either Matrix, Placement or Rotation.",
+            expr);
+        break;
+    }
+    case MROTATE: {
+        Py::Object rotationObject = args[1]->getPyValue();
+        if (!PyObject_TypeCheck(rotationObject.ptr(), &Base::RotationPy::Type))
+        {
+            rotationObject = Py::asObject(new Base::RotationPy(Base::Rotation()));
+            initialiseObject(&rotationObject, args, 1);
+        }
 
-    } else if (f == CREATE) {
+        Base::Matrix4D rotationMatrix;
+        static_cast<Base::RotationPy*>(rotationObject.ptr())->getRotationPtr()->getValue(rotationMatrix);
+
+        return transformFirstArgument(expr, args, &rotationMatrix);
+    }
+    case MROTATEX:
+    case MROTATEY:
+    case MROTATEZ:
+    {
+        Py::Object rotationAngleParameter = args[1]->getPyValue();
+        Quantity rotationAngle = pyToQuantity(rotationAngleParameter, expr, "Invalid rotation angle.");
+
+        if (!(rotationAngle.isDimensionlessOrUnit(Unit::Angle)))
+            _EXPR_THROW("Unit must be either empty or an angle.", expr);
+
+        Rotation rotation = Base::Rotation(
+            Vector3d(static_cast<double>(f == MROTATEX), static_cast<double>(f == MROTATEY), static_cast<double>(f == MROTATEZ)),
+            rotationAngle.getValue() * M_PI / 180.0);
+        Base::Matrix4D rotationMatrix;
+        rotation.getValue(rotationMatrix);
+
+        return transformFirstArgument(expr, args, &rotationMatrix);
+    }
+    case MSCALE: {
+        Vector3d scaleValues = evaluateSecondVectorArgument(expr, args);
+
+        Base::Matrix4D scaleMatrix;
+        scaleMatrix.scale(scaleValues);
+
+        return transformFirstArgument(expr, args, &scaleMatrix);
+    }
+    case MTRANSLATE: {
+        Vector3d translateValues = evaluateSecondVectorArgument(expr, args);
+
+        Base::Matrix4D translateMatrix;
+        translateMatrix.move(translateValues);
+
+        Py::Object target = args[0]->getPyValue();
+        if (PyObject_TypeCheck(target.ptr(), &Base::RotationPy::Type)) {
+            Base::Matrix4D targetRotatioMatrix;
+            static_cast<Base::RotationPy*>(target.ptr())->getRotationPtr()->getValue(targetRotatioMatrix);
+            return Py::asObject(new Base::PlacementPy(Base::Placement(translateMatrix * targetRotatioMatrix)));
+        }
+
+        return transformFirstArgument(expr, args, &translateMatrix);
+    }
+    case CREATE: {
         Py::Object pytype = args[0]->getPyValue();
-        if(!pytype.isString())
-            _EXPR_THROW("Function requires the first argument to be a string.",expr);
+        if (!pytype.isString())
+            _EXPR_THROW("Function requires the first argument to be a string.", expr);
         std::string type(pytype.as_string());
         Py::Object res;
-        if(boost::iequals(type,"matrix"))
+        if (boost::iequals(type, "matrix"))
             res = Py::asObject(new Base::MatrixPy(Base::Matrix4D()));
-        else if(boost::iequals(type,"vector"))
+        else if (boost::iequals(type, "vector"))
             res = Py::asObject(new Base::VectorPy(Base::Vector3d()));
-        else if(boost::iequals(type,"placement"))
+        else if (boost::iequals(type, "placement"))
             res = Py::asObject(new Base::PlacementPy(Base::Placement()));
-        else if(boost::iequals(type,"rotation"))
+        else if (boost::iequals(type, "rotation"))
             res = Py::asObject(new Base::RotationPy(Base::Rotation()));
         else
-            _EXPR_THROW("Unknown type '" << type << "'.",expr);
-        if(args.size()>1) {
-            Py::Tuple tuple(args.size()-1);
-            for(unsigned i=1;i<args.size();++i)
-                tuple.setItem(i-1,args[i]->getPyValue());
-            Py::Dict dict;
-            PyObjectBase::__PyInit(res.ptr(),tuple.ptr(),dict.ptr());
-        }
+            _EXPR_THROW("Unknown type '" << type << "'.", expr);
+        initialiseObject(&res, args, 1);
         return res;
-    } else if (f == STR) {
+    }
+    case MATRIX: {
+        Py::Object matrix = Py::asObject(new Base::MatrixPy(Base::Matrix4D()));
+        initialiseObject(&matrix, args);
+        return matrix;
+    }
+    case PLACEMENT: {
+        Py::Object placement = Py::asObject(new Base::PlacementPy(Base::Placement()));
+        initialiseObject(&placement, args);
+        return placement;
+    }
+    case ROTATION: {
+        Py::Object rotation = Py::asObject(new Base::RotationPy(Base::Rotation()));
+        initialiseObject(&rotation, args);
+        return rotation;
+    }
+    case STR:
         return Py::String(args[0]->getPyValue().as_string());
-    } else if (f == HIDDENREF || f == HREF) {
+    case TRANSLATIONM: {
+        if (args.size() != 1)
+            break; // Break and proceed to 3 size version.
+        Py::Object parameter = args[0]->getPyValue();
+        if (!parameter.isSequence())
+            _EXPR_THROW("Not sequence type: '" << parameter.as_string() << "'.", expr);
+        if (PySequence_Size(parameter.ptr()) != 3)
+            _EXPR_THROW("Sequence provided has " << PySequence_Size(parameter.ptr()) << " elements instead of 3.", expr);
+        double x, y, z;
+        if (!PyArg_ParseTuple(Py::Tuple(Py::Sequence(parameter)).ptr(), "ddd", &x, &y, &z)) {
+            PyErr_Clear();
+            _EXPR_THROW("Error parsing sequence.", expr);
+        }
+        return translationMatrix(x, y, z);
+    }
+    case VECTOR: {
+        Py::Object vector = Py::asObject(new Base::VectorPy(Base::Vector3d()));
+        initialiseObject(&vector, args);
+        return vector;
+    }
+    case HIDDENREF:
+    case HREF:
         return args[0]->getPyValue();
     }
 
@@ -2111,13 +2274,13 @@ Py::Object FunctionExpression::evaluate(const Expression *expr, int f, const std
     Quantity v1 = pyToQuantity(e1,expr,"Invalid first argument.");
     Py::Object e2;
     Quantity v2;
-    if(args.size()>1) {
+    if (args.size() > 1) {
         e2 = args[1]->getPyValue();
         v2 = pyToQuantity(e2,expr,"Invalid second argument.");
     }
     Py::Object e3;
     Quantity v3;
-    if(args.size()>2) {
+    if (args.size() > 2) {
         e3 = args[2]->getPyValue();
         v3 = pyToQuantity(e3,expr,"Invalid third argument.");
     }
@@ -2133,8 +2296,11 @@ Py::Object FunctionExpression::evaluate(const Expression *expr, int f, const std
     case COS:
     case SIN:
     case TAN:
-        if (!(v1.getUnit() == Unit::Angle || v1.getUnit().isEmpty()))
-            _EXPR_THROW("Unit must be either empty or an angle.",expr);
+    case ROTATIONX:
+    case ROTATIONY:
+    case ROTATIONZ:
+        if (!(v1.isDimensionlessOrUnit(Unit::Angle)))
+            _EXPR_THROW("Unit must be either empty or an angle.", expr);
 
         // Convert value to radians
         value *= M_PI / 180.0;
@@ -2143,8 +2309,8 @@ Py::Object FunctionExpression::evaluate(const Expression *expr, int f, const std
     case ACOS:
     case ASIN:
     case ATAN:
-        if (!v1.getUnit().isEmpty())
-            _EXPR_THROW("Unit must be empty.",expr);
+        if (!v1.isDimensionless())
+            _EXPR_THROW("Unit must be empty.", expr);
         unit = Unit::Angle;
         scaler = 180.0 / M_PI;
         break;
@@ -2154,7 +2320,7 @@ Py::Object FunctionExpression::evaluate(const Expression *expr, int f, const std
     case SINH:
     case TANH:
     case COSH:
-        if (!v1.getUnit().isEmpty())
+        if (!v1.isDimensionless())
             _EXPR_THROW("Unit must be empty.",expr);
         unit = Unit();
         break;
@@ -2233,12 +2399,12 @@ Py::Object FunctionExpression::evaluate(const Expression *expr, int f, const std
         if (e2.isNone())
             _EXPR_THROW("Invalid second argument.",expr);
 
-        if (!v2.getUnit().isEmpty())
+        if (!v2.isDimensionless())
             _EXPR_THROW("Exponent is not allowed to have a unit.",expr);
 
         // Compute new unit for exponentiation
         double exponent = v2.getValue();
-        if (!v1.getUnit().isEmpty()) {
+        if (!v1.isDimensionless()) {
             if (exponent - boost::math::round(exponent) < 1e-9)
                 unit = v1.getUnit().pow(exponent);
             else
@@ -2261,6 +2427,10 @@ Py::Object FunctionExpression::evaluate(const Expression *expr, int f, const std
         }
         unit = v1.getUnit();
         break;
+    case TRANSLATIONM:
+        if (v1.isDimensionlessOrUnit(Unit::Length) && v2.isDimensionlessOrUnit(Unit::Length) && v3.isDimensionlessOrUnit(Unit::Length))
+            break;
+        _EXPR_THROW("Translation units must be a length or dimensionless.", expr);
     default:
         _EXPR_THROW("Unknown function: " << f,0);
     }
@@ -2344,6 +2514,14 @@ Py::Object FunctionExpression::evaluate(const Expression *expr, int f, const std
     case FLOOR:
         output = floor(value);
         break;
+    case ROTATIONX:
+    case ROTATIONY:
+    case ROTATIONZ:
+        return Py::asObject(new Base::RotationPy(Base::Rotation(
+            Vector3d(static_cast<double>(f == ROTATIONX), static_cast<double>(f == ROTATIONY), static_cast<double>(f == ROTATIONZ)),
+            value)));
+    case TRANSLATIONM:
+        return translationMatrix(v1.getValue(), v2.getValue(), v3.getValue());
     default:
         _EXPR_THROW("Unknown function: " << f,0);
     }
@@ -2397,82 +2575,108 @@ Expression *FunctionExpression::simplify() const
 void FunctionExpression::_toString(std::ostream &ss, bool persistent,int) const
 {
     switch (f) {
+    case ABS:
+        ss << "abs("; break;;
     case ACOS:
         ss << "acos("; break;;
     case ASIN:
         ss << "asin("; break;;
     case ATAN:
         ss << "atan("; break;;
-    case ABS:
-        ss << "abs("; break;;
-    case EXP:
-        ss << "exp("; break;;
-    case LOG:
-        ss << "log("; break;;
-    case LOG10:
-        ss << "log10("; break;;
-    case SIN:
-        ss << "sin("; break;;
-    case SINH:
-        ss << "sinh("; break;;
-    case TAN:
-        ss << "tan("; break;;
-    case TANH:
-        ss << "tanh("; break;;
-    case SQRT:
-        ss << "sqrt("; break;;
+    case ATAN2:
+        ss << "atan2("; break;;
+    case CATH:
+        ss << "cath("; break;;
     case CBRT:
         ss << "cbrt("; break;;
+    case CEIL:
+        ss << "ceil("; break;;
     case COS:
         ss << "cos("; break;;
     case COSH:
         ss << "cosh("; break;;
-    case MOD:
-        ss << "mod("; break;;
-    case ATAN2:
-        ss << "atan2("; break;;
-    case POW:
-        ss << "pow("; break;;
-    case HYPOT:
-        ss << "hypot("; break;;
-    case CATH:
-        ss << "cath("; break;;
-    case ROUND:
-        ss << "round("; break;;
-    case TRUNC:
-        ss << "trunc("; break;;
-    case CEIL:
-        ss << "ceil("; break;;
+    case EXP:
+        ss << "exp("; break;;
     case FLOOR:
         ss << "floor("; break;;
-    case SUM:
-        ss << "sum("; break;;
-    case COUNT:
-        ss << "count("; break;;
-    case AVERAGE:
-        ss << "average("; break;;
-    case STDDEV:
-        ss << "stddev("; break;;
-    case MIN:
-        ss << "min("; break;;
-    case MAX:
-        ss << "max("; break;;
-    case LIST:
-        ss << "list("; break;;
-    case TUPLE:
-        ss << "tuple("; break;;
-    case MSCALE:
-        ss << "mscale("; break;;
+    case HYPOT:
+        ss << "hypot("; break;;
+    case LOG:
+        ss << "log("; break;;
+    case LOG10:
+        ss << "log10("; break;;
+    case MOD:
+        ss << "mod("; break;;
+    case POW:
+        ss << "pow("; break;;
+    case ROUND:
+        ss << "round("; break;;
+    case SIN:
+        ss << "sin("; break;;
+    case SINH:
+        ss << "sinh("; break;;
+    case SQRT:
+        ss << "sqrt("; break;;
+    case TAN:
+        ss << "tan("; break;;
+    case TANH:
+        ss << "tanh("; break;;
+    case TRUNC:
+        ss << "trunc("; break;;
     case MINVERT:
         ss << "minvert("; break;;
+    case MROTATE:
+        ss << "mrotate("; break;;
+    case MROTATEX:
+        ss << "mrotatex("; break;;
+    case MROTATEY:
+        ss << "mrotatey("; break;;
+    case MROTATEZ:
+        ss << "mrotatez("; break;;
+    case MSCALE:
+        ss << "mscale("; break;;
+    case MTRANSLATE:
+        ss << "mtranslate("; break;;
     case CREATE:
         ss << "create("; break;;
+    case LIST:
+        ss << "list("; break;;
+    case MATRIX:
+        ss << "matrix("; break;;
+    case PLACEMENT:
+        ss << "placement("; break;;
+    case ROTATION:
+        ss << "rotation("; break;;
+    case ROTATIONX:
+        ss << "rotationx("; break;;
+    case ROTATIONY:
+        ss << "rotationy("; break;;
+    case ROTATIONZ:
+        ss << "rotationz("; break;;
     case STR:
         ss << "str("; break;;
+    case TRANSLATIONM:
+        ss << "translationm("; break;;
+    case TUPLE:
+        ss << "tuple("; break;;
+    case VECTOR:
+        ss << "vector("; break;;
     case HIDDENREF:
         ss << "hiddenref("; break;;
     case HREF:
         ss << "href("; break;;
+    case AVERAGE:
+        ss << "average("; break;;
+    case COUNT:
+        ss << "count("; break;;
+    case MAX:
+        ss << "max("; break;;
+    case MIN:
+        ss << "min("; break;;
+    case STDDEV:
+        ss << "stddev("; break;;
+    case SUM:
+        ss << "sum("; break;;
     default:
         ss << fname << "("; break;;
     }
@@ -3267,46 +3471,62 @@ static void initParser(const App::DocumentObject *owner)
     unitExpression = valueExpression = false;
 
     if (!has_registered_functions) {
+        registered_functions["abs"] = FunctionExpression::ABS;
         registered_functions["acos"] = FunctionExpression::ACOS;
         registered_functions["asin"] = FunctionExpression::ASIN;
         registered_functions["atan"] = FunctionExpression::ATAN;
-        registered_functions["abs"] = FunctionExpression::ABS;
-        registered_functions["exp"] = FunctionExpression::EXP;
-        registered_functions["log"] = FunctionExpression::LOG;
-        registered_functions["log10"] = FunctionExpression::LOG10;
-        registered_functions["sin"] = FunctionExpression::SIN;
-        registered_functions["sinh"] = FunctionExpression::SINH;
-        registered_functions["tan"] = FunctionExpression::TAN;
-        registered_functions["tanh"] = FunctionExpression::TANH;
-        registered_functions["sqrt"] = FunctionExpression::SQRT;
+        registered_functions["atan2"] = FunctionExpression::ATAN2;
+        registered_functions["cath"] = FunctionExpression::CATH;
         registered_functions["cbrt"] = FunctionExpression::CBRT;
+        registered_functions["ceil"] = FunctionExpression::CEIL;
         registered_functions["cos"] = FunctionExpression::COS;
         registered_functions["cosh"] = FunctionExpression::COSH;
-        registered_functions["atan2"] = FunctionExpression::ATAN2;
+        registered_functions["exp"] = FunctionExpression::EXP;
+        registered_functions["floor"] = FunctionExpression::FLOOR;
+        registered_functions["hypot"] = FunctionExpression::HYPOT;
+        registered_functions["log"] = FunctionExpression::LOG;
+        registered_functions["log10"] = FunctionExpression::LOG10;
         registered_functions["mod"] = FunctionExpression::MOD;
         registered_functions["pow"] = FunctionExpression::POW;
         registered_functions["round"] = FunctionExpression::ROUND;
+        registered_functions["sin"] = FunctionExpression::SIN;
+        registered_functions["sinh"] = FunctionExpression::SINH;
+        registered_functions["sqrt"] = FunctionExpression::SQRT;
+        registered_functions["tan"] = FunctionExpression::TAN;
+        registered_functions["tanh"] = FunctionExpression::TANH;
         registered_functions["trunc"] = FunctionExpression::TRUNC;
-        registered_functions["ceil"] = FunctionExpression::CEIL;
-        registered_functions["floor"] = FunctionExpression::FLOOR;
-        registered_functions["hypot"] = FunctionExpression::HYPOT;
-        registered_functions["cath"] = FunctionExpression::CATH;
-        registered_functions["list"] = FunctionExpression::LIST;
-        registered_functions["tuple"] = FunctionExpression::TUPLE;
-        registered_functions["mscale"] = FunctionExpression::MSCALE;
+
         registered_functions["minvert"] = FunctionExpression::MINVERT;
+        registered_functions["mrotate"] = FunctionExpression::MROTATE;
+        registered_functions["mrotatex"] = FunctionExpression::MROTATEX;
+        registered_functions["mrotatey"] = FunctionExpression::MROTATEY;
+        registered_functions["mrotatez"] = FunctionExpression::MROTATEZ;
+        registered_functions["mscale"] = FunctionExpression::MSCALE;
+        registered_functions["mtranslate"] = FunctionExpression::MTRANSLATE;
+
         registered_functions["create"] = FunctionExpression::CREATE;
+        registered_functions["list"] = FunctionExpression::LIST;
+        registered_functions["matrix"] = FunctionExpression::MATRIX;
+        registered_functions["placement"] = FunctionExpression::PLACEMENT;
+        registered_functions["rotation"] = FunctionExpression::ROTATION;
+        registered_functions["rotationx"] = FunctionExpression::ROTATIONX;
+        registered_functions["rotationy"] = FunctionExpression::ROTATIONY;
+        registered_functions["rotationz"] = FunctionExpression::ROTATIONZ;
         registered_functions["str"] = FunctionExpression::STR;
+        registered_functions["translationm"] = FunctionExpression::TRANSLATIONM;
+        registered_functions["tuple"] = FunctionExpression::TUPLE;
+        registered_functions["vector"] = FunctionExpression::VECTOR;
+
         registered_functions["hiddenref"] = FunctionExpression::HIDDENREF;
         registered_functions["href"] = FunctionExpression::HREF;
 
         // Aggregates
-        registered_functions["sum"] = FunctionExpression::SUM;
-        registered_functions["count"] = FunctionExpression::COUNT;
         registered_functions["average"] = FunctionExpression::AVERAGE;
-        registered_functions["stddev"] = FunctionExpression::STDDEV;
-        registered_functions["min"] = FunctionExpression::MIN;
+        registered_functions["count"] = FunctionExpression::COUNT;
         registered_functions["max"] = FunctionExpression::MAX;
+        registered_functions["min"] = FunctionExpression::MIN;
+        registered_functions["stddev"] = FunctionExpression::STDDEV;
+        registered_functions["sum"] = FunctionExpression::SUM;
 
         has_registered_functions = true;
     }

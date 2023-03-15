@@ -36,11 +36,13 @@ from compact_view import Ui_CompactView
 from expanded_view import Ui_ExpandedView
 
 import addonmanager_utilities as utils
+from addonmanager_metadata import get_first_supported_freecad_version, Version
 
 translate = FreeCAD.Qt.translate
 
 
 # pylint: disable=too-few-public-methods
+
 
 class ListDisplayStyle(IntEnum):
     """The display mode of the list"""
@@ -345,7 +347,8 @@ class PackageListItemDelegate(QtWidgets.QStyledItemDelegate):
             self.displayStyle = style
 
     def sizeHint(self, _option, index):
-        """Attempt to figure out the correct height for the widget based on its current contents."""
+        """Attempt to figure out the correct height for the widget based on its
+        current contents."""
         self.update_content(index)
         return self.widget.sizeHint()
 
@@ -365,8 +368,8 @@ class PackageListItemDelegate(QtWidgets.QStyledItemDelegate):
         if self.displayStyle == ListDisplayStyle.EXPANDED:
             self.widget.ui.labelTags.setText("")
         if repo.metadata:
-            self.widget.ui.labelDescription.setText(repo.metadata.Description)
-            self.widget.ui.labelVersion.setText(f"<i>v{repo.metadata.Version}</i>")
+            self.widget.ui.labelDescription.setText(repo.metadata.description)
+            self.widget.ui.labelVersion.setText(f"<i>v{repo.metadata.version}</i>")
             if self.displayStyle == ListDisplayStyle.EXPANDED:
                 self._setup_expanded_package(repo)
         elif repo.macro and repo.macro.parsed:
@@ -387,18 +390,18 @@ class PackageListItemDelegate(QtWidgets.QStyledItemDelegate):
 
     def _setup_expanded_package(self, repo: Addon):
         """Set up the display for a package in expanded view"""
-        maintainers = repo.metadata.Maintainer
+        maintainers = repo.metadata.maintainer
         maintainers_string = ""
         if len(maintainers) == 1:
             maintainers_string = (
                 translate("AddonsInstaller", "Maintainer")
-                + f": {maintainers[0]['name']} <{maintainers[0]['email']}>"
+                + f": {maintainers[0].name} <{maintainers[0].email}>"
             )
         elif len(maintainers) > 1:
             n = len(maintainers)
             maintainers_string = translate("AddonsInstaller", "Maintainers:", "", n)
             for maintainer in maintainers:
-                maintainers_string += f"\n{maintainer['name']} <{maintainer['email']}>"
+                maintainers_string += f"\n{maintainer.name} <{maintainer.email}>"
         self.widget.ui.labelMaintainer.setText(maintainers_string)
         if repo.tags:
             self.widget.ui.labelTags.setText(
@@ -435,8 +438,10 @@ class PackageListItemDelegate(QtWidgets.QStyledItemDelegate):
             else:
                 self.widget.ui.labelMaintainer.setText("")
 
-    def get_compact_update_string(self, repo: Addon) -> str:
-        """Get a single-line string listing details about the installed version and date"""
+    @staticmethod
+    def get_compact_update_string(repo: Addon) -> str:
+        """Get a single-line string listing details about the installed version and
+        date"""
 
         result = ""
         if repo.status() == Addon.Status.UNCHECKED:
@@ -460,8 +465,10 @@ class PackageListItemDelegate(QtWidgets.QStyledItemDelegate):
 
         return result
 
-    def get_expanded_update_string(self, repo: Addon) -> str:
-        """Get a multi-line string listing details about the installed version and date"""
+    @staticmethod
+    def get_expanded_update_string(repo: Addon) -> str:
+        """Get a multi-line string listing details about the installed version and
+        date"""
 
         result = ""
 
@@ -471,7 +478,7 @@ class PackageListItemDelegate(QtWidgets.QStyledItemDelegate):
                 installed_version_string = (
                     "<br/>" + translate("AddonsInstaller", "Installed version") + ": "
                 )
-                installed_version_string += repo.installed_version
+                installed_version_string += str(repo.installed_version)
             else:
                 installed_version_string = "<br/>" + translate(
                     "AddonsInstaller", "Unknown version"
@@ -493,7 +500,7 @@ class PackageListItemDelegate(QtWidgets.QStyledItemDelegate):
             available_version_string = (
                 "<br/>" + translate("AddonsInstaller", "Available version") + ": "
             )
-            available_version_string += repo.metadata.Version
+            available_version_string += str(repo.metadata.version)
 
         if repo.status() == Addon.Status.UNCHECKED:
             result = translate("AddonsInstaller", "Installed")
@@ -529,8 +536,8 @@ class PackageListItemDelegate(QtWidgets.QStyledItemDelegate):
         option: QtWidgets.QStyleOptionViewItem,
         _: QtCore.QModelIndex,
     ):
-        """Main paint function: renders this widget into a given rectangle, successively drawing
-        all of its children."""
+        """Main paint function: renders this widget into a given rectangle,
+        successively drawing all of its children."""
         painter.save()
         self.widget.resize(option.rect.size())
         painter.translate(option.rect.topLeft())
@@ -641,17 +648,11 @@ class PackageListFilter(QtCore.QSortFilterProxyModel):
             # it's possible that this package actually provides versions of itself
             # for newer and older versions
 
-            first_supported_version = data.metadata.getFirstSupportedFreeCADVersion()
+            first_supported_version = get_first_supported_freecad_version(data.metadata)
             if first_supported_version is not None:
-                required_version = first_supported_version.split(".")
-                fc_major = int(FreeCAD.Version()[0])
-                fc_minor = int(FreeCAD.Version()[1])
-
-                if int(required_version[0]) > fc_major:
+                current_fc_version = Version(from_list=FreeCAD.Version())
+                if first_supported_version > current_fc_version:
                     return False
-                if int(required_version[0]) == fc_major and len(required_version) > 1:
-                    if int(required_version[1]) > fc_minor:
-                        return False
 
         name = data.display_name
         desc = data.description
@@ -692,9 +693,11 @@ class PackageListFilter(QtCore.QSortFilterProxyModel):
                     return True
         return False
 
+
 # pylint: disable=attribute-defined-outside-init, missing-function-docstring
 
-class Ui_PackageList():
+
+class Ui_PackageList:
     """The contents of the PackageList widget"""
 
     def setupUi(self, form):

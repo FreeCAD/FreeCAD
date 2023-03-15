@@ -35,6 +35,9 @@ class BaseExport ProgressIndicatorPy : public Py::PythonExtension<ProgressIndica
 {
 public:
     static void init_type();    // announce properties and methods
+    static Py::PythonType& behaviors();
+    static PyTypeObject* type_object();
+    static bool check(PyObject* p);
 
     ProgressIndicatorPy();
     ~ProgressIndicatorPy() override;

@@ -560,9 +560,7 @@ bool ImportOCAF2::createGroup(App::Document *doc, Info &info, const TopoDS_Shape
                 link->Placement.setValue(pla->getValue());
             child = link;
         }
-        // child->Visibility.setValue(false);
     }
-    // group->Visibility.setValue(false);
     group->ElementList.setValues(children);
     group->VisibilityList.setValue(visibilities);
     info.obj = group;
@@ -627,7 +625,6 @@ App::DocumentObject* ImportOCAF2::loadShapes()
             ret = info.obj;
     }
     if(ret) {
-        // ret->Visibility.setValue(true);
         ret->recomputeFeature(true);
     }
     if(options.merge && ret && !ret->isDerivedFrom(Part::Feature::getClassTypeId())) {
@@ -766,7 +763,6 @@ App::DocumentObject *ImportOCAF2::loadShape(App::Document *doc,
     }
 
     auto link = static_cast<App::Link*>(doc->addObject("App::Link","Link"));
-    // link->Visibility.setValue(false);
     link->setLink(-1,info.obj);
     setPlacement(&link->Placement,shape);
     info.obj = link;
@@ -861,7 +857,6 @@ bool ImportOCAF2::createAssembly(App::Document *_doc,
 
             // Okay, we are creating a link array
             auto link = static_cast<App::Link*>(doc->addObject("App::Link","Link"));
-            // link->Visibility.setValue(false);
             link->setLink(-1,child);
             link->ShowElement.setValue(false);
             link->ElementCount.setValue(childInfo.plas.size());
@@ -1180,13 +1175,12 @@ void ExportOCAF2::exportObjects(std::vector<App::DocumentObject*> &objs, const c
         setName(label,nullptr,name);
     }
 
-    if(FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG))
+    if(FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG)) {
         dumpLabels(pDoc->Main(),aShapeTool,aColorTool);
+    }
 
-#if OCC_VERSION_HEX >= 0x070200
     // Update is not performed automatically anymore: https://tracker.dev.opencascade.org/view.php?id=28055
     aShapeTool->UpdateAssemblies();
-#endif
 }
 
 TDF_Label ExportOCAF2::exportObject(App::DocumentObject* parentObj,

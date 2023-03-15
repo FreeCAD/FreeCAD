@@ -91,6 +91,7 @@ set(FemGui_UIC_SRCS
 if(BUILD_FEM_VTK)
     set(FemGui_UIC_SRCS
         ${FemGui_UIC_SRCS}
+        BoxWidget.ui
         CylinderWidget.ui
         PlaneWidget.ui
         SphereWidget.ui
@@ -101,7 +102,7 @@ if(BUILD_FEM_VTK)
         TaskPostDataAtPoint.ui
         TaskPostDisplay.ui
         TaskPostScalarClip.ui
-        TaskPostWarpVector.ui   
+        TaskPostWarpVector.ui
     )
 endif(BUILD_FEM_VTK)
 
@@ -270,6 +271,7 @@ SET(FemGui_SRCS_TaskBoxes
 if(BUILD_FEM_VTK)
     SET(FemGui_SRCS_TaskBoxes
         ${FemGui_SRCS_TaskBoxes}
+        BoxWidget.ui
         CylinderWidget.ui
         PlaneWidget.ui
         SphereWidget.ui
@@ -282,7 +284,7 @@ if(BUILD_FEM_VTK)
         TaskPostDataAtPoint.ui
         TaskPostDisplay.ui
         TaskPostScalarClip.ui
-        TaskPostWarpVector.ui        
+        TaskPostWarpVector.ui
     )
 endif(BUILD_FEM_VTK)
 SOURCE_GROUP("Task_Boxes" FILES ${FemGui_SRCS_TaskBoxes})

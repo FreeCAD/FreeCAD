@@ -52,6 +52,14 @@ from AddonManagerTest.app.test_freecad_interface import (
     TestParameters as AddonManagerTestParameters,
     TestDataPaths as AddonManagerTestDataPaths,
 )
+from AddonManagerTest.app.test_metadata import (
+    TestDependencyType as AddonManagerTestDependencyType,
+    TestMetadataReader as AddonManagerTestMetadataReader,
+    TestMetadataReaderIntegration as AddonManagerTestMetadataReaderIntegration,
+    TestUrlType as AddonManagerTestUrlType,
+    TestVersion as AddonManagerTestVersion,
+    TestMetadataAuxiliaryFunctions as AddonManagerTestMetadataAuxiliaryFunctions
+)
 
 
 class TestListTerminator:
@@ -76,6 +84,12 @@ loaded_gui_tests = [
     AddonManagerTestConsole,
     AddonManagerTestParameters,
     AddonManagerTestDataPaths,
+    AddonManagerTestDependencyType,
+    AddonManagerTestMetadataReader,
+    AddonManagerTestMetadataReaderIntegration,
+    AddonManagerTestUrlType,
+    AddonManagerTestVersion,
+    AddonManagerTestMetadataAuxiliaryFunctions,
     TestListTerminator  # Needed to prevent the last test from running twice
 ]
 for test in loaded_gui_tests:
