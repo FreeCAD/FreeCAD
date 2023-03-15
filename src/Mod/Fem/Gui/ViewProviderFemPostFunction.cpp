@@ -186,9 +186,6 @@ ViewProviderFemPostFunction::ViewProviderFemPostFunction()
     m_geometrySeperator = new SoSeparator();
     m_geometrySeperator->ref();
 
-    m_transform = new SoTransform();
-    m_transform->ref();
-
     m_scale = new SoScale();
     m_scale->ref();
     m_scale->scaleFactor = SbVec3f(1, 1, 1);
@@ -199,7 +196,6 @@ ViewProviderFemPostFunction::~ViewProviderFemPostFunction()
     m_geometrySeperator->unref();
     m_manip->unref();
     m_scale->unref();
-    //transform is unref'd when it is replaced by the dragger
 }
 
 void ViewProviderFemPostFunction::attach(App::DocumentObject* pcObj)
@@ -211,7 +207,7 @@ void ViewProviderFemPostFunction::attach(App::DocumentObject* pcObj)
     color->diffuseColor.setValue(0, 0, 1);
     color->transparency.setValue(0.5);
 
-    m_transform = new SoTransform;
+    SoTransform* transform = new SoTransform();
 
     m_manip = setupManipulator();
     m_manip->ref();
@@ -220,7 +216,7 @@ void ViewProviderFemPostFunction::attach(App::DocumentObject* pcObj)
     pcEditNode->ref();
 
     pcEditNode->addChild(color);
-    pcEditNode->addChild(m_transform);
+    pcEditNode->addChild(transform);
     pcEditNode->addChild(m_geometrySeperator);
 
     m_geometrySeperator->insertChild(m_scale, 0);
@@ -232,7 +228,7 @@ void ViewProviderFemPostFunction::attach(App::DocumentObject* pcObj)
     SoSearchAction sa;
     sa.setInterest(SoSearchAction::FIRST);
     sa.setSearchingAll(FALSE);
-    sa.setNode(m_transform);
+    sa.setNode(transform);
     sa.apply(pcEditNode);
     SoPath* path = sa.getPath();
     if (path) {
