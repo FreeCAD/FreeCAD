@@ -282,7 +282,7 @@ TopoDS_Shape DrawComplexSection::prepareShape(const TopoDS_Shape& cutShape, doub
 }
 
 
-void DrawComplexSection::makeSectionCut(TopoDS_Shape& baseShape)
+void DrawComplexSection::makeSectionCut(const TopoDS_Shape& baseShape)
 {
     //    Base::Console().Message("DCS::makeSectionCut() - %s - baseShape.IsNull: %d\n",
     //                            getNameInDocument(), baseShape.IsNull());
@@ -295,7 +295,11 @@ void DrawComplexSection::makeSectionCut(TopoDS_Shape& baseShape)
         connectAlignWatcher =
             QObject::connect(&m_alignWatcher, &QFutureWatcherBase::finished, &m_alignWatcher,
                              [this] { this->onSectionCutFinished(); });
+#if QT_VERSION < QT_VERSION_CHECK(6,0,0)
         m_alignFuture = QtConcurrent::run(this, &DrawComplexSection::makeAlignedPieces, baseShape);
+#else
+        m_alignFuture = QtConcurrent::run(&DrawComplexSection::makeAlignedPieces, this, baseShape);
+#endif
         m_alignWatcher.setFuture(m_alignFuture);
         waitingForAlign(true);
     }

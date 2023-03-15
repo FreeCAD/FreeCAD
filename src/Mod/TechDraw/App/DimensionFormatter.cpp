@@ -22,6 +22,7 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
+# include <QLocale>
 # include <QRegularExpression>
 #endif
 

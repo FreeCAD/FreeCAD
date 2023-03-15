@@ -390,7 +390,11 @@ TechDraw::GeometryObjectPtr DrawViewPart::buildGeometryObject(TopoDS_Shape& shap
         //https://github.com/KDE/clazy/blob/1.11/docs/checks/README-connect-3arg-lambda.md
         connectHlrWatcher = QObject::connect(&m_hlrWatcher, &QFutureWatcherBase::finished,
                                              &m_hlrWatcher, [this] { this->onHlrFinished(); });
+#if QT_VERSION < QT_VERSION_CHECK(6,0,0)
         m_hlrFuture = QtConcurrent::run(go.get(), &GeometryObject::projectShape, shape, viewAxis);
+#else
+        m_hlrFuture = QtConcurrent::run(&GeometryObject::projectShape, go.get(), shape, viewAxis);
+#endif
         m_hlrWatcher.setFuture(m_hlrFuture);
         waitingForHlr(true);
     }
@@ -430,7 +434,11 @@ void DrawViewPart::onHlrFinished(void)
             connectFaceWatcher =
                 QObject::connect(&m_faceWatcher, &QFutureWatcherBase::finished, &m_faceWatcher,
                                  [this] { this->onFacesFinished(); });
+#if QT_VERSION < QT_VERSION_CHECK(6,0,0)
             m_faceFuture = QtConcurrent::run(this, &DrawViewPart::extractFaces);
+#else
+            m_faceFuture = QtConcurrent::run(&DrawViewPart::extractFaces, this);
+#endif
             m_faceWatcher.setFuture(m_faceFuture);
             waitingForFaces(true);
         }
