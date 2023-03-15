@@ -32,6 +32,7 @@
 #include <QMenu>
 #include <QMessageBox>
 #include <QStringList>
+#include <QTextDocument>
 #include <QThread>
 #include <QTimer>
 #include <QTreeWidget>
@@ -938,6 +939,8 @@ void NotificationArea::showInNotificationArea()
                     iconstr = QStringLiteral(":/icons/info.svg");
                 }
 
+                QString tmpmessage = convertFromPlainText(item->msg, Qt::WhiteSpaceMode::WhiteSpaceNormal);
+
                 msgw +=
                     QString::fromLatin1(
                         "                                                                                   \
@@ -948,7 +951,7 @@ void NotificationArea::showInNotificationArea()
                 </tr>")
                         .arg(iconstr)
                         .arg(item->notifierName)
-                        .arg(item->msg);
+                        .arg(tmpmessage);
 
                 // start a timer for each of these notifications that was not previously shown
                 if (!item->shown) {
