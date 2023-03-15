@@ -545,21 +545,23 @@ QRectF QGIView::customChildrenBoundingRect() const
     int editablePathItemType = QGraphicsItem::UserType + 301;  // TODO: Magic number warning
     int movableTextItemType = QGraphicsItem::UserType + 300;
     int weldingSymbolItemType = QGraphicsItem::UserType + 340;
+    int centerMarkItemType = QGraphicsItem::UserType + 171;
     QRectF result;
-    for (QList<QGraphicsItem*>::iterator it = children.begin(); it != children.end(); ++it) {
-        if (!(*it)->isVisible()) {
+    for (auto& child : children) {
+        if (!child->isVisible()) {
             continue;
         }
-        if ( ((*it)->type() != dimItemType) &&
-             ((*it)->type() != leaderItemType) &&
-             ((*it)->type() != textLeaderItemType) &&
-             ((*it)->type() != editablePathItemType) &&
-             ((*it)->type() != movableTextItemType) &&
-             ((*it)->type() != borderItemType) &&
-             ((*it)->type() != labelItemType)  &&
-             ((*it)->type() != weldingSymbolItemType)  &&
-             ((*it)->type() != captionItemType) ) {
-            QRectF childRect = mapFromItem(*it, (*it)->boundingRect()).boundingRect();
+        if ( (child->type() != dimItemType) &&
+             (child->type() != leaderItemType) &&
+             (child->type() != textLeaderItemType) &&
+             (child->type() != editablePathItemType) &&
+             (child->type() != movableTextItemType) &&
+             (child->type() != borderItemType) &&
+             (child->type() != labelItemType)  &&
+             (child->type() != weldingSymbolItemType)  &&
+             (child->type() != captionItemType)  &&
+             (child->type() != centerMarkItemType)) {
+            QRectF childRect = mapFromItem(child, child->boundingRect()).boundingRect();
             result = result.united(childRect);
             //result = result.united((*it)->boundingRect());
         }
