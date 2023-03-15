@@ -296,7 +296,7 @@ SET(FreeCADApp_SRCS
     FreeCADTest.py
     PreCompiled.cpp
     PreCompiled.h
-)
+        MappedElement.cpp MappedElement.h)
 
 if(FREECAD_USE_PCH)
     add_definitions(-D_PreComp_)
