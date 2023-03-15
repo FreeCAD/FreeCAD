@@ -302,6 +302,8 @@ def convertToDwg(dxffilename, dwgfilename):
             proc.communicate()
             return dwgfilename
         except Exception:
-            FCC.PrintError(translate("draft", "QCAD error") + "\n")
-
+            if conv != 0:
+                FCC.PrintError(translate("draft", "QCAD error") + "\n")
+            else:
+                FCC.PrintError(translate("draft", "No suitable DWG convertor has been found. Please set one manually under menu Edit -> Preferences -> Import/Export -> DWG") + "\n")
     return None
