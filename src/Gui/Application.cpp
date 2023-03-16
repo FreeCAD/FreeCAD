@@ -41,6 +41,8 @@
 # include <QWindow>
 #endif
 
+#include <QLoggingCategory>
+
 #include <App/Document.h>
 #include <App/DocumentObjectPy.h>
 #include <Base/Console.h>
@@ -1670,6 +1672,18 @@ Gui::PreferencePackManager* Application::prefPackManager()
 //**************************************************************************
 // Init, Destruct and singleton
 
+namespace {
+void setCategoryFilterRules()
+{
+    QString filter;
+    QTextStream stream(&filter);
+    stream << "qt.qpa.xcb.warning=false\n";
+    stream << "qt.qpa.mime.warning=false\n";
+    stream.flush();
+    QLoggingCategory::setFilterRules(filter);
+}
+}
+
 using _qt_msg_handler_old = void (*)(QtMsgType, const QMessageLogContext &, const QString &);
 _qt_msg_handler_old old_qtmsg_handler = nullptr;
 
@@ -1755,6 +1769,7 @@ void Application::initApplication()
         initTypes();
         new Base::ScriptProducer( "FreeCADGuiInit", FreeCADGuiInit );
         init_resources();
+        setCategoryFilterRules();
         old_qtmsg_handler = qInstallMessageHandler(messageHandler);
         init = true;
     }
