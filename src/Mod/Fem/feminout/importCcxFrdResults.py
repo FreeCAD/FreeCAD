@@ -81,11 +81,6 @@ def importFrd(
 
     if len(m["Nodes"]) > 0:
         mesh = importToolsFem.make_femmesh(m)
-        result_mesh_object = ObjectsFem.makeMeshResult(
-            doc,
-            "ResultMesh"
-        )
-        result_mesh_object.FemMesh = mesh
         res_mesh_is_compacted = False
         nodenumbers_for_compacted_mesh = []
 
@@ -124,6 +119,9 @@ def importFrd(
                     )
 
                 res_obj = ObjectsFem.makeResultMechanical(doc, results_name)
+                # create result mesh
+                result_mesh_object = ObjectsFem.makeMeshResult(doc, results_name + "_Mesh")
+                result_mesh_object.FemMesh = mesh
                 res_obj.Mesh = result_mesh_object
                 res_obj = importToolsFem.fill_femresult_mechanical(res_obj, result_set)
                 if analysis:

@@ -78,7 +78,7 @@ class _TaskPanel:
         self.CCX_mesh_visibility = False
 
         # store visibility of possibly existing mesh object
-        CCX_mesh = self.fea.analysis.Document.getObject("ResultMesh")
+        CCX_mesh = self.fea.analysis.Document.getObject("CCX_Results_Mesh")
         if CCX_mesh is not None:
             self.CCX_mesh_visibility = CCX_mesh.ViewObject.Visibility
 
