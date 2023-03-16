@@ -23,13 +23,6 @@
 #ifndef APP_MAPPED_ELEMENT_H
 #define APP_MAPPED_ELEMENT_H
 
-#include <cstring>
-#include <memory>
-#include <cctype>
-#include <boost/algorithm/string/predicate.hpp>
-#include <QByteArray>
-#include <QHash>
-#include <utility>
 #include "ComplexGeoData.h"
 #include "IndexedName.h"
 #include "MappedName.h"
@@ -42,6 +35,9 @@ class DocumentObject;
 namespace Data
 {
 
+/// A MappedElement combines a MappedName and and IndexedName into a single entity and provides
+/// simple comparison operators for the combination (including operator< so that the entity can
+/// be sorted, or used in sorted containers).
 struct AppExport MappedElement
 {
     IndexedName index;
@@ -49,42 +45,48 @@ struct AppExport MappedElement
 
     MappedElement() = default;
 
-    MappedElement(const IndexedName & idx, MappedName  n)
-        : index(idx), name(std::move(n))
+    MappedElement(const IndexedName& idx, MappedName n)
+        : index(idx),
+          name(std::move(n))
     {}
 
-    MappedElement(MappedName  n, const IndexedName & idx)
-        : index(idx), name(std::move(n))
+    MappedElement(MappedName n, const IndexedName& idx)
+        : index(idx),
+          name(std::move(n))
     {}
 
     ~MappedElement() = default;
 
-    MappedElement(const MappedElement & other) = default;
+    MappedElement(const MappedElement& other) = default;
 
-    MappedElement(MappedElement && other) noexcept
-        : index(other.index), name(std::move(other.name))
+    MappedElement(MappedElement&& other) noexcept
+        : index(other.index),
+          name(std::move(other.name))
     {}
 
-    MappedElement & operator=(MappedElement && other) noexcept
+    MappedElement& operator=(MappedElement&& other) noexcept
     {
         this->index = other.index;
         this->name = std::move(other.name);
         return *this;
     }
 
-    MappedElement & operator=(const MappedElement & other) = default;
+    MappedElement& operator=(const MappedElement& other) = default;
 
-    bool operator==(const MappedElement &other) const
+    bool operator==(const MappedElement& other) const
     {
         return this->index == other.index && this->name == other.name;
     }
 
-    bool operator!=(const MappedElement &other) const
+    bool operator!=(const MappedElement& other) const
     {
         return this->index != other.index || this->name != other.name;
     }
 
-    bool operator<(const MappedElement &other) const
+    /// For sorting purposes, one MappedElement is considered "less" than another if its index
+    /// compares less (which is first alphabetical, and then by numeric index). If the index of this
+    /// MappedElement is the same, then the names are compared lexicographically.
+    bool operator<(const MappedElement& other) const
     {
         int res = this->index.compare(other.index);
         if (res < 0) {
@@ -97,7 +99,7 @@ struct AppExport MappedElement
     }
 };
 
-} //namespace Data
+}// namespace Data
 
 
 #endif// APP_MAPPED_ELEMENT_H

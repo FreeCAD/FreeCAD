@@ -264,6 +264,7 @@ SET(FreeCADApp_CPP_SRCS
     ComplexGeoDataPyImp.cpp
     Enumeration.cpp
     IndexedName.cpp
+    MappedElement.cpp
     MappedName.cpp
     Material.cpp
     MaterialPyImp.cpp
@@ -284,6 +285,7 @@ SET(FreeCADApp_HPP_SRCS
     Enumeration.h
     IndexedName.h
     MappedName.h
+    MappedElement.h
     Material.h
     Metadata.h
 )
@@ -296,7 +298,7 @@ SET(FreeCADApp_SRCS
     FreeCADTest.py
     PreCompiled.cpp
     PreCompiled.h
-        MappedElement.cpp MappedElement.h)
+)
 
 if(FREECAD_USE_PCH)
     add_definitions(-D_PreComp_)

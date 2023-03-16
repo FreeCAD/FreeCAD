@@ -6,6 +6,7 @@ target_sources(
             ${CMAKE_CURRENT_SOURCE_DIR}/ElementMap.cpp
             ${CMAKE_CURRENT_SOURCE_DIR}/IndexedName.cpp
             ${CMAKE_CURRENT_SOURCE_DIR}/License.cpp
+            ${CMAKE_CURRENT_SOURCE_DIR}/MappedElement.cpp
             ${CMAKE_CURRENT_SOURCE_DIR}/MappedName.cpp
             ${CMAKE_CURRENT_SOURCE_DIR}/Metadata.cpp
 )
