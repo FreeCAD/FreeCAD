@@ -21,8 +21,8 @@
  ****************************************************************************/
 
 
-#ifndef _AppMappedName_h_
-#define _AppMappedName_h_
+#ifndef APP_MAPPED_NAME_H
+#define APP_MAPPED_NAME_H
 
 
 #include <string>
@@ -33,152 +33,164 @@
 #include <QHash>
 
 #include "ComplexGeoData.h"
+#include "IndexedName.h"
 
 
 namespace Data
 {
 
+// NOLINTBEGIN(cppcoreguidelines-pro-bounds-pointer-arithmetic)
 
 class AppExport MappedName
 {
 public:
-
-	explicit MappedName(const char * name, int size = -1)
-		: raw(false)
-	{
-        if (!name) return;
-        if (boost::starts_with(name, ComplexGeoData::elementMapPrefix()))
+    explicit MappedName(const char* name, int size = -1)
+        : raw(false)
+    {
+        if (!name) {
+            return;
+        }
+        if (boost::starts_with(name, ComplexGeoData::elementMapPrefix())) {
             name += ComplexGeoData::elementMapPrefix().size();
+        }
 
         data = size < 0 ? QByteArray(name) : QByteArray(name, size);
     }
 
-	explicit MappedName(const std::string & name)
-        : raw(false) 
+    explicit MappedName(const std::string& nameString)
+        : raw(false)
     {
-        int size = name.size();
-        const char *n = name.c_str();
-        if (boost::starts_with(name, ComplexGeoData::elementMapPrefix())) {
-            n += ComplexGeoData::elementMapPrefix().size();
+        auto size = nameString.size();
+        const char* name = nameString.c_str();
+        if (boost::starts_with(nameString, ComplexGeoData::elementMapPrefix())) {
+            name += ComplexGeoData::elementMapPrefix().size();
             size -= ComplexGeoData::elementMapPrefix().size();
         }
-        data = QByteArray(n, size);
+        data = QByteArray(name, static_cast<int>(size));
     }
-/*
-    explicit MappedName(const IndexedName & element)
-        : data(element.getType()), raw(false)
+
+    explicit MappedName(const IndexedName& element)
+        : data(element.getType()),
+          raw(false)
     {
-        if (element.getIndex() > 0)
+        if (element.getIndex() > 0) {
             data += QByteArray::number(element.getIndex());
+        }
     }
-*/
+
     MappedName()
         : raw(false)
     {}
 
-	MappedName(const MappedName & other)
-		: data(other.data), postfix(other.postfix), raw(other.raw)
-	{}
+    MappedName(const MappedName& other) = default;
 
-    //FIXME if you pass a raw MappedName into these constructors they will 
-    //reset raw to false and things will break. is this intended?
+    // FIXME if you pass a raw MappedName into these constructors they will
+    // reset raw to false and things will break. is this intended?
 
-	MappedName(const MappedName & other, int startpos, int size = -1)
+    MappedName(const MappedName& other, int startPosition, int size = -1)
         : raw(false)
     {
-        append(other, startpos, size);
+        append(other, startPosition, size);
     }
 
-	MappedName(const MappedName & other, const char *postfix)
-		: data(other.data + other.postfix), postfix(postfix), raw(false)
-	{}
-
-    MappedName(MappedName &&other)
-        : data(std::move(other.data)), postfix(std::move(other.postfix)), raw(other.raw)
+    MappedName(const MappedName& other, const char* postfix)
+        : data(other.data + other.postfix),
+          postfix(postfix),
+          raw(false)
     {}
 
-    static MappedName fromRawData(const char * name, int size = -1)
+    MappedName(MappedName&& other) noexcept
+        : data(std::move(other.data)),
+          postfix(std::move(other.postfix)),
+          raw(other.raw)
+    {}
+
+    ~MappedName() = default;
+
+    static MappedName fromRawData(const char* name, int size = -1)
     {
         MappedName res;
         if (name) {
-            res.data = QByteArray::fromRawData(name, size>=0 ? size : qstrlen(name));
+            res.data =
+                QByteArray::fromRawData(name, size >= 0 ? size : static_cast<int>(qstrlen(name)));
             res.raw = true;
         }
         return res;
     }
 
-    static MappedName fromRawData(const QByteArray & data)
+    static MappedName fromRawData(const QByteArray& data)
     {
         return fromRawData(data.constData(), data.size());
     }
 
-    static MappedName fromRawData(const MappedName &other, int startpos, int size = -1)
+    static MappedName fromRawData(const MappedName& other, int startPosition, int size = -1)
     {
-        if (startpos < 0)
-            startpos = 0;
+        if (startPosition < 0) {
+            startPosition = 0;
+        }
 
-        if (startpos >= other.size())
-            return MappedName();
+        if (startPosition >= other.size()) {
+            return {};
+        }
 
-        if (startpos >= other.data.size())
-            return MappedName(other, startpos, size);
+        if (startPosition >= other.data.size()) {
+            return {other, startPosition, size};
+        }
 
         MappedName res;
         res.raw = true;
-        if (size < 0)
-            size = other.size() - startpos;
+        if (size < 0) {
+            size = other.size() - startPosition;
+        }
 
-        if (size < other.data.size() - startpos) {
-            res.data = QByteArray::fromRawData(other.data.constData() + startpos, size);
+        if (size < other.data.size() - startPosition) {
+            res.data = QByteArray::fromRawData(other.data.constData() + startPosition, size);
         }
         else {
-            res.data = QByteArray::fromRawData(other.data.constData() + startpos, other.data.size() - startpos);
-            size -= other.data.size() - startpos;
-            if (size == other.postfix.size())
+            res.data = QByteArray::fromRawData(other.data.constData() + startPosition,
+                                               other.data.size() - startPosition);
+            size -= other.data.size() - startPosition;
+            if (size == other.postfix.size()) {
                 res.postfix = other.postfix;
-            else if (size)
+            }
+            else if (size != 0) {
                 res.postfix.append(other.postfix.constData(), size);
+            }
         }
         return res;
     }
 
-    MappedName & operator=(const MappedName & other)
+    MappedName& operator=(const MappedName& other) = default;
+
+    MappedName& operator=(const std::string& other)
     {
-		this->data = other.data;
-		this->postfix = other.postfix;
+        *this = MappedName(other);
+        return *this;
+    }
+
+    MappedName& operator=(const char* other)
+    {
+        *this = MappedName(other);
+        return *this;
+    }
+
+
+    MappedName& operator=(MappedName&& other) noexcept
+    {
+        this->data = std::move(other.data);
+        this->postfix = std::move(other.postfix);
         this->raw = other.raw;
         return *this;
     }
 
-    MappedName & operator=(const std::string & other)
+    friend std::ostream& operator<<(std::ostream& stream, const MappedName& mappedName)
     {
-        *this = MappedName(other);
-        return *this;
+        stream.write(mappedName.data.constData(), mappedName.data.size());
+        stream.write(mappedName.postfix.constData(), mappedName.postfix.size());
+        return stream;
     }
 
-    MappedName & operator=(const char * other)
-    {
-        *this = MappedName(other);
-        return *this;
-    }
-
-
-    MappedName & operator=(MappedName &&other)
-    {
-        this->data = std::move(other.data);
-        this->postfix = std::move(other.postfix);
-        this->raw  = other.raw;
-        return *this;
-    }
-
-    friend std::ostream & operator<<(std::ostream & s, const MappedName & n)
-    {
-        s.write(n.data.constData(), n.data.size());
-        s.write(n.postfix.constData(), n.postfix.size());
-        return s;
-    }
-
-    bool operator==(const MappedName & other) const
+    bool operator==(const MappedName& other) const
     {
         if (this->size() != other.size()) {
             return false;
@@ -188,188 +200,204 @@ public:
             return this->data == other.data && this->postfix == other.postfix;
         }
 
-        const auto &smaller = this->data.size() < other.data.size() ? *this : other;
-        const auto &larger = this->data.size() < other.data.size() ? other: *this;
-        
+        const auto& smaller = this->data.size() < other.data.size() ? *this : other;
+        const auto& larger = this->data.size() < other.data.size() ? other : *this;
+
         if (!larger.data.startsWith(smaller.data)) {
             return false;
         }
 
-        QByteArray tmp = QByteArray::fromRawData(
-                larger.data.constData() + smaller.data.size(),
-                larger.data.size() - smaller.data.size()
-                );
-        
+        QByteArray tmp = QByteArray::fromRawData(larger.data.constData() + smaller.data.size(),
+                                                 larger.data.size() - smaller.data.size());
+
         if (!smaller.postfix.startsWith(tmp)) {
             return false;
         }
 
-        tmp = QByteArray::fromRawData(
-                smaller.postfix.constData() + tmp.size(),
-                smaller.postfix.size() - tmp.size()
-                );
+        tmp = QByteArray::fromRawData(smaller.postfix.constData() + tmp.size(),
+                                      smaller.postfix.size() - tmp.size());
 
         return tmp == larger.postfix;
     }
 
-    bool operator!=(const MappedName & other) const
+    bool operator!=(const MappedName& other) const
     {
         return !(this->operator==(other));
     }
 
-	MappedName operator+(const MappedName & other) const
-	{
-        MappedName res(*this);
-        res += other;
-        return res;
-	}
-
-	MappedName operator+(const char * other) const
-	{
-        MappedName res(*this);
-        res += other;
-        return res;
-	}
-
-	MappedName operator+(const std::string & other) const
-	{
-        MappedName res(*this);
-        res += other;
-        return res;
-	}
-
-	MappedName operator+(const QByteArray & other) const
-	{
-        MappedName res(*this);
-        res += other;
-        return res;
-	}
-
-	MappedName & operator+=(const char * other)
-	{
-        if (other && other[0])
-            this->postfix.append(other, -1);
-		return *this;
-	}
-
-	MappedName & operator+=(const std::string & other)
-	{
-        if (other.size()) {
-            this->postfix.reserve(this->postfix.size() + other.size());
-            this->postfix.append(other.c_str(), other.size());
-        }
-		return *this;
-	}
-
-	MappedName & operator+=(const QByteArray & other)
-	{
-        this->postfix += other;
-		return *this;
-	}
-
-	MappedName & operator+=(const MappedName & other)
-	{
-        append(other);
-		return *this;
-	}
-
-    void append(const char * d, int size = -1)
+    MappedName operator+(const MappedName& other) const
     {
-        //FIXME raw not assigned?
-        if (d && size) {
-            if (size < 0)
-                size = qstrlen(d);
-            if (empty())
-                this->data.append(d, size);
-            else
-                this->postfix.append(d, size);
+        MappedName res(*this);
+        res += other;
+        return res;
+    }
+
+    MappedName operator+(const char* other) const
+    {
+        MappedName res(*this);
+        res += other;
+        return res;
+    }
+
+    MappedName operator+(const std::string& other) const
+    {
+        MappedName res(*this);
+        res += other;
+        return res;
+    }
+
+    MappedName operator+(const QByteArray& other) const
+    {
+        MappedName res(*this);
+        res += other;
+        return res;
+    }
+
+    MappedName& operator+=(const char* other)
+    {
+        if (other && (other[0] != 0)) {
+            this->postfix.append(other, -1);
+        }
+        return *this;
+    }
+
+    MappedName& operator+=(const std::string& other)
+    {
+        if (!other.empty()) {
+            this->postfix.reserve(this->postfix.size() + static_cast<int>(other.size()));
+            this->postfix.append(other.c_str(), static_cast<int>(other.size()));
+        }
+        return *this;
+    }
+
+    MappedName& operator+=(const QByteArray& other)
+    {
+        this->postfix += other;
+        return *this;
+    }
+
+    MappedName& operator+=(const MappedName& other)
+    {
+        append(other);
+        return *this;
+    }
+
+    void append(const char* dataToAppend, int size = -1)
+    {
+        // FIXME raw not assigned?
+        if (dataToAppend && (size != 0)) {
+            if (size < 0) {
+                size = static_cast<int>(qstrlen(dataToAppend));
+            }
+            if (empty()) {
+                this->data.append(dataToAppend, size);
+            }
+            else {
+                this->postfix.append(dataToAppend, size);
+            }
         }
     }
 
-    void append(const MappedName & other, int startpos = 0, int size = -1)
+    void append(const MappedName& other, int startPosition = 0, int size = -1)
     {
-        // enforce 0 <= startpos <= other.size
-        if (startpos < 0)
-            startpos = 0;
-        else if (startpos > other.size())
+        // enforce 0 <= startPosition <= other.size
+        if (startPosition < 0) {
+            startPosition = 0;
+        }
+        else if (startPosition > other.size()) {
             return;
+        }
 
-        // enforce 0 <= size <= other.size - startpos
-        if (size < 0 || size > other.size() - startpos)
-            size = other.size() - startpos;
+        // enforce 0 <= size <= other.size - startPosition
+        if (size < 0 || size > other.size() - startPosition) {
+            size = other.size() - startPosition;
+        }
 
-       
-        if (startpos < other.data.size()) // if starting inside data
-        { 
+
+        if (startPosition < other.data.size())// if starting inside data
+        {
             int count = size;
-            //make sure count doesn't exceed data size and end up in postfix
-            if (count > other.data.size() - startpos) 
-                count = other.data.size() - startpos;
-                
-            //if this is empty append in data else append in postfix
-            if (startpos == 0 && count == other.data.size() && this->empty()) {
+            // make sure count doesn't exceed data size and end up in postfix
+            if (count > other.data.size() - startPosition) {
+                count = other.data.size() - startPosition;
+            }
+
+            // if this is empty append in data else append in postfix
+            if (startPosition == 0 && count == other.data.size() && this->empty()) {
                 this->data = other.data;
                 this->raw = other.raw;
-            } else
-                append(other.data.constData() + startpos, count);
+            }
+            else {
+                append(other.data.constData() + startPosition, count);
+            }
 
-            //setup startpos and count to contiune appending the remainder to postfix
-            startpos = 0;
+            // setup startPosition and count to continue appending the remainder to postfix
+            startPosition = 0;
             size -= count;
-        } 
-        else //else starting inside postfix
+        }
+        else// else starting inside postfix
         {
-            startpos -= other.data.size();
+            startPosition -= other.data.size();
         }
 
-        //if there is still data to be added to postfix
-        if (size) {
-            if (startpos == 0 && size == other.postfix.size()) {
-                if (this->empty())
+        // if there is still data to be added to postfix
+        if (size != 0) {
+            if (startPosition == 0 && size == other.postfix.size()) {
+                if (this->empty()) {
                     this->data = other.postfix;
-                else if (this->postfix.isEmpty())
+                }
+                else if (this->postfix.isEmpty()) {
                     this->postfix = other.postfix;
-                else
+                }
+                else {
                     this->postfix += other.postfix;
-            } else
-                append(other.postfix.constData() + startpos, size);
+                }
+            }
+            else {
+                append(other.postfix.constData() + startPosition, size);
+            }
         }
     }
 
-    std::string toString(int startpos, int len=-1) const
+    std::string toString(int startPosition, int len = -1) const
     {
         std::string res;
-        return toString(res, startpos, len);
+        return toString(res, startPosition, len);
     }
 
-    const char * toString(std::string &s, int startpos=0, int len=-1) const
+    const char* toString(std::string& buffer, int startPosition = 0, int len = -1) const
     {
-        std::size_t offset = s.size();
+        std::size_t offset = buffer.size();
         int count = this->size();
-        if (startpos < 0)
-            startpos = 0;
-        else if (startpos >= count)
-            return s.c_str()+s.size();
-        if (len < 0 || len > count - startpos)
-            len = count - startpos;
-        s.reserve(s.size() + len);
-        if (startpos < this->data.size()) {
-            count = this->data.size() - startpos;
-            if (len < count)
+        if (startPosition < 0) {
+            startPosition = 0;
+        }
+        else if (startPosition >= count) {
+            return buffer.c_str() + buffer.size();
+        }
+        if (len < 0 || len > count - startPosition) {
+            len = count - startPosition;
+        }
+        buffer.reserve(buffer.size() + len);
+        if (startPosition < this->data.size()) {
+            count = this->data.size() - startPosition;
+            if (len < count) {
                 count = len;
-            s.append(this->data.constData()+startpos, count);
+            }
+            buffer.append(this->data.constData() + startPosition, count);
             len -= count;
         }
-        s.append(this->postfix.constData(), len);
-        return s.c_str() + offset;
+        buffer.append(this->postfix.constData(), len);
+        return buffer.c_str() + offset;
     }
 
-    //if offset is inside data return data, if offset is > data.size 
+    // if offset is inside data return data, if offset is > data.size
     //(ends up in postfix) return postfix
-    const char * toConstString(int offset, int &size) const
+    const char* toConstString(int offset, int& size) const
     {
-        if (offset < 0)
+        if (offset < 0) {
             offset = 0;
+        }
         if (offset > this->data.size()) {
             offset -= this->data.size();
             if (offset > this->postfix.size()) {
@@ -383,63 +411,63 @@ public:
         return this->data.constData() + offset;
     }
 
-    QByteArray toRawBytes(int offset=0, int size=-1) const
+    QByteArray toRawBytes(int offset = 0, int size = -1) const
     {
-        if (offset < 0)
+        if (offset < 0) {
             offset = 0;
-        if (offset >= this->size())
-            return QByteArray();
-        if (size < 0 || size > this->size() - offset)
+        }
+        if (offset >= this->size()) {
+            return {};
+        }
+        if (size < 0 || size > this->size() - offset) {
             size = this->size() - offset;
+        }
         if (offset >= this->data.size()) {
             offset -= this->data.size();
-            return QByteArray::fromRawData(this->postfix.constData()+offset, size);
+            return QByteArray::fromRawData(this->postfix.constData() + offset, size);
         }
-        if (size <= this->data.size() - offset)
-            return QByteArray::fromRawData(this->data.constData()+offset, size);
+        if (size <= this->data.size() - offset) {
+            return QByteArray::fromRawData(this->data.constData() + offset, size);
+        }
 
-        QByteArray res(this->data.constData()+offset, this->data.size()-offset);
+        QByteArray res(this->data.constData() + offset, this->data.size() - offset);
         res.append(this->postfix.constData(), size - this->data.size() + offset);
         return res;
     }
 
-    const QByteArray & dataBytes() const
+    const QByteArray& dataBytes() const
     {
         return this->data;
     }
 
-    const QByteArray & postfixBytes() const
+    const QByteArray& postfixBytes() const
     {
         return this->postfix;
     }
 
-    const char * constPostfix() const
+    const char* constPostfix() const
     {
         return this->postfix.constData();
     }
 
-    // No constData() because 'data' is allow to contain raw data, which may
-    // not end with 0.
-#if 0
-    void char * constData() const
-    {
-        return this->data.constData();
-    }
-#endif
+    // No constData() because 'data' is allowed to contain raw data, which may not end with 0.
 
     QByteArray toBytes() const
     {
-        if (this->postfix.isEmpty())
+        if (this->postfix.isEmpty()) {
             return this->data;
-        if (this->data.isEmpty())
+        }
+        if (this->data.isEmpty()) {
             return this->postfix;
+        }
         return this->data + this->postfix;
     }
-/*
+
     IndexedName toIndexedName() const
     {
-        if (this->postfix.isEmpty())
+        if (this->postfix.isEmpty()) {
             return IndexedName(this->data);
+        }
         return IndexedName();
     }
 
@@ -450,52 +478,58 @@ public:
         return res;
     }
 
-    const char *toPrefixedString(std::string &buf) const
+    const char* toPrefixedString(std::string& buf) const
     {
-        if (!toIndexedName())
+        if (!toIndexedName()) {
             buf += ComplexGeoData::elementMapPrefix();
+        }
         toString(buf);
         return buf.c_str();
     }
-*/    
-    int compare(const MappedName &other) const
+
+    int compare(const MappedName& other) const
     {
-        int asize = this->size();
-        int bsize = other.size();
-        for (int i=0, count=std::min(asize, bsize); i<count; ++i) {
-            char a = this->operator[](i);
-            char b = other[i];
-            if (a < b)
+        int thisSize = this->size();
+        int otherSize = other.size();
+        for (int i = 0, count = std::min(thisSize, otherSize); i < count; ++i) {
+            char thisChar = this->operator[](i);
+            char otherChar = other[i];
+            if (thisChar < otherChar) {
                 return -1;
-            if (a > b)
+            }
+            if (thisChar > otherChar) {
                 return 1;
+            }
         }
-        if (asize < bsize)
+        if (thisSize < otherSize) {
             return -1;
-        if (asize > bsize)
+        }
+        if (thisSize > otherSize) {
             return 1;
+        }
         return 0;
     }
 
-    bool operator<(const MappedName & other) const
+    bool operator<(const MappedName& other) const
     {
         return compare(other) < 0;
     }
 
-	char operator[](int index) const
-	{
-        //FIXME overflow underflow checks?
-        if (index >= this->data.size())
+    char operator[](int index) const
+    {
+        // FIXME overflow underflow checks?
+        if (index >= this->data.size()) {
             return this->postfix[index - this->data.size()];
-		return this->data[index];
-	}
+        }
+        return this->data[index];
+    }
 
-	int size() const
+    int size() const
     {
         return this->data.size() + this->postfix.size();
     }
 
-	bool empty() const
+    bool empty() const
     {
         return this->data.isEmpty() && this->postfix.isEmpty();
     }
@@ -507,8 +541,9 @@ public:
 
     MappedName copy() const
     {
-        if (!this->raw)
+        if (!this->raw) {
             return *this;
+        }
         MappedName res;
         res.data.append(this->data.constData(), this->data.size());
         res.postfix = this->postfix;
@@ -522,92 +557,112 @@ public:
         return !empty();
     }
 
-	void clear()
+    void clear()
     {
         this->data.clear();
         this->postfix.clear();
         this->raw = false;
     }
 
-    int find(const char *d, int startpos = 0) const
+    int find(const char* searchTarget, int startPosition = 0) const
     {
-        if (!d)
+        if (!searchTarget) {
             return -1;
-        if (startpos < 0)
-            startpos = 0;
-        if (startpos < this->data.size()) {
-            int res = this->data.indexOf(d, startpos);
-            if (res >= 0)
+        }
+        if (startPosition < 0) {
+            startPosition = 0;
+        }
+        if (startPosition < this->data.size()) {
+            int res = this->data.indexOf(searchTarget, startPosition);
+            if (res >= 0) {
                 return res;
-            startpos = 0;
-        } else
-            startpos -= this->data.size();
-        int res = this->postfix.indexOf(d, startpos);
-        if (res < 0)
+            }
+            startPosition = 0;
+        }
+        else {
+            startPosition -= this->data.size();
+        }
+        int res = this->postfix.indexOf(searchTarget, startPosition);
+        if (res < 0) {
             return res;
+        }
         return res + this->data.size();
     }
 
-    int find(const std::string &d, int startpos = 0) const
+    int find(const std::string& searchTarget, int startPosition = 0) const
     {
-        return find(d.c_str(), startpos);
+        return find(searchTarget.c_str(), startPosition);
     }
 
-    int rfind(const char *d, int startpos = -1) const
+    int rfind(const char* searchTarget, int startPosition = -1) const
     {
-        if (!d)
+        if (!searchTarget) {
             return -1;
-        if (startpos < 0 || startpos > this->postfix.size()) { //FIXME should be this->data.size
-            if (startpos > postfix.size())
-                startpos -= postfix.size();
-            int res = this->postfix.lastIndexOf(d, startpos);
-            if (res >= 0)
-                return res + this->data.size();
-            startpos = -1;
         }
-        return this->data.lastIndexOf(d, startpos);
+        if (startPosition < 0
+            || startPosition > this->postfix.size()) {// FIXME should be this->data.size
+            if (startPosition > postfix.size()) {
+                startPosition -= postfix.size();
+            }
+            int res = this->postfix.lastIndexOf(searchTarget, startPosition);
+            if (res >= 0) {
+                return res + this->data.size();
+            }
+            startPosition = -1;
+        }
+        return this->data.lastIndexOf(searchTarget, startPosition);
     }
 
-    int rfind(const std::string &d, int startpos = -1) const
+    int rfind(const std::string& searchTarget, int startPosition = -1) const
     {
-        return rfind(d.c_str(), startpos);
+        return rfind(searchTarget.c_str(), startPosition);
     }
 
-    bool endsWith(const char *s) const
+    bool endsWith(const char* searchTarget) const
     {
-        if (!s)
+        if (!searchTarget) {
             return false;
-        if (this->postfix.size())
-            return this->postfix.endsWith(s);
-        return this->data.endsWith(s);
+        }
+        if (this->postfix.size() != 0) {
+            return this->postfix.endsWith(searchTarget);
+        }
+        return this->data.endsWith(searchTarget);
     }
 
-    bool endsWith(const std::string &s) const
+    bool endsWith(const std::string& searchTarget) const
     {
-        return endsWith(s.c_str());
+        return endsWith(searchTarget.c_str());
     }
 
-    bool startsWith(const QByteArray & s, int offset = 0) const
+    bool startsWith(const QByteArray& searchTarget, int offset = 0) const
     {
-        if (s.size() > size() - offset)
+        if (searchTarget.size() > size() - offset) {
             return false;
-        if (offset || (this->data.size() && this->data.size() < s.size()))
-            return toRawBytes(offset, s.size()) == s;
-        if (this->data.size())
-            return this->data.startsWith(s);
-        return this->postfix.startsWith(s);
+        }
+        if ((offset != 0)
+            || ((this->data.size() != 0) && this->data.size() < searchTarget.size())) {
+            return toRawBytes(offset, searchTarget.size()) == searchTarget;
+        }
+        if (this->data.size() != 0) {
+            return this->data.startsWith(searchTarget);
+        }
+        return this->postfix.startsWith(searchTarget);
     }
 
-    bool startsWith(const char *s, int offset = 0) const
+    bool startsWith(const char* searchTarget, int offset = 0) const
     {
-        if (!s)
+        if (!searchTarget) {
             return false;
-        return startsWith(QByteArray::fromRawData(s, qstrlen(s)), offset);
+        }
+        return startsWith(
+            QByteArray::fromRawData(searchTarget, static_cast<int>(qstrlen(searchTarget))), offset);
     }
 
-    bool startsWith(const std::string &s, int offset = 0) const
+    bool startsWith(const std::string& searchTarget, int offset = 0) const
     {
-        return startsWith(QByteArray::fromRawData(s.c_str(), s.size()), offset);
+        return startsWith(
+            QByteArray::fromRawData(searchTarget.c_str(), static_cast<int>(searchTarget.size())),
+            offset);
     }
 
     std::size_t hash() const
@@ -616,14 +671,15 @@ public:
     }
 
 private:
-	QByteArray data;
-	QByteArray postfix;
+    QByteArray data;
+    QByteArray postfix;
     bool raw;
 };
 
+// NOLINTEND(cppcoreguidelines-pro-bounds-pointer-arithmetic)
 
 
-} //namespace Data
+}// namespace Data
 
 
-#endif
+#endif// APP_MAPPED_NAME_H
