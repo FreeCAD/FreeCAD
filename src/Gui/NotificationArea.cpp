@@ -79,6 +79,8 @@ struct NotificationAreaP
     bool notificationsDisabled = false;
     /// Control of confirmation mechanism (for Critical Messages)
     bool requireConfirmationCriticalMessageDuringRestoring = true;
+    /// Width of the non-intrusive notification
+    int notificationWidth = 800;
     //@}
 
     /** @name Widget parameters */
@@ -631,6 +633,13 @@ NotificationArea::ParameterObserver::ParameterObserver(NotificationArea* notific
              auto enabled = hGrp->GetBool(string.c_str(), true);
              notificationArea->pImp->autoRemoveUserNotifications = enabled;
          }},
+        {"NotificiationWidth",
+         [this](const std::string& string) {
+             auto width = hGrp->GetInt(string.c_str(), 800);
+             if (width < 300)
+                 width = 300;
+             notificationArea->pImp->notificationWidth = width;
+         }},
     };
 
     for (auto& val : parameterMap) {
@@ -982,7 +991,8 @@ void NotificationArea::showInNotificationArea()
         NotificationBox::showText(this->mapToGlobal(QPoint()),
                                   msgw,
                                   pImp->notificationExpirationTime,
-                                  pImp->minimumOnScreenTime);
+                                  pImp->minimumOnScreenTime,
+                                  pImp->notificationWidth);
     }
 }
 
