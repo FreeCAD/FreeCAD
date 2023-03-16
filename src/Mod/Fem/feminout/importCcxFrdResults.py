@@ -107,9 +107,7 @@ def importFrd(
                         .format(result_name_prefix, eigenmode_number)
                     )
                 elif number_of_increments > 1:
-
                     if result_analysis_type == "buckling":
-
                         results_name = (
                             "{}BucklingFactor_{}_Results"
                             .format(result_name_prefix, step_time)
@@ -119,7 +117,6 @@ def importFrd(
                             "{}Time_{}_Results"
                             .format(result_name_prefix, step_time)
                         )
-
                 else:
                     results_name = (
                         "{}Results"
@@ -192,6 +189,31 @@ def importFrd(
                     res_obj = resulttools.add_principal_stress_std(res_obj)
                 # fill Stats
                 res_obj = resulttools.fill_femresult_stats(res_obj)
+
+                # create a results pipeline if not already existing
+                pipeline_name = "Pipeline_" + results_name
+                pipeline_obj = doc.getObject(pipeline_name)
+                if pipeline_obj is None:
+                    pipeline_obj = ObjectsFem.makePostVtkResult(doc, res_obj, results_name)
+                    pipeline_visibility = True
+                    if analysis:
+                        analysis.addObject(pipeline_obj)
+                else:
+                    if FreeCAD.GuiUp:
+                        # store pipeline visibility because pipeline_obj.load makes the
+                        # pipeline always visible
+                        pipeline_visibility = pipeline_obj.ViewObject.Visibility
+                    pipeline_obj.load(res_obj)
+                # update the pipeline
+                pipeline_obj.recomputeChildren()
+                pipeline_obj.recompute()
+                if FreeCAD.GuiUp:
+                    pipeline_obj.ViewObject.updateColorBars()
+                    # make results mesh invisible, will be made visible
+                    # later in task_solver_ccxtools.py
+                    res_obj.Mesh.ViewObject.Visibility = False
+                    # restore pipeline visibility
+                    pipeline_obj.ViewObject.Visibility = pipeline_visibility
 
         else:
             error_message = (

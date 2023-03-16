@@ -133,7 +133,6 @@ void ViewProviderFemPostPipeline::onSelectionChanged(const Gui::SelectionChanges
 
 void ViewProviderFemPostPipeline::updateColorBars()
 {
-
     // take all visible childs and update its shape coloring
     auto children = claimChildren();
     for (auto& child : children) {
