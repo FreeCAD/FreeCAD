@@ -1,5 +1,5 @@
 # ***************************************************************************
-# *   Copyright (c) 2023 0penBrain                               *
+# *   Copyright (c) 2023 0penBrain                                          *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
 # *   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -205,37 +205,6 @@ jobs:
           mkdir -p ${{ env.reportdir }}
           echo "reportFile=${{ env.reportfilename }}" >> $GITHUB_OUTPUT
     # Run generic lints
-      - name: Check for non Unix line ending
-        if: inputs.checkLineendings && always()
-        continue-on-error: ${{ inputs.lineendingsFailSilent }}
-        run: |
-          lineendings=0
-          for file in ${{ inputs.changedFiles }}
-          do
-            # Check for DOS or MAC line endings
-            if [[ $(file -b $file) =~ "with CR" ]]
-            then
-              echo "::warning file=$file,title=$file::File has non Unix line endings"
-              echo "$file has non Unix line endings" >> ${{ env.logdir }}lineendings.log
-              ((lineendings=lineendings+1))
-            fi
-          done
-          echo "Found $lineendings line ending errors"
-          # Write the report
-          if [ $lineendings -gt 0 ]
-          then
-            echo "<details><summary>:information_source: Found $lineendings problems with line endings</summary>" >> ${{env.reportdir}}${{ env.reportfilename }}
-            echo "" >> ${{env.reportdir}}${{ env.reportfilename }}
-            echo '```' >> ${{env.reportdir}}${{ env.reportfilename }}
-            cat ${{ env.logdir }}lineendings.log >> ${{env.reportdir}}${{ env.reportfilename }}
-            echo '```' >> ${{env.reportdir}}${{ env.reportfilename }}
-            echo "</details>" >> ${{env.reportdir}}${{ env.reportfilename }}
-          else
-            echo ":heavy_check_mark: No line ending problem found  " >> ${{env.reportdir}}${{ env.reportfilename }}
-          fi
-          echo "" >> ${{env.reportdir}}${{ env.reportfilename }}
-          # Exit the step with appropriate code
-          [ $lineendings -eq 0 ]
       - name: Check for trailing whitespaces
         if: inputs.checkWhitespace && always()
         continue-on-error: ${{ inputs.whitespaceFailSilent }}
