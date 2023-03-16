@@ -742,8 +742,13 @@ def makePostVtkResult(
 ):
     """makePostVtkResult(document, base_result, [name]):
     creates a FEM post processing result object (vtk based) to hold FEM results"""
-    obj = doc.addObject("Fem::FemPostPipeline", name)
+    Pipeline_Name = "Pipeline_" + name
+    obj = doc.addObject("Fem::FemPostPipeline", Pipeline_Name)
     obj.load(base_result)
+    if FreeCAD.GuiUp:
+        obj.ViewObject.SelectionStyle = "BoundBox"
+        # to assure the user sees something, set the default to Surface
+        obj.ViewObject.DisplayMode = "Surface"
     return obj
 
 

@@ -249,8 +249,6 @@ class _TaskPanel:
         # print("calculixFinished(), exit code: {}".format(exitCode))
         FreeCAD.Console.PrintLog("calculix state: {}\n".format(self.Calculix.state()))
 
-        had_errors = False
-
         # Restore previous cwd
         QtCore.QDir.setCurrent(self.cwd)
 
@@ -260,7 +258,6 @@ class _TaskPanel:
             self.calculixNoError()
         else:
             self.calculixError()
-            had_errors = True
 
         self.form.pb_run_ccx.setText("Re-run CalculiX")
         self.femConsoleMessage("Loading result sets...")
@@ -290,47 +287,15 @@ class _TaskPanel:
             self.fea.load_results()
         except Exception:
             FreeCAD.Console.PrintError("loading results failed\n")
-            had_errors = True
 
         QApplication.restoreOverrideCursor()
         self.form.l_time.setText("Time: {0:4.1f}: ".format(time.time() - self.Start))
 
-        # create a results pipeline from the just created results object
-        if not had_errors:
-            CCX_results = self.fea.analysis.Document.getObject("CCX_Results")
-            # safe guard
-            if CCX_results is None:
-                return
-            # check if there is already a pipeline
-            self.CCX_pipeline = self.fea.analysis.Document.getObject("SolverCCXResult")
-            if self.CCX_pipeline is None:
-                try:
-                    self._createResults()
-                except Exception:
-                    FreeCAD.Console.PrintError("Results pipeline could not be created\n")
-                    had_errors = True
-            self.CCX_pipeline.load(CCX_results)
-            self.CCX_pipeline.recomputeChildren()
-            self.fea.analysis.Document.recompute()
-            # recompute() updated the result mesh data
-            # but not the shape and bar coloring
-            self.CCX_pipeline.ViewObject.updateColorBars()
-            # restore mesh object visibility
-            CCX_mesh = self.fea.analysis.Document.getObject("ResultMesh")
-            if CCX_mesh is not None:
-                CCX_mesh.ViewObject.Visibility = self.CCX_mesh_visibility
-        else:
-            FreeCAD.Console.PrintError("\nNo result pipeline was created.\n")
-
-    def _createResults(self):
-        self.CCX_pipeline = self.fea.analysis.Document.addObject(
-            "Fem::FemPostPipeline", "SolverCCXResult")
-        self.CCX_pipeline.Label = "SolverCCXResult"
-        self.CCX_pipeline.ViewObject.SelectionStyle = "BoundBox"
-        self.fea.analysis.addObject(self.CCX_pipeline)
-        # to assure the user sees something, set the default to Surface
-        self.CCX_pipeline.ViewObject.DisplayMode = "Surface"
-
+        # restore mesh object visibility
+        CCX_mesh = self.fea.analysis.Document.getObject("ResultMesh")
+        if CCX_mesh is not None:
+            CCX_mesh.ViewObject.Visibility = self.CCX_mesh_visibility
+    
     def choose_working_dir(self):
         wd = QtGui.QFileDialog.getExistingDirectory(None, "Choose CalculiX working directory",
                                                     self.fea.working_dir)

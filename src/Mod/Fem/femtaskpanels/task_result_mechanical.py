@@ -65,11 +65,6 @@ class _TaskPanel:
         # if Mesh and result are in active analysis
         # activate the result mesh object
         self.mesh_obj.ViewObject.show()
-        # hide pipeline if any
-        CCX_pipeline = FreeCADGui.ActiveDocument.getObject("SolverCCXResult")
-        if CCX_pipeline is not None:
-            self.pipeline_visibility = CCX_pipeline.Visibility
-            CCX_pipeline.hide()
 
         ui_path = FreeCAD.getHomePath() + "Mod/Fem/Resources/ui/"
         self.result_widget = FreeCADGui.PySideUic.loadUi(ui_path + "ResultShow.ui")
@@ -194,12 +189,6 @@ class _TaskPanel:
             scale_factor = get_displacement_scale_factor(self.result_obj)
             self.result_widget.sb_displacement_factor_max.setValue(10. * scale_factor)
             self.result_widget.sb_displacement_factor.setValue(scale_factor)
-
-    def __del__(self):
-        # restore visibility
-        CCX_pipeline = FreeCADGui.ActiveDocument.getObject("SolverCCXResult")
-        if self.pipeline_visibility and CCX_pipeline is not None:
-            CCX_pipeline.Visibility = self.pipeline_visibility
 
     def restore_result_dialog(self):
         try:
