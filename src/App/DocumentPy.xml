@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <GenerateModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="generateMetaModel_Module.xsd">
-  <PythonExport 
-    Father="PropertyContainerPy" 
-    Name="DocumentPy" 
-    Twin="Document" 
-    TwinPointer="Document" 
-    Include="App/Document.h" 
-    Namespace="App" 
-    FatherInclude="App/PropertyContainerPy.h" 
+  <PythonExport
+    Father="PropertyContainerPy"
+    Name="DocumentPy"
+    Twin="Document"
+    TwinPointer="Document"
+    Include="App/Document.h"
+    Namespace="App"
+    FatherInclude="App/PropertyContainerPy.h"
     FatherNamespace="App">
     <Documentation>
       <Author Licence="LGPL" Name="Juergen Riegel" EMail="FreeCAD@juergen-riegel.net" />
@@ -104,6 +104,23 @@ attach (Boolean): if True, then bind the document object first before adding to 
 viewType (String): override the view provider type directly, only effective when attach is False.</UserDocu>
       </Documentation>
     </Methode>
+    <Methode Name="addProperty">
+        <Documentation>
+            <UserDocu>
+                addProperty(string, string) -- Add a generic property.
+                The first argument specifies the type, the second the
+                name of the property.
+            </UserDocu>
+        </Documentation>
+    </Methode>
+    <Methode Name="removeProperty">
+        <Documentation>
+            <UserDocu>
+                removeProperty(string) -- Remove a generic property.
+                Note, you can only remove user-defined properties but not built-in ones.
+            </UserDocu>
+        </Documentation>
+    </Methode>
     <Methode Name="removeObject">
       <Documentation>
         <UserDocu>Remove an object from the document</UserDocu>
@@ -113,7 +130,7 @@ viewType (String): override the view provider type directly, only effective when
       <Documentation>
           <UserDocu>
 copyObject(object, with_dependencies=False, return_all=False)
-Copy an object or objects from another document to this document. 
+Copy an object or objects from another document to this document.
 
 object: can either a single object or sequence of objects
 with_dependencies: if True, all internal dependent objects are copied too.
@@ -127,7 +144,7 @@ return_all: if True, return all copied objects, or else return only the copied
         <UserDocu>
 moveObject(object, bool with_dependencies = False)
 Transfers an object from another document to this document.
-              
+
 object: can either a single object or sequence of objects
 with_dependencies: if True, all internal dependent objects are copied too.
         </UserDocu>
