@@ -78,6 +78,7 @@ void DlgSettingsNotificationArea::saveSettings()
     ui->maxNotifications->onSave();
     ui->maxWidgetMessages->onSave();
     ui->autoRemoveUserNotifications->onSave();
+    ui->notificationWidth->onSave();
 }
 
 void DlgSettingsNotificationArea::loadSettings()
@@ -89,6 +90,7 @@ void DlgSettingsNotificationArea::loadSettings()
     ui->maxNotifications->onRestore();
     ui->maxWidgetMessages->onRestore();
     ui->autoRemoveUserNotifications->onRestore();
+    ui->notificationWidth->onRestore();
 }
 
 void DlgSettingsNotificationArea::changeEvent(QEvent *e)
