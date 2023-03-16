@@ -115,7 +115,6 @@ SET(Draft_make_functions
     draftmake/make_clone.py
     draftmake/make_copy.py
     draftmake/make_dimension.py
-    draftmake/make_drawingview.py
     draftmake/make_ellipse.py
     draftmake/make_facebinder.py
     draftmake/make_fillet.py
@@ -148,7 +147,6 @@ SET(Draft_objects
     draftobjects/bspline.py
     draftobjects/circle.py
     draftobjects/clone.py
-    draftobjects/drawingview.py
     draftobjects/ellipse.py
     draftobjects/facebinder.py
     draftobjects/draft_annotation.py
@@ -231,7 +229,6 @@ SET(Modifier_tools
     draftguitools/gui_downgrade.py
     draftguitools/gui_trimex.py
     draftguitools/gui_scale.py
-    draftguitools/gui_drawing.py
     draftguitools/gui_wire2spline.py
     draftguitools/gui_shape2dview.py
     draftguitools/gui_draft2sketch.py
