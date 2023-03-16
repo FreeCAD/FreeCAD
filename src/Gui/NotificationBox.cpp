@@ -60,9 +60,9 @@ class NotificationLabel: public QLabel
 {
     Q_OBJECT
 public:
-    NotificationLabel(const QString& text, const QPoint& pos, int displayTime, int minShowTime = 0);
+    NotificationLabel(const QString& text, const QPoint& pos, int displayTime, int minShowTime = 0, int width = 0);
     /// Reuse existing notification to show a new notification (with a new text)
-    void reuseNotification(const QString& text, int displayTime, const QPoint& pos);
+    void reuseNotification(const QString& text, int displayTime, const QPoint& pos, int width);
     /// Hide notification after a hiding timer.
     void hideNotification();
     /// Update the size of the QLabel
@@ -96,7 +96,7 @@ private:
 qobject_delete_later_unique_ptr<NotificationLabel> NotificationLabel::instance = nullptr;
 
 NotificationLabel::NotificationLabel(const QString& text, const QPoint& pos, int displayTime,
-                                     int minShowTime)
+                                     int minShowTime, int width)
     : QLabel(nullptr, Qt::ToolTip | Qt::BypassGraphicsProxyWidget),
       minShowTime(minShowTime)
 {
@@ -125,7 +125,7 @@ NotificationLabel::NotificationLabel(const QString& text, const QPoint& pos, int
         hideNotificationImmediately();
     });
 
-    reuseNotification(text, displayTime, pos);
+    reuseNotification(text, displayTime, pos, width);
 }
 
 void NotificationLabel::restartExpireTimer(int displayTime)
@@ -143,8 +143,11 @@ void NotificationLabel::restartExpireTimer(int displayTime)
     hideTimer.stop();
 }
 
-void NotificationLabel::reuseNotification(const QString& text, int displayTime, const QPoint& pos)
+void NotificationLabel::reuseNotification(const QString& text, int displayTime, const QPoint& pos, int width)
 {
+    if(width > 0)
+        setFixedWidth(width);
+
     setText(text);
     updateSize(pos);
     restartExpireTimer(displayTime);
@@ -287,7 +290,7 @@ bool NotificationLabel::notificationLabelChanged(const QString& text)
 /***************************** NotificationBox **********************************/
 
 void NotificationBox::showText(const QPoint& pos, const QString& text, int displayTime,
-                               unsigned int minShowTime)
+                               unsigned int minShowTime, int width)
 {
     // a label does already exist
     if (NotificationLabel::instance && NotificationLabel::instance->isVisible()) {
@@ -298,7 +301,7 @@ void NotificationBox::showText(const QPoint& pos, const QString& text, int displ
         else {
             // If the label has changed, reuse the one that is showing (removes flickering)
             if (NotificationLabel::instance->notificationLabelChanged(text)) {
-                NotificationLabel::instance->reuseNotification(text, displayTime, pos);
+                NotificationLabel::instance->reuseNotification(text, displayTime, pos, width);
                 NotificationLabel::instance->placeNotificationLabel(pos);
             }
             return;
@@ -310,7 +313,8 @@ void NotificationBox::showText(const QPoint& pos, const QString& text, int displ
         new NotificationLabel(text,
                               pos,
                               displayTime,
-                              minShowTime);// sets NotificationLabel::instance to itself
+                              minShowTime,
+                              width);// sets NotificationLabel::instance to itself
 
         NotificationLabel::instance->placeNotificationLabel(pos);
         NotificationLabel::instance->setObjectName(QLatin1String("NotificationBox_label"));
