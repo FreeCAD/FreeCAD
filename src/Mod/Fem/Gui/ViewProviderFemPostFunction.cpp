@@ -56,6 +56,7 @@
 #include "ViewProviderFemPostFunction.h"
 #include "FemSettings.h"
 #include "TaskPostBoxes.h"
+#include "ViewProviderAnalysis.h"
 
 #include "ui_BoxWidget.h"
 #include "ui_CylinderWidget.h"
@@ -133,32 +134,10 @@ void ViewProviderFemPostFunctionProvider::updateSize()
 
 bool ViewProviderFemPostFunctionProvider::onDelete(const std::vector<std::string>&)
 {
-    // warn the user if the object has childs
-
+    // warn the user if the object has unselected children
     auto objs = claimChildren();
-    if (!objs.empty())
-    {
-        // generate dialog
-        QString bodyMessage;
-        QTextStream bodyMessageStream(&bodyMessage);
-        bodyMessageStream << qApp->translate("Std_Delete",
-            "The functions list is not empty, therefore the\nfollowing referencing objects might be lost:");
-        bodyMessageStream << '\n';
-        for (auto ObjIterator : objs)
-            bodyMessageStream << '\n' << QString::fromUtf8(ObjIterator->Label.getValue());
-        bodyMessageStream << "\n\n" << QObject::tr("Are you sure you want to continue?");
-        // show and evaluate the dialog
-        int DialogResult = QMessageBox::warning(Gui::getMainWindow(),
-            qApp->translate("Std_Delete", "Object dependencies"), bodyMessage,
-            QMessageBox::Yes, QMessageBox::No);
-        if (DialogResult == QMessageBox::Yes)
-            return true;
-        else
-            return false;
-    }
-    else {
-        return true;
-    }
+    return ViewProviderFemAnalysis::checkSelectedChildren(
+        objs, this->getDocument(), "functions list");
 }
 
 bool ViewProviderFemPostFunctionProvider::canDelete(App::DocumentObject* obj) const
@@ -178,7 +157,6 @@ PROPERTY_SOURCE(FemGui::ViewProviderFemPostFunction, Gui::ViewProviderDocumentOb
 ViewProviderFemPostFunction::ViewProviderFemPostFunction()
     : m_manip(nullptr), m_autoscale(false), m_isDragging(false), m_autoRecompute(false)
 {
-
     ADD_PROPERTY_TYPE(AutoScaleFactorX, (1), "AutoScale", App::Prop_Hidden, "Automatic scaling factor");
     ADD_PROPERTY_TYPE(AutoScaleFactorY, (1), "AutoScale", App::Prop_Hidden, "Automatic scaling factor");
     ADD_PROPERTY_TYPE(AutoScaleFactorZ, (1), "AutoScale", App::Prop_Hidden, "Automatic scaling factor");

@@ -32,6 +32,7 @@
 #include <Gui/MainWindow.h>
 
 #include "ViewProviderSolver.h"
+#include "ViewProviderAnalysis.h"
 
 
 using namespace FemGui;
@@ -44,9 +45,7 @@ ViewProviderSolver::ViewProviderSolver()
 }
 
 ViewProviderSolver::~ViewProviderSolver()
-{
-
-}
+{}
 
 std::vector<std::string> ViewProviderSolver::getDisplayModes() const
 {
@@ -55,32 +54,9 @@ std::vector<std::string> ViewProviderSolver::getDisplayModes() const
 
 bool ViewProviderSolver::onDelete(const std::vector<std::string>&)
 {
-    // warn the user if the object has childs
-
+    // warn the user if the object has unselected children
     auto objs = claimChildren();
-    if (!objs.empty())
-    {
-        // generate dialog
-        QString bodyMessage;
-        QTextStream bodyMessageStream(&bodyMessage);
-        bodyMessageStream << qApp->translate("Std_Delete",
-            "The solver is not empty, therefore the\nfollowing referencing objects might be lost:");
-        bodyMessageStream << '\n';
-        for (auto ObjIterator : objs)
-            bodyMessageStream << '\n' << QString::fromUtf8(ObjIterator->Label.getValue());
-        bodyMessageStream << "\n\n" << QObject::tr("Are you sure you want to continue?");
-        // show and evaluate the dialog
-        int DialogResult = QMessageBox::warning(Gui::getMainWindow(),
-            qApp->translate("Std_Delete", "Object dependencies"), bodyMessage,
-            QMessageBox::Yes, QMessageBox::No);
-        if (DialogResult == QMessageBox::Yes)
-            return true;
-        else
-            return false;
-    }
-    else {
-        return true;
-    }
+    return ViewProviderFemAnalysis::checkSelectedChildren(objs, this->getDocument(), "solver");
 }
 
 bool ViewProviderSolver::canDelete(App::DocumentObject* obj) const
