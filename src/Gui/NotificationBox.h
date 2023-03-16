@@ -54,9 +54,11 @@ public:
      * an event, see class documentation above)
      * @param minShowTime  Time during which the notification can only be made disappear by popping
      * it out (clicking inside it).
+     * @param width Fixes the width of the notification. Default value makes the width to be system determined (dependent on
+     * the text).
      */
     static void showText(const QPoint& pos, const QString& text, int displayTime = -1,
-                         unsigned int minShowTime = 0);
+                         unsigned int minShowTime = 0, int width = 0);
     /// Hides a notification.
     static inline void hideText()
     {
