@@ -148,9 +148,9 @@ def setup(doc=None, solvertype="ccxtools"):
     mat = material_obj.Material
     mat["Name"] = "Water"
     mat["Density"] = "998 kg/m^3"
-    mat["SpecificHeat"] = "4.182 J/kg/K"
+    mat["SpecificHeat"] = "4182 J/kg/K"
     mat["DynamicViscosity"] = "1.003e-3 kg/m/s"
-    mat["VolumetricThermalExpansionCoefficient"] = "2.07e-4 m/m/K"
+    mat["ThermalExpansionCoefficient"] = "2.07e-4 m/m/K"
     mat["ThermalConductivity"] = "0.591 W/m/K"
     material_obj.Material = mat
     analysis.addObject(material_obj)
