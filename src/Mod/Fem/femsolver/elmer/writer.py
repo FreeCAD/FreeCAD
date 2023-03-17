@@ -702,8 +702,8 @@ class Writer(object):
     def _haveMaterialFluid(self):
         for obj in self.getMember("App::MaterialObject"):
             m = obj.Material
-            # fluid material always has KinematicViscosity defined
-            if "KinematicViscosity" in m:
+            # fluid material always has a viscosity defined
+            if ("DynamicViscosity" in m) or ("KinematicViscosity" in m):
                 return True
         return False
 
@@ -712,7 +712,7 @@ class Writer(object):
         # then assume it is a solid
         if self.getBodyMaterial(body) is not None:
             m = self.getBodyMaterial(body).Material
-            return "KinematicViscosity" in m
+            return ("DynamicViscosity" in m) or ("KinematicViscosity" in m)
         return False
 
     def getBodyMaterial(self, name):
