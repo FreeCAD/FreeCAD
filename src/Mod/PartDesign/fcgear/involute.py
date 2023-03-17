@@ -23,14 +23,15 @@
 #   License along with FCGear; if not, write to the Free Software
 #   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307
 
-from math import cos, sin, pi, acos, asin, atan, sqrt, radians
+from math import cos, sin, tan, pi, acos, asin, atan, sqrt, radians
 from math import comb as binom
 
 
 def CreateExternalGear(w, m, Z, phi,
         split=True,
         addCoeff=1.0, dedCoeff=1.25,
-        filletCoeff=0.375):
+        filletCoeff=0.375,
+        shiftCoeff=0.0):
     """
     Create an external gear
 
@@ -43,6 +44,7 @@ def CreateExternalGear(w, m, Z, phi,
     filletCoeff is the root fillet radius, normalized by the module.
         The default of 0.375 matches the hard-coded value (1.5 * 0.25) of the implementation
         up to v0.20. The ISO Rack specified 0.38, though.
+    shiftCoeff is the profile shift coefficient (profile shift normalized by module)
 
     if split is True, each profile of a teeth will consist in 2 Bezier
     curves of degree 3, otherwise it will be made of one Bezier curve
@@ -56,13 +58,15 @@ def CreateExternalGear(w, m, Z, phi,
         split_involute=split,
         outer_height_coefficient=addCoeff,
         inner_height_coefficient=dedCoeff,
-        inner_fillet_coefficient=filletCoeff)
+        inner_fillet_coefficient=filletCoeff,
+        profile_shift_coefficient=shiftCoeff)
 
 
 def CreateInternalGear(w, m, Z, phi,
         split=True,
         addCoeff=0.6, dedCoeff=1.25,
-        filletCoeff=0.375):
+        filletCoeff=0.375,
+        shiftCoeff=0.0):
     """
     Create an internal gear
 
@@ -81,6 +85,7 @@ def CreateInternalGear(w, m, Z, phi,
     filletCoeff is the root fillet radius, normalized by the module.
         The default of 0.375 matches the hard-coded value (1.5 * 0.25) of the implementation
         up to v0.20. The ISO Rack specified 0.38, though.
+    shiftCoeff is the profile shift coefficient (profile shift normalized by module)
 
     if split is True, each profile of a teeth will consist in 2 Bezier
     curves of degree 3, otherwise it will be made of one Bezier curve
@@ -95,7 +100,8 @@ def CreateInternalGear(w, m, Z, phi,
         rotation=pi/Z, # rotate by half a tooth to align the "inner" tooth with the X-axis
         outer_height_coefficient=dedCoeff,
         inner_height_coefficient=addCoeff,
-        outer_fillet_coefficient=filletCoeff)
+        outer_fillet_coefficient=filletCoeff,
+        profile_shift_coefficient=shiftCoeff)
 
 
 def _create_involute_profile(
@@ -108,7 +114,8 @@ def _create_involute_profile(
         outer_height_coefficient=1.0,
         inner_height_coefficient=1.0,
         outer_fillet_coefficient=0.0,
-        inner_fillet_coefficient=0.0):
+        inner_fillet_coefficient=0.0,
+        profile_shift_coefficient=0.0):
     """
     Create an involute gear profile in the given wire builder
 
@@ -125,8 +132,9 @@ def _create_involute_profile(
     The "_coefficient" suffix denotes values normalized by the module.
     """
 
-    outer_height = outer_height_coefficient * module # external: addendum, internal: dedendum
-    inner_height = inner_height_coefficient * module # external: dedendum, internal: addednum
+    profile_shift = profile_shift_coefficient * module
+    outer_height = outer_height_coefficient * module + profile_shift # ext: addendum, int: dedednum
+    inner_height = inner_height_coefficient * module - profile_shift # ext: dedendum, int: addednum
 
     # ****** calculate radii
     # All distances from the center of the profile start with "R".
@@ -248,8 +256,13 @@ def _create_involute_profile(
     else:
         inv = BezCoeffs(Rb, Rfo, 4, fs, fe)
 
+    # ****** calculate angular tooth thickness at reference circle
+    enlargement_by_shift = profile_shift * tan(pressure_angle) / Rref
+    tooth_thickness_half_angle = angular_pitch / 4 + enlargement_by_shift
+    psi = tooth_thickness_half_angle # for the formulae below, a symbol is more readable
+
     # rotate all points to make the tooth symetric to the X axis
-    inv = [rotate(pt, -base_to_ref - angular_pitch / 4) for pt in inv]
+    inv = [rotate(pt, -base_to_ref - psi) for pt in inv]
 
     # create the back profile of tooth (mirror image on X axis)
     invR = [mirror(pt) for pt in inv]
@@ -257,12 +270,12 @@ def _create_involute_profile(
     # ****** calculate section junction points.
     # Those are the points where the named element ends (start is the end of the previous element).
     # Suffix _back is back of this tooth, suffix _next is front of next tooth.
-    inner_fillet = toCartesian(Rfi, -angular_pitch / 4 - start_to_ref) # top of fillet
+    inner_fillet = toCartesian(Rfi, -psi - start_to_ref) # top of fillet
     inner_fillet_back = mirror(inner_fillet) # flip to make same point on back of tooth
-    inner_circle_back = toCartesian(Ri, angular_pitch / 4 + start_to_ref + inner_fillet_angle)
-    inner_circle_next = toCartesian(Ri, 3 * angular_pitch / 4 - start_to_ref - inner_fillet_angle)
+    inner_circle_back = toCartesian(Ri, psi + start_to_ref + inner_fillet_angle)
+    inner_circle_next = toCartesian(Ri, angular_pitch - psi - start_to_ref - inner_fillet_angle)
     inner_fillet_next = rotate(inner_fillet, angular_pitch)  # top of fillet, front of next tooth
-    outer_fillet = toCartesian(Ro, -angular_pitch / 4 + ref_to_stop + outer_fillet_angle)
+    outer_fillet = toCartesian(Ro, -psi + ref_to_stop + outer_fillet_angle)
     outer_circle = mirror(outer_fillet)
 
     # ****** build the gear profile using the provided wire builder

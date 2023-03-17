@@ -21,8 +21,10 @@
 
 import unittest
 import pathlib
+from math import pi, tan, cos, acos
 
 import FreeCAD
+Quantity = FreeCAD.Units.Quantity # FIXME from FreeCAD.Units import Quantity doesn't work
 from FreeCAD import Vector
 from Part import makeCircle, Precision
 import InvoluteGearFeature
@@ -150,6 +152,66 @@ class TestInvoluteGear(unittest.TestCase):
         self.assertNoIntersection(hub.Shape, makeCircle(tip_diameter/2 - delta), "Teeth extent below tip circle")
         self.assertNoIntersection(hub.Shape, makeCircle(root_diameter/2 + delta), "Teeth extend beyond root circle")
 
+    def testShiftedExternalGearProfile(self):
+        gear = InvoluteGearFeature.makeInvoluteGear('InvoluteGear')
+        gear.NumberOfTeeth = 9 # odd number to have a tooth space on the negative X-axis
+        gear.ProfileShiftCoefficient = 0.6
+        self.assertSuccessfulRecompute(gear)
+        self.assertClosedWire(gear.Shape)
+        # first, verify the radial dimensions
+        xm = gear.ProfileShiftCoefficient * gear.Modules
+        Rref = gear.NumberOfTeeth * gear.Modules / 2
+        Rtip = Rref + gear.AddendumCoefficient * gear.Modules + xm
+        Rroot = Rref - gear.DedendumCoefficient * gear.Modules + xm
+        delta = Quantity("20 um") # 20 micron is as good as it gets
+        self.assertIntersection(gear.Shape, makeCircle(Rref), "Expecting intersection at reference circle")
+        self.assertNoIntersection(gear.Shape, makeCircle(Rtip + delta), "Teeth extent beyond tip circle")
+        self.assertNoIntersection(gear.Shape, makeCircle(Rroot - delta), "Teeth extend below root circle")
+        # to verify the angular dimensions, we use an "over pin measurement"
+        Dpin, Rc = external_pin_diameter_and_distance(
+            z=gear.NumberOfTeeth,
+            m=gear.Modules.getValueAs('mm'),
+            a=gear.PressureAngle.getValueAs('rad'),
+            x=gear.ProfileShiftCoefficient)
+        Rpin = Quantity(f"{Dpin/2} mm")
+        delta = Quantity("1 um") # our angular precision is much greater then the radial one
+        self.assertIntersection(gear.Shape, makeCircle(Rpin + delta, Vector(-Rc)),
+            msg="Expecting intersection with enlarged pin")
+        self.assertNoIntersection(gear.Shape, makeCircle(Rpin - delta, Vector(-Rc)),
+            msg="Expecting no intersection with reduced pin")
+
+    def testShiftedInternalGearProfile(self):
+        gear = InvoluteGearFeature.makeInvoluteGear('InvoluteGear')
+        gear.NumberOfTeeth = 11 # odd number to have a tooth space on the negative X-axis
+        gear.ExternalGear = False # to ensure "clean" flanks we need to tweak some more props
+        gear.ProfileShiftCoefficient = 0.4
+        gear.AddendumCoefficient = 0.6
+        gear.DedendumCoefficient = 0.8
+        self.assertSuccessfulRecompute(gear)
+        self.assertClosedWire(gear.Shape)
+        # first, verify the radial dimensions
+        xm = gear.ProfileShiftCoefficient * gear.Modules
+        Rref = gear.NumberOfTeeth * gear.Modules / 2
+        # For internal, too, positive shift is outwards. So this is *not* inverted.
+        Rtip = Rref - gear.AddendumCoefficient * gear.Modules + xm
+        Rroot = Rref + gear.DedendumCoefficient * gear.Modules + xm
+        delta = Quantity("20 um") # 20 micron is as good as it gets
+        self.assertIntersection(gear.Shape, makeCircle(Rref), "Expecting intersection at reference circle")
+        self.assertNoIntersection(gear.Shape, makeCircle(Rtip - delta), "Teeth extent below tip circle")
+        self.assertNoIntersection(gear.Shape, makeCircle(Rroot + delta), "Teeth extend beyond root circle")
+        # to verify the angular dimensions, we use an "over pin measurement"
+        Dpin, Rc = internal_pin_diameter_and_distance(
+            z=gear.NumberOfTeeth,
+            m=gear.Modules.getValueAs('mm'),
+            a=gear.PressureAngle.getValueAs('rad'),
+            x=gear.ProfileShiftCoefficient)
+        Rpin = Quantity(f"{Dpin/2} mm")
+        delta = Quantity("1 um") # our angular precision is much greater then the radial one
+        self.assertIntersection(gear.Shape, makeCircle(Rpin + delta, Vector(-Rc)),
+            msg="Expecting intersection with enlarged pin")
+        self.assertNoIntersection(gear.Shape, makeCircle(Rpin - delta, Vector(-Rc)),
+            msg="Expecting no intersection with reduced pin")
+
     def testZeroFilletExternalGearProfile_BaseAboveRoot(self):
         gear = InvoluteGearFeature.makeInvoluteGear('InvoluteGear')
         # below 42 teeth, with default dedendum 1.25, we have some non-involute flanks
@@ -261,3 +323,81 @@ class TestInvoluteGear(unittest.TestCase):
 
     def assertSolid(self, shape, msg=None):
         self.assertEqual(shape.ShapeType, 'Solid', msg=msg)
+
+
+def inv(a):
+    """the involute function"""
+    return tan(a) - a
+
+
+def external_pin_diameter_and_distance(z, m, a, x):
+    """Calculates the ideal pin diameter for over pins measurement and its distance
+    for extrnal spur gears.
+
+    z is the number of teeth
+    m is the module, in millimeter
+    a is the pressure angle, in radians
+    x is the profile shift coefficient
+
+    returns the tuple of ideal pin diameter and its center distance from the gear's center
+    """
+    # Equations taken from http://qtcgears.com/tools/catalogs/PDF_Q420/Tech.pdf
+    # Table 10-13 (1-4) and Table 10-14 (4a)
+
+    # 1. Half Tooth Space Angle at Base Circle
+    nu = pi / (2 * z) - inv(a) - 2 * x * tan(a) / z
+
+    # 2. The Pressure Angle at the Point Pin is Tangent to Tooth Surface
+    ap = acos(z * m * cos(a) / (z * m + 2 * x * m))
+
+    # 3. The Pressure Angle at Pin Center
+    phi = tan(ap) + nu
+
+    # 4. Ideal Pin Diameter
+    dp = z * m * cos(a) * (inv(phi) + nu)
+
+    # 4a. Over Pins Measurement, even number of teeth
+    # As we return the distance from the gear's center, we need dm to pass thought this center
+    # and that's only the case for a dm for an even number of teeth. However, this center distance
+    # is also valid for an odd number of teeth, as we don't measure pin-to-pin but pin-to-center.
+    dm = z * m * cos(a) / cos(phi) + dp
+
+    # Eq. 10-12 on page T46
+    rc = (dm - dp) / 2
+    return (dp, rc)
+
+
+def internal_pin_diameter_and_distance(z, m, a, x):
+    """Calculates the ideal pin diameter for over pins measurement and its distance
+    for intrnal spur gears.
+
+    z is the number of teeth
+    m is the module, in millimeter
+    a is the pressure angle, in radians
+    x is the profile shift coefficient
+
+    returns the tuple of ideal pin diameter and its center distance from the gear's center
+    """
+    # Equations taken from http://qtcgears.com/tools/catalogs/PDF_Q420/Tech.pdf
+    # Table 10-17 (1-4) and Table 10-18 (4a)
+
+    # 1. Half Tooth Space Angle at Base Circle
+    nu = pi / (2 * z) + inv(a) + 2 * x * tan(a) / z
+
+    # 2. The Pressure Angle at the Point Pin is Tangent to Tooth Surface
+    ap = acos(z * m * cos(a) / (z * m + 2 * x * m))
+
+    # 3. The Pressure Angle at Pin Center
+    phi = tan(ap) - nu
+
+    # 4. Ideal Pin Diameter
+    dp = z * m * cos(a) * (nu - inv(phi))
+
+    # 4a. Over Pins Measurement, even number of teeth
+    # As we return the distance from the gear's center, we need dm to pass thought this center
+    # and that's only the case for a dm for an even number of teeth. However, this center distance
+    # is also valid for an odd number of teeth, as we don't measure pin-to-pin but pin-to-center.
+    dm = z * m * cos(a) / cos(phi) - dp
+
+    rc = (dm + dp) / 2
+    return (dp, rc)

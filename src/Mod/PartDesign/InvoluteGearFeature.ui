@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>248</width>
-    <height>270</height>
+    <width>253</width>
+    <height>301</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -230,6 +230,29 @@
      </property>
      <property name="value">
       <double>0.380000000000000</double>
+     </property>
+    </widget>
+   </item>
+   <item row="8" column="0">
+    <widget class="QLabel" name="label_ProfileShift">
+     <property name="text">
+      <string>Profile Shift Coefficient</string>
+     </property>
+    </widget>
+   </item>
+   <item row="8" column="1">
+    <widget class="QDoubleSpinBox" name="doubleSpinBox_ProfileShift">
+     <property name="minimum">
+      <double>-3.000000000000000</double>
+     </property>
+     <property name="maximum">
+      <double>3.000000000000000</double>
+     </property>
+     <property name="singleStep">
+      <double>0.100000000000000</double>
+     </property>
+     <property name="value">
+      <double>0.000000000000000</double>
      </property>
     </widget>
    </item>

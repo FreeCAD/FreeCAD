@@ -122,13 +122,17 @@ class _InvoluteGear:
             doc=QtCore.QT_TRANSLATE_NOOP("App::Property",
                 "The radius of the fillet at the root of the tooth, normalized by the module."),
             default=lambda: 0.375 if is_restore else 0.38)
+        ensure_property("App::PropertyFloat","ProfileShiftCoefficient",
+            doc=QtCore.QT_TRANSLATE_NOOP("App::Property",
+                "The distance by which the reference profile is shifted outwards, normalized by the module."),
+            default=0.0)
 
     def execute(self,obj):
         w = fcgear.FCWireBuilder()
         generator_func = involute.CreateExternalGear if obj.ExternalGear else involute.CreateInternalGear
         generator_func(w, obj.Modules.Value, obj.NumberOfTeeth, obj.PressureAngle.Value,
             split=obj.HighPrecision, addCoeff=obj.AddendumCoefficient, dedCoeff=obj.DedendumCoefficient,
-            filletCoeff=obj.RootFilletCoefficient)
+            filletCoeff=obj.RootFilletCoefficient, shiftCoeff=obj.ProfileShiftCoefficient)
         gearw = Part.Wire([o.toShape() for o in w.wire])
         obj.Shape = gearw
         obj.positionBySupport()
@@ -199,6 +203,7 @@ class _InvoluteGearTaskPanel:
         self.form.doubleSpinBox_Addendum.valueChanged.connect(assignValue("AddendumCoefficient"))
         self.form.doubleSpinBox_Dedendum.valueChanged.connect(assignValue("DedendumCoefficient"))
         self.form.doubleSpinBox_RootFillet.valueChanged.connect(assignValue("RootFilletCoefficient"))
+        self.form.doubleSpinBox_ProfileShift.valueChanged.connect(assignValue("ProfileShiftCoefficient"))
 
         self.update()
 
@@ -222,6 +227,7 @@ class _InvoluteGearTaskPanel:
         assign("AddendumCoefficient", self.form.doubleSpinBox_Addendum, self.form.label_Addendum)
         assign("DedendumCoefficient", self.form.doubleSpinBox_Dedendum, self.form.label_Dedendum)
         assign("RootFilletCoefficient", self.form.doubleSpinBox_RootFillet, self.form.label_RootFillet)
+        assign("ProfileShiftCoefficient", self.form.doubleSpinBox_ProfileShift, self.form.label_ProfileShift)
 
     def changeEvent(self, event):
         if event == QtCore.QEvent.LanguageChange:
@@ -237,6 +243,7 @@ class _InvoluteGearTaskPanel:
         self.obj.AddendumCoefficient = self.form.doubleSpinBox_Addendum.value()
         self.obj.DedendumCoefficient = self.form.doubleSpinBox_Dedendum.value()
         self.obj.RootFilletCoefficient = self.form.doubleSpinBox_RootFillet.value()
+        self.obj.ProfileShiftCoefficient = self.form.doubleSpinBox_ProfileShift.value()
 
     def transferFrom(self):
         "Transfer from the object to the dialog"
@@ -248,6 +255,7 @@ class _InvoluteGearTaskPanel:
         self.form.doubleSpinBox_Addendum.setValue(self.obj.AddendumCoefficient)
         self.form.doubleSpinBox_Dedendum.setValue(self.obj.DedendumCoefficient)
         self.form.doubleSpinBox_RootFillet.setValue(self.obj.RootFilletCoefficient)
+        self.form.doubleSpinBox_ProfileShift.setValue(self.obj.ProfileShiftCoefficient)
 
     def getStandardButtons(self):
         return int(QtGui.QDialogButtonBox.Ok) | int(QtGui.QDialogButtonBox.Cancel)| int(QtGui.QDialogButtonBox.Apply)
