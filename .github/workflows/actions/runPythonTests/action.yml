@@ -20,7 +20,7 @@
 # ***************************************************************************
 
 name: runPythonTests
-description: "Linux: run Python tests, generate log and report"
+description: "Run Python tests, generate log and report"
 
 inputs:
   testDescription:
