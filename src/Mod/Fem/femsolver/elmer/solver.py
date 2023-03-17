@@ -49,7 +49,7 @@ from femtools import femutils
 if FreeCAD.GuiUp:
     import FemGui
 
-COORDINATE_SYSTEM = ["Cartesian 1D", "Cartesian 2D", "Cartesian 3D",
+COORDINATE_SYSTEM = ["Cartesian", "Cartesian 1D", "Cartesian 2D", "Cartesian 3D",
                      "Polar 2D", "Polar 3D",
                      "Cylindric", "Cylindric Symmetric",
                      "Axi Symmetric"]
@@ -87,7 +87,7 @@ class Proxy(solverbase.Proxy):
             ""
         )
         obj.CoordinateSystem = COORDINATE_SYSTEM
-        obj.CoordinateSystem = "Cartesian 3D"
+        obj.CoordinateSystem = "Cartesian"
 
         obj.addProperty(
             "App::PropertyIntegerConstraint",

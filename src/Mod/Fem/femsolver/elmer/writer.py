@@ -364,7 +364,7 @@ class Writer(object):
                 ""
             )
             solver.CoordinateSystem = solverClass.COORDINATE_SYSTEM
-            solver.CoordinateSystem = "Cartesian 3D"
+            solver.CoordinateSystem = "Cartesian"
         if not hasattr(self.solver, "BDFOrder"):
             solver.addProperty(
                 "App::PropertyIntegerConstraint",
