@@ -1634,8 +1634,8 @@ class Writer(object):
     def _haveMaterialFluid(self):
         for obj in self._getMember("App::MaterialObject"):
             m = obj.Material
-            # fluid material always has KinematicViscosity defined
-            if "KinematicViscosity" in m:
+            # fluid material always has a viscosity defined
+            if ("DynamicViscosity" in m) or ("KinematicViscosity" in m):
                 return True
         return False
 
@@ -1644,7 +1644,7 @@ class Writer(object):
         # then assume it is a solid
         if self._getBodyMaterial(body) is not None:
             m = self._getBodyMaterial(body).Material
-            return "KinematicViscosity" in m
+            return ("DynamicViscosity" in m) or ("KinematicViscosity" in m)
         return False
 
     def _hasExpression(self, equation):
