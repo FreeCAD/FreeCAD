@@ -67,6 +67,7 @@
 #include <Base/FileInfo.h>
 #include <Base/Interpreter.h>
 #include <Base/Stream.h>
+#include <Base/UnitsApi.h>
 #include <DAGView/DAGView.h>
 #include <TaskView/TaskView.h>
 
@@ -152,7 +153,7 @@ private:
 // Pimpl class
 struct MainWindowP
 {
-    QLabel* sizeLabel;
+    QToolButton* sizeLabel;
     QLabel* actionLabel;
     QTimer* actionTimer;
     QTimer* statusTimer;
@@ -297,8 +298,9 @@ MainWindow::MainWindow(QWidget * parent, Qt::WindowFlags f)
     d->status = new StatusBarObserver();
     d->actionLabel = new QLabel(statusBar());
     // d->actionLabel->setMinimumWidth(120);
-    d->sizeLabel = new QLabel(tr("Dimension"), statusBar());
-    d->sizeLabel->setMinimumWidth(120);
+
+    initialiseSizeLabel();
+
     statusBar()->addWidget(d->actionLabel, 1);
     QProgressBar* progressBar = Gui::SequencerBar::instance()->getProgressBar(statusBar());
     statusBar()->addPermanentWidget(progressBar, 0);
@@ -2077,6 +2079,44 @@ void MainWindow::setPaneText(int i, QString text)
     else if (i==2) {
         d->sizeLabel->setText(text);
     }
+}
+
+void MainWindow::initialiseSizeLabel()
+{
+    d->sizeLabel = new QToolButton(statusBar());
+    d->sizeLabel->setText(tr("Dimension"));
+    d->sizeLabel->setPopupMode(QToolButton::MenuButtonPopup);
+    QObject::connect(
+        d->sizeLabel, &QToolButton::clicked,
+        d->sizeLabel, &QToolButton::showMenu
+    );
+    d->sizeLabel->setMinimumWidth(120);
+
+    //create the button actions
+    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Units");
+    int userSchema = hGrp->GetInt("UserSchema", 0);
+    QActionGroup* actionGrp = new QActionGroup(this);
+    actionGrp->setExclusive(true);
+
+    int num = static_cast<int>(Base::UnitSystem::NumUnitSystemTypes);
+    for (int i = 0; i < num; i++) {
+        QAction* action = new QAction(qApp->translate("Gui::Dialog::DlgSettingsUnits", Base::UnitsApi::getDescription(static_cast<Base::UnitSystem>(i))), this);
+        action->setCheckable(true);
+        action->setChecked(i == userSchema);
+        actionGrp->addAction(action);
+
+        QObject::connect(action, &QAction::changed,
+            this, [i, hGrp] {
+                // Set and save the Unit System
+                Base::UnitsApi::setSchema(static_cast<Base::UnitSystem>(i));
+                hGrp->SetInt("UserSchema", i); //Note : saving parameter will trigger EditModeCoinManager::ParameterObserver
+
+                // Update the application to show the unit change
+                Gui::Application::Instance->onUpdate();
+            }
+        );
+    }
+    d->sizeLabel->addActions(actionGrp->actions());
 }
 
 void MainWindow::customEvent(QEvent* e)
