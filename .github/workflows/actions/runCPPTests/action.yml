@@ -21,7 +21,7 @@
 # ***************************************************************************
 
 name: runCPPTests
-description: "Run: C++ tests"
+description: "Run C++ tests, generate log and report"
 
 inputs:
   testCommand:
@@ -37,8 +37,7 @@ inputs:
 runs:
   using: "composite"
   steps:
-    - name: Run GTest unit tests
-      id: runGoogleTests
+    - name: Run C++ unit tests
       shell: bash
       run: stdbuf -oL -eL ${{ inputs.testCommand }} |& tee -a ${{ inputs.testLogFile }}
     - name: Parse test results
