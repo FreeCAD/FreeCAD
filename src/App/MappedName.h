@@ -44,6 +44,12 @@ namespace Data
 class AppExport MappedName
 {
 public:
+    /// Create a MappedName from a C string, optionally prefixed by an element map prefix, which
+    /// will be omitted from the stored MappedName.
+    ///
+    /// \param name The new name. A deep copy is made.
+    /// \param size Optional, the length of the name string. If not provided, the string must be
+    /// null-terminated.
     explicit MappedName(const char* name, int size = -1)
         : raw(false)
     {
@@ -57,6 +63,10 @@ public:
         data = size < 0 ? QByteArray(name) : QByteArray(name, size);
     }
 
+    /// Create a MappedName from a C++ std::string, optionally prefixed by an element map prefix,
+    /// which will be omitted from the stored MappedName.
+    ///
+    /// \param name The new name. A deep copy is made.
     explicit MappedName(const std::string& nameString)
         : raw(false)
     {
@@ -69,6 +79,9 @@ public:
         data = QByteArray(name, static_cast<int>(size));
     }
 
+    /// Create a MappedName from an IndexedName. If non-zero, the numerical part of the IndexedName
+    /// is appended as text to the MappedName. In that case the memory is *not* shared between the
+    /// original IndexedName and the MappedName.
     explicit MappedName(const IndexedName& element)
         : data(element.getType()),
           raw(false)
@@ -87,6 +100,11 @@ public:
     // FIXME if you pass a raw MappedName into these constructors they will
     // reset raw to false and things will break. is this intended?
 
+    /// Copy constructor with start position offset and optional size. The data is *not* reused.
+    ///
+    /// \param other The MappedName to copy
+    /// \param startPosition an integer offset to start the copy from
+    /// \param size the number of bytes to copy. If not specified
     MappedName(const MappedName& other, int startPosition, int size = -1)
         : raw(false)
     {
