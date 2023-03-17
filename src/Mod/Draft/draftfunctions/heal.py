@@ -98,8 +98,6 @@ def heal(objlist=None, delete=True, reparent=True):
                 elif ("DrawMode" in props) and ("FacesNumber" in props):
                     print("Healing " + obj.Name + " of type Polygon")
                     nobj = make_copy(obj,force="Polygon",reparent=reparent)
-                elif ("FillStyle" in props) and ("FontSize" in props):
-                    nobj = make_copy(obj,force="DrawingView",reparent=reparent)
                 else:
                     dellist.pop()
                     print("Object " + obj.Name + " is not healable")
