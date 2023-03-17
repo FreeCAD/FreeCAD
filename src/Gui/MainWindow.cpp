@@ -23,6 +23,7 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
+# include <QActionGroup>
 # include <QApplication>
 # include <QByteArray>
 # include <QCheckBox>
