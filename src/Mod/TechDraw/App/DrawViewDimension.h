@@ -152,6 +152,7 @@ public:
 
     virtual double getDimValue();
     QStringList getPrefixSuffixSpec(QString fSpec);
+    bool isNumericFormat(QString formatSpecifier);
 
     virtual DrawViewPart* getViewPart() const;
     virtual QRectF getRect() const override { return QRectF(0,0,1,1);}          //pretend dimensions always fit!

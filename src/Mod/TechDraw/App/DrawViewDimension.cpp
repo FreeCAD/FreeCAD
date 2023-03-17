@@ -908,7 +908,9 @@ std::string DrawViewDimension::formatValue(qreal value,
             formattedValue.replace(QRegExp(QStringLiteral("([0-9][0-9]*\\.[0-9]*[1-9])00*$")), QStringLiteral("\\1"));
             formattedValue.replace(QRegExp(QStringLiteral("([0-9][0-9]*)\\.0*$")), QStringLiteral("\\1"));
         } else {
-            formattedValue = QString::asprintf(Base::Tools::toStdString(formatSpecifier).c_str(), userVal);
+            if (isNumericFormat(formatSpecifier)) {
+                formattedValue = QString::asprintf(Base::Tools::toStdString(formatSpecifier).c_str(), userVal);
+            }
         }
 
         // if abs(1 - userVal / formattedValue) > 0.1 we know that we make an error greater than 10%
@@ -991,6 +993,16 @@ std::string DrawViewDimension::formatValue(qreal value,
     }
 
     return result;
+}
+
+bool DrawViewDimension::isNumericFormat(QString formatSpecifier)
+{
+    QRegExp rxFormat(QStringLiteral("%[+-]?[0-9]*\\.*[0-9]*[aefgwAEFGW]")); //printf double format spec
+    int pos = rxFormat.indexIn(formatSpecifier);
+    if (pos > -1) {
+        return true;
+    }
+    return false;
 }
 
 bool DrawViewDimension::haveTolerance(void)
