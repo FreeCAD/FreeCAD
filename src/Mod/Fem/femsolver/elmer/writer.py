@@ -1113,33 +1113,27 @@ class Writer(object):
             for name in (n for n in refs if n in bodies):
                 self._material(name, "Name", m["Name"])
                 if "Density" in m:
-                    self._material(
-                        name, "Density",
-                        self._getDensity(m)
-                    )
+                    density = self._convert(m["Density"], "M/L^3")
+                    self._material(name, "Density", density)
                 if "ThermalConductivity" in m:
-                    self._material(
-                        name, "Heat Conductivity",
-                        self._convert(m["ThermalConductivity"], "M*L/(T^3*O)")
-                    )
-                if "KinematicViscosity" in m:
-                    density = self._getDensity(m)
+                    tConductivity = self._convert(m["ThermalConductivity"], "M*L/(T^3*O)")
+                    self._material(name, "Heat Conductivity", tConductivity)
+                if "DynamicViscosity" in m:
+                    dViscosity = self._convert(m["DynamicViscosity"], "M/(L*T)")
+                    self._material(name, "Viscosity", dViscosity)
+                elif ("KinematicViscosity" in m) and ("Density" in m):
+                    density = self._convert(m["Density"], "M/L^3")
                     kViscosity = self._convert(m["KinematicViscosity"], "L^2/T")
-                    self._material(
-                        name, "Viscosity", kViscosity * density)
+                    self._material(name, "Viscosity", kViscosity * density)
                 if "ThermalExpansionCoefficient" in m:
                     value = self._convert(m["ThermalExpansionCoefficient"], "O^-1")
                     if value > 0:
-                        self._material(
-                            name, "Heat expansion Coefficient", value)
+                        self._material(name, "Heat expansion Coefficient", value)
                 if "ReferencePressure" in m:
                     pressure = self._convert(m["ReferencePressure"], "M/(L*T^2)")
                     self._material(name, "Reference Pressure", pressure)
                 if "SpecificHeatRatio" in m:
-                    self._material(
-                        name, "Specific Heat Ratio",
-                        float(m["SpecificHeatRatio"])
-                    )
+                    self._material(name, "Specific Heat Ratio", float(m["SpecificHeatRatio"]))
                 if "CompressibilityModel" in m:
                     self._material(
                         name, "Compressibility Model",
