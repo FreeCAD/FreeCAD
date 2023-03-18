@@ -74,6 +74,29 @@ void ElementView::FUNC(){ \
 
 
 namespace SketcherGui {
+
+class ElementItemDelegate : public QStyledItemDelegate
+{
+    Q_OBJECT
+public:
+    explicit ElementItemDelegate(ElementView* parent);
+    ~ElementItemDelegate() override;
+
+    void paint(QPainter* painter, const QStyleOptionViewItem& option, const QModelIndex& index) const override;
+    bool editorEvent(QEvent* event, QAbstractItemModel* model, const QStyleOptionViewItem& option, const QModelIndex& index) override;
+
+    ElementItem* getElementtItem(const QModelIndex& index) const;
+
+    const int border = 1; //1px, looks good around buttons.
+    const int leftMargin = 4; //4px on the left of icons, looks good.
+    mutable int customIconsMargin = 4;
+    const int textBottomMargin = 5; //5px center the text.
+
+Q_SIGNALS:
+    void itemHovered(QModelIndex);
+    void itemChecked(QModelIndex, Qt::CheckState state);
+};
+
 // helper class to store additional information about the listWidget entry.
 class ElementItem : public QListWidgetItem
 {
@@ -1465,3 +1488,4 @@ void TaskSketcherElements::onSettingsExtendedInformationChanged()
 }
 
 #include "moc_TaskSketcherElements.cpp"
+#include "TaskSketcherElements.moc" // For Delegate as it is QOBJECT
