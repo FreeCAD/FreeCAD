@@ -40,41 +40,83 @@ class ConstraintFlowVelocity(base_fempythonobject.BaseFemPythonObject):
     def __init__(self, obj):
         super(ConstraintFlowVelocity, self).__init__(obj)
         obj.addProperty(
-            "App::PropertyFloat",
+            "App::PropertyVelocity",
             "VelocityX",
             "Parameter",
             "Velocity in x-direction"
         )
         obj.addProperty(
+            "App::PropertyString",
+            "VelocityXFormula",
+            "Parameter",
+            "Velocity formula in x-direction"
+        )
+        obj.addProperty(
             "App::PropertyBool",
-            "VelocityXEnabled",
+            "VelocityXUnspecified",
             "Parameter",
             "Use velocity in x-direction"
         )
+        obj.VelocityXUnspecified = True
         obj.addProperty(
-            "App::PropertyFloat",
+            "App::PropertyBool",
+            "VelocityXHasFormula",
+            "Parameter",
+            "Use formula for velocity in x-direction"
+        )
+
+        obj.addProperty(
+            "App::PropertyVelocity",
             "VelocityY",
             "Parameter",
             "Velocity in y-direction"
         )
         obj.addProperty(
+            "App::PropertyString",
+            "VelocityYFormula",
+            "Parameter",
+            "Velocity formula in y-direction"
+        )
+        obj.addProperty(
             "App::PropertyBool",
-            "VelocityYEnabled",
+            "VelocityYUnspecified",
             "Parameter",
             "Use velocity in y-direction"
         )
+        obj.VelocityYUnspecified = True
         obj.addProperty(
-            "App::PropertyFloat",
+            "App::PropertyBool",
+            "VelocityYHasFormula",
+            "Parameter",
+            "Use formula for velocity in y-direction"
+        )
+
+        obj.addProperty(
+            "App::PropertyVelocity",
             "VelocityZ",
             "Parameter",
             "Velocity in z-direction"
         )
         obj.addProperty(
+            "App::PropertyString",
+            "VelocityZFormula",
+            "Parameter",
+            "Velocity formula in z-direction"
+        )
+        obj.addProperty(
             "App::PropertyBool",
-            "VelocityZEnabled",
+            "VelocityZUnspecified",
             "Parameter",
             "Use velocity in z-direction"
         )
+        obj.VelocityZUnspecified = True
+        obj.addProperty(
+            "App::PropertyBool",
+            "VelocityZHasFormula",
+            "Parameter",
+            "Use formula for velocity in z-direction"
+        )
+
         obj.addProperty(
             "App::PropertyBool",
             "NormalToBoundary",
