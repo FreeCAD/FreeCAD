@@ -175,6 +175,8 @@ SET(TechDraw_SRCS
     TechDrawExport.h
     ProjectionAlgos.cpp
     ProjectionAlgos.h
+    XMLQuery.cpp
+    XMLQuery.h
 )
 
 SET(Geometry_SRCS
