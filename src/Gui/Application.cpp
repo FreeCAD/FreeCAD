@@ -29,6 +29,7 @@
 # include <QCloseEvent>
 # include <QDir>
 # include <QFileInfo>
+# include <QImageReader>
 # include <QLocale>
 # include <QMessageBox>
 # include <QMessageLogContext>
@@ -328,6 +329,22 @@ struct PyMethodDef FreeCADGui_methods[] = {
 };
 
 } // namespace Gui
+
+namespace {
+    void setImportImageFormats()
+    {
+        QList<QByteArray> supportedFormats = QImageReader::supportedImageFormats();
+        std::stringstream str;
+        str << "Image formats (";
+        for (const auto& ext : supportedFormats) {
+            str << "*." << ext.constData() << " ";
+        }
+        str << ")";
+
+        std::string filter = str.str();
+        App::GetApplication().addImportType(filter.c_str(), "FreeCADGui");
+    }
+}
 
 Application::Application(bool GUIenabled)
 {
@@ -2158,6 +2175,7 @@ void Application::runApplication()
     try {
         Base::Console().Log("Run Gui init script\n");
         runInitGuiScript();
+        setImportImageFormats();
     }
     catch (const Base::Exception& e) {
         Base::Console().Error("Error in FreeCADGuiInit.py: %s\n", e.what());
