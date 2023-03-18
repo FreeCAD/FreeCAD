@@ -103,9 +103,6 @@ public:
 
     MappedName(const MappedName& other) = default;
 
-    // FIXME if you pass a raw MappedName into these constructors they will
-    // reset raw to false and things will break. is this intended?
-
     /// Copy constructor with start position offset and optional size. The data is *not* reused.
     ///
     /// \param other The MappedName to copy
@@ -364,7 +361,6 @@ public:
     /// \param size The number of bytes to copy. If omitted, dataToAppend must be null-terminated.
     void append(const char* dataToAppend, int size = -1)
     {
-        // FIXME raw not assigned?
         if (dataToAppend && (size != 0)) {
             if (size < 0) {
                 size = static_cast<int>(qstrlen(dataToAppend));
@@ -690,6 +686,8 @@ public:
     }
 
     /// Returns true if this is shared data, or false if a unique copy has been made.
+    /// It is safe to access data only if it has been copied prior. To force a copy 
+    /// please \see compact()
     bool isRaw() const
     {
         return this->raw;
@@ -783,9 +781,9 @@ public:
             return -1;
         }
         if (startPosition < 0
-            || startPosition > this->postfix.size()) {// FIXME should be this->data.size
-            if (startPosition > postfix.size()) {
-                startPosition -= postfix.size();
+            || startPosition >= this->data.size()) {
+            if (startPosition >= data.size()) {
+                startPosition -= data.size();
             }
             int res = this->postfix.lastIndexOf(searchTarget, startPosition);
             if (res >= 0) {

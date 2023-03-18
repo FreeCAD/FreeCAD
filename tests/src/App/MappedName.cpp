@@ -237,19 +237,12 @@ TEST(MappedName, fromRawDataCopy)
     EXPECT_EQ(mappedName.postfixBytes(), QByteArray("TESTPOSTFIX"));
 }
 
-TEST(MappedName, fromRawDataCopyStartposAndSize) //FIXME
+TEST(MappedName, fromRawDataCopyStartposAndSize) 
 {
     // Arrange
     Data::MappedName temp = Data::MappedName::fromRawData(QByteArray("TESTTEST", 8));
     temp.append("ABCDEFGHIJKLM"); //postfix
-
-/*  This block is OK 
-    EXPECT_EQ(temp.isRaw(), true);
-    EXPECT_EQ(temp.empty(), false);
-    EXPECT_EQ(temp.size(), 21);
-    EXPECT_EQ(temp.dataBytes(), QByteArray("TESTTEST", 8));
-    EXPECT_EQ(temp.postfixBytes(), QByteArray("ABCDEFGHIJKLM"));
-*/
+    temp.compact(); //Always call compact before accessing data!
 
     // Act
     Data::MappedName mappedName = Data::MappedName::fromRawData(temp, 2, 13);
@@ -258,9 +251,6 @@ TEST(MappedName, fromRawDataCopyStartposAndSize) //FIXME
     EXPECT_EQ(mappedName.isRaw(), true);
     EXPECT_EQ(mappedName.empty(), false);
     EXPECT_EQ(mappedName.size(), 13);
-    //next line fails with TEST\0T != STTEST
-    //funny thing if i uncomment the block above, which does nothing, now the next line
-    //fails with TEST\0H != STTEST
     EXPECT_EQ(mappedName.dataBytes(), QByteArray("STTEST", 6)); 
     EXPECT_EQ(mappedName.postfixBytes(), QByteArray("ABCDEFG"));
 }
@@ -649,40 +639,26 @@ TEST(MappedName, rfind)
     EXPECT_EQ(mappedName.rfind("STPO"), -1); //sentence must be fully contained in data or postfix
     EXPECT_EQ(mappedName.rfind("POST"), 4);
 
-
-    //FIXME looks broken
     EXPECT_EQ(mappedName.rfind("ST"), 13); 
     EXPECT_EQ(mappedName.rfind("ST", 0), -1); 
     EXPECT_EQ(mappedName.rfind("ST", 1), -1); 
     EXPECT_EQ(mappedName.rfind("ST", 2), 2); 
     EXPECT_EQ(mappedName.rfind("ST", 3), 2); 
     EXPECT_EQ(mappedName.rfind("ST", 4), 2); 
-    EXPECT_EQ(mappedName.rfind("ST", 5), -1);
-    EXPECT_EQ(mappedName.rfind("ST", 6), -1);
-    EXPECT_EQ(mappedName.rfind("ST", 7), -1);
-    EXPECT_EQ(mappedName.rfind("ST", 8), -1);
-    EXPECT_EQ(mappedName.rfind("ST", 9), -1);
-    EXPECT_EQ(mappedName.rfind("ST", 10), -1); 
-    EXPECT_EQ(mappedName.rfind("ST", 11), -1); 
-    EXPECT_EQ(mappedName.rfind("ST", 12), 2); 
-    EXPECT_EQ(mappedName.rfind("ST", 13), 6); 
-    EXPECT_EQ(mappedName.rfind("ST", 14), 6); 
-    EXPECT_EQ(mappedName.rfind("ST", 15), 6); 
-    EXPECT_EQ(mappedName.rfind("ST", 16), 6); 
-    EXPECT_EQ(mappedName.rfind("ST", 17), 6); 
-    EXPECT_EQ(mappedName.rfind("ST", 18), 6); 
-    EXPECT_EQ(mappedName.rfind("ST", 19), 6); 
-    EXPECT_EQ(mappedName.rfind("ST", 20), 13); 
-    EXPECT_EQ(mappedName.rfind("ST", 21), 13); 
-    EXPECT_EQ(mappedName.rfind("ST", 22), 13); 
-    EXPECT_EQ(mappedName.rfind("ST", 23), 2); 
-    EXPECT_EQ(mappedName.rfind("ST", 24), 2); 
-    EXPECT_EQ(mappedName.rfind("ST", 25), 2); 
-    EXPECT_EQ(mappedName.rfind("ST", 26), 2); 
-    EXPECT_EQ(mappedName.rfind("ST", 27), 2); 
-    EXPECT_EQ(mappedName.rfind("ST", 28), 2); 
-    //EXPECT_EQ(mappedName.rfind("POST", 7), 4);
-    //EXPECT_EQ(mappedName.rfind("POST", 8), -1);
+    EXPECT_EQ(mappedName.rfind("ST", 5), 2); 
+    EXPECT_EQ(mappedName.rfind("ST", 6), 6);
+    EXPECT_EQ(mappedName.rfind("ST", 7), 6);
+    EXPECT_EQ(mappedName.rfind("ST", 8), 6);
+    EXPECT_EQ(mappedName.rfind("ST", 9), 6);
+    EXPECT_EQ(mappedName.rfind("ST", 10), 6); 
+    EXPECT_EQ(mappedName.rfind("ST", 11), 6); 
+    EXPECT_EQ(mappedName.rfind("ST", 12), 6); 
+    EXPECT_EQ(mappedName.rfind("ST", 13), 13); 
+    EXPECT_EQ(mappedName.rfind("ST", 14), 13); 
+    EXPECT_EQ(mappedName.rfind("ST", 15), 13); 
+
+    EXPECT_EQ(mappedName.rfind("POST", 4), 4);
+    EXPECT_EQ(mappedName.rfind("POST", 3), -1);
     
     EXPECT_EQ(mappedName.rfind(std::string("")), mappedName.size());
 }
