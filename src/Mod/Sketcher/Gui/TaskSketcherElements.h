@@ -55,8 +55,6 @@ enum class SubElementType {
     none
 };
 
-
-
 class ElementView : public QListWidget
 {
     Q_OBJECT
@@ -111,38 +109,7 @@ private:
     void changeLayer(int layer);
 };
 
-class ElementFilterList : public QListWidget
-{
-    Q_OBJECT
-
-public:
-    explicit ElementFilterList(QWidget* parent = nullptr);
-    ~ElementFilterList() override;
-
-protected:
-    void changeEvent(QEvent* e) override;
-    virtual void languageChange();
-
-private:
-    using filterItemRepr =  std::pair<const char *, const int>; // {filter item text, filter item level}
-    inline static const std::vector<filterItemRepr> filterItems = {
-        {QT_TR_NOOP("Normal"),0},
-        {QT_TR_NOOP("Construction"),0},
-        {QT_TR_NOOP("Internal"),0},
-        {QT_TR_NOOP("External"),0},
-        {QT_TR_NOOP("All types"),0},
-        {QT_TR_NOOP("Point"),1},
-        {QT_TR_NOOP("Line"),1},
-        {QT_TR_NOOP("Circle"),1},
-        {QT_TR_NOOP("Ellipse"),1},
-        {QT_TR_NOOP("Arc of circle"),1},
-        {QT_TR_NOOP("Arc of ellipse"),1},
-        {QT_TR_NOOP("Arc of hyperbola"),1},
-        {QT_TR_NOOP("Arc of parabola"),1},
-        {QT_TR_NOOP("B-Spline"),1}
-    };
-
-};
+class ElementFilterList;
 
 class TaskSketcherElements : public Gui::TaskView::TaskBox, public Gui::SelectionObserver
 {
