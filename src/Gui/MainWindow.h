@@ -204,7 +204,7 @@ public:
     enum StatusType {None, Err, Wrn, Pane, Msg, Log, Tmp, Critical};
     void showStatus(int type, const QString & message);
 
-    void initialiseSizeLabel();
+    void initializeSizeLabel();
 
 public Q_SLOTS:
     /**

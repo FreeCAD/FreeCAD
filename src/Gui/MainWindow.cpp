@@ -154,7 +154,7 @@ private:
 // Pimpl class
 struct MainWindowP
 {
-    QToolButton* sizeLabel;
+    QPushButton* sizeLabel;
     QLabel* actionLabel;
     QTimer* actionTimer;
     QTimer* statusTimer;
@@ -300,7 +300,7 @@ MainWindow::MainWindow(QWidget * parent, Qt::WindowFlags f)
     d->actionLabel = new QLabel(statusBar());
     // d->actionLabel->setMinimumWidth(120);
 
-    initialiseSizeLabel();
+    initializeSizeLabel();
 
     statusBar()->addWidget(d->actionLabel, 1);
     QProgressBar* progressBar = Gui::SequencerBar::instance()->getProgressBar(statusBar());
@@ -2081,21 +2081,17 @@ void MainWindow::setPaneText(int i, QString text)
     }
 }
 
-void MainWindow::initialiseSizeLabel()
+void MainWindow::initializeSizeLabel()
 {
-    d->sizeLabel = new QToolButton(statusBar());
+    d->sizeLabel = new QPushButton(statusBar());
+    d->sizeLabel->setFlat(true);
     d->sizeLabel->setText(tr("Dimension"));
-    d->sizeLabel->setPopupMode(QToolButton::MenuButtonPopup);
-    QObject::connect(
-        d->sizeLabel, &QToolButton::clicked,
-        d->sizeLabel, &QToolButton::showMenu
-    );
     d->sizeLabel->setMinimumWidth(120);
 
     //create the button actions
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Units");
     int userSchema = hGrp->GetInt("UserSchema", 0);
-    QActionGroup* actionGrp = new QActionGroup(this);
+    QActionGroup* actionGrp = new QActionGroup(d->sizeLabel);
     actionGrp->setExclusive(true);
 
     int num = static_cast<int>(Base::UnitSystem::NumUnitSystemTypes);
@@ -2109,14 +2105,16 @@ void MainWindow::initialiseSizeLabel()
             this, [i, hGrp] {
                 // Set and save the Unit System
                 Base::UnitsApi::setSchema(static_cast<Base::UnitSystem>(i));
-                hGrp->SetInt("UserSchema", i); //Note : saving parameter will trigger EditModeCoinManager::ParameterObserver
+                hGrp->SetInt("UserSchema", i);
 
                 // Update the application to show the unit change
                 Gui::Application::Instance->onUpdate();
             }
         );
     }
-    d->sizeLabel->addActions(actionGrp->actions());
+    auto menu = new QMenu(d->sizeLabel);
+    menu->addActions(actionGrp->actions());
+    d->sizeLabel->setMenu(menu);
 }
 
 void MainWindow::customEvent(QEvent* e)
