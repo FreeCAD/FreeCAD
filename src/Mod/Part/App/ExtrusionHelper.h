@@ -47,7 +47,8 @@ public:
                           const double LengthFwd,
                           const double LengthRev,
                           const double AngleFwd,
-                          const double AngleRev,
+                          const double AngleRev, 
+                          bool taperParallel,
                           bool isSolid,
                           std::list<TopoDS_Shape>& drafts,
                           bool isPartDesign);

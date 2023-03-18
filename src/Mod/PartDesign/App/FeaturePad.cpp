@@ -56,6 +56,7 @@ Pad::Pad()
     ADD_PROPERTY_TYPE(AlongSketchNormal, (true), "Pad", App::Prop_None, "Measure pad length along the sketch normal direction");
     ADD_PROPERTY_TYPE(UpToFace, (nullptr), "Pad", App::Prop_None, "Face where pad will end");
     ADD_PROPERTY_TYPE(Offset, (0.0), "Pad", App::Prop_None, "Offset from face in which pad will end");
+    ADD_PROPERTY_TYPE(InwardTaperParallel, (false), "Pad", App::Prop_None, "Make inward and outward taper parallel");
     Offset.setConstraints(&signedLengthConstraint);
     ADD_PROPERTY_TYPE(TaperAngle, (0.0), "Pad", App::Prop_None, "Taper angle");
     TaperAngle.setConstraints(&floatAngle);
@@ -194,7 +195,7 @@ App::DocumentObjectExecReturn *Pad::execute()
             if (hasTaperedAngle()) {
                 if (hasReversed)
                     dir.Reverse();
-                generateTaperedPrism(prism, sketchshape, method, dir, L, L2, TaperAngle.getValue(), TaperAngle2.getValue(), hasMidplane);
+                generateTaperedPrism(prism, sketchshape, method, dir, L, L2, TaperAngle.getValue(), TaperAngle2.getValue(), hasMidplane, InwardTaperParallel.getValue());
             }
             else {
                 generatePrism(prism, sketchshape, method, dir, L, L2, hasMidplane, hasReversed);

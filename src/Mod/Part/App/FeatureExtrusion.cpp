@@ -65,6 +65,7 @@ Extrusion::Extrusion()
     ADD_PROPERTY_TYPE(LengthRev, (0.0), "Extrude", App::Prop_None, "Length of additional extrusion, against direction.");
     ADD_PROPERTY_TYPE(Solid, (false), "Extrude", App::Prop_None, "If true, extruding a wire yields a solid. If false, a shell.");
     ADD_PROPERTY_TYPE(Reversed, (false), "Extrude", App::Prop_None, "Set to true to swap the direction of extrusion.");
+    ADD_PROPERTY_TYPE(InwardTaperParallel, (false), "Pad", App::Prop_None, "Make inward and outward taper parallel");
     ADD_PROPERTY_TYPE(Symmetric, (false), "Extrude", App::Prop_None, "If true, extrusion is done in both directions to a total of LengthFwd. LengthRev is ignored.");
     ADD_PROPERTY_TYPE(TaperAngle, (0.0), "Extrude", App::Prop_None, "Sets the angle of slope (draft) to apply to the sides. The angle is for outward taper; negative value yields inward tapering.");
     ADD_PROPERTY_TYPE(TaperAngleRev, (0.0), "Extrude", App::Prop_None, "Taper angle of reverse part of extrusion.");
@@ -83,6 +84,7 @@ short Extrusion::mustExecute() const
         Reversed.isTouched() ||
         Symmetric.isTouched() ||
         TaperAngle.isTouched() ||
+        InwardTaperParallel.isTouched() ||
         TaperAngleRev.isTouched() ||
         FaceMakerClass.isTouched())
         return 1;
@@ -249,7 +251,7 @@ TopoShape Extrusion::extrudeShape(const TopoShape& source, const Extrusion::Extr
         std::list<TopoDS_Shape> drafts;
         bool isPartDesign = false; // there is an OCC bug with single-edge wires (circles) we need to treat differently for PD and Part
         ExtrusionHelper::makeDraft(myShape, params.dir, params.lengthFwd, params.lengthRev,
-                                   params.taperAngleFwd, params.taperAngleRev, params.solid, drafts, isPartDesign);
+                                   params.taperAngleFwd, params.taperAngleRev, params.inwardTaperParallel, params.solid, drafts, isPartDesign);
         if (drafts.empty()) {
             Standard_Failure::Raise("Drafting shape failed");
         }

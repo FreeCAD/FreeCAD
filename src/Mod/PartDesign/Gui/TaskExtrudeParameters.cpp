@@ -83,6 +83,8 @@ void TaskExtrudeParameters::setupDialog()
     bool midplane = extrude->Midplane.getValue();
     bool reversed = extrude->Reversed.getValue();
 
+    bool inwardTaperParallel = extrude->InwardTaperParallel.getValue();
+
     int index = extrude->Type.getValue(); // must extract value here, clear() kills it!
     App::DocumentObject* obj =  extrude->UpToFace.getValue();
     std::vector<std::string> subStrings = extrude->UpToFace.getSubValues();
@@ -143,6 +145,8 @@ void TaskExtrudeParameters::setupDialog()
     // According to bug #0000521 the reversed option
     // shouldn't be de-activated if the pad has a support face
     ui->checkBoxReversed->setChecked(reversed);
+
+    ui->checkBoxTaperParallel->setChecked(inwardTaperParallel);
 
     // Set object labels
     if (obj && PartDesign::Feature::isDatum(obj)) {
@@ -217,6 +221,8 @@ void TaskExtrudeParameters::connectSlots()
         this, &TaskExtrudeParameters::onMidplaneChanged);
     connect(ui->checkBoxReversed, &QCheckBox::toggled,
         this, &TaskExtrudeParameters::onReversedChanged);
+    connect(ui->checkBoxTaperParallel, &QCheckBox::toggled,
+        this, &TaskExtrudeParameters::onTaperParallelChanged);
     connect(ui->changeMode, qOverload<int>(&QComboBox::currentIndexChanged),
         this, &TaskExtrudeParameters::onModeChanged);
     connect(ui->buttonFace, &QPushButton::toggled,
@@ -434,12 +440,15 @@ void TaskExtrudeParameters::setCheckboxes(Modes mode, Type type)
     bool isFaceEditEnabled = false;
     bool isTaperEditVisible = false;
     bool isTaperEdit2Visible = false;
+    bool isInwardTaperParallelVisible = false;
 
     if (mode == Modes::Dimension) {
         isLengthEditVisible = true;
         ui->lengthEdit->selectNumber();
         QMetaObject::invokeMethod(ui->lengthEdit, "setFocus", Qt::QueuedConnection);
         isTaperEditVisible = true;
+        if (type == Type::Pad)
+            isInwardTaperParallelVisible = true;
         isMidplaneVisible = true;
         isMidplaneEnabled = true;
         // Reverse only makes sense if Midplane is not true
@@ -475,6 +484,8 @@ void TaskExtrudeParameters::setCheckboxes(Modes mode, Type type)
         isTaperEditVisible = true;
         isTaperEdit2Visible = true;
         isReversedEnabled = true;
+        if (type == Type::Pad)
+            isInwardTaperParallelVisible = true;
     }
 
     ui->lengthEdit->setVisible(isLengthEditVisible);
@@ -502,6 +513,8 @@ void TaskExtrudeParameters::setCheckboxes(Modes mode, Type type)
     ui->checkBoxMidplane->setVisible(isMidplaneVisible);
 
     ui->checkBoxReversed->setEnabled(isReversedEnabled);
+
+    ui->checkBoxTaperParallel->setVisible(isInwardTaperParallelVisible);
 
     ui->buttonFace->setEnabled(isFaceEditEnabled);
     ui->lineFaceName->setEnabled(isFaceEditEnabled);
@@ -658,6 +671,14 @@ void TaskExtrudeParameters::onReversedChanged(bool on)
     updateDirectionEdits();
 }
 
+void TaskExtrudeParameters::onTaperParallelChanged(bool on)
+{
+    PartDesign::FeatureExtrude* extrude = static_cast<PartDesign::FeatureExtrude*>(vp->getObject());
+    extrude->InwardTaperParallel.setValue(on);
+    tryRecomputeFeature();
+}
+
+
 void TaskExtrudeParameters::getReferenceAxis(App::DocumentObject*& obj, std::vector<std::string>& sub) const
 {
     if (axesInList.empty())
@@ -790,6 +811,11 @@ bool TaskExtrudeParameters::getMidplane() const
     return ui->checkBoxMidplane->isChecked();
 }
 
+bool TaskExtrudeParameters::getTaperParallel() const
+{
+    return ui->checkBoxTaperParallel->isChecked();
+}
+
 int TaskExtrudeParameters::getMode() const
 {
     return ui->changeMode->currentIndex();
@@ -871,6 +897,7 @@ void TaskExtrudeParameters::applyParameters(QString facename)
     FCMD_OBJ_CMD(obj, "UpToFace = " << facename.toLatin1().data());
     FCMD_OBJ_CMD(obj, "Reversed = " << (getReversed() ? 1 : 0));
     FCMD_OBJ_CMD(obj, "Midplane = " << (getMidplane() ? 1 : 0));
+    //FCMD_OBJ_CMD(obj, "mTaperParallel = " << (getTaperParallel() ? 1 : 0));
     FCMD_OBJ_CMD(obj, "Offset = " << getOffset());
 }
 

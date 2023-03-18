@@ -49,6 +49,7 @@ public:
     App::PropertyBool Solid;
     App::PropertyBool Reversed;
     App::PropertyBool Symmetric;
+    App::PropertyBool InwardTaperParallel;
     App::PropertyAngle TaperAngle;
     App::PropertyAngle TaperAngleRev;
     App::PropertyString FaceMakerClass;
@@ -64,10 +65,11 @@ public:
         double lengthFwd;
         double lengthRev;
         bool solid;
+        bool inwardTaperParallel;
         double taperAngleFwd; //in radians
         double taperAngleRev;
         std::string faceMakerClass;
-        ExtrusionParameters(): lengthFwd(0), lengthRev(0), solid(false), taperAngleFwd(0), taperAngleRev(0) {}// constructor to keep garbage out
+        ExtrusionParameters(): lengthFwd(0), lengthRev(0), solid(false), inwardTaperParallel(false), taperAngleFwd(0), taperAngleRev(0) {}// constructor to keep garbage out
     };
 
     /** @name methods override feature */

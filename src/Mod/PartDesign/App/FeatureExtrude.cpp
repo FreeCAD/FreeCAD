@@ -63,8 +63,9 @@ short FeatureExtrude::mustExecute() const
         UseCustomVector.isTouched() ||
         Direction.isTouched() ||
         ReferenceAxis.isTouched() ||
-        AlongSketchNormal.isTouched() ||
-        Offset.isTouched() ||
+        AlongSketchNormal.isTouched() || 
+        Offset.isTouched() || 
+        InwardTaperParallel.isTouched() ||
         UpToFace.isTouched())
         return 1;
     return ProfileBased::mustExecute();
@@ -232,27 +233,28 @@ void FeatureExtrude::generateTaperedPrism(TopoDS_Shape& prism,
                                           const double L2,
                                           const double angle,
                                           const double angle2,
-                                          const bool midplane)
+                                          const bool midplane,
+                                          const bool taperParallel)
 {
     std::list<TopoDS_Shape> drafts;
     bool isSolid = true; // in PD we only generate solids, while Part Extrude can also create only shells
     bool isPartDesign = true; // there is an OCC bug with single-edge wires (circles) we need to treat differently for PD and Part
     if (method == "ThroughAll") {
         Part::ExtrusionHelper::makeDraft(sketchshape, direction, getThroughAllLength(),
-            0.0, Base::toRadians(angle), 0.0, isSolid, drafts, isPartDesign);
+            0.0, Base::toRadians(angle), 0.0, taperParallel, isSolid, drafts, isPartDesign);
     }
     else if (method == "TwoLengths") {
         Part::ExtrusionHelper::makeDraft(sketchshape, direction, L, L2,
-            Base::toRadians(angle), Base::toRadians(angle2), isSolid, drafts, isPartDesign);
+            Base::toRadians(angle), Base::toRadians(angle2), taperParallel, isSolid, drafts, isPartDesign);
     }
     else if (method == "Length") {
         if (midplane) {
             Part::ExtrusionHelper::makeDraft(sketchshape, direction, L / 2, L / 2,
-                Base::toRadians(angle), Base::toRadians(angle), isSolid, drafts, isPartDesign);
+                Base::toRadians(angle), Base::toRadians(angle), taperParallel, isSolid, drafts, isPartDesign);
         }
         else
             Part::ExtrusionHelper::makeDraft(sketchshape, direction, L, 0.0,
-                Base::toRadians(angle), 0.0, isSolid, drafts, isPartDesign);
+                Base::toRadians(angle), 0.0, taperParallel, isSolid, drafts, isPartDesign);
     }
 
     if (drafts.empty()) {
@@ -282,10 +284,12 @@ void FeatureExtrude::updateProperties(const std::string &method)
     bool isReversedEnabled = false;
     bool isUpToFaceEnabled = false;
     bool isTaperVisible = false;
+    bool isInwardTaperParallelVisible = false;
     bool isTaper2Visible = false;
     if (method == "Length") {
         isLengthEnabled = true;
         isTaperVisible = true;
+        isInwardTaperParallelVisible = true;
         isMidplaneEnabled = true;
         isReversedEnabled = !Midplane.getValue();
     }
@@ -310,6 +314,7 @@ void FeatureExtrude::updateProperties(const std::string &method)
         isLengthEnabled = true;
         isLength2Enabled = true;
         isTaperVisible = true;
+        isInwardTaperParallelVisible = true;
         isTaper2Visible = true;
         isReversedEnabled = true;
     }
@@ -319,6 +324,7 @@ void FeatureExtrude::updateProperties(const std::string &method)
     Length2.setReadOnly(!isLength2Enabled);
     Offset.setReadOnly(!isOffsetEnabled);
     TaperAngle.setReadOnly(!isTaperVisible);
+    InwardTaperParallel.setReadOnly(!isInwardTaperParallelVisible);
     TaperAngle2.setReadOnly(!isTaper2Visible);
     Midplane.setReadOnly(!isMidplaneEnabled);
     Reversed.setReadOnly(!isReversedEnabled);

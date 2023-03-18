@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>300</width>
-    <height>490</height>
+    <height>523</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -40,14 +40,14 @@
       </widget>
      </item>
      <item row="1" column="1">
-      <widget class="Gui::PrefQuantitySpinBox" name="lengthEdit">
-       <property name="keyboardTracking">
+      <widget class="Gui::PrefQuantitySpinBox" name="lengthEdit" native="true">
+       <property name="keyboardTracking" stdset="0">
         <bool>false</bool>
        </property>
        <property name="unit" stdset="0">
         <string notr="true">mm</string>
        </property>
-       <property name="minimum">
+       <property name="minimum" stdset="0">
         <double>0.000000000000000</double>
        </property>
       </widget>
@@ -60,8 +60,8 @@
       </widget>
      </item>
      <item row="2" column="1">
-      <widget class="Gui::PrefQuantitySpinBox" name="offsetEdit">
-       <property name="keyboardTracking">
+      <widget class="Gui::PrefQuantitySpinBox" name="offsetEdit" native="true">
+       <property name="keyboardTracking" stdset="0">
         <bool>false</bool>
        </property>
        <property name="unit" stdset="0">
@@ -277,8 +277,8 @@ measured along the specified direction</string>
       </widget>
      </item>
      <item>
-      <widget class="Gui::PrefQuantitySpinBox" name="taperEdit">
-       <property name="keyboardTracking">
+      <widget class="Gui::PrefQuantitySpinBox" name="taperEdit" native="true">
+       <property name="keyboardTracking" stdset="0">
         <bool>false</bool>
        </property>
        <property name="unit" stdset="0">
@@ -287,6 +287,13 @@ measured along the specified direction</string>
       </widget>
      </item>
     </layout>
+   </item>
+   <item>
+    <widget class="QCheckBox" name="checkBoxTaperParallel">
+     <property name="text">
+      <string>Inward/outward taper parallel</string>
+     </property>
+    </widget>
    </item>
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout_4">
@@ -298,8 +305,8 @@ measured along the specified direction</string>
       </widget>
      </item>
      <item>
-      <widget class="Gui::PrefQuantitySpinBox" name="lengthEdit2">
-       <property name="keyboardTracking">
+      <widget class="Gui::PrefQuantitySpinBox" name="lengthEdit2" native="true">
+       <property name="keyboardTracking" stdset="0">
         <bool>false</bool>
        </property>
        <property name="unit" stdset="0">
@@ -322,8 +329,8 @@ measured along the specified direction</string>
       </widget>
      </item>
      <item>
-      <widget class="Gui::PrefQuantitySpinBox" name="taperEdit2">
-       <property name="keyboardTracking">
+      <widget class="Gui::PrefQuantitySpinBox" name="taperEdit2" native="true">
+       <property name="keyboardTracking" stdset="0">
         <bool>false</bool>
        </property>
        <property name="unit" stdset="0">

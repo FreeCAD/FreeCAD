@@ -58,6 +58,7 @@ Pocket::Pocket()
     ADD_PROPERTY_TYPE(UpToFace, (nullptr), "Pocket", App::Prop_None, "Face where pocket will end");
     ADD_PROPERTY_TYPE(Offset, (0.0), "Pocket", App::Prop_None, "Offset from face in which pocket will end");
     Offset.setConstraints(&signedLengthConstraint);
+    ADD_PROPERTY_TYPE(InwardTaperParallel, (false), "Pad", App::Prop_None, "Make inward and outward taper parallel");
     ADD_PROPERTY_TYPE(TaperAngle, (0.0), "Pocket", App::Prop_None, "Taper angle");
     TaperAngle.setConstraints(&floatAngle);
     ADD_PROPERTY_TYPE(TaperAngle2, (0.0), "Pocket", App::Prop_None, "Taper angle for 2nd direction");
@@ -204,7 +205,7 @@ App::DocumentObjectExecReturn *Pocket::execute()
             if (hasTaperedAngle()) {
                 if (Reversed.getValue())
                     dir.Reverse();
-                generateTaperedPrism(prism, profileshape, method, dir, L, L2, TaperAngle.getValue(), TaperAngle2.getValue(), Midplane.getValue());
+                generateTaperedPrism(prism, profileshape, method, dir, L, L2, TaperAngle.getValue(), TaperAngle2.getValue(), Midplane.getValue(), InwardTaperParallel.getValue());
             }
             else {
                 generatePrism(prism, profileshape, method, dir, L, L2, Midplane.getValue(), Reversed.getValue());

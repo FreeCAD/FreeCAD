@@ -58,6 +58,7 @@ void ExtrusionHelper::makeDraft(const TopoDS_Shape& shape,
                                 const double LengthRev,
                                 const double AngleFwd,
                                 const double AngleRev,
+                                bool taperParallel,
                                 bool isSolid,
                                 std::list<TopoDS_Shape>& drafts,
                                 bool isPartDesign)
@@ -156,13 +157,10 @@ void ExtrusionHelper::makeDraft(const TopoDS_Shape& shape,
                     createTaperedPrismOffset(TopoDS::Wire(singleWire), vecRev, distanceRev, true, offsetWire);
                 }
                 else {
-                    // there is an OCC bug with single-edge wires (circles), see inside createTaperedPrismOffset
-                    if (numEdges > 1 || !isPartDesign)
-                        // inner wires must get the negated offset
-                        createTaperedPrismOffset(TopoDS::Wire(singleWire), vecRev, -distanceRev, true, offsetWire);
-                    else
-                        // circles in PartDesign must not get the negated offset
+                    if (taperParallel)
                         createTaperedPrismOffset(TopoDS::Wire(singleWire), vecRev, distanceRev, true, offsetWire);
+                    else
+                        createTaperedPrismOffset(TopoDS::Wire(singleWire), vecRev, -distanceRev, true, offsetWire);
                 }
                 if (offsetWire.IsNull())
                     return;
@@ -204,13 +202,10 @@ void ExtrusionHelper::makeDraft(const TopoDS_Shape& shape,
                     createTaperedPrismOffset(TopoDS::Wire(singleWire), vecFwd, distanceFwd, false, offsetWire);
                 }
                 else {
-                    // there is an OCC bug with single-edge wires (circles), see inside createTaperedPrismOffset
-                    if (numEdges > 1 || !isPartDesign)
-                        // inner wires must get the negated offset
-                        createTaperedPrismOffset(TopoDS::Wire(singleWire), vecFwd, -distanceFwd, false, offsetWire);
-                    else
-                        // circles in PartDesign must not get the negated offset
+                    if (taperParallel)
                         createTaperedPrismOffset(TopoDS::Wire(singleWire), vecFwd, distanceFwd, false, offsetWire);
+                    else
+                        createTaperedPrismOffset(TopoDS::Wire(singleWire), vecFwd, -distanceFwd, false, offsetWire);
                 }
                 if (offsetWire.IsNull())
                     return;

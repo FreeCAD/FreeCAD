@@ -90,6 +90,7 @@ protected Q_SLOTS:
     void onZDirectionEditChanged(double);
     void onMidplaneChanged(bool);
     void onReversedChanged(bool);
+    void onTaperParallelChanged(bool);
     void onButtonFace(const bool checked = true);
     void onFaceName(const QString& text);
     virtual void onModeChanged(int);
@@ -111,6 +112,7 @@ protected:
     double getZDirection(void) const;
     bool   getReversed(void) const;
     bool   getMidplane(void) const;
+    bool   getTaperParallel(void) const;
     int    getMode(void) const;
     QString getFaceName(void) const;
     void onSelectionChanged(const Gui::SelectionChanges& msg) override;

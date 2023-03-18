@@ -52,6 +52,7 @@ public:
     App::PropertyBool        AlongSketchNormal;
     App::PropertyLength      Offset;
     App::PropertyLinkSub     ReferenceAxis;
+    App::PropertyBool        InwardTaperParallel;
 
     static App::PropertyQuantityConstraint::Constraints signedLengthConstraint;
     static double maxAngle;
@@ -110,7 +111,8 @@ protected:
                               const double L2,
                               const double angle,
                               const double angle2,
-                              const bool midplane);
+                              const bool midplane, 
+                              const bool taperParallel);
 
     /**
       * Disables settings that are not valid for the current method
