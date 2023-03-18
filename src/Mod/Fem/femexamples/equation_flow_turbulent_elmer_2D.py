@@ -71,19 +71,19 @@ def setup(doc=None, solvertype="elmer"):
     # geometric objects
 
     # the wire defining the pipe volume in 2D
-    p1 = Vector(400, 0, -50.000)
-    p2 = Vector(400, 0, -150.000)
-    p3 = Vector(1200, 0, -150.000)
-    p4 = Vector(1200, 0, 50.000)
-    p5 = Vector(0, 0, 50.000)
-    p6 = Vector(0, 0, -50.000)
+    p1 = Vector(400, -50.000, 0)
+    p2 = Vector(400, -150.000, 0)
+    p3 = Vector(1200, -150.000, 0)
+    p4 = Vector(1200, 50.000, 0)
+    p5 = Vector(0, 50.000, 0)
+    p6 = Vector(0, -50.000, 0)
     wire = Draft.make_wire([p1, p2, p3, p4, p5, p6], closed=True)
     wire.Label = "Wire"
 
     # the circle defining the heating rod
     pCirc = Vector(160, 0, 0)
     axisCirc = Vector(1, 0, 0)
-    placementCircle = Placement(pCirc, Rotation(axisCirc, 90))
+    placementCircle = Placement(pCirc, Rotation(axisCirc, 0))
     circle = Draft.make_circle(10, placement=placementCircle)
     circle.Label = "HeatingRod"
     circle.ViewObject.Visibility = False
@@ -107,7 +107,6 @@ def setup(doc=None, solvertype="elmer"):
     doc.recompute()
     if FreeCAD.GuiUp:
         BooleanFragments.ViewObject.Transparency = 50
-        BooleanFragments.ViewObject.Document.activeView().viewFront()
         BooleanFragments.ViewObject.Document.activeView().fitAll()
 
     # analysis
@@ -119,6 +118,7 @@ def setup(doc=None, solvertype="elmer"):
     # solver
     if solvertype == "elmer":
         solver_obj = ObjectsFem.makeSolverElmer(doc, "SolverElmer")
+        solver_obj.CoordinateSystem = "Cartesian 2D"
         equation_flow = ObjectsFem.makeEquationFlow(doc, solver_obj)
         equation_heat = ObjectsFem.makeEquationHeat(doc, solver_obj)
     else:
@@ -131,7 +131,6 @@ def setup(doc=None, solvertype="elmer"):
 
     # solver settings
     equation_flow.IdrsParameter = 3
-    equation_flow.LinearIterations = 250
     equation_flow.LinearIterativeMethod = "Idrs"
     equation_flow.LinearPreconditioning = "ILU1"
     equation_flow.setExpression("LinearTolerance", "1e-6")
@@ -139,9 +138,9 @@ def setup(doc=None, solvertype="elmer"):
     equation_flow.NonlinearNewtonAfterIterations = 30
     equation_flow.setExpression("NonlinearTolerance", "1e-4")
     equation_flow.RelaxationFactor = 0.1
+    equation_flow.Variable = "Flow Solution[Velocity:2 Pressure:1]"
     equation_heat.Convection = "Computed"
     equation_heat.IdrsParameter = 3
-    equation_heat.LinearIterations = 250
     equation_heat.LinearIterativeMethod = "Idrs"
     equation_heat.LinearPreconditioning = "ILU1"
     equation_heat.setExpression("LinearTolerance", "1e-6")
@@ -187,19 +186,10 @@ def setup(doc=None, solvertype="elmer"):
     FlowVelocity_Inlet = ObjectsFem.makeConstraintFlowVelocity(doc, "FlowVelocity_Inlet")
     FlowVelocity_Inlet.References = [(BooleanFragments, "Edge5")]
     FlowVelocity_Inlet.NormalDirection = Vector(-1, 0, 0)
-    FlowVelocity_Inlet.VelocityX = 0.020
-    FlowVelocity_Inlet.VelocityXEnabled = True
-    FlowVelocity_Inlet.VelocityYEnabled = True
-    FlowVelocity_Inlet.VelocityZEnabled = True
+    FlowVelocity_Inlet.VelocityX = "20.0 mm/s"
+    FlowVelocity_Inlet.VelocityXUnspecified = False
+    FlowVelocity_Inlet.VelocityYUnspecified = False
     analysis.addObject(FlowVelocity_Inlet)
-
-    # constraint outlet velocity
-    FlowVelocity_Outlet = ObjectsFem.makeConstraintFlowVelocity(doc, "FlowVelocity_Outlet")
-    FlowVelocity_Outlet.References = [(BooleanFragments, "Edge6")]
-    FlowVelocity_Outlet.NormalDirection = Vector(1, 0, 0)
-    FlowVelocity_Outlet.VelocityYEnabled = True
-    FlowVelocity_Outlet.VelocityZEnabled = True
-    analysis.addObject(FlowVelocity_Outlet)
 
     # constraint wall velocity
     FlowVelocity_Wall = ObjectsFem.makeConstraintFlowVelocity(doc, "FlowVelocity_Wall")
@@ -209,19 +199,9 @@ def setup(doc=None, solvertype="elmer"):
         (BooleanFragments, "Edge4"),
         (BooleanFragments, "Edge7")]
     FlowVelocity_Wall.NormalDirection = Vector(0, 0, -1)
-    FlowVelocity_Wall.VelocityXEnabled = True
-    FlowVelocity_Wall.VelocityYEnabled = True
-    FlowVelocity_Wall.VelocityZEnabled = True
+    FlowVelocity_Wall.VelocityXUnspecified = False
+    FlowVelocity_Wall.VelocityYUnspecified = False
     analysis.addObject(FlowVelocity_Wall)
-
-    # constraint initial velocity
-    FlowVelocity_Initial = ObjectsFem.makeConstraintInitialFlowVelocity(doc, "FlowVelocity_Initial")
-    FlowVelocity_Initial.References = [(BooleanFragments, "Face2")]
-    FlowVelocity_Initial.NormalDirection = Vector(0, -1, 0)
-    FlowVelocity_Initial.VelocityXEnabled = True
-    FlowVelocity_Initial.VelocityYEnabled = True
-    FlowVelocity_Initial.VelocityZEnabled = True
-    analysis.addObject(FlowVelocity_Initial)
 
     # constraint initial temperature
     Temperature_Initial = ObjectsFem.makeConstraintInitialTemperature(doc, "Temperature_Initial")
