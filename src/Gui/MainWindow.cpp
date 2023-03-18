@@ -171,8 +171,7 @@ public:
         auto* actionGrp = new QActionGroup(menu);
         int num = static_cast<int>(Base::UnitSystem::NumUnitSystemTypes);
         for (int i = 0; i < num; i++) {
-            QAction* action = menu->addAction(qApp->translate("Gui::Dialog::DlgSettingsUnits",
-                    Base::UnitsApi::getDescription(static_cast<Base::UnitSystem>(i))));
+            QAction* action = menu->addAction(QStringLiteral("UnitSchema%1").arg(i));
             actionGrp->addAction(action);
             action->setCheckable(true);
             QObject::connect(action, &QAction::toggled, this, [this,i](bool checked) {
@@ -183,9 +182,10 @@ public:
                         // Update the application to show the unit change
                         Gui::Application::Instance->onUpdate();
                     }
-            } );
+                } );
         }
         setMenu(menu);
+        retranslateUi();
         unitChanged();
         getWindowParameter()->Attach(this);
     }
@@ -203,6 +203,16 @@ public:
         }
     }
 
+    void changeEvent(QEvent *event) override
+    {
+        if (event->type() == QEvent::LanguageChange) {
+            retranslateUi();
+        }
+        else {
+            QPushButton::changeEvent(event);
+        }
+    }
+
 private:
     void unitChanged(void)
     {
@@ -214,6 +224,17 @@ private:
         auto action = actions[userSchema];
         if(!action->isChecked()) { // Using a QSignalBlocker leads to issue
             action->setChecked(true);
+        }
+    }
+
+    void retranslateUi() {
+        auto actions = menu()->actions();
+        int maxSchema = static_cast<int>(Base::UnitSystem::NumUnitSystemTypes);
+        assert(actions.size() <= maxSchema);
+        for(int i = 0; i < maxSchema ; i++)
+        {
+            actions[i]->setText(qApp->translate("Gui::Dialog::DlgSettingsUnits",
+                    Base::UnitsApi::getDescription(static_cast<Base::UnitSystem>(i))));
         }
     }
 };
