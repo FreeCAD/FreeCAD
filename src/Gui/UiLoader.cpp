@@ -495,8 +495,8 @@ UiLoader::UiLoader(QObject* parent)
 
 std::unique_ptr<UiLoader> UiLoader::newInstance(QObject *parent)
 {
-    QCoreApplication *app=QCoreApplication::instance();
-    QStringList libPaths= app->libraryPaths();
+    QCoreApplication* app = QCoreApplication::instance();
+    QStringList libPaths = app->libraryPaths();
 
     app->setLibraryPaths(QStringList{}); //< backup library paths, so QUiLoader won't load plugins by default
     std::unique_ptr<UiLoader> rv{new UiLoader{parent}};

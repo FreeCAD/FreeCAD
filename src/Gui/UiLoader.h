@@ -34,6 +34,7 @@
 #endif
 
 #include <CXX/Extensions.hxx>
+#include <memory>
 
 
 QT_BEGIN_NAMESPACE

@@ -35,13 +35,9 @@
 using namespace Gui::Dialog;
 
 /** Construction */
-PropertyPage::PropertyPage(QWidget* parent) : QWidget(parent)
-{
-  bChanged = false;
-}
-
-/** Destruction */
-PropertyPage::~PropertyPage()
+PropertyPage::PropertyPage(QWidget* parent)
+    : QWidget(parent)
+    , bChanged{false}
 {
 }
 
@@ -61,40 +57,40 @@ void PropertyPage::reset()
 }
 
 /** Returns whether the page was modified or not. */
-bool PropertyPage::isModified()
+bool PropertyPage::isModified() const
 {
-  return bChanged;
+    return bChanged;
 }
 
 /** Sets the page to be modified. */
-void PropertyPage::setModified(bool b)
+void PropertyPage::setModified(bool value)
 {
-  bChanged = b;
+    bChanged = value;
 }
 
 /** Applies all changes calling @ref apply() and resets the modified state. */
 void PropertyPage::onApply()
 {
-  if (isModified())
-    apply();
+    if (isModified()) {
+        apply();
+    }
 
-  setModified(false);
+    setModified(false);
 }
 
 /** Discards all changes calling @ref cancel() and resets the modified state. */
 void PropertyPage::onCancel()
 {
-  if (isModified())
-  {
-    cancel();
-    setModified(false);
-  }
+    if (isModified()) {
+        cancel();
+        setModified(false);
+    }
 }
 
 /** Resets to the default values. */
 void PropertyPage::onReset()
 {
-  reset();
+    reset();
 }
 
 // ----------------------------------------------------------------
@@ -104,26 +100,23 @@ PreferencePage::PreferencePage(QWidget* parent) : QWidget(parent)
 {
 }
 
-/** Destruction */
-PreferencePage::~PreferencePage()
+void PreferencePage::changeEvent(QEvent* event)
 {
-}
-
-void PreferencePage::changeEvent(QEvent *e)
-{
-    QWidget::changeEvent(e);
+    QWidget::changeEvent(event);
 }
 
 // ----------------------------------------------------------------
 
 PreferenceUiForm::PreferenceUiForm(const QString& fn, QWidget* parent)
-  : PreferencePage(parent), form(nullptr)
+  : PreferencePage(parent)
+  , form(nullptr)
 {
     auto loader = UiLoader::newInstance();
     loader->setWorkingDirectory(QFileInfo(fn).absolutePath());
     QFile file(fn);
-    if (file.open(QFile::ReadOnly))
+    if (file.open(QFile::ReadOnly)) {
         form = loader->load(&file, this);
+    }
     file.close();
     if (form) {
         this->setWindowTitle(form->windowTitle());
