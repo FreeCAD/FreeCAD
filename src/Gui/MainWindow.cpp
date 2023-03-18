@@ -150,6 +150,74 @@ private:
     int _timeout;
 };
 
+/**
+ * The DimensionWidget class is aiming at providing a widget used in the status bar that will:
+ *  - Allow application to display dimension information such as the viewportsize
+ *  - Provide a popup menu allowing user to change the used unit schema (and update if changed elsewhere)
+ */
+class DimensionWidget : public QPushButton, WindowParameter
+{
+    Q_OBJECT
+
+public:
+    explicit DimensionWidget(QWidget* parent): QPushButton(parent), WindowParameter("Units")
+    {
+        setFlat(true);
+        setText(qApp->translate("Gui::MainWindow", "Dimension"));
+        setMinimumWidth(120);
+
+        //create the action buttons
+        auto* menu = new QMenu(this);
+        auto* actionGrp = new QActionGroup(menu);
+        int num = static_cast<int>(Base::UnitSystem::NumUnitSystemTypes);
+        for (int i = 0; i < num; i++) {
+            QAction* action = menu->addAction(qApp->translate("Gui::Dialog::DlgSettingsUnits",
+                    Base::UnitsApi::getDescription(static_cast<Base::UnitSystem>(i))));
+            actionGrp->addAction(action);
+            action->setCheckable(true);
+            QObject::connect(action, &QAction::toggled, this, [this,i](bool checked) {
+                    if(checked) {
+                        // Set and save the Unit System
+                        Base::UnitsApi::setSchema(static_cast<Base::UnitSystem>(i));
+                        getWindowParameter()->SetInt("UserSchema", i);
+                        // Update the application to show the unit change
+                        Gui::Application::Instance->onUpdate();
+                    }
+            } );
+        }
+        setMenu(menu);
+        unitChanged();
+        getWindowParameter()->Attach(this);
+    }
+
+    ~DimensionWidget()
+    {
+        getWindowParameter()->Detach(this);
+    }
+
+    void OnChange(Base::Subject<const char*> &rCaller, const char * sReason) override
+    {
+        Q_UNUSED(rCaller)
+        if (strcmp(sReason, "UserSchema") == 0) {
+            unitChanged();
+        }
+    }
+
+private:
+    void unitChanged(void)
+    {
+        int userSchema = getWindowParameter()->GetInt("UserSchema", 0);
+        auto actions = menu()->actions();
+        if(Q_UNLIKELY(userSchema < 0 || userSchema >= actions.size())) {
+            userSchema = 0;
+        }
+        auto action = actions[userSchema];
+        if(!action->isChecked()) { // Using a QSignalBlocker leads to issue
+            action->setChecked(true);
+        }
+    }
+};
+
 // -------------------------------------
 // Pimpl class
 struct MainWindowP
@@ -300,7 +368,7 @@ MainWindow::MainWindow(QWidget * parent, Qt::WindowFlags f)
     d->actionLabel = new QLabel(statusBar());
     // d->actionLabel->setMinimumWidth(120);
 
-    initializeSizeLabel();
+    d->sizeLabel = new DimensionWidget(statusBar());
 
     statusBar()->addWidget(d->actionLabel, 1);
     QProgressBar* progressBar = Gui::SequencerBar::instance()->getProgressBar(statusBar());
@@ -2081,42 +2149,6 @@ void MainWindow::setPaneText(int i, QString text)
     }
 }
 
-void MainWindow::initializeSizeLabel()
-{
-    d->sizeLabel = new QPushButton(statusBar());
-    d->sizeLabel->setFlat(true);
-    d->sizeLabel->setText(tr("Dimension"));
-    d->sizeLabel->setMinimumWidth(120);
-
-    //create the button actions
-    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Units");
-    int userSchema = hGrp->GetInt("UserSchema", 0);
-    QActionGroup* actionGrp = new QActionGroup(d->sizeLabel);
-    actionGrp->setExclusive(true);
-
-    int num = static_cast<int>(Base::UnitSystem::NumUnitSystemTypes);
-    for (int i = 0; i < num; i++) {
-        QAction* action = new QAction(qApp->translate("Gui::Dialog::DlgSettingsUnits", Base::UnitsApi::getDescription(static_cast<Base::UnitSystem>(i))), this);
-        action->setCheckable(true);
-        action->setChecked(i == userSchema);
-        actionGrp->addAction(action);
-
-        QObject::connect(action, &QAction::changed,
-            this, [i, hGrp] {
-                // Set and save the Unit System
-                Base::UnitsApi::setSchema(static_cast<Base::UnitSystem>(i));
-                hGrp->SetInt("UserSchema", i);
-
-                // Update the application to show the unit change
-                Gui::Application::Instance->onUpdate();
-            }
-        );
-    }
-    auto menu = new QMenu(d->sizeLabel);
-    menu->addActions(actionGrp->actions());
-    d->sizeLabel->setMenu(menu);
-}
-
 void MainWindow::customEvent(QEvent* e)
 {
     if (e->type() == QEvent::User) {
@@ -2247,3 +2279,4 @@ ActionStyleEvent::Style ActionStyleEvent::getType() const
 
 
 #include "moc_MainWindow.cpp"
+#include "MainWindow.moc"
