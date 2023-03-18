@@ -592,6 +592,26 @@ private:
                 tryAutoRecomputeIfNotSolve(
                     static_cast<Sketcher::SketchObject*>(sketchgui->getObject()));
 
+                ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
+                    "User parameter:BaseApp/Preferences/Mod/Sketcher");
+                bool continuousMode = hGrp->GetBool("ContinuousCreationMode", true);
+
+                if (continuousMode) {
+                    // This code enables the continuous creation mode.
+                    resetHandlerState();
+
+                    drawCursorToPosition(position);
+
+                    /* It is ok not to call to purgeHandler
+                     * in continuous creation mode because the
+                     * handler is destroyed by the quit() method on pressing the
+                     * right button of the mouse */
+                }
+                else {
+                    sketchgui
+                        ->purgeHandler();// no code after this line, Handler get deleted in ViewProvider
+                }
+
                 return false;
             }
 
