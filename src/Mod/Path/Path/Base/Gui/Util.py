@@ -199,10 +199,10 @@ class QuantitySpinBox(QtCore.QObject):
             self.lastWidgetText = self.widget.text()  # update last widget value
             if expr:
                 self.widget.setReadOnly(True)
-                self.widget.setStyleSheet("color: gray")
+                self.widget.setProperty("exprSet", "true")
             else:
                 self.widget.setReadOnly(False)
-                self.widget.setStyleSheet("color: black")
+                self.widget.setProperty("exprSet", "false")
 
     def updateProperty(self):
         """updateProperty() ... update the bound property with the value from the spin box"""
