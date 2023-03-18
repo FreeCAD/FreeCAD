@@ -41,6 +41,7 @@
 #include <Gui/Application.h>
 #include <Gui/BitmapFactory.h>
 #include <Gui/Command.h>
+#include <Gui/Notifications.h>
 #include <Gui/Selection.h>
 #include <Gui/SelectionObject.h>
 #include <Gui/ViewProvider.h>
@@ -386,12 +387,19 @@ void ElementView::changeLayer(int layer)
 
         bool anychanged = false;
         for(auto geoid : geoids) {
-            auto currentlayer = getSafeGeomLayerId(geometry[geoid]);
-            if( currentlayer != layer) {
-                auto geo = geometry[geoid]->clone();
-                setSafeGeomLayerId(geo, layer);
-                newgeometry[geoid] = geo;
-                anychanged = true;
+            if(geoid >= 0) { // currently only internal geometry can be changed from one layer to another
+                auto currentlayer = getSafeGeomLayerId(geometry[geoid]);
+                if( currentlayer != layer) {
+                    auto geo = geometry[geoid]->clone();
+                    setSafeGeomLayerId(geo, layer);
+                    newgeometry[geoid] = geo;
+                    anychanged = true;
+                }
+            }
+            else {
+                Gui::TranslatedNotification(sketchobject,
+                                            QObject::tr("Unsupported visual layer operation"),
+                                            QObject::tr("It is currently unsupported to move external geometry to another visual layer. External geometry will be omitted"));
             }
         }
 
@@ -700,7 +708,7 @@ private:
     };
 
 };
-} // namespace SketcherGui
+}
 
 enum class GeoFilterType {
     NormalGeos,
