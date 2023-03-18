@@ -29,8 +29,6 @@
 # include <QGraphicsSvgItem>
 # include <QPen>
 # include <QSvgRenderer>
-# include <QXmlQuery>
-# include <QXmlResultItems>
 #endif// #ifndef _PreComp_
 
 #include <App/Application.h>
@@ -39,7 +37,7 @@
 
 #include <Mod/TechDraw/App/DrawSVGTemplate.h>
 #include <Mod/TechDraw/App/DrawUtil.h>
-#include <Mod/TechDraw/App/QDomNodeModel.h>
+#include <Mod/TechDraw/App/XMLQuery.h>
 
 #include "QGISVGTemplate.h"
 #include "PreferencesGui.h"
@@ -165,20 +163,6 @@ void QGISVGTemplate::createClickHandles()
     }
     file.close();
 
-    QDomElement templateDocElem = templateDocument.documentElement();
-
-    QXmlQuery query(QXmlQuery::XQuery10);
-    QDomNodeModel model(query.namePool(), templateDocument);
-    query.setFocus(QXmlItem(model.fromDomNode(templateDocElem)));
-
-    // XPath query to select all <text> nodes with "freecad:editable" attribute
-    query.setQuery(QString::fromUtf8("declare default element namespace \"" SVG_NS_URI "\"; "
-                                     "declare namespace freecad=\"" FREECAD_SVG_NS_URI "\"; "
-                                     "//text[@freecad:editable]"));
-
-    QXmlResultItems queryResult;
-    query.evaluateTo(&queryResult);
-
     //TODO: Find location of special fields (first/third angle) and make graphics items for them
 
     Base::Reference<ParameterGrp> hGrp = App::GetApplication()
@@ -194,10 +178,13 @@ void QGISVGTemplate::createClickHandles()
     double width = editClickBoxSize;
     double height = editClickBoxSize;
 
-    while (!queryResult.next().isNull()) {
-        QDomElement textElement =
-            model.toDomNode(queryResult.current().toNodeModelIndex()).toElement();
+    TechDraw::XMLQuery query(templateDocument);
 
+    // XPath query to select all <text> nodes with "freecad:editable" attribute
+    query.processItems(QString::fromUtf8("declare default element namespace \"" SVG_NS_URI "\"; "
+                                         "declare namespace freecad=\"" FREECAD_SVG_NS_URI "\"; "
+                                         "//text[@freecad:editable]"),
+                       [&](QDomElement& textElement) -> bool {
         QString name = textElement.attribute(QString::fromUtf8("freecad:editable"));
         double x = Rez::guiX(
             textElement.attribute(QString::fromUtf8("x"), QString::fromUtf8("0.0")).toDouble());
@@ -207,7 +194,7 @@ void QGISVGTemplate::createClickHandles()
         if (name.isEmpty()) {
             Base::Console().Warning(
                 "QGISVGTemplate::createClickHandles - no name for editable text at %f, %f\n", x, y);
-            continue;
+            return true;
         }
 
         auto item(new TemplateTextField(this, svgTemplate, name.toStdString()));
@@ -229,7 +216,8 @@ void QGISVGTemplate::createClickHandles()
         addToGroup(item);
 
         textFields.push_back(item);
-    }
+        return true;
+    });
 }
 
 #include <Mod/TechDraw/Gui/moc_QGISVGTemplate.cpp>
