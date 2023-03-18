@@ -885,6 +885,7 @@ SET(Viewprovider_CPP_SRCS
     ViewProviderExtern.cpp
     ViewProviderFeature.cpp
     ViewProviderGeometryObject.cpp
+    ViewProviderImagePlane.cpp
     ViewProviderInventorObject.cpp
     ViewProviderMeasureDistance.cpp
     ViewProviderPyImp.cpp
@@ -921,6 +922,7 @@ SET(Viewprovider_SRCS
     ViewProviderExtern.h
     ViewProviderFeature.h
     ViewProviderGeometryObject.h
+    ViewProviderImagePlane.h
     ViewProviderInventorObject.h
     ViewProviderMeasureDistance.h
     ViewProviderPythonFeature.h
@@ -1133,6 +1135,8 @@ SET(FreeCADGui_CPP_SRCS
     ExpressionBindingPy.cpp
     GraphicsViewZoom.cpp
     ExpressionCompleter.cpp
+    FileHandler.cpp
+    FileHandler.h
     GuiApplication.cpp
     GuiApplicationNativeEventAware.cpp
     GuiConsole.cpp
