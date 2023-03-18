@@ -117,7 +117,7 @@ class ElementItem : public QListWidgetItem
     };
 
     ElementItem(int elementnr, int startingVertex, int midVertex, int endVertex,
-        Base::Type geometryType, GeometryState state, const QString & lab, const Part::Geometry * geo) :
+        Base::Type geometryType, GeometryState state, const QString & lab, ViewProviderSketch *sketchView) :
         ElementNbr(elementnr)
         , StartingVertex(startingVertex)
         , MidVertex(midVertex)
@@ -132,7 +132,7 @@ class ElementItem : public QListWidgetItem
         , hovered(SubElementType::none)
         , rightClicked(false)
         , label(lab)
-        , geo(geo)
+        , sketchView(sketchView)
     {
 
     }
@@ -141,9 +141,20 @@ class ElementItem : public QListWidgetItem
     }
 
     bool isVisible() {
-        auto layer = getSafeGeomLayerId(geo);
 
-        return layer != static_cast<unsigned int>(Layer::Hidden);
+        if(State != GeometryState::External) {
+            const auto geo = sketchView->getSketchObject()->getGeometry(ElementNbr);
+            if(geo) {
+                auto layer = getSafeGeomLayerId(geo);
+
+                return layer != static_cast<unsigned int>(Layer::Hidden);
+            }
+        }
+
+        // 1. external geometry currently is always visible.
+        // 2. if internal and ElementNbr is out of range, the element
+        // needs to be updated and the return value is not important.
+        return true;
     }
 
     int ElementNbr;
@@ -166,7 +177,8 @@ class ElementItem : public QListWidgetItem
 
     QString label;
 
-    const Part::Geometry * geo;
+    private:
+    ViewProviderSketch *sketchView;
 };
 
 class ElementFilterList : public QListWidget
@@ -1369,8 +1381,8 @@ void TaskSketcherElements::slotElementsChanged(void)
             (isNamingBoxChecked ?
                 (tr("Other") + IdInformation()) +
                 (construction ? (QString::fromLatin1("-") + tr("Construction")) : (internalAligned ? (QString::fromLatin1("-") + tr("Internal")) : QString::fromLatin1(""))) :
-                (QString::fromLatin1("%1-").arg(i) + tr("Other")))
-            , (*it) // geometry
+                (QString::fromLatin1("%1-").arg(i) + tr("Other"))),
+            sketchView
         );
 
         ui->listWidgetElements->addItem(itemN);
@@ -1461,8 +1473,8 @@ void TaskSketcherElements::slotElementsChanged(void)
                     (QString::fromLatin1("%1-").arg(i - 2) + tr("BSpline"))) :
                 (isNamingBoxChecked ?
                     (tr("Other") + linkname) :
-                    (QString::fromLatin1("%1-").arg(i - 2) + tr("Other")))
-                , (*it) // geometry
+                    (QString::fromLatin1("%1-").arg(i - 2) + tr("Other"))),
+                sketchView
             );
 
             ui->listWidgetElements->addItem(itemN);
