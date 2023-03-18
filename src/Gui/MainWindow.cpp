@@ -174,16 +174,16 @@ public:
             QAction* action = menu->addAction(QStringLiteral("UnitSchema%1").arg(i));
             actionGrp->addAction(action);
             action->setCheckable(true);
-            QObject::connect(action, &QAction::toggled, this, [this,i](bool checked) {
-                    if(checked) {
-                        // Set and save the Unit System
-                        Base::UnitsApi::setSchema(static_cast<Base::UnitSystem>(i));
-                        getWindowParameter()->SetInt("UserSchema", i);
-                        // Update the application to show the unit change
-                        Gui::Application::Instance->onUpdate();
-                    }
-                } );
+            action->setData(i);
         }
+        QObject::connect(actionGrp, &QActionGroup::triggered, this, [this](QAction* action) {
+            int userSchema = action->data().toInt();
+            // Set and save the Unit System
+            Base::UnitsApi::setSchema(static_cast<Base::UnitSystem>(userSchema));
+            getWindowParameter()->SetInt("UserSchema", userSchema);
+            // Update the application to show the unit change
+            Gui::Application::Instance->onUpdate();
+        } );
         setMenu(menu);
         retranslateUi();
         unitChanged();
@@ -221,10 +221,7 @@ private:
         if(Q_UNLIKELY(userSchema < 0 || userSchema >= actions.size())) {
             userSchema = 0;
         }
-        auto action = actions[userSchema];
-        if(!action->isChecked()) { // Using a QSignalBlocker leads to issue
-            action->setChecked(true);
-        }
+        actions[userSchema]->setChecked(true);
     }
 
     void retranslateUi() {
