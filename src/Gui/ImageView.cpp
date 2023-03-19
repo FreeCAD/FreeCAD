@@ -43,6 +43,7 @@
 #endif
 
 #include "ImageView.h"
+#include "BitmapFactory.h"
 
 using namespace Gui;
 
@@ -62,6 +63,7 @@ ImageView::ImageView(QWidget* parent)
     scrollArea->setVisible(false);
     setCentralWidget(scrollArea);
     setAcceptDrops(true);
+    setWindowIcon(Gui::BitmapFactory().pixmap("colors"));
 }
 
 bool ImageView::loadFile(const QString& fileName)

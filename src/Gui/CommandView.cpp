@@ -1984,7 +1984,7 @@ StdViewLoadImage::StdViewLoadImage()
     sToolTipText= QT_TR_NOOP("Loads a image");
     sWhatsThis  = "Std_ViewLoadPicture";
     sStatusTip  = QT_TR_NOOP("Loads a image");
-  //sPixmap     = "camera-photo";
+    sPixmap     = "image-open";
     eType       = 0;
 }
 

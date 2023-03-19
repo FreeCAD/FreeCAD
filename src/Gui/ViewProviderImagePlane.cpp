@@ -54,6 +54,8 @@ ViewProviderImagePlane::ViewProviderImagePlane()
 
     pcCoords = new SoCoordinate3();
     pcCoords->ref();
+
+    sPixmap = "image-plane";
 }
 
 ViewProviderImagePlane::~ViewProviderImagePlane()
