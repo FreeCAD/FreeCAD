@@ -49,8 +49,8 @@ STDAPI CreateRegistryKeys(REGKEY_SUBKEY_AND_VALUE* aKeys, ULONG cKeys);
 STDAPI DeleteRegistryKeys(REGKEY_DELETEKEY* aKeys, ULONG cKeys);
 
 
-BOOL APIENTRY DllMain(HINSTANCE hinstDll, 
-                      DWORD dwReason, 
+BOOL APIENTRY DllMain(HINSTANCE hinstDll,
+                      DWORD dwReason,
                       LPVOID pvReserved)
 {
    switch (dwReason)
@@ -88,8 +88,8 @@ STDAPI_(ULONG) DllRelease()
 
 STDAPI DllRegisterServer()
 {
-    // This tells the shell to invalidate the thumbnail cache.  This is important because any .recipe files 
-    // viewed before registering this handler would otherwise show cached blank thumbnails. 
+    // This tells the shell to invalidate the thumbnail cache.  This is important because any .recipe files
+    // viewed before registering this handler would otherwise show cached blank thumbnails.
     SHChangeNotify(SHCNE_ASSOCCHANGED, SHCNF_IDLIST, NULL, NULL);
 
     WCHAR szModule[MAX_PATH];
@@ -101,12 +101,12 @@ STDAPI DllRegisterServer()
     REGKEY_SUBKEY_AND_VALUE keys[] = {
                                         {HKEY_CLASSES_ROOT, L"CLSID\\" szCLSID_SampleThumbnailProvider, NULL, REG_SZ, (DWORD_PTR)L"FCStd Thumbnail Provider"},
 #if 1
-                                      //{HKEY_CLASSES_ROOT, L"CLSID\\DisableProcessIsolation", NULL, REG_DWORD, (DWORD) 1}, 
-                                        {HKEY_CLASSES_ROOT, L"CLSID\\" szCLSID_SampleThumbnailProvider, L"DisableProcessIsolation", REG_DWORD, (DWORD) 1}, 
+                                      //{HKEY_CLASSES_ROOT, L"CLSID\\DisableProcessIsolation", NULL, REG_DWORD, (DWORD) 1},
+                                        {HKEY_CLASSES_ROOT, L"CLSID\\" szCLSID_SampleThumbnailProvider, L"DisableProcessIsolation", REG_DWORD, (DWORD) 1},
 #endif
                                         {HKEY_CLASSES_ROOT, L"CLSID\\" szCLSID_SampleThumbnailProvider L"\\InprocServer32", NULL, REG_SZ, (DWORD_PTR)szModule},
                                         {HKEY_CLASSES_ROOT, L"CLSID\\" szCLSID_SampleThumbnailProvider L"\\InprocServer32", L"ThreadingModel", REG_SZ, (DWORD_PTR)L"Apartment"},
-                                      //{HKEY_CLASSES_ROOT, L".FCStd\\shellex", L"Trick only here to create shellex when not existing",REG_DWORD, 1}, 
+                                      //{HKEY_CLASSES_ROOT, L".FCStd\\shellex", L"Trick only here to create shellex when not existing",REG_DWORD, 1},
                                         {HKEY_CLASSES_ROOT, L".FCStd\\shellex\\{E357FCCD-A995-4576-B01F-234630154E96}", NULL, REG_SZ, (DWORD_PTR)szCLSID_SampleThumbnailProvider},
                                         {HKEY_CLASSES_ROOT, L".FCBak\\shellex\\{E357FCCD-A995-4576-B01F-234630154E96}", NULL, REG_SZ, (DWORD_PTR)szCLSID_SampleThumbnailProvider}
                                      };
@@ -143,7 +143,7 @@ STDAPI CreateRegistryKey(REGKEY_SUBKEY_AND_VALUE* pKey)
             cbData += sizeof(WCHAR);
         }
         break;
-        
+
     default:
         hr = E_INVALIDARG;
     }
