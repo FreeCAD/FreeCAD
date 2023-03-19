@@ -158,7 +158,7 @@ ParameterGrp::handle SnapManager::ParameterObserver::getParameterGrpHandle()
 
 //**************************** SnapManager class ******************************
 
-SnapManager::SnapManager(ViewProviderSketch &vp):viewProvider(vp), angleSnapEnabled(false), referencePoint(Base::Vector2d(0.,0.)), lastMouseAngle(0.0)
+SnapManager::SnapManager(ViewProviderSketch &vp):viewProvider(vp), angleSnapRequested(false), referencePoint(Base::Vector2d(0.,0.)), lastMouseAngle(0.0)
 {
     // Create parameter observer and initialise watched parameters
     pObserver = std::make_unique<SnapManager::ParameterObserver>(*this);
@@ -176,7 +176,7 @@ bool SnapManager::snap(double& x, double& y)
     //In order of priority :
 
     // 1 - Snap at an angle
-    if (angleSnapEnabled && QApplication::keyboardModifiers() == Qt::ControlModifier) {
+    if (angleSnapRequested && QApplication::keyboardModifiers() == Qt::ControlModifier) {
         return snapAtAngle(x, y);
     }
     else {
@@ -365,6 +365,6 @@ bool SnapManager::snapToArcMiddle(Base::Vector3d& pointToOverride, const Part::G
 
 void SnapManager::setAngleSnapping(bool enable, Base::Vector2d referencepoint)
 {
-    angleSnapEnabled = enable;
+    angleSnapRequested = enable;
     referencePoint = referencepoint;
 }
