@@ -2439,16 +2439,12 @@ StdViewZoomIn::StdViewZoomIn()
 void StdViewZoomIn::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    auto view = qobject_cast<View3DInventor*>(getMainWindow()->activeWindow());
-    if ( view ) {
-        View3DInventorViewer* viewer = view->getViewer();
-        viewer->navigationStyle()->zoomIn();
-    }
+    getGuiApplication()->sendMsgToFocusView("ZoomIn");
 }
 
 bool StdViewZoomIn::isActive()
 {
-    return (qobject_cast<View3DInventor*>(getMainWindow()->activeWindow()));
+    return getGuiApplication()->sendHasMsgToActiveView("ZoomIn");
 }
 
 //===========================================================================
@@ -2472,16 +2468,12 @@ StdViewZoomOut::StdViewZoomOut()
 void StdViewZoomOut::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    auto view = qobject_cast<View3DInventor*>(getMainWindow()->activeWindow());
-    if (view) {
-        View3DInventorViewer* viewer = view->getViewer();
-        viewer->navigationStyle()->zoomOut();
-    }
+    getGuiApplication()->sendMsgToFocusView("ZoomOut");
 }
 
 bool StdViewZoomOut::isActive()
 {
-    return (qobject_cast<View3DInventor*>(getMainWindow()->activeWindow()));
+    return getGuiApplication()->sendHasMsgToActiveView("ZoomOut");
 }
 
 namespace {
