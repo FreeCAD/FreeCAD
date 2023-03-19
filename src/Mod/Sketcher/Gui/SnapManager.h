@@ -105,7 +105,7 @@ private:
     /// Reference to ViewProviderSketch in order to access the public and the Attorney Interface
     ViewProviderSketch & viewProvider;
 
-    bool angleSnapEnabled;
+    bool angleSnapRequested;
     bool snapRequested;
     bool snapToObjectsRequested;
     bool snapToGridRequested;
