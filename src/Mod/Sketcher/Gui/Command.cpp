@@ -1197,7 +1197,7 @@ public:
         setEnabled(false);
     }
 
-    void updateWidget() {
+    void updateWidget(bool snapenabled) {
 
         auto updateCheckBox = [](QCheckBox* checkbox, bool value) {
             auto checked = checkbox->checkState() == Qt::Checked;
@@ -1225,11 +1225,10 @@ public:
 
         updateSpinBox(snapAngle, hGrp->GetFloat("SnapAngle", 5.0));
 
-        bool snapActivated = hGrp->GetBool("Snap", true);
-        snapToObjects->setEnabled(snapActivated);
-        snapToGrid->setEnabled(snapActivated);
-        angleLabel->setEnabled(snapActivated);
-        snapAngle->setEnabled(snapActivated);
+        snapToObjects->setEnabled(snapenabled);
+        snapToGrid->setEnabled(snapenabled);
+        angleLabel->setEnabled(snapenabled);
+        snapAngle->setEnabled(snapenabled);
     }
 
     void languageChange()
@@ -1300,16 +1299,18 @@ private:
     Gui::QuantitySpinBox* snapAngle;
 };
 
-class CmdSketcherSnap : public Gui::Command
+class CmdSketcherSnap : public Gui::Command, public ParameterGrp::ObserverType
 {
 public:
     CmdSketcherSnap();
-    virtual ~CmdSketcherSnap() {}
+    virtual ~CmdSketcherSnap();
     virtual const char* className() const
     {
         return "CmdSketcherSnap";
     }
     virtual void languageChange();
+
+    void OnChange(Base::Subject<const char*> &rCaller, const char * sReason) override;
 protected:
     virtual void activated(int iMsg);
     virtual bool isActive(void);
@@ -1317,10 +1318,16 @@ protected:
 private:
     void updateIcon(bool value);
 
+    ParameterGrp::handle getParameterPath() {
+        return App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher/Snap");
+    }
+
     CmdSketcherSnap(const CmdSketcherSnap&) = delete;
     CmdSketcherSnap(CmdSketcherSnap&&) = delete;
     CmdSketcherSnap& operator= (const CmdSketcherSnap&) = delete;
     CmdSketcherSnap& operator= (CmdSketcherSnap&&) = delete;
+
+    bool snapEnabled;
 };
 
 CmdSketcherSnap::CmdSketcherSnap()
@@ -1333,6 +1340,24 @@ CmdSketcherSnap::CmdSketcherSnap()
     sWhatsThis = "Sketcher_Snap";
     sStatusTip = sToolTipText;
     eType = 0;
+
+    ParameterGrp::handle hGrp = this->getParameterPath();
+    hGrp->Attach(this);
+}
+
+CmdSketcherSnap::~CmdSketcherSnap() {
+
+    ParameterGrp::handle hGrp = this->getParameterPath();
+    hGrp->Detach(this);
+}
+
+void CmdSketcherSnap::OnChange(Base::Subject<const char*> &rCaller, const char * sReason)
+{
+    Q_UNUSED(rCaller)
+
+    if (strcmp(sReason, "Snap") == 0) {
+        snapEnabled = getParameterPath()->GetBool("Snap", true);
+    }
 }
 
 void CmdSketcherSnap::updateIcon(bool value)
@@ -1348,12 +1373,10 @@ void CmdSketcherSnap::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
 
-    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher/Snap");
-    bool value = !hGrp->GetBool("Snap", true);
-    
-    hGrp->SetBool("Snap", value);
+    getParameterPath()->SetBool("Snap", !snapEnabled);
 
-    updateIcon(value);
+    // snapEnable updated via observer
+    updateIcon(snapEnabled);
 
     //Update the widget :
     if (!_pcAction)
@@ -1363,7 +1386,7 @@ void CmdSketcherSnap::activated(int iMsg)
     QList<QAction*> a = pcAction->actions();
 
     auto* ssa = static_cast<SnapSpaceAction*>(a[0]);
-    ssa->updateWidget();
+    ssa->updateWidget(snapEnabled);
 }
 
 Gui::Action* CmdSketcherSnap::createAction()
@@ -1378,14 +1401,13 @@ Gui::Action* CmdSketcherSnap::createAction()
 
     _pcAction = pcAction;
 
-    QObject::connect(pcAction, &Gui::ActionGroup::aboutToShow, [ssa](QMenu* menu) {
+    QObject::connect(pcAction, &Gui::ActionGroup::aboutToShow, [ssa, this](QMenu* menu) {
         Q_UNUSED(menu)
-            ssa->updateWidget();
+            ssa->updateWidget(snapEnabled);
     });
 
     // set the right pixmap
-    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher/Snap");
-    updateIcon(hGrp->GetBool("Snap", true));
+    updateIcon(snapEnabled);
 
     return pcAction;
 }
@@ -1409,10 +1431,7 @@ bool CmdSketcherSnap::isActive()
     auto* vp = getInactiveHandlerEditModeSketchViewProvider();
 
     if (vp) {
-        ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher/Snap");
-        bool value = hGrp->GetBool("Snap", true);
-
-        updateIcon(value);
+        updateIcon(snapEnabled);
 
         return true;
     }
