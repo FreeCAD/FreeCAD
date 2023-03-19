@@ -104,15 +104,16 @@ public:
 private:
     /// Reference to ViewProviderSketch in order to access the public and the Attorney Interface
     ViewProviderSketch & viewProvider;
+
     bool angleSnapEnabled;
+    bool snapRequested;
+    bool snapToObjectsRequested;
+    bool snapToGridRequested;
+
     Base::Vector2d referencePoint;
     double lastMouseAngle;
 
     double snapAngle;
-
-    bool snapRequested;
-    bool snapToObjectsRequested;
-    bool snapToGridRequested;
 
     /// Observer to track all the needed parameters.
     std::unique_ptr<SnapManager::ParameterObserver> pObserver;
