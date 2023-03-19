@@ -995,8 +995,6 @@ public:
                 updateCheckBox(checkbox, propvalue);
             };
 
-            ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher/General");
-
             updateCheckBoxFromProperty(gridAutoSpacing, sketchView->GridAuto);
 
             gridSizeBox->setValue(sketchView->GridSize.getValue());
