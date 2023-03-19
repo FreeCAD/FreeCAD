@@ -39,9 +39,9 @@ class GuiExport PropertyPage : public QWidget
 
 public:
     explicit PropertyPage(QWidget* parent = nullptr);
-    ~PropertyPage() override;
+    ~PropertyPage() override = default;
 
-    bool isModified();
+    bool isModified() const;
     void setModified(bool b);
     void onApply();
     void onCancel();
@@ -69,14 +69,14 @@ class GuiExport PreferencePage : public QWidget
 
 public:
     explicit PreferencePage(QWidget* parent = nullptr);
-    ~PreferencePage() override;
+    ~PreferencePage() override = default;
 
 public Q_SLOTS:
     virtual void loadSettings()=0;
     virtual void saveSettings()=0;
 
 protected:
-    void changeEvent(QEvent *e) override = 0;
+    void changeEvent(QEvent* event) override = 0;
 };
 
 /** Subclass that embeds a form from a UI file.

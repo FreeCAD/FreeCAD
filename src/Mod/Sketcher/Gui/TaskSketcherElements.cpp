@@ -117,7 +117,7 @@ class ElementItem : public QListWidgetItem
     };
 
     ElementItem(int elementnr, int startingVertex, int midVertex, int endVertex,
-        Base::Type geometryType, GeometryState state, const QString & lab, const Part::Geometry * geo) :
+        Base::Type geometryType, GeometryState state, const QString & lab, ViewProviderSketch *sketchView) :
         ElementNbr(elementnr)
         , StartingVertex(startingVertex)
         , MidVertex(midVertex)
@@ -132,7 +132,7 @@ class ElementItem : public QListWidgetItem
         , hovered(SubElementType::none)
         , rightClicked(false)
         , label(lab)
-        , geo(geo)
+        , sketchView(sketchView)
     {
 
     }
@@ -141,9 +141,20 @@ class ElementItem : public QListWidgetItem
     }
 
     bool isVisible() {
-        auto layer = getSafeGeomLayerId(geo);
 
-        return layer != static_cast<unsigned int>(Layer::Hidden);
+        if(State != GeometryState::External) {
+            const auto geo = sketchView->getSketchObject()->getGeometry(ElementNbr);
+            if(geo) {
+                auto layer = getSafeGeomLayerId(geo);
+
+                return layer != static_cast<unsigned int>(Layer::Hidden);
+            }
+        }
+
+        // 1. external geometry currently is always visible.
+        // 2. if internal and ElementNbr is out of range, the element
+        // needs to be updated and the return value is not important.
+        return true;
     }
 
     int ElementNbr;
@@ -166,7 +177,41 @@ class ElementItem : public QListWidgetItem
 
     QString label;
 
-    const Part::Geometry * geo;
+    private:
+    ViewProviderSketch *sketchView;
+};
+
+class ElementFilterList : public QListWidget
+{
+    Q_OBJECT
+
+public:
+    explicit ElementFilterList(QWidget* parent = nullptr);
+    ~ElementFilterList() override;
+
+protected:
+    void changeEvent(QEvent* e) override;
+    virtual void languageChange();
+
+private:
+    using filterItemRepr =  std::pair<const char *, const int>; // {filter item text, filter item level}
+    inline static const std::vector<filterItemRepr> filterItems = {
+        {QT_TR_NOOP("Normal"),0},
+        {QT_TR_NOOP("Construction"),0},
+        {QT_TR_NOOP("Internal"),0},
+        {QT_TR_NOOP("External"),0},
+        {QT_TR_NOOP("All types"),0},
+        {QT_TR_NOOP("Point"),1},
+        {QT_TR_NOOP("Line"),1},
+        {QT_TR_NOOP("Circle"),1},
+        {QT_TR_NOOP("Ellipse"),1},
+        {QT_TR_NOOP("Arc of circle"),1},
+        {QT_TR_NOOP("Arc of ellipse"),1},
+        {QT_TR_NOOP("Arc of hyperbola"),1},
+        {QT_TR_NOOP("Arc of parabola"),1},
+        {QT_TR_NOOP("B-Spline"),1}
+    };
+
 };
 } // SketcherGui
 
@@ -675,40 +720,6 @@ ElementItem* ElementItemDelegate::getElementtItem(const QModelIndex& index) cons
 }
 
 /* Filter element list widget ------------------------------------------------------ */
-namespace SketcherGui {
-class ElementFilterList : public QListWidget
-{
-    Q_OBJECT
-
-public:
-    explicit ElementFilterList(QWidget* parent = nullptr);
-    ~ElementFilterList() override;
-
-protected:
-    void changeEvent(QEvent* e) override;
-    virtual void languageChange();
-
-private:
-    using filterItemRepr =  std::pair<const char *, const int>; // {filter item text, filter item level}
-    inline static const std::vector<filterItemRepr> filterItems = {
-        {QT_TR_NOOP("Normal"),0},
-        {QT_TR_NOOP("Construction"),0},
-        {QT_TR_NOOP("Internal"),0},
-        {QT_TR_NOOP("External"),0},
-        {QT_TR_NOOP("All types"),0},
-        {QT_TR_NOOP("Point"),1},
-        {QT_TR_NOOP("Line"),1},
-        {QT_TR_NOOP("Circle"),1},
-        {QT_TR_NOOP("Ellipse"),1},
-        {QT_TR_NOOP("Arc of circle"),1},
-        {QT_TR_NOOP("Arc of ellipse"),1},
-        {QT_TR_NOOP("Arc of hyperbola"),1},
-        {QT_TR_NOOP("Arc of parabola"),1},
-        {QT_TR_NOOP("B-Spline"),1}
-    };
-
-};
-}
 
 enum class GeoFilterType {
     NormalGeos,
@@ -1370,8 +1381,8 @@ void TaskSketcherElements::slotElementsChanged(void)
             (isNamingBoxChecked ?
                 (tr("Other") + IdInformation()) +
                 (construction ? (QString::fromLatin1("-") + tr("Construction")) : (internalAligned ? (QString::fromLatin1("-") + tr("Internal")) : QString::fromLatin1(""))) :
-                (QString::fromLatin1("%1-").arg(i) + tr("Other")))
-            , (*it) // geometry
+                (QString::fromLatin1("%1-").arg(i) + tr("Other"))),
+            sketchView
         );
 
         ui->listWidgetElements->addItem(itemN);
@@ -1462,8 +1473,8 @@ void TaskSketcherElements::slotElementsChanged(void)
                     (QString::fromLatin1("%1-").arg(i - 2) + tr("BSpline"))) :
                 (isNamingBoxChecked ?
                     (tr("Other") + linkname) :
-                    (QString::fromLatin1("%1-").arg(i - 2) + tr("Other")))
-                , (*it) // geometry
+                    (QString::fromLatin1("%1-").arg(i - 2) + tr("Other"))),
+                sketchView
             );
 
             ui->listWidgetElements->addItem(itemN);

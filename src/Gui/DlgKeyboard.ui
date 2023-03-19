@@ -103,6 +103,9 @@
          </item>
          <item row="1" column="2" colspan="2">
           <widget class="Gui::AccelLineEdit" name="accelLineEditShortcut">
+           <property name="toolTip">
+            <string>To change a current shortcut enter the new shortcut in the field below and press 'Assign'.</string>
+           </property>
            <property name="readOnly">
             <bool>true</bool>
            </property>
