@@ -1073,13 +1073,13 @@ class CmdSketcherGrid : public Gui::Command
 public:
     CmdSketcherGrid();
     virtual ~CmdSketcherGrid(){}
-    virtual const char* className() const
+    virtual const char* className() const override
     { return "CmdSketcherGrid"; }
-    virtual void languageChange();
+    virtual void languageChange() override;
 protected:
-    virtual void activated(int iMsg);
-    virtual bool isActive(void);
-    virtual Gui::Action * createAction(void);
+    virtual void activated(int iMsg) override;
+    virtual bool isActive(void) override;
+    virtual Gui::Action * createAction(void) override;
 private:
     void updateIcon(bool value);
     void updateInactiveHandlerIcon();
@@ -1304,17 +1304,17 @@ class CmdSketcherSnap : public Gui::Command, public ParameterGrp::ObserverType
 public:
     CmdSketcherSnap();
     virtual ~CmdSketcherSnap();
-    virtual const char* className() const
+    virtual const char* className() const override
     {
         return "CmdSketcherSnap";
     }
-    virtual void languageChange();
+    virtual void languageChange() override;
 
     void OnChange(Base::Subject<const char*> &rCaller, const char * sReason) override;
 protected:
-    virtual void activated(int iMsg);
-    virtual bool isActive(void);
-    virtual Gui::Action* createAction(void);
+    virtual void activated(int iMsg) override;
+    virtual bool isActive(void) override;
+    virtual Gui::Action* createAction(void) override;
 private:
     void updateIcon(bool value);
 
