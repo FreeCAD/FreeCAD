@@ -153,7 +153,7 @@ void SnapManager::ParameterObserver::OnChange(Base::Subject<const char*>& rCalle
 
 ParameterGrp::handle SnapManager::ParameterObserver::getParameterGrpHandle()
 {
-    return App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher/General");
+    return App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher/Snap");
 }
 
 //**************************** SnapManager class ******************************
