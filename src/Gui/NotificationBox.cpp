@@ -73,6 +73,8 @@ public:
     bool notificationLabelChanged(const QString& text);
     /// Place the notification at the given position
     void placeNotificationLabel(const QPoint& pos);
+    /// Set the windowrect defining an area to which the label should be constrained
+    void setTipRect(const QRect &restrictionarea);
 
     /// The instance
     static qobject_delete_later_unique_ptr<NotificationLabel> instance;
@@ -91,6 +93,8 @@ private:
     int minShowTime;
     QTimer hideTimer;
     QTimer expireTimer;
+
+    QRect restrictionArea;
 };
 
 qobject_delete_later_unique_ptr<NotificationLabel> NotificationLabel::instance = nullptr;
@@ -263,23 +267,34 @@ void NotificationLabel::placeNotificationLabel(const QPoint& pos)
 
         p += offset;
 
-        QRect screenRect = screen->geometry();
+        QRect actinglimit = screen->geometry();
 
-        if (p.x() + this->width() > screenRect.x() + screenRect.width())
-            p.rx() -= 4 + this->width();
-        if (p.y() + this->height() > screenRect.y() + screenRect.height())
-            p.ry() -= 24 + this->height();
-        if (p.y() < screenRect.y())
-            p.setY(screenRect.y());
-        if (p.x() + this->width() > screenRect.x() + screenRect.width())
-            p.setX(screenRect.x() + screenRect.width() - this->width());
-        if (p.x() < screenRect.x())
-            p.setX(screenRect.x());
-        if (p.y() + this->height() > screenRect.y() + screenRect.height())
-            p.setY(screenRect.y() + screenRect.height() - this->height());
+        if(!restrictionArea.isNull())
+            actinglimit = restrictionArea;
+
+        const int standard_x_padding = 4;
+        const int standard_y_padding = 24;
+
+        if (p.x() + this->width() > actinglimit.x() + actinglimit.width())
+            p.rx() -= standard_x_padding + this->width();
+        if (p.y() + standard_y_padding + this->height() > actinglimit.y() + actinglimit.height())
+            p.ry() -= standard_y_padding + this->height();
+        if (p.y() < actinglimit.y())
+            p.setY(actinglimit.y());
+        if (p.x() + this->width() > actinglimit.x() + actinglimit.width())
+            p.setX(actinglimit.x() + actinglimit.width() - this->width());
+        if (p.x() < actinglimit.x())
+            p.setX(actinglimit.x());
+        if (p.y() + this->height() > actinglimit.y() + actinglimit.height())
+            p.setY(actinglimit.y() + actinglimit.height() - this->height());
     }
 
     this->move(p);
+}
+
+void NotificationLabel::setTipRect(const QRect &restrictionarea)
+{
+    restrictionArea = restrictionarea;
 }
 
 bool NotificationLabel::notificationLabelChanged(const QString& text)
@@ -290,7 +305,7 @@ bool NotificationLabel::notificationLabelChanged(const QString& text)
 /***************************** NotificationBox **********************************/
 
 void NotificationBox::showText(const QPoint& pos, const QString& text, int displayTime,
-                               unsigned int minShowTime, int width)
+                               unsigned int minShowTime, const QRect &restrictionarea, int width)
 {
     // a label does already exist
     if (NotificationLabel::instance && NotificationLabel::instance->isVisible()) {
@@ -301,6 +316,7 @@ void NotificationBox::showText(const QPoint& pos, const QString& text, int displ
         else {
             // If the label has changed, reuse the one that is showing (removes flickering)
             if (NotificationLabel::instance->notificationLabelChanged(text)) {
+                NotificationLabel::instance->setTipRect(restrictionarea);
                 NotificationLabel::instance->reuseNotification(text, displayTime, pos, width);
                 NotificationLabel::instance->placeNotificationLabel(pos);
             }
@@ -310,12 +326,16 @@ void NotificationBox::showText(const QPoint& pos, const QString& text, int displ
 
     // no label can be reused, create new label:
     if (!text.isEmpty()) {
+        // Note: The Label takes no parent, as on windows, we can't use the widget as parent
+        // otherwise the window will be raised when the tooltip will be shown. We do not use
+        // it on Linux either for consistency.
         new NotificationLabel(text,
                               pos,
                               displayTime,
                               minShowTime,
                               width);// sets NotificationLabel::instance to itself
 
+        NotificationLabel::instance->setTipRect(restrictionarea);
         NotificationLabel::instance->placeNotificationLabel(pos);
         NotificationLabel::instance->setObjectName(QLatin1String("NotificationBox_label"));
 

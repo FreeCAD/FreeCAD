@@ -234,7 +234,7 @@ void NotificationAreaObserver::SendLog(const std::string& notifiername, const st
             .trimmed();// remove any leading and trailing whitespace character ('\n')
 
     // avoid processing empty strings
-    if(simplifiedstring.isEmpty())
+    if (simplifiedstring.isEmpty())
         return;
 
     if (level == Base::LogStyle::TranslatedNotification) {
@@ -827,7 +827,7 @@ void NotificationArea::pushNotification(const QString& notifiername, const QStri
     auto timer_thread = pImp->inhibitTimer.thread();
     auto current_thread = QThread::currentThread();
 
-    if(timer_thread == current_thread)
+    if (timer_thread == current_thread)
         pImp->inhibitTimer.start(pImp->inhibitNotificationTime);
 }
 
@@ -939,7 +939,8 @@ void NotificationArea::showInNotificationArea()
                     iconstr = QStringLiteral(":/icons/info.svg");
                 }
 
-                QString tmpmessage = convertFromPlainText(item->msg, Qt::WhiteSpaceMode::WhiteSpaceNormal);
+                QString tmpmessage =
+                    convertFromPlainText(item->msg, Qt::WhiteSpaceMode::WhiteSpaceNormal);
 
                 msgw +=
                     QString::fromLatin1(
@@ -990,11 +991,17 @@ void NotificationArea::showInNotificationArea()
 
         msgw += QString::fromLatin1("</table></p>");
 
+        // Calculate the main window QRect in global screen coordinates.
+        auto mainwindow = getMainWindow();
+        auto mainwindowrect = mainwindow->rect();
+        auto globalmainwindowrect =
+            QRect(mainwindow->mapToGlobal(mainwindowrect.topLeft()), mainwindowrect.size());
 
         NotificationBox::showText(this->mapToGlobal(QPoint()),
                                   msgw,
                                   pImp->notificationExpirationTime,
                                   pImp->minimumOnScreenTime,
+                                  globalmainwindowrect,
                                   pImp->notificationWidth);
     }
 }
