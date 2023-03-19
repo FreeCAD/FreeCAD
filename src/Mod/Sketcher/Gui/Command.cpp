@@ -1212,7 +1212,7 @@ public:
                 }
             };
 
-            ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher/General");
+            ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher/Snap");
 
             updateCheckBox(snapToObjects, hGrp->GetBool("SnapToObjects", true));
 
@@ -1271,7 +1271,7 @@ protected:
             auto* sketchView = getView();
 
             if (sketchView) {
-                ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher/General");
+                ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher/Snap");
                 hGrp->SetBool("SnapToObjects", state == Qt::Checked);
             }
         });
@@ -1279,7 +1279,7 @@ protected:
         QObject::connect(snapToGrid, &QCheckBox::stateChanged, [this](int state) {
             auto* sketchView = getView();
             if (sketchView) {
-                ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher/General");
+                ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher/Snap");
                 hGrp->SetBool("SnapToGrid", state == Qt::Checked);
             }
         });
@@ -1288,7 +1288,7 @@ protected:
             auto* sketchView = getView();
 
             if (sketchView) {
-                ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher/General");
+                ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher/Snap");
                 hGrp->SetFloat("SnapAngle", val);
             }
         });
@@ -1362,7 +1362,7 @@ void CmdSketcherSnap::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
 
-    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher/General");
+    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher/Snap");
     bool value = !hGrp->GetBool("Snap", true);
     
     hGrp->SetBool("Snap", value);
@@ -1398,7 +1398,7 @@ Gui::Action* CmdSketcherSnap::createAction()
     });
 
     // set the right pixmap
-    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher/General");
+    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher/Snap");
     updateIcon(hGrp->GetBool("Snap", true));
 
     return pcAction;
@@ -1423,7 +1423,7 @@ bool CmdSketcherSnap::isActive()
     auto* vp = getInactiveHandlerEditModeSketchViewProvider();
 
     if (vp) {
-        ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher/General");
+        ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher/Snap");
         bool value = hGrp->GetBool("Snap", true);
 
         updateIcon(value);
