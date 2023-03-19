@@ -32,9 +32,9 @@ class DrawViewDimensionTest(unittest.TestCase):
         self.view1.Source = [self.document.Sphere]
         self.view1.X = 220
         self.view1.Y = 150
-        
+
         self.document.recompute()
-        
+
         #wait for threads to complete before checking result
         loop = QtCore.QEventLoop()
 
@@ -53,7 +53,7 @@ class DrawViewDimensionTest(unittest.TestCase):
         """Tests if a length dimension can be added to view"""
         # make length dimension
         print("making length dimension")
-        
+
         dimension = self.document.addObject("TechDraw::DrawViewDimension", "Dimension")
         self.page.addView(dimension)
         dimension.Type = "Distance"

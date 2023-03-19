@@ -295,7 +295,7 @@ class _TaskPanel:
         CCX_mesh = self.fea.analysis.Document.getObject("ResultMesh")
         if CCX_mesh is not None:
             CCX_mesh.ViewObject.Visibility = self.CCX_mesh_visibility
-    
+
     def choose_working_dir(self):
         wd = QtGui.QFileDialog.getExistingDirectory(None, "Choose CalculiX working directory",
                                                     self.fea.working_dir)
