@@ -356,7 +356,7 @@ class _TaskPanel:
     def runCalculix(self):
         if self.fea.ccx_binary_present is False:
             self.femConsoleMessage(
-                "CalculiX can not be started. No or wrong CalculiX binary: {}"
+                "CalculiX can not be started. Missing or incorrect CalculiX binary: {}"
                 .format(self.fea.ccx_binary)
             )
             # TODO deactivate the run button
