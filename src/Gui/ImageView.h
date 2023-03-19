@@ -26,6 +26,7 @@
 
 #include <Gui/MDIView.h>
 
+class QFileInfo;
 class QLabel;
 class QScrollArea;
 class QScrollBar;
@@ -82,6 +83,7 @@ private:
     void pasteImage();
     bool canPasteImage() const;
     static QImage imageFromClipboard();
+    static bool isImageFormat(const QFileInfo&);
     void loadImageFromUrl(const QList<QUrl>&);
 
 private:

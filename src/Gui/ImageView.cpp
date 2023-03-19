@@ -246,6 +246,18 @@ void ImageView::dragEnterEvent(QDragEnterEvent* event)
     }
 }
 
+bool ImageView::isImageFormat(const QFileInfo& fileInfo)
+{
+    QString ext = fileInfo.suffix().toLower();
+    QByteArray suffix = ext.toLatin1();
+    QList<QByteArray> supportedFormats = QImageReader::supportedImageFormats();
+    auto it = std::find_if(supportedFormats.begin(), supportedFormats.end(), [suffix](const QByteArray& image) {
+        return (image == suffix);
+    });
+
+    return (it != supportedFormats.end());
+}
+
 void ImageView::loadImageFromUrl(const QList<QUrl>& urls)
 {
     if (urls.isEmpty()) {
@@ -255,7 +267,9 @@ void ImageView::loadImageFromUrl(const QList<QUrl>& urls)
     const QUrl& url = urls.first();
     const QFileInfo info(url.toLocalFile());
     if (info.exists() && info.isFile()) {
-        loadFile(info.absoluteFilePath());
+        if (isImageFormat(info)) {
+            loadFile(info.absoluteFilePath());
+        }
     }
 }
 
