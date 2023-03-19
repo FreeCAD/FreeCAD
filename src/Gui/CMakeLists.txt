@@ -1066,6 +1066,7 @@ SET(View_CPP_SRCS
     MDIViewPy.cpp
     MDIViewPyWrap.cpp
     GraphvizView.cpp
+    ImageView.cpp
     ActiveObjectList.cpp
 )
 SET(View_HPP_SRCS
@@ -1073,6 +1074,7 @@ SET(View_HPP_SRCS
     MDIViewPy.h
     MDIViewPyWrap.h
     GraphvizView.h
+    ImageView.h
     ActiveObjectList.h
 )
 SET(View_SRCS
