@@ -89,11 +89,12 @@ public:
     /// is appended as text to the MappedName. In that case the memory is *not* shared between the
     /// original IndexedName and the MappedName.
     explicit MappedName(const IndexedName& element)
-        : data(element.getType()),
-          raw(false)
+        : data(QByteArray::fromRawData(element.getType(), qstrlen(element.getType()))),
+          raw(true)
     {
         if (element.getIndex() > 0) {
-            data += QByteArray::number(element.getIndex());
+            this->data += QByteArray::number(element.getIndex());
+            this->raw = false;
         }
     }
 
@@ -664,8 +665,13 @@ public:
     /// continuing through postfix. No bounds checking is performed when compiled in release mode.
     char operator[](int index) const
     {
-        // FIXME overflow underflow checks?
+        if (index < 0) {
+            index = 0;
+        }
         if (index >= this->data.size()) {
+            if (index - this->data.size() > this->postfix.size() - 1) {
+                index = this->postfix.size() - 1;
+            }
             return this->postfix[index - this->data.size()];
         }
         return this->data[index];
@@ -708,7 +714,7 @@ public:
     }
 
     /// Ensure that this data is unshared, making a copy if necessary.
-    void compact() const;
+    void compact();
 
     /// Boolean conversion is the inverse of empty(), returning true if there is data in either the
     /// data or postfix, and false if there is nothing in either.

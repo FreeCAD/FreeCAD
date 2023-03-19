@@ -33,13 +33,12 @@
 using namespace Data;
 
 
-void MappedName::compact() const
+void MappedName::compact()
 {
-    auto self = const_cast<MappedName*>(this);
 
     if (this->raw) {
-        self->data = QByteArray(self->data.constData(), self->data.size());
-        self->raw = false;
+        this->data = QByteArray(this->data.constData(), this->data.size());
+        this->raw = false;
     }
 
 #if 0

@@ -103,6 +103,7 @@ TEST(MappedName, constructFromIndexedNameNoIndex)
 
     // Assert
     EXPECT_EQ(mappedName.dataBytes().constData(), indexedName.getType()); // shared memory
+    EXPECT_EQ(mappedName.isRaw(), true);
 }
 
 TEST(MappedName, constructFromIndexedNameWithIndex)
@@ -115,6 +116,7 @@ TEST(MappedName, constructFromIndexedNameWithIndex)
 
     // Assert
     EXPECT_NE(mappedName.dataBytes().constData(), indexedName.getType()); // NOT shared memory
+    EXPECT_EQ(mappedName.isRaw(), false);
     EXPECT_EQ(mappedName.toString(), indexedName.toString());
 }
 
@@ -534,14 +536,69 @@ TEST(MappedName, toIndexedNameInvalid)
     EXPECT_TRUE(indexedName.isNull());
 }
 
-TEST(MappedName, toPrefixedString)
+TEST(MappedName, appendToBuffer)
 {
-    // TODO Write this test
+    // Arrange
+    Data::MappedName mappedName(Data::MappedName("TEST"), "POSTFIXTEST");
+    std::string buffer("STUFF");
+
+    // Act
+    mappedName.appendToBuffer(buffer);
+
+    // Assert
+    EXPECT_EQ(buffer, std::string("STUFFTESTPOSTFIXTEST"));
+
+    // Act
+    mappedName.appendToBuffer(buffer, 2, 7);
+
+    // Assert
+    EXPECT_EQ(buffer, std::string("STUFFTESTPOSTFIXTESTSTPOSTF"));
 }
 
 TEST(MappedName, appendToBufferWithPrefix)
 {
-    // TODO Write this test
+    // Arrange
+    Data::MappedName mappedName(Data::MappedName("TEST"), "POSTFIXTEST");
+    std::string buffer("STUFF");
+    std::string elemMapPrefix = Data::ComplexGeoData::elementMapPrefix();
+
+    // Act
+    mappedName.appendToBufferWithPrefix(buffer);
+
+    // Assert
+    EXPECT_EQ(buffer, std::string("STUFF") + elemMapPrefix + std::string("TESTPOSTFIXTEST"));
+
+    // Arrange
+    Data::MappedName mappedName2("TEST"); //If mappedName does not have a postfix and is a valid indexedName: prefix is not added
+
+    // Act
+    mappedName2.appendToBufferWithPrefix(buffer); 
+
+    // Assert
+    EXPECT_EQ(buffer, std::string("STUFF") + elemMapPrefix + std::string("TESTPOSTFIXTEST") + /*missing prefix*/ std::string("TEST"));
+}
+
+TEST(MappedName, toPrefixedString)
+{
+    // Arrange
+    Data::MappedName mappedName(Data::MappedName("TEST"), "POSTFIXTEST");
+    std::string buffer("STUFF");
+    std::string elemMapPrefix = Data::ComplexGeoData::elementMapPrefix();
+
+    // Act
+    buffer += mappedName.toPrefixedString();
+
+    // Assert
+    EXPECT_EQ(buffer, std::string("STUFF") + elemMapPrefix + std::string("TESTPOSTFIXTEST"));
+
+    // Arrange
+    Data::MappedName mappedName2("TEST"); //If mappedName does not have a postfix and is a valid indexedName: prefix is not added
+
+    // Act
+    buffer += mappedName2.toPrefixedString(); 
+
+    // Assert
+    EXPECT_EQ(buffer, std::string("STUFF") + elemMapPrefix + std::string("TESTPOSTFIXTEST") + /*missing prefix*/ std::string("TEST"));
 }
 
 TEST(MappedName, toBytes)
@@ -763,6 +820,13 @@ TEST(MappedName, startsWith)
     EXPECT_EQ(mappedName.startsWith("WASD"), false); 
 }
 
-//TODO test hash function
+TEST(MappedName, hash)
+{
+    // Arrange
+    Data::MappedName mappedName(Data::MappedName("TEST"), "POSTFIXTEST");
+        
+    // Act & Assert
+    EXPECT_EQ(mappedName.hash(), qHash(QByteArray("TEST"), qHash(QByteArray("POSTFIXTEST"))));
+}
 
 // NOLINTEND(readability-magic-numbers)
