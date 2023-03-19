@@ -1217,7 +1217,7 @@ public:
             }
         };
 
-        ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher/Snap");
+        ParameterGrp::handle hGrp = getParameterPath();
 
         updateCheckBox(snapToObjects, hGrp->GetBool("SnapToObjects", true));
 
@@ -1271,17 +1271,17 @@ protected:
         languageChange();
 
         QObject::connect(snapToObjects, &QCheckBox::stateChanged, [this](int state) {
-            ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher/Snap");
+            ParameterGrp::handle hGrp = this->getParameterPath();
             hGrp->SetBool("SnapToObjects", state == Qt::Checked);
         });
 
         QObject::connect(snapToGrid, &QCheckBox::stateChanged, [this](int state) {
-            ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher/Snap");
+            ParameterGrp::handle hGrp = this->getParameterPath();
             hGrp->SetBool("SnapToGrid", state == Qt::Checked);
         });
 
         QObject::connect(snapAngle, qOverload<double>(&Gui::QuantitySpinBox::valueChanged), [this](double val) {
-            ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher/Snap");
+            ParameterGrp::handle hGrp = this->getParameterPath();
             hGrp->SetFloat("SnapAngle", val);
         });
 
@@ -1289,14 +1289,8 @@ protected:
     }
 
 private:
-    ViewProviderSketch* getView() {
-        Gui::Document* doc = Gui::Application::Instance->activeDocument();
-
-        if (doc) {
-            return dynamic_cast<SketcherGui::ViewProviderSketch*>(doc->getInEdit());
-        }
-
-        return nullptr;
+    ParameterGrp::handle getParameterPath() {
+        return App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher/Snap");
     }
 
 private:
