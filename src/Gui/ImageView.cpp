@@ -286,21 +286,19 @@ QImage ImageView::imageFromClipboard()
 
 void ImageView::print(QPrinter* printer)
 {
-    QPrintDialog dialog(printer, this);
-    if (dialog.exec()) {
-        QPainter painter(printer);
-        QPixmap pixmap = QPixmap::fromImage(rawImage);
-        QRect rect = painter.viewport();
-        QSize size = pixmap.size();
-        size.scale(rect.size(), Qt::KeepAspectRatio);
-        painter.setViewport(rect.x(), rect.y(), size.width(), size.height());
-        painter.setWindow(pixmap.rect());
-        painter.drawPixmap(0, 0, pixmap);
-    }
+    QPainter painter(printer);
+    QPixmap pixmap = QPixmap::fromImage(rawImage);
+    QRect rect = painter.viewport();
+    QSize size = pixmap.size();
+    size.scale(rect.size(), Qt::KeepAspectRatio);
+    painter.setViewport(rect.x(), rect.y(), size.width(), size.height());
+    painter.setWindow(pixmap.rect());
+    painter.drawPixmap(0, 0, pixmap);
 }
 
-bool ImageView::onMsg(const char* pMsg,const char**)
+bool ImageView::onMsg(const char* pMsg,const char** ppReturn)
 {
+    Q_UNUSED(ppReturn)
     if (strcmp("ViewFit", pMsg) == 0) {
         fitToWindow(true);
         return true;
