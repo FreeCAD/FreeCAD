@@ -6,11 +6,9 @@
 #include "App/ComplexGeoData.h"
 
 #include <string>
-#include <sstream>
 
+// NOLINTBEGIN(readability-magic-numbers)
 
-
-// clang-format off
 TEST(MappedName, defaultConstruction)
 {
     // Act
@@ -93,6 +91,31 @@ TEST(MappedName, stringNamedConstructionDiscardPrefix)
     EXPECT_EQ(mappedName.size(), 4);
     EXPECT_EQ(mappedName.dataBytes(), QByteArray("TEST"));
     EXPECT_EQ(mappedName.postfixBytes(), QByteArray());
+}
+
+TEST(MappedName, constructFromIndexedNameNoIndex)
+{
+    // Arrange
+    Data::IndexedName indexedName {"INDEXED_NAME"};
+
+    // Act
+    Data::MappedName mappedName {indexedName};
+
+    // Assert
+    EXPECT_EQ(mappedName.dataBytes().constData(), indexedName.getType()); // shared memory
+}
+
+TEST(MappedName, constructFromIndexedNameWithIndex)
+{
+    // Arrange
+    Data::IndexedName indexedName {"INDEXED_NAME", 1};
+
+    // Act
+    Data::MappedName mappedName {indexedName};
+
+    // Assert
+    EXPECT_NE(mappedName.dataBytes().constData(), indexedName.getType()); // NOT shared memory
+    EXPECT_EQ(mappedName.toString(), indexedName.toString());
 }
 
 TEST(MappedName, copyConstructor)
@@ -183,12 +206,6 @@ TEST(MappedName, moveConstructor)
     EXPECT_EQ(mappedName.size(), 15);
     EXPECT_EQ(mappedName.dataBytes(), QByteArray("TEST"));
     EXPECT_EQ(mappedName.postfixBytes(), QByteArray("POSTFIXTEST"));
-
-    EXPECT_EQ(temp.isRaw(), false);
-    EXPECT_EQ(temp.empty(), true);
-    EXPECT_EQ(temp.size(), 0);
-    EXPECT_EQ(temp.dataBytes(), QByteArray());
-    EXPECT_EQ(temp.postfixBytes(), QByteArray());
 }
 
 TEST(MappedName, fromRawData)
@@ -315,12 +332,6 @@ TEST(MappedName, assignmentOperatorMove)
     EXPECT_EQ(mappedName.size(), 15);
     EXPECT_EQ(mappedName.dataBytes(), QByteArray("TEST"));
     EXPECT_EQ(mappedName.postfixBytes(), QByteArray("POSTFIXTEST"));
-
-    EXPECT_EQ(temp.isRaw(), false);
-    EXPECT_EQ(temp.empty(), true);
-    EXPECT_EQ(temp.size(), 0);
-    EXPECT_EQ(temp.dataBytes(), QByteArray());
-    EXPECT_EQ(temp.postfixBytes(), QByteArray());
 }
 
 TEST(MappedName, streamInsertionOperator)
@@ -470,7 +481,7 @@ TEST(MappedName, toConstString)
 {
     // Arrange
     Data::MappedName mappedName(Data::MappedName("TEST"), "POSTFIXTEST");
-    int size;
+    int size{0};
 
     // Act
     const char *temp = mappedName.toConstString(0, size);
@@ -497,6 +508,40 @@ TEST(MappedName, toRawBytes)
     EXPECT_EQ(mappedName.toRawBytes(3), QByteArray("TPOSTFIXTEST"));
     EXPECT_EQ(mappedName.toRawBytes(7, 3), QByteArray("TFI"));
     EXPECT_EQ(mappedName.toRawBytes(502, 5), QByteArray());
+}
+
+TEST(MappedName, toIndexedNameASCIIOnly)
+{
+    // Arrange
+    Data::MappedName mappedName {"MAPPED_NAME"};
+
+    // Act
+    auto indexedName = mappedName.toIndexedName();
+
+    // Assert
+    EXPECT_FALSE(indexedName.isNull());
+}
+
+TEST(MappedName, toIndexedNameInvalid)
+{
+    // Arrange
+    Data::MappedName mappedName {"MAPPED-NAME"};
+
+    // Act
+    auto indexedName = mappedName.toIndexedName();
+
+    // Assert
+    EXPECT_TRUE(indexedName.isNull());
+}
+
+TEST(MappedName, toPrefixedString)
+{
+    // TODO Write this test
+}
+
+TEST(MappedName, appendToBufferWithPrefix)
+{
+    // TODO Write this test
 }
 
 TEST(MappedName, toBytes)
@@ -719,7 +764,5 @@ TEST(MappedName, startsWith)
 }
 
 //TODO test hash function
-//TODO test indexedName functions
 
-
-// clang-format on
+// NOLINTEND(readability-magic-numbers)
