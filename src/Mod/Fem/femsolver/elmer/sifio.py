@@ -77,6 +77,7 @@ _TYPE_INTEGER = "Integer"
 _TYPE_LOGICAL = "Logical"
 _TYPE_STRING = "String"
 _TYPE_FILE = "File"
+_TYPE_VARIABLE = "Variable"
 
 WARN = "\"Warn\""
 IGNORE = "\"Ignore\""
@@ -357,9 +358,20 @@ class _Writer(object):
         self._stream.write(_WHITESPACE)
         self._stream.write("=")
         self._stream.write(_WHITESPACE)
-        self._stream.write(attrType)
+        # check if we have a variable string
+        if attrType is _TYPE_STRING:
+            if data.startswith('Variable'):
+                attrType = _TYPE_VARIABLE
+        if attrType is not _TYPE_VARIABLE:
+            self._stream.write(attrType)
         self._stream.write(_WHITESPACE)
-        self._stream.write(self._preprocess(data, type(data)))
+        output = self._preprocess(data, type(data))
+        # in case of a variable the output must be without the quatoation marks
+        if attrType is _TYPE_VARIABLE:
+            output = output.lstrip('\"')
+            # we cannot use rstrip because there are two subsequent " at the end
+            output = output[:-1]
+        self._stream.write(output)
 
     def _writeArrAttr(self, key, data):
         attrType = self._getAttrTypeArr(data)
@@ -369,10 +381,21 @@ class _Writer(object):
         self._stream.write(_WHITESPACE)
         self._stream.write("=")
         self._stream.write(_WHITESPACE)
-        self._stream.write(attrType)
+        # check if we have a variable string
+        if attrType is _TYPE_STRING:
+            if data.startswith('Variable'):
+                attrType = _TYPE_VARIABLE
+        if attrType is not _TYPE_VARIABLE:
+            self._stream.write(attrType)
         for val in data:
             self._stream.write(_WHITESPACE)
-            self._stream.write(self._preprocess(val, type(val)))
+            output = self._preprocess(val, type(val))
+            # in case of a variable the output must be without the quatoation marks
+            if attrType is _TYPE_VARIABLE:
+                output = output.lstrip('\"')
+                # we cannot use rstrip because there are two subsequent " at the end
+                output = output[:-1]
+            self._stream.write(output)
 
     def _writeFileAttr(self, key, data):
         self._stream.write(_INDENT)
