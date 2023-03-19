@@ -102,18 +102,17 @@ public:
     void setAngleSnapping(bool enable, Base::Vector2d referencepoint);
 
 private:
-    double snapAngle;
+    /// Reference to ViewProviderSketch in order to access the public and the Attorney Interface
+    ViewProviderSketch & viewProvider;
+    bool angleSnapEnabled;
+    Base::Vector2d referencePoint;
     double lastMouseAngle;
+
+    double snapAngle;
 
     bool snapRequested;
     bool snapToObjectsRequested;
     bool snapToGridRequested;
-
-    bool angleSnapEnabled;
-    Base::Vector2d referencePoint;
-
-    /// Reference to ViewProviderSketch in order to access the public and the Attorney Interface
-    ViewProviderSketch & viewProvider;
 
     /// Observer to track all the needed parameters.
     std::unique_ptr<SnapManager::ParameterObserver> pObserver;
