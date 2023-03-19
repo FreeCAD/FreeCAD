@@ -222,6 +222,7 @@ TEST(MappedName, fromRawDataCopy)
     // Arrange
     Data::MappedName temp = Data::MappedName::fromRawData(QByteArray("TESTTEST", 10));
     temp.append("TESTPOSTFIX");
+    temp.compact(); //Always call compact before accessing data!
     
     // Act
     Data::MappedName mappedName = Data::MappedName::fromRawData(temp, 0);
@@ -326,9 +327,9 @@ TEST(MappedName, streamInsertionOperator)
 {
     // Arrange
     Data::MappedName mappedName(Data::MappedName("TEST"), "POSTFIXTEST");
+    std::stringstream ss;
 
     // Act
-    std::stringstream ss;
     ss << mappedName;
 
     // Assert
@@ -614,14 +615,30 @@ TEST(MappedName, find)
     // Act & Assert
     EXPECT_EQ(mappedName.find(nullptr), -1);
     EXPECT_EQ(mappedName.find(""), 0);
+    EXPECT_EQ(mappedName.find(std::string("")), 0);
     EXPECT_EQ(mappedName.find("TEST"), 0);
     EXPECT_EQ(mappedName.find("STPO"), -1); //sentence must be fully contained in data or postfix
     EXPECT_EQ(mappedName.find("POST"), 4);
-    EXPECT_EQ(mappedName.find("ST", 3), 6); //found in postfix
     EXPECT_EQ(mappedName.find("POST", 4), 4);
     EXPECT_EQ(mappedName.find("POST", 5), -1);
-
-    EXPECT_EQ(mappedName.find(std::string("")), 0);
+    
+    EXPECT_EQ(mappedName.rfind("ST"), 13); 
+    EXPECT_EQ(mappedName.rfind("ST", 15), 13); 
+    EXPECT_EQ(mappedName.rfind("ST", 14), 13); 
+    EXPECT_EQ(mappedName.rfind("ST", 13), 13); 
+    EXPECT_EQ(mappedName.rfind("ST", 12), 6); 
+    EXPECT_EQ(mappedName.rfind("ST", 11), 6); 
+    EXPECT_EQ(mappedName.rfind("ST", 10), 6); 
+    EXPECT_EQ(mappedName.rfind("ST", 9), 6);
+    EXPECT_EQ(mappedName.rfind("ST", 8), 6);
+    EXPECT_EQ(mappedName.rfind("ST", 7), 6);
+    EXPECT_EQ(mappedName.rfind("ST", 6), 6);
+    EXPECT_EQ(mappedName.rfind("ST", 5), 2); 
+    EXPECT_EQ(mappedName.rfind("ST", 4), 2); 
+    EXPECT_EQ(mappedName.rfind("ST", 3), 2); 
+    EXPECT_EQ(mappedName.rfind("ST", 2), 2); 
+    EXPECT_EQ(mappedName.rfind("ST", 1), -1); 
+    EXPECT_EQ(mappedName.rfind("ST", 0), -1); 
 }
 
 TEST(MappedName, rfind)
@@ -632,9 +649,12 @@ TEST(MappedName, rfind)
     // Act & Assert
     EXPECT_EQ(mappedName.rfind(nullptr), -1);
     EXPECT_EQ(mappedName.rfind(""), mappedName.size());
+    EXPECT_EQ(mappedName.rfind(std::string("")), mappedName.size());
     EXPECT_EQ(mappedName.rfind("TEST"), 11);
     EXPECT_EQ(mappedName.rfind("STPO"), -1); //sentence must be fully contained in data or postfix
     EXPECT_EQ(mappedName.rfind("POST"), 4);
+    EXPECT_EQ(mappedName.rfind("POST", 4), 4);
+    EXPECT_EQ(mappedName.rfind("POST", 3), -1);
 
     EXPECT_EQ(mappedName.rfind("ST"), 13); 
     EXPECT_EQ(mappedName.rfind("ST", 0), -1); 
@@ -653,11 +673,6 @@ TEST(MappedName, rfind)
     EXPECT_EQ(mappedName.rfind("ST", 13), 13); 
     EXPECT_EQ(mappedName.rfind("ST", 14), 13); 
     EXPECT_EQ(mappedName.rfind("ST", 15), 13); 
-
-    EXPECT_EQ(mappedName.rfind("POST", 4), 4);
-    EXPECT_EQ(mappedName.rfind("POST", 3), -1);
-    
-    EXPECT_EQ(mappedName.rfind(std::string("")), mappedName.size());
 }
 
 TEST(MappedName, endswith)
@@ -668,9 +683,8 @@ TEST(MappedName, endswith)
     // Act & Assert
     EXPECT_EQ(mappedName.endsWith(nullptr), false);
     EXPECT_EQ(mappedName.endsWith("TEST"), true);
-    EXPECT_EQ(mappedName.endsWith("WASD"), false); 
-
     EXPECT_EQ(mappedName.endsWith(std::string("TEST")), true);
+    EXPECT_EQ(mappedName.endsWith("WASD"), false); 
 
     // Arrange
     mappedName.append("POSTFIX");
@@ -684,16 +698,24 @@ TEST(MappedName, endswith)
 TEST(MappedName, startsWith)
 {
     // Arrange
-    Data::MappedName mappedName("TEST");
-        
+    Data::MappedName mappedName;
+
     // Act & Assert
+    EXPECT_EQ(mappedName.startsWith(nullptr), false);
+    EXPECT_EQ(mappedName.startsWith(QByteArray()), true);
+    EXPECT_EQ(mappedName.startsWith(""), true);
+    EXPECT_EQ(mappedName.startsWith(std::string("")), true);
+    EXPECT_EQ(mappedName.startsWith("WASD"), false); 
+        
+    // Arrange
+    mappedName.append("TEST");
+
+    // Act & Assert
+    EXPECT_EQ(mappedName.startsWith(nullptr), false);
     EXPECT_EQ(mappedName.startsWith(QByteArray()), true);
     EXPECT_EQ(mappedName.startsWith("TEST"), true);
-    EXPECT_EQ(mappedName.startsWith("WASD"), false); 
-
-    EXPECT_EQ(mappedName.startsWith(nullptr), false);
-    EXPECT_EQ(mappedName.startsWith("TEST"), true);
     EXPECT_EQ(mappedName.startsWith(std::string("TEST")), true);
+    EXPECT_EQ(mappedName.startsWith("WASD"), false); 
 }
 
 //TODO test hash function
