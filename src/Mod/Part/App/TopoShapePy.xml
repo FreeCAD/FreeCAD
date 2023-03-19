@@ -115,8 +115,10 @@ importBrepFromString(str,False) to not display a progress bar.
     </Methode>
     <Methode Name="extrude" Const="true">
       <Documentation>
-        <UserDocu>Extrude the shape along a direction.
-extrude(direction, length)</UserDocu>
+        <UserDocu>Extrude the shape along a vector.
+extrude(vector) -> Shape
+--
+Shp2 = Shp1.extrude(Vector(0,0,10)) - extrude the shape 10 mm in the +Z direction.</UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="revolve" Const="true">
