@@ -1208,13 +1208,22 @@ public:
             }
         };
 
+        auto updateSpinBox = [](Gui::QuantitySpinBox* spinbox, double value) {
+            auto currentvalue = spinbox->rawValue();
+
+            if (currentvalue != value) {
+                const QSignalBlocker blocker(spinbox);
+                spinbox->setValue(value);
+            }
+        };
+
         ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher/Snap");
 
         updateCheckBox(snapToObjects, hGrp->GetBool("SnapToObjects", true));
 
         updateCheckBox(snapToGrid, hGrp->GetBool("SnapToGrid", false));
 
-        snapAngle->setValue(hGrp->GetFloat("SnapAngle", 5.0));
+        updateSpinBox(snapAngle, hGrp->GetFloat("SnapAngle", 5.0));
 
         bool snapActivated = hGrp->GetBool("Snap", true);
         snapToObjects->setEnabled(snapActivated);
