@@ -99,8 +99,7 @@ public:
     bool snapToLineMiddle(Base::Vector3d& pointToOverride, const Part::GeomLineSegment* line);
     bool snapToArcMiddle(Base::Vector3d& pointToOverride, const Part::GeomArcOfCircle* arc);
 
-    bool angleSnapEnabled;
-    Base::Vector2d referencePoint;
+    void setAngleSnapping(bool enable, Base::Vector2d referencepoint);
 
 private:
     double snapAngle;
@@ -109,6 +108,9 @@ private:
     bool snapRequested;
     bool snapToObjectsRequested;
     bool snapToGridRequested;
+
+    bool angleSnapEnabled;
+    Base::Vector2d referencePoint;
 
     /// Reference to ViewProviderSketch in order to access the public and the Attorney Interface
     ViewProviderSketch & viewProvider;

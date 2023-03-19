@@ -556,8 +556,7 @@ bool ViewProviderSketch::keyPressed(bool pressed, int key)
 void ViewProviderSketch::setAngleSnapping(bool enable, Base::Vector2d referencePoint)
 {
     assert(snapManager);
-    snapManager->angleSnapEnabled = enable;
-    snapManager->referencePoint = referencePoint;
+    snapManager->setAngleSnapping(enable, referencePoint);
 }
 
 void ViewProviderSketch::getProjectingLine(const SbVec2s& pnt, const Gui::View3DInventorViewer *viewer, SbLine& line) const
