@@ -1199,38 +1199,32 @@ public:
 
     void updateWidget() {
 
-        auto* sketchView = getView();
+        auto updateCheckBox = [](QCheckBox* checkbox, bool value) {
+            auto checked = checkbox->checkState() == Qt::Checked;
 
-        if (sketchView) {
+            if (value != checked) {
+                const QSignalBlocker blocker(checkbox);
+                checkbox->setChecked(value);
+            }
+        };
 
-            auto updateCheckBox = [](QCheckBox* checkbox, bool value) {
-                auto checked = checkbox->checkState() == Qt::Checked;
+        ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher/Snap");
 
-                if (value != checked) {
-                    const QSignalBlocker blocker(checkbox);
-                    checkbox->setChecked(value);
-                }
-            };
+        updateCheckBox(snapToObjects, hGrp->GetBool("SnapToObjects", true));
 
-            ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher/Snap");
+        updateCheckBox(snapToGrid, hGrp->GetBool("SnapToGrid", false));
 
-            updateCheckBox(snapToObjects, hGrp->GetBool("SnapToObjects", true));
+        snapAngle->setValue(hGrp->GetFloat("SnapAngle", 5.0));
 
-            updateCheckBox(snapToGrid, hGrp->GetBool("SnapToGrid", false));
-
-            snapAngle->setValue(hGrp->GetFloat("SnapAngle", 5.0));
-
-            bool snapActivated = hGrp->GetBool("Snap", true);
-            snapToObjects->setEnabled(snapActivated);
-            snapToGrid->setEnabled(snapActivated);
-            angleLabel->setEnabled(snapActivated);
-            snapAngle->setEnabled(snapActivated);
-        }
+        bool snapActivated = hGrp->GetBool("Snap", true);
+        snapToObjects->setEnabled(snapActivated);
+        snapToGrid->setEnabled(snapActivated);
+        angleLabel->setEnabled(snapActivated);
+        snapAngle->setEnabled(snapActivated);
     }
 
     void languageChange()
     {
-
         snapToObjects->setText(tr("Snap to objects"));
         snapToObjects->setToolTip(tr("New points will snap to the currently preselected object. It will also snap to the middle of lines and arcs."));
         snapToObjects->setStatusTip(snapToObjects->toolTip());
@@ -1268,29 +1262,18 @@ protected:
         languageChange();
 
         QObject::connect(snapToObjects, &QCheckBox::stateChanged, [this](int state) {
-            auto* sketchView = getView();
-
-            if (sketchView) {
-                ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher/Snap");
-                hGrp->SetBool("SnapToObjects", state == Qt::Checked);
-            }
+            ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher/Snap");
+            hGrp->SetBool("SnapToObjects", state == Qt::Checked);
         });
 
         QObject::connect(snapToGrid, &QCheckBox::stateChanged, [this](int state) {
-            auto* sketchView = getView();
-            if (sketchView) {
-                ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher/Snap");
-                hGrp->SetBool("SnapToGrid", state == Qt::Checked);
-            }
+            ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher/Snap");
+            hGrp->SetBool("SnapToGrid", state == Qt::Checked);
         });
 
         QObject::connect(snapAngle, qOverload<double>(&Gui::QuantitySpinBox::valueChanged), [this](double val) {
-            auto* sketchView = getView();
-
-            if (sketchView) {
-                ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher/Snap");
-                hGrp->SetFloat("SnapAngle", val);
-            }
+            ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher/Snap");
+            hGrp->SetFloat("SnapAngle", val);
         });
 
         return snapW;
