@@ -179,7 +179,7 @@ def setup(doc=None, solvertype="elmer"):
     # constraint inlet velocity
     FlowVelocity_Inlet = ObjectsFem.makeConstraintFlowVelocity(doc, "FlowVelocity_Inlet")
     FlowVelocity_Inlet.References = [(BooleanFragments, "Edge5")]
-    FlowVelocity_Inlet.VelocityXFormula = "Variable Coordinate 2; Real MATC \"-0.01*(tx-1)*(2-tx)\""
+    FlowVelocity_Inlet.VelocityXFormula = "Variable Coordinate 2; Real MATC \"10*(tx+50e-3)*(50e-3-tx)\""
     FlowVelocity_Inlet.VelocityXUnspecified = False
     FlowVelocity_Inlet.VelocityXHasFormula = True
     FlowVelocity_Inlet.VelocityYUnspecified = False
@@ -214,7 +214,7 @@ def setup(doc=None, solvertype="elmer"):
 
     # constraint inlet temperature
     Temperature_Inlet = ObjectsFem.makeConstraintTemperature(doc, "Temperature_Inlet")
-    Temperature_Inlet.Temperature = 350.0
+    Temperature_Inlet.Temperature = 300.0
     Temperature_Inlet.NormalDirection = Vector(-1, 0, 0)
     Temperature_Inlet.References = [(BooleanFragments, "Edge5")]
     analysis.addObject(Temperature_Inlet)

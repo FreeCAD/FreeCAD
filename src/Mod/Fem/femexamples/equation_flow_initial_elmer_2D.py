@@ -223,7 +223,7 @@ def setup(doc=None, solvertype="elmer"):
 
     # constraint inlet temperature
     Temperature_Inlet = ObjectsFem.makeConstraintTemperature(doc, "Temperature_Inlet")
-    Temperature_Inlet.Temperature = 350.0
+    Temperature_Inlet.Temperature = 300.0
     Temperature_Inlet.NormalDirection = Vector(-1, 0, 0)
     Temperature_Inlet.References = [(BooleanFragments, "Edge5")]
     analysis.addObject(Temperature_Inlet)
