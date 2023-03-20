@@ -134,8 +134,8 @@ def setup(doc=None, solvertype="elmer"):
     equation_flow.LinearIterativeMethod = "Idrs"
     equation_flow.LinearPreconditioning = "ILU1"
     equation_flow.setExpression("LinearTolerance", "1e-6")
-    equation_flow.NonlinearIterations = 30
-    equation_flow.NonlinearNewtonAfterIterations = 30
+    equation_flow.NonlinearIterations = 40
+    equation_flow.NonlinearNewtonAfterIterations = 40
     equation_flow.RelaxationFactor = 0.1
     equation_flow.setExpression("NonlinearTolerance", "1e-4")
     equation_flow.Variable = "Flow Solution[Velocity:2 Pressure:1]"
@@ -144,8 +144,8 @@ def setup(doc=None, solvertype="elmer"):
     equation_heat.LinearIterativeMethod = "Idrs"
     equation_heat.LinearPreconditioning = "ILU1"
     equation_heat.setExpression("LinearTolerance", "1e-6")
-    equation_heat.NonlinearIterations = 30
-    equation_heat.NonlinearNewtonAfterIterations = 30
+    equation_heat.NonlinearIterations = 40
+    equation_heat.NonlinearNewtonAfterIterations = 40
     equation_heat.setExpression("NonlinearTolerance", "1e-4")
     equation_heat.Priority = 5
     equation_heat.RelaxationFactor = 0.1
@@ -185,8 +185,10 @@ def setup(doc=None, solvertype="elmer"):
     # constraint inlet velocity
     FlowVelocity_Inlet = ObjectsFem.makeConstraintFlowVelocity(doc, "FlowVelocity_Inlet")
     FlowVelocity_Inlet.References = [(BooleanFragments, "Edge5")]
-    FlowVelocity_Inlet.VelocityX = "20.0 mm/s"
+    FlowVelocity_Inlet.VelocityXFormula = "Variable Coordinate 2; Real MATC \"10*(tx+50e-3)*(50e-3-tx)\""
     FlowVelocity_Inlet.VelocityXUnspecified = False
+    FlowVelocity_Inlet.VelocityXHasFormula = True
+    FlowVelocity_Inlet.VelocityYUnspecified = False
     analysis.addObject(FlowVelocity_Inlet)
 
     # constraint wall velocity
