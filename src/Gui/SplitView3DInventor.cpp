@@ -34,6 +34,7 @@
 
 #include "SplitView3DInventor.h"
 #include "Application.h"
+#include "Camera.h"
 #include "Document.h"
 #include "NavigationStyle.h"
 #include "SoFCSelectionAction.h"
