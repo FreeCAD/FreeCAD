@@ -165,11 +165,81 @@ void ViewProviderImagePlane::scaleImage()
 
 }
 
-bool ViewProviderImagePlane::loadSvg(const char* filename, float x, float y, QImage& img)
+void ViewProviderImagePlane::resizePlane(float xsize, float ysize)
+{
+    pcCoords->point.set1Value(0,-(xsize/2),-(ysize/2),0.0);
+    pcCoords->point.set1Value(1,+(xsize/2),-(ysize/2),0.0);
+    pcCoords->point.set1Value(2,+(xsize/2),+(ysize/2),0.0);
+    pcCoords->point.set1Value(3,-(xsize/2),+(ysize/2),0.0);
+}
+
+void ViewProviderImagePlane::loadImage()
+{
+    App::ImagePlane* imagePlane = static_cast<App::ImagePlane*>(pcObject);
+    std::string fileName = imagePlane->ImageFile.getValue();
+
+    if (!fileName.empty()) {
+        double xsize = imagePlane->XSize.getValue();
+        double ysize = imagePlane->YSize.getValue();
+
+        QImage impQ;
+        if (!loadSvg(fileName.c_str(), xsize, ysize, impQ)) {
+            QSizeF size = loadRaster(fileName.c_str(), impQ);
+            if (!impQ.isNull()) {
+                imagePlane->XSize.setValue(size.width());
+                imagePlane->YSize.setValue(size.height());
+            }
+        }
+
+        convertToSFImage(impQ);
+    }
+}
+
+QSizeF ViewProviderImagePlane::loadRaster(const char* fileName, QImage& img)
+{
+    QSizeF sizef;
+    if (img.load(QString::fromUtf8(fileName))) {
+        double xPixelsPerM = img.dotsPerMeterX();
+        double width = img.width();
+        width = width * 1000 / xPixelsPerM;
+
+        double yPixelsPerM = img.dotsPerMeterY();
+        double height = img.height();
+        height = height * 1000 / yPixelsPerM;
+
+        sizef.setWidth(width);
+        sizef.setHeight(height);
+    }
+
+    return sizef;
+}
+
+void ViewProviderImagePlane::reloadIfSvg()
+{
+    App::ImagePlane* imagePlane = static_cast<App::ImagePlane*>(pcObject);
+    std::string fileName = imagePlane->ImageFile.getValue();
+
+    double xsize = imagePlane->XSize.getValue();
+    double ysize = imagePlane->YSize.getValue();
+
+    QImage impQ;
+    loadSvg(fileName.c_str(), xsize, ysize, impQ);
+    convertToSFImage(impQ);
+}
+
+bool ViewProviderImagePlane::loadSvg(const char* filename, double width, double height, QImage& img)
 {
     QFileInfo fi(QString::fromUtf8(filename));
     if (fi.suffix().toLower() == QLatin1String("svg")) {
-        QPixmap px = BitmapFactory().pixmapFromSvg(filename, QSize((int)x,(int)y));
+        QImage tmp;
+        if (tmp.load(QString::fromUtf8(filename))) {
+            double xPixelsPerM = tmp.dotsPerMeterX();
+            double yPixelsPerM = tmp.dotsPerMeterY();
+            width = width * xPixelsPerM / 1000;
+            height = height * yPixelsPerM / 1000;
+        }
+
+        QPixmap px = BitmapFactory().pixmapFromSvg(filename, QSizeF(width, height));
         img = px.toImage();
         return true;
     }
@@ -177,44 +247,28 @@ bool ViewProviderImagePlane::loadSvg(const char* filename, float x, float y, QIm
     return false;
 }
 
+void ViewProviderImagePlane::convertToSFImage(const QImage& img)
+{
+    if (!img.isNull()) {
+        SoSFImage sfimg;
+        // convert to Coin bitmap
+        BitmapFactory().convert(img, sfimg);
+        texture->image = sfimg;
+    }
+}
+
 void ViewProviderImagePlane::updateData(const App::Property* prop)
 {
     App::ImagePlane* pcPlaneObj = static_cast<App::ImagePlane*>(pcObject);
     if (prop == &pcPlaneObj->XSize || prop == &pcPlaneObj->YSize) {
-        float x = pcPlaneObj->XSize.getValue();
-        float y = pcPlaneObj->YSize.getValue();
+        float xsize = pcPlaneObj->XSize.getValue();
+        float ysize = pcPlaneObj->YSize.getValue();
 
-        //pcCoords->point.setNum(4);
-        pcCoords->point.set1Value(0,-(x/2),-(y/2),0.0);
-        pcCoords->point.set1Value(1,+(x/2),-(y/2),0.0);
-        pcCoords->point.set1Value(2,+(x/2),+(y/2),0.0);
-        pcCoords->point.set1Value(3,-(x/2),+(y/2),0.0);
-
-        QImage impQ;
-        loadSvg(pcPlaneObj->ImageFile.getValue(), x, y, impQ);
-        if (!impQ.isNull()) {
-            SoSFImage img;
-            // convert to Coin bitmap
-            BitmapFactory().convert(impQ,img);
-            texture->image = img;
-        }
+        resizePlane(xsize, ysize);
+        reloadIfSvg();
     }
     else if (prop == &pcPlaneObj->ImageFile) {
-        std::string fileName = pcPlaneObj->ImageFile.getValue();
-        float x = pcPlaneObj->XSize.getValue();
-        float y = pcPlaneObj->YSize.getValue();
-        QImage impQ;
-        if (!loadSvg(fileName.c_str(), x, y, impQ)) {
-            if (!fileName.empty()) {
-                impQ.load(QString::fromStdString(fileName));
-            }
-        }
-        if (!impQ.isNull()) {
-            SoSFImage img;
-            // convert to Coin bitmap
-            BitmapFactory().convert(impQ,img);
-            texture->image = img;
-        }
+        loadImage();
     }
     else {
         Gui::ViewProviderGeometryObject::updateData(prop);

@@ -53,7 +53,12 @@ public:
     void onChanged(const App::Property* prop) override;
 
 private:
-    bool loadSvg(const char*, float x, float y, QImage& img);
+    void resizePlane(float xsize, float ysize);
+    void loadImage();
+    void reloadIfSvg();
+    bool loadSvg(const char*, double x, double y, QImage& img);
+    QSizeF loadRaster(const char*, QImage& img);
+    void convertToSFImage(const QImage& img);
     void changeOrientation();
     void scaleImage();
 
