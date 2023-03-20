@@ -40,7 +40,7 @@ def get_information():
         "name": "Turbulent Flow - Elmer 2D",
         "meshtype": "solid",
         "meshelement": "Tet10",
-        "constraints": ["initial pressure", "initial temperature", "initial velocity",
+        "constraints": ["initial pressure", "initial temperature",
                         "temperature", "velocity"],
         "solvers": ["elmer"],
         "material": "fluid",
@@ -54,7 +54,7 @@ To run the example from Python console use:
 from femexamples.equation_flow_turbulent_elmer_2D import setup
 setup()
 
-Flow and Heat equation - Elmer solver
+Flow and Heat equation in turbulent flow - Elmer solver
 
 """
 
@@ -136,8 +136,8 @@ def setup(doc=None, solvertype="elmer"):
     equation_flow.setExpression("LinearTolerance", "1e-6")
     equation_flow.NonlinearIterations = 30
     equation_flow.NonlinearNewtonAfterIterations = 30
-    equation_flow.setExpression("NonlinearTolerance", "1e-4")
     equation_flow.RelaxationFactor = 0.1
+    equation_flow.setExpression("NonlinearTolerance", "1e-4")
     equation_flow.Variable = "Flow Solution[Velocity:2 Pressure:1]"
     equation_heat.Convection = "Computed"
     equation_heat.IdrsParameter = 3
@@ -185,10 +185,8 @@ def setup(doc=None, solvertype="elmer"):
     # constraint inlet velocity
     FlowVelocity_Inlet = ObjectsFem.makeConstraintFlowVelocity(doc, "FlowVelocity_Inlet")
     FlowVelocity_Inlet.References = [(BooleanFragments, "Edge5")]
-    FlowVelocity_Inlet.NormalDirection = Vector(-1, 0, 0)
     FlowVelocity_Inlet.VelocityX = "20.0 mm/s"
     FlowVelocity_Inlet.VelocityXUnspecified = False
-    FlowVelocity_Inlet.VelocityYUnspecified = False
     analysis.addObject(FlowVelocity_Inlet)
 
     # constraint wall velocity
@@ -198,7 +196,6 @@ def setup(doc=None, solvertype="elmer"):
         (BooleanFragments, "Edge3"),
         (BooleanFragments, "Edge4"),
         (BooleanFragments, "Edge7")]
-    FlowVelocity_Wall.NormalDirection = Vector(0, 0, -1)
     FlowVelocity_Wall.VelocityXUnspecified = False
     FlowVelocity_Wall.VelocityYUnspecified = False
     analysis.addObject(FlowVelocity_Wall)
