@@ -345,6 +345,7 @@ SET(Gui_UIC_SRCS
     Placement.ui
     TextureMapping.ui
     TaskView/TaskAppearance.ui
+    TaskView/TaskOrientation.ui
     TaskView/TaskSelectLinkProperty.ui
     TaskElementColors.ui
     DlgObjectSelection.ui
@@ -726,6 +727,9 @@ SET(Task_View_SRCS
     TaskView/TaskAppearance.cpp
     TaskView/TaskAppearance.h
     TaskView/TaskAppearance.ui
+    TaskView/TaskOrientation.cpp
+    TaskView/TaskOrientation.h
+    TaskView/TaskOrientation.ui
     TaskView/TaskSelectLinkProperty.cpp
     TaskView/TaskSelectLinkProperty.h
     TaskView/TaskSelectLinkProperty.ui
@@ -794,6 +798,7 @@ SOURCE_GROUP("Widget\\QSintActionPanel\\Mocs" FILES ${qsint_MOC_SRCS})
 
 # The 3d view
 SET(View3D_CPP_SRCS
+    Camera.cpp
     Flag.cpp
     GLBuffer.cpp
     GLPainter.cpp
@@ -824,6 +829,7 @@ SET(View3D_CPP_SRCS
 )
 SET(View3D_SRCS
     ${View3D_CPP_SRCS}
+    Camera.h
     Flag.h
     GLBuffer.h
     GLPainter.h
@@ -1233,6 +1239,7 @@ if(MSVC)
         propertyeditor/PropertyItemDelegate.cpp
         propertyeditor/PropertyModel.cpp
         TaskView/TaskAppearance.cpp
+        TaskView/TaskOrientation.cpp
         TaskView/TaskSelectLinkProperty.cpp
         TaskView/TaskEditControl.cpp
         TaskView/TaskView.cpp

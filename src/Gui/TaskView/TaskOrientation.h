@@ -21,46 +21,60 @@
  *                                                                         *
  **************************************************************************/
 
-#ifndef GUI_CAMERA_H
-#define GUI_CAMERA_H
+#ifndef GUI_TASKORIENTATION_H
+#define GUI_TASKORIENTATION_H
 
-#include <Inventor/SbRotation.h>
-#include <Base/Rotation.h>
-#include <FCGlobal.h>
+#include <Gui/TaskView/TaskDialog.h>
+#include <App/DocumentObserver.h>
+#include <App/GeoFeature.h>
+#include <memory>
 
 namespace Gui {
 
-class GuiExport Camera
+class Ui_TaskOrientation;
+class TaskOrientation : public QWidget
 {
+    Q_OBJECT
+
 public:
-    enum Orientation {
-        Top,
-        Bottom,
-        Front,
-        Rear,
-        Right,
-        Left,
-        Isometric,
-        Dimetric,
-        Trimetric,
-    };
+    explicit TaskOrientation(App::GeoFeature* obj, QWidget* parent = nullptr);
+    ~TaskOrientation() override;
 
-    static SbRotation top();
-    static SbRotation bottom();
-    static SbRotation front();
-    static SbRotation rear();
-    static SbRotation right();
-    static SbRotation left();
-    static SbRotation isometric();
-    static SbRotation dimetric();
-    static SbRotation trimetric();
+    void open();
+    void accept();
+    void reject();
 
-    static SbRotation rotation(Orientation view);
-    static Base::Rotation convert(Orientation view);
-    static Base::Rotation convert(const SbRotation&);
-    static SbRotation convert(const Base::Rotation&);
+private:
+    void restore(const Base::Placement&);
+    void onPreview();
+    void updateIcon();
+    void updatePlacement();
+
+private:
+    std::unique_ptr<Ui_TaskOrientation> ui;
+    App::WeakPtrT<App::GeoFeature> feature;
+};
+
+class TaskOrientationDialog : public Gui::TaskView::TaskDialog
+{
+    Q_OBJECT
+
+public:
+    explicit TaskOrientationDialog(App::GeoFeature* obj);
+
+public:
+    void open() override;
+    bool accept() override;
+    bool reject() override;
+
+    QDialogButtonBox::StandardButtons getStandardButtons() const override {
+        return QDialogButtonBox::Ok | QDialogButtonBox::Cancel;
+    }
+
+private:
+    TaskOrientation* widget;
 };
 
 }
 
-#endif // GUI_CAMERA_H
+#endif // GUI_TASKORIENTATION_H

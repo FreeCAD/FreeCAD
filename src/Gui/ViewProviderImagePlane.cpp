@@ -23,20 +23,25 @@
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <sstream>
+# include <QAction>
 # include <QFileInfo>
 # include <QImage>
+# include <QMenu>
 # include <QString>
-
 # include <Inventor/nodes/SoCoordinate3.h>
 # include <Inventor/nodes/SoFaceSet.h>
 # include <Inventor/nodes/SoMaterial.h>
 # include <Inventor/nodes/SoSeparator.h>
+# include <Inventor/nodes/SoShapeHints.h>
 # include <Inventor/nodes/SoTexture2.h>
 # include <Inventor/nodes/SoTextureCoordinate2.h>
 #endif
 
 #include <App/Document.h>
+#include <Gui/ActionFunction.h>
 #include <Gui/BitmapFactory.h>
+#include <Gui/Control.h>
+#include <Gui/TaskView/TaskOrientation.h>
 #include <App/ImagePlane.h>
 
 #include "ViewProviderImagePlane.h"
@@ -46,14 +51,23 @@ using namespace Gui;
 
 
 PROPERTY_SOURCE(Gui::ViewProviderImagePlane, Gui::ViewProviderGeometryObject)
+const char* ViewProviderImagePlane::LightingEnums[]= {"One side", "Two side", nullptr};
 
 ViewProviderImagePlane::ViewProviderImagePlane()
 {
+    ADD_PROPERTY_TYPE(Lighting,(1L), "Object Style", App::Prop_None, "Set object lighting.");
+    Lighting.setEnums(LightingEnums);
+
     texture = new SoTexture2;
     texture->ref();
 
     pcCoords = new SoCoordinate3();
     pcCoords->ref();
+
+    shapeHints = new SoShapeHints;
+    shapeHints->shapeType = SoShapeHints::UNKNOWN_SHAPE_TYPE;
+    shapeHints->vertexOrdering = SoShapeHints::COUNTERCLOCKWISE;
+    shapeHints->ref();
 
     sPixmap = "image-plane";
 }
@@ -62,6 +76,7 @@ ViewProviderImagePlane::~ViewProviderImagePlane()
 {
     pcCoords->unref();
     texture->unref();
+    shapeHints->unref();
 }
 
 void ViewProviderImagePlane::attach(App::DocumentObject *pcObj)
@@ -85,6 +100,7 @@ void ViewProviderImagePlane::attach(App::DocumentObject *pcObj)
     texture->model = SoTexture2::MODULATE;
     planesep->addChild(texture);
 
+    planesep->addChild(shapeHints);
     planesep->addChild(pcShapeMaterial);
 
     // plane
@@ -111,6 +127,42 @@ std::vector<std::string> ViewProviderImagePlane::getDisplayModes() const
     std::vector<std::string> StrList;
     StrList.emplace_back("ImagePlane");
     return StrList;
+}
+
+void ViewProviderImagePlane::onChanged(const App::Property* prop)
+{
+    if (prop == &Lighting) {
+        if (Lighting.getValue() == 0)
+            shapeHints->vertexOrdering = SoShapeHints::UNKNOWN_ORDERING;
+        else
+            shapeHints->vertexOrdering = SoShapeHints::COUNTERCLOCKWISE;
+    }
+    ViewProviderGeometryObject::onChanged(prop);
+}
+
+void ViewProviderImagePlane::setupContextMenu(QMenu* menu, QObject* receiver, const char* member)
+{
+    ViewProviderGeometryObject::setupContextMenu(menu, receiver, member);
+
+    Gui::ActionFunction* func = new Gui::ActionFunction(menu);
+    QAction* orient = menu->addAction(QObject::tr("Change orientation..."));
+    func->trigger(orient, std::bind(&ViewProviderImagePlane::changeOrientation, this));
+
+    QAction* scale = menu->addAction(QObject::tr("Scale image..."));
+    scale->setIcon(QIcon(QLatin1String("images:image-scaling.svg")));
+    func->trigger(scale, std::bind(&ViewProviderImagePlane::scaleImage, this));
+}
+
+void ViewProviderImagePlane::changeOrientation()
+{
+    Gui::Control().showDialog(new TaskOrientationDialog(
+        dynamic_cast<App::GeoFeature*>(getObject())
+    ));
+}
+
+void ViewProviderImagePlane::scaleImage()
+{
+
 }
 
 bool ViewProviderImagePlane::loadSvg(const char* filename, float x, float y, QImage& img)

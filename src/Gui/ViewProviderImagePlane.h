@@ -28,6 +28,7 @@
 
 class SoCoordinate3;
 class SoDrawStyle;
+class SoShapeHints;
 class SoTexture2;
 class QImage;
 
@@ -39,24 +40,29 @@ class GuiExport ViewProviderImagePlane : public Gui::ViewProviderGeometryObject
     PROPERTY_HEADER_WITH_OVERRIDE(Gui::ViewProviderImagePlane);
 
 public:
-    /// constructor.
     ViewProviderImagePlane();
-
-    /// destructor.
     ~ViewProviderImagePlane() override;
+
+    App::PropertyEnumeration Lighting;
 
     void attach(App::DocumentObject *pcObject) override;
     void setDisplayMode(const char* ModeName) override;
     std::vector<std::string> getDisplayModes() const override;
     void updateData(const App::Property*) override;
+    void setupContextMenu(QMenu*, QObject*, const char*) override;
+    void onChanged(const App::Property* prop) override;
 
 private:
     bool loadSvg(const char*, float x, float y, QImage& img);
+    void changeOrientation();
+    void scaleImage();
 
-protected:
+private:
     SoCoordinate3         * pcCoords;
     SoTexture2            * texture;
- };
+    SoShapeHints          * shapeHints;
+    static const char     * LightingEnums[];
+};
 
 } //namespace Gui
 

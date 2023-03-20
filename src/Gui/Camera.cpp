@@ -24,6 +24,7 @@
 #include "PreCompiled.h"
 
 #include "Camera.h"
+#include "Utilities.h"
 
 using namespace Gui;
 
@@ -92,51 +93,109 @@ vz.z=0
  https://de.wikipedia.org/wiki/Arkussinus_und_Arkuskosinus
 */
 
+SbRotation Camera::top()
+{
+    return SbRotation(0, 0, 0, 1);
+}
+
+SbRotation Camera::bottom()
+{
+    return SbRotation(1, 0, 0, 0);
+}
+
+SbRotation Camera::front()
+{
+    auto root = (float)(sqrt(2.0)/2.0);
+    return SbRotation(root, 0, 0, root);
+}
+
+SbRotation Camera::rear()
+{
+    auto root = (float)(sqrt(2.0)/2.0);
+    return SbRotation(0, root, root, 0);
+}
+
+SbRotation Camera::right()
+{
+    return SbRotation(0.5, 0.5, 0.5, 0.5);
+}
+
+SbRotation Camera::left()
+{
+    return SbRotation(-0.5, 0.5, 0.5, -0.5);
+}
+
+SbRotation Camera::isometric()
+{
+    //from math import sqrt, degrees, asin
+    //p1=App.Rotation(App.Vector(1,0,0),45)
+    //p2=App.Rotation(App.Vector(0,0,1),-45)
+    //p3=p2.multiply(p1)
+    //return SbRotation(0.353553f, -0.146447f, -0.353553f, 0.853553f);
+
+    //from math import sqrt, degrees, asin
+    //p1=App.Rotation(App.Vector(1,0,0),90)
+    //p2=App.Rotation(App.Vector(0,0,1),135)
+    //p3=App.Rotation(App.Vector(-1,1,0),degrees(asin(-sqrt(1.0/3.0))))
+    //p4=p3.multiply(p2).multiply(p1)
+    //return SbRotation(0.17592, 0.424708, 0.820473, 0.339851);
+
+    //from math import sqrt, degrees, asin
+    //p1=App.Rotation(App.Vector(1,0,0),90)
+    //p2=App.Rotation(App.Vector(0,0,1),45)
+    //#p3=App.Rotation(App.Vector(1,1,0),45)
+    //p3=App.Rotation(App.Vector(1,1,0),degrees(asin(-sqrt(1.0/3.0))))
+    //p4=p3.multiply(p2).multiply(p1)
+    return SbRotation(0.424708f, 0.17592f, 0.339851f, 0.820473f);
+}
+
+SbRotation Camera::dimetric()
+{
+    return SbRotation(0.567952f, 0.103751f, 0.146726f, 0.803205f);
+}
+
+SbRotation Camera::trimetric()
+{
+    return SbRotation(0.446015f, 0.119509f, 0.229575f, 0.856787f);
+}
+
 SbRotation Camera::rotation(Camera::Orientation view)
 {
     switch (view) {
     case Top:
-        return SbRotation(0, 0, 0, 1);
+        return top();
     case Bottom:
-        return SbRotation(1, 0, 0, 0);
-    case Front: {
-        auto root = (float)(sqrt(2.0)/2.0);
-        return SbRotation(root, 0, 0, root);
-    }
-    case Rear: {
-        auto root = (float)(sqrt(2.0)/2.0);
-        return SbRotation(0, root, root, 0);
-    }
+        return bottom();
+    case Front:
+        return front();
+    case Rear:
+        return rear();
     case Right:
-        return SbRotation(0.5, 0.5, 0.5, 0.5);
+        return right();
     case Left:
-        return SbRotation(-0.5, 0.5, 0.5, -0.5);
+        return left();
     case Isometric:
-        //from math import sqrt, degrees, asin
-        //p1=App.Rotation(App.Vector(1,0,0),45)
-        //p2=App.Rotation(App.Vector(0,0,1),-45)
-        //p3=p2.multiply(p1)
-        //return SbRotation(0.353553f, -0.146447f, -0.353553f, 0.853553f);
-
-        //from math import sqrt, degrees, asin
-        //p1=App.Rotation(App.Vector(1,0,0),90)
-        //p2=App.Rotation(App.Vector(0,0,1),135)
-        //p3=App.Rotation(App.Vector(-1,1,0),degrees(asin(-sqrt(1.0/3.0))))
-        //p4=p3.multiply(p2).multiply(p1)
-        //return SbRotation(0.17592, 0.424708, 0.820473, 0.339851);
-
-        //from math import sqrt, degrees, asin
-        //p1=App.Rotation(App.Vector(1,0,0),90)
-        //p2=App.Rotation(App.Vector(0,0,1),45)
-        //#p3=App.Rotation(App.Vector(1,1,0),45)
-        //p3=App.Rotation(App.Vector(1,1,0),degrees(asin(-sqrt(1.0/3.0))))
-        //p4=p3.multiply(p2).multiply(p1)
-        return SbRotation(0.424708f, 0.17592f, 0.339851f, 0.820473f);
+        return isometric();
     case Dimetric:
-        return SbRotation(0.567952f, 0.103751f, 0.146726f, 0.803205f);
+        return dimetric();
     case Trimetric:
-        return SbRotation(0.446015f, 0.119509f, 0.229575f, 0.856787f);
+        return trimetric();
     default:
-        return SbRotation(0, 0, 0, 1);
+        return top();
     }
+}
+
+Base::Rotation Camera::convert(Camera::Orientation view)
+{
+    return convert(Camera::rotation(view));
+}
+
+Base::Rotation Camera::convert(const SbRotation& rot)
+{
+    return Base::convertTo<Base::Rotation>(rot);
+}
+
+SbRotation Camera::convert(const Base::Rotation& rot)
+{
+    return Base::convertTo<SbRotation>(rot);
 }
