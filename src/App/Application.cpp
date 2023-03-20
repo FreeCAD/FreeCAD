@@ -2009,6 +2009,7 @@ void Application::initTypes()
     App::PropertyTime                       ::init();
     App::PropertyUltimateTensileStrength    ::init();
     App::PropertyVacuumPermittivity         ::init();
+    App::PropertyVelocity                   ::init();
     App::PropertyVolume                     ::init();
     App::PropertyVolumeFlowRate             ::init();
     App::PropertyVolumetricThermalExpansionCoefficient::init();

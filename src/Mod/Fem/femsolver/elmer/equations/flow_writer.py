@@ -193,14 +193,23 @@ class Flowwriter:
     def _outputInitialVelocity(self, obj, name):
         # flow only makes sense for fluid material
         if self.write.isBodyMaterialFluid(name):
-            if obj.VelocityXEnabled:
-                velocity = self.write.getFromUi(obj.VelocityX, "m/s", "L/T")
+            if not obj.VelocityXUnspecified:
+                if not obj.VelocityXHasFormula:
+                    velocity = float(obj.VelocityX.getValueAs("m/s"))
+                else:
+                    velocity = obj.VelocityXFormula
                 self.write.initial(name, "Velocity 1", velocity)
-            if obj.VelocityYEnabled:
-                velocity = self.write.getFromUi(obj.VelocityY, "m/s", "L/T")
+            if not obj.VelocityYUnspecified:
+                if not obj.VelocityYHasFormula:
+                    velocity = float(obj.VelocityY.getValueAs("m/s"))
+                else:
+                    velocity = obj.VelocityYFormula
                 self.write.initial(name, "Velocity 2", velocity)
-            if obj.VelocityZEnabled:
-                velocity = self.write.getFromUi(obj.VelocityZ, "m/s", "L/T")
+            if not obj.VelocityZUnspecified:
+                if not obj.VelocityZHasFormula:
+                    velocity = float(obj.VelocityZ.getValueAs("m/s"))
+                else:
+                    velocity = obj.VelocityZFormula
                 self.write.initial(name, "Velocity 3", velocity)
 
     def handleFlowInitialVelocity(self, bodies):
@@ -227,14 +236,23 @@ class Flowwriter:
         for obj in self.write.getMember("Fem::ConstraintFlowVelocity"):
             if obj.References:
                 for name in obj.References[0][1]:
-                    if obj.VelocityXEnabled:
-                        velocity = self.write.getFromUi(obj.VelocityX, "m/s", "L/T")
+                    if not obj.VelocityXUnspecified:
+                        if not obj.VelocityXHasFormula:
+                            velocity = float(obj.VelocityX.getValueAs("m/s"))
+                        else:
+                            velocity = obj.VelocityXFormula
                         self.write.boundary(name, "Velocity 1", velocity)
-                    if obj.VelocityYEnabled:
-                        velocity = self.write.getFromUi(obj.VelocityY, "m/s", "L/T")
+                    if not obj.VelocityYUnspecified:
+                        if not obj.VelocityYHasFormula:
+                            velocity = float(obj.VelocityY.getValueAs("m/s"))
+                        else:
+                            velocity = obj.VelocityYFormula
                         self.write.boundary(name, "Velocity 2", velocity)
-                    if obj.VelocityZEnabled:
-                        velocity = self.write.getFromUi(obj.VelocityZ, "m/s", "L/T")
+                    if not obj.VelocityZUnspecified:
+                        if not obj.VelocityZHasFormula:
+                            velocity = float(obj.VelocityZ.getValueAs("m/s"))
+                        else:
+                            velocity = obj.VelocityZFormula
                         self.write.boundary(name, "Velocity 3", velocity)
                     if obj.NormalToBoundary:
                         self.write.boundary(name, "Normal-Tangential Velocity", True)

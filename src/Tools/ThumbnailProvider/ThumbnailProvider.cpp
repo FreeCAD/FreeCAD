@@ -178,7 +178,7 @@ CThumbnailProvider::~CThumbnailProvider()
 STDMETHODIMP CThumbnailProvider::QueryInterface(REFIID riid,
                                                 void** ppvObject)
 {
-    static const QITAB qit[] = 
+    static const QITAB qit[] =
     {
       //QITABENT(CThumbnailProvider, IInitializeWithStream),
         QITABENT(CThumbnailProvider, IInitializeWithFile),
@@ -206,16 +206,16 @@ STDMETHODIMP_(ULONG) CThumbnailProvider::Release()
 }
 
 
-STDMETHODIMP CThumbnailProvider::Initialize(IStream *pstm, 
+STDMETHODIMP CThumbnailProvider::Initialize(IStream *pstm,
                                             DWORD grfMode)
 {
     return S_OK;
 }
 
-STDMETHODIMP CThumbnailProvider::Initialize(LPCWSTR pszFilePath, 
+STDMETHODIMP CThumbnailProvider::Initialize(LPCWSTR pszFilePath,
                                             DWORD grfMode)
 {
-    wcscpy_s(m_szFile, pszFilePath); 
+    wcscpy_s(m_szFile, pszFilePath);
     return S_OK;
 }
 
@@ -235,8 +235,8 @@ bool CThumbnailProvider::CheckZip() const
     return true;
 }
 
-STDMETHODIMP CThumbnailProvider::GetThumbnail(UINT cx, 
-                                              HBITMAP *phbmp, 
+STDMETHODIMP CThumbnailProvider::GetThumbnail(UINT cx,
+                                              HBITMAP *phbmp,
                                               WTS_ALPHATYPE *pdwAlpha)
 {
     try {
@@ -277,11 +277,11 @@ STDMETHODIMP CThumbnailProvider::GetThumbnail(UINT cx,
         // or whatever could go wrong
     }
 
-    return NOERROR; 
+    return NOERROR;
 }
 
 
-STDMETHODIMP CThumbnailProvider::GetSite(REFIID riid, 
+STDMETHODIMP CThumbnailProvider::GetSite(REFIID riid,
                                          void** ppvSite)
 {
     if (m_pSite)

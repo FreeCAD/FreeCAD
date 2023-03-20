@@ -54,11 +54,16 @@ public:
      * an event, see class documentation above)
      * @param minShowTime  Time during which the notification can only be made disappear by popping
      * it out (clicking inside it).
-     * @param width Fixes the width of the notification. Default value makes the width to be system determined (dependent on
-     * the text).
+     * @param restrictionarea Try to keep the NotificationBox within this area. If this area is not
+     * provided, the whole screen is used as restriction area. This are must be provided in global
+     * screen coordinates.
+     * @param width Fixes the width of the notification. Default value makes the width to be system
+     * determined (dependent on the text). If a fixed width is provided it is enforced over the
+     * restrictionarea.
      */
     static void showText(const QPoint& pos, const QString& text, int displayTime = -1,
-                         unsigned int minShowTime = 0, int width = 0);
+                         unsigned int minShowTime = 0, const QRect& restrictionarea = {},
+                         int width = 0);
     /// Hides a notification.
     static inline void hideText()
     {
