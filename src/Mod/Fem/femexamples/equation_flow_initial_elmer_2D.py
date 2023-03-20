@@ -37,10 +37,10 @@ from .manager import init_doc
 
 def get_information():
     return {
-        "name": "Flow - Elmer 2D",
+        "name": "Initial Flow - Elmer 2D",
         "meshtype": "solid",
         "meshelement": "Tet10",
-        "constraints": ["initial pressure", "initial temperature",
+        "constraints": ["initial pressure", "initial temperature", "initial velocity",
                         "temperature", "velocity"],
         "solvers": ["elmer"],
         "material": "fluid",
@@ -51,10 +51,10 @@ def get_explanation(header=""):
     return header + """
 
 To run the example from Python console use:
-from femexamples.equation_flow_elmer_2D import setup
+from femexamples.equation_flow_initial_elmer_2D import setup
 setup()
 
-Flow and Heat equation - Elmer solver
+Flow and Heat equation with initial velocity - Elmer solver
 
 """
 
@@ -133,12 +133,18 @@ def setup(doc=None, solvertype="elmer"):
     equation_flow.IdrsParameter = 3
     equation_flow.LinearIterativeMethod = "Idrs"
     equation_flow.LinearPreconditioning = "ILU1"
+    equation_flow.NonlinearIterations = 20
+    equation_flow.NonlinearNewtonAfterIterations = 20
+    equation_flow.RelaxationFactor = 0.15
     equation_flow.Variable = "Flow Solution[Velocity:2 Pressure:1]"
     equation_heat.Convection = "Computed"
     equation_heat.IdrsParameter = 3
     equation_heat.LinearIterativeMethod = "Idrs"
     equation_heat.LinearPreconditioning = "ILU1"
+    equation_heat.NonlinearIterations = 20
+    equation_heat.NonlinearNewtonAfterIterations = 20
     equation_heat.Priority = 5
+    equation_heat.RelaxationFactor = 0.15
     equation_heat.Stabilize = True
 
     # material
@@ -146,16 +152,12 @@ def setup(doc=None, solvertype="elmer"):
     # fluid
     material_obj = ObjectsFem.makeMaterialFluid(doc, "Material_Fluid")
     mat = material_obj.Material
-    mat["Name"] = "Air"
-    mat["Density"] = "1.204 kg/m^3"
-    mat["DynamicViscosity"] = "1.80e-5 kg/m/s"
-    mat["KinematicViscosity"] = "1.511e-5 m^2/s"
-    mat["ThermalConductivity"] = "0.02587 W/m/K"
-    mat["ThermalExpansionCoefficient"] = "3.43e-3 1/K"
-    mat["SpecificHeat"] = "1.01 kJ/kg/K"
-    mat["ElectricalConductivity"] = "1e-12 S/m"
-    mat["RelativePermeability"] = "1.0"
-    mat["RelativePermittivity"] = "1.00059"
+    mat["Name"] = "Carbon dioxide"
+    mat["Density"] = "1.8393 kg/m^3"
+    mat["DynamicViscosity"] = "14.7e-6 kg/m/s"
+    mat["ThermalConductivity"] = "0.016242 W/m/K"
+    mat["ThermalExpansionCoefficient"] = "0.00343 m/m/K"
+    mat["SpecificHeat"] = "0.846 kJ/kg/K"
     material_obj.Material = mat
     material_obj.References = [(BooleanFragments, "Face2")]
     analysis.addObject(material_obj)
@@ -179,10 +181,8 @@ def setup(doc=None, solvertype="elmer"):
     # constraint inlet velocity
     FlowVelocity_Inlet = ObjectsFem.makeConstraintFlowVelocity(doc, "FlowVelocity_Inlet")
     FlowVelocity_Inlet.References = [(BooleanFragments, "Edge5")]
-    FlowVelocity_Inlet.VelocityXFormula = "Variable Coordinate 2; Real MATC \"-0.01*(tx-1)*(2-tx)\""
+    FlowVelocity_Inlet.VelocityX = "20.0 mm/s"
     FlowVelocity_Inlet.VelocityXUnspecified = False
-    FlowVelocity_Inlet.VelocityXHasFormula = True
-    FlowVelocity_Inlet.VelocityYUnspecified = False
     analysis.addObject(FlowVelocity_Inlet)
 
     # constraint wall velocity
@@ -195,6 +195,15 @@ def setup(doc=None, solvertype="elmer"):
     FlowVelocity_Wall.VelocityXUnspecified = False
     FlowVelocity_Wall.VelocityYUnspecified = False
     analysis.addObject(FlowVelocity_Wall)
+
+    # constraint initial velocity
+    FlowVelocity_Initial = ObjectsFem.makeConstraintInitialFlowVelocity(doc, "FlowVelocity_Initial")
+    FlowVelocity_Initial.References = [(BooleanFragments, "Face2")]
+    FlowVelocity_Initial.VelocityX = "20.0 mm/s"
+    FlowVelocity_Initial.VelocityY = "-20.0 mm/s"
+    FlowVelocity_Initial.VelocityXUnspecified = False
+    FlowVelocity_Initial.VelocityYUnspecified = False
+    analysis.addObject(FlowVelocity_Initial)
 
     # constraint initial temperature
     Temperature_Initial = ObjectsFem.makeConstraintInitialTemperature(doc, "Temperature_Initial")
