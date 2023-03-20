@@ -2666,8 +2666,11 @@ void ConstraintC2CDistance::errorgrad(double *err, double *grad, double *param)
             else if(param == distance()) {
                 drad = (*distance()<0.)?1.0:-1.0;
             }
-
-            *grad = -dlength_ct12 + drad;
+            if (length_ct12>1e-13) {
+                *grad = -dlength_ct12 + drad;
+            } else { // concentric case
+                *grad = drad;
+            }
         }
     }
 }
