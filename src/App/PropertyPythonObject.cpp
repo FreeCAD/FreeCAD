@@ -121,6 +121,11 @@ void PropertyPythonObject::fromString(const std::string& repr)
     try {
         if (repr.empty())
             return;
+        if (repr == "null") {
+            Py::String typestr(this->object.type().str());
+            Base::Console().Log("PropertyPythonObject::fromString(): repr is null for object %s\n", typestr.as_string().c_str());
+            return;
+        }
         Py::Module pickle(PyImport_ImportModule("json"),true);
         if (pickle.isNull())
             throw Py::Exception();
