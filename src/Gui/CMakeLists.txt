@@ -345,6 +345,7 @@ SET(Gui_UIC_SRCS
     Placement.ui
     TextureMapping.ui
     TaskView/TaskAppearance.ui
+    TaskView/TaskImageScale.ui
     TaskView/TaskOrientation.ui
     TaskView/TaskSelectLinkProperty.ui
     TaskElementColors.ui
@@ -727,6 +728,9 @@ SET(Task_View_SRCS
     TaskView/TaskAppearance.cpp
     TaskView/TaskAppearance.h
     TaskView/TaskAppearance.ui
+    TaskView/TaskImageScale.cpp
+    TaskView/TaskImageScale.h
+    TaskView/TaskImageScale.ui
     TaskView/TaskOrientation.cpp
     TaskView/TaskOrientation.h
     TaskView/TaskOrientation.ui
@@ -1239,6 +1243,7 @@ if(MSVC)
         propertyeditor/PropertyItemDelegate.cpp
         propertyeditor/PropertyModel.cpp
         TaskView/TaskAppearance.cpp
+        TaskView/TaskImageScale.cpp
         TaskView/TaskOrientation.cpp
         TaskView/TaskSelectLinkProperty.cpp
         TaskView/TaskEditControl.cpp

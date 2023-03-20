@@ -42,6 +42,7 @@
 #include <Gui/BitmapFactory.h>
 #include <Gui/Control.h>
 #include <Gui/TaskView/TaskOrientation.h>
+#include <Gui/TaskView/TaskImageScale.h>
 #include <App/ImagePlane.h>
 
 #include "ViewProviderImagePlane.h"
@@ -142,27 +143,30 @@ void ViewProviderImagePlane::onChanged(const App::Property* prop)
 
 void ViewProviderImagePlane::setupContextMenu(QMenu* menu, QObject* receiver, const char* member)
 {
-    ViewProviderGeometryObject::setupContextMenu(menu, receiver, member);
-
     Gui::ActionFunction* func = new Gui::ActionFunction(menu);
-    QAction* orient = menu->addAction(QObject::tr("Change orientation..."));
-    func->trigger(orient, std::bind(&ViewProviderImagePlane::changeOrientation, this));
+    QAction* action = menu->addAction(QObject::tr("Change image..."));
+    action->setIcon(QIcon(QLatin1String("images:image-scaling.svg")));
+    func->trigger(action, std::bind(&ViewProviderImagePlane::manipulateImage, this));
 
-    QAction* scale = menu->addAction(QObject::tr("Scale image..."));
-    scale->setIcon(QIcon(QLatin1String("images:image-scaling.svg")));
-    func->trigger(scale, std::bind(&ViewProviderImagePlane::scaleImage, this));
+    ViewProviderGeometryObject::setupContextMenu(menu, receiver, member);
 }
 
-void ViewProviderImagePlane::changeOrientation()
+bool ViewProviderImagePlane::doubleClicked()
 {
-    Gui::Control().showDialog(new TaskOrientationDialog(
+    manipulateImage();
+    return true;
+}
+
+void ViewProviderImagePlane::manipulateImage()
+{
+    auto dialog = new TaskOrientationDialog(
         dynamic_cast<App::GeoFeature*>(getObject())
+    );
+    dialog->addTaskBox(new TaskImageScale(
+        dynamic_cast<App::ImagePlane*>(getObject())
     ));
-}
 
-void ViewProviderImagePlane::scaleImage()
-{
-
+    Gui::Control().showDialog(dialog);
 }
 
 void ViewProviderImagePlane::resizePlane(float xsize, float ysize)
@@ -188,6 +192,9 @@ void ViewProviderImagePlane::loadImage()
             if (!impQ.isNull()) {
                 imagePlane->XSize.setValue(size.width());
                 imagePlane->YSize.setValue(size.height());
+
+                imagePlane->XPixelsPerMeter = impQ.dotsPerMeterX();
+                imagePlane->YPixelsPerMeter = impQ.dotsPerMeterY();
             }
         }
 

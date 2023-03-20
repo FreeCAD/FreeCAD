@@ -43,6 +43,14 @@ public:
     App::PropertyLength       XSize;
     App::PropertyLength       YSize;
 
+    int getXSizeInPixel();
+    int getYSizeInPixel();
+    void setXSizeInPixel(int);
+    void setYSizeInPixel(int);
+
+    double XPixelsPerMeter;
+    double YPixelsPerMeter;
+
     /// returns the type name of the ViewProvider
     const char* getViewProviderName() const override {
         return "Gui::ViewProviderImagePlane";

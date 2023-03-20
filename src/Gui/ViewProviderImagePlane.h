@@ -50,6 +50,7 @@ public:
     std::vector<std::string> getDisplayModes() const override;
     void updateData(const App::Property*) override;
     void setupContextMenu(QMenu*, QObject*, const char*) override;
+    bool doubleClicked() override;
     void onChanged(const App::Property* prop) override;
 
 private:
@@ -59,8 +60,7 @@ private:
     bool loadSvg(const char*, double x, double y, QImage& img);
     QSizeF loadRaster(const char*, QImage& img);
     void convertToSFImage(const QImage& img);
-    void changeOrientation();
-    void scaleImage();
+    void manipulateImage();
 
 private:
     SoCoordinate3         * pcCoords;
