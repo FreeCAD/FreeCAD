@@ -2,5 +2,7 @@
     <qresource>
         <file>icons/preview-rendered.svg</file>
         <file>icons/preview-vector.svg</file>
+        <file>icons/preferences-material.svg</file>
+        <file>ui/preferences-material.ui</file>
     </qresource>
 </RCC>

@@ -19,3 +19,7 @@
 #*                                                                         *
 #***************************************************************************
 
+import FreeCADGui
+
+import Material_rc
+FreeCADGui.addPreferencePage(":/ui/preferences-material.ui","Material")
