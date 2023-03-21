@@ -36,7 +36,7 @@ from .. import writer as general_writer
 from femtools import femutils
 from . import elasticity
 
-class Elasticitywriter:
+class ElasticityWriter:
 
     def __init__(self, writer, solver):
         self.write = writer

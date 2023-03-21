@@ -259,6 +259,8 @@ SET(FemSolverElmer_SRCS
 
 SET(FemSolverElmerEquations_SRCS
     femsolver/elmer/equations/__init__.py
+    femsolver/elmer/equations/deformation.py
+    femsolver/elmer/equations/deformation_writer.py
     femsolver/elmer/equations/elasticity.py
     femsolver/elmer/equations/elasticity_writer.py
     femsolver/elmer/equations/electricforce.py
