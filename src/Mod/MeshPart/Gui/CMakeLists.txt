@@ -81,12 +81,6 @@ endif(FREECAD_USE_PCH)
 add_library(MeshPartGui SHARED ${MeshPartGui_SRCS} ${MeshPartGui_Scripts} ${FLATMESH_PY_SRCS})
 target_link_libraries(MeshPartGui ${MeshPartGui_LIBS})
 
-# external SMESH doesn't support C++17 yet
-if(FREECAD_USE_EXTERNAL_SMESH)
-    set_target_properties(MeshPartGui PROPERTIES CXX_STANDARD_REQUIRED ON)
-    set_target_properties(MeshPartGui PROPERTIES CXX_STANDARD 14)
-endif()
-
 
 SET_BIN_DIR(MeshPartGui MeshPartGui /Mod/MeshPart)
 SET_PYTHON_PREFIX_SUFFIX(MeshPartGui)

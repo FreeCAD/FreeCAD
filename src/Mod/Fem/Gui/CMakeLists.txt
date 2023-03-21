@@ -361,12 +361,6 @@ SET(FemGuiIcon_SVG
 add_library(FemGui SHARED ${FemGui_SRCS} ${FemGuiIcon_SVG})
 target_link_libraries(FemGui ${FemGui_LIBS} ${VTK_LIBRARIES})
 
-# external SMESH doesn't support C++17 yet
-if(FREECAD_USE_EXTERNAL_SMESH)
-    set_target_properties(FemGui PROPERTIES CXX_STANDARD_REQUIRED ON)
-    set_target_properties(FemGui PROPERTIES CXX_STANDARD 14)
-endif()
-
 
 fc_copy_sources(FemGui "${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DATADIR}/Mod/Fem" ${FemGuiIcon_SVG})
 
