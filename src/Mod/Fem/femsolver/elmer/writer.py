@@ -48,6 +48,7 @@ from femmesh import gmshtools
 from femtools import constants
 from femtools import femutils
 from femtools import membertools
+from .equations import deformation_writer as DEF_writer
 from .equations import elasticity_writer as EL_writer
 from .equations import electricforce_writer as EF_writer
 from .equations import electrostatic_writer as ES_writer
@@ -94,6 +95,7 @@ class Writer(object):
     def write_solver_input(self):
         self._handleRedifinedConstants()
         self._handleSimulation()
+        self._handleDeformation()
         self._handleElasticity()
         self._handleElectricforce()
         self._handleElectrostatic()
@@ -406,10 +408,38 @@ class Writer(object):
             solver.TimestepSizes = [0.1]
 
     #-------------------------------------------------------------------------------------------
+    # Deformation
+
+    def _handleDeformation(self):
+        DEFW = DEF_writer.DeformationWriter(self, self.solver)
+        activeIn = []
+        for equation in self.solver.Group:
+            if femutils.is_of_type(equation, "Fem::EquationElmerDeformation"):
+                if not self._haveMaterialSolid():
+                    raise WriteError(
+                        "The Deformation equation requires at least one body with a solid material!"
+                    )
+                if equation.References:
+                    activeIn = equation.References[0][1]
+                else:
+                    activeIn = self.getAllBodies()
+                solverSection = DEFW.getDeformationSolver(equation)
+                for body in activeIn:
+                    if not self.isBodyMaterialFluid(body):
+                        self._addSolver(body, solverSection)
+                        DEFW.handleDeformationEquation(activeIn, equation)
+        if activeIn:
+            DEFW.handleDeformationConstants()
+            DEFW.handleDeformationBndConditions()
+            DEFW.handleDeformationInitial(activeIn)
+            DEFW.handleDeformationBodyForces(activeIn)
+            DEFW.handleDeformationMaterial(activeIn)
+
+    #-------------------------------------------------------------------------------------------
     # Elasticity
 
     def _handleElasticity(self):
-        ELW = EL_writer.Elasticitywriter(self, self.solver)
+        ELW = EL_writer.ElasticityWriter(self, self.solver)
         activeIn = []
         for equation in self.solver.Group:
             if femutils.is_of_type(equation, "Fem::EquationElmerElasticity"):

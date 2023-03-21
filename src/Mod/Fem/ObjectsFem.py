@@ -753,6 +753,20 @@ def makePostVtkResult(
 
 
 # ********* solver objects ***********************************************************************
+def makeEquationDeformation(
+    doc,
+    base_solver=None,
+    name="Deformation"
+):
+    """makeEquationDeformation(document, [base_solver], [name]):
+    creates a FEM deformation (nonlinear elasticity) equation for a solver"""
+    from femsolver.elmer.equations import deformation
+    obj = deformation.create(doc, name)
+    if base_solver:
+        base_solver.addObject(obj)
+    return obj
+
+
 def makeEquationElasticity(
     doc,
     base_solver=None,
