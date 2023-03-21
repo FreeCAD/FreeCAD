@@ -133,6 +133,45 @@
         </property>
        </widget>
       </item>
+      <item row="4" column="0">
+       <widget class="Gui::PrefCheckBox" name="hideNonIntrusiveNotificationsWhenWindowDeactivated">
+        <property name="toolTip">
+         <string>Any open non-intrusive notifications will disappear when another window is activated</string>
+        </property>
+        <property name="text">
+         <string>Hide when other window is activated</string>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>HideNonIntrusiveNotificationsWhenWindowDeactivated</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>NotificationArea</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="5" column="0">
+       <widget class="Gui::PrefCheckBox" name="preventNonIntrusiveNotificationsWhenWindowNotActive">
+        <property name="toolTip">
+         <string>Prevent non-intrusive notifications from appearing when the FreeCAD Window is not the active window</string>
+        </property>
+        <property name="text">
+         <string>Do not show when inactive</string>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>PreventNonIntrusiveNotificationsWhenWindowNotActive</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>NotificationArea</cstring>
+        </property>
+       </widget>
+      </item>
+
      </layout>
     </widget>
    </item>
