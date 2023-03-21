@@ -108,6 +108,8 @@ struct NotificationAreaP
     const unsigned int inhibitNotificationTime = 250;
     //@}
 
+    bool missedNotifications = false;
+
     // Access control
     std::mutex mutexNotification;
 
@@ -141,6 +143,8 @@ private:
         warning = BitmapFactory().pixmapFromSvg(":/icons/Warning.svg", QSize(16, 16));
         critical = BitmapFactory().pixmapFromSvg(":/icons/critical-info.svg", QSize(16, 16));
         info = BitmapFactory().pixmapFromSvg(":/icons/info.svg", QSize(16, 16));
+        notificationArea = QIcon(QStringLiteral(":/icons/InTray.svg"));
+        notificationAreaMissedNotifications = QIcon(QStringLiteral(":/icons/InTray_missed_notifications.svg"));
     }
 
     inline static const auto& getResourceManager()
@@ -175,11 +179,25 @@ public:
         return rm.info;
     }
 
+    inline static auto NotificationAreaIcon()
+    {
+        auto rm = getResourceManager();
+        return rm.notificationArea;
+    }
+
+    inline static auto notificationAreaMissedNotificationsIcon()
+    {
+        auto rm = getResourceManager();
+        return rm.notificationAreaMissedNotifications;
+    }
+
 private:
     QPixmap error;
     QPixmap warning;
     QPixmap critical;
     QPixmap info;
+    QIcon notificationArea;
+    QIcon notificationAreaMissedNotifications;
 };
 
 /******************** Console Messages Observer (Console Interface) ************************/
@@ -723,6 +741,10 @@ NotificationArea::NotificationArea(QWidget* parent)
             pImp->mutexNotification);// guard to avoid modifying the notification list and indices
                                      // while creating the tooltip
         setText(QString::number(0)); // no unread notifications
+        if(pImp->missedNotifications) {
+            setIcon(TrayIcon::Normal);
+            pImp->missedNotifications = false;
+        }
         static_cast<NotificationsAction*>(pImp->notificationaction)->synchroniseWidget();
 
         // the position of the action has already been calculated (for a non-synchronised widget),
@@ -748,6 +770,8 @@ NotificationArea::NotificationArea(QWidget* parent)
         setText(QString::number(na->getUnreadCount()));
         showInNotificationArea();
     });
+
+    setIcon(TrayIcon::Normal);
 }
 
 NotificationArea::~NotificationArea()
@@ -1015,13 +1039,18 @@ void NotificationArea::showInNotificationArea()
             options = options | NotificationBox::Options::HideIfReferenceWidgetDeactivated;
         }
 
-        NotificationBox::showText(this->mapToGlobal(QPoint()),
+        bool isshown = NotificationBox::showText(this->mapToGlobal(QPoint()),
                                   msgw,
                                   getMainWindow(),
                                   pImp->notificationExpirationTime,
                                   pImp->minimumOnScreenTime,
                                   options,
                                   pImp->notificationWidth);
+
+        if(!isshown && !pImp->missedNotifications) {
+            pImp->missedNotifications = true;
+            setIcon(TrayIcon::MissedNotifications);
+        }
     }
 }
 
@@ -1029,4 +1058,14 @@ void NotificationArea::slotRestoreFinished(const App::Document&)
 {
     // Re-arm on restore critical message modal notifications if another document is loaded
     pImp->requireConfirmationCriticalMessageDuringRestoring = true;
+}
+
+void NotificationArea::setIcon(TrayIcon trayIcon)
+{
+    if(trayIcon == TrayIcon::Normal) {
+        QPushButton::setIcon(ResourceManager::NotificationAreaIcon());
+    }
+    else if(trayIcon == TrayIcon::MissedNotifications) {
+        QPushButton::setIcon(ResourceManager::notificationAreaMissedNotificationsIcon());
+    }
 }
