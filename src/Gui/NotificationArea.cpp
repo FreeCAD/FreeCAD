@@ -991,17 +991,13 @@ void NotificationArea::showInNotificationArea()
 
         msgw += QString::fromLatin1("</table></p>");
 
-        // Calculate the main window QRect in global screen coordinates.
-        auto mainwindow = getMainWindow();
-        auto mainwindowrect = mainwindow->rect();
-        auto globalmainwindowrect =
-            QRect(mainwindow->mapToGlobal(mainwindowrect.topLeft()), mainwindowrect.size());
-
         NotificationBox::showText(this->mapToGlobal(QPoint()),
                                   msgw,
+                                  getMainWindow(),
                                   pImp->notificationExpirationTime,
                                   pImp->minimumOnScreenTime,
-                                  globalmainwindowrect,
+                                  NotificationBox::OnlyIfReferenceActive |
+                                  NotificationBox::RestrictAreaToReference,
                                   pImp->notificationWidth);
     }
 }
