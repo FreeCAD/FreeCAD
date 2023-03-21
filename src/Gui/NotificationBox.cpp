@@ -246,6 +246,11 @@ bool NotificationLabel::eventFilter(QObject* o, QEvent* e)
                 return insideclick;
             }
         }
+        break;
+        case QEvent::WindowDeactivate:
+            hideNotificationImmediately();
+            break;
+
         default:
             break;
     }
