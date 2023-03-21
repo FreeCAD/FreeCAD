@@ -53,6 +53,7 @@ public:
          None = 0x0,
          RestrictAreaToReference = 0x1,
          OnlyIfReferenceActive = 0x2,
+         HideIfReferenceWidgetDeactivated = 0x4,
     };
 
     /** Shows a non-intrusive notification.

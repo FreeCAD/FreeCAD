@@ -76,6 +76,8 @@ public:
     /// Set the windowrect defining an area to which the label should be constrained
     void setTipRect(const QRect &restrictionarea);
 
+    void setHideIfReferenceWidgetDeactivated(bool on);
+
     /// The instance
     static qobject_delete_later_unique_ptr<NotificationLabel> instance;
 
@@ -95,6 +97,7 @@ private:
     QTimer expireTimer;
 
     QRect restrictionArea;
+    bool hideIfReferenceWidgetDeactivated;
 };
 
 qobject_delete_later_unique_ptr<NotificationLabel> NotificationLabel::instance = nullptr;
@@ -248,7 +251,8 @@ bool NotificationLabel::eventFilter(QObject* o, QEvent* e)
         }
         break;
         case QEvent::WindowDeactivate:
-            hideNotificationImmediately();
+            if(hideIfReferenceWidgetDeactivated)
+                hideNotificationImmediately();
             break;
 
         default:
@@ -302,6 +306,11 @@ void NotificationLabel::setTipRect(const QRect &restrictionarea)
     restrictionArea = restrictionarea;
 }
 
+void NotificationLabel::setHideIfReferenceWidgetDeactivated(bool on)
+{
+    hideIfReferenceWidgetDeactivated = on;
+}
+
 bool NotificationLabel::notificationLabelChanged(const QString& text)
 {
     return NotificationLabel::instance->text() != text;
@@ -341,6 +350,8 @@ void NotificationBox::showText(const QPoint& pos, const QString& text, QWidget *
             // If the label has changed, reuse the one that is showing (removes flickering)
             if (NotificationLabel::instance->notificationLabelChanged(text)) {
                 NotificationLabel::instance->setTipRect(restrictionarea);
+                NotificationLabel::instance->setHideIfReferenceWidgetDeactivated(options &
+                    Options::HideIfReferenceWidgetDeactivated);
                 NotificationLabel::instance->reuseNotification(text, displayTime, pos, width);
                 NotificationLabel::instance->placeNotificationLabel(pos);
             }
@@ -360,6 +371,8 @@ void NotificationBox::showText(const QPoint& pos, const QString& text, QWidget *
                               width);// sets NotificationLabel::instance to itself
 
         NotificationLabel::instance->setTipRect(restrictionarea);
+        NotificationLabel::instance->setHideIfReferenceWidgetDeactivated(options &
+            Options::HideIfReferenceWidgetDeactivated);
         NotificationLabel::instance->placeNotificationLabel(pos);
         NotificationLabel::instance->setObjectName(QLatin1String("NotificationBox_label"));
 
