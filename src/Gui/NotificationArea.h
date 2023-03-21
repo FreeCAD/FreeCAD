@@ -39,6 +39,11 @@ struct NotificationAreaP;
 
 class NotificationArea: public QPushButton
 {
+    enum class TrayIcon {
+        Normal,
+        MissedNotifications,
+    };
+
 public:
     class ParameterObserver: public ParameterGrp::ObserverType
     {
@@ -67,6 +72,8 @@ private:
     void slotRestoreFinished(const App::Document&);
 
     void mousePressEvent(QMouseEvent* e) override;
+
+    void setIcon(TrayIcon trayIcon);
 
 private:
     std::unique_ptr<NotificationAreaP> pImp;

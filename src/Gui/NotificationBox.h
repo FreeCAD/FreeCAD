@@ -71,8 +71,10 @@ public:
      * @param width Fixes the width of the notification. Default value makes the width to be system
      * determined (dependent on the text). If a fixed width is provided it is enforced over the
      * restrictionarea.
+     *
+     * @return returns whether the notification was shown or not
      */
-    static void showText(const QPoint& pos, const QString& text, QWidget * referenceWidget = nullptr, int displayTime = -1,
+    static bool showText(const QPoint& pos, const QString& text, QWidget * referenceWidget = nullptr, int displayTime = -1,
                          unsigned int minShowTime = 0, Options options = Options::None,
                          int width = 0);
     /// Hides a notification.

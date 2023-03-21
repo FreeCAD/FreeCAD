@@ -314,7 +314,6 @@ MainWindow::MainWindow(QWidget * parent, Qt::WindowFlags f)
     if(notificationAreaEnabled) {
         NotificationArea* notificationArea = new NotificationArea(statusBar());
         notificationArea->setObjectName(QString::fromLatin1("notificationArea"));
-        notificationArea->setIcon(QIcon(QString::fromLatin1(":/icons/InTray.svg")));
         notificationArea->setStyleSheet(QStringLiteral("text-align:left;"));
         statusBar()->addPermanentWidget(notificationArea);
     }

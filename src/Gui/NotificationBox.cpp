@@ -318,7 +318,7 @@ bool NotificationLabel::notificationLabelChanged(const QString& text)
 
 /***************************** NotificationBox **********************************/
 
-void NotificationBox::showText(const QPoint& pos, const QString& text, QWidget * referenceWidget, int displayTime,
+bool NotificationBox::showText(const QPoint& pos, const QString& text, QWidget * referenceWidget, int displayTime,
                          unsigned int minShowTime, Options options,
                          int width)
 {
@@ -327,7 +327,7 @@ void NotificationBox::showText(const QPoint& pos, const QString& text, QWidget *
     if(referenceWidget) {
         if(options & Options::OnlyIfReferenceActive) {
             if (!referenceWidget->isActiveWindow()) {
-                return;
+                return false;
             }
         }
 
@@ -344,7 +344,7 @@ void NotificationBox::showText(const QPoint& pos, const QString& text, QWidget *
     if (NotificationLabel::instance && NotificationLabel::instance->isVisible()) {
         if (text.isEmpty()) {// empty text means hide current label
             NotificationLabel::instance->hideNotification();
-            return;
+            return false;
         }
         else {
             // If the label has changed, reuse the one that is showing (removes flickering)
@@ -355,7 +355,7 @@ void NotificationBox::showText(const QPoint& pos, const QString& text, QWidget *
                 NotificationLabel::instance->reuseNotification(text, displayTime, pos, width);
                 NotificationLabel::instance->placeNotificationLabel(pos);
             }
-            return;
+            return true;
         }
     }
 
@@ -378,6 +378,8 @@ void NotificationBox::showText(const QPoint& pos, const QString& text, QWidget *
 
         NotificationLabel::instance->showNormal();
     }
+
+    return true;
 }
 
 bool NotificationBox::isVisible()
