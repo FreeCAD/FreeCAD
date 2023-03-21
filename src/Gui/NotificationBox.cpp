@@ -309,9 +309,28 @@ bool NotificationLabel::notificationLabelChanged(const QString& text)
 
 /***************************** NotificationBox **********************************/
 
-void NotificationBox::showText(const QPoint& pos, const QString& text, int displayTime,
-                               unsigned int minShowTime, const QRect &restrictionarea, int width)
+void NotificationBox::showText(const QPoint& pos, const QString& text, QWidget * referenceWidget, int displayTime,
+                         unsigned int minShowTime, Options options,
+                         int width)
 {
+    QRect restrictionarea = {};
+
+    if(referenceWidget) {
+        if(options & Options::OnlyIfReferenceActive) {
+            if (!referenceWidget->isActiveWindow()) {
+                return;
+            }
+        }
+
+        if(options & Options::RestrictAreaToReference) {
+            // Calculate the main window QRect in global screen coordinates.
+            auto mainwindowrect = referenceWidget->rect();
+
+            restrictionarea =
+                QRect(referenceWidget->mapToGlobal(mainwindowrect.topLeft()), mainwindowrect.size());
+        }
+    }
+
     // a label does already exist
     if (NotificationLabel::instance && NotificationLabel::instance->isVisible()) {
         if (text.isEmpty()) {// empty text means hide current label
