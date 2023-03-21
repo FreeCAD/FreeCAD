@@ -39,7 +39,8 @@ struct NotificationAreaP;
 
 class NotificationArea: public QPushButton
 {
-    enum class TrayIcon {
+    enum class TrayIcon
+    {
         Normal,
         MissedNotifications,
     };

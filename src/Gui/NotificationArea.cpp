@@ -84,7 +84,8 @@ struct NotificationAreaP
     int notificationWidth = 800;
     /// Any open non-intrusive notifications will disappear when another window is activated
     bool hideNonIntrusiveNotificationsWhenWindowDeactivated = true;
-    /// Prevent non-intrusive notifications from appearing when the FreeCAD Window is not the active window
+    /// Prevent non-intrusive notifications from appearing when the FreeCAD Window is not the active
+    /// window
     bool preventNonIntrusiveNotificationsWhenWindowNotActive = true;
     //@}
 
@@ -144,7 +145,8 @@ private:
         critical = BitmapFactory().pixmapFromSvg(":/icons/critical-info.svg", QSize(16, 16));
         info = BitmapFactory().pixmapFromSvg(":/icons/info.svg", QSize(16, 16));
         notificationArea = QIcon(QStringLiteral(":/icons/InTray.svg"));
-        notificationAreaMissedNotifications = QIcon(QStringLiteral(":/icons/InTray_missed_notifications.svg"));
+        notificationAreaMissedNotifications =
+            QIcon(QStringLiteral(":/icons/InTray_missed_notifications.svg"));
     }
 
     inline static const auto& getResourceManager()
@@ -741,7 +743,7 @@ NotificationArea::NotificationArea(QWidget* parent)
             pImp->mutexNotification);// guard to avoid modifying the notification list and indices
                                      // while creating the tooltip
         setText(QString::number(0)); // no unread notifications
-        if(pImp->missedNotifications) {
+        if (pImp->missedNotifications) {
             setIcon(TrayIcon::Normal);
             pImp->missedNotifications = false;
         }
@@ -1031,23 +1033,23 @@ void NotificationArea::showInNotificationArea()
 
         NotificationBox::Options options = NotificationBox::Options::RestrictAreaToReference;
 
-        if(pImp->preventNonIntrusiveNotificationsWhenWindowNotActive) {
+        if (pImp->preventNonIntrusiveNotificationsWhenWindowNotActive) {
             options = options | NotificationBox::Options::OnlyIfReferenceActive;
         }
 
-        if(pImp->hideNonIntrusiveNotificationsWhenWindowDeactivated) {
+        if (pImp->hideNonIntrusiveNotificationsWhenWindowDeactivated) {
             options = options | NotificationBox::Options::HideIfReferenceWidgetDeactivated;
         }
 
         bool isshown = NotificationBox::showText(this->mapToGlobal(QPoint()),
-                                  msgw,
-                                  getMainWindow(),
-                                  pImp->notificationExpirationTime,
-                                  pImp->minimumOnScreenTime,
-                                  options,
-                                  pImp->notificationWidth);
+                                                 msgw,
+                                                 getMainWindow(),
+                                                 pImp->notificationExpirationTime,
+                                                 pImp->minimumOnScreenTime,
+                                                 options,
+                                                 pImp->notificationWidth);
 
-        if(!isshown && !pImp->missedNotifications) {
+        if (!isshown && !pImp->missedNotifications) {
             pImp->missedNotifications = true;
             setIcon(TrayIcon::MissedNotifications);
         }
@@ -1062,10 +1064,10 @@ void NotificationArea::slotRestoreFinished(const App::Document&)
 
 void NotificationArea::setIcon(TrayIcon trayIcon)
 {
-    if(trayIcon == TrayIcon::Normal) {
+    if (trayIcon == TrayIcon::Normal) {
         QPushButton::setIcon(ResourceManager::NotificationAreaIcon());
     }
-    else if(trayIcon == TrayIcon::MissedNotifications) {
+    else if (trayIcon == TrayIcon::MissedNotifications) {
         QPushButton::setIcon(ResourceManager::notificationAreaMissedNotificationsIcon());
     }
 }
