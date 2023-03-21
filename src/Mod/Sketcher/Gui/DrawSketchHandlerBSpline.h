@@ -141,8 +141,18 @@ public:
 
             // check if coincident with first pole
             for(auto & ac : sugConstr.back()) {
-                if( ac.Type == Sketcher::Coincident && ac.GeoId == poleGeoIds[0] && ac.PosId == Sketcher::PointPos::mid ) {
-                    IsClosed = true;
+                if (ac.Type == Sketcher::Coincident) {
+                    if (ac.GeoId == poleGeoIds[0] && ac.PosId == Sketcher::PointPos::mid)
+                        IsClosed = true;
+                    else {
+                        // The coincidence with first point may be indirect
+                        const auto coincidents =
+                            static_cast<Sketcher::SketchObject*>(sketchgui->getObject())
+                            ->getAllCoincidentPoints(ac.GeoId, ac.PosId);
+                        if (coincidents.find(poleGeoIds[0]) != coincidents.end() &&
+                            coincidents.at(poleGeoIds[0]) == Sketcher::PointPos::mid)
+                            IsClosed = true;
+                    }
                 }
             }
 

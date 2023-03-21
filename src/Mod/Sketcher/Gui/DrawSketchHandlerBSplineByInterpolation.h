@@ -136,16 +136,30 @@ public:
             addSugConstraint();
         }
         else if (Mode == STATUS_SEEK_ADDITIONAL_POINTS) {
-            BSplineKnots.push_back(onSketchPos);
-            BSplineMults.push_back(1);// NOTE: not strictly true for end-points
-
-            // check if coincident with first knot
+            // check if coincidence issues with first or last added knot
             for (auto& ac : sugConstr.back()) {
-                if (ac.Type == Sketcher::Coincident && ac.GeoId == knotGeoIds[0]
-                    && ac.PosId == Sketcher::PointPos::start) {
-                    IsClosed = true;
+                if (ac.Type == Sketcher::Coincident) {
+                    if (ac.GeoId == knotGeoIds[0] && ac.PosId == Sketcher::PointPos::start)
+                        IsClosed = true;
+                    else {
+                        // The coincidence with first point may be indirect
+                        const auto coincidents =
+                            static_cast<Sketcher::SketchObject*>(sketchgui->getObject())
+                            ->getAllCoincidentPoints(ac.GeoId, ac.PosId);
+                        if (coincidents.find(knotGeoIds[0]) != coincidents.end() &&
+                            coincidents.at(knotGeoIds[0]) == Sketcher::PointPos::start)
+                            IsClosed = true;
+                        else if (coincidents.find(knotGeoIds.back()) != coincidents.end() &&
+                                 coincidents.at(knotGeoIds.back()) == Sketcher::PointPos::start) {
+                            return true;// OCCT doesn't allow consecutive points being coincident
+                        }
+
+                    }
                 }
             }
+
+            BSplineKnots.push_back(onSketchPos);
+            BSplineMults.push_back(1);// NOTE: not strictly true for end-points
 
             if (IsClosed) {
                 Mode = STATUS_CLOSE;
