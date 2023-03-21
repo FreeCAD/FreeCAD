@@ -82,6 +82,10 @@ struct NotificationAreaP
     bool requireConfirmationCriticalMessageDuringRestoring = true;
     /// Width of the non-intrusive notification
     int notificationWidth = 800;
+    /// Any open non-intrusive notifications will disappear when another window is activated
+    bool hideNonIntrusiveNotificationsWhenWindowDeactivated = true;
+    /// Prevent non-intrusive notifications from appearing when the FreeCAD Window is not the active window
+    bool preventNonIntrusiveNotificationsWhenWindowNotActive = true;
     //@}
 
     /** @name Widget parameters */
@@ -641,6 +645,16 @@ NotificationArea::ParameterObserver::ParameterObserver(NotificationArea* notific
                  width = 300;
              notificationArea->pImp->notificationWidth = width;
          }},
+        {"HideNonIntrusiveNotificationsWhenWindowDeactivated",
+         [this](const std::string& string) {
+             auto enabled = hGrp->GetBool(string.c_str(), true);
+             notificationArea->pImp->hideNonIntrusiveNotificationsWhenWindowDeactivated = enabled;
+         }},
+        {"PreventNonIntrusiveNotificationsWhenWindowNotActive",
+         [this](const std::string& string) {
+             auto enabled = hGrp->GetBool(string.c_str(), true);
+             notificationArea->pImp->preventNonIntrusiveNotificationsWhenWindowNotActive = enabled;
+         }},
     };
 
     for (auto& val : parameterMap) {
@@ -991,14 +1005,22 @@ void NotificationArea::showInNotificationArea()
 
         msgw += QString::fromLatin1("</table></p>");
 
+        NotificationBox::Options options = NotificationBox::Options::RestrictAreaToReference;
+
+        if(pImp->preventNonIntrusiveNotificationsWhenWindowNotActive) {
+            options = options | NotificationBox::Options::OnlyIfReferenceActive;
+        }
+
+        if(pImp->hideNonIntrusiveNotificationsWhenWindowDeactivated) {
+            options = options | NotificationBox::Options::HideIfReferenceWidgetDeactivated;
+        }
+
         NotificationBox::showText(this->mapToGlobal(QPoint()),
                                   msgw,
                                   getMainWindow(),
                                   pImp->notificationExpirationTime,
                                   pImp->minimumOnScreenTime,
-                                  NotificationBox::Options::OnlyIfReferenceActive |
-                                  NotificationBox::Options::RestrictAreaToReference |
-                                  NotificationBox::Options::HideIfReferenceWidgetDeactivated,
+                                  options,
                                   pImp->notificationWidth);
     }
 }
