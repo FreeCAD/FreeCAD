@@ -996,9 +996,9 @@ void NotificationArea::showInNotificationArea()
                                   getMainWindow(),
                                   pImp->notificationExpirationTime,
                                   pImp->minimumOnScreenTime,
-                                  NotificationBox::OnlyIfReferenceActive |
-                                  NotificationBox::RestrictAreaToReference |
-                                  NotificationBox::HideIfReferenceWidgetDeactivated,
+                                  NotificationBox::Options::OnlyIfReferenceActive |
+                                  NotificationBox::Options::RestrictAreaToReference |
+                                  NotificationBox::Options::HideIfReferenceWidgetDeactivated,
                                   pImp->notificationWidth);
     }
 }

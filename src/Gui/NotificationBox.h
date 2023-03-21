@@ -49,7 +49,7 @@ class NotificationBox
     NotificationBox() = delete;
 
 public:
-     enum Options {
+     enum class Options {
          None = 0x0,
          RestrictAreaToReference = 0x1,
          OnlyIfReferenceActive = 0x2,
@@ -97,6 +97,12 @@ public:
 inline NotificationBox::Options operator|(NotificationBox::Options lhs, NotificationBox::Options rhs) {
     return static_cast<NotificationBox::Options>(
         static_cast<std::underlying_type<NotificationBox::Options>::type>(lhs) |
+        static_cast<std::underlying_type<NotificationBox::Options>::type>(rhs));
+}
+
+inline bool operator&(NotificationBox::Options lhs, NotificationBox::Options rhs) {
+    return (
+        static_cast<std::underlying_type<NotificationBox::Options>::type>(lhs) &
         static_cast<std::underlying_type<NotificationBox::Options>::type>(rhs));
 }
 
