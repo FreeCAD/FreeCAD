@@ -86,17 +86,15 @@ TaskThicknessParameters::TaskThicknessParameters(ViewProviderDressUp *DressUpVie
         this, &TaskThicknessParameters::onReversedChanged);
     connect(ui->checkIntersection, &QCheckBox::toggled,
         this, &TaskThicknessParameters::onIntersectionChanged);
-    connect(ui->buttonRefAdd, &QToolButton::toggled,
-        this, &TaskThicknessParameters::onButtonRefAdd);
-    connect(ui->buttonRefRemove, &QToolButton::toggled,
-        this, &TaskThicknessParameters::onButtonRefRemove);
+    connect(ui->buttonRefSel, &QToolButton::toggled,
+        this, &TaskThicknessParameters::onButtonRefSel);
     connect(ui->modeComboBox, qOverload<int>(&QComboBox::currentIndexChanged),
         this, &TaskThicknessParameters::onModeChanged);
     connect(ui->joinComboBox, qOverload<int>(&QComboBox::currentIndexChanged),
         this, &TaskThicknessParameters::onJoinTypeChanged);
 
     // Create context menu
-    createDeleteAction(ui->listWidgetReferences, ui->buttonRefRemove);
+    createDeleteAction(ui->listWidgetReferences);
     connect(deleteAction, &QAction::triggered, this, &TaskThicknessParameters::onRefDeleted);
 
     connect(ui->listWidgetReferences, &QListWidget::currentItemChanged,
@@ -126,29 +124,25 @@ void TaskThicknessParameters::onSelectionChanged(const Gui::SelectionChanges& ms
 
     if (msg.Type == Gui::SelectionChanges::AddSelection) {
         if (referenceSelected(msg)) {
-            if (selectionMode == refAdd) {
+            // Clear selection.
+            Gui::Selection().clearSelection();
+
+            if (removeItemFromListWidget(ui->listWidgetReferences, msg.pSubName)) {
+                // if there is only one item left, it cannot be deleted
+                if (ui->listWidgetReferences->count() == 1) {
+                    deleteAction->setEnabled(false);
+                    deleteAction->setStatusTip(tr("There must be at least one item"));
+                    // we must also end the selection mode
+                    exitSelectionMode();
+                    clearButtons(none);
+                }
+            }
+            else {
                 ui->listWidgetReferences->addItem(QString::fromStdString(msg.pSubName));
                 // it might be the second one so we can enable the context menu
                 if (ui->listWidgetReferences->count() > 1) {
                     deleteAction->setEnabled(true);
                     deleteAction->setStatusTip(QString());
-                    ui->buttonRefRemove->setEnabled(true);
-                    ui->buttonRefRemove->setToolTip(tr("Click button to enter selection mode,\nclick again to end selection"));
-                }
-            }
-            else {
-                removeItemFromListWidget(ui->listWidgetReferences, msg.pSubName);
-                // remove its selection too
-                Gui::Selection().clearSelection();
-                // if there is only one item left, it cannot be deleted
-                if (ui->listWidgetReferences->count() == 1) {
-                    deleteAction->setEnabled(false);
-                    deleteAction->setStatusTip(tr("There must be at least one item"));
-                    ui->buttonRefRemove->setEnabled(false);
-                    ui->buttonRefRemove->setToolTip(tr("There must be at least one item"));
-                    // we must also end the selection mode
-                    exitSelectionMode();
-                    clearButtons(none);
                 }
             }
             // highlight existing references for possible further selections
@@ -159,8 +153,7 @@ void TaskThicknessParameters::onSelectionChanged(const Gui::SelectionChanges& ms
 
 void TaskThicknessParameters::clearButtons(const selectionModes notThis)
 {
-    if (notThis != refAdd) ui->buttonRefAdd->setChecked(false);
-    if (notThis != refRemove) ui->buttonRefRemove->setChecked(false);
+    if (notThis != refSel) ui->buttonRefSel->setChecked(false);
     DressUpView->highlightReferences(false);
 }
 
@@ -211,8 +204,6 @@ void TaskThicknessParameters::onRefDeleted(void)
     if (ui->listWidgetReferences->count() == 1) {
         deleteAction->setEnabled(false);
         deleteAction->setStatusTip(tr("There must be at least one item"));
-        ui->buttonRefRemove->setEnabled(false);
-        ui->buttonRefRemove->setToolTip(tr("There must be at least one item"));
     }
 }
 

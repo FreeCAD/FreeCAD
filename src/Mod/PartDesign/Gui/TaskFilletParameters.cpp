@@ -58,8 +58,7 @@ TaskFilletParameters::TaskFilletParameters(ViewProviderDressUp *DressUpView, QWi
     PartDesign::Fillet* pcFillet = static_cast<PartDesign::Fillet*>(DressUpView->getObject());
     bool useAllEdges = pcFillet->UseAllEdges.getValue();
     ui->checkBoxUseAllEdges->setChecked(useAllEdges);
-    ui->buttonRefAdd->setEnabled(!useAllEdges);
-    ui->buttonRefRemove->setEnabled(!useAllEdges);
+    ui->buttonRefSel->setEnabled(!useAllEdges);
     ui->listWidgetReferences->setEnabled(!useAllEdges);
     double r = pcFillet->Radius.getValue();
 
@@ -79,15 +78,13 @@ TaskFilletParameters::TaskFilletParameters(ViewProviderDressUp *DressUpView, QWi
 
     connect(ui->filletRadius, qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
         this, &TaskFilletParameters::onLengthChanged);
-    connect(ui->buttonRefAdd, &QToolButton::toggled,
-        this, &TaskFilletParameters::onButtonRefAdd);
-    connect(ui->buttonRefRemove, &QToolButton::toggled,
-        this, &TaskFilletParameters::onButtonRefRemove);
+    connect(ui->buttonRefSel, &QToolButton::toggled,
+        this, &TaskFilletParameters::onButtonRefSel);
     connect(ui->checkBoxUseAllEdges, &QToolButton::toggled,
         this, &TaskFilletParameters::onCheckBoxUseAllEdgesToggled);
 
     // Create context menu
-    createDeleteAction(ui->listWidgetReferences, ui->buttonRefRemove);
+    createDeleteAction(ui->listWidgetReferences);
     connect(deleteAction, &QAction::triggered, this, &TaskFilletParameters::onRefDeleted);
 
     createAddAllEdgesAction(ui->listWidgetReferences);
@@ -114,29 +111,25 @@ void TaskFilletParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
 
     if (msg.Type == Gui::SelectionChanges::AddSelection) {
         if (referenceSelected(msg)) {
-            if (selectionMode == refAdd) {
+            // Clear selection.
+            Gui::Selection().clearSelection();
+
+            if (removeItemFromListWidget(ui->listWidgetReferences, msg.pSubName)) {
+                // if there is only one item left, it cannot be deleted
+                if (ui->listWidgetReferences->count() == 1) {
+                    deleteAction->setEnabled(false);
+                    deleteAction->setStatusTip(tr("There must be at least one item"));
+                    // we must also end the selection mode
+                    exitSelectionMode();
+                    clearButtons(none);
+                }
+            }
+            else {
                 ui->listWidgetReferences->addItem(QString::fromStdString(msg.pSubName));
                 // it might be the second one so we can enable the context menu
                 if (ui->listWidgetReferences->count() > 1) {
                     deleteAction->setEnabled(true);
                     deleteAction->setStatusTip(QString());
-                    ui->buttonRefRemove->setEnabled(true);
-                    ui->buttonRefRemove->setToolTip(tr("Click button to enter selection mode,\nclick again to end selection"));
-                }
-            }
-            else {
-                removeItemFromListWidget(ui->listWidgetReferences, msg.pSubName);
-                // remove its selection too
-                Gui::Selection().clearSelection();
-                // if there is only one item left, it cannot be deleted
-                if (ui->listWidgetReferences->count() == 1) {
-                    deleteAction->setEnabled(false);
-                    deleteAction->setStatusTip(tr("There must be at least one item"));
-                    ui->buttonRefRemove->setEnabled(false);
-                    ui->buttonRefRemove->setToolTip(tr("There must be at least one item"));
-                    // we must also end the selection mode
-                    exitSelectionMode();
-                    clearButtons(none);
                 }
             }
             // highlight existing references for possible further selections
@@ -148,8 +141,7 @@ void TaskFilletParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
 void TaskFilletParameters::onCheckBoxUseAllEdgesToggled(bool checked)
 {
     PartDesign::Fillet* pcFillet = static_cast<PartDesign::Fillet*>(DressUpView->getObject());
-    ui->buttonRefRemove->setEnabled(!checked);
-    ui->buttonRefAdd->setEnabled(!checked);
+    ui->buttonRefSel->setEnabled(!checked);
     ui->listWidgetReferences->setEnabled(!checked);
     pcFillet->UseAllEdges.setValue(checked);
     pcFillet->getDocument()->recomputeFeature(pcFillet);
@@ -157,8 +149,7 @@ void TaskFilletParameters::onCheckBoxUseAllEdgesToggled(bool checked)
 
 void TaskFilletParameters::clearButtons(const selectionModes notThis)
 {
-    if (notThis != refAdd) ui->buttonRefAdd->setChecked(false);
-    if (notThis != refRemove) ui->buttonRefRemove->setChecked(false);
+    if (notThis != refSel) ui->buttonRefSel->setChecked(false);
     DressUpView->highlightReferences(false);
 }
 
@@ -209,15 +200,12 @@ void TaskFilletParameters::onRefDeleted()
     if (ui->listWidgetReferences->count() == 1) {
         deleteAction->setEnabled(false);
         deleteAction->setStatusTip(tr("There must be at least one item"));
-        ui->buttonRefRemove->setEnabled(false);
-        ui->buttonRefRemove->setToolTip(tr("There must be at least one item"));
     }
 }
 
 void TaskFilletParameters::onAddAllEdges()
 {
     TaskDressUpParameters::addAllEdges(ui->listWidgetReferences);
-    ui->buttonRefRemove->setEnabled(true);
 }
 
 void TaskFilletParameters::onLengthChanged(double len)

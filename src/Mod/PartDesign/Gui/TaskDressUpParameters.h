@@ -63,13 +63,12 @@ public:
     }
 
 protected Q_SLOTS:
-    void onButtonRefAdd(const bool checked);
-    void onButtonRefRemove(const bool checked);
+    void onButtonRefSel(const bool checked);
     void doubleClicked(QListWidgetItem* item);
     void setSelection(QListWidgetItem* current);
     void itemClickedTimeout();
     virtual void onRefDeleted(void) = 0;
-    void createDeleteAction(QListWidget* parentList, QWidget* parentButton);
+    void createDeleteAction(QListWidget* parentList);
     void createAddAllEdgesAction(QListWidget* parentList);
 
 protected:
@@ -81,9 +80,9 @@ protected:
     void addAllEdges(QListWidget* listWidget);
 
 protected:
-    enum selectionModes { none, refAdd, refRemove, plane, line };
+    enum selectionModes { none, refSel, plane, line };
     virtual void clearButtons(const selectionModes notThis) = 0;
-    static void removeItemFromListWidget(QListWidget* widget, const char* itemstr);
+    static bool removeItemFromListWidget(QListWidget* widget, const char* itemstr);
 
     ViewProviderDressUp* getDressUpView() const
     { return DressUpView; }

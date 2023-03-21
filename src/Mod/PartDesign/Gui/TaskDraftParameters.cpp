@@ -85,17 +85,15 @@ TaskDraftParameters::TaskDraftParameters(ViewProviderDressUp *DressUpView, QWidg
         this, &TaskDraftParameters::onAngleChanged);
     connect(ui->checkReverse, &QCheckBox::toggled,
         this, &TaskDraftParameters::onReversedChanged);
-    connect(ui->buttonRefAdd, &QToolButton::toggled,
-        this, &TaskDraftParameters::onButtonRefAdd);
-    connect(ui->buttonRefRemove, &QToolButton::toggled,
-        this, &TaskDraftParameters::onButtonRefRemove);
+    connect(ui->buttonRefSel, &QToolButton::toggled,
+        this, &TaskDraftParameters::onButtonRefSel);
     connect(ui->buttonPlane, &QToolButton::toggled,
         this, &TaskDraftParameters::onButtonPlane);
     connect(ui->buttonLine, &QToolButton::toggled,
         this, &TaskDraftParameters::onButtonLine);
 
     // Create context menu
-    createDeleteAction(ui->listWidgetReferences, ui->buttonRefRemove);
+    createDeleteAction(ui->listWidgetReferences);
     connect(deleteAction, &QAction::triggered, this, &TaskDraftParameters::onRefDeleted);
 
     connect(ui->listWidgetReferences, &QListWidget::currentItemChanged,
@@ -127,34 +125,31 @@ void TaskDraftParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
 
     if (msg.Type == Gui::SelectionChanges::AddSelection) {
         if (referenceSelected(msg)) {
-            if (selectionMode == refAdd) {
-                ui->listWidgetReferences->addItem(QString::fromStdString(msg.pSubName));
-                // it might be the second one so we can enable the context menu
-                if (ui->listWidgetReferences->count() > 1) {
-                    deleteAction->setEnabled(true);
-                    deleteAction->setStatusTip(QString());
-                    ui->buttonRefRemove->setEnabled(true);
-                    ui->buttonRefRemove->setToolTip(tr("Click button to enter selection mode,\nclick again to end selection"));
-                }
-            }
-            else {
-                removeItemFromListWidget(ui->listWidgetReferences, msg.pSubName);
-                // remove its selection too
-                Gui::Selection().clearSelection();
+            // Clear selection.
+            Gui::Selection().clearSelection();
+
+            if (removeItemFromListWidget(ui->listWidgetReferences, msg.pSubName)) {
                 // if there is only one item left, it cannot be deleted
                 if (ui->listWidgetReferences->count() == 1) {
                     deleteAction->setEnabled(false);
                     deleteAction->setStatusTip(tr("There must be at least one item"));
-                    ui->buttonRefRemove->setEnabled(false);
-                    ui->buttonRefRemove->setToolTip(tr("There must be at least one item"));
                     // we must also end the selection mode
                     exitSelectionMode();
                     clearButtons(none);
                 }
             }
+            else {
+                ui->listWidgetReferences->addItem(QString::fromStdString(msg.pSubName));
+                // it might be the second one so we can enable the context menu
+                if (ui->listWidgetReferences->count() > 1) {
+                    deleteAction->setEnabled(true);
+                    deleteAction->setStatusTip(QString());
+                }
+            }
             // highlight existing references for possible further selections
             DressUpView->highlightReferences(true);
-        } else if (selectionMode == plane) {
+        }
+        else if (selectionMode == plane) {
             PartDesign::Draft* pcDraft = static_cast<PartDesign::Draft*>(DressUpView->getObject());
             std::vector<std::string> planes;
             App::DocumentObject* selObj;
@@ -170,7 +165,8 @@ void TaskDraftParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
             DressUpView->highlightReferences(true);
             // hide the draft if there was a computation error
             hideOnError();
-        } else if (selectionMode == line) {
+        } 
+        else if (selectionMode == line) {
             PartDesign::Draft* pcDraft = static_cast<PartDesign::Draft*>(DressUpView->getObject());
             std::vector<std::string> edges;
             App::DocumentObject* selObj;
@@ -192,8 +188,7 @@ void TaskDraftParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
 
 void TaskDraftParameters::clearButtons(const selectionModes notThis)
 {
-    if (notThis != refAdd) ui->buttonRefAdd->setChecked(false);
-    if (notThis != refRemove) ui->buttonRefRemove->setChecked(false);
+    if (notThis != refSel) ui->buttonRefSel->setChecked(false);
     if (notThis != line) ui->buttonLine->setChecked(false);
     if (notThis != plane) ui->buttonPlane->setChecked(false);
     DressUpView->highlightReferences(false);
@@ -271,8 +266,6 @@ void TaskDraftParameters::onRefDeleted(void)
     if (ui->listWidgetReferences->count() == 1) {
         deleteAction->setEnabled(false);
         deleteAction->setStatusTip(tr("There must be at least one item"));
-        ui->buttonRefRemove->setEnabled(false);
-        ui->buttonRefRemove->setToolTip(tr("There must be at least one item"));
     }
 }
 

@@ -97,8 +97,7 @@ void TaskDressUpParameters::setupTransaction()
 
 bool TaskDressUpParameters::referenceSelected(const Gui::SelectionChanges& msg)
 {
-    if ((msg.Type == Gui::SelectionChanges::AddSelection) && (
-                (selectionMode == refAdd) || (selectionMode == refRemove))) {
+    if ((msg.Type == Gui::SelectionChanges::AddSelection) && (selectionMode == refSel)) {
 
         if (strcmp(msg.pDocName, DressUpView->getObject()->getDocument()->getName()) != 0)
             return false;
@@ -115,17 +114,11 @@ bool TaskDressUpParameters::referenceSelected(const Gui::SelectionChanges& msg)
         std::vector<std::string> refs = pcDressUp->Base.getSubValues();
         std::vector<std::string>::iterator f = std::find(refs.begin(), refs.end(), subName);
 
-        if (selectionMode == refAdd) {
-            if (f == refs.end())
-                refs.push_back(subName);
-            else
-                return false; // duplicate selection
-        } else {
-            if (f != refs.end())
-                refs.erase(f);
-            else
-                return false;
-        }
+        if (f != refs.end())
+            refs.erase(f);
+        else
+            refs.push_back(subName);
+
         DressUpView->highlightReferences(false);
         setupTransaction();
         pcDressUp->Base.setValue(base, refs);
@@ -162,7 +155,7 @@ void TaskDressUpParameters::addAllEdges(QListWidget* widget)
             pcDressUp->getDocument()->recomputeFeature(pcDressUp);
             hideObject();
             DressUpView->highlightReferences(true);
-            onButtonRefAdd(true);
+            onButtonRefSel(true);
 
             if (deleteAction) {
                 deleteAction->setEnabled(widget->count() > 1);
@@ -171,12 +164,12 @@ void TaskDressUpParameters::addAllEdges(QListWidget* widget)
     }
 }
 
-void TaskDressUpParameters::onButtonRefAdd(bool checked)
+void TaskDressUpParameters::onButtonRefSel(bool checked)
 {
     if (checked) {
-        clearButtons(refAdd);
+        clearButtons(refSel);
         hideObject();
-        selectionMode = refAdd;
+        selectionMode = refSel;
         if (addAllEdgesAction)
             addAllEdgesAction->setEnabled(true);
         AllowSelectionFlags allow;
@@ -189,25 +182,6 @@ void TaskDressUpParameters::onButtonRefAdd(bool checked)
     else {
         if (addAllEdgesAction)
             addAllEdgesAction->setEnabled(false);
-        exitSelectionMode();
-        DressUpView->highlightReferences(false);
-    }
-}
-
-void TaskDressUpParameters::onButtonRefRemove(const bool checked)
-{
-    if (checked) {
-        clearButtons(refRemove);
-        hideObject();
-        selectionMode = refRemove;
-        AllowSelectionFlags allow;
-        allow.setFlag(AllowSelection::EDGE, allowEdges);
-        allow.setFlag(AllowSelection::FACE, allowFaces);
-        Gui::Selection().clearSelection();
-        Gui::Selection().addSelectionGate(new ReferenceSelection(this->getBase(), allow));
-        DressUpView->highlightReferences(true);
-    }
-    else {
         exitSelectionMode();
         DressUpView->highlightReferences(false);
     }
@@ -286,7 +260,7 @@ void TaskDressUpParameters::createAddAllEdgesAction(QListWidget* parentList)
 }
 
 
-void TaskDressUpParameters::createDeleteAction(QListWidget* parentList, QWidget* parentButton)
+void TaskDressUpParameters::createDeleteAction(QListWidget* parentList)
 {
     // creates a context menu, a shortcut for it and connects it to a slot function
 
@@ -301,8 +275,6 @@ void TaskDressUpParameters::createDeleteAction(QListWidget* parentList, QWidget*
     if (parentList->count() == 1) {
         deleteAction->setEnabled(false);
         deleteAction->setStatusTip(tr("There must be at least one item"));
-        parentButton->setEnabled(false);
-        parentButton->setToolTip(tr("There must be at least one item"));
     }
     parentList->setContextMenuPolicy(Qt::ActionsContextMenu);
 }
@@ -347,7 +319,7 @@ const std::vector<std::string> TaskDressUpParameters::getReferences() const
 }
 
 // TODO: This code is identical with TaskTransformedParameters::removeItemFromListWidget()
-void TaskDressUpParameters::removeItemFromListWidget(QListWidget* widget, const char* itemstr)
+bool TaskDressUpParameters::removeItemFromListWidget(QListWidget* widget, const char* itemstr)
 {
     QList<QListWidgetItem*> items = widget->findItems(QString::fromLatin1(itemstr), Qt::MatchExactly);
     if (!items.empty()) {
@@ -355,7 +327,9 @@ void TaskDressUpParameters::removeItemFromListWidget(QListWidget* widget, const 
             QListWidgetItem* it = widget->takeItem(widget->row(*i));
             delete it;
         }
+        return true;
     }
+    return false;
 }
 
 void TaskDressUpParameters::hideOnError()
