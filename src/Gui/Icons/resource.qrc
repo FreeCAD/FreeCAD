@@ -256,6 +256,9 @@
         <file>Std_UserEditModeCutting.svg</file>
         <file>Std_UserEditModeColor.svg</file>
         <file>Warning.svg</file>
+        <file>image-open.svg</file>
+        <file>image-plane.svg</file>
+        <file>image-scaling.svg</file>
     </qresource>
     <!-- Demonstrating support for an embedded icon theme -->
     <!-- See also http://permalink.gmane.org/gmane.comp.lib.qt.general/26374 -->

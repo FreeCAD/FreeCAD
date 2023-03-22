@@ -697,6 +697,7 @@ MenuItem* StdWorkbench::setupMenuBar() const
     *tool << "Std_DlgParameter"
           << "Separator"
           << "Std_ViewScreenShot"
+          << "Std_ViewLoadImage"
           << "Std_SceneInspector"
           << "Std_DependencyGraph"
           << "Std_ProjectUtil"
