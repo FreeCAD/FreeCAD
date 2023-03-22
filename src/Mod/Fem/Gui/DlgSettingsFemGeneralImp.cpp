@@ -55,6 +55,7 @@ void DlgSettingsFemGeneralImp::saveSettings()
     ui->cb_wd_custom->onSave();
     ui->le_wd_custom->onSave();
     ui->cb_overwrite_solver_working_directory->onSave();
+    ui->cmb_def_solver->onSave();
 }
 
 void DlgSettingsFemGeneralImp::loadSettings()
@@ -70,6 +71,7 @@ void DlgSettingsFemGeneralImp::loadSettings()
     ui->cb_wd_custom->onRestore();
     ui->le_wd_custom->onRestore();
     ui->cb_overwrite_solver_working_directory->onRestore();
+    ui->cmb_def_solver->onRestore();
 }
 
 /**
