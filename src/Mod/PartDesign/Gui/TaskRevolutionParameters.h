@@ -39,14 +39,12 @@ class ViewProvider;
 
 namespace PartDesignGui {
 
-
-
 class TaskRevolutionParameters : public TaskSketchBasedParameters
 {
     Q_OBJECT
 
 public:
-    explicit TaskRevolutionParameters(ViewProvider* RevolutionView,QWidget *parent = nullptr);
+    explicit TaskRevolutionParameters(ViewProvider* RevolutionView, QWidget* parent = nullptr);
     ~TaskRevolutionParameters() override;
 
     void apply() override;
@@ -71,7 +69,6 @@ protected:
     void onSelectionChanged(const Gui::SelectionChanges& msg) override;
     void changeEvent(QEvent *event) override;
     void getReferenceAxis(App::DocumentObject *&obj, std::vector<std::string> &sub) const;
-    double getAngle() const;
     bool getMidplane() const;
     bool getReversed() const;
 
@@ -110,7 +107,9 @@ public:
     explicit TaskDlgRevolutionParameters(PartDesignGui::ViewProvider *RevolutionView);
 
     ViewProvider* getRevolutionView() const
-    { return vp; }
+    {
+        return vp;
+    }
 };
 
 } //namespace PartDesignGui
