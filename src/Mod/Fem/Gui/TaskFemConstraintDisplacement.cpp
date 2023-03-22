@@ -82,15 +82,15 @@ TaskFemConstraintDisplacement::TaskFemConstraintDisplacement(
     // Get the feature data
     Fem::ConstraintDisplacement* pcConstraint =
         static_cast<Fem::ConstraintDisplacement*>(ConstraintView->getObject());
-    double fStates[6] {};
+    Base::Quantity fStates[6] {};
     const char* sStates[3] {};
     bool bStates[16] {};
-    fStates[0] = pcConstraint->xDisplacement.getValue();
-    fStates[1] = pcConstraint->yDisplacement.getValue();
-    fStates[2] = pcConstraint->zDisplacement.getValue();
-    fStates[3] = pcConstraint->xRotation.getValue();
-    fStates[4] = pcConstraint->yRotation.getValue();
-    fStates[5] = pcConstraint->zRotation.getValue();
+    fStates[0] = pcConstraint->xDisplacement.getQuantityValue();
+    fStates[1] = pcConstraint->yDisplacement.getQuantityValue();
+    fStates[2] = pcConstraint->zDisplacement.getQuantityValue();
+    fStates[3] = pcConstraint->xRotation.getQuantityValue();
+    fStates[4] = pcConstraint->yRotation.getQuantityValue();
+    fStates[5] = pcConstraint->zRotation.getQuantityValue();
     sStates[0] = pcConstraint->xDisplacementFormula.getValue();
     sStates[1] = pcConstraint->yDisplacementFormula.getValue();
     sStates[2] = pcConstraint->zDisplacementFormula.getValue();
@@ -169,6 +169,14 @@ TaskFemConstraintDisplacement::TaskFemConstraintDisplacement(
     // Selection buttons
     buttonGroup->addButton(ui->btnAdd, (int)SelectionChangeModes::refAdd);
     buttonGroup->addButton(ui->btnRemove, (int)SelectionChangeModes::refRemove);
+
+    // Bind input fields to properties
+    ui->spinxDisplacement->bind(pcConstraint->xDisplacement);
+    ui->spinyDisplacement->bind(pcConstraint->yDisplacement);
+    ui->spinzDisplacement->bind(pcConstraint->zDisplacement);
+    ui->spinxRotation->bind(pcConstraint->xRotation);
+    ui->spinyRotation->bind(pcConstraint->yRotation);
+    ui->spinzRotation->bind(pcConstraint->zRotation);
 
     updateUI();
 }
@@ -432,34 +440,34 @@ const std::string TaskFemConstraintDisplacement::getReferences() const
     return TaskFemConstraint::getReferences(items);
 }
 
-double TaskFemConstraintDisplacement::get_spinxDisplacement() const
+std::string TaskFemConstraintDisplacement::get_spinxDisplacement() const
 {
-    return ui->spinxDisplacement->value();
+    return ui->spinxDisplacement->value().getSafeUserString().toStdString();
 }
 
-double TaskFemConstraintDisplacement::get_spinyDisplacement() const
+std::string TaskFemConstraintDisplacement::get_spinyDisplacement() const
 {
-    return ui->spinyDisplacement->value();
+    return ui->spinyDisplacement->value().getSafeUserString().toStdString();
 }
 
-double TaskFemConstraintDisplacement::get_spinzDisplacement() const
+std::string TaskFemConstraintDisplacement::get_spinzDisplacement() const
 {
-    return ui->spinzDisplacement->value();
+    return ui->spinzDisplacement->value().getSafeUserString().toStdString();
 }
 
-double TaskFemConstraintDisplacement::get_spinxRotation() const
+std::string TaskFemConstraintDisplacement::get_spinxRotation() const
 {
-    return ui->spinxRotation->value();
+    return ui->spinxRotation->value().getSafeUserString().toStdString();
 }
 
-double TaskFemConstraintDisplacement::get_spinyRotation() const
+std::string TaskFemConstraintDisplacement::get_spinyRotation() const
 {
-    return ui->spinyRotation->value();
+    return ui->spinyRotation->value().getSafeUserString().toStdString();
 }
 
-double TaskFemConstraintDisplacement::get_spinzRotation() const
+std::string TaskFemConstraintDisplacement::get_spinzRotation() const
 {
-    return ui->spinzRotation->value();
+    return ui->spinzRotation->value().getSafeUserString().toStdString();
 }
 
 std::string TaskFemConstraintDisplacement::get_xFormula() const
@@ -625,27 +633,31 @@ bool TaskDlgFemConstraintDisplacement::accept()
         static_cast<const TaskFemConstraintDisplacement*>(parameter);
 
     try {
-        Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.%s.xDisplacement = %f",
-                                name.c_str(), parameterDisplacement->get_spinxDisplacement());
+        Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.%s.xDisplacement = \"%s\"",
+                                name.c_str(),
+                                parameterDisplacement->get_spinxDisplacement().c_str());
         Gui::Command::doCommand(Gui::Command::Doc,
                                 "App.ActiveDocument.%s.xDisplacementFormula = \"%s\"",
                                 name.c_str(), parameterDisplacement->get_xFormula().c_str());
-        Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.%s.yDisplacement = %f",
-                                name.c_str(), parameterDisplacement->get_spinyDisplacement());
+        Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.%s.yDisplacement = \"%s\"",
+                                name.c_str(),
+                                parameterDisplacement->get_spinyDisplacement().c_str());
         Gui::Command::doCommand(Gui::Command::Doc,
                                 "App.ActiveDocument.%s.yDisplacementFormula = \"%s\"",
                                 name.c_str(), parameterDisplacement->get_yFormula().c_str());
-        Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.%s.zDisplacement = %f",
-                                name.c_str(), parameterDisplacement->get_spinzDisplacement());
+        Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.%s.zDisplacement = \"%s\"",
+                                name.c_str(),
+                                parameterDisplacement->get_spinzDisplacement().c_str());
         Gui::Command::doCommand(Gui::Command::Doc,
                                 "App.ActiveDocument.%s.zDisplacementFormula = \"%s\"",
                                 name.c_str(), parameterDisplacement->get_zFormula().c_str());
-        Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.%s.xRotation = %f",
-                                name.c_str(), parameterDisplacement->get_spinxRotation());
-        Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.%s.yRotation = %f",
-                                name.c_str(), parameterDisplacement->get_spinyRotation());
-        Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.%s.zRotation = %f",
-                                name.c_str(), parameterDisplacement->get_spinzRotation());
+        Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.%s.xRotation = \"%s\"",
+                                name.c_str(), parameterDisplacement->get_spinxRotation().c_str());
+        Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.%s.yRotation = \"%s\"",
+                                name.c_str(), parameterDisplacement->get_spinyRotation().c_str());
+        Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.%s.zRotation = \"%s\"",
+                                name.c_str(),
+                                parameterDisplacement->get_spinzRotation().c_str());
         Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.%s.xFree = %s",
                                 name.c_str(),
                                 parameterDisplacement->get_dispxfree() ? "True" : "False");
@@ -696,7 +708,7 @@ bool TaskDlgFemConstraintDisplacement::accept()
                                 name.c_str(),
                                 parameterDisplacement->get_useFlowSurfaceForce() ? "True"
                                                                                  : "False");
-
+        
         std::string scale = parameterDisplacement->getScale();// OvG: determine modified scale
         Gui::Command::doCommand(Gui::Command::Doc,
                                 "App.ActiveDocument.%s.Scale = %s",
