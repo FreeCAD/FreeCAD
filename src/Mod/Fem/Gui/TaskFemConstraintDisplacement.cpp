@@ -698,7 +698,7 @@ bool TaskDlgFemConstraintDisplacement::accept()
                                 name.c_str(),
                                 parameterDisplacement->get_useFlowSurfaceForce() ? "True"
                                                                                  : "False");
-        
+
         std::string scale = parameterDisplacement->getScale();// OvG: determine modified scale
         Gui::Command::doCommand(Gui::Command::Doc,
                                 "App.ActiveDocument.%s.Scale = %s",

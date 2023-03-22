@@ -48,7 +48,7 @@ class _TaskPanel(object):
         self._paramWidget = FreeCADGui.PySideUic.loadUi(
             FreeCAD.getHomePath() + "Mod/Fem/Resources/ui/FlowVelocity.ui"
         )
-        
+
         # geometry selection widget
         # start with Solid in list!
         self._selectionWidget = selection_widgets.GeometryElementsSelection(
