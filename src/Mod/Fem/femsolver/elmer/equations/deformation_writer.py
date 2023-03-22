@@ -44,6 +44,7 @@ class DeformationWriter:
     def getDeformationSolver(self, equation):
         s = self.write.createLinearSolver(equation)
         # output the equation parameters
+        s = self.write.createNonlinearSolver(equation)
         s["Equation"] = "Nonlinear elasticity solver"
         s["Procedure"] = sifio.FileAttr("ElasticSolve/ElasticSolver")
         if equation.CalculateStrains is True:

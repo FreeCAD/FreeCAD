@@ -29,16 +29,15 @@ __url__ = "https://www.freecadweb.org"
 #  @{
 
 from femtools import femutils
+from . import nonlinear
 from ... import equationbase
-from . import linear
-
 
 def create(doc, name="Deformation"):
     return femutils.createObject(
         doc, name, Proxy, ViewProxy)
 
 
-class Proxy(linear.Proxy, equationbase.DeformationProxy):
+class Proxy(nonlinear.Proxy, equationbase.DeformationProxy):
 
     Type = "Fem::EquationElmerDeformation"
 
@@ -107,14 +106,11 @@ class Proxy(linear.Proxy, equationbase.DeformationProxy):
 
         obj.Priority = 10
         obj.CalculatePrincipal = True
-        # according to Elmer tutorial and forum, for stresses direct solving
-        # is recommended -> tests showed 10 times faster and even more accurate
-        obj.LinearSolverType = "Direct"
-        obj.LinearDirectMethod = "Umfpack"
+        obj.CalculateStresses = True
         obj.Variable = "-dofs 3 Displacement"
 
 
-class ViewProxy(linear.ViewProxy, equationbase.DeformationViewProxy):
+class ViewProxy(nonlinear.ViewProxy, equationbase.DeformationViewProxy):
     pass
 
 ##  @}
