@@ -692,7 +692,7 @@ public:
     }
 
     /// Returns true if this is shared data, or false if a unique copy has been made.
-    /// It is safe to access data only if it has been copied prior. To force a copy 
+    /// It is safe to access data only if it has been copied prior. To force a copy
     /// please \see compact()
     bool isRaw() const
     {
