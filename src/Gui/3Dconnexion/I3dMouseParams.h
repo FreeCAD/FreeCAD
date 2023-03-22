@@ -15,11 +15,11 @@ class I3dMouseSensor
 {
 public:
 
-	enum ESpeed {
-	   kLowSpeed = 0,
-	   kMidSpeed,
-	   kHighSpeed
-	};
+    enum ESpeed {
+       kLowSpeed = 0,
+       kMidSpeed,
+       kHighSpeed
+    };
 
 virtual bool	IsPanZoom() const = 0;
 virtual bool	IsRotate() const  = 0;
@@ -41,23 +41,23 @@ class I3dMouseNavigation
 public:
 
    enum EPivot {
-	  kManualPivot = 0,
-	  kAutoPivot,
-	  kAutoPivotOverride
+      kManualPivot = 0,
+      kAutoPivot,
+      kAutoPivotOverride
    };
 
    enum ENavigation {
-	  kObjectMode = 0,
-	  kCameraMode,
-	  kFlyMode,
-	  kWalkMode,
-	  kHelicopterMode
+      kObjectMode = 0,
+      kCameraMode,
+      kFlyMode,
+      kWalkMode,
+      kHelicopterMode
    };
 
    enum EPivotVisibility {
-	  kHidePivot = 0,
-	  kShowPivot,
-	  kShowMovingPivot
+      kHidePivot = 0,
+      kShowPivot,
+      kShowMovingPivot
    };
 
 
