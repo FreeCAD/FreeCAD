@@ -26,6 +26,7 @@
 #ifndef GUI_TASKVIEW_TaskFemConstraintDisplacement_H
 #define GUI_TASKVIEW_TaskFemConstraintDisplacement_H
 
+#include <memory>
 #include <QObject>
 
 #include <Gui/Selection.h>
@@ -44,7 +45,8 @@ class TaskFemConstraintDisplacement : public TaskFemConstraintOnBoundary
     Q_OBJECT
 
 public:
-    explicit TaskFemConstraintDisplacement(ViewProviderFemConstraintDisplacement *ConstraintView, QWidget *parent = nullptr);
+    explicit TaskFemConstraintDisplacement(ViewProviderFemConstraintDisplacement* ConstraintView,
+                                           QWidget* parent = nullptr);
     ~TaskFemConstraintDisplacement() override;
     const std::string getReferences() const override;
     double get_spinxDisplacement()const;
@@ -99,8 +101,7 @@ protected:
 
 private:
     void updateUI();
-    Ui_TaskFemConstraintDisplacement* ui;
-
+    std::unique_ptr<Ui_TaskFemConstraintDisplacement> ui;
 };
 
 class TaskDlgFemConstraintDisplacement : public TaskDlgFemConstraint
@@ -108,7 +109,8 @@ class TaskDlgFemConstraintDisplacement : public TaskDlgFemConstraint
     Q_OBJECT
 
 public:
-    explicit TaskDlgFemConstraintDisplacement(ViewProviderFemConstraintDisplacement *ConstraintView);
+    explicit TaskDlgFemConstraintDisplacement(
+        ViewProviderFemConstraintDisplacement* ConstraintView);
     void open() override;
     bool accept() override;
     bool reject() override;

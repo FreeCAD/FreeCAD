@@ -63,7 +63,7 @@ protected:
 
 private:
     QWidget* proxy;
-    Ui_TaskAnalysisInfo* ui;
+    std::unique_ptr<Ui_TaskAnalysisInfo> ui;
 };
 
 } //namespace FEMGUI_TaskAnalysisInfo_H

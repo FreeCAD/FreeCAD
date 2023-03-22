@@ -42,11 +42,12 @@ using namespace Gui;
 
 /* TRANSLATOR FemGui::TaskFemConstraintSpring */
 
-TaskFemConstraintSpring::TaskFemConstraintSpring(ViewProviderFemConstraintSpring* ConstraintView, QWidget* parent)
-    : TaskFemConstraintOnBoundary(ConstraintView, parent, "FEM_ConstraintSpring")
+TaskFemConstraintSpring::TaskFemConstraintSpring(ViewProviderFemConstraintSpring* ConstraintView,
+                                                 QWidget* parent)
+    : TaskFemConstraintOnBoundary(ConstraintView, parent, "FEM_ConstraintSpring"),
+      ui(new Ui_TaskFemConstraintSpring)
 {
     proxy = new QWidget(this);
-    ui = new Ui_TaskFemConstraintSpring();
     ui->setupUi(proxy);
     QMetaObject::connectSlotsByName(this);
 
@@ -63,21 +64,26 @@ TaskFemConstraintSpring::TaskFemConstraintSpring(ViewProviderFemConstraintSpring
 
     /* Note: */
     // Get the feature data
-    Fem::ConstraintSpring* pcConstraint = static_cast<Fem::ConstraintSpring*>(ConstraintView->getObject());
+    Fem::ConstraintSpring* pcConstraint =
+        static_cast<Fem::ConstraintSpring*>(ConstraintView->getObject());
 
     std::vector<App::DocumentObject*> Objects = pcConstraint->References.getValues();
     std::vector<std::string> SubElements = pcConstraint->References.getSubValues();
 
     // Fill data into dialog elements
-    ui->if_norm->setMinimum(0); // TODO fix this -------------------------------------------------------------------
+    ui->if_norm->setMinimum(
+        0);// TODO fix this -------------------------------------------------------------------
     ui->if_norm->setMaximum(FLOAT_MAX);
-    Base::Quantity ns = Base::Quantity((pcConstraint->normalStiffness.getValue()), Base::Unit::Stiffness);
+    Base::Quantity ns =
+        Base::Quantity((pcConstraint->normalStiffness.getValue()), Base::Unit::Stiffness);
     ui->if_norm->setValue(ns);
 
     // Fill data into dialog elements
-    ui->if_tan->setMinimum(0); // TODO fix this -------------------------------------------------------------------
+    ui->if_tan->setMinimum(
+        0);// TODO fix this -------------------------------------------------------------------
     ui->if_tan->setMaximum(FLOAT_MAX);
-    Base::Quantity ts = Base::Quantity((pcConstraint->tangentialStiffness.getValue()), Base::Unit::Stiffness);
+    Base::Quantity ts =
+        Base::Quantity((pcConstraint->tangentialStiffness.getValue()), Base::Unit::Stiffness);
     ui->if_tan->setValue(ts);
 
     /* */
@@ -98,9 +104,7 @@ TaskFemConstraintSpring::TaskFemConstraintSpring(ViewProviderFemConstraintSpring
 }
 
 TaskFemConstraintSpring::~TaskFemConstraintSpring()
-{
-    delete ui;
-}
+{}
 
 void TaskFemConstraintSpring::updateUI()
 {
@@ -111,19 +115,21 @@ void TaskFemConstraintSpring::updateUI()
     }
 }
 
-
 void TaskFemConstraintSpring::addToSelection()
 {
-    std::vector<Gui::SelectionObject> selection = Gui::Selection().getSelectionEx(); //gets vector of selected objects of active document
+    std::vector<Gui::SelectionObject> selection =
+        Gui::Selection().getSelectionEx();// gets vector of selected objects of active document
     if (selection.empty()) {
         QMessageBox::warning(this, tr("Selection error"), tr("Nothing selected!"));
         return;
     }
-    Fem::ConstraintSpring* pcConstraint = static_cast<Fem::ConstraintSpring*>(ConstraintView->getObject());
+    Fem::ConstraintSpring* pcConstraint =
+        static_cast<Fem::ConstraintSpring*>(ConstraintView->getObject());
     std::vector<App::DocumentObject*> Objects = pcConstraint->References.getValues();
     std::vector<std::string> SubElements = pcConstraint->References.getSubValues();
 
-    for (std::vector<Gui::SelectionObject>::iterator it = selection.begin(); it != selection.end(); ++it) {//for every selected object
+    for (std::vector<Gui::SelectionObject>::iterator it = selection.begin(); it != selection.end();
+         ++it) {// for every selected object
         if (!it->isObjectTypeOf(Part::Feature::getClassTypeId())) {
             QMessageBox::warning(this, tr("Selection error"), tr("Selected object is not a part!"));
             return;
@@ -131,17 +137,25 @@ void TaskFemConstraintSpring::addToSelection()
         const std::vector<std::string>& subNames = it->getSubNames();
         App::DocumentObject* obj = it->getObject();
 
-        for (size_t subIt = 0; subIt < (subNames.size()); ++subIt) {// for every selected sub element
+        for (size_t subIt = 0; subIt < (subNames.size());
+             ++subIt) {// for every selected sub element
             bool addMe = true;
             if (subNames[subIt].substr(0, 4) != "Face") {
                 QMessageBox::warning(this, tr("Selection error"), tr("Only faces can be picked"));
                 return;
             }
-            for (std::vector<std::string>::iterator itr = std::find(SubElements.begin(), SubElements.end(), subNames[subIt]);
-                itr != SubElements.end();
-                itr = std::find(++itr, SubElements.end(), subNames[subIt]))
-            {// for every sub element in selection that matches one in old list
-                if (obj == Objects[std::distance(SubElements.begin(), itr)]) {//if selected sub element's object equals the one in old list then it was added before so don't add
+            for (std::vector<std::string>::iterator itr =
+                     std::find(SubElements.begin(), SubElements.end(), subNames[subIt]);
+                 itr != SubElements.end();
+                 itr = std::find(++itr,
+                                 SubElements.end(),
+                                 subNames[subIt])) {// for every sub element in selection that
+                                                    // matches one in old list
+                if (obj
+                    == Objects[std::distance(
+                        SubElements.begin(),
+                        itr)]) {// if selected sub element's object equals the one in old list then
+                                // it was added before so don't add
                     addMe = false;
                 }
             }
@@ -153,23 +167,26 @@ void TaskFemConstraintSpring::addToSelection()
             }
         }
     }
-    //Update UI
+    // Update UI
     pcConstraint->References.setValues(Objects, SubElements);
     updateUI();
 }
 
 void TaskFemConstraintSpring::removeFromSelection()
 {
-    std::vector<Gui::SelectionObject> selection = Gui::Selection().getSelectionEx(); //gets vector of selected objects of active document
+    std::vector<Gui::SelectionObject> selection =
+        Gui::Selection().getSelectionEx();// gets vector of selected objects of active document
     if (selection.empty()) {
         QMessageBox::warning(this, tr("Selection error"), tr("Nothing selected!"));
         return;
     }
-    Fem::ConstraintSpring* pcConstraint = static_cast<Fem::ConstraintSpring*>(ConstraintView->getObject());
+    Fem::ConstraintSpring* pcConstraint =
+        static_cast<Fem::ConstraintSpring*>(ConstraintView->getObject());
     std::vector<App::DocumentObject*> Objects = pcConstraint->References.getValues();
     std::vector<std::string> SubElements = pcConstraint->References.getSubValues();
     std::vector<size_t> itemsToDel;
-    for (std::vector<Gui::SelectionObject>::iterator it = selection.begin(); it != selection.end(); ++it) {//for every selected object
+    for (std::vector<Gui::SelectionObject>::iterator it = selection.begin(); it != selection.end();
+         ++it) {// for every selected object
         if (!it->isObjectTypeOf(Part::Feature::getClassTypeId())) {
             QMessageBox::warning(this, tr("Selection error"), tr("Selected object is not a part!"));
             return;
@@ -177,12 +194,20 @@ void TaskFemConstraintSpring::removeFromSelection()
         const std::vector<std::string>& subNames = it->getSubNames();
         App::DocumentObject* obj = it->getObject();
 
-        for (size_t subIt = 0; subIt < (subNames.size()); ++subIt) {// for every selected sub element
-            for (std::vector<std::string>::iterator itr = std::find(SubElements.begin(), SubElements.end(), subNames[subIt]);
-                itr != SubElements.end();
-                itr = std::find(++itr, SubElements.end(), subNames[subIt]))
-            {// for every sub element in selection that matches one in old list
-                if (obj == Objects[std::distance(SubElements.begin(), itr)]) {//if selected sub element's object equals the one in old list then it was added before so mark for deletion
+        for (size_t subIt = 0; subIt < (subNames.size());
+             ++subIt) {// for every selected sub element
+            for (std::vector<std::string>::iterator itr =
+                     std::find(SubElements.begin(), SubElements.end(), subNames[subIt]);
+                 itr != SubElements.end();
+                 itr = std::find(++itr,
+                                 SubElements.end(),
+                                 subNames[subIt])) {// for every sub element in selection that
+                                                    // matches one in old list
+                if (obj
+                    == Objects[std::distance(
+                        SubElements.begin(),
+                        itr)]) {// if selected sub element's object equals the one in old list then
+                                // it was added before so mark for deletion
                     itemsToDel.push_back(std::distance(SubElements.begin(), itr));
                 }
             }
@@ -194,7 +219,7 @@ void TaskFemConstraintSpring::removeFromSelection()
         SubElements.erase(SubElements.begin() + itemsToDel.back());
         itemsToDel.pop_back();
     }
-    //Update UI
+    // Update UI
     {
         QSignalBlocker block(ui->lw_references);
         ui->lw_references->clear();
@@ -257,7 +282,8 @@ void TaskFemConstraintSpring::clearButtons(const SelectionChangeModes notThis)
 // TaskDialog
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-TaskDlgFemConstraintSpring::TaskDlgFemConstraintSpring(ViewProviderFemConstraintSpring* ConstraintView)
+TaskDlgFemConstraintSpring::TaskDlgFemConstraintSpring(
+    ViewProviderFemConstraintSpring* ConstraintView)
 {
     this->ConstraintView = ConstraintView;
     assert(ConstraintView);
@@ -275,7 +301,11 @@ void TaskDlgFemConstraintSpring::open()
         QString msg = QObject::tr("Constraint spring");
         Gui::Command::openCommand((const char*)msg.toUtf8());
         ConstraintView->setVisible(true);
-        Gui::Command::doCommand(Gui::Command::Doc, ViewProviderFemConstraint::gethideMeshShowPartStr((static_cast<Fem::Constraint*>(ConstraintView->getObject()))->getNameInDocument()).c_str()); //OvG: Hide meshes and show parts
+        Gui::Command::doCommand(
+            Gui::Command::Doc,
+            ViewProviderFemConstraint::gethideMeshShowPartStr(
+                (static_cast<Fem::Constraint*>(ConstraintView->getObject()))->getNameInDocument())
+                .c_str());// OvG: Hide meshes and show parts
     }
 }
 
@@ -283,16 +313,25 @@ bool TaskDlgFemConstraintSpring::accept()
 {
     /* Note: */
     std::string name = ConstraintView->getObject()->getNameInDocument();
-    const TaskFemConstraintSpring* parameterStiffness = static_cast<const TaskFemConstraintSpring*>(parameter);
-    //const TaskFemConstraintSpring* parameterTan = static_cast<const TaskFemConstraintSpring>(parameter);
+    const TaskFemConstraintSpring* parameterStiffness =
+        static_cast<const TaskFemConstraintSpring*>(parameter);
+    // const TaskFemConstraintSpring* parameterTan = static_cast<const
+    // TaskFemConstraintSpring>(parameter);
 
     try {
-        Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.%s.normalStiffness = %f",
-            name.c_str(), parameterStiffness->get_normalStiffness());
-        Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.%s.tangentialStiffness = %f",
-            name.c_str(), parameterStiffness->get_tangentialStiffness());
-        std::string scale = parameterStiffness->getScale();  //OvG: determine modified scale
-        Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.%s.Scale = %s", name.c_str(), scale.c_str()); //OvG: implement modified scale
+        Gui::Command::doCommand(Gui::Command::Doc,
+                                "App.ActiveDocument.%s.normalStiffness = %f",
+                                name.c_str(),
+                                parameterStiffness->get_normalStiffness());
+        Gui::Command::doCommand(Gui::Command::Doc,
+                                "App.ActiveDocument.%s.tangentialStiffness = %f",
+                                name.c_str(),
+                                parameterStiffness->get_tangentialStiffness());
+        std::string scale = parameterStiffness->getScale();// OvG: determine modified scale
+        Gui::Command::doCommand(Gui::Command::Doc,
+                                "App.ActiveDocument.%s.Scale = %s",
+                                name.c_str(),
+                                scale.c_str());// OvG: implement modified scale
     }
     catch (const Base::Exception& e) {
         QMessageBox::warning(parameter, tr("Input error"), QString::fromLatin1(e.what()));

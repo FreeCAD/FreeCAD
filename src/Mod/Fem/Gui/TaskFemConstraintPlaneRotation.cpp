@@ -49,28 +49,30 @@ using namespace Gui;
 
 /* TRANSLATOR FemGui::TaskFemConstraintPlaneRotation */
 
-TaskFemConstraintPlaneRotation::TaskFemConstraintPlaneRotation(ViewProviderFemConstraintPlaneRotation* ConstraintView, QWidget* parent)
-    : TaskFemConstraint(ConstraintView, parent, "FEM_ConstraintPlaneRotation")
+TaskFemConstraintPlaneRotation::TaskFemConstraintPlaneRotation(
+    ViewProviderFemConstraintPlaneRotation* ConstraintView, QWidget* parent)
+    : TaskFemConstraint(ConstraintView, parent, "FEM_ConstraintPlaneRotation"),
+      ui(new Ui_TaskFemConstraintPlaneRotation)
 { //Note change "planerotation" in line above to new constraint name
     proxy = new QWidget(this);
-    ui = new Ui_TaskFemConstraintPlaneRotation();
     ui->setupUi(proxy);
     QMetaObject::connectSlotsByName(this);
 
     // create a context menu for the listview of the references
     createDeleteAction(ui->lw_references);
-    connect(deleteAction, &QAction::triggered, this, &TaskFemConstraintPlaneRotation::onReferenceDeleted);
-
+    connect(deleteAction, &QAction::triggered,
+        this, &TaskFemConstraintPlaneRotation::onReferenceDeleted);
     connect(ui->lw_references, &QListWidget::currentItemChanged,
-            this, &TaskFemConstraintPlaneRotation::setSelection);
+        this, &TaskFemConstraintPlaneRotation::setSelection);
     connect(ui->lw_references, &QListWidget::itemClicked,
-            this, &TaskFemConstraintPlaneRotation::setSelection);
+        this, &TaskFemConstraintPlaneRotation::setSelection);
 
     this->groupLayout()->addWidget(proxy);
 
     /* Note: */
     // Get the feature data
-    Fem::ConstraintPlaneRotation* pcConstraint = static_cast<Fem::ConstraintPlaneRotation*>(ConstraintView->getObject());
+    Fem::ConstraintPlaneRotation* pcConstraint =
+        static_cast<Fem::ConstraintPlaneRotation*>(ConstraintView->getObject());
 
     std::vector<App::DocumentObject*> Objects = pcConstraint->References.getValues();
     std::vector<std::string> SubElements = pcConstraint->References.getSubValues();
@@ -85,17 +87,17 @@ TaskFemConstraintPlaneRotation::TaskFemConstraintPlaneRotation(ViewProviderFemCo
         ui->lw_references->setCurrentRow(0, QItemSelectionModel::ClearAndSelect);
     }
 
-    //Selection buttons
-    connect(ui->btnAdd, &QToolButton::clicked, this, &TaskFemConstraintPlaneRotation::addToSelection);
-    connect(ui->btnRemove, &QToolButton::clicked, this, &TaskFemConstraintPlaneRotation::removeFromSelection);
+    // Selection buttons
+    connect(ui->btnAdd, &QToolButton::clicked,
+        this, &TaskFemConstraintPlaneRotation::addToSelection);
+    connect(ui->btnRemove, &QToolButton::clicked,
+        this, &TaskFemConstraintPlaneRotation::removeFromSelection);
 
     updateUI();
 }
 
 TaskFemConstraintPlaneRotation::~TaskFemConstraintPlaneRotation()
-{
-    delete ui;
-}
+{}
 
 void TaskFemConstraintPlaneRotation::updateUI()
 {
@@ -110,47 +112,65 @@ void TaskFemConstraintPlaneRotation::addToSelection()
 {
     int rows = ui->lw_references->model()->rowCount();
     if (rows == 1) {
-        QMessageBox::warning(this, tr("Selection error"), tr("Only one face can be selected for a plane rotation constraint!"));
+        QMessageBox::warning(this,
+                             tr("Selection error"),
+                             tr("Only one face can be selected for a plane rotation constraint!"));
         Gui::Selection().clearSelection();
         return;
     }
     else {
-        std::vector<Gui::SelectionObject> selection = Gui::Selection().getSelectionEx(); //gets vector of selected objects of active document
+        std::vector<Gui::SelectionObject> selection =
+            Gui::Selection().getSelectionEx();// gets vector of selected objects of active document
         if (selection.empty()) {
             QMessageBox::warning(this, tr("Selection error"), tr("Nothing selected!"));
             return;
         }
-        Fem::ConstraintPlaneRotation* pcConstraint = static_cast<Fem::ConstraintPlaneRotation*>(ConstraintView->getObject());
+        Fem::ConstraintPlaneRotation* pcConstraint =
+            static_cast<Fem::ConstraintPlaneRotation*>(ConstraintView->getObject());
         std::vector<App::DocumentObject*> Objects = pcConstraint->References.getValues();
         std::vector<std::string> SubElements = pcConstraint->References.getSubValues();
 
-        for (std::vector<Gui::SelectionObject>::iterator it = selection.begin(); it != selection.end(); ++it) {//for every selected object
+        for (std::vector<Gui::SelectionObject>::iterator it = selection.begin();
+             it != selection.end();
+             ++it) {// for every selected object
             if (!it->isObjectTypeOf(Part::Feature::getClassTypeId())) {
-                QMessageBox::warning(this, tr("Selection error"), tr("Selected object is not a part!"));
+                QMessageBox::warning(
+                    this, tr("Selection error"), tr("Selected object is not a part!"));
                 return;
             }
             const std::vector<std::string>& subNames = it->getSubNames();
             App::DocumentObject* obj = it->getObject();
 
             if (subNames.size() == 1) {
-                for (size_t subIt = 0; subIt < (subNames.size()); ++subIt) {// for every selected sub element
+                for (size_t subIt = 0; subIt < (subNames.size());
+                     ++subIt) {// for every selected sub element
                     bool addMe = true;
                     if ((subNames[subIt].substr(0, 4) != "Face")) {
-                        QMessageBox::warning(this, tr("Selection error"), tr("Only faces can be picked"));
+                        QMessageBox::warning(
+                            this, tr("Selection error"), tr("Only faces can be picked"));
                         return;
                     }
                     Part::Feature* feat = static_cast<Part::Feature*>(obj);
                     TopoDS_Shape ref = feat->Shape.getShape().getSubShape(subNames[subIt].c_str());
                     if ((subNames[subIt].substr(0, 4) == "Face")) {
                         if (!Fem::Tools::isPlanar(TopoDS::Face(ref))) {
-                            QMessageBox::warning(this, tr("Selection error"), tr("Only planar faces can be picked"));
+                            QMessageBox::warning(
+                                this, tr("Selection error"), tr("Only planar faces can be picked"));
                             return;
                         }
                     }
-                    for (std::vector<std::string>::iterator itr = std::find(SubElements.begin(), SubElements.end(), subNames[subIt]);
-                        itr != SubElements.end();
-                        itr = std::find(++itr, SubElements.end(), subNames[subIt])) {// for every sub element in selection that matches one in old list
-                        if (obj == Objects[std::distance(SubElements.begin(), itr)]) {//if selected sub element's object equals the one in old list then it was added before so don't add
+                    for (std::vector<std::string>::iterator itr =
+                             std::find(SubElements.begin(), SubElements.end(), subNames[subIt]);
+                         itr != SubElements.end();
+                         itr = std::find(++itr,
+                                         SubElements.end(),
+                                         subNames[subIt])) {// for every sub element in selection
+                                                            // that matches one in old list
+                        if (obj
+                            == Objects[std::distance(
+                                SubElements.begin(),
+                                itr)]) {// if selected sub element's object equals the one in old
+                                        // list then it was added before so don't add
                             addMe = false;
                         }
                     }
@@ -163,11 +183,14 @@ void TaskFemConstraintPlaneRotation::addToSelection()
                 }
             }
             else {
-                QMessageBox::warning(this, tr("Selection error"), tr("Only one face can be selected for a plane rotation constraint!"));
+                QMessageBox::warning(
+                    this,
+                    tr("Selection error"),
+                    tr("Only one face can be selected for a plane rotation constraint!"));
                 Gui::Selection().clearSelection();
                 return;
             }
-            //Update UI
+            // Update UI
             pcConstraint->References.setValues(Objects, SubElements);
             updateUI();
         }
@@ -176,16 +199,19 @@ void TaskFemConstraintPlaneRotation::addToSelection()
 
 void TaskFemConstraintPlaneRotation::removeFromSelection()
 {
-    std::vector<Gui::SelectionObject> selection = Gui::Selection().getSelectionEx(); //gets vector of selected objects of active document
+    std::vector<Gui::SelectionObject> selection =
+        Gui::Selection().getSelectionEx();// gets vector of selected objects of active document
     if (selection.empty()) {
         QMessageBox::warning(this, tr("Selection error"), tr("Nothing selected!"));
         return;
     }
-    Fem::ConstraintPlaneRotation* pcConstraint = static_cast<Fem::ConstraintPlaneRotation*>(ConstraintView->getObject());
+    Fem::ConstraintPlaneRotation* pcConstraint =
+        static_cast<Fem::ConstraintPlaneRotation*>(ConstraintView->getObject());
     std::vector<App::DocumentObject*> Objects = pcConstraint->References.getValues();
     std::vector<std::string> SubElements = pcConstraint->References.getSubValues();
     std::vector<size_t> itemsToDel;
-    for (std::vector<Gui::SelectionObject>::iterator it = selection.begin(); it != selection.end(); ++it) {//for every selected object
+    for (std::vector<Gui::SelectionObject>::iterator it = selection.begin(); it != selection.end();
+         ++it) {// for every selected object
         if (!it->isObjectTypeOf(Part::Feature::getClassTypeId())) {
             QMessageBox::warning(this, tr("Selection error"), tr("Selected object is not a part!"));
             return;
@@ -193,12 +219,20 @@ void TaskFemConstraintPlaneRotation::removeFromSelection()
         const std::vector<std::string>& subNames = it->getSubNames();
         App::DocumentObject* obj = it->getObject();
 
-        for (size_t subIt = 0; subIt < (subNames.size()); ++subIt) {// for every selected sub element
-            for (std::vector<std::string>::iterator itr = std::find(SubElements.begin(), SubElements.end(), subNames[subIt]);
-                itr != SubElements.end();
-                itr = std::find(++itr, SubElements.end(), subNames[subIt]))
-            {// for every sub element in selection that matches one in old list
-                if (obj == Objects[std::distance(SubElements.begin(), itr)]) {//if selected sub element's object equals the one in old list then it was added before so mark for deletion
+        for (size_t subIt = 0; subIt < (subNames.size());
+             ++subIt) {// for every selected sub element
+            for (std::vector<std::string>::iterator itr =
+                     std::find(SubElements.begin(), SubElements.end(), subNames[subIt]);
+                 itr != SubElements.end();
+                 itr = std::find(++itr,
+                                 SubElements.end(),
+                                 subNames[subIt])) {// for every sub element in selection that
+                                                    // matches one in old list
+                if (obj
+                    == Objects[std::distance(
+                        SubElements.begin(),
+                        itr)]) {// if selected sub element's object equals the one in old list then
+                                // it was added before so mark for deletion
                     itemsToDel.push_back(std::distance(SubElements.begin(), itr));
                 }
             }
@@ -210,7 +244,7 @@ void TaskFemConstraintPlaneRotation::removeFromSelection()
         SubElements.erase(SubElements.begin() + itemsToDel.back());
         itemsToDel.pop_back();
     }
-    //Update UI
+    // Update UI
     {
         QSignalBlocker block(ui->lw_references);
         ui->lw_references->clear();
@@ -249,7 +283,8 @@ void TaskFemConstraintPlaneRotation::changeEvent(QEvent*)
 // TaskDialog
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-TaskDlgFemConstraintPlaneRotation::TaskDlgFemConstraintPlaneRotation(ViewProviderFemConstraintPlaneRotation* ConstraintView)
+TaskDlgFemConstraintPlaneRotation::TaskDlgFemConstraintPlaneRotation(
+    ViewProviderFemConstraintPlaneRotation* ConstraintView)
 {
     this->ConstraintView = ConstraintView;
     assert(ConstraintView);
@@ -267,16 +302,24 @@ void TaskDlgFemConstraintPlaneRotation::open()
         QString msg = QObject::tr("Constraint planerotation");
         Gui::Command::openCommand((const char*)msg.toUtf8());
         ConstraintView->setVisible(true);
-        Gui::Command::doCommand(Gui::Command::Doc, ViewProviderFemConstraint::gethideMeshShowPartStr((static_cast<Fem::Constraint*>(ConstraintView->getObject()))->getNameInDocument()).c_str()); //OvG: Hide meshes and show parts
+        Gui::Command::doCommand(
+            Gui::Command::Doc,
+            ViewProviderFemConstraint::gethideMeshShowPartStr(
+                (static_cast<Fem::Constraint*>(ConstraintView->getObject()))->getNameInDocument())
+                .c_str());// OvG: Hide meshes and show parts
     }
 }
 
 bool TaskDlgFemConstraintPlaneRotation::accept()
 {
     std::string name = ConstraintView->getObject()->getNameInDocument();
-    const TaskFemConstraintPlaneRotation* parameters = static_cast<const TaskFemConstraintPlaneRotation*>(parameter);
-    std::string scale = parameters->getScale();  //OvG: determine modified scale
-    Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.%s.Scale = %s", name.c_str(), scale.c_str()); //OvG: implement modified scale
+    const TaskFemConstraintPlaneRotation* parameters =
+        static_cast<const TaskFemConstraintPlaneRotation*>(parameter);
+    std::string scale = parameters->getScale();// OvG: determine modified scale
+    Gui::Command::doCommand(Gui::Command::Doc,
+                            "App.ActiveDocument.%s.Scale = %s",
+                            name.c_str(),
+                            scale.c_str());// OvG: implement modified scale
     return TaskDlgFemConstraint::accept();
 }
 

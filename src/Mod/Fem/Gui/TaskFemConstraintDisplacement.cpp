@@ -46,10 +46,10 @@ using namespace Gui;
 
 TaskFemConstraintDisplacement::TaskFemConstraintDisplacement(
     ViewProviderFemConstraintDisplacement* ConstraintView, QWidget* parent)
-    : TaskFemConstraintOnBoundary(ConstraintView, parent, "FEM_ConstraintDisplacement")
+    : TaskFemConstraintOnBoundary(ConstraintView, parent, "FEM_ConstraintDisplacement"),
+      ui(new Ui_TaskFemConstraintDisplacement)
 {
     proxy = new QWidget(this);
-    ui = new Ui_TaskFemConstraintDisplacement();
     ui->setupUi(proxy);
     QMetaObject::connectSlotsByName(this);
 
@@ -174,9 +174,7 @@ TaskFemConstraintDisplacement::TaskFemConstraintDisplacement(
 }
 
 TaskFemConstraintDisplacement::~TaskFemConstraintDisplacement()
-{
-    delete ui;
-}
+{}
 
 void TaskFemConstraintDisplacement::updateUI()
 {
