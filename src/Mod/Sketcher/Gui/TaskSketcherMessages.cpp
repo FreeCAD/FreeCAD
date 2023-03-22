@@ -57,8 +57,8 @@ TaskSketcherMessages::TaskSketcherMessages(ViewProviderSketch *sketchView) :
 
     // Set up the possible state values for the status label
     ui->labelConstrainStatus->setParameterGroup("User parameter:BaseApp/Preferences/Mod/Sketcher/General");
-    ui->labelConstrainStatus->registerState(QString::fromUtf8("empty_sketch"), QColor("black"), std::string("EmptySketchMessageColor"));
-    ui->labelConstrainStatus->registerState(QString::fromUtf8("under_constrained"), QColor("black"), std::string("UnderconstrainedMessageColor"));
+    ui->labelConstrainStatus->registerState(QString::fromUtf8("empty_sketch"), palette().windowText().color(), std::string("EmptySketchMessageColor"));
+    ui->labelConstrainStatus->registerState(QString::fromUtf8("under_constrained"), palette().windowText().color(), std::string("UnderconstrainedMessageColor"));
     ui->labelConstrainStatus->registerState(QString::fromUtf8("malformed_constraints"), QColor("red"), std::string("MalformedConstraintMessageColor"));
     ui->labelConstrainStatus->registerState(QString::fromUtf8("conflicting_constraints"), QColor("orangered"), std::string("ConflictingConstraintMessageColor"));
     ui->labelConstrainStatus->registerState(QString::fromUtf8("redundant_constraints"), QColor("red"), std::string("RedundantConstraintMessageColor"));
