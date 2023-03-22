@@ -165,6 +165,12 @@ def get_dir_setting():
         return DirSetting.CUSTOM
     return DirSetting.TEMPORARY
 
+def get_default_solver():
+    """ Return default solver name.
+    """
+    solver_map = {0: None, 1: "CalculixCcxTools", 2: "Elmer", 3: "Mystran", 4: "Z88"}
+    param_group = FreeCAD.ParamGet(_GENERAL_PARAM)
+    return solver_map[param_group.GetInt("DefaultSolver", 0)]
 
 class _SolverDlg(object):
     """ Internal query logic for solver specific settings.
