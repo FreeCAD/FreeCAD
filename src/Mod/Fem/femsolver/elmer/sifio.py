@@ -364,7 +364,7 @@ class _Writer(object):
                 attrType = _TYPE_VARIABLE
         if attrType is not _TYPE_VARIABLE:
             self._stream.write(attrType)
-        self._stream.write(_WHITESPACE)
+            self._stream.write(_WHITESPACE)
         output = self._preprocess(data, type(data))
         # in case of a variable the output must be without the quatoation marks
         if attrType is _TYPE_VARIABLE:
