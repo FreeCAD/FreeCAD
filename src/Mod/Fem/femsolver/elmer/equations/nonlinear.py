@@ -76,8 +76,8 @@ class Proxy(linear.Proxy):
             )
         )
 
-        obj.NonlinearIterations = (500, 1, int(1e6), 10)
-        obj.NonlinearNewtonAfterIterations = (3, 1, 100, 1)
+        obj.NonlinearIterations = (20, 1, int(1e6), 10)
+        obj.NonlinearNewtonAfterIterations = (3, 1, 500, 1)
         # for small numbers we must set an expression because we don't have a UI,
         # the user has to view and edit the tolerance via the property editor and
         # this does not yet allow to view and edit small numbers in scientific notation
