@@ -50,6 +50,8 @@ public:
     void saveSettings() override;
     void loadSettings() override;
 
+    static QStringList getEnabledWorkbenches();
+
 protected Q_SLOTS:
     void onLoadClicked(const QString& wbName);
 
@@ -64,6 +66,7 @@ private:
     std::vector<std::string> _backgroundAutoloadedModules;
     std::string _startupModule;
     std::map<QString, QCheckBox*> _autoloadCheckBoxes;
+    std::map<QString, QCheckBox*> _enabledCheckBoxes;
 };
 
 } // namespace Dialog

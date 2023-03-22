@@ -40,10 +40,11 @@ const uint DlgSettingsLazyLoadedImp::WorkbenchNameRole = Qt::UserRole;
 
 // this enum defines the order of the columns
 enum Column {
-    Load,
-    CheckBox,
+    Enabled,
     Icon,
-    Name
+    Name,
+    CheckBox,
+    Load
 };
 
 /* TRANSLATOR Gui::Dialog::DlgSettingsLazyLoadedImp */
@@ -68,6 +69,30 @@ DlgSettingsLazyLoadedImp::~DlgSettingsLazyLoadedImp()
 
 void DlgSettingsLazyLoadedImp::saveSettings()
 {
+    //Save enabled
+    std::ostringstream enabledStr;
+    std::ostringstream disabledStr;
+    for (const auto& checkBox : _enabledCheckBoxes) {
+        if (checkBox.second->isChecked()) {
+            if (!enabledStr.str().empty())
+                enabledStr << ",";
+            enabledStr << checkBox.first.toStdString();
+        }
+        else {
+            if (!disabledStr.str().empty())
+                disabledStr << ",";
+            disabledStr << checkBox.first.toStdString();
+        }
+    }
+
+    if (!enabledStr.str().empty()) //make sure that we have at least one enabled workbench.
+        enabledStr << "NoneWorkbench";
+
+    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Workbenches");
+    hGrp->SetASCII("Enabled", enabledStr.str().c_str());
+    hGrp->SetASCII("Disabled", disabledStr.str().c_str());
+
+    //Save auto-load
     std::ostringstream csv;
     for (const auto& checkBox : _autoloadCheckBoxes) {
         if (checkBox.second->isChecked()) {
@@ -132,22 +157,26 @@ void DlgSettingsLazyLoadedImp::buildUnloadedWorkbenchList()
 {
     QStringList workbenches = Application::Instance->workbenches();
     workbenches.sort();
+    QStringList enabled_wbs_list = getEnabledWorkbenches();
 
     ui->workbenchTable->horizontalHeader()->setDefaultAlignment(Qt::AlignLeft);
     ui->workbenchTable->setRowCount(0);
     _autoloadCheckBoxes.clear(); // setRowCount(0) just invalidated all of these pointers
-    ui->workbenchTable->setColumnCount(4);
+    _enabledCheckBoxes.clear();// setRowCount(0) just invalidated all of these pointers
+    ui->workbenchTable->setColumnCount(5);
     ui->workbenchTable->setSelectionMode(QAbstractItemView::SelectionMode::NoSelection);
+    ui->workbenchTable->horizontalHeader()->setSectionResizeMode(Enabled, QHeaderView::ResizeMode::ResizeToContents);
     ui->workbenchTable->horizontalHeader()->setSectionResizeMode(Icon, QHeaderView::ResizeMode::ResizeToContents);
-    ui->workbenchTable->horizontalHeader()->setSectionResizeMode(Name, QHeaderView::ResizeMode::Stretch);
+    ui->workbenchTable->horizontalHeader()->setSectionResizeMode(Name, QHeaderView::ResizeMode::ResizeToContents);
     ui->workbenchTable->horizontalHeader()->setSectionResizeMode(CheckBox, QHeaderView::ResizeMode::ResizeToContents);
     ui->workbenchTable->horizontalHeader()->setSectionResizeMode(Load, QHeaderView::ResizeMode::ResizeToContents);
     QStringList columnHeaders;
-    for (int i = 0; i < 4; i++) {
+    for (int i = 0; i < 5; i++) {
         switch (i) {
+            case Enabled : columnHeaders << tr("Enable");       break;
             case Icon    : columnHeaders << QString();            break;
             case Name    : columnHeaders << tr("Workbench Name"); break;
-            case CheckBox: columnHeaders << tr("Autoload?");      break;
+            case CheckBox: columnHeaders << tr("Autoload");      break;
             case Load    : columnHeaders << QString();            break;
         }
     }
@@ -160,6 +189,19 @@ void DlgSettingsLazyLoadedImp::buildUnloadedWorkbenchList()
 
         ui->workbenchTable->insertRow(rowNumber);
         auto wbTooltip = Application::Instance->workbenchToolTip(wbName);
+        auto wbDisplayName = Application::Instance->workbenchMenuText(wbName);
+
+        // Column 0: Enabled checkbox.
+        auto enCheckWidget = new QWidget(this);
+        auto enableCheckBox = new QCheckBox(this);
+        enableCheckBox->setToolTip(tr("If unchecked, %1 will not appear in the available workbenches.").arg(wbDisplayName));
+        auto enCheckLayout = new QHBoxLayout(enCheckWidget);
+        enCheckLayout->addWidget(enableCheckBox);
+        enCheckLayout->setAlignment(Qt::AlignCenter);
+        enCheckLayout->setContentsMargins(0, 0, 0, 0);
+        enableCheckBox->setChecked(enabled_wbs_list.contains(wbName));
+        _enabledCheckBoxes.insert(std::make_pair(wbName, enableCheckBox));
+        ui->workbenchTable->setCellWidget(rowNumber, Enabled, enCheckWidget);
 
         // Column 1: Workbench Icon
         auto wbIcon = Application::Instance->workbenchIcon(wbName);
@@ -170,7 +212,6 @@ void DlgSettingsLazyLoadedImp::buildUnloadedWorkbenchList()
         ui->workbenchTable->setCellWidget(rowNumber, Icon, iconLabel);
 
         // Column 2: Workbench Display Name
-        auto wbDisplayName = Application::Instance->workbenchMenuText(wbName);
         auto textLabel = new QLabel(wbDisplayName);
         textLabel->setToolTip(wbTooltip);
         ui->workbenchTable->setCellWidget(rowNumber, Name, textLabel);
@@ -216,6 +257,32 @@ void DlgSettingsLazyLoadedImp::buildUnloadedWorkbenchList()
 
         ++rowNumber;
     }
+}
+
+QStringList DlgSettingsLazyLoadedImp::getEnabledWorkbenches()
+{
+    QString enabled_wbs;
+    QStringList enabled_wbs_list;
+    ParameterGrp::handle hGrp;
+    QString allWorkbenches = QString::fromLatin1("ALL");
+
+    hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Workbenches");
+    enabled_wbs = QString::fromStdString(hGrp->GetASCII("Enabled", allWorkbenches.toStdString().c_str()).c_str());
+#if QT_VERSION >= QT_VERSION_CHECK(5,15,0)
+    enabled_wbs_list = enabled_wbs.split(QLatin1String(","), Qt::SkipEmptyParts);
+#else
+    enabled_wbs_list = enabled_wbs.split(QLatin1String(","), QString::SkipEmptyParts);
+#endif
+
+    if (enabled_wbs_list.at(0) == allWorkbenches) {
+        enabled_wbs_list.removeFirst();
+        QStringList workbenches = Application::Instance->workbenches();
+        for (QStringList::Iterator it = workbenches.begin(); it != workbenches.end(); ++it) {
+            enabled_wbs_list.append(*it);
+        }
+        enabled_wbs_list.sort();
+    }
+    return enabled_wbs_list;
 }
 
 /**
