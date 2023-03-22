@@ -24,6 +24,7 @@
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <QFileInfo>
+# include <QImageReader>
 # include <QStringList>
 # include <Inventor/SoInput.h>
 #endif
@@ -146,10 +147,14 @@ bool FileHandler::openInternal()
         return true;
     }
 
-    if (hasExtension(QStringList() << QLatin1String("bmp")
-                                   << QLatin1String("jpg")
-                                   << QLatin1String("png")
-                                   << QLatin1String("xpm"))) {
+    QStringList supportedFormats;
+    auto imageFormats = QImageReader::supportedImageFormats();
+    std::transform(imageFormats.cbegin(), imageFormats.cend(),
+                   std::back_inserter(supportedFormats), [](const QByteArray& format) {
+        return QString::fromLatin1(format);
+    });
+
+    if (hasExtension(supportedFormats)) {
         openImage();
         return true;
     }

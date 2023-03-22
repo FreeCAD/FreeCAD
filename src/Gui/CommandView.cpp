@@ -1982,7 +1982,7 @@ StdViewLoadImage::StdViewLoadImage()
     sGroup      = "Standard-View";
     sMenuText   = QT_TR_NOOP("Load image...");
     sToolTipText= QT_TR_NOOP("Loads a image");
-    sWhatsThis  = "Std_ViewLoadPicture";
+    sWhatsThis  = "Std_ViewLoadImage";
     sStatusTip  = QT_TR_NOOP("Loads a image");
     sPixmap     = "image-open";
     eType       = 0;

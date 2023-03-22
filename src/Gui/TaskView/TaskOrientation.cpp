@@ -72,6 +72,7 @@ void TaskOrientation::accept()
     if (!feature.expired()) {
         App::Document* doc = feature->getDocument();
         doc->commitTransaction();
+        doc->recompute();
     }
 }
 
@@ -80,6 +81,7 @@ void TaskOrientation::reject()
     if (!feature.expired()) {
         App::Document* doc = feature->getDocument();
         doc->abortTransaction();
+        feature->purgeTouched();
     }
 }
 
