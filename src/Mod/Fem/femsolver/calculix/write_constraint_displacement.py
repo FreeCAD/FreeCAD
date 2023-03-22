@@ -25,6 +25,8 @@ __title__ = "FreeCAD FEM calculix constraint displacement"
 __author__ = "Bernd Hahnebach"
 __url__ = "https://www.freecadweb.org"
 
+import FreeCAD
+
 
 def get_analysis_types():
     return "all"    # write for all analysis types
@@ -68,26 +70,50 @@ def write_constraint(f, femobj, disp_obj, ccxwriter):
     if disp_obj.xFix:
         f.write("{},1\n".format(disp_obj.Name))
     elif not disp_obj.xFree:
-        f.write("{},1,1,{:.13G}\n".format(disp_obj.Name, disp_obj.xDisplacement))
+        f.write(
+            "{},1,1,{}\n".format(
+                disp_obj.Name, FreeCAD.Units.Quantity(disp_obj.xDisplacement.getValueAs("mm"))
+            )
+        )
     if disp_obj.yFix:
         f.write("{},2\n".format(disp_obj.Name))
     elif not disp_obj.yFree:
-        f.write("{},2,2,{:.13G}\n".format(disp_obj.Name, disp_obj.yDisplacement))
+        f.write(
+            "{},2,2,{}\n".format(
+                disp_obj.Name, FreeCAD.Units.Quantity(disp_obj.yDisplacement.getValueAs("mm"))
+            )
+        )
     if disp_obj.zFix:
         f.write("{},3\n".format(disp_obj.Name))
     elif not disp_obj.zFree:
-        f.write("{},3,3,{:.13G}\n".format(disp_obj.Name, disp_obj.zDisplacement))
+        f.write(
+            "{},3,3,{}\n".format(
+                disp_obj.Name, FreeCAD.Units.Quantity(disp_obj.zDisplacement.getValueAs("mm"))
+            )
+        )
 
     if ccxwriter.member.geos_beamsection or ccxwriter.member.geos_shellthickness:
         if disp_obj.rotxFix:
             f.write("{},4\n".format(disp_obj.Name))
         elif not disp_obj.rotxFree:
-            f.write("{},4,4,{:.13G}\n".format(disp_obj.Name, disp_obj.xRotation))
+            f.write(
+                "{},4,4,{}\n".format(
+                    disp_obj.Name, FreeCAD.Units.Quantity(disp_obj.xRotation.getValueAs("deg"))
+                )
+            )
         if disp_obj.rotyFix:
             f.write("{},5\n".format(disp_obj.Name))
         elif not disp_obj.rotyFree:
-            f.write("{},5,5,{:.13G}\n".format(disp_obj.Name, disp_obj.yRotation))
+            f.write(
+                "{},5,5,{}\n".format(
+                    disp_obj.Name, FreeCAD.Units.Quantity(disp_obj.yRotation.getValueAs("deg"))
+                )
+            )
         if disp_obj.rotzFix:
             f.write("{},6\n".format(disp_obj.Name))
         elif not disp_obj.rotzFree:
-            f.write("{},6,6,{:.13G}\n".format(disp_obj.Name, disp_obj.zRotation))
+            f.write(
+                "{},6,6,{}\n".format(
+                    disp_obj.Name, FreeCAD.Units.Quantity(disp_obj.zRotation.getValueAs("deg"))
+                )
+            )

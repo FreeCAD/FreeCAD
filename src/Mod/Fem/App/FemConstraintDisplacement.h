@@ -23,11 +23,11 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef FEM_CONSTRAINTDISPLACEMENT_H
 #define FEM_CONSTRAINTDISPLACEMENT_H
 
 #include "FemConstraint.h"
+
 
 namespace Fem
 {
@@ -45,12 +45,12 @@ public:
     App::PropertyVectorList Normals;
 
     //Displacement parameters
-    App::PropertyFloat xDisplacement;
-    App::PropertyFloat yDisplacement;
-    App::PropertyFloat zDisplacement;
-    App::PropertyFloat xRotation;
-    App::PropertyFloat yRotation;
-    App::PropertyFloat zRotation;
+    App::PropertyDistance xDisplacement;
+    App::PropertyDistance yDisplacement;
+    App::PropertyDistance zDisplacement;
+    App::PropertyAngle xRotation;
+    App::PropertyAngle yRotation;
+    App::PropertyAngle zRotation;
     App::PropertyString xDisplacementFormula;
     App::PropertyString yDisplacementFormula;
     App::PropertyString zDisplacementFormula;
@@ -78,6 +78,8 @@ public:
     const char* getViewProviderName() const override;
 
 protected:
+    void handleChangedPropertyType(Base::XMLReader& reader, const char* TypeName,
+                                   App::Property* prop) override;
     void onChanged(const App::Property* prop) override;
 
 };

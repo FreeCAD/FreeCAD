@@ -113,19 +113,19 @@ class DeformationWriter:
                         continue
                     if not obj.xFree:
                         if not obj.hasXFormula:
-                            displacement = obj.xDisplacement * 0.001
+                            displacement = float(obj.xDisplacement.getValueAs("m"))
                         else:
                             displacement = obj.xDisplacementFormula
                         self.write.boundary(name, "Displacement 1", displacement)
                     if not obj.yFree:
                         if not obj.hasYFormula:
-                            displacement = obj.yDisplacement * 0.001
+                            displacement = float(obj.yDisplacement.getValueAs("m"))
                         else:
                             displacement = obj.yDisplacementFormula
                         self.write.boundary(name, "Displacement 2", displacement)
                     if not obj.zFree:
                         if not obj.hasZFormula:
-                            displacement = obj.zDisplacement * 0.001
+                            displacement = float(obj.zDisplacement.getValueAs("m"))
                         else:
                             displacement = obj.zDisplacementFormula
                         self.write.boundary(name, "Displacement 3", displacement)

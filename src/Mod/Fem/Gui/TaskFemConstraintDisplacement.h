@@ -48,31 +48,32 @@ public:
     explicit TaskFemConstraintDisplacement(ViewProviderFemConstraintDisplacement* ConstraintView,
                                            QWidget* parent = nullptr);
     ~TaskFemConstraintDisplacement() override;
+
     const std::string getReferences() const override;
-    double get_spinxDisplacement()const;
-    double get_spinyDisplacement()const;
-    double get_spinzDisplacement()const;
-    double get_spinxRotation()const;
-    double get_spinyRotation()const;
-    double get_spinzRotation()const;
+    std::string get_spinxDisplacement() const;
+    std::string get_spinyDisplacement() const;
+    std::string get_spinzDisplacement() const;
+    std::string get_spinxRotation() const;
+    std::string get_spinyRotation() const;
+    std::string get_spinzRotation() const;
     std::string get_xFormula() const;
     std::string get_yFormula() const;
     std::string get_zFormula() const;
-    bool get_dispxfix()const;
-    bool get_dispxfree()const;
+    bool get_dispxfix() const;
+    bool get_dispxfree() const;
     bool get_hasDispXFormula() const;
-    bool get_dispyfix()const;
-    bool get_dispyfree()const;
+    bool get_dispyfix() const;
+    bool get_dispyfree() const;
     bool get_hasDispYFormula() const;
-    bool get_dispzfix()const;
-    bool get_dispzfree()const;
+    bool get_dispzfix() const;
+    bool get_dispzfree() const;
     bool get_hasDispZFormula() const;
-    bool get_rotxfix()const;
-    bool get_rotxfree()const;
-    bool get_rotyfix()const;
-    bool get_rotyfree()const;
-    bool get_rotzfix()const;
-    bool get_rotzfree()const;
+    bool get_rotxfix() const;
+    bool get_rotxfree() const;
+    bool get_rotyfix() const;
+    bool get_rotyfree() const;
+    bool get_rotzfix() const;
+    bool get_rotzfree() const;
     bool get_useFlowSurfaceForce() const;
 
 private Q_SLOTS:

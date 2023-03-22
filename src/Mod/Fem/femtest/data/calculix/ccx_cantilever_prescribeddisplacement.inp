@@ -394,7 +394,7 @@ ConstraintFixed,3
 ** Displacement constraint applied
 ** ConstraintDisplacmentPrescribed
 *BOUNDARY
-ConstraintDisplacmentPrescribed,3,3,-250
+ConstraintDisplacmentPrescribed,3,3,-250.0
 
 
 ***********************************************************
