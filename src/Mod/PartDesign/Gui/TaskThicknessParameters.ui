@@ -21,7 +21,7 @@
 click again to end selection</string>
      </property>
      <property name="text">
-      <string>Select face</string>
+      <string>Start selection</string>
      </property>
      <property name="checkable">
       <bool>true</bool>

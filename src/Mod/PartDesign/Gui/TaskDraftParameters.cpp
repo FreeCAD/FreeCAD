@@ -111,8 +111,10 @@ TaskDraftParameters::TaskDraftParameters(ViewProviderDressUp *DressUpView, QWidg
     strings = pcDraft->PullDirection.getSubValues();
     ui->lineLine->setText(getRefStr(ref, strings));
 
-    // the dialog can be called on a broken draft, then hide the draft
-    hideOnError();
+    if (strings.size() == 0)
+        setSelectionMode(refSel);
+    else
+        hideOnError();
 }
 
 void TaskDraftParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
@@ -120,34 +122,9 @@ void TaskDraftParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
     // executed when the user selected something in the CAD object
     // adds/deletes the selection accordingly
 
-    if (selectionMode == none)
-        return;
-
     if (msg.Type == Gui::SelectionChanges::AddSelection) {
-        if (referenceSelected(msg)) {
-            // Clear selection.
-            Gui::Selection().clearSelection();
-
-            if (removeItemFromListWidget(ui->listWidgetReferences, msg.pSubName)) {
-                // if there is only one item left, it cannot be deleted
-                if (ui->listWidgetReferences->count() == 1) {
-                    deleteAction->setEnabled(false);
-                    deleteAction->setStatusTip(tr("There must be at least one item"));
-                    // we must also end the selection mode
-                    exitSelectionMode();
-                    clearButtons(none);
-                }
-            }
-            else {
-                ui->listWidgetReferences->addItem(QString::fromStdString(msg.pSubName));
-                // it might be the second one so we can enable the context menu
-                if (ui->listWidgetReferences->count() > 1) {
-                    deleteAction->setEnabled(true);
-                    deleteAction->setStatusTip(QString());
-                }
-            }
-            // highlight existing references for possible further selections
-            DressUpView->highlightReferences(true);
+        if (selectionMode == refSel) {
+            referenceSelected(msg, ui->listWidgetReferences);
         }
         else if (selectionMode == plane) {
             PartDesign::Draft* pcDraft = static_cast<PartDesign::Draft*>(DressUpView->getObject());
@@ -186,18 +163,18 @@ void TaskDraftParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
     }
 }
 
-void TaskDraftParameters::clearButtons(const selectionModes notThis)
+void TaskDraftParameters::setButtons(const selectionModes mode)
 {
-    if (notThis != refSel) ui->buttonRefSel->setChecked(false);
-    if (notThis != line) ui->buttonLine->setChecked(false);
-    if (notThis != plane) ui->buttonPlane->setChecked(false);
-    DressUpView->highlightReferences(false);
+    ui->buttonRefSel->setText(mode == refSel ? tr("End selection") : tr("Start selection"));
+    ui->buttonRefSel->setChecked(mode == refSel);
+    ui->buttonLine->setChecked(mode == line);
+    ui->buttonPlane->setChecked(mode == plane);
 }
 
 void TaskDraftParameters::onButtonPlane(bool checked)
 {
     if (checked) {
-        clearButtons(plane);
+        setButtons(plane);
         hideObject();
         selectionMode = plane;
         Gui::Selection().clearSelection();
@@ -210,7 +187,7 @@ void TaskDraftParameters::onButtonPlane(bool checked)
 void TaskDraftParameters::onButtonLine(bool checked)
 {
     if (checked) {
-        clearButtons(line);
+        setButtons(line);
         hideObject();
         selectionMode = line;
         Gui::Selection().clearSelection();
@@ -221,52 +198,7 @@ void TaskDraftParameters::onButtonLine(bool checked)
 
 void TaskDraftParameters::onRefDeleted(void)
 {
-    // assure we we are not in selection mode
-    exitSelectionMode();
-    clearButtons(none);
-    // delete any selections since the reference(s) might be highlighted
-    Gui::Selection().clearSelection();
-    DressUpView->highlightReferences(false);
-
-    // get the list of items to be deleted
-    QList<QListWidgetItem*> selectedList = ui->listWidgetReferences->selectedItems();
-
-    // if all items are selected, we must stop because one must be kept to avoid that the feature gets broken
-    if (selectedList.count() == ui->listWidgetReferences->model()->rowCount()) {
-        QMessageBox::warning(this, tr("Selection error"), tr("At least one item must be kept."));
-        return;
-    }
-
-    // get the draft object
-    PartDesign::Draft* pcDraft = static_cast<PartDesign::Draft*>(DressUpView->getObject());
-    App::DocumentObject* base = pcDraft->Base.getValue();
-    // get all draft references
-    std::vector<std::string> refs = pcDraft->Base.getSubValues();
-    setupTransaction();
-
-    // delete the selection backwards to assure the list index keeps valid for the deletion
-    for (int i = selectedList.count() - 1; i > -1; i--) {
-        // the ref index is the same as the listWidgetReferences index
-        // so we can erase using the row number of the element to be deleted
-        int rowNumber = ui->listWidgetReferences->row(selectedList.at(i));
-        // erase the reference
-        refs.erase(refs.begin() + rowNumber);
-        // remove from the list
-        ui->listWidgetReferences->model()->removeRow(rowNumber);
-    }
-
-    // update the object
-    pcDraft->Base.setValue(base, refs);
-    // recompute the feature
-    pcDraft->recomputeFeature();
-    // hide the draft if there was a computation error
-    hideOnError();
-
-    // if there is only one item left, it cannot be deleted
-    if (ui->listWidgetReferences->count() == 1) {
-        deleteAction->setEnabled(false);
-        deleteAction->setStatusTip(tr("There must be at least one item"));
-    }
+    TaskDressUpParameters::deleteRef(ui->listWidgetReferences);
 }
 
 void TaskDraftParameters::getPlane(App::DocumentObject*& obj, std::vector<std::string>& sub) const
@@ -289,7 +221,7 @@ void TaskDraftParameters::getLine(App::DocumentObject*& obj, std::vector<std::st
 
 void TaskDraftParameters::onAngleChanged(double angle)
 {
-    clearButtons(none);
+    setButtons(none);
     PartDesign::Draft* pcDraft = static_cast<PartDesign::Draft*>(DressUpView->getObject());
     setupTransaction();
     pcDraft->Angle.setValue(angle);
@@ -304,7 +236,7 @@ double TaskDraftParameters::getAngle(void) const
 }
 
 void TaskDraftParameters::onReversedChanged(const bool on) {
-    clearButtons(none);
+    setButtons(none);
     PartDesign::Draft* pcDraft = static_cast<PartDesign::Draft*>(DressUpView->getObject());
     setupTransaction();
     pcDraft->Reversed.setValue(on);

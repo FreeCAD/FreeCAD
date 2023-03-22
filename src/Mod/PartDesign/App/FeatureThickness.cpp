@@ -72,8 +72,16 @@ App::DocumentObjectExecReturn *Thickness::execute()
         return new App::DocumentObjectExecReturn(e.what());
     }
 
-    TopTools_ListOfShape closingFaces;
     const std::vector<std::string>& subStrings = Base.getSubValues();
+
+    //If no element is selected, then we use a copy of previous feature.
+    if (subStrings.empty()) {
+        this->Shape.setValue(TopShape);
+        return App::DocumentObject::StdReturn;
+    }
+
+    TopTools_ListOfShape closingFaces;
+
     for (std::vector<std::string>::const_iterator it = subStrings.begin(); it != subStrings.end(); ++it) {
         TopoDS_Face face = TopoDS::Face(TopShape.getSubShape(it->c_str()));
         closingFaces.Append(face);

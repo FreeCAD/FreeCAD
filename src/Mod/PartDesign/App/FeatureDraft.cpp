@@ -102,15 +102,21 @@ App::DocumentObjectExecReturn *Draft::execute()
     Part::TopoShape TopShape;
     try {
         TopShape = getBaseShape();
-    } catch (Base::Exception& e) {
+    }
+    catch (Base::Exception& e) {
         return new App::DocumentObjectExecReturn(e.what());
     }
 
     // Faces where draft should be applied
     // Note: Cannot be const reference currently because of BRepOffsetAPI_DraftAngle::Remove() bug, see below
     std::vector<std::string> SubVals = Base.getSubValuesStartsWith("Face");
-    if (SubVals.empty())
-        return new App::DocumentObjectExecReturn("No faces specified");
+
+    //If no element is selected, then we use a copy of previous feature.
+    if (SubVals.empty()) {
+        this->positionByBaseFeature();
+        this->Shape.setValue(TopShape);
+        return App::DocumentObject::StdReturn;
+    }
 
     // Draft angle
     double angle = Base::toRadians(Angle.getValue());
