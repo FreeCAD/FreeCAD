@@ -107,21 +107,28 @@ class DeformationWriter:
         for obj in self.write.getMember("Fem::ConstraintDisplacement"):
             if obj.References:
                 for name in obj.References[0][1]:
+                    if obj.useFlowSurfaceForce:
+                        self.write.boundary(name, "FSI BC", obj.useFlowSurfaceForce)
+                        # if useFlowSurfaceForce no displacements must be output
+                        continue
                     if not obj.xFree:
-                        self.write.boundary(
-                            name, "Displacement 1", obj.xDisplacement * 0.001)
-                    elif obj.xFix:
-                        self.write.boundary(name, "Displacement 1", 0.0)
+                        if not obj.hasXFormula:
+                            displacement = obj.xDisplacement * 0.001
+                        else:
+                            displacement = obj.xDisplacementFormula
+                        self.write.boundary(name, "Displacement 1", displacement)
                     if not obj.yFree:
-                        self.write.boundary(
-                            name, "Displacement 2", obj.yDisplacement * 0.001)
-                    elif obj.yFix:
-                        self.write.boundary(name, "Displacement 2", 0.0)
+                        if not obj.hasYFormula:
+                            displacement = obj.yDisplacement * 0.001
+                        else:
+                            displacement = obj.yDisplacementFormula
+                        self.write.boundary(name, "Displacement 2", displacement)
                     if not obj.zFree:
-                        self.write.boundary(
-                            name, "Displacement 3", obj.zDisplacement * 0.001)
-                    elif obj.zFix:
-                        self.write.boundary(name, "Displacement 3", 0.0)
+                        if not obj.hasZFormula:
+                            displacement = obj.zDisplacement * 0.001
+                        else:
+                            displacement = obj.zDisplacementFormula
+                        self.write.boundary(name, "Displacement 3", displacement)
                 self.write.handled(obj)
 
     def handleDeformationInitial(self, bodies):

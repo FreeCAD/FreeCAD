@@ -51,6 +51,9 @@ public:
     App::PropertyFloat xRotation;
     App::PropertyFloat yRotation;
     App::PropertyFloat zRotation;
+    App::PropertyString xDisplacementFormula;
+    App::PropertyString yDisplacementFormula;
+    App::PropertyString zDisplacementFormula;
     App::PropertyBool xFree;
     App::PropertyBool yFree;
     App::PropertyBool zFree;
@@ -63,7 +66,10 @@ public:
     App::PropertyBool rotxFix;
     App::PropertyBool rotyFix;
     App::PropertyBool rotzFix;
-    //App::PropertyBool element;
+    App::PropertyBool hasXFormula;
+    App::PropertyBool hasYFormula;
+    App::PropertyBool hasZFormula;
+    App::PropertyBool useFlowSurfaceForce;
 
     /// recalculate the object
     App::DocumentObjectExecReturn *execute() override;
