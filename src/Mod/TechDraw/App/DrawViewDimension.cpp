@@ -529,11 +529,13 @@ double DrawViewDimension::getDimValue()
         //nothing to measure
         return result;
     }
-    if (!getViewPart())
+    if (!getViewPart()) {
         return result;
+    }
 
-    if (!getViewPart()->hasGeometry())//happens when loading saved document
+    if (!getViewPart()->hasGeometry()) { //happens when loading saved document
         return result;
+    }
 
     if (MeasureType.isValue("True")) {
         // True Values
@@ -1233,7 +1235,7 @@ ReferenceVector DrawViewDimension::getReferences3d() const
     return refs3d;
 }
 
-void DrawViewDimension::replaceReferenceSubElement2d(int iRef, std::string newSubelement)
+void DrawViewDimension::replaceReferenceSubElement2d(int iRef, std::string& newSubelement)
 {
 //    Base::Console().Message("DVD::replaceReferenceSubElement2d(%d, %s)\n", iRef, newSubelement.c_str());
     ReferenceVector refs = getReferences2d();
@@ -1241,7 +1243,7 @@ void DrawViewDimension::replaceReferenceSubElement2d(int iRef, std::string newSu
     setReferences2d(refs);
 }
 
-void DrawViewDimension::replaceReferenceSubElement3d(int iRef, std::string newSubelement)
+void DrawViewDimension::replaceReferenceSubElement3d(int iRef, std::string& newSubelement)
 {
     ReferenceVector refs = getReferences3d();
     refs.at(iRef).setSubName(newSubelement);

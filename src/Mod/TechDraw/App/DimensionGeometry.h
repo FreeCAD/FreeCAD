@@ -56,7 +56,7 @@ public:
     void project(DrawViewPart* dvp);
     void mapToPage(DrawViewPart* dvp);
     void invertY();
-    void dump(std::string text) const;
+    void dump(std::string& text) const;
 
 private:
     Base::Vector3d m_first;
@@ -87,7 +87,7 @@ public:
     void project(DrawViewPart* dvp);
     void mapToPage(DrawViewPart* dvp);
     void invertY();
-    void dump(std::string text) const;
+    void dump(std::string& text) const;
 
 private:
     pointPair m_ends;
@@ -99,7 +99,7 @@ class TechDrawExport arcPoints
 {
 public:
     arcPoints();
-    arcPoints(const arcPoints& ap);
+    arcPoints(const arcPoints& ap) = default;
 
     arcPoints& operator= (const arcPoints& ap);
 
@@ -107,7 +107,7 @@ public:
     void project(DrawViewPart* dvp);
     void mapToPage(DrawViewPart* dvp);
     void invertY();
-    void dump(std::string text) const;
+    void dump(std::string& text) const;
 
 //TODO: setters and getters
     bool isArc;

@@ -69,9 +69,9 @@ public:
     std::string geomType() const;
     bool isWholeObject() const;
 
-    Part::TopoShape asTopoShape();
-    Part::TopoShape asTopoShapeVertex(TopoDS_Vertex vert);
-    Part::TopoShape asTopoShapeEdge(TopoDS_Edge edge);
+    Part::TopoShape asTopoShape() const;
+    Part::TopoShape asTopoShapeVertex(TopoDS_Vertex &vert) const;
+    Part::TopoShape asTopoShapeEdge(TopoDS_Edge& edge) const;
 
     bool is3d() const;
 

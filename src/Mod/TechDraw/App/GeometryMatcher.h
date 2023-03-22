@@ -38,7 +38,7 @@ namespace TechDraw {
 class TechDrawExport GeometryMatcher {
 public:
     GeometryMatcher() {}
-    GeometryMatcher(DrawViewDimension* dim) { m_dimension = dim; }
+    explicit GeometryMatcher(DrawViewDimension* dim) { m_dimension = dim; }
     ~GeometryMatcher() = default;
 
     bool compareGeometry(Part::TopoShape geom1,  Part::TopoShape geom2);

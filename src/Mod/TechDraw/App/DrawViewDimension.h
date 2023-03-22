@@ -176,7 +176,7 @@ protected:
     virtual pointPair getPointsEdgeVert(ReferenceVector references);
 
     virtual arcPoints getArcParameters(ReferenceVector references);
-    virtual arcPoints arcPointsFromBaseGeom(TechDraw::BaseGeomPtr base);
+    virtual arcPoints arcPointsFromBaseGeom(BaseGeomPtr base);
     virtual arcPoints arcPointsFromEdge(TopoDS_Edge occEdge);
 
     virtual anglePoints getAnglePointsTwoEdges(ReferenceVector references);
@@ -203,8 +203,8 @@ protected:
     std::string recoverChangedEdge3d(int iReference);
     std::string recoverChangedVertex2d(int iReference);
     std::string recoverChangedVertex3d(int iReference);
-    void replaceReferenceSubElement2d(int iRef, std::string newSubelement);
-    void replaceReferenceSubElement3d(int iRef, std::string newSubelement);
+    void replaceReferenceSubElement2d(int iRef, std::string &newSubelement);
+    void replaceReferenceSubElement3d(int iRef, std::string &newSubelement);
 
     std::vector<Part::TopoShape> getEdges(const Part::TopoShape& inShape);
     std::vector<Part::TopoShape> getVertexes(const Part::TopoShape& inShape);
