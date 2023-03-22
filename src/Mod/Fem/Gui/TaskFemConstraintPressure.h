@@ -26,6 +26,7 @@
 #ifndef GUI_TASKVIEW_TaskFemConstraintPressure_H
 #define GUI_TASKVIEW_TaskFemConstraintPressure_H
 
+#include <memory>
 #include <QObject>
 
 #include "TaskFemConstraintOnBoundary.h"
@@ -40,7 +41,8 @@ class TaskFemConstraintPressure : public TaskFemConstraintOnBoundary
     Q_OBJECT
 
 public:
-    explicit TaskFemConstraintPressure(ViewProviderFemConstraintPressure *ConstraintView,QWidget *parent = nullptr);
+    explicit TaskFemConstraintPressure(ViewProviderFemConstraintPressure* ConstraintView,
+                                       QWidget* parent = nullptr);
     ~TaskFemConstraintPressure() override;
     const std::string getReferences() const override;
     double get_Pressure()const;
@@ -59,8 +61,7 @@ protected:
 
 private:
     void updateUI();
-    Ui_TaskFemConstraintPressure* ui;
-
+    std::unique_ptr<Ui_TaskFemConstraintPressure> ui;
 };
 
 class TaskDlgFemConstraintPressure : public TaskDlgFemConstraint

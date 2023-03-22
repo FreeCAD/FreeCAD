@@ -26,6 +26,7 @@
 #ifndef GUI_TASKVIEW_TaskFemConstraintTemperature_H
 #define GUI_TASKVIEW_TaskFemConstraintTemperature_H
 
+#include <memory>
 #include <QObject>
 
 #include <Gui/Selection.h>
@@ -65,8 +66,7 @@ protected:
 
 private:
     void updateUI();
-    Ui_TaskFemConstraintTemperature* ui;
-
+    std::unique_ptr<Ui_TaskFemConstraintTemperature> ui;
 };
 
 class TaskDlgFemConstraintTemperature : public TaskDlgFemConstraint

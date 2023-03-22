@@ -36,16 +36,13 @@
 using namespace FemGui;
 using namespace Gui;
 
-TaskTetParameter::TaskTetParameter(Fem::FemMeshShapeNetgenObject *pcObject,QWidget *parent)
-    : TaskBox(Gui::BitmapFactory().pixmap("FEM_CreateNodesSet"),
-      tr("Tet Parameter"),
-      true,
-      parent),
-      pcObject(pcObject)
+TaskTetParameter::TaskTetParameter(Fem::FemMeshShapeNetgenObject* pcObject, QWidget* parent)
+    : TaskBox(Gui::BitmapFactory().pixmap("FEM_CreateNodesSet"), tr("Tet Parameter"), true, parent),
+      pcObject(pcObject),
+      ui(new Ui_TaskTetParameter)
 {
     // we need a separate container widget to add all controls to
     proxy = new QWidget(this);
-    ui = new Ui_TaskTetParameter();
     ui->setupUi(proxy);
     QMetaObject::connectSlotsByName(this);
 
@@ -83,9 +80,7 @@ TaskTetParameter::TaskTetParameter(Fem::FemMeshShapeNetgenObject *pcObject,QWidg
 }
 
 TaskTetParameter::~TaskTetParameter()
-{
-    delete ui;
-}
+{}
 
 void TaskTetParameter::SwitchMethod(int Value)
 {
