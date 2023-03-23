@@ -1499,8 +1499,7 @@ bool CmdFemCompEmEquations::isActive()
         nullptr, App::DocumentObject::getClassTypeId(), Gui::ResolveMode::FollowLink);
     if (results.size() == 1) {
         auto object = results.begin()->getObject();
-        // FIXME: this is not unique since the Ccx solver object has the same type
-        std::string Type = "Fem::FemSolverObjectPython";
+        std::string Type = "Fem::SolverElmer";
         if (Type.compare(object->getTypeId().getName()) == 0)
             return true;
     }
