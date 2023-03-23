@@ -26,6 +26,7 @@
 # include <cstring>
 # include <sstream>
 #endif
+# include <array>
 
 #include "Matrix.h"
 #include "Converter.h"
@@ -896,4 +897,71 @@ ScaleType Matrix4D::hasScale(double tol) const
     }
 
     return ScaleType::NoScaling;
+}
+
+std::array<Matrix4D, 4> Matrix4D::decompose() const{
+    // decompose the matrix to shear, scale, rotation and move
+    // so that matrix = move * rotation * scale * shear
+    // return an array of matrices
+    std::array<Matrix4D, 4> SZRT = {
+        Matrix4D(*this), Matrix4D(), Matrix4D(), Matrix4D()
+    };
+    SZRT[3].move(SZRT[0].getCol(3));
+    SZRT[0].setCol(3, Vector3d());
+    // find rotation
+    Vector3d xDir = SZRT[0].getCol(0);
+    if (xDir.IsNull()) xDir = Vector3d(1.,0.,0.);
+    Vector3d yDir = SZRT[0].getCol(1);
+    if (yDir.IsNull()) yDir = Vector3d(0.,1.,0.);
+    Vector3d zDir = xDir.Cross(yDir);
+    // check for parallel directions
+    if (zDir.IsNull()) {
+        zDir = SZRT[0].getCol(2);
+        if (zDir.IsNull()) zDir = Vector3d(0.,0.,1.);
+        yDir = zDir.Cross(xDir);
+        if (yDir.IsNull()) {
+            zDir = xDir.Cross(xDir.y ? Vector3d(1.,0.,0.) : Vector3d(0.,1.,0.));
+            yDir = zDir.Cross(xDir);
+        }
+    } else {
+        yDir = zDir.Cross(xDir);
+    }
+    xDir.Normalize();
+    yDir.Normalize();
+    zDir.Normalize();
+    
+    SZRT[2].setCol(0, xDir);
+    SZRT[2].setCol(1, yDir);
+    SZRT[2].setCol(2, zDir);
+    SZRT[2].inverse();
+    SZRT[0] = SZRT[2] * SZRT[0];
+    // To keep signs of the scale factors equal
+    if (SZRT[0].determinant() < 0) {
+        SZRT[2].rotZ(D_PI);
+        SZRT[0].rotZ(D_PI);
+    }
+    SZRT[2].inverse();
+    // extract scale
+    double xScale = SZRT[0].dMtrx4D[0][0];
+    double yScale = SZRT[0].dMtrx4D[1][1];
+    double zScale = SZRT[0].dMtrx4D[2][2];
+    SZRT[1].dMtrx4D[0][0] = xScale;
+    SZRT[1].dMtrx4D[1][1] = yScale;
+    SZRT[1].dMtrx4D[2][2] = zScale;
+    // The remaining shear
+    SZRT[0].scale(xScale ? 1.0 / xScale : 1.0, yScale ? 1.0 / yScale : 1.0, zScale ? 1.0 / zScale : 1.0);
+    // Restore trace in shear matrix
+    SZRT[0].setTrace(Vector3d(1.0, 1.0, 1.0));
+    // Remove values close to zero
+    for (int i = 0; i < 3; i++) {
+        if (std::abs(SZRT[1].dMtrx4D[i][i]) < 1e-15)
+            SZRT[1].dMtrx4D[i][i] = 0.0;
+        for (int j = 0; j < 3; j++) {
+            if (std::abs(SZRT[0].dMtrx4D[i][j]) < 1e-15)
+                SZRT[0].dMtrx4D[i][j] = 0.0;
+            if (std::abs(SZRT[2].dMtrx4D[i][j]) < 1e-15)
+                SZRT[2].dMtrx4D[i][j] = 0.0;
+        }
+    }
+    return SZRT;
 }
