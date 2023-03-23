@@ -22,6 +22,7 @@
 
 
 #include "PreCompiled.h"
+#include <array>
 
 #include <boost/algorithm/string/predicate.hpp>
 #include "Base/Exception.h"
@@ -220,28 +221,8 @@ void Rotation::setValue(const double q[4])
 
 void Rotation::setValue(const Matrix4D & m)
 {
-    
-    auto type = m.hasScale();
-    if (type == Base::ScaleType::Other) {
-        THROWM(Base::ValueError, "setValue(matrix): Could not determine the rotation.");
-    }
-    Matrix4D mc(m);
-    if (type != Base::ScaleType::NoScaling) {
-        mc.setCol(3, Vector3d(0.0, 0.0, 0.0));
-        if (type == Base::ScaleType::NonUniformRight) {
-            mc.transpose();
-        }
-        double sx = 1.0 / mc.getRow(0).Length();
-        double sy = 1.0 / mc.getRow(1).Length();
-        double sz = 1.0 / mc.getRow(2).Length();
-        mc.scale(sx, sy, sz);
-        if (type == Base::ScaleType::NonUniformRight) {
-            mc.transpose();
-        }
-        if (mc.determinant3() < 0.0) {
-            mc.scale(-1.0, -1.0, -1.0);
-        }
-    }
+    // Get the rotation part matrix
+    Matrix4D mc = m.decompose()[2];
     // Extract quaternion
     double trace = (mc[0][0] + mc[1][1] + mc[2][2]);
     if (trace > 0.0) {
