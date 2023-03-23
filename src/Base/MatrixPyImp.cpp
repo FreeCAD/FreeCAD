@@ -22,6 +22,7 @@
 
 
 #include "PreCompiled.h"
+//#include <array>
 
 // inclusion of the generated files (generated out of MatrixPy.xml)
 #include "RotationPy.h"
@@ -350,6 +351,18 @@ PyObject* MatrixPy::hasScale(PyObject * args)
     ScaleType type = getMatrixPtr()->hasScale(tol);
     Py::Module mod("FreeCAD");
     return Py::new_reference_to(mod.callMemberFunction("ScaleType", Py::TupleN(Py::Int(static_cast<int>(type)))));
+}
+PyObject* MatrixPy::decompose(PyObject * args)
+{
+    if (!PyArg_ParseTuple(args, ""))
+      return nullptr;
+
+    auto ms = getMatrixPtr()->decompose();
+    Py::Tuple tuple(4);
+    for (int i=0; i<4; i++) {
+        tuple.setItem(i, Py::Matrix(ms[i]));
+    }
+    return Py::new_reference_to(tuple);
 }
 
 PyObject* MatrixPy::nullify()

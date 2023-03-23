@@ -97,6 +97,13 @@ if it's not a scale matrix.
 tol : float</UserDocu>
       </Documentation>
     </Methode>
+    <Methode Name="decompose" Const="true">
+      <Documentation>
+        <UserDocu>decompose() -> Base.Matrix, Base.Matrix, Base.Matrix, Base.Matrix\n
+Return a tuple of matrices representing shear, scale, rotation and move.
+So that matrix = move * rotation * scale * shear.</UserDocu>
+      </Documentation>
+    </Methode>
     <Methode Name="nullify" NoArgs="true">
       <Documentation>
         <UserDocu>nullify() -> None
