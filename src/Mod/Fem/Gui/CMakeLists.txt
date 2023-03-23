@@ -65,7 +65,6 @@ set(FemGui_UIC_SRCS
     DlgSettingsFemGeneral.ui
     DlgSettingsFemGmsh.ui
     DlgSettingsFemInOutVtk.ui
-    DlgSettingsFemMaterial.ui
     DlgSettingsFemMystran.ui
     DlgSettingsFemZ88.ui
     TaskCreateNodeSet.ui
@@ -126,9 +125,6 @@ SET(FemGui_DLG_SRCS
     DlgSettingsFemInOutVtk.ui
     DlgSettingsFemInOutVtkImp.cpp
     DlgSettingsFemInOutVtkImp.h
-    DlgSettingsFemMaterial.ui
-    DlgSettingsFemMaterialImp.cpp
-    DlgSettingsFemMaterialImp.h
     DlgSettingsFemMystran.ui
     DlgSettingsFemMystranImp.cpp
     DlgSettingsFemMystranImp.h

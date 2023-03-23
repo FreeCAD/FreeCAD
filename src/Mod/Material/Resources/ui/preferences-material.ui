@@ -224,7 +224,7 @@ If unchecked, they will be sorted by their name.</string>
   </customwidget>
  </customwidgets>
  <resources>
-  <include location="Resources/Fem.qrc"/>
+  <include location="../Material.qrc"/>
  </resources>
  <connections>
   <connection>
