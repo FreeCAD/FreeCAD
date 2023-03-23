@@ -602,8 +602,10 @@ def drill_translate(outstring, cmd, params):
     global UNITS
     global UNIT_FORMAT
     global UNIT_SPEED_FORMAT
+    
 
     strFormat = "." + str(PRECISION) + "f"
+    strG0_Initial_Z=("G0 Z" + format(float(CURRENT_Z.getValueAs(UNIT_FORMAT)), strFormat) + "\n")
 
     trBuff = ""
 
@@ -630,8 +632,8 @@ def drill_translate(outstring, cmd, params):
         drill_Z += CURRENT_Z
         RETRACT_Z += CURRENT_Z
 
-    if DRILL_RETRACT_MODE == "G98" and CURRENT_Z >= RETRACT_Z:
-        RETRACT_Z = CURRENT_Z
+#    if DRILL_RETRACT_MODE == "G98" and CURRENT_Z >= RETRACT_Z:
+#        RETRACT_Z = CURRENT_Z
 
     # get the other parameters
     drill_feedrate = Units.Quantity(params["F"], FreeCAD.Units.Velocity)
@@ -726,7 +728,11 @@ def drill_translate(outstring, cmd, params):
                             + format(float(drill_Z.getValueAs(UNIT_FORMAT)), strFormat)
                             + strF_Feedrate
                         )
-                        trBuff += linenumber() + strG0_RETRACT_Z
+                        
+                        if DRILL_RETRACT_MODE == "G98" : 
+                            trBuff += (linenumber() + strG0_Initial_Z)
+                        else: 
+                            trBuff += (linenumber() + strG0_RETRACT_Z)
                         break
 
     except Exception as e:
