@@ -2290,11 +2290,11 @@ void CmdSketcherConstrainDistance::activated(int iMsg)
             return;
         }
     }
-    else if (isEdge(GeoId1,PosId1) && isEdge(GeoId2,PosId2))  { // circle to circle distance
+    else if (isEdge(GeoId1,PosId1) && isEdge(GeoId2,PosId2))  {
         const Part::Geometry *geom1 = Obj->getGeometry(GeoId1);
         const Part::Geometry *geom2 = Obj->getGeometry(GeoId2);
         if (geom1->getTypeId() == Part::GeomCircle::getClassTypeId()
-        && geom2->getTypeId() == Part::GeomCircle::getClassTypeId() ) {
+        && geom2->getTypeId() == Part::GeomCircle::getClassTypeId() ) { // circle to circle distance
             auto circleSeg1 = static_cast<const Part::GeomCircle*>(geom1);
             double radius1 = circleSeg1->getRadius();
             Base::Vector3d center1 = circleSeg1->getCenter();
@@ -2323,6 +2323,43 @@ void CmdSketcherConstrainDistance::activated(int iMsg)
             openCommand(QT_TRANSLATE_NOOP("Command", "Add circle to circle distance constraint"));
             Gui::cmdAppObjectArgs(selection[0].getObject(),
                 "addConstraint(Sketcher.Constraint('Distance',%d,%d,%f))",
+                GeoId1,GeoId2,ActDist);
+
+            if (arebothpointsorsegmentsfixed || constraintCreationMode==Reference) { // it is a constraint on a external line, make it non-driving
+                const std::vector<Sketcher::Constraint *> &ConStr = Obj->Constraints.getValues();
+
+                Gui::cmdAppObjectArgs(selection[0].getObject(),
+                     "setDriving(%i,%s)",
+                     ConStr.size()-1,"False");
+                finishDatumConstraint (this, Obj, false);
+            }
+            else
+                finishDatumConstraint (this, Obj, true);
+
+            return;
+        } else if ((geom1->getTypeId() == Part::GeomCircle::getClassTypeId()
+                && geom2->getTypeId() == Part::GeomLineSegment::getClassTypeId())
+            || (geom1->getTypeId() == Part::GeomLineSegment::getClassTypeId()
+                && geom2->getTypeId() == Part::GeomCircle::getClassTypeId()) ) { // circle to line distance
+
+            if (geom1->getTypeId() == Part::GeomLineSegment::getClassTypeId()){
+                std::swap(geom1, geom2); //Assume circle is first
+                std::swap(GeoId1, GeoId2);
+            }
+
+            auto circleSeg = static_cast<const Part::GeomCircle*>(geom1);
+            double radius = circleSeg->getRadius();
+            Base::Vector3d center = circleSeg->getCenter();
+
+            auto lineSeg= static_cast<const Part::GeomLineSegment*>(geom2);
+            Base::Vector3d pnt1 = lineSeg->getStartPoint();
+            Base::Vector3d pnt2 = lineSeg->getEndPoint();
+            Base::Vector3d d = pnt2 - pnt1;
+            double ActDist = std::abs(-center.x*d.y+center.y*d.x+pnt1.x*pnt2.y-pnt2.x*pnt1.y) / d.Length() - radius;
+
+            openCommand(QT_TRANSLATE_NOOP("Command", "Add circle to line distance constraint"));
+            Gui::cmdAppObjectArgs(selection[0].getObject(),
+                "addConstraint(Sketcher.Constraint('Distance',%d,%d,%f)) ",
                 GeoId1,GeoId2,ActDist);
 
             if (arebothpointsorsegmentsfixed || constraintCreationMode==Reference) { // it is a constraint on a external line, make it non-driving
@@ -2467,7 +2504,7 @@ void CmdSketcherConstrainDistance::applyConstraint(std::vector<SelIdPair> &selSe
                 finishDatumConstraint (this, Obj, true);
         }
         else if (geom->getTypeId() == Part::GeomCircle::getClassTypeId()) {
-            // allow this selection but do nothing as it needs 2 circles
+            // allow this selection but do nothing as it needs 2 circles or 1 circle and 1 line
         }
         else {
             Gui::TranslatedNotification(Obj,

@@ -72,7 +72,8 @@ namespace GCS
         WeightedLinearCombination = 27,
         SlopeAtBSplineKnot = 28,
         PointOnBSpline = 29,
-        C2CDistance = 30
+        C2CDistance = 30,
+        C2LDistance = 31
     };
 
     enum InternalAlignmentType {
@@ -756,6 +757,24 @@ namespace GCS
         void errorgrad(double* err, double* grad, double *param); //error and gradient combined. Values are returned through pointers.
     public:
         ConstraintC2CDistance(Circle &c1, Circle &c2, double *d);
+        ConstraintType getTypeId() override;
+        void rescale(double coef=1.) override;
+        double error() override;
+        double grad(double *) override;
+    };
+
+    // C2LDistance
+    class ConstraintC2LDistance : public Constraint
+    {
+    private:
+        Circle circle;
+        Line line;
+        double *d;
+        inline double* distance() { return pvec[0]; }
+        void ReconstructGeomPointers(); //writes pointers in pvec to the parameters of c, l
+        void errorgrad(double* err, double* grad, double *param); //error and gradient combined. Values are returned through pointers.
+    public:
+        ConstraintC2LDistance(Circle &c, Line &l, double *d);
         ConstraintType getTypeId() override;
         void rescale(double coef=1.) override;
         double error() override;
