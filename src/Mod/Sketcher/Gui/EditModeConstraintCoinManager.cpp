@@ -660,17 +660,39 @@ Restart:
                             pnt1 = geolistfacade.getPoint(Constr->First, Constr->FirstPos);
 
                             const Part::Geometry *geo = geolistfacade.getGeometryFromGeoId(Constr->Second);
-                            if (geo->getTypeId() == Part::GeomLineSegment::getClassTypeId()) { // point to line distance
-                                const Part::GeomLineSegment *lineSeg = static_cast<const Part::GeomLineSegment *>(geo);
-                                Base::Vector3d l2p1 = lineSeg->getStartPoint();
-                                Base::Vector3d l2p2 = lineSeg->getEndPoint();
-                                // calculate the projection of p1 onto line2
-                                pnt2.ProjectToLine(pnt1-l2p1, l2p2-l2p1);
-                                pnt2 += pnt1;
+                            if (geo->getTypeId() == Part::GeomLineSegment::getClassTypeId()) {
+                                if (Constr->SecondPos != Sketcher::PointPos::none) {  // point to line distance
+                                    const Part::GeomLineSegment *lineSeg = static_cast<const Part::GeomLineSegment *>(geo);
+                                    Base::Vector3d l2p1 = lineSeg->getStartPoint();
+                                    Base::Vector3d l2p2 = lineSeg->getEndPoint();
+                                    // calculate the projection of p1 onto line2
+                                    pnt2.ProjectToLine(pnt1-l2p1, l2p2-l2p1);
+                                    pnt2 += pnt1;
+                                } else {
+                                    const Part::Geometry *geo1 = geolistfacade.getGeometryFromGeoId(Constr->First);
+                                    if (geo1->getTypeId() == Part::GeomCircle::getClassTypeId()) { // circle to line distance
+                                        const Part::GeomLineSegment *lineSeg = static_cast<const Part::GeomLineSegment *>(geo);
+                                        const Part::GeomCircle *circleSeg = static_cast<const Part::GeomCircle*>(geo1);
+                                        Base::Vector3d ct = circleSeg->getCenter();
+                                        Base::Vector3d l2p1 = lineSeg->getStartPoint();
+                                        Base::Vector3d l2p2 = lineSeg->getEndPoint();
+                                        double radius = circleSeg->getRadius();
+                                        pnt2.ProjectToLine(ct-l2p1, l2p2-l2p1); //project on the line translated to origin
+                                        Base::Vector3d dir = pnt2;
+                                        dir.Normalize();
+                                        pnt1 = ct + dir * radius;
+                                        pnt2 += ct;
+                                        Base::Vector3d d = l2p2 - l2p1;
+                                        double ActDist = std::abs(-ct.x*d.y+ct.y*d.x+l2p1.x*l2p2.y-l2p2.x*l2p1.y) / d.Length() - radius;
+                                        if (ActDist < 0) {
+                                            std::swap(pnt1, pnt2);
+                                        }
+                                    }
+                                }
 
-                            } else if (geo->getTypeId() == Part::GeomCircle::getClassTypeId()) { // circle to circle distance
+                            } else if (geo->getTypeId() == Part::GeomCircle::getClassTypeId()) {
                                 const Part::Geometry *geo1 = geolistfacade.getGeometryFromGeoId(Constr->First);
-                                if (geo1->getTypeId() == Part::GeomCircle::getClassTypeId()) {
+                                if (geo1->getTypeId() == Part::GeomCircle::getClassTypeId()) { // circle to circle distance
                                     const Part::GeomCircle *circleSeg1 = static_cast<const Part::GeomCircle*>(geo1);
                                     auto circleSeg2 = static_cast<const Part::GeomCircle*>(geo);
                                     GetCirclesMinimalDistance(circleSeg1, circleSeg2, pnt1, pnt2);
