@@ -41,7 +41,7 @@ def get_information():
         "name": "Deformation (nonlinear elasticity) - Elmer",
         "meshtype": "solid",
         "meshelement": "Tet10",
-        "constraints": ["displacement"],
+        "constraints": ["displacement", "spring"],
         "solvers": ["elmer"],
         "material": "solid",
         "equations": ["deformation"]
@@ -165,6 +165,19 @@ def setup(doc=None, solvertype="elmer"):
     DisplaceRight.zFix = True
     DisplaceRight.References = [(SpringObject, "Face5")]
     analysis.addObject(DisplaceRight)
+
+    # constraints spring
+    StiffnessLeft = doc.addObject("Fem::ConstraintSpring", "StiffnessLeft")
+    StiffnessLeft.TangentialStiffness = "50 N/m"
+    StiffnessLeft.ElmerStiffness = "Tangential Stiffness"
+    StiffnessLeft.References = [(SpringObject, "Face1")]
+    analysis.addObject(StiffnessLeft)
+
+    StiffnessRight = doc.addObject("Fem::ConstraintSpring", "StiffnessRight")
+    StiffnessRight.TangentialStiffness = "50 N/m"
+    StiffnessRight.ElmerStiffness = "Tangential Stiffness"
+    StiffnessRight.References = [(SpringObject, "Face5")]
+    analysis.addObject(StiffnessRight)
 
     # mesh
     femmesh_obj = analysis.addObject(ObjectsFem.makeMeshGmsh(doc, get_meshname()))[0]

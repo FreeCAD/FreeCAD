@@ -36,8 +36,9 @@ class FemExport ConstraintSpring : public Fem::Constraint
 public:
     ConstraintSpring();
 
-    App::PropertyFloat normalStiffness;
-    App::PropertyFloat tangentialStiffness;
+    App::PropertyStiffness NormalStiffness;
+    App::PropertyStiffness TangentialStiffness;
+    App::PropertyEnumeration ElmerStiffness;
     App::PropertyVectorList Points;
     App::PropertyVectorList Normals;
 
