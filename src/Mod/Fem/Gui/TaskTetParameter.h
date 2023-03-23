@@ -75,7 +75,7 @@ protected:
 
 private:
     QWidget* proxy;
-    Ui_TaskTetParameter* ui;
+    std::unique_ptr<Ui_TaskTetParameter> ui;
 };
 
 } //namespace FemGui

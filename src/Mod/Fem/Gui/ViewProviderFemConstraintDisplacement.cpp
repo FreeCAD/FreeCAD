@@ -40,7 +40,8 @@
 
 using namespace FemGui;
 
-PROPERTY_SOURCE(FemGui::ViewProviderFemConstraintDisplacement, FemGui::ViewProviderFemConstraintOnBoundary)
+PROPERTY_SOURCE(FemGui::ViewProviderFemConstraintDisplacement,
+                FemGui::ViewProviderFemConstraintOnBoundary)
 
 ViewProviderFemConstraintDisplacement::ViewProviderFemConstraintDisplacement()
 {
@@ -52,7 +53,7 @@ ViewProviderFemConstraintDisplacement::~ViewProviderFemConstraintDisplacement()
 {
 }
 
-//FIXME setEdit needs a careful review
+// FIXME setEdit needs a careful review
 bool ViewProviderFemConstraintDisplacement::setEdit(int ModNum)
 {
     if (ModNum == ViewProvider::Default) {
@@ -91,14 +92,16 @@ bool ViewProviderFemConstraintDisplacement::setEdit(int ModNum)
 
 #define HEIGHT (4)
 #define WIDTH (0.3)
-//#define USE_MULTIPLE_COPY  //OvG: MULTICOPY fails to update scaled display on initial drawing - so disable
+//#define USE_MULTIPLE_COPY
+//OvG: MULTICOPY fails to update scaled display on initial drawing - so disable
 
 void ViewProviderFemConstraintDisplacement::updateData(const App::Property* prop)
 {
     // Gets called whenever a property of the attached object changes
     Fem::ConstraintDisplacement *pcConstraint =
         static_cast<Fem::ConstraintDisplacement *>(this->getObject());
-    float scaledwidth = WIDTH * pcConstraint->Scale.getValue(); //OvG: Calculate scaled values once only
+    // OvG: Calculate scaled values once only
+    float scaledwidth = WIDTH * pcConstraint->Scale.getValue();
     float scaledheight = HEIGHT * pcConstraint->Scale.getValue();
     bool xFree = pcConstraint->xFree.getValue();
     bool yFree = pcConstraint->yFree.getValue();
@@ -144,7 +147,7 @@ void ViewProviderFemConstraintDisplacement::updateData(const App::Property* prop
     }
 #endif
 
-    if (strcmp(prop->getName(),"Points") == 0) {
+    if (prop == &pcConstraint->Points) {
         const std::vector<Base::Vector3d>& points = pcConstraint->Points.getValues();
         const std::vector<Base::Vector3d>& normals = pcConstraint->Normals.getValues();
         if (points.size() != normals.size())

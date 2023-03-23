@@ -48,6 +48,7 @@
 #include <zipios++/gzipoutputstream.h>
 
 #include "SoFCDB.h"
+#include "Camera.h"
 #include "Flag.h"
 #include "GestureNavigationStyle.h"
 #include "NavigationStyle.h"
@@ -68,7 +69,6 @@
 #include "SoMouseWheelEvent.h"
 #include "SoNavigationDragger.h"
 #include "SoTextLabel.h"
-#include "View3DPy.h"
 #include "Inventor/MarkerBitmaps.h"
 #include "Inventor/SmSwitchboard.h"
 #include "Inventor/SoAutoZoomTranslation.h"

@@ -56,6 +56,7 @@
 #include "ViewProviderFemPostFunction.h"
 #include "FemSettings.h"
 #include "TaskPostBoxes.h"
+#include "ViewProviderAnalysis.h"
 
 #include "ui_BoxWidget.h"
 #include "ui_CylinderWidget.h"
@@ -70,7 +71,8 @@ void FunctionWidget::setViewProvider(ViewProviderFemPostFunction* view)
 {
     m_view = view;
     m_object = static_cast<Fem::FemPostFunction*>(view->getObject());
-    m_connection = m_object->getDocument()->signalChangedObject.connect(boost::bind(&FunctionWidget::onObjectsChanged, this, bp::_1, bp::_2));
+    m_connection = m_object->getDocument()->signalChangedObject.connect(
+        boost::bind(&FunctionWidget::onObjectsChanged, this, bp::_1, bp::_2));
 }
 
 void FunctionWidget::onObjectsChanged(const App::DocumentObject& obj, const App::Property& p) {
@@ -110,21 +112,22 @@ void ViewProviderFemPostFunctionProvider::onChanged(const App::Property* prop)
 void ViewProviderFemPostFunctionProvider::updateData(const App::Property* prop)
 {
     Gui::ViewProviderDocumentObject::updateData(prop);
-
-    if (strcmp(prop->getName(), "Functions") == 0) {
+    Fem::FemPostFunctionProvider* obj = static_cast<Fem::FemPostFunctionProvider*>(getObject());
+    if (prop == &obj->Functions) {
         updateSize();
     }
 }
 
 void ViewProviderFemPostFunctionProvider::updateSize()
 {
-    std::vector< App::DocumentObject* > vec = claimChildren();
-    for (std::vector< App::DocumentObject* >::iterator it = vec.begin(); it != vec.end(); ++it) {
+    std::vector<App::DocumentObject*> vec = claimChildren();
+    for (std::vector<App::DocumentObject*>::iterator it = vec.begin(); it != vec.end(); ++it) {
 
         if (!(*it)->isDerivedFrom(Fem::FemPostFunction::getClassTypeId()))
             continue;
 
-        ViewProviderFemPostFunction* vp = static_cast<FemGui::ViewProviderFemPostFunction*>(Gui::Application::Instance->getViewProvider(*it));
+        ViewProviderFemPostFunction* vp = static_cast<FemGui::ViewProviderFemPostFunction*>(
+            Gui::Application::Instance->getViewProvider(*it));
         vp->AutoScaleFactorX.setValue(SizeX.getValue());
         vp->AutoScaleFactorY.setValue(SizeY.getValue());
         vp->AutoScaleFactorZ.setValue(SizeZ.getValue());
@@ -133,32 +136,10 @@ void ViewProviderFemPostFunctionProvider::updateSize()
 
 bool ViewProviderFemPostFunctionProvider::onDelete(const std::vector<std::string>&)
 {
-    // warn the user if the object has childs
-
+    // warn the user if the object has unselected children
     auto objs = claimChildren();
-    if (!objs.empty())
-    {
-        // generate dialog
-        QString bodyMessage;
-        QTextStream bodyMessageStream(&bodyMessage);
-        bodyMessageStream << qApp->translate("Std_Delete",
-            "The functions list is not empty, therefore the\nfollowing referencing objects might be lost:");
-        bodyMessageStream << '\n';
-        for (auto ObjIterator : objs)
-            bodyMessageStream << '\n' << QString::fromUtf8(ObjIterator->Label.getValue());
-        bodyMessageStream << "\n\n" << QObject::tr("Are you sure you want to continue?");
-        // show and evaluate the dialog
-        int DialogResult = QMessageBox::warning(Gui::getMainWindow(),
-            qApp->translate("Std_Delete", "Object dependencies"), bodyMessage,
-            QMessageBox::Yes, QMessageBox::No);
-        if (DialogResult == QMessageBox::Yes)
-            return true;
-        else
-            return false;
-    }
-    else {
-        return true;
-    }
+    return ViewProviderFemAnalysis::checkSelectedChildren(
+        objs, this->getDocument(), "functions list");
 }
 
 bool ViewProviderFemPostFunctionProvider::canDelete(App::DocumentObject* obj) const
@@ -178,17 +159,16 @@ PROPERTY_SOURCE(FemGui::ViewProviderFemPostFunction, Gui::ViewProviderDocumentOb
 ViewProviderFemPostFunction::ViewProviderFemPostFunction()
     : m_manip(nullptr), m_autoscale(false), m_isDragging(false), m_autoRecompute(false)
 {
-
-    ADD_PROPERTY_TYPE(AutoScaleFactorX, (1), "AutoScale", App::Prop_Hidden, "Automatic scaling factor");
-    ADD_PROPERTY_TYPE(AutoScaleFactorY, (1), "AutoScale", App::Prop_Hidden, "Automatic scaling factor");
-    ADD_PROPERTY_TYPE(AutoScaleFactorZ, (1), "AutoScale", App::Prop_Hidden, "Automatic scaling factor");
-
+    ADD_PROPERTY_TYPE(
+        AutoScaleFactorX, (1), "AutoScale", App::Prop_Hidden, "Automatic scaling factor");
+    ADD_PROPERTY_TYPE(
+        AutoScaleFactorY, (1), "AutoScale", App::Prop_Hidden, "Automatic scaling factor");
+    ADD_PROPERTY_TYPE(
+        AutoScaleFactorZ, (1), "AutoScale", App::Prop_Hidden, "Automatic scaling factor");
+    
     m_geometrySeperator = new SoSeparator();
     m_geometrySeperator->ref();
-
-    m_transform = new SoTransform();
-    m_transform->ref();
-
+    
     m_scale = new SoScale();
     m_scale->ref();
     m_scale->scaleFactor = SbVec3f(1, 1, 1);
@@ -199,7 +179,6 @@ ViewProviderFemPostFunction::~ViewProviderFemPostFunction()
     m_geometrySeperator->unref();
     m_manip->unref();
     m_scale->unref();
-    //transform is unref'd when it is replaced by the dragger
 }
 
 void ViewProviderFemPostFunction::attach(App::DocumentObject* pcObj)
@@ -211,7 +190,7 @@ void ViewProviderFemPostFunction::attach(App::DocumentObject* pcObj)
     color->diffuseColor.setValue(0, 0, 1);
     color->transparency.setValue(0.5);
 
-    m_transform = new SoTransform;
+    SoTransform* transform = new SoTransform();
 
     m_manip = setupManipulator();
     m_manip->ref();
@@ -220,7 +199,7 @@ void ViewProviderFemPostFunction::attach(App::DocumentObject* pcObj)
     pcEditNode->ref();
 
     pcEditNode->addChild(color);
-    pcEditNode->addChild(m_transform);
+    pcEditNode->addChild(transform);
     pcEditNode->addChild(m_geometrySeperator);
 
     m_geometrySeperator->insertChild(m_scale, 0);
@@ -232,7 +211,7 @@ void ViewProviderFemPostFunction::attach(App::DocumentObject* pcObj)
     SoSearchAction sa;
     sa.setInterest(SoSearchAction::FIRST);
     sa.setSearchingAll(FALSE);
-    sa.setNode(m_transform);
+    sa.setNode(transform);
     sa.apply(pcEditNode);
     SoPath* path = sa.getPath();
     if (path) {
@@ -253,7 +232,8 @@ SbBox3f ViewProviderFemPostFunction::getBoundingsOfView() const
 {
     SbBox3f box;
     Gui::Document* doc = this->getDocument();
-    Gui::View3DInventor* view = qobject_cast<Gui::View3DInventor*>(doc->getViewOfViewProvider(this));
+    Gui::View3DInventor* view =
+        qobject_cast<Gui::View3DInventor*>(doc->getViewOfViewProvider(this));
     if (view) {
         Gui::View3DInventorViewer* viewer = view->getViewer();
         box = viewer->getBoundingBox();
@@ -296,7 +276,8 @@ std::vector<std::string> ViewProviderFemPostFunction::getDisplayModes() const
 void ViewProviderFemPostFunction::dragStartCallback(void* data, SoDragger*)
 {
     // This is called when a manipulator is about to manipulating
-    Gui::Application::Instance->activeDocument()->openCommand(QT_TRANSLATE_NOOP("Command", "Edit Mirror"));
+    Gui::Application::Instance->activeDocument()->openCommand(
+        QT_TRANSLATE_NOOP("Command", "Edit Mirror"));
     static_cast<ViewProviderFemPostFunction*>(data)->m_isDragging = true;
 
     ViewProviderFemPostFunction* that = static_cast<ViewProviderFemPostFunction*>(data);
@@ -378,7 +359,8 @@ void ViewProviderFemPostFunction::onChanged(const App::Property* prop)
     Gui::ViewProviderDocumentObject::onChanged(prop);
 
     if (m_autoscale)
-        m_scale->scaleFactor = SbVec3f(AutoScaleFactorX.getValue(), AutoScaleFactorY.getValue(), AutoScaleFactorZ.getValue());
+        m_scale->scaleFactor = SbVec3f(
+            AutoScaleFactorX.getValue(), AutoScaleFactorY.getValue(), AutoScaleFactorZ.getValue());
 }
 
 
@@ -444,8 +426,8 @@ FunctionWidget* ViewProviderFemPostBoxFunction::createControlWidget()
 }
 
 BoxWidget::BoxWidget()
+    : ui(new Ui_BoxWidget)
 {
-    ui = new Ui_BoxWidget();
     ui->setupUi(this);
 
     QSize size = ui->centerX->sizeForText(QStringLiteral("000000000000"));
@@ -464,12 +446,18 @@ BoxWidget::BoxWidget()
     ui->width->setDecimals(UserDecimals);
     ui->height->setDecimals(UserDecimals);
 
-    connect(ui->centerX, qOverload<double>(&Gui::QuantitySpinBox::valueChanged), this, &BoxWidget::centerChanged);
-    connect(ui->centerY, qOverload<double>(&Gui::QuantitySpinBox::valueChanged), this, &BoxWidget::centerChanged);
-    connect(ui->centerZ, qOverload<double>(&Gui::QuantitySpinBox::valueChanged), this, &BoxWidget::centerChanged);
-    connect(ui->length, qOverload<double>(&Gui::QuantitySpinBox::valueChanged), this, &BoxWidget::lengthChanged);
-    connect(ui->width, qOverload<double>(&Gui::QuantitySpinBox::valueChanged), this, &BoxWidget::widthChanged);
-    connect(ui->height, qOverload<double>(&Gui::QuantitySpinBox::valueChanged), this, &BoxWidget::heightChanged);
+    connect(ui->centerX, qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
+        this, &BoxWidget::centerChanged);
+    connect(ui->centerY, qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
+        this, &BoxWidget::centerChanged);
+    connect(ui->centerZ, qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
+        this, &BoxWidget::centerChanged);
+    connect(ui->length, qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
+        this, &BoxWidget::lengthChanged);
+    connect(ui->width, qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
+        this, &BoxWidget::widthChanged);
+    connect(ui->height, qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
+        this, &BoxWidget::heightChanged);
 }
 
 BoxWidget::~BoxWidget()
@@ -620,8 +608,8 @@ FunctionWidget* ViewProviderFemPostCylinderFunction::createControlWidget()
 }
 
 CylinderWidget::CylinderWidget()
+    : ui(new Ui_CylinderWidget)
 {
-    ui = new Ui_CylinderWidget();
     ui->setupUi(this);
 
     QSize size = ui->centerX->sizeForText(QStringLiteral("000000000000"));
@@ -641,13 +629,20 @@ CylinderWidget::CylinderWidget()
     ui->axisY->setDecimals(UserDecimals);
     ui->axisZ->setDecimals(UserDecimals);
 
-    connect(ui->centerX, qOverload<double>(&Gui::QuantitySpinBox::valueChanged), this, &CylinderWidget::centerChanged);
-    connect(ui->centerY, qOverload<double>(&Gui::QuantitySpinBox::valueChanged), this, &CylinderWidget::centerChanged);
-    connect(ui->centerZ, qOverload<double>(&Gui::QuantitySpinBox::valueChanged), this, &CylinderWidget::centerChanged);
-    connect(ui->axisX, qOverload<double>(&Gui::QuantitySpinBox::valueChanged), this, &CylinderWidget::axisChanged);
-    connect(ui->axisY, qOverload<double>(&Gui::QuantitySpinBox::valueChanged), this, &CylinderWidget::axisChanged);
-    connect(ui->axisZ, qOverload<double>(&Gui::QuantitySpinBox::valueChanged), this, &CylinderWidget::axisChanged);
-    connect(ui->radius, qOverload<double>(&Gui::QuantitySpinBox::valueChanged), this, &CylinderWidget::radiusChanged);
+    connect(ui->centerX, qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
+        this, &CylinderWidget::centerChanged);
+    connect(ui->centerY, qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
+        this, &CylinderWidget::centerChanged);
+    connect(ui->centerZ, qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
+        this, &CylinderWidget::centerChanged);
+    connect(ui->axisX, qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
+        this, &CylinderWidget::axisChanged);
+    connect(ui->axisY, qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
+        this, &CylinderWidget::axisChanged);
+    connect(ui->axisZ, qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
+        this, &CylinderWidget::axisChanged);
+    connect(ui->radius, qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
+        this, &CylinderWidget::radiusChanged);
 }
 
 CylinderWidget::~CylinderWidget()
@@ -719,7 +714,8 @@ void CylinderWidget::axisChanged(double)
 void CylinderWidget::radiusChanged(double)
 {
     if (!blockObjectUpdates()) {
-        static_cast<Fem::FemPostCylinderFunction*>(getObject())->Radius.setValue(ui->radius->value().getValue());
+        static_cast<Fem::FemPostCylinderFunction*>(getObject())
+            ->Radius.setValue(ui->radius->value().getValue());
     }
 }
 
@@ -733,13 +729,14 @@ static const App::PropertyFloatConstraint::Constraints scaleConstraint = {1e-4, 
 ViewProviderFemPostPlaneFunction::ViewProviderFemPostPlaneFunction()
     : m_detectscale(false)
 {
-    ADD_PROPERTY_TYPE(Scale, (1000.0), "Manipulator", App::Prop_None, "Scaling factor for the manipulator");
+    ADD_PROPERTY_TYPE(
+        Scale, (1000.0), "Manipulator", App::Prop_None, "Scaling factor for the manipulator");
     Scale.setConstraints(&scaleConstraint);
     sPixmap = "fem-post-geo-plane";
 
     setAutoScale(true);
 
-    //setup the visualisation geometry
+    // setup the visualisation geometry
     getGeometryNode()->addChild(ShapeNodes::postPlane());
 }
 
@@ -773,7 +770,8 @@ void ViewProviderFemPostPlaneFunction::onChanged(const App::Property* prop)
             // get current matrix
             SbVec3f t, s;
             SbRotation r, so;
-            SbMatrix matrix = getManipulator()->getDragger()->getMotionMatrix(); // clazy:exclude=rule-of-two-soft
+            SbMatrix matrix =
+                getManipulator()->getDragger()->getMotionMatrix();// clazy:exclude=rule-of-two-soft
             matrix.getTransform(t, r, s, so);
 
             float scale = static_cast<float>(Scale.getValue());
@@ -827,8 +825,8 @@ FunctionWidget* ViewProviderFemPostPlaneFunction::createControlWidget()
 
 
 PlaneWidget::PlaneWidget()
+    : ui(new Ui_PlaneWidget)
 {
-    ui = new Ui_PlaneWidget();
     ui->setupUi(this);
 
     QSize size = ui->originX->sizeForText(QStringLiteral("000000000000"));
@@ -847,12 +845,18 @@ PlaneWidget::PlaneWidget()
     ui->normalY->setDecimals(UserDecimals);
     ui->normalZ->setDecimals(UserDecimals);
 
-    connect(ui->originX, qOverload<double>(&Gui::QuantitySpinBox::valueChanged), this, &PlaneWidget::originChanged);
-    connect(ui->originY, qOverload<double>(&Gui::QuantitySpinBox::valueChanged), this, &PlaneWidget::originChanged);
-    connect(ui->originZ, qOverload<double>(&Gui::QuantitySpinBox::valueChanged), this, &PlaneWidget::originChanged);
-    connect(ui->normalX, qOverload<double>(&Gui::QuantitySpinBox::valueChanged), this, &PlaneWidget::normalChanged);
-    connect(ui->normalY, qOverload<double>(&Gui::QuantitySpinBox::valueChanged), this, &PlaneWidget::normalChanged);
-    connect(ui->normalZ, qOverload<double>(&Gui::QuantitySpinBox::valueChanged), this, &PlaneWidget::normalChanged);
+    connect(ui->originX, qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
+        this, &PlaneWidget::originChanged);
+    connect(ui->originY, qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
+        this, &PlaneWidget::originChanged);
+    connect(ui->originZ, qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
+        this, &PlaneWidget::originChanged);
+    connect(ui->normalX, qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
+        this, &PlaneWidget::normalChanged);
+    connect(ui->normalY, qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
+        this, &PlaneWidget::normalChanged);
+    connect(ui->normalZ, qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
+        this, &PlaneWidget::normalChanged);
 }
 
 PlaneWidget::~PlaneWidget()
@@ -873,7 +877,8 @@ void PlaneWidget::setViewProvider(ViewProviderFemPostFunction* view)
     ui->originY->setUnit(unit);
     ui->originZ->setUnit(unit);
     setBlockObjectUpdates(false);
-    // The normal vector is unitless. It uses nevertheless Gui::PrefQuantitySpinBox to keep dialog uniform.
+    // The normal vector is unitless. It uses nevertheless Gui::PrefQuantitySpinBox to keep dialog
+    // uniform.
     onChange(func->Normal);
     onChange(func->Origin);
 }
@@ -991,8 +996,8 @@ FunctionWidget* ViewProviderFemPostSphereFunction::createControlWidget()
 }
 
 SphereWidget::SphereWidget()
+    : ui(new Ui_SphereWidget)
 {
-    ui = new Ui_SphereWidget();
     ui->setupUi(this);
 
     QSize size = ui->centerX->sizeForText(QStringLiteral("000000000000"));
@@ -1006,10 +1011,14 @@ SphereWidget::SphereWidget()
     ui->centerY->setDecimals(UserDecimals);
     ui->centerZ->setDecimals(UserDecimals);
 
-    connect(ui->centerX, qOverload<double>(&Gui::QuantitySpinBox::valueChanged), this, &SphereWidget::centerChanged);
-    connect(ui->centerY, qOverload<double>(&Gui::QuantitySpinBox::valueChanged), this, &SphereWidget::centerChanged);
-    connect(ui->centerZ, qOverload<double>(&Gui::QuantitySpinBox::valueChanged), this, &SphereWidget::centerChanged);
-    connect(ui->radius, qOverload<double>(&Gui::QuantitySpinBox::valueChanged), this, &SphereWidget::radiusChanged);
+    connect(ui->centerX, qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
+        this, &SphereWidget::centerChanged);
+    connect(ui->centerY, qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
+        this, &SphereWidget::centerChanged);
+    connect(ui->centerZ, qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
+        this, &SphereWidget::centerChanged);
+    connect(ui->radius, qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
+        this, &SphereWidget::radiusChanged);
 }
 
 SphereWidget::~SphereWidget()
@@ -1065,7 +1074,8 @@ void SphereWidget::centerChanged(double)
 void SphereWidget::radiusChanged(double)
 {
     if (!blockObjectUpdates()) {
-        static_cast<Fem::FemPostSphereFunction*>(getObject())->Radius.setValue(ui->radius->value().getValue());
+        static_cast<Fem::FemPostSphereFunction*>(getObject())
+            ->Radius.setValue(ui->radius->value().getValue());
     }
 }
 
@@ -1189,17 +1199,19 @@ SoGroup* postSphere()
     int idx = 0;
     for (int i = 0; i < 4; i++) {
         for (int j = 0; j < 21; j++) {
-            points->point.set1Value(idx, SbVec3f(std::sin(2 * M_PI / 20 * j) * std::cos(M_PI / 4 * i),
-                std::sin(2 * M_PI / 20 * j) * std::sin(M_PI / 4 * i),
-                std::cos(2 * M_PI / 20 * j)));
+            points->point.set1Value(idx,
+                                    SbVec3f(std::sin(2 * M_PI / 20 * j) * std::cos(M_PI / 4 * i),
+                                            std::sin(2 * M_PI / 20 * j) * std::sin(M_PI / 4 * i),
+                                            std::cos(2 * M_PI / 20 * j)));
             ++idx;
         }
     }
     for (int i = 0; i < 4; i++) {
         for (int j = 0; j < 21; j++) {
-            points->point.set1Value(idx, SbVec3f(std::sin(M_PI / 4 * i) * std::cos(2 * M_PI / 20 * j),
-                std::sin(M_PI / 4 * i) * std::sin(2 * M_PI / 20 * j),
-                std::cos(M_PI / 4 * i)));
+            points->point.set1Value(idx,
+                                    SbVec3f(std::sin(M_PI / 4 * i) * std::cos(2 * M_PI / 20 * j),
+                                            std::sin(M_PI / 4 * i) * std::sin(2 * M_PI / 20 * j),
+                                            std::cos(M_PI / 4 * i)));
             ++idx;
         }
     }

@@ -1010,10 +1010,6 @@ public:
         painter.setPen(Qt::white);
         painter.drawText(25, 40, 70, 20, Qt::AlignHCenter|Qt::AlignVCenter,
             QString::fromLatin1("Distance: 2.784mm"));
-        //QPainterPath text;
-        //text.addText(25,55,QFont(), QString::fromLatin1("Distance"));
-        //painter.setBrush(QBrush(Qt::white, Qt::SolidPattern));
-        //painter.drawPath(text);
     }
 };
 
@@ -1024,32 +1020,23 @@ public:
     GDIWidget(QWidget* parent) : QWidget(parent)
     {
         setAttribute(Qt::WA_PaintOnScreen);
-#if QT_VERSION >= 0x050000
         setAttribute(Qt::WA_NativeWindow);
-#endif
     }
     QPaintEngine *paintEngine() const {
         return 0;
     }
 protected:
     void paintEvent(QPaintEvent *event) {
-#if QT_VERSION < 0x050000
-        HDC hdc = getDC();
-#else
+
         HWND hWnd = (HWND)this->winId();
         HDC hdc = GetDC(hWnd);
-#endif
         SelectObject(hdc, GetSysColorBrush(COLOR_WINDOW));
         Rectangle(hdc, 0, 0, width(), height());
         RECT rect = {0, 0, width(), height() };
         DrawTextA(hdc, "Hello World!", 12, &rect,
         DT_SINGLELINE | DT_VCENTER | DT_CENTER);
-#if QT_VERSION < 0x050000
-        releaseDC(hdc);
-#else
         ReleaseDC(hWnd, hdc);
-#endif
-    }
+     }
 };
 #endif
 
@@ -1073,14 +1060,7 @@ void CmdTestImageNode::activated(int)
 
 
     QPainterPath roundRectPath;
-    //roundRectPath.moveTo(80.0, 35.0);
-    //roundRectPath.arcTo(70.0, 30.0, 10.0, 10.0, 0.0, 90.0);
-    //roundRectPath.lineTo(25.0, 30.0);
-    //roundRectPath.arcTo(20.0, 30.0, 10.0, 10.0, 90.0, 90.0);
-    //roundRectPath.lineTo(20.0, 65.0);
-    //roundRectPath.arcTo(20.0, 60.0, 10.0, 10.0, 180.0, 90.0);
-    //roundRectPath.lineTo(75.0, 70.0);
-    //roundRectPath.arcTo(70.0, 60.0, 10.0, 10.0, 270.0, 90.0);
+
     roundRectPath.moveTo(100.0, 5.0);
     roundRectPath.arcTo(90.0, 0.0, 10.0, 10.0, 0.0, 90.0);
     roundRectPath.lineTo(5.0, 0.0);
@@ -1091,12 +1071,6 @@ void CmdTestImageNode::activated(int)
     roundRectPath.arcTo(90.0, 90.0, 10.0, 10.0, 270.0, 90.0);
     roundRectPath.closeSubpath();
 
-
-    //QLabel* l = new QLabel();
-    //l.setText(QLatin1String("Distance: 2.784mm"));
-    //QPixmap p = QPixmap::grabWidget(&l, 0,0,100,100);
-    //l.show();
-    //QPixmap p = Gui::BitmapFactory().pixmap("edit-cut");
 
     Gui::MDIView* view = Gui::getMainWindow()->activeWindow();
     Gui::View3DInventorViewer* viewer = static_cast<Gui::View3DInventor*>(view)->getViewer();
@@ -1112,18 +1086,10 @@ void CmdTestImageNode::activated(int)
     painter.setBrush(QBrush(QColor(0,85,255), Qt::SolidPattern));
     QRectF rectangle(0.0, 0.0, w+10, h+10);
     painter.drawRoundedRect(rectangle, 5, 5);
-    //painter.drawRect(rectangle);
-    //painter.drawPath(roundRectPath);
+
     painter.setPen(QColor(255,255,255));
     painter.drawText(5,h+3, text);
     painter.end();
-    //l->setPixmap(QPixmap::fromImage(image));
-    //l->show();
-    //RenderArea* ra = new RenderArea(roundRectPath);
-    //ra->show();
-
-    //QPixmap p = QPixmap::grabWidget(ra, 0,0,100,30);
-    //image = p.toImage();
 
     SoSFImage texture;
     Gui::BitmapFactory().convert(image, texture);
@@ -1176,7 +1142,6 @@ CmdTestRedirectPaint::CmdTestRedirectPaint()
 
 void CmdTestRedirectPaint::activated(int)
 {
-#if 1 //QT_VERSION >= 0x050000
     QCalendarWidget* cal = new QCalendarWidget();
     cal->setWindowTitle(QString::fromLatin1("QCalendarWidget"));
     cal->show();
@@ -1187,15 +1152,6 @@ void CmdTestRedirectPaint::activated(int)
     label->setPixmap(img);
     label->show();
     label->setWindowTitle(QString::fromLatin1("QLabel"));
-#else
-    QCalendarWidget* cal = new QCalendarWidget();
-    QLabel* label = new QLabel();
-    QPainter::setRedirected(cal,label);
-    cal->setWindowTitle(QString::fromLatin1("QCalendarWidget"));
-    cal->show();
-    label->show();
-    label->setWindowTitle(QString::fromLatin1("QLabel"));
-#endif
 }
 
 //===========================================================================

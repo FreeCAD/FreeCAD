@@ -20,7 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
@@ -51,6 +50,7 @@
 #include "TaskFeaturePick.h"
 #include "TaskSketchBasedParameters.h"
 #include "Utils.h"
+
 
 Q_DECLARE_METATYPE(App::PropertyLinkSubList::SubSet)
 
@@ -165,9 +165,7 @@ TaskPipeParameters::~TaskPipeParameters()
 }
 
 void TaskPipeParameters::updateUI()
-{
-
-}
+{}
 
 void TaskPipeParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
 {
@@ -482,7 +480,6 @@ bool TaskPipeParameters::accept()
             }
 
             std::vector<App::PropertyLinkSubList::SubSet> subSets;
-            int index = 0;
             for (auto &subSet : pcPipe->Sections.getSubListValues()) {
                 if (!pcActiveBody->hasObject(subSet.first) &&
                     !pcActiveBody->getOrigin()->hasObject(subSet.first)) {
@@ -495,8 +492,6 @@ bool TaskPipeParameters::accept()
                 else {
                     subSets.push_back(subSet);
                 }
-
-                index++;
             }
 
             pcPipe->Sections.setSubListValues(subSets);

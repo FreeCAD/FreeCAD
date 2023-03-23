@@ -188,7 +188,8 @@ inline void SketcherAddWorkbenchSketchEditModeActions(Gui::ToolBarItem& sketch)
     sketch  << "Sketcher_LeaveSketch"
             << "Sketcher_ViewSketch"
             << "Sketcher_ViewSection"
-            << "Sketcher_Grid";
+            << "Sketcher_Grid"
+            << "Sketcher_Snap";
 }
 
 template <typename T>
@@ -325,7 +326,6 @@ inline void SketcherAddWorkbenchConstraints<Gui::MenuItem>(Gui::MenuItem& cons)
             << "Sketcher_ConstrainRadiam"
             << "Sketcher_ConstrainAngle"
             << "Sketcher_ConstrainSnellsLaw"
-            << "Sketcher_ConstrainInternalAlignment"
             << "Separator"
             << "Sketcher_ToggleDrivingConstraint"
             << "Sketcher_ToggleActiveConstraint";
@@ -352,7 +352,6 @@ inline void SketcherAddWorkbenchConstraints<Gui::ToolBarItem>(Gui::ToolBarItem& 
             << "Sketcher_CompConstrainRadDia"
             << "Sketcher_ConstrainAngle"
             // << "Sketcher_ConstrainSnellsLaw" // Rarely used, show only in menu
-            // << "Sketcher_ConstrainInternalAlignment" // This constrain is never used by the user - Do not use precious toolbar space
             << "Separator"
             << "Sketcher_ToggleDrivingConstraint"
             << "Sketcher_ToggleActiveConstraint";

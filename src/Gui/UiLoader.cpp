@@ -24,6 +24,7 @@
 #ifndef _PreComp_
 # include <QAction>
 # include <QActionGroup>
+# include <QCoreApplication>
 # include <QDir>
 # include <QFile>
 # include <QLayout>
@@ -488,10 +489,20 @@ QString QUiLoader::errorString() const
 UiLoader::UiLoader(QObject* parent)
   : QUiLoader(parent)
 {
-    // do not use the plugins for additional widgets as we don't need them and
-    // the application may crash under Linux (tested on Ubuntu 7.04 & 7.10).
-    clearPluginPaths();
     this->cw = availableWidgets();
+    setLanguageChangeEnabled(true);
+}
+
+std::unique_ptr<UiLoader> UiLoader::newInstance(QObject *parent)
+{
+    QCoreApplication* app = QCoreApplication::instance();
+    QStringList libPaths = app->libraryPaths();
+
+    app->setLibraryPaths(QStringList{}); //< backup library paths, so QUiLoader won't load plugins by default
+    std::unique_ptr<UiLoader> rv{new UiLoader{parent}};
+    app->setLibraryPaths(libPaths);
+
+    return rv;
 }
 
 UiLoader::~UiLoader()
@@ -544,8 +555,8 @@ void UiLoaderPy::init_type()
 }
 
 UiLoaderPy::UiLoaderPy()
+    : loader{UiLoader::newInstance()}
 {
-    loader.setLanguageChangeEnabled(true);
 }
 
 UiLoaderPy::~UiLoaderPy()
@@ -592,7 +603,7 @@ Py::Object UiLoaderPy::load(const Py::Tuple& args)
         }
 
         if (device) {
-            QWidget* widget = loader.load(device, parent);
+            QWidget* widget = loader->load(device, parent);
             if (widget) {
                 wrap.loadGuiModule();
                 wrap.loadWidgetsModule();
@@ -613,7 +624,7 @@ Py::Object UiLoaderPy::load(const Py::Tuple& args)
 
 Py::Object UiLoaderPy::createWidget(const Py::Tuple& args)
 {
-    return wrapFromWidgetFactory(args, std::bind(&UiLoader::createWidget, &loader,
+    return wrapFromWidgetFactory(args, std::bind(&UiLoader::createWidget, loader.get(),
                                                  std::placeholders::_1,
                                                  std::placeholders::_2,
                                                  std::placeholders::_3));
@@ -625,7 +636,7 @@ Py::Object UiLoaderPy::addPluginPath(const Py::Tuple& args)
     if (wrap.loadCoreModule()) {
         std::string fn;
         if (wrap.toCString(args[0], fn)) {
-            loader.addPluginPath(QString::fromStdString(fn));
+            loader->addPluginPath(QString::fromStdString(fn));
         }
     }
     return Py::None();
@@ -633,13 +644,13 @@ Py::Object UiLoaderPy::addPluginPath(const Py::Tuple& args)
 
 Py::Object UiLoaderPy::clearPluginPaths(const Py::Tuple& /*args*/)
 {
-    loader.clearPluginPaths();
+    loader->clearPluginPaths();
     return Py::None();
 }
 
 Py::Object UiLoaderPy::pluginPaths(const Py::Tuple& /*args*/)
 {
-    auto list = loader.pluginPaths();
+    auto list = loader->pluginPaths();
     Py::List py;
     for (const auto& it : list) {
         py.append(Py::String(it.toStdString()));
@@ -649,7 +660,7 @@ Py::Object UiLoaderPy::pluginPaths(const Py::Tuple& /*args*/)
 
 Py::Object UiLoaderPy::availableWidgets(const Py::Tuple& /*args*/)
 {
-    auto list = loader.availableWidgets();
+    auto list = loader->availableWidgets();
     Py::List py;
     for (const auto& it : list) {
         py.append(Py::String(it.toStdString()));
@@ -665,17 +676,17 @@ Py::Object UiLoaderPy::availableWidgets(const Py::Tuple& /*args*/)
 
 Py::Object UiLoaderPy::errorString(const Py::Tuple& /*args*/)
 {
-    return Py::String(loader.errorString().toStdString());
+    return Py::String(loader->errorString().toStdString());
 }
 
 Py::Object UiLoaderPy::isLanguageChangeEnabled(const Py::Tuple& /*args*/)
 {
-    return Py::Boolean(loader.isLanguageChangeEnabled());
+    return Py::Boolean(loader->isLanguageChangeEnabled());
 }
 
 Py::Object UiLoaderPy::setLanguageChangeEnabled(const Py::Tuple& args)
 {
-    loader.setLanguageChangeEnabled(Py::Boolean(args[0]));
+    loader->setLanguageChangeEnabled(Py::Boolean(args[0]));
     return Py::None();
 }
 
@@ -685,7 +696,7 @@ Py::Object UiLoaderPy::setWorkingDirectory(const Py::Tuple& args)
     if (wrap.loadCoreModule()) {
         std::string fn;
         if (wrap.toCString(args[0], fn)) {
-            loader.setWorkingDirectory(QString::fromStdString(fn));
+            loader->setWorkingDirectory(QString::fromStdString(fn));
         }
     }
     return Py::None();
@@ -693,7 +704,7 @@ Py::Object UiLoaderPy::setWorkingDirectory(const Py::Tuple& args)
 
 Py::Object UiLoaderPy::workingDirectory(const Py::Tuple& /*args*/)
 {
-    QDir dir = loader.workingDirectory();
+    QDir dir = loader->workingDirectory();
     QString path = dir.absolutePath();
     return Py::String(path.toStdString());
 }

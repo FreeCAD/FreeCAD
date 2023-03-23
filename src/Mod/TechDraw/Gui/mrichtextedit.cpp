@@ -201,8 +201,7 @@ MRichTextEdit::MRichTextEdit(QWidget *parent, QString textIn) : QWidget(parent) 
 
     // font size
 
-    QFontDatabase db;
-    const auto sizes = db.standardSizes();
+    const auto sizes = QFontDatabase::standardSizes();
     for(int size: sizes) {
         f_fontsize->addItem(QString::number(size));
     }
@@ -430,7 +429,11 @@ void MRichTextEdit::textStyle(int index) {
         }
     if (index == ParagraphMonospace) {
         fmt = cursor.charFormat();
+#if QT_VERSION < QT_VERSION_CHECK(5,13,0)
         fmt.setFontFamily(QString::fromUtf8("Monospace"));
+#else
+        fmt.setFontFamilies(QStringList() << QString::fromUtf8("Monospace"));
+#endif
         fmt.setFontStyleHint(QFont::Monospace);
         fmt.setFontFixedPitch(true);
         }

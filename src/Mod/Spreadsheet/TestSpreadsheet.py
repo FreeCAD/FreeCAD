@@ -894,7 +894,7 @@ class SpreadsheetCases(unittest.TestCase):
         pla = FreeCAD.Placement(vec,rot)
         ipla = pla.inverse()
 
-        sheet.set('A1', '=create(<<vector>>, 2, 1, 2)')
+        sheet.set('A1', '=vector(2, 1, 2)')
 
         # different ways of calling mscale()
         sheet.set('B1', '=mscale(create(<<matrix>>), A1)')
@@ -907,10 +907,10 @@ class SpreadsheetCases(unittest.TestCase):
         sheet.set('D2', '=A2^0')
         sheet.set('E2', '=A2^1')
         sheet.set('F2', '=A2^2')
-        sheet.set('G2', '=create(<<matrix>>, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)')
+        sheet.set('G2', '=matrix(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)')
         sheet.set('H2', '=G2^-1')
 
-        sheet.set('A3', '=create(<<rotation>>, create(<<vector>>, 0, 1, 0), 45)')
+        sheet.set('A3', '=rotation(vector(0, 1, 0), 45)')
 
         # test rotation power operation
         sheet.set('B3', '=A3^-2')
@@ -919,7 +919,7 @@ class SpreadsheetCases(unittest.TestCase):
         sheet.set('E3', '=A3^1')
         sheet.set('F3', '=A3^2')
 
-        sheet.set('A4', '=create(<<placement>>, A1, A3)')
+        sheet.set('A4', '=placement(A1, A3)')
 
         # test placement power operation
         sheet.set('B4', '=A4^-2')
@@ -943,6 +943,20 @@ class SpreadsheetCases(unittest.TestCase):
         sheet.set('D6', '=minvert(D4*D2) * minvert(D3) * D5')
         sheet.set('E6', '=(E2 * E3)^-1 * E4^-1 * E5')
         sheet.set('F6', '=(F3*F4*F2)^-1 * F5')
+
+        # Rotate and translate.
+        sheet.set('A7', '=placement(vector(1; 2; 3), vector(1; 0; 0); 0)')
+        sheet.set('B7', '=mrotate(A7; vector(1; 0; 0); 90)')
+        sheet.set('C7', '=mrotatex(A7; 90)')
+        sheet.set('D7', '=mrotatey(A7; 90)')
+        sheet.set('E7', '=mrotatez(A7; 90)')
+        sheet.set('F7', '=mtranslate(A7; vector(1; 2; 3))')
+        sheet.set('G7', '=mtranslate(A7; 1; 2; 3)')
+
+        # Compatibility with old syntax.
+        sheet.set('A8', '=create(<<vector>>, 2, 1, 2)')
+        sheet.set('B8', '=create(<<rotation>>, create(<<vector>>, 0, 1, 0), 45)')
+        sheet.set('C8', '=create(<<placement>>, A8, B8)')
 
         self.doc.recompute()
 
@@ -1013,6 +1027,18 @@ class SpreadsheetCases(unittest.TestCase):
         self.assertLess(sheet.D6.distanceToPoint(vec),tol)
         self.assertLess(sheet.E6.distanceToPoint(vec),tol)
         self.assertLess(sheet.F6.distanceToPoint(vec),tol)
+
+        self.assertTrue(sheet.A7.Base.isEqual(FreeCAD.Vector(1, 2, 3), tol))
+        self.assertTrue(sheet.B7.Base.isEqual(FreeCAD.Vector(1, -3, 2), tol))
+        self.assertTrue(sheet.C7.Base.isEqual(FreeCAD.Vector(1, -3, 2), tol))
+        self.assertTrue(sheet.D7.Base.isEqual(FreeCAD.Vector(3, 2.0, -1), tol))
+        self.assertTrue(sheet.E7.Base.isEqual(FreeCAD.Vector(-2, 1, 3.0), tol))
+        self.assertTrue(sheet.F7.Base.isEqual(FreeCAD.Vector(2, 4, 6), tol))
+        self.assertTrue(sheet.G7.Base.isEqual(FreeCAD.Vector(2, 4, 6), tol))
+
+        self.assertEqual(sheet.A8, vec)
+        self.assertEqual(sheet.B8, rot)
+        self.assertEqual(sheet.C8, pla)
 
     def testIssue3128(self):
         """ Regression test for issue 3128; mod should work with arbitrary units for both arguments """

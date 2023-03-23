@@ -41,39 +41,55 @@ ConstraintDisplacement::ConstraintDisplacement()
     // Displacement or Rotation not 0.0, prescribed displacement, Free and Fix should be False
 
     // x displacement
-    ADD_PROPERTY(xFix,(0));
-    ADD_PROPERTY(xFree,(1));
-    ADD_PROPERTY(xDisplacement,(0.0));
+    ADD_PROPERTY(xFix, (false));
+    ADD_PROPERTY(xFree, (1));
+    ADD_PROPERTY(xDisplacement, (0.0));
+    ADD_PROPERTY(hasXFormula, (false));
+    ADD_PROPERTY(xDisplacementFormula, (""));
 
     // y displacement
-    ADD_PROPERTY(yFix,(0));
-    ADD_PROPERTY(yFree,(1));
-    ADD_PROPERTY(yDisplacement,(0.0));
+    ADD_PROPERTY(yFix, (false));
+    ADD_PROPERTY(yFree, (true));
+    ADD_PROPERTY(yDisplacement, (0.0));
+    ADD_PROPERTY(hasYFormula, (false));
+    ADD_PROPERTY(yDisplacementFormula, (""));
 
     // z displacement
-    ADD_PROPERTY(zFix,(0));
-    ADD_PROPERTY(zFree,(1));
-    ADD_PROPERTY(zDisplacement,(0.0));
+    ADD_PROPERTY(zFix, (false));
+    ADD_PROPERTY(zFree, (true));
+    ADD_PROPERTY(zDisplacement, (0.0));
+    ADD_PROPERTY(hasZFormula, (false));
+    ADD_PROPERTY(zDisplacementFormula, (""));
+
+    // flow surface force
+    ADD_PROPERTY(useFlowSurfaceForce, (false));
 
     // x rotation
-    ADD_PROPERTY(rotxFix,(0));
-    ADD_PROPERTY(rotxFree,(1));
-    ADD_PROPERTY(xRotation,(0.0));
+    ADD_PROPERTY(rotxFix, (false));
+    ADD_PROPERTY(rotxFree, (true));
+    ADD_PROPERTY(xRotation, (0.0));
 
     // y rotation
-    ADD_PROPERTY(rotyFix,(0));
-    ADD_PROPERTY(rotyFree,(1));
-    ADD_PROPERTY(yRotation,(0.0));
+    ADD_PROPERTY(rotyFix, (false));
+    ADD_PROPERTY(rotyFree, (true));
+    ADD_PROPERTY(yRotation, (0.0));
 
     // z rotation
-    ADD_PROPERTY(rotzFix,(0));
-    ADD_PROPERTY(rotzFree,(1));
-    ADD_PROPERTY(zRotation,(0.0));
+    ADD_PROPERTY(rotzFix, (false));
+    ADD_PROPERTY(rotzFree, (true));
+    ADD_PROPERTY(zRotation, (0.0));
 
-    ADD_PROPERTY_TYPE(Points,(Base::Vector3d()),"ConstraintFixed",App::PropertyType(App::Prop_ReadOnly|App::Prop_Output),
+    ADD_PROPERTY_TYPE(Points,
+                      (Base::Vector3d()),
+                      "ConstraintFixed",
+                      App::PropertyType(App::Prop_ReadOnly | App::Prop_Output),
                       "Points where symbols are drawn");
-    ADD_PROPERTY_TYPE(Normals,(Base::Vector3d()),"ConstraintFixed",App::PropertyType(App::Prop_ReadOnly|App::Prop_Output),
-                                                                             "Normals where symbols are drawn");
+    ADD_PROPERTY_TYPE(Normals,
+                      (Base::Vector3d()),
+                      "ConstraintFixed",
+                      App::PropertyType(App::Prop_ReadOnly | App::Prop_Output),
+                      "Normals where symbols are drawn");
+
     Points.setValues(std::vector<Base::Vector3d>());
     Normals.setValues(std::vector<Base::Vector3d>());
 }
@@ -88,6 +104,45 @@ const char* ConstraintDisplacement::getViewProviderName() const
     return "FemGui::ViewProviderFemConstraintDisplacement";
 }
 
+void ConstraintDisplacement::handleChangedPropertyType(Base::XMLReader& reader,
+                                                           const char* TypeName,
+                                                           App::Property* prop)
+{
+    // properties _Displacement had App::PropertyFloat and were changed to App::PropertyDistance
+    if (prop == &xDisplacement && strcmp(TypeName, "App::PropertyFloat") == 0) {
+        App::PropertyDistance xDisplacementProperty;
+        // restore the PropertyFloat to be able to set its value
+        xDisplacementProperty.Restore(reader);
+        xDisplacement.setValue(xDisplacementProperty.getValue());
+    }
+    else if (prop == &yDisplacement && strcmp(TypeName, "App::PropertyFloat") == 0) {
+        App::PropertyDistance yDisplacementProperty;
+        yDisplacementProperty.Restore(reader);
+        yDisplacement.setValue(yDisplacementProperty.getValue());
+    }
+    else if (prop == &zDisplacement && strcmp(TypeName, "App::PropertyFloat") == 0) {
+        App::PropertyDistance zDisplacementProperty;
+        zDisplacementProperty.Restore(reader);
+        zDisplacement.setValue(zDisplacementProperty.getValue());
+    }
+    // properties _Displacement had App::PropertyFloat and were changed to App::PropertyAngle
+    else if (prop == &xRotation && strcmp(TypeName, "App::PropertyFloat") == 0) {
+        App::PropertyDistance xRotationProperty;
+        xRotationProperty.Restore(reader);
+        xRotation.setValue(xRotationProperty.getValue());
+    }
+    else if (prop == &yRotation && strcmp(TypeName, "App::PropertyFloat") == 0) {
+        App::PropertyDistance yRotationProperty;
+        yRotationProperty.Restore(reader);
+        yRotation.setValue(yRotationProperty.getValue());
+    }
+    else if (prop == &zRotation && strcmp(TypeName, "App::PropertyFloat") == 0) {
+        App::PropertyDistance zRotationProperty;
+        zRotationProperty.Restore(reader);
+        zRotation.setValue(zRotationProperty.getValue());
+    }
+}
+
 void ConstraintDisplacement::onChanged(const App::Property* prop)
 {
     // Note: If we call this at the end, then the arrows are not oriented correctly initially
@@ -97,11 +152,11 @@ void ConstraintDisplacement::onChanged(const App::Property* prop)
     if (prop == &References) {
         std::vector<Base::Vector3d> points;
         std::vector<Base::Vector3d> normals;
-        int scale = 1; //OvG: Enforce use of scale
+        int scale = 1; // OvG: Enforce use of scale
         if (getPoints(points, normals, &scale)) {
             Points.setValues(points);
             Normals.setValues(normals);
-            Scale.setValue(scale); //OvG: Scale
+            Scale.setValue(scale); // OvG: Scale
             Points.touch(); // This triggers ViewProvider::updateData()
         }
     }

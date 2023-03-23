@@ -318,11 +318,21 @@ void DrawViewPart::partExec(TopoDS_Shape& shape)
 //prepare the shape for HLR processing by centering, scaling and rotating it
 GeometryObjectPtr DrawViewPart::makeGeometryForShape(TopoDS_Shape& shape)
 {
-    //    Base::Console().Message("DVP::makeGeometryForShape() - %s\n", getNameInDocument());
-    gp_Pnt inputCenter = TechDraw::findCentroid(shape, getProjectionCS());
-    m_saveCentroid = DU::toVector3d(inputCenter);
-    m_saveShape = centerScaleRotate(this, shape, m_saveCentroid);
-    GeometryObjectPtr go = buildGeometryObject(shape, getProjectionCS());
+//    Base::Console().Message("DVP::makeGeometryForShape() - %s\n", getNameInDocument());
+
+    // if we use the passed reference directly, the centering doesn't work.  Maybe the underlying OCC TShape
+    // isn't modified?  using a copy works and the referenced shape (from getSourceShape in execute())
+    // isn't used for anything anyway.
+    bool copyGeometry = true;
+    bool copyMesh = false;
+    BRepBuilderAPI_Copy copier(shape, copyGeometry, copyMesh);
+    TopoDS_Shape localShape = copier.Shape();
+
+    gp_Pnt gCentroid = TechDraw::findCentroid(localShape, getProjectionCS());
+    m_saveCentroid = DU::toVector3d(gCentroid);
+    m_saveShape = centerScaleRotate(this, localShape, m_saveCentroid);
+
+    GeometryObjectPtr go = buildGeometryObject(localShape, getProjectionCS());
     return go;
 }
 
@@ -330,7 +340,7 @@ GeometryObjectPtr DrawViewPart::makeGeometryForShape(TopoDS_Shape& shape)
 TopoDS_Shape DrawViewPart::centerScaleRotate(DrawViewPart* dvp, TopoDS_Shape& inOutShape,
                                              Base::Vector3d centroid)
 {
-    //    Base::Console().Message("DVP::centerScaleRotate() - %s\n", dvp->getNameInDocument());
+//    Base::Console().Message("DVP::centerScaleRotate() - %s\n", dvp->getNameInDocument());
     gp_Ax2 viewAxis = dvp->getProjectionCS();
 
     //center shape on origin
@@ -345,12 +355,11 @@ TopoDS_Shape DrawViewPart::centerScaleRotate(DrawViewPart* dvp, TopoDS_Shape& in
     return centeredShape;
 }
 
-
 //create a geometry object and trigger the HLR process in another thread
 TechDraw::GeometryObjectPtr DrawViewPart::buildGeometryObject(TopoDS_Shape& shape,
                                                               const gp_Ax2& viewAxis)
 {
-    //    Base::Console().Message("DVP::buildGeometryObject() - %s\n", getNameInDocument());
+//    Base::Console().Message("DVP::buildGeometryObject() - %s\n", getNameInDocument());
     showProgressMessage(getNameInDocument(), "is finding hidden lines");
 
     TechDraw::GeometryObjectPtr go(
@@ -366,13 +375,26 @@ TechDraw::GeometryObjectPtr DrawViewPart::buildGeometryObject(TopoDS_Shape& shap
         go->projectShapeWithPolygonAlgo(shape, viewAxis);
     }
     else {
+        // TODO: we should give the thread its own copy of the shape because the passed one will be
+        // destroyed when the call stack we followed to get here unwinds and the thread could still be
+        // running.
+        // Should we pass a smart pointer instead of const& ??
+    //    bool copyGeometry = true;
+    //    bool copyMesh = false;
+    //    BRepBuilderAPI_Copy copier(shape, copyGeometry, copyMesh);
+    //    copier.Shape();
+
         //projectShape (the HLR process) runs in a separate thread since it can take a long time
         //note that &m_hlrWatcher in the third parameter is not strictly required, but using the
         //4 parameter signature instead of the 3 parameter signature prevents clazy warning:
         //https://github.com/KDE/clazy/blob/1.11/docs/checks/README-connect-3arg-lambda.md
         connectHlrWatcher = QObject::connect(&m_hlrWatcher, &QFutureWatcherBase::finished,
                                              &m_hlrWatcher, [this] { this->onHlrFinished(); });
+#if QT_VERSION < QT_VERSION_CHECK(6,0,0)
         m_hlrFuture = QtConcurrent::run(go.get(), &GeometryObject::projectShape, shape, viewAxis);
+#else
+        m_hlrFuture = QtConcurrent::run(&GeometryObject::projectShape, go.get(), shape, viewAxis);
+#endif
         m_hlrWatcher.setFuture(m_hlrFuture);
         waitingForHlr(true);
     }
@@ -412,7 +434,11 @@ void DrawViewPart::onHlrFinished(void)
             connectFaceWatcher =
                 QObject::connect(&m_faceWatcher, &QFutureWatcherBase::finished, &m_faceWatcher,
                                  [this] { this->onFacesFinished(); });
+#if QT_VERSION < QT_VERSION_CHECK(6,0,0)
             m_faceFuture = QtConcurrent::run(this, &DrawViewPart::extractFaces);
+#else
+            m_faceFuture = QtConcurrent::run(&DrawViewPart::extractFaces, this);
+#endif
             m_faceWatcher.setFuture(m_faceFuture);
             waitingForFaces(true);
         }
@@ -1144,10 +1170,27 @@ Base::Vector3d DrawViewPart::getOriginalCentroid() const { return m_saveCentroid
 Base::Vector3d DrawViewPart::getCurrentCentroid() const
 {
     TopoDS_Shape shape = getSourceShape();
-    gp_Ax2 cs = getProjectionCS(Base::Vector3d(0.0, 0.0, 0.0));
-    Base::Vector3d center = TechDraw::findCentroidVec(shape, cs);
-    return center;
+    if (shape.IsNull()) {
+        return Base::Vector3d(0.0, 0.0, 0.0);
+    }
+    gp_Ax2 cs = getProjectionCS();
+    gp_Pnt gCenter = TechDraw::findCentroid(shape, cs);
+    return DU::toVector3d(gCenter);
 }
+
+
+Base::Vector3d DrawViewPart::getLocalOrigin3d() const
+{
+    return getCurrentCentroid();
+}
+
+Base::Vector3d DrawViewPart::getLocalOrigin2d() const
+{
+    Base::Vector3d centroid = getCurrentCentroid();
+    Base::Vector3d localOrigin = projectPoint(centroid, false);
+    return localOrigin;
+}
+
 
 std::vector<DrawViewSection*> DrawViewPart::getSectionRefs() const
 {
@@ -1293,9 +1336,8 @@ Base::Vector3d DrawViewPart::getXDirection() const
             Base::Vector3d dir = Direction.getValue();   //make a sensible default
             Base::Vector3d org(0.0, 0.0, 0.0);
             result = getLegacyX(org, dir);
-        }
-        else {
-            result = propVal;//normal case.  XDirection is set.
+        } else {
+            result = propVal;	//normal case.  XDirection is set.
         }
     }
     else {                                        //no Property.  can this happen?

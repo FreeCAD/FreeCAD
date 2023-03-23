@@ -73,7 +73,7 @@ public:
     void detailExec(TopoDS_Shape& s,
                     DrawViewPart* baseView,
                     DrawViewSection* sectionAlias);
-    void makeDetailShape(TopoDS_Shape& shape,
+    void makeDetailShape(const TopoDS_Shape& shape,
                          DrawViewPart* dvp,
                          DrawViewSection* dvs);
     void postHlrTasks(void) override;

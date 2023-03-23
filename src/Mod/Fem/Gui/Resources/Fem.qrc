@@ -41,6 +41,7 @@
         <file>icons/FEM_ElementGeometry1D.svg</file>
         <file>icons/FEM_ElementGeometry2D.svg</file>
         <file>icons/FEM_ElementRotation1D.svg</file>
+        <file>icons/FEM_EquationDeformation.svg</file>
         <file>icons/FEM_EquationElasticity.svg</file>
         <file>icons/FEM_EquationElectricforce.svg</file>
         <file>icons/FEM_EquationElectrostatic.svg</file>

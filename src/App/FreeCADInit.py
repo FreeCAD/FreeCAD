@@ -63,16 +63,6 @@ def setupSearchPaths(PathExtension):
     # new paths must be prepended to avoid to load a wrong version of a library
     try:
         os.environ["PATH"] = PathEnvironment + os.environ["PATH"]
-    except UnicodeDecodeError:
-        # See #0002238. FIXME: check again once ported to Python 3.x
-        Log('UnicodeDecodeError was raised when concatenating unicode string with PATH. Try to remove non-ascii paths...\n')
-        path = os.environ["PATH"].split(os.pathsep)
-        cleanpath=[]
-        for i in path:
-            if test_ascii(i):
-                cleanpath.append(i)
-        os.environ["PATH"] = PathEnvironment + os.pathsep.join(cleanpath)
-        Log('done\n')
     except UnicodeEncodeError:
         Log('UnicodeEncodeError was raised when concatenating unicode string with PATH. Try to replace non-ascii chars...\n')
         os.environ["PATH"] = PathEnvironment.encode(errors='replace') + os.environ["PATH"]
@@ -305,7 +295,6 @@ Wrn = FreeCAD.Console.PrintWarning
 Crt = FreeCAD.Console.PrintCritical
 Ntf = FreeCAD.Console.PrintNotification
 Tnf = FreeCAD.Console.PrintTranslatedNotification
-test_ascii = lambda s: all(ord(c) < 128 for c in s)
 
 #store the cmake variales
 App.__cmake__ = cmake;
@@ -962,6 +951,5 @@ App.ReturnType = ReturnType
 
 # clean up namespace
 del(InitApplications)
-del(test_ascii)
 
 Log ('Init: App::FreeCADInit.py done\n')

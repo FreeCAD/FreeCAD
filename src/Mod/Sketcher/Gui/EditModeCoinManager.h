@@ -132,6 +132,7 @@ class SketcherGuiExport EditModeCoinManager
         void updateConstraintPresentationParameters(const std::string & parametername);
         void updateElementSizeParameters(const std::string & parametername);
         void updateColor(SbColor &sbcolor, const std::string &parametername);
+        void updateUnit(const std::string &parametername);
 
         template<OverlayVisibilityParameter visibilityparameter>
         void updateOverlayVisibilityParameter(const std::string & parametername);

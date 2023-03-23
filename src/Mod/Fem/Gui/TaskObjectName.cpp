@@ -42,11 +42,11 @@ TaskObjectName::TaskObjectName(App::DocumentObject *pcObject,QWidget *parent)
       tr("TaskObjectName"),
       true,
       parent),
-      pcObject(pcObject)
+      pcObject(pcObject),
+      ui(new Ui_TaskObjectName)
 {
     // we need a separate container widget to add all controls to
     proxy = new QWidget(this);
-    ui = new Ui_TaskObjectName();
     ui->setupUi(proxy);
     QMetaObject::connectSlotsByName(this);
 
@@ -62,19 +62,14 @@ TaskObjectName::TaskObjectName(App::DocumentObject *pcObject,QWidget *parent)
 
 }
 
-
 void TaskObjectName::TextChanged (const QString & text)
 {
     name = text.toUtf8().constData();
     //pcObject->Label.setValue(text.toUtf8());
 }
 
-
-
 TaskObjectName::~TaskObjectName()
-{
-    delete ui;
-}
+{}
 
 
 #include "moc_TaskObjectName.cpp"

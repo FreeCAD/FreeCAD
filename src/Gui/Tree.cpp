@@ -33,6 +33,7 @@
 # include <QMenu>
 # include <QMessageBox>
 # include <QPixmap>
+# include <QThread>
 # include <QTimer>
 # include <QToolTip>
 # include <QVBoxLayout>
@@ -757,6 +758,12 @@ void TreeWidget::updateStatus(bool delay) {
 }
 
 void TreeWidget::_updateStatus(bool delay) {
+    // When running from a different thread Qt will raise a warning
+    // when trying to start the QTimer
+    if (Q_UNLIKELY(thread() != QThread::currentThread())) {
+        return;
+    }
+
     if (!delay) {
         if (!ChangedObjects.empty() || !NewObjects.empty())
             onUpdateStatus();
@@ -2995,6 +3002,12 @@ void TreeWidget::onSelectTimer() {
 
 void TreeWidget::onSelectionChanged(const SelectionChanges& msg)
 {
+    // When running from a different thread Qt will raise a warning
+    // when trying to start the QTimer
+    if (Q_UNLIKELY(thread() != QThread::currentThread())) {
+        return;
+    }
+
     switch (msg.Type)
     {
     case SelectionChanges::AddSelection:

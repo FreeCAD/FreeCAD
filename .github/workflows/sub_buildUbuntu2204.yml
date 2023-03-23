@@ -1,5 +1,5 @@
 # ***************************************************************************
-# *   Copyright (c) 2023 0penBrain                               *
+# *   Copyright (c) 2023 0penBrain                                          *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
 # *   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -194,7 +194,7 @@ jobs:
       - name: FreeCAD CLI tests on build dir
         if: inputs.testOnBuildDir
         timeout-minutes: 10
-        uses: ./.github/workflows/actions/runTests
+        uses: ./.github/workflows/actions/runPythonTests
         with:
           testDescription: "CLI tests on build dir"
           testCommand: ${{ env.builddir }}bin/FreeCADCmd -t 0
@@ -203,11 +203,18 @@ jobs:
       - name: FreeCAD GUI tests on build dir
         if: inputs.testOnBuildDir
         timeout-minutes: 15
-        uses: ./.github/workflows/actions/runTests
+        uses: ./.github/workflows/actions/runPythonTests
         with:
           testDescription: "GUI tests on build dir"
           testCommand: xvfb-run ${{ env.builddir }}/bin/FreeCAD -t 0
           logFile: ${{ env.logdir }}TestGUIBuild.log
+          reportFile: ${{env.reportdir}}${{ env.reportfilename }}
+      - name: C++ unit tests
+        timeout-minutes: 1
+        uses: ./.github/workflows/actions/runCPPTests
+        with:
+          testCommand: ${{ env.builddir }}/tests/Tests_run --gtest_output=json:${{env.reportdir}}gtest_results.json
+          testLogFile: ${{env.reportdir}}gtest_test_log.txt
           reportFile: ${{env.reportdir}}${{ env.reportfilename }}
       - name: CMake Install
         uses: ./.github/workflows/actions/linux/install
@@ -218,7 +225,7 @@ jobs:
           reportFile: ${{env.reportdir}}${{ env.reportfilename }}
       - name: FreeCAD CLI tests on install
         timeout-minutes: 10
-        uses: ./.github/workflows/actions/runTests
+        uses: ./.github/workflows/actions/runPythonTests
         with:
           testDescription: "CLI tests on install"
           testCommand: FreeCADCmd -t 0
@@ -226,7 +233,7 @@ jobs:
           reportFile: ${{env.reportdir}}${{ env.reportfilename }}
       - name: FreeCAD GUI tests on install
         timeout-minutes: 15
-        uses: ./.github/workflows/actions/runTests
+        uses: ./.github/workflows/actions/runPythonTests
         with:
           testDescription: "GUI tests on install"
           testCommand: xvfb-run FreeCAD -t 0

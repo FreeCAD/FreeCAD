@@ -1044,11 +1044,9 @@ void CmdTechDrawBalloon::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
     bool result = _checkSelectionBalloon(this, 1);
-    if (!result)
+    if (!result) {
         return;
-    //    result = _checkDrawViewPartBalloon(this);
-    //    if (!result)
-    //        return;
+    }
 
     std::vector<Gui::SelectionObject> selection = getSelection().getSelectionEx();
 
@@ -1085,7 +1083,8 @@ bool CmdTechDrawBalloon::isActive()
 {
     bool havePage = DrawGuiUtil::needPage(this);
     bool haveView = DrawGuiUtil::needView(this, false);
-    return (havePage && haveView);
+    bool taskInProgress = Gui::Control().activeDialog();
+    return (havePage && haveView && !taskInProgress);
 }
 
 //===========================================================================

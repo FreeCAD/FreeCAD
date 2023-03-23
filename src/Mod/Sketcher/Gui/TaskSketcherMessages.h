@@ -47,12 +47,11 @@ public:
     explicit TaskSketcherMessages(ViewProviderSketch *sketchView);
     ~TaskSketcherMessages() override;
 
-    void slotSetUp(const QString &state, const QString &msg, const QString& link, const QString& linkText);
+    void slotSetUp(const QString& state, const QString& msg, const QString& link, const QString& linkText);
 
 private Q_SLOTS:
     void on_labelConstrainStatusLink_linkClicked(const QString &);
-    void on_autoUpdate_stateChanged(int state);
-    void on_autoRemoveRedundants_stateChanged(int state);
+    void onAutoUpdateStateChanged();
     void on_manualUpdate_clicked(bool checked);
     
 protected:

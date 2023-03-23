@@ -85,14 +85,8 @@ namespace Sketcher {
 namespace SketcherGui {
 
 class EditModeCoinManager;
+class SnapManager;
 class DrawSketchHandler;
-
-enum class SnapMode { // to be moved to SnapManager
-    None,
-    SnapToObject,
-    SnapToAngle,
-    SnapToGrid,
-};
 
 using GeoList = Sketcher::GeoList;
 using GeoListFacade = Sketcher::GeoListFacade;
@@ -484,8 +478,10 @@ public:
     void onSelectionChanged(const Gui::SelectionChanges& msg) override;
     //@}
 
-    void setSnapMode(SnapMode mode);
-    SnapMode getSnapMode() const;
+    /** @name Toggle angle snapping and set the reference point */
+    //@{
+    /// Toggle angle snapping and set the reference point
+    void setAngleSnapping(bool enable, Base::Vector2d referencePoint = Base::Vector2d(0., 0.));
 
     /** @name Access to Sketch and Solver objects */
     //@{
@@ -566,6 +562,7 @@ public:
     //@{
     friend class ViewProviderSketchDrawSketchHandlerAttorney;
     friend class ViewProviderSketchCoinAttorney;
+    friend class ViewProviderSketchSnapAttorney;
     friend class ViewProviderSketchShortcutListenerAttorney;
     //@}
 protected:
@@ -660,9 +657,6 @@ private:
 
     /** @name miscelanea utilities */
     //@{
-    /// snap points x,y (mouse coordinates) onto grid if enabled
-    void snapToGrid(double &x, double &y);
-
     /// moves a selected constraint
     void moveConstraint(int constNum, const Base::Vector2d &toPos);
 
@@ -784,6 +778,8 @@ private:
 
     std::unique_ptr<EditModeCoinManager> editCoinManager;
 
+    std::unique_ptr<SnapManager> snapManager;
+
     std::unique_ptr<ViewProviderSketch::ParameterObserver> pObserver;
 
     std::unique_ptr<DrawSketchHandler> sketchHandler;
@@ -792,8 +788,6 @@ private:
 
     SoNodeSensor cameraSensor;
     int viewOrientationFactor; // stores if sketch viewed from front or back
-
-    SnapMode snapMode = SnapMode::None; // temporary - to be moved to SnapManager
 };
 
 } // namespace PartGui

@@ -138,33 +138,27 @@ class Flowwriter:
             for name in (n for n in refs if n in bodies):
                 self.write.material(name, "Name", m["Name"])
                 if "Density" in m:
-                    self.write.material(
-                        name, "Density",
-                        self.write.getDensity(m)
-                    )
+                    density = self.write.convert(m["Density"], "M/L^3")
+                    self.write.material(name, "Density", density)
                 if "ThermalConductivity" in m:
-                    self.write.material(
-                        name, "Heat Conductivity",
-                        self.write.convert(m["ThermalConductivity"], "M*L/(T^3*O)")
-                    )
-                if "KinematicViscosity" in m:
-                    density = self.write.getDensity(m)
+                    tConductivity = self.write.convert(m["ThermalConductivity"], "M*L/(T^3*O)")
+                    self.write.material(name, "Heat Conductivity", tConductivity)
+                if "DynamicViscosity" in m:
+                    dViscosity = self.write.convert(m["DynamicViscosity"], "M/(L*T)")
+                    self.write.material(name, "Viscosity", dViscosity)
+                elif ("KinematicViscosity" in m) and ("Density" in m):
+                    density = self.write.convert(m["Density"], "M/L^3")
                     kViscosity = self.write.convert(m["KinematicViscosity"], "L^2/T")
-                    self.write.material(
-                        name, "Viscosity", kViscosity * density)
+                    self.write.material(name, "Viscosity", kViscosity * density)
                 if "ThermalExpansionCoefficient" in m:
                     value = self.write.convert(m["ThermalExpansionCoefficient"], "O^-1")
                     if value > 0:
-                        self.write.material(
-                            name, "Heat expansion Coefficient", value)
+                        self.write.material(name, "Heat expansion Coefficient", value)
                 if "ReferencePressure" in m:
                     pressure = self.write.convert(m["ReferencePressure"], "M/(L*T^2)")
                     self.write.material(name, "Reference Pressure", pressure)
                 if "SpecificHeatRatio" in m:
-                    self.write.material(
-                        name, "Specific Heat Ratio",
-                        float(m["SpecificHeatRatio"])
-                    )
+                    self.write.material(name, "Specific Heat Ratio", float(m["SpecificHeatRatio"]))
                 if "CompressibilityModel" in m:
                     self.write.material(
                         name, "Compressibility Model",
@@ -199,14 +193,23 @@ class Flowwriter:
     def _outputInitialVelocity(self, obj, name):
         # flow only makes sense for fluid material
         if self.write.isBodyMaterialFluid(name):
-            if obj.VelocityXEnabled:
-                velocity = self.write.getFromUi(obj.VelocityX, "m/s", "L/T")
+            if not obj.VelocityXUnspecified:
+                if not obj.VelocityXHasFormula:
+                    velocity = float(obj.VelocityX.getValueAs("m/s"))
+                else:
+                    velocity = obj.VelocityXFormula
                 self.write.initial(name, "Velocity 1", velocity)
-            if obj.VelocityYEnabled:
-                velocity = self.write.getFromUi(obj.VelocityY, "m/s", "L/T")
+            if not obj.VelocityYUnspecified:
+                if not obj.VelocityYHasFormula:
+                    velocity = float(obj.VelocityY.getValueAs("m/s"))
+                else:
+                    velocity = obj.VelocityYFormula
                 self.write.initial(name, "Velocity 2", velocity)
-            if obj.VelocityZEnabled:
-                velocity = self.write.getFromUi(obj.VelocityZ, "m/s", "L/T")
+            if not obj.VelocityZUnspecified:
+                if not obj.VelocityZHasFormula:
+                    velocity = float(obj.VelocityZ.getValueAs("m/s"))
+                else:
+                    velocity = obj.VelocityZFormula
                 self.write.initial(name, "Velocity 3", velocity)
 
     def handleFlowInitialVelocity(self, bodies):
@@ -233,14 +236,23 @@ class Flowwriter:
         for obj in self.write.getMember("Fem::ConstraintFlowVelocity"):
             if obj.References:
                 for name in obj.References[0][1]:
-                    if obj.VelocityXEnabled:
-                        velocity = self.write.getFromUi(obj.VelocityX, "m/s", "L/T")
+                    if not obj.VelocityXUnspecified:
+                        if not obj.VelocityXHasFormula:
+                            velocity = float(obj.VelocityX.getValueAs("m/s"))
+                        else:
+                            velocity = obj.VelocityXFormula
                         self.write.boundary(name, "Velocity 1", velocity)
-                    if obj.VelocityYEnabled:
-                        velocity = self.write.getFromUi(obj.VelocityY, "m/s", "L/T")
+                    if not obj.VelocityYUnspecified:
+                        if not obj.VelocityYHasFormula:
+                            velocity = float(obj.VelocityY.getValueAs("m/s"))
+                        else:
+                            velocity = obj.VelocityYFormula
                         self.write.boundary(name, "Velocity 2", velocity)
-                    if obj.VelocityZEnabled:
-                        velocity = self.write.getFromUi(obj.VelocityZ, "m/s", "L/T")
+                    if not obj.VelocityZUnspecified:
+                        if not obj.VelocityZHasFormula:
+                            velocity = float(obj.VelocityZ.getValueAs("m/s"))
+                        else:
+                            velocity = obj.VelocityZFormula
                         self.write.boundary(name, "Velocity 3", velocity)
                     if obj.NormalToBoundary:
                         self.write.boundary(name, "Normal-Tangential Velocity", True)

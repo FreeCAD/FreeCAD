@@ -1,0 +1,61 @@
+# ***************************************************************************
+# *   Copyright (c) 2023 0penBrain                                          *
+# *   Copyright (c) 2023 FreeCAD Project Association                        *
+# *                                                                         *
+# *   This program is free software; you can redistribute it and/or modify  *
+# *   it under the terms of the GNU Lesser General Public License (LGPL)    *
+# *   as published by the Free Software Foundation; either version 2 of     *
+# *   the License, or (at your option) any later version.                   *
+# *   for detail see the LICENCE text file.                                 *
+# *                                                                         *
+# *   This program is distributed in the hope that it will be useful,       *
+# *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+# *   GNU Library General Public License for more details.                  *
+# *                                                                         *
+# *   You should have received a copy of the GNU Library General Public     *
+# *   License along with this program; if not, write to the Free Software   *
+# *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
+# *   USA                                                                   *
+# *                                                                         *
+# ***************************************************************************
+
+name: runCPPTests
+description: "Run C++ tests, generate log and report"
+
+inputs:
+  testCommand:
+    description: "Test command to be run"
+    required: true
+  testLogFile:
+    description: "Path for the command-line output of the tests"
+    required: true
+  reportFile:
+    description: "Report file"
+    required: true
+
+runs:
+  using: "composite"
+  steps:
+    - name: Run C++ unit tests
+      shell: bash
+      run: stdbuf -oL -eL ${{ inputs.testCommand }} |& tee -a ${{ inputs.testLogFile }}
+    - name: Parse test results
+      if: always()
+      shell: bash
+      run:  |
+        result=$(sed -ne "/Global test environment tear-down/,/^$/{/^$/d;p}" ${{ inputs.testLogFile }})
+        if [ $(echo $result | grep -F "[  FAILED  ]") ]
+        then
+          echo "<details><summary>:fire: GTest C++ unit test suite failed</summary>" >> ${{ inputs.reportFile }}
+        else
+          echo "<details><summary>:heavy_check_mark: GTest C++ unit test suite succeeded</summary>" >> ${{ inputs.reportFile }}
+        fi
+        echo "" >> ${{ inputs.reportFile }}
+        echo "Results" >> ${{ inputs.reportFile }}
+        echo "" >> ${{ inputs.reportFile }}
+        echo '```' >> ${{ inputs.reportFile }}
+        echo "$result" >> ${{ inputs.reportFile }}
+        echo '```' >> ${{ inputs.reportFile }}
+        echo "</details>">> ${{ inputs.reportFile }}
+        echo "" >> ${{ inputs.reportFile }}

@@ -139,7 +139,7 @@ class Line(gui_base_original.Creator):
         if self.oldWP:
             App.DraftWorkingPlane.setFromParameters(self.oldWP)
             if hasattr(Gui, "Snapper"):
-                Gui.Snapper.setGrid()
+                Gui.Snapper.setGrid(tool=True)
                 Gui.Snapper.restack()
         self.oldWP = None
 

@@ -30,10 +30,6 @@ if(BUILD_IDF)
   add_subdirectory(Idf)
 endif(BUILD_IDF)
 
-if(BUILD_IMAGE)
-  add_subdirectory(Image)
-endif(BUILD_IMAGE)
-
 if(BUILD_IMPORT)
   add_subdirectory(Import)
 endif(BUILD_IMPORT)

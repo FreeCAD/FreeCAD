@@ -76,11 +76,13 @@ public:
         if (Mode==STATUS_SEEK_First){
             EditCurve[0] = onSketchPos;
 
+            setAngleSnapping(true, EditCurve[0]);
             Mode = STATUS_SEEK_Second;
         }
         else {
             EditCurve[1] = onSketchPos;
             drawEdit(EditCurve);
+            setAngleSnapping(false);
             Mode = STATUS_End;
         }
         return true;

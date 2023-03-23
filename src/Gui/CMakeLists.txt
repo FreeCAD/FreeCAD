@@ -327,6 +327,7 @@ SET(Gui_UIC_SRCS
     DlgSettingsImage.ui
     DlgSettingsLazyLoaded.ui
     DlgSettingsMacro.ui
+    DlgSettingsNotificationArea.ui
     DlgSettingsPythonConsole.ui
     DlgCheckableMessageBox.ui
     DlgToolbars.ui
@@ -344,6 +345,8 @@ SET(Gui_UIC_SRCS
     Placement.ui
     TextureMapping.ui
     TaskView/TaskAppearance.ui
+    TaskView/TaskImageScale.ui
+    TaskView/TaskOrientation.ui
     TaskView/TaskSelectLinkProperty.ui
     TaskElementColors.ui
     DlgObjectSelection.ui
@@ -568,6 +571,7 @@ SET(Dialog_Settings_CPP_SRCS
     DlgSettingsImageImp.cpp
     DlgSettingsLazyLoadedImp.cpp
     DlgSettingsMacroImp.cpp
+    DlgSettingsNotificationArea.cpp
     DlgSettingsPythonConsole.cpp
 )
 SET(Dialog_Settings_HPP_SRCS
@@ -587,6 +591,7 @@ SET(Dialog_Settings_HPP_SRCS
     DlgSettingsImageImp.h
     DlgSettingsLazyLoadedImp.h
     DlgSettingsMacroImp.h
+    DlgSettingsNotificationArea.h
     DlgSettingsPythonConsole.h
 )
 SET(Dialog_Settings_SRCS
@@ -608,6 +613,7 @@ SET(Dialog_Settings_SRCS
     DlgSettingsImage.ui
     DlgSettingsLazyLoaded.ui
     DlgSettingsMacro.ui
+    DlgSettingsNotificationArea.ui
     DlgSettingsPythonConsole.ui
 )
 SOURCE_GROUP("Dialog\\Settings" FILES ${Dialog_Settings_SRCS})
@@ -722,6 +728,12 @@ SET(Task_View_SRCS
     TaskView/TaskAppearance.cpp
     TaskView/TaskAppearance.h
     TaskView/TaskAppearance.ui
+    TaskView/TaskImageScale.cpp
+    TaskView/TaskImageScale.h
+    TaskView/TaskImageScale.ui
+    TaskView/TaskOrientation.cpp
+    TaskView/TaskOrientation.h
+    TaskView/TaskOrientation.ui
     TaskView/TaskSelectLinkProperty.cpp
     TaskView/TaskSelectLinkProperty.h
     TaskView/TaskSelectLinkProperty.ui
@@ -790,6 +802,7 @@ SOURCE_GROUP("Widget\\QSintActionPanel\\Mocs" FILES ${qsint_MOC_SRCS})
 
 # The 3d view
 SET(View3D_CPP_SRCS
+    Camera.cpp
     Flag.cpp
     GLBuffer.cpp
     GLPainter.cpp
@@ -820,6 +833,7 @@ SET(View3D_CPP_SRCS
 )
 SET(View3D_SRCS
     ${View3D_CPP_SRCS}
+    Camera.h
     Flag.h
     GLBuffer.h
     GLPainter.h
@@ -881,6 +895,7 @@ SET(Viewprovider_CPP_SRCS
     ViewProviderExtern.cpp
     ViewProviderFeature.cpp
     ViewProviderGeometryObject.cpp
+    ViewProviderImagePlane.cpp
     ViewProviderInventorObject.cpp
     ViewProviderMeasureDistance.cpp
     ViewProviderPyImp.cpp
@@ -917,6 +932,7 @@ SET(Viewprovider_SRCS
     ViewProviderExtern.h
     ViewProviderFeature.h
     ViewProviderGeometryObject.h
+    ViewProviderImagePlane.h
     ViewProviderInventorObject.h
     ViewProviderMeasureDistance.h
     ViewProviderPythonFeature.h
@@ -999,6 +1015,7 @@ SET(Widget_CPP_SRCS
     MainWindow.cpp
     MainWindowPy.cpp
     NotificationBox.cpp
+    NotificationArea.cpp
     PrefWidgets.cpp
     InputField.cpp
     ProgressBar.cpp
@@ -1018,6 +1035,7 @@ SET(Widget_HPP_SRCS
     MainWindow.h
     MainWindowPy.h
     NotificationBox.h
+    NotificationArea.h
     PrefWidgets.h
     InputField.h
     ProgressBar.h
@@ -1058,6 +1076,7 @@ SET(View_CPP_SRCS
     MDIViewPy.cpp
     MDIViewPyWrap.cpp
     GraphvizView.cpp
+    ImageView.cpp
     ActiveObjectList.cpp
 )
 SET(View_HPP_SRCS
@@ -1065,6 +1084,7 @@ SET(View_HPP_SRCS
     MDIViewPy.h
     MDIViewPyWrap.h
     GraphvizView.h
+    ImageView.h
     ActiveObjectList.h
 )
 SET(View_SRCS
@@ -1127,6 +1147,8 @@ SET(FreeCADGui_CPP_SRCS
     ExpressionBindingPy.cpp
     GraphicsViewZoom.cpp
     ExpressionCompleter.cpp
+    FileHandler.cpp
+    FileHandler.h
     GuiApplication.cpp
     GuiApplicationNativeEventAware.cpp
     GuiConsole.cpp
@@ -1165,6 +1187,7 @@ SET(FreeCADGui_SRCS
     Macro.h
     MergeDocuments.h
     MetaTypes.h
+    Notifications.h
     PreCompiled.cpp
     PreCompiled.h
     QtAll.h
@@ -1220,6 +1243,8 @@ if(MSVC)
         propertyeditor/PropertyItemDelegate.cpp
         propertyeditor/PropertyModel.cpp
         TaskView/TaskAppearance.cpp
+        TaskView/TaskImageScale.cpp
+        TaskView/TaskOrientation.cpp
         TaskView/TaskSelectLinkProperty.cpp
         TaskView/TaskEditControl.cpp
         TaskView/TaskView.cpp

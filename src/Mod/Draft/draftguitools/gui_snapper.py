@@ -1594,15 +1594,15 @@ class Snapper:
             self.toolbar.toggleViewAction().setVisible(False)
 
 
-    def setGrid(self):
+    def setGrid(self, tool=False):
         """Set the grid, if visible."""
         self.setTrackers()
         if self.grid and (not self.forceGridOff):
             if self.grid.Visible:
-                self.grid.set()
+                self.grid.set(tool)
 
 
-    def setTrackers(self):
+    def setTrackers(self, tool=False):
         """Set the trackers."""
         v = Draft.get3DView()
         if v and (v != self.activeview):
@@ -1620,7 +1620,10 @@ class Snapper:
             else:
                 if Draft.getParam("grid", True):
                     self.grid = trackers.gridTracker()
-                    self.grid.on()
+                    if Draft.getParam("alwaysShowGrid", True) or tool:
+                        self.grid.on()
+                    else:
+                        self.grid.off()
                 else:
                     self.grid = None
                 self.tracker = trackers.snapTracker()
@@ -1651,7 +1654,7 @@ class Snapper:
             self.activeview = v
 
         if self.grid and (not self.forceGridOff):
-            self.grid.set()
+            self.grid.set(tool)
 
 
     def addHoldPoint(self):

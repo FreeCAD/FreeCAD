@@ -82,7 +82,7 @@ void TaskLineDecor::initUi()
     }
     std::string temp = ss.str();
     if (!temp.empty()) {
-        temp.pop_back();
+        temp.resize(temp.length() - 2);
     }
     ui->le_Lines->setText(Base::Tools::fromStdString(temp));
 
