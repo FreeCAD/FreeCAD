@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>FemGui::DlgSettingsFemMaterialImp</class>
- <widget class="QWidget" name="FemGui::DlgSettingsFemMaterialImp">
+ <class>MaterialPreferences</class>
+ <widget class="QWidget" name="MaterialPreferences">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -223,9 +223,6 @@ If unchecked, they will be sorted by their name.</string>
    <header>Gui/PrefWidgets.h</header>
   </customwidget>
  </customwidgets>
- <resources>
-  <include location="../Material.qrc"/>
- </resources>
  <connections>
   <connection>
    <sender>cb_use_mat_from_custom_dir</sender>
