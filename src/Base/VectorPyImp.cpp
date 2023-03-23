@@ -192,14 +192,10 @@ PyObject * VectorPy::sequence_item (PyObject *self, Py_ssize_t index)
     }
 
     VectorPy* self_ = static_cast<VectorPy*>(self);
-    if (self_->sequence.length() == 0) {
-        self_->sequence = Py::List{3};
-    }
 
     unsigned short pos = index % 3;
     Base::Vector3d vec = self_->value();
     Py::Float item{vec[pos]};
-    self_->sequence.setItem(pos, item);
 
     return Py::new_reference_to(item);
 }

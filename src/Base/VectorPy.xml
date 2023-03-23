@@ -219,8 +219,6 @@ normal : Base.Vector</UserDocu>
     :PyObjectBase(new Vector3d(vec.x,vec.y,vec.z),T){}
     Vector3d value() const
     { return *(getVectorPtr()); }
-private:
-    Py::List sequence;
 		</ClassDeclarations>
 	</PythonExport>
 </GenerateModel>
