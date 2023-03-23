@@ -280,6 +280,7 @@ SET(FreeCADApp_HPP_SRCS
     Color.h
     ColorModel.h
     ComplexGeoData.h
+    ElementMap.h
     Enumeration.h
     IndexedName.h
     MappedName.h
