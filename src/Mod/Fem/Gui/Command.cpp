@@ -1238,7 +1238,7 @@ bool CmdFemCreateNodesSet::isActive()
 
 
 //===========================================================================
-// FEM_CompEmConstraints (dropdown toolbar button for Electromagnetic constraints)
+// FEM_CompEmConstraints (dropdown toolbar button for electromagnetic constraints)
 //===========================================================================
 
 DEF_STD_CMD_ACL(CmdFemCompEmConstraints)
@@ -1361,7 +1361,7 @@ bool CmdFemCompEmConstraints::isActive()
 
 
 //===========================================================================
-// FEM_CompEmEquations (dropdown toolbar button for Electromagnetic equations)
+// FEM_CompEmEquations (dropdown toolbar button for electromagnetic equations)
 //===========================================================================
 
 DEF_STD_CMD_ACL(CmdFemCompEmEquations)
@@ -1488,10 +1488,119 @@ void CmdFemCompEmEquations::languageChange()
 bool CmdFemCompEmEquations::isActive()
 {
     // only if there is an active analysis
-    Fem::FemAnalysis* ActiveAnalysis =
-        FemGui::ActiveAnalysisObserver::instance()->getActiveObject();
-    if (!ActiveAnalysis
-        || !ActiveAnalysis->getTypeId().isDerivedFrom(Fem::FemAnalysis::getClassTypeId()))
+    if (!FemGui::ActiveAnalysisObserver::instance()->hasActiveObject())
+        return false;
+
+    // only activate if a single Elmer object is selected
+    auto results = getSelection().getSelectionEx(
+        nullptr, App::DocumentObject::getClassTypeId(), Gui::ResolveMode::FollowLink);
+    if (results.size() == 1) {
+        auto object = results.begin()->getObject();
+        // FIXME: this is not unique since the Ccx solver object has the same type
+        std::string Type = "Fem::FemSolverObjectPython";
+        if (Type.compare(object->getTypeId().getName()) == 0)
+            return true;
+    }
+    return false;
+}
+
+
+//===========================================================================
+// FEM_CompMechEquations (dropdown toolbar button for mechanical equations)
+//===========================================================================
+
+DEF_STD_CMD_ACL(CmdFemCompMechEquations)
+
+CmdFemCompMechEquations::CmdFemCompMechEquations()
+    : Command("FEM_CompMechEquations")
+{
+    sAppModule = "Fem";
+    sGroup = QT_TR_NOOP("Fem");
+    sMenuText = QT_TR_NOOP("Mechanical equations");
+    sToolTipText = QT_TR_NOOP("Mechanical equations for the Elmer solver");
+    sWhatsThis = "FEM_CompMechEquations";
+    sStatusTip = sToolTipText;
+}
+
+void CmdFemCompMechEquations::activated(int iMsg)
+{
+    Gui::CommandManager& rcCmdMgr = Gui::Application::Instance->commandManager();
+    if (iMsg == 0)
+        rcCmdMgr.runCommandByName("FEM_EquationElasticity");
+    else if (iMsg == 1)
+        rcCmdMgr.runCommandByName("FEM_EquationDeformation");
+    else
+        return;
+
+    // Since the default icon is reset when enabling/disabling the command we have
+    // to explicitly set the icon of the used command.
+    Gui::ActionGroup* pcAction = qobject_cast<Gui::ActionGroup*>(_pcAction);
+    QList<QAction*> a = pcAction->actions();
+
+    assert(iMsg < a.size());
+    pcAction->setIcon(a[iMsg]->icon());
+}
+
+Gui::Action* CmdFemCompMechEquations::createAction()
+{
+    Gui::ActionGroup* pcAction = new Gui::ActionGroup(this, Gui::getMainWindow());
+    pcAction->setDropDownMenu(true);
+    applyCommandData(this->className(), pcAction);
+
+    QAction* cmd0 = pcAction->addAction(QString());
+    cmd0->setIcon(Gui::BitmapFactory().iconFromTheme("FEM_EquationElasticity"));
+    QAction* cmd1 = pcAction->addAction(QString());
+    cmd1->setIcon(Gui::BitmapFactory().iconFromTheme("FEM_EquationDeformation"));
+
+    _pcAction = pcAction;
+    languageChange();
+
+    pcAction->setIcon(cmd0->icon());
+    int defaultId = 0;
+    pcAction->setProperty("defaultAction", QVariant(defaultId));
+
+    return pcAction;
+}
+
+void CmdFemCompMechEquations::languageChange()
+{
+    Command::languageChange();
+
+    if (!_pcAction)
+        return;
+
+    Gui::CommandManager& rcCmdMgr = Gui::Application::Instance->commandManager();
+
+    Gui::ActionGroup* pcAction = qobject_cast<Gui::ActionGroup*>(_pcAction);
+    QList<QAction*> a = pcAction->actions();
+
+    Gui::Command* EquationElasticity = rcCmdMgr.getCommandByName("FEM_EquationElasticity");
+    if (EquationElasticity) {
+        QAction* cmd1 = a[0];
+        cmd1->setText(QApplication::translate("FEM_EquationElasticity",
+                                              EquationElasticity->getMenuText()));
+        cmd1->setToolTip(QApplication::translate("FEM_EquationElasticity",
+                                                 EquationElasticity->getToolTipText()));
+        cmd1->setStatusTip(QApplication::translate("FEM_EquationElasticity",
+                                                   EquationElasticity->getStatusTip()));
+    }
+
+    Gui::Command* EquationDeformation = rcCmdMgr.getCommandByName("FEM_EquationDeformation");
+    if (EquationDeformation) {
+        QAction* cmd0 = a[1];
+        cmd0->setText(
+            QApplication::translate("FEM_EquationDeformation", EquationDeformation->getMenuText()));
+        cmd0->setToolTip(QApplication::translate("FEM_EquationDeformation",
+                                                 EquationDeformation->getToolTipText()));
+        cmd0->setStatusTip(QApplication::translate("FEM_EquationDeformation",
+                                                   EquationDeformation->getStatusTip()));
+    }
+}
+
+bool CmdFemCompMechEquations::isActive()
+{
+    // only if there is an active analysis
+    if (!FemGui::ActiveAnalysisObserver::instance()->hasActiveObject())
         return false;
 
     // only activate if a single Elmer object is selected
@@ -2468,6 +2577,7 @@ void CreateFemCommands()
     rcCmdMgr.addCommand(new CmdFemConstraintTransform());
     rcCmdMgr.addCommand(new CmdFemConstraintSpring());
     rcCmdMgr.addCommand(new CmdFemCompEmConstraints());
+    rcCmdMgr.addCommand(new CmdFemCompMechEquations());
 
     // mesh
     rcCmdMgr.addCommand(new CmdFemCreateNodesSet());
