@@ -346,6 +346,15 @@ class ElasticityWriter:
                             displacement = obj.zDisplacementFormula
                         self.write.boundary(name, "Displacement 3", displacement)
                 self.write.handled(obj)
+        for obj in self.write.getMember("Fem::ConstraintSpring"):
+            if obj.References:
+                for name in obj.References[0][1]:
+                    if obj.ElmerStiffness == "Normal Stiffness":
+                        spring = float(obj.NormalStiffness.getValueAs("N/m"))
+                    else:
+                        spring = float(obj.TangentialStiffness.getValueAs("N/m"))
+                    self.write.boundary(name, "Spring", spring)
+                self.write.handled(obj)
 
     def handleElasticityInitial(self, bodies):
         pass

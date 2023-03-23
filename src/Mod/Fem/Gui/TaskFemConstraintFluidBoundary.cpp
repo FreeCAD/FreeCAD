@@ -114,11 +114,8 @@ void initComboBox(QComboBox* combo, const std::vector<std::string>& textItems,
     combo->clear();
     for (unsigned int it = 0; it < textItems.size(); it++) {
         combo->insertItem(it, Base::Tools::fromStdString(textItems[it]));
-        if (sItem == textItems[it]) {
+        if (sItem == textItems[it])
             iItem = it;
-            // Base::Console().Warning("Found the subtype and set the current index as %d for
-            // subtype %s ComboBox\n", it, sItem);
-        }
     }
     combo->setCurrentIndex(iItem);
     combo->blockSignals(false);

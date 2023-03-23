@@ -854,10 +854,10 @@ void CmdFemConstraintSpring::activated(int)
     doCommand(
         Doc, "App.activeDocument().addObject(\"Fem::ConstraintSpring\",\"%s\")", FeatName.c_str());
     doCommand(Doc,
-              "App.activeDocument().%s.normalStiffness = 1.0",
+              "App.activeDocument().%s.NormalStiffness = 1.0",
               FeatName.c_str());//OvG: set default not equal to 0
     doCommand(Doc,
-              "App.activeDocument().%s.tangentialStiffness = 0.0",
+              "App.activeDocument().%s.TangentialStiffness = 0.0",
               FeatName.c_str());//OvG: set default to False
     doCommand(
         Doc, "App.activeDocument().%s.Scale = 1", FeatName.c_str());//OvG: set initial scale to 1
