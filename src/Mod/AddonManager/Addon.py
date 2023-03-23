@@ -188,7 +188,7 @@ class Addon:
         else:
             self.metadata_url = None
         self.metadata: Optional[Metadata] = None
-        self.icon = None  # Relative path to remote icon file
+        self.icon = None  # A QIcon version of this Addon's icon
         self.icon_file: str = ""  # Absolute local path to cached icon file
         self.best_icon_relative_path = ""
         self.macro = None  # Bridge to Gaël Écorchard's macro management class
