@@ -175,9 +175,7 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
     Gui::ToolBarItem* solve = new Gui::ToolBarItem(root);
     solve->setCommand("Solve");
      *solve
-        << "FEM_SolverCalculixCxxtools"
-        << "FEM_SolverElmer"
-        << "FEM_SolverZ88"
+        << "FEM_Solvers"
         << "Separator"
         << "FEM_EquationElasticity"
         << "FEM_EquationDeformation"

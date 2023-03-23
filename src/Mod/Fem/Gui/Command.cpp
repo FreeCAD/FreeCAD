@@ -1507,6 +1507,137 @@ bool CmdFemCompEmEquations::isActive()
     return false;
 }
 
+//===========================================================================
+// FEM_Solvers (dropdown toolbar button for solvers)
+//===========================================================================
+
+DEF_STD_CMD_ACL(CmdFemSolvers)
+
+CmdFemSolvers::CmdFemSolvers()
+    : Command("FEM_Solvers")
+{
+    sAppModule = "Fem";
+    sGroup = QT_TR_NOOP("Fem");
+    sMenuText = QT_TR_NOOP("Solvers");
+    sToolTipText = QT_TR_NOOP(
+        "Available FEM solvers");
+    sWhatsThis = "FEM_Solvers";
+    sStatusTip = sToolTipText;
+}
+
+void CmdFemSolvers::activated(int iMsg)
+{
+    Gui::CommandManager& rcCmdMgr = Gui::Application::Instance->commandManager();
+    if (iMsg == 0)
+        rcCmdMgr.runCommandByName("FEM_SolverCalculixCxxtools");
+    else if (iMsg == 1)
+        rcCmdMgr.runCommandByName("FEM_SolverElmer");
+    else if (iMsg == 2)
+        rcCmdMgr.runCommandByName("FEM_SolverMystran");
+    else if (iMsg == 3)
+        rcCmdMgr.runCommandByName("FEM_SolverZ88");
+    else
+        return;
+
+    // Since the default icon is reset when enabling/disabling the command we have
+    // to explicitly set the icon of the used command.
+    Gui::ActionGroup* pcAction = qobject_cast<Gui::ActionGroup*>(_pcAction);
+    QList<QAction*> a = pcAction->actions();
+
+    assert(iMsg < a.size());
+    pcAction->setIcon(a[iMsg]->icon());
+}
+
+Gui::Action* CmdFemSolvers::createAction()
+{
+    Gui::ActionGroup* pcAction = new Gui::ActionGroup(this, Gui::getMainWindow());
+    pcAction->setDropDownMenu(true);
+    applyCommandData(this->className(), pcAction);
+
+    QAction* cmd0 = pcAction->addAction(QString());
+    cmd0->setIcon(Gui::BitmapFactory().iconFromTheme("FEM_SolverCalculiX"));
+    QAction* cmd1 = pcAction->addAction(QString());
+    cmd1->setIcon(Gui::BitmapFactory().iconFromTheme("FEM_SolverElmer"));
+    QAction* cmd2 = pcAction->addAction(QString());
+    cmd2->setIcon(Gui::BitmapFactory().iconFromTheme("FEM_SolverMystran"));
+    QAction* cmd3 = pcAction->addAction(QString());
+    cmd3->setIcon(Gui::BitmapFactory().iconFromTheme("FEM_SolverZ88"));
+
+    _pcAction = pcAction;
+    languageChange();
+
+    pcAction->setIcon(cmd0->icon());
+    int defaultId = 0;
+    pcAction->setProperty("defaultAction", QVariant(defaultId));
+
+    return pcAction;
+}
+
+void CmdFemSolvers::languageChange()
+{
+    Command::languageChange();
+
+    if (!_pcAction)
+        return;
+
+    Gui::CommandManager& rcCmdMgr = Gui::Application::Instance->commandManager();
+
+    Gui::ActionGroup* pcAction = qobject_cast<Gui::ActionGroup*>(_pcAction);
+    QList<QAction*> a = pcAction->actions();
+
+    Gui::Command* SolverCalculixCxxtools = rcCmdMgr.getCommandByName("FEM_SolverCalculixCxxtools");
+    if (SolverCalculixCxxtools) {
+        QAction* cmd0 = a[0];
+        cmd0->setText(QApplication::translate("FEM_SolverCalculixCxxtools",
+                                              SolverCalculixCxxtools->getMenuText()));
+        cmd0->setToolTip(QApplication::translate("FEM_SolverCalculixCxxtools",
+                                                 SolverCalculixCxxtools->getToolTipText()));
+        cmd0->setStatusTip(QApplication::translate("FEM_SolverCalculixCxxtools",
+                                                   SolverCalculixCxxtools->getStatusTip()));
+    }
+
+    Gui::Command* SolverElmer = rcCmdMgr.getCommandByName("FEM_SolverElmer");
+    if (SolverElmer) {
+        QAction* cmd1 = a[1];
+        cmd1->setText(QApplication::translate("FEM_SolverElmer",
+                                              SolverElmer->getMenuText()));
+        cmd1->setToolTip(QApplication::translate("FEM_SolverElmer",
+                                                 SolverElmer->getToolTipText()));
+        cmd1->setStatusTip(QApplication::translate("FEM_SolverElmer",
+                                                   SolverElmer->getStatusTip()));
+    }
+
+    Gui::Command* SolverMystran =
+        rcCmdMgr.getCommandByName("FEM_SolverMystran");
+    if (SolverMystran) {
+        QAction* cmd2 = a[2];
+        cmd2->setText(QApplication::translate("FEM_SolverMystran",
+                                              SolverMystran->getMenuText()));
+        cmd2->setToolTip(QApplication::translate("FEM_SolverMystran",
+                                                 SolverMystran->getToolTipText()));
+        cmd2->setStatusTip(QApplication::translate("FEM_SolverMystran",
+                                                   SolverMystran->getStatusTip()));
+    }
+
+    Gui::Command* SolverZ88 =
+        rcCmdMgr.getCommandByName("FEM_SolverZ88");
+    if (SolverZ88) {
+        QAction* cmd3 = a[3];
+        cmd3->setText(QApplication::translate("FEM_SolverZ88",
+                                              SolverZ88->getMenuText()));
+        cmd3->setToolTip(QApplication::translate("FEM_SolverZ88",
+                                                 SolverZ88->getToolTipText()));
+        cmd3->setStatusTip(QApplication::translate("FEM_SolverZ88",
+                                                   SolverZ88->getStatusTip()));
+    }
+}
+
+bool CmdFemSolvers::isActive()
+{
+    // only if there is an active analysis
+    return FemGui::ActiveAnalysisObserver::instance()->hasActiveObject();
+}
+
 
 //================================================================================================
 //================================================================================================
@@ -2475,6 +2606,9 @@ void CreateFemCommands()
 
     // equations
     rcCmdMgr.addCommand(new CmdFemCompEmEquations());
+
+    // solvers
+    rcCmdMgr.addCommand(new CmdFemSolvers());
 
     // vtk post processing
 #ifdef FC_USE_VTK

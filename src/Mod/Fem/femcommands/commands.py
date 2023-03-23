@@ -1036,7 +1036,7 @@ class _SolverCxxtools(CommandManager):
 
     def __init__(self):
         super(_SolverCxxtools, self).__init__()
-        self.pixmap = "FEM_SolverStandard"
+        self.pixmap = "FEM_SolverCalculiX"
         self.menutext = Qt.QT_TRANSLATE_NOOP(
             "FEM_SolverCalculixCxxtools",
             "Solver CalculiX Standard"
@@ -1077,7 +1077,7 @@ class _SolverCalculix(CommandManager):
 
     def __init__(self):
         super(_SolverCalculix, self).__init__()
-        self.pixmap = "FEM_SolverStandard"
+        self.pixmap = "FEM_SolverCalculiX"
         self.menutext = Qt.QT_TRANSLATE_NOOP(
             "FEM_SolverCalculix",
             "Solver CalculiX (new framework)"

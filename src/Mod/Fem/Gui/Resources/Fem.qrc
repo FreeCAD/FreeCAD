@@ -86,7 +86,7 @@
         <file>icons/FEM_SolverElmer.svg</file>
         <file>icons/FEM_SolverMystran.svg</file>
         <file>icons/FEM_SolverRun.svg</file>
-        <file>icons/FEM_SolverStandard.svg</file>
+        <file>icons/FEM_SolverCalculiX.svg</file>
         <file>icons/FEM_SolverZ88.svg</file>
 
         <!-- object icons without gui command -->

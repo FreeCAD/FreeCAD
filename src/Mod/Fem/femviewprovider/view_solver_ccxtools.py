@@ -39,7 +39,7 @@ class VPSolverCcxTools(view_base_femconstraint.VPBaseFemConstraint):
     """
 
     def getIcon(self):
-        return ":/icons/FEM_SolverStandard.svg"
+        return ":/icons/FEM_SolverCalculiX.svg"
 
     def setEdit(self, vobj, mode=0):
         view_base_femconstraint.VPBaseFemConstraint.setEdit(
