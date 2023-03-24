@@ -123,7 +123,8 @@ public:
 
     void accept() override;
     void reload();
-    void activateGroupPage(const QString& group, int id);
+    void activateGroupPage(const QString& group, int index);
+    void activeGroupPage(QString& group, int& index) const;
 
 protected:
     void changeEvent(QEvent *e) override;
