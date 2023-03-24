@@ -35,6 +35,7 @@ from FreeCAD import Qt
 
 from .manager import CommandManager
 from femsolver import settings
+from femtools.femutils import expandParentObject
 from femtools.femutils import is_of_type
 
 
@@ -1074,6 +1075,8 @@ class _SolverCxxtools(CommandManager):
                 "makeSolverCalculixCcxTools(FreeCAD.ActiveDocument))"
             )
         FreeCAD.ActiveDocument.commitTransaction()
+         # expand analysis object in tree view
+        expandParentObject()
         FreeCAD.ActiveDocument.recompute()
 
 
@@ -1094,7 +1097,7 @@ class _SolverCalculix(CommandManager):
         )
         self.is_active = "with_analysis"
         self.is_active = "with_analysis"
-        self.do_activated = "add_obj_on_gui_noset_edit"
+        self.do_activated = "add_obj_on_gui_expand_noset_edit"
 
 
 class _SolverControl(CommandManager):
@@ -1129,7 +1132,7 @@ class _SolverElmer(CommandManager):
             "Creates a FEM solver Elmer"
         )
         self.is_active = "with_analysis"
-        self.do_activated = "add_obj_on_gui_noset_edit"
+        self.do_activated = "add_obj_on_gui_expand_noset_edit"
 
 
 class _SolverMystran(CommandManager):
@@ -1142,7 +1145,7 @@ class _SolverMystran(CommandManager):
         self.accel = "S, M"
         self.tooltip = Qt.QT_TRANSLATE_NOOP("FEM_SolverMystran", "Creates a FEM solver Mystran")
         self.is_active = "with_analysis"
-        self.do_activated = "add_obj_on_gui_noset_edit"
+        self.do_activated = "add_obj_on_gui_expand_noset_edit"
 
 
 class _SolverRun(CommandManager):
@@ -1174,7 +1177,7 @@ class _SolverZ88(CommandManager):
         self.accel = "S, Z"
         self.tooltip = Qt.QT_TRANSLATE_NOOP("FEM_SolverZ88", "Creates a FEM solver Z88")
         self.is_active = "with_analysis"
-        self.do_activated = "add_obj_on_gui_noset_edit"
+        self.do_activated = "add_obj_on_gui_expand_noset_edit"
 
 
 # the string in add command will be the page name on FreeCAD wiki
