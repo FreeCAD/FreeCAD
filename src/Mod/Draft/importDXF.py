@@ -333,17 +333,18 @@ def locateLayer(wantedLayer, color=None, drawstyle=None):
     """
     # layers is a global variable.
     # It should probably be passed as an argument.
-    wantedLayerName = decodeName(wantedLayer)
-    for l in layers:
-        if wantedLayerName == l.Label:
-            return l
+    if wantedLayer is None:
+        wantedLayer = '0'
+    for layer in layers:
+        if layer.Label == wantedLayer:
+            return layer
     if dxfUseDraftVisGroups:
         newLayer = Draft.make_layer(name=wantedLayer,
-                                    line_color=color,
-                                    draw_style=drawstyle)
+                                    line_color=(0.0,0.0,0.0) if not color else color,
+                                    draw_style="Solid" if not drawstyle else drawstyle)
     else:
         newLayer = doc.addObject("App::DocumentObjectGroup", wantedLayer)
-    newLayer.Label = wantedLayerName
+    newLayer.Label = wantedLayer
     layers.append(newLayer)
     return newLayer
 
