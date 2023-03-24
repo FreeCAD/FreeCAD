@@ -76,9 +76,15 @@ App::DocumentObjectExecReturn *Thickness::execute()
 
     //If no element is selected, then we use a copy of previous feature.
     if (subStrings.empty()) {
+        //We must set the placement of the feature in case it's empty.
+        this->positionByBaseFeature();
         this->Shape.setValue(TopShape);
         return App::DocumentObject::StdReturn;
     }
+
+    /* If the feature was empty at some point, then Placement was set by positionByBaseFeature.
+    *  However makeThickSolid apparantly requires the placement to be empty, so we have to clear it*/
+    this->Placement.setValue(Base::Placement());
 
     TopTools_ListOfShape closingFaces;
 
