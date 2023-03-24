@@ -81,7 +81,7 @@ _PARAM_PATH = "User parameter:BaseApp/Preferences/Mod/Fem/"
 _GENERAL_PARAM = _PARAM_PATH + "General"
 
 
-def get_binary(name):
+def get_binary(name, silent=False):
     """ Find binary of solver *name* honoring user settings.
 
     Return the specific path set by the user in FreeCADs settings/parameter
@@ -92,16 +92,18 @@ def get_binary(name):
     That check is done in DlgSettingsFem_Solver_Imp.cpp
 
     :param name: solver id as a ``str`` (see :mod:`femsolver.settings`)
+    :param silent: whether to output error if binary not found
     """
     if name in _SOLVER_PARAM:
-        binary = _SOLVER_PARAM[name].get_binary()
+        binary = _SOLVER_PARAM[name].get_binary(silent)
         return binary
     else:
-        FreeCAD.Console.PrintError(
-            "Settings solver name: {} not found in "
-            "solver settings modules _SOLVER_PARAM dirctionary.\n"
-            .format(name)
-        )
+        if not silent:
+            FreeCAD.Console.PrintError(
+                "Settings solver name: {} not found in "
+                "solver settings modules _SOLVER_PARAM dirctionary.\n"
+                .format(name)
+            )
         return None
 
 
@@ -168,7 +170,15 @@ def get_dir_setting():
 def get_default_solver():
     """ Return default solver name.
     """
-    solver_map = {0: None, 1: "CalculixCcxTools", 2: "Elmer", 3: "Mystran", 4: "Z88"}
+    solver_map = {0: "None"}
+    if get_binary("Calculix", True):
+        solver_map[1] = "CalculixCcxTools"
+    if get_binary("ElmerSolver", True):
+        solver_map[len(solver_map)] = "Elmer"
+    if get_binary("Mystran", True):
+        solver_map[len(solver_map)] = "Mystran"
+    if get_binary("Z88", True):
+        solver_map[len(solver_map)] = "Z88"
     param_group = FreeCAD.ParamGet(_GENERAL_PARAM)
     return solver_map[param_group.GetInt("DefaultSolver", 0)]
 
@@ -213,7 +223,7 @@ class _SolverDlg(object):
 
         self.param_group = FreeCAD.ParamGet(self.param_path)
 
-    def get_binary(self):
+    def get_binary(self, silent=False):
 
         # set the binary path to the FreeCAD defaults
         # ATM pure unix shell commands without path names are used as standard
@@ -234,7 +244,7 @@ class _SolverDlg(object):
         # The user does not know what exactly has going wrong.
         from distutils.spawn import find_executable as find_bin
         the_found_binary = find_bin(binary)
-        if the_found_binary is None:
+        if (the_found_binary is None) and (not silent):
             FreeCAD.Console.PrintError(
                 "The binary has not been found. Full binary search path: {}\n"
                 .format(binary)

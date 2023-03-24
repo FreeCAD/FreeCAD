@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>425</width>
-    <height>447</height>
+    <width>411</width>
+    <height>450</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -387,11 +387,9 @@
             <property name="enabled">
              <bool>true</bool>
             </property>
-            <property name="editable">
-             <bool>false</bool>
-            </property>
             <property name="toolTip">
-             <string>Default solver used by the analysis container</string>
+             <string>Default solver to be added when
+adding an analysis container</string>
             </property>
             <property name="prefEntry" stdset="0">
              <cstring>DefaultSolver</cstring>
@@ -402,26 +400,6 @@
             <item>
              <property name="text">
               <string>None</string>
-             </property>
-            </item>
-            <item>
-             <property name="text">
-              <string>CalculiX</string>
-             </property>
-            </item>
-            <item>
-             <property name="text">
-              <string>Elmer</string>
-             </property>
-            </item>
-            <item>
-             <property name="text">
-              <string>Mystran</string>
-             </property>
-            </item>
-            <item>
-             <property name="text">
-              <string>Z88</string>
              </property>
             </item>
            </widget>
