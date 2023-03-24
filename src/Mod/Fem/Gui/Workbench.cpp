@@ -26,6 +26,7 @@
 # include <qobject.h>
 #endif
 
+#include <App/Application.h>
 #include <Gui/MenuManager.h>
 #include <Gui/ToolBarManager.h>
 
@@ -174,11 +175,27 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
 
     Gui::ToolBarItem* solve = new Gui::ToolBarItem(root);
     solve->setCommand("Solve");
-     *solve
-        << "FEM_SolverCalculixCxxtools"
-        << "FEM_SolverElmer"
-        << "FEM_SolverZ88"
-        << "Separator"
+    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
+        "User parameter:BaseApp/Preferences/Mod/Fem/Ccx");
+    auto ccxBinaryPath = hGrp->GetASCII("ccxBinaryPath", "");
+    if (!ccxBinaryPath.empty())
+        *solve << "FEM_SolverCalculixCxxtools";
+    hGrp = App::GetApplication().GetParameterGroupByPath(
+        "User parameter:BaseApp/Preferences/Mod/Fem/Elmer");
+    auto elmerBinaryPath = hGrp->GetASCII("elmerBinaryPath", "");
+    if (!elmerBinaryPath.empty())
+        *solve << "FEM_SolverElmer";
+    hGrp = App::GetApplication().GetParameterGroupByPath(
+        "User parameter:BaseApp/Preferences/Mod/Fem/mystran");
+    auto MystranBinaryPath = hGrp->GetASCII("MystranBinaryPath", "");
+    if (!MystranBinaryPath.empty())
+        *solve << "FEM_SolverMystran";
+    hGrp = App::GetApplication().GetParameterGroupByPath(
+        "User parameter:BaseApp/Preferences/Mod/Fem/Z88");
+    auto z88BinaryPath = hGrp->GetASCII("z88BinaryPath", "");
+    if (!z88BinaryPath.empty())
+        *solve << "FEM_SolverZ88";
+    *solve << "Separator"
         << "FEM_CompMechEquations"
         << "FEM_CompEmEquations"
         << "FEM_EquationFlow"
