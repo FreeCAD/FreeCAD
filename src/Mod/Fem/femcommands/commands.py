@@ -69,12 +69,20 @@ class _Analysis(CommandManager):
         FreeCADGui.addModule("ObjectsFem")
         FreeCADGui.doCommand("ObjectsFem.makeAnalysis(FreeCAD.ActiveDocument, 'Analysis')")
         FreeCADGui.doCommand("FemGui.setActiveAnalysis(FreeCAD.ActiveDocument.ActiveObject)")
-        if get_default_solver():
+        FreeCAD.ActiveDocument.commitTransaction()
+        if get_default_solver() != "None":
+            FreeCAD.ActiveDocument.openTransaction("Create default solver")
             FreeCADGui.doCommand("ObjectsFem.makeSolver{}(FreeCAD.ActiveDocument)"
-                .format(get_default_solver()))
+                .format(get_default_solver())
+            )
             FreeCADGui.doCommand(
-                "FemGui.getActiveAnalysis().addObject(FreeCAD.ActiveDocument.ActiveObject)")
-
+                "FemGui.getActiveAnalysis().addObject(FreeCAD.ActiveDocument.ActiveObject)"
+            )
+            FreeCAD.ActiveDocument.commitTransaction()
+            self.do_activated = "add_obj_on_gui_expand_noset_edit"
+            # Fixme: expand analysis object in tree view to make added solver visible
+            # expandParentObject() does not work because the Analysis is not yet a tree
+            # in the tree view
         FreeCAD.ActiveDocument.recompute()
 
 
@@ -711,6 +719,7 @@ class _MaterialMechanicalNonlinear(CommandManager):
             )
             solver_object.MaterialNonlinearity = "nonlinear"
             solver_object.GeometricalNonlinearity = "nonlinear"
+        FreeCAD.ActiveDocument.commitTransaction()
         FreeCADGui.Selection.clearSelection()
         FreeCAD.ActiveDocument.recompute()
 
@@ -793,6 +802,7 @@ class _FEMMesh2Mesh(CommandManager):
             FreeCADGui.doCommand(
                 "FreeCAD.ActiveDocument." + femmesh.Name + ".ViewObject.hide()"
             )
+        FreeCAD.ActiveDocument.commitTransaction()
         FreeCADGui.Selection.clearSelection()
         FreeCAD.ActiveDocument.recompute()
 
@@ -835,6 +845,7 @@ class _MeshClear(CommandManager):
         FreeCADGui.doCommand(
             "FreeCAD.ActiveDocument." + self.selobj.Name + ".FemMesh = Fem.FemMesh()"
         )
+        FreeCAD.ActiveDocument.commitTransaction()
         FreeCADGui.Selection.clearSelection()
         FreeCAD.ActiveDocument.recompute()
 
@@ -864,6 +875,7 @@ class _MeshDisplayInfo(CommandManager):
         FreeCADGui.doCommand(
             "PySide.QtGui.QMessageBox.information(None, 'FEM Mesh Info', mesh_info)"
         )
+        FreeCAD.ActiveDocument.commitTransaction()
         FreeCADGui.Selection.clearSelection()
         FreeCAD.ActiveDocument.recompute()
 
@@ -909,6 +921,7 @@ class _MeshGmshFromShape(CommandManager):
         FreeCADGui.doCommand(
             "FreeCADGui.ActiveDocument.setEdit(FreeCAD.ActiveDocument.ActiveObject.Name)"
         )
+        FreeCAD.ActiveDocument.commitTransaction()
         FreeCADGui.Selection.clearSelection()
         FreeCAD.ActiveDocument.recompute()
 
@@ -971,6 +984,7 @@ class _MeshNetgenFromShape(CommandManager):
         FreeCADGui.doCommand(
             "FreeCADGui.ActiveDocument.setEdit(FreeCAD.ActiveDocument.ActiveObject.Name)"
         )
+        FreeCAD.ActiveDocument.commitTransaction()
         FreeCADGui.Selection.clearSelection()
         # a recompute immediately starts meshing when task panel is opened, this is not intended
 
@@ -1071,7 +1085,7 @@ class _SolverCxxtools(CommandManager):
                 "makeSolverCalculixCcxTools(FreeCAD.ActiveDocument))"
             )
         FreeCAD.ActiveDocument.commitTransaction()
-         # expand analysis object in tree view
+        # expand analysis object in tree view
         expandParentObject()
         FreeCAD.ActiveDocument.recompute()
 
