@@ -2811,7 +2811,7 @@ bool ViewProviderSketch::setEdit(int ModNum)
         msgBox.setDefaultButton(QMessageBox::Yes);
         int ret = msgBox.exec();
         if (ret == QMessageBox::Yes)
-            Gui::Control().reject();
+            Gui::Control().closeDialog();
         else
             return false;
     }
