@@ -39,7 +39,7 @@
 
 using namespace Gui;
 
-TaskImageScale::TaskImageScale(App::ImagePlane* obj, QWidget* parent)
+TaskImageScale::TaskImageScale(Image::ImagePlane* obj, QWidget* parent)
   : QWidget(parent)
   , ui(new Ui_TaskImageScale)
   , feature(obj)

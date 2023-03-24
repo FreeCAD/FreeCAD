@@ -27,12 +27,12 @@
 #include <App/PropertyFile.h>
 #include <App/PropertyUnits.h>
 
-namespace App
+namespace Image
 {
 
 class AppExport ImagePlane : public App::GeoFeature
 {
-    PROPERTY_HEADER_WITH_OVERRIDE(App::ImagePlane);
+    PROPERTY_HEADER_WITH_OVERRIDE(Image::ImagePlane);
 
 public:
     /// Constructor
@@ -57,7 +57,7 @@ public:
     }
 };
 
-} //namespace App
+} //namespace Image
 
 
 #endif // App_ImagePlane_H
