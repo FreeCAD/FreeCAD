@@ -55,7 +55,7 @@ public:
 
 protected Q_SLOTS:
     void onLoadClicked(const QString& wbName);
-    void onUpDownClicked(const QString& wbName, bool up);
+    void onWbActivated(const QString& wbName, bool checked);
 
 protected:
     void buildWorkbenchList();
@@ -66,8 +66,8 @@ private:
     QWidget* createWorkbenchWidget(const QString& it, bool enabled);
 
     std::unique_ptr<Ui_DlgSettingsLazyLoaded> ui;
-    static const uint WorkbenchNameRole;
-    static const int columnCount;
+    static const QString iconLabelStr;
+    static const QString nameLabelStr;
     static const QString loadLabelStr;
     static const QString loadButtonStr;
     static const QString enableCheckboxStr;

@@ -29,34 +29,28 @@
       </size>
      </property>
      <property name="text">
-      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;To preserve resources, FreeCAD does not load workbenches until they are used. Loading them may provide access to additional preferences related to their functionality.&lt;/p&gt;&lt;p&gt;Enabling or disabling workbenches requires a restart of the application.&lt;/p&gt;&lt;p&gt;The following workbenches are available in your installation:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;To preserve resources, FreeCAD does not load workbenches until they are used. Loading them may provide access to additional preferences related to their functionality.&lt;/p&gt;&lt;p&gt;
+You can enable/disable and reorder workbenches (requires restart).&lt;/p&gt;&lt;p&gt;
+Your installed workbenches(you can add more through the addon manager):&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
      </property>
      <property name="wordWrap">
       <bool>true</bool>
      </property>
     </widget>
    </item>
-  <item row="1" column="0">
-    <widget class="QTableWidget" name="workbenchTable">
-     <property name="showGrid">
-      <bool>false</bool>
-     </property>
-     <property name="sortingEnabled">
-      <bool>false</bool>
-     </property>
-     <attribute name="verticalHeaderVisible">
-      <bool>false</bool>
-     </attribute>
-     <column>
-      <property name="text">
-       <string/>
-      </property>
-     </column>
-    </widget>
+   <item row="1" column="0">
+    <widget class="QListWidgetDragBugFix" name="wbList"/>
    </item>
-   </layout>
+  </layout>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
+ <customwidgets>
+  <customwidget>
+   <class>QListWidgetDragBugFix</class>
+   <extends>QListWidget</extends>
+   <header>QListWidgetDragBugFix.h</header>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>
