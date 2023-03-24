@@ -51,22 +51,30 @@ public:
     void loadSettings() override;
 
     static QStringList getEnabledWorkbenches();
+    static QStringList getDisabledWorkbenches();
 
 protected Q_SLOTS:
     void onLoadClicked(const QString& wbName);
+    void onUpDownClicked(const QString& wbName, bool up);
 
 protected:
-    void buildUnloadedWorkbenchList();
+    void buildWorkbenchList();
     void changeEvent(QEvent *e) override;
 
 private:
+    void addWorkbench(const QString& it, bool enabled);
+    QWidget* createWorkbenchWidget(const QString& it, bool enabled);
+
     std::unique_ptr<Ui_DlgSettingsLazyLoaded> ui;
     static const uint WorkbenchNameRole;
+    static const int columnCount;
+    static const QString loadLabelStr;
+    static const QString loadButtonStr;
+    static const QString enableCheckboxStr;
+    static const QString autoloadCheckboxStr;
 
     std::vector<std::string> _backgroundAutoloadedModules;
     std::string _startupModule;
-    std::map<QString, QCheckBox*> _autoloadCheckBoxes;
-    std::map<QString, QCheckBox*> _enabledCheckBoxes;
 };
 
 } // namespace Dialog

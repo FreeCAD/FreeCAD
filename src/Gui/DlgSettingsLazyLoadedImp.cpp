@@ -30,6 +30,7 @@
 #include "DlgSettingsLazyLoadedImp.h"
 #include "ui_DlgSettingsLazyLoaded.h"
 #include "Application.h"
+#include "BitmapFactory.h"
 #include "Workbench.h"
 #include "WorkbenchManager.h"
 
@@ -38,14 +39,12 @@ using namespace Gui::Dialog;
 
 const uint DlgSettingsLazyLoadedImp::WorkbenchNameRole = Qt::UserRole;
 
-// this enum defines the order of the columns
-enum Column {
-    Enabled,
-    Icon,
-    Name,
-    CheckBox,
-    Load
-};
+const int DlgSettingsLazyLoadedImp::columnCount = 1;
+
+const QString DlgSettingsLazyLoadedImp::loadLabelStr = QString::fromLatin1("loadLabel");
+const QString DlgSettingsLazyLoadedImp::loadButtonStr = QString::fromLatin1("loadButton");
+const QString DlgSettingsLazyLoadedImp::enableCheckboxStr = QString::fromLatin1("enableCheckbox");
+const QString DlgSettingsLazyLoadedImp::autoloadCheckboxStr = QString::fromLatin1("autoloadCheckbox");
 
 /* TRANSLATOR Gui::Dialog::DlgSettingsLazyLoadedImp */
 
@@ -69,40 +68,49 @@ DlgSettingsLazyLoadedImp::~DlgSettingsLazyLoadedImp()
 
 void DlgSettingsLazyLoadedImp::saveSettings()
 {
-    //Save enabled
-    std::ostringstream enabledStr;
-    std::ostringstream disabledStr;
-    for (const auto& checkBox : _enabledCheckBoxes) {
-        if (checkBox.second->isChecked()) {
+    std::ostringstream enabledStr, disabledStr, autoloadStr;
+
+    for (int i = 0; i < ui->workbenchTable->rowCount(); i++) {
+        QWidget* widget = ui->workbenchTable->cellWidget(i, 0);
+        if (!widget)
+            continue;
+        QCheckBox* enableBox = widget->findChild<QCheckBox*>(enableCheckboxStr);
+        if (!enableBox)
+            continue;
+
+        if (enableBox->isChecked()) {
             if (!enabledStr.str().empty())
                 enabledStr << ",";
-            enabledStr << checkBox.first.toStdString();
+            enabledStr << widget->objectName().toStdString();
         }
         else {
             if (!disabledStr.str().empty())
                 disabledStr << ",";
-            disabledStr << checkBox.first.toStdString();
+            disabledStr << widget->objectName().toStdString();
+        }
+
+        QCheckBox* autoloadBox = widget->findChild<QCheckBox*>(autoloadCheckboxStr);
+        if (!autoloadBox)
+            continue;
+
+        if (autoloadBox->isChecked()) {
+            if (!autoloadStr.str().empty())
+                autoloadStr << ",";
+            autoloadStr << widget->objectName().toStdString();
         }
     }
 
-    if (!enabledStr.str().empty()) //make sure that we have at least one enabled workbench.
+    if (enabledStr.str().empty()) //make sure that we have at least one enabled workbench.
         enabledStr << "NoneWorkbench";
+    else
+        disabledStr << "NoneWorkbench"; //Note, NoneWorkbench is not in the table so it's not added before.
 
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Workbenches");
     hGrp->SetASCII("Enabled", enabledStr.str().c_str());
     hGrp->SetASCII("Disabled", disabledStr.str().c_str());
 
-    //Save auto-load
-    std::ostringstream csv;
-    for (const auto& checkBox : _autoloadCheckBoxes) {
-        if (checkBox.second->isChecked()) {
-            if (!csv.str().empty())
-                csv << ",";
-            csv << checkBox.first.toStdString();
-        }
-    }
     App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/General")->
-        SetASCII("BackgroundAutoloadModules", csv.str().c_str());
+        SetASCII("BackgroundAutoloadModules", autoloadStr.str().c_str());
 }
 
 void DlgSettingsLazyLoadedImp::loadSettings()
@@ -125,7 +133,7 @@ void DlgSettingsLazyLoadedImp::loadSettings()
         _backgroundAutoloadedModules.push_back(workbench);
 
 
-    buildUnloadedWorkbenchList();
+    buildWorkbenchList();
 }
 
 void DlgSettingsLazyLoadedImp::onLoadClicked(const QString &wbName)
@@ -136,128 +144,193 @@ void DlgSettingsLazyLoadedImp::onLoadClicked(const QString &wbName)
     Application::Instance->activateWorkbench(originalActiveWB->name().c_str());
 
     // replace load button with loaded indicator
-    auto wbDisplayName = Application::Instance->workbenchMenuText(wbName);
     for (int i = 0; i < ui->workbenchTable->rowCount(); i++) {
-        QWidget* widget = ui->workbenchTable->cellWidget(i, Name);
-        auto textLabel = dynamic_cast<QLabel*>(widget);
-        if (textLabel && textLabel->text() == wbDisplayName) {
-            auto label = new QLabel(tr("Loaded"));
-            label->setAlignment(Qt::AlignCenter);
-            ui->workbenchTable->setCellWidget(i, Load, label);
+        QWidget* widget = ui->workbenchTable->cellWidget(i, 0);
+        if (widget && widget->objectName() == wbName) {
+            QWidget* loadLabel = widget->findChild<QWidget*>(loadLabelStr);
+            QWidget* loadButton = widget->findChild<QWidget*>(loadButtonStr);
+            loadButton->setVisible(false);
+            loadLabel->setVisible(true);
             break;
         }
     }
 }
 
+void DlgSettingsLazyLoadedImp::onUpDownClicked(const QString& wbName, bool up)
+{
+    int rowIndex = 0;
+    //find the index of the row that is moving.
+    for (int i = 0; i < ui->workbenchTable->rowCount(); i++) {
+        QWidget* widget = ui->workbenchTable->cellWidget(i, 0);
+        if(widget->objectName() == wbName) {
+            break;
+        }
+        rowIndex++;
+    }
+
+    //Check if it can move
+    if (((rowIndex == 0) && up) || ((rowIndex == ui->workbenchTable->rowCount() - 1) && !up))
+        return;
+
+    //Move in the _enabledCheckBoxes vector.
+    //std::iter_swap(_enabledCheckBoxes.begin() + rowIndex, _enabledCheckBoxes.begin() + rowIndex + (up ? -1 : 1));
+
+    //Move the rows in the table
+    auto widget = ui->workbenchTable->cellWidget(rowIndex, 0);
+    auto widget2 = ui->workbenchTable->cellWidget(rowIndex + (up ? -1 : 1), 0);
+
+    auto newWidget = new QWidget(this);
+    newWidget->setObjectName(widget->objectName());
+    newWidget->setLayout(widget->layout());
+
+    auto newWidget2 = new QWidget(this);
+    newWidget2->setObjectName(widget2->objectName());
+    newWidget2->setLayout(widget2->layout());
+
+    ui->workbenchTable->removeCellWidget(rowIndex, 0);
+    ui->workbenchTable->removeCellWidget(rowIndex + (up ? -1 : 1), 0);
+
+    ui->workbenchTable->setCellWidget(rowIndex + (up ? -1 : 1), 0, newWidget);
+    ui->workbenchTable->setCellWidget(rowIndex                , 0, newWidget2);
+}
 
 /**
 Build the list of unloaded workbenches.
 */
-void DlgSettingsLazyLoadedImp::buildUnloadedWorkbenchList()
+void DlgSettingsLazyLoadedImp::buildWorkbenchList()
 {
     QStringList workbenches = Application::Instance->workbenches();
-    workbenches.sort();
-    QStringList enabled_wbs_list = getEnabledWorkbenches();
+    QStringList enabledWbs = getEnabledWorkbenches();
+    QStringList disabledWbs = getDisabledWorkbenches();
 
+    ui->workbenchTable->setSelectionMode(QAbstractItemView::NoSelection);
     ui->workbenchTable->horizontalHeader()->setDefaultAlignment(Qt::AlignLeft);
     ui->workbenchTable->setRowCount(0);
-    _autoloadCheckBoxes.clear(); // setRowCount(0) just invalidated all of these pointers
-    _enabledCheckBoxes.clear();// setRowCount(0) just invalidated all of these pointers
-    ui->workbenchTable->setColumnCount(5);
-    ui->workbenchTable->setSelectionMode(QAbstractItemView::SelectionMode::NoSelection);
-    ui->workbenchTable->horizontalHeader()->setSectionResizeMode(Enabled, QHeaderView::ResizeMode::ResizeToContents);
-    ui->workbenchTable->horizontalHeader()->setSectionResizeMode(Icon, QHeaderView::ResizeMode::ResizeToContents);
-    ui->workbenchTable->horizontalHeader()->setSectionResizeMode(Name, QHeaderView::ResizeMode::ResizeToContents);
-    ui->workbenchTable->horizontalHeader()->setSectionResizeMode(CheckBox, QHeaderView::ResizeMode::ResizeToContents);
-    ui->workbenchTable->horizontalHeader()->setSectionResizeMode(Load, QHeaderView::ResizeMode::ResizeToContents);
+    ui->workbenchTable->setColumnCount(columnCount);
+    ui->workbenchTable->horizontalHeader()->setSectionResizeMode(0, QHeaderView::ResizeMode::ResizeToContents);
     QStringList columnHeaders;
-    for (int i = 0; i < 5; i++) {
-        switch (i) {
-            case Enabled : columnHeaders << tr("Enable");       break;
-            case Icon    : columnHeaders << QString();            break;
-            case Name    : columnHeaders << tr("Workbench Name"); break;
-            case CheckBox: columnHeaders << tr("Autoload");      break;
-            case Load    : columnHeaders << QString();            break;
-        }
-    }
+    columnHeaders << tr("Enable");
     ui->workbenchTable->setHorizontalHeaderLabels(columnHeaders);
 
-    unsigned int rowNumber = 0;
+
+    //First we add the enabled wbs in their saved order.
+    for (const auto& wbName : enabledWbs) {
+        if (workbenches.contains(wbName)) {
+            addWorkbench(wbName, true);
+        }
+        else {
+            qDebug() << "Ignoring unknown" << wbName << "workbench found in user preferences.";
+        }
+    }
+    //Second we add workbench in alphabetical order that are either Disabled, or !enabled && !disabled, ie newly added wb.
     for (const auto& wbName : workbenches) {
-        if (wbName.toStdString() == "NoneWorkbench")
-            continue; // Do not list the default empty Workbench
-
-        ui->workbenchTable->insertRow(rowNumber);
-        auto wbTooltip = Application::Instance->workbenchToolTip(wbName);
-        auto wbDisplayName = Application::Instance->workbenchMenuText(wbName);
-
-        // Column 0: Enabled checkbox.
-        auto enCheckWidget = new QWidget(this);
-        auto enableCheckBox = new QCheckBox(this);
-        enableCheckBox->setToolTip(tr("If unchecked, %1 will not appear in the available workbenches.").arg(wbDisplayName));
-        auto enCheckLayout = new QHBoxLayout(enCheckWidget);
-        enCheckLayout->addWidget(enableCheckBox);
-        enCheckLayout->setAlignment(Qt::AlignCenter);
-        enCheckLayout->setContentsMargins(0, 0, 0, 0);
-        enableCheckBox->setChecked(enabled_wbs_list.contains(wbName));
-        _enabledCheckBoxes.insert(std::make_pair(wbName, enableCheckBox));
-        ui->workbenchTable->setCellWidget(rowNumber, Enabled, enCheckWidget);
-
-        // Column 1: Workbench Icon
-        auto wbIcon = Application::Instance->workbenchIcon(wbName);
-        auto iconLabel = new QLabel();
-        iconLabel->setPixmap(wbIcon.scaled(QSize(20,20), Qt::AspectRatioMode::KeepAspectRatio, Qt::TransformationMode::SmoothTransformation));
-        iconLabel->setToolTip(wbTooltip);
-        iconLabel->setContentsMargins(5, 3, 3, 3); // Left, top, right, bottom
-        ui->workbenchTable->setCellWidget(rowNumber, Icon, iconLabel);
-
-        // Column 2: Workbench Display Name
-        auto textLabel = new QLabel(wbDisplayName);
-        textLabel->setToolTip(wbTooltip);
-        ui->workbenchTable->setCellWidget(rowNumber, Name, textLabel);
-
-        // Column 3: Autoloaded checkBox
-        //
-        // To get the checkBox centered, we have to jump through some hoops...
-        auto checkWidget = new QWidget(this);
-        auto autoloadCheckBox = new QCheckBox(this);
-        autoloadCheckBox->setToolTip(tr("If checked, %1 will be loaded automatically when FreeCAD starts up").arg(wbDisplayName));
-        auto checkLayout = new QHBoxLayout(checkWidget);
-        checkLayout->addWidget(autoloadCheckBox);
-        checkLayout->setAlignment(Qt::AlignCenter);
-        checkLayout->setContentsMargins(0, 0, 0, 0);
-
-        // Figure out whether to check and/or disable this checkBox:
-        if (wbName.toStdString() == _startupModule) {
-            autoloadCheckBox->setChecked(true);
-            autoloadCheckBox->setEnabled(false);
-            autoloadCheckBox->setToolTip(tr("This is the current startup module, and must be autoloaded. See Preferences/General/Autoload to change."));
+        if (disabledWbs.contains(wbName)) {
+            addWorkbench(wbName, false);
         }
-        else if (std::find(_backgroundAutoloadedModules.begin(), _backgroundAutoloadedModules.end(),
-                           wbName.toStdString()) != _backgroundAutoloadedModules.end()) {
-            autoloadCheckBox->setChecked(true);
-            _autoloadCheckBoxes.insert(std::make_pair(wbName, autoloadCheckBox));
+        else if (!enabledWbs.contains(wbName)) {
+            qDebug() << "Adding unknown " << wbName << "workbench.";
+            addWorkbench(wbName, false);
         }
-        else {
-            _autoloadCheckBoxes.insert(std::make_pair(wbName, autoloadCheckBox));
-        }
-        ui->workbenchTable->setCellWidget(rowNumber, CheckBox, checkWidget);
-
-        // Column 4: Load button/loaded indicator
-        if (WorkbenchManager::instance()->getWorkbench(wbName.toStdString())) {
-            auto label = new QLabel(tr("Loaded"));
-            label->setAlignment(Qt::AlignCenter);
-            ui->workbenchTable->setCellWidget(rowNumber, Load, label);
-        }
-        else {
-            auto button = new QPushButton(tr("Load now"));
-            connect(button, &QPushButton::clicked, this, [this,wbName]() { onLoadClicked(wbName); });
-            ui->workbenchTable->setCellWidget(rowNumber, Load, button);
-        }
-
-        ++rowNumber;
     }
 }
+
+void DlgSettingsLazyLoadedImp::addWorkbench(const QString& wbName, bool enabled)
+{
+    if (wbName.toStdString() == "NoneWorkbench")
+        return; // Do not list the default empty Workbench
+
+    int rowNumber = ui->workbenchTable->rowCount();
+    ui->workbenchTable->insertRow(rowNumber);
+    QWidget* widget = createWorkbenchWidget(wbName, enabled);
+    ui->workbenchTable->setCellWidget(rowNumber, 0, widget);
+}
+
+QWidget* DlgSettingsLazyLoadedImp::createWorkbenchWidget(const QString& wbName, bool enabled)
+{
+    auto wbTooltip = Application::Instance->workbenchToolTip(wbName);
+    auto wbDisplayName = Application::Instance->workbenchMenuText(wbName);
+
+    // 1: Enable checkbox
+    auto enableCheckBox = new QCheckBox(this);
+    enableCheckBox->setToolTip(tr("If unchecked, %1 will not appear in the available workbenches.").arg(wbDisplayName));
+    enableCheckBox->setChecked(enabled);
+    enableCheckBox->setObjectName(enableCheckboxStr);
+    if (wbName.toStdString() == _startupModule) {
+        enableCheckBox->setChecked(true);
+        enableCheckBox->setEnabled(false);
+        enableCheckBox->setToolTip(tr("This is the current startup module, and must be enabled. See Preferences/General/Autoload to change."));
+    }
+
+    // 2: Workbench Icon
+    auto wbIcon = Application::Instance->workbenchIcon(wbName);
+    auto iconLabel = new QLabel(wbDisplayName);
+    iconLabel->setPixmap(wbIcon.scaled(QSize(20, 20), Qt::AspectRatioMode::KeepAspectRatio, Qt::TransformationMode::SmoothTransformation));
+    iconLabel->setToolTip(wbTooltip);
+    iconLabel->setContentsMargins(5, 0, 0, 5); // Left, top, right, bottom
+
+    // 3: Workbench Display Name
+    auto textLabel = new QLabel(wbDisplayName);
+    textLabel->setToolTip(wbTooltip);
+
+    // 4: Autoloaded checkBox.
+    auto autoloadCheckBox = new QCheckBox(this);
+    autoloadCheckBox->setObjectName(autoloadCheckboxStr);
+    autoloadCheckBox->setText(tr("Auto-load"));
+    autoloadCheckBox->setToolTip(tr("If checked, %1 will be loaded automatically when FreeCAD starts up").arg(wbDisplayName));
+
+    if (wbName.toStdString() == _startupModule) { // Figure out whether to check and/or disable this checkBox:
+        autoloadCheckBox->setChecked(true);
+        autoloadCheckBox->setEnabled(false);
+        autoloadCheckBox->setToolTip(tr("This is the current startup module, and must be autoloaded. See Preferences/General/Autoload to change."));
+    }
+    else if (std::find(_backgroundAutoloadedModules.begin(), _backgroundAutoloadedModules.end(),
+        wbName.toStdString()) != _backgroundAutoloadedModules.end()) {
+        autoloadCheckBox->setChecked(true);
+    }
+
+    // 5: Load button/loaded indicator
+    auto loadLabel = new QLabel(tr("Loaded"));
+    loadLabel->setAlignment(Qt::AlignCenter);
+    loadLabel->setObjectName(loadLabelStr);
+    auto loadButton = new QPushButton(tr("Load"));
+    loadButton->setObjectName(loadButtonStr);
+    connect(loadButton, &QPushButton::clicked, this, [this, wbName]() { onLoadClicked(wbName); });
+    if (WorkbenchManager::instance()->getWorkbench(wbName.toStdString())) {
+        loadButton->setVisible(false);
+    }
+    else {
+        loadLabel->setVisible(false);
+    }
+
+    // 6: up down buttons
+    auto downButton = new QToolButton(this);
+    auto upButton = new QToolButton(this);
+    downButton->setToolTip(tr("Move %1 down").arg(wbDisplayName));
+    upButton->setToolTip(tr("Move %1 up").arg(wbDisplayName));
+    downButton->setIcon(Gui::BitmapFactory().iconFromTheme("button_down"));
+    upButton->setIcon(Gui::BitmapFactory().iconFromTheme("button_up"));
+    connect(upButton, &QToolButton::clicked, this, [this, wbName]() { onUpDownClicked(wbName, true); });
+    connect(downButton, &QToolButton::clicked, this, [this, wbName]() { onUpDownClicked(wbName, false); });
+
+
+    auto mainWidget = new QWidget(this);
+    mainWidget->setObjectName(wbName);
+    auto layout = new QHBoxLayout(mainWidget);
+    layout->addWidget(enableCheckBox);
+    layout->addWidget(iconLabel);
+    layout->addWidget(textLabel);
+    layout->addStretch();
+    layout->addWidget(loadButton);
+    layout->addWidget(loadLabel);
+    layout->addWidget(autoloadCheckBox);
+    layout->addWidget(downButton);
+    layout->addWidget(upButton);
+    layout->setAlignment(Qt::AlignLeft);
+    layout->setContentsMargins(10, 0, 0, 0);
+
+    return mainWidget;
+}
+
 
 QStringList DlgSettingsLazyLoadedImp::getEnabledWorkbenches()
 {
@@ -283,6 +356,23 @@ QStringList DlgSettingsLazyLoadedImp::getEnabledWorkbenches()
         enabled_wbs_list.sort();
     }
     return enabled_wbs_list;
+}
+
+QStringList DlgSettingsLazyLoadedImp::getDisabledWorkbenches()
+{
+    QString disabled_wbs;
+    QStringList disabled_wbs_list;
+    ParameterGrp::handle hGrp;
+
+    hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Workbenches");
+    disabled_wbs = QString::fromStdString(hGrp->GetASCII("Disabled", ""));
+#if QT_VERSION >= QT_VERSION_CHECK(5,15,0)
+    disabled_wbs_list = disabled_wbs.split(QLatin1String(","), Qt::SkipEmptyParts);
+#else
+    disabled_wbs_list = disabled_wbs.split(QLatin1String(","), QString::SkipEmptyParts);
+#endif
+
+    return disabled_wbs_list;
 }
 
 /**
