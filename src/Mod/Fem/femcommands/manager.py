@@ -36,6 +36,7 @@ from femtools.femutils import is_of_type
 
 if FreeCAD.GuiUp:
     from PySide import QtCore
+    from PySide import QtGui
     import FreeCADGui
     import FemGui
 
@@ -152,6 +153,8 @@ class CommandManager(object):
             self.add_obj_on_gui_selobj_noset_edit(self.__class__.__name__.lstrip("_"))
         elif self.do_activated == "add_obj_on_gui_selobj_set_edit":
             self.add_obj_on_gui_selobj_set_edit(self.__class__.__name__.lstrip("_"))
+        elif self.do_activated == "add_obj_on_gui_selobj_expand_noset_edit":
+            self.add_obj_on_gui_selobj_expand_noset_edit(self.__class__.__name__.lstrip("_"))
         # in all other cases Activated is implemented it the command class
 
     def results_present(self):
@@ -371,4 +374,29 @@ class CommandManager(object):
             .format(objtype, self.selobj.Name)
         )
         FreeCADGui.Selection.clearSelection()
+        FreeCAD.ActiveDocument.recompute()
+
+    def add_obj_on_gui_selobj_expand_noset_edit(self, objtype):
+        # like add_obj_on_gui_selobj_noset_edit but the selection is kept
+        # and the selobj view is expanded in the tree to see the added obj
+        FreeCAD.ActiveDocument.openTransaction(
+            "Create Fem{}"
+            .format(objtype)
+        )
+        FreeCADGui.addModule(
+            "ObjectsFem"
+        )
+        FreeCADGui.doCommand(
+            "ObjectsFem.make{}("
+            "FreeCAD.ActiveDocument, FreeCAD.ActiveDocument.{})"
+            .format(objtype, self.selobj.Name)
+        )
+        # expand selobj in tree view
+        trees = FreeCADGui.getMainWindow().findChildren(QtGui.QTreeWidget)
+        for tree in trees:
+            items = tree.selectedItems()
+            if items == []:
+                continue
+            for item in items:
+                tree.expandItem(item)
         FreeCAD.ActiveDocument.recompute()
