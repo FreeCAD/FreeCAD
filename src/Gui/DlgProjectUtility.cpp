@@ -115,8 +115,9 @@ void DlgProjectUtility::tryCreateArchive(const QString& source, const QString& t
         str << "project_utility.createDocument(\"" << (const char*)source.toUtf8()
             << "\", \"" << (const char*)target.toUtf8() << "\")";
         Gui::Command::runCommand(Gui::Command::App, str.str().c_str());
-        if (openFile)
+        if (openFile) {
             Application::Instance->open((const char*)target.toUtf8(),"FreeCAD");
+        }
     }
     catch (const Base::Exception& e) {
         QMessageBox::critical(this, tr("Failed to create project"), QString::fromLatin1(e.what()));
