@@ -163,7 +163,7 @@ void ViewProviderImagePlane::manipulateImage()
         dynamic_cast<App::GeoFeature*>(getObject())
     );
     dialog->addTaskBox(new TaskImageScale(
-        dynamic_cast<App::ImagePlane*>(getObject())
+        dynamic_cast<Image::ImagePlane*>(getObject())
     ));
 
     Gui::Control().showDialog(dialog);
@@ -179,7 +179,7 @@ void ViewProviderImagePlane::resizePlane(float xsize, float ysize)
 
 void ViewProviderImagePlane::loadImage()
 {
-    App::ImagePlane* imagePlane = static_cast<App::ImagePlane*>(pcObject);
+    Image::ImagePlane* imagePlane = static_cast<Image::ImagePlane*>(pcObject);
     std::string fileName = imagePlane->ImageFile.getValue();
 
     if (!fileName.empty()) {
@@ -223,7 +223,7 @@ QSizeF ViewProviderImagePlane::loadRaster(const char* fileName, QImage& img)
 
 void ViewProviderImagePlane::reloadIfSvg()
 {
-    App::ImagePlane* imagePlane = static_cast<App::ImagePlane*>(pcObject);
+    Image::ImagePlane* imagePlane = static_cast<Image::ImagePlane*>(pcObject);
     std::string fileName = imagePlane->ImageFile.getValue();
 
     double xsize = imagePlane->XSize.getValue();
@@ -266,7 +266,7 @@ void ViewProviderImagePlane::convertToSFImage(const QImage& img)
 
 void ViewProviderImagePlane::updateData(const App::Property* prop)
 {
-    App::ImagePlane* pcPlaneObj = static_cast<App::ImagePlane*>(pcObject);
+    Image::ImagePlane* pcPlaneObj = static_cast<Image::ImagePlane*>(pcObject);
     if (prop == &pcPlaneObj->XSize || prop == &pcPlaneObj->YSize) {
         float xsize = pcPlaneObj->XSize.getValue();
         float ysize = pcPlaneObj->YSize.getValue();

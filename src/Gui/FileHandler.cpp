@@ -201,7 +201,7 @@ void FileHandler::openImage()
     QFileInfo fi;
     fi.setFile(filename);
 
-    Gui::cmdAppDocumentArgs(doc, "addObject('%s', '%s')", "App::ImagePlane",  fi.baseName().toStdString());
+    Gui::cmdAppDocumentArgs(doc, "addObject('%s', '%s')", "Image::ImagePlane",  fi.baseName().toStdString());
     Gui::cmdAppDocumentArgs(doc, "ActiveObject.ImageFile = '%s'", fi.absoluteFilePath().toStdString());
     Gui::cmdAppDocumentArgs(doc, "ActiveObject.Label = '%s'", fi.baseName().toStdString());
     Gui::cmdAppDocument(doc, "recompute()");

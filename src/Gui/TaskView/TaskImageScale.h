@@ -37,7 +37,7 @@ class TaskImageScale : public QWidget
     Q_OBJECT
 
 public:
-    explicit TaskImageScale(App::ImagePlane* obj, QWidget* parent = nullptr);
+    explicit TaskImageScale(Image::ImagePlane* obj, QWidget* parent = nullptr);
     ~TaskImageScale() override;
 
 private:
@@ -46,7 +46,7 @@ private:
 
 private:
     std::unique_ptr<Ui_TaskImageScale> ui;
-    App::WeakPtrT<App::ImagePlane> feature;
+    App::WeakPtrT<Image::ImagePlane> feature;
     double aspectRatio;
 };
 
