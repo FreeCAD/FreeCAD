@@ -39,6 +39,8 @@ public:
     explicit TaskThicknessParameters(ViewProviderDressUp *DressUpView, QWidget *parent=nullptr);
     ~TaskThicknessParameters() override;
 
+    void apply() override;
+
     double getValue(void) const;
     bool getReversed(void) const;
     bool getIntersection(void) const;

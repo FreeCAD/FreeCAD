@@ -275,6 +275,14 @@ void TaskDraftParameters::changeEvent(QEvent *e)
     }
 }
 
+void TaskDraftParameters::apply()
+{
+    //Alert user if he created an empty feature
+    if (ui->listWidgetReferences->count() == 0)
+        Base::Console().Warning(tr("Empty draft created !\n").toStdString().c_str());
+
+    TaskDressUpParameters::apply();
+}
 
 //**************************************************************************
 //**************************************************************************
@@ -311,6 +319,8 @@ bool TaskDlgDraftParameters::accept()
     auto tobj = vp->getObject();
     if (!tobj->isError())
         parameter->showObject();
+
+    parameter->apply();
 
     std::vector<std::string> strings;
     App::DocumentObject* obj;

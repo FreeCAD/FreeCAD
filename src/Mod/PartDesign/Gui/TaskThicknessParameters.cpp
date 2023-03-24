@@ -241,6 +241,12 @@ void TaskThicknessParameters::changeEvent(QEvent *e)
     }
 }
 
+void TaskThicknessParameters::apply()
+{
+    //Alert user if he created an empty feature
+    if (ui->listWidgetReferences->count() == 0)
+        Base::Console().Warning(tr("Empty thickness created !\n").toStdString().c_str());
+}
 
 //**************************************************************************
 //**************************************************************************
@@ -282,6 +288,8 @@ bool TaskDlgThicknessParameters::accept()
     auto obj = vp->getObject();
     if (!obj->isError())
         parameter->showObject();
+
+    parameter->apply();
 
     TaskThicknessParameters* draftparameter = static_cast<TaskThicknessParameters*>(parameter);
 

@@ -188,6 +188,10 @@ void TaskFilletParameters::apply()
 
     //Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Fillet changed"));
     ui->filletRadius->apply();
+
+    //Alert user if he created an empty feature
+    if(ui->listWidgetReferences->count() == 0)
+        Base::Console().Warning(tr("Empty fillet created !\n").toStdString().c_str());
 }
 
 //**************************************************************************

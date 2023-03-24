@@ -40,6 +40,8 @@ public:
     explicit TaskDraftParameters(ViewProviderDressUp *DressUpView, QWidget *parent=nullptr);
     ~TaskDraftParameters() override;
 
+    void apply() override;
+
     double getAngle() const;
     bool getReversed() const;
     const std::vector<std::string> getFaces() const;

@@ -318,6 +318,10 @@ void TaskChamferParameters::apply()
             ui->chamferAngle->apply();
             break;
     }
+
+    //Alert user if he created an empty feature
+    if (ui->listWidgetReferences->count() == 0)
+        Base::Console().Warning(tr("Empty chamfer created !\n").toStdString().c_str());
 }
 
 //**************************************************************************
