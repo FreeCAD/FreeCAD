@@ -49,6 +49,7 @@ public:
     std::string getDefaultFormatSpec(bool isToleranceFormat) const;
     bool isTooSmall(double value, QString formatSpec);
     QString formatValueToSpec(double value, QString formatSpecifier);
+    bool isNumericFormat(QString formatSpecifier);
 
 private:
     DrawViewDimension* m_dimension;

@@ -1216,7 +1216,7 @@ class gridTracker(Tracker):
         self.numlines = Draft.getParam("gridSize", 100)
         self.update()
 
-    def set(self):
+    def set(self,tool=False):
         """Move and rotate the grid according to the current working plane."""
         self.reset()
         Q = FreeCAD.DraftWorkingPlane.getRotation().Rotation.Q
@@ -1225,7 +1225,8 @@ class gridTracker(Tracker):
         self.trans.translation.setValue([P.x, P.y, P.z])
         self.displayHumanFigure()
         self.setAxesColor()
-        self.on()
+        if tool:
+            self.on()
 
     def getClosestNode(self, point):
         """Return the closest node from the given point."""

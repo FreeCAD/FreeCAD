@@ -371,14 +371,12 @@ std::vector<LineSet> DrawGeomHatch::getTrimmedLines(DrawViewPart* source,
         }
 
         std::vector<TechDraw::BaseGeomPtr> resultGeoms;
-        int i = 0;
         for (auto& e: resultEdges) {
             TechDraw::BaseGeomPtr base = BaseGeom::baseFactory(e);
             if (!base) {
                 throw Base::ValueError("DGH::getTrimmedLines - baseFactory failed");
             }
             resultGeoms.push_back(base);
-            i++;
         }
         ls.setEdges(resultEdges);
         ls.setGeoms(resultGeoms);
@@ -531,14 +529,12 @@ std::vector<LineSet> DrawGeomHatch::getFaceOverlay(int fdx)
         PATLineSpec hl = ls.getPATLineSpec();
         std::vector<TopoDS_Edge> candidates = DrawGeomHatch::makeEdgeOverlay(hl, bBox, ScalePattern.getValue());
         std::vector<TechDraw::BaseGeomPtr> resultGeoms;
-        int i = 0;
         for (auto& e: candidates) {
             TechDraw::BaseGeomPtr base = BaseGeom::baseFactory(e);
             if (!base) {
                 throw Base::ValueError("DGH::getFaceOverlay - baseFactory failed");
             }
             resultGeoms.push_back(base);
-            i++;
         }
         ls.setEdges(candidates);
         ls.setGeoms(resultGeoms);

@@ -24,6 +24,7 @@ set(TechDrawLIBS
     Part
     Spreadsheet
     Import
+    PartDesign
 )
 
 if(FREECAD_QT_MAJOR_VERSION EQUAL 5)
@@ -114,6 +115,8 @@ SET(Draw_SRCS
     DimensionReferences.h
     DimensionFormatter.cpp
     DimensionFormatter.h
+    GeometryMatcher.cpp
+    GeometryMatcher.h
     DrawViewBalloon.cpp
     DrawViewBalloon.h
     DrawViewSection.cpp
@@ -175,6 +178,8 @@ SET(TechDraw_SRCS
     TechDrawExport.h
     ProjectionAlgos.cpp
     ProjectionAlgos.h
+    XMLQuery.cpp
+    XMLQuery.h
 )
 
 SET(Geometry_SRCS

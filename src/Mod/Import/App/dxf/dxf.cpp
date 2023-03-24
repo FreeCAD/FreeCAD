@@ -2361,6 +2361,7 @@ bool CDxfRead::ReadText()
 {
     double c[3]; // coordinate
     double height = 0.03082;
+    std::string textPrefix;
 
     memset( c, 0, sizeof(c) );
 
@@ -2403,11 +2404,22 @@ bool CDxfRead::ReadText()
                 get_line();
                 ss.str(m_str); ss >> height; height = mm(height); if(ss.fail()) return false;
                 break;
+            case 3:
+                // Additional text that goes before the type 1 text
+                get_line();
+                textPrefix.append(m_str);
+                break;
             case 1:
                 // text
+                // Note that we treat this as the end of the TEXT or MTEXT entity but this may cause us to miss
+                // other properties. Officially the entity ends at the start of the next entity, the BLKEND record
+                // that ends the containing BLOCK, or the ENDSEC record that ends the ENTITIES section. These are
+                // all code 0 records. Changing this would require either some sort of peek/pushback ability or the understanding
+                // that ReadText() and all the other Read... methods return having already read a code 0.
                 get_line();
                 DerefACI();
-                OnReadText(c, height * 25.4 / 72.0, m_str);
+                textPrefix.append(m_str);
+                OnReadText(c, height * 25.4 / 72.0, textPrefix.c_str());
                 return(true);
 
             case 62:

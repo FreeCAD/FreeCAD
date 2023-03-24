@@ -42,16 +42,17 @@ translate = FreeCAD.Qt.translate
 
 
 class UpdaterFactory:
-    """A factory class for generating updaters. Mainly exists to allow eaily mocking those
-    updaters during testing. A replacement class need only provide a "get_updater" function
-    that returns mock updater objects. Those objects must be QObjects with a run() function
-    and a finished signal."""
+    """A factory class for generating updaters. Mainly exists to allow easily mocking
+    those updaters during testing. A replacement class need only provide a
+    "get_updater" function that returns mock updater objects. Those objects must be
+    QObjects with a run() function and a finished signal."""
 
     def __init__(self, addons):
         self.addons = addons
 
     def get_updater(self, addon):
-        """Get an updater for this addon (either a MacroInstaller or an AddonInstaller)"""
+        """Get an updater for this addon (either a MacroInstaller or an
+        AddonInstaller)"""
         if addon.macro is not None:
             return MacroInstaller(addon)
         return AddonInstaller(addon, self.addons)
@@ -101,7 +102,8 @@ class UpdateAllGUI(QtCore.QObject):
         self.cancelled = False
 
     def run(self):
-        """Run the Update All process. Blocks until updates are complete or cancelled."""
+        """Run the Update All process. Blocks until updates are complete or
+        cancelled."""
         self.running = True
         self._setup_dialog()
         self.dialog.show()
@@ -194,14 +196,16 @@ class UpdateAllGUI(QtCore.QObject):
         text = translate("Addons installer", "Finished updating the following addons")
         self._set_dialog_to_final_state(text)
         self.running = False
+        self.finished.emit()
 
     def _setup_cancelled_state(self):
         text1 = translate("AddonsInstaller", "Update was cancelled")
         text2 = translate("AddonsInstaller", "some addons may have been updated")
         self._set_dialog_to_final_state(text1 + ": " + text2)
         self.running = False
+        self.finished.emit()
 
-    def _set_dialog_to_final_state(self,new_content):
+    def _set_dialog_to_final_state(self, new_content):
         self.dialog.buttonBox.clear()
         self.dialog.buttonBox.addButton(QtWidgets.QDialogButtonBox.Close)
         self.dialog.label.setText(new_content)

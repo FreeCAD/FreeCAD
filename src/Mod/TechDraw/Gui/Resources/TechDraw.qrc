@@ -157,6 +157,7 @@
         <file>icons/TechDraw_TreeView.svg</file>
         <file>icons/TechDraw_VerticalDimension.svg</file>
         <file>icons/TechDraw_VerticalExtentDimension.svg</file>
+        <file>icons/TechDraw_RefError.svg</file>
         <file>icons/triangle.svg</file>
 
         <!-- MRTE -->

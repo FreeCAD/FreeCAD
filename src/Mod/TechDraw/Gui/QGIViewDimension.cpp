@@ -52,6 +52,7 @@
 #include "QGIArrow.h"
 #include "QGIDimLines.h"
 #include "QGIVertex.h"
+#include "QGCustomSvg.h"
 #include "ViewProviderDimension.h"
 #include "ZVALUE.h"
 
@@ -512,6 +513,12 @@ QGIViewDimension::QGIViewDimension() : dvDimension(nullptr), hasHover(false), m_
     setZValue(ZVALUE::DIMENSION);//note: this won't paint dimensions over another View if it stacks
                                  //above this Dimension's parent view.   need Layers?
     hideFrame();
+
+    m_refFlag = new QGCustomSvg();
+    m_refFlag->setParentItem(this);
+    m_refFlag->load(QString::fromUtf8(":/icons/TechDraw_RefError.svg"));
+    m_refFlag->setZValue(ZVALUE::LOCK);
+    m_refFlag->hide();
 }
 
 QVariant QGIViewDimension::itemChange(GraphicsItemChange change, const QVariant& value)
@@ -635,6 +642,14 @@ void QGIViewDimension::updateView(bool update)
     }
     else {
         updateDim();
+    }
+
+    if (dim->goodReferenceGeometry()) {
+        m_refFlag->hide();
+    } else {
+//        m_refFlag->setPos(datumLabel->pos());
+        m_refFlag->centerAt(datumLabel->pos() + datumLabel->boundingRect().center());
+        m_refFlag->show();
     }
 
     draw();

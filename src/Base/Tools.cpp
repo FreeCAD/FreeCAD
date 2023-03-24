@@ -154,6 +154,8 @@ std::string Base::Tools::addNumber(const std::string& name, unsigned int num, in
 
 std::string Base::Tools::getIdentifier(const std::string& name)
 {
+    if (name.empty())
+        return "_";
     // check for first character whether it's a digit
     std::string CleanName = name;
     if (!CleanName.empty() && CleanName[0] >= 48 && CleanName[0] <= 57)

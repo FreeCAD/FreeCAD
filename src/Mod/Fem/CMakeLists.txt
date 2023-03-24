@@ -78,6 +78,8 @@ SET(FemExamples_SRCS
     femexamples/equation_electrostatics_capacitance_two_balls.py
     femexamples/equation_electrostatics_electricforce_elmer_nongui6.py
     femexamples/equation_flow_elmer_2D.py
+    femexamples/equation_flow_initial_elmer_2D.py
+    femexamples/equation_flow_turbulent_elmer_2D.py
     femexamples/equation_flux_elmer.py
     femexamples/equation_magnetodynamics_elmer.py
     femexamples/equation_magnetodynamics_2D_elmer.py
@@ -257,6 +259,8 @@ SET(FemSolverElmer_SRCS
 
 SET(FemSolverElmerEquations_SRCS
     femsolver/elmer/equations/__init__.py
+    femsolver/elmer/equations/deformation.py
+    femsolver/elmer/equations/deformation_writer.py
     femsolver/elmer/equations/elasticity.py
     femsolver/elmer/equations/elasticity_writer.py
     femsolver/elmer/equations/electricforce.py

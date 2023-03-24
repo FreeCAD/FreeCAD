@@ -27,6 +27,7 @@
 #ifndef GUI_TASKVIEW_TaskFemConstraintTransform_H
 #define GUI_TASKVIEW_TaskFemConstraintTransform_H
 
+#include <memory>
 #include <QObject>
 
 #include "TaskFemConstraint.h"
@@ -41,7 +42,8 @@ class TaskFemConstraintTransform : public TaskFemConstraint
     Q_OBJECT
 
 public:
-    explicit TaskFemConstraintTransform(ViewProviderFemConstraintTransform *ConstraintView,QWidget *parent = nullptr);
+    explicit TaskFemConstraintTransform(ViewProviderFemConstraintTransform* ConstraintView,
+                                        QWidget* parent = nullptr);
     ~TaskFemConstraintTransform() override;
     const std::string getReferences() const override;
     double get_X_rot()const;
@@ -67,7 +69,7 @@ protected:
 
 private:
     void updateUI();
-    Ui_TaskFemConstraintTransform* ui;
+    std::unique_ptr<Ui_TaskFemConstraintTransform> ui;
 };
 
 class TaskDlgFemConstraintTransform : public TaskDlgFemConstraint

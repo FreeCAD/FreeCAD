@@ -26,10 +26,7 @@
 #ifndef _PreComp_
 # include <sstream>
 # include <QDomDocument>
-# include <QDomNodeModel.h>
 # include <QFile>
-# include <QXmlQuery>
-# include <QXmlResultItems>
 #endif
 
 #include <App/Application.h>
@@ -44,6 +41,7 @@
 #include "DrawSVGTemplate.h"
 #include "DrawSVGTemplatePy.h"
 #include "DrawUtil.h"
+#include "XMLQuery.h"
 
 
 using namespace TechDraw;
@@ -113,72 +111,64 @@ QString DrawSVGTemplate::processTemplate()
         return QString();
     }
 
-	QDomDocument templateDocument;
-	if (!templateDocument.setContent(&templateFile)) {
+    QDomDocument templateDocument;
+    if (!templateDocument.setContent(&templateFile)) {
         Base::Console().Error("DrawSVGTemplate::processTemplate - failed to parse file: %s\n",
             PageResult.getValue());
-		return QString();
-	}
+        return QString();
+    }
 
-	QXmlQuery query(QXmlQuery::XQuery10);
-	QDomNodeModel model(query.namePool(), templateDocument);
-	query.setFocus(QXmlItem(model.fromDomNode(templateDocument.documentElement())));
+    XMLQuery query(templateDocument);
+    std::map<std::string, std::string> substitutions = EditableTexts.getValues();
 
-	// XPath query to select all <tspan> nodes whose <text> parent
-	// has "freecad:editable" attribute
-	query.setQuery(QString::fromUtf8(
-		"declare default element namespace \"" SVG_NS_URI "\"; "
-		"declare namespace freecad=\"" FREECAD_SVG_NS_URI "\"; "
-		"//text[@freecad:editable]/tspan"));
+    // XPath query to select all <tspan> nodes whose <text> parent
+    // has "freecad:editable" attribute
+    query.processItems(QString::fromUtf8(
+        "declare default element namespace \"" SVG_NS_URI "\"; "
+        "declare namespace freecad=\"" FREECAD_SVG_NS_URI "\"; "
+        "//text[@freecad:editable]/tspan"),
+        [&substitutions, &templateDocument](QDomElement& tspan) -> bool {
+        // Replace the editable text spans with new nodes holding actual values
+        QString editableName = tspan.parentNode().toElement().attribute(QString::fromUtf8("freecad:editable"));
+        std::map<std::string, std::string>::iterator item =
+            substitutions.find(editableName.toStdString());
+        if (item != substitutions.end()) {
+            // Keep all spaces in the text node
+            tspan.setAttribute(QString::fromUtf8("xml:space"), QString::fromUtf8("preserve"));
 
-	QXmlResultItems queryResult;
-	query.evaluateTo(&queryResult);
+            // Remove all child nodes and append text node with editable replacement as the only descendant
+            while (!tspan.lastChild().isNull()) {
+                tspan.removeChild(tspan.lastChild());
+            }
+            tspan.appendChild(templateDocument.createTextNode(QString::fromUtf8(item->second.c_str())));
+        }
+        return true;
+    });
 
-	std::map<std::string, std::string> substitutions = EditableTexts.getValues();
-	while (!queryResult.next().isNull())
-	{
-		QDomElement tspan = model.toDomNode(queryResult.current().toNodeModelIndex()).toElement();
+    // Calculate the dimensions of the page and store for retrieval
+    // Obtain the size of the SVG document by reading the document attributes
+    QDomElement docElement = templateDocument.documentElement();
+    Base::Quantity quantity;
 
-		// Replace the editable text spans with new nodes holding actual values
-		QString editableName = tspan.parentNode().toElement().attribute(QString::fromUtf8("freecad:editable"));
-		std::map<std::string, std::string>::iterator item =
-			substitutions.find(std::string(editableName.toUtf8().constData()));
-		if (item != substitutions.end()) {
-			// Keep all spaces in the text node
-			tspan.setAttribute(QString::fromUtf8("xml:space"), QString::fromUtf8("preserve"));
+    // Obtain the width
+    QString str = docElement.attribute(QString::fromLatin1("width"));
+    quantity = Base::Quantity::parse(str);
+    quantity.setUnit(Base::Unit::Length);
 
-			// Remove all child nodes and append text node with editable replacement as the only descendant
-			while (!tspan.lastChild().isNull()) {
-				tspan.removeChild(tspan.lastChild());
-			}
-			tspan.appendChild(templateDocument.createTextNode(QString::fromUtf8(item->second.c_str())));
-		}
-	}
+    Width.setValue(quantity.getValue());
 
-	// Calculate the dimensions of the page and store for retrieval
-	// Obtain the size of the SVG document by reading the document attributes
-	QDomElement docElement = templateDocument.documentElement();
-	Base::Quantity quantity;
+    str = docElement.attribute(QString::fromLatin1("height"));
+    quantity = Base::Quantity::parse(str);
+    quantity.setUnit(Base::Unit::Length);
 
-	// Obtain the width
-	QString str = docElement.attribute(QString::fromLatin1("width"));
-	quantity = Base::Quantity::parse(str);
-	quantity.setUnit(Base::Unit::Length);
+    Height.setValue(quantity.getValue());
 
-	Width.setValue(quantity.getValue());
+    bool isLandscape = getWidth() / getHeight() >= 1.;
 
-	str = docElement.attribute(QString::fromLatin1("height"));
-	quantity = Base::Quantity::parse(str);
-	quantity.setUnit(Base::Unit::Length);
+    Orientation.setValue(isLandscape ? 1 : 0);
 
-	Height.setValue(quantity.getValue());
-
-	bool isLandscape = getWidth() / getHeight() >= 1.;
-
-	Orientation.setValue(isLandscape ? 1 : 0);
-
-	//all Qt holds on files should be released on exit #4085
-	return templateDocument.toString();
+    //all Qt holds on files should be released on exit #4085
+    return templateDocument.toString();
 }
 
 double DrawSVGTemplate::getWidth() const
@@ -218,7 +208,7 @@ std::map<std::string, std::string> DrawSVGTemplate::getEditableTextsFromTemplate
 
     Base::FileInfo tfi(templateFilename);
     if (!tfi.isReadable()) {
-        // if there is a old absolute template file set use a redirect
+        // if there is an old absolute template file set use a redirect
         tfi.setFile(App::Application::getResourceDir() + "Mod/Drawing/Templates/" + tfi.fileName());
         // try the redirect
         if (!tfi.isReadable()) {
@@ -240,29 +230,22 @@ std::map<std::string, std::string> DrawSVGTemplate::getEditableTextsFromTemplate
         return editables;
     }
 
-    QXmlQuery query(QXmlQuery::XQuery10);
-    QDomNodeModel model(query.namePool(), templateDocument, true);
-    query.setFocus(QXmlItem(model.fromDomNode(templateDocument.documentElement())));
+    XMLQuery query(templateDocument);
 
     // XPath query to select all <tspan> nodes whose <text> parent
     // has "freecad:editable" attribute
-    query.setQuery(QString::fromUtf8(
+    query.processItems(QString::fromUtf8(
         "declare default element namespace \"" SVG_NS_URI "\"; "
         "declare namespace freecad=\"" FREECAD_SVG_NS_URI "\"; "
-        "//text[@freecad:editable]/tspan"));
-
-    QXmlResultItems queryResult;
-    query.evaluateTo(&queryResult);
-
-    while (!queryResult.next().isNull()) {
-        QDomElement tspan = model.toDomNode(queryResult.current().toNodeModelIndex()).toElement();
-
+        "//text[@freecad:editable]/tspan"),
+        [&editables](QDomElement& tspan) -> bool {
         QString editableName = tspan.parentNode().toElement().attribute(QString::fromUtf8("freecad:editable"));
         QString editableValue = tspan.firstChild().nodeValue();
 
         editables[std::string(editableName.toUtf8().constData())] =
             std::string(editableValue.toUtf8().constData());
-    }
+        return true;
+    });
 
     return editables;
 }

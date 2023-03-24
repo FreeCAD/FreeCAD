@@ -1,4 +1,6 @@
 if(MSVC)
+    add_compile_options(/wd4251)
+
     option(
       gtest_force_shared_crt
       "Use shared (DLL) run-time lib even when Google Test is built as static lib."

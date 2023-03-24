@@ -37,17 +37,12 @@ public:
 
     virtual Standard_Integer Execute(void);
 
-//  virtual void Validate(void);
-
-  /// Returns the Name/Type of the feature
-  virtual const char *Type(void){return "PartImportStep";}
+    /// Returns the Name/Type of the feature
+    virtual const char *Type(void){return "PartImportStep";}
 };
 
 
-
 }
-
-
 
 
 #endif // __FeatureImportStep_H__

@@ -94,6 +94,7 @@
 #include "FeaturePython.h"
 #include "GeoFeature.h"
 #include "GeoFeatureGroupExtension.h"
+#include "ImagePlane.h"
 #include "InventorObject.h"
 #include "Link.h"
 #include "LinkBaseExtensionPy.h"
@@ -2009,6 +2010,7 @@ void Application::initTypes()
     App::PropertyTime                       ::init();
     App::PropertyUltimateTensileStrength    ::init();
     App::PropertyVacuumPermittivity         ::init();
+    App::PropertyVelocity                   ::init();
     App::PropertyVolume                     ::init();
     App::PropertyVolumeFlowRate             ::init();
     App::PropertyVolumetricThermalExpansionCoefficient::init();
@@ -2052,12 +2054,13 @@ void Application::initTypes()
     App::DocumentObjectGroup       ::init();
     App::DocumentObjectGroupPython ::init();
     App::DocumentObjectFileIncluded::init();
+    App::ImagePlane                ::init();
     App::InventorObject            ::init();
     App::VRMLObject                ::init();
     App::Annotation                ::init();
     App::AnnotationLabel           ::init();
     App::MeasureDistance           ::init();
-    App ::MaterialObject           ::init();
+    App::MaterialObject            ::init();
     App::MaterialObjectPython      ::init();
     App::TextDocument              ::init();
     App::Placement                 ::init();

@@ -74,7 +74,7 @@ protected:
 
 private:
     QWidget* proxy;
-    Ui_TaskCreateNodeSet* ui;
+    std::unique_ptr<Ui_TaskCreateNodeSet> ui;
 };
 
 } //namespace PartDesignGui

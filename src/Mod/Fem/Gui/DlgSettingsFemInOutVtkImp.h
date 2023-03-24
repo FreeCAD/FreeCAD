@@ -22,11 +22,13 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef FEMGUI_DLGSETTINGSFEMINOUTVTKIMP_H
 #define FEMGUI_DLGSETTINGSFEMINOUTVTKIMP_H
 
+#include <memory>
+
 #include <Gui/PropertyPage.h>
+
 
 namespace FemGui {
 
@@ -45,7 +47,7 @@ protected:
     void changeEvent(QEvent *e) override;
 
 private:
-    Ui_DlgSettingsFemInOutVtk* ui;
+    std::unique_ptr<Ui_DlgSettingsFemInOutVtk> ui;
 };
 
 } // namespace FemGui

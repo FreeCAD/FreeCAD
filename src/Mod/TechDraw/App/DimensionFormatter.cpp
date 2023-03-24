@@ -22,6 +22,7 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
+# include <QLocale>
 # include <QRegularExpression>
 #endif
 
@@ -320,12 +321,26 @@ QString DimensionFormatter::formatValueToSpec(double value, QString formatSpecif
         formattedValue.replace(QRegularExpression(QStringLiteral("([0-9][0-9]*\\.[0-9]*[1-9])00*$")), QStringLiteral("\\1"));
         formattedValue.replace(QRegularExpression(QStringLiteral("([0-9][0-9]*)\\.0*$")), QStringLiteral("\\1"));
     } else {
-        formattedValue = QString::asprintf(Base::Tools::toStdString(formatSpecifier).c_str(), value);
+        if (isNumericFormat(formatSpecifier)) {
+            formattedValue = QString::asprintf(Base::Tools::toStdString(formatSpecifier).c_str(), value);
+        }
     }
 
     return formattedValue;
 }
 
+bool DimensionFormatter::isNumericFormat(QString formatSpecifier)
+{
+    QRegularExpression rxFormat(QStringLiteral("%[+-]?[0-9]*\\.*[0-9]*[aefgwAEFGW]")); //printf double format spec
+    QRegularExpressionMatch rxMatch;
+    int pos = formatSpecifier.indexOf(rxFormat, 0, &rxMatch);
+    if (pos != -1)  {
+        return true;
+    }
+    return false;
+}
+
+//TODO: similar code here and above
 QStringList DimensionFormatter::getPrefixSuffixSpec(QString fSpec)
 {
     QStringList result;

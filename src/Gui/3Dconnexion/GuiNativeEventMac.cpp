@@ -145,7 +145,7 @@ Gui::GuiNativeEvent::~GuiNativeEvent()
 
 void Gui::GuiNativeEvent::initSpaceball(QMainWindow *window)
 {
-	Q_UNUSED(window)
+    Q_UNUSED(window)
     OSStatus err;
     /* make sure the framework is installed */
     if (SetConnexionHandlers == NULL)

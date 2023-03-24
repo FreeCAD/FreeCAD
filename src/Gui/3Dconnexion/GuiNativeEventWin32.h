@@ -37,19 +37,19 @@ class GUIApplicationNativeEventAware;
 
 namespace Gui
 {
-	class GUIApplicationNativeEventAware;
+    class GUIApplicationNativeEventAware;
 
-	class GuiNativeEvent : public GuiAbstractNativeEvent
-	{
-	Q_OBJECT
-	public:
-		GuiNativeEvent(GUIApplicationNativeEventAware *app);
-		~GuiNativeEvent() override;
-		void initSpaceball(QMainWindow *window) override final;
-	private:
-		GuiNativeEvent();
-		GuiNativeEvent(const GuiNativeEvent&);
-		GuiNativeEvent& operator=(const GuiNativeEvent&);
+    class GuiNativeEvent : public GuiAbstractNativeEvent
+    {
+    Q_OBJECT
+    public:
+        GuiNativeEvent(GUIApplicationNativeEventAware *app);
+        ~GuiNativeEvent() override;
+        void initSpaceball(QMainWindow *window) override final;
+    private:
+        GuiNativeEvent();
+        GuiNativeEvent(const GuiNativeEvent&);
+        GuiNativeEvent& operator=(const GuiNativeEvent&);
     public:
         static bool Is3dmouseAttached();
 
@@ -96,7 +96,7 @@ namespace Gui
         // use to calculate distance traveled since last event
         DWORD fLast3dmouseInputTime;
         static Gui::GuiNativeEvent* gMouseInput;
-	};
+    };
 }
 
 #endif //GUINATIVEEVENT_H

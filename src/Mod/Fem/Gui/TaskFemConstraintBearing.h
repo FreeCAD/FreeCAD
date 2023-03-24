@@ -24,6 +24,7 @@
 #ifndef GUI_TASKVIEW_TaskFemConstraintBearing_H
 #define GUI_TASKVIEW_TaskFemConstraintBearing_H
 
+#include <memory>
 #include <QObject>
 
 #include "TaskFemConstraint.h"
@@ -47,8 +48,9 @@ class TaskFemConstraintBearing : public TaskFemConstraint
     Q_OBJECT
 
 public:
-    explicit TaskFemConstraintBearing(ViewProviderFemConstraint *ConstraintView, QWidget *parent = nullptr,
-                             const char* pixmapname = "FEM_ConstraintBearing");
+    explicit TaskFemConstraintBearing(ViewProviderFemConstraint* ConstraintView,
+                                      QWidget* parent = nullptr,
+                                      const char* pixmapname = "FEM_ConstraintBearing");
     ~TaskFemConstraintBearing() override;
 
     double getDistance() const;
@@ -69,8 +71,7 @@ protected:
     void onSelectionChanged(const Gui::SelectionChanges& msg) override;
 
 protected:
-    Ui_TaskFemConstraintBearing* ui;
-
+    std::unique_ptr<Ui_TaskFemConstraintBearing> ui;
 };
 
 /// simulation dialog for the TaskView
@@ -84,7 +85,6 @@ public:
 
     /// is called by the framework if the dialog is accepted (Ok)
     bool accept() override;
-
 };
 
 } //namespace FemGui

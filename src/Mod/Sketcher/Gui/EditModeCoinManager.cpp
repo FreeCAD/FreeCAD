@@ -149,6 +149,8 @@ void EditModeCoinManager::ParameterObserver::initParameters()
             [this, drawingParameters = Client.drawingParameters](const std::string & param){updateColor(drawingParameters.SelectColor, param);}},
         {"CursorTextColor",
             [this, drawingParameters = Client.drawingParameters](const std::string & param){updateColor(drawingParameters.CursorTextColor, param);}},
+        {"UserSchema",
+            [this](const std::string& param) {updateUnit(param); }},
     };
 
     for( auto & val : str2updatefunction){
@@ -275,6 +277,12 @@ void EditModeCoinManager::ParameterObserver::updateColor(SbColor &sbcolor, const
     Client.updateInventorColors();
 }
 
+void EditModeCoinManager::ParameterObserver::updateUnit(const std::string &parametername)
+{
+    Q_UNUSED(parametername);
+    //Nothing to do because we only need Client.redrawViewProvider(); that is already called in OnChange.
+}
+
 void EditModeCoinManager::ParameterObserver::subscribeToParameters()
 {
     try {
@@ -286,6 +294,9 @@ void EditModeCoinManager::ParameterObserver::subscribeToParameters()
 
         ParameterGrp::handle hGrpskg = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
         hGrpskg->Attach(this);
+
+        ParameterGrp::handle hGrpu = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Units");
+        hGrpu->Attach(this);
     }
     catch(const Base::ValueError & e) { // ensure that if parameter strings are not well-formed, the exception is not propagated
         Base::Console().Error("EditModeCoinManager: Malformed parameter string: %s\n", e.what());
@@ -303,6 +314,9 @@ void EditModeCoinManager::ParameterObserver::unsubscribeToParameters()
 
         ParameterGrp::handle hGrpskg = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
         hGrpskg->Detach(this);
+
+        ParameterGrp::handle hGrpu = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Units");
+        hGrpu->Detach(this);
     }
     catch(const Base::ValueError & e) {// ensure that if parameter strings are not well-formed, the program is not terminated when calling the noexcept destructor.
         Base::Console().Error("EditModeCoinManager: Malformed parameter string: %s\n", e.what());

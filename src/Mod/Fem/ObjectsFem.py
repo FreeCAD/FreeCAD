@@ -742,12 +742,31 @@ def makePostVtkResult(
 ):
     """makePostVtkResult(document, base_result, [name]):
     creates a FEM post processing result object (vtk based) to hold FEM results"""
-    obj = doc.addObject("Fem::FemPostPipeline", name)
+    Pipeline_Name = "Pipeline_" + name
+    obj = doc.addObject("Fem::FemPostPipeline", Pipeline_Name)
     obj.load(base_result)
+    if FreeCAD.GuiUp:
+        obj.ViewObject.SelectionStyle = "BoundBox"
+        # to assure the user sees something, set the default to Surface
+        obj.ViewObject.DisplayMode = "Surface"
     return obj
 
 
 # ********* solver objects ***********************************************************************
+def makeEquationDeformation(
+    doc,
+    base_solver=None,
+    name="Deformation"
+):
+    """makeEquationDeformation(document, [base_solver], [name]):
+    creates a FEM deformation (nonlinear elasticity) equation for a solver"""
+    from femsolver.elmer.equations import deformation
+    obj = deformation.create(doc, name)
+    if base_solver:
+        base_solver.addObject(obj)
+    return obj
+
+
 def makeEquationElasticity(
     doc,
     base_solver=None,

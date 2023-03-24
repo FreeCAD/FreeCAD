@@ -431,6 +431,23 @@ class _ElementRotation1D(CommandManager):
         self.do_activated = "add_obj_on_gui_noset_edit"
 
 
+class _EquationDeformation(CommandManager):
+    "The FEM_EquationDeformation command definition"
+
+    def __init__(self):
+        super(_EquationDeformation, self).__init__()
+        self.menutext = Qt.QT_TRANSLATE_NOOP(
+            "FEM_EquationDeformation",
+            "Deformation equation"
+        )
+        self.tooltip = Qt.QT_TRANSLATE_NOOP(
+            "FEM_EquationDeformation",
+            "Creates a FEM equation for\n deformation (nonlinear elasticity)"
+        )
+        self.is_active = "with_solver_elmer"
+        self.do_activated = "add_obj_on_gui_selobj_noset_edit"
+
+
 class _EquationElasticity(CommandManager):
     "The FEM_EquationElasticity command definition"
 
@@ -442,7 +459,7 @@ class _EquationElasticity(CommandManager):
         )
         self.tooltip = Qt.QT_TRANSLATE_NOOP(
             "FEM_EquationElasticity",
-            "Creates a FEM equation for elasticity"
+            "Creates a FEM equation for\n elasticity (stress)"
         )
         self.is_active = "with_solver_elmer"
         self.do_activated = "add_obj_on_gui_selobj_noset_edit"
@@ -1231,6 +1248,10 @@ FreeCADGui.addCommand(
 FreeCADGui.addCommand(
     "FEM_ElementRotation1D",
     _ElementRotation1D()
+)
+FreeCADGui.addCommand(
+    "FEM_EquationDeformation",
+    _EquationDeformation()
 )
 FreeCADGui.addCommand(
     "FEM_EquationElasticity",

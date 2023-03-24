@@ -72,8 +72,8 @@ std::vector< App::DocumentObject* > ViewProviderFemPostPipeline::claimChildren3D
 
 void ViewProviderFemPostPipeline::updateData(const App::Property* prop) {
     FemGui::ViewProviderFemPostObject::updateData(prop);
-
-    if (strcmp(prop->getName(), "Function") == 0)
+    Fem::FemPostPipeline* pipeline = static_cast<Fem::FemPostPipeline*>(getObject());
+    if (prop == &pipeline->Functions)
         updateFunctionSize();
 }
 
@@ -133,7 +133,6 @@ void ViewProviderFemPostPipeline::onSelectionChanged(const Gui::SelectionChanges
 
 void ViewProviderFemPostPipeline::updateColorBars()
 {
-
     // take all visible childs and update its shape coloring
     auto children = claimChildren();
     for (auto& child : children) {

@@ -32,8 +32,9 @@
 
 using namespace FemGui;
 
-DlgSettingsFemExportAbaqusImp::DlgSettingsFemExportAbaqusImp( QWidget* parent )
-    : PreferencePage( parent ), ui(new Ui_DlgSettingsFemExportAbaqus)
+DlgSettingsFemExportAbaqusImp::DlgSettingsFemExportAbaqusImp(QWidget* parent)
+    : PreferencePage(parent),
+      ui(new Ui_DlgSettingsFemExportAbaqus)
 {
     ui->setupUi(this);
 }
@@ -42,10 +43,7 @@ DlgSettingsFemExportAbaqusImp::DlgSettingsFemExportAbaqusImp( QWidget* parent )
  *  Destroys the object and frees any allocated resources
  */
 DlgSettingsFemExportAbaqusImp::~DlgSettingsFemExportAbaqusImp()
-{
-    // no need to delete child widgets, Qt does it all for us
-    delete ui;
-}
+{}
 
 void DlgSettingsFemExportAbaqusImp::saveSettings()
 {

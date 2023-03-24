@@ -35,24 +35,6 @@ namespace Gui {
 
 class View3DInventor;
 
-class Camera
-{
-public:
-    enum Orientation {
-        Top,
-        Bottom,
-        Front,
-        Rear,
-        Left,
-        Right,
-        Isometric,
-        Dimetric,
-        Trimetric,
-    };
-
-    static SbRotation rotation(Orientation view);
-};
-
 class View3DInventorPy : public Py::PythonExtension<View3DInventorPy>
 {
 public:

@@ -216,10 +216,12 @@ public:
         if (method == PERIAPSIS_APOAPSIS_B) {
             if (mode == STATUS_SEEK_PERIAPSIS) {
                 periapsis = onSketchPos;
+                setAngleSnapping(true, periapsis);
                 mode = STATUS_SEEK_APOAPSIS;
             }
             else if (mode == STATUS_SEEK_APOAPSIS) {
                 apoapsis = onSketchPos;
+                setAngleSnapping(false);
                 mode = STATUS_SEEK_B;
             }
             else {
@@ -228,10 +230,12 @@ public:
         } else { // method is CENTER_PERIAPSIS_B
             if (mode == STATUS_SEEK_CENTROID) {
                 centroid = onSketchPos;
+                setAngleSnapping(true, centroid);
                 mode = STATUS_SEEK_PERIAPSIS;
             }
             else if (mode == STATUS_SEEK_PERIAPSIS) {
                 periapsis = onSketchPos;
+                setAngleSnapping(false);
                 mode = STATUS_SEEK_B;
             }
             else {

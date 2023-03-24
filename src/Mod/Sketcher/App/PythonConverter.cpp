@@ -296,6 +296,10 @@ std::string PythonConverter::process(const Sketcher::Constraint * constraint)
                 return boost::str(boost::format("Sketcher.Constraint('Distance', %i, %f)") %
                         constr->First % constr->getValue());
             }
+            else if(constr->FirstPos == Sketcher::PointPos::none){
+                return boost::str(boost::format("Sketcher.Constraint('Distance', %i, %i, %f)") %
+                        constr->First % constr->Second % constr->getValue());
+            }
             else if(constr->SecondPos == Sketcher::PointPos::none){
                 return boost::str(boost::format("Sketcher.Constraint('Distance', %i, %i, %i, %f)") %
                         constr->First % static_cast<int>(constr->FirstPos) % constr->Second % constr->getValue());

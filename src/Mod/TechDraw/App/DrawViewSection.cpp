@@ -380,7 +380,11 @@ void DrawViewSection::sectionExec(TopoDS_Shape& baseShape)
         connectCutWatcher =
             QObject::connect(&m_cutWatcher, &QFutureWatcherBase::finished, &m_cutWatcher,
                              [this] { this->onSectionCutFinished(); });
+#if QT_VERSION < QT_VERSION_CHECK(6,0,0)
         m_cutFuture = QtConcurrent::run(this, &DrawViewSection::makeSectionCut, baseShape);
+#else
+        m_cutFuture = QtConcurrent::run(&DrawViewSection::makeSectionCut, this, baseShape);
+#endif
         m_cutWatcher.setFuture(m_cutFuture);
         waitingForCut(true);
     }
@@ -390,7 +394,7 @@ void DrawViewSection::sectionExec(TopoDS_Shape& baseShape)
     }
 }
 
-void DrawViewSection::makeSectionCut(TopoDS_Shape& baseShape)
+void DrawViewSection::makeSectionCut(const TopoDS_Shape& baseShape)
 {
     //    Base::Console().Message("DVS::makeSectionCut() - %s - baseShape.IsNull: %d\n",
     //                            getNameInDocument(), baseShape.IsNull());
