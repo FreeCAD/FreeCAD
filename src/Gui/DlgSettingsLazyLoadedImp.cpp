@@ -289,6 +289,7 @@ QWidget* DlgSettingsLazyLoadedImp::createWorkbenchWidget(const QString& wbName, 
     loadLabel->setEnabled(enableCheckBox->isChecked());
     auto loadButton = new QPushButton(tr("Load"));
     loadButton->setObjectName(loadButtonStr);
+    loadButton->setToolTip(tr("To preserve resources, FreeCAD does not load workbenches until they are used. Loading them may provide access to additional preferences related to their functionality."));
     loadButton->setEnabled(enableCheckBox->isChecked());
     connect(loadButton, &QPushButton::clicked, this, [this, wbName]() { onLoadClicked(wbName); });
     if (WorkbenchManager::instance()->getWorkbench(wbName.toStdString())) {
