@@ -331,7 +331,6 @@ SET(Gui_UIC_SRCS
     DlgSettingsPythonConsole.ui
     DlgCheckableMessageBox.ui
     DlgToolbars.ui
-    DlgWorkbenches.ui
     DlgTreeWidget.ui
     DlgLocationAngle.ui
     DlgLocationPos.ui
@@ -526,7 +525,6 @@ SET(Dialog_Customize_CPP_SRCS
     DlgCustomizeSpNavSettings.cpp
     DlgKeyboardImp.cpp
     DlgToolbarsImp.cpp
-    DlgWorkbenchesImp.cpp
     QListWidgetCustom.cpp
     QListWidgetDragBugFix.cpp
 )
@@ -538,7 +536,6 @@ SET(Dialog_Customize_HPP_SRCS
     DlgCustomizeSpNavSettings.h
     DlgKeyboardImp.h
     DlgToolbarsImp.h
-    DlgWorkbenchesImp.h
     QListWidgetCustom.h
     QListWidgetDragBugFix.h
 )
@@ -551,7 +548,6 @@ SET(Dialog_Customize_SRCS
     DlgCustomizeSpNavSettings.ui
     DlgKeyboard.ui
     DlgToolbars.ui
-    DlgWorkbenches.ui
 )
 SOURCE_GROUP("Dialog\\Customize" FILES ${Dialog_Customize_SRCS})
 

@@ -45,7 +45,6 @@
 #include "DlgSettingsLazyLoadedImp.h"
 
 #include "DlgToolbarsImp.h"
-#include "DlgWorkbenchesImp.h"
 #include "DlgActionsImp.h"
 #include "DlgCommandsImp.h"
 #include "DlgKeyboardImp.h"
@@ -87,7 +86,6 @@ WidgetFactorySupplier::WidgetFactorySupplier()
     //
     new CustomPageProducer<DlgCustomCommandsImp>;
     new CustomPageProducer<DlgCustomKeyboardImp>;
-    new CustomPageProducer<DlgWorkbenchesImp>;
     new CustomPageProducer<DlgCustomToolbarsImp>;
     new CustomPageProducer<DlgCustomActionsImp>;
     new CustomPageProducer<DlgCustomizeSpNavSettings>;
