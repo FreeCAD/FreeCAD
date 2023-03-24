@@ -347,6 +347,7 @@ class CommandManager(object):
     def add_obj_on_gui_expand_noset_edit(self, objtype):
         # like add_obj_on_gui_noset_edit but the parent object
         # is expanded in the tree to see the added obj
+        # the added obj is also selected to enable direct additons to it
         FreeCAD.ActiveDocument.openTransaction(
             "Create Fem{}"
             .format(objtype)
@@ -362,9 +363,13 @@ class CommandManager(object):
         # add the object
         FreeCADGui.doCommand(
             "addedObj = FemGui.getActiveAnalysis().addObject(ObjectsFem."
-            "make{}(FreeCAD.ActiveDocument))"
+            "make{}(FreeCAD.ActiveDocument))[0]"
             .format(objtype)
         )
+        # select only added object
+        FreeCADGui.Selection.clearSelection()
+        FreeCADGui.doCommand("addedObjDocObj = FreeCAD.ActiveDocument.getObject(addedObj.Name)")
+        FreeCADGui.doCommand("FreeCADGui.Selection.addSelection(addedObjDocObj)")
         FreeCAD.ActiveDocument.recompute()
 
     def add_obj_on_gui_selobj_set_edit(self, objtype):
