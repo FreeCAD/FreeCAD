@@ -68,6 +68,14 @@ DlgSettingsFemGeneralImp::DlgSettingsFemGeneralImp(QWidget* parent)
         solversList << QLatin1String(item.c_str());
     }
     ui->cmb_def_solver->addItems(solversList);
+
+    // if the "DefaultSolver" parameter is not yet set and there is only
+    // one available solver, set this solver
+    hGrp = App::GetApplication().GetParameterGroupByPath(
+        "User parameter:BaseApp/Preferences/Mod/Fem/General");
+    auto DefaultSolver = hGrp->GetInt("DefaultSolver", 0);
+    if (!DefaultSolver && ui->cmb_def_solver->count() == 2)
+        ui->cmb_def_solver->setCurrentIndex(1);
 }
 
 DlgSettingsFemGeneralImp::~DlgSettingsFemGeneralImp()
