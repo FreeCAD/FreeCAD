@@ -34,6 +34,7 @@ import FreeCADGui
 from FreeCAD import Qt
 
 from .manager import CommandManager
+from femsolver import settings
 from femtools.femutils import is_of_type
 
 
@@ -67,12 +68,16 @@ class _Analysis(CommandManager):
         FreeCADGui.addModule("ObjectsFem")
         FreeCADGui.doCommand("ObjectsFem.makeAnalysis(FreeCAD.ActiveDocument, 'Analysis')")
         FreeCADGui.doCommand("FemGui.setActiveAnalysis(FreeCAD.ActiveDocument.ActiveObject)")
-        # create a CalculiX ccx tools solver for any new analysis
-        # to be on the safe side for new users
-        FreeCADGui.doCommand("ObjectsFem.makeSolverCalculixCcxTools(FreeCAD.ActiveDocument)")
-        FreeCADGui.doCommand(
-            "FemGui.getActiveAnalysis().addObject(FreeCAD.ActiveDocument.ActiveObject)"
-        )
+        # if there is no Elmer or Z88 binary create a CalculiX ccx tools solver for
+        # new analysis to be on the safe side for new users
+        binary = settings.get_binary("ElmerSolver")
+        if binary is None:
+            binary = settings.get_binary("Z88")
+        if binary is None:
+            FreeCADGui.doCommand("ObjectsFem.makeSolverCalculixCcxTools(FreeCAD.ActiveDocument)")
+            FreeCADGui.doCommand(
+                "FemGui.getActiveAnalysis().addObject(FreeCAD.ActiveDocument.ActiveObject)"
+            )
         FreeCAD.ActiveDocument.recompute()
 
 
