@@ -370,8 +370,19 @@ Action * StdCmdDlgPreferences::createAction()
 void StdCmdDlgPreferences::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
+
+    static QString groupName{};
+    static int index{};
+
     Gui::Dialog::DlgPreferencesImp cDlg(getMainWindow());
-    cDlg.exec();
+    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences");
+    if (hGrp->GetBool("RestoreGroupPage", true)) {
+        cDlg.activateGroupPage(groupName, index);
+    }
+
+    if (cDlg.exec()) {
+        cDlg.activeGroupPage(groupName, index);
+    }
 }
 
 //===========================================================================

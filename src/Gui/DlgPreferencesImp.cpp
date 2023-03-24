@@ -305,10 +305,27 @@ void DlgPreferencesImp::activateGroupPage(const QString& group, int index)
         QListWidgetItem* item = ui->listBox->item(i);
         if (item->data(GroupNameRole).toString() == group) {
             ui->listBox->setCurrentItem(item);
-            auto tabWidget = static_cast<QTabWidget*>(ui->tabWidgetStack->widget(i));
-            tabWidget->setCurrentIndex(index);
-            break;
+            auto tabWidget = dynamic_cast<QTabWidget*>(ui->tabWidgetStack->widget(i));
+            if (tabWidget) {
+                tabWidget->setCurrentIndex(index);
+                break;
+            }
         }
+    }
+}
+
+/**
+ * Returns the group name \a group and position \a index of the active page.
+ */
+void DlgPreferencesImp::activeGroupPage(QString& group, int& index) const
+{
+    int row = ui->listBox->currentRow();
+    auto item = ui->listBox->item(row);
+    auto tabWidget = dynamic_cast<QTabWidget*>(ui->tabWidgetStack->widget(row));
+
+    if (item && tabWidget) {
+        group = item->data(GroupNameRole).toString();
+        index = tabWidget->currentIndex();
     }
 }
 
