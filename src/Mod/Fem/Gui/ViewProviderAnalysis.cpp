@@ -41,6 +41,8 @@
 #include <Gui/MainWindow.h>
 #include <Gui/Selection.h>
 #include <Gui/SelectionObject.h>
+#include <Gui/Workbench.h>
+#include <Gui/WorkbenchManager.h>
 #include <Mod/Fem/App/FemAnalysis.h>
 #include <Mod/Fem/App/FemConstraint.h>
 #include <Mod/Fem/App/FemMeshObject.h>
@@ -103,6 +105,18 @@ void ViewProviderFemAnalysis::attach(App::DocumentObject *obj)
 {
     Gui::ViewProviderDocumentObjectGroup::attach(obj);
     extension.attach(this);
+    // activate analysis if currently active workbench is FEM
+    auto *workbench = Gui::WorkbenchManager::instance()->active();
+    if (workbench->name() == "FemWorkbench") {
+        doubleClicked();
+        // indicate the activated analysis by selecting it
+        // especially useful for files with 2 or more analyses but also
+        // necessary for the workflow with new files to add a solver as next object
+        std::vector<App::DocumentObject*> selVector {};
+        selVector.push_back(this->getObject());
+        auto docName = this->getObject()->getDocument()->getName();
+        Gui::Selection().setSelection(docName, selVector);
+    }
 }
 
 void ViewProviderFemAnalysis::highlightView(Gui::ViewProviderDocumentObject *view)

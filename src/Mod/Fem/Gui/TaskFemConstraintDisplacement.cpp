@@ -489,7 +489,6 @@ std::string TaskFemConstraintDisplacement::get_zFormula() const
     QString zFormula = ui->DisplacementZFormulaLE->text();
     zFormula.replace(QString::fromLatin1("\""), QString::fromLatin1("\\\""));
     return zFormula.toStdString();
-    ;
 }
 
 bool TaskFemConstraintDisplacement::get_dispxfix() const

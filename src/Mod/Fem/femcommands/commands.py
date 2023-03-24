@@ -34,6 +34,7 @@ import FreeCADGui
 from FreeCAD import Qt
 
 from .manager import CommandManager
+from femsolver import settings
 from femtools.femutils import is_of_type
 
 
@@ -67,12 +68,16 @@ class _Analysis(CommandManager):
         FreeCADGui.addModule("ObjectsFem")
         FreeCADGui.doCommand("ObjectsFem.makeAnalysis(FreeCAD.ActiveDocument, 'Analysis')")
         FreeCADGui.doCommand("FemGui.setActiveAnalysis(FreeCAD.ActiveDocument.ActiveObject)")
-        # create a CalculiX ccx tools solver for any new analysis
-        # to be on the safe side for new users
-        FreeCADGui.doCommand("ObjectsFem.makeSolverCalculixCcxTools(FreeCAD.ActiveDocument)")
-        FreeCADGui.doCommand(
-            "FemGui.getActiveAnalysis().addObject(FreeCAD.ActiveDocument.ActiveObject)"
-        )
+        # if there is no Elmer or Z88 binary create a CalculiX ccx tools solver for
+        # new analysis to be on the safe side for new users
+        binary = settings.get_binary("ElmerSolver")
+        if binary is None:
+            binary = settings.get_binary("Z88")
+        if binary is None:
+            FreeCADGui.doCommand("ObjectsFem.makeSolverCalculixCcxTools(FreeCAD.ActiveDocument)")
+            FreeCADGui.doCommand(
+                "FemGui.getActiveAnalysis().addObject(FreeCAD.ActiveDocument.ActiveObject)"
+            )
         FreeCAD.ActiveDocument.recompute()
 
 
@@ -445,7 +450,7 @@ class _EquationDeformation(CommandManager):
             "Creates a FEM equation for\n deformation (nonlinear elasticity)"
         )
         self.is_active = "with_solver_elmer"
-        self.do_activated = "add_obj_on_gui_selobj_noset_edit"
+        self.do_activated = "add_obj_on_gui_selobj_expand_noset_edit"
 
 
 class _EquationElasticity(CommandManager):
@@ -462,7 +467,7 @@ class _EquationElasticity(CommandManager):
             "Creates a FEM equation for\n elasticity (stress)"
         )
         self.is_active = "with_solver_elmer"
-        self.do_activated = "add_obj_on_gui_selobj_noset_edit"
+        self.do_activated = "add_obj_on_gui_selobj_expand_noset_edit"
 
 
 class _EquationElectricforce(CommandManager):
@@ -479,7 +484,7 @@ class _EquationElectricforce(CommandManager):
             "Creates a FEM equation for electric forces"
         )
         self.is_active = "with_solver_elmer"
-        self.do_activated = "add_obj_on_gui_selobj_noset_edit"
+        self.do_activated = "add_obj_on_gui_selobj_expand_noset_edit"
 
 
 class _EquationElectrostatic(CommandManager):
@@ -496,7 +501,7 @@ class _EquationElectrostatic(CommandManager):
             "Creates a FEM equation for electrostatic"
         )
         self.is_active = "with_solver_elmer"
-        self.do_activated = "add_obj_on_gui_selobj_noset_edit"
+        self.do_activated = "add_obj_on_gui_selobj_expand_noset_edit"
 
 
 class _EquationFlow(CommandManager):
@@ -513,7 +518,7 @@ class _EquationFlow(CommandManager):
             "Creates a FEM equation for flow"
         )
         self.is_active = "with_solver_elmer"
-        self.do_activated = "add_obj_on_gui_selobj_noset_edit"
+        self.do_activated = "add_obj_on_gui_selobj_expand_noset_edit"
 
 
 class _EquationFlux(CommandManager):
@@ -530,7 +535,7 @@ class _EquationFlux(CommandManager):
             "Creates a FEM equation for flux"
         )
         self.is_active = "with_solver_elmer"
-        self.do_activated = "add_obj_on_gui_selobj_noset_edit"
+        self.do_activated = "add_obj_on_gui_selobj_expand_noset_edit"
 
 
 class _EquationHeat(CommandManager):
@@ -547,7 +552,7 @@ class _EquationHeat(CommandManager):
             "Creates a FEM equation for heat"
         )
         self.is_active = "with_solver_elmer"
-        self.do_activated = "add_obj_on_gui_selobj_noset_edit"
+        self.do_activated = "add_obj_on_gui_selobj_expand_noset_edit"
 
 
 class _EquationMagnetodynamic(CommandManager):
@@ -564,7 +569,7 @@ class _EquationMagnetodynamic(CommandManager):
             "Creates a FEM equation for\n magnetodynamic forces"
         )
         self.is_active = "with_solver_elmer"
-        self.do_activated = "add_obj_on_gui_selobj_noset_edit"
+        self.do_activated = "add_obj_on_gui_selobj_expand_noset_edit"
 
 
 class _EquationMagnetodynamic2D(CommandManager):
@@ -581,7 +586,7 @@ class _EquationMagnetodynamic2D(CommandManager):
             "Creates a FEM equation for\n 2D magnetodynamic forces"
         )
         self.is_active = "with_solver_elmer"
-        self.do_activated = "add_obj_on_gui_selobj_noset_edit"
+        self.do_activated = "add_obj_on_gui_selobj_expand_noset_edit"
 
 
 class _Examples(CommandManager):

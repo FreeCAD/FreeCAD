@@ -535,6 +535,7 @@ SET(Part_SRCS
     ProgressIndicator.h
     TopoShape.cpp
     TopoShape.h
+    TopoShapeOpCode.h
     edgecluster.cpp
     edgecluster.h
     modelRefine.cpp

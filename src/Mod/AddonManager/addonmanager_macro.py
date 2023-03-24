@@ -189,7 +189,7 @@ class Macro:
         self.fill_details_from_code(self.code)
         if not self.icon and not self.xpm:
             self.parse_wiki_page_for_icon(p)
-            self.clean_icon()
+        self.clean_icon()
 
         if not self.author:
             self.author = self.parse_desc("Author: ")
