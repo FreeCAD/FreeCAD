@@ -295,7 +295,7 @@ def getDrillableTargets(obj, ToolDiameter=None, vector=App.Vector(0, 0, 1)):
     shp = obj.Shape
 
     results = []
-    for i in range(1, len(shp.Faces)):
+    for i in range(1, len(shp.Faces)+1):
         fname = "Face{}".format(i)
         Path.Log.debug(fname)
         candidate = obj.getSubObject(fname)
