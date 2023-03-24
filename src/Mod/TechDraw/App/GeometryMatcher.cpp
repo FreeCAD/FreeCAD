@@ -200,7 +200,7 @@ bool GeometryMatcher::compareBSplines(TopoDS_Edge edge1, TopoDS_Edge edge2)
         circleEdge1 = GeometryUtils::asCircle(edge1, isArc1);
         circleEdge2 = GeometryUtils::asCircle(edge2, isArc1);
     }
-    catch (Base::RuntimeError& e) {
+    catch (Base::RuntimeError&) {
         Base::Console().Error("GeometryMatcher failed to make circles from splines\n");
         return false;
     }
