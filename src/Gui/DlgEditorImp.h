@@ -52,11 +52,12 @@ public:
     void saveSettings() override;
     void loadSettings() override;
 
-protected Q_SLOTS:
-    void on_displayItems_currentItemChanged(QTreeWidgetItem *i);
-    void on_colorButton_changed();
-    void on_fontFamily_activated(const QString&);
-    void on_fontSize_valueChanged(const QString&);
+private:
+    void setupConnections();
+    void onDisplayItemsCurrentItemChanged(QTreeWidgetItem *i);
+    void onColorButtonChanged();
+    void onFontFamilyActivated(const QString&);
+    void onFontSizeValueChanged(const QString&);
 
 protected:
     void changeEvent(QEvent *e) override;
