@@ -109,13 +109,6 @@ void ViewProviderFemAnalysis::attach(App::DocumentObject *obj)
     auto *workbench = Gui::WorkbenchManager::instance()->active();
     if (workbench->name() == "FemWorkbench") {
         doubleClicked();
-        // indicate the activated analysis by selecting it
-        // especially useful for files with 2 or more analyses but also
-        // necessary for the workflow with new files to add a solver as next object
-        std::vector<App::DocumentObject*> selVector {};
-        selVector.push_back(this->getObject());
-        auto docName = this->getObject()->getDocument()->getName();
-        Gui::Selection().setSelection(docName, selVector);
     }
 }
 
@@ -134,6 +127,13 @@ bool ViewProviderFemAnalysis::doubleClicked(void)
     // After activation of the analysis the allowed FEM toolbar buttons should become active.
     // To achieve this we must clear the object selection to trigger the selection observer.
     Gui::Command::doCommand(Gui::Command::Gui, "Gui.Selection.clearSelection()");
+    // indicate the activated analysis by selecting it
+    // especially useful for files with 2 or more analyses but also
+    // necessary for the workflow with new files to add a solver as next object
+    std::vector<App::DocumentObject*> selVector {};
+    selVector.push_back(this->getObject());
+    auto *docName = this->getObject()->getDocument()->getName();
+    Gui::Selection().setSelection(docName, selVector);
     return true;
 }
 

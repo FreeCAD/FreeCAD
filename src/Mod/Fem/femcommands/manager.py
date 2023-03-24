@@ -32,6 +32,7 @@ __url__ = "https://www.freecadweb.org"
 
 import FreeCAD
 
+from femtools.femutils import expandParentObject
 from femtools.femutils import is_of_type
 
 if FreeCAD.GuiUp:
@@ -147,6 +148,8 @@ class CommandManager(object):
     def Activated(self):
         if self.do_activated == "add_obj_on_gui_noset_edit":
             self.add_obj_on_gui_noset_edit(self.__class__.__name__.lstrip("_"))
+        elif self.do_activated == "add_obj_on_gui_expand_noset_edit":
+            self.add_obj_on_gui_expand_noset_edit(self.__class__.__name__.lstrip("_"))
         elif self.do_activated == "add_obj_on_gui_set_edit":
             self.add_obj_on_gui_set_edit(self.__class__.__name__.lstrip("_"))
         elif self.do_activated == "add_obj_on_gui_selobj_noset_edit":
@@ -341,6 +344,29 @@ class CommandManager(object):
         # no clear selection is done
         FreeCAD.ActiveDocument.recompute()
 
+    def add_obj_on_gui_expand_noset_edit(self, objtype):
+        # like add_obj_on_gui_noset_edit but the parent object
+        # is expanded in the tree to see the added obj
+        FreeCAD.ActiveDocument.openTransaction(
+            "Create Fem{}"
+            .format(objtype)
+        )
+        FreeCADGui.addModule(
+            "ObjectsFem"
+        )
+        FreeCADGui.addModule(
+            "FemGui"
+        )
+        # expand parent obj in tree view if selected
+        expandParentObject()
+        # add the object
+        FreeCADGui.doCommand(
+            "addedObj = FemGui.getActiveAnalysis().addObject(ObjectsFem."
+            "make{}(FreeCAD.ActiveDocument))"
+            .format(objtype)
+        )
+        FreeCAD.ActiveDocument.recompute()
+
     def add_obj_on_gui_selobj_set_edit(self, objtype):
         FreeCAD.ActiveDocument.openTransaction(
             "Create Fem{}"
@@ -378,7 +404,7 @@ class CommandManager(object):
 
     def add_obj_on_gui_selobj_expand_noset_edit(self, objtype):
         # like add_obj_on_gui_selobj_noset_edit but the selection is kept
-        # and the selobj view is expanded in the tree to see the added obj
+        # and the selobj is expanded in the tree to see the added obj
         FreeCAD.ActiveDocument.openTransaction(
             "Create Fem{}"
             .format(objtype)
@@ -392,11 +418,5 @@ class CommandManager(object):
             .format(objtype, self.selobj.Name)
         )
         # expand selobj in tree view
-        trees = FreeCADGui.getMainWindow().findChildren(QtGui.QTreeWidget)
-        for tree in trees:
-            items = tree.selectedItems()
-            if items == []:
-                continue
-            for item in items:
-                tree.expandItem(item)
+        expandParentObject()
         FreeCAD.ActiveDocument.recompute()
