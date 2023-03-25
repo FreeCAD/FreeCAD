@@ -57,7 +57,6 @@ Solver 2
   Coordinate Scaling Revert = Logical True
   Equation = String "ResultOutput"
   Exec Solver = String "After simulation"
-  Output File Name = File "case"
   Procedure = File "ResultOutputSolve" "ResultOutputSolver"
   Vtu Format = Logical True
 End
