@@ -267,7 +267,7 @@ TEST_F(IndexedNameTest, comparisonOperators)
     auto indexedName4 = Data::IndexedName("FACE42");
 
     // Act & Assert
-    EXPECT_EQ(indexedName3.compare(indexedName4), -1);
+    EXPECT_LT(indexedName3.compare(indexedName4), 0);
     EXPECT_FALSE(indexedName3 == indexedName4);
     EXPECT_TRUE(indexedName3 != indexedName4);
     EXPECT_TRUE(indexedName3 < indexedName4);
@@ -277,7 +277,7 @@ TEST_F(IndexedNameTest, comparisonOperators)
     auto indexedName6 = Data::IndexedName("EDGE42");
 
     // Act & Assert
-    EXPECT_EQ(indexedName5.compare(indexedName6), 1);
+    EXPECT_GT(indexedName5.compare(indexedName6), 0);
     EXPECT_FALSE(indexedName5 == indexedName6);
     EXPECT_TRUE(indexedName5 != indexedName6);
     EXPECT_FALSE(indexedName5 < indexedName6);
@@ -287,7 +287,7 @@ TEST_F(IndexedNameTest, comparisonOperators)
     auto indexedName8 = Data::IndexedName("EDGE42");
 
     // Act & Assert
-    EXPECT_EQ(indexedName7.compare(indexedName8), -1);
+    EXPECT_LT(indexedName7.compare(indexedName8), 0);
     EXPECT_FALSE(indexedName7 == indexedName8);
     EXPECT_TRUE(indexedName7 != indexedName8);
     EXPECT_TRUE(indexedName7 < indexedName8);
@@ -297,10 +297,20 @@ TEST_F(IndexedNameTest, comparisonOperators)
     auto indexedName10 = Data::IndexedName("EDGE42");
 
     // Act & Assert
-    EXPECT_EQ(indexedName9.compare(indexedName10), 1);
+    EXPECT_GT(indexedName9.compare(indexedName10), 0);
     EXPECT_FALSE(indexedName9 == indexedName10);
     EXPECT_TRUE(indexedName9 != indexedName10);
     EXPECT_FALSE(indexedName9 < indexedName10);
+
+    // Arrange
+    auto indexedName11 = Data::IndexedName("EDGE2");
+    auto indexedName12 = Data::IndexedName("EDGE12");
+
+    // Act & Assert
+    EXPECT_LT(indexedName11.compare(indexedName12), 0);
+    EXPECT_FALSE(indexedName11 == indexedName12);
+    EXPECT_TRUE(indexedName11 != indexedName12);
+    EXPECT_TRUE(indexedName11 < indexedName12);
 }
 
 TEST_F(IndexedNameTest, subscriptOperator)
