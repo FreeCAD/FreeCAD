@@ -65,6 +65,9 @@ private:
     void addWorkbench(const QString& it, bool enabled);
     QWidget* createWorkbenchWidget(const QString& it, bool enabled);
 
+    void saveWorkbenchSelector();
+    void loadWorkbenchSelector();
+
     std::unique_ptr<Ui_DlgSettingsWorkbenches> ui;
     static const QString iconLabelStr;
     static const QString nameLabelStr;

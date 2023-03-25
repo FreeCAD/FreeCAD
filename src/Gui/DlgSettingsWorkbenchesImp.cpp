@@ -30,6 +30,7 @@
 #include "DlgSettingsWorkbenchesImp.h"
 #include "ui_DlgSettingsWorkbenches.h"
 #include "Application.h"
+#include "UserSettings.h"
 #include "Workbench.h"
 #include "WorkbenchManager.h"
 
@@ -111,10 +112,14 @@ void DlgSettingsWorkbenchesImp::saveSettings()
 
     App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/General")->
         SetASCII("BackgroundAutoloadModules", autoloadStr.str().c_str());
+
+    saveWorkbenchSelector();
 }
 
 void DlgSettingsWorkbenchesImp::loadSettings()
 {
+    loadWorkbenchSelector();
+
     // There are two different "autoload" settings: the first, in FreeCAD since 2004,
     // controls the module the user sees first when starting FreeCAD, and defaults to the Start workbench
     std::string start = App::Application::Config()["StartWorkbench"];
@@ -370,6 +375,23 @@ void DlgSettingsWorkbenchesImp::changeEvent(QEvent *e)
     else {
         QWidget::changeEvent(e);
     }
+}
+
+void DlgSettingsWorkbenchesImp::saveWorkbenchSelector()
+{
+    //save workbench selector position
+    auto index = ui->WorkbenchSelectorPosition->currentIndex();
+    WorkbenchSwitcher::setIndex(index);
+}
+
+void DlgSettingsWorkbenchesImp::loadWorkbenchSelector()
+{
+    //workbench selector position combobox setup
+    ui->WorkbenchSelectorPosition->clear();
+    ui->WorkbenchSelectorPosition->addItem(tr("Toolbar"));
+    ui->WorkbenchSelectorPosition->addItem(tr("Left corner"));
+    ui->WorkbenchSelectorPosition->addItem(tr("Right corner"));
+    ui->WorkbenchSelectorPosition->setCurrentIndex(WorkbenchSwitcher::getIndex());
 }
 
 #include "moc_DlgSettingsWorkbenchesImp.cpp"

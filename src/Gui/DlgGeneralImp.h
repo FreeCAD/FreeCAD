@@ -69,8 +69,6 @@ private:
     bool setLanguage(); //Returns true if language has been changed
     void setNumberLocale(bool force = false);
     void setDecimalPointConversion(bool on);
-    void saveWorkbenchSelector();
-    void loadWorkbenchSelector();
 
 private:
     int localeIndex;

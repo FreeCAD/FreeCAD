@@ -41,7 +41,6 @@
 #include "DlgRevertToBackupConfigImp.h"
 #include "MainWindow.h"
 #include "PreferencePackManager.h"
-#include "UserSettings.h"
 #include "Language/Translator.h"
 
 using namespace Gui::Dialog;
@@ -223,8 +222,6 @@ void DlgGeneralImp::saveSettings()
     hGrp->GetGroup("TreeView")->SetBool("Enabled",treeView);
     hGrp->GetGroup("PropertyView")->SetBool("Enabled",propertyView);
 
-    saveWorkbenchSelector();
-
     hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/MainWindow");
     hGrp->SetBool("TiledBackground", ui->tiledBackground->isChecked());
 
@@ -309,9 +306,6 @@ void DlgGeneralImp::loadSettings()
         index = comboView?2:1;
     }
     ui->treeMode->setCurrentIndex(index);
-
-    //workbench selector position combobox setup
-    loadWorkbenchSelector();
 
     hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/MainWindow");
     ui->tiledBackground->setChecked(hGrp->GetBool("TiledBackground", false));
@@ -507,23 +501,6 @@ void DlgGeneralImp::onLoadPreferencePackClicked(const std::string& packName)
         if (parentDialog)
             parentDialog->reload();
     }
-}
-
-void DlgGeneralImp::saveWorkbenchSelector()
-{
-    //save workbench selector position
-    auto index = ui->WorkbenchSelectorPosition->currentIndex();
-    WorkbenchSwitcher::setIndex(index);
-}
-
-void DlgGeneralImp::loadWorkbenchSelector()
-{
-    //workbench selector position combobox setup
-    ui->WorkbenchSelectorPosition->clear();
-    ui->WorkbenchSelectorPosition->addItem(tr("Toolbar"));
-    ui->WorkbenchSelectorPosition->addItem(tr("Left corner"));
-    ui->WorkbenchSelectorPosition->addItem(tr("Right corner"));
-    ui->WorkbenchSelectorPosition->setCurrentIndex(WorkbenchSwitcher::getIndex());
 }
 
 #include "moc_DlgGeneralImp.cpp"
