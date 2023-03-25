@@ -587,7 +587,9 @@ jobs:
           pip install codespell
           wget https://raw.githubusercontent.com/codespell-project/codespell/master/codespell_lib/data/dictionary.txt
           #wget https://raw.githubusercontent.com/codespell-project/codespell/master/codespell_lib/data/dictionary_rare.txt
+          set +e
           misspellings=$( { codespell --quiet-level 3 --summary --count --ignore-words ${{ inputs.listIgnoredMisspelling }} --skip ${{ inputs.spellingIgnore }} -D dictionary.txt ${{ inputs.changedFiles }} > ${{ env.logdir }}codespell.log ; } 2>&1 )
+          set -e
           # If codespell has run successfully, write the Log to the console with the Problem Matchers
           if [ -f ${{ env.logdir }}codespell.log ]
           then
