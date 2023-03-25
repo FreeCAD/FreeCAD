@@ -44,7 +44,7 @@ on:
       - completed
 
 env:
-  dryrun: true
+  dryrun: false
 
 concurrency:
   group: FC-CI-cleaner
