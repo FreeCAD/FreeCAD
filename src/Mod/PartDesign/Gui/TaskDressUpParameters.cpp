@@ -51,6 +51,9 @@ FC_LOG_LEVEL_INIT("PartDesign",true,true)
 using namespace PartDesignGui;
 using namespace Gui;
 
+const QString TaskDressUpParameters::btnPreviewStr = tr("Preview");
+const QString TaskDressUpParameters::btnSelectStr = tr("Select");
+
 /* TRANSLATOR PartDesignGui::TaskDressUpParameters */
 
 TaskDressUpParameters::TaskDressUpParameters(ViewProviderDressUp *DressUpView, bool selectEdges, bool selectFaces, QWidget *parent)

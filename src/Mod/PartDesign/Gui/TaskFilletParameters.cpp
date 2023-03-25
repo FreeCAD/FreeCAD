@@ -128,7 +128,7 @@ void TaskFilletParameters::onCheckBoxUseAllEdgesToggled(bool checked)
 void TaskFilletParameters::setButtons(const selectionModes mode)
 {
     ui->buttonRefSel->setChecked(mode == refSel);
-    ui->buttonRefSel->setText(mode == refSel ? tr("End selection") : tr("Start selection"));
+    ui->buttonRefSel->setText(mode == refSel ? btnPreviewStr : btnSelectStr);
 }
 
 void TaskFilletParameters::onRefDeleted()

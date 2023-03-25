@@ -175,7 +175,7 @@ void TaskChamferParameters::onCheckBoxUseAllEdgesToggled(bool checked)
 void TaskChamferParameters::setButtons(const selectionModes mode)
 {
     ui->buttonRefSel->setChecked(mode == refSel);
-    ui->buttonRefSel->setText(mode == refSel ? tr("End selection") : tr("Start selection"));
+    ui->buttonRefSel->setText(mode == refSel ? btnPreviewStr : btnSelectStr);
 }
 
 void TaskChamferParameters::onRefDeleted()

@@ -99,6 +99,9 @@ protected:
     bool allowFaces, allowEdges;
     selectionModes selectionMode;
     int transactionID;
+
+    static const QString btnPreviewStr;
+    static const QString btnSelectStr;
 };
 
 /// simulation dialog for the TaskView

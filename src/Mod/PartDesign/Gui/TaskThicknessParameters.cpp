@@ -131,7 +131,7 @@ void TaskThicknessParameters::onSelectionChanged(const Gui::SelectionChanges& ms
 void TaskThicknessParameters::setButtons(const selectionModes mode)
 {
     ui->buttonRefSel->setChecked(mode == refSel);
-    ui->buttonRefSel->setText(mode == refSel ? tr("End selection") : tr("Start selection"));
+    ui->buttonRefSel->setText(mode == refSel ? btnPreviewStr : btnSelectStr);
 }
 
 void TaskThicknessParameters::onRefDeleted(void)
