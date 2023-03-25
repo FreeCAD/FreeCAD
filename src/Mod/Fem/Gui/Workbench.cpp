@@ -29,6 +29,7 @@
 #include <App/Application.h>
 #include <Gui/MenuManager.h>
 #include <Gui/ToolBarManager.h>
+#include <Mod/Fem/App/FemTools.h>
 
 #include "Workbench.h"
 
@@ -175,25 +176,16 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
 
     Gui::ToolBarItem* solve = new Gui::ToolBarItem(root);
     solve->setCommand("Solve");
-    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
-        "User parameter:BaseApp/Preferences/Mod/Fem/Ccx");
-    auto ccxBinaryPath = hGrp->GetASCII("ccxBinaryPath", "");
-    if (!ccxBinaryPath.empty())
+    if (!Fem::Tools::checkIfBinaryExists("CCX", "ccx", "ccx").empty())
         *solve << "FEM_SolverCalculixCxxtools";
-    hGrp = App::GetApplication().GetParameterGroupByPath(
-        "User parameter:BaseApp/Preferences/Mod/Fem/Elmer");
-    auto elmerBinaryPath = hGrp->GetASCII("elmerBinaryPath", "");
-    if (!elmerBinaryPath.empty())
+    if (!Fem::Tools::checkIfBinaryExists("Elmer", "elmer", "ElmerSolver").empty())
         *solve << "FEM_SolverElmer";
-    hGrp = App::GetApplication().GetParameterGroupByPath(
-        "User parameter:BaseApp/Preferences/Mod/Fem/mystran");
-    auto MystranBinaryPath = hGrp->GetASCII("MystranBinaryPath", "");
-    if (!MystranBinaryPath.empty())
+    // also check the multi-CPU Elmer build
+    else if (!Fem::Tools::checkIfBinaryExists("Elmer", "elmer", "ElmerSolver_mpi").empty())
+        *solve << "FEM_SolverElmer";
+    if (!Fem::Tools::checkIfBinaryExists("Mystran", "mystran", "mystran").empty())
         *solve << "FEM_SolverMystran";
-    hGrp = App::GetApplication().GetParameterGroupByPath(
-        "User parameter:BaseApp/Preferences/Mod/Fem/Z88");
-    auto z88BinaryPath = hGrp->GetASCII("z88BinaryPath", "");
-    if (!z88BinaryPath.empty())
+    if (!Fem::Tools::checkIfBinaryExists("Z88", "z88", "z88r").empty())
         *solve << "FEM_SolverZ88";
     *solve << "Separator"
         << "FEM_CompMechEquations"
