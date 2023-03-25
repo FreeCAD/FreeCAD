@@ -27,8 +27,8 @@
 #include <sstream>
 #endif
 
-#include "DlgSettingsLazyLoadedImp.h"
-#include "ui_DlgSettingsLazyLoaded.h"
+#include "DlgSettingsWorkbenchesImp.h"
+#include "ui_DlgSettingsWorkbenches.h"
 #include "Application.h"
 #include "Workbench.h"
 #include "WorkbenchManager.h"
@@ -36,21 +36,21 @@
 
 using namespace Gui::Dialog;
 
-const QString DlgSettingsLazyLoadedImp::iconLabelStr = QString::fromLatin1("iconLabel");
-const QString DlgSettingsLazyLoadedImp::nameLabelStr = QString::fromLatin1("nameLabel");
-const QString DlgSettingsLazyLoadedImp::loadLabelStr = QString::fromLatin1("loadLabel");
-const QString DlgSettingsLazyLoadedImp::loadButtonStr = QString::fromLatin1("loadButton");
-const QString DlgSettingsLazyLoadedImp::enableCheckboxStr = QString::fromLatin1("enableCheckbox");
-const QString DlgSettingsLazyLoadedImp::autoloadCheckboxStr = QString::fromLatin1("autoloadCheckbox");
+const QString DlgSettingsWorkbenchesImp::iconLabelStr = QString::fromLatin1("iconLabel");
+const QString DlgSettingsWorkbenchesImp::nameLabelStr = QString::fromLatin1("nameLabel");
+const QString DlgSettingsWorkbenchesImp::loadLabelStr = QString::fromLatin1("loadLabel");
+const QString DlgSettingsWorkbenchesImp::loadButtonStr = QString::fromLatin1("loadButton");
+const QString DlgSettingsWorkbenchesImp::enableCheckboxStr = QString::fromLatin1("enableCheckbox");
+const QString DlgSettingsWorkbenchesImp::autoloadCheckboxStr = QString::fromLatin1("autoloadCheckbox");
 
-/* TRANSLATOR Gui::Dialog::DlgSettingsLazyLoadedImp */
+/* TRANSLATOR Gui::Dialog::DlgSettingsWorkbenchesImp */
 
 /**
- *  Constructs a DlgSettingsLazyLoadedImp
+ *  Constructs a DlgSettingsWorkbenchesImp
  */
-DlgSettingsLazyLoadedImp::DlgSettingsLazyLoadedImp( QWidget* parent )
+DlgSettingsWorkbenchesImp::DlgSettingsWorkbenchesImp( QWidget* parent )
     : PreferencePage( parent )
-    , ui(new Ui_DlgSettingsLazyLoaded)
+    , ui(new Ui_DlgSettingsWorkbenches)
 {
     ui->setupUi(this);
 }
@@ -58,12 +58,12 @@ DlgSettingsLazyLoadedImp::DlgSettingsLazyLoadedImp( QWidget* parent )
 /**
  *  Destroys the object and frees any allocated resources
  */
-DlgSettingsLazyLoadedImp::~DlgSettingsLazyLoadedImp()
+DlgSettingsWorkbenchesImp::~DlgSettingsWorkbenchesImp()
 {
 }
 
 
-void DlgSettingsLazyLoadedImp::saveSettings()
+void DlgSettingsWorkbenchesImp::saveSettings()
 {
     std::ostringstream enabledStr, disabledStr, autoloadStr;
 
@@ -113,7 +113,7 @@ void DlgSettingsLazyLoadedImp::saveSettings()
         SetASCII("BackgroundAutoloadModules", autoloadStr.str().c_str());
 }
 
-void DlgSettingsLazyLoadedImp::loadSettings()
+void DlgSettingsWorkbenchesImp::loadSettings()
 {
     // There are two different "autoload" settings: the first, in FreeCAD since 2004,
     // controls the module the user sees first when starting FreeCAD, and defaults to the Start workbench
@@ -136,7 +136,7 @@ void DlgSettingsLazyLoadedImp::loadSettings()
     buildWorkbenchList();
 }
 
-void DlgSettingsLazyLoadedImp::onLoadClicked(const QString &wbName)
+void DlgSettingsWorkbenchesImp::onLoadClicked(const QString &wbName)
 {
     // activate selected workbench
     Workbench* originalActiveWB = WorkbenchManager::instance()->active();
@@ -156,7 +156,7 @@ void DlgSettingsLazyLoadedImp::onLoadClicked(const QString &wbName)
     }
 }
 
-void DlgSettingsLazyLoadedImp::onWbActivated(const QString &wbName, bool checked)
+void DlgSettingsWorkbenchesImp::onWbActivated(const QString &wbName, bool checked)
 {
     // activate/deactivate the widgets
     for (int i = 0; i < ui->wbList->count(); i++) {
@@ -184,7 +184,7 @@ void DlgSettingsLazyLoadedImp::onWbActivated(const QString &wbName, bool checked
 /**
 Build the list of unloaded workbenches.
 */
-void DlgSettingsLazyLoadedImp::buildWorkbenchList()
+void DlgSettingsWorkbenchesImp::buildWorkbenchList()
 {
     QStringList workbenches = Application::Instance->workbenches();
     QStringList enabledWbs = getEnabledWorkbenches();
@@ -218,7 +218,7 @@ void DlgSettingsLazyLoadedImp::buildWorkbenchList()
     }
 }
 
-void DlgSettingsLazyLoadedImp::addWorkbench(const QString& wbName, bool enabled)
+void DlgSettingsWorkbenchesImp::addWorkbench(const QString& wbName, bool enabled)
 {
     if (wbName.toStdString() == "NoneWorkbench")
         return; // Do not list the default empty Workbench
@@ -230,7 +230,7 @@ void DlgSettingsLazyLoadedImp::addWorkbench(const QString& wbName, bool enabled)
     ui->wbList->setItemWidget(wItem, widget);
 }
 
-QWidget* DlgSettingsLazyLoadedImp::createWorkbenchWidget(const QString& wbName, bool enabled)
+QWidget* DlgSettingsWorkbenchesImp::createWorkbenchWidget(const QString& wbName, bool enabled)
 {
     auto wbTooltip = Application::Instance->workbenchToolTip(wbName);
     auto wbDisplayName = Application::Instance->workbenchMenuText(wbName);
@@ -316,7 +316,7 @@ QWidget* DlgSettingsLazyLoadedImp::createWorkbenchWidget(const QString& wbName, 
 }
 
 
-QStringList DlgSettingsLazyLoadedImp::getEnabledWorkbenches()
+QStringList DlgSettingsWorkbenchesImp::getEnabledWorkbenches()
 {
     QString enabled_wbs;
     QStringList enabled_wbs_list;
@@ -342,7 +342,7 @@ QStringList DlgSettingsLazyLoadedImp::getEnabledWorkbenches()
     return enabled_wbs_list;
 }
 
-QStringList DlgSettingsLazyLoadedImp::getDisabledWorkbenches()
+QStringList DlgSettingsWorkbenchesImp::getDisabledWorkbenches()
 {
     QString disabled_wbs;
     QStringList disabled_wbs_list;
@@ -362,7 +362,7 @@ QStringList DlgSettingsLazyLoadedImp::getDisabledWorkbenches()
 /**
  * Sets the strings of the subwidgets using the current language.
  */
-void DlgSettingsLazyLoadedImp::changeEvent(QEvent *e)
+void DlgSettingsWorkbenchesImp::changeEvent(QEvent *e)
 {
     if (e->type() == QEvent::LanguageChange) {
         ui->retranslateUi(this);
@@ -372,4 +372,4 @@ void DlgSettingsLazyLoadedImp::changeEvent(QEvent *e)
     }
 }
 
-#include "moc_DlgSettingsLazyLoadedImp.cpp"
+#include "moc_DlgSettingsWorkbenchesImp.cpp"

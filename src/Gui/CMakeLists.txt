@@ -325,7 +325,7 @@ SET(Gui_UIC_SRCS
     DlgSettingsColorGradient.ui
     DlgSettingsDocument.ui
     DlgSettingsImage.ui
-    DlgSettingsLazyLoaded.ui
+    DlgSettingsWorkbenches.ui
     DlgSettingsMacro.ui
     DlgSettingsNotificationArea.ui
     DlgSettingsPythonConsole.ui
@@ -567,7 +567,7 @@ SET(Dialog_Settings_CPP_SRCS
     DlgSettingsColorGradientImp.cpp
     DlgSettingsDocumentImp.cpp
     DlgSettingsImageImp.cpp
-    DlgSettingsLazyLoadedImp.cpp
+    DlgSettingsWorkbenchesImp.cpp
     DlgSettingsMacroImp.cpp
     DlgSettingsNotificationArea.cpp
     DlgSettingsPythonConsole.cpp
@@ -587,7 +587,7 @@ SET(Dialog_Settings_HPP_SRCS
     DlgSettingsColorGradientImp.h
     DlgSettingsDocumentImp.h
     DlgSettingsImageImp.h
-    DlgSettingsLazyLoadedImp.h
+    DlgSettingsWorkbenchesImp.h
     DlgSettingsMacroImp.h
     DlgSettingsNotificationArea.h
     DlgSettingsPythonConsole.h
@@ -609,7 +609,7 @@ SET(Dialog_Settings_SRCS
     DlgSettingsColorGradient.ui
     DlgSettingsDocument.ui
     DlgSettingsImage.ui
-    DlgSettingsLazyLoaded.ui
+    DlgSettingsWorkbenches.ui
     DlgSettingsMacro.ui
     DlgSettingsNotificationArea.ui
     DlgSettingsPythonConsole.ui

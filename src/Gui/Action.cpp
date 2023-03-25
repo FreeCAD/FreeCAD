@@ -48,7 +48,7 @@
 #include "BitmapFactory.h"
 #include "Command.h"
 #include "DlgUndoRedo.h"
-#include "DlgSettingsLazyLoadedImp.h"
+#include "DlgSettingsWorkbenchesImp.h"
 #include "Document.h"
 #include "EditorView.h"
 #include "FileDialog.h"
@@ -801,8 +801,8 @@ void WorkbenchGroup::setWorkbenchData(int index, const QString& wb)
 void WorkbenchGroup::refreshWorkbenchList()
 {
     QStringList items = Application::Instance->workbenches();
-    QStringList enabled_wbs_list = DlgSettingsLazyLoadedImp::getEnabledWorkbenches();
-    QStringList disabled_wbs_list = DlgSettingsLazyLoadedImp::getDisabledWorkbenches();
+    QStringList enabled_wbs_list = DlgSettingsWorkbenchesImp::getEnabledWorkbenches();
+    QStringList disabled_wbs_list = DlgSettingsWorkbenchesImp::getDisabledWorkbenches();
     QStringList enable_wbs;
 
     // Go through the list of enabled workbenches and verify that they really exist because

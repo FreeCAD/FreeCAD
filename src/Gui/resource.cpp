@@ -42,7 +42,7 @@
 #include "DlgSettingsUnitsImp.h"
 #include "DlgSettingsDocumentImp.h"
 #include "DlgReportViewImp.h"
-#include "DlgSettingsLazyLoadedImp.h"
+#include "DlgSettingsWorkbenchesImp.h"
 
 #include "DlgToolbarsImp.h"
 #include "DlgActionsImp.h"
@@ -79,7 +79,7 @@ WidgetFactorySupplier::WidgetFactorySupplier()
     new PrefPageProducer<DlgSettings3DViewImp>        ( QT_TRANSLATE_NOOP("QObject","Display") );
     new PrefPageProducer<DlgSettingsNavigation>       ( QT_TRANSLATE_NOOP("QObject","Display") );
     new PrefPageProducer<DlgSettingsViewColor>        ( QT_TRANSLATE_NOOP("QObject","Display") );
-    new PrefPageProducer<DlgSettingsLazyLoadedImp>    ( QT_TRANSLATE_NOOP("QObject","Workbenches") );
+    new PrefPageProducer<DlgSettingsWorkbenchesImp>   ( QT_TRANSLATE_NOOP("QObject","Workbenches") );
 
     // ADD YOUR CUSTOMIZE PAGES HERE
     //

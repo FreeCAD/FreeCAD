@@ -21,8 +21,8 @@
  ***************************************************************************/
 
 
-#ifndef GUI_DIALOG_DLGSETTINGSLAZYLOADED_IMP_H
-#define GUI_DIALOG_DLGSETTINGSLAZYLOADED_IMP_H
+#ifndef GUI_DIALOG_DLGSETTINGSWORKBENCHES_IMP_H
+#define GUI_DIALOG_DLGSETTINGSWORKBENCHES_IMP_H
 
 #include "PropertyPage.h"
 #include <memory>
@@ -31,21 +31,21 @@ class QCheckBox;
 
 namespace Gui {
 namespace Dialog {
-class Ui_DlgSettingsLazyLoaded;
+class Ui_DlgSettingsWorkbenches;
 
 
 /**
- * The DlgSettingsLazyLoadedImp class implements a pseudo-preference page explain why
+ * The DlgSettingsWorkbenchesImp class implements a pseudo-preference page explain why
  * the remaining preference pages aren't loaded yet, and to help the user do so on demand.
  * \author Jürgen Riegel
  */
-class DlgSettingsLazyLoadedImp : public PreferencePage
+class DlgSettingsWorkbenchesImp : public PreferencePage
 {
     Q_OBJECT
 
 public:
-    explicit DlgSettingsLazyLoadedImp( QWidget* parent = nullptr );
-    ~DlgSettingsLazyLoadedImp() override;
+    explicit DlgSettingsWorkbenchesImp( QWidget* parent = nullptr );
+    ~DlgSettingsWorkbenchesImp() override;
 
     void saveSettings() override;
     void loadSettings() override;
@@ -65,7 +65,7 @@ private:
     void addWorkbench(const QString& it, bool enabled);
     QWidget* createWorkbenchWidget(const QString& it, bool enabled);
 
-    std::unique_ptr<Ui_DlgSettingsLazyLoaded> ui;
+    std::unique_ptr<Ui_DlgSettingsWorkbenches> ui;
     static const QString iconLabelStr;
     static const QString nameLabelStr;
     static const QString loadLabelStr;
@@ -80,4 +80,4 @@ private:
 } // namespace Dialog
 } // namespace Gui
 
-#endif // GUI_DIALOG_DLGSETTINGSLAZYLOADED_IMP_H
+#endif // GUI_DIALOG_DLGSETTINGSWORKBENCHES_IMP_H

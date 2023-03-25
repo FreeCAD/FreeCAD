@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>Gui::Dialog::DlgSettingsLazyLoaded</class>
- <widget class="QWidget" name="Gui::Dialog::DlgSettingsLazyLoaded">
+ <class>Gui::Dialog::DlgSettingsWorkbenches</class>
+ <widget class="QWidget" name="Gui::Dialog::DlgSettingsWorkbenches">
   <property name="geometry">
    <rect>
     <x>0</x>
