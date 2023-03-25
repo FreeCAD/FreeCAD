@@ -264,6 +264,7 @@ SET(FreeCADApp_CPP_SRCS
     ComplexGeoDataPyImp.cpp
     Enumeration.cpp
     IndexedName.cpp
+    MappedElement.cpp
     MappedName.cpp
     Material.cpp
     MaterialPyImp.cpp
@@ -284,6 +285,7 @@ SET(FreeCADApp_HPP_SRCS
     Enumeration.h
     IndexedName.h
     MappedName.h
+    MappedElement.h
     Material.h
     Metadata.h
 )
