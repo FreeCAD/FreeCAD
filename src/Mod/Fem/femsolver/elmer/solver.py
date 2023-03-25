@@ -101,18 +101,10 @@ class Proxy(solverbase.Proxy):
 
         obj.addProperty(
             "App::PropertyIntegerList",
-            "OutputIntervals",
-            "Timestepping",
-            "After how many time steps a result file is output"
-        )
-        obj.OutputIntervals = [1]
-
-        obj.addProperty(
-            "App::PropertyIntegerList",
             "TimestepIntervals",
             "Timestepping",
             (
-                "List of times if 'Simulation Type'\n"
+                "List of maximum optimization rounds if 'Simulation Type'\n"
                 "is either 'Scanning' or 'Transient'"
             )
         )
@@ -121,7 +113,7 @@ class Proxy(solverbase.Proxy):
             "TimestepSizes",
             "Timestepping",
             (
-                "List of time steps sizes if 'Simulation Type'\n"
+                "List of time steps of optimization if 'Simulation Type'\n"
                 "is either 'Scanning' or 'Transient'"
             )
         )
