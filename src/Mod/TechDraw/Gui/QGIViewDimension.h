@@ -135,7 +135,6 @@ private:
     QGCustomText* m_tolTextOver;
     QGCustomText* m_tolTextUnder;
     QGCustomText* m_unitText;
-    QGCustomText* m_referenceFlag;
     QColor m_colNormal;
     bool m_ctrl;
 
