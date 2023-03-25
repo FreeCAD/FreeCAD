@@ -249,14 +249,14 @@ class TestMetadataReader(unittest.TestCase):
     def setUp(self) -> None:
         if "xml.etree.ElementTree" in sys.modules:
             sys.modules.pop("xml.etree.ElementTree")
-        if "MetadataReader" in sys.modules:
-            sys.modules.pop("MetadataReader")
+        if "addonmanager_metadata" in sys.modules:
+            sys.modules.pop("addonmanager_metadata")
 
     def tearDown(self) -> None:
         if "xml.etree.ElementTree" in sys.modules:
             sys.modules.pop("xml.etree.ElementTree")
-        if "MetadataReader" in sys.modules:
-            sys.modules.pop("MetadataReader")
+        if "addonmanager_metadata" in sys.modules:
+            sys.modules.pop("addonmanager_metadata")
 
     def test_from_file(self):
         from addonmanager_metadata import MetadataReader
