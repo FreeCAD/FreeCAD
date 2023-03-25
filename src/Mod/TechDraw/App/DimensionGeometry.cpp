@@ -50,7 +50,7 @@ void pointPair::move(Base::Vector3d offset)
     m_second = m_second - offset;
 }
 
-// project the points onto the dvp's paper plane.  Points are still in R3 coords.
+// project the points onto the dvp's paper plane.
 void pointPair::project(DrawViewPart* dvp)
 {
     m_first = dvp->projectPoint(m_first) * dvp->getScale();
@@ -58,6 +58,8 @@ void pointPair::project(DrawViewPart* dvp)
 }
 
 // map the points onto the dvp's XY coordinate system
+// this routine is no longer needed since we now use the hlr projector instead
+// of "projectToPlane" from Vector3d
 void pointPair::mapToPage(DrawViewPart* dvp)
 {
     gp_Trsf xOXYZ;
@@ -70,13 +72,15 @@ void pointPair::mapToPage(DrawViewPart* dvp)
     m_second = DU::toVector3d(gvSecond);
 }
 
+// this routine is no longer needed since we now use the dvp's projectPoint
+// which performs Y inversion by default
 void pointPair::invertY()
 {
     m_first = DU::invertY(m_first);
     m_second = DU::invertY(m_second);
 }
 
-void pointPair::dump(std::string &text) const
+void pointPair::dump(std::string text) const
 {
     Base::Console().Message("pointPair - %s\n", text.c_str());
     Base::Console().Message("pointPair - first: %s  second: %s\n",
@@ -106,7 +110,7 @@ void anglePoints::move(Base::Vector3d offset)
     m_vertex = m_vertex - offset;
 }
 
-// project the points onto the dvp's paper plane.  Points are still in R3 coords.
+// project the points onto the dvp's paper plane.
 void anglePoints::project(DrawViewPart* dvp)
 {
     m_ends.project(dvp);
@@ -114,6 +118,7 @@ void anglePoints::project(DrawViewPart* dvp)
 }
 
 // map the points onto the dvp's XY coordinate system
+// obsolete. see above.
 void anglePoints::mapToPage(DrawViewPart* dvp)
 {
     m_ends.mapToPage(dvp);
@@ -126,13 +131,14 @@ void anglePoints::mapToPage(DrawViewPart* dvp)
 }
 
 // map the points onto the coordinate system used for drawing where -Y direction is "up"
+// obsolete. see above
 void anglePoints::invertY()
 {
     m_ends.invertY();
     m_vertex = DU::invertY(m_vertex);
 }
 
-void anglePoints::dump(std::string &text) const
+void anglePoints::dump(std::string text) const
 {
     Base::Console().Message("anglePoints - %s\n", text.c_str());
     Base::Console().Message("anglePoints - ends - first: %s  second: %s\n",
@@ -186,6 +192,7 @@ void arcPoints::project(DrawViewPart* dvp)
     midArc = dvp->projectPoint(midArc) * dvp->getScale();
 }
 
+// obsolete. see above
 void arcPoints::mapToPage(DrawViewPart* dvp)
 {
     gp_Trsf xOXYZ;
@@ -206,6 +213,7 @@ void arcPoints::mapToPage(DrawViewPart* dvp)
     midArc = DU::toVector3d(gvMidArc);
 }
 
+// obsolete. see above
 void arcPoints::invertY()
 {
     center = DU::invertY(center);
@@ -214,7 +222,7 @@ void arcPoints::invertY()
     midArc = DU::invertY(midArc);
 }
 
-void arcPoints::dump(std::string &text) const
+void arcPoints::dump(std::string text) const
 {
     Base::Console().Message("arcPoints - %s\n", text.c_str());
     Base::Console().Message("arcPoints - radius: %.3f center: %s\n", radius,
