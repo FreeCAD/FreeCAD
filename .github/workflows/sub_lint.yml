@@ -312,7 +312,6 @@ jobs:
         if: inputs.checkPylint && inputs.changedPythonFiles != '' && always()
         continue-on-error: ${{ inputs.pylintFailSilent }}
         run: |
-          set +e
           pylintErrors=0
           pylintWarnings=0
           pylintRefactorings=0
@@ -321,8 +320,10 @@ jobs:
           # List enabled pylint checks
           pylint --list-msgs-enabled > ${{ env.logdir }}pylint-enabled-checks.log
           # Run pylint on all python files
+          set +e
           pylint --disable=${{ inputs.pylintDisable }} ${{ inputs.changedPythonFiles }} > ${{ env.logdir }}pylint.log
           exitCode=$?
+          set -e
           # If pylint has run successfully, write the Log to the console with the Problem Matchers
           if [ -f ${{ env.logdir }}pylint.log ]
           then
@@ -373,12 +374,13 @@ jobs:
         if: inputs.checkBlack && inputs.changedPythonFiles != '' && always()
         continue-on-error: ${{ inputs.blackFailSilent }}
         run: |
-          set +e
           blackReformats=0
           blackFails=0
           pip install black
+          set +e
           black --check ${{ inputs.changedPythonFiles }} &> ${{ env.logdir }}black.log
           exitCode=$?
+          set -e
           # If black has run successfully, write the Log to the console with the Problem Matchers
           if [ -f ${{ env.logdir }}black.log ]
           then
@@ -614,7 +616,6 @@ jobs:
         if: inputs.checkClangTidy && inputs.changedCppFiles != '' && always()
         continue-on-error: ${{ inputs.clangTidyFailSilent }}
         run: |
-          set +e
           clangTidyErrors=0
           clangTidyWarnings=0
           clangTidyNotes=0
@@ -622,8 +623,10 @@ jobs:
           #TODO: check where this "clang-tidy.yaml" goes ; shall this be put in the fixes ?
           clang-tidy --quiet --format-style=${{ inputs.clangStyle }} --export-fixes=clang-tidy.yaml -checks=${{ inputs.clangTidyChecks }} -p build/ --explain-config &>> ${{ env.logdir }}clang-tidy-enabled-checks.log
           # Run clang-tidy on all cpp files
+          set +e
           clang-tidy --quiet --format-style=${{ inputs.clangStyle }} --export-fixes=clang-tidy.yaml -checks=${{ inputs.clangTidyChecks }} -p build/ ${{ inputs.changedCppFiles }} &>> ${{ env.logdir }}clang-tidy.log
           exitCode=$?
+          set -e
           # If clang-tidy has run successfully, write the Log to the console with the Problem Matchers
           if [ -f ${{ env.logdir }}clang-tidy.log ]
           then
