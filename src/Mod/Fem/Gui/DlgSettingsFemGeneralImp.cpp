@@ -25,6 +25,7 @@
 #include "PreCompiled.h"
 
 #include <App/Application.h>
+#include <Mod/Fem/App/FemTools.h>
 
 #include "DlgSettingsFemGeneralImp.h"
 #include "ui_DlgSettingsFemGeneral.h"
@@ -42,25 +43,16 @@ DlgSettingsFemGeneralImp::DlgSettingsFemGeneralImp(QWidget* parent)
     ui->cmb_def_solver->clear();
     std::vector<std::string> Solvers = {"None"};
 
-    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
-        "User parameter:BaseApp/Preferences/Mod/Fem/Ccx");
-    auto ccxBinaryPath = hGrp->GetASCII("ccxBinaryPath", "");
-    if (!ccxBinaryPath.empty())
+    if (!Fem::Tools::checkIfBinaryExists("CCX", "ccx", "ccx").empty())
         Solvers.push_back("CalculiX");
-    hGrp = App::GetApplication().GetParameterGroupByPath(
-        "User parameter:BaseApp/Preferences/Mod/Fem/Elmer");
-    auto elmerBinaryPath = hGrp->GetASCII("elmerBinaryPath", "");
-    if (!elmerBinaryPath.empty())
+    if (!Fem::Tools::checkIfBinaryExists("Elmer", "elmer", "ElmerSolver").empty())
         Solvers.push_back("Elmer");
-    hGrp = App::GetApplication().GetParameterGroupByPath(
-        "User parameter:BaseApp/Preferences/Mod/Fem/mystran");
-    auto MystranBinaryPath = hGrp->GetASCII("MystranBinaryPath", "");
-    if (!MystranBinaryPath.empty())
+    // also check the multi-CPU Elmer build
+    else if (!Fem::Tools::checkIfBinaryExists("Elmer", "elmer", "ElmerSolver_mpi").empty())
+        Solvers.push_back("Elmer");
+    if (!Fem::Tools::checkIfBinaryExists("Mystran", "mystran", "mystran").empty())
         Solvers.push_back("Mystran");
-    hGrp = App::GetApplication().GetParameterGroupByPath(
-        "User parameter:BaseApp/Preferences/Mod/Fem/Z88");
-    auto z88BinaryPath = hGrp->GetASCII("z88BinaryPath", "");
-    if (!z88BinaryPath.empty())
+    if (!Fem::Tools::checkIfBinaryExists("Z88", "z88", "z88r").empty())
         Solvers.push_back("Z88");
 
     QStringList solversList;
@@ -71,7 +63,7 @@ DlgSettingsFemGeneralImp::DlgSettingsFemGeneralImp(QWidget* parent)
 
     // if the "DefaultSolver" parameter is not yet set and there is only
     // one available solver, set this solver
-    hGrp = App::GetApplication().GetParameterGroupByPath(
+    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
         "User parameter:BaseApp/Preferences/Mod/Fem/General");
     auto DefaultSolver = hGrp->GetInt("DefaultSolver", 0);
     if (!DefaultSolver && ui->cmb_def_solver->count() == 2)

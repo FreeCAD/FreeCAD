@@ -248,7 +248,7 @@ class Results(run.Results):
             self._handleStedyStateResult()
         else:
             self._handleTransientResults()
-        
+
     def _handleStedyStateResult(self):
         if self.solver.ElmerResult is None:
             self._createResults()
@@ -351,7 +351,7 @@ class Results(run.Results):
                 )
                 self.solver.ElmerTimeResults = tmplist
                 self._finishTimeResults(time, counter-1)
-        
+
     def _finishTimeResults(self, time, counter):
         # we purposely use the decimal dot in the label
         self.solver.ElmerTimeResults[counter].Label\

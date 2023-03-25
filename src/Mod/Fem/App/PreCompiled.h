@@ -53,6 +53,7 @@
 #include <boost/tokenizer.hpp>
 
 #include <Python.h>
+#include <QFileInfo>
 
 // Salomesh
 #include <SMDS_MeshElement.hxx>
