@@ -117,8 +117,9 @@ def setup(doc=None, solvertype="elmer"):
     # solver
     if solvertype == "elmer":
         solver_obj = ObjectsFem.makeSolverElmer(doc, "SolverElmer")
+        solver_obj.OutputIntervals = [5]
         solver_obj.SimulationType = "Transient"
-        solver_obj.TimestepIntervals = [20]
+        solver_obj.TimestepIntervals = [21]
         solver_obj.TimestepSizes = [0.05]
         equation_deformation = ObjectsFem.makeEquationDeformation(doc, solver_obj)
         equation_deformation.setExpression("LinearTolerance", "1e-7")
