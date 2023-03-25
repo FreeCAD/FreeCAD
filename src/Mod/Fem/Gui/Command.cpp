@@ -68,17 +68,14 @@ using namespace std;
 // helpers
 bool getConstraintPrerequisits(Fem::FemAnalysis** Analysis)
 {
-    Fem::FemAnalysis* ActiveAnalysis =
-        FemGui::ActiveAnalysisObserver::instance()->getActiveObject();
-    if (!ActiveAnalysis
-        || !ActiveAnalysis->getTypeId().isDerivedFrom(Fem::FemAnalysis::getClassTypeId())) {
+    if (!FemGui::ActiveAnalysisObserver::instance()->hasActiveObject()) {
         QMessageBox::warning(Gui::getMainWindow(),
                              QObject::tr("No active Analysis"),
                              QObject::tr("You need to create or activate a Analysis"));
         return true;
     }
 
-    *Analysis = static_cast<Fem::FemAnalysis*>(ActiveAnalysis);
+    *Analysis = FemGui::ActiveAnalysisObserver::instance()->getActiveObject();
 
     // return with no error
     return false;
@@ -1241,13 +1238,7 @@ void CmdFemCompEmConstraints::languageChange()
 bool CmdFemCompEmConstraints::isActive()
 {
     // only if there is an active analysis
-    Fem::FemAnalysis* ActiveAnalysis =
-        FemGui::ActiveAnalysisObserver::instance()->getActiveObject();
-    if (!ActiveAnalysis
-        || !ActiveAnalysis->getTypeId().isDerivedFrom(Fem::FemAnalysis::getClassTypeId()))
-        return false;
-
-    return true;
+    return FemGui::ActiveAnalysisObserver::instance()->hasActiveObject();
 }
 
 
