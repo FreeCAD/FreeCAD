@@ -23,7 +23,7 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <QMessageBox>
+#include <QMessageBox>
 #endif
 
 #include "DlgSettingsNotificationArea.h"
@@ -35,13 +35,13 @@ using namespace Gui::Dialog;
 /* TRANSLATOR Gui::Dialog::DlgSettingsNotificationArea */
 
 DlgSettingsNotificationArea::DlgSettingsNotificationArea(QWidget* parent)
-  : PreferencePage(parent)
-  , ui(new Ui_DlgSettingsNotificationArea)
+    : PreferencePage(parent),
+      ui(new Ui_DlgSettingsNotificationArea)
 {
     ui->setupUi(this);
 
     connect(ui->NotificationAreaEnabled, &QCheckBox::stateChanged, [this](int state) {
-        if(state == Qt::CheckState::Checked) {
+        if (state == Qt::CheckState::Checked) {
             ui->NonIntrusiveNotificationsEnabled->setEnabled(true);
             ui->maxDuration->setEnabled(true);
             ui->maxDuration->setEnabled(true);
@@ -53,8 +53,10 @@ DlgSettingsNotificationArea::DlgSettingsNotificationArea(QWidget* parent)
             ui->preventNonIntrusiveNotificationsWhenWindowNotActive->setEnabled(true);
             ui->errorSubscriptionEnabled->setEnabled(true);
             ui->warningSubscriptionEnabled->setEnabled(true);
-            QMessageBox::information(this, tr("Notification Area"),
-            tr("Activation of the Notification Area only takes effect after an application restart."));
+            QMessageBox::information(this,
+                                     tr("Notification Area"),
+                                     tr("Activation of the Notification Area only takes effect "
+                                        "after an application restart."));
         }
         else {
             ui->NonIntrusiveNotificationsEnabled->setEnabled(false);
@@ -68,14 +70,14 @@ DlgSettingsNotificationArea::DlgSettingsNotificationArea(QWidget* parent)
             ui->preventNonIntrusiveNotificationsWhenWindowNotActive->setEnabled(false);
             ui->errorSubscriptionEnabled->setEnabled(false);
             ui->warningSubscriptionEnabled->setEnabled(false);
-        // N.B: Deactivation is handled by the Notification Area itself, as it listens to all its configuration parameters.
+            // N.B: Deactivation is handled by the Notification Area itself, as it listens to all
+            // its configuration parameters.
         }
     });
 }
 
 DlgSettingsNotificationArea::~DlgSettingsNotificationArea()
-{
-}
+{}
 
 void DlgSettingsNotificationArea::saveSettings()
 {
@@ -107,10 +109,9 @@ void DlgSettingsNotificationArea::loadSettings()
     ui->preventNonIntrusiveNotificationsWhenWindowNotActive->onRestore();
     ui->errorSubscriptionEnabled->onRestore();
     ui->warningSubscriptionEnabled->onRestore();
-
 }
 
-void DlgSettingsNotificationArea::changeEvent(QEvent *e)
+void DlgSettingsNotificationArea::changeEvent(QEvent* e)
 {
     if (e->type() == QEvent::LanguageChange) {
         ui->retranslateUi(this);
