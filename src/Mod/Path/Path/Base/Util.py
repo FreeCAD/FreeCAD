@@ -159,6 +159,7 @@ def clearExpressionEngine(obj):
             obj.setExpression(attr, None)
 
 
+#TODO remove functions below, leftover from using six
 def toUnicode(string):
     """toUnicode(string) ... returns a unicode version of string regardless of the python version."""
     return str(string)
