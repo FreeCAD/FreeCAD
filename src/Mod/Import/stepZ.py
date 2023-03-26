@@ -11,7 +11,6 @@
 # OCC7 doesn't support non-ASCII characters at the moment
 # https://forum.freecadweb.org/viewtopic.php?t=20815
 
-import six
 
 import FreeCAD
 import FreeCADGui
@@ -31,7 +30,7 @@ ___stpZversion___ = "1.3.9"
 
 
 import gzip as gz
-import builtins as builtin  #py3
+import builtins
 import importlib
 
 
@@ -78,8 +77,7 @@ def import_stpz(fn,fc,doc):
     tempdir = tempfile.gettempdir() # get the current temporary directory
     tempfilepath = os.path.join(tempdir,fname + u'.stp')
 
-    #with six.builtins.open(tempfilepath, 'wb') as f: #py3
-    with builtin.open(tempfilepath, 'wb') as f: #py3
+    with builtins.open(tempfilepath, 'wb') as f: #py3
         f.write(fc)
     #ImportGui.insert(filepath)
     if doc is None:

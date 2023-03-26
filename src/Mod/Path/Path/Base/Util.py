@@ -31,7 +31,6 @@ other than Path.Log, then it probably doesn't belong here.
 """
 
 import FreeCAD
-import six
 import Path
 
 translate = FreeCAD.Qt.translate
@@ -162,14 +161,14 @@ def clearExpressionEngine(obj):
 
 def toUnicode(string):
     """toUnicode(string) ... returns a unicode version of string regardless of the python version."""
-    return six.text_type(string)
+    return str(string)
 
 
 def isString(string):
     """isString(string) ... return True if string is a string, regardless of string type and python version."""
-    return isinstance(string, six.string_types)
+    return isinstance(string, str)
 
 
 def keyValueIter(dictionary):
     """keyValueIter(dict) ... return iterable object over dictionary's (key,value) tuples."""
-    return six.iteritems(dictionary)
+    return dictionary.items()
