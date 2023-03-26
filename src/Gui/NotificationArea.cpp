@@ -675,6 +675,16 @@ NotificationArea::ParameterObserver::ParameterObserver(NotificationArea* notific
              auto enabled = hGrp->GetBool(string.c_str(), true);
              notificationArea->pImp->preventNonIntrusiveNotificationsWhenWindowNotActive = enabled;
          }},
+        {"ErrorSubscriptionEnabled",
+         [this](const std::string& string) {
+             auto enabled = hGrp->GetBool(string.c_str(), true);
+             notificationArea->pImp->observer->bErr = enabled;
+         }},
+        {"WarningSubscriptionEnabled",
+         [this](const std::string& string) {
+             auto enabled = hGrp->GetBool(string.c_str(), true);
+             notificationArea->pImp->observer->bWrn = enabled;
+         }},
     };
 
     for (auto& val : parameterMap) {
