@@ -428,7 +428,7 @@ private:
     Base::Matrix4D _Mtrx;
     MeshCore::MeshKernel _kernel;
     std::vector<Segment> _segments;
-    static float Epsilon;
+    static const float Epsilon;
 };
 
 } // namespace Mesh
