@@ -30,7 +30,7 @@
      </property>
      <property name="text">
       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;You can enable, disable and reorder workbenches (requires restart). Additional workbenches can be installed through the addon manager.&lt;/p&gt;&lt;p&gt;
-Your currently system has the following workbenches:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+Currently, your system has the following workbenches:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
      </property>
      <property name="wordWrap">
       <bool>true</bool>
@@ -38,7 +38,7 @@ Your currently system has the following workbenches:&lt;/p&gt;&lt;/body&gt;&lt;/
     </widget>
    </item>
    <item row="1" column="0">
-    <widget class="QListWidgetDragBugFix" name="wbList"/>
+    <widget class="ListWidgetDragBugFix" name="wbList"/>
    </item>
    <item row="2" column="0">
     <layout class="QHBoxLayout">
@@ -116,9 +116,9 @@ after FreeCAD launches</string>
  <layoutdefault spacing="6" margin="11"/>
  <customwidgets>
   <customwidget>
-   <class>QListWidgetDragBugFix</class>
+   <class>ListWidgetDragBugFix</class>
    <extends>QListWidget</extends>
-   <header>QListWidgetDragBugFix.h</header>
+   <header>ListWidgetDragBugFix.h</header>
   </customwidget>
  </customwidgets>
  <resources/>

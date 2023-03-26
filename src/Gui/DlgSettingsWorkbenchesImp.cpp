@@ -54,6 +54,14 @@ DlgSettingsWorkbenchesImp::DlgSettingsWorkbenchesImp( QWidget* parent )
     , ui(new Ui_DlgSettingsWorkbenches)
 {
     ui->setupUi(this);
+
+    ui->wbList->setDragDropMode(QAbstractItemView::InternalMove);
+    ui->wbList->setSelectionMode(QAbstractItemView::SingleSelection);
+    ui->wbList->viewport()->setAcceptDrops(true);
+    ui->wbList->setDropIndicatorShown(true);
+    ui->wbList->setDragEnabled(true);
+    ui->wbList->setDefaultDropAction(Qt::MoveAction);
+
     connect(ui->AutoloadModuleCombo, QOverload<int>::of(&QComboBox::activated), this, [this](int index) { onStartWbChangedClicked(index); });
 }
 
@@ -206,13 +214,6 @@ void DlgSettingsWorkbenchesImp::buildWorkbenchList()
     QStringList workbenches = Application::Instance->workbenches();
     QStringList enabledWbs = getEnabledWorkbenches();
     QStringList disabledWbs = getDisabledWorkbenches();
-
-    ui->wbList->setDragDropMode(QAbstractItemView::InternalMove);
-    ui->wbList->setSelectionMode(QAbstractItemView::SingleSelection);
-    ui->wbList->viewport()->setAcceptDrops(true);
-    ui->wbList->setDropIndicatorShown(true);
-    ui->wbList->setDragEnabled(true);
-    ui->wbList->setDefaultDropAction(Qt::MoveAction);
 
     //First we add the enabled wbs in their saved order.
     for (const auto& wbName : enabledWbs) {

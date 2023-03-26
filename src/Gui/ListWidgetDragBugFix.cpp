@@ -20,23 +20,31 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef QLISTWIDGETDRAGBUGFIX_HPP
-#define QLISTWIDGETDRAGBUGFIX_HPP
-
-#include <QDragMoveEvent>
-#include <QListWidget>
-
-
-class QListWidgetDragBugFix : public QListWidget
-{
-    Q_OBJECT
-
-public:
-    QListWidgetDragBugFix(QWidget *parent);
-    ~QListWidgetDragBugFix() override;
-
-protected:
-    void dragMoveEvent(QDragMoveEvent *e) override;
-};
-
+#include "PreCompiled.h"
+#ifndef _PreComp_
+# include <QDragMoveEvent>
 #endif
+
+#include "ListWidgetDragBugFix.h"
+
+
+ListWidgetDragBugFix::ListWidgetDragBugFix(QWidget * parent)
+  : QListWidget(parent)
+{
+}
+
+ListWidgetDragBugFix::~ListWidgetDragBugFix()
+{
+}
+
+void ListWidgetDragBugFix::dragMoveEvent(QDragMoveEvent *e)
+{
+    if ((row(itemAt(e->pos())) == currentRow() + 1)
+        || (currentRow() == count() - 1 && row(itemAt(e->pos())) == -1)) {
+        e->ignore();
+        return;
+    }
+    QListWidget::dragMoveEvent(e);
+}
+
+#include "moc_ListWidgetDragBugFix.cpp"

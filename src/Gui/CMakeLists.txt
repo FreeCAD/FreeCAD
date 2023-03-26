@@ -526,7 +526,7 @@ SET(Dialog_Customize_CPP_SRCS
     DlgKeyboardImp.cpp
     DlgToolbarsImp.cpp
     QListWidgetCustom.cpp
-    QListWidgetDragBugFix.cpp
+    ListWidgetDragBugFix.cpp
 )
 SET(Dialog_Customize_HPP_SRCS
     DlgActionsImp.h
@@ -537,7 +537,7 @@ SET(Dialog_Customize_HPP_SRCS
     DlgKeyboardImp.h
     DlgToolbarsImp.h
     QListWidgetCustom.h
-    QListWidgetDragBugFix.h
+    ListWidgetDragBugFix.h
 )
 SET(Dialog_Customize_SRCS
     ${Dialog_Customize_CPP_SRCS}
