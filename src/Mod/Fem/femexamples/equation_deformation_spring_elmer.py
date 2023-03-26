@@ -117,7 +117,7 @@ def setup(doc=None, solvertype="elmer"):
     # solver
     if solvertype == "elmer":
         solver_obj = ObjectsFem.makeSolverElmer(doc, "SolverElmer")
-        solver_obj.OutputIntervals = [5]
+        solver_obj.OutputIntervals = [4]
         solver_obj.SimulationType = "Transient"
         solver_obj.TimestepIntervals = [21]
         solver_obj.TimestepSizes = [0.05]
@@ -183,7 +183,7 @@ def setup(doc=None, solvertype="elmer"):
     # mesh
     femmesh_obj = analysis.addObject(ObjectsFem.makeMeshGmsh(doc, get_meshname()))[0]
     femmesh_obj.Part = body
-    femmesh_obj.CharacteristicLengthMax = "1 mm"
+    femmesh_obj.CharacteristicLengthMax = "1.25 mm"
     femmesh_obj.ElementOrder = "1st"
     femmesh_obj.ViewObject.Visibility = False
 
