@@ -26,7 +26,6 @@ __author__ = "Bernd Hahnebach"
 __url__ = "https://www.freecadweb.org"
 
 
-import six
 
 
 def write_femelement_matgeosets(f, ccxwriter):
@@ -39,8 +38,7 @@ def write_femelement_matgeosets(f, ccxwriter):
 
         f.write("*ELSET,ELSET={}\n".format(matgeoset["ccx_elset_name"]))
 
-        # use six to be sure to be Python 2.7 and 3.x compatible
-        if isinstance(matgeoset["ccx_elset"], six.string_types):
+        if isinstance(matgeoset["ccx_elset"], str):
             f.write("{}\n".format(matgeoset["ccx_elset"]))
         else:
             for elid in matgeoset["ccx_elset"]:
