@@ -51,6 +51,8 @@ DlgSettingsNotificationArea::DlgSettingsNotificationArea(QWidget* parent)
             ui->autoRemoveUserNotifications->setEnabled(true);
             ui->hideNonIntrusiveNotificationsWhenWindowDeactivated->setEnabled(true);
             ui->preventNonIntrusiveNotificationsWhenWindowNotActive->setEnabled(true);
+            ui->errorSubscriptionEnabled->setEnabled(true);
+            ui->warningSubscriptionEnabled->setEnabled(true);
             QMessageBox::information(this, tr("Notification Area"),
             tr("Activation of the Notification Area only takes effect after an application restart."));
         }
@@ -64,6 +66,8 @@ DlgSettingsNotificationArea::DlgSettingsNotificationArea(QWidget* parent)
             ui->autoRemoveUserNotifications->setEnabled(false);
             ui->hideNonIntrusiveNotificationsWhenWindowDeactivated->setEnabled(false);
             ui->preventNonIntrusiveNotificationsWhenWindowNotActive->setEnabled(false);
+            ui->errorSubscriptionEnabled->setEnabled(false);
+            ui->warningSubscriptionEnabled->setEnabled(false);
         // N.B: Deactivation is handled by the Notification Area itself, as it listens to all its configuration parameters.
         }
     });
@@ -85,6 +89,8 @@ void DlgSettingsNotificationArea::saveSettings()
     ui->notificationWidth->onSave();
     ui->hideNonIntrusiveNotificationsWhenWindowDeactivated->onSave();
     ui->preventNonIntrusiveNotificationsWhenWindowNotActive->onSave();
+    ui->errorSubscriptionEnabled->onSave();
+    ui->warningSubscriptionEnabled->onSave();
 }
 
 void DlgSettingsNotificationArea::loadSettings()
@@ -99,6 +105,8 @@ void DlgSettingsNotificationArea::loadSettings()
     ui->notificationWidth->onRestore();
     ui->hideNonIntrusiveNotificationsWhenWindowDeactivated->onRestore();
     ui->preventNonIntrusiveNotificationsWhenWindowNotActive->onRestore();
+    ui->errorSubscriptionEnabled->onRestore();
+    ui->warningSubscriptionEnabled->onRestore();
 
 }
 
