@@ -241,12 +241,12 @@ std::string FileInfo::filePath () const
     return FileName;
 }
 
-std::string FileInfo::fileName () const
+std::string FileInfo::fileName() const
 {
     return FileName.substr(FileName.find_last_of('/')+1);
 }
 
-std::string FileInfo::dirPath () const
+std::string FileInfo::dirPath() const
 {
     std::size_t last_pos;
     std::string retval;
@@ -256,7 +256,7 @@ std::string FileInfo::dirPath () const
     }
     else {
 #ifdef FC_OS_WIN32
-        wchar_t buf[MAX_PATH+1];
+        wchar_t buf[MAX_PATH + 1];
         GetCurrentDirectoryW(MAX_PATH, buf);
         retval = std::string(ConvertFromWideString(std::wstring(buf)));
 #else
@@ -268,7 +268,7 @@ std::string FileInfo::dirPath () const
     return retval;
 }
 
-std::string FileInfo::fileNamePure () const
+std::string FileInfo::fileNamePure() const
 {
     std::string temp = fileName();
     std::string::size_type pos = temp.find_last_of('.');
@@ -291,7 +291,7 @@ std::wstring FileInfo::toStdWString() const
 #endif
 }
 
-std::string FileInfo::extension () const
+std::string FileInfo::extension() const
 {
     std::string::size_type pos = FileName.find_last_of('.');
     if (pos == std::string::npos)
@@ -299,7 +299,7 @@ std::string FileInfo::extension () const
     return FileName.substr(pos+1);
 }
 
-std::string FileInfo::completeExtension () const
+std::string FileInfo::completeExtension() const
 {
     std::string::size_type pos = FileName.find_first_of('.');
     if (pos == std::string::npos)
@@ -307,46 +307,46 @@ std::string FileInfo::completeExtension () const
     return FileName.substr(pos+1);
 }
 
-bool FileInfo::hasExtension (const char* Ext) const
+bool FileInfo::hasExtension(const char* Ext) const
 {
 #if defined (FC_OS_WIN32)
-    return _stricmp(Ext,extension().c_str()) == 0;
+    return _stricmp(Ext, extension().c_str()) == 0;
 #elif defined (FC_OS_LINUX) || defined(FC_OS_CYGWIN) || defined(FC_OS_MACOSX) || defined(FC_OS_BSD)
     return strcasecmp(Ext,extension().c_str()) == 0;
 #endif
 }
 
-bool FileInfo::exists () const
+bool FileInfo::exists() const
 {
 #if defined (FC_OS_WIN32)
     std::wstring wstr = toStdWString();
-    return _waccess(wstr.c_str(),F_OK) == 0;
+    return _waccess(wstr.c_str(), F_OK) == 0;
 #elif defined (FC_OS_LINUX) || defined(FC_OS_CYGWIN) || defined(FC_OS_MACOSX) || defined(FC_OS_BSD)
-    return access(FileName.c_str(),F_OK) == 0;
+    return access(FileName.c_str(), F_OK) == 0;
 #endif
 }
 
-bool FileInfo::isReadable () const
+bool FileInfo::isReadable() const
 {
 #if defined (FC_OS_WIN32)
     std::wstring wstr = toStdWString();
-    return _waccess(wstr.c_str(),R_OK) == 0;
+    return _waccess(wstr.c_str(), R_OK) == 0;
 #elif defined (FC_OS_LINUX) || defined(FC_OS_CYGWIN) || defined(FC_OS_MACOSX) || defined(FC_OS_BSD)
-    return access(FileName.c_str(),R_OK) == 0;
+    return access(FileName.c_str(), R_OK) == 0;
 #endif
 }
 
-bool FileInfo::isWritable () const
+bool FileInfo::isWritable() const
 {
 #if defined (FC_OS_WIN32)
     std::wstring wstr = toStdWString();
-    return _waccess(wstr.c_str(),W_OK) == 0;
+    return _waccess(wstr.c_str(), W_OK) == 0;
 #elif defined (FC_OS_LINUX) || defined(FC_OS_CYGWIN) || defined(FC_OS_MACOSX) || defined(FC_OS_BSD)
-    return access(FileName.c_str(),W_OK) == 0;
+    return access(FileName.c_str(), W_OK) == 0;
 #endif
 }
 
-bool FileInfo::setPermissions (Permissions perms)
+bool FileInfo::setPermissions(Permissions perms)
 {
     int mode = 0;
 
@@ -359,13 +359,13 @@ bool FileInfo::setPermissions (Permissions perms)
         return false;
 #if defined (FC_OS_WIN32)
     std::wstring wstr = toStdWString();
-    return _wchmod(wstr.c_str(),mode) == 0;
+    return _wchmod(wstr.c_str(), mode) == 0;
 #elif defined (FC_OS_LINUX) || defined(FC_OS_CYGWIN) || defined(FC_OS_MACOSX) || defined(FC_OS_BSD)
-    return chmod(FileName.c_str(),mode) == 0;
+    return chmod(FileName.c_str(), mode) == 0;
 #endif
 }
 
-bool FileInfo::isFile () const
+bool FileInfo::isFile() const
 {
 #ifdef FC_OS_WIN32
     if (exists()) {
@@ -391,7 +391,7 @@ bool FileInfo::isFile () const
     return true;
 }
 
-bool FileInfo::isDir () const
+bool FileInfo::isDir() const
 {
     if (exists()) {
         // if we can chdir then it must be a directory, otherwise we assume it

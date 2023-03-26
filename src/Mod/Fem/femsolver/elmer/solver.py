@@ -34,6 +34,7 @@ import os
 import FreeCAD
 
 from . import tasks
+from .equations import deformation
 from .equations import elasticity
 from .equations import electricforce
 from .equations import electrostatic
@@ -67,12 +68,13 @@ class Proxy(solverbase.Proxy):
     Type = "Fem::SolverElmer"
 
     _EQUATIONS = {
-        "Heat": heat,
+        "Deformation": deformation,
         "Elasticity": elasticity,
         "Electrostatic": electrostatic,
         "Flux": flux,
         "Electricforce": electricforce,
         "Flow": flow,
+        "Heat": heat,
         "Magnetodynamic": magnetodynamic,
         "Magnetodynamic2D": magnetodynamic2D,
     }
