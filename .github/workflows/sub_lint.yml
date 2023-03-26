@@ -93,7 +93,7 @@ on:
         type: boolean
         required: false
       pylintDisable:
-        default: disable=C0302
+        default: C0302,C0303 # Trailing whitespaces (C0303) are already checked
         type: string
         required: false
       pylintFailSilent:
