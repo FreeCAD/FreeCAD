@@ -27,7 +27,9 @@
 #undef max
 
 #include <Eigen/Core>
+
 #include "Constraints.h"
+
 
 namespace GCS
 {

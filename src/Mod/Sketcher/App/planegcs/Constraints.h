@@ -24,8 +24,6 @@
 #define PLANEGCS_CONSTRAINTS_H
 
 #include "Geo.h"
-#include "Util.h"
-#include <boost/graph/graph_concepts.hpp>
 
 //#define _GCS_EXTRACT_SOLVER_SUBSYSTEM_ // This enables debugging code intended to extract information to file bug reports against Eigen, not for production code
 
@@ -34,6 +32,7 @@
 #else
 #define _PROTECTED_UNLESS_EXTRACT_MODE_ protected
 #endif
+
 
 namespace GCS
 {
