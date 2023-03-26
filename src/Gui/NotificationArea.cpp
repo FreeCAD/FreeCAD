@@ -510,6 +510,11 @@ public:
         pushedItems.push_front(item);
     }
 
+    QSize size()
+    {
+        return tableWidget->size();
+    }
+
 protected:
     /// creates the Notifications Widget
     QWidget* createWidget(QWidget* parent) override
@@ -759,11 +764,42 @@ NotificationArea::NotificationArea(QWidget* parent)
         }
         static_cast<NotificationsAction*>(pImp->notificationaction)->synchroniseWidget();
 
-        // the position of the action has already been calculated (for a non-synchronised widget),
-        // the size could be recalculated here, but not the position according to the previous size.
-        // This resize event forces this recalculation.
-        QResizeEvent re(pImp->menu->size(), pImp->menu->size());
+
+        // There is a Qt bug in not respecting a QMenu size when size changes in aboutToShow.
+        //
+        // https://bugreports.qt.io/browse/QTBUG-54421
+        // https://forum.qt.io/topic/68765/how-to-update-geometry-on-qaction-visibility-change-in-qmenu-abouttoshow/3
+        //
+        // None of this works
+        // pImp->menu->updateGeometry();
+        // pImp->menu->adjustSize();
+        // pImp->menu->ensurePolished();
+        // this->updateGeometry();
+        // this->adjustSize();
+        // this->ensurePolished();
+
+        // This does correct the size
+        QSize size = static_cast<NotificationsAction*>(pImp->notificationaction)->size();
+        QResizeEvent re(size, size);
         qApp->sendEvent(pImp->menu, &re);
+
+        // This corrects the position of the menu
+        QTimer::singleShot(0, [&] {
+            QWidget* statusbar = static_cast<QWidget*>(this->parent());
+            QPoint statusbar_top_right = statusbar->mapToGlobal(statusbar->rect().topRight());
+            QSize menusize = pImp->menu->size();
+            QWidget* w = this;
+            QPoint button_pos = w->mapToGlobal(w->rect().topLeft());
+            QPoint widget_pos;
+            if ((statusbar_top_right.x() - menusize.width()) > button_pos.x()) {
+                widget_pos = QPoint(button_pos.x(), statusbar_top_right.y() - menusize.height());
+            }
+            else {
+                widget_pos = QPoint(statusbar_top_right.x() - menusize.width(),
+                                    statusbar_top_right.y() - menusize.height());
+            }
+            pImp->menu->move(widget_pos);
+        });
     });
 
 
