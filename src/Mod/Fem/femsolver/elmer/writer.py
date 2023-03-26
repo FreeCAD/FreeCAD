@@ -331,7 +331,6 @@ class Writer(object):
         # Elmer uses SI base units, but our mesh is in mm, therefore we must tell
         # the solver that we have another scale
         self._simulation("Coordinate Scaling", 0.001)
-        self._simulation("Output Intervals", 1)
         self._simulation("Simulation Type", self.solver.SimulationType)
         if self.solver.SimulationType == "Steady State":
             self._simulation(
@@ -372,6 +371,14 @@ class Writer(object):
                 "Order of time stepping method 'BDF'"
             )
             solver.BDFOrder = (2, 1, 5, 1)
+        if not hasattr(self.solver, "ElmerTimeResults"):
+            solver.addProperty(
+                "App::PropertyLinkList",
+                "ElmerTimeResults",
+                "Base",
+                "",
+                4 | 8
+            )
         if not hasattr(self.solver, "OutputIntervals"):
             solver.addProperty(
                 "App::PropertyIntegerList",
@@ -824,7 +831,9 @@ class Writer(object):
         else:
             s["Exec Solver"] = "After simulation"
         s["Procedure"] = sifio.FileAttr("ResultOutputSolve/ResultOutputSolver")
+        s["Output File Name"] = sifio.FileAttr("FreeCAD")
         s["Vtu Format"] = True
+        s["Vtu Time Collection"] = True
         if self.unit_schema == Units.Scheme.SI2:
             s["Coordinate Scaling Revert"] = True
             Console.PrintMessage(
