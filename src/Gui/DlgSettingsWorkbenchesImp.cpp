@@ -281,6 +281,8 @@ QWidget* DlgSettingsWorkbenchesImp::createWorkbenchWidget(const QString& wbName,
     font.setBold(true);
     textLabel->setFont(font);
     textLabel->setEnabled(enableCheckBox->isChecked());
+    textLabel->setMinimumSize(200,0);
+
 
     // 4: Autoloaded checkBox.
     auto autoloadCheckBox = new QCheckBox(this);
@@ -322,7 +324,6 @@ QWidget* DlgSettingsWorkbenchesImp::createWorkbenchWidget(const QString& wbName,
     layout->addWidget(enableCheckBox);
     layout->addWidget(iconLabel);
     layout->addWidget(textLabel);
-    layout->addStretch();
     layout->addWidget(loadButton);
     layout->addWidget(loadLabel);
     layout->addWidget(autoloadCheckBox);
