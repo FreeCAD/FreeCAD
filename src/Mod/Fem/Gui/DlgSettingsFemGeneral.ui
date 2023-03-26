@@ -323,6 +323,10 @@
           </item>
           <item>
            <widget class="Gui::PrefCheckBox" name="cb_restore_result_dialog">
+            <property name="toolTip">
+             <string>The results dialog will be opened
+with the last used dialog settings</string>
+            </property>
             <property name="text">
              <string>Restore result dialog settings</string>
             </property>
@@ -341,6 +345,10 @@
            <widget class="Gui::PrefCheckBox" name="cb_hide_constraint">
             <property name="enabled">
              <bool>true</bool>
+            </property>
+            <property name="toolTip">
+             <string>All constraints are hidden in the model view
+when the results dialog is opened</string>
             </property>
             <property name="text">
              <string>Hide constraints when open result dialog</string>
