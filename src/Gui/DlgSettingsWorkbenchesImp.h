@@ -33,7 +33,6 @@ namespace Gui {
 namespace Dialog {
 class Ui_DlgSettingsWorkbenches;
 
-
 /**
  * The DlgSettingsWorkbenchesImp class implements a pseudo-preference page explain why
  * the remaining preference pages aren't loaded yet, and to help the user do so on demand.
@@ -53,9 +52,10 @@ public:
     static QStringList getEnabledWorkbenches();
     static QStringList getDisabledWorkbenches();
 
-protected Q_SLOTS:
-    void onLoadClicked(const QString& wbName);
-    void onWbActivated(const QString& wbName, bool checked);
+    void setStartWorkbenchComboItems();
+
+    std::vector<std::string> _backgroundAutoloadedModules;
+    std::string _startupModule;
 
 protected:
     void buildWorkbenchList();
@@ -63,24 +63,36 @@ protected:
 
 private:
     void addWorkbench(const QString& it, bool enabled);
-    QWidget* createWorkbenchWidget(const QString& it, bool enabled);
 
     void saveWorkbenchSelector();
     void loadWorkbenchSelector();
 
-    void setStartWorkbenchComboItems();
     void onStartWbChangedClicked(int index);
 
     std::unique_ptr<Ui_DlgSettingsWorkbenches> ui;
-    static const QString iconLabelStr;
-    static const QString nameLabelStr;
-    static const QString loadLabelStr;
-    static const QString loadButtonStr;
-    static const QString enableCheckboxStr;
-    static const QString autoloadCheckboxStr;
+};
 
-    std::vector<std::string> _backgroundAutoloadedModules;
-    std::string _startupModule;
+class wbListItem : public QWidget
+{
+    Q_OBJECT
+
+public:
+    explicit wbListItem(const QString& wbName, bool enabled, DlgSettingsWorkbenchesImp* dlg, QWidget* parent = nullptr);
+    ~wbListItem() override;
+
+protected Q_SLOTS:
+    void onLoadClicked();
+    void onWbActivated(bool checked);
+
+public:
+    QCheckBox* enableCheckBox;
+    QCheckBox* autoloadCheckBox;
+    QLabel* iconLabel;
+    QLabel* textLabel;
+    QLabel* loadLabel;
+    QPushButton* loadButton;
+
+    DlgSettingsWorkbenchesImp* dlg;
 };
 
 } // namespace Dialog

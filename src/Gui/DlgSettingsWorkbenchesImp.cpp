@@ -37,12 +37,115 @@
 
 using namespace Gui::Dialog;
 
-const QString DlgSettingsWorkbenchesImp::iconLabelStr = QString::fromLatin1("iconLabel");
-const QString DlgSettingsWorkbenchesImp::nameLabelStr = QString::fromLatin1("nameLabel");
-const QString DlgSettingsWorkbenchesImp::loadLabelStr = QString::fromLatin1("loadLabel");
-const QString DlgSettingsWorkbenchesImp::loadButtonStr = QString::fromLatin1("loadButton");
-const QString DlgSettingsWorkbenchesImp::enableCheckboxStr = QString::fromLatin1("enableCheckbox");
-const QString DlgSettingsWorkbenchesImp::autoloadCheckboxStr = QString::fromLatin1("autoloadCheckbox");
+wbListItem::wbListItem(const QString& wbName, bool enabled, DlgSettingsWorkbenchesImp* dialog, QWidget* parent) : QWidget(parent)
+    , dlg(dialog)
+{
+    this->setObjectName(wbName);
+
+    auto wbTooltip = Application::Instance->workbenchToolTip(wbName);
+    auto wbDisplayName = Application::Instance->workbenchMenuText(wbName);
+
+    // 1: Enable checkbox
+    enableCheckBox = new QCheckBox(this);
+    enableCheckBox->setToolTip(tr("If unchecked, %1 will not appear in the available workbenches.").arg(wbDisplayName));
+    enableCheckBox->setChecked(enabled);
+    if (wbName.toStdString() == dlg->_startupModule) {
+        enableCheckBox->setChecked(true);
+        enableCheckBox->setEnabled(false);
+        enableCheckBox->setToolTip(tr("This is the current startup module, and must be enabled. See Preferences/General/Autoload to change."));
+    }
+    connect(enableCheckBox, &QCheckBox::toggled, this, [this](bool checked) { onWbActivated(checked); });
+
+    // 2: Workbench Icon
+    auto wbIcon = Application::Instance->workbenchIcon(wbName);
+    iconLabel = new QLabel(wbDisplayName);
+    iconLabel->setPixmap(wbIcon.scaled(QSize(20, 20), Qt::AspectRatioMode::KeepAspectRatio, Qt::TransformationMode::SmoothTransformation));
+    iconLabel->setToolTip(wbTooltip);
+    iconLabel->setContentsMargins(5, 0, 0, 5); // Left, top, right, bottom
+    iconLabel->setEnabled(enableCheckBox->isChecked());
+
+    // 3: Workbench Display Name
+    textLabel = new QLabel(wbDisplayName);
+    textLabel->setToolTip(wbTooltip);
+    QFont font = textLabel->font();
+    font.setBold(true);
+    textLabel->setFont(font);
+    textLabel->setEnabled(enableCheckBox->isChecked());
+    textLabel->setMinimumSize(200, 0);
+
+
+    // 4: Autoloaded checkBox.
+    autoloadCheckBox = new QCheckBox(this);
+    autoloadCheckBox->setText(tr("Auto-load"));
+    autoloadCheckBox->setToolTip(tr("If checked, %1 will be loaded automatically when FreeCAD starts up").arg(wbDisplayName));
+    autoloadCheckBox->setEnabled(enableCheckBox->isChecked());
+
+    if (wbName.toStdString() == dlg->_startupModule) { // Figure out whether to check and/or disable this checkBox:
+        autoloadCheckBox->setChecked(true);
+        autoloadCheckBox->setEnabled(false);
+        autoloadCheckBox->setToolTip(tr("This is the current startup module, and must be autoloaded. See Preferences/General/Autoload to change."));
+    }
+    else if (std::find(dlg->_backgroundAutoloadedModules.begin(), dlg->_backgroundAutoloadedModules.end(),
+        wbName.toStdString()) != dlg->_backgroundAutoloadedModules.end()) {
+        autoloadCheckBox->setChecked(true);
+    }
+
+    // 5: Load button/loaded indicator
+    loadLabel = new QLabel(tr("Loaded"));
+    loadLabel->setAlignment(Qt::AlignCenter);
+    loadLabel->setEnabled(enableCheckBox->isChecked());
+    loadButton = new QPushButton(tr("Load"));
+    loadButton->setToolTip(tr("To preserve resources, FreeCAD does not load workbenches until they are used. Loading them may provide access to additional preferences related to their functionality."));
+    loadButton->setEnabled(enableCheckBox->isChecked());
+    connect(loadButton, &QPushButton::clicked, this, [this]() { onLoadClicked(); });
+    if (WorkbenchManager::instance()->getWorkbench(wbName.toStdString())) {
+        loadButton->setVisible(false);
+    }
+    else {
+        loadLabel->setVisible(false);
+    }
+
+    auto layout = new QHBoxLayout(this);
+    layout->addWidget(enableCheckBox);
+    layout->addWidget(iconLabel);
+    layout->addWidget(textLabel);
+    layout->addWidget(loadButton);
+    layout->addWidget(loadLabel);
+    layout->addWidget(autoloadCheckBox);
+    layout->setAlignment(Qt::AlignLeft);
+    layout->setContentsMargins(10, 0, 0, 0);
+}
+
+wbListItem::~wbListItem()
+{
+}
+
+void wbListItem::onLoadClicked()
+{
+    // activate selected workbench
+    Workbench* originalActiveWB = WorkbenchManager::instance()->active();
+    Application::Instance->activateWorkbench(objectName().toStdString().c_str());
+    Application::Instance->activateWorkbench(originalActiveWB->name().c_str());
+
+    // replace load button with loaded indicator
+    loadButton->setVisible(false);
+    loadLabel->setVisible(true);
+}
+
+void wbListItem::onWbActivated(bool checked)
+{
+    // activate/deactivate the widgets
+    iconLabel->setEnabled(checked);
+    textLabel->setEnabled(checked);
+    loadLabel->setEnabled(checked);
+    loadButton->setEnabled(checked);
+    autoloadCheckBox->setEnabled(checked);
+    if (!checked) //disabling wb disable auto-load.
+        autoloadCheckBox->setChecked(false);
+
+    // Reset the start combo items.
+    dlg->setStartWorkbenchComboItems();
+}
 
 /* TRANSLATOR Gui::Dialog::DlgSettingsWorkbenchesImp */
 
@@ -78,32 +181,25 @@ void DlgSettingsWorkbenchesImp::saveSettings()
     std::ostringstream enabledStr, disabledStr, autoloadStr;
 
     for (int i = 0; i < ui->wbList->count(); i++) {
-        QWidget* widget = ui->wbList->itemWidget(ui->wbList->item(i));
-        if (!widget)
-            continue;
-        QCheckBox* enableBox = widget->findChild<QCheckBox*>(enableCheckboxStr);
-        if (!enableBox)
+        wbListItem* wbItem = dynamic_cast<wbListItem*>(ui->wbList->itemWidget(ui->wbList->item(i)));
+        if (!wbItem)
             continue;
 
-        if (enableBox->isChecked()) {
+        if (wbItem->enableCheckBox->isChecked()) {
             if (!enabledStr.str().empty())
                 enabledStr << ",";
-            enabledStr << widget->objectName().toStdString();
+            enabledStr << wbItem->objectName().toStdString();
         }
         else {
             if (!disabledStr.str().empty())
                 disabledStr << ",";
-            disabledStr << widget->objectName().toStdString();
+            disabledStr << wbItem->objectName().toStdString();
         }
 
-        QCheckBox* autoloadBox = widget->findChild<QCheckBox*>(autoloadCheckboxStr);
-        if (!autoloadBox)
-            continue;
-
-        if (autoloadBox->isChecked()) {
+        if (wbItem->autoloadCheckBox->isChecked()) {
             if (!autoloadStr.str().empty())
                 autoloadStr << ",";
-            autoloadStr << widget->objectName().toStdString();
+            autoloadStr << wbItem->objectName().toStdString();
         }
     }
 
@@ -158,54 +254,6 @@ void DlgSettingsWorkbenchesImp::loadSettings()
     setStartWorkbenchComboItems();
 }
 
-void DlgSettingsWorkbenchesImp::onLoadClicked(const QString &wbName)
-{
-    // activate selected workbench
-    Workbench* originalActiveWB = WorkbenchManager::instance()->active();
-    Application::Instance->activateWorkbench(wbName.toStdString().c_str());
-    Application::Instance->activateWorkbench(originalActiveWB->name().c_str());
-
-    // replace load button with loaded indicator
-    for (int i = 0; i < ui->wbList->count(); i++) {
-        QWidget* widget = ui->wbList->itemWidget(ui->wbList->item(i));
-        if (widget && widget->objectName() == wbName) {
-            QWidget* loadLabel = widget->findChild<QWidget*>(loadLabelStr);
-            QWidget* loadButton = widget->findChild<QWidget*>(loadButtonStr);
-            loadButton->setVisible(false);
-            loadLabel->setVisible(true);
-            break;
-        }
-    }
-}
-
-void DlgSettingsWorkbenchesImp::onWbActivated(const QString &wbName, bool checked)
-{
-    // activate/deactivate the widgets
-    for (int i = 0; i < ui->wbList->count(); i++) {
-        QWidget* widget = ui->wbList->itemWidget(ui->wbList->item(i));
-        if (widget && widget->objectName() == wbName) {
-            QWidget* iconLabel = widget->findChild<QWidget*>(iconLabelStr);
-            QWidget* nameLabel = widget->findChild<QWidget*>(nameLabelStr);
-            QWidget* loadLabel = widget->findChild<QWidget*>(loadLabelStr);
-            QWidget* loadButton = widget->findChild<QWidget*>(loadButtonStr);
-            QCheckBox* autoloadCheckbox = widget->findChild<QCheckBox*>(autoloadCheckboxStr);
-            if (!iconLabel || !nameLabel || !loadLabel || !loadButton || !autoloadCheckbox)
-                return;
-            iconLabel->setEnabled(checked);
-            nameLabel->setEnabled(checked);
-            loadLabel->setEnabled(checked);
-            loadButton->setEnabled(checked);
-            autoloadCheckbox->setEnabled(checked);
-            if (!checked) //disabling wb disable auto-load.
-                autoloadCheckbox->setChecked(false);
-            break;
-        }
-    }
-
-    // Reset the start combo items.
-    setStartWorkbenchComboItems();
-}
-
 /**
 Build the list of unloaded workbenches.
 */
@@ -241,97 +289,11 @@ void DlgSettingsWorkbenchesImp::addWorkbench(const QString& wbName, bool enabled
     if (wbName.toStdString() == "NoneWorkbench")
         return; // Do not list the default empty Workbench
 
-    QWidget* widget = createWorkbenchWidget(wbName, enabled);
+    wbListItem* widget = new wbListItem(wbName, enabled, this, this);
     auto wItem = new QListWidgetItem();
     wItem->setSizeHint(widget->sizeHint());
     ui->wbList->addItem(wItem);
     ui->wbList->setItemWidget(wItem, widget);
-}
-
-QWidget* DlgSettingsWorkbenchesImp::createWorkbenchWidget(const QString& wbName, bool enabled)
-{
-    auto wbTooltip = Application::Instance->workbenchToolTip(wbName);
-    auto wbDisplayName = Application::Instance->workbenchMenuText(wbName);
-
-    // 1: Enable checkbox
-    auto enableCheckBox = new QCheckBox(this);
-    enableCheckBox->setToolTip(tr("If unchecked, %1 will not appear in the available workbenches.").arg(wbDisplayName));
-    enableCheckBox->setChecked(enabled);
-    enableCheckBox->setObjectName(enableCheckboxStr);
-    if (wbName.toStdString() == _startupModule) {
-        enableCheckBox->setChecked(true);
-        enableCheckBox->setEnabled(false);
-        enableCheckBox->setToolTip(tr("This is the current startup module, and must be enabled. See Preferences/General/Autoload to change."));
-    }
-    connect(enableCheckBox, &QCheckBox::toggled, this, [this, wbName](bool checked) { onWbActivated(wbName, checked); });
-
-    // 2: Workbench Icon
-    auto wbIcon = Application::Instance->workbenchIcon(wbName);
-    auto iconLabel = new QLabel(wbDisplayName);
-    iconLabel->setObjectName(iconLabelStr);
-    iconLabel->setPixmap(wbIcon.scaled(QSize(20, 20), Qt::AspectRatioMode::KeepAspectRatio, Qt::TransformationMode::SmoothTransformation));
-    iconLabel->setToolTip(wbTooltip);
-    iconLabel->setContentsMargins(5, 0, 0, 5); // Left, top, right, bottom
-    iconLabel->setEnabled(enableCheckBox->isChecked());
-
-    // 3: Workbench Display Name
-    auto textLabel = new QLabel(wbDisplayName);
-    textLabel->setObjectName(nameLabelStr);
-    textLabel->setToolTip(wbTooltip); 
-    QFont font = textLabel->font();
-    font.setBold(true);
-    textLabel->setFont(font);
-    textLabel->setEnabled(enableCheckBox->isChecked());
-    textLabel->setMinimumSize(200,0);
-
-
-    // 4: Autoloaded checkBox.
-    auto autoloadCheckBox = new QCheckBox(this);
-    autoloadCheckBox->setObjectName(autoloadCheckboxStr);
-    autoloadCheckBox->setText(tr("Auto-load"));
-    autoloadCheckBox->setToolTip(tr("If checked, %1 will be loaded automatically when FreeCAD starts up").arg(wbDisplayName));
-    autoloadCheckBox->setEnabled(enableCheckBox->isChecked());
-
-    if (wbName.toStdString() == _startupModule) { // Figure out whether to check and/or disable this checkBox:
-        autoloadCheckBox->setChecked(true);
-        autoloadCheckBox->setEnabled(false);
-        autoloadCheckBox->setToolTip(tr("This is the current startup module, and must be autoloaded. See Preferences/General/Autoload to change."));
-    }
-    else if (std::find(_backgroundAutoloadedModules.begin(), _backgroundAutoloadedModules.end(),
-        wbName.toStdString()) != _backgroundAutoloadedModules.end()) {
-        autoloadCheckBox->setChecked(true);
-    }
-
-    // 5: Load button/loaded indicator
-    auto loadLabel = new QLabel(tr("Loaded"));
-    loadLabel->setAlignment(Qt::AlignCenter);
-    loadLabel->setObjectName(loadLabelStr);
-    loadLabel->setEnabled(enableCheckBox->isChecked());
-    auto loadButton = new QPushButton(tr("Load"));
-    loadButton->setObjectName(loadButtonStr);
-    loadButton->setToolTip(tr("To preserve resources, FreeCAD does not load workbenches until they are used. Loading them may provide access to additional preferences related to their functionality."));
-    loadButton->setEnabled(enableCheckBox->isChecked());
-    connect(loadButton, &QPushButton::clicked, this, [this, wbName]() { onLoadClicked(wbName); });
-    if (WorkbenchManager::instance()->getWorkbench(wbName.toStdString())) {
-        loadButton->setVisible(false);
-    }
-    else {
-        loadLabel->setVisible(false);
-    }
-
-    auto mainWidget = new QWidget(this);
-    mainWidget->setObjectName(wbName);
-    auto layout = new QHBoxLayout(mainWidget);
-    layout->addWidget(enableCheckBox);
-    layout->addWidget(iconLabel);
-    layout->addWidget(textLabel);
-    layout->addWidget(loadButton);
-    layout->addWidget(loadLabel);
-    layout->addWidget(autoloadCheckBox);
-    layout->setAlignment(Qt::AlignLeft);
-    layout->setContentsMargins(10, 0, 0, 0);
-
-    return mainWidget;
 }
 
 
@@ -415,12 +377,9 @@ void DlgSettingsWorkbenchesImp::setStartWorkbenchComboItems()
     // fills the combo box with activated workbenches.
     QStringList enabledWbs;
     for (int i = 0; i < ui->wbList->count(); i++) {
-        QWidget* widget = ui->wbList->itemWidget(ui->wbList->item(i));
-        if (widget) {
-            QCheckBox* enableCheckbox = widget->findChild<QCheckBox*>(enableCheckboxStr);
-            if (enableCheckbox && enableCheckbox->isChecked()) {
-                enabledWbs << widget->objectName();
-            }
+        wbListItem* wbItem = dynamic_cast<wbListItem*>(ui->wbList->itemWidget(ui->wbList->item(i)));
+        if (wbItem && wbItem->enableCheckBox->isChecked()) {
+            enabledWbs << wbItem->objectName();
         }
     }
 
@@ -464,14 +423,13 @@ void Gui::Dialog::DlgSettingsWorkbenchesImp::onStartWbChangedClicked(int index)
 
     //Change wb that user can't deactivate.
     for (int i = 0; i < ui->wbList->count(); i++) {
-        QWidget* widget = ui->wbList->itemWidget(ui->wbList->item(i));
-        if (widget) {
-            QCheckBox* enableCheckbox = widget->findChild<QCheckBox*>(enableCheckboxStr);
-            if (enableCheckbox && widget->objectName() == wbName) {
-                enableCheckbox->setEnabled(false);
+        wbListItem* wbItem = dynamic_cast<wbListItem*>(ui->wbList->itemWidget(ui->wbList->item(i)));
+        if (wbItem) {
+            if (wbItem->objectName() == wbName) {
+                wbItem->enableCheckBox->setEnabled(false);
             }
             else {
-                enableCheckbox->setEnabled(true);
+                wbItem->enableCheckBox->setEnabled(true);
             }
         }
     }
