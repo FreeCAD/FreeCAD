@@ -18,7 +18,7 @@
 #include <Base/FileInfo.h>
 #include <Base/Stream.h>
 #include <Base/Vector3D.h>
-
+#include <Base/Interpreter.h>
 #include "dxf.h"
 
 
@@ -1766,11 +1766,16 @@ CDxfRead::CDxfRead(const char* filepath)
     }
     m_ifs->imbue(std::locale("C"));
 
+    m_version = RUnknown;
+    m_CodePage = NULL;
+    m_encoding = NULL;
 }
 
 CDxfRead::~CDxfRead()
 {
     delete m_ifs;
+    delete m_CodePage;
+    delete m_encoding;
 }
 
 double CDxfRead::mm( double value ) const
@@ -2418,8 +2423,12 @@ bool CDxfRead::ReadText()
                 // that ReadText() and all the other Read... methods return having already read a code 0.
                 get_line();
                 DerefACI();
-                textPrefix.append(m_str);
-                OnReadText(c, height * 25.4 / 72.0, textPrefix.c_str());
+                {
+                    const char* utfStr = (this->*stringToUTF8)(m_str);
+                    OnReadText(c, height * 25.4 / 72.0, utfStr);
+                    if (utfStr != m_str)
+                        delete utfStr;
+                }
                 return(true);
 
             case 62:
@@ -3271,7 +3280,118 @@ bool CDxfRead::ReadLayer()
     return false;
 }
 
-void CDxfRead::DoRead(const bool ignore_errors /* = false */ )
+bool CDxfRead::ReadVersion()
+{
+    static const std::vector<std::string> VersionNames = {
+        // This table is indexed by eDXFVersion_t - (ROlder+1)
+        "AC1006",
+        "AC1009",
+        "AC1012",
+        "AC1014",
+        "AC1015",
+        "AC1018",
+        "AC1021",
+        "AC1024",
+        "AC1027",
+        "AC1032"};
+
+    assert(VersionNames.size() == RNewer - ROlder - 1);
+    get_line();
+    get_line();
+    std::vector<std::string>::const_iterator first = VersionNames.cbegin();
+    std::vector<std::string>::const_iterator last = VersionNames.cend();
+    std::vector<std::string>::const_iterator found = std::lower_bound(first, last, m_str);
+    if (found == last)
+        m_version = RNewer;
+    else if (*found == m_str)
+        m_version = (eAutoCADVersion_t)(std::distance(first, found) + (ROlder + 1));
+    else if (found == first)
+        m_version = ROlder;
+    else
+        m_version = RUnknown;
+
+    return ResolveEncoding();
+}
+
+bool CDxfRead::ReadDWGCodePage()
+{
+    get_line();
+    get_line();
+    assert(m_CodePage == NULL); // If not, we have found two DWGCODEPAGE variables or DoRead was called twice on the same CDxfRead object.
+    m_CodePage = new std::string(m_str);
+
+    return ResolveEncoding();
+}
+
+bool CDxfRead::ResolveEncoding()
+{
+    if (m_encoding != NULL) {
+        delete m_encoding;
+        m_encoding = NULL;
+    }
+    if (m_version >= R2007) {   // Note this does not include RUnknown, but does include RLater
+        m_encoding = new std::string("utf_8");
+        stringToUTF8 = &CDxfRead::UTF8ToUTF8;
+    }
+    else if (m_CodePage == NULL) {
+        // cp1252
+        m_encoding = new std::string("cp1252");
+        stringToUTF8 = &CDxfRead::GeneralToUTF8;
+    }
+    else {
+        // Names may be of the form "ansi_1252" which we map to "cp1252" but we don't map "ansi_x3xxxx" which means "ascii"
+        if (strncmp(m_CodePage->c_str(), "ansi_", 5) == 0
+            && strncmp(m_CodePage->c_str(), "ansi_x3", 7) != 0) {
+            std::string* p = new std::string(*m_CodePage);
+            p->replace(0, 5, "cp");
+            m_encoding = p;
+        }
+        else
+            m_encoding = new std::string(*m_CodePage);
+        // At this point we want to recognize synonyms for "utf_8" and use the custom decoder function.
+        // This is because this is one of the common cases and our decoder function is a fast no-op.
+        // We don't actually use the decoder function we get from PyCodec_Decoder because to call it we have to convert the (char *) text into
+        // a 'bytes' object first so we can pass it to the function using PyObject_Callxxx(), getting the PYObject containing the
+        // Python string, which we then decode back to UTF-8. It is simpler to call PyUnicode_DecodeXxxx which takes a (const char *)
+        // and is just a direct c++ callable.
+        PyObject* pyDecoder = PyCodec_Decoder(m_encoding->c_str());
+        if (pyDecoder == NULL)
+            return false; // A key error exception will have been placed.
+        PyObject* pyUTF8Decoder = PyCodec_Decoder("utf_8");
+        assert(pyUTF8Decoder != NULL);
+        if (pyDecoder == pyUTF8Decoder)
+            stringToUTF8 = &CDxfRead::UTF8ToUTF8;
+        else
+            stringToUTF8 = &CDxfRead::GeneralToUTF8;
+        Py_DECREF(pyDecoder);
+        Py_DECREF(pyUTF8Decoder);
+    }
+    return m_encoding != NULL;
+}
+const char* CDxfRead::UTF8ToUTF8(const char* encoded) const
+{
+    return encoded;
+}
+const char* CDxfRead::GeneralToUTF8(const char* encoded) const
+{
+    PyObject* decoded = PyUnicode_Decode(encoded, strlen(encoded), m_encoding->c_str(), "strict");
+    if (decoded == NULL)
+        return NULL;
+    Py_ssize_t len;
+    const char* converted = PyUnicode_AsUTF8AndSize(decoded, &len);
+    char* result = NULL;
+    if (converted != NULL) {
+        // converted only has lifetime of decoded so we must save a copy.
+        result = (char *)malloc(len + 1);
+        if (result == NULL)
+            PyErr_SetString(PyExc_MemoryError, "Out of memory");
+        else
+            memcpy(result, converted, len + 1);
+    }
+    Py_DECREF(decoded);
+    return result;
+}
+void CDxfRead::DoRead(const bool ignore_errors /* = false */)
 {
     m_ignore_errors = ignore_errors;
     if(m_fail)
@@ -3298,7 +3418,19 @@ void CDxfRead::DoRead(const bool ignore_errors /* = false */ )
             continue;
         } // End if - then
 
-        else if(!strcmp(m_str, "0"))
+        if (!strcmp(m_str, "$ACADVER")) {
+            if (!ReadVersion())
+                return;
+            continue;
+        }// End if - then
+
+        if (!strcmp(m_str, "$DWGCODEPAGE")) {
+            if (!ReadDWGCodePage())
+                return;
+            continue;
+        }// End if - then
+
+        if (!strcmp(m_str, "0"))
         {
             get_line();
             if (!strcmp( m_str, "SECTION" )){
