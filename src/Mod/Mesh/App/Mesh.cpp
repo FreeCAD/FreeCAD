@@ -56,7 +56,7 @@
 
 using namespace Mesh;
 
-float MeshObject::Epsilon = 1.0e-5f;
+const float MeshObject::Epsilon = 1.0e-5F;
 
 TYPESYSTEM_SOURCE(Mesh::MeshObject, Data::ComplexGeoData)
 TYPESYSTEM_SOURCE(Mesh::MeshSegment, Data::Segment)
