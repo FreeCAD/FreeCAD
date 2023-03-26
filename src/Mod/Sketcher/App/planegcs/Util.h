@@ -23,9 +23,10 @@
 #ifndef PLANEGCS_UTIL_H
 #define PLANEGCS_UTIL_H
 
-#include <vector>
 #include <map>
 #include <set>
+#include <vector>
+
 
 namespace GCS
 {

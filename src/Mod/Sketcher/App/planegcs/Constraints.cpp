@@ -21,11 +21,13 @@
  ***************************************************************************/
 
 #include <algorithm>
-#include <cmath>
 #define DEBUG_DERIVS 0
 #if DEBUG_DERIVS
 # include <cassert>
 #endif
+#include <cmath>
+
+#include <boost/graph/graph_concepts.hpp>
 
 #include "Constraints.h"
 
