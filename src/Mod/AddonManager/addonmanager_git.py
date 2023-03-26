@@ -31,11 +31,11 @@ import shutil
 import subprocess
 from typing import List, Optional
 import time
-import FreeCAD
 
 import addonmanager_utilities as utils
+import addonmanager_freecad_interface as fci
 
-translate = FreeCAD.Qt.translate
+translate = fci.translate
 
 
 class NoGitFound(RuntimeError):
@@ -90,7 +90,7 @@ class GitManager:
             self._synchronous_call_git(["pull"])
             self._synchronous_call_git(["submodule", "update", "--init", "--recursive"])
         except GitFailed as e:
-            FreeCAD.Console.PrintWarning(
+            fci.Console.PrintWarning(
                 translate(
                     "AddonsInstaller",
                     "Basic git update failed with the following message:",
@@ -98,7 +98,7 @@ class GitManager:
                 + str(e)
                 + "\n"
             )
-            FreeCAD.Console.PrintWarning(
+            fci.Console.PrintWarning(
                 translate(
                     "AddonsInstaller",
                     "Backing up the original directory and re-cloning",
@@ -209,7 +209,7 @@ class GitManager:
         try:
             self.clone(remote, local_path)
         except GitFailed as e:
-            FreeCAD.Console.PrintError(
+            fci.Console.PrintError(
                 translate(
                     "AddonsInstaller", "Failed to clone {} into {} using git"
                 ).format(remote, local_path)
@@ -240,10 +240,10 @@ class GitManager:
                 if len(segments) == 3:
                     result = segments[1]
                     break
-                FreeCAD.Console.PrintWarning(
+                fci.Console.PrintWarning(
                     "Error parsing the results from git remote -v show:\n"
                 )
-                FreeCAD.Console.PrintWarning(line + "\n")
+                fci.Console.PrintWarning(line + "\n")
         os.chdir(old_dir)
         return result
 
@@ -320,10 +320,10 @@ class GitManager:
         #   A) The value of the GitExecutable user preference
         #   B) The executable located in the same bin directory as FreeCAD and called "git"
         #   C) The result of a shutil search for your system's "git" executable
-        prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Addons")
+        prefs = fci.ParamGet("User parameter:BaseApp/Preferences/Addons")
         git_exe = prefs.GetString("GitExecutable", "Not set")
         if not git_exe or git_exe == "Not set" or not os.path.exists(git_exe):
-            fc_dir = FreeCAD.getHomePath()
+            fc_dir = fci.DataPaths().home_dir()
             git_exe = os.path.join(fc_dir, "bin", "git")
             if "Windows" in platform.system():
                 git_exe += ".exe"
@@ -361,7 +361,7 @@ def initialize_git() -> Optional[GitManager]:
     preference group. Returns None if for any of those reasons we aren't using git."""
 
     git_manager = None
-    pref = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Addons")
+    pref = fci.ParamGet("User parameter:BaseApp/Preferences/Addons")
     disable_git = pref.GetBool("disableGit", False)
     if not disable_git:
         try:

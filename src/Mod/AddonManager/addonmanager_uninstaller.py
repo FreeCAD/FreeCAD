@@ -28,14 +28,13 @@ details. """
 import os
 from typing import List
 
-import FreeCAD
-
-from PySide import QtCore
+import addonmanager_freecad_interface as fci
+from addonmanager_pyside_interface import QObject, Signal
 
 import addonmanager_utilities as utils
 from Addon import Addon
 
-translate = FreeCAD.Qt.translate
+translate = fci.translate
 
 # pylint: disable=too-few-public-methods
 
@@ -44,7 +43,7 @@ class InvalidAddon(RuntimeError):
     """Raised when an object that cannot be uninstalled is passed to the constructor"""
 
 
-class AddonUninstaller(QtCore.QObject):
+class AddonUninstaller(QObject):
     """The core, non-GUI uninstaller class for non-macro addons. Usually instantiated and moved to
     its own thread, otherwise it will block the GUI (if the GUI is running) -- since all it does is
     delete files this is not a huge problem, but in some cases the Addon might be quite large, and
@@ -59,7 +58,7 @@ class AddonUninstaller(QtCore.QObject):
 
         addon_to_remove = MyAddon() # Some class with 'name' attribute
 
-        self.worker_thread = QtCore.QThread()
+        self.worker_thread = QThread()
         self.uninstaller = AddonUninstaller(addon_to_remove)
         self.uninstaller.moveToThread(self.worker_thread)
         self.uninstaller.success.connect(self.removal_succeeded)
@@ -83,12 +82,12 @@ class AddonUninstaller(QtCore.QObject):
     # Signals: success and failure
     # Emitted when the installation process is complete. The object emitted is the object that the
     # installation was requested for.
-    success = QtCore.Signal(object)
-    failure = QtCore.Signal(object, str)
+    success = Signal(object)
+    failure = Signal(object, str)
 
     # Finished: regardless of the outcome, this is emitted when all work that is going to be done
     # is done (i.e. whatever thread this is running in can quit).
-    finished = QtCore.Signal()
+    finished = Signal()
 
     def __init__(self, addon: object):
         """Initialize the uninstaller."""
@@ -185,7 +184,7 @@ class AddonUninstaller(QtCore.QObject):
                         FreeCAD.Console.PrintWarning(str(e) + "\n")
 
 
-class MacroUninstaller(QtCore.QObject):
+class MacroUninstaller(QObject):
     """The core, non-GUI uninstaller class for macro addons. May be run directly on the GUI thread
     if desired, since macros are intended to be relatively small and shouldn't have too many files
     to delete. However, it is a QObject so may also be moved into a QThread -- see AddonUninstaller
@@ -200,12 +199,12 @@ class MacroUninstaller(QtCore.QObject):
     # Signals: success and failure
     # Emitted when the removal process is complete. The object emitted is the object that the
     # removal was requested for.
-    success = QtCore.Signal(object)
-    failure = QtCore.Signal(object, str)
+    success = Signal(object)
+    failure = Signal(object, str)
 
     # Finished: regardless of the outcome, this is emitted when all work that is going to be done
     # is done (i.e. whatever thread this is running in can quit).
-    finished = QtCore.Signal()
+    finished = Signal()
 
     def __init__(self, addon):
         super().__init__()
