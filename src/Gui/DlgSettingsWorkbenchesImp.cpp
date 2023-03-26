@@ -54,6 +54,7 @@ DlgSettingsWorkbenchesImp::DlgSettingsWorkbenchesImp( QWidget* parent )
     , ui(new Ui_DlgSettingsWorkbenches)
 {
     ui->setupUi(this);
+    connect(ui->AutoloadModuleCombo, QOverload<int>::of(&QComboBox::activated), this, [this](int index) { onStartWbChangedClicked(index); });
 }
 
 /**
@@ -114,6 +115,12 @@ void DlgSettingsWorkbenchesImp::saveSettings()
         SetASCII("BackgroundAutoloadModules", autoloadStr.str().c_str());
 
     saveWorkbenchSelector();
+
+    int index = ui->AutoloadModuleCombo->currentIndex();
+    QVariant data = ui->AutoloadModuleCombo->itemData(index);
+    QString startWbName = data.toString();
+    App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/General")->
+        SetASCII("AutoloadModule", startWbName.toLatin1());
 }
 
 void DlgSettingsWorkbenchesImp::loadSettings()
@@ -137,8 +144,10 @@ void DlgSettingsWorkbenchesImp::loadSettings()
     while (std::getline(stream, workbench, ','))
         _backgroundAutoloadedModules.push_back(workbench);
 
-
     buildWorkbenchList();
+
+    //We set the startup setting after building the list so that we can put only the enabled wb.
+    setStartWorkbenchComboItems();
 }
 
 void DlgSettingsWorkbenchesImp::onLoadClicked(const QString &wbName)
@@ -184,6 +193,9 @@ void DlgSettingsWorkbenchesImp::onWbActivated(const QString &wbName, bool checke
             break;
         }
     }
+
+    // Reset the start combo items.
+    setStartWorkbenchComboItems();
 }
 
 /**
@@ -392,6 +404,75 @@ void DlgSettingsWorkbenchesImp::loadWorkbenchSelector()
     ui->WorkbenchSelectorPosition->addItem(tr("Left corner"));
     ui->WorkbenchSelectorPosition->addItem(tr("Right corner"));
     ui->WorkbenchSelectorPosition->setCurrentIndex(WorkbenchSwitcher::getIndex());
+}
+
+void DlgSettingsWorkbenchesImp::setStartWorkbenchComboItems()
+{
+    ui->AutoloadModuleCombo->clear();
+
+    // fills the combo box with activated workbenches.
+    QStringList enabledWbs;
+    for (int i = 0; i < ui->wbList->count(); i++) {
+        QWidget* widget = ui->wbList->itemWidget(ui->wbList->item(i));
+        if (widget) {
+            QCheckBox* enableCheckbox = widget->findChild<QCheckBox*>(enableCheckboxStr);
+            if (enableCheckbox && enableCheckbox->isChecked()) {
+                enabledWbs << widget->objectName();
+            }
+        }
+    }
+
+    QMap<QString, QString> menuText;
+    for (const auto& it : enabledWbs) {
+        QString text = Application::Instance->workbenchMenuText(it);
+        menuText[text] = it;
+    }
+
+    {   // add special workbench to selection
+        QPixmap px = Application::Instance->workbenchIcon(QString::fromLatin1("NoneWorkbench"));
+        QString key = QString::fromLatin1("<last>");
+        QString value = QString::fromLatin1("$LastModule");
+        if (px.isNull()) {
+            ui->AutoloadModuleCombo->addItem(key, QVariant(value));
+        }
+        else {
+            ui->AutoloadModuleCombo->addItem(px, key, QVariant(value));
+        }
+    }
+
+    for (QMap<QString, QString>::Iterator it = menuText.begin(); it != menuText.end(); ++it) {
+        QPixmap px = Application::Instance->workbenchIcon(it.value());
+        if (px.isNull()) {
+            ui->AutoloadModuleCombo->addItem(it.key(), QVariant(it.value()));
+        }
+        else {
+            ui->AutoloadModuleCombo->addItem(px, it.key(), QVariant(it.value()));
+        }
+    }
+
+    ui->AutoloadModuleCombo->setCurrentIndex(ui->AutoloadModuleCombo->findData(QString::fromStdString(_startupModule)));
+}
+
+void Gui::Dialog::DlgSettingsWorkbenchesImp::onStartWbChangedClicked(int index)
+{
+    //Update _startupModule
+    QVariant data = ui->AutoloadModuleCombo->itemData(index);
+    QString wbName = data.toString();
+    _startupModule = wbName.toStdString();
+
+    //Change wb that user can't deactivate.
+    for (int i = 0; i < ui->wbList->count(); i++) {
+        QWidget* widget = ui->wbList->itemWidget(ui->wbList->item(i));
+        if (widget) {
+            QCheckBox* enableCheckbox = widget->findChild<QCheckBox*>(enableCheckboxStr);
+            if (enableCheckbox && widget->objectName() == wbName) {
+                enableCheckbox->setEnabled(false);
+            }
+            else {
+                enableCheckbox->setEnabled(true);
+            }
+        }
+    }
 }
 
 #include "moc_DlgSettingsWorkbenchesImp.cpp"

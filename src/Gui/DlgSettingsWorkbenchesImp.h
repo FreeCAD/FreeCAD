@@ -68,6 +68,9 @@ private:
     void saveWorkbenchSelector();
     void loadWorkbenchSelector();
 
+    void setStartWorkbenchComboItems();
+    void onStartWbChangedClicked(int index);
+
     std::unique_ptr<Ui_DlgSettingsWorkbenches> ui;
     static const QString iconLabelStr;
     static const QString nameLabelStr;

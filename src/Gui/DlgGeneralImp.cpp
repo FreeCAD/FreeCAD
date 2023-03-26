@@ -62,37 +62,6 @@ DlgGeneralImp::DlgGeneralImp( QWidget* parent )
 {
     ui->setupUi(this);
 
-    // fills the combo box with all available workbenches
-    // sorted by their menu text
-    QStringList work = Application::Instance->workbenches();
-    QMap<QString, QString> menuText;
-    for (const auto & it : work) {
-        QString text = Application::Instance->workbenchMenuText(it);
-        menuText[text] = it;
-    }
-
-    {   // add special workbench to selection
-        QPixmap px = Application::Instance->workbenchIcon(QString::fromLatin1("NoneWorkbench"));
-        QString key = QString::fromLatin1("<last>");
-        QString value = QString::fromLatin1("$LastModule");
-        if (px.isNull()) {
-            ui->AutoloadModuleCombo->addItem(key, QVariant(value));
-        }
-        else {
-            ui->AutoloadModuleCombo->addItem(px, key, QVariant(value));
-        }
-    }
-
-    for (QMap<QString, QString>::Iterator it = menuText.begin(); it != menuText.end(); ++it) {
-        QPixmap px = Application::Instance->workbenchIcon(it.value());
-        if (px.isNull()) {
-            ui->AutoloadModuleCombo->addItem(it.key(), QVariant(it.value()));
-        }
-        else {
-            ui->AutoloadModuleCombo->addItem(px, it.key(), QVariant(it.value()));
-        }
-    }
-
     recreatePreferencePackMenu();
 
     connect(ui->ImportConfig, &QPushButton::clicked, this, &DlgGeneralImp::onImportConfigClicked);
@@ -177,12 +146,6 @@ void DlgGeneralImp::setDecimalPointConversion(bool on)
 
 void DlgGeneralImp::saveSettings()
 {
-    int index = ui->AutoloadModuleCombo->currentIndex();
-    QVariant data = ui->AutoloadModuleCombo->itemData(index);
-    QString startWbName = data.toString();
-    App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/General")->
-                          SetASCII("AutoloadModule", startWbName.toLatin1());
-
     ui->SubstituteDecimal->onSave();
     ui->UseLocaleFormatting->onSave();
     ui->RecentFiles->onSave();
@@ -232,12 +195,6 @@ void DlgGeneralImp::saveSettings()
 
 void DlgGeneralImp::loadSettings()
 {
-    std::string start = App::Application::Config()["StartWorkbench"];
-    start = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/General")->
-                                  GetASCII("AutoloadModule", start.c_str());
-    QString startWbName = QLatin1String(start.c_str());
-    ui->AutoloadModuleCombo->setCurrentIndex(ui->AutoloadModuleCombo->findData(startWbName));
-
     ui->SubstituteDecimal->onRestore();
     ui->UseLocaleFormatting->onRestore();
     ui->RecentFiles->onRestore();

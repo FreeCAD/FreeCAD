@@ -58,6 +58,40 @@ Your currently system has the following workbenches:&lt;/p&gt;&lt;/body&gt;&lt;/
       <number>0</number>
      </property>
      <item>
+      <widget class="QLabel" name="autoModuleLabel">
+       <property name="text">
+        <string>Start up workbench:</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QComboBox" name="AutoloadModuleCombo">
+       <property name="toolTip">
+        <string>Choose which workbench will be activated and shown
+after FreeCAD launches</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item row="3" column="0">
+    <layout class="QHBoxLayout">
+     <property name="spacing">
+      <number>6</number>
+     </property>
+     <property name="leftMargin">
+      <number>0</number>
+     </property>
+     <property name="topMargin">
+      <number>0</number>
+     </property>
+     <property name="rightMargin">
+      <number>0</number>
+     </property>
+     <property name="bottomMargin">
+      <number>0</number>
+     </property>
+     <item>
       <widget class="QLabel" name="WorkbenchSelectorPositionLabel">
        <property name="text">
         <string>Workbench selector position :</string>
