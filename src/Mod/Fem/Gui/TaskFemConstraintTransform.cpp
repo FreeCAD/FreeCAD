@@ -77,11 +77,11 @@ TaskFemConstraintTransform::TaskFemConstraintTransform(
     connect(ui->rb_rect, &QRadioButton::clicked, this, &TaskFemConstraintTransform::Rect);
     connect(ui->rb_cylin, &QRadioButton::clicked, this, &TaskFemConstraintTransform::Cyl);
 
-    connect(ui->sp_X, qOverload<int>(&QSpinBox::valueChanged),
+    connect(ui->sp_X, qOverload<double>(&QuantitySpinBox::valueChanged),
             this, &TaskFemConstraintTransform::x_Changed);
-    connect(ui->sp_Y, qOverload<int>(&QSpinBox::valueChanged),
+    connect(ui->sp_Y, qOverload<double>(&QuantitySpinBox::valueChanged),
             this, &TaskFemConstraintTransform::y_Changed);
-    connect(ui->sp_Z, qOverload<int>(&QSpinBox::valueChanged),
+    connect(ui->sp_Z, qOverload<double>(&QuantitySpinBox::valueChanged),
             this, &TaskFemConstraintTransform::z_Changed);
 
     // Get the feature data
@@ -92,9 +92,9 @@ TaskFemConstraintTransform::TaskFemConstraintTransform(
     std::vector<std::string> SubElements = pcConstraint->References.getSubValues();
 
     // Fill data into dialog elements
-    ui->sp_X->setValue(pcConstraint->X_rot.getValue());
-    ui->sp_Y->setValue(pcConstraint->Y_rot.getValue());
-    ui->sp_Z->setValue(pcConstraint->Z_rot.getValue());
+    ui->sp_X->setValue(pcConstraint->X_rot.getQuantityValue());
+    ui->sp_Y->setValue(pcConstraint->Y_rot.getQuantityValue());
+    ui->sp_Z->setValue(pcConstraint->Z_rot.getQuantityValue());
     std::string transform_type = pcConstraint->TransformType.getValueAsString();
     if (transform_type == "Rectangular") {
         ui->sw_transform->setCurrentIndex(0);
@@ -150,7 +150,13 @@ TaskFemConstraintTransform::TaskFemConstraintTransform(
             this,
             &TaskFemConstraintTransform::removeFromSelection);
 
+    // Bind input fields to properties
+    ui->sp_X->bind(pcConstraint->X_rot);
+    ui->sp_Y->bind(pcConstraint->Y_rot);
+    ui->sp_Z->bind(pcConstraint->Z_rot);
+
     updateUI();
+
     if ((p == 0) && (!Objects.empty())) {
         QMessageBox::warning(this,
                              tr("Constraint update error"),
@@ -507,10 +513,18 @@ else:\n\
         doc." + showConstr + ".NameDispl = []\n";
 }
 
-/* Note: */
-double TaskFemConstraintTransform::get_X_rot() const { return ui->sp_X->value(); }
-double TaskFemConstraintTransform::get_Y_rot() const { return ui->sp_Y->value(); }
-double TaskFemConstraintTransform::get_Z_rot() const { return ui->sp_Z->value(); }
+std::string TaskFemConstraintTransform::get_X_rot() const
+{
+    return ui->sp_X->value().getSafeUserString().toStdString();
+}
+std::string TaskFemConstraintTransform::get_Y_rot() const
+{
+    return ui->sp_Y->value().getSafeUserString().toStdString();
+}
+std::string TaskFemConstraintTransform::get_Z_rot() const
+{
+    return ui->sp_Z->value().getSafeUserString().toStdString();
+}
 
 std::string TaskFemConstraintTransform::get_transform_type() const {
     std::string transform;
@@ -570,27 +584,17 @@ bool TaskDlgFemConstraintTransform::accept()
         static_cast<const TaskFemConstraintTransform*>(parameter);
 
     try {
-        Gui::Command::doCommand(Gui::Command::Doc,
-                                "App.ActiveDocument.%s.X_rot = %f",
-                                name.c_str(),
-                                parameters->get_X_rot());
-        Gui::Command::doCommand(Gui::Command::Doc,
-                                "App.ActiveDocument.%s.Y_rot = %f",
-                                name.c_str(),
-                                parameters->get_Y_rot());
-        Gui::Command::doCommand(Gui::Command::Doc,
-                                "App.ActiveDocument.%s.Z_rot = %f",
-                                name.c_str(),
-                                parameters->get_Z_rot());
-        Gui::Command::doCommand(Gui::Command::Doc,
-                                "App.ActiveDocument.%s.TransformType = %s",
-                                name.c_str(),
-                                parameters->get_transform_type().c_str());
+        Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.%s.X_rot = \"%s\"",
+                                name.c_str(), parameters->get_X_rot().c_str());
+        Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.%s.Y_rot = \"%s\"",
+                                name.c_str(), parameters->get_Y_rot().c_str());
+        Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.%s.Z_rot = \"%s\"",
+                                name.c_str(), parameters->get_Z_rot().c_str());
+        Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.%s.TransformType = %s",
+                                name.c_str(), parameters->get_transform_type().c_str());
         std::string scale = parameters->getScale();// OvG: determine modified scale
-        Gui::Command::doCommand(Gui::Command::Doc,
-                                "App.ActiveDocument.%s.Scale = %s",
-                                name.c_str(),
-                                scale.c_str());// OvG: implement modified scale
+        Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.%s.Scale = %s",
+                                name.c_str(), scale.c_str());// OvG: implement modified scale
     }
     catch (const Base::Exception& e) {
         QMessageBox::warning(parameter, tr("Input error"), QString::fromLatin1(e.what()));
