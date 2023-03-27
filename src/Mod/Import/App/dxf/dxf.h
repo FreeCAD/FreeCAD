@@ -26,7 +26,7 @@
 #define HAVE_IOSTREAM
 #endif
 
-typedef int Aci_t; // AutoCAD color index
+typedef int ColorIndex_t; // DXF color index
 
 typedef enum
 {
@@ -272,8 +272,9 @@ private:
     bool m_ignore_errors;
 
 
-    typedef std::map< std::string,Aci_t > LayerAciMap_t;
-    LayerAciMap_t m_layer_aci;  // layer names -> layer color aci map
+    std::map<std::string,ColorIndex_t> m_layer_ColorIndex_map;  // Mapping from layer name -> layer color index
+    const ColorIndex_t ColorBylayer = 256;
+    const ColorIndex_t ColorByBlock = 0;
 
     bool ReadUnits();
     bool ReadLayer();
@@ -299,10 +300,10 @@ private:
 
     void get_line();
     void put_line(const char *value);
-    void DerefACI();
+    void ResolveColorIndex();
 
 protected:
-    Aci_t m_aci; // manifest color name or 256 for layer color
+    ColorIndex_t m_ColorIndex;
     eDXFVersion_t m_version;// Version from $ACADVER variable in DXF
     const char* (CDxfRead::*stringToUTF8)(const char*) const;
 
