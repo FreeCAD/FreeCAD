@@ -45,11 +45,15 @@ public:
     explicit wbListItem(const QString& wbName, bool enabled, DlgSettingsWorkbenchesImp* dlg, QWidget* parent = nullptr);
     ~wbListItem() override;
 
+    bool isEnabled();
+    bool isAutoLoading();
+    void setEnableCheckboxActivated(bool val);
+
 protected Q_SLOTS:
     void onLoadClicked();
     void onWbActivated(bool checked);
 
-public:
+private:
     QCheckBox* enableCheckBox;
     QCheckBox* autoloadCheckBox;
     QLabel* iconLabel;
@@ -144,6 +148,21 @@ wbListItem::~wbListItem()
 {
 }
 
+bool wbListItem::isEnabled()
+{
+    return enableCheckBox->isChecked();
+}
+
+bool wbListItem::isAutoLoading()
+{
+    return autoloadCheckBox->isChecked();
+}
+
+void wbListItem::setEnableCheckboxActivated(bool val)
+{
+    enableCheckBox->setEnabled(val);
+}
+
 void wbListItem::onLoadClicked()
 {
     // activate selected workbench
@@ -209,7 +228,7 @@ void DlgSettingsWorkbenchesImp::saveSettings()
         if (!wbItem)
             continue;
 
-        if (wbItem->enableCheckBox->isChecked()) {
+        if (wbItem->isEnabled()) {
             if (!enabledStr.str().empty())
                 enabledStr << ",";
             enabledStr << wbItem->objectName().toStdString();
@@ -220,7 +239,7 @@ void DlgSettingsWorkbenchesImp::saveSettings()
             disabledStr << wbItem->objectName().toStdString();
         }
 
-        if (wbItem->autoloadCheckBox->isChecked()) {
+        if (wbItem->isAutoLoading()) {
             if (!autoloadStr.str().empty())
                 autoloadStr << ",";
             autoloadStr << wbItem->objectName().toStdString();
@@ -402,7 +421,7 @@ void DlgSettingsWorkbenchesImp::setStartWorkbenchComboItems()
     QStringList enabledWbs;
     for (int i = 0; i < ui->wbList->count(); i++) {
         wbListItem* wbItem = dynamic_cast<wbListItem*>(ui->wbList->itemWidget(ui->wbList->item(i)));
-        if (wbItem && wbItem->enableCheckBox->isChecked()) {
+        if (wbItem && wbItem->isEnabled()) {
             enabledWbs << wbItem->objectName();
         }
     }
@@ -449,12 +468,7 @@ void Gui::Dialog::DlgSettingsWorkbenchesImp::onStartWbChangedClicked(int index)
     for (int i = 0; i < ui->wbList->count(); i++) {
         wbListItem* wbItem = dynamic_cast<wbListItem*>(ui->wbList->itemWidget(ui->wbList->item(i)));
         if (wbItem) {
-            if (wbItem->objectName() == wbName) {
-                wbItem->enableCheckBox->setEnabled(false);
-            }
-            else {
-                wbItem->enableCheckBox->setEnabled(true);
-            }
+            wbItem->setEnableCheckboxActivated(!(wbItem->objectName() == wbName));
         }
     }
 }
