@@ -145,7 +145,7 @@ class Overlappingfaces():
                 subdict=isinsidedict.copy()
                 del subdict[parent]
                 for child in children:
-                        printtreechild(subdict,facenum,child)
+                    printtreechild(subdict,facenum,child)
 
         rootitems=[fi for fi in range(facenum) if Overlappingfaces.hasnoparentstatic(isinsidedict,fi)]
         for rootitem in rootitems:
@@ -169,13 +169,13 @@ class Overlappingfaces():
                 obj=doc.addObject("Part::Cut","facesfromedges_%d" % faceindex)
                 obj.Base= addshape(faceindex) #we only do subtraction
                 if len(directchildren) == 1:
-                        obj.Tool = addfeature(directchildren[0],subdict)
+                    obj.Tool = addfeature(directchildren[0],subdict)
                 else:
-                        obj.Tool = doc.addObject("Part::MultiFuse",\
-                                "facesfromedges_union")
-                        obj.Tool.Shapes = [addfeature(child,subdict)\
-                                for child in directchildren]
-                        obj.Tool.ViewObject.hide()
+                    obj.Tool = doc.addObject("Part::MultiFuse",\
+                            "facesfromedges_union")
+                    obj.Tool.Shapes = [addfeature(child,subdict)\
+                            for child in directchildren]
+                    obj.Tool.ViewObject.hide()
             obj.ViewObject.hide()
             return obj
 
@@ -282,7 +282,7 @@ def endpointdistance(edges):
     it expects the edges to be traversed forward starting from Vertex 0'''
     numedges=len(edges)
     if numedges == 1 and len(edges[0].Vertexes) == 1:
-            return 0.0,0.0,0.0
+        return 0.0,0.0,0.0
     outerdistance = edges[0].Vertexes[0].Point.sub(\
         edges[-1].Vertexes[-1].Point).Length
     if numedges > 1:
@@ -298,7 +298,7 @@ def endpointdistancedebuglist(debuglist):
     it expects a 'not reversed' flag for every edge'''
     numedges=len(debuglist)
     if numedges == 1 and len(debuglist[0][0].Vertexes) == 1:
-            return 0.0,0.0,0.0
+        return 0.0,0.0,0.0
     outerdistance = debuglist[0][0].Vertexes[(not debuglist[0][1])*-1].\
             Point.sub(debuglist[-1][0].Vertexes[(debuglist[-1][1])*-1].\
             Point).Length
@@ -312,7 +312,8 @@ def endpointdistancedebuglist(debuglist):
 
 def edgestowires(edgelist,eps=0.001):
     '''takes list of edges and returns a list of wires'''
-    import Part, Draft
+    import Part
+    import Draft
     # TODO remove double edges
     wirelist=[]
     #for path in findConnectedEdges(edgelist,eps=eps):
@@ -476,7 +477,8 @@ def superWireReverse(debuglist,closed=False):
     return Part.Wire(newedges)
 
 def importDXFface(filename,layer=None,doc=None):
-    import FreeCAD,importDXF
+    import FreeCAD
+    import importDXF
     importDXF.readPreferences()
     importDXF.getDXFlibs()
     importDXF.dxfMakeBlocks = False
