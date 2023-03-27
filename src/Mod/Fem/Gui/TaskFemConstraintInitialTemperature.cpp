@@ -60,21 +60,17 @@ TaskFemConstraintInitialTemperature::TaskFemConstraintInitialTemperature(
     std::vector<std::string> SubElements = pcConstraint->References.getSubValues();
 
     // Fill data into dialog elements
-    ui->if_temperature->setMinimum(0);
-    ui->if_temperature->setMaximum(FLOAT_MAX);
-    Base::Quantity t =
-        Base::Quantity(pcConstraint->initialTemperature.getValue(), Base::Unit::Temperature);
-    ui->if_temperature->setValue(t);
+    ui->if_temperature->setValue(pcConstraint->initialTemperature.getQuantityValue());
+
+    ui->if_temperature->bind(pcConstraint->initialTemperature);
 }
 
 TaskFemConstraintInitialTemperature::~TaskFemConstraintInitialTemperature()
 {}
 
-double TaskFemConstraintInitialTemperature::get_temperature() const
+std::string TaskFemConstraintInitialTemperature::get_temperature() const
 {
-    Base::Quantity temperature = ui->if_temperature->getQuantity();
-    double temperature_in_kelvin = temperature.getValueAs(Base::Quantity::Kelvin);
-    return temperature_in_kelvin;
+    return ui->if_temperature->value().getSafeUserString().toStdString();
 }
 
 void TaskFemConstraintInitialTemperature::changeEvent(QEvent*)
@@ -119,9 +115,9 @@ bool TaskDlgFemConstraintInitialTemperature::accept()
 
     try {
         Gui::Command::doCommand(Gui::Command::Doc,
-                                "App.ActiveDocument.%s.initialTemperature = %f",
+                                "App.ActiveDocument.%s.initialTemperature = \"%s\"",
                                 name.c_str(),
-                                parameterTemperature->get_temperature());
+                                parameterTemperature->get_temperature().c_str());
 
         std::string scale = parameterTemperature->getScale();// OvG: determine modified scale
         Gui::Command::doCommand(Gui::Command::Doc,

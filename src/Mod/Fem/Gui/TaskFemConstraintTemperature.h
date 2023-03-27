@@ -47,8 +47,8 @@ public:
     explicit TaskFemConstraintTemperature(ViewProviderFemConstraintTemperature *ConstraintView,QWidget *parent = nullptr);
     ~TaskFemConstraintTemperature() override;
     const std::string getReferences() const override;
-    double get_temperature()const;
-    double get_cflux() const;
+    std::string get_temperature() const;
+    std::string get_cflux() const;
     std::string get_constraint_type() const;
 
 private Q_SLOTS:

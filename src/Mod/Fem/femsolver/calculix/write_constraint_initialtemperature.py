@@ -25,6 +25,8 @@ __title__ = "FreeCAD FEM calculix constraint initialtemperature"
 __author__ = "Bernd Hahnebach"
 __url__ = "https://www.freecadweb.org"
 
+import FreeCAD
+
 
 def get_analysis_types():
     return ["thermomech"]
@@ -46,7 +48,12 @@ def write_constraint(f, femobj, inittemp_obj, ccxwriter):
 
     # floats read from ccx should use {:.13G}, see comment in writer module
 
-    f.write("{},{:.13G}\n".format(ccxwriter.ccx_nall, inittemp_obj.initialTemperature))
+    f.write(
+            "{},{}\n".format(
+                ccxwriter.ccx_nall,
+                FreeCAD.Units.Quantity(inittemp_obj.initialTemperature.getValueAs("K"))
+            )
+        )
 
 
 # Should only be one object in the analysis

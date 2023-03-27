@@ -44,7 +44,7 @@ public:
     explicit TaskFemConstraintInitialTemperature(
         ViewProviderFemConstraintInitialTemperature* ConstraintView, QWidget* parent = nullptr);
     ~TaskFemConstraintInitialTemperature() override;
-    double get_temperature()const;
+    std::string get_temperature() const;
 
 protected:
     void changeEvent(QEvent *e) override;
