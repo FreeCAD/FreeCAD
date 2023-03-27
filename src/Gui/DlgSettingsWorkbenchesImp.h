@@ -27,10 +27,7 @@
 #include "PropertyPage.h"
 #include <memory>
 
-class QCheckBox;
-
-namespace Gui {
-namespace Dialog {
+namespace Gui::Dialog {
 class Ui_DlgSettingsWorkbenches;
 
 /**
@@ -72,30 +69,6 @@ private:
     std::unique_ptr<Ui_DlgSettingsWorkbenches> ui;
 };
 
-class wbListItem : public QWidget
-{
-    Q_OBJECT
-
-public:
-    explicit wbListItem(const QString& wbName, bool enabled, DlgSettingsWorkbenchesImp* dlg, QWidget* parent = nullptr);
-    ~wbListItem() override;
-
-protected Q_SLOTS:
-    void onLoadClicked();
-    void onWbActivated(bool checked);
-
-public:
-    QCheckBox* enableCheckBox;
-    QCheckBox* autoloadCheckBox;
-    QLabel* iconLabel;
-    QLabel* textLabel;
-    QLabel* loadLabel;
-    QPushButton* loadButton;
-
-    DlgSettingsWorkbenchesImp* dlg;
-};
-
-} // namespace Dialog
-} // namespace Gui
+} // namespace Gui::Dialog
 
 #endif // GUI_DIALOG_DLGSETTINGSWORKBENCHES_IMP_H

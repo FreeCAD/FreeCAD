@@ -24,6 +24,7 @@
 #ifndef _PreComp_
 #include <QCheckBox>
 #include <QPushButton>
+#include <QLabel>
 #include <sstream>
 #endif
 
@@ -36,6 +37,29 @@
 
 
 using namespace Gui::Dialog;
+
+namespace Gui::Dialog {
+class wbListItem : public QWidget
+{
+public:
+    explicit wbListItem(const QString& wbName, bool enabled, DlgSettingsWorkbenchesImp* dlg, QWidget* parent = nullptr);
+    ~wbListItem() override;
+
+protected Q_SLOTS:
+    void onLoadClicked();
+    void onWbActivated(bool checked);
+
+public:
+    QCheckBox* enableCheckBox;
+    QCheckBox* autoloadCheckBox;
+    QLabel* iconLabel;
+    QLabel* textLabel;
+    QLabel* loadLabel;
+    QPushButton* loadButton;
+
+    DlgSettingsWorkbenchesImp* dlg;
+};
+}
 
 wbListItem::wbListItem(const QString& wbName, bool enabled, DlgSettingsWorkbenchesImp* dialog, QWidget* parent) : QWidget(parent)
     , dlg(dialog)
@@ -58,14 +82,14 @@ wbListItem::wbListItem(const QString& wbName, bool enabled, DlgSettingsWorkbench
 
     // 2: Workbench Icon
     auto wbIcon = Application::Instance->workbenchIcon(wbName);
-    iconLabel = new QLabel(wbDisplayName);
+    iconLabel = new QLabel(wbDisplayName, this);
     iconLabel->setPixmap(wbIcon.scaled(QSize(20, 20), Qt::AspectRatioMode::KeepAspectRatio, Qt::TransformationMode::SmoothTransformation));
     iconLabel->setToolTip(wbTooltip);
     iconLabel->setContentsMargins(5, 0, 0, 5); // Left, top, right, bottom
     iconLabel->setEnabled(enableCheckBox->isChecked());
 
     // 3: Workbench Display Name
-    textLabel = new QLabel(wbDisplayName);
+    textLabel = new QLabel(wbDisplayName, this);
     textLabel->setToolTip(wbTooltip);
     QFont font = textLabel->font();
     font.setBold(true);
@@ -91,10 +115,10 @@ wbListItem::wbListItem(const QString& wbName, bool enabled, DlgSettingsWorkbench
     }
 
     // 5: Load button/loaded indicator
-    loadLabel = new QLabel(tr("Loaded"));
+    loadLabel = new QLabel(tr("Loaded"), this);
     loadLabel->setAlignment(Qt::AlignCenter);
     loadLabel->setEnabled(enableCheckBox->isChecked());
-    loadButton = new QPushButton(tr("Load"));
+    loadButton = new QPushButton(tr("Load"), this);
     loadButton->setToolTip(tr("To preserve resources, FreeCAD does not load workbenches until they are used. Loading them may provide access to additional preferences related to their functionality."));
     loadButton->setEnabled(enableCheckBox->isChecked());
     connect(loadButton, &QPushButton::clicked, this, [this]() { onLoadClicked(); });
