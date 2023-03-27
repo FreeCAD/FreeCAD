@@ -167,8 +167,11 @@ void DlgGeneralImp::setNumberLocale(bool force/* = false*/)
     localeIndex = localeFormat;
 }
 
-void DlgGeneralImp::setDecimalPointConversion(bool on) {
-    Translator::instance()->enableDecimalPointConversion(on);
+void DlgGeneralImp::setDecimalPointConversion(bool on)
+{
+    if (Translator::instance()->isEnabledDecimalPointConversion() != on) {
+        Translator::instance()->enableDecimalPointConversion(on);
+    }
 }
 
 void DlgGeneralImp::saveSettings()
