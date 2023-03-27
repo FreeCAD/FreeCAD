@@ -41,8 +41,10 @@ using namespace Gui::Dialog;
 namespace Gui::Dialog {
 class wbListItem : public QWidget
 {
+    Q_OBJECT
+
 public:
-    explicit wbListItem(const QString& wbName, bool enabled, DlgSettingsWorkbenchesImp* dlg, QWidget* parent = nullptr);
+    explicit wbListItem(const QString& wbName, bool enabled, bool startupWb, bool autoLoad, QWidget* parent = nullptr);
     ~wbListItem() override;
 
     bool isEnabled();
@@ -53,6 +55,9 @@ protected Q_SLOTS:
     void onLoadClicked();
     void onWbActivated(bool checked);
 
+Q_SIGNALS:
+    void activatedWbListChanged();
+
 private:
     QCheckBox* enableCheckBox;
     QCheckBox* autoloadCheckBox;
@@ -60,13 +65,10 @@ private:
     QLabel* textLabel;
     QLabel* loadLabel;
     QPushButton* loadButton;
-
-    DlgSettingsWorkbenchesImp* dlg;
 };
 }
 
-wbListItem::wbListItem(const QString& wbName, bool enabled, DlgSettingsWorkbenchesImp* dialog, QWidget* parent) : QWidget(parent)
-    , dlg(dialog)
+wbListItem::wbListItem(const QString& wbName, bool enabled, bool startupWb, bool autoLoad, QWidget* parent) : QWidget(parent)
 {
     this->setObjectName(wbName);
 
@@ -77,7 +79,7 @@ wbListItem::wbListItem(const QString& wbName, bool enabled, DlgSettingsWorkbench
     enableCheckBox = new QCheckBox(this);
     enableCheckBox->setToolTip(tr("If unchecked, %1 will not appear in the available workbenches.").arg(wbDisplayName));
     enableCheckBox->setChecked(enabled);
-    if (wbName.toStdString() == dlg->_startupModule) {
+    if (startupWb) {
         enableCheckBox->setChecked(true);
         enableCheckBox->setEnabled(false);
         enableCheckBox->setToolTip(tr("This is the current startup module, and must be enabled. See Preferences/General/Autoload to change."));
@@ -108,13 +110,12 @@ wbListItem::wbListItem(const QString& wbName, bool enabled, DlgSettingsWorkbench
     autoloadCheckBox->setToolTip(tr("If checked, %1 will be loaded automatically when FreeCAD starts up").arg(wbDisplayName));
     autoloadCheckBox->setEnabled(enableCheckBox->isChecked());
 
-    if (wbName.toStdString() == dlg->_startupModule) { // Figure out whether to check and/or disable this checkBox:
+    if (startupWb) { // Figure out whether to check and/or disable this checkBox:
         autoloadCheckBox->setChecked(true);
         autoloadCheckBox->setEnabled(false);
         autoloadCheckBox->setToolTip(tr("This is the current startup module, and must be autoloaded. See Preferences/General/Autoload to change."));
     }
-    else if (std::find(dlg->_backgroundAutoloadedModules.begin(), dlg->_backgroundAutoloadedModules.end(),
-        wbName.toStdString()) != dlg->_backgroundAutoloadedModules.end()) {
+    else if (autoLoad) {
         autoloadCheckBox->setChecked(true);
     }
 
@@ -187,7 +188,7 @@ void wbListItem::onWbActivated(bool checked)
         autoloadCheckBox->setChecked(false);
 
     // Reset the start combo items.
-    dlg->setStartWorkbenchComboItems();
+    Q_EMIT activatedWbListChanged();
 }
 
 /* TRANSLATOR Gui::Dialog::DlgSettingsWorkbenchesImp */
@@ -332,7 +333,11 @@ void DlgSettingsWorkbenchesImp::addWorkbench(const QString& wbName, bool enabled
     if (wbName.toStdString() == "NoneWorkbench")
         return; // Do not list the default empty Workbench
 
-    wbListItem* widget = new wbListItem(wbName, enabled, this, this);
+    bool isStartupWb = wbName.toStdString() == _startupModule;
+    bool autoLoad = std::find(_backgroundAutoloadedModules.begin(), _backgroundAutoloadedModules.end(),
+        wbName.toStdString()) != _backgroundAutoloadedModules.end();
+    wbListItem* widget = new wbListItem(wbName, enabled, isStartupWb, autoLoad, this);
+    connect(widget, &wbListItem::activatedWbListChanged, this, &DlgSettingsWorkbenchesImp::setStartWorkbenchComboItems);
     auto wItem = new QListWidgetItem();
     wItem->setSizeHint(widget->sizeHint());
     ui->wbList->addItem(wItem);
@@ -474,3 +479,4 @@ void Gui::Dialog::DlgSettingsWorkbenchesImp::onStartWbChangedClicked(int index)
 }
 
 #include "moc_DlgSettingsWorkbenchesImp.cpp"
+#include "DlgSettingsWorkbenchesImp.moc"

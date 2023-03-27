@@ -49,10 +49,8 @@ public:
     static QStringList getEnabledWorkbenches();
     static QStringList getDisabledWorkbenches();
 
+protected Q_SLOTS:
     void setStartWorkbenchComboItems();
-
-    std::vector<std::string> _backgroundAutoloadedModules;
-    std::string _startupModule;
 
 protected:
     void buildWorkbenchList();
@@ -65,6 +63,9 @@ private:
     void loadWorkbenchSelector();
 
     void onStartWbChangedClicked(int index);
+
+    std::vector<std::string> _backgroundAutoloadedModules;
+    std::string _startupModule;
 
     std::unique_ptr<Ui_DlgSettingsWorkbenches> ui;
 };
