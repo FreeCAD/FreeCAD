@@ -307,6 +307,10 @@
             <property name="enabled">
              <bool>true</bool>
             </property>
+            <property name="toolTip">
+             <string>Existing result objects will be kept
+otherwise overwritten by new solver run</string>
+            </property>
             <property name="text">
              <string>Keep results on calculation re-run</string>
             </property>
