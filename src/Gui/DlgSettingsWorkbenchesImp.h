@@ -62,7 +62,7 @@ private:
     void saveWorkbenchSelector();
     void loadWorkbenchSelector();
 
-    void onStartWbChangedClicked(int index);
+    void onStartWbChanged(int index);
 
     std::vector<std::string> _backgroundAutoloadedModules;
     std::string _startupModule;

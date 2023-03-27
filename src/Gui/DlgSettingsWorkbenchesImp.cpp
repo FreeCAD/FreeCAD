@@ -49,7 +49,7 @@ public:
 
     bool isEnabled();
     bool isAutoLoading();
-    void setEnableCheckboxActivated(bool val);
+    void setStartupWb(bool val);
 
 protected Q_SLOTS:
     void onLoadClicked();
@@ -103,7 +103,6 @@ wbListItem::wbListItem(const QString& wbName, bool enabled, bool startupWb, bool
     textLabel->setEnabled(enableCheckBox->isChecked());
     textLabel->setMinimumSize(200, 0);
 
-
     // 4: Autoloaded checkBox.
     autoloadCheckBox = new QCheckBox(this);
     autoloadCheckBox->setText(tr("Auto-load"));
@@ -138,9 +137,9 @@ wbListItem::wbListItem(const QString& wbName, bool enabled, bool startupWb, bool
     layout->addWidget(enableCheckBox);
     layout->addWidget(iconLabel);
     layout->addWidget(textLabel);
+    layout->addWidget(autoloadCheckBox);
     layout->addWidget(loadButton);
     layout->addWidget(loadLabel);
-    layout->addWidget(autoloadCheckBox);
     layout->setAlignment(Qt::AlignLeft);
     layout->setContentsMargins(10, 0, 0, 0);
 }
@@ -159,9 +158,13 @@ bool wbListItem::isAutoLoading()
     return autoloadCheckBox->isChecked();
 }
 
-void wbListItem::setEnableCheckboxActivated(bool val)
+void wbListItem::setStartupWb(bool val)
 {
-    enableCheckBox->setEnabled(val);
+    if(val)
+        autoloadCheckBox->setChecked(true);
+
+    enableCheckBox->setEnabled(!val);
+    autoloadCheckBox->setEnabled(!val);
 }
 
 void wbListItem::onLoadClicked()
@@ -209,7 +212,7 @@ DlgSettingsWorkbenchesImp::DlgSettingsWorkbenchesImp( QWidget* parent )
     ui->wbList->setDragEnabled(true);
     ui->wbList->setDefaultDropAction(Qt::MoveAction);
 
-    connect(ui->AutoloadModuleCombo, QOverload<int>::of(&QComboBox::activated), this, [this](int index) { onStartWbChangedClicked(index); });
+    connect(ui->AutoloadModuleCombo, QOverload<int>::of(&QComboBox::activated), this, [this](int index) { onStartWbChanged(index); });
 }
 
 /**
@@ -462,7 +465,7 @@ void DlgSettingsWorkbenchesImp::setStartWorkbenchComboItems()
     ui->AutoloadModuleCombo->setCurrentIndex(ui->AutoloadModuleCombo->findData(QString::fromStdString(_startupModule)));
 }
 
-void Gui::Dialog::DlgSettingsWorkbenchesImp::onStartWbChangedClicked(int index)
+void Gui::Dialog::DlgSettingsWorkbenchesImp::onStartWbChanged(int index)
 {
     //Update _startupModule
     QVariant data = ui->AutoloadModuleCombo->itemData(index);
@@ -473,7 +476,7 @@ void Gui::Dialog::DlgSettingsWorkbenchesImp::onStartWbChangedClicked(int index)
     for (int i = 0; i < ui->wbList->count(); i++) {
         wbListItem* wbItem = dynamic_cast<wbListItem*>(ui->wbList->itemWidget(ui->wbList->item(i)));
         if (wbItem) {
-            wbItem->setEnableCheckboxActivated(!(wbItem->objectName() == wbName));
+            wbItem->setStartupWb(wbItem->objectName() == wbName);
         }
     }
 }
