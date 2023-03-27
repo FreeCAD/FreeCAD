@@ -110,34 +110,34 @@ void ConstraintDisplacement::handleChangedPropertyType(Base::XMLReader& reader,
 {
     // properties _Displacement had App::PropertyFloat and were changed to App::PropertyDistance
     if (prop == &xDisplacement && strcmp(TypeName, "App::PropertyFloat") == 0) {
-        App::PropertyDistance xDisplacementProperty;
+        App::PropertyFloat xDisplacementProperty;
         // restore the PropertyFloat to be able to set its value
         xDisplacementProperty.Restore(reader);
         xDisplacement.setValue(xDisplacementProperty.getValue());
     }
     else if (prop == &yDisplacement && strcmp(TypeName, "App::PropertyFloat") == 0) {
-        App::PropertyDistance yDisplacementProperty;
+        App::PropertyFloat yDisplacementProperty;
         yDisplacementProperty.Restore(reader);
         yDisplacement.setValue(yDisplacementProperty.getValue());
     }
     else if (prop == &zDisplacement && strcmp(TypeName, "App::PropertyFloat") == 0) {
-        App::PropertyDistance zDisplacementProperty;
+        App::PropertyFloat zDisplacementProperty;
         zDisplacementProperty.Restore(reader);
         zDisplacement.setValue(zDisplacementProperty.getValue());
     }
     // properties _Displacement had App::PropertyFloat and were changed to App::PropertyAngle
     else if (prop == &xRotation && strcmp(TypeName, "App::PropertyFloat") == 0) {
-        App::PropertyDistance xRotationProperty;
+        App::PropertyFloat xRotationProperty;
         xRotationProperty.Restore(reader);
         xRotation.setValue(xRotationProperty.getValue());
     }
     else if (prop == &yRotation && strcmp(TypeName, "App::PropertyFloat") == 0) {
-        App::PropertyDistance yRotationProperty;
+        App::PropertyFloat yRotationProperty;
         yRotationProperty.Restore(reader);
         yRotation.setValue(yRotationProperty.getValue());
     }
     else if (prop == &zRotation && strcmp(TypeName, "App::PropertyFloat") == 0) {
-        App::PropertyDistance zRotationProperty;
+        App::PropertyFloat zRotationProperty;
         zRotationProperty.Restore(reader);
         zRotation.setValue(zRotationProperty.getValue());
     }
