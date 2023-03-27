@@ -661,7 +661,7 @@ def readfile(filename):
         f = pythonopen(tmpfile)
     else:
         f = pythonopen(filename)
-    rootnode =  p arsenode(f.read())[0]
+    rootnode =  parsenode(f.read())[0]
     f.close()
     if isopenscad and tmpfile:
         try:
