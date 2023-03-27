@@ -33,6 +33,7 @@
 
 #include <App/Document.h>
 #include <Gui/Command.h>
+#include <Gui/QuantitySpinBox.h>
 #include <Gui/SelectionObject.h>
 #include <Mod/Fem/App/FemConstraintTemperature.h>
 
@@ -54,23 +55,6 @@ TaskFemConstraintTemperature::TaskFemConstraintTemperature(
     ui->setupUi(proxy);
     QMetaObject::connectSlotsByName(this);
 
-    // create a context menu for the listview of the references
-    createDeleteAction(ui->lw_references);
-    connect(deleteAction, &QAction::triggered,
-            this, &TaskFemConstraintTemperature::onReferenceDeleted);
-
-    connect(ui->lw_references, &QListWidget::currentItemChanged,
-            this, &TaskFemConstraintTemperature::setSelection);
-    connect(ui->lw_references, &QListWidget::itemClicked,
-            this, &TaskFemConstraintTemperature::setSelection);
-    connect(ui->rb_temperature, &QRadioButton::clicked,
-            this, &TaskFemConstraintTemperature::Temp);
-    connect(ui->rb_cflux, &QRadioButton::clicked,
-            this, &TaskFemConstraintTemperature::Flux);
-
-    connect(ui->if_temperature, qOverload<double>(&InputField::valueChanged),
-            this, &TaskFemConstraintTemperature::onTempCfluxChanged);
-
     this->groupLayout()->addWidget(proxy);
 
     // Get the feature data
@@ -87,20 +71,17 @@ TaskFemConstraintTemperature::TaskFemConstraintTemperature(
     std::string constraint_type = pcConstraint->ConstraintType.getValueAsString();
     if (constraint_type == "Temperature") {
         ui->rb_temperature->setChecked(1);
-        std::string str = "Temperature";
-        QString qstr = QString::fromStdString(str);
-        ui->lbl_type->setText(qstr);
-        Base::Quantity t =
-            Base::Quantity(pcConstraint->Temperature.getValue(), Base::Unit::Temperature);
-        ui->if_temperature->setValue(t);
+        ui->if_temperature->setValue(pcConstraint->Temperature.getQuantityValue());
+
+        ui->if_temperature->bind(pcConstraint->Temperature);
+        ui->if_temperature->setUnit(pcConstraint->Temperature.getUnit());
     }
     else if (constraint_type == "CFlux") {
         ui->rb_cflux->setChecked(1);
         std::string str = "Concentrated heat flux";
-        QString qstr = QString::fromStdString(str);
-        ui->lbl_type->setText(qstr);
-        Base::Quantity c = Base::Quantity(pcConstraint->CFlux.getValue(), Base::Unit::Power);
-        ui->if_temperature->setValue(c);
+        ui->if_temperature->setValue(pcConstraint->CFlux.getQuantityValue());
+        ui->if_temperature->bind(pcConstraint->CFlux);
+        ui->if_temperature->setUnit(pcConstraint->CFlux.getUnit());
     }
 
     ui->lw_references->clear();
@@ -111,7 +92,28 @@ TaskFemConstraintTemperature::TaskFemConstraintTemperature(
         ui->lw_references->setCurrentRow(0, QItemSelectionModel::ClearAndSelect);
     }
 
-    //Selection buttons
+    // create a context menu for the listview of the references
+    createDeleteAction(ui->lw_references);
+    connect(
+        deleteAction, &QAction::triggered, this, &TaskFemConstraintTemperature::onReferenceDeleted);
+
+    connect(ui->lw_references,
+            &QListWidget::currentItemChanged,
+            this,
+            &TaskFemConstraintTemperature::setSelection);
+    connect(ui->lw_references,
+            &QListWidget::itemClicked,
+            this,
+            &TaskFemConstraintTemperature::setSelection);
+    connect(ui->rb_temperature, &QRadioButton::clicked, this, &TaskFemConstraintTemperature::Temp);
+    connect(ui->rb_cflux, &QRadioButton::clicked, this, &TaskFemConstraintTemperature::Flux);
+
+    connect(ui->if_temperature,
+            qOverload<double>(&QuantitySpinBox::valueChanged),
+            this,
+            &TaskFemConstraintTemperature::onTempCfluxChanged);
+
+    // Selection buttons
     buttonGroup->addButton(ui->btnAdd, (int)SelectionChangeModes::refAdd);
     buttonGroup->addButton(ui->btnRemove, (int)SelectionChangeModes::refRemove);
 
@@ -132,48 +134,22 @@ void TaskFemConstraintTemperature::updateUI()
 
 void TaskFemConstraintTemperature::onTempCfluxChanged(double val)
 {
-    Fem::ConstraintTemperature* pcConstraint =
-        static_cast<Fem::ConstraintTemperature*>(ConstraintView->getObject());
-    if (ui->rb_temperature->isChecked()) {
-        pcConstraint->Temperature.setValue(val);
-    }
-    else {
-        pcConstraint->CFlux.setValue(val);
-    }
 }
 
 void TaskFemConstraintTemperature::Temp()
 {
     Fem::ConstraintTemperature* pcConstraint =
         static_cast<Fem::ConstraintTemperature*>(ConstraintView->getObject());
-    std::string name = ConstraintView->getObject()->getNameInDocument();
-    Gui::Command::doCommand(Gui::Command::Doc,
-                            "App.ActiveDocument.%s.ConstraintType = %s",
-                            name.c_str(),
-                            get_constraint_type().c_str());
-    std::string str = "Temperature";
-    QString qstr = QString::fromStdString(str);
-    ui->lbl_type->setText(qstr);
-    Base::Quantity t = Base::Quantity(300, Base::Unit::Temperature);
-    ui->if_temperature->setValue(t);
-    pcConstraint->Temperature.setValue(300);
+    ui->if_temperature->setUnit(pcConstraint->Temperature.getUnit());
+    ui->if_temperature->setValue(pcConstraint->Temperature.getQuantityValue());
 }
 
 void TaskFemConstraintTemperature::Flux()
 {
     Fem::ConstraintTemperature* pcConstraint =
         static_cast<Fem::ConstraintTemperature*>(ConstraintView->getObject());
-    std::string name = ConstraintView->getObject()->getNameInDocument();
-    Gui::Command::doCommand(Gui::Command::Doc,
-                            "App.ActiveDocument.%s.ConstraintType = %s",
-                            name.c_str(),
-                            get_constraint_type().c_str());
-    std::string str = "Concentrated heat flux";
-    QString qstr = QString::fromStdString(str);
-    ui->lbl_type->setText(qstr);
-    Base::Quantity c = Base::Quantity(0, Base::Unit::Power);
-    ui->if_temperature->setValue(c);
-    pcConstraint->CFlux.setValue(0);
+    ui->if_temperature->setUnit(pcConstraint->CFlux.getUnit());
+    ui->if_temperature->setValue(pcConstraint->CFlux.getQuantityValue());
 }
 
 void TaskFemConstraintTemperature::addToSelection()
@@ -302,20 +278,21 @@ const std::string TaskFemConstraintTemperature::getReferences() const
     return TaskFemConstraint::getReferences(items);
 }
 
-double TaskFemConstraintTemperature::get_temperature() const {
-    Base::Quantity temperature = ui->if_temperature->getQuantity();
-    double temperature_in_kelvin = temperature.getValueAs(Base::Quantity::Kelvin);
-    return temperature_in_kelvin;
+std::string TaskFemConstraintTemperature::get_temperature() const
+{
+    return ui->if_temperature->value().getSafeUserString().toStdString();
 }
 
-double TaskFemConstraintTemperature::get_cflux() const {
-    Base::Quantity cflux = ui->if_temperature->getQuantity();
-    double cflux_in_watt = cflux.getValueAs(Base::Quantity::Watt);
-    return cflux_in_watt;
+std::string TaskFemConstraintTemperature::get_cflux() const
+{
+    return ui->if_temperature->value().getSafeUserString().toStdString();
 }
 
 std::string TaskFemConstraintTemperature::get_constraint_type() const {
+    Fem::ConstraintTemperature* pcConstraint =
+        static_cast<Fem::ConstraintTemperature*>(ConstraintView->getObject());
     std::string type;
+
     if (ui->rb_temperature->isChecked()) {
         type = "\"Temperature\"";
     }
@@ -385,7 +362,23 @@ bool TaskDlgFemConstraintTemperature::accept()
     const TaskFemConstraintTemperature* parameterTemperature =
         static_cast<const TaskFemConstraintTemperature*>(parameter);
 
+    auto type = parameterTemperature->get_constraint_type();
+
     try {
+        Gui::Command::doCommand(Gui::Command::Doc,
+                                    "App.ActiveDocument.%s.ConstraintType = %s",
+                                    name.c_str(),
+                                    parameterTemperature->get_constraint_type().c_str());
+        if (type == "Temperature")
+            Gui::Command::doCommand(Gui::Command::Doc,
+                                    "App.ActiveDocument.%s.Temperature = \"%s\"",
+                                    name.c_str(),
+                                    parameterTemperature->get_temperature().c_str());
+        else if (type == "CFlux")
+            Gui::Command::doCommand(Gui::Command::Doc,
+                                    "App.ActiveDocument.%s.CFlux = \"%s\"",
+                                    name.c_str(),
+                                    parameterTemperature->get_cflux().c_str());
         std::string scale = parameterTemperature->getScale();// OvG: determine modified scale
         Gui::Command::doCommand(Gui::Command::Doc,
                                 "App.ActiveDocument.%s.Scale = %s",

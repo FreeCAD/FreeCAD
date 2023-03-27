@@ -45,7 +45,7 @@ public:
     App::PropertyVectorList Normals;
 
     //Temperature parameters
-    App::PropertyFloat initialTemperature;
+    App::PropertyTemperature initialTemperature;
 
 
     /// recalculate the object
@@ -55,6 +55,8 @@ public:
     const char* getViewProviderName() const override;
 
 protected:
+    void handleChangedPropertyType(Base::XMLReader& reader, const char* TypeName,
+                                   App::Property* prop);
     void onChanged(const App::Property* prop) override;
 
 };
