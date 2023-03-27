@@ -90,7 +90,7 @@ jobs:
         run: |
           # Group the caches by MARK-CONTEXT-REF, sort by ascending last access datetime, keep all but the last 2 and keep all accessed for more than 1 hour as to be deleted
           # As a consequence, for pushes (repo branches), at least 2 caches (for each context and for each branch) are kept, others are deleted if they have been useless for more than 1 hour
-          PSID=$(jq "group_by(.key | .[:rindex(\"-\")]) | .[] | sort_by(.last_accessed_at) | .[:-2][] | select((.last_accessed_at | .[:rindex(\".\")]+\"Z\" | fromdateiso8601) < (now | floor - 3600)) | .id" ${{ env.logdir }}pushes.json)
+          PSID=$(jq "group_by(.key | .[:rindex(\"-\")]) | .[] | sort_by(.last_accessed_at) | .[:-2][] | select((.last_accessed_at | if contains(\".\") then .[:rindex(\".\")]+\"Z\" else . end | fromdateiso8601) < (now | floor - 3600)) | .id" ${{ env.logdir }}pushes.json)
           for id in $PSID
           do
             echo "Trying to delete push obsolete cache ID : $id"
