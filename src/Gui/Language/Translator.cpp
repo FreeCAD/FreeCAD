@@ -280,7 +280,7 @@ void Translator::setLocale(const std::string& language) const
 
 void Translator::updateLocaleChange() const
 {
-    for (auto &topLevelWidget: qApp->topLevelWidgets()) {
+    for (auto &topLevelWidget : qApp->topLevelWidgets()) {
         topLevelWidget->setLocale(QLocale());
     }
 }
