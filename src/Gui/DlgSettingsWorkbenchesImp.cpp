@@ -227,35 +227,34 @@ void DlgSettingsWorkbenchesImp::saveSettings()
 {
     std::ostringstream enabledStr, disabledStr, autoloadStr;
 
+    auto addStrToOss = [](std::string wbName, std::ostringstream& oss) {
+        if (!oss.str().empty())
+            oss << ",";
+        oss << wbName;
+    };
+
     for (int i = 0; i < ui->wbList->count(); i++) {
         wbListItem* wbItem = dynamic_cast<wbListItem*>(ui->wbList->itemWidget(ui->wbList->item(i)));
         if (!wbItem)
             continue;
+        std::string wbName = wbItem->objectName().toStdString();
 
         if (wbItem->isEnabled()) {
-            if (!enabledStr.str().empty())
-                enabledStr << ",";
-            enabledStr << wbItem->objectName().toStdString();
+            addStrToOss(wbName, enabledStr);
         }
         else {
-            if (!disabledStr.str().empty())
-                disabledStr << ",";
-            disabledStr << wbItem->objectName().toStdString();
+            addStrToOss(wbName, disabledStr);
         }
 
         if (wbItem->isAutoLoading()) {
-            if (!autoloadStr.str().empty())
-                autoloadStr << ",";
-            autoloadStr << wbItem->objectName().toStdString();
+            addStrToOss(wbName, autoloadStr);
         }
     }
 
     if (enabledStr.str().empty()) //make sure that we have at least one enabled workbench.
         enabledStr << "NoneWorkbench";
     else {
-        if (!disabledStr.str().empty())
-            disabledStr << ",";
-        disabledStr << "NoneWorkbench"; //Note, NoneWorkbench is not in the table so it's not added before.
+        addStrToOss("NoneWorkbench", disabledStr); //Note, NoneWorkbench is not in the table so it's not added before.
     }
 
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Workbenches");
