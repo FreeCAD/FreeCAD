@@ -197,7 +197,7 @@ class Resize:
 
     def onChanged(self, fp, prop):
         if prop in ['Object','Vector']:
-           self.createGeometry(fp)
+            self.createGeometry(fp)
 
     def execute(self, fp):
         self.createGeometry(fp)
@@ -364,7 +364,8 @@ class Frustum:
     def createGeometry(self,fp):
         if all((fp.Radius1,fp.Radius2,fp.FacesNumber,fp.Height)):
             import math
-            import FreeCAD,Part
+            import FreeCAD
+            import Part
             #from draftlibs import fcgeo
             plm = fp.Placement
             wires = []
@@ -413,7 +414,10 @@ class Twist:
             self.createGeometry(fp)
 
     def createGeometry(self, fp):
-        import FreeCAD,Part,math,sys
+        import FreeCAD
+        import Part
+        import math
+        import sys
         if fp.Base and fp.Height and fp.Base.Shape.isValid():
             solids = []
             for lower_face in fp.Base.Shape.Faces:
@@ -483,7 +487,10 @@ class PrismaticToroid:
             self.createGeometry(fp)
 
     def createGeometry(self,fp):
-        import FreeCAD,Part,math,sys
+        import FreeCAD
+        import Part
+        import math
+        import sys
         if fp.Base and fp.Angle and fp.Segments and fp.Base.Shape.isValid():
             solids = []
             min_sweep_angle_per_segment = 360.0 / fp.Segments # This is how OpenSCAD defines $fn
@@ -580,7 +587,8 @@ class CGALFeature:
     def execute(self,fp):
         #arguments are ignored
         maxmeshpoints = None #TBD: add as property
-        import Part, OpenSCAD.OpenSCADUtils
+        import Part
+        import OpenSCAD.OpenSCADUtils
         shape = OpenSCAD.OpenSCADUtils.process_ObjectsViaOpenSCADShape(fp.Document,fp.Children,\
                 fp.Operation, maxmeshpoints=maxmeshpoints)
         if shape:
