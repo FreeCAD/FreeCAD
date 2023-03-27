@@ -415,4 +415,9 @@ void Translator::enableDecimalPointConversion(bool on)
     }
 }
 
+bool Translator::isEnabledDecimalPointConversion() const
+{
+    return static_cast<bool>(decimalPointConverter);
+}
+
 #include "moc_Translator.cpp"
