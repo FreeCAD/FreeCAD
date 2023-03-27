@@ -22,11 +22,12 @@
 # ***************************************************************************
 
 """Wrap QtCore imports so that can be replaced when running outside of FreeCAD (e.g. for
-unit tests, etc. Only provides wrappers for the things commonly used by the Addon
+unit tests, etc.) Only provides wrappers for the things commonly used by the Addon
 Manager."""
 
 try:
     from PySide import QtCore
+
     QObject = QtCore.QObject
     Signal = QtCore.Signal
 
