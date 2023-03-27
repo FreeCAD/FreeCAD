@@ -886,14 +886,10 @@ class TaskPanel:
             self.form.operationsList.addItem(item)
 
         self.form.jobModel.clear()
-        for name, count in PathUtil.keyValueIter(
-            Counter(
-                [
+        for name, count in Counter([
                     self.obj.Proxy.baseObject(self.obj, o).Label
                     for o in self.obj.Model.Group
-                ]
-            )
-        ):
+            ]).items():
             if count == 1:
                 self.form.jobModel.addItem(name)
             else:
@@ -1412,7 +1408,7 @@ class TaskPanel:
                 additions = want - have
 
                 # first remove all obsolete base models
-                for model, count in PathUtil.keyValueIter(obsolete):
+                for model, count in obsolete.items():
                     for i in range(count):
                         # it seems natural to remove the last of all the base objects for a given model
                         base = [
@@ -1425,7 +1421,7 @@ class TaskPanel:
                 # do not access any of the retired objects after this point, they don't exist anymore
 
                 # then add all rookie base models
-                for model, count in PathUtil.keyValueIter(additions):
+                for model, count in additions.items():
                     for i in range(count):
                         base = PathJob.createModelResourceClone(obj, model)
                         obj.Model.addObject(base)

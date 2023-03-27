@@ -25,7 +25,6 @@ from PathScripts.PathUtils import waiting_effects
 from PySide.QtCore import QT_TRANSLATE_NOOP
 import FreeCAD
 import Path
-import Path.Base.Util as PathUtil
 import Path.Dressup.Utils as PathDressup
 import PathScripts.PathUtils as PathUtils
 import copy
@@ -792,7 +791,7 @@ class PathData:
 
         tags = []
 
-        for (i, count) in PathUtil.keyValueIter(edgeDict):
+        for (i, count) in edgeDict.items():
             edge = self.baseWire.Edges[i]
             Path.Log.debug(" %d: %d" % (i, count))
             # debugMarker(edge.Vertexes[0].Point, 'base', (1.0, 0.0, 0.0), 0.2)

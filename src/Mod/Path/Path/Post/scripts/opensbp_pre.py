@@ -50,7 +50,6 @@ Many other OpenSBP commands not handled
 
 import FreeCAD
 import Path
-import Path.Base.Util as PathUtil
 import os
 import Path
 
@@ -186,7 +185,7 @@ def parse(inputstring):
 
             last[words[0][1]] = words[1]
             output += s
-            for key, val in PathUtil.keyValueIter(last):
+            for key, val in last.items():
                 if val is not None:
                     output += key + str(val) + " F" + speed + "\n"
 

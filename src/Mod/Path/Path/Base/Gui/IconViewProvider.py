@@ -22,7 +22,6 @@
 
 import FreeCAD
 import Path
-import Path.Base.Util as PathUtil
 import PathGui
 import importlib
 
@@ -109,7 +108,7 @@ def Attach(vobj, name):
 
     Path.Log.track(vobj.Object.Label, name)
     global _factory
-    for key, value in PathUtil.keyValueIter(_factory):
+    for key, value in _factory.items():
         if key == name:
             return value(vobj, name)
     Path.Log.track(vobj.Object.Label, name, "PathIconViewProvider")
