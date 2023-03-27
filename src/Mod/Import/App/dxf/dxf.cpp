@@ -3304,7 +3304,7 @@ bool CDxfRead::ReadVersion()
     if (found == last)
         m_version = RNewer;
     else if (*found == m_str)
-        m_version = (eAutoCADVersion_t)(std::distance(first, found) + (ROlder + 1));
+        m_version = (eDXFVersion_t)(std::distance(first, found) + (ROlder + 1));
     else if (found == first)
         m_version = ROlder;
     else

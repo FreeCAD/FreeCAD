@@ -133,7 +133,7 @@ typedef enum
     R2013,
     R2018,
     RNewer,
-} eAutoCADVersion_t;
+} eDXFVersion_t;
 //********************
 
 class CDxfWrite{
@@ -303,7 +303,7 @@ private:
 
 protected:
     Aci_t m_aci; // manifest color name or 256 for layer color
-    eAutoCADVersion_t m_version;// Version from $ACADVER variable in DXF
+    eDXFVersion_t m_version;// Version from $ACADVER variable in DXF
     const char* (CDxfRead::*stringToUTF8)(const char*) const;
 
 private:
