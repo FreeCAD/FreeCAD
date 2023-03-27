@@ -174,6 +174,28 @@ void PropertyGeometryList::setPyObject(PyObject *value)
     }
 }
 
+void PropertyGeometryList::trySaveGeometry(Geometry * geom, Base::Writer &writer) const
+{
+    // Not all geometry classes implement Save() and throw an exception instead
+    try {
+        geom->Save(writer);
+    }
+    catch (const Base::NotImplementedError& e) {
+        Base::Console().Warning(std::string("PropertyGeometryList"), "Not yet implemented: %s\n", e.what());
+    }
+}
+
+void PropertyGeometryList::tryRestoreGeometry(Geometry * geom, Base::XMLReader &reader)
+{
+    // Not all geometry classes implement Restore() and throw an exception instead
+    try {
+        geom->Restore(reader);
+    }
+    catch (const Base::NotImplementedError& e) {
+        Base::Console().Warning(std::string("PropertyGeometryList"), "Not yet implemented: %s\n", e.what());
+    }
+}
+
 void PropertyGeometryList::Save(Writer &writer) const
 {
     writer.Stream() << writer.ind() << "<GeometryList count=\"" << getSize() <<"\">" << endl;
@@ -182,7 +204,7 @@ void PropertyGeometryList::Save(Writer &writer) const
         writer.Stream() << writer.ind() << "<Geometry  type=\""
                         << _lValueList[i]->getTypeId().getName() << "\">" << endl;;
         writer.incInd();
-        _lValueList[i]->Save(writer);
+        trySaveGeometry(_lValueList[i], writer);
         writer.decInd();
         writer.Stream() << writer.ind() << "</Geometry>" << endl;
     }
@@ -203,7 +225,7 @@ void PropertyGeometryList::Restore(Base::XMLReader &reader)
         reader.readElement("Geometry");
         const char* TypeName = reader.getAttribute("type");
         Geometry *newG = (Geometry *)Base::Type::fromName(TypeName).createInstance();
-        newG->Restore(reader);
+        tryRestoreGeometry(newG, reader);
 
         if(reader.testStatus(Base::XMLReader::ReaderStatus::PartialRestoreInObject)) {
             Base::Console().Error("Geometry \"%s\" within a PropertyGeometryList was subject to a partial restore.\n",reader.localName());

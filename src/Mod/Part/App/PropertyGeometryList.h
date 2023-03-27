@@ -89,6 +89,10 @@ public:
     virtual unsigned int getMemSize(void) const;
 
 private:
+    void trySaveGeometry(Geometry * geom, Base::Writer &writer) const;
+    void tryRestoreGeometry(Geometry * geom, Base::XMLReader &reader);
+
+private:
     std::vector<Geometry*> _lValueList;
 };
 
