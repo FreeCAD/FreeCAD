@@ -44,12 +44,14 @@ class wbListItem : public QWidget
     Q_OBJECT
 
 public:
-    explicit wbListItem(const QString& wbName, bool enabled, bool startupWb, bool autoLoad, QWidget* parent = nullptr);
+    explicit wbListItem(const QString& wbName, bool enabled, bool startupWb, bool autoLoad, int index, QWidget* parent = nullptr);
     ~wbListItem() override;
 
     bool isEnabled();
     bool isAutoLoading();
     void setStartupWb(bool val);
+
+    void setShortcutLabel(int index);
 
 protected Q_SLOTS:
     void onLoadClicked();
@@ -63,12 +65,13 @@ private:
     QCheckBox* autoloadCheckBox;
     QLabel* iconLabel;
     QLabel* textLabel;
+    QLabel* shortcutLabel;
     QLabel* loadLabel;
     QPushButton* loadButton;
 };
 }
 
-wbListItem::wbListItem(const QString& wbName, bool enabled, bool startupWb, bool autoLoad, QWidget* parent) : QWidget(parent)
+wbListItem::wbListItem(const QString& wbName, bool enabled, bool startupWb, bool autoLoad, int index, QWidget* parent) : QWidget(parent)
 {
     this->setObjectName(wbName);
 
@@ -86,6 +89,7 @@ wbListItem::wbListItem(const QString& wbName, bool enabled, bool startupWb, bool
     }
     connect(enableCheckBox, &QCheckBox::toggled, this, [this](bool checked) { onWbActivated(checked); });
 
+    QWidget* subWidget = new QWidget(this);
     // 2: Workbench Icon
     auto wbIcon = Application::Instance->workbenchIcon(wbName);
     iconLabel = new QLabel(wbDisplayName, this);
@@ -101,9 +105,22 @@ wbListItem::wbListItem(const QString& wbName, bool enabled, bool startupWb, bool
     font.setBold(true);
     textLabel->setFont(font);
     textLabel->setEnabled(enableCheckBox->isChecked());
-    textLabel->setMinimumSize(200, 0);
 
-    // 4: Autoloaded checkBox.
+    // 4: shortcut
+    shortcutLabel = new QLabel(QString::fromLatin1("(W, %1)").arg(index + 1), this);
+    shortcutLabel->setToolTip(tr("Shortcut to activate this workbench."));
+    shortcutLabel->setEnabled(enableCheckBox->isChecked());
+    shortcutLabel->setVisible(index < 9);
+
+    auto subLayout = new QHBoxLayout(subWidget);
+    subLayout->addWidget(iconLabel);
+    subLayout->addWidget(textLabel);
+    subLayout->addWidget(shortcutLabel);
+    subLayout->setAlignment(Qt::AlignLeft);
+    subLayout->setContentsMargins(5, 0, 0, 5);
+    subWidget->setMinimumSize(250, 0);
+
+    // 5: Autoloaded checkBox.
     autoloadCheckBox = new QCheckBox(this);
     autoloadCheckBox->setText(tr("Auto-load"));
     autoloadCheckBox->setToolTip(tr("If checked, %1 will be loaded automatically when FreeCAD starts up").arg(wbDisplayName));
@@ -118,7 +135,7 @@ wbListItem::wbListItem(const QString& wbName, bool enabled, bool startupWb, bool
         autoloadCheckBox->setChecked(true);
     }
 
-    // 5: Load button/loaded indicator
+    // 6: Load button/loaded indicator
     loadLabel = new QLabel(tr("Loaded"), this);
     loadLabel->setAlignment(Qt::AlignCenter);
     loadLabel->setEnabled(enableCheckBox->isChecked());
@@ -135,8 +152,7 @@ wbListItem::wbListItem(const QString& wbName, bool enabled, bool startupWb, bool
 
     auto layout = new QHBoxLayout(this);
     layout->addWidget(enableCheckBox);
-    layout->addWidget(iconLabel);
-    layout->addWidget(textLabel);
+    layout->addWidget(subWidget);
     layout->addWidget(autoloadCheckBox);
     layout->addWidget(loadButton);
     layout->addWidget(loadLabel);
@@ -167,6 +183,12 @@ void wbListItem::setStartupWb(bool val)
     autoloadCheckBox->setEnabled(!val);
 }
 
+void wbListItem::setShortcutLabel(int index)
+{
+    shortcutLabel->setText(QString::fromLatin1("(W, %1)").arg(index + 1));
+    shortcutLabel->setVisible(index < 9);
+}
+
 void wbListItem::onLoadClicked()
 {
     // activate selected workbench
@@ -184,6 +206,7 @@ void wbListItem::onWbActivated(bool checked)
     // activate/deactivate the widgets
     iconLabel->setEnabled(checked);
     textLabel->setEnabled(checked);
+    shortcutLabel->setEnabled(checked);
     loadLabel->setEnabled(checked);
     loadButton->setEnabled(checked);
     autoloadCheckBox->setEnabled(checked);
@@ -211,6 +234,8 @@ DlgSettingsWorkbenchesImp::DlgSettingsWorkbenchesImp( QWidget* parent )
     ui->wbList->setDropIndicatorShown(true);
     ui->wbList->setDragEnabled(true);
     ui->wbList->setDefaultDropAction(Qt::MoveAction);
+
+    connect(ui->wbList->model(), &QAbstractItemModel::rowsMoved, this, &DlgSettingsWorkbenchesImp::wbItemMoved);
 
     connect(ui->AutoloadModuleCombo, QOverload<int>::of(&QComboBox::activated), this, [this](int index) { onStartWbChanged(index); });
 }
@@ -338,7 +363,7 @@ void DlgSettingsWorkbenchesImp::addWorkbench(const QString& wbName, bool enabled
     bool isStartupWb = wbName.toStdString() == _startupModule;
     bool autoLoad = std::find(_backgroundAutoloadedModules.begin(), _backgroundAutoloadedModules.end(),
         wbName.toStdString()) != _backgroundAutoloadedModules.end();
-    wbListItem* widget = new wbListItem(wbName, enabled, isStartupWb, autoLoad, this);
+    wbListItem* widget = new wbListItem(wbName, enabled, isStartupWb, autoLoad, ui->wbList->count(), this);
     connect(widget, &wbListItem::activatedWbListChanged, this, &DlgSettingsWorkbenchesImp::setStartWorkbenchComboItems);
     auto wItem = new QListWidgetItem();
     wItem->setSizeHint(widget->sizeHint());
@@ -462,6 +487,16 @@ void DlgSettingsWorkbenchesImp::setStartWorkbenchComboItems()
     }
 
     ui->AutoloadModuleCombo->setCurrentIndex(ui->AutoloadModuleCombo->findData(QString::fromStdString(_startupModule)));
+}
+
+void DlgSettingsWorkbenchesImp::wbItemMoved()
+{
+    for (int i = 0; i < ui->wbList->count(); i++) {
+        wbListItem* wbItem = dynamic_cast<wbListItem*>(ui->wbList->itemWidget(ui->wbList->item(i)));
+        if (wbItem) {
+            wbItem->setShortcutLabel(i);
+        }
+    }
 }
 
 void Gui::Dialog::DlgSettingsWorkbenchesImp::onStartWbChanged(int index)

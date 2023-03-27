@@ -51,6 +51,7 @@ public:
 
 protected Q_SLOTS:
     void setStartWorkbenchComboItems();
+    void wbItemMoved();
 
 protected:
     void buildWorkbenchList();
