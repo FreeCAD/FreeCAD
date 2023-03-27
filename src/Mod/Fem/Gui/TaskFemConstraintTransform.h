@@ -46,9 +46,9 @@ public:
                                         QWidget* parent = nullptr);
     ~TaskFemConstraintTransform() override;
     const std::string getReferences() const override;
-    double get_X_rot()const;
-    double get_Y_rot()const;
-    double get_Z_rot()const;
+    std::string get_X_rot() const;
+    std::string get_Y_rot() const;
+    std::string get_Z_rot() const;
     std::string get_transform_type() const;
     static std::string getSurfaceReferences(const std::string showConstr);
 
