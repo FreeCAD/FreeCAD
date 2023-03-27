@@ -407,7 +407,7 @@ class PackageDetails(QtWidgets.QWidget):
 
     def set_change_branch_button_state(self):
         """The change branch button is only available for installed Addons that have a .git directory
-        and in runs where the GitPython import is available."""
+        and in runs where the git is available."""
 
         self.ui.buttonChangeBranch.hide()
 
