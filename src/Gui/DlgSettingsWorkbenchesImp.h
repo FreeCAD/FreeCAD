@@ -50,7 +50,7 @@ public:
     static QStringList getDisabledWorkbenches();
 
 protected Q_SLOTS:
-    void setStartWorkbenchComboItems();
+    void wbToggled(const QString& wbName, bool enabled);
     void wbItemMoved();
 
 protected:
@@ -59,6 +59,8 @@ protected:
 
 private:
     void addWorkbench(const QString& it, bool enabled);
+
+    void setStartWorkbenchComboItems();
 
     void saveWorkbenchSelector();
     void loadWorkbenchSelector();

@@ -55,10 +55,10 @@ public:
 
 protected Q_SLOTS:
     void onLoadClicked();
-    void onWbActivated(bool checked);
+    void onWbToggled(bool checked);
 
 Q_SIGNALS:
-    void activatedWbListChanged();
+    void wbToggled(const QString& wbName, bool enabled);
 
 private:
     QCheckBox* enableCheckBox;
@@ -87,7 +87,7 @@ wbListItem::wbListItem(const QString& wbName, bool enabled, bool startupWb, bool
         enableCheckBox->setEnabled(false);
         enableCheckBox->setToolTip(tr("This is the current startup module, and must be enabled. See Preferences/General/Autoload to change."));
     }
-    connect(enableCheckBox, &QCheckBox::toggled, this, [this](bool checked) { onWbActivated(checked); });
+    connect(enableCheckBox, &QCheckBox::toggled, this, [this](bool checked) { onWbToggled(checked); });
 
     QWidget* subWidget = new QWidget(this);
     // 2: Workbench Icon
@@ -201,7 +201,7 @@ void wbListItem::onLoadClicked()
     loadLabel->setVisible(true);
 }
 
-void wbListItem::onWbActivated(bool checked)
+void wbListItem::onWbToggled(bool checked)
 {
     // activate/deactivate the widgets
     iconLabel->setEnabled(checked);
@@ -212,9 +212,9 @@ void wbListItem::onWbActivated(bool checked)
     autoloadCheckBox->setEnabled(checked);
     if (!checked) //disabling wb disable auto-load.
         autoloadCheckBox->setChecked(false);
-
+    
     // Reset the start combo items.
-    Q_EMIT activatedWbListChanged();
+    Q_EMIT wbToggled(objectName(), checked);
 }
 
 /* TRANSLATOR Gui::Dialog::DlgSettingsWorkbenchesImp */
@@ -364,7 +364,7 @@ void DlgSettingsWorkbenchesImp::addWorkbench(const QString& wbName, bool enabled
     bool autoLoad = std::find(_backgroundAutoloadedModules.begin(), _backgroundAutoloadedModules.end(),
         wbName.toStdString()) != _backgroundAutoloadedModules.end();
     wbListItem* widget = new wbListItem(wbName, enabled, isStartupWb, autoLoad, ui->wbList->count(), this);
-    connect(widget, &wbListItem::activatedWbListChanged, this, &DlgSettingsWorkbenchesImp::setStartWorkbenchComboItems);
+    connect(widget, &wbListItem::wbToggled, this, &DlgSettingsWorkbenchesImp::wbToggled);
     auto wItem = new QListWidgetItem();
     wItem->setSizeHint(widget->sizeHint());
     ui->wbList->addItem(wItem);
@@ -443,6 +443,34 @@ void DlgSettingsWorkbenchesImp::loadWorkbenchSelector()
     ui->WorkbenchSelectorPosition->addItem(tr("Left corner"));
     ui->WorkbenchSelectorPosition->addItem(tr("Right corner"));
     ui->WorkbenchSelectorPosition->setCurrentIndex(WorkbenchSwitcher::getIndex());
+}
+
+void DlgSettingsWorkbenchesImp::wbToggled(const QString& wbName, bool enabled)
+{
+    setStartWorkbenchComboItems();
+
+    //reorder the list of items.
+    int wbIndex = 0;
+    for (int i = 0; i < ui->wbList->count(); i++) {
+        wbListItem* wbItem = dynamic_cast<wbListItem*>(ui->wbList->itemWidget(ui->wbList->item(i)));
+        if (wbItem && wbItem->objectName() == wbName) {
+            wbIndex = i;
+        } 
+    }
+
+    int destinationIndex = ui->wbList->count();
+
+    for (int i = 0; i < ui->wbList->count(); i++) {
+        wbListItem* wbItem = dynamic_cast<wbListItem*>(ui->wbList->itemWidget(ui->wbList->item(i)));
+        if (wbItem && !wbItem->isEnabled() && (enabled || ((wbItem->objectName()).toStdString() > wbName.toStdString()))) {
+            //If the wb was enabled, then it was in the disabled wbs. So it moves to the row of the currently first disabled wb
+            //If the wb was disabled. Then it goes to the disabled wb where it belongs alphabetically.
+            destinationIndex = i;
+            break;
+        }
+    }
+    ui->wbList->model()->moveRow(QModelIndex(), wbIndex, QModelIndex(), destinationIndex);
+
 }
 
 void DlgSettingsWorkbenchesImp::setStartWorkbenchComboItems()
