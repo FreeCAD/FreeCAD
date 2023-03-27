@@ -76,18 +76,22 @@ DlgGeneralImp::DlgGeneralImp( QWidget* parent )
         QPixmap px = Application::Instance->workbenchIcon(QString::fromLatin1("NoneWorkbench"));
         QString key = QString::fromLatin1("<last>");
         QString value = QString::fromLatin1("$LastModule");
-        if (px.isNull())
+        if (px.isNull()) {
             ui->AutoloadModuleCombo->addItem(key, QVariant(value));
-        else
+        }
+        else {
             ui->AutoloadModuleCombo->addItem(px, key, QVariant(value));
+        }
     }
 
     for (QMap<QString, QString>::Iterator it = menuText.begin(); it != menuText.end(); ++it) {
         QPixmap px = Application::Instance->workbenchIcon(it.value());
-        if (px.isNull())
+        if (px.isNull()) {
             ui->AutoloadModuleCombo->addItem(it.key(), QVariant(it.value()));
-        else
+        }
+        else {
             ui->AutoloadModuleCombo->addItem(px, it.key(), QVariant(it.value()));
+        }
     }
 
     recreatePreferencePackMenu();
@@ -100,10 +104,7 @@ DlgGeneralImp::DlgGeneralImp( QWidget* parent )
 
     // If there are any saved config file backs, show the revert button, otherwise hide it:
     const auto & backups = Application::Instance->prefPackManager()->configBackups();
-    if (backups.empty())
-        ui->RevertToSavedConfig->setEnabled(false);
-    else
-        ui->RevertToSavedConfig->setEnabled(true);
+    ui->RevertToSavedConfig->setEnabled(backups.empty());
     connect(ui->RevertToSavedConfig, &QPushButton::clicked, this, &DlgGeneralImp::revertToSavedConfig);
 }
 
@@ -148,8 +149,9 @@ void DlgGeneralImp::setNumberLocale(bool force/* = false*/)
 
     // Only make the change if locale setting has changed or if forced
     // Except if format is "OS" where we don't want to run setLocale
-    if (localeIndex == localeFormat && (!force || localeFormat == 0))
+    if (localeIndex == localeFormat && (!force || localeFormat == 0)) {
         return;
+    }
 
     if (localeFormat == 0) {
         Translator::instance()->setLocale(); // Defaults to system locale
@@ -200,11 +202,13 @@ void DlgGeneralImp::saveSettings()
     hGrp->SetInt("ToolbarIconSize", pixel);
     getMainWindow()->setIconSize(QSize(pixel,pixel));
 
-    int blinkTime = hGrp->GetBool("EnableCursorBlinking", true) ? -1 : 0;
+    int blinkTime{hGrp->GetBool("EnableCursorBlinking", true) ? -1 : 0};
     qApp->setCursorFlashTime(blinkTime);
 
     hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/DockWindows");
-    bool treeView=false, propertyView=false, comboView=true;
+    bool treeView=false;
+    bool propertyView=false;
+    bool comboView=true;
     switch(ui->treeMode->currentIndex()) {
     case 1:
         treeView = propertyView = true;
