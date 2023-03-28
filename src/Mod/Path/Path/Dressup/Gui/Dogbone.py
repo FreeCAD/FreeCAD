@@ -25,7 +25,6 @@ from PySide import QtCore
 from PySide.QtCore import QT_TRANSLATE_NOOP
 import FreeCAD
 import Path
-import Path.Base.Util as PathUtil
 import Path.Dressup.Utils as PathDressup
 import PathScripts.PathUtils as PathUtils
 import math
@@ -1168,9 +1167,7 @@ class TaskPanel(object):
 
     def updateBoneList(self):
         itemList = []
-        for loc, (enabled, inaccessible, ids, zs) in PathUtil.keyValueIter(
-            self.obj.Proxy.boneStateList(self.obj)
-        ):
+        for loc, (enabled, inaccessible, ids, zs) in self.obj.Proxy.boneStateList(self.obj).items():
             lbl = "(%.2f, %.2f): %s" % (loc[0], loc[1], ",".join(str(id) for id in ids))
             item = QtGui.QListWidgetItem(lbl)
             if enabled:

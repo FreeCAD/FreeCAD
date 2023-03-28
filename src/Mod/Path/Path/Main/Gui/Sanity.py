@@ -32,7 +32,6 @@ from PySide import QtCore, QtGui
 import FreeCAD
 import FreeCADGui
 import Path
-import Path.Base.Util as PathUtil
 import PathScripts
 from collections import Counter
 from datetime import datetime
@@ -508,9 +507,7 @@ class CommandPathSanity:
         data = {"baseimage": "", "bases": ""}
         try:
             bases = {}
-            for name, count in PathUtil.keyValueIter(
-                Counter([obj.Proxy.baseObject(obj, o).Label for o in obj.Model.Group])
-            ):
+            for name, count in Counter([obj.Proxy.baseObject(obj, o).Label for o in obj.Model.Group]).items():
                 bases[name] = str(count)
 
             data["baseimage"] = self.__makePicture(obj.Model, "baseimage")
