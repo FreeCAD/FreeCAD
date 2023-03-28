@@ -1766,7 +1766,7 @@ void CmdPartDesignDraft::activated(int iMsg)
         size_t i = 0;
         while (i < SubNames.size())
         {
-            std::string aSubName = static_cast<std::string>(SubNames.at(i));
+            std::string aSubName = SubNames.at(i);
 
             if (aSubName.compare(0, 4, "Face") == 0) {
                 // Check for valid face types
@@ -1833,7 +1833,7 @@ void CmdPartDesignThickness::activated(int iMsg)
         size_t i = 0;
         while (i < SubNames.size())
         {
-            std::string aSubName = static_cast<std::string>(SubNames.at(i));
+            std::string aSubName = SubNames.at(i);
 
             if (aSubName.compare(0, 4, "Face") != 0) {
                 // empty name or any other sub-element

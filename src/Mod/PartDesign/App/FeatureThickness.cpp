@@ -83,7 +83,7 @@ App::DocumentObjectExecReturn *Thickness::execute()
     }
 
     /* If the feature was empty at some point, then Placement was set by positionByBaseFeature.
-    *  However makeThickSolid apparantly requires the placement to be empty, so we have to clear it*/
+    *  However makeThickSolid apparently requires the placement to be empty, so we have to clear it*/
     this->Placement.setValue(Base::Placement());
 
     TopTools_ListOfShape closingFaces;
