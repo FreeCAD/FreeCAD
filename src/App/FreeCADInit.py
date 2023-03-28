@@ -192,6 +192,32 @@ def InitApplications():
         else:
             Log('Init:      Initializing ' + Dir + '(Init.py not found)... ignore\n')
 
+    def processMetadataFile(MetadataFile):
+        meta = FreeCAD.Metadata(MetadataFile)
+        if not meta.supportsCurrentFreeCAD():
+            Msg(f'NOTICE: {meta.Name} does not support this version of FreeCAD, so is being skipped\n')
+            return None
+        content = meta.Content
+        if "workbench" in content:
+            workbenches = content["workbench"]
+            for workbench in workbenches:
+                if not workbench.supportsCurrentFreeCAD():
+                    Msg(f'NOTICE: {meta.Name} content item {workbench.Name} does not support this version of FreeCAD, so is being skipped\n')
+                    return None
+                subdirectory = workbench.Name if not workbench.Subdirectory else workbench.Subdirectory
+                subdirectory = subdirectory.replace("/",os.path.sep)
+                subdirectory = os.path.join(Dir, subdirectory)
+                #classname = workbench.Classname
+                sys.path.insert(0,subdirectory)
+                PathExtension.append(subdirectory)
+                RunInitPy(subdirectory)
+
+    def tryProcessMetadataFile(MetadataFile):
+        try:
+            processMetadataFile(MetadataFile)
+        except Exception as exc:
+            Err(str(exc))
+
     for Dir in ModDict.values():
         if ((Dir != '') & (Dir != 'CVS') & (Dir != '__init__.py')):
             stopFile = os.path.join(Dir, "ADDON_DISABLED")
@@ -202,26 +228,7 @@ def InitApplications():
             PathExtension.append(Dir)
             MetadataFile = os.path.join(Dir, "package.xml")
             if os.path.exists(MetadataFile):
-                meta = FreeCAD.Metadata(MetadataFile)
-                if not meta.supportsCurrentFreeCAD():
-                    Msg(f'NOTICE: {meta.Name} does not support this version of FreeCAD, so is being skipped\n')
-                    continue
-                content = meta.Content
-                if "workbench" in content:
-                    workbenches = content["workbench"]
-                    for workbench in workbenches:
-                        if not workbench.supportsCurrentFreeCAD():
-                            Msg(f'NOTICE: {meta.Name} content item {workbench.Name} does not support this version of FreeCAD, so is being skipped\n')
-                            continue
-                        subdirectory = workbench.Name if not workbench.Subdirectory else workbench.Subdirectory
-                        subdirectory = subdirectory.replace("/",os.path.sep)
-                        subdirectory = os.path.join(Dir, subdirectory)
-                        #classname = workbench.Classname
-                        sys.path.insert(0,subdirectory)
-                        PathExtension.append(subdirectory)
-                        RunInitPy(subdirectory)
-                else:
-                    pass # The package content says there are no workbenches here, so just skip
+                tryProcessMetadataFile(MetadataFile)
             else:
                 RunInitPy(Dir)
 
