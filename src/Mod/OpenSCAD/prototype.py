@@ -18,8 +18,11 @@ if open.__module__ in ['__builtin__','io']:
 
 
 def openscadmesh(doc, scadstr, objname):
-    import Part,Mesh,os,OpenSCADUtils
-    tmpfilename=OpenSCADUtils.callopenscadstring(scadstr,'stl')
+    import Part
+    import Mesh
+    import os
+    import OpenSCADUtils
+    tmpfilename = OpenSCADUtils.callopenscadstring(scadstr,'stl')
     if tmpfilename:
         #mesh1 = doc.getObject(objname) #reuse imported object
         Mesh.insert(tmpfilename)
@@ -83,7 +86,7 @@ class Node:
 
     def addtofreecad(self,doc=None,fcpar=None):
         def center(obj,x,y,z):
-             obj.Placement = FreeCAD.Placement(\
+            obj.Placement = FreeCAD.Placement(\
                 FreeCAD.Vector(-x/2.0,-y/2.0,-z/2.0),\
                 FreeCAD.Rotation(0,0,0,1))
 
@@ -191,11 +194,11 @@ class Node:
                     center(obj,0,0,h)
         elif namel == 'polyhedron':
             obj = doc.addObject("Part::Feature",namel)
-            points=self.arguments['points']
-            faces=self.arguments['triangles']
-            shell=Part.Shell([Part.Face(Part.makePolygon(\
-                    [tuple(points[pointindex]) for pointindex in \
-                    (face+face[0:1])])) for face in faces])
+            points = self.arguments['points']
+            faces = self.arguments['triangles']
+            shell = Part.Shell([Part.Face(Part.makePolygon(\
+                     [tuple(points[pointindex]) for pointindex in \
+                     (face+face[0:1])])) for face in faces])
 #            obj.Shape=Part.Solid(shell).removeSplitter()
             solid=Part.Solid(shell).removeSplitter()
             if solid.Volume < 0:
@@ -205,12 +208,12 @@ class Node:
 
         elif namel == 'polygon':
             obj = doc.addObject("Part::Feature", namel)
-            points=self.arguments['points']
+            points = self.arguments['points']
             paths = self.arguments.get('paths')
             if not paths:
-                faces=[Part.Face(Part.makePolygon([(x,y,0) for x,y in points+points[0:1]]))]
+                faces = [Part.Face(Part.makePolygon([(x,y,0) for x,y in points+points[0:1]]))]
             else:
-                faces= [Part.Face(Part.makePolygon([(points[pointindex][0],points[pointindex][1],0) for \
+                faces = [Part.Face(Part.makePolygon([(points[pointindex][0],points[pointindex][1],0) for \
                     pointindex in (path+path[0:1])])) for path in paths]
             obj.Shape=subtractfaces(faces)
         elif namel == 'square':
@@ -225,9 +228,9 @@ class Node:
             import Draft
             if '$fn' in self.arguments and self.arguments['$fn'] != 0 \
             and self.arguments['$fn']<=Node.fnmin:
-                obj=Draft.makePolygon(int(self.arguments['$fn']),r)
+                obj = Draft.makePolygon(int(self.arguments['$fn']),r)
             else:
-                obj=Draft.makeCircle(r) # create a Face
+                obj = Draft.makeCircle(r) # create a Face
                 #obj = doc.addObject("Part::Circle",namel);obj.Radius = r
         elif namel == 'color':
             if len(self.children) == 1:
@@ -240,8 +243,8 @@ class Node:
             obj.ViewObject.Transparency = transp
         elif namel == 'multmatrix':
             assert(len(self.children)>0)
-            m1l=[round(f,12) for f in sum(self.arguments,[])] #That's the original matrix
-            m1=FreeCAD.Matrix(*tuple(m1l)) #That's the original matrix
+            m1l = [round(f,12) for f in sum(self.arguments,[])] #That's the original matrix
+            m1 = FreeCAD.Matrix(*tuple(m1l)) #That's the original matrix
             if isspecialorthogonalpython(fcsubmatrix(m1)): #a Placement can represent the transformation
                 if len(self.children) == 1:
                     obj = self.children[0].addtofreecad(doc,fcpar or True)
@@ -251,7 +254,7 @@ class Node:
                     #FreeCAD.Console.PrintMessage('obj %s\nmat %s/n' % (obj.Placement,m1))
                 obj.Placement=FreeCAD.Placement(m1).multiply(obj.Placement)
             else: #we need to apply the matrix transformation to the Shape using a custom PythonFeature
-                obj=doc.addObject("Part::FeaturePython",namel)
+                obj = doc.addObject("Part::FeaturePython",namel)
                 if len(self.children) == 1:
                     child = self.children[0].addtofreecad(doc,obj)
                 else:
@@ -266,9 +269,9 @@ class Node:
             if not twist:
                 obj = doc.addObject("Part::Extrusion",namel)
             else: #twist
-                obj=doc.addObject("Part::FeaturePython",'twist_extrude')
+                obj = doc.addObject("Part::FeaturePython",'twist_extrude')
             if len(self.children)==0:
-                base= Node('import',self.arguments).addtofreecad(doc,obj)
+                base = Node('import',self.arguments).addtofreecad(doc,obj)
             elif len(self.children)==1:
                 base = self.children[0].addtofreecad(doc,obj)
             else:
@@ -282,7 +285,7 @@ class Node:
                 base.ViewObject.hide()
                 base=newobj
             if not twist:
-                obj.Base= base
+                obj.Base = base
                 obj.Dir = (0,0,height)
             else: #twist
                 Twist(obj,base,height,-twist)
@@ -294,7 +297,7 @@ class Node:
         elif namel == 'rotate_extrude':
             obj = doc.addObject("Part::Revolution",namel)
             if len(self.children)==0:
-                base= Node('import',self.arguments).addtofreecad(doc,obj)
+                base = Node('import',self.arguments).addtofreecad(doc,obj)
             elif len(self.children)==1:
                 base = self.children[0].addtofreecad(doc,obj)
             else:
@@ -315,8 +318,8 @@ class Node:
             obj.Placement=FreeCAD.Placement(FreeCAD.Vector(),FreeCAD.Rotation(0,0,90))
         elif namel == 'projection':
             if self.arguments['cut']:
-                planename='xy_plane_used_for_project_cut'
-                obj=doc.addObject('Part::MultiCommon','projection_cut')
+                planename = 'xy_plane_used_for_project_cut'
+                obj = doc.addObject('Part::MultiCommon','projection_cut')
                 plane = doc.getObject(planename)
                 if not plane:
                     plane=doc.addObject("Part::Plane",planename)
@@ -339,12 +342,12 @@ class Node:
             origin = self.arguments.get('origin')
             if filename:
                 import os
-                docname=os.path.split(filename)[1]
+                docname = os.path.split(filename)[1]
                 objname,extension = docname.split('.',1)
                 if not os.path.isabs(filename):
                     try:
                         global lastimportpath
-                        filename=os.path.join(lastimportpath,filename)
+                        filename = os.path.join(lastimportpath,filename)
                     except: raise #no path given
                 # Check for a mesh fileformat support by the Mesh mddule
                 if extension.lower() in reverseimporttypes()['Mesh']:
@@ -352,7 +355,7 @@ class Node:
                     mesh1 = doc.getObject(objname) #reuse imported object
                     if not mesh1:
                         Mesh.insert(filename)
-                        mesh1=doc.getObject(objname)
+                        mesh1 = doc.getObject(objname)
                     mesh1.ViewObject.hide()
                     sh = Part.Shape()
                     sh.makeShapeFromMesh(mesh1.Mesh.Topology,0.1)
@@ -443,7 +446,7 @@ class Node:
                 cubeobj.Length = x+2*r
                 cubeobj.Width = y+2*r
                 cubeobj.Height = z+2*r*issphere
-                obj=doc.addObject("Part::Fillet","%s_%s"%(namel,roundobjname))
+                obj = doc.addObject("Part::Fillet","%s_%s"%(namel,roundobjname))
                 obj.Base = cubeobj
                 cubeobj.ViewObject.hide()
                 if issphere:
@@ -456,7 +459,7 @@ class Node:
                     #OffsetShape
                     raise(NotImplementedError)
             elif childrennames.count('sphere') == 1:
-                sphereindex=childrennames.index('sphere')
+                sphereindex = childrennames.index('sphere')
                 sphere = self.children[sphereindex]
                 offset = sphere.arguments['r']
                 nonsphere = self.children[0:sphereindex]+\
@@ -522,7 +525,7 @@ class Node:
                     or (obj.isDerivedFrom('Part::FeaturePython') and isinstance(obj.Proxy,RefineShape)):
                     return obj
                 else:
-                    newobj=doc.addObject("Part::FeaturePython",'refine')
+                    newobj = doc.addObject("Part::FeaturePython",'refine')
                     RefineShape(newobj,obj)
                     ViewProviderTree(newobj.ViewObject)
                     obj.ViewObject.hide()
