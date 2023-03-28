@@ -81,7 +81,7 @@ class DeformationWriter:
         for obj in self.write.getMember("Fem::ConstraintPressure"):
             if obj.References:
                 for name in obj.References[0][1]:
-                    pressure = self.write.getFromUi(obj.Pressure, "MPa", "M/(L*T^2)")
+                    pressure = float(obj.Pressure.getValueAs("Pa"))
                     if not obj.Reversed:
                         pressure *= -1
                     self.write.boundary(name, "Normal Force", pressure)

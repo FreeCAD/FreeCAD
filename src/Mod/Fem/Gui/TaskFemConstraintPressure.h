@@ -45,7 +45,7 @@ public:
                                        QWidget* parent = nullptr);
     ~TaskFemConstraintPressure() override;
     const std::string getReferences() const override;
-    double get_Pressure()const;
+    std::string get_Pressure() const;
     bool get_Reverse()const;
 
 private Q_SLOTS:

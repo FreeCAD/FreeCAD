@@ -70,12 +70,12 @@
       </widget>
      </item>
      <item>
-      <widget class="Gui::InputField" name="if_pressure">
-       <property name="text">
-        <string>0 MPa</string>
-       </property>
+      <widget class="Gui::QuantitySpinBox" name="if_pressure">
        <property name="unit" stdset="0">
-        <string notr="true">MPa</string>
+        <string notr="true"/>
+       </property>
+       <property name="minimum">
+        <double>0.000000000000000</double>
        </property>
       </widget>
      </item>
@@ -92,9 +92,9 @@
  </widget>
  <customwidgets>
   <customwidget>
-   <class>Gui::InputField</class>
-   <extends>QLineEdit</extends>
-   <header>Gui/InputField.h</header>
+   <class>Gui::QuantitySpinBox</class>
+   <extends>QWidget</extends>
+   <header>Gui/QuantitySpinBox.h</header>
   </customwidget>
  </customwidgets>
  <resources/>

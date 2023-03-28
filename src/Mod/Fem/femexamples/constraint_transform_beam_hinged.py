@@ -147,7 +147,7 @@ def setup(doc=None, solvertype="ccxtools"):
     # constraint pressure
     con_pressure = ObjectsFem.makeConstraintPressure(doc, name="FemConstraintPressure")
     con_pressure.References = [(geom_obj, "Face8")]
-    con_pressure.Pressure = 10.0
+    con_pressure.Pressure = "10.0 MPa"
     con_pressure.Reversed = False
     analysis.addObject(con_pressure)
 

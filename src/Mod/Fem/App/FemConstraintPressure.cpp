@@ -54,6 +54,20 @@ const char* ConstraintPressure::getViewProviderName() const
     return "FemGui::ViewProviderFemConstraintPressure";
 }
 
+void ConstraintPressure::handleChangedPropertyType(Base::XMLReader& reader, const char* TypeName,
+                                                      App::Property* prop)
+{
+    // property Pressure had App::PropertyFloat and was changed to App::PropertyPressure
+    if (prop == &Pressure && strcmp(TypeName, "App::PropertyFloat") == 0) {
+        App::PropertyFloat PressureProperty;
+        // restore the PropertyFloat to be able to set its value
+        PressureProperty.Restore(reader);
+        // the old implementation or pressure stored the value as MPa
+        // therefore we must convert the value with a factor 1000
+        Pressure.setValue(PressureProperty.getValue() * 1000.0);
+    }
+}
+
 void ConstraintPressure::onChanged(const App::Property* prop)
 {
     Constraint::onChanged(prop);

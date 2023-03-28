@@ -51,21 +51,8 @@ TaskFemConstraintPressure::TaskFemConstraintPressure(
     ui->setupUi(proxy);
     QMetaObject::connectSlotsByName(this);
 
-    // create a context menu for the listview of the references
-    createDeleteAction(ui->lw_references);
-    connect(deleteAction, &QAction::triggered,
-        this, &TaskFemConstraintPressure::onReferenceDeleted);
-    connect(ui->lw_references, &QListWidget::currentItemChanged,
-            this, &TaskFemConstraintPressure::setSelection);
-    connect(ui->lw_references, &QListWidget::itemClicked,
-            this, &TaskFemConstraintPressure::setSelection);
-
-    connect(ui->checkBoxReverse, &QCheckBox::toggled,
-            this, &TaskFemConstraintPressure::onCheckReverse);
-
     this->groupLayout()->addWidget(proxy);
 
-    /* Note: */
     // Get the feature data
     Fem::ConstraintPressure* pcConstraint =
         static_cast<Fem::ConstraintPressure*>(ConstraintView->getObject());
@@ -74,14 +61,14 @@ TaskFemConstraintPressure::TaskFemConstraintPressure(
     std::vector<std::string> SubElements = pcConstraint->References.getSubValues();
 
     // Fill data into dialog elements
+    ui->if_pressure->setUnit(pcConstraint->Pressure.getUnit());
     ui->if_pressure->setMinimum(0);
     ui->if_pressure->setMaximum(FLOAT_MAX);
-    Base::Quantity p =
-        Base::Quantity(1000 * (pcConstraint->Pressure.getValue()), Base::Unit::Stress);
-    ui->if_pressure->setValue(p);
+    ui->if_pressure->setValue(pcConstraint->Pressure.getQuantityValue());
+    ui->if_pressure->bind(pcConstraint->Pressure);
+
     bool reversed = pcConstraint->Reversed.getValue();
     ui->checkBoxReverse->setChecked(reversed);
-    /* */
 
     ui->lw_references->clear();
     for (std::size_t i = 0; i < Objects.size(); i++) {
@@ -91,7 +78,19 @@ TaskFemConstraintPressure::TaskFemConstraintPressure(
         ui->lw_references->setCurrentRow(0, QItemSelectionModel::ClearAndSelect);
     }
 
-    //Selection buttons
+    // create a context menu for the listview of the references
+    createDeleteAction(ui->lw_references);
+    connect(
+        deleteAction, &QAction::triggered, this, &TaskFemConstraintPressure::onReferenceDeleted);
+    connect(ui->lw_references, &QListWidget::currentItemChanged,
+            this, &TaskFemConstraintPressure::setSelection);
+    connect(ui->lw_references, &QListWidget::itemClicked,
+            this, &TaskFemConstraintPressure::setSelection);
+
+    connect(ui->checkBoxReverse, &QCheckBox::toggled,
+            this, &TaskFemConstraintPressure::onCheckReverse);
+
+    // Selection buttons
     buttonGroup->addButton(ui->btnAdd, (int)SelectionChangeModes::refAdd);
     buttonGroup->addButton(ui->btnRemove, (int)SelectionChangeModes::refRemove);
 
@@ -247,12 +246,9 @@ const std::string TaskFemConstraintPressure::getReferences() const
     return TaskFemConstraint::getReferences(items);
 }
 
-/* Note: */
-double TaskFemConstraintPressure::get_Pressure() const
+std::string TaskFemConstraintPressure::get_Pressure() const
 {
-    Base::Quantity pressure = ui->if_pressure->getQuantity();
-    double pressure_in_MPa = pressure.getValueAs(Base::Quantity::MegaPascal);
-    return pressure_in_MPa;
+    return ui->if_pressure->value().getSafeUserString().toStdString();
 }
 
 bool TaskFemConstraintPressure::get_Reverse() const
@@ -317,9 +313,9 @@ bool TaskDlgFemConstraintPressure::accept()
 
     try {
         Gui::Command::doCommand(Gui::Command::Doc,
-                                "App.ActiveDocument.%s.Pressure = %f",
+                                "App.ActiveDocument.%s.Pressure = \"%s\"",
                                 name.c_str(),
-                                parameterPressure->get_Pressure());
+                                parameterPressure->get_Pressure().c_str());
         Gui::Command::doCommand(Gui::Command::Doc,
                                 "App.ActiveDocument.%s.Reversed = %s",
                                 name.c_str(),
