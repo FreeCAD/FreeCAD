@@ -776,6 +776,7 @@ std::vector<Document*> Application::openDocuments(const std::vector<std::string>
                         label = (*labels)[count].c_str();
                 }
 
+                // TODO: Store opening time
                 auto doc = openDocumentPrivate(path, name.c_str(), label, isMainDoc, createView, std::move(objNames));
                 FC_DURATION_PLUS(timing.d1,t1);
                 if (doc) {

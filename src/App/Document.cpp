@@ -59,6 +59,7 @@ recompute path. Also, it enables more complicated dependencies beyond trees.
 
 #ifndef _PreComp_
 # include <bitset>
+# include <chrono>
 # include <stack>
 # include <boost/filesystem.hpp>
 #endif
@@ -856,6 +857,12 @@ Document::Document(const char* documentName)
                       0,
                       PropertyType(Prop_Hidden | Prop_ReadOnly),
                       "Link of the tip object of the document");
+
+    if (!myName.empty())
+        myEditTime = fs::last_write_time(fs::absolute(fs::path(FileName.getValue())));
+    else
+        myEditTime = std::chrono::system_clock::to_time_t(std::chrono::system_clock::now());
+
     Uid.touch();
 }
 
@@ -1528,8 +1535,19 @@ bool Document::save ()
             TipName.setValue(Tip.getValue()->getNameInDocument());
         }
 
+        // TODO: First check last modified _time_ of previous stored document if it exists
+        auto filepath = fs::absolute(fs::path(FileName.getValue()));
+        std::time_t lastModifiedTime;
+        if (fs::exists(filepath)) {
+            lastModifiedTime = fs::last_write_time(filepath);
+            if (lastModifiedTime > myEditTime) {
+                throw Base::FileException(
+                    "File was edited externally. Aborting Save.", FileName.getValue());
+            }
+        }
         std::string LastModifiedDateString = Base::TimeInfo::currentDateTimeString();
         LastModifiedDate.setValue(LastModifiedDateString.c_str());
+        myEditTime = std::chrono::system_clock::to_time_t(std::chrono::system_clock::now());
         // set author if needed
         bool saveAuthor = App::GetApplication().GetParameterGroupByPath
             ("User parameter:BaseApp/Preferences/Document")->GetBool("prefSetAuthorOnSave",false);
