@@ -78,7 +78,7 @@ def setup(doc=None, solvertype="ccxtools"):
         (geom_obj, "Vertex7"),
         (geom_obj, "Vertex8")
     ]
-    con_force.Force = 9000000.0
+    con_force.Force = "9000000.0 N"
     con_force.Direction = (doc.Box, ["Edge5"])
     con_force.Reversed = True
     analysis.addObject(con_force)

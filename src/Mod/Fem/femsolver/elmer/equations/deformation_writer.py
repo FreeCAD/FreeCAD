@@ -96,7 +96,7 @@ class DeformationWriter:
         for obj in self.write.getMember("Fem::ConstraintForce"):
             if obj.References:
                 for name in obj.References[0][1]:
-                    force = self.write.getFromUi(obj.Force, "N", "M*L*T^-2")
+                    force = float(obj.Force.getValueAs("N"))
                     self.write.boundary(name, "Force 1", obj.DirectionVector.x * force)
                     self.write.boundary(name, "Force 2", obj.DirectionVector.y * force)
                     self.write.boundary(name, "Force 3", obj.DirectionVector.z * force)

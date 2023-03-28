@@ -57,31 +57,13 @@ TaskFemConstraintForce::TaskFemConstraintForce(ViewProviderFemConstraintForce* C
     ui->setupUi(proxy);
     QMetaObject::connectSlotsByName(this);
 
-    // create a context menu for the listview of the references
-    createDeleteAction(ui->listReferences);
-    connect(deleteAction, &QAction::triggered,
-            this, &TaskFemConstraintForce::onReferenceDeleted);
-    connect(ui->spinForce, qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
-            this, &TaskFemConstraintForce::onForceChanged);
-    connect(ui->buttonDirection, &QToolButton::clicked,
-            this, &TaskFemConstraintForce::onButtonDirection);
-    connect(ui->checkReverse, &QCheckBox::toggled,
-            this, &TaskFemConstraintForce::onCheckReverse);
-    connect(ui->listReferences, &QListWidget::itemClicked,
-            this, &TaskFemConstraintForce::setSelection);
-
     this->groupLayout()->addWidget(proxy);
-
-    // Temporarily prevent unnecessary feature recomputes
-    ui->spinForce->blockSignals(true);
-    ui->listReferences->blockSignals(true);
-    ui->buttonDirection->blockSignals(true);
-    ui->checkReverse->blockSignals(true);
 
     // Get the feature data
     Fem::ConstraintForce* pcConstraint =
         static_cast<Fem::ConstraintForce*>(ConstraintView->getObject());
-    double f = pcConstraint->Force.getValue();
+    auto force = pcConstraint->Force.getQuantityValue();
+    Base::Console().Error("force: %s\n", force.getSafeUserString().toStdString());
     std::vector<App::DocumentObject*> Objects = pcConstraint->References.getValues();
     std::vector<std::string> SubElements = pcConstraint->References.getSubValues();
     std::vector<std::string> dirStrings = pcConstraint->Direction.getSubValues();
@@ -91,9 +73,10 @@ TaskFemConstraintForce::TaskFemConstraintForce(ViewProviderFemConstraintForce* C
     bool reversed = pcConstraint->Reversed.getValue();
 
     // Fill data into dialog elements
+    ui->spinForce->setUnit(pcConstraint->Force.getUnit());
     ui->spinForce->setMinimum(0);
     ui->spinForce->setMaximum(FLOAT_MAX);
-    ui->spinForce->setValue(f);
+    ui->spinForce->setValue(force);
     ui->listReferences->clear();
     for (std::size_t i = 0; i < Objects.size(); i++)
         ui->listReferences->addItem(makeRefText(Objects[i], SubElements[i]));
@@ -102,14 +85,20 @@ TaskFemConstraintForce::TaskFemConstraintForce(ViewProviderFemConstraintForce* C
     ui->lineDirection->setText(dir.isEmpty() ? QString() : dir);
     ui->checkReverse->setChecked(reversed);
 
-    ui->spinForce->blockSignals(false);
-    ui->listReferences->blockSignals(false);
-    ui->buttonDirection->blockSignals(false);
-    ui->checkReverse->blockSignals(false);
+    // create a context menu for the listview of the references
+    createDeleteAction(ui->listReferences);
+    connect(deleteAction, &QAction::triggered, this, &TaskFemConstraintForce::onReferenceDeleted);
+    connect(ui->buttonDirection, &QToolButton::clicked,
+            this, &TaskFemConstraintForce::onButtonDirection);
+    connect(ui->checkReverse, &QCheckBox::toggled, this, &TaskFemConstraintForce::onCheckReverse);
+    connect(ui->listReferences, &QListWidget::itemClicked,
+            this, &TaskFemConstraintForce::setSelection);
 
-    //Selection buttons
+    // Selection buttons
     buttonGroup->addButton(ui->btnAdd, (int)SelectionChangeModes::refAdd);
     buttonGroup->addButton(ui->btnRemove, (int)SelectionChangeModes::refRemove);
+
+    ui->spinForce->bind(pcConstraint->Force);
 
     updateUI();
 }
@@ -253,13 +242,6 @@ void TaskFemConstraintForce::removeFromSelection()
     updateUI();
 }
 
-void TaskFemConstraintForce::onForceChanged(double f)
-{
-    Fem::ConstraintForce* pcConstraint =
-        static_cast<Fem::ConstraintForce*>(ConstraintView->getObject());
-    pcConstraint->Force.setValue(f);
-}
-
 void TaskFemConstraintForce::onReferenceDeleted()
 {
     TaskFemConstraintForce::removeFromSelection();// OvG: On right-click face is automatically
@@ -353,9 +335,9 @@ void TaskFemConstraintForce::onCheckReverse(const bool pressed)
     pcConstraint->Reversed.setValue(pressed);
 }
 
-double TaskFemConstraintForce::getForce() const
+const std::string TaskFemConstraintForce::getForce() const
 {
-    return ui->spinForce->value().getValue();
+    return ui->spinForce->value().getSafeUserString().toStdString();
 }
 
 const std::string TaskFemConstraintForce::getReferences() const
@@ -457,18 +439,10 @@ bool TaskDlgFemConstraintForce::accept()
         static_cast<const TaskFemConstraintForce*>(parameter);
 
     try {
-        // Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "FEM force constraint changed"));
-
-        if (parameterForce->getForce() <= 0) {
-            QMessageBox::warning(
-                parameter, tr("Input error"), tr("Please specify a force greater than 0"));
-            return false;
-        }
-        else {
-            QByteArray num = QByteArray::number(parameterForce->getForce());
-            Gui::Command::doCommand(
-                Gui::Command::Doc, "App.ActiveDocument.%s.Force = %s", name.c_str(), num.data());
-        }
+        Gui::Command::doCommand(Gui::Command::Doc,
+                                "App.ActiveDocument.%s.Force = \"%s\"",
+                                name.c_str(),
+                                parameterForce->getForce().c_str());
 
         std::string dirname = parameterForce->getDirectionName().data();
         std::string dirobj = parameterForce->getDirectionObject().data();

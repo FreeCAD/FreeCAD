@@ -446,7 +446,7 @@ def setup(doc=None, solvertype="ccxtools"):
     # constraint force
     con_force = ObjectsFem.makeConstraintForce(doc, "ConstraintForce")
     con_force.References = [(geom_obj, ("Vertex5", "Vertex6"))]
-    con_force.Force = 60000.0  # 30 kN on each Node
+    con_force.Force = "60000.0 N"  # 30 kN on each Node
     con_force.Direction = (load_line, ["Edge1"])
     con_force.Reversed = False
     analysis.addObject(con_force)

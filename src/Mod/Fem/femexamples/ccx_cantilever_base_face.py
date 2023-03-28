@@ -100,7 +100,7 @@ def setup_cantilever_base_face(doc=None, solvertype="ccxtools"):
     # constraint force
     con_force = ObjectsFem.makeConstraintForce(doc, "ConstraintForce")
     con_force.References = [(geom_obj, "Edge3")]
-    con_force.Force = 9000000.0  # 9'000'000 N = 9 MN
+    con_force.Force = "9000000.0 N"
     con_force.Direction = (geom_obj, ["Edge3"])
     con_force.Reversed = True
     analysis.addObject(con_force)

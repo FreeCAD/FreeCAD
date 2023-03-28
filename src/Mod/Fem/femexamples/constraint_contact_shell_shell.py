@@ -182,7 +182,7 @@ def setup(doc=None, solvertype="ccxtools"):
     con_force = ObjectsFem.makeConstraintForce(doc, "ConstraintForce")
     # TODO use point of tube boolean fragment
     con_force.References = [(force_point, "Vertex1")]
-    con_force.Force = 5000.0
+    con_force.Force = "5000.0 N"
     con_force.Direction = (load_line, ["Edge1"])
     con_force.Reversed = True
     analysis.addObject(con_force)

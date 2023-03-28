@@ -83,7 +83,7 @@ ConstraintFixed,6
 *CLOAD
 ** ConstraintForce
 ** node load on shape: CantileverLine:Vertex2
-2,3,-9.0000000000000E+06
+2,3,-9000000.0
 
 
 
@@ -104,8 +104,8 @@ RF
 
 ***********************************************************
 ** CalculiX Input file
-**   written by    --> FreeCAD 0.20.25432 (Git)
-**   written on    --> Wed Aug  4 22:12:24 2021
+**   written by    --> FreeCAD 0.21.0
+**   written on    --> Tue Mar 28 05:29:54 2023
 **   file name     --> 
 **   analysis name --> Analysis
 **

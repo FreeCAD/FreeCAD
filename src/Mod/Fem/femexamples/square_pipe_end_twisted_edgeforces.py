@@ -135,7 +135,7 @@ def setup(doc=None, solvertype="ccxtools"):
     # con_force1
     con_force1 = ObjectsFem.makeConstraintForce(doc, name="ConstraintForce1")
     con_force1.References = [(geom_obj, "Edge9")]
-    con_force1.Force = 100000.00
+    con_force1.Force = "100000.00 N"
     con_force1.Direction = (geom_obj, ["Edge9"])
     con_force1.Reversed = True
     analysis.addObject(con_force1)
@@ -143,7 +143,7 @@ def setup(doc=None, solvertype="ccxtools"):
     # con_force2
     con_force2 = ObjectsFem.makeConstraintForce(doc, name="ConstraintForce2")
     con_force2.References = [(geom_obj, "Edge3")]
-    con_force2.Force = 100000.00
+    con_force2.Force = "100000.00 N"
     con_force2.Direction = (geom_obj, ["Edge3"])
     con_force2.Reversed = True
     analysis.addObject(con_force2)
@@ -151,7 +151,7 @@ def setup(doc=None, solvertype="ccxtools"):
     # con_force3
     con_force3 = ObjectsFem.makeConstraintForce(doc, name="ConstraintForce3")
     con_force3.References = [(geom_obj, "Edge11")]
-    con_force3.Force = 100000.00
+    con_force3.Force = "100000.00 N"
     con_force3.Direction = (geom_obj, ["Edge11"])
     con_force3.Reversed = True
     analysis.addObject(con_force3)
@@ -159,7 +159,7 @@ def setup(doc=None, solvertype="ccxtools"):
     # con_force4
     con_force4 = ObjectsFem.makeConstraintForce(doc, name="ConstraintForce4")
     con_force4.References = [(geom_obj, "Edge6")]
-    con_force4.Force = 100000.00
+    con_force4.Force = "100000.00 N"
     con_force4.Direction = (geom_obj, ["Edge6"])
     con_force4.Reversed = True
     analysis.addObject(con_force4)

@@ -95,11 +95,11 @@ ConstraintFixed,6
 *CLOAD
 ** ConstraintForce
 ** node loads on shape: CanileverPlate:Edge3
-3,3,-7.5000000000000E+05
-4,3,-7.5000000000000E+05
-11,3,-1.5000000000000E+06
-12,3,-3.0000000000000E+06
-13,3,-3.0000000000000E+06
+3,3,-750000.0
+4,3,-750000.0
+11,3,-1500000.0
+12,3,-3000000.0
+13,3,-3000000.0
 
 
 
@@ -120,8 +120,8 @@ RF
 
 ***********************************************************
 ** CalculiX Input file
-**   written by    --> FreeCAD 0.20.25343 (Git)
-**   written on    --> Thu Jul 29 13:06:02 2021
+**   written by    --> FreeCAD 0.21.0
+**   written on    --> Tue Mar 28 05:28:22 2023
 **   file name     --> ccx_cantilever_ele_quad8.FCStd
 **   analysis name --> Analysis
 **

@@ -377,16 +377,16 @@ ConstraintFixed,3
 *CLOAD
 ** ConstraintForce
 ** node load on shape: Box:Vertex5
-4,3,-2.2500000000000E+06
+4,3,-2250000.0
 
 ** node load on shape: Box:Vertex6
-3,3,-2.2500000000000E+06
+3,3,-2250000.0
 
 ** node load on shape: Box:Vertex7
-2,3,-2.2500000000000E+06
+2,3,-2250000.0
 
 ** node load on shape: Box:Vertex8
-1,3,-2.2500000000000E+06
+1,3,-2250000.0
 
 
 
@@ -407,8 +407,8 @@ RF
 
 ***********************************************************
 ** CalculiX Input file
-**   written by    --> FreeCAD 0.19.21875 (Git)
-**   written on    --> Tue Jul  7 07:19:27 2020
+**   written by    --> FreeCAD 0.21.0
+**   written on    --> Tue Mar 28 03:54:52 2023
 **   file name     --> ccx_cantilever_nodeload.FCStd
 **   analysis name --> Analysis
 **

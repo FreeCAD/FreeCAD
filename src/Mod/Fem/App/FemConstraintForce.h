@@ -38,7 +38,7 @@ public:
     /// Constructor
     ConstraintForce();
 
-    App::PropertyFloat Force;
+    App::PropertyForce Force;
     App::PropertyLinkSub Direction;
     App::PropertyBool Reversed;
     // Read-only (calculated values). These trigger changes in the ViewProvider
@@ -54,6 +54,8 @@ public:
     }
 
 protected:
+    void handleChangedPropertyType(Base::XMLReader& reader, const char* TypeName,
+                                   App::Property* prop);
     void onChanged(const App::Property* prop) override;
 
 private:
