@@ -325,13 +325,12 @@ SET(Gui_UIC_SRCS
     DlgSettingsColorGradient.ui
     DlgSettingsDocument.ui
     DlgSettingsImage.ui
-    DlgSettingsLazyLoaded.ui
+    DlgSettingsWorkbenches.ui
     DlgSettingsMacro.ui
     DlgSettingsNotificationArea.ui
     DlgSettingsPythonConsole.ui
     DlgCheckableMessageBox.ui
     DlgToolbars.ui
-    DlgWorkbenches.ui
     DlgTreeWidget.ui
     DlgLocationAngle.ui
     DlgLocationPos.ui
@@ -526,8 +525,8 @@ SET(Dialog_Customize_CPP_SRCS
     DlgCustomizeSpNavSettings.cpp
     DlgKeyboardImp.cpp
     DlgToolbarsImp.cpp
-    DlgWorkbenchesImp.cpp
     QListWidgetCustom.cpp
+    ListWidgetDragBugFix.cpp
 )
 SET(Dialog_Customize_HPP_SRCS
     DlgActionsImp.h
@@ -537,8 +536,8 @@ SET(Dialog_Customize_HPP_SRCS
     DlgCustomizeSpNavSettings.h
     DlgKeyboardImp.h
     DlgToolbarsImp.h
-    DlgWorkbenchesImp.h
     QListWidgetCustom.h
+    ListWidgetDragBugFix.h
 )
 SET(Dialog_Customize_SRCS
     ${Dialog_Customize_CPP_SRCS}
@@ -549,7 +548,6 @@ SET(Dialog_Customize_SRCS
     DlgCustomizeSpNavSettings.ui
     DlgKeyboard.ui
     DlgToolbars.ui
-    DlgWorkbenches.ui
 )
 SOURCE_GROUP("Dialog\\Customize" FILES ${Dialog_Customize_SRCS})
 
@@ -569,7 +567,7 @@ SET(Dialog_Settings_CPP_SRCS
     DlgSettingsColorGradientImp.cpp
     DlgSettingsDocumentImp.cpp
     DlgSettingsImageImp.cpp
-    DlgSettingsLazyLoadedImp.cpp
+    DlgSettingsWorkbenchesImp.cpp
     DlgSettingsMacroImp.cpp
     DlgSettingsNotificationArea.cpp
     DlgSettingsPythonConsole.cpp
@@ -589,7 +587,7 @@ SET(Dialog_Settings_HPP_SRCS
     DlgSettingsColorGradientImp.h
     DlgSettingsDocumentImp.h
     DlgSettingsImageImp.h
-    DlgSettingsLazyLoadedImp.h
+    DlgSettingsWorkbenchesImp.h
     DlgSettingsMacroImp.h
     DlgSettingsNotificationArea.h
     DlgSettingsPythonConsole.h
@@ -611,7 +609,7 @@ SET(Dialog_Settings_SRCS
     DlgSettingsColorGradient.ui
     DlgSettingsDocument.ui
     DlgSettingsImage.ui
-    DlgSettingsLazyLoaded.ui
+    DlgSettingsWorkbenches.ui
     DlgSettingsMacro.ui
     DlgSettingsNotificationArea.ui
     DlgSettingsPythonConsole.ui

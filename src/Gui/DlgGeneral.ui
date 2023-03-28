@@ -508,43 +508,6 @@ this according to your screen size or personal taste</string>
            </item>
           </layout>
          </item>
-         <item>
-          <layout class="QHBoxLayout">
-           <property name="spacing">
-            <number>6</number>
-           </property>
-           <property name="leftMargin">
-            <number>0</number>
-           </property>
-           <property name="topMargin">
-            <number>0</number>
-           </property>
-           <property name="rightMargin">
-            <number>0</number>
-           </property>
-           <property name="bottomMargin">
-            <number>0</number>
-           </property>
-           <item>
-            <widget class="QLabel" name="WorkbenchSelectorPositionLabel">
-             <property name="text">
-              <string>Workbench selector position :</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QComboBox" name="WorkbenchSelectorPosition">
-             <property name="toolTip">
-              <string>Customize where the workbench selector appears (restart required).
-
-'Toolbar': In the toolbars, as a movable toolbar.
-'Left Corner': In the menu bar, on the left corner.
-'Right Corner': In the menu bar, on the right corner.</string>
-             </property>
-            </widget>
-           </item>
-          </layout>
-         </item>
         </layout>
        </widget>
       </item>
@@ -570,40 +533,6 @@ this according to your screen size or personal taste</string>
           <number>6</number>
          </property>
          <item row="0" column="0">
-          <layout class="QGridLayout">
-           <property name="leftMargin">
-            <number>0</number>
-           </property>
-           <property name="topMargin">
-            <number>0</number>
-           </property>
-           <property name="rightMargin">
-            <number>0</number>
-           </property>
-           <property name="bottomMargin">
-            <number>0</number>
-           </property>
-           <property name="spacing">
-            <number>6</number>
-           </property>
-           <item row="0" column="0">
-            <widget class="QLabel" name="autoModuleLabel">
-             <property name="text">
-              <string>Auto load module after start up:</string>
-             </property>
-            </widget>
-           </item>
-           <item row="0" column="1">
-            <widget class="QComboBox" name="AutoloadModuleCombo">
-             <property name="toolTip">
-              <string>Choose which workbench will be activated and shown
-after FreeCAD launches</string>
-             </property>
-            </widget>
-           </item>
-          </layout>
-         </item>
-         <item row="2" column="0">
           <widget class="Gui::PrefCheckBox" name="SplashScreen">
            <property name="toolTip">
             <string>A Splash screen is a small loading window that is shown

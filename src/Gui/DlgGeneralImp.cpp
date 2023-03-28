@@ -1,24 +1,26 @@
-/***************************************************************************
- *   Copyright (c) 2004 Werner Mayer <wmayer[at]users.sourceforge.net>     *
- *                                                                         *
- *   This file is part of the FreeCAD CAx development system.              *
- *                                                                         *
- *   This library is free software; you can redistribute it and/or         *
- *   modify it under the terms of the GNU Library General Public           *
- *   License as published by the Free Software Foundation; either          *
- *   version 2 of the License, or (at your option) any later version.      *
- *                                                                         *
- *   This library  is distributed in the hope that it will be useful,      *
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
- *   GNU Library General Public License for more details.                  *
- *                                                                         *
- *   You should have received a copy of the GNU Library General Public     *
- *   License along with this library; see the file COPYING.LIB. If not,    *
- *   write to the Free Software Foundation, Inc., 59 Temple Place,         *
- *   Suite 330, Boston, MA  02111-1307, USA                                *
- *                                                                         *
- ***************************************************************************/
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
+ /****************************************************************************
+  *   Copyright (c) 2004 Werner Mayer <wmayer[at]users.sourceforge.net>     *
+  *   Copyright (c) 2023 FreeCAD Project Association                         *
+  *                                                                          *
+  *   This file is part of FreeCAD.                                          *
+  *                                                                          *
+  *   FreeCAD is free software: you can redistribute it and/or modify it     *
+  *   under the terms of the GNU Lesser General Public License as            *
+  *   published by the Free Software Foundation, either version 2.1 of the   *
+  *   License, or (at your option) any later version.                        *
+  *                                                                          *
+  *   FreeCAD is distributed in the hope that it will be useful, but         *
+  *   WITHOUT ANY WARRANTY; without even the implied warranty of             *
+  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU       *
+  *   Lesser General Public License for more details.                        *
+  *                                                                          *
+  *   You should have received a copy of the GNU Lesser General Public       *
+  *   License along with FreeCAD. If not, see                                *
+  *   <https://www.gnu.org/licenses/>.                                       *
+  *                                                                          *
+  ***************************************************************************/
 
 
 #include "PreCompiled.h"
@@ -41,7 +43,6 @@
 #include "DlgRevertToBackupConfigImp.h"
 #include "MainWindow.h"
 #include "PreferencePackManager.h"
-#include "UserSettings.h"
 #include "Language/Translator.h"
 
 using namespace Gui::Dialog;
@@ -62,37 +63,6 @@ DlgGeneralImp::DlgGeneralImp( QWidget* parent )
   , ui(new Ui_DlgGeneral)
 {
     ui->setupUi(this);
-
-    // fills the combo box with all available workbenches
-    // sorted by their menu text
-    QStringList work = Application::Instance->workbenches();
-    QMap<QString, QString> menuText;
-    for (const auto & it : work) {
-        QString text = Application::Instance->workbenchMenuText(it);
-        menuText[text] = it;
-    }
-
-    {   // add special workbench to selection
-        QPixmap px = Application::Instance->workbenchIcon(QString::fromLatin1("NoneWorkbench"));
-        QString key = QString::fromLatin1("<last>");
-        QString value = QString::fromLatin1("$LastModule");
-        if (px.isNull()) {
-            ui->AutoloadModuleCombo->addItem(key, QVariant(value));
-        }
-        else {
-            ui->AutoloadModuleCombo->addItem(px, key, QVariant(value));
-        }
-    }
-
-    for (QMap<QString, QString>::Iterator it = menuText.begin(); it != menuText.end(); ++it) {
-        QPixmap px = Application::Instance->workbenchIcon(it.value());
-        if (px.isNull()) {
-            ui->AutoloadModuleCombo->addItem(it.key(), QVariant(it.value()));
-        }
-        else {
-            ui->AutoloadModuleCombo->addItem(px, it.key(), QVariant(it.value()));
-        }
-    }
 
     recreatePreferencePackMenu();
 
@@ -178,12 +148,6 @@ void DlgGeneralImp::setDecimalPointConversion(bool on)
 
 void DlgGeneralImp::saveSettings()
 {
-    int index = ui->AutoloadModuleCombo->currentIndex();
-    QVariant data = ui->AutoloadModuleCombo->itemData(index);
-    QString startWbName = data.toString();
-    App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/General")->
-                          SetASCII("AutoloadModule", startWbName.toLatin1());
-
     ui->SubstituteDecimal->onSave();
     ui->UseLocaleFormatting->onSave();
     ui->RecentFiles->onSave();
@@ -223,8 +187,6 @@ void DlgGeneralImp::saveSettings()
     hGrp->GetGroup("TreeView")->SetBool("Enabled",treeView);
     hGrp->GetGroup("PropertyView")->SetBool("Enabled",propertyView);
 
-    saveWorkbenchSelector();
-
     hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/MainWindow");
     hGrp->SetBool("TiledBackground", ui->tiledBackground->isChecked());
 
@@ -235,12 +197,6 @@ void DlgGeneralImp::saveSettings()
 
 void DlgGeneralImp::loadSettings()
 {
-    std::string start = App::Application::Config()["StartWorkbench"];
-    start = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/General")->
-                                  GetASCII("AutoloadModule", start.c_str());
-    QString startWbName = QLatin1String(start.c_str());
-    ui->AutoloadModuleCombo->setCurrentIndex(ui->AutoloadModuleCombo->findData(startWbName));
-
     ui->SubstituteDecimal->onRestore();
     ui->UseLocaleFormatting->onRestore();
     ui->RecentFiles->onRestore();
@@ -309,9 +265,6 @@ void DlgGeneralImp::loadSettings()
         index = comboView?2:1;
     }
     ui->treeMode->setCurrentIndex(index);
-
-    //workbench selector position combobox setup
-    loadWorkbenchSelector();
 
     hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/MainWindow");
     ui->tiledBackground->setChecked(hGrp->GetBool("TiledBackground", false));
@@ -507,23 +460,6 @@ void DlgGeneralImp::onLoadPreferencePackClicked(const std::string& packName)
         if (parentDialog)
             parentDialog->reload();
     }
-}
-
-void DlgGeneralImp::saveWorkbenchSelector()
-{
-    //save workbench selector position
-    auto index = ui->WorkbenchSelectorPosition->currentIndex();
-    WorkbenchSwitcher::setIndex(index);
-}
-
-void DlgGeneralImp::loadWorkbenchSelector()
-{
-    //workbench selector position combobox setup
-    ui->WorkbenchSelectorPosition->clear();
-    ui->WorkbenchSelectorPosition->addItem(tr("Toolbar"));
-    ui->WorkbenchSelectorPosition->addItem(tr("Left corner"));
-    ui->WorkbenchSelectorPosition->addItem(tr("Right corner"));
-    ui->WorkbenchSelectorPosition->setCurrentIndex(WorkbenchSwitcher::getIndex());
 }
 
 #include "moc_DlgGeneralImp.cpp"
