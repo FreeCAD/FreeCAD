@@ -55,38 +55,6 @@ if open.__module__ in ['__builtin__', 'io']:
 useDraftWire = True
 
 
-def decodeName(name):
-    """Decode encoded name.
-
-    Parameters
-    ----------
-    name : str
-        The string to decode.
-
-    Returns
-    -------
-    tuple
-    (string)
-        A tuple containing the decoded `name` in 'latin1',
-        otherwise in 'utf8'.
-        If it fails it returns the original `name`.
-    """
-    try:
-        decodedName = name
-    except UnicodeDecodeError:
-        try:
-            decodedName = (name.decode("latin1"))
-        except UnicodeDecodeError:
-            try:
-                decodedName = (name.decode("utf8"))
-            except UnicodeDecodeError:
-                _msg = ("AirfoilDAT error: "
-                        "couldn't determine character encoding.")
-                FCC.PrintError(translate("ImportAirfoilDAT", _msg) + "\n")
-                decodedName = name
-    return decodedName
-
-
 def open(filename):
     """Open filename and parse.
 
@@ -102,7 +70,7 @@ def open(filename):
     """
     docname = os.path.splitext(os.path.basename(filename))[0]
     doc = FreeCAD.newDocument(docname)
-    doc.Label = decodeName(docname)
+    doc.Label = docname
     process(filename)
     doc.recompute()
 
@@ -134,7 +102,6 @@ def insert(filename, docname):
     obj = process(filename)
     if obj is not None:
         importgroup = doc.addObject("App::DocumentObjectGroup", groupname)
-        importgroup.Label = decodeName(groupname)
         importgroup.Group = [obj]
     doc.recompute()
 

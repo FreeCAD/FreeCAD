@@ -845,7 +845,7 @@ class DraftToolBar:
 
     def labelUi(self,title=translate("draft","Label"),callback=None):
         w = QtGui.QWidget()
-        w.setWindowTitle(translate("draft","Label type", utf8_decode=True))
+        w.setWindowTitle(translate("draft","Label type"))
         l = QtGui.QVBoxLayout(w)
         combo = QtGui.QComboBox()
         from draftobjects.label import get_label_types

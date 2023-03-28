@@ -1631,32 +1631,6 @@ class svgHandler(xml.sax.ContentHandler):
 # class svgHandler
 
 
-def decodeName(name):
-    """Decode encoded name.
-
-    Parameters
-    ----------
-    name : str
-        The string to decode.
-
-    Returns
-    -------
-    tuple
-    (string)
-        A tuple containing the decoded `name` in 'utf8', otherwise in 'latin1'.
-        If it fails it returns the original `name`.
-    """
-    try:
-        decodedName = (name.decode("utf8"))
-    except UnicodeDecodeError:
-        try:
-            decodedName = (name.decode("latin1"))
-        except UnicodeDecodeError:
-            _err("SVG error: couldn't determine character encoding")
-            decodedName = name
-    return decodedName
-
-
 def getContents(filename, tag, stringmode=False):
     """Get the contents of all occurrences of the given tag in the file.
 
