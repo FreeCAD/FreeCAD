@@ -56,6 +56,7 @@ protected Q_SLOTS:
     void wbItemMoved();
     void onWbSelectorChanged(int index);
     void onStartWbChanged(int index);
+    void onWbByTabToggled(bool val);
 
 protected:
     void buildWorkbenchList();

@@ -240,6 +240,7 @@ DlgSettingsWorkbenchesImp::DlgSettingsWorkbenchesImp( QWidget* parent )
     connect(ui->wbList->model(), &QAbstractItemModel::rowsMoved, this, &DlgSettingsWorkbenchesImp::wbItemMoved);
     connect(ui->AutoloadModuleCombo, QOverload<int>::of(&QComboBox::activated), this, &DlgSettingsWorkbenchesImp::onStartWbChanged);
     connect(ui->WorkbenchSelectorPosition, QOverload<int>::of(&QComboBox::activated), this, &DlgSettingsWorkbenchesImp::onWbSelectorChanged);
+    connect(ui->CheckBox_WbByTab, &QCheckBox::toggled, this, &DlgSettingsWorkbenchesImp::onWbByTabToggled);
 }
 
 /**
@@ -298,6 +299,8 @@ void DlgSettingsWorkbenchesImp::saveSettings()
     QString startWbName = data.toString();
     App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/General")->
         SetASCII("AutoloadModule", startWbName.toLatin1());
+
+    ui->CheckBox_WbByTab->onSave();
 }
 
 void DlgSettingsWorkbenchesImp::loadSettings()
@@ -325,6 +328,11 @@ void DlgSettingsWorkbenchesImp::loadSettings()
 
     //We set the startup setting after building the list so that we can put only the enabled wb.
     setStartWorkbenchComboItems();
+
+    {
+        QSignalBlocker sigblk(ui->CheckBox_WbByTab);
+        ui->CheckBox_WbByTab->onRestore();
+    }
 }
 
 /**
@@ -552,8 +560,15 @@ void DlgSettingsWorkbenchesImp::onStartWbChanged(int index)
     }
 }
 
-void Gui::Dialog::DlgSettingsWorkbenchesImp::onWbSelectorChanged(int index)
+void DlgSettingsWorkbenchesImp::onWbSelectorChanged(int index)
 {
+    Q_UNUSED(index);
+    requireReboot();
+}
+
+void DlgSettingsWorkbenchesImp::onWbByTabToggled(bool val)
+{
+    Q_UNUSED(val);
     requireReboot();
 }
 
