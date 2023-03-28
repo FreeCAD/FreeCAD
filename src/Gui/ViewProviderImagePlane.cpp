@@ -188,11 +188,8 @@ void ViewProviderImagePlane::loadImage()
 
         QImage impQ;
         if (!loadSvg(fileName.c_str(), xsize, ysize, impQ)) {
-            QSizeF size = loadRaster(fileName.c_str(), impQ);
+            loadRaster(fileName.c_str(), impQ);
             if (!impQ.isNull()) {
-                imagePlane->XSize.setValue(size.width());
-                imagePlane->YSize.setValue(size.height());
-
                 imagePlane->XPixelsPerMeter = impQ.dotsPerMeterX();
                 imagePlane->YPixelsPerMeter = impQ.dotsPerMeterY();
             }
