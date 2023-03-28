@@ -39,6 +39,8 @@ public:
     explicit TaskThicknessParameters(ViewProviderDressUp *DressUpView, QWidget *parent=nullptr);
     ~TaskThicknessParameters() override;
 
+    void apply() override;
+
     double getValue(void) const;
     bool getReversed(void) const;
     bool getIntersection(void) const;
@@ -54,7 +56,7 @@ private Q_SLOTS:
     void onRefDeleted(void) override;
 
 protected:
-    void clearButtons(const selectionModes notThis) override;
+    void setButtons(const selectionModes mode) override;
     bool event(QEvent *e) override;
     void changeEvent(QEvent *e) override;
     void onSelectionChanged(const Gui::SelectionChanges& msg) override;
