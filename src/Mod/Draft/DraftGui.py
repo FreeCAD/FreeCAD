@@ -1114,9 +1114,7 @@ class DraftToolBar:
                         numx, numy, numz = num_vec + ref_vec
                         self.sourceCmd.numericInput(numx,numy,numz)
 
-            elif (self.textValue.isVisible() or self.SStringValue.isVisible()
-                  or self.SSizeValue.isVisible() or self.STrackValue.isVisible()
-                  or self.FFileValue.isVisible()):
+            elif self.textValue.isVisible():
                 return False
             else:
                 FreeCADGui.ActiveDocument.resetEdit()
@@ -1469,17 +1467,6 @@ class DraftToolBar:
 
     def isConstructionMode(self):
         return self.tray is not None and self.constrButton.isChecked()
-
-    def drawPage(self):
-        self.sourceCmd.draw()
-
-    def changePage(self,index):
-        pagename = str(self.pageBox.itemText(index))
-        vobj = FreeCADGui.ActiveDocument.getObject(pagename)
-        if vobj:
-            self.scaleBox.setEditText(str(vobj.HintScale))
-            self.marginXValue.setValue(float(vobj.HintOffsetX))
-            self.marginYValue.setValue(float(vobj.HintOffsetY))
 
     def selectplane(self):
         FreeCADGui.runCommand("Draft_SelectPlane")
