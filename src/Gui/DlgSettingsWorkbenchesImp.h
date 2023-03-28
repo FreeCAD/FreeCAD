@@ -52,6 +52,8 @@ public:
 protected Q_SLOTS:
     void wbToggled(const QString& wbName, bool enabled);
     void wbItemMoved();
+    void onWbSelectorChanged(int index);
+    void onStartWbChanged(int index);
 
 protected:
     void buildWorkbenchList();
@@ -65,7 +67,6 @@ private:
     void saveWorkbenchSelector();
     void loadWorkbenchSelector();
 
-    void onStartWbChanged(int index);
 
     std::vector<std::string> _backgroundAutoloadedModules;
     std::string _startupModule;

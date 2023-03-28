@@ -180,7 +180,7 @@ void wbListItem::setStartupWb(bool val)
         autoloadCheckBox->setChecked(true);
 
     enableCheckBox->setEnabled(!val);
-    autoloadCheckBox->setEnabled(!val);
+    autoloadCheckBox->setEnabled(!val && textLabel->isEnabled());
 }
 
 void wbListItem::setShortcutLabel(int index)
@@ -236,8 +236,8 @@ DlgSettingsWorkbenchesImp::DlgSettingsWorkbenchesImp( QWidget* parent )
     ui->wbList->setDefaultDropAction(Qt::MoveAction);
 
     connect(ui->wbList->model(), &QAbstractItemModel::rowsMoved, this, &DlgSettingsWorkbenchesImp::wbItemMoved);
-
-    connect(ui->AutoloadModuleCombo, QOverload<int>::of(&QComboBox::activated), this, [this](int index) { onStartWbChanged(index); });
+    connect(ui->AutoloadModuleCombo, QOverload<int>::of(&QComboBox::activated), this, &DlgSettingsWorkbenchesImp::onStartWbChanged);
+    connect(ui->WorkbenchSelectorPosition, QOverload<int>::of(&QComboBox::activated), this, &DlgSettingsWorkbenchesImp::onWbSelectorChanged);
 }
 
 /**
@@ -330,6 +330,8 @@ Build the list of unloaded workbenches.
 */
 void DlgSettingsWorkbenchesImp::buildWorkbenchList()
 {
+    QSignalBlocker sigblk(ui->wbList);
+
     QStringList workbenches = Application::Instance->workbenches();
     QStringList enabledWbs = getEnabledWorkbenches();
     QStringList disabledWbs = getDisabledWorkbenches();
@@ -437,6 +439,8 @@ void DlgSettingsWorkbenchesImp::saveWorkbenchSelector()
 
 void DlgSettingsWorkbenchesImp::loadWorkbenchSelector()
 {
+    QSignalBlocker sigblk(ui->WorkbenchSelectorPosition);
+
     //workbench selector position combobox setup
     ui->WorkbenchSelectorPosition->clear();
     ui->WorkbenchSelectorPosition->addItem(tr("Toolbar"));
@@ -447,6 +451,8 @@ void DlgSettingsWorkbenchesImp::loadWorkbenchSelector()
 
 void DlgSettingsWorkbenchesImp::wbToggled(const QString& wbName, bool enabled)
 {
+    requireReboot();
+
     setStartWorkbenchComboItems();
 
     //reorder the list of items.
@@ -519,6 +525,7 @@ void DlgSettingsWorkbenchesImp::setStartWorkbenchComboItems()
 
 void DlgSettingsWorkbenchesImp::wbItemMoved()
 {
+    requireReboot();
     for (int i = 0; i < ui->wbList->count(); i++) {
         wbListItem* wbItem = dynamic_cast<wbListItem*>(ui->wbList->itemWidget(ui->wbList->item(i)));
         if (wbItem) {
@@ -527,7 +534,7 @@ void DlgSettingsWorkbenchesImp::wbItemMoved()
     }
 }
 
-void Gui::Dialog::DlgSettingsWorkbenchesImp::onStartWbChanged(int index)
+void DlgSettingsWorkbenchesImp::onStartWbChanged(int index)
 {
     //Update _startupModule
     QVariant data = ui->AutoloadModuleCombo->itemData(index);
@@ -541,6 +548,11 @@ void Gui::Dialog::DlgSettingsWorkbenchesImp::onStartWbChanged(int index)
             wbItem->setStartupWb(wbItem->objectName() == wbName);
         }
     }
+}
+
+void Gui::Dialog::DlgSettingsWorkbenchesImp::onWbSelectorChanged(int index)
+{
+    requireReboot();
 }
 
 #include "moc_DlgSettingsWorkbenchesImp.cpp"

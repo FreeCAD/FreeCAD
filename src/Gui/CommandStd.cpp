@@ -383,6 +383,7 @@ void StdCmdDlgPreferences::activated(int iMsg)
     if (cDlg.exec()) {
         cDlg.activeGroupPage(groupName, index);
     }
+    cDlg.isRebootRequired(); //The user may have applied first, then clicked the cancel button so it's not in the if(cDlg.exec())
 }
 
 //===========================================================================

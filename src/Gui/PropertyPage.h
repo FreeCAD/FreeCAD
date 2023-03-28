@@ -71,12 +71,18 @@ public:
     explicit PreferencePage(QWidget* parent = nullptr);
     ~PreferencePage() override = default;
 
+    bool isRebootRequired();
+    void requireReboot();
+
 public Q_SLOTS:
     virtual void loadSettings()=0;
     virtual void saveSettings()=0;
 
 protected:
     void changeEvent(QEvent* event) override = 0;
+
+private:
+    bool rebootRequired;
 };
 
 /** Subclass that embeds a form from a UI file.
