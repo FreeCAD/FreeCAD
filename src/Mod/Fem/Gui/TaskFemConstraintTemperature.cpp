@@ -108,11 +108,6 @@ TaskFemConstraintTemperature::TaskFemConstraintTemperature(
     connect(ui->rb_temperature, &QRadioButton::clicked, this, &TaskFemConstraintTemperature::Temp);
     connect(ui->rb_cflux, &QRadioButton::clicked, this, &TaskFemConstraintTemperature::Flux);
 
-    connect(ui->if_temperature,
-            qOverload<double>(&QuantitySpinBox::valueChanged),
-            this,
-            &TaskFemConstraintTemperature::onTempCfluxChanged);
-
     // Selection buttons
     buttonGroup->addButton(ui->btnAdd, (int)SelectionChangeModes::refAdd);
     buttonGroup->addButton(ui->btnRemove, (int)SelectionChangeModes::refRemove);
@@ -130,10 +125,6 @@ void TaskFemConstraintTemperature::updateUI()
         onButtonReference(true);
         return;
     }
-}
-
-void TaskFemConstraintTemperature::onTempCfluxChanged(double val)
-{
 }
 
 void TaskFemConstraintTemperature::Temp()
