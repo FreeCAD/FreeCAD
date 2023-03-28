@@ -294,7 +294,6 @@ SET(Gui_UIC_SRCS
     DlgUnitsCalculator.ui
     DlgAuthorization.ui
     DlgChooseIcon.ui
-    DlgCommands.ui
     DlgCreateNewPreferencePack.ui
     DlgCustomizeSpNavSettings.ui
     DlgDisplayProperties.ui
@@ -519,7 +518,6 @@ SOURCE_GROUP("Dialog" FILES ${Dialog_SRCS})
 # The customize dialog sources
 SET(Dialog_Customize_CPP_SRCS
     DlgActionsImp.cpp
-    DlgCommandsImp.cpp
     DlgCustomizeImp.cpp
     DlgCustomizeSpaceball.cpp
     DlgCustomizeSpNavSettings.cpp
@@ -530,7 +528,6 @@ SET(Dialog_Customize_CPP_SRCS
 )
 SET(Dialog_Customize_HPP_SRCS
     DlgActionsImp.h
-    DlgCommandsImp.h
     DlgCustomizeImp.h
     DlgCustomizeSpaceball.h
     DlgCustomizeSpNavSettings.h
@@ -544,7 +541,6 @@ SET(Dialog_Customize_SRCS
     ${Dialog_Customize_HPP_SRCS}
     DlgActions.ui
     DlgChooseIcon.ui
-    DlgCommands.ui
     DlgCustomizeSpNavSettings.ui
     DlgKeyboard.ui
     DlgToolbars.ui
