@@ -124,10 +124,11 @@ public:
     ~DlgPreferencesImp() override;
 
     void accept() override;
+    void reject() override;
     void reload();
     void activateGroupPage(const QString& group, int index);
     void activeGroupPage(QString& group, int& index) const;
-    void isRebootRequired();
+    void restartIfRequired();
 
 protected:
     void changeEvent(QEvent *e) override;
@@ -163,7 +164,7 @@ private:
     std::unique_ptr<Ui_DlgPreferences> ui;
     bool invalidParameter;
     bool canEmbedScrollArea;
-    bool rebootRequired;
+    bool restartRequired;
 
     static const int GroupNameRole; /**< A name for our Qt::UserRole, used when storing user data in a list item */
 

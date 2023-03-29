@@ -98,7 +98,7 @@ void PropertyPage::onReset()
 // ----------------------------------------------------------------
 
 /** Construction */
-PreferencePage::PreferencePage(QWidget* parent) : QWidget(parent), rebootRequired(false)
+PreferencePage::PreferencePage(QWidget* parent) : QWidget(parent), restartRequired(false)
 {
 }
 
@@ -107,14 +107,14 @@ void PreferencePage::changeEvent(QEvent* event)
     QWidget::changeEvent(event);
 }
 
-bool PreferencePage::isRebootRequired()
+bool PreferencePage::isRestartRequired() const
 {
-    return rebootRequired;
+    return restartRequired;
 }
 
-void PreferencePage::requireReboot()
+void PreferencePage::requireRestart()
 {
-    rebootRequired = true;
+    restartRequired = true;
 }
 
 
