@@ -62,7 +62,7 @@ void TaskOrientation::open()
 {
     if (!feature.expired()) {
         App::Document* doc = feature->getDocument();
-        doc->openTransaction(QT_TRANSLATE_NOOP("Command", "Change orientation"));
+        doc->openTransaction(QT_TRANSLATE_NOOP("Command", "Edit image"));
         restore(feature->Placement.getValue());
     }
 }

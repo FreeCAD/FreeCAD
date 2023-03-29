@@ -24,13 +24,27 @@
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <QDialog>
+# include <QPushButton>
 # include <map>
+# include <Inventor/events/SoLocation2Event.h>
+# include <Inventor/events/SoMouseButtonEvent.h>
+# include <Inventor/nodes/SoBaseColor.h>
+# include <Inventor/nodes/SoCoordinate3.h>
+# include <Inventor/nodes/SoLineSet.h>
+# include <Inventor/nodes/SoSeparator.h>
 #endif
 
+#include <Base/Console.h>
+#include <Base/Precision.h>
 #include <Base/Tools.h>
 #include <App/Document.h>
+#include <Gui/Application.h>
 #include <Gui/BitmapFactory.h>
 #include <Gui/Camera.h>
+#include <Gui/Document.h>
+#include <Gui/View3DInventor.h>
+#include <Gui/View3DInventorViewer.h>
+#include <Gui/ViewProviderDocumentObject.h>
 #include <Gui/TaskView/TaskView.h>
 
 #include "TaskImageScale.h"
@@ -39,6 +53,8 @@
 
 using namespace Gui;
 
+/* TRANSLATOR Gui::TaskImageScale */
+
 TaskImageScale::TaskImageScale(Image::ImagePlane* obj, QWidget* parent)
   : QWidget(parent)
   , ui(new Ui_TaskImageScale)
@@ -46,17 +62,30 @@ TaskImageScale::TaskImageScale(Image::ImagePlane* obj, QWidget* parent)
   , aspectRatio{1.0}
 {
     ui->setupUi(this);
+    ui->pushButtonCancel->hide();
     ui->spinBoxWidth->setValue(obj->getXSizeInPixel());
     ui->spinBoxHeight->setValue(obj->getYSizeInPixel());
 
     aspectRatio = obj->XSize.getValue() / obj->YSize.getValue();
 
-    connect(ui->spinBoxWidth, qOverload<int>(&QSpinBox::valueChanged), this, &TaskImageScale::changeWidth);
-    connect(ui->spinBoxHeight, qOverload<int>(&QSpinBox::valueChanged), this, &TaskImageScale::changeHeight);
+    connect(ui->spinBoxWidth, qOverload<int>(&QSpinBox::valueChanged),
+            this, &TaskImageScale::changeWidth);
+    connect(ui->spinBoxHeight, qOverload<int>(&QSpinBox::valueChanged),
+            this, &TaskImageScale::changeHeight);
+    connect(ui->pushButtonScale, &QPushButton::clicked,
+            this, &TaskImageScale::onInteractiveScale);
+    connect(ui->pushButtonCancel, &QPushButton::clicked,
+            this, &TaskImageScale::rejectScale);
 }
 
 TaskImageScale::~TaskImageScale()
 {
+    if (scale) {
+        if (scale->isActive()) {
+            scale->deactivate();
+        }
+        scale->deleteLater();
+    }
 }
 
 void TaskImageScale::changeWidth()
@@ -82,6 +111,212 @@ void TaskImageScale::changeHeight()
             QSignalBlocker block(ui->spinBoxHeight);
             ui->spinBoxWidth->setValue(int(double(value) * aspectRatio));
         }
+    }
+}
+
+View3DInventorViewer* TaskImageScale::getViewer() const
+{
+    if (!feature.expired()) {
+        auto vp = Application::Instance->getViewProvider(feature.get());
+        auto doc = static_cast<ViewProviderDocumentObject*>(vp)->getDocument();
+        auto view = dynamic_cast<View3DInventor*>(doc->getViewOfViewProvider(vp));
+        if (view) {
+            return view->getViewer();
+        }
+    }
+
+    return nullptr;
+}
+
+void TaskImageScale::selectedPoints(size_t num)
+{
+    if (num == 1) {
+        ui->labelInstruction->setText(tr("Select second point"));
+    }
+    else if (num == 2) {
+        ui->labelInstruction->setText(tr("Enter desired distance between the points"));
+        ui->pushButtonScale->setEnabled(true);
+        ui->pushButtonScale->setText(tr("Accept"));
+        ui->pushButtonCancel->show();
+        ui->quantitySpinBox->setEnabled(true);
+        ui->quantitySpinBox->setValue(scale->getDistance());
+    }
+}
+
+void TaskImageScale::scaleImage(double factor)
+{
+    if (!feature.expired()) {
+        feature->XSize.setValue(feature->XSize.getValue() * factor);
+        feature->YSize.setValue(feature->YSize.getValue() * factor);
+
+        QSignalBlocker blockW(ui->spinBoxWidth);
+        ui->spinBoxWidth->setValue(feature->getXSizeInPixel());
+        QSignalBlocker blockH(ui->spinBoxHeight);
+        ui->spinBoxHeight->setValue(feature->getYSizeInPixel());
+    }
+}
+
+void TaskImageScale::startScale()
+{
+    scale->activate();
+    ui->labelInstruction->setText(tr("Select two points in the 3d view"));
+    ui->pushButtonScale->setEnabled(false);
+    ui->pushButtonCancel->hide();
+    ui->quantitySpinBox->setEnabled(false);
+}
+
+void TaskImageScale::acceptScale()
+{
+    scaleImage(ui->quantitySpinBox->value().getValue() / scale->getDistance());
+    rejectScale();
+}
+
+void TaskImageScale::rejectScale()
+{
+    scale->deactivate();
+    ui->labelInstruction->clear();
+    ui->pushButtonScale->setText(tr("Interactive"));
+    ui->pushButtonCancel->hide();
+    ui->quantitySpinBox->setEnabled(false);
+
+    scale->clearPoints();
+}
+
+void TaskImageScale::onInteractiveScale()
+{
+    if (!feature.expired() && !scale) {
+        View3DInventorViewer* viewer = getViewer();
+        if (viewer) {
+            scale = new InteractiveScale(viewer);
+            connect(scale, &InteractiveScale::selectedPoints,
+                    this, &TaskImageScale::selectedPoints);
+        }
+    }
+
+    if (scale) {
+        if (scale->isActive()) {
+            acceptScale();
+        }
+        else {
+            startScale();
+        }
+    }
+}
+
+// ----------------------------------------------------------------------------
+
+InteractiveScale::InteractiveScale(View3DInventorViewer* view)
+    : active{false}
+    , viewer{view}
+{
+    coords = new SoCoordinate3;
+    coords->ref();
+    root = new SoSeparator;
+    root->ref();
+
+    root->addChild(coords);
+
+    SoBaseColor* color = new SoBaseColor;
+    color->rgb.setValue(1.0F, 0.0F, 0.0F);
+    root->addChild(color);
+    root->addChild(new SoLineSet);
+}
+
+InteractiveScale::~InteractiveScale()
+{
+    coords->unref();
+    root->unref();
+}
+
+void InteractiveScale::activate()
+{
+    if (viewer) {
+        static_cast<SoSeparator*>(viewer->getSceneGraph())->addChild(root);
+        viewer->setEditing(true);
+        viewer->addEventCallback(SoLocation2Event::getClassTypeId(), InteractiveScale::getMousePosition, this);
+        viewer->addEventCallback(SoMouseButtonEvent::getClassTypeId(), InteractiveScale::getMouseClick, this);
+        viewer->setSelectionEnabled(false);
+        viewer->getWidget()->setCursor(QCursor(Qt::CrossCursor));
+        active = true;
+    }
+}
+
+void InteractiveScale::deactivate()
+{
+    if (viewer) {
+        static_cast<SoSeparator*>(viewer->getSceneGraph())->removeChild(root);
+        viewer->setEditing(false);
+        viewer->removeEventCallback(SoLocation2Event::getClassTypeId(), InteractiveScale::getMousePosition, this);
+        viewer->removeEventCallback(SoMouseButtonEvent::getClassTypeId(), InteractiveScale::getMouseClick, this);
+        viewer->setSelectionEnabled(true);
+        viewer->getWidget()->setCursor(QCursor(Qt::ArrowCursor));
+        active = false;
+    }
+}
+
+double InteractiveScale::getDistance() const
+{
+    if (points.size() < 2)
+        return 0.0;
+
+    return (points[0] - points[1]).length();
+}
+
+double InteractiveScale::getDistance(const SbVec3f& pt) const
+{
+    if (points.empty())
+        return 0.0;
+
+    return (points[0] - pt).length();
+}
+
+void InteractiveScale::clearPoints()
+{
+    points.clear();
+    coords->point.setNum(0);
+}
+
+void InteractiveScale::getMouseClick(void * ud, SoEventCallback * ecb)
+{
+    InteractiveScale* scale = static_cast<InteractiveScale*>(ud);
+    const SoMouseButtonEvent * mbe = static_cast<const SoMouseButtonEvent *>(ecb->getEvent());
+    Gui::View3DInventorViewer* view  = static_cast<Gui::View3DInventorViewer*>(ecb->getUserData());
+
+    if (mbe->getButton() == SoMouseButtonEvent::BUTTON1 && mbe->getState() == SoButtonEvent::DOWN) {
+        ecb->setHandled();
+        auto pos2d = mbe->getPosition();
+        auto pos3d = view->getPointOnFocalPlane(pos2d);
+
+        if (scale->points.empty()) {
+            scale->points.push_back(pos3d);
+            scale->coords->point.set1Value(0, pos3d);
+        }
+        else if (scale->points.size() == 1) {
+            double distance = scale->getDistance(pos3d);
+            if (distance > Base::Precision::Confusion()) {
+                scale->points.push_back(pos3d);
+                scale->coords->point.set1Value(1, pos3d);
+            }
+            else {
+                Base::Console().Warning(std::string("Image scale"), "The second point is too close. Retry!\n");
+            }
+        }
+
+        Q_EMIT scale->selectedPoints(scale->points.size());
+    }
+}
+
+void InteractiveScale::getMousePosition(void * ud, SoEventCallback * ecb)
+{
+    InteractiveScale* scale = static_cast<InteractiveScale*>(ud);
+    const SoLocation2Event * l2e = static_cast<const SoLocation2Event *>(ecb->getEvent());
+    Gui::View3DInventorViewer* view  = static_cast<Gui::View3DInventorViewer*>(ecb->getUserData());
+
+    if (scale->points.size() == 1) {
+        ecb->setHandled();
+        auto pos2d = l2e->getPosition();
+        auto pos3d = view->getPointOnFocalPlane(pos2d);
+        scale->coords->point.set1Value(1, pos3d);
     }
 }
 
