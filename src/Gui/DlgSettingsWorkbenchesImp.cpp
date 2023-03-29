@@ -405,7 +405,7 @@ QStringList DlgSettingsWorkbenchesImp::getEnabledWorkbenches()
         enabled_wbs_list.removeFirst();
         QStringList workbenches = Application::Instance->workbenches();
         for(auto& wbName : workbenches) {
-            if (wbName.toStdString() != "NoneWorkbench")
+            if (wbName.toStdString() != "NoneWorkbench" && wbName.toStdString() != "TestWorkbench")
                 enabled_wbs_list.append(wbName);
         }
         enabled_wbs_list.sort();
@@ -429,6 +429,7 @@ QStringList DlgSettingsWorkbenchesImp::getDisabledWorkbenches()
 
     if (disabled_wbs_list.isEmpty()) {
         disabled_wbs_list.append(QString::fromLatin1("NoneWorkbench"));
+        disabled_wbs_list.append(QString::fromLatin1("TestWorkbench"));
     }
     return disabled_wbs_list;
 }
