@@ -60,6 +60,7 @@
 #endif // _PreComp
 
 #include <Base/Console.h>
+#include <Base/FileInfo.h>
 
 #include "TopoShapeWirePy.h"
 
@@ -126,8 +127,14 @@ PyObject* FT2FC(const Py_UNICODE *PyUString,
         throw std::runtime_error(ErrorMsg.str());
     }
 
+
     std::ifstream fontfile;
-    fontfile.open(FontSpec, std::ios::binary|std::ios::in);
+#ifdef FC_OS_WIN32
+    Base::FileInfo winFI(FontSpec);
+    fontfile.open(winFI.toStdWString().c_str(), std::ios::binary | std::ios::in);
+#else
+    fontfile.open(FontSpec, std::ios::binary | std::ios::in);
+#endif
     if (!fontfile.is_open()) {
         //get indignant
         ErrorMsg << "Can not open font file: " << FontSpec;
