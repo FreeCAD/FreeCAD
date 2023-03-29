@@ -49,7 +49,8 @@ public:
     void loadSettings() override;
 
     static QStringList getEnabledWorkbenches();
-    static QStringList getDisabledWorkbenches();
+    static void addToEnabledWorkenches(const QString wbName);
+    static void removeFromEnabledWorkenches(const QString wbName);
 
 protected Q_SLOTS:
     void wbToggled(const QString& wbName, bool enabled);

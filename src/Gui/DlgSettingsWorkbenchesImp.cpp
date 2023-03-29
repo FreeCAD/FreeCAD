@@ -253,7 +253,7 @@ DlgSettingsWorkbenchesImp::~DlgSettingsWorkbenchesImp()
 
 void DlgSettingsWorkbenchesImp::saveSettings()
 {
-    std::ostringstream enabledStr, disabledStr, autoloadStr;
+    std::ostringstream enabledStr, autoloadStr;
 
     auto addStrToOss = [](std::string wbName, std::ostringstream& oss) {
         if (!oss.str().empty())
@@ -270,9 +270,6 @@ void DlgSettingsWorkbenchesImp::saveSettings()
         if (wbItem->isEnabled()) {
             addStrToOss(wbName, enabledStr);
         }
-        else {
-            addStrToOss(wbName, disabledStr);
-        }
 
         if (wbItem->isAutoLoading()) {
             addStrToOss(wbName, autoloadStr);
@@ -281,13 +278,9 @@ void DlgSettingsWorkbenchesImp::saveSettings()
 
     if (enabledStr.str().empty()) //make sure that we have at least one enabled workbench.
         enabledStr << "NoneWorkbench";
-    else {
-        addStrToOss("NoneWorkbench", disabledStr); //Note, NoneWorkbench is not in the table so it's not added before.
-    }
 
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Workbenches");
     hGrp->SetASCII("Enabled", enabledStr.str().c_str());
-    hGrp->SetASCII("Disabled", disabledStr.str().c_str());
 
     App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/General")->
         SetASCII("BackgroundAutoloadModules", autoloadStr.str().c_str());
@@ -346,7 +339,6 @@ void DlgSettingsWorkbenchesImp::buildWorkbenchList()
     workbenches.sort(); //This will sort alphabetically the disabled wb.
 
     QStringList enabledWbs = getEnabledWorkbenches();
-    QStringList disabledWbs = getDisabledWorkbenches();
 
     //First we add the enabled wbs in their saved order.
     for (const auto& wbName : enabledWbs) {
@@ -357,13 +349,9 @@ void DlgSettingsWorkbenchesImp::buildWorkbenchList()
             Base::Console().Log("Ignoring unknown %s workbench found in user preferences.\n", wbName.toStdString().c_str());
         }
     }
-    //Second we add workbench in alphabetical order that are either Disabled, or !enabled && !disabled, ie newly added wb.
+    //Second we add workbenches that are disabled in alphabetical order.
     for (const auto& wbName : workbenches) {
-        if (disabledWbs.contains(wbName)) {
-            addWorkbench(wbName, false);
-        }
-        else if (!enabledWbs.contains(wbName)) {
-            Base::Console().Log("Adding unknown %s workbench.\n", wbName.toStdString().c_str());
+        if (!enabledWbs.contains(wbName) && wbName.toStdString() != "NoneWorkbench") {
             addWorkbench(wbName, false);
         }
     }
@@ -371,9 +359,6 @@ void DlgSettingsWorkbenchesImp::buildWorkbenchList()
 
 void DlgSettingsWorkbenchesImp::addWorkbench(const QString& wbName, bool enabled)
 {
-    if (wbName.toStdString() == "NoneWorkbench")
-        return; // Do not list the default empty Workbench
-
     bool isStartupWb = wbName.toStdString() == _startupModule;
     bool autoLoad = std::find(_backgroundAutoloadedModules.begin(), _backgroundAutoloadedModules.end(),
         wbName.toStdString()) != _backgroundAutoloadedModules.end();
@@ -384,7 +369,6 @@ void DlgSettingsWorkbenchesImp::addWorkbench(const QString& wbName, bool enabled
     ui->wbList->addItem(wItem);
     ui->wbList->setItemWidget(wItem, widget);
 }
-
 
 QStringList DlgSettingsWorkbenchesImp::getEnabledWorkbenches()
 {
@@ -413,25 +397,38 @@ QStringList DlgSettingsWorkbenchesImp::getEnabledWorkbenches()
     return enabled_wbs_list;
 }
 
-QStringList DlgSettingsWorkbenchesImp::getDisabledWorkbenches()
+void DlgSettingsWorkbenchesImp::addToEnabledWorkenches(const QString wbToAddName)
 {
-    QString disabled_wbs;
-    QStringList disabled_wbs_list;
-    ParameterGrp::handle hGrp;
+    QStringList enabled_wbs_list = getEnabledWorkbenches();
 
-    hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Workbenches");
-    disabled_wbs = QString::fromStdString(hGrp->GetASCII("Disabled", ""));
-#if QT_VERSION >= QT_VERSION_CHECK(5,15,0)
-    disabled_wbs_list = disabled_wbs.split(QLatin1String(","), Qt::SkipEmptyParts);
-#else
-    disabled_wbs_list = disabled_wbs.split(QLatin1String(","), QString::SkipEmptyParts);
-#endif
+    enabled_wbs_list.push_back(wbToAddName);
 
-    if (disabled_wbs_list.isEmpty()) {
-        disabled_wbs_list.append(QString::fromLatin1("NoneWorkbench"));
-        disabled_wbs_list.append(QString::fromLatin1("TestWorkbench"));
+    std::ostringstream enabledStr;
+    for (auto& wbName : enabled_wbs_list) {
+        if (!enabledStr.str().empty())
+            enabledStr << ",";
+        enabledStr << wbName.toStdString();
     }
-    return disabled_wbs_list;
+
+    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Workbenches");
+    hGrp->SetASCII("Enabled", enabledStr.str().c_str());
+}
+
+void DlgSettingsWorkbenchesImp::removeFromEnabledWorkenches(const QString wbToRemoveName)
+{
+    QStringList enabled_wbs_list = getEnabledWorkbenches();
+
+    std::ostringstream enabledStr;
+    for (const auto& wbName : enabled_wbs_list) {
+        if (wbName != wbToRemoveName) {
+            if (!enabledStr.str().empty())
+                enabledStr << ",";
+            enabledStr << wbName.toStdString();
+        }
+    }
+
+    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Workbenches");
+    hGrp->SetASCII("Enabled", enabledStr.str().c_str());
 }
 
 /**

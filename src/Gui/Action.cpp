@@ -802,34 +802,21 @@ void WorkbenchGroup::refreshWorkbenchList()
 {
     QStringList items = Application::Instance->workbenches();
     QStringList enabled_wbs_list = DlgSettingsWorkbenchesImp::getEnabledWorkbenches();
-    QStringList disabled_wbs_list = DlgSettingsWorkbenchesImp::getDisabledWorkbenches();
-    QStringList enable_wbs;
 
     // Go through the list of enabled workbenches and verify that they really exist because
     // it might be possible that a workbench has been removed after setting up the list of
     // enabled workbenches.
-    for (const auto& it : enabled_wbs_list) {
-        int index = items.indexOf(it);
-        if (index >= 0) {
-            enable_wbs << it;
-            items.removeAt(index);
+    for (int i = 0; i < enabled_wbs_list.size(); i++) {
+        if (items.indexOf(enabled_wbs_list[i]) < 0) {
+            enabled_wbs_list.removeAt(i);
+            i--;
         }
     }
 
-    // Filter out the actively disabled workbenches
-    for (const auto& it : disabled_wbs_list) {
-        int index = items.indexOf(it);
-        if (index >= 0) {
-            items.removeAt(index);
-        }
-    }
-
-    // Now add the remaining workbenches of 'items'. They have been added to the application
-    // after setting up the list of enabled workbenches.
-    enable_wbs.append(items);
+    // Resize the action group.
     QList<QAction*> workbenches = groupAction()->actions();
     int numActions = workbenches.size();
-    int extend = enable_wbs.size() - numActions;
+    int extend = enabled_wbs_list.size() - numActions;
     if (extend > 0) {
         for (int i=0; i<extend; i++) {
             QAction* action = groupAction()->addAction(QLatin1String(""));
@@ -840,7 +827,7 @@ void WorkbenchGroup::refreshWorkbenchList()
 
     // Show all enabled wb
     int index = 0;
-    for (const auto& it : enable_wbs) {
+    for (const auto& it : enabled_wbs_list) {
         setWorkbenchData(index++, it);
     }
 }
