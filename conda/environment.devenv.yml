@@ -1,0 +1,58 @@
+name: freecad
+channels:
+- conda-forge
+dependencies:
+- libselinux           # [linux]
+- libspnav             # [linux]
+- libxau               # [linux]
+- libxcb               # [linux]
+- libxdamage           # [linux]
+- libxext              # [linux]
+- libxfixes            # [linux]
+- libxi-devel          # [linux]
+- libxxf86vm           # [linux]
+- mesa-dri-drivers     # [linux]
+- mesa-libegl-devel    # [linux]
+- mesa-libgl-devel     # [linux]
+- xorg-x11-server-xvfb # [linux]
+- sed                  # [unix]
+- boost
+- boost-cpp
+- cmake
+- coin3d
+- compilers
+- conda-build
+- conda-devenv
+- conda-smithy
+- debugpy
+- doxygen
+- eigen
+- freetype
+- gmsh
+- graphviz
+- hdf5
+- matplotlib
+- ninja
+- numpy
+- occt==7.6.3
+- openssl==3.0.8
+- pcl
+- pip
+- pivy
+- pkg-config
+- ply
+- pybind11
+- pyside2
+- python
+- pyyaml
+- qt
+- qt-main
+- qt-webengine
+- six
+- smesh==9.9
+- swig
+- vtk
+- xerces-c
+- zlib
+- pip:
+  - ptvsd
