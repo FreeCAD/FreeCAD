@@ -128,7 +128,6 @@ public:
     void reload();
     void activateGroupPage(const QString& group, int index);
     void activeGroupPage(QString& group, int& index) const;
-    void restartIfRequired();
 
 protected:
     void changeEvent(QEvent *e) override;
@@ -151,6 +150,7 @@ private:
     void applyChanges();
     void restoreDefaults();
     QString longestGroupName() const;
+    void restartIfRequired();
     //@}
 
 private:
