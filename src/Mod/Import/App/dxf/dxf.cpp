@@ -3339,21 +3339,19 @@ bool CDxfRead::ResolveEncoding()
         stringToUTF8 = &CDxfRead::GeneralToUTF8;
     }
     else {
-        // Names may be of the form "ansi_1252" which we map to "cp1252" but we don't map "ansi_x3xxxx" which means "ascii"
-        if (strncmp(m_CodePage->c_str(), "ansi_", 5) == 0
-            && strncmp(m_CodePage->c_str(), "ansi_x3", 7) != 0) {
-            std::string* p = new std::string(*m_CodePage);
+        // Codepage names may be of the form "ansi_1252" which we map to "cp1252" but we don't map "ansi_x3xxxx" (which happens to mean "ascii")
+        std::string* p = new std::string(*m_CodePage);
+        if (strncmp(p->c_str(), "ansi_", 5) == 0
+            && strncmp(p->c_str(), "ansi_x3", 7) != 0)
             p->replace(0, 5, "cp");
-            m_encoding = p;
-        }
-        else
-            m_encoding = new std::string(*m_CodePage);
+        m_encoding = p;
         // At this point we want to recognize synonyms for "utf_8" and use the custom decoder function.
         // This is because this is one of the common cases and our decoder function is a fast no-op.
         // We don't actually use the decoder function we get from PyCodec_Decoder because to call it we have to convert the (char *) text into
         // a 'bytes' object first so we can pass it to the function using PyObject_Callxxx(), getting the PYObject containing the
         // Python string, which we then decode back to UTF-8. It is simpler to call PyUnicode_DecodeXxxx which takes a (const char *)
         // and is just a direct c++ callable.
+        Base::PyGILStateLocker lock;
         PyObject* pyDecoder = PyCodec_Decoder(m_encoding->c_str());
         if (pyDecoder == NULL)
             return false; // A key error exception will have been placed.
@@ -3374,6 +3372,7 @@ const char* CDxfRead::UTF8ToUTF8(const char* encoded) const
 }
 const char* CDxfRead::GeneralToUTF8(const char* encoded) const
 {
+    Base::PyGILStateLocker lock;
     PyObject* decoded = PyUnicode_Decode(encoded, strlen(encoded), m_encoding->c_str(), "strict");
     if (decoded == NULL)
         return NULL;
