@@ -101,7 +101,7 @@ DlgCustomKeyboardImp::DlgCustomKeyboardImp( QWidget* parent  )
 
     ui->shortcutTimeout->onRestore();
     QTimer *timer = new QTimer(this);
-    QObject::connect(ui->shortcutTimeout, QOverload<int>::of(&QSpinBox::valueChanged), timer, [=](int) {
+    QObject::connect(ui->shortcutTimeout, qOverload<int>(&QSpinBox::valueChanged), timer, [=](int) {
         timer->start(100);
     });
     QObject::connect(timer, &QTimer::timeout, [=]() {
@@ -220,7 +220,7 @@ DlgCustomKeyboardImp::initCommandList(QTreeWidget *commandTreeWidget,
         timer->start(100);
     });
 
-    QObject::connect(combo, QOverload<int>::of(&QComboBox::activated), timer, [timer]() {
+    QObject::connect(combo, qOverload<int>(&QComboBox::activated), timer, [timer]() {
         timer->start(100);
     });
 

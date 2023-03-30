@@ -238,8 +238,8 @@ DlgSettingsWorkbenchesImp::DlgSettingsWorkbenchesImp( QWidget* parent )
     ui->wbList->setDefaultDropAction(Qt::MoveAction);
 
     connect(ui->wbList->model(), &QAbstractItemModel::rowsMoved, this, &DlgSettingsWorkbenchesImp::wbItemMoved);
-    connect(ui->AutoloadModuleCombo, QOverload<int>::of(&QComboBox::activated), this, &DlgSettingsWorkbenchesImp::onStartWbChanged);
-    connect(ui->WorkbenchSelectorPosition, QOverload<int>::of(&QComboBox::activated), this, &DlgSettingsWorkbenchesImp::onWbSelectorChanged);
+    connect(ui->AutoloadModuleCombo, qOverload<int>(&QComboBox::activated), this, &DlgSettingsWorkbenchesImp::onStartWbChanged);
+    connect(ui->WorkbenchSelectorPosition, qOverload<int>(&QComboBox::activated), this, &DlgSettingsWorkbenchesImp::onWbSelectorChanged);
     connect(ui->CheckBox_WbByTab, &QCheckBox::toggled, this, &DlgSettingsWorkbenchesImp::onWbByTabToggled);
 }
 
