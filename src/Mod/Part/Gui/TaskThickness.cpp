@@ -221,8 +221,8 @@ bool ThicknessWidget::accept()
             Gui::cmdAppObjectArgs(d->thickness, "Faces = %s", d->selection.c_str());
         }
         Gui::cmdAppObjectArgs(d->thickness, "Value = %f", d->ui.spinOffset->value().getValue());
-        Gui::cmdAppObjectArgs(d->thickness, "Mode = %i", d->ui.modeType->currentIndex());
-        Gui::cmdAppObjectArgs(d->thickness, "Join = %i", d->ui.joinType->currentIndex());
+        Gui::cmdAppObjectArgs(d->thickness, "Mode = %d", d->ui.modeType->currentIndex());
+        Gui::cmdAppObjectArgs(d->thickness, "Join = %d", d->ui.joinType->currentIndex());
         Gui::cmdAppObjectArgs(d->thickness, "Intersection = %s",
             d->ui.intersection->isChecked() ? "True" : "False");
         Gui::cmdAppObjectArgs(d->thickness, "SelfIntersection = %s",
