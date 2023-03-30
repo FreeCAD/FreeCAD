@@ -88,7 +88,6 @@ RUN apt-get install -y				\
 	python3-matplotlib			\
 	python3-pivy				\
 	python3-ply				\
-	python3-pyqt5				\
 	python3-pyside2.*			\
 	python3-pyside2.qtcore			\
 	python3-pyside2.qtgui			\
