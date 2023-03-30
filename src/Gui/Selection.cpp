@@ -1198,7 +1198,8 @@ void SelectionSingleton::rmvSelection(const char* pDocName, const char* pObjectN
         if(!temp.SubName.empty()) {
             // otherwise, match subojects with common prefix, separated by '.'
             if(!boost::starts_with(It->SubName,temp.SubName) ||
-               (It->SubName.length() >= temp.SubName.length() && It->SubName[temp.SubName.length()-1]!='.'))
+               (It->SubName.length() >= temp.SubName.length() && It->SubName[temp.SubName.length()-1]!='.') ||
+               (It->SubName.back() == '.' && temp.SubName.back() == '.'))
                 continue;
         }
 
