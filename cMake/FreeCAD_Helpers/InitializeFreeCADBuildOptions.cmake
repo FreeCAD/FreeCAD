@@ -25,7 +25,6 @@ macro(InitializeFreeCADBuildOptions)
         option(FREECAD_RELEASE_PDB "Create PDB files for Release version." ON)
         option(FREECAD_RELEASE_SEH "Enable Structured Exception Handling for Release version." ON)
         option(FREECAD_LIBPACK_USE "Use the LibPack to Build FreeCAD (only Win32 so far)." ON)
-        option(FREECAD_LIBPACK_USEPYSIDE "Use PySide in LibPack rather to PyQt and Swig." ON)
         option(FREECAD_USE_PCH "Activate precompiled headers where it's used." ON)
 
         if (DEFINED ENV{FREECAD_LIBPACK_DIR})
