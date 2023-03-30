@@ -5044,9 +5044,10 @@ int DocumentObjectItem::getSubName(std::ostringstream& str, App::DocumentObject*
     if (!parent)
         return NotGroup;
     int ret = parent->getSubName(str, topParent);
+    int group = parent->isGroup();
     if (ret != SuperGroup) {
-        int group = parent->isGroup();
-        if (group == NotGroup) {
+        int groupTmp = group;
+        if (groupTmp == NotGroup) {
             if (ret != PartGroup) {
                 // Handle this situation,
                 //
@@ -5061,9 +5062,9 @@ int DocumentObjectItem::getSubName(std::ostringstream& str, App::DocumentObject*
                 str.str(""); //reset the current subname
                 return NotGroup;
             }
-            group = PartGroup;
+            groupTmp = PartGroup;
         }
-        ret = group;
+        ret = groupTmp;
     }
 
     auto obj = parent->object()->getObject();
@@ -5074,7 +5075,7 @@ int DocumentObjectItem::getSubName(std::ostringstream& str, App::DocumentObject*
     }
     if (!topParent)
         topParent = obj;
-    else if (!obj->redirectSubName(str, topParent, object()->getObject()))
+    else if (!obj->redirectSubName(str, topParent, object()->getObject()) && group)
         str << obj->getNameInDocument() << '.';
     return ret;
 }
