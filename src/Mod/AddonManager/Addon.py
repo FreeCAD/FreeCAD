@@ -24,6 +24,7 @@
 """ Defines the Addon class to encapsulate information about FreeCAD Addons """
 
 import os
+import re
 from urllib.parse import urlparse
 from typing import Dict, Set, List, Optional
 from threading import Lock
@@ -592,6 +593,9 @@ class Addon:
                 "The existence of this file prevents FreeCAD from loading this Addon. To re-enable, delete the file."
             )
 
+        if (self.contains_workbench()):
+            self.disable_workbench()
+
     def enable(self):
         """Re-enable loading this addon by deleting the stopfile"""
 
@@ -600,6 +604,122 @@ class Addon:
             os.unlink(stopfile)
         except FileNotFoundError:
             pass
+
+        if (self.contains_workbench()):
+            self.enable_workbench()
+
+    def enable_workbench(self):
+        pref = fci.ParamGet("User parameter:BaseApp/Workbenches")
+        enabled_wbs = pref.GetString("Enabled", "All")
+        #print(f"start enabling : {enabled_wbs}")
+
+        if (enabled_wbs == "All"):
+            enabled_wbs = "";
+
+            if fci.FreeCADGui:
+                wbs = [wb for wb in fci.FreeCADGui.listWorkbenches()]
+                wbs.sort()
+                for wbName in wbs:
+                    if (wbName != "NoneWorkbench" and wbName != "TestWorkbench"):
+                        if (enabled_wbs != ""):
+                            enabled_wbs += ","
+                        enabled_wbs += wbName
+            else:
+                enabled_wbs += "NoneWorkbench"
+
+        enabled_wbs += ","
+        enabled_wbs += self.get_workbench_name()
+        pref.SetString("Enabled", enabled_wbs)
+        #print(f"Done enabling {enabled_wbs} \n")
+
+    def disable_workbench(self):
+        pref = fci.ParamGet("User parameter:BaseApp/Workbenches")
+        enabled_wbs = pref.GetString("Enabled", "All")
+        #print(f"start disabling {enabled_wbs}")
+
+        if (enabled_wbs == "All"):
+            enabled_wbs = "";
+
+            if fci.FreeCADGui:
+                wbs = [wb for wb in fci.FreeCADGui.listWorkbenches()]
+                wbs.sort()
+                for wbName in workbenches:
+                    if (wbName != "NoneWorkbench" and wbName != "TestWorkbench" and wbName != self.get_workbench_name()):
+                        if (enabled_wbs != ""):
+                            enabled_wbs += ","
+                        enabled_wbs += wbName
+            else:
+                enabled_wbs += "NoneWorkbench"
+        else:
+            enabled_wbs_list = enabled_wbs.split(',')
+            enabled_wbs = "";
+            for wbName in enabled_wbs_list:
+                if (wbName != self.get_workbench_name()):
+                    if (enabled_wbs != ""):
+                        enabled_wbs += ","
+                    enabled_wbs += wbName
+
+        pref.SetString("Enabled", enabled_wbs)
+        #print(f"done disabling :  {enabled_wbs} \n")
+
+    def get_workbench_name(self) -> str:
+        """Find the name of the workbench class (ie the name under which it's registered in freecad core)')"""
+        wb_name = ""
+            
+        if self.repo_type == Addon.Kind.PACKAGE:
+            for wb in self.metadata.content["workbench"]: # we may have more than one wb.
+                if wb_name != "":
+                    wb_name += ","
+                wb_name += wb.classname
+                
+        if self.repo_type == Addon.Kind.WORKBENCH or wb_name == "":
+            wb_name = self.try_find_wbname_in_files()
+
+        if wb_name == "":
+            wb_name = self.name
+
+        return wb_name
+
+    def try_find_wbname_in_files(self) -> str:
+        wb_name = "";
+        filesInDir = []
+        
+        mod_dir = os.path.join(self.mod_directory, self.name)
+
+        for root, subdirs, files in os.walk(mod_dir):
+            for f in files:
+                if not os.path.isdir(os.path.join(root, f).replace("\\", "/")):
+                    filesInDir.append(os.path.join(root, f).replace("\\", "/"))
+        if filesInDir:
+            for currentfile in filesInDir:
+                filename, extension = os.path.splitext(currentfile)
+                if extension == ".py":
+                    #print(f"Current file: {currentfile} ")
+                    try:
+                        with open(os.path.join(root, currentfile), 'r') as f:
+                            content = f.read()
+                            m = re.search('Gui.addWorkbench\((\w+)\(\)\)', content)
+                            if m:
+                                wb_name = m.group(1)
+                                break
+                    except Exception as e:
+                        continue
+        #print(f"Found name {wb_name} \n")
+        return wb_name
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 # @dataclass(frozen)

@@ -153,6 +153,11 @@ class AddonInstaller(QtCore.QObject):
                 success = self._install_by_git()
             elif method_to_use == InstallationMethod.COPY:
                 success = self._install_by_copy()
+            if (
+                hasattr(self.addon_to_install, "contains_workbench")
+                and self.addon_to_install.contains_workbench()
+            ):
+                self.addon_to_install.enable_workbench()
         except utils.ProcessInterrupted:
             pass
         if success:

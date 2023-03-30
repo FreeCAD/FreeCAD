@@ -113,6 +113,11 @@ class AddonUninstaller(QObject):
                     self.run_uninstall_script(path_to_remove)
                     self.remove_extra_files(path_to_remove)
                     success = utils.rmdir(path_to_remove)
+                    if (
+                        hasattr(self.addon_to_remove, "contains_workbench")
+                        and self.addon_to_remove.contains_workbench()
+                    ):
+                        self.addon_to_remove.disable_workbench()
                 except OSError as e:
                     error_message = str(e)
             else:
