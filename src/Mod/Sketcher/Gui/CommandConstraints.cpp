@@ -1444,10 +1444,10 @@ void CmdSketcherConstrainLock::activated(int iMsg)
             || constraintCreationMode==Reference) {
             // it is a constraint on a external line, make it non-driving
 
-            Gui::cmdAppObjectArgs(selection[0].getObject(), "setDriving(%i,%s)",
+            Gui::cmdAppObjectArgs(selection[0].getObject(), "setDriving(%d,%s)",
                                   lastconstraintindex-1,"False");
 
-            Gui::cmdAppObjectArgs(selection[0].getObject(), "setDriving(%i,%s)",
+            Gui::cmdAppObjectArgs(selection[0].getObject(), "setDriving(%d,%s)",
                                   lastconstraintindex,"False");
         }
     }
@@ -1483,10 +1483,10 @@ void CmdSketcherConstrainLock::activated(int iMsg)
             if ( (refpointfixed && pointfixed) || constraintCreationMode==Reference) {
                 // it is a constraint on a external line, make it non-driving
 
-                Gui::cmdAppObjectArgs(selection[0].getObject(), "setDriving(%i,%s)",
+                Gui::cmdAppObjectArgs(selection[0].getObject(), "setDriving(%d,%s)",
                                       lastconstraintindex-1,"False");
 
-                Gui::cmdAppObjectArgs(selection[0].getObject(), "setDriving(%i,%s)",
+                Gui::cmdAppObjectArgs(selection[0].getObject(), "setDriving(%d,%s)",
                                       lastconstraintindex,"False");
             }
         }
@@ -1527,9 +1527,9 @@ void CmdSketcherConstrainLock::applyConstraint(std::vector<SelIdPair> &selSeq, i
             // it is a constraint on a external line, make it non-driving
             const std::vector<Sketcher::Constraint *> &ConStr = Obj->Constraints.getValues();
 
-            Gui::cmdAppObjectArgs(sketchgui->getObject(), "setDriving(%i, %s)", ConStr.size()-2, "False");
+            Gui::cmdAppObjectArgs(sketchgui->getObject(), "setDriving(%d, %s)", ConStr.size()-2, "False");
 
-            Gui::cmdAppObjectArgs(sketchgui->getObject(), "setDriving(%i, %s)", ConStr.size()-1, "False");
+            Gui::cmdAppObjectArgs(sketchgui->getObject(), "setDriving(%d, %s)", ConStr.size()-1, "False");
         }
 
         // finish the transaction and update
@@ -1929,10 +1929,10 @@ bool CmdSketcherConstrainCoincident::substituteConstraintCombinations(SketchObje
 
                 if( constraintExists ) {
                     // try to remove any pre-existing direct coincident constraints
-                    Gui::cmdAppObjectArgs(Obj, "delConstraintOnPoint(%i,%i)", GeoId1, static_cast<int>(PosId1));
+                    Gui::cmdAppObjectArgs(Obj, "delConstraintOnPoint(%d,%d)", GeoId1, static_cast<int>(PosId1));
                 }
 
-                Gui::cmdAppObjectArgs(Obj, "delConstraint(%i)", j);
+                Gui::cmdAppObjectArgs(Obj, "delConstraint(%d)", j);
 
                 doEndpointTangency(Obj, GeoId1, GeoId2, PosId1, PosId2);
 
@@ -1951,7 +1951,7 @@ bool CmdSketcherConstrainCoincident::substituteConstraintCombinations(SketchObje
 
                 // if a similar tangency already exists this must result in bad constraints
                 if ((*it)->SecondPos == Sketcher::PointPos::none) {
-                    Gui::cmdAppObjectArgs(Obj, "delConstraint(%i)", j);
+                    Gui::cmdAppObjectArgs(Obj, "delConstraint(%d)", j);
 
                     doEndpointTangency(Obj, GeoId1, GeoId2, PosId1, PosId2);
 
@@ -2247,7 +2247,7 @@ void CmdSketcherConstrainDistance::activated(int iMsg)
             const std::vector<Sketcher::Constraint *> &ConStr = Obj->Constraints.getValues();
 
             Gui::cmdAppObjectArgs(selection[0].getObject(),
-                 "setDriving(%i,%s)",
+                 "setDriving(%d,%s)",
                  ConStr.size()-1,"False");
             finishDatumConstraint (this, Obj, false);
         }
@@ -2280,7 +2280,7 @@ void CmdSketcherConstrainDistance::activated(int iMsg)
                 const std::vector<Sketcher::Constraint *> &ConStr = Obj->Constraints.getValues();
 
                 Gui::cmdAppObjectArgs(selection[0].getObject(),
-                     "setDriving(%i,%s)",
+                     "setDriving(%d,%s)",
                      ConStr.size()-1,"False");
                 finishDatumConstraint (this, Obj, false);
             }
@@ -2329,7 +2329,7 @@ void CmdSketcherConstrainDistance::activated(int iMsg)
                 const std::vector<Sketcher::Constraint *> &ConStr = Obj->Constraints.getValues();
 
                 Gui::cmdAppObjectArgs(selection[0].getObject(),
-                     "setDriving(%i,%s)",
+                     "setDriving(%d,%s)",
                      ConStr.size()-1,"False");
                 finishDatumConstraint (this, Obj, false);
             }
@@ -2364,7 +2364,7 @@ void CmdSketcherConstrainDistance::activated(int iMsg)
                 constraintCreationMode==Reference) {
                 const std::vector<Sketcher::Constraint *> &ConStr = Obj->Constraints.getValues();
 
-                Gui::cmdAppObjectArgs(selection[0].getObject(), "setDriving(%i,%s)",
+                Gui::cmdAppObjectArgs(selection[0].getObject(), "setDriving(%d,%s)",
                      ConStr.size()-1,"False");
                 finishDatumConstraint (this, Obj, false);
             }
@@ -2426,7 +2426,7 @@ void CmdSketcherConstrainDistance::applyConstraint(std::vector<SelIdPair> &selSe
             // it is a constraint on a external line, make it non-driving
             const std::vector<Sketcher::Constraint *> &ConStr = Obj->Constraints.getValues();
 
-            Gui::cmdAppObjectArgs(Obj,"setDriving(%i,%s)",
+            Gui::cmdAppObjectArgs(Obj,"setDriving(%d,%s)",
                  ConStr.size()-1,"False");
             finishDatumConstraint (this, Obj, false);
         }
@@ -2459,7 +2459,7 @@ void CmdSketcherConstrainDistance::applyConstraint(std::vector<SelIdPair> &selSe
                 // it is a constraint on a external line, make it non-driving
                 const std::vector<Sketcher::Constraint *> &ConStr = Obj->Constraints.getValues();
 
-                Gui::cmdAppObjectArgs(Obj, "setDriving(%i,%s)",
+                Gui::cmdAppObjectArgs(Obj, "setDriving(%d,%s)",
                      ConStr.size()-1,"False");
                 finishDatumConstraint (this, Obj, false);
             }
@@ -2503,7 +2503,7 @@ void CmdSketcherConstrainDistance::applyConstraint(std::vector<SelIdPair> &selSe
                 // it is a constraint on a external line, make it non-driving
                 const std::vector<Sketcher::Constraint *> &ConStr = Obj->Constraints.getValues();
 
-                Gui::cmdAppObjectArgs(Obj,"setDriving(%i,%s)",
+                Gui::cmdAppObjectArgs(Obj,"setDriving(%d,%s)",
                      ConStr.size()-1,"False");
                 finishDatumConstraint (this, Obj, false);
             }
@@ -2553,7 +2553,7 @@ void CmdSketcherConstrainDistance::applyConstraint(std::vector<SelIdPair> &selSe
             if (arebothpointsorsegmentsfixed || constraintCreationMode==Reference) { // it is a constraint on a external line, make it non-driving
                 const std::vector<Sketcher::Constraint *> &ConStr = Obj->Constraints.getValues();
 
-                Gui::cmdAppObjectArgs(Obj, "setDriving(%i,%s)",
+                Gui::cmdAppObjectArgs(Obj, "setDriving(%d,%s)",
                      ConStr.size()-1,"False");
                 finishDatumConstraint (this, Obj, false);
             }
@@ -2640,7 +2640,7 @@ bool CmdSketcherConstrainPointOnObject::substituteConstraintCombinations(   Sket
             // NOTE: This function does not either open or commit a command as it is used for group addition
             // it relies on such infrastructure being provided by the caller.
 
-            Gui::cmdAppObjectArgs(Obj, "delConstraint(%i)", cid);
+            Gui::cmdAppObjectArgs(Obj, "delConstraint(%d)", cid);
 
             doEndpointToEdgeTangency(Obj, GeoId1, PosId1, GeoId2);
 
@@ -2951,7 +2951,7 @@ void CmdSketcherConstrainDistanceX::activated(int iMsg)
             // it is a constraint on a external line, make it non-driving
             const std::vector<Sketcher::Constraint *> &ConStr = Obj->Constraints.getValues();
 
-            Gui::cmdAppObjectArgs(selection[0].getObject(), "setDriving(%i,%s)",
+            Gui::cmdAppObjectArgs(selection[0].getObject(), "setDriving(%d,%s)",
                  ConStr.size()-1,"False");
             finishDatumConstraint (this, Obj, false);
         }
@@ -2984,7 +2984,7 @@ void CmdSketcherConstrainDistanceX::activated(int iMsg)
             // it is a constraint on a external line, make it non-driving
             const std::vector<Sketcher::Constraint *> &ConStr = Obj->Constraints.getValues();
 
-            Gui::cmdAppObjectArgs(selection[0].getObject(),"setDriving(%i,%s)",
+            Gui::cmdAppObjectArgs(selection[0].getObject(),"setDriving(%d,%s)",
                  ConStr.size()-1,"False");
             finishDatumConstraint (this, Obj, false);
         }
@@ -3057,7 +3057,7 @@ void CmdSketcherConstrainDistanceX::applyConstraint(std::vector<SelIdPair> &selS
         // it is a constraint on a external line, make it non-driving
         const std::vector<Sketcher::Constraint *> &ConStr = Obj->Constraints.getValues();
 
-        Gui::cmdAppObjectArgs(Obj,"setDriving(%i,%s)",
+        Gui::cmdAppObjectArgs(Obj,"setDriving(%d,%s)",
         ConStr.size()-1,"False");
         finishDatumConstraint (this, Obj, false);
     }
@@ -3206,7 +3206,7 @@ void CmdSketcherConstrainDistanceY::activated(int iMsg)
             // it is a constraint on a external line, make it non-driving
             const std::vector<Sketcher::Constraint *> &ConStr = Obj->Constraints.getValues();
 
-            Gui::cmdAppObjectArgs(selection[0].getObject(), "setDriving(%i,%s)",
+            Gui::cmdAppObjectArgs(selection[0].getObject(), "setDriving(%d,%s)",
                 ConStr.size()-1,"False");
             finishDatumConstraint (this, Obj, false);
         }
@@ -3238,7 +3238,7 @@ void CmdSketcherConstrainDistanceY::activated(int iMsg)
             // it is a constraint on a external line, make it non-driving
             const std::vector<Sketcher::Constraint *> &ConStr = Obj->Constraints.getValues();
 
-            Gui::cmdAppObjectArgs(selection[0].getObject(), "setDriving(%i,%s)",
+            Gui::cmdAppObjectArgs(selection[0].getObject(), "setDriving(%d,%s)",
                 ConStr.size()-1,"False");
             finishDatumConstraint (this, Obj, false);
         }
@@ -3310,7 +3310,7 @@ void CmdSketcherConstrainDistanceY::applyConstraint(std::vector<SelIdPair> &selS
     if (areBothPointsOrSegmentsFixed(Obj,GeoId1, GeoId2) || constraintCreationMode==Reference) { // it is a constraint on a external line, make it non-driving
         const std::vector<Sketcher::Constraint *> &ConStr = Obj->Constraints.getValues();
 
-        Gui::cmdAppObjectArgs(Obj, "setDriving(%i,%s)",
+        Gui::cmdAppObjectArgs(Obj, "setDriving(%d,%s)",
             ConStr.size()-1,"False");
         finishDatumConstraint (this, Obj, false);
     }
@@ -4204,7 +4204,7 @@ bool CmdSketcherConstrainTangent::substituteConstraintCombinations(SketchObject 
 
             doEndpointTangency(Obj, (*it)->First, (*it)->Second, (*it)->FirstPos, (*it)->SecondPos);
 
-            Gui::cmdAppObjectArgs(Obj, "delConstraintOnPoint(%i,%i)", first, firstpos);
+            Gui::cmdAppObjectArgs(Obj, "delConstraintOnPoint(%d,%d)", first, firstpos);
 
             commitCommand();
             Obj->solve(); // The substitution requires a solve() so that the autoremove redundants works when Autorecompute not active.
@@ -4223,7 +4223,7 @@ bool CmdSketcherConstrainTangent::substituteConstraintCombinations(SketchObject 
 
             doEndpointToEdgeTangency(Obj, (*it)->First, (*it)->FirstPos, (*it)->Second);
 
-            Gui::cmdAppObjectArgs(Obj, "delConstraint(%i)", cid); // remove the preexisting point on object constraint.
+            Gui::cmdAppObjectArgs(Obj, "delConstraint(%d)", cid); // remove the preexisting point on object constraint.
 
             commitCommand();
 
@@ -5073,7 +5073,7 @@ void CmdSketcherConstrainRadius::activated(int iMsg)
 
             constrSize=ConStr.size();
 
-            Gui::cmdAppObjectArgs(selection[0].getObject(),"setDriving(%i,%s)", constrSize-1,"False");
+            Gui::cmdAppObjectArgs(selection[0].getObject(),"setDriving(%d,%s)", constrSize-1,"False");
         }
 
 
@@ -5121,7 +5121,7 @@ void CmdSketcherConstrainRadius::activated(int iMsg)
 
                 if (constraintCreationMode==Reference) {
                     const std::vector<Sketcher::Constraint *> &ConStr = Obj->Constraints.getValues();
-                    Gui::cmdAppObjectArgs(selection[0].getObject(), "setDriving(%i,%s)", ConStr.size()-1,"False");
+                    Gui::cmdAppObjectArgs(selection[0].getObject(), "setDriving(%d,%s)", ConStr.size()-1,"False");
                 }
             }
         }
@@ -5187,7 +5187,7 @@ void CmdSketcherConstrainRadius::applyConstraint(std::vector<SelIdPair> &selSeq,
 
         bool fixed = isPointOrSegmentFixed(Obj,GeoId);
         if(fixed || constraintCreationMode==Reference) {
-            Gui::cmdAppObjectArgs(Obj, "setDriving(%i,%s)",
+            Gui::cmdAppObjectArgs(Obj, "setDriving(%d,%s)",
                                   ConStr.size()-1, "False");
 
             updateNeeded=true; // We do need to update the solver DoF after setting the constraint driving.
@@ -5365,7 +5365,7 @@ void CmdSketcherConstrainDiameter::activated(int iMsg)
 
             constrSize=ConStr.size();
 
-            Gui::cmdAppObjectArgs(Obj,"setDriving(%i,%s)",constrSize-1,"False");
+            Gui::cmdAppObjectArgs(Obj,"setDriving(%d,%s)",constrSize-1,"False");
         }
 
         finishDatumConstraint (this, Obj, false, externalGeoIdDiameterMap.size());
@@ -5404,7 +5404,7 @@ void CmdSketcherConstrainDiameter::activated(int iMsg)
 
                     const std::vector<Sketcher::Constraint *> &ConStr = Obj->Constraints.getValues();
 
-                    Gui::cmdAppObjectArgs(Obj, "setDriving(%i,%s)", ConStr.size()-1,"False");
+                    Gui::cmdAppObjectArgs(Obj, "setDriving(%d,%s)", ConStr.size()-1,"False");
 
                 }
 
@@ -5473,7 +5473,7 @@ void CmdSketcherConstrainDiameter::applyConstraint(std::vector<SelIdPair> &selSe
 
             bool fixed = isPointOrSegmentFixed(Obj,GeoId);
             if(fixed || constraintCreationMode==Reference) {
-                Gui::cmdAppObjectArgs(Obj, "setDriving(%i,%s)", ConStr.size()-1, "False");
+                Gui::cmdAppObjectArgs(Obj, "setDriving(%d,%s)", ConStr.size()-1, "False");
                 updateNeeded=true; // We do need to update the solver DoF after setting the constraint driving.
             }
 
@@ -5664,7 +5664,7 @@ void CmdSketcherConstrainRadiam::activated(int iMsg)
 
             constrSize=ConStr.size();
 
-            Gui::cmdAppObjectArgs(Obj,"setDriving(%i,%s)",constrSize-1,"False");
+            Gui::cmdAppObjectArgs(Obj,"setDriving(%d,%s)",constrSize-1,"False");
         }
 
         finishDatumConstraint (this, Obj, false, externalGeoIdRadiamMap.size());
@@ -5719,7 +5719,7 @@ void CmdSketcherConstrainRadiam::activated(int iMsg)
 
                     const std::vector<Sketcher::Constraint *> &ConStr = Obj->Constraints.getValues();
 
-                    Gui::cmdAppObjectArgs(Obj, "setDriving(%i,%s)", ConStr.size()-1,"False");
+                    Gui::cmdAppObjectArgs(Obj, "setDriving(%d,%s)", ConStr.size()-1,"False");
 
                 }
 
@@ -5794,7 +5794,7 @@ void CmdSketcherConstrainRadiam::applyConstraint(std::vector<SelIdPair> &selSeq,
 
             bool fixed = isPointOrSegmentFixed(Obj,GeoId);
             if(fixed || constraintCreationMode==Reference) {
-                Gui::cmdAppObjectArgs(Obj, "setDriving(%i,%s)", ConStr.size()-1, "False");
+                Gui::cmdAppObjectArgs(Obj, "setDriving(%d,%s)", ConStr.size()-1, "False");
                 updateNeeded=true; // We do need to update the solver DoF after setting the constraint driving.
             }
 
@@ -6107,7 +6107,7 @@ void CmdSketcherConstrainAngle::activated(int iMsg)
             if (bothexternal || constraintCreationMode==Reference) { // it is a constraint on a external line, make it non-driving
                 const std::vector<Sketcher::Constraint *> &ConStr = Obj->Constraints.getValues();
 
-                Gui::cmdAppObjectArgs(selection[0].getObject(),"setDriving(%i,%s)",
+                Gui::cmdAppObjectArgs(selection[0].getObject(),"setDriving(%d,%s)",
                     ConStr.size()-1,"False");
                 finishDatumConstraint (this, Obj, false);
             }
@@ -6216,7 +6216,7 @@ void CmdSketcherConstrainAngle::activated(int iMsg)
                 if (bothexternal || constraintCreationMode==Reference) { // it is a constraint on a external line, make it non-driving
                     const std::vector<Sketcher::Constraint *> &ConStr = Obj->Constraints.getValues();
 
-                    Gui::cmdAppObjectArgs(selection[0].getObject(),"setDriving(%i,%s)",
+                    Gui::cmdAppObjectArgs(selection[0].getObject(),"setDriving(%d,%s)",
                         ConStr.size()-1,"False");
                     finishDatumConstraint (this, Obj, false);
                 }
@@ -6249,7 +6249,7 @@ void CmdSketcherConstrainAngle::activated(int iMsg)
                     // it is a constraint on a external line, make it non-driving
                     const std::vector<Sketcher::Constraint *> &ConStr = Obj->Constraints.getValues();
 
-                    Gui::cmdAppObjectArgs(selection[0].getObject(), "setDriving(%i,%s)",
+                    Gui::cmdAppObjectArgs(selection[0].getObject(), "setDriving(%d,%s)",
                         ConStr.size()-1,"False");
                     finishDatumConstraint (this, Obj, false);
                 }
@@ -6273,7 +6273,7 @@ void CmdSketcherConstrainAngle::activated(int iMsg)
                     // it is a constraint on a external line, make it non-driving
                     const std::vector<Sketcher::Constraint *> &ConStr = Obj->Constraints.getValues();
 
-                    Gui::cmdAppObjectArgs(selection[0].getObject(), "setDriving(%i,%s)",
+                    Gui::cmdAppObjectArgs(selection[0].getObject(), "setDriving(%d,%s)",
                         ConStr.size()-1,"False");
                     finishDatumConstraint (this, Obj, false);
                 }
@@ -6390,7 +6390,7 @@ void CmdSketcherConstrainAngle::applyConstraint(std::vector<SelIdPair> &selSeq, 
                 // it is a constraint on a external line, make it non-driving
                 const std::vector<Sketcher::Constraint *> &ConStr = Obj->Constraints.getValues();
 
-                Gui::cmdAppObjectArgs(Obj,"setDriving(%i,%s)",
+                Gui::cmdAppObjectArgs(Obj,"setDriving(%d,%s)",
                     ConStr.size()-1,"False");
                 finishDatumConstraint (this, Obj, false);
             }
@@ -6475,7 +6475,7 @@ void CmdSketcherConstrainAngle::applyConstraint(std::vector<SelIdPair> &selSeq, 
             // it is a constraint on a external line, make it non-driving
             const std::vector<Sketcher::Constraint *> &ConStr = Obj->Constraints.getValues();
 
-            Gui::cmdAppObjectArgs(Obj,"setDriving(%i,%s)",
+            Gui::cmdAppObjectArgs(Obj,"setDriving(%d,%s)",
                 ConStr.size()-1,"False");
             finishDatumConstraint (this, Obj, false);
         }
