@@ -140,7 +140,6 @@ protected:
     SoTransformManip*           getManipulator() {return m_manip;}
     SoSeparator*                getGeometryNode() {return m_geometrySeperator;}
     SoScale*                    getScaleNode() {return m_scale;}
-    SoTransform*                getTransformNode() {return m_transform;}
 
 private:
     static void dragStartCallback(void * data, SoDragger * d);
@@ -150,7 +149,6 @@ private:
     SoSeparator*        m_geometrySeperator;
     SoTransformManip*   m_manip;
     SoScale*            m_scale;
-    SoTransform*        m_transform;
     bool                m_autoscale, m_isDragging, m_autoRecompute;
 };
 

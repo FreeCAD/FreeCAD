@@ -58,7 +58,7 @@ public:
     TopoDS_Compound alignSectionFaces(TopoDS_Shape faceIntersections) override;
     std::pair<Base::Vector3d, Base::Vector3d> sectionLineEnds() override;
 
-    void makeSectionCut(TopoDS_Shape& baseShape) override;
+    void makeSectionCut(const TopoDS_Shape& baseShape) override;
 
     void waitingForAlign(bool s) { m_waitingForAlign = s; }
     bool waitingForAlign(void) const { return m_waitingForAlign; }

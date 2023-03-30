@@ -186,7 +186,11 @@ void DrawViewDetail::detailExec(TopoDS_Shape& shape, DrawViewPart* dvp, DrawView
     connectDetailWatcher =
         QObject::connect(&m_detailWatcher, &QFutureWatcherBase::finished, &m_detailWatcher,
                          [this] { this->onMakeDetailFinished(); });
+#if QT_VERSION < QT_VERSION_CHECK(6,0,0)
     m_detailFuture = QtConcurrent::run(this, &DrawViewDetail::makeDetailShape, shape, dvp, dvs);
+#else
+    m_detailFuture = QtConcurrent::run(&DrawViewDetail::makeDetailShape, this, shape, dvp, dvs);
+#endif
     m_detailWatcher.setFuture(m_detailFuture);
     waitingForDetail(true);
 }
@@ -194,7 +198,7 @@ void DrawViewDetail::detailExec(TopoDS_Shape& shape, DrawViewPart* dvp, DrawView
 //this runs in a separate thread since it can sometimes take a long time
 //make a common of the input shape and a cylinder (or prism depending on
 //the matting style)
-void DrawViewDetail::makeDetailShape(TopoDS_Shape& shape, DrawViewPart* dvp, DrawViewSection* dvs)
+void DrawViewDetail::makeDetailShape(const TopoDS_Shape& shape, DrawViewPart* dvp, DrawViewSection* dvs)
 {
     showProgressMessage(getNameInDocument(), "is making detail shape");
 

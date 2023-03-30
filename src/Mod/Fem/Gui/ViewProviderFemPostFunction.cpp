@@ -56,6 +56,7 @@
 #include "ViewProviderFemPostFunction.h"
 #include "FemSettings.h"
 #include "TaskPostBoxes.h"
+#include "ViewProviderAnalysis.h"
 
 #include "ui_BoxWidget.h"
 #include "ui_CylinderWidget.h"
@@ -133,32 +134,10 @@ void ViewProviderFemPostFunctionProvider::updateSize()
 
 bool ViewProviderFemPostFunctionProvider::onDelete(const std::vector<std::string>&)
 {
-    // warn the user if the object has childs
-
+    // warn the user if the object has unselected children
     auto objs = claimChildren();
-    if (!objs.empty())
-    {
-        // generate dialog
-        QString bodyMessage;
-        QTextStream bodyMessageStream(&bodyMessage);
-        bodyMessageStream << qApp->translate("Std_Delete",
-            "The functions list is not empty, therefore the\nfollowing referencing objects might be lost:");
-        bodyMessageStream << '\n';
-        for (auto ObjIterator : objs)
-            bodyMessageStream << '\n' << QString::fromUtf8(ObjIterator->Label.getValue());
-        bodyMessageStream << "\n\n" << QObject::tr("Are you sure you want to continue?");
-        // show and evaluate the dialog
-        int DialogResult = QMessageBox::warning(Gui::getMainWindow(),
-            qApp->translate("Std_Delete", "Object dependencies"), bodyMessage,
-            QMessageBox::Yes, QMessageBox::No);
-        if (DialogResult == QMessageBox::Yes)
-            return true;
-        else
-            return false;
-    }
-    else {
-        return true;
-    }
+    return ViewProviderFemAnalysis::checkSelectedChildren(
+        objs, this->getDocument(), "functions list");
 }
 
 bool ViewProviderFemPostFunctionProvider::canDelete(App::DocumentObject* obj) const
@@ -178,16 +157,12 @@ PROPERTY_SOURCE(FemGui::ViewProviderFemPostFunction, Gui::ViewProviderDocumentOb
 ViewProviderFemPostFunction::ViewProviderFemPostFunction()
     : m_manip(nullptr), m_autoscale(false), m_isDragging(false), m_autoRecompute(false)
 {
-
     ADD_PROPERTY_TYPE(AutoScaleFactorX, (1), "AutoScale", App::Prop_Hidden, "Automatic scaling factor");
     ADD_PROPERTY_TYPE(AutoScaleFactorY, (1), "AutoScale", App::Prop_Hidden, "Automatic scaling factor");
     ADD_PROPERTY_TYPE(AutoScaleFactorZ, (1), "AutoScale", App::Prop_Hidden, "Automatic scaling factor");
 
     m_geometrySeperator = new SoSeparator();
     m_geometrySeperator->ref();
-
-    m_transform = new SoTransform();
-    m_transform->ref();
 
     m_scale = new SoScale();
     m_scale->ref();
@@ -199,7 +174,6 @@ ViewProviderFemPostFunction::~ViewProviderFemPostFunction()
     m_geometrySeperator->unref();
     m_manip->unref();
     m_scale->unref();
-    //transform is unref'd when it is replaced by the dragger
 }
 
 void ViewProviderFemPostFunction::attach(App::DocumentObject* pcObj)
@@ -211,7 +185,7 @@ void ViewProviderFemPostFunction::attach(App::DocumentObject* pcObj)
     color->diffuseColor.setValue(0, 0, 1);
     color->transparency.setValue(0.5);
 
-    m_transform = new SoTransform;
+    SoTransform* transform = new SoTransform();
 
     m_manip = setupManipulator();
     m_manip->ref();
@@ -220,7 +194,7 @@ void ViewProviderFemPostFunction::attach(App::DocumentObject* pcObj)
     pcEditNode->ref();
 
     pcEditNode->addChild(color);
-    pcEditNode->addChild(m_transform);
+    pcEditNode->addChild(transform);
     pcEditNode->addChild(m_geometrySeperator);
 
     m_geometrySeperator->insertChild(m_scale, 0);
@@ -232,7 +206,7 @@ void ViewProviderFemPostFunction::attach(App::DocumentObject* pcObj)
     SoSearchAction sa;
     sa.setInterest(SoSearchAction::FIRST);
     sa.setSearchingAll(FALSE);
-    sa.setNode(m_transform);
+    sa.setNode(transform);
     sa.apply(pcEditNode);
     SoPath* path = sa.getPath();
     if (path) {

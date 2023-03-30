@@ -116,7 +116,7 @@ public:
     short mustExecute() const override;
 
     void sectionExec(TopoDS_Shape& s);
-    virtual void makeSectionCut(TopoDS_Shape& baseShape);
+    virtual void makeSectionCut(const TopoDS_Shape& baseShape);
     void postHlrTasks(void) override;
     virtual void postSectionCutTasks();
     void waitingForCut(bool s) { m_waitingForCut = s; }

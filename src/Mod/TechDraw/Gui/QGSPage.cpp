@@ -1259,7 +1259,9 @@ void QGSPage::postProcessXml(QTemporaryFile& temporaryFile, QString fileName, QS
 
     QTextStream stream(&outFile);
     stream.setGenerateByteOrderMark(false);
+#if QT_VERSION < QT_VERSION_CHECK(6,0,0)
     stream.setCodec("UTF-8");
+#endif
 
     stream << exportDoc.toByteArray();
     outFile.close();

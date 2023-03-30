@@ -27,7 +27,6 @@
 #include <QApplication>
 #include <QBitmap>
 #include <QContextMenuEvent>
-#include <QGLWidget>
 #include <QLabel>
 #include <QMouseEvent>
 #include <QPaintEvent>
@@ -357,7 +356,6 @@ void QGVPage::setRenderer(RendererType type)
 
     if (m_renderer == OpenGL) {
 #ifndef QT_NO_OPENGL
-        //        setViewport(new QGLWidget(QGLFormat(QGL::SampleBuffers))); //QGLWidget is obsolete
         setViewport(new QOpenGLWidget);
         setViewportUpdateMode(QGraphicsView::SmartViewportUpdate);
 #endif
@@ -466,7 +464,11 @@ void QGVPage::kbPanScroll(int xMove, int yMove)
     }
 }
 
+#if QT_VERSION < QT_VERSION_CHECK(6,0,0)
 void QGVPage::enterEvent(QEvent* event)
+#else
+void QGVPage::enterEvent(QEnterEvent* event)
+#endif
 {
     QGraphicsView::enterEvent(event);
     m_navStyle->handleEnterEvent(event);

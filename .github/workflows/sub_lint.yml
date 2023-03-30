@@ -39,7 +39,7 @@ on:
         type: string
         required: true
       checkLineendings:
-        default: true
+        default: false
         type: boolean
         required: false
       lineendingsFailSilent:

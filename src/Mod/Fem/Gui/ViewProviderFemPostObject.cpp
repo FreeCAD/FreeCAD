@@ -62,6 +62,7 @@
 
 #include "ViewProviderFemPostObject.h"
 #include "TaskPostBoxes.h"
+#include "ViewProviderAnalysis.h"
 
 
 using namespace FemGui;
@@ -836,8 +837,8 @@ void ViewProviderFemPostObject::setupTaskDialog(TaskDlgPost* dlg)
     dlg->appendBox(new TaskPostDisplay(this));
 }
 
-void ViewProviderFemPostObject::unsetEdit(int ModNum) {
-
+void ViewProviderFemPostObject::unsetEdit(int ModNum)
+{
     if (ModNum == ViewProvider::Default) {
         // and update the pad
         //getSketchObject()->getDocument()->recompute();
@@ -903,33 +904,9 @@ void ViewProviderFemPostObject::OnChange(Base::Subject< int >& /*rCaller*/, int 
 
 bool ViewProviderFemPostObject::onDelete(const std::vector<std::string>&)
 {
-    // warn the user if the object has childs
-
+    // warn the user if the object has unselected children
     auto objs = claimChildren();
-    if (!objs.empty())
-    {
-        // generate dialog
-        QString bodyMessage;
-        QTextStream bodyMessageStream(&bodyMessage);
-        bodyMessageStream << qApp->translate("Std_Delete",
-                                             "The pipeline is not empty, therefore the\nfollowing "
-                                             "referencing objects might be lost:");
-        bodyMessageStream << '\n';
-        for (auto ObjIterator : objs)
-            bodyMessageStream << '\n' << QString::fromUtf8(ObjIterator->Label.getValue());
-        bodyMessageStream << "\n\n" << QObject::tr("Are you sure you want to continue?");
-        // show and evaluate the dialog
-        int DialogResult = QMessageBox::warning(Gui::getMainWindow(),
-            qApp->translate("Std_Delete", "Object dependencies"), bodyMessage,
-            QMessageBox::Yes, QMessageBox::No);
-        if (DialogResult == QMessageBox::Yes)
-            return true;
-        else
-            return false;
-    }
-    else {
-        return true;
-    }
+    return ViewProviderFemAnalysis::checkSelectedChildren(objs, this->getDocument(), "pipeline");
 }
 
 bool ViewProviderFemPostObject::canDelete(App::DocumentObject* obj) const
