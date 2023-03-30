@@ -114,7 +114,8 @@ class ObjectCustom(PathOp.ObjectOp):
             gcode_file = self.findGcodeFile(obj.GcodeFile)
 
             # could not determine the path
-            if not gcode_file: return
+            if not gcode_file:
+                Path.Log.error(translate("PathCustom", "Custom file %s could not be found.") % obj.GcodeFile)
 
             with open(gcode_file) as fd:
                 for l in fd.readlines():
