@@ -609,7 +609,7 @@ class Addon:
             self.enable_workbench()
 
     def enable_workbench(self):
-        pref = fci.ParamGet("User parameter:BaseApp/Workbenches")
+        pref = fci.ParamGet("User parameter:BaseApp/Preferences/Workbenches")
         enabled_wbs = pref.GetString("Enabled", "All")
         #print(f"start enabling : {enabled_wbs}")
 
@@ -633,7 +633,7 @@ class Addon:
         #print(f"Done enabling {enabled_wbs} \n")
 
     def disable_workbench(self):
-        pref = fci.ParamGet("User parameter:BaseApp/Workbenches")
+        pref = fci.ParamGet("User parameter:BaseApp/Preferences/Workbenches")
         enabled_wbs = pref.GetString("Enabled", "All")
         #print(f"start disabling {enabled_wbs}")
 
@@ -706,21 +706,6 @@ class Addon:
                         continue
         #print(f"Found name {wb_name} \n")
         return wb_name
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 # @dataclass(frozen)
 class MissingDependencies:

@@ -279,7 +279,7 @@ void DlgSettingsWorkbenchesImp::saveSettings()
     if (enabledStr.str().empty()) //make sure that we have at least one enabled workbench.
         enabledStr << "NoneWorkbench";
 
-    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Workbenches");
+    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Workbenches");
     hGrp->SetASCII("Enabled", enabledStr.str().c_str());
 
     App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/General")->
@@ -377,7 +377,7 @@ QStringList DlgSettingsWorkbenchesImp::getEnabledWorkbenches()
     ParameterGrp::handle hGrp;
     QString allWorkbenches = QString::fromLatin1("ALL");
 
-    hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Workbenches");
+    hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Workbenches");
     enabled_wbs = QString::fromStdString(hGrp->GetASCII("Enabled", allWorkbenches.toStdString().c_str()));
 #if QT_VERSION >= QT_VERSION_CHECK(5,15,0)
     enabled_wbs_list = enabled_wbs.split(QLatin1String(","), Qt::SkipEmptyParts);
@@ -410,7 +410,7 @@ void DlgSettingsWorkbenchesImp::addToEnabledWorkenches(const QString wbToAddName
         enabledStr << wbName.toStdString();
     }
 
-    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Workbenches");
+    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Workbenches");
     hGrp->SetASCII("Enabled", enabledStr.str().c_str());
 }
 
@@ -427,7 +427,7 @@ void DlgSettingsWorkbenchesImp::removeFromEnabledWorkenches(const QString wbToRe
         }
     }
 
-    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Workbenches");
+    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Workbenches");
     hGrp->SetASCII("Enabled", enabledStr.str().c_str());
 }
 
