@@ -161,6 +161,14 @@ public:
     virtual DeriVector2 CalculateNormal(const Point& p,
                                         const double* derivparam = nullptr) const = 0;
 
+    // returns normal vector at parameter instead of at the given point.
+    virtual DeriVector2 CalculateNormal(const double* param, const double* derivparam = nullptr)
+    {
+        DeriVector2 pointDV = Value(*param, 0.0);
+        Point p(&pointDV.x, &pointDV.y);
+        return CalculateNormal(p, derivparam);
+    }
+
     /**
      * @brief Value: returns point (vector) given the value of parameter
      * @param u: value of parameter
@@ -414,6 +422,9 @@ public:
     // interface helpers
     VEC_D flattenedknots;
     DeriVector2 CalculateNormal(const Point& p, const double* derivparam = nullptr) const override;
+    // TODO: override parametric version
+    // DeriVector2 CalculateNormal(const double* param, const double* derivparam = nullptr) const
+    // override;
     DeriVector2 Value(double u, double du, const double* derivparam = nullptr) const override;
     int PushOwnParams(VEC_pD& pvec) override;
     void ReconstructOnNewPvec(VEC_pD& pvec, int& cnt) override;
@@ -433,7 +444,7 @@ public:
     /// x is the point at which combination is needed
     /// k is the range in `flattenedknots` that contains x
     /// p is the degree
-    /// d is the vector of (relevant) poles (this will be changed)
+    /// d is the vector of (relevant) poles (note that this is not const and will be changed)
     /// flatknots is the vector of knots
     static double splineValue(double x, size_t k, unsigned int p, VEC_D& d, const VEC_D& flatknots);
 };
