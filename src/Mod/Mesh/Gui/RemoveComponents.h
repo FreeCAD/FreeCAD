@@ -27,6 +27,7 @@
 #include <QDialog>
 #include <Gui/TaskView/TaskDialog.h>
 #include <Gui/TaskView/TaskView.h>
+#include <Mod/Mesh/MeshGlobal.h>
 #include "MeshSelection.h"
 
 namespace MeshGui {
@@ -48,22 +49,25 @@ public:
     void deleteSelection();
     void invertSelection();
 
-public Q_SLOTS:
-    void on_selectRegion_clicked();
-    void on_selectAll_clicked();
-    void on_selectComponents_clicked();
-    void on_selectTriangle_clicked();
-    void on_deselectRegion_clicked();
-    void on_deselectAll_clicked();
-    void on_deselectComponents_clicked();
-    void on_deselectTriangle_clicked();
-    void on_visibleTriangles_toggled(bool);
-    void on_screenTriangles_toggled(bool);
-    void on_cbSelectComp_toggled(bool);
-    void on_cbDeselectComp_toggled(bool);
+public:
+    void onSelectRegionClicked();
+    void onSelectAllClicked();
+    void onSelectComponentsClicked();
+    void onSelectTriangleClicked();
+    void onDeselectRegionClicked();
+    void onDeselectAllClicked();
+    void onDeselectComponentsClicked();
+    void onDeselectTriangleClicked();
+    void onVisibleTrianglesToggled(bool);
+    void onScreenTrianglesToggled(bool);
+    void onSelectCompToggled(bool);
+    void onDeselectCompToggled(bool);
 
 protected:
     void changeEvent(QEvent *e) override;
+
+private:
+    void setupConnections();
 
 private:
     Ui_RemoveComponents* ui;

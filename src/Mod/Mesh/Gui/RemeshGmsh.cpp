@@ -30,6 +30,7 @@
 
 #include <App/Application.h>
 #include <App/Document.h>
+#include <App/DocumentObserver.h>
 #include <Base/Console.h>
 #include <Base/FileInfo.h>
 #include <Base/Stream.h>
@@ -73,17 +74,8 @@ GmshWidget::GmshWidget(QWidget* parent, Qt::WindowFlags fl)
   : QWidget(parent, fl)
   , d(new Private(parent))
 {
-    connect(&d->gmsh, &QProcess::started, this, &GmshWidget::started);
-    connect(&d->gmsh, qOverload<int, QProcess::ExitStatus>(&QProcess::finished),
-            this, &GmshWidget::finished);
-    connect(&d->gmsh, &QProcess::errorOccurred,
-            this, &GmshWidget::errorOccurred);
-    connect(&d->gmsh, &QProcess::readyReadStandardError,
-            this, &GmshWidget::readyReadStandardError);
-    connect(&d->gmsh, &QProcess::readyReadStandardOutput,
-            this, &GmshWidget::readyReadStandardOutput);
-
     d->ui.setupUi(this);
+    setupConnections();
     d->ui.fileChooser->onRestore();
     d->syntax = new Gui::DockWnd::ReportHighlighter(d->ui.outputWindow);
     d->ui.outputWindow->setReadOnly(true);
@@ -112,6 +104,23 @@ GmshWidget::GmshWidget(QWidget* parent, Qt::WindowFlags fl)
 GmshWidget::~GmshWidget()
 {
     d->ui.fileChooser->onSave();
+}
+
+void GmshWidget::setupConnections()
+{
+    connect(&d->gmsh, &QProcess::started, this, &GmshWidget::started);
+    connect(&d->gmsh, qOverload<int, QProcess::ExitStatus>(&QProcess::finished),
+            this, &GmshWidget::finished);
+    connect(&d->gmsh, &QProcess::errorOccurred,
+            this, &GmshWidget::errorOccurred);
+    connect(&d->gmsh, &QProcess::readyReadStandardError,
+            this, &GmshWidget::readyReadStandardError);
+    connect(&d->gmsh, &QProcess::readyReadStandardOutput,
+            this, &GmshWidget::readyReadStandardOutput);
+    connect(d->ui.killButton, &QPushButton::clicked,
+            this, &GmshWidget::onKillButtonClicked);
+    connect(d->ui.clearButton, &QPushButton::clicked,
+            this, &GmshWidget::onClearButtonClicked);
 }
 
 void GmshWidget::changeEvent(QEvent *e)
@@ -202,7 +211,7 @@ void GmshWidget::readyReadStandardOutput()
     d->appendText(text, false);
 }
 
-void GmshWidget::on_killButton_clicked()
+void GmshWidget::onKillButtonClicked()
 {
     if (d->gmsh.state() == QProcess::Running) {
         d->gmsh.kill();
@@ -211,7 +220,7 @@ void GmshWidget::on_killButton_clicked()
     }
 }
 
-void GmshWidget::on_clearButton_clicked()
+void GmshWidget::onClearButtonClicked()
 {
     d->ui.outputWindow->clear();
 }
@@ -257,7 +266,7 @@ void GmshWidget::errorOccurred(QProcess::ProcessError error)
 
 void GmshWidget::reject()
 {
-    on_killButton_clicked();
+    onKillButtonClicked();
 }
 
 // -------------------------------------------------
