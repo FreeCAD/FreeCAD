@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>293</width>
-    <height>266</height>
+    <width>421</width>
+    <height>267</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -115,6 +115,19 @@
           </property>
          </spacer>
         </item>
+        <item>
+         <widget class="QCheckBox" name="checkBoxOutside">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="text">
+           <string>Allow points outside the image</string>
+          </property>
+         </widget>
+        </item>
        </layout>
       </item>
       <item row="1" column="0">
@@ -157,6 +170,15 @@
    <header>Gui/QuantitySpinBox.h</header>
   </customwidget>
  </customwidgets>
+ <tabstops>
+  <tabstop>spinBoxWidth</tabstop>
+  <tabstop>spinBoxHeight</tabstop>
+  <tabstop>checkBoxRatio</tabstop>
+  <tabstop>pushButtonScale</tabstop>
+  <tabstop>pushButtonCancel</tabstop>
+  <tabstop>checkBoxOutside</tabstop>
+  <tabstop>quantitySpinBox</tabstop>
+ </tabstops>
  <resources/>
  <connections/>
 </ui>

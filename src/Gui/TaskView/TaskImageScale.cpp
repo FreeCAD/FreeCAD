@@ -26,6 +26,7 @@
 # include <QDialog>
 # include <QPushButton>
 # include <map>
+# include <Inventor/SoPickedPoint.h>
 # include <Inventor/events/SoLocation2Event.h>
 # include <Inventor/events/SoMouseButtonEvent.h>
 # include <Inventor/nodes/SoBaseColor.h>
@@ -136,8 +137,6 @@ void TaskImageScale::selectedPoints(size_t num)
     else if (num == 2) {
         ui->labelInstruction->setText(tr("Enter desired distance between the points"));
         ui->pushButtonScale->setEnabled(true);
-        ui->pushButtonScale->setText(tr("Accept"));
-        ui->pushButtonCancel->show();
         ui->quantitySpinBox->setEnabled(true);
         ui->quantitySpinBox->setValue(scale->getDistance());
     }
@@ -158,10 +157,17 @@ void TaskImageScale::scaleImage(double factor)
 
 void TaskImageScale::startScale()
 {
-    scale->activate();
-    ui->labelInstruction->setText(tr("Select two points in the 3d view"));
+    scale->activate(ui->checkBoxOutside->isChecked());
+    if (ui->checkBoxOutside->isChecked()) {
+        ui->labelInstruction->setText(tr("Select two points in the 3d view"));
+    }
+    else {
+        ui->labelInstruction->setText(tr("Select two points on the image"));
+    }
+    ui->checkBoxOutside->setEnabled(false);
     ui->pushButtonScale->setEnabled(false);
-    ui->pushButtonCancel->hide();
+    ui->pushButtonScale->setText(tr("Accept"));
+    ui->pushButtonCancel->show();
     ui->quantitySpinBox->setEnabled(false);
 }
 
@@ -175,9 +181,11 @@ void TaskImageScale::rejectScale()
 {
     scale->deactivate();
     ui->labelInstruction->clear();
+    ui->pushButtonScale->setEnabled(true);
     ui->pushButtonScale->setText(tr("Interactive"));
     ui->pushButtonCancel->hide();
     ui->quantitySpinBox->setEnabled(false);
+    ui->checkBoxOutside->setEnabled(true);
 
     scale->clearPoints();
 }
@@ -187,7 +195,8 @@ void TaskImageScale::onInteractiveScale()
     if (!feature.expired() && !scale) {
         View3DInventorViewer* viewer = getViewer();
         if (viewer) {
-            scale = new InteractiveScale(viewer);
+            auto vp = Application::Instance->getViewProvider(feature.get());
+            scale = new InteractiveScale(viewer, vp);
             connect(scale, &InteractiveScale::selectedPoints,
                     this, &TaskImageScale::selectedPoints);
         }
@@ -205,9 +214,11 @@ void TaskImageScale::onInteractiveScale()
 
 // ----------------------------------------------------------------------------
 
-InteractiveScale::InteractiveScale(View3DInventorViewer* view)
+InteractiveScale::InteractiveScale(View3DInventorViewer* view, ViewProvider* vp)
     : active{false}
+    , allowOutsideImage{false}
     , viewer{view}
+    , viewProv{vp}
 {
     coords = new SoCoordinate3;
     coords->ref();
@@ -228,7 +239,7 @@ InteractiveScale::~InteractiveScale()
     root->unref();
 }
 
-void InteractiveScale::activate()
+void InteractiveScale::activate(bool allowOutside)
 {
     if (viewer) {
         static_cast<SoSeparator*>(viewer->getSceneGraph())->addChild(root);
@@ -238,6 +249,7 @@ void InteractiveScale::activate()
         viewer->setSelectionEnabled(false);
         viewer->getWidget()->setCursor(QCursor(Qt::CrossCursor));
         active = true;
+        allowOutsideImage = allowOutside;
     }
 }
 
@@ -276,33 +288,67 @@ void InteractiveScale::clearPoints()
     coords->point.setNum(0);
 }
 
+void InteractiveScale::findPointOnPlane(SoEventCallback * ecb)
+{
+    if (allowOutsideImage) {
+        findPointOnFocalPlane(ecb);
+    }
+    else {
+        findPointOnImagePlane(ecb);
+    }
+}
+
+void InteractiveScale::findPointOnImagePlane(SoEventCallback * ecb)
+{
+    const SoMouseButtonEvent * mbe = static_cast<const SoMouseButtonEvent *>(ecb->getEvent());
+    Gui::View3DInventorViewer* view  = static_cast<Gui::View3DInventorViewer*>(ecb->getUserData());
+    std::unique_ptr<SoPickedPoint> pp(view->getPointOnRay(mbe->getPosition(), viewProv));
+    if (pp.get()) {
+        auto pos3d = pp->getPoint();
+
+        collectPoint(pos3d);
+    }
+}
+
+void InteractiveScale::findPointOnFocalPlane(SoEventCallback * ecb)
+{
+    const SoMouseButtonEvent * mbe = static_cast<const SoMouseButtonEvent *>(ecb->getEvent());
+    Gui::View3DInventorViewer* view  = static_cast<Gui::View3DInventorViewer*>(ecb->getUserData());
+
+    auto pos2d = mbe->getPosition();
+    auto pos3d = view->getPointOnFocalPlane(pos2d);
+
+    collectPoint(pos3d);
+}
+
+void InteractiveScale::collectPoint(const SbVec3f& pos3d)
+{
+    if (points.empty()) {
+        points.push_back(pos3d);
+        coords->point.set1Value(0, pos3d);
+    }
+    else if (points.size() == 1) {
+        double distance = getDistance(pos3d);
+        if (distance > Base::Precision::Confusion()) {
+            points.push_back(pos3d);
+            coords->point.set1Value(1, pos3d);
+        }
+        else {
+            Base::Console().Warning(std::string("Image scale"), "The second point is too close. Retry!\n");
+        }
+    }
+
+    Q_EMIT selectedPoints(points.size());
+}
+
 void InteractiveScale::getMouseClick(void * ud, SoEventCallback * ecb)
 {
     InteractiveScale* scale = static_cast<InteractiveScale*>(ud);
     const SoMouseButtonEvent * mbe = static_cast<const SoMouseButtonEvent *>(ecb->getEvent());
-    Gui::View3DInventorViewer* view  = static_cast<Gui::View3DInventorViewer*>(ecb->getUserData());
 
     if (mbe->getButton() == SoMouseButtonEvent::BUTTON1 && mbe->getState() == SoButtonEvent::DOWN) {
         ecb->setHandled();
-        auto pos2d = mbe->getPosition();
-        auto pos3d = view->getPointOnFocalPlane(pos2d);
-
-        if (scale->points.empty()) {
-            scale->points.push_back(pos3d);
-            scale->coords->point.set1Value(0, pos3d);
-        }
-        else if (scale->points.size() == 1) {
-            double distance = scale->getDistance(pos3d);
-            if (distance > Base::Precision::Confusion()) {
-                scale->points.push_back(pos3d);
-                scale->coords->point.set1Value(1, pos3d);
-            }
-            else {
-                Base::Console().Warning(std::string("Image scale"), "The second point is too close. Retry!\n");
-            }
-        }
-
-        Q_EMIT scale->selectedPoints(scale->points.size());
+        scale->findPointOnPlane(ecb);
     }
 }
 
