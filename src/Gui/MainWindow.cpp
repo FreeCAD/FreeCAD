@@ -230,7 +230,7 @@ private:
         assert(actions.size() <= maxSchema);
         for(int i = 0; i < maxSchema ; i++)
         {
-            actions[i]->setText(qApp->translate("Gui::Dialog::DlgSettingsUnits",
+            actions[i]->setText(qApp->translate("Gui::Dialog::DlgGeneralImp",
                     Base::UnitsApi::getDescription(static_cast<Base::UnitSystem>(i))));
         }
     }

@@ -320,7 +320,6 @@ SET(Gui_UIC_SRCS
     DlgSettingsCacheDirectory.ui
     DlgSettingsNavigation.ui
     DlgSettingsSelection.ui
-    DlgSettingsUnits.ui
     DlgSettingsViewColor.ui
     DlgSettingsColorGradient.ui
     DlgSettingsDocument.ui
@@ -562,7 +561,6 @@ SET(Dialog_Settings_CPP_SRCS
     DlgSettingsCacheDirectory.cpp
     DlgSettingsNavigation.cpp
     DlgSettingsSelection.cpp
-    DlgSettingsUnitsImp.cpp
     DlgSettingsViewColor.cpp
     DlgSettingsColorGradientImp.cpp
     DlgSettingsDocumentImp.cpp
@@ -582,7 +580,6 @@ SET(Dialog_Settings_HPP_SRCS
     DlgSettingsCacheDirectory.h
     DlgSettingsNavigation.h
     DlgSettingsSelection.h
-    DlgSettingsUnitsImp.h
     DlgSettingsViewColor.h
     DlgSettingsColorGradientImp.h
     DlgSettingsDocumentImp.h
@@ -604,7 +601,6 @@ SET(Dialog_Settings_SRCS
     DlgSettingsCacheDirectory.ui
     DlgSettingsNavigation.ui
     DlgSettingsSelection.ui
-    DlgSettingsUnits.ui
     DlgSettingsViewColor.ui
     DlgSettingsColorGradient.ui
     DlgSettingsDocument.ui

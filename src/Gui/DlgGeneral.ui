@@ -38,7 +38,7 @@
       <item>
        <widget class="QGroupBox" name="GroupBox7">
         <property name="title">
-         <string>Language</string>
+         <string>Language and number format</string>
         </property>
         <layout class="QGridLayout">
          <property name="leftMargin">
@@ -59,7 +59,7 @@
          <item row="0" column="0">
           <widget class="QLabel" name="TextLabel1_4">
            <property name="text">
-            <string>Change language:</string>
+            <string>Language:</string>
            </property>
           </widget>
          </item>
@@ -71,13 +71,100 @@
           </widget>
          </item>
          <item row="1" column="0">
+          <widget class="QLabel" name="unitSystemLabel">
+           <property name="text">
+            <string>Unit system:</string>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="1">
+          <widget class="QComboBox" name="comboBox_UnitSystem">
+           <property name="toolTip">
+            <string>Unit system that should be used for all parts the application</string>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="2">
+          <layout class="QHBoxLayout" name="horizontalLayout_3">
+           <item>
+            <widget class="QLabel" name="decimalsLabel">
+             <property name="text">
+              <string>Number of decimals:</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QSpinBox" name="spinBoxDecimals">
+             <property name="toolTip">
+              <string>Number of decimals that should be shown for numbers and dimensions</string>
+             </property>
+             <property name="minimum">
+              <number>1</number>
+             </property>
+             <property name="maximum">
+              <number>12</number>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+		 <item row="2" column="0">
+          <widget class="QLabel" name="fractionalInchLabel">
+           <property name="text">
+            <string>Minimum fractional inch:</string>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="1">
+          <widget class="QComboBox" name="comboBox_FracInch">
+           <property name="toolTip">
+            <string>Minimum fractional inch to be displayed</string>
+           </property>
+           <item>
+            <property name="text">
+             <string notr="true">1/2"</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string notr="true">1/4"</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string notr="true">1/8"</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string notr="true">1/16"</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string notr="true">1/32"</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string notr="true">1/64"</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string notr="true">1/128"</string>
+            </property>
+           </item>
+          </widget>
+         </item>
+         <item row="3" column="0">
           <widget class="QLabel" name="TextLabel1_5">
            <property name="text">
             <string>Number format:</string>
            </property>
           </widget>
          </item>
-         <item row="1" column="1">
+         <item row="3" column="1">
           <widget class="Gui::PrefComboBox" name="UseLocaleFormatting">
            <property name="prefEntry" stdset="0">
             <cstring>UseLocaleFormatting</cstring>
@@ -102,7 +189,7 @@
            </item>
           </widget>
          </item>
-         <item row="1" column="2">
+         <item row="3" column="2">
           <widget class="Gui::PrefCheckBox" name="SubstituteDecimal">
            <property name="toolTip">
             <string>If enabled, numerical keypad decimal separator

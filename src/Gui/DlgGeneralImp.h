@@ -64,6 +64,9 @@ protected Q_SLOTS:
     void onManagePreferencePacksClicked();
     void onImportConfigClicked();
 
+public Q_SLOTS:
+    void on_comboBox_UnitSystem_currentIndexChanged(int index);
+
 private:
     void setRecentFileSize();
     void saveAsNewPreferencePack();
