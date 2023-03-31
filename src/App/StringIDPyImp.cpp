@@ -1,4 +1,4 @@
-/****************************************************************************
+/***************************************************************************
 *   Copyright (c) 2018 Zheng Lei (realthunder) <realthunder.dev@gmail.com> *
 *                                                                          *
 *   This file is part of the FreeCAD CAx development system.               *
@@ -30,47 +30,48 @@
 using namespace App;
 
 // returns a string which represent the object e.g. when printed in python
-std::string StringIDPy::representation(void) const
+std::string StringIDPy::representation() const
 {
    return getStringIDPtr()->toString(_index);
 }
 
 PyObject* StringIDPy::isSame(PyObject *args)
 {
-   PyObject *other;
-   if (!PyArg_ParseTuple(args, "O!", &StringIDPy::Type, &other)) {     // convert args: Python->C
+   PyObject *other = nullptr;
+   if (PyArg_ParseTuple(args, "O!", &StringIDPy::Type, &other) == 0) { // convert args: Python->C
        return Py::new_reference_to(Py::False());
    }
-   auto otherPy = static_cast<StringIDPy*>(other);
+   auto *otherPy = static_cast<StringIDPy*>(other);
    return Py::new_reference_to(Py::Boolean(
        otherPy->getStringIDPtr() == this->getStringIDPtr()
        && otherPy->_index == this->_index));
 }
 
-Py::Int StringIDPy::getValue(void) const {
+Py::Int StringIDPy::getValue() const {
    return Py::Int(getStringIDPtr()->value());
 }
 
-Py::List StringIDPy::getRelated(void) const {
+Py::List StringIDPy::getRelated() const {
    Py::List list;
-   for (auto &id : getStringIDPtr()->relatedIDs())
+   for (const auto &id : getStringIDPtr()->relatedIDs()) {
        list.append(Py::Long(id.value()));
+}
    return list;
 }
 
-Py::String StringIDPy::getData(void) const {
-   return Py::String(getStringIDPtr()->dataToText(this->_index));
+Py::String StringIDPy::getData() const {
+   return {Py::String(getStringIDPtr()->dataToText(this->_index))};
 }
 
-Py::Boolean StringIDPy::getIsBinary(void) const {
-   return Py::Boolean(getStringIDPtr()->isBinary());
+Py::Boolean StringIDPy::getIsBinary() const {
+   return {getStringIDPtr()->isBinary()};
 }
 
-Py::Boolean StringIDPy::getIsHashed(void) const {
-   return Py::Boolean(getStringIDPtr()->isHashed());
+Py::Boolean StringIDPy::getIsHashed() const {
+   return {getStringIDPtr()->isHashed()};
 }
 
-Py::Int StringIDPy::getIndex(void) const {
+Py::Int StringIDPy::getIndex() const {
    return Py::Int(this->_index);
 }
 
@@ -80,7 +81,7 @@ void StringIDPy::setIndex(Py::Int index) {
 
 PyObject *StringIDPy::getCustomAttributes(const char* /*attr*/) const
 {
-   return 0;
+   return nullptr;
 }
 
 int StringIDPy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)

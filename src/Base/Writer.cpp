@@ -87,34 +87,40 @@ Writer::Writer()
 
 Writer::~Writer() = default;
 
-std::ostream &Writer::beginCharStream() {
-    if(CharStream) {
+std::ostream& Writer::beginCharStream()
+{
+    if (CharStream) {
         throw Base::RuntimeError("Writer::beginCharStream(): invalid state");
     }
 
     Stream() << "<![CDATA[";
     CharStream = std::make_unique<boost::iostreams::filtering_ostream>();
-    auto f = dynamic_cast<boost::iostreams::filtering_ostream*>(CharStream.get());
-    f->push(cdata_filter());
-    f->push(Stream());
-    *f << std::setprecision(std::numeric_limits<double>::digits10 + 1);
+    auto* filteredStream = dynamic_cast<boost::iostreams::filtering_ostream*>(CharStream.get());
+    filteredStream->push(cdata_filter());
+    filteredStream->push(Stream());
+    *filteredStream << std::setprecision(std::numeric_limits<double>::digits10 + 1);
     return *CharStream;
 }
 
-std::ostream &Writer::endCharStream() {
-    if(CharStream) {
+std::ostream& Writer::endCharStream()
+{
+    if (CharStream) {
         CharStream.reset();
+        Stream() << "]]>";
     }
     return Stream();
 }
 
-std::ostream &Writer::charStream() {
-    if(!CharStream)
+std::ostream& Writer::charStream()
+{
+    if (!CharStream) {
         throw Base::RuntimeError("Writer::endCharStream(): no current character stream");
+    }
     return *CharStream;
 }
 
-void Writer::insertText(const std::string &s) {
+void Writer::insertText(const std::string& s)
+{
     beginCharStream() << s;
     endCharStream();
 }
