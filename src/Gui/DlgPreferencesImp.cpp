@@ -337,10 +337,10 @@ void DlgPreferencesImp::accept()
 {
     this->invalidParameter = false;
     applyChanges();
-    if (!this->invalidParameter)
+    if (!this->invalidParameter) {
         QDialog::accept();
-
-    restartIfRequired();
+        restartIfRequired();
+    }
 }
 
 void DlgPreferencesImp::reject()
