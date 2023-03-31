@@ -609,58 +609,58 @@ class Addon:
             self.enable_workbench()
 
     def enable_workbench(self):
-        pref = fci.ParamGet("User parameter:BaseApp/Preferences/Workbenches")
-        enabled_wbs = pref.GetString("Enabled", "All")
-        #print(f"start enabling : {enabled_wbs}")
-
-        if (enabled_wbs == "All"):
-            enabled_wbs = "";
-
-            if fci.FreeCADGui:
-                wbs = [wb for wb in fci.FreeCADGui.listWorkbenches()]
-                wbs.sort()
-                for wbName in wbs:
-                    if (wbName != "NoneWorkbench" and wbName != "TestWorkbench"):
-                        if (enabled_wbs != ""):
-                            enabled_wbs += ","
-                        enabled_wbs += wbName
-            else:
-                enabled_wbs += "NoneWorkbench"
-
-        enabled_wbs += ","
-        enabled_wbs += self.get_workbench_name()
-        pref.SetString("Enabled", enabled_wbs)
-        #print(f"Done enabling {enabled_wbs} \n")
+        wbName = self.get_workbench_name()
+        
+        # Remove from the list of disabled.
+        self.remove_from_disabled_wbs(wbName)
 
     def disable_workbench(self):
         pref = fci.ParamGet("User parameter:BaseApp/Preferences/Workbenches")
-        enabled_wbs = pref.GetString("Enabled", "All")
-        #print(f"start disabling {enabled_wbs}")
+        wbName = self.get_workbench_name()
 
-        if (enabled_wbs == "All"):
-            enabled_wbs = "";
+        # Add the wb to the list of disabled if it was not already
+        disabled_wbs = pref.GetString("Disabled", "NoneWorkbench,TestWorkbench")
+        #print(f"start disabling {disabled_wbs}")
+        disabled_wbs_list = disabled_wbs.split(',')
+        if not (wbName in disabled_wbs_list):
+            disabled_wbs += "," + wbName
+        pref.SetString("Disabled", disabled_wbs)
+        #print(f"done disabling :  {disabled_wbs} \n")
 
-            if fci.FreeCADGui:
-                wbs = [wb for wb in fci.FreeCADGui.listWorkbenches()]
-                wbs.sort()
-                for wbName in workbenches:
-                    if (wbName != "NoneWorkbench" and wbName != "TestWorkbench" and wbName != self.get_workbench_name()):
-                        if (enabled_wbs != ""):
-                            enabled_wbs += ","
-                        enabled_wbs += wbName
-            else:
-                enabled_wbs += "NoneWorkbench"
-        else:
-            enabled_wbs_list = enabled_wbs.split(',')
-            enabled_wbs = "";
-            for wbName in enabled_wbs_list:
-                if (wbName != self.get_workbench_name()):
-                    if (enabled_wbs != ""):
-                        enabled_wbs += ","
-                    enabled_wbs += wbName
+    def desinstall_workbench(self):
+        pref = fci.ParamGet("User parameter:BaseApp/Preferences/Workbenches")
+        wbName = self.get_workbench_name()
 
-        pref.SetString("Enabled", enabled_wbs)
-        #print(f"done disabling :  {enabled_wbs} \n")
+        # Remove from the list of ordered.
+        ordered_wbs = pref.GetString("Ordered", "")
+        #print(f"start remove from ordering {ordered_wbs}")
+        ordered_wbs_list = ordered_wbs.split(',')
+        ordered_wbs = ""
+        for wb in ordered_wbs_list:
+            if (wb != wbName):
+                if (ordered_wbs != ""):
+                    ordered_wbs += ","
+                ordered_wbs += wb
+        pref.SetString("Ordered", ordered_wbs)
+        #print(f"end remove from ordering {ordered_wbs}")
+        
+        # Remove from the list of disabled.
+        self.remove_from_disabled_wbs(wbName)
+
+    def remove_from_disabled_wbs(self, wbName: str):
+        pref = fci.ParamGet("User parameter:BaseApp/Preferences/Workbenches")
+
+        disabled_wbs = pref.GetString("Disabled", "NoneWorkbench,TestWorkbench")
+        #print(f"start enabling : {disabled_wbs}")
+        disabled_wbs_list = disabled_wbs.split(',')
+        disabled_wbs = ""
+        for wb in disabled_wbs_list:
+            if (wb != wbName):
+                if (disabled_wbs != ""):
+                    disabled_wbs += ","
+                disabled_wbs += wb
+        pref.SetString("Disabled", disabled_wbs)
+        #print(f"Done enabling {disabled_wbs} \n")
 
     def get_workbench_name(self) -> str:
         """Find the name of the workbench class (ie the name under which it's registered in freecad core)')"""

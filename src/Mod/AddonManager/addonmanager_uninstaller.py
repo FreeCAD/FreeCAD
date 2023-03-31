@@ -117,7 +117,7 @@ class AddonUninstaller(QObject):
                         hasattr(self.addon_to_remove, "contains_workbench")
                         and self.addon_to_remove.contains_workbench()
                     ):
-                        self.addon_to_remove.disable_workbench()
+                        self.addon_to_remove.desinstall_workbench()
                 except OSError as e:
                     error_message = str(e)
             else:
