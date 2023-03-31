@@ -174,8 +174,8 @@ bool OffsetWidget::accept()
         double offsetValue = d->ui.spinOffset->value().getValue();
         Gui::cmdAppObjectArgs(d->offset, "Value = %f", offsetValue);
         d->ui.spinOffset->apply();
-        Gui::cmdAppObjectArgs(d->offset, "Mode = %i", d->ui.modeType->currentIndex());
-        Gui::cmdAppObjectArgs(d->offset, "Join = %i", d->ui.joinType->currentIndex());
+        Gui::cmdAppObjectArgs(d->offset, "Mode = %d", d->ui.modeType->currentIndex());
+        Gui::cmdAppObjectArgs(d->offset, "Join = %d", d->ui.joinType->currentIndex());
         Gui::cmdAppObjectArgs(d->offset, "Intersection = %s", d->ui.intersection->isChecked() ? "True" : "False");
         Gui::cmdAppObjectArgs(d->offset, "SelfIntersection = %s", d->ui.selfIntersection->isChecked() ? "True" : "False");
         Gui::cmdAppObjectArgs(d->offset, "Fill = %s", d->ui.fillOffset->isChecked() ? "True" : "False");

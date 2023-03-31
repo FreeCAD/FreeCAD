@@ -40,6 +40,7 @@ RemoveComponents::RemoveComponents(QWidget* parent, Qt::WindowFlags fl)
 {
     ui = new Ui_RemoveComponents;
     ui->setupUi(this);
+    setupConnections();
     ui->spSelectComp->setRange(1, INT_MAX);
     ui->spSelectComp->setValue(10);
     ui->spDeselectComp->setRange(1, INT_MAX);
@@ -57,6 +58,34 @@ RemoveComponents::~RemoveComponents()
     delete ui;
 }
 
+void RemoveComponents::setupConnections()
+{
+    connect(ui->selectRegion, &QPushButton::clicked,
+            this, &RemoveComponents::onSelectRegionClicked);
+    connect(ui->selectAll, &QPushButton::clicked,
+            this, &RemoveComponents::onSelectAllClicked);
+    connect(ui->selectComponents, &QPushButton::clicked,
+            this, &RemoveComponents::onSelectComponentsClicked);
+    connect(ui->selectTriangle, &QPushButton::clicked,
+            this, &RemoveComponents::onSelectTriangleClicked);
+    connect(ui->deselectRegion, &QPushButton::clicked,
+            this, &RemoveComponents::onDeselectRegionClicked);
+    connect(ui->deselectAll, &QPushButton::clicked,
+            this, &RemoveComponents::onDeselectAllClicked);
+    connect(ui->deselectComponents, &QPushButton::clicked,
+            this, &RemoveComponents::onDeselectComponentsClicked);
+    connect(ui->deselectTriangle, &QPushButton::clicked,
+            this, &RemoveComponents::onDeselectTriangleClicked);
+    connect(ui->visibleTriangles, &QCheckBox::toggled,
+            this, &RemoveComponents::onVisibleTrianglesToggled);
+    connect(ui->screenTriangles, &QCheckBox::toggled,
+            this, &RemoveComponents::onScreenTrianglesToggled);
+    connect(ui->cbSelectComp, &QCheckBox::toggled,
+            this, &RemoveComponents::onSelectCompToggled);
+    connect(ui->cbDeselectComp, &QCheckBox::toggled,
+            this, &RemoveComponents::onDeselectCompToggled);
+}
+
 void RemoveComponents::changeEvent(QEvent *e)
 {
     if (e->type() == QEvent::LanguageChange) {
@@ -65,58 +94,58 @@ void RemoveComponents::changeEvent(QEvent *e)
     QWidget::changeEvent(e);
 }
 
-void RemoveComponents::on_selectRegion_clicked()
+void RemoveComponents::onSelectRegionClicked()
 {
     meshSel.startSelection();
 }
 
-void RemoveComponents::on_deselectRegion_clicked()
+void RemoveComponents::onDeselectRegionClicked()
 {
     meshSel.startDeselection();
 }
 
-void RemoveComponents::on_selectAll_clicked()
+void RemoveComponents::onSelectAllClicked()
 {
     // select the complete meshes
     meshSel.fullSelection();
 }
 
-void RemoveComponents::on_deselectAll_clicked()
+void RemoveComponents::onDeselectAllClicked()
 {
     // deselect all meshes
     meshSel.clearSelection();
 }
 
-void RemoveComponents::on_selectComponents_clicked()
+void RemoveComponents::onSelectComponentsClicked()
 {
     // select components up to a certain size
     int size = ui->spSelectComp->value();
     meshSel.selectComponent(size);
 }
 
-void RemoveComponents::on_deselectComponents_clicked()
+void RemoveComponents::onDeselectComponentsClicked()
 {
     // deselect components from a certain size on
     int size = ui->spDeselectComp->value();
     meshSel.deselectComponent(size);
 }
 
-void RemoveComponents::on_visibleTriangles_toggled(bool on)
+void RemoveComponents::onVisibleTrianglesToggled(bool on)
 {
     meshSel.setCheckOnlyVisibleTriangles(on);
 }
 
-void RemoveComponents::on_screenTriangles_toggled(bool on)
+void RemoveComponents::onScreenTrianglesToggled(bool on)
 {
     meshSel.setCheckOnlyPointToUserTriangles(on);
 }
 
-void RemoveComponents::on_cbSelectComp_toggled(bool on)
+void RemoveComponents::onSelectCompToggled(bool on)
 {
     meshSel.setAddComponentOnClick(on);
 }
 
-void RemoveComponents::on_cbDeselectComp_toggled(bool on)
+void RemoveComponents::onDeselectCompToggled(bool on)
 {
     meshSel.setRemoveComponentOnClick(on);
 }
@@ -140,13 +169,13 @@ void RemoveComponents::invertSelection()
     meshSel.invertSelection();
 }
 
-void RemoveComponents::on_selectTriangle_clicked()
+void RemoveComponents::onSelectTriangleClicked()
 {
     meshSel.selectTriangle();
     meshSel.setAddComponentOnClick(ui->cbSelectComp->isChecked());
 }
 
-void RemoveComponents::on_deselectTriangle_clicked()
+void RemoveComponents::onDeselectTriangleClicked()
 {
     meshSel.deselectTriangle();
     meshSel.setRemoveComponentOnClick(ui->cbDeselectComp->isChecked());

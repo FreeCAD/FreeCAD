@@ -565,7 +565,7 @@ QGIView* QGIView::getQGIVByName(std::string name)
     QList<QGraphicsItem*>::iterator it = qgItems.begin();
     for (; it != qgItems.end(); it++) {
         QGIView* qv = dynamic_cast<QGIView*>((*it));
-        if (qv) {
+        if (!qv) {
             const char* qvName = qv->getViewName();
             if(name.compare(qvName) == 0) {
                 return (qv);

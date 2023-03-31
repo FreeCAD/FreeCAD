@@ -31,9 +31,6 @@ if(FREECAD_QT_MAJOR_VERSION EQUAL 5)
     include_directories(
         ${QtXmlPatterns_INCLUDE_DIRS}
     )
-else()
-    # This is deprecated as of Qt 5.13, and removed in Qt 6
-    message(WARNING "TechDraw relies on the now-removed Qt XMLPatterns package, and must be refactored to compile against Qt6.")
 endif()
 
 include_directories(

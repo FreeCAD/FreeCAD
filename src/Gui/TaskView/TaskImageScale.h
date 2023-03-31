@@ -24,12 +24,59 @@
 #ifndef GUI_TASKIMAGESCALE_H
 #define GUI_TASKIMAGESCALE_H
 
+#include <QPointer>
 #include <Gui/TaskView/TaskDialog.h>
 #include <App/DocumentObserver.h>
 #include <App/ImagePlane.h>
 #include <memory>
+#include <vector>
+
+class SbVec3f;
+class SoEventCallback;
+class SoCoordinate3;
+class SoSeparator;
+class SoLineSet;
 
 namespace Gui {
+
+class View3DInventorViewer;
+class ViewProvider;
+class InteractiveScale : public QObject
+{
+    Q_OBJECT
+
+public:
+    explicit InteractiveScale(View3DInventorViewer* view, ViewProvider* vp);
+    ~InteractiveScale();
+    void activate(bool allowOutside);
+    void deactivate();
+    bool isActive() const {
+        return active;
+    }
+    double getDistance() const;
+    double getDistance(const SbVec3f&) const;
+    void clearPoints();
+
+private:
+    static void getMouseClick(void * ud, SoEventCallback * ecb);
+    static void getMousePosition(void * ud, SoEventCallback * ecb);
+    void findPointOnPlane(SoEventCallback * ecb);
+    void findPointOnImagePlane(SoEventCallback * ecb);
+    void findPointOnFocalPlane(SoEventCallback * ecb);
+    void collectPoint(const SbVec3f&);
+
+Q_SIGNALS:
+    void selectedPoints(size_t);
+
+private:
+    bool active;
+    bool allowOutsideImage;
+    SoCoordinate3* coords;
+    SoSeparator* root;
+    QPointer<Gui::View3DInventorViewer> viewer;
+    ViewProvider* viewProv;
+    std::vector<SbVec3f> points;
+};
 
 class Ui_TaskImageScale;
 class TaskImageScale : public QWidget
@@ -43,9 +90,17 @@ public:
 private:
     void changeWidth();
     void changeHeight();
+    void onInteractiveScale();
+    View3DInventorViewer* getViewer() const;
+    void selectedPoints(size_t num);
+    void scaleImage(double);
+    void startScale();
+    void acceptScale();
+    void rejectScale();
 
 private:
     std::unique_ptr<Ui_TaskImageScale> ui;
+    QPointer<InteractiveScale> scale;
     App::WeakPtrT<Image::ImagePlane> feature;
     double aspectRatio;
 };
