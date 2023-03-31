@@ -36,9 +36,7 @@ class TestAddon(unittest.TestCase):
     MODULE = "test_addon"  # file name without extension
 
     def setUp(self):
-        self.test_dir = os.path.join(
-            os.path.dirname(__file__), "..", "data"
-        )
+        self.test_dir = os.path.join(os.path.dirname(__file__), "..", "data")
 
     def test_display_name(self):
 
@@ -178,7 +176,8 @@ class TestAddon(unittest.TestCase):
         self.assertEqual(addon.repo_type, Addon.Kind.MACRO)
         self.assertEqual(addon.name, "DoNothing")
         self.assertEqual(
-            addon.macro.comment, "Do absolutely nothing. For Addon Manager integration tests."
+            addon.macro.comment,
+            "Do absolutely nothing. For Addon Manager integration tests.",
         )
         self.assertEqual(addon.url, "https://github.com/FreeCAD/FreeCAD")
         self.assertEqual(addon.macro.version, "1.0")

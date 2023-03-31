@@ -59,7 +59,7 @@ loaded_gui_tests = [
     AddonManagerTestMacroInstallerGui,
     AddonManagerTestUpdateAllGui,
     AddonManagerTestUninstallerGUI,
-    TestListTerminator  # Needed to prevent the last test from running twice
+    TestListTerminator,  # Needed to prevent the last test from running twice
 ]
 for test in loaded_gui_tests:
     fci.Console.PrintLog(f"Loaded tests from {test.__name__}\n")

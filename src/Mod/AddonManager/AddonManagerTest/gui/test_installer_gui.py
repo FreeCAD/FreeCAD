@@ -45,7 +45,6 @@ class TestInstallerGui(unittest.TestCase):
         self.installer_gui = AddonInstallerGUI(self.addon_to_install)
         self.finalized_thread = False
 
-
     def tearDown(self):
         pass
 
