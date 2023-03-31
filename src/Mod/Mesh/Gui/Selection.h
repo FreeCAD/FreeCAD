@@ -45,11 +45,12 @@ public:
     std::vector<App::DocumentObject*> getObjects() const;
     bool eventFilter(QObject*, QEvent*) override;
 
-private Q_SLOTS:
-    void on_addSelection_clicked();
-    void on_clearSelection_clicked();
-    void on_visibleTriangles_toggled(bool);
-    void on_screenTriangles_toggled(bool);
+private:
+    void setupConnections();
+    void onAddSelectionClicked();
+    void onClearSelectionClicked();
+    void onVisibleTrianglesToggled(bool);
+    void onScreenTrianglesToggled(bool);
 
 private:
     MeshSelection meshSel;

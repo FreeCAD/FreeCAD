@@ -57,9 +57,9 @@ public:
     Smooth method() const;
     bool smoothSelection() const;
 
-private Q_SLOTS:
-    void method_clicked(int);
-    void on_checkBoxSelection_toggled(bool);
+private:
+    void methodClicked(int);
+    void onCheckBoxSelectionToggled(bool);
 
 Q_SIGNALS:
     void toggledSelection(bool);
