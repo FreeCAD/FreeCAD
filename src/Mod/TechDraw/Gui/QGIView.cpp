@@ -565,9 +565,9 @@ QGIView* QGIView::getQGIVByName(std::string name)
     QList<QGraphicsItem*>::iterator it = qgItems.begin();
     for (; it != qgItems.end(); it++) {
         QGIView* qv = dynamic_cast<QGIView*>((*it));
-        if (!qv) {
-            const char* qvName = qv->getViewName();
-            if(name.compare(qvName) == 0) {
+        if (qv) {
+            std::string qvName = qv->getViewNameAsString();
+            if (name == qvName) {
                 return (qv);
             }
         }
@@ -650,7 +650,7 @@ bool QGIView::getFrameState()
 
     TechDraw::DrawPage* page = dv->findParentPage();
     if (!page) return true;
-    
+
     Gui::Document* activeGui = Gui::Application::Instance->getDocument(page->getDocument());
     Gui::ViewProvider* vp = activeGui->getViewProvider(page);
     ViewProviderPage* vpp = dynamic_cast<ViewProviderPage*>(vp);
