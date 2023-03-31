@@ -593,7 +593,7 @@ class Addon:
                 "The existence of this file prevents FreeCAD from loading this Addon. To re-enable, delete the file."
             )
 
-        if (self.contains_workbench()):
+        if self.contains_workbench():
             self.disable_workbench()
 
     def enable(self):
@@ -605,7 +605,7 @@ class Addon:
         except FileNotFoundError:
             pass
 
-        if (self.contains_workbench()):
+        if self.contains_workbench():
             self.enable_workbench()
 
     def enable_workbench(self):
@@ -613,7 +613,6 @@ class Addon:
 
         # Remove from the list of disabled.
         self.remove_from_disabled_wbs(wbName)
-
 
     def disable_workbench(self):
         pref = fci.ParamGet("User parameter:BaseApp/Preferences/Workbenches")
@@ -627,7 +626,6 @@ class Addon:
             disabled_wbs += "," + wbName
         pref.SetString("Disabled", disabled_wbs)
         # print(f"done disabling :  {disabled_wbs} \n")
-
 
     def desinstall_workbench(self):
         pref = fci.ParamGet("User parameter:BaseApp/Preferences/Workbenches")
@@ -649,7 +647,6 @@ class Addon:
         # Remove from the list of disabled.
         self.remove_from_disabled_wbs(wbName)
 
-
     def remove_from_disabled_wbs(self, wbName: str):
         pref = fci.ParamGet("User parameter:BaseApp/Preferences/Workbenches")
 
@@ -665,13 +662,15 @@ class Addon:
         pref.SetString("Disabled", disabled_wbs)
         # print(f"Done enabling {disabled_wbs} \n")
 
-
     def get_workbench_name(self) -> str:
-        """Find the name of the workbench class (ie the name under which it's registered in freecad core)')"""
+        """Find the name of the workbench class (ie the name under which it's
+        registered in freecad core)'"""
         wb_name = ""
 
         if self.repo_type == Addon.Kind.PACKAGE:
-            for wb in self.metadata.content["workbench"]:  # we may have more than one wb.
+            for wb in self.metadata.content[
+                "workbench"
+            ]:  # we may have more than one wb.
                 if wb_name != "":
                     wb_name += ","
                 wb_name += wb.classname
@@ -680,7 +679,6 @@ class Addon:
         if wb_name == "":
             wb_name = self.name
         return wb_name
-
 
     def try_find_wbname_in_files(self) -> str:
         wb_name = ""
@@ -704,10 +702,11 @@ class Addon:
                             if m:
                                 wb_name = m.group(1)
                                 break
-                    except Exception as e:
+                    except OSError as e:
                         continue
         # print(f"Found name {wb_name} \n")
         return wb_name
+
 
 # @dataclass(frozen)
 class MissingDependencies:
@@ -771,7 +770,9 @@ class MissingDependencies:
                         translate(
                             "AddonsInstaller",
                             "Got an error when trying to import {}",
-                        ).format(py_dep) + ":\n" + str(e)
+                        ).format(py_dep)
+                        + ":\n"
+                        + str(e)
                     )
 
         self.python_optional = []
@@ -785,7 +786,9 @@ class MissingDependencies:
                     translate(
                         "AddonsInstaller",
                         "Got an error when trying to import {}",
-                    ).format(py_dep) + ":\n" + str(e)
+                    ).format(py_dep)
+                    + ":\n"
+                    + str(e)
                 )
 
         self.wbs.sort()
