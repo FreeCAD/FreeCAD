@@ -800,18 +800,7 @@ void WorkbenchGroup::setWorkbenchData(int index, const QString& wb)
 
 void WorkbenchGroup::refreshWorkbenchList()
 {
-    QStringList items = Application::Instance->workbenches();
     QStringList enabled_wbs_list = DlgSettingsWorkbenchesImp::getEnabledWorkbenches();
-
-    // Go through the list of enabled workbenches and verify that they really exist because
-    // it might be possible that a workbench has been removed after setting up the list of
-    // enabled workbenches.
-    for (int i = 0; i < enabled_wbs_list.size(); i++) {
-        if (items.indexOf(enabled_wbs_list[i]) < 0) {
-            enabled_wbs_list.removeAt(i);
-            i--;
-        }
-    }
 
     // Resize the action group.
     QList<QAction*> workbenches = groupAction()->actions();
