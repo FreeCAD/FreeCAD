@@ -347,6 +347,25 @@ class TestAddon(unittest.TestCase):
             # Assert
             self.assertEqual(wb_name, "TestWorkbench")
 
+    def test_try_find_wbname_in_files_subdir(self):
+        with tempfile.TemporaryDirectory() as mod_dir:
+            # Arrange
+            test_addon = Addon("test")
+            test_addon.mod_directory = mod_dir
+            base_path = os.path.join(mod_dir, test_addon.name)
+            os.mkdir(base_path)
+            subdir = os.path.join(base_path, "subdirectory")
+            os.mkdir(subdir)
+            file_path = os.path.join(subdir, "test.py")
+            with open(file_path, "w", encoding="utf-8") as f:
+                f.write("Gui.addWorkbench(TestWorkbench())")
+
+            # Act
+            wb_name = test_addon.try_find_wbname_in_files()
+
+            # Assert
+            self.assertEqual(wb_name, "TestWorkbench")
+
     def test_try_find_wbname_in_files_variable_used(self):
         with tempfile.TemporaryDirectory() as mod_dir:
             # Arrange
