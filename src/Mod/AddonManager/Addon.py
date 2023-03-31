@@ -681,31 +681,36 @@ class Addon:
         return wb_name
 
     def try_find_wbname_in_files(self) -> str:
-        wb_name = ""
-        filesInDir = []
-
+        """Attempt to locate a line with an addWorkbench command in the workbench's
+        Python files. If it is directly instantiating a workbench, then we can use
+        the line to determine classname for this workbench. If it uses a variable,
+        or if the line doesn't exist at all, an empty string is returned."""
         mod_dir = os.path.join(self.mod_directory, self.name)
 
-        for root, subdirs, files in os.walk(mod_dir):
+        for root, _, files in os.walk(mod_dir):
             for f in files:
-                if not os.path.isdir(os.path.join(root, f).replace("\\", "/")):
-                    filesInDir.append(os.path.join(root, f).replace("\\", "/"))
-        if filesInDir:
-            for currentfile in filesInDir:
-                filename, extension = os.path.splitext(currentfile)
-                if extension == ".py":
-                    # print(f"Current file: {currentfile} ")
-                    try:
-                        with open(os.path.join(root, currentfile), "r") as f:
-                            content = f.read()
-                            m = re.search("Gui.addWorkbench\((\w+)\(\)\)", content)
-                            if m:
-                                wb_name = m.group(1)
-                                break
-                    except OSError as e:
-                        continue
-        # print(f"Found name {wb_name} \n")
-        return wb_name
+                current_file = os.path.join(root, f)
+                if not os.path.isdir(current_file):
+                    filename, extension = os.path.splitext(current_file)
+                    if extension == ".py":
+                        wb_classname = self._find_classname_in_file(current_file)
+                        print(f"Current file: {current_file} ")
+                        if wb_classname:
+                            print(f"Found name {wb_classname} \n")
+                            return wb_classname
+        return ""
+
+    @staticmethod
+    def _find_classname_in_file(current_file) -> str:
+        try:
+            with open(current_file, "r", encoding="utf-8") as python_file:
+                content = python_file.read()
+                search_result = re.search(r"Gui.addWorkbench\s*\(\s*(\w+)\s*\(\s*\)\s*\)", content)
+                if search_result:
+                    return search_result.group(1)
+        except OSError:
+            pass
+        return ""
 
 
 # @dataclass(frozen)
