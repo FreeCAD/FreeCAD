@@ -610,9 +610,10 @@ class Addon:
 
     def enable_workbench(self):
         wbName = self.get_workbench_name()
-        
+
         # Remove from the list of disabled.
         self.remove_from_disabled_wbs(wbName)
+
 
     def disable_workbench(self):
         pref = fci.ParamGet("User parameter:BaseApp/Preferences/Workbenches")
@@ -620,12 +621,13 @@ class Addon:
 
         # Add the wb to the list of disabled if it was not already
         disabled_wbs = pref.GetString("Disabled", "NoneWorkbench,TestWorkbench")
-        #print(f"start disabling {disabled_wbs}")
-        disabled_wbs_list = disabled_wbs.split(',')
+        # print(f"start disabling {disabled_wbs}")
+        disabled_wbs_list = disabled_wbs.split(",")
         if not (wbName in disabled_wbs_list):
             disabled_wbs += "," + wbName
         pref.SetString("Disabled", disabled_wbs)
-        #print(f"done disabling :  {disabled_wbs} \n")
+        # print(f"done disabling :  {disabled_wbs} \n")
+
 
     def desinstall_workbench(self):
         pref = fci.ParamGet("User parameter:BaseApp/Preferences/Workbenches")
@@ -633,57 +635,57 @@ class Addon:
 
         # Remove from the list of ordered.
         ordered_wbs = pref.GetString("Ordered", "")
-        #print(f"start remove from ordering {ordered_wbs}")
-        ordered_wbs_list = ordered_wbs.split(',')
+        # print(f"start remove from ordering {ordered_wbs}")
+        ordered_wbs_list = ordered_wbs.split(",")
         ordered_wbs = ""
         for wb in ordered_wbs_list:
-            if (wb != wbName):
-                if (ordered_wbs != ""):
+            if wb != wbName:
+                if ordered_wbs != "":
                     ordered_wbs += ","
                 ordered_wbs += wb
         pref.SetString("Ordered", ordered_wbs)
-        #print(f"end remove from ordering {ordered_wbs}")
-        
+        # print(f"end remove from ordering {ordered_wbs}")
+
         # Remove from the list of disabled.
         self.remove_from_disabled_wbs(wbName)
+
 
     def remove_from_disabled_wbs(self, wbName: str):
         pref = fci.ParamGet("User parameter:BaseApp/Preferences/Workbenches")
 
         disabled_wbs = pref.GetString("Disabled", "NoneWorkbench,TestWorkbench")
-        #print(f"start enabling : {disabled_wbs}")
-        disabled_wbs_list = disabled_wbs.split(',')
+        # print(f"start enabling : {disabled_wbs}")
+        disabled_wbs_list = disabled_wbs.split(",")
         disabled_wbs = ""
         for wb in disabled_wbs_list:
-            if (wb != wbName):
-                if (disabled_wbs != ""):
+            if wb != wbName:
+                if disabled_wbs != "":
                     disabled_wbs += ","
                 disabled_wbs += wb
         pref.SetString("Disabled", disabled_wbs)
-        #print(f"Done enabling {disabled_wbs} \n")
+        # print(f"Done enabling {disabled_wbs} \n")
+
 
     def get_workbench_name(self) -> str:
         """Find the name of the workbench class (ie the name under which it's registered in freecad core)')"""
         wb_name = ""
-            
+
         if self.repo_type == Addon.Kind.PACKAGE:
-            for wb in self.metadata.content["workbench"]: # we may have more than one wb.
+            for wb in self.metadata.content["workbench"]:  # we may have more than one wb.
                 if wb_name != "":
                     wb_name += ","
                 wb_name += wb.classname
-                
         if self.repo_type == Addon.Kind.WORKBENCH or wb_name == "":
             wb_name = self.try_find_wbname_in_files()
-
         if wb_name == "":
             wb_name = self.name
-
         return wb_name
 
+
     def try_find_wbname_in_files(self) -> str:
-        wb_name = "";
+        wb_name = ""
         filesInDir = []
-        
+
         mod_dir = os.path.join(self.mod_directory, self.name)
 
         for root, subdirs, files in os.walk(mod_dir):
@@ -694,17 +696,17 @@ class Addon:
             for currentfile in filesInDir:
                 filename, extension = os.path.splitext(currentfile)
                 if extension == ".py":
-                    #print(f"Current file: {currentfile} ")
+                    # print(f"Current file: {currentfile} ")
                     try:
-                        with open(os.path.join(root, currentfile), 'r') as f:
+                        with open(os.path.join(root, currentfile), "r") as f:
                             content = f.read()
-                            m = re.search('Gui.addWorkbench\((\w+)\(\)\)', content)
+                            m = re.search("Gui.addWorkbench\((\w+)\(\)\)", content)
                             if m:
                                 wb_name = m.group(1)
                                 break
                     except Exception as e:
                         continue
-        #print(f"Found name {wb_name} \n")
+        # print(f"Found name {wb_name} \n")
         return wb_name
 
 # @dataclass(frozen)
