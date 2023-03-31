@@ -20,7 +20,7 @@
 # *   <https://www.gnu.org/licenses/>.                                      *
 # *                                                                         *
 # ***************************************************************************
-
+import tempfile
 import unittest
 import os
 import sys
@@ -32,7 +32,6 @@ from addonmanager_macro import Macro
 
 
 class TestAddon(unittest.TestCase):
-
     MODULE = "test_addon"  # file name without extension
 
     def setUp(self):
@@ -41,7 +40,6 @@ class TestAddon(unittest.TestCase):
         )
 
     def test_display_name(self):
-
         # Case 1: No display name set elsewhere: name == display_name
         addon = Addon(
             "FreeCAD",
@@ -84,7 +82,6 @@ class TestAddon(unittest.TestCase):
         self.assertEqual(expected_tags, tags)
 
     def test_contains_functions(self):
-
         # Test package.xml combinations:
 
         # Workbenches
@@ -201,7 +198,6 @@ class TestAddon(unittest.TestCase):
         self.assertTrue(addon.__dict__, second_addon.__dict__)
 
     def test_dependency_resolution(self):
-
         addonA = Addon(
             "AddonA",
             "https://github.com/FreeCAD/FakeAddonA",
@@ -303,3 +299,114 @@ class TestAddon(unittest.TestCase):
             "TagC" in addon.tags,
             "Found 'TagA' in tags, it should have been excluded by version requirement",
         )
+
+    def test_try_find_wbname_in_files_empty_dir(self):
+        with tempfile.TemporaryDirectory() as mod_dir:
+            # Arrange
+            test_addon = Addon("test")
+            test_addon.mod_directory = mod_dir
+            os.mkdir(os.path.join(mod_dir, test_addon.name))
+
+            # Act
+            wb_name = test_addon.try_find_wbname_in_files()
+
+            # Assert
+            self.assertEqual(wb_name, "")
+
+    def test_try_find_wbname_in_files_non_python_ignored(self):
+        with tempfile.TemporaryDirectory() as mod_dir:
+            # Arrange
+            test_addon = Addon("test")
+            test_addon.mod_directory = mod_dir
+            base_path = os.path.join(mod_dir, test_addon.name)
+            os.mkdir(base_path)
+            file_path = os.path.join(base_path, "test.txt")
+            with open(file_path, "w", encoding="utf-8") as f:
+                f.write("Gui.addWorkbench(TestWorkbench())")
+
+            # Act
+            wb_name = test_addon.try_find_wbname_in_files()
+
+            # Assert
+            self.assertEqual(wb_name, "")
+
+    def test_try_find_wbname_in_files_simple(self):
+        with tempfile.TemporaryDirectory() as mod_dir:
+            # Arrange
+            test_addon = Addon("test")
+            test_addon.mod_directory = mod_dir
+            base_path = os.path.join(mod_dir, test_addon.name)
+            os.mkdir(base_path)
+            file_path = os.path.join(base_path, "test.py")
+            with open(file_path, "w", encoding="utf-8") as f:
+                f.write("Gui.addWorkbench(TestWorkbench())")
+
+            # Act
+            wb_name = test_addon.try_find_wbname_in_files()
+
+            # Assert
+            self.assertEqual(wb_name, "TestWorkbench")
+
+    def test_try_find_wbname_in_files_subdir(self):
+        with tempfile.TemporaryDirectory() as mod_dir:
+            # Arrange
+            test_addon = Addon("test")
+            test_addon.mod_directory = mod_dir
+            base_path = os.path.join(mod_dir, test_addon.name)
+            os.mkdir(base_path)
+            subdir = os.path.join(base_path, "subdirectory")
+            os.mkdir(subdir)
+            file_path = os.path.join(subdir, "test.py")
+            with open(file_path, "w", encoding="utf-8") as f:
+                f.write("Gui.addWorkbench(TestWorkbench())")
+
+            # Act
+            wb_name = test_addon.try_find_wbname_in_files()
+
+            # Assert
+            self.assertEqual(wb_name, "TestWorkbench")
+
+    def test_try_find_wbname_in_files_variable_used(self):
+        with tempfile.TemporaryDirectory() as mod_dir:
+            # Arrange
+            test_addon = Addon("test")
+            test_addon.mod_directory = mod_dir
+            base_path = os.path.join(mod_dir, test_addon.name)
+            os.mkdir(base_path)
+            file_path = os.path.join(base_path, "test.py")
+            with open(file_path, "w", encoding="utf-8") as f:
+                f.write("Gui.addWorkbench(wb)")
+
+            # Act
+            wb_name = test_addon.try_find_wbname_in_files()
+
+            # Assert
+            self.assertEqual(wb_name, "")
+
+    def test_try_find_wbname_in_files_variants(self):
+        variants = [
+            "Gui.addWorkbench(TestWorkbench())",
+            "Gui.addWorkbench (TestWorkbench())",
+            "Gui.addWorkbench( TestWorkbench() )",
+            "Gui.addWorkbench(TestWorkbench( ))",
+            "Gui.addWorkbench( TestWorkbench( ) )",
+            "Gui.addWorkbench( TestWorkbench ( ) )",
+            "Gui.addWorkbench ( TestWorkbench ( ) )",
+        ]
+        for variant in variants:
+            with self.subTest(variant=variant):
+                with tempfile.TemporaryDirectory() as mod_dir:
+                    # Arrange
+                    test_addon = Addon("test")
+                    test_addon.mod_directory = mod_dir
+                    base_path = os.path.join(mod_dir, test_addon.name)
+                    os.mkdir(base_path)
+                    file_path = os.path.join(base_path, "test.py")
+                    with open(file_path, "w", encoding="utf-8") as f:
+                        f.write(variant)
+
+                    # Act
+                    wb_name = test_addon.try_find_wbname_in_files()
+
+                    # Assert
+                    self.assertEqual(wb_name, "TestWorkbench")
