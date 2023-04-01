@@ -44,8 +44,8 @@ private:
     void saveSettings();
     void changeEvent(QEvent *e) override;
 
-private Q_SLOTS:
-    void on_makePlacement_clicked();
+private:
+    void onMakePlacementClicked();
 
 private:
     class Private;
