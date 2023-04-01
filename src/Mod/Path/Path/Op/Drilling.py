@@ -202,7 +202,6 @@ class ObjectDrilling(PathCircularHoleBase.ObjectOp):
         if not hasattr(obj,"KeepToolDown"):
             obj.addProperty("App::PropertyBool", "KeepToolDown", "Drill", 
                 QT_TRANSLATE_NOOP("App::Property", "Apply G99 retraction: only retract to RetractHeight between holes in this operation"))
-            #obj.KeepToolDown=True
 
         if not hasattr(obj,"RetractMode"):
             obj.addProperty(
@@ -213,7 +212,7 @@ class ObjectDrilling(PathCircularHoleBase.ObjectOp):
                     "App::Property", "Controls tool retract height between holes in same op, Default=G98: safety height"
                 ),
             )
-			# ensure new enums exist
+			# ensure new enums exist in old class
             for n in self.propertyEnumerations():
                 setattr(obj, n[0], n[1])
 
