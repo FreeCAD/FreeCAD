@@ -267,7 +267,7 @@
            <string>Background will have selected color gradient</string>
           </property>
           <property name="text">
-           <string>Color gradient</string>
+           <string>Linear gradient</string>
           </property>
           <property name="checked">
            <bool>true</bool>
@@ -314,17 +314,23 @@
          </widget>
         </item>
         <item row="2" column="0">
-         <spacer name="horizontalSpacer">
-          <property name="orientation">
-           <enum>Qt::Horizontal</enum>
+         <widget class="Gui::PrefRadioButton" name="rbRadialGradient">
+          <property name="toolTip">
+           <string>Background will have selected color gradient</string>
           </property>
-          <property name="sizeHint" stdset="0">
-           <size>
-            <width>40</width>
-            <height>20</height>
-           </size>
+          <property name="text">
+           <string>Radial gradient</string>
           </property>
-         </spacer>
+          <property name="checked">
+           <bool>false</bool>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>RadialGradient</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>View</cstring>
+          </property>
+         </widget>
         </item>
         <item row="2" column="3">
          <widget class="Gui::PrefColorButton" name="backgroundColorTo">
@@ -586,6 +592,7 @@
   <tabstop>SelectionColor_Background</tabstop>
   <tabstop>radioButtonGradient</tabstop>
   <tabstop>backgroundColorFrom</tabstop>
+  <tabstop>rbRadialGradient</tabstop>
   <tabstop>backgroundColorTo</tabstop>
   <tabstop>checkMidColor</tabstop>
   <tabstop>backgroundColorMid</tabstop>
@@ -674,6 +681,38 @@
   </connection>
   <connection>
    <sender>radioButtonGradient</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>backgroundColorTo</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>77</x>
+     <y>309</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>310</x>
+     <y>338</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>rbRadialGradient</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>backgroundColorFrom</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>110</x>
+     <y>309</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>310</x>
+     <y>311</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>rbRadialGradient</sender>
    <signal>toggled(bool)</signal>
    <receiver>backgroundColorTo</receiver>
    <slot>setEnabled(bool)</slot>

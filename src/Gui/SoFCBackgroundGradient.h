@@ -44,8 +44,11 @@ public:
     SoFCBackgroundGradient();
 
     void GLRender (SoGLRenderAction *action);
-    void setColorGradient(const SbColor& fromColor, const SbColor& toColor);
-    void setColorGradient(const SbColor& fromColor, const SbColor& toColor, const SbColor& midColor);
+    void setColorGradient(const SbColor& fromColor, const SbColor& toColor, bool isRadial);
+    void setColorGradient(const SbColor& fromColor, const SbColor& toColor, const SbColor& midColor, bool isRadial);
+
+private:
+    bool radial;
 
 protected:
     virtual ~SoFCBackgroundGradient();

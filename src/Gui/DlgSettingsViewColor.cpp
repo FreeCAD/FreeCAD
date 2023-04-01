@@ -64,6 +64,7 @@ void DlgSettingsViewColor::saveSettings()
     ui->backgroundColorMid->onSave();
     ui->radioButtonSimple->onSave();
     ui->radioButtonGradient->onSave();
+    ui->rbRadialGradient->onSave();
     ui->checkMidColor->onSave();
     ui->checkBoxPreselection->onSave();
     ui->checkBoxSelection->onSave();
@@ -81,6 +82,7 @@ void DlgSettingsViewColor::loadSettings()
     ui->backgroundColorMid->onRestore();
     ui->radioButtonSimple->onRestore();
     ui->radioButtonGradient->onRestore();
+    ui->rbRadialGradient->onRestore();
     ui->checkMidColor->onRestore();
     ui->checkBoxPreselection->onRestore();
     ui->checkBoxSelection->onRestore();

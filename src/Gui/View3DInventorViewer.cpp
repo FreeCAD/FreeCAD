@@ -1084,16 +1084,18 @@ bool View3DInventorViewer::hasGradientBackground() const
 }
 
 void View3DInventorViewer::setGradientBackgroundColor(const SbColor& fromColor,
-                                                      const SbColor& toColor)
+                                                      const SbColor& toColor,
+                                                      bool isRadial)
 {
-    pcBackGround->setColorGradient(fromColor, toColor);
+    pcBackGround->setColorGradient(fromColor, toColor, isRadial);
 }
 
 void View3DInventorViewer::setGradientBackgroundColor(const SbColor& fromColor,
                                                       const SbColor& toColor,
-                                                      const SbColor& midColor)
+                                                      const SbColor& midColor,
+                                                      bool isRadial)
 {
-    pcBackGround->setColorGradient(fromColor, toColor, midColor);
+    pcBackGround->setColorGradient(fromColor, toColor, midColor, isRadial);
 }
 
 void View3DInventorViewer::setEnabledFPSCounter(bool on)
