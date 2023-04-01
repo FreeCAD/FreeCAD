@@ -249,6 +249,7 @@ private:
 SectionsPanel::SectionsPanel(ViewProviderSections* vp, Surface::Sections* obj) : ui(new Ui_Sections())
 {
     ui->setupUi(this);
+    setupConnections();
     ui->statusLabel->clear();
 
     selectionMode = None;
@@ -277,6 +278,15 @@ SectionsPanel::SectionsPanel(ViewProviderSections* vp, Surface::Sections* obj) :
  */
 SectionsPanel::~SectionsPanel()
 {
+}
+
+void SectionsPanel::setupConnections()
+{
+    connect(ui->buttonEdgeAdd, &QToolButton::toggled,
+            this, &SectionsPanel::onButtonEdgeAddToggled);
+    connect(ui->buttonEdgeRemove, &QToolButton::toggled,
+            this, &SectionsPanel::onButtonEdgeRemoveToggled);
+
 }
 
 // stores object pointer, its old fill type and adjusts radio buttons according to it.
@@ -404,7 +414,7 @@ bool SectionsPanel::reject()
     return true;
 }
 
-void SectionsPanel::on_buttonEdgeAdd_toggled(bool checked)
+void SectionsPanel::onButtonEdgeAddToggled(bool checked)
 {
     if (checked) {
         selectionMode = AppendEdge;
@@ -416,7 +426,7 @@ void SectionsPanel::on_buttonEdgeAdd_toggled(bool checked)
     }
 }
 
-void SectionsPanel::on_buttonEdgeRemove_toggled(bool checked)
+void SectionsPanel::onButtonEdgeRemoveToggled(bool checked)
 {
     if (checked) {
         selectionMode = RemoveEdge;

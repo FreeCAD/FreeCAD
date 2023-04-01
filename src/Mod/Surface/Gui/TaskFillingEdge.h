@@ -87,12 +87,13 @@ protected:
     void slotDeletedObject(const Gui::ViewProviderDocumentObject& Obj) override;
     void modifyBoundary(bool);
 
-private Q_SLOTS:
-    void on_buttonUnboundEdgeAdd_toggled(bool checked);
-    void on_buttonUnboundEdgeRemove_toggled(bool checked);
-    void on_listUnbound_itemDoubleClicked(QListWidgetItem*);
-    void on_buttonUnboundAccept_clicked();
-    void on_buttonUnboundIgnore_clicked();
+private:
+    void setupConnections();
+    void onButtonUnboundEdgeAddToggled(bool checked);
+    void onButtonUnboundEdgeRemoveToggled(bool checked);
+    void onListUnboundItemDoubleClicked(QListWidgetItem*);
+    void onButtonUnboundAcceptClicked();
+    void onButtonUnboundIgnoreClicked();
     void onDeleteUnboundEdge();
     void clearSelection();
 

@@ -96,18 +96,17 @@ protected:
     /** Notifies when the object is about to be removed. */
     void slotDeletedObject(const Gui::ViewProviderDocumentObject& Obj) override;
 
-private Q_SLOTS:
-    void on_buttonEdgeAdd_toggled(bool checked);
-    void on_buttonEdgeRemove_toggled(bool checked);
+private:
+    void setupConnections();
+    void onButtonEdgeAddToggled(bool checked);
+    void onButtonEdgeRemoveToggled(bool checked);
     void onDeleteEdge();
     void clearSelection();
     void onIndexesMoved();
 
-private:
     void appendCurve(App::DocumentObject*, const std::string& subname);
     void removeCurve(App::DocumentObject*, const std::string& subname);
 
-private:
     void exitSelectionMode();
 };
 
