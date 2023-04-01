@@ -214,7 +214,7 @@ void wbListItem::onWbToggled(bool checked)
     autoloadCheckBox->setEnabled(checked);
     if (!checked) //disabling wb disable auto-load.
         autoloadCheckBox->setChecked(false);
-    
+
     // Reset the start combo items.
     Q_EMIT wbToggled(objectName(), checked);
 }
@@ -471,7 +471,7 @@ void DlgSettingsWorkbenchesImp::wbToggled(const QString& wbName, bool enabled)
         wbListItem* wbItem = dynamic_cast<wbListItem*>(ui->wbList->itemWidget(ui->wbList->item(i)));
         if (wbItem && wbItem->objectName() == wbName) {
             wbIndex = i;
-        } 
+        }
     }
 
     int destinationIndex = ui->wbList->count();
