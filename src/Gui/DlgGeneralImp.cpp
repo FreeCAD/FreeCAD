@@ -83,6 +83,7 @@ DlgGeneralImp::DlgGeneralImp( QWidget* parent )
     ui->RevertToSavedConfig->setEnabled(backups.empty());
     connect(ui->RevertToSavedConfig, &QPushButton::clicked, this, &DlgGeneralImp::revertToSavedConfig);
 
+    connect(ui->comboBox_UnitSystem, qOverload<int>(&QComboBox::currentIndexChanged), this, &DlgGeneralImp::onUnitSystemIndexChanged);
     ui->spinBoxDecimals->setMaximum(std::numeric_limits<double>::digits10 + 1);
 
     int num = static_cast<int>(Base::UnitSystem::NumUnitSystemTypes);
@@ -536,8 +537,7 @@ void DlgGeneralImp::onLoadPreferencePackClicked(const std::string& packName)
     }
 }
 
-
-void DlgGeneralImp::on_comboBox_UnitSystem_currentIndexChanged(int index)
+void DlgGeneralImp::onUnitSystemIndexChanged(int index)
 {
     if (index < 0)
         return; // happens when clearing the combo box in retranslateUi()

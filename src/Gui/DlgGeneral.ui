@@ -80,7 +80,7 @@
          <item row="1" column="1">
           <widget class="QComboBox" name="comboBox_UnitSystem">
            <property name="toolTip">
-            <string>Unit system that should be used for all parts the application</string>
+            <string>Unit system that should be used for all parts of the application</string>
            </property>
           </widget>
          </item>

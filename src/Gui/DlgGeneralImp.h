@@ -65,7 +65,7 @@ protected Q_SLOTS:
     void onImportConfigClicked();
 
 public Q_SLOTS:
-    void on_comboBox_UnitSystem_currentIndexChanged(int index);
+    void onUnitSystemIndexChanged(int index);
 
 private:
     void setRecentFileSize();
