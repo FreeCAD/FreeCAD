@@ -260,6 +260,7 @@ FillingPanel::FillingPanel(ViewProviderFilling* vp, Surface::Filling* obj)
 {
     ui = new Ui_TaskFilling();
     ui->setupUi(this);
+    setupConnections();
     ui->statusLabel->clear();
 
     selectionMode = None;
@@ -285,6 +286,24 @@ FillingPanel::~FillingPanel()
 {
     // no need to delete child widgets, Qt does it all for us
     delete ui;
+}
+
+void FillingPanel::setupConnections()
+{
+    connect(ui->buttonInitFace, &QPushButton::clicked,
+            this, &FillingPanel::onButtonInitFaceClicked);
+    connect(ui->buttonEdgeAdd, &QToolButton::toggled,
+            this, &FillingPanel::onButtonEdgeAddToggled);
+    connect(ui->buttonEdgeRemove, &QToolButton::toggled,
+            this, &FillingPanel::onButtonEdgeRemoveToggled);
+    connect(ui->lineInitFaceName, &QLineEdit::textChanged,
+            this, &FillingPanel::onLineInitFaceNameTextChanged);
+    connect(ui->listBoundary, &QListWidget::itemDoubleClicked,
+            this, &FillingPanel::onListBoundaryItemDoubleClicked);
+    connect(ui->buttonAccept, &QPushButton::clicked,
+            this, &FillingPanel::onButtonAcceptClicked);
+    connect(ui->buttonIgnore, &QPushButton::clicked,
+            this, &FillingPanel::onButtonIgnoreClicked);
 }
 
 void FillingPanel::appendButtons(Gui::ButtonGroup* buttonGroup)
@@ -479,7 +498,7 @@ bool FillingPanel::reject()
     return true;
 }
 
-void FillingPanel::on_lineInitFaceName_textChanged(const QString& text)
+void FillingPanel::onLineInitFaceNameTextChanged(const QString& text)
 {
     if (text.isEmpty()) {
         checkOpenCommand();
@@ -495,14 +514,14 @@ void FillingPanel::on_lineInitFaceName_textChanged(const QString& text)
     }
 }
 
-void FillingPanel::on_buttonInitFace_clicked()
+void FillingPanel::onButtonInitFaceClicked()
 {
     // 'selectionMode' is passed by reference and changed when the filter is deleted
     Gui::Selection().addSelectionGate(new ShapeSelection(selectionMode, editedObject.get()));
     selectionMode = InitFace;
 }
 
-void FillingPanel::on_buttonEdgeAdd_toggled(bool checked)
+void FillingPanel::onButtonEdgeAddToggled(bool checked)
 {
     if (checked) {
         // 'selectionMode' is passed by reference and changed when the filter is deleted
@@ -514,7 +533,7 @@ void FillingPanel::on_buttonEdgeAdd_toggled(bool checked)
     }
 }
 
-void FillingPanel::on_buttonEdgeRemove_toggled(bool checked)
+void FillingPanel::onButtonEdgeRemoveToggled(bool checked)
 {
     if (checked) {
         // 'selectionMode' is passed by reference and changed when the filter is deleted
@@ -526,7 +545,7 @@ void FillingPanel::on_buttonEdgeRemove_toggled(bool checked)
     }
 }
 
-void FillingPanel::on_listBoundary_itemDoubleClicked(QListWidgetItem* item)
+void FillingPanel::onListBoundaryItemDoubleClicked(QListWidgetItem* item)
 {
     Gui::Selection().clearSelection();
     Gui::Selection().rmvSelectionGate();
@@ -805,7 +824,7 @@ void FillingPanel::onIndexesMoved()
     editedObject->recomputeFeature();
 }
 
-void FillingPanel::on_buttonAccept_clicked()
+void FillingPanel::onButtonAcceptClicked()
 {
     QListWidgetItem* item = ui->listBoundary->currentItem();
     if (item) {
@@ -850,7 +869,7 @@ void FillingPanel::on_buttonAccept_clicked()
     editedObject->recomputeFeature();
 }
 
-void FillingPanel::on_buttonIgnore_clicked()
+void FillingPanel::onButtonIgnoreClicked()
 {
     modifyBoundary(false);
     ui->comboBoxFaces->clear();

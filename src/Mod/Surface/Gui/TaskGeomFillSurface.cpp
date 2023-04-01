@@ -192,6 +192,8 @@ GeomFillSurface::GeomFillSurface(ViewProviderGeomFillSurface* vp, Surface::GeomF
 {
     ui = new Ui_GeomFillSurface();
     ui->setupUi(this);
+    setupConnections();
+
     selectionMode = None;
     this->vp = vp;
     checkCommand = true;
@@ -223,6 +225,22 @@ GeomFillSurface::~GeomFillSurface()
 {
     // no need to delete child widgets, Qt does it all for us
     delete ui;
+}
+
+void GeomFillSurface::setupConnections()
+{
+    connect(ui->fillType_stretch, &QRadioButton::clicked,
+            this, &GeomFillSurface::onFillTypeStretchClicked);
+    connect(ui->fillType_coons, &QRadioButton::clicked,
+            this, &GeomFillSurface::onFillTypeCoonsClicked);
+    connect(ui->fillType_curved, &QRadioButton::clicked,
+            this, &GeomFillSurface::onFillTypeCurvedClicked);
+    connect(ui->buttonEdgeAdd, &QToolButton::toggled,
+            this, &GeomFillSurface::onButtonEdgeAddToggled);
+    connect(ui->buttonEdgeRemove, &QToolButton::toggled,
+            this, &GeomFillSurface::onButtonEdgeRemoveToggled);
+    connect(ui->listWidget, &QListWidget::itemDoubleClicked,
+            this, &GeomFillSurface::onListWidgetItemDoubleClicked);
 }
 
 // stores object pointer, its old fill type and adjusts radio buttons according to it.
@@ -379,17 +397,17 @@ bool GeomFillSurface::reject()
     return true;
 }
 
-void GeomFillSurface::on_fillType_stretch_clicked()
+void GeomFillSurface::onFillTypeStretchClicked()
 {
     changeFillType(GeomFill_StretchStyle);
 }
 
-void GeomFillSurface::on_fillType_coons_clicked()
+void GeomFillSurface::onFillTypeCoonsClicked()
 {
     changeFillType(GeomFill_CoonsStyle);
 }
 
-void GeomFillSurface::on_fillType_curved_clicked()
+void GeomFillSurface::onFillTypeCurvedClicked()
 {
     changeFillType(GeomFill_CurvedStyle);
 }
@@ -407,7 +425,7 @@ void GeomFillSurface::changeFillType(GeomFill_FillingStyle fillType)
     }
 }
 
-void GeomFillSurface::on_buttonEdgeAdd_toggled(bool checked)
+void GeomFillSurface::onButtonEdgeAddToggled(bool checked)
 {
     if (checked) {
         selectionMode = Append;
@@ -418,7 +436,7 @@ void GeomFillSurface::on_buttonEdgeAdd_toggled(bool checked)
     }
 }
 
-void GeomFillSurface::on_buttonEdgeRemove_toggled(bool checked)
+void GeomFillSurface::onButtonEdgeRemoveToggled(bool checked)
 {
     if (checked) {
         selectionMode = Remove;
@@ -583,7 +601,7 @@ void GeomFillSurface::flipOrientation(QListWidgetItem* item)
     }
 }
 
-void GeomFillSurface::on_listWidget_itemDoubleClicked(QListWidgetItem* item)
+void GeomFillSurface::onListWidgetItemDoubleClicked(QListWidgetItem* item)
 {
     if (item) {
         flipOrientation(item);
