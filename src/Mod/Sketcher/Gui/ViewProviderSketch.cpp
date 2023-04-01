@@ -51,7 +51,6 @@
 #include <Gui/Selection.h>
 #include <Gui/SelectionObject.h>
 #include <Gui/SoFCUnifiedSelection.h>
-#include "Gui/ToolBarManager.h"
 #include <Gui/Utilities.h>
 #include <Gui/View3DInventor.h>
 #include <Gui/View3DInventorViewer.h>
@@ -70,6 +69,7 @@
 #include "TaskSketcherValidation.h"
 #include "Utils.h"
 #include "ViewProviderSketchGeometryExtension.h"
+#include "Workbench.h"
 
 
 FC_LOG_LEVEL_INIT("Sketch",true,true)
@@ -2770,25 +2770,6 @@ void ViewProviderSketch::setupContextMenu(QMenu *menu, QObject *receiver, const 
     Gui::ViewProvider::setupContextMenu(menu, receiver, member);
 }
 
-namespace
-{
-    inline const QStringList editModeToolbarNames()
-    {
-        return QStringList{ QString::fromLatin1("Sketcher Edit Mode"),
-                            QString::fromLatin1("Sketcher geometries"),
-                            QString::fromLatin1("Sketcher constraints"),
-                            QString::fromLatin1("Sketcher tools"),
-                            QString::fromLatin1("Sketcher B-spline tools"),
-                            QString::fromLatin1("Sketcher virtual space") };
-    }
-
-    inline const QStringList nonEditModeToolbarNames()
-    {
-        return QStringList{ QString::fromLatin1("Structure"),
-                            QString::fromLatin1("Sketcher") };
-    }
-}
-
 bool ViewProviderSketch::setEdit(int ModNum)
 {
     Q_UNUSED(ModNum)
@@ -2935,13 +2916,7 @@ bool ViewProviderSketch::setEdit(int ModNum)
 
     Gui::getMainWindow()->installEventFilter(listener);
 
-    /*Modify toolbars dynamically.
-    First save state of toolbars in case user changed visibility of a toolbar but he's not changing the wb.
-    This happens in someone works directly from sketcher, changing from edit mode to not-edit-mode*/
-    Gui::ToolBarManager::getInstance()->saveState();
-
-    Gui::ToolBarManager::getInstance()->setToolbarVisibility(true, editModeToolbarNames());
-    Gui::ToolBarManager::getInstance()->setToolbarVisibility(false, nonEditModeToolbarNames());
+    Workbench::enterEditMode();
 
     return true;
 }
@@ -3078,13 +3053,7 @@ void ViewProviderSketch::unsetEdit(int ModNum)
     auto gridnode = getGridNode();
     pcRoot->removeChild(gridnode);
 
-    /*Modify toolbars dynamically.
-    First save state of toolbars in case user changed visibility of a toolbar but he's not changing the wb.
-    This happens in someone works directly from sketcher, changing from edit mode to not-edit-mode*/
-    Gui::ToolBarManager::getInstance()->saveState();
-
-    Gui::ToolBarManager::getInstance()->setToolbarVisibility(false, editModeToolbarNames());
-    Gui::ToolBarManager::getInstance()->setToolbarVisibility(true, nonEditModeToolbarNames());
+    Workbench::leaveEditMode();
 
     if(listener) {
         Gui::getMainWindow()->removeEventFilter(listener);
