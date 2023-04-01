@@ -32,7 +32,7 @@
 # include <Inventor/nodes/SoBaseColor.h>
 # include <Inventor/nodes/SoCoordinate3.h>
 # include <Inventor/nodes/SoLineSet.h>
-# include <Inventor/nodes/SoSeparator.h>
+# include <Inventor/nodes/SoAnnotation.h>
 #endif
 
 #include <Base/Console.h>
@@ -222,7 +222,7 @@ InteractiveScale::InteractiveScale(View3DInventorViewer* view, ViewProvider* vp)
 {
     coords = new SoCoordinate3;
     coords->ref();
-    root = new SoSeparator;
+    root = new SoAnnotation;
     root->ref();
 
     root->addChild(coords);
