@@ -77,12 +77,12 @@ def setup(doc=None, solvertype="elmer"):
     SketchPath.MapMode = "FlatFace"
     SketchPath.addGeometry(Part.LineSegment(Vector(
         -20.0, 30.0, 0.0), Vector(-20.0, 0.0, 0.0)), False)
-    SketchPath.addConstraint(Sketcher.Constraint('PointOnObject', 0, 2, -1)) 
-    SketchPath.addConstraint(Sketcher.Constraint('Vertical', 0)) 
+    SketchPath.addConstraint(Sketcher.Constraint('PointOnObject', 0, 2, -1))
+    SketchPath.addConstraint(Sketcher.Constraint('Vertical', 0))
     SketchPath.addGeometry(Part.ArcOfCircle(Part.Circle(
         Vector(0.0, 0.0, 0.0), Vector(0, 0, 1), 20.0), 3.141593, 6.283185), False)
-    SketchPath.addConstraint(Sketcher.Constraint('Tangent', 0, 2, 1, 1)) 
-    SketchPath.addConstraint(Sketcher.Constraint('PointOnObject', 1, 2, -1)) 
+    SketchPath.addConstraint(Sketcher.Constraint('Tangent', 0, 2, 1, 1))
+    SketchPath.addConstraint(Sketcher.Constraint('PointOnObject', 1, 2, -1))
     SketchPath.addGeometry(Part.LineSegment(
         Vector(20.0, 0.0, 0.0), Vector(20.0, 30.0, 0.0)), False)
     SketchPath.addConstraint(Sketcher.Constraint('Tangent', 1, 2, 2, 1))

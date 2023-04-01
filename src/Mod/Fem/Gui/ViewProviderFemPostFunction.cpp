@@ -165,10 +165,10 @@ ViewProviderFemPostFunction::ViewProviderFemPostFunction()
         AutoScaleFactorY, (1), "AutoScale", App::Prop_Hidden, "Automatic scaling factor");
     ADD_PROPERTY_TYPE(
         AutoScaleFactorZ, (1), "AutoScale", App::Prop_Hidden, "Automatic scaling factor");
-    
+
     m_geometrySeperator = new SoSeparator();
     m_geometrySeperator->ref();
-    
+
     m_scale = new SoScale();
     m_scale->ref();
     m_scale->scaleFactor = SbVec3f(1, 1, 1);

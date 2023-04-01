@@ -398,7 +398,7 @@ def startProgramInfo(code):
         return info
 
 def expandParentObject():
-    """ expands parent and selected obj in tree view """ 
+    """ expands parent and selected obj in tree view """
     trees = FreeCADGui.getMainWindow().findChildren(QtGui.QTreeWidget)
     for tree in trees:
         items = tree.selectedItems()

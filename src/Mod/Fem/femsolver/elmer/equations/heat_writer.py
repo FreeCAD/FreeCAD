@@ -129,7 +129,7 @@ class Heatwriter:
         tempObj = self.write.getSingleMember("Fem::ConstraintInitialTemperature")
         if tempObj is not None:
             refTemp = float(tempObj.initialTemperature.getValueAs("K"))
-            for name in bodies:              
+            for name in bodies:
                 self.write.initial(name, "Temperature", refTemp)
             self.write.handled(tempObj)
 
