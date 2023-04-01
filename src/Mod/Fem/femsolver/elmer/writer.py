@@ -348,7 +348,7 @@ class Writer(object):
             self._simulation("BDF Order", self.solver.BDFOrder)
             self._simulation("Output Intervals", self.solver.OutputIntervals)
             self._simulation("Timestep Intervals", self.solver.TimestepIntervals)
-            self._simulation("Timestep Sizes", self.solver.TimestepSizes) 
+            self._simulation("Timestep Sizes", self.solver.TimestepSizes)
             self._simulation("Timestepping Method", "BDF")
         self._simulation("Use Mesh Names", True)
 
