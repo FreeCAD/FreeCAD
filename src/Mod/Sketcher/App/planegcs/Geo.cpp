@@ -624,7 +624,7 @@ DeriVector2 BSpline::CalculateNormal(const Point &p, const double* derivparam) c
     // place holder
     DeriVector2 ret;
 
-    // even if this method is call CalculateNormal, the returned vector is not the normal strictu 
+    // even if this method is call CalculateNormal, the returned vector is not the normal strictu
     // sensus but a normal vector, where the vector should point to the left when one walks along
     // the curve from start to end.
     //
