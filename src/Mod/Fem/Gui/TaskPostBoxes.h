@@ -238,11 +238,12 @@ public:
     void applyPythonCode() override;
     bool isGuiTaskOnly() override {return true;}
 
-private Q_SLOTS:
-    void on_Representation_activated(int i);
-    void on_Field_activated(int i);
-    void on_VectorMode_activated(int i);
-    void on_Transparency_valueChanged(int i);
+private:
+    void setupConnections();
+    void onRepresentationActivated(int i);
+    void onFieldActivated(int i);
+    void onVectorModeActivated(int i);
+    void onTransparencyValueChanged(int i);
     void slotAddedFunction();
 
 private:
@@ -284,12 +285,14 @@ public:
     void applyPythonCode() override;
     static void pointCallback(void* ud, SoEventCallback* n);
 
-private Q_SLOTS:
-    void on_SelectPoints_clicked();
-    void on_CreatePlot_clicked();
-    void on_Representation_activated(int i);
-    void on_Field_activated(int i);
-    void on_VectorMode_activated(int i);
+private:
+    void setupConnectionsStep1();
+    void setupConnectionsStep2();
+    void onSelectPointsClicked();
+    void onCreatePlotClicked();
+    void onRepresentationActivated(int i);
+    void onFieldActivated(int i);
+    void onVectorModeActivated(int i);
     void point2Changed(double);
     void point1Changed(double);
     void resolutionChanged(int val);
@@ -316,9 +319,10 @@ public:
     void applyPythonCode() override;
     static void pointCallback(void* ud, SoEventCallback* n);
 
-private Q_SLOTS:
-    void on_SelectPoint_clicked();
-    void on_Field_activated(int i);
+private:
+    void setupConnections();
+    void onSelectPointClicked();
+    void onFieldActivated(int i);
     void centerChanged(double);
     void onChange(double x, double y, double z);
 
@@ -344,11 +348,12 @@ public:
 
     void applyPythonCode() override;
 
-private Q_SLOTS:
-    void on_CreateButton_triggered(QAction*);
-    void on_FunctionBox_currentIndexChanged(int idx);
-    void on_InsideOut_toggled(bool val);
-    void on_CutCells_toggled(bool val);
+private:
+    void setupConnections();
+    void onCreateButtonTriggered(QAction*);
+    void onFunctionBoxCurrentIndexChanged(int idx);
+    void onInsideOutToggled(bool val);
+    void onCutCellsToggled(bool val);
 
 Q_SIGNALS:
     void emitAddedFunction();
@@ -375,7 +380,7 @@ public:
 
     void applyPythonCode() override;
 
-private Q_SLOTS:
+private:
     void onFieldsChanged(int idx);
     void onVectorModeChanged(int idx);
     void onNumberOfContoursChanged(int number);
@@ -402,9 +407,10 @@ public:
 
     void applyPythonCode() override;
 
-private Q_SLOTS:
-    void on_CreateButton_triggered(QAction*);
-    void on_FunctionBox_currentIndexChanged(int idx);
+private:
+    void setupConnections();
+    void onCreateButtonTriggered(QAction*);
+    void onFunctionBoxCurrentIndexChanged(int idx);
 
 Q_SIGNALS:
     void emitAddedFunction();
@@ -431,11 +437,12 @@ public:
 
     void applyPythonCode() override;
 
-private Q_SLOTS:
-    void on_Slider_valueChanged(int v);
-    void on_Value_valueChanged(double v);
-    void on_Scalar_currentIndexChanged(int idx);
-    void on_InsideOut_toggled(bool val);
+private:
+    void setupConnections();
+    void onSliderValueChanged(int v);
+    void onValueValueChanged(double v);
+    void onScalarCurrentIndexChanged(int idx);
+    void onInsideOutToggled(bool val);
 
 private:
     QWidget* proxy;
@@ -455,12 +462,13 @@ public:
 
     void applyPythonCode() override;
 
-private Q_SLOTS:
-    void on_Slider_valueChanged(int v);
-    void on_Value_valueChanged(double v);
-    void on_Max_valueChanged(double);
-    void on_Min_valueChanged(double);
-    void on_Vector_currentIndexChanged(int idx);
+private:
+    void setupConnections();
+    void onSliderValueChanged(int v);
+    void onValueValueChanged(double v);
+    void onMaxValueChanged(double);
+    void onMinValueChanged(double);
+    void onVectorCurrentIndexChanged(int idx);
 
 private:
     QWidget* proxy;
