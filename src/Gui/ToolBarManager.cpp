@@ -238,6 +238,7 @@ void ToolBarManager::setup(ToolBarItem* toolBarItems)
         visible &= (*it)->visibility != ToolBarItem::HideStyle::FORCE_HIDE;
         toolbar->setVisible(visible);
         toolbar->toggleViewAction()->setVisible((*it)->visibility != ToolBarItem::HideStyle::FORCE_HIDE);
+        toolbar->toggleViewAction()->setProperty("HideStyle", static_cast<int>((*it)->visibility));
 
         // setup the toolbar
         setup(*it, toolbar);
@@ -327,6 +328,24 @@ void ToolBarManager::setup(ToolBarItem* item, QToolBar* toolbar) const
 
 void ToolBarManager::saveState() const
 {
+    auto ignoreSave = [](QAction* action) {
+        // If the toggle action is invisible then it's controlled by the application.
+        // In this case the current state is not saved.
+        if (!action->isVisible()) {
+            return true;
+        }
+
+        QVariant property = action->property("HideStyle");
+        if (property.isNull()) {
+            return false;
+        }
+
+        // If hide style is FORCE_HIDE then never save the state because it's
+        // alwas controlled by the application.
+        auto value = static_cast<ToolBarItem::HideStyle>(property.toInt());
+        return value == ToolBarItem::HideStyle::FORCE_HIDE;
+    };
+
     ParameterGrp::handle hPref = App::GetApplication().GetUserParameter().GetGroup("BaseApp")
                                ->GetGroup("MainWindow")->GetGroup("Toolbars");
 
@@ -334,8 +353,10 @@ void ToolBarManager::saveState() const
     for (QStringList::ConstIterator it = this->toolbarNames.begin(); it != this->toolbarNames.end(); ++it) {
         QToolBar* toolbar = findToolBar(toolbars, *it);
         if (toolbar) {
-            if (!toolbar->toggleViewAction()->isVisible())
-                continue; //if toggleViewAction is not visible it means that the toolbar is FORCE_HIDE. In which case we do not save settings.
+            if (ignoreSave(toolbar->toggleViewAction())) {
+                continue;
+            }
+
             QByteArray toolbarName = toolbar->objectName().toUtf8();
             hPref->SetBool(toolbarName.constData(), toolbar->isVisible());
         }
