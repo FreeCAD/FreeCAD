@@ -347,6 +347,7 @@ def is_float(element: Any) -> bool:
     except ValueError:
         return False
 
+
 def get_python_exe() -> str:
     """Find Python. In preference order
     A) The value of the PythonExecutableForPip user preference
@@ -448,11 +449,8 @@ def run_interruptable_subprocess(args) -> subprocess.CompletedProcess:
                 p.kill()
                 raise ProcessInterrupted()
     if return_code is None or return_code != 0:
-        raise subprocess.CalledProcessError (
-            return_code if return_code is not None else -1,
-            args,
-            stdout,
-            stderr
+        raise subprocess.CalledProcessError(
+            return_code if return_code is not None else -1, args, stdout, stderr
         )
     return subprocess.CompletedProcess(args, return_code, stdout, stderr)
 

@@ -204,9 +204,13 @@ class TestUrlType(unittest.TestCase):
 
 
 class TestMetadataAuxiliaryFunctions(unittest.TestCase):
-
     def test_get_first_supported_freecad_version_simple(self):
-        from addonmanager_metadata import Metadata, Version, get_first_supported_freecad_version
+        from addonmanager_metadata import (
+            Metadata,
+            Version,
+            get_first_supported_freecad_version,
+        )
+
         expected_result = Version(from_string="0.20.2beta")
         metadata = self.given_metadata_with_freecadmin_set(expected_result)
         first_version = get_first_supported_freecad_version(metadata)
@@ -215,12 +219,18 @@ class TestMetadataAuxiliaryFunctions(unittest.TestCase):
     @staticmethod
     def given_metadata_with_freecadmin_set(min_version):
         from addonmanager_metadata import Metadata
+
         metadata = Metadata()
         metadata.freecadmin = min_version
         return metadata
 
     def test_get_first_supported_freecad_version_with_content(self):
-        from addonmanager_metadata import Metadata, Version, get_first_supported_freecad_version
+        from addonmanager_metadata import (
+            Metadata,
+            Version,
+            get_first_supported_freecad_version,
+        )
+
         expected_result = Version(from_string="0.20.2beta")
         metadata = self.given_metadata_with_freecadmin_in_content(expected_result)
         first_version = get_first_supported_freecad_version(metadata)
@@ -229,17 +239,24 @@ class TestMetadataAuxiliaryFunctions(unittest.TestCase):
     @staticmethod
     def given_metadata_with_freecadmin_in_content(min_version):
         from addonmanager_metadata import Metadata, Version
+
         v_list = min_version.version_as_list
         metadata = Metadata()
         wb1 = Metadata()
-        wb1.freecadmin = Version(from_list=[v_list[0]+1,v_list[1],v_list[2],v_list[3]])
+        wb1.freecadmin = Version(
+            from_list=[v_list[0] + 1, v_list[1], v_list[2], v_list[3]]
+        )
         wb2 = Metadata()
-        wb2.freecadmin = Version(from_list=[v_list[0],v_list[1]+1,v_list[2],v_list[3]])
+        wb2.freecadmin = Version(
+            from_list=[v_list[0], v_list[1] + 1, v_list[2], v_list[3]]
+        )
         wb3 = Metadata()
-        wb3.freecadmin = Version(from_list=[v_list[0],v_list[1],v_list[2]+1,v_list[3]])
+        wb3.freecadmin = Version(
+            from_list=[v_list[0], v_list[1], v_list[2] + 1, v_list[3]]
+        )
         m1 = Metadata()
         m1.freecadmin = min_version
-        metadata.content = {"workbench":[wb1,wb2,wb3],"macro":[m1]}
+        metadata.content = {"workbench": [wb1, wb2, wb3], "macro": [m1]}
         return metadata
 
 

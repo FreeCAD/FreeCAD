@@ -107,7 +107,7 @@ class MetadataValidators:
 
         return errors
 
-    def validate_top_level(self, addon:Addon) -> List[str]:
+    def validate_top_level(self, addon: Addon) -> List[str]:
         """Check for the presence of the required top-level elements"""
         errors = []
         if not addon.metadata.name or len(addon.metadata.name) == 0:
@@ -185,7 +185,7 @@ class MetadataValidators:
         return errors
 
     @staticmethod
-    def validate_workbench_metadata(workbench:Metadata) -> List[str]:
+    def validate_workbench_metadata(workbench: Metadata) -> List[str]:
         """Validate the required element(s) for a workbench"""
         errors = []
         if not workbench.classname or len(workbench.classname) == 0:
@@ -193,7 +193,7 @@ class MetadataValidators:
         return errors
 
     @staticmethod
-    def validate_preference_pack_metadata(pack:Metadata) -> List[str]:
+    def validate_preference_pack_metadata(pack: Metadata) -> List[str]:
         """Validate the required element(s) for a preference pack"""
         errors = []
         if not pack.name or len(pack.name) == 0:
