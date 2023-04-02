@@ -64,6 +64,9 @@ protected Q_SLOTS:
     void onManagePreferencePacksClicked();
     void onImportConfigClicked();
 
+public Q_SLOTS:
+    void onUnitSystemIndexChanged(int index);
+
 private:
     void setRecentFileSize();
     void saveAsNewPreferencePack();
