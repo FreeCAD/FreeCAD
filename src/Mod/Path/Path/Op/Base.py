@@ -332,12 +332,6 @@ class ObjectOp(object):
                 ),
             )
 
-        for n in self.opPropertyEnumerations():
-            Path.Log.debug("n: {}".format(n))
-            Path.Log.debug("n[0]: {}  n[1]: {}".format(n[0], n[1]))
-            if hasattr(obj, n[0]):
-                setattr(obj, n[0], n[1])
-
         # members being set later
         self.commandlist = None
         self.horizFeed = None
@@ -352,6 +346,12 @@ class ObjectOp(object):
         self.addNewProps = None
 
         self.initOperation(obj)
+
+        for n in self.opPropertyEnumerations():
+            Path.Log.debug("n: {}".format(n))
+            Path.Log.debug("n[0]: {}  n[1]: {}".format(n[0], n[1]))
+            if hasattr(obj, n[0]):
+                setattr(obj, n[0], n[1])
 
         if not hasattr(obj, "DoNotSetDefaultValues") or not obj.DoNotSetDefaultValues:
             if parentJob:
