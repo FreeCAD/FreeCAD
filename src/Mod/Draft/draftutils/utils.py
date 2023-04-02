@@ -172,7 +172,7 @@ def get_param_type(param):
                  "snapStyle", "dimstyle", "gridSize", "gridTransparency"):
         return "int"
     elif param in ("constructiongroupname", "textfont",
-                   "patternFile", "template", "snapModes",
+                   "patternFile", "snapModes",
                    "FontFile", "ClonePrefix", "overrideUnit",
                    "labeltype", "gridSpacing") or "inCommandShortcut" in param:
         return "string"
