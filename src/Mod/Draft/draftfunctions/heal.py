@@ -70,7 +70,7 @@ def heal(objlist=None, delete=True, reparent=True):
     for obj in objlist:
         dtype = utils.get_type(obj)
         ftype = obj.TypeId
-        if ftype in ["Part::FeaturePython","App::FeaturePython","Part::Part2DObjectPython","Drawing::FeatureViewPython"]:
+        if ftype in ["Part::FeaturePython","App::FeaturePython","Part::Part2DObjectPython"]:
             proxy = obj.Proxy
             if hasattr(obj,"ViewObject"):
                 if hasattr(obj.ViewObject,"Proxy"):

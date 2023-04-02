@@ -21,7 +21,7 @@
 """Provides support for importing and exporting SVG files.
 
 It enables importing/exporting objects directly to/from the 3D document
-but doesn't handle the SVG output from the Drawing and TechDraw modules.
+but doesn't handle the SVG output from the TechDraw module.
 
 Currently it only reads the following entities:
 * paths, lines, circular arcs, rects, circles, ellipses, polygons, polylines.

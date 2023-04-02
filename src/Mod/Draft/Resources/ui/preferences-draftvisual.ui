@@ -165,25 +165,6 @@
           </property>
          </spacer>
         </item>
-        <item>
-         <widget class="Gui::PrefFileChooser" name="gui::preffilechooser_2">
-          <property name="minimumSize">
-           <size>
-            <width>300</width>
-            <height>0</height>
-           </size>
-          </property>
-          <property name="toolTip">
-           <string>The default template to use when creating a new drawing sheet</string>
-          </property>
-          <property name="prefEntry" stdset="0">
-           <cstring>template</cstring>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>Mod/Draft</cstring>
-          </property>
-         </widget>
-        </item>
        </layout>
       </item>
       <item>

@@ -1688,8 +1688,7 @@ class DraftToolBar:
                 self.commands = ["Draft_Move","Draft_Rotate",
                                  "Draft_Scale","Draft_Offset",
                                  "Draft_Trimex","Draft_Upgrade",
-                                 "Draft_Downgrade","Draft_Edit",
-                                 "Draft_Drawing"]
+                                 "Draft_Downgrade","Draft_Edit"]
                 self.title = "Modify objects"
             def shouldShow(self):
                 return (FreeCAD.ActiveDocument is not None) and (FreeCADGui.Selection.getSelection() != [])
