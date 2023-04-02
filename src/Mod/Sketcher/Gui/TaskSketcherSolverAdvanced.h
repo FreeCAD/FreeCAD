@@ -44,27 +44,28 @@ public:
     explicit TaskSketcherSolverAdvanced(ViewProviderSketch *sketchView);
     ~TaskSketcherSolverAdvanced() override;
 
-private Q_SLOTS:
-    void on_comboBoxDefaultSolver_currentIndexChanged(int index); 
-    void on_comboBoxDogLegGaussStep_currentIndexChanged(int index);    
-    void on_spinBoxMaxIter_valueChanged(int i);
-    void on_checkBoxSketchSizeMultiplier_stateChanged(int state);    
-    void on_lineEditConvergence_editingFinished();
-    void on_comboBoxQRMethod_currentIndexChanged(int index);
-    void on_lineEditQRPivotThreshold_editingFinished();
-    void on_comboBoxRedundantDefaultSolver_currentIndexChanged(int index);
-    void on_lineEditRedundantConvergence_editingFinished();
-    void on_spinBoxRedundantSolverMaxIterations_valueChanged(int i);
-    void on_checkBoxRedundantSketchSizeMultiplier_stateChanged(int state);
-    void on_comboBoxDebugMode_currentIndexChanged(int index);
-    void on_lineEditSolverParam1_editingFinished();
-    void on_lineEditRedundantSolverParam1_editingFinished();
-    void on_lineEditSolverParam2_editingFinished();
-    void on_lineEditRedundantSolverParam2_editingFinished();
-    void on_lineEditSolverParam3_editingFinished();
-    void on_lineEditRedundantSolverParam3_editingFinished();
-    void on_pushButtonDefaults_clicked(bool checked = false);
-    void on_pushButtonSolve_clicked(bool checked = false);
+private:
+    void setupConnections();
+    void onComboBoxDefaultSolverCurrentIndexChanged(int index);
+    void onComboBoxDogLegGaussStepCurrentIndexChanged(int index);
+    void onSpinBoxMaxIterValueChanged(int i);
+    void onCheckBoxSketchSizeMultiplierStateChanged(int state);
+    void onLineEditConvergenceEditingFinished();
+    void onComboBoxQRMethodCurrentIndexChanged(int index);
+    void onLineEditQRPivotThresholdEditingFinished();
+    void onComboBoxRedundantDefaultSolverCurrentIndexChanged(int index);
+    void onLineEditRedundantConvergenceEditingFinished();
+    void onSpinBoxRedundantSolverMaxIterationsValueChanged(int i);
+    void onCheckBoxRedundantSketchSizeMultiplierStateChanged(int state);
+    void onComboBoxDebugModeCurrentIndexChanged(int index);
+    void onLineEditSolverParam1EditingFinished();
+    void onLineEditRedundantSolverParam1EditingFinished();
+    void onLineEditSolverParam2EditingFinished();
+    void onLineEditRedundantSolverParam2EditingFinished();
+    void onLineEditSolverParam3EditingFinished();
+    void onLineEditRedundantSolverParam3EditingFinished();
+    void onPushButtonDefaultsClicked(bool checked = false);
+    void onPushButtonSolveClicked(bool checked = false);
 
 protected:
     void updateDefaultMethodParameters();

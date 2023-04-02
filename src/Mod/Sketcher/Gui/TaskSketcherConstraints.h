@@ -170,23 +170,23 @@ private:
 
     void getSelectionGeoId(QString expr, int & geoid, Sketcher::PointPos & pos);
 
-public Q_SLOTS:
-    void on_listWidgetConstraints_itemSelectionChanged();
-    void on_listWidgetConstraints_itemActivated(QListWidgetItem *item);
-    void on_listWidgetConstraints_itemChanged(QListWidgetItem * item);
-    void on_listWidgetConstraints_updateDrivingStatus(QListWidgetItem *item, bool status);
-    void on_listWidgetConstraints_updateActiveStatus(QListWidgetItem *item, bool status);
-    void on_listWidgetConstraints_emitCenterSelectedItems();
-    void on_listWidgetConstraints_emitShowSelection3DVisibility();
-    void on_listWidgetConstraints_emitHideSelection3DVisibility();
-    void on_filterBox_stateChanged(int val);
-    void on_showHideButton_clicked(bool);
-    void on_settings_restrictVisibility_changed(bool value = false);
-    void on_settings_extendedInformation_changed(bool value = false);
-    void on_settings_hideInternalAligment_changed(bool value = false);
-    void on_settings_autoConstraints_changed(bool value = false);
-    void on_settings_autoRemoveRedundant_changed(bool value = false);
-    void on_filterList_itemChanged(QListWidgetItem* item);
+public:
+    void onListWidgetConstraintsItemSelectionChanged();
+    void onListWidgetConstraintsItemActivated(QListWidgetItem *item);
+    void onListWidgetConstraintsItemChanged(QListWidgetItem * item);
+    void onListWidgetConstraintsUpdateDrivingStatus(QListWidgetItem *item, bool status);
+    void onListWidgetConstraintsUpdateActiveStatus(QListWidgetItem *item, bool status);
+    void onListWidgetConstraintsEmitCenterSelectedItems();
+    void onListWidgetConstraintsEmitShowSelection3DVisibility();
+    void onListWidgetConstraintsEmitHideSelection3DVisibility();
+    void onFilterBoxStateChanged(int val);
+    void onShowHideButtonClicked(bool);
+    void onSettingsRestrictVisibilityChanged(bool value = false);
+    void onSettingsExtendedInformationChanged(bool value = false);
+    void onSettingsHideInternalAligmentChanged(bool value = false);
+    void onSettingsAutoConstraintsChanged(bool value = false);
+    void onSettingsAutoRemoveRedundantChanged(bool value = false);
+    void onFilterListItemChanged(QListWidgetItem* item);
 
 protected:
     void changeEvent(QEvent *e) override;

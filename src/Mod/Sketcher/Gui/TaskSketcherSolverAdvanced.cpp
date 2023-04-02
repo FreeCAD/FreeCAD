@@ -61,7 +61,7 @@ TaskSketcherSolverAdvanced::TaskSketcherSolverAdvanced(ViewProviderSketch *sketc
     // we need a separate container widget to add all controls to
     proxy = new QWidget(this);
     ui->setupUi(proxy);
-    QMetaObject::connectSlotsByName(this);
+    setupConnections();
 
     this->groupLayout()->addWidget(proxy);
 
@@ -83,6 +83,50 @@ TaskSketcherSolverAdvanced::TaskSketcherSolverAdvanced(ViewProviderSketch *sketc
 
 TaskSketcherSolverAdvanced::~TaskSketcherSolverAdvanced()
 {
+}
+
+void TaskSketcherSolverAdvanced::setupConnections()
+{
+    connect(ui->comboBoxDefaultSolver, qOverload<int>(&QComboBox::currentIndexChanged),
+            this, &TaskSketcherSolverAdvanced::onComboBoxDefaultSolverCurrentIndexChanged);
+    connect(ui->comboBoxDogLegGaussStep, qOverload<int>(&QComboBox::currentIndexChanged),
+            this, &TaskSketcherSolverAdvanced::onComboBoxDogLegGaussStepCurrentIndexChanged);
+    connect(ui->spinBoxMaxIter, qOverload<int>(&QSpinBox::valueChanged),
+            this, &TaskSketcherSolverAdvanced::onSpinBoxMaxIterValueChanged);
+    connect(ui->checkBoxSketchSizeMultiplier, &QCheckBox::stateChanged,
+            this, &TaskSketcherSolverAdvanced::onCheckBoxSketchSizeMultiplierStateChanged);
+    connect(ui->lineEditConvergence, &QLineEdit::editingFinished,
+            this, &TaskSketcherSolverAdvanced::onLineEditConvergenceEditingFinished);
+    connect(ui->comboBoxQRMethod, qOverload<int>(&QComboBox::currentIndexChanged),
+            this, &TaskSketcherSolverAdvanced::onComboBoxQRMethodCurrentIndexChanged);
+    connect(ui->lineEditQRPivotThreshold, &QLineEdit::editingFinished,
+            this, &TaskSketcherSolverAdvanced::onLineEditQRPivotThresholdEditingFinished);
+    connect(ui->comboBoxRedundantDefaultSolver, qOverload<int>(&QComboBox::currentIndexChanged),
+            this, &TaskSketcherSolverAdvanced::onComboBoxRedundantDefaultSolverCurrentIndexChanged);
+    connect(ui->lineEditRedundantConvergence, &QLineEdit::editingFinished,
+            this, &TaskSketcherSolverAdvanced::onLineEditRedundantConvergenceEditingFinished);
+    connect(ui->spinBoxRedundantSolverMaxIterations, qOverload<int>(&QSpinBox::valueChanged),
+            this, &TaskSketcherSolverAdvanced::onSpinBoxRedundantSolverMaxIterationsValueChanged);
+    connect(ui->checkBoxRedundantSketchSizeMultiplier, &QCheckBox::stateChanged,
+            this, &TaskSketcherSolverAdvanced::onCheckBoxRedundantSketchSizeMultiplierStateChanged);
+    connect(ui->comboBoxDebugMode, qOverload<int>(&QComboBox::currentIndexChanged),
+            this, &TaskSketcherSolverAdvanced::onComboBoxDebugModeCurrentIndexChanged);
+    connect(ui->lineEditSolverParam1, &QLineEdit::editingFinished,
+            this, &TaskSketcherSolverAdvanced::onLineEditSolverParam1EditingFinished);
+    connect(ui->lineEditRedundantSolverParam1, &QLineEdit::editingFinished,
+            this, &TaskSketcherSolverAdvanced::onLineEditRedundantSolverParam1EditingFinished);
+    connect(ui->lineEditSolverParam2, &QLineEdit::editingFinished,
+            this, &TaskSketcherSolverAdvanced::onLineEditSolverParam2EditingFinished);
+    connect(ui->lineEditRedundantSolverParam2, &Gui::PrefLineEdit::editingFinished,
+            this, &TaskSketcherSolverAdvanced::onLineEditRedundantSolverParam2EditingFinished);
+    connect(ui->lineEditSolverParam3, &QLineEdit::editingFinished,
+            this, &TaskSketcherSolverAdvanced::onLineEditSolverParam3EditingFinished);
+    connect(ui->lineEditRedundantSolverParam3, &Gui::PrefLineEdit::editingFinished,
+            this, &TaskSketcherSolverAdvanced::onLineEditRedundantSolverParam3EditingFinished);
+    connect(ui->pushButtonDefaults, &QPushButton::clicked,
+            this, &TaskSketcherSolverAdvanced::onPushButtonDefaultsClicked);
+    connect(ui->pushButtonSolve, &QPushButton::clicked,
+            this, &TaskSketcherSolverAdvanced::onPushButtonSolveClicked);
 }
 
 void TaskSketcherSolverAdvanced::updateDefaultMethodParameters()
@@ -220,7 +264,7 @@ void TaskSketcherSolverAdvanced::updateRedundantMethodParameters()
     }
 }
 
-void TaskSketcherSolverAdvanced::on_lineEditSolverParam1_editingFinished()
+void TaskSketcherSolverAdvanced::onLineEditSolverParam1EditingFinished()
 {
     QString text = ui->lineEditSolverParam1->text();
     double val = text.toDouble();
@@ -248,7 +292,7 @@ void TaskSketcherSolverAdvanced::on_lineEditSolverParam1_editingFinished()
     }
 }
 
-void TaskSketcherSolverAdvanced::on_lineEditRedundantSolverParam1_editingFinished()
+void TaskSketcherSolverAdvanced::onLineEditRedundantSolverParam1EditingFinished()
 {
     QString text = ui->lineEditRedundantSolverParam1->text();
     double val = text.toDouble();
@@ -276,7 +320,7 @@ void TaskSketcherSolverAdvanced::on_lineEditRedundantSolverParam1_editingFinishe
     }
 }
 
-void TaskSketcherSolverAdvanced::on_lineEditSolverParam2_editingFinished()
+void TaskSketcherSolverAdvanced::onLineEditSolverParam2EditingFinished()
 {
     QString text = ui->lineEditSolverParam2->text();
     double val = text.toDouble();
@@ -304,7 +348,7 @@ void TaskSketcherSolverAdvanced::on_lineEditSolverParam2_editingFinished()
     }
 }
 
-void TaskSketcherSolverAdvanced::on_lineEditRedundantSolverParam2_editingFinished()
+void TaskSketcherSolverAdvanced::onLineEditRedundantSolverParam2EditingFinished()
 {
     QString text = ui->lineEditRedundantSolverParam2->text();
     double val = text.toDouble();
@@ -332,7 +376,7 @@ void TaskSketcherSolverAdvanced::on_lineEditRedundantSolverParam2_editingFinishe
     }
 }
 
-void TaskSketcherSolverAdvanced::on_lineEditSolverParam3_editingFinished()
+void TaskSketcherSolverAdvanced::onLineEditSolverParam3EditingFinished()
 {
     QString text = ui->lineEditSolverParam3->text();
     double val = text.toDouble();
@@ -360,7 +404,7 @@ void TaskSketcherSolverAdvanced::on_lineEditSolverParam3_editingFinished()
     }
 }
 
-void TaskSketcherSolverAdvanced::on_lineEditRedundantSolverParam3_editingFinished()
+void TaskSketcherSolverAdvanced::onLineEditRedundantSolverParam3EditingFinished()
 {
     QString text = ui->lineEditRedundantSolverParam3->text();
     double val = text.toDouble();
@@ -388,27 +432,27 @@ void TaskSketcherSolverAdvanced::on_lineEditRedundantSolverParam3_editingFinishe
     }
 }
 
-void TaskSketcherSolverAdvanced::on_comboBoxDefaultSolver_currentIndexChanged(int index)
+void TaskSketcherSolverAdvanced::onComboBoxDefaultSolverCurrentIndexChanged(int index)
 {
     ui->comboBoxDefaultSolver->onSave();
     const_cast<Sketcher::Sketch &>(sketchView->getSketchObject()->getSolvedSketch()).defaultSolver = static_cast<GCS::Algorithm>(index);
     updateDefaultMethodParameters();
 }
 
-void TaskSketcherSolverAdvanced::on_comboBoxDogLegGaussStep_currentIndexChanged(int index)
+void TaskSketcherSolverAdvanced::onComboBoxDogLegGaussStepCurrentIndexChanged(int index)
 {
     ui->comboBoxDogLegGaussStep->onSave();
     const_cast<Sketcher::Sketch &>(sketchView->getSketchObject()->getSolvedSketch()).setDogLegGaussStep((GCS::DogLegGaussStep) index);
     updateDefaultMethodParameters();
 }
 
-void TaskSketcherSolverAdvanced::on_spinBoxMaxIter_valueChanged(int i)
+void TaskSketcherSolverAdvanced::onSpinBoxMaxIterValueChanged(int i)
 {
     ui->spinBoxMaxIter->onSave();
     const_cast<Sketcher::Sketch &>(sketchView->getSketchObject()->getSolvedSketch()).setMaxIter(i);
 }
 
-void TaskSketcherSolverAdvanced::on_checkBoxSketchSizeMultiplier_stateChanged(int state)
+void TaskSketcherSolverAdvanced::onCheckBoxSketchSizeMultiplierStateChanged(int state)
 {
     if(state==Qt::Checked) {
         ui->checkBoxSketchSizeMultiplier->onSave();
@@ -420,7 +464,7 @@ void TaskSketcherSolverAdvanced::on_checkBoxSketchSizeMultiplier_stateChanged(in
     }
 }
 
-void TaskSketcherSolverAdvanced::on_lineEditQRPivotThreshold_editingFinished()
+void TaskSketcherSolverAdvanced::onLineEditQRPivotThresholdEditingFinished()
 {
     QString text = ui->lineEditQRPivotThreshold->text();
     double val = text.toDouble();
@@ -434,7 +478,7 @@ void TaskSketcherSolverAdvanced::on_lineEditQRPivotThreshold_editingFinished()
     const_cast<Sketcher::Sketch &>(sketchView->getSketchObject()->getSolvedSketch()).setQRPivotThreshold(val);
 }
 
-void TaskSketcherSolverAdvanced::on_lineEditConvergence_editingFinished()
+void TaskSketcherSolverAdvanced::onLineEditConvergenceEditingFinished()
 {
     QString text = ui->lineEditConvergence->text();
     double val = text.toDouble();
@@ -448,7 +492,7 @@ void TaskSketcherSolverAdvanced::on_lineEditConvergence_editingFinished()
     const_cast<Sketcher::Sketch &>(sketchView->getSketchObject()->getSolvedSketch()).setConvergence(val);
 }
 
-void TaskSketcherSolverAdvanced::on_lineEditRedundantConvergence_editingFinished()
+void TaskSketcherSolverAdvanced::onLineEditRedundantConvergenceEditingFinished()
 {
     QString text = ui->lineEditRedundantConvergence->text();
     double val = text.toDouble();
@@ -462,26 +506,26 @@ void TaskSketcherSolverAdvanced::on_lineEditRedundantConvergence_editingFinished
     const_cast<Sketcher::Sketch &>(sketchView->getSketchObject()->getSolvedSketch()).setConvergenceRedundant(val);
 }
 
-void TaskSketcherSolverAdvanced::on_comboBoxQRMethod_currentIndexChanged(int index)
+void TaskSketcherSolverAdvanced::onComboBoxQRMethodCurrentIndexChanged(int index)
 {
     const_cast<Sketcher::Sketch &>(sketchView->getSketchObject()->getSolvedSketch()).setQRAlgorithm((GCS::QRAlgorithm) index);
     ui->comboBoxQRMethod->onSave();
 }
 
-void TaskSketcherSolverAdvanced::on_comboBoxRedundantDefaultSolver_currentIndexChanged(int index)
+void TaskSketcherSolverAdvanced::onComboBoxRedundantDefaultSolverCurrentIndexChanged(int index)
 {
     ui->comboBoxRedundantDefaultSolver->onSave();
     const_cast<Sketcher::Sketch &>(sketchView->getSketchObject()->getSolvedSketch()).defaultSolverRedundant = static_cast<GCS::Algorithm>(index);
     updateRedundantMethodParameters();
 }
 
-void TaskSketcherSolverAdvanced::on_spinBoxRedundantSolverMaxIterations_valueChanged(int i)
+void TaskSketcherSolverAdvanced::onSpinBoxRedundantSolverMaxIterationsValueChanged(int i)
 {
     ui->spinBoxRedundantSolverMaxIterations->onSave();
     const_cast<Sketcher::Sketch &>(sketchView->getSketchObject()->getSolvedSketch()).setMaxIterRedundant(i);
 }
 
-void TaskSketcherSolverAdvanced::on_checkBoxRedundantSketchSizeMultiplier_stateChanged(int state)
+void TaskSketcherSolverAdvanced::onCheckBoxRedundantSketchSizeMultiplierStateChanged(int state)
 {
     if(state==Qt::Checked) {
         ui->checkBoxRedundantSketchSizeMultiplier->onSave();
@@ -493,19 +537,19 @@ void TaskSketcherSolverAdvanced::on_checkBoxRedundantSketchSizeMultiplier_stateC
     }
 }
 
-void TaskSketcherSolverAdvanced::on_comboBoxDebugMode_currentIndexChanged(int index)
+void TaskSketcherSolverAdvanced::onComboBoxDebugModeCurrentIndexChanged(int index)
 {
     ui->comboBoxDebugMode->onSave();
     const_cast<Sketcher::Sketch &>(sketchView->getSketchObject()->getSolvedSketch()).setDebugMode((GCS::DebugMode) index);
 }
 
-void TaskSketcherSolverAdvanced::on_pushButtonSolve_clicked(bool checked/* = false*/)
+void TaskSketcherSolverAdvanced::onPushButtonSolveClicked(bool checked/* = false*/)
 {
     Q_UNUSED(checked);
     sketchView->getSketchObject()->solve();
 }
 
-void TaskSketcherSolverAdvanced::on_pushButtonDefaults_clicked(bool checked/* = false*/)
+void TaskSketcherSolverAdvanced::onPushButtonDefaultsClicked(bool checked/* = false*/)
 {
     Q_UNUSED(checked);
     // Algorithm params for default solvers
