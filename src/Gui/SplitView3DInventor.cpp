@@ -109,6 +109,7 @@ void AbstractSplitView::setupSettings()
     OnChange(*hGrp,"CornerCoordSystemSize");
     OnChange(*hGrp,"UseAutoRotation");
     OnChange(*hGrp,"Gradient");
+    OnChange(*hGrp,"RadialGradient");
     OnChange(*hGrp,"BackgroundColor");
     OnChange(*hGrp,"BackgroundColor2");
     OnChange(*hGrp,"BackgroundColor3");
@@ -263,9 +264,9 @@ void AbstractSplitView::OnChange(ParameterGrp::SubjectType &rCaller,ParameterGrp
         for (std::vector<View3DInventorViewer*>::iterator it = _viewer.begin(); it != _viewer.end(); ++it)
             (*it)->setAnimationEnabled(rGrp.GetBool("UseAutoRotation",false));
     }
-    else if (strcmp(Reason,"Gradient") == 0) {
+    else if ( strcmp(Reason,"Gradient") == 0 || strcmp(Reason, "RadialGradient") == 0  ) {
         for (std::vector<View3DInventorViewer*>::iterator it = _viewer.begin(); it != _viewer.end(); ++it)
-            (*it)->setGradientBackground((rGrp.GetBool("Gradient",true)));
+            (*it)->setGradientBackground(rGrp.GetBool("Gradient", true) || rGrp.GetBool("RadialGradient", true));
     }
     else if (strcmp(Reason,"ShowFPS") == 0) {
         for (std::vector<View3DInventorViewer*>::iterator it = _viewer.begin(); it != _viewer.end(); ++it)
@@ -305,9 +306,11 @@ void AbstractSplitView::OnChange(ParameterGrp::SubjectType &rCaller,ParameterGrp
         for (std::vector<View3DInventorViewer*>::iterator it = _viewer.begin(); it != _viewer.end(); ++it) {
             (*it)->setBackgroundColor(QColor::fromRgbF(r1, g1, b1));
             if (!rGrp.GetBool("UseBackgroundColorMid",false))
-                (*it)->setGradientBackgroundColor(SbColor(r2, g2, b2), SbColor(r3, g3, b3));
+                (*it)->setGradientBackgroundColor(SbColor(r2, g2, b2), SbColor(r3, g3, b3),
+                                                  rGrp.GetBool("RadialGradient", false) );
             else
-                (*it)->setGradientBackgroundColor(SbColor(r2, g2, b2), SbColor(r3, g3, b3), SbColor(r4, g4, b4));
+                (*it)->setGradientBackgroundColor(SbColor(r2, g2, b2), SbColor(r3, g3, b3), SbColor(r4, g4, b4),
+                                                  rGrp.GetBool("RadialGradient", false) );
         }
     }
 }

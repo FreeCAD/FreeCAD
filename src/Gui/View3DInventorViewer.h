@@ -373,10 +373,12 @@ public:
     void setGradientBackground(bool b);
     bool hasGradientBackground() const;
     void setGradientBackgroundColor(const SbColor& fromColor,
-                                    const SbColor& toColor);
+                                    const SbColor& toColor,
+                                    bool isRadial);
     void setGradientBackgroundColor(const SbColor& fromColor,
                                     const SbColor& toColor,
-                                    const SbColor& midColor);
+                                    const SbColor& midColor,
+                                    bool isRadial);
     void setNavigationType(Base::Type);
 
     void setAxisCross(bool b);
