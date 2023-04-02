@@ -664,7 +664,9 @@ class MissingDependencies:
                         translate(
                             "AddonsInstaller",
                             "Got an error when trying to import {}",
-                        ).format(py_dep) + ":\n" + str(e)
+                        ).format(py_dep)
+                        + ":\n"
+                        + str(e)
                     )
 
         self.python_optional = []
@@ -678,7 +680,9 @@ class MissingDependencies:
                     translate(
                         "AddonsInstaller",
                         "Got an error when trying to import {}",
-                    ).format(py_dep) + ":\n" + str(e)
+                    ).format(py_dep)
+                    + ":\n"
+                    + str(e)
                 )
 
         self.wbs.sort()

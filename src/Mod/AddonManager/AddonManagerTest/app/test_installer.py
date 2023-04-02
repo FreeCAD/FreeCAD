@@ -116,7 +116,9 @@ class TestAddonInstaller(unittest.TestCase):
                 os.path.join(self.test_data_dir, "good_package.xml"),
                 os.path.join(addon_dir, "package.xml"),
             )
-            good_metadata = MetadataReader.from_file(os.path.join(addon_dir, "package.xml"))
+            good_metadata = MetadataReader.from_file(
+                os.path.join(addon_dir, "package.xml")
+            )
             installer._update_metadata()
             self.assertEqual(self.real_addon.installed_version, good_metadata.version)
 
