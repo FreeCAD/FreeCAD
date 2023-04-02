@@ -2175,6 +2175,21 @@ void Application::runApplication()
 
             int major = context.format().majorVersion();
             int minor = context.format().minorVersion();
+            if (major < 2) {
+                std::map<std::string, std::string>& config = App::Application::Config();
+                QString fcmajor  = QString::fromLatin1(config["BuildVersionMajor"].c_str());
+                QString fcminor  = QString::fromLatin1(config["BuildVersionMinor"].c_str());
+                QString fcpoint = QString::fromLatin1(config["BuildVersionPoint"].c_str());
+                QString msgboxtitle =
+                        QString::fromLatin1("%1 %2.%3.%4 ").arg(mainApp.applicationName(), fcmajor, fcminor, fcpoint);
+                std::stringstream ss;
+                ss << "This system is running OpenGL version " << major << "." << minor
+                   << ", FreeCAD requires OpenGL version 2.0 or above, please upgrade your graphics driver"
+                   << " and/or card as required.\n\n";
+                std::string msgboxtext = ss.str();            
+                QMessageBox::critical(0, msgboxtitle + QObject::tr("Invalid OpenGL Version"), QObject::tr(msgboxtext.c_str()));
+                throw Base::RuntimeError("Invalid OpenGL Version");
+            }
             const char* glVersion = reinterpret_cast<const char*>(glGetString(GL_VERSION));
             Base::Console().Log("OpenGL version is: %d.%d (%s)\n", major, minor, glVersion);
         }
