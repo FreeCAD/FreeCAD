@@ -34,6 +34,7 @@ from . import manager
 from .manager import get_meshname
 from .manager import init_doc
 
+
 def get_information():
     return {
         "name": "Magnetostatic - Elmer 2D",
@@ -45,6 +46,7 @@ def get_information():
         "equations": ["magnetostatic"]
     }
 
+
 def get_explanation(header=""):
     return header + """
 
@@ -55,6 +57,7 @@ setup()
 Magnetodynamic2D equation - Elmer solver
 
 """
+
 
 def setup(doc=None, solvertype="elmer"):
 

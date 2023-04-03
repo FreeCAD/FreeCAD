@@ -219,6 +219,7 @@ class _ConstraintCentrif(CommandManager):
         self.is_active = "with_analysis"
         self.do_activated = "add_obj_on_gui_set_edit"
 
+
 class _ConstraintCurrentDensity(CommandManager):
     "The FEM_ConstraintCurrentDensity command definition"
 

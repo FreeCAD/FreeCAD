@@ -35,6 +35,7 @@ from . import manager
 from .manager import get_meshname
 from .manager import init_doc
 
+
 def get_information():
     return {
         "name": "Flow - Elmer 2D",
@@ -47,6 +48,7 @@ def get_information():
         "equations": ["flow", "heat"]
     }
 
+
 def get_explanation(header=""):
     return header + """
 
@@ -57,6 +59,7 @@ setup()
 Flow and Heat equation - Elmer solver
 
 """
+
 
 def setup(doc=None, solvertype="elmer"):
 

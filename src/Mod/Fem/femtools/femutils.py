@@ -397,6 +397,7 @@ def startProgramInfo(code):
         info.dwFlags = subprocess.STARTF_USESHOWWINDOW
         return info
 
+
 def expandParentObject():
     """ expands parent and selected obj in tree view """
     trees = FreeCADGui.getMainWindow().findChildren(QtGui.QTreeWidget)

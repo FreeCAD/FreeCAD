@@ -35,6 +35,7 @@ from . import manager
 from .manager import get_meshname
 from .manager import init_doc
 
+
 def get_information():
     return {
         "name": "Magnetic Field Around Wire",
@@ -46,6 +47,7 @@ def get_information():
         "equations": ["electromagnetic"]
     }
 
+
 def get_explanation(header=""):
     return header + """
 
@@ -56,6 +58,7 @@ setup()
 Magnetodynamic equation - Elmer solver
 
 """
+
 
 def setup(doc=None, solvertype="elmer"):
 
