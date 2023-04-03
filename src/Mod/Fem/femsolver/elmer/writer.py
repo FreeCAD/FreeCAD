@@ -419,7 +419,7 @@ class Writer(object):
             )
             solver.TimestepSizes = [0.1]
 
-    #-------------------------------------------------------------------------------------------
+    # -------------------------------------------------------------------------------------------
     # Deformation
 
     def _handleDeformation(self):
@@ -447,7 +447,7 @@ class Writer(object):
             DEFW.handleDeformationBodyForces(activeIn)
             DEFW.handleDeformationMaterial(activeIn)
 
-    #-------------------------------------------------------------------------------------------
+    # -------------------------------------------------------------------------------------------
     # Elasticity
 
     def _handleElasticity(self):
@@ -475,7 +475,7 @@ class Writer(object):
             ELW.handleElasticityBodyForces(activeIn)
             ELW.handleElasticityMaterial(activeIn)
 
-    #-------------------------------------------------------------------------------------------
+    # -------------------------------------------------------------------------------------------
     # Electrostatic
 
     def _handleElectrostatic(self):
@@ -495,7 +495,7 @@ class Writer(object):
             ESW.handleElectrostaticBndConditions()
             ESW.handleElectrostaticMaterial(activeIn)
 
-    #-------------------------------------------------------------------------------------------
+    # -------------------------------------------------------------------------------------------
     # Electricforce
 
     def _handleElectricforce(self):
@@ -511,7 +511,7 @@ class Writer(object):
                 for body in activeIn:
                     self._addSolver(body, solverSection)
 
-    #-------------------------------------------------------------------------------------------
+    # -------------------------------------------------------------------------------------------
     # Flow
 
     def _handleFlow(self):
@@ -539,7 +539,7 @@ class Writer(object):
             FlowW.handleFlowInitialVelocity(activeIn)
             FlowW.handleFlowMaterial(activeIn)
 
-    #-------------------------------------------------------------------------------------------
+    # -------------------------------------------------------------------------------------------
     # Flux
 
     def _handleFlux(self):
@@ -555,7 +555,7 @@ class Writer(object):
                 for body in activeIn:
                     self._addSolver(body, solverSection)
 
-    #-------------------------------------------------------------------------------------------
+    # -------------------------------------------------------------------------------------------
     # Heat
 
     def _handleHeat(self):
@@ -578,7 +578,7 @@ class Writer(object):
             HeatW.handleHeatBodyForces(activeIn)
             HeatW.handleHeatMaterial(activeIn)
 
-    #-------------------------------------------------------------------------------------------
+    # -------------------------------------------------------------------------------------------
     # Magnetodynamic
 
     def _handleMagnetodynamic(self):
@@ -602,7 +602,7 @@ class Writer(object):
             MgDyn.handleMagnetodynamicBodyForces(activeIn, equation)
             MgDyn.handleMagnetodynamicMaterial(activeIn)
 
-    #-------------------------------------------------------------------------------------------
+    # -------------------------------------------------------------------------------------------
     # Magnetodynamic2D
 
     def _handleMagnetodynamic2D(self):
@@ -635,7 +635,7 @@ class Writer(object):
             MgDyn2D.handleMagnetodynamic2DBodyForces(activeIn, equation)
             MgDyn2D.handleMagnetodynamic2DMaterial(activeIn)
 
-    #-------------------------------------------------------------------------------------------
+    # -------------------------------------------------------------------------------------------
     # Solver handling
 
     def createEmptySolver(self):
@@ -730,7 +730,7 @@ class Writer(object):
             equation.NonlinearNewtonAfterTolerance
         return s
 
-    #-------------------------------------------------------------------------------------------
+    # -------------------------------------------------------------------------------------------
     # Helper functions
 
     def _haveMaterialSolid(self):
