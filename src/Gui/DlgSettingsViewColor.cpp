@@ -133,8 +133,8 @@ void DlgSettingsViewColor::onSwitchGradientColorsPressed()
 
 void DlgSettingsViewColor::onCheckMidColorToggled(bool val)
 {
-    ui->color2Label->setVisible(val);
-    ui->backgroundColorMid->setVisible(val);
+    ui->color2Label->setEnabled(val);
+    ui->backgroundColorMid->setEnabled(val);
 }
 
 void DlgSettingsViewColor::onRadioButtonSimpleToggled(bool val)
@@ -163,12 +163,15 @@ void DlgSettingsViewColor::setGradientColorVisibility(bool val)
     ui->SelectionColor_Background->setVisible(!val);
     ui->color1Label->setVisible(val);
     ui->backgroundColorFrom->setVisible(val);
-    ui->color2Label->setVisible(val && ui->checkMidColor->isChecked());
-    ui->backgroundColorMid->setVisible(val && ui->checkMidColor->isChecked());
+    ui->color2Label->setVisible(val);
+    ui->backgroundColorMid->setVisible(val);
     ui->color3Label->setVisible(val);
     ui->backgroundColorTo->setVisible(val);
     ui->checkMidColor->setVisible(val);
     ui->SwitchGradientColors->setVisible(val);
+
+    if (val)
+        onCheckMidColorToggled(ui->checkMidColor->isChecked());
 }
 
 #include "moc_DlgSettingsViewColor.cpp"

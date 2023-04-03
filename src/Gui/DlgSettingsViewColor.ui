@@ -388,7 +388,7 @@
           </property>
          </widget>
         </item>
-        <item row="5" column="0">
+        <item row="3" column="2">
          <widget class="Gui::PrefCheckBox" name="checkMidColor">
           <property name="toolTip">
            <string>Color gradient will get selected color as middle color</string>
