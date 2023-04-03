@@ -45,7 +45,7 @@ namespace bio = boost::iostreams;
  * @return Return the end position of the tag field, or return -1 if not found.
  */
 static int findTagInElementName(const MappedName& name, long* tag = 0, int* len = 0,
-                                std::string* postfix = 0, char* type = 0, bool negative = false,
+                                const char* postfix = 0, char* type = 0, bool negative = false,
                                 bool recursive = true)
 {
     bool hex = true;
@@ -199,8 +199,6 @@ static int findTagInElementName(const MappedName& name, long* tag = 0, int* len 
         name.toString(*postfix, pos);
     return pos;
 }
-
-
 
 
 
