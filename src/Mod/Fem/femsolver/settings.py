@@ -167,6 +167,7 @@ def get_dir_setting():
         return DirSetting.CUSTOM
     return DirSetting.TEMPORARY
 
+
 def get_default_solver():
     """ Return default solver name.
     """
@@ -181,6 +182,7 @@ def get_default_solver():
         solver_map[len(solver_map)] = "Z88"
     param_group = FreeCAD.ParamGet(_GENERAL_PARAM)
     return solver_map[param_group.GetInt("DefaultSolver", 0)]
+
 
 class _SolverDlg(object):
     """ Internal query logic for solver specific settings.

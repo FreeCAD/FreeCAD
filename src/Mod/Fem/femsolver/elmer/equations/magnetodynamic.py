@@ -32,6 +32,7 @@ from femtools import femutils
 from . import nonlinear
 from ... import equationbase
 
+
 def create(doc, name="Magnetodynamic"):
     return femutils.createObject(
         doc, name, Proxy, ViewProxy)

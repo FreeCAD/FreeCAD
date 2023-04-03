@@ -34,6 +34,7 @@ from .. import sifio
 from .. import writer as general_writer
 from . import flow
 
+
 class Flowwriter:
 
     def __init__(self, writer, solver):

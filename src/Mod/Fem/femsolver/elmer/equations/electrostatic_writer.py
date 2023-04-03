@@ -32,6 +32,7 @@ __url__ = "https://www.freecad.org"
 
 from .. import sifio
 
+
 class ESwriter:
 
     def __init__(self, writer, solver):

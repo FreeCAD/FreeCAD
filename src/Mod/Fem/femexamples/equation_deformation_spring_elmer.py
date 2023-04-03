@@ -36,6 +36,7 @@ from . import manager
 from .manager import get_meshname
 from .manager import init_doc
 
+
 def get_information():
     return {
         "name": "Deformation (nonlinear elasticity) - Elmer",
@@ -47,6 +48,7 @@ def get_information():
         "equations": ["deformation"]
     }
 
+
 def get_explanation(header=""):
     return header + """
 
@@ -57,6 +59,7 @@ setup()
 Deformation equation - Elmer solver
 
 """
+
 
 def setup(doc=None, solvertype="elmer"):
 

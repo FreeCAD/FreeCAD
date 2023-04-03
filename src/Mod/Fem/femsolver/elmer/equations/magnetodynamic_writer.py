@@ -34,6 +34,7 @@ from FreeCAD import Units
 from .. import sifio
 from .. import writer as general_writer
 
+
 class MgDynwriter:
 
     def __init__(self, writer, solver):
