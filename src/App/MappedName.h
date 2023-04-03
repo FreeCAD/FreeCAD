@@ -910,8 +910,7 @@ struct MappedNameRef
     ElementIDRefs sids;
     std::unique_ptr<MappedNameRef> next;
 
-    MappedNameRef()
-    {}
+    MappedNameRef() = default;
 
     MappedNameRef(const MappedName& name, const ElementIDRefs& sids = ElementIDRefs())
         : name(name),

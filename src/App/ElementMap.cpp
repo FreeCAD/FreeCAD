@@ -4,9 +4,18 @@
 
 #include "App/Application.h"
 #include "Base/Console.h"
+
 //#include <boost/algorithm/string/predicate.hpp>
 #include <boost/algorithm/string/split.hpp>
 #include <boost/algorithm/string/classification.hpp>
+
+#include <boost/iostreams/device/array.hpp>
+#include <boost/iostreams/stream.hpp>
+//#include <boost/io/ios_state.hpp>
+//#include <boost/regex.hpp>
+
+
+
 
 #include <unordered_map>
 
@@ -15,6 +24,198 @@ FC_LOG_LEVEL_INIT("ComplexGeoData", true, 2);
 
 namespace Data
 {
+
+
+//FIXME
+
+namespace bio = boost::iostreams;
+/** Extract tag and other information from a encoded element name
+ *
+ * @param name: encoded element name
+ * @param tag: optional pointer to receive the extracted tag
+ * @param len: optional pointer to receive the length field after the tag field.
+ *             This gives the length of the previous hashsed element name starting
+ *             from the beginning of the give element name.
+ * @param postfix: optional pointer to receive the postfix starting at the found tag field.
+ * @param type: optional pointer to receive the element type character
+ * @param negative: return negative tag as it is. If disabled, then always return positive tag.
+ *                  Negative tag is sometimes used for element disambiguation.
+ * @param recursive: recursively find the last non-zero tag
+ *
+ * @return Return the end position of the tag field, or return -1 if not found.
+ */
+static int findTagInElementName(const MappedName& name, long* tag = 0, int* len = 0,
+                                std::string* postfix = 0, char* type = 0, bool negative = false,
+                                bool recursive = true)
+{
+    bool hex = true;
+    int pos = name.rfind(ComplexGeoData::tagPostfix());
+
+    // Example name, tagPosfix == ;:H
+    // #94;:G0;XTR;:H19:8,F;:H1a,F;BND:-1:0;:H1b:10,F
+    //                                     ^
+    //                                     |
+    //                                    pos
+
+    if(pos < 0) {
+        pos = name.rfind(POSTFIX_DECIMAL_TAG); //FIXME inconsistent
+        if (pos < 0)
+            return -1;
+        hex = false;
+    }
+    int offset = pos + (int)ComplexGeoData::tagPostfix().size();
+    long _tag = 0;
+    int _len = 0;
+    char sep = 0;
+    char sep2 = 0;
+    char tp = 0;
+    char eof = 0;
+
+    int size;
+    const char *s = name.toConstString(offset, size);
+
+    // check if the number followed by the tagPosfix is negative
+    bool isNegative = (s[0] == '-');
+    if (isNegative) {
+        ++s;
+        --size;
+    }
+    bio::stream<bio::array_source> iss(s, size);
+    if (!hex) {
+        // no hex is an older version of the encoding scheme
+        iss >> _tag >> sep;
+    } else {
+        // The purpose of tag postfix is to encode one model operation. The
+        // 'tag' field is used to record the own object ID of that model shape,
+        // and the 'len' field indicates the length of the operation codes
+        // before the tag postfix. These fields are in hex. The trailing 'F' is
+        // the shape type of this element, 'F' for face, 'E' edge, and 'V' vertex.
+        //
+        // #94;:G0;XTR;:H19:8,F;:H1a,F;BND:-1:0;:H1b:10,F
+        //                     |              |   ^^ ^^
+        //                     |              |   |   |  
+        //                     ---len = 0x10---  tag len
+
+        iss >> std::hex;
+        // _tag field can be skipped, if it is 0
+        if (s[0] == ',' || s[0] == ':')
+            iss >> sep;
+        else
+            iss >> _tag >> sep;
+    }
+
+    if (isNegative)
+        _tag = -_tag;
+
+    if (sep == ':') {
+        // ':' is followed by _len field.
+        //
+        // For decTagPostfix() (i.e. older encoding scheme), this is the length
+        // of the string before the entire postfix (A postfix may contain
+        // multiple segments usually separated by elementMapPrefix().
+        //
+        // For newer tagPostfix(), this counts the number of characters that
+        // proceeds this tag postfix segment that forms the op code (see
+        // example above).
+        //
+        // The reason of this change is so that the postfix can stay the same
+        // regardless of the prefix, which can increase memory efficiency.
+        //
+        iss >> _len >> sep2 >> tp >> eof;
+
+        // The next separator to look for is either ':' for older tag postfix, or ','
+        if (!hex && sep2 == ':')
+            sep2 = ',';
+    }
+    else if (hex && sep == ',') {
+        // ',' is followed by a single character that indicates the element type.
+        iss >> tp >> eof;
+        sep = ':';
+        sep2 = ',';
+    }
+
+    if (_len < 0 || sep != ':' || sep2 != ',' || tp == 0 || eof != 0)
+        return -1;
+
+    if (hex) {
+        if (pos-_len < 0)
+           return -1;
+        if (_len && recursive && (tag || len)) {
+            // in case of recursive tag postfix (used by hierarchy element
+            // map), look for any embedded tag postifx
+            int next = MappedName::fromRawData(name, pos-_len, _len).rfind(ComplexGeoData::tagPostfix());
+            if (next >= 0) {
+                next += pos - _len;
+                // #94;:G0;XTR;:H19:8,F;:H1a,F;BND:-1:0;:H1b:10,F
+                //                     ^               ^
+                //                     |               |
+                //                    next            pos
+                //
+                // There maybe other operation codes after this embedded tag
+                // postfix, search for the sperator.
+                //
+                int end;
+                if (pos == next)
+                    end = -1;
+                else
+                    end = MappedName::fromRawData(
+                        name, next+1, pos-next-1).find(ComplexGeoData::elementMapPrefix());
+                if (end >= 0) {
+                    end += next+1;
+                    // #94;:G0;XTR;:H19:8,F;:H1a,F;BND:-1:0;:H1b:10,F
+                    //                            ^
+                    //                            |
+                    //                           end
+                    _len = pos - end;
+                    // #94;:G0;XTR;:H19:8,F;:H1a,F;BND:-1:0;:H1b:10,F
+                    //                            |       |
+                    //                            -- len --
+                } else
+                    _len = 0;
+            }
+        }
+
+        // Now convert the 'len' field back to the length of the remaining name
+        //
+        // #94;:G0;XTR;:H19:8,F;:H1a,F;BND:-1:0;:H1b:10,F
+        // |                         |
+        // ----------- len -----------
+        _len = pos - _len;
+    }
+    if(type)
+        *type = tp;
+    if(tag) {
+        if (_tag == 0 && recursive)
+            return findTagInElementName(
+                        MappedName(name, 0, _len), tag, len, postfix, type, negative);
+        if(_tag>0 || negative)
+            *tag = _tag;
+        else
+            *tag = -_tag;
+    }
+    if(len)
+        *len = _len;
+    if(postfix)
+        name.toString(*postfix, pos);
+    return pos;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 // Because the existence of hierarchical element maps, for the same document
@@ -500,7 +701,7 @@ MappedName ElementMap::addName(MappedName& name, const IndexedName& idx, const E
                    bool overwrite, IndexedName* existing)
 {
     if (FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG)) {
-        if (name.find("#") >= 0 && ComplexGeoData::findTagInElementName(name) < 0) {
+        if (name.find("#") >= 0 && findTagInElementName(name) < 0) {
             FC_ERR("missing tag postfix " << name);
         }
     }
@@ -564,7 +765,7 @@ IndexedName ElementMap::find(const MappedName& name, ElementIDRefs* sids) const
             return IndexedName();
 
         int len = 0;
-        if (ComplexGeoData::findTagInElementName(
+        if (findTagInElementName(
                 name, nullptr, &len, nullptr, nullptr, false, false)
             < 0)
             return IndexedName();
@@ -720,7 +921,7 @@ void ElementMap::hashChildMaps(ComplexGeoData& master)
             auto& child = vv.second;
             int len = 0;
             long tag;
-            int pos = ComplexGeoData::findTagInElementName(
+            int pos = findTagInElementName(
                 MappedName::fromRawData(child.postfix), &tag, &len, nullptr, nullptr, false, false);
             if (pos > 10) {
                 MappedName postfix = master.hashElementName(
