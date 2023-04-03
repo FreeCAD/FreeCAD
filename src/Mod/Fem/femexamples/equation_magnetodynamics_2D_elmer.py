@@ -118,7 +118,7 @@ def setup(doc=None, solvertype="elmer"):
     Powder.ViewObject.Visibility = False
 
     # a half circle defining later the air volume
-    Air_Circle =Part.makeCircle(
+    Air_Circle = Part.makeCircle(
         140.0, Vector(0.0, 60.0, 0.0), Vector(0.0, 0.0, 1.0), -90.0, 90.0)
     Air_Line = Part.makeLine((0.0, -80.0, 0.0), (0.0, 200.0, 0.0))
     Air_Area = doc.addObject("Part::Feature", "Air_Area")
