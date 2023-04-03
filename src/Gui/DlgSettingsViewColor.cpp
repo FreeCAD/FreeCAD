@@ -46,6 +46,18 @@ DlgSettingsViewColor::DlgSettingsViewColor(QWidget* parent)
     ui->SelectionColor->setEnabled(ui->checkBoxSelection->isChecked());
     connect(ui->SwitchGradientColors, &QPushButton::pressed, this,
         &DlgSettingsViewColor::onSwitchGradientColorsPressed);
+
+    connect(ui->radioButtonSimple, &QRadioButton::toggled, this,
+        &DlgSettingsViewColor::onRadioButtonSimpleToggled);
+
+    connect(ui->radioButtonGradient, &QRadioButton::toggled, this,
+        &DlgSettingsViewColor::onRadioButtonGradientToggled);
+
+    connect(ui->rbRadialGradient, &QRadioButton::toggled, this,
+        &DlgSettingsViewColor::onRadioButtonRadialGradientToggled);
+
+    connect(ui->checkMidColor, &QCheckBox::toggled, this,
+        &DlgSettingsViewColor::onCheckMidColorToggled);
 }
 
 /**
@@ -90,6 +102,13 @@ void DlgSettingsViewColor::loadSettings()
     ui->SelectionColor->onRestore();
     ui->TreeEditColor->onRestore();
     ui->TreeActiveColor->onRestore();
+
+    if (ui->radioButtonSimple->isChecked())
+        onRadioButtonSimpleToggled(true);
+    else if(ui->radioButtonGradient->isChecked())
+        onRadioButtonGradientToggled(true);
+    else
+        onRadioButtonRadialGradientToggled(true);
 }
 
 /**
@@ -110,6 +129,49 @@ void DlgSettingsViewColor::onSwitchGradientColorsPressed()
     QColor tempColor = ui->backgroundColorFrom->color();
     ui->backgroundColorFrom->setColor(ui->backgroundColorTo->color());
     ui->backgroundColorTo->setColor(tempColor);
+}
+
+void DlgSettingsViewColor::onCheckMidColorToggled(bool val)
+{
+    ui->color2Label->setEnabled(val);
+    ui->backgroundColorMid->setEnabled(val);
+}
+
+void DlgSettingsViewColor::onRadioButtonSimpleToggled(bool val)
+{
+    setGradientColorVisibility(!val);
+}
+
+void DlgSettingsViewColor::onRadioButtonGradientToggled(bool val)
+{
+    setGradientColorVisibility(val);
+    ui->color1Label->setText(tr("Top:"));
+    ui->color2Label->setText(tr("Middle:"));
+    ui->color3Label->setText(tr("Bottom:"));
+}
+
+void DlgSettingsViewColor::onRadioButtonRadialGradientToggled(bool val)
+{
+    setGradientColorVisibility(val);
+    ui->color1Label->setText(tr("Central:"));
+    ui->color2Label->setText(tr("Midway:"));
+    ui->color3Label->setText(tr("End:"));
+}
+
+void DlgSettingsViewColor::setGradientColorVisibility(bool val)
+{
+    ui->SelectionColor_Background->setVisible(!val);
+    ui->color1Label->setVisible(val);
+    ui->backgroundColorFrom->setVisible(val);
+    ui->color2Label->setVisible(val);
+    ui->backgroundColorMid->setVisible(val);
+    ui->color3Label->setVisible(val);
+    ui->backgroundColorTo->setVisible(val);
+    ui->checkMidColor->setVisible(val);
+    ui->SwitchGradientColors->setVisible(val);
+
+    if (val)
+        onCheckMidColorToggled(ui->checkMidColor->isChecked());
 }
 
 #include "moc_DlgSettingsViewColor.cpp"
