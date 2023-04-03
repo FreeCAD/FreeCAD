@@ -30,7 +30,8 @@ protected:
 
     void givenDataAsXMLStream(const std::string& data)
     {
-        auto stringData = R"(<?xml version="1.0" encoding="UTF-8"?><document>)" + data + "</document>";
+        auto stringData =
+            R"(<?xml version="1.0" encoding="UTF-8"?><document>)" + data + "</document>";
         std::istringstream stream(stringData);
         std::ofstream fileStream(_tempFile);
         fileStream.write(stringData.data(), static_cast<std::streamsize>(stringData.length()));
@@ -88,7 +89,7 @@ TEST_F(ReaderTest, beginCharStreamOpenClose)
     Reader()->readElement("data");
 
     // Act
-    auto& result = Reader()->beginCharStream(); // Not an error, even though there is no data
+    auto& result = Reader()->beginCharStream();// Not an error, even though there is no data
 
     // Assert
     EXPECT_TRUE(result.good());
@@ -113,7 +114,7 @@ TEST_F(ReaderTest, charStreamGood)
     Reader()->beginCharStream();
 
     // Act
-    auto &result = Reader()->charStream();
+    auto& result = Reader()->charStream();
 
     // Assert
     EXPECT_TRUE(result.good());
@@ -137,7 +138,7 @@ TEST_F(ReaderTest, endCharStreamGood)
     Reader()->beginCharStream();
 
     // Act & Assert
-    Reader()->endCharStream(); // Does not throw
+    Reader()->endCharStream();// Does not throw
 }
 
 TEST_F(ReaderTest, endCharStreamBad)
@@ -148,7 +149,7 @@ TEST_F(ReaderTest, endCharStreamBad)
     // Do not open the stream...
 
     // Act & Assert
-    Reader()->endCharStream(); // Does not throw, even with no open stream
+    Reader()->endCharStream();// Does not throw, even with no open stream
 }
 
 TEST_F(ReaderTest, readDataSmallerThanBuffer)
@@ -159,7 +160,7 @@ TEST_F(ReaderTest, readDataSmallerThanBuffer)
     givenDataAsXMLStream("<data>" + expectedData + "</data>");
     Reader()->readElement("data");
     Reader()->beginCharStream();
-    std::array<char,bufferSize> buffer{};
+    std::array<char, bufferSize> buffer {};
 
     // Act
     auto bytesRead = Reader()->read(buffer.data(), bufferSize);
@@ -177,7 +178,7 @@ TEST_F(ReaderTest, readDataLargerThanBuffer)
     givenDataAsXMLStream("<data>" + expectedData + "</data>");
     Reader()->readElement("data");
     Reader()->beginCharStream();
-    std::array<char,bufferSize> buffer{};
+    std::array<char, bufferSize> buffer {};
 
     // Act
     auto bytesRead = Reader()->read(buffer.data(), bufferSize);
@@ -197,15 +198,15 @@ TEST_F(ReaderTest, readDataLargerThanBufferSecondRead)
     givenDataAsXMLStream("<data>" + expectedData + "</data>");
     Reader()->readElement("data");
     Reader()->beginCharStream();
-    std::array<char,bufferSize> buffer{};
-    Reader()->read(buffer.data(), bufferSize); // Read the first five bytes
+    std::array<char, bufferSize> buffer {};
+    Reader()->read(buffer.data(), bufferSize);// Read the first five bytes
 
     // Act
-    auto bytesRead = Reader()->read(buffer.data(), bufferSize); // Second five bytes
+    auto bytesRead = Reader()->read(buffer.data(), bufferSize);// Second five bytes
 
     // Assert
     for (size_t i = 0; i < bufferSize; ++i) {
-        EXPECT_EQ(expectedData[i+bufferSize], buffer.at(i));
+        EXPECT_EQ(expectedData[i + bufferSize], buffer.at(i));
     }
     EXPECT_EQ(bufferSize, bytesRead);
 }
@@ -218,11 +219,11 @@ TEST_F(ReaderTest, readDataNotStarted)
     std::string expectedData {"Test ASCII data"};
     givenDataAsXMLStream("<data>" + expectedData + "</data>");
     Reader()->readElement("data");
-    std::array<char,bufferSize> buffer{};
+    std::array<char, bufferSize> buffer {};
 
     // Act
     auto bytesRead = Reader()->read(buffer.data(), bufferSize);
 
     // Assert
-    EXPECT_EQ(-1, bytesRead); // Because we didn't call beginCharStream
+    EXPECT_EQ(-1, bytesRead);// Because we didn't call beginCharStream
 }

@@ -35,6 +35,8 @@
 #include <CXX/Objects.hxx>
 #include <utility>
 
+#include <Base/PyObjectBase.h>
+
 
 namespace Data
 {
@@ -170,10 +172,17 @@ public:
     {
         return _data;
     }
+
     /// Returns the postfix
     QByteArray postfix() const
     {
         return _postfix;
+    }
+
+    /// Sets the postfix
+    void setPostfix(QByteArray postfix)
+    {
+        _postfix = std::move(postfix);
     }
 
     PyObject* getPyObject() override;
@@ -186,7 +195,7 @@ public:
      * The format is #<id>. And if index is non zero, then #<id>:<index>. Both
      * <id> and <index> are in hex format.
      */
-    std::string toString(int index) const;
+    std::string toString(int index = 0) const;
 
     /// Light weight structure of holding a string ID and associated index
     struct IndexID
@@ -244,20 +253,18 @@ public:
     std::string dataToText(int index) const;
 
     /** Get the content of this StringID as QByteArray
-     * @param bytes: output bytes
      * @param index: optional index.
      */
-    void toBytes(QByteArray& bytes, int index) const
+    QByteArray dataToBytes(int index = 0) const
     {
+        QByteArray res(_data);
+        if (index != 0) {
+            res += QByteArray::number(index);
+        }
         if (_postfix.size() != 0) {
-            bytes = _data + _postfix;
+            res += _postfix;
         }
-        else if (index != 0) {
-            bytes = _data + QByteArray::number(index);
-        }
-        else {
-            bytes = _data;
-        }
+        return res;
     }
 
     /// Mark this StringID as used
@@ -530,7 +537,7 @@ public:
     void toBytes(QByteArray& bytes) const
     {
         if (_sid) {
-            _sid->toBytes(bytes, _index);
+            bytes = _sid->dataToBytes(_index);
         }
     }
 

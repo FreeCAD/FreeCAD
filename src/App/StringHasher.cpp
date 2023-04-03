@@ -102,7 +102,7 @@ PyObject* StringID::getPyObject()
 
 PyObject* StringID::getPyObjectWithIndex(int index)
 {
-    auto* res = new StringIDPy(this);
+    auto res = new StringIDPy(this);
     res->_index = index;
     return res;
 }
