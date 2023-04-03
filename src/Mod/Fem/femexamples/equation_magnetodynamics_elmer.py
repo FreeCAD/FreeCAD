@@ -23,8 +23,6 @@
 
 import sys
 import FreeCAD
-from FreeCAD import Rotation
-from FreeCAD import Vector
 
 import Fem
 import ObjectsFem

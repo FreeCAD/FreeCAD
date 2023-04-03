@@ -85,8 +85,8 @@ def setup(doc=None, solvertype="elmer"):
     # solver
     if solvertype == "elmer":
         solver_obj = ObjectsFem.makeSolverElmer(doc, "SolverElmer")
-        equation_electrostatic = ObjectsFem.makeEquationElectrostatic(doc, solver_obj)
-        equation_heat = ObjectsFem.makeEquationHeat(doc, solver_obj)
+        ObjectsFem.makeEquationElectrostatic(doc, solver_obj)
+        ObjectsFem.makeEquationHeat(doc, solver_obj)
         equation_flux_potential = ObjectsFem.makeEquationFlux(doc, solver_obj)
         equation_flux_temperature = ObjectsFem.makeEquationFlux(doc, solver_obj)
     else:

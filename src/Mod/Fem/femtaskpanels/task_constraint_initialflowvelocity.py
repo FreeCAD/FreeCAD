@@ -34,7 +34,6 @@ from PySide import QtCore
 
 import FreeCAD
 import FreeCADGui
-from FreeCAD import Units
 
 from femguiutils import selection_widgets
 from femtools import femutils

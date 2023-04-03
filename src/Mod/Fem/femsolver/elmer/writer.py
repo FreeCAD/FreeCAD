@@ -322,10 +322,13 @@ class Writer(object):
         self._updateSimulation(self.solver)
         # output the equation parameters
         # first check what equations we have
-        hasHeat = False
-        for equation in self.solver.Group:
-            if femutils.is_of_type(equation, "Fem::EquationElmerHeat"):
-                hasHeat = True
+
+        # hasHeat ist not used, thus commented ATM
+        # hasHeat = False
+        # for equation in self.solver.Group:
+        #    if femutils.is_of_type(equation, "Fem::EquationElmerHeat"):
+        #        hasHeat = True
+
         self._simulation("Coordinate System", self.solver.CoordinateSystem)
         self._simulation("Coordinate Mapping", (1, 2, 3))
         # Elmer uses SI base units, but our mesh is in mm, therefore we must tell
@@ -615,7 +618,7 @@ class Writer(object):
                 else:
                     activeIn = self.getAllBodies()
                 # Magnetodynamic2D cannot handle all coordinate sysytems
-                if self.solver.CoordinateSystem in _COORDS_NON_MAGNETO_2D :
+                if self.solver.CoordinateSystem in _COORDS_NON_MAGNETO_2D:
                     raise WriteError(
                         "The coordinate setting '{}'\n is not "
                         "supported by the equation 'Magnetodynamic2D'.\n\n"
@@ -737,7 +740,7 @@ class Writer(object):
         for obj in self.getMember("App::MaterialObject"):
             m = obj.Material
             # fluid material always has KinematicViscosity defined
-            if not "KinematicViscosity" in m:
+            if "KinematicViscosity" not in m:
                 return True
         return False
 

@@ -26,8 +26,6 @@ __author__ = "Bernd Hahnebach"
 __url__ = "https://www.freecadweb.org"
 
 
-
-
 def write_femelement_matgeosets(f, ccxwriter):
 
     # write mat_geo_sets to file
