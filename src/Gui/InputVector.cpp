@@ -75,7 +75,7 @@ LocationWidget::LocationWidget (QWidget * parent)
     gridLayout->addLayout(box, 0, 0, 1, 2);
 
     connect(dValue, qOverload<int>(&QComboBox::activated),
-            this, &LocationWidget::on_direction_activated);
+            this, &LocationWidget::onDirectionActivated);
     retranslateUi();
 }
 
@@ -202,7 +202,7 @@ Base::Vector3d LocationWidget::getUserDirection(bool* ok) const
     return dir;
 }
 
-void LocationWidget::on_direction_activated(int index)
+void LocationWidget::onDirectionActivated(int index)
 {
     // last item is selected to define direction by user
     if (index+1 == dValue->count()) {
@@ -253,7 +253,7 @@ Base::Vector3d LocationDialog::getUserDirection(bool* ok) const
     return dir;
 }
 
-void LocationDialog::on_direction_activated(int index)
+void LocationDialog::onDirectionActivated(int index)
 {
     directionActivated(index);
 }

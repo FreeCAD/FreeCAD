@@ -44,9 +44,9 @@ public:
     void accept();
     void reject();
 
-private Q_SLOTS:
-    void on_fileChooser_fileNameSelected(const QString&);
-    void on_checkEnv_toggled(bool);
+private:
+    void onFileChooserFileNameSelected(const QString&);
+    void onCheckEnvToggled(bool);
 
 protected:
     void changeEvent(QEvent *e);
