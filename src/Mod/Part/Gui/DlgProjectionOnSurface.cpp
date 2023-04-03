@@ -137,6 +137,8 @@ DlgProjectionOnSurface::DlgProjectionOnSurface(QWidget *parent)
   , filterFace(nullptr)
 {
     ui->setupUi(this);
+    setupConnections();
+
     ui->pushButtonAddEdge->setCheckable(true);
     ui->pushButtonAddFace->setCheckable(true);
     ui->pushButtonAddProjFace->setCheckable(true);
@@ -170,7 +172,7 @@ DlgProjectionOnSurface::DlgProjectionOnSurface(QWidget *parent)
       throw Base::ValueError(QString(tr("Can not create a projection object!!!")).toUtf8());
     }
     m_projectionObject->Label.setValue(std::string(m_projectionObjectName.toUtf8()).c_str());
-    on_radioButtonShowAll_clicked();
+    onRadioButtonShowAllClicked();
     m_lastDepthVal = ui->doubleSpinBoxSolidDepth->value();
 }
 
@@ -204,6 +206,36 @@ DlgProjectionOnSurface::~DlgProjectionOnSurface()
   Gui::Selection().rmvSelectionGate();
 }
 
+void PartGui::DlgProjectionOnSurface::setupConnections()
+{
+    connect(ui->pushButtonAddFace, &QPushButton::clicked,
+            this, &DlgProjectionOnSurface::onPushButtonAddFaceClicked);
+    connect(ui->pushButtonAddEdge, &QPushButton::clicked,
+            this, &DlgProjectionOnSurface::onPushButtonAddEdgeClicked);
+    connect(ui->pushButtonGetCurrentCamDir, &QPushButton::clicked,
+            this, &DlgProjectionOnSurface::onPushButtonGetCurrentCamDirClicked);
+    connect(ui->pushButtonDirX, &QPushButton::clicked,
+            this, &DlgProjectionOnSurface::onPushButtonDirXClicked);
+    connect(ui->pushButtonDirY, &QPushButton::clicked,
+            this, &DlgProjectionOnSurface::onPushButtonDirYClicked);
+    connect(ui->pushButtonDirZ, &QPushButton::clicked,
+            this, &DlgProjectionOnSurface::onPushButtonDirZClicked);
+    connect(ui->pushButtonAddProjFace, &QPushButton::clicked,
+            this, &DlgProjectionOnSurface::onPushButtonAddProjFaceClicked);
+    connect(ui->radioButtonShowAll, &QRadioButton::clicked,
+            this, &DlgProjectionOnSurface::onRadioButtonShowAllClicked);
+    connect(ui->radioButtonFaces, &QRadioButton::clicked,
+            this, &DlgProjectionOnSurface::onRadioButtonFacesClicked);
+    connect(ui->radioButtonEdges, &QRadioButton::clicked,
+            this, &DlgProjectionOnSurface::onRadioButtonEdgesClicked);
+    connect(ui->doubleSpinBoxExtrudeHeight, qOverload<double>(&QDoubleSpinBox::valueChanged),
+            this, &DlgProjectionOnSurface::onDoubleSpinBoxExtrudeHeightValueChanged);
+    connect(ui->pushButtonAddWire, &QPushButton::clicked,
+            this, &DlgProjectionOnSurface::onPushButtonAddWireClicked);
+    connect(ui->doubleSpinBoxSolidDepth, qOverload<double>(&QDoubleSpinBox::valueChanged),
+            this, &DlgProjectionOnSurface::onDoubleSpinBoxSolidDepthValueChanged);
+}
+
 void PartGui::DlgProjectionOnSurface::slotDeletedDocument(const App::Document& Doc)
 {
   if (m_partDocument == &Doc) {
@@ -231,7 +263,7 @@ void PartGui::DlgProjectionOnSurface::reject()
     m_partDocument->abortTransaction();
 }
 
-void PartGui::DlgProjectionOnSurface::on_pushButtonAddFace_clicked()
+void PartGui::DlgProjectionOnSurface::onPushButtonAddFaceClicked()
 {
   if ( ui->pushButtonAddFace->isChecked() )
   {
@@ -252,7 +284,7 @@ void PartGui::DlgProjectionOnSurface::on_pushButtonAddFace_clicked()
   }
 }
 
-void PartGui::DlgProjectionOnSurface::on_pushButtonAddEdge_clicked()
+void PartGui::DlgProjectionOnSurface::onPushButtonAddEdgeClicked()
 {
   if (ui->pushButtonAddEdge->isChecked())
   {
@@ -264,7 +296,7 @@ void PartGui::DlgProjectionOnSurface::on_pushButtonAddEdge_clicked()
       Gui::Selection().addSelectionGate(filterEdge);
     }
     ui->radioButtonEdges->setChecked(true);
-    on_radioButtonEdges_clicked();
+    onRadioButtonEdgesClicked();
   }
   else
   {
@@ -275,22 +307,22 @@ void PartGui::DlgProjectionOnSurface::on_pushButtonAddEdge_clicked()
   }
 }
 
-void PartGui::DlgProjectionOnSurface::on_pushButtonGetCurrentCamDir_clicked()
+void PartGui::DlgProjectionOnSurface::onPushButtonGetCurrentCamDirClicked()
 {
   get_camera_direction();
 }
 
-void PartGui::DlgProjectionOnSurface::on_pushButtonDirX_clicked()
+void PartGui::DlgProjectionOnSurface::onPushButtonDirXClicked()
 {
   set_xyz_dir_spinbox(ui->doubleSpinBoxDirX);
 }
 
-void PartGui::DlgProjectionOnSurface::on_pushButtonDirY_clicked()
+void PartGui::DlgProjectionOnSurface::onPushButtonDirYClicked()
 {
   set_xyz_dir_spinbox(ui->doubleSpinBoxDirY);
 }
 
-void PartGui::DlgProjectionOnSurface::on_pushButtonDirZ_clicked()
+void PartGui::DlgProjectionOnSurface::onPushButtonDirZClicked()
 {
   set_xyz_dir_spinbox(ui->doubleSpinBoxDirZ);
 }
@@ -322,7 +354,7 @@ void PartGui::DlgProjectionOnSurface::onSelectionChanged(const Gui::SelectionCha
       }
 
       ui->pushButtonAddProjFace->setChecked(false);
-      on_pushButtonAddProjFace_clicked();
+      onPushButtonAddProjFaceClicked();
     }
   }
 }
@@ -978,7 +1010,7 @@ void PartGui::DlgProjectionOnSurface::transform_shape_to_global_position(TopoDS_
   }
 }
 
-void PartGui::DlgProjectionOnSurface::on_pushButtonAddProjFace_clicked()
+void PartGui::DlgProjectionOnSurface::onPushButtonAddProjFaceClicked()
 {
   if (ui->pushButtonAddProjFace->isChecked())
   {
@@ -998,32 +1030,32 @@ void PartGui::DlgProjectionOnSurface::on_pushButtonAddProjFace_clicked()
     filterFace = nullptr;
   }
 }
-void PartGui::DlgProjectionOnSurface::on_radioButtonShowAll_clicked()
+void PartGui::DlgProjectionOnSurface::onRadioButtonShowAllClicked()
 {
   m_currentShowType = "all";
   show_projected_shapes(m_shapeVec);
 }
 
-void PartGui::DlgProjectionOnSurface::on_radioButtonFaces_clicked()
+void PartGui::DlgProjectionOnSurface::onRadioButtonFacesClicked()
 {
   m_currentShowType = "faces";
   show_projected_shapes(m_shapeVec);
 }
 
-void PartGui::DlgProjectionOnSurface::on_radioButtonEdges_clicked()
+void PartGui::DlgProjectionOnSurface::onRadioButtonEdgesClicked()
 {
   m_currentShowType = "edges";
   show_projected_shapes(m_shapeVec);
 }
 
-void PartGui::DlgProjectionOnSurface::on_doubleSpinBoxExtrudeHeight_valueChanged(double arg1)
+void PartGui::DlgProjectionOnSurface::onDoubleSpinBoxExtrudeHeightValueChanged(double arg1)
 {
   Q_UNUSED(arg1);
   create_face_extrude(m_shapeVec);
   show_projected_shapes(m_shapeVec);
 }
 
-void PartGui::DlgProjectionOnSurface::on_pushButtonAddWire_clicked()
+void PartGui::DlgProjectionOnSurface::onPushButtonAddWireClicked()
 {
   if (ui->pushButtonAddWire->isChecked())
   {
@@ -1035,7 +1067,7 @@ void PartGui::DlgProjectionOnSurface::on_pushButtonAddWire_clicked()
       Gui::Selection().addSelectionGate(filterEdge);
     }
     ui->radioButtonEdges->setChecked(true);
-    on_radioButtonEdges_clicked();
+    onRadioButtonEdgesClicked();
   }
   else
   {
@@ -1046,7 +1078,7 @@ void PartGui::DlgProjectionOnSurface::on_pushButtonAddWire_clicked()
   }
 }
 
-void PartGui::DlgProjectionOnSurface::on_doubleSpinBoxSolidDepth_valueChanged(double arg1)
+void PartGui::DlgProjectionOnSurface::onDoubleSpinBoxSolidDepthValueChanged(double arg1)
 {
   auto valX = ui->doubleSpinBoxDirX->value();
   auto valY = ui->doubleSpinBoxDirY->value();

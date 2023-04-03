@@ -56,10 +56,8 @@ private:
 protected:
     void changeEvent(QEvent *e) override;
 
-public Q_SLOTS:
-    void on_swapButton_clicked();
-
-private Q_SLOTS:
+private:
+    void onSwapButtonClicked();
     void currentItemChanged(QTreeWidgetItem*, QTreeWidgetItem*);
 
 private:

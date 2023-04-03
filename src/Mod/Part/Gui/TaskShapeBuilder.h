@@ -42,9 +42,9 @@ public:
     bool accept();
     bool reject();
 
-private Q_SLOTS:
-    void on_createButton_clicked();
-    void on_selectButton_clicked();
+private:
+    void onCreateButtonClicked();
+    void onSelectButtonClicked();
     void switchMode(int);
 
 private:
