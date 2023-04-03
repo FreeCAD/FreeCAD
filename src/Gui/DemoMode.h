@@ -24,10 +24,12 @@
 #define GUI_DIALOG_DEMOMODE_H
 
 #include <QDialog>
+#include <FCGlobal.h>
 
 
 class QTimer;
 class SoCamera;
+class SbVec3f;
 class SbRotation;
 
 namespace Gui {
@@ -49,13 +51,14 @@ public:
     void accept();
     void reject();
 
-protected Q_SLOTS:
-    void on_playButton_toggled(bool);
-    void on_fullscreen_toggled(bool);
-    void on_timerCheck_toggled(bool);
-    void on_speedSlider_valueChanged(int);
-    void on_angleSlider_valueChanged(int);
-    void on_timeout_valueChanged(int);
+protected:
+    void setupConnections();
+    void onPlayButtonToggled(bool);
+    void onFullscreenToggled(bool);
+    void onTimerCheckToggled(bool);
+    void onSpeedSliderValueChanged(int);
+    void onAngleSliderValueChanged(int);
+    void onTimeoutValueChanged(int);
     void onAutoPlay();
 
 private:

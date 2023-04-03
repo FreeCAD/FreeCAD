@@ -52,8 +52,8 @@ public:
     Base::Vector3d getDirection() const;
     Base::Vector3d getUserDirection(bool* ok=nullptr) const;
 
-private Q_SLOTS:
-    void on_direction_activated(int);
+private:
+    void onDirectionActivated(int);
 
 private:
     void changeEvent(QEvent*) override;
@@ -86,8 +86,8 @@ protected:
 protected:
     void changeEvent(QEvent *e) override = 0;
 
-private Q_SLOTS:
-    void on_direction_activated(int);
+private:
+    void onDirectionActivated(int);
 
 public:
     virtual Base::Vector3d getDirection() const = 0;

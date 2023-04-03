@@ -313,18 +313,22 @@ ElementColors::ElementColors(ViewProviderDocumentObject* vp, bool noHide)
     :d(new Private(vp))
 {
     d->ui->setupUi(this);
+    setupConnections();
+
     d->ui->objectLabel->setText(QString::fromUtf8(vp->getObject()->Label.getValue()));
     d->ui->elementList->setMouseTracking(true); // needed for itemEntered() to work
 
-    if(noHide)
+    if (noHide) {
         d->ui->hideSelection->setVisible(false);
+    }
 
     ParameterGrp::handle hPart = App::GetApplication().GetParameterGroupByPath
         ("User parameter:BaseApp/Preferences/View");
     d->ui->recompute->setChecked(hPart->GetBool("ColorRecompute",true));
     d->ui->onTop->setChecked(hPart->GetBool("ColorOnTop",true));
-    if(d->ui->onTop->isChecked())
+    if (d->ui->onTop->isChecked()) {
         d->vpParent->OnTopWhenSelected.setValue(3);
+    }
 
     Selection().addSelectionGate(d, ResolveMode::NoResolve);
 
@@ -343,13 +347,39 @@ ElementColors::~ElementColors()
     Selection().rmvSelectionGate();
 }
 
-void ElementColors::on_recompute_clicked(bool checked) {
+void ElementColors::setupConnections()
+{
+    connect(d->ui->removeSelection, &QPushButton::clicked,
+            this, &ElementColors::onRemoveSelectionClicked);
+    connect(d->ui->addSelection, &QPushButton::clicked,
+            this, &ElementColors::onAddSelectionClicked);
+    connect(d->ui->removeAll, &QPushButton::clicked,
+            this, &ElementColors::onRemoveAllClicked);
+    connect(d->ui->elementList, &QListWidget::itemDoubleClicked,
+            this, &ElementColors::onElementListItemDoubleClicked);
+    connect(d->ui->elementList, &QListWidget::itemSelectionChanged,
+            this, &ElementColors::onElementListItemSelectionChanged);
+    connect(d->ui->elementList, &QListWidget::itemEntered,
+            this, &ElementColors::onElementListItemEntered);
+    connect(d->ui->recompute, &QCheckBox::clicked,
+            this, &ElementColors::onRecomputeClicked);
+    connect(d->ui->onTop, &QCheckBox::clicked,
+            this, &ElementColors::onTopClicked);
+    connect(d->ui->hideSelection, &QPushButton::clicked,
+            this, &ElementColors::onHideSelectionClicked);
+    connect(d->ui->boxSelect, &QPushButton::clicked,
+            this, &ElementColors::onBoxSelectClicked);
+}
+
+void ElementColors::onRecomputeClicked(bool checked)
+{
     ParameterGrp::handle hPart = App::GetApplication().GetParameterGroupByPath
         ("User parameter:BaseApp/Preferences/View");
     hPart->SetBool("ColorRecompute",checked);
 }
 
-void ElementColors::on_onTop_clicked(bool checked) {
+void ElementColors::onTopClicked(bool checked)
+{
     ParameterGrp::handle hPart = App::GetApplication().GetParameterGroupByPath
         ("User parameter:BaseApp/Preferences/View");
     hPart->SetBool("ColorOnTop",checked);
@@ -368,19 +398,19 @@ void ElementColors::slotDeleteObject(const ViewProvider& obj)
         Control().closeDialog();
 }
 
-void ElementColors::on_removeSelection_clicked()
+void ElementColors::onRemoveSelectionClicked()
 {
     d->removeItems();
 }
 
-void ElementColors::on_boxSelect_clicked()
+void ElementColors::onBoxSelectClicked()
 {
     auto cmd = Application::Instance->commandManager().getCommandByName("Std_BoxElementSelection");
     if(cmd)
         cmd->invoke(0);
 }
 
-void ElementColors::on_hideSelection_clicked() {
+void ElementColors::onHideSelectionClicked() {
     auto sels = Selection().getSelectionEx(d->editDoc.c_str(), App::DocumentObject::getClassTypeId(), ResolveMode::NoResolve);
     for(auto &sel : sels) {
         if(d->editObj!=sel.getFeatName())
@@ -400,7 +430,7 @@ void ElementColors::on_hideSelection_clicked() {
     }
 }
 
-void ElementColors::on_addSelection_clicked()
+void ElementColors::onAddSelectionClicked()
 {
     auto sels = Selection().getSelectionEx(d->editDoc.c_str(), App::DocumentObject::getClassTypeId(), ResolveMode::NoResolve);
     d->items.clear();
@@ -440,7 +470,7 @@ void ElementColors::on_addSelection_clicked()
     }
 }
 
-void ElementColors::on_removeAll_clicked()
+void ElementColors::onRemoveAllClicked()
 {
     d->removeAll();
 }
@@ -476,7 +506,7 @@ void ElementColors::leaveEvent(QEvent *e) {
     }
 }
 
-void ElementColors::on_elementList_itemEntered(QListWidgetItem *item) {
+void ElementColors::onElementListItemEntered(QListWidgetItem *item) {
     std::string name(qPrintable(item->data(Qt::UserRole+1).value<QString>()));
     if(!d->hiddenSub.empty()) {
         d->vp->partialRender({d->hiddenSub},false);
@@ -493,7 +523,7 @@ void ElementColors::on_elementList_itemEntered(QListWidgetItem *item) {
                                       : Gui::SelectionChanges::MsgSource::Internal);
 }
 
-void ElementColors::on_elementList_itemSelectionChanged() {
+void ElementColors::onElementListItemSelectionChanged() {
     d->onSelectionChanged();
 }
 
@@ -502,7 +532,7 @@ void ElementColors::onSelectionChanged(const SelectionChanges& msg)
     d->onSelectionChanged(msg);
 }
 
-void ElementColors::on_elementList_itemDoubleClicked(QListWidgetItem *item) {
+void ElementColors::onElementListItemDoubleClicked(QListWidgetItem *item) {
     d->editItem(this,item);
 }
 

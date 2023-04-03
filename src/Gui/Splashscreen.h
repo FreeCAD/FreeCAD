@@ -107,8 +107,8 @@ protected:
     void showCollectionInformation();
     void showOrHideImage(const QRect& rect);
 
-protected Q_SLOTS:
-    virtual void on_copyButton_clicked();
+protected:
+    virtual void copyToClipboard();
     void linkActivated(const QUrl& link);
 
 private:

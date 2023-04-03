@@ -51,6 +51,11 @@ TextureMapping::TextureMapping(QWidget* parent, Qt::WindowFlags fl)
 {
     ui = new Ui_TextureMapping();
     ui->setupUi(this);
+    connect(ui->fileChooser, &FileChooser::fileNameSelected,
+            this, &TextureMapping::onFileChooserFileNameSelected);
+    connect(ui->checkEnv, &QCheckBox::toggled,
+            this, &TextureMapping::onCheckEnvToggled);
+
     ui->checkGlobal->hide();
 
     // set a dummy string which is not a valid file name
@@ -74,7 +79,7 @@ TextureMapping::TextureMapping(QWidget* parent, Qt::WindowFlags fl)
     if (!path.empty()) {
         QString file = QString::fromUtf8(path.c_str());
         ui->fileChooser->setFileName(file);
-        on_fileChooser_fileNameSelected(file);
+        onFileChooserFileNameSelected(file);
     }
 }
 
@@ -119,7 +124,7 @@ void TextureMapping::keyPressEvent(QKeyEvent *e)
     e->ignore();
 }
 
-void TextureMapping::on_fileChooser_fileNameSelected(const QString& s)
+void TextureMapping::onFileChooserFileNameSelected(const QString& s)
 {
     QImage image;
     if (!image.load(s)) {
@@ -161,7 +166,7 @@ void TextureMapping::on_fileChooser_fileNameSelected(const QString& s)
     App::GetApplication().Config()["TextureImage"] = (const char*)s.toUtf8();
 }
 
-void TextureMapping::on_checkEnv_toggled(bool b)
+void TextureMapping::onCheckEnvToggled(bool b)
 {
     if (!this->grp)
         return;
