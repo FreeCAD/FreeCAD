@@ -66,6 +66,8 @@
 						<xs:attribute name="Reference" type="xs:boolean" use="optional"/>
 						<xs:attribute name="Initialization" type="xs:boolean" use="optional" default="false"/>
 						<xs:attribute name="DisableNotify" type="xs:boolean" use="optional" default="false"/>
+						<xs:attribute name="DescriptorGetter" type="xs:boolean" use="optional" default="false"/>
+						<xs:attribute name="DescriptorSetter" type="xs:boolean" use="optional" default="false"/>
 					</xs:complexType>
 				</xs:element>
 			</xs:sequence>
