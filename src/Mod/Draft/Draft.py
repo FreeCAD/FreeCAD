@@ -219,11 +219,7 @@ from draftmake.make_circle import (make_circle,
 # arcs
 from draftmake.make_arc_3points import make_arc_3points
 
-# drawing: obsolete since Drawing was replaced by TechDraw
-from draftobjects.drawingview import (DrawingView,
-                                      _DrawingView)
-from draftmake.make_drawingview import (make_drawing_view,
-                                        makeDrawingView)
+
 
 # ellipse
 from draftobjects.ellipse import (Ellipse,
