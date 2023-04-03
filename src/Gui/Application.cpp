@@ -2186,7 +2186,7 @@ void Application::runApplication()
                 ss << "This system is running OpenGL version " << major << "." << minor
                    << ", FreeCAD requires OpenGL version 2.0 or above, please upgrade your graphics driver"
                    << " and/or card as required.\n\n";
-                std::string msgboxtext = ss.str();            
+                std::string msgboxtext = ss.str();
                 QMessageBox::critical(0, msgboxtitle + QObject::tr("Invalid OpenGL Version"), QObject::tr(msgboxtext.c_str()));
                 throw Base::RuntimeError("Invalid OpenGL Version");
             }
