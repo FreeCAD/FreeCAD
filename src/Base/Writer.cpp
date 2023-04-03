@@ -25,6 +25,7 @@
 
 #include <limits>
 #include <locale>
+#include <iomanip>
 
 #include "Writer.h"
 #include "Base64.h"
