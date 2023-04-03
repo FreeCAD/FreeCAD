@@ -90,6 +90,8 @@ ThicknessWidget::ThicknessWidget(Part::Thickness* thickness, QWidget* parent)
 
     d->thickness = thickness;
     d->ui.setupUi(this);
+    setupConnections();
+
     d->ui.labelOffset->setText(tr("Thickness"));
     d->ui.fillOffset->hide();
 
@@ -121,47 +123,65 @@ ThicknessWidget::~ThicknessWidget()
     Gui::Selection().rmvSelectionGate();
 }
 
+void ThicknessWidget::setupConnections()
+{
+    connect(d->ui.spinOffset, qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
+            this, &ThicknessWidget::onSpinOffsetValueChanged);
+    connect(d->ui.modeType, qOverload<int>(&QComboBox::activated),
+            this, &ThicknessWidget::onModeTypeActivated);
+    connect(d->ui.joinType, qOverload<int>(&QComboBox::activated),
+            this, &ThicknessWidget::onJoinTypeActivated);
+    connect(d->ui.intersection, &QCheckBox::toggled,
+            this, &ThicknessWidget::onIntersectionToggled);
+    connect(d->ui.selfIntersection, &QCheckBox::toggled,
+            this, &ThicknessWidget::onSelfIntersectionToggled);
+    connect(d->ui.facesButton, &QPushButton::toggled,
+            this, &ThicknessWidget::onFacesButtonToggled);
+    connect(d->ui.updateView, &QCheckBox::toggled,
+            this, &ThicknessWidget::onUpdateViewToggled);
+}
+
 Part::Thickness* ThicknessWidget::getObject() const
 {
     return d->thickness;
 }
 
-void ThicknessWidget::on_spinOffset_valueChanged(double val)
+void ThicknessWidget::onSpinOffsetValueChanged(double val)
 {
     d->thickness->Value.setValue(val);
     if (d->ui.updateView->isChecked())
         d->thickness->getDocument()->recomputeFeature(d->thickness);
 }
 
-void ThicknessWidget::on_modeType_activated(int val)
+void ThicknessWidget::onModeTypeActivated(int val)
 {
     d->thickness->Mode.setValue(val);
     if (d->ui.updateView->isChecked())
         d->thickness->getDocument()->recomputeFeature(d->thickness);
 }
 
-void ThicknessWidget::on_joinType_activated(int val)
+void ThicknessWidget::onJoinTypeActivated(int val)
 {
     d->thickness->Join.setValue((long)val);
     if (d->ui.updateView->isChecked())
         d->thickness->getDocument()->recomputeFeature(d->thickness);
 }
 
-void ThicknessWidget::on_intersection_toggled(bool on)
+void ThicknessWidget::onIntersectionToggled(bool on)
 {
     d->thickness->Intersection.setValue(on);
     if (d->ui.updateView->isChecked())
         d->thickness->getDocument()->recomputeFeature(d->thickness);
 }
 
-void ThicknessWidget::on_selfIntersection_toggled(bool on)
+void ThicknessWidget::onSelfIntersectionToggled(bool on)
 {
     d->thickness->SelfIntersection.setValue(on);
     if (d->ui.updateView->isChecked())
         d->thickness->getDocument()->recomputeFeature(d->thickness);
 }
 
-void ThicknessWidget::on_facesButton_toggled(bool on)
+void ThicknessWidget::onFacesButtonToggled(bool on)
 {
     if (on) {
         QList<QWidget*> c = this->findChildren<QWidget*>();
@@ -204,7 +224,7 @@ void ThicknessWidget::on_facesButton_toggled(bool on)
     }
 }
 
-void ThicknessWidget::on_updateView_toggled(bool on)
+void ThicknessWidget::onUpdateViewToggled(bool on)
 {
     if (on) {
         d->thickness->getDocument()->recomputeFeature(d->thickness);

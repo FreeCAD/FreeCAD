@@ -244,6 +244,8 @@ FaceColors::FaceColors(ViewProviderPartExt* vp, QWidget* parent)
 {
     Q_UNUSED(parent);
     d->ui->setupUi(this);
+    setupConnections();
+
     d->ui->groupBox->setTitle(QString::fromUtf8(vp->getObject()->Label.getValue()));
     d->ui->colorButton->setDisabled(true);
     d->ui->colorButton->setAllowTransparency(true);
@@ -275,6 +277,16 @@ FaceColors::~FaceColors()
     delete d;
 }
 
+void FaceColors::setupConnections()
+{
+    connect(d->ui->colorButton, &Gui::ColorButton::changed,
+            this, &FaceColors::onColorButtonChanged);
+    connect(d->ui->defaultButton, &QPushButton::clicked,
+            this, &FaceColors::onDefaultButtonClicked);
+    connect(d->ui->boxSelection, &QPushButton::toggled,
+            this, &FaceColors::onBoxSelectionToggled);
+}
+
 void FaceColors::slotUndoDocument(const Gui::Document& Doc)
 {
     if (d->doc == &Doc) {
@@ -295,7 +307,7 @@ void FaceColors::slotDeleteObject(const Gui::ViewProvider& obj)
         Gui::Control().closeDialog();
 }
 
-void FaceColors::on_boxSelection_toggled(bool checked)
+void FaceColors::onBoxSelectionToggled(bool checked)
 {
     Gui::View3DInventor* view = qobject_cast<Gui::View3DInventor*>(Gui::getMainWindow()->activeWindow());
     // toggle the button state and feature
@@ -320,13 +332,13 @@ void FaceColors::on_boxSelection_toggled(bool checked)
     }
 }
 
-void FaceColors::on_defaultButton_clicked()
+void FaceColors::onDefaultButtonClicked()
 {
     std::fill(d->perface.begin(), d->perface.end(), d->vp->ShapeColor.getValue());
     d->vp->DiffuseColor.setValues(d->perface);
 }
 
-void FaceColors::on_colorButton_changed()
+void FaceColors::onColorButtonChanged()
 {
     if (!d->index.isEmpty()) {
         QColor color = d->ui->colorButton->color();

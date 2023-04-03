@@ -119,6 +119,10 @@ ShapeBuilderWidget::ShapeBuilderWidget(QWidget* parent)
     d->bg.addButton(d->ui.radioButtonSolidFromShell, 5);
     d->bg.setExclusive(true);
 
+    connect(d->ui.selectButton, &QPushButton::clicked,
+            this, &ShapeBuilderWidget::onSelectButtonClicked);
+    connect(d->ui.createButton, &QPushButton::clicked,
+            this, &ShapeBuilderWidget::onCreateButtonClicked);
 #if QT_VERSION < QT_VERSION_CHECK(5,15,0)
     connect(&d->bg, qOverload<int>(&QButtonGroup::buttonClicked),
             this, &ShapeBuilderWidget::switchMode);
@@ -170,7 +174,7 @@ void ShapeBuilderWidget::onSelectionChanged(const Gui::SelectionChanges& msg)
     }
 }
 
-void ShapeBuilderWidget::on_createButton_clicked()
+void ShapeBuilderWidget::onCreateButtonClicked()
 {
     int mode = d->bg.checkedId();
     Gui::Document* doc = Gui::Application::Instance->activeDocument();
@@ -204,7 +208,7 @@ void ShapeBuilderWidget::on_createButton_clicked()
     }
 }
 
-void ShapeBuilderWidget::on_selectButton_clicked()
+void ShapeBuilderWidget::onSelectButtonClicked()
 {
     int id = d->bg.checkedId();
     if (id == 0 || id == 2) {

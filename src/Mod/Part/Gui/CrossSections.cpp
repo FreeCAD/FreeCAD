@@ -125,6 +125,8 @@ CrossSections::CrossSections(const Base::BoundBox3d& bb, QWidget* parent, Qt::Wi
   , bbox(bb)
 {
     ui->setupUi(this);
+    setupConnections();
+
     ui->position->setRange(-DBL_MAX, DBL_MAX);
     ui->position->setUnit(Base::Unit::Length);
     ui->distance->setRange(0, DBL_MAX);
@@ -152,6 +154,26 @@ CrossSections::~CrossSections()
         view->getViewer()->removeViewProvider(vp);
     }
     delete vp;
+}
+
+void CrossSections::setupConnections()
+{
+    connect(ui->xyPlane, &QRadioButton::clicked,
+            this, &CrossSections::xyPlaneClicked);
+    connect(ui->xzPlane, &QRadioButton::clicked,
+            this, &CrossSections::xzPlaneClicked);
+    connect(ui->yzPlane, &QRadioButton::clicked,
+            this, &CrossSections::yzPlaneClicked);
+    connect(ui->position, qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
+            this, &CrossSections::positionValueChanged);
+    connect(ui->distance, qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
+            this, &CrossSections::distanceValueChanged);
+    connect(ui->countSections, qOverload<int>(&QSpinBox::valueChanged),
+            this, &CrossSections::countSectionsValueChanged);
+    connect(ui->checkBothSides, &QCheckBox::toggled,
+            this, &CrossSections::checkBothSidesToggled);
+    connect(ui->sectionsBox, &QGroupBox::toggled,
+            this, &CrossSections::sectionsBoxToggled);
 }
 
 CrossSections::Plane CrossSections::plane() const
@@ -280,7 +302,7 @@ void CrossSections::apply()
 #endif
 }
 
-void CrossSections::on_xyPlane_clicked()
+void CrossSections::xyPlaneClicked()
 {
     Base::Vector3d c = bbox.GetCenter();
     ui->position->setValue(c.z);
@@ -296,7 +318,7 @@ void CrossSections::on_xyPlane_clicked()
     }
 }
 
-void CrossSections::on_xzPlane_clicked()
+void CrossSections::xzPlaneClicked()
 {
     Base::Vector3d c = bbox.GetCenter();
     ui->position->setValue(c.y);
@@ -312,7 +334,7 @@ void CrossSections::on_xzPlane_clicked()
     }
 }
 
-void CrossSections::on_yzPlane_clicked()
+void CrossSections::yzPlaneClicked()
 {
     Base::Vector3d c = bbox.GetCenter();
     ui->position->setValue(c.x);
@@ -328,7 +350,7 @@ void CrossSections::on_yzPlane_clicked()
     }
 }
 
-void CrossSections::on_position_valueChanged(double v)
+void CrossSections::positionValueChanged(double v)
 {
     if (!ui->sectionsBox->isChecked()) {
         calcPlane(plane(), v);
@@ -338,10 +360,10 @@ void CrossSections::on_position_valueChanged(double v)
     }
 }
 
-void CrossSections::on_sectionsBox_toggled(bool b)
+void CrossSections::sectionsBoxToggled(bool b)
 {
     if (b) {
-        on_countSections_valueChanged(ui->countSections->value());
+        countSectionsValueChanged(ui->countSections->value());
     }
     else {
         CrossSections::Plane type = plane();
@@ -364,7 +386,7 @@ void CrossSections::on_sectionsBox_toggled(bool b)
     }
 }
 
-void CrossSections::on_checkBothSides_toggled(bool b)
+void CrossSections::checkBothSidesToggled(bool b)
 {
     double d = ui->distance->value().getValue();
     d = b ? 2.0 * d : 0.5 * d;
@@ -372,7 +394,7 @@ void CrossSections::on_checkBothSides_toggled(bool b)
     calcPlanes(plane());
 }
 
-void CrossSections::on_countSections_valueChanged(int v)
+void CrossSections::countSectionsValueChanged(int v)
 {
     CrossSections::Plane type = plane();
     double dist = 0;
@@ -393,7 +415,7 @@ void CrossSections::on_countSections_valueChanged(int v)
     calcPlanes(type);
 }
 
-void CrossSections::on_distance_valueChanged(double)
+void CrossSections::distanceValueChanged(double)
 {
     calcPlanes(plane());
 }

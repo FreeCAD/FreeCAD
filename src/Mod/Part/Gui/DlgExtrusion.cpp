@@ -100,6 +100,8 @@ DlgExtrusion::DlgExtrusion(QWidget* parent, Qt::WindowFlags fl)
   : QDialog(parent, fl), ui(new Ui_DlgExtrusion), filter(nullptr)
 {
     ui->setupUi(this);
+    setupConnections();
+
     ui->statusLabel->clear();
     ui->dirX->setDecimals(Base::UnitsApi::getDecimals());
     ui->dirY->setDecimals(Base::UnitsApi::getDecimals());
@@ -116,7 +118,7 @@ DlgExtrusion::DlgExtrusion(QWidget* parent, Qt::WindowFlags fl)
     sel.applyFrom(Gui::Selection().getObjectsOfType(App::Link::getClassTypeId()));
     sel.applyFrom(Gui::Selection().getObjectsOfType(App::Part::getClassTypeId()));
 
-    this->on_DirMode_changed();
+    this->onDirModeChanged();
     ui->spinLenFwd->selectAll();
     // Make sure that the spin box has the focus to get key events
     // Calling setFocus() directly doesn't work because the spin box is not
@@ -139,6 +141,28 @@ DlgExtrusion::~DlgExtrusion()
     // no need to delete child widgets, Qt does it all for us
 }
 
+void DlgExtrusion::setupConnections()
+{
+    connect(ui->rbDirModeCustom, &QRadioButton::toggled,
+            this, &DlgExtrusion::onDirModeCustomToggled);
+    connect(ui->rbDirModeEdge, &QRadioButton::toggled,
+            this, &DlgExtrusion::onDirModeEdgeToggled);
+    connect(ui->rbDirModeNormal, &QRadioButton::toggled,
+            this, &DlgExtrusion::onDirModeNormalToggled);
+    connect(ui->btnSelectEdge, &QPushButton::clicked,
+            this, &DlgExtrusion::onSelectEdgeClicked);
+    connect(ui->btnX, &QPushButton::clicked,
+            this, &DlgExtrusion::onButtnoXClicked);
+    connect(ui->btnY, &QPushButton::clicked,
+            this, &DlgExtrusion::onButtonYClicked);
+    connect(ui->btnZ, &QPushButton::clicked,
+            this, &DlgExtrusion::onButtonZClicked);
+    connect(ui->chkSymmetric, &QCheckBox::toggled,
+            this, &DlgExtrusion::onCheckSymmetricToggled);
+    connect(ui->txtLink, &QLineEdit::textChanged,
+            this, &DlgExtrusion::onTextLinkTextChanged);
+}
+
 void DlgExtrusion::changeEvent(QEvent *e)
 {
     if (e->type() == QEvent::LanguageChange) {
@@ -154,25 +178,25 @@ void DlgExtrusion::keyPressEvent(QKeyEvent* ke)
     ke->ignore();
 }
 
-void DlgExtrusion::on_rbDirModeCustom_toggled(bool on)
+void DlgExtrusion::onDirModeCustomToggled(bool on)
 {
     if(on) //this check prevents dual fire of dirmode changed - on radio buttons, one will come on, and other will come off, causing two events.
-        this->on_DirMode_changed();
+        this->onDirModeChanged();
 }
 
-void DlgExtrusion::on_rbDirModeEdge_toggled(bool on)
+void DlgExtrusion::onDirModeEdgeToggled(bool on)
 {
     if(on)
-        this->on_DirMode_changed();
+        this->onDirModeChanged();
 }
 
-void DlgExtrusion::on_rbDirModeNormal_toggled(bool on)
+void DlgExtrusion::onDirModeNormalToggled(bool on)
 {
     if(on)
-        this->on_DirMode_changed();
+        this->onDirModeChanged();
 }
 
-void DlgExtrusion::on_btnSelectEdge_clicked()
+void DlgExtrusion::onSelectEdgeClicked()
 {
     if (!filter) {
         filter = new EdgeSelection();
@@ -214,7 +238,7 @@ void DlgExtrusion::on_btnSelectEdge_clicked()
     }
 }
 
-void DlgExtrusion::on_btnX_clicked()
+void DlgExtrusion::onButtnoXClicked()
 {
     Base::Vector3d axis(1.0, 0.0, 0.0);
     if ((getDir() - axis).Length() < 1e-7)
@@ -223,7 +247,7 @@ void DlgExtrusion::on_btnX_clicked()
     setDir(axis);
 }
 
-void DlgExtrusion::on_btnY_clicked()
+void DlgExtrusion::onButtonYClicked()
 {
     Base::Vector3d axis(0.0, 1.0, 0.0);
     if ((getDir() - axis).Length() < 1e-7)
@@ -232,7 +256,7 @@ void DlgExtrusion::on_btnY_clicked()
     setDir(axis);
 }
 
-void DlgExtrusion::on_btnZ_clicked()
+void DlgExtrusion::onButtonZClicked()
 {
     Base::Vector3d axis(0.0, 0.0, 1.0);
     if ((getDir() - axis).Length() < 1e-7)
@@ -241,17 +265,17 @@ void DlgExtrusion::on_btnZ_clicked()
     setDir(axis);
 }
 
-void DlgExtrusion::on_chkSymmetric_toggled(bool on)
+void DlgExtrusion::onCheckSymmetricToggled(bool on)
 {
     ui->spinLenRev->setEnabled(!on);
 }
 
-void DlgExtrusion::on_txtLink_textChanged(QString)
+void DlgExtrusion::onTextLinkTextChanged(QString)
 {
     this->fetchDir();
 }
 
-void DlgExtrusion::on_DirMode_changed()
+void DlgExtrusion::onDirModeChanged()
 {
     Part::Extrusion::eDirMode dirMode = this->getDirMode();
     ui->dirX->setEnabled(dirMode == Part::Extrusion::dmCustom);
@@ -419,7 +443,7 @@ void DlgExtrusion::apply()
             throw Base::AbortException();
 
         if (filter) //if still selecting edge - stop. This is important for visibility automation.
-            this->on_btnSelectEdge_clicked();
+            this->onSelectEdgeClicked();
 
         Gui::WaitCursor wc;
         App::Document* activeDoc = App::GetApplication().getDocument(this->document.c_str());
@@ -485,7 +509,7 @@ void DlgExtrusion::apply()
 void DlgExtrusion::reject()
 {
     if (filter) //if still selecting edge - stop.
-        this->on_btnSelectEdge_clicked();
+        this->onSelectEdgeClicked();
 
     QDialog::reject();
 }
@@ -531,7 +555,7 @@ void DlgExtrusion::setDirMode(Part::Extrusion::eDirMode newMode)
     ui->rbDirModeCustom->blockSignals(false);
     ui->rbDirModeEdge->blockSignals(false);
     ui->rbDirModeNormal->blockSignals(false);
-    this->on_DirMode_changed();
+    this->onDirModeChanged();
 }
 
 void DlgExtrusion::getAxisLink(App::PropertyLinkSub& lnk) const

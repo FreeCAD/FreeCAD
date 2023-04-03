@@ -1013,7 +1013,7 @@ Skip this settings page and run the geometry check automatically.\n\
 Default: false"));
     autoRunCheckBox->setChecked(group->GetBool("AutoRun", false));
     connect(autoRunCheckBox, &QCheckBox::toggled,
-            this, &TaskCheckGeometryDialog::on_autoRunCheckBox_toggled);
+            this, &TaskCheckGeometryDialog::onAutoRunCheckBoxToggled);
     settingsBox->groupLayout()->addWidget(autoRunCheckBox);
 
     runBOPCheckBox = new QCheckBox();
@@ -1024,7 +1024,7 @@ the standard BRep geometry check misses. These errors do not always \n\
 mean the checked object is unusable.  Default: false"));
     runBOPCheckBox->setChecked(group->GetBool("RunBOPCheck", false));
     connect(runBOPCheckBox, &QCheckBox::toggled,
-            this, &TaskCheckGeometryDialog::on_runBOPCheckBox_toggled);
+            this, &TaskCheckGeometryDialog::onRunBOPCheckBoxToggled);
     settingsBox->groupLayout()->addWidget(runBOPCheckBox);
 
     runSingleThreadedCheckBox = new QCheckBox();
@@ -1034,7 +1034,7 @@ Run the geometry check in a single thread.  This is slower,\n\
 but more stable.  Default: false"));
     runSingleThreadedCheckBox->setChecked(group->GetBool("RunSingleThreaded", false));
     connect(runSingleThreadedCheckBox, &QCheckBox::toggled,
-            this, &TaskCheckGeometryDialog::on_runSingleThreadedCheckBox_toggled);
+            this, &TaskCheckGeometryDialog::onRunSingleThreadedCheckBoxToggled);
     settingsBox->groupLayout()->addWidget(runSingleThreadedCheckBox);
 
     logErrorsCheckBox = new QCheckBox();
@@ -1042,7 +1042,7 @@ but more stable.  Default: false"));
     logErrorsCheckBox->setToolTip(tr("Log errors to report view.  Default: true"));
     logErrorsCheckBox->setChecked(group->GetBool("LogErrors", true));
     connect(logErrorsCheckBox, &QCheckBox::toggled,
-            this, &TaskCheckGeometryDialog::on_logErrorsCheckBox_toggled);
+            this, &TaskCheckGeometryDialog::onLogErrorsCheckBoxToggled);
     settingsBox->groupLayout()->addWidget(logErrorsCheckBox);
 
     expandShapeContentCheckBox = new QCheckBox();
@@ -1052,7 +1052,7 @@ Expand shape content.  Changes will take effect next time you use \n\
 the check geometry tool.  Default: false"));
     expandShapeContentCheckBox->setChecked(group->GetBool("ExpandShapeContent", false));
     connect(expandShapeContentCheckBox, &QCheckBox::toggled,
-            this, &TaskCheckGeometryDialog::on_expandShapeContentCheckBox_toggled);
+            this, &TaskCheckGeometryDialog::onExpandShapeContentCheckBoxToggled);
     settingsBox->groupLayout()->addWidget(expandShapeContentCheckBox);
 
     advancedShapeContentCheckBox = new QCheckBox();
@@ -1062,7 +1062,7 @@ Show advanced shape content.  Changes will take effect next time you use \n\
 the check geometry tool.  Default: false"));
     advancedShapeContentCheckBox->setChecked(group->GetBool("AdvancedShapeContent", true));
     connect(advancedShapeContentCheckBox, &QCheckBox::toggled,
-            this, &TaskCheckGeometryDialog::on_advancedShapeContentCheckBox_toggled);
+            this, &TaskCheckGeometryDialog::onAdvancedShapeContentCheckBoxToggled);
     settingsBox->groupLayout()->addWidget(advancedShapeContentCheckBox);
 
     settingsBox->groupLayout()->addWidget(new QLabel(tr("\nIndividual BOP Checks:")));
@@ -1072,7 +1072,7 @@ the check geometry tool.  Default: false"));
     argumentTypeModeCheckBox->setToolTip(tr("Check for bad argument types.  Default: true"));
     argumentTypeModeCheckBox->setChecked(group->GetBool("ArgumentTypeMode", true));
     connect(argumentTypeModeCheckBox, &QCheckBox::toggled,
-            this, &TaskCheckGeometryDialog::on_argumentTypeModeCheckBox_toggled);
+            this, &TaskCheckGeometryDialog::onArgumentTypeModeCheckBoxToggled);
     settingsBox->groupLayout()->addWidget(argumentTypeModeCheckBox);
 
     selfInterModeCheckBox = new QCheckBox();
@@ -1080,7 +1080,7 @@ the check geometry tool.  Default: false"));
     selfInterModeCheckBox->setToolTip(tr("Check for self-intersections.  Default: true"));
     selfInterModeCheckBox->setChecked(group->GetBool("SelfInterMode", true));
     connect(selfInterModeCheckBox, &QCheckBox::toggled,
-            this, &TaskCheckGeometryDialog::on_selfInterModeCheckBox_toggled);
+            this, &TaskCheckGeometryDialog::onSelfInterModeCheckBoxToggled);
     settingsBox->groupLayout()->addWidget(selfInterModeCheckBox);
 
     smallEdgeModeCheckBox = new QCheckBox();
@@ -1088,7 +1088,7 @@ the check geometry tool.  Default: false"));
     smallEdgeModeCheckBox->setToolTip(tr("Check for edges that are too small.  Default: true"));
     smallEdgeModeCheckBox->setChecked(group->GetBool("SmallEdgeMode", true));
     connect(smallEdgeModeCheckBox, &QCheckBox::toggled,
-            this, &TaskCheckGeometryDialog::on_smallEdgeModeCheckBox_toggled);
+            this, &TaskCheckGeometryDialog::onSmallEdgeModeCheckBoxToggled);
     settingsBox->groupLayout()->addWidget(smallEdgeModeCheckBox);
 
     rebuildFaceModeCheckBox = new QCheckBox();
@@ -1096,7 +1096,7 @@ the check geometry tool.  Default: false"));
     rebuildFaceModeCheckBox->setToolTip(tr("Check for nonrecoverable faces.  Default: true"));
     rebuildFaceModeCheckBox->setChecked(group->GetBool("RebuildFaceMode", true));
     connect(rebuildFaceModeCheckBox, &QCheckBox::toggled,
-            this, &TaskCheckGeometryDialog::on_rebuildFaceModeCheckBox_toggled);
+            this, &TaskCheckGeometryDialog::onRebuildFaceModeCheckBoxToggled);
     settingsBox->groupLayout()->addWidget(rebuildFaceModeCheckBox);
 
     continuityModeCheckBox = new QCheckBox();
@@ -1104,7 +1104,7 @@ the check geometry tool.  Default: false"));
     continuityModeCheckBox->setToolTip(tr("Check for continuity.  Default: true"));
     continuityModeCheckBox->setChecked(group->GetBool("ContinuityMode", true));
     connect(continuityModeCheckBox, &QCheckBox::toggled,
-            this, &TaskCheckGeometryDialog::on_continuityModeCheckBox_toggled);
+            this, &TaskCheckGeometryDialog::onContinuityModeCheckBoxToggled);
     settingsBox->groupLayout()->addWidget(continuityModeCheckBox);
 
     tangentModeCheckBox = new QCheckBox();
@@ -1112,7 +1112,7 @@ the check geometry tool.  Default: false"));
     tangentModeCheckBox->setToolTip(tr("Check for incompatible faces.  Default: true"));
     tangentModeCheckBox->setChecked(group->GetBool("TangentMode", true));
     connect(tangentModeCheckBox, &QCheckBox::toggled,
-            this, &TaskCheckGeometryDialog::on_tangentModeCheckBox_toggled);
+            this, &TaskCheckGeometryDialog::onTangentModeCheckBoxToggled);
     settingsBox->groupLayout()->addWidget(tangentModeCheckBox);
 
     mergeVertexModeCheckBox = new QCheckBox();
@@ -1120,7 +1120,7 @@ the check geometry tool.  Default: false"));
     mergeVertexModeCheckBox->setToolTip(tr("Check for incompatible vertices.  Default: true"));
     mergeVertexModeCheckBox->setChecked(group->GetBool("MergeVertexMode", true));
     connect(mergeVertexModeCheckBox, &QCheckBox::toggled,
-            this, &TaskCheckGeometryDialog::on_mergeVertexModeCheckBox_toggled);
+            this, &TaskCheckGeometryDialog::onMergeVertexModeCheckBoxToggled);
     settingsBox->groupLayout()->addWidget(mergeVertexModeCheckBox);
 
     mergeEdgeModeCheckBox = new QCheckBox();
@@ -1128,7 +1128,7 @@ the check geometry tool.  Default: false"));
     mergeEdgeModeCheckBox->setToolTip(tr("Check for incompatible edges.  Default: true"));
     mergeEdgeModeCheckBox->setChecked(group->GetBool("MergeEdgeMode", true));
     connect(mergeEdgeModeCheckBox, &QCheckBox::toggled,
-            this, &TaskCheckGeometryDialog::on_mergeEdgeModeCheckBox_toggled);
+            this, &TaskCheckGeometryDialog::onMergeEdgeModeCheckBoxToggled);
     settingsBox->groupLayout()->addWidget(mergeEdgeModeCheckBox);
 
     curveOnSurfaceModeCheckBox = new QCheckBox();
@@ -1136,7 +1136,7 @@ the check geometry tool.  Default: false"));
     curveOnSurfaceModeCheckBox->setToolTip(tr("Check for invalid curves on surfaces.  Default: true"));
     curveOnSurfaceModeCheckBox->setChecked(group->GetBool("CurveOnSurfaceMode", true));
     connect(curveOnSurfaceModeCheckBox, &QCheckBox::toggled,
-            this, &TaskCheckGeometryDialog::on_curveOnSurfaceModeCheckBox_toggled);
+            this, &TaskCheckGeometryDialog::onCurveOnSurfaceModeCheckBoxToggled);
     settingsBox->groupLayout()->addWidget(curveOnSurfaceModeCheckBox);
     if (group->GetBool("AutoRun",false)){
         settingsBox->hide();
@@ -1168,7 +1168,7 @@ bool TaskCheckGeometryDialog::reject()
     return true;
 }
 
-void TaskCheckGeometryDialog::on_clicked(QAbstractButton *btn)
+void TaskCheckGeometryDialog::onClicked(QAbstractButton *btn)
 {
     /** when ok (run check) is clicked or when close is clicked
      *  the appropriate accept() or reject() is called already
@@ -1204,108 +1204,108 @@ void TaskCheckGeometryDialog::modifyStandardButtons(QDialogButtonBox* box)
         settingsBtn->setEnabled(false);
     resultsBtn = box->addButton(tr("Results"),QDialogButtonBox::ActionRole);
     resultsBtn->setEnabled(false);
-    connect(box, &QDialogButtonBox::clicked, this, &TaskCheckGeometryDialog::on_clicked);
+    connect(box, &QDialogButtonBox::clicked, this, &TaskCheckGeometryDialog::onClicked);
 }
 
-void TaskCheckGeometryDialog::on_autoRunCheckBox_toggled(bool isOn)
+void TaskCheckGeometryDialog::onAutoRunCheckBoxToggled(bool isOn)
 {
     ParameterGrp::handle group = App::GetApplication().GetUserParameter().
     GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod")->GetGroup("Part")->GetGroup("CheckGeometry");
     group->SetBool("AutoRun", isOn);
 }
 
-void TaskCheckGeometryDialog::on_runBOPCheckBox_toggled(bool isOn)
+void TaskCheckGeometryDialog::onRunBOPCheckBoxToggled(bool isOn)
 {
     ParameterGrp::handle group = App::GetApplication().GetUserParameter().
     GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod")->GetGroup("Part")->GetGroup("CheckGeometry");
     group->SetBool("RunBOPCheck", isOn);
 }
 
-void TaskCheckGeometryDialog::on_runSingleThreadedCheckBox_toggled(bool isOn)
+void TaskCheckGeometryDialog::onRunSingleThreadedCheckBoxToggled(bool isOn)
 {
     ParameterGrp::handle group = App::GetApplication().GetUserParameter().
     GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod")->GetGroup("Part")->GetGroup("CheckGeometry");
     group->SetBool("RunSingleThreaded", isOn);
 }
 
-void TaskCheckGeometryDialog::on_logErrorsCheckBox_toggled(bool isOn)
+void TaskCheckGeometryDialog::onLogErrorsCheckBoxToggled(bool isOn)
 {
     ParameterGrp::handle group = App::GetApplication().GetUserParameter().
     GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod")->GetGroup("Part")->GetGroup("CheckGeometry");
     group->SetBool("LogErrors", isOn);
 }
 
-void TaskCheckGeometryDialog::on_argumentTypeModeCheckBox_toggled(bool isOn)
+void TaskCheckGeometryDialog::onArgumentTypeModeCheckBoxToggled(bool isOn)
 {
     ParameterGrp::handle group = App::GetApplication().GetUserParameter().
     GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod")->GetGroup("Part")->GetGroup("CheckGeometry");
     group->SetBool("ArgumentTypeMode", isOn);
 }
 
-void TaskCheckGeometryDialog::on_expandShapeContentCheckBox_toggled(bool isOn)
+void TaskCheckGeometryDialog::onExpandShapeContentCheckBoxToggled(bool isOn)
 {
     ParameterGrp::handle group = App::GetApplication().GetUserParameter().
     GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod")->GetGroup("Part")->GetGroup("CheckGeometry");
     group->SetBool("ExpandShapeContent", isOn);
 }
 
-void TaskCheckGeometryDialog::on_advancedShapeContentCheckBox_toggled(bool isOn)
+void TaskCheckGeometryDialog::onAdvancedShapeContentCheckBoxToggled(bool isOn)
 {
     ParameterGrp::handle group = App::GetApplication().GetUserParameter().
     GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod")->GetGroup("Part")->GetGroup("CheckGeometry");
     group->SetBool("AdvancedShapeContent", isOn);
 }
 
-void TaskCheckGeometryDialog::on_selfInterModeCheckBox_toggled(bool isOn)
+void TaskCheckGeometryDialog::onSelfInterModeCheckBoxToggled(bool isOn)
 {
     ParameterGrp::handle group = App::GetApplication().GetUserParameter().
     GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod")->GetGroup("Part")->GetGroup("CheckGeometry");
     group->SetBool("SelfInterMode", isOn);
 }
 
-void TaskCheckGeometryDialog::on_smallEdgeModeCheckBox_toggled(bool isOn)
+void TaskCheckGeometryDialog::onSmallEdgeModeCheckBoxToggled(bool isOn)
 {
     ParameterGrp::handle group = App::GetApplication().GetUserParameter().
     GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod")->GetGroup("Part")->GetGroup("CheckGeometry");
     group->SetBool("SmallEdgeMode", isOn);
 }
 
-void TaskCheckGeometryDialog::on_rebuildFaceModeCheckBox_toggled(bool isOn)
+void TaskCheckGeometryDialog::onRebuildFaceModeCheckBoxToggled(bool isOn)
 {
     ParameterGrp::handle group = App::GetApplication().GetUserParameter().
     GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod")->GetGroup("Part")->GetGroup("CheckGeometry");
     group->SetBool("RebuildFaceMode", isOn);
 }
 
-void TaskCheckGeometryDialog::on_continuityModeCheckBox_toggled(bool isOn)
+void TaskCheckGeometryDialog::onContinuityModeCheckBoxToggled(bool isOn)
 {
     ParameterGrp::handle group = App::GetApplication().GetUserParameter().
     GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod")->GetGroup("Part")->GetGroup("CheckGeometry");
     group->SetBool("ContinuityMode", isOn);
 }
 
-void TaskCheckGeometryDialog::on_tangentModeCheckBox_toggled(bool isOn)
+void TaskCheckGeometryDialog::onTangentModeCheckBoxToggled(bool isOn)
 {
     ParameterGrp::handle group = App::GetApplication().GetUserParameter().
     GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod")->GetGroup("Part")->GetGroup("CheckGeometry");
     group->SetBool("TangentMode", isOn);
 }
 
-void TaskCheckGeometryDialog::on_mergeVertexModeCheckBox_toggled(bool isOn)
+void TaskCheckGeometryDialog::onMergeVertexModeCheckBoxToggled(bool isOn)
 {
     ParameterGrp::handle group = App::GetApplication().GetUserParameter().
     GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod")->GetGroup("Part")->GetGroup("CheckGeometry");
     group->SetBool("MergeVertexMode", isOn);
 }
 
-void TaskCheckGeometryDialog::on_mergeEdgeModeCheckBox_toggled(bool isOn)
+void TaskCheckGeometryDialog::onMergeEdgeModeCheckBoxToggled(bool isOn)
 {
     ParameterGrp::handle group = App::GetApplication().GetUserParameter().
     GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod")->GetGroup("Part")->GetGroup("CheckGeometry");
     group->SetBool("MergeEdgeMode", isOn);
 }
 
-void TaskCheckGeometryDialog::on_curveOnSurfaceModeCheckBox_toggled(bool isOn)
+void TaskCheckGeometryDialog::onCurveOnSurfaceModeCheckBoxToggled(bool isOn)
 {
     ParameterGrp::handle group = App::GetApplication().GetUserParameter().
     GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod")->GetGroup("Part")->GetGroup("CheckGeometry");
