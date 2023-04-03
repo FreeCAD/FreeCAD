@@ -384,7 +384,7 @@
           </property>
           <property name="icon">
            <iconset resource="Icons/resource.qrc">
-           <normaloff>:/icons/button_switch.svg</normaloff>:/icons/button_switch.svg</iconset>
+           <normaloff>:/icons/button_sort.svg</normaloff>:/icons/button_sort.svg</iconset>
           </property>
          </widget>
         </item>
