@@ -52,6 +52,13 @@ protected:
 
 protected Q_SLOTS:
   void onSwitchGradientColorsPressed();
+  void onRadioButtonSimpleToggled(bool val);
+  void onRadioButtonGradientToggled(bool val);
+  void onRadioButtonRadialGradientToggled(bool val);
+  void onCheckMidColorToggled(bool val);
+
+private:
+	void setGradientColorVisibility(bool val);
 
 private:
   std::unique_ptr<Ui_DlgSettingsViewColor> ui;
