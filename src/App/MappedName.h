@@ -26,15 +26,18 @@
 #define APP_MAPPED_NAME_H
 
 
+#include <memory>
 #include <string>
 
 #include <boost/algorithm/string/predicate.hpp>
 
 #include <QByteArray>
 #include <QHash>
+#include <QVector>
 
 #include "ComplexGeoData.h"
 #include "IndexedName.h"
+#include "StringHasher.h"
 
 
 namespace Data
@@ -786,8 +789,7 @@ public:
         if (!searchTarget) {
             return -1;
         }
-        if (startPosition < 0
-            || startPosition >= this->data.size()) {
+        if (startPosition < 0 || startPosition >= this->data.size()) {
             if (startPosition >= data.size()) {
                 startPosition -= data.size();
             }
@@ -898,6 +900,111 @@ private:
     QByteArray postfix;
     bool raw;
 };
+
+
+typedef QVector<::App::StringIDRef> ElementIDRefs;
+
+struct MappedNameRef
+{
+    MappedName name;
+    ElementIDRefs sids;
+    std::unique_ptr<MappedNameRef> next;
+
+    MappedNameRef()
+    {}
+
+    MappedNameRef(const MappedName& name, const ElementIDRefs& sids = ElementIDRefs())
+        : name(name),
+          sids(sids)
+    {
+        compact();
+    }
+
+    MappedNameRef(const MappedNameRef& other)
+        : name(other.name),
+          sids(other.sids)
+    {}
+
+    MappedNameRef(MappedNameRef&& other)
+        : name(std::move(other.name)),
+          sids(std::move(other.sids)),
+          next(std::move(other.next))
+    {}
+
+    MappedNameRef& operator=(MappedNameRef&& other)
+    {
+        name = std::move(other.name);
+        sids = std::move(other.sids);
+        next = std::move(other.next);
+        return *this;
+    }
+
+    explicit operator bool() const
+    {
+        return !name.empty();
+    }
+
+    void append(const MappedName& name, const ElementIDRefs sids = ElementIDRefs())
+    {
+        if (!name)
+            return;
+        if (!this->name) {
+            this->name = name;
+            this->sids = sids;
+            compact();
+            return;
+        }
+        std::unique_ptr<MappedNameRef> n(new MappedNameRef(name, sids));
+        if (!this->next)
+            this->next = std::move(n);
+        else {
+            this->next.swap(n);
+            this->next->next = std::move(n);
+        }
+    }
+
+    void compact()
+    {
+        if (sids.size() > 1) {
+            std::sort(sids.begin(), sids.end());
+            sids.erase(std::unique(sids.begin(), sids.end()), sids.end());
+        }
+    }
+
+    bool erase(const MappedName& name)
+    {
+        if (this->name == name) {
+            this->name.clear();
+            this->sids.clear();
+            if (this->next) {
+                this->name = std::move(this->next->name);
+                this->sids = std::move(this->next->sids);
+                std::unique_ptr<MappedNameRef> tmp;
+                tmp.swap(this->next);
+                this->next = std::move(tmp->next);
+            }
+            return true;
+        }
+
+        for (std::unique_ptr<MappedNameRef>* p = &this->next; *p; p = &(*p)->next) {
+            if ((*p)->name == name) {
+                std::unique_ptr<MappedNameRef> tmp;
+                tmp.swap(*p);
+                *p = std::move(tmp->next);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    void clear()
+    {
+        this->name.clear();
+        this->sids.clear();
+        this->next.reset();
+    }
+};
+
 
 // NOLINTEND(cppcoreguidelines-pro-bounds-pointer-arithmetic)
 
