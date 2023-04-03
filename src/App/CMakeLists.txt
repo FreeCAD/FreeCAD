@@ -266,6 +266,7 @@ SET(FreeCADApp_CPP_SRCS
     ColorModel.cpp
     ComplexGeoData.cpp
     ComplexGeoDataPyImp.cpp
+    ElementMap.cpp
     Enumeration.cpp
     IndexedName.cpp
     MappedElement.cpp
