@@ -354,8 +354,10 @@ class Results(run.Results):
 
     def _finishTimeResults(self, time, counter):
         # we purposely use the decimal dot in the label
-        self.solver.ElmerTimeResults[counter].Label\
-           = self.solver.Name + "_" + str(time) + "_" + "Result"
+        self.solver.ElmerTimeResults[counter].Label = (
+            "{}_{}_Result"
+            .format(self.solver.Name, time)
+        )
         self.solver.ElmerTimeResults[counter].ViewObject.OnTopWhenSelected = True
         self.analysis.addObject(self.solver.ElmerTimeResults[counter])
         # to assure the user sees something, set the default to Surface

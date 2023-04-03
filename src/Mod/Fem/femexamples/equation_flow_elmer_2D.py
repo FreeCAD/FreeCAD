@@ -182,7 +182,9 @@ def setup(doc=None, solvertype="elmer"):
     # constraint inlet velocity
     FlowVelocity_Inlet = ObjectsFem.makeConstraintFlowVelocity(doc, "FlowVelocity_Inlet")
     FlowVelocity_Inlet.References = [(BooleanFragments, "Edge5")]
-    FlowVelocity_Inlet.VelocityXFormula = "Variable Coordinate 2; Real MATC \"10*(tx+50e-3)*(50e-3-tx)\""
+    FlowVelocity_Inlet.VelocityXFormula = (
+        "Variable Coordinate 2; Real MATC \"10*(tx+50e-3)*(50e-3-tx)\""
+    )
     FlowVelocity_Inlet.VelocityXUnspecified = False
     FlowVelocity_Inlet.VelocityXHasFormula = True
     FlowVelocity_Inlet.VelocityYUnspecified = False

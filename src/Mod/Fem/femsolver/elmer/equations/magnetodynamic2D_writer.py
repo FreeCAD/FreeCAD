@@ -107,7 +107,7 @@ class MgDyn2Dwriter:
     def handleMagnetodynamic2DMaterial(self, bodies):
         # check that all bodies have a set material
         for name in bodies:
-            if self.write.getBodyMaterial(name) == None:
+            if self.write.getBodyMaterial(name) is None:
                 raise general_writer.WriteError(
                     "The body {} is not referenced in any material.\n\n".format(name)
                 )

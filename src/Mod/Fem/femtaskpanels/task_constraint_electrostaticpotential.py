@@ -73,13 +73,15 @@ class _TaskPanel(object):
         self._meshVisible = None
 
         # start with vector inputs hidden if no vector is set
-        if self._obj.AV_re_1_Disabled and \
-            self._obj.AV_re_2_Disabled and \
-            self._obj.AV_re_3_Disabled and \
-            self._obj.AV_im_Disabled and \
-            self._obj.AV_im_1_Disabled and \
-            self._obj.AV_im_2_Disabled and \
-            self._obj.AV_im_3_Disabled:
+        if (
+            self._obj.AV_re_1_Disabled
+            and self._obj.AV_re_2_Disabled
+            and self._obj.AV_re_3_Disabled
+            and self._obj.AV_im_Disabled
+            and self._obj.AV_im_1_Disabled
+            and self._obj.AV_im_2_Disabled
+            and self._obj.AV_im_3_Disabled
+        ):
             self._vectorField_visibility(False)
             self._paramWidget.vectorFieldBox.setChecked(False)
         QtCore.QObject.connect(

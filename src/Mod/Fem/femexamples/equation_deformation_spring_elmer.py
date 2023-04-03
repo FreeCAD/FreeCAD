@@ -23,11 +23,8 @@
 
 import sys
 import FreeCAD
-from FreeCAD import Placement
-from FreeCAD import Rotation
 from FreeCAD import Vector
 
-import Draft
 import ObjectsFem
 import Part
 import Sketcher
