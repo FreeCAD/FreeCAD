@@ -155,7 +155,7 @@ class MgDynwriter:
                     )
                 self.write.material(name, "Name", m["Name"])
                 conductivity = self.write.convert(m["ElectricalConductivity"], "T^3*I^2/(L^3*M)")
-                conductivity = round(conductivity, 10) # to get rid of numerical artifacts
+                conductivity = round(conductivity, 10)  # to get rid of numerical artifacts
                 self.write.material(name, "Electric Conductivity", conductivity)
                 self.write.material(
                     name, "Relative Permeability",
