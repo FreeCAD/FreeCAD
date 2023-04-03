@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 #
-# Generated Mon Mar  6 17:37:05 2023 by generateDS.py.
+# Generated Fri Mar 31 16:59:53 2023 by generateDS.py.
 # Update it with: python generateDS.py -o generateModel_Module.py generateMetaModel_Module.xsd
 #
 # WARNING! All changes made in this file will be lost!
@@ -220,7 +220,7 @@ class GenerateModel:
 
 class PythonExport:
     subclass = None
-    def __init__(self, Name='', PythonName='', Include='', Father='', Twin='', Namespace='', FatherInclude='', FatherNamespace='', Constructor=0, NumberProtocol=0, RichCompare=0, TwinPointer='', Delete=0, Reference=0, Initialization=0, DisableNotify=0, Documentation=None, Methode=None, Attribute=None, Sequence=None, CustomAttributes='', ClassDeclarations='', ForwardDeclarations=''):
+    def __init__(self, Name='', PythonName='', Include='', Father='', Twin='', Namespace='', FatherInclude='', FatherNamespace='', Constructor=0, NumberProtocol=0, RichCompare=0, TwinPointer='', Delete=0, Reference=0, Initialization=0, DisableNotify=0, DescriptorGetter=0, DescriptorSetter=0, Documentation=None, Methode=None, Attribute=None, Sequence=None, CustomAttributes='', ClassDeclarations='', ForwardDeclarations=''):
         self.Name = Name
         self.PythonName = PythonName
         self.Include = Include
@@ -237,6 +237,8 @@ class PythonExport:
         self.Reference = Reference
         self.Initialization = Initialization
         self.DisableNotify = DisableNotify
+        self.DescriptorGetter = DescriptorGetter
+        self.DescriptorSetter = DescriptorSetter
         self.Documentation = Documentation
         if Methode is None:
             self.Methode = []
@@ -306,6 +308,10 @@ class PythonExport:
     def setInitialization(self, Initialization): self.Initialization = Initialization
     def getDisablenotify(self): return self.DisableNotify
     def setDisablenotify(self, DisableNotify): self.DisableNotify = DisableNotify
+    def getDescriptorgetter(self): return self.DescriptorGetter
+    def setDescriptorgetter(self, DescriptorGetter): self.DescriptorGetter = DescriptorGetter
+    def getDescriptorsetter(self): return self.DescriptorSetter
+    def setDescriptorsetter(self, DescriptorSetter): self.DescriptorSetter = DescriptorSetter
     def export(self, outfile, level, name_='PythonExport'):
         showIndent(outfile, level)
         outfile.write('<%s' % (name_, ))
@@ -339,6 +345,10 @@ class PythonExport:
             outfile.write(' Initialization="%s"' % (self.getInitialization(), ))
         if self.getDisablenotify() is not None:
             outfile.write(' DisableNotify="%s"' % (self.getDisablenotify(), ))
+        if self.getDescriptorgetter() is not None:
+            outfile.write(' DescriptorGetter="%s"' % (self.getDescriptorgetter(), ))
+        if self.getDescriptorsetter() is not None:
+            outfile.write(' DescriptorSetter="%s"' % (self.getDescriptorsetter(), ))
     def exportChildren(self, outfile, level, name_='PythonExport'):
         if self.Documentation:
             self.Documentation.export(outfile, level)
@@ -391,6 +401,10 @@ class PythonExport:
         outfile.write('Initialization = "%s",\n' % (self.getInitialization(),))
         showIndent(outfile, level)
         outfile.write('DisableNotify = "%s",\n' % (self.getDisablenotify(),))
+        showIndent(outfile, level)
+        outfile.write('DescriptorGetter = "%s",\n' % (self.getDescriptorgetter(),))
+        showIndent(outfile, level)
+        outfile.write('DescriptorSetter = "%s",\n' % (self.getDescriptorsetter(),))
     def exportLiteralChildren(self, outfile, level, name_):
         if self.Documentation:
             showIndent(outfile, level)
@@ -508,6 +522,20 @@ class PythonExport:
                 self.DisableNotify = 0
             else:
                 raise ValueError('Bad boolean attribute (DisableNotify)')
+        if attrs.get('DescriptorGetter'):
+            if attrs.get('DescriptorGetter').value in ('true', '1'):
+                self.DescriptorGetter = 1
+            elif attrs.get('DescriptorGetter').value in ('false', '0'):
+                self.DescriptorGetter = 0
+            else:
+                raise ValueError('Bad boolean attribute (DescriptorGetter)')
+        if attrs.get('DescriptorSetter'):
+            if attrs.get('DescriptorSetter').value in ('true', '1'):
+                self.DescriptorSetter = 1
+            elif attrs.get('DescriptorSetter').value in ('false', '0'):
+                self.DescriptorSetter = 0
+            else:
+                raise ValueError('Bad boolean attribute (DescriptorSetter)')
     def buildChildren(self, child_, nodeName_):
         if child_.nodeType == Node.ELEMENT_NODE and \
             nodeName_ == 'Documentation':
@@ -1950,6 +1978,22 @@ class SaxGeneratemodelHandler(handler.ContentHandler):
                     obj.setDisablenotify(0)
                 else:
                     self.reportError('"DisableNotify" attribute must be boolean ("true", "1", "false", "0")')
+            val = attrs.get('DescriptorGetter', None)
+            if val is not None:
+                if val in ('true', '1'):
+                    obj.setDescriptorgetter(1)
+                elif val in ('false', '0'):
+                    obj.setDescriptorgetter(0)
+                else:
+                    self.reportError('"DescriptorGetter" attribute must be boolean ("true", "1", "false", "0")')
+            val = attrs.get('DescriptorSetter', None)
+            if val is not None:
+                if val in ('true', '1'):
+                    obj.setDescriptorsetter(1)
+                elif val in ('false', '0'):
+                    obj.setDescriptorsetter(0)
+                else:
+                    self.reportError('"DescriptorSetter" attribute must be boolean ("true", "1", "false", "0")')
             stackObj = SaxStackElement('PythonExport', obj)
             self.stack.append(stackObj)
             done = 1
