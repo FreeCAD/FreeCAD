@@ -1377,8 +1377,6 @@ PyObject* Application::sShowPreferences(PyObject * /*self*/, PyObject *args)
     wc.restoreCursor();
     cDlg.exec();
     wc.setWaitCursor();
-    cDlg.isRebootRequired(); //The user may have applied first, then clicked the cancel button so it's not in the if(cDlg.exec())
-    wc.setWaitCursor();
 
     Py_Return;
 }

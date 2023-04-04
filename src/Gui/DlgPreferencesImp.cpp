@@ -71,7 +71,7 @@ DlgPreferencesImp* DlgPreferencesImp::_activeDialog = nullptr;
  */
 DlgPreferencesImp::DlgPreferencesImp(QWidget* parent, Qt::WindowFlags fl)
     : QDialog(parent, fl), ui(new Ui_DlgPreferences),
-      invalidParameter(false), canEmbedScrollArea(true), rebootRequired(false)
+      invalidParameter(false), canEmbedScrollArea(true), restartRequired(false)
 {
     ui->setupUi(this);
     QFontMetrics fm(font());
@@ -337,8 +337,16 @@ void DlgPreferencesImp::accept()
 {
     this->invalidParameter = false;
     applyChanges();
-    if (!this->invalidParameter)
+    if (!this->invalidParameter) {
         QDialog::accept();
+        restartIfRequired();
+    }
+}
+
+void DlgPreferencesImp::reject()
+{
+    QDialog::reject();
+    restartIfRequired();
 }
 
 void DlgPreferencesImp::onButtonBoxClicked(QAbstractButton* btn)
@@ -464,7 +472,7 @@ void DlgPreferencesImp::applyChanges()
             auto page = qobject_cast<PreferencePage*>(tabWidget->widget(j));
             if (page) {
                 page->saveSettings();
-                rebootRequired = rebootRequired || page->isRebootRequired();
+                restartRequired = restartRequired || page->isRestartRequired();
             }
         }
     }
@@ -477,9 +485,9 @@ void DlgPreferencesImp::applyChanges()
     }
 }
 
-void DlgPreferencesImp::isRebootRequired()
+void DlgPreferencesImp::restartIfRequired()
 {
-    if (rebootRequired) {
+    if (restartRequired) {
         QMessageBox* restartBox = new QMessageBox();
         restartBox->setIcon(QMessageBox::Warning);
         restartBox->setWindowTitle(tr("Restart required"));
@@ -498,6 +506,7 @@ void DlgPreferencesImp::isRebootRequired()
             QTimer::singleShot(1000, []() 
             {
                 QStringList args = QApplication::arguments();
+                args.pop_front();
                 if (getMainWindow()->close())
                     QProcess::startDetached(QApplication::applicationFilePath(), args);
             });

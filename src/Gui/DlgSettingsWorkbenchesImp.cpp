@@ -253,7 +253,7 @@ DlgSettingsWorkbenchesImp::~DlgSettingsWorkbenchesImp()
 
 void DlgSettingsWorkbenchesImp::saveSettings()
 {
-    std::ostringstream enabledStr, disabledStr, autoloadStr;
+    std::ostringstream orderedStr, disabledStr, autoloadStr;
 
     auto addStrToOss = [](std::string wbName, std::ostringstream& oss) {
         if (!oss.str().empty())
@@ -268,7 +268,7 @@ void DlgSettingsWorkbenchesImp::saveSettings()
         std::string wbName = wbItem->objectName().toStdString();
 
         if (wbItem->isEnabled()) {
-            addStrToOss(wbName, enabledStr);
+            addStrToOss(wbName, orderedStr);
         }
         else {
             addStrToOss(wbName, disabledStr);
@@ -279,14 +279,17 @@ void DlgSettingsWorkbenchesImp::saveSettings()
         }
     }
 
-    if (enabledStr.str().empty()) //make sure that we have at least one enabled workbench.
-        enabledStr << "NoneWorkbench";
+    if (orderedStr.str().empty()) //make sure that we have at least one enabled workbench. This should not be necessary because startup wb cannot be disabled.
+        orderedStr << "NoneWorkbench";
     else {
-        addStrToOss("NoneWorkbench", disabledStr); //Note, NoneWorkbench is not in the table so it's not added before.
+        if (!disabledStr.str().empty())
+            disabledStr << ",";
+        disabledStr << "NoneWorkbench";
     }
 
-    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Workbenches");
-    hGrp->SetASCII("Enabled", enabledStr.str().c_str());
+
+    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Workbenches");
+    hGrp->SetASCII("Ordered", orderedStr.str().c_str());
     hGrp->SetASCII("Disabled", disabledStr.str().c_str());
 
     App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/General")->
@@ -342,26 +345,16 @@ void DlgSettingsWorkbenchesImp::buildWorkbenchList()
 {
     QSignalBlocker sigblk(ui->wbList);
 
-    QStringList workbenches = Application::Instance->workbenches();
     QStringList enabledWbs = getEnabledWorkbenches();
     QStringList disabledWbs = getDisabledWorkbenches();
 
     //First we add the enabled wbs in their saved order.
     for (const auto& wbName : enabledWbs) {
-        if (workbenches.contains(wbName)) {
-            addWorkbench(wbName, true);
-        }
-        else {
-            Base::Console().Warning("Ignoring unknown %s workbench found in user preferences.", wbName.toStdString().c_str());
-        }
+        addWorkbench(wbName, true);
     }
-    //Second we add workbench in alphabetical order that are either Disabled, or !enabled && !disabled, ie newly added wb.
-    for (const auto& wbName : workbenches) {
-        if (disabledWbs.contains(wbName)) {
-            addWorkbench(wbName, false);
-        }
-        else if (!enabledWbs.contains(wbName)) {
-            Base::Console().Warning("Adding unknown %s workbench.", wbName.toStdString().c_str());
+    //Second we add workbenches that are disabled in alphabetical order.
+    for (const auto& wbName : disabledWbs) {
+        if (wbName.toStdString() != "NoneWorkbench") {
             addWorkbench(wbName, false);
         }
     }
@@ -369,9 +362,6 @@ void DlgSettingsWorkbenchesImp::buildWorkbenchList()
 
 void DlgSettingsWorkbenchesImp::addWorkbench(const QString& wbName, bool enabled)
 {
-    if (wbName.toStdString() == "NoneWorkbench")
-        return; // Do not list the default empty Workbench
-
     bool isStartupWb = wbName.toStdString() == _startupModule;
     bool autoLoad = std::find(_backgroundAutoloadedModules.begin(), _backgroundAutoloadedModules.end(),
         wbName.toStdString()) != _backgroundAutoloadedModules.end();
@@ -383,46 +373,71 @@ void DlgSettingsWorkbenchesImp::addWorkbench(const QString& wbName, bool enabled
     ui->wbList->setItemWidget(wItem, widget);
 }
 
-
 QStringList DlgSettingsWorkbenchesImp::getEnabledWorkbenches()
 {
-    QString enabled_wbs;
+    QStringList disabled_wbs_list = getDisabledWorkbenches();
     QStringList enabled_wbs_list;
+    QStringList wbs_ordered_list;
+    QString wbs_ordered;
     ParameterGrp::handle hGrp;
-    QString allWorkbenches = QString::fromLatin1("ALL");
 
-    hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Workbenches");
-    enabled_wbs = QString::fromStdString(hGrp->GetASCII("Enabled", allWorkbenches.toStdString().c_str()).c_str());
+    hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Workbenches");
+    wbs_ordered = QString::fromStdString(hGrp->GetASCII("Ordered", ""));
 #if QT_VERSION >= QT_VERSION_CHECK(5,15,0)
-    enabled_wbs_list = enabled_wbs.split(QLatin1String(","), Qt::SkipEmptyParts);
+    wbs_ordered_list = wbs_ordered.split(QLatin1String(","), Qt::SkipEmptyParts);
 #else
-    enabled_wbs_list = enabled_wbs.split(QLatin1String(","), QString::SkipEmptyParts);
+    wbs_ordered_list = wbs_ordered.split(QLatin1String(","), QString::SkipEmptyParts);
 #endif
 
-    if (enabled_wbs_list.at(0) == allWorkbenches) {
-        enabled_wbs_list.removeFirst();
-        QStringList workbenches = Application::Instance->workbenches();
-        for (QStringList::Iterator it = workbenches.begin(); it != workbenches.end(); ++it) {
-            enabled_wbs_list.append(*it);
+    QStringList workbenches = Application::Instance->workbenches();
+    workbenches.sort();
+
+    //First we add the wb that are ordered.
+    for(auto& wbName : wbs_ordered_list) {
+        if (workbenches.contains(wbName) && !disabled_wbs_list.contains(wbName)) { //Some wb may have been removed
+            enabled_wbs_list.append(wbName);
         }
-        enabled_wbs_list.sort();
+        else {
+            Base::Console().Log("Ignoring unknown %s workbench found in user preferences.\n", wbName.toStdString().c_str());
+        }
     }
+
+    //Then we add the wbs that are not ordered and not disabled in alphabetical order
+    for(auto& wbName : workbenches) {
+        if (!enabled_wbs_list.contains(wbName) && !disabled_wbs_list.contains(wbName))
+            enabled_wbs_list.append(wbName);
+    }
+
     return enabled_wbs_list;
 }
 
 QStringList DlgSettingsWorkbenchesImp::getDisabledWorkbenches()
 {
     QString disabled_wbs;
+    QStringList unfiltered_disabled_wbs_list;
     QStringList disabled_wbs_list;
     ParameterGrp::handle hGrp;
 
-    hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Workbenches");
-    disabled_wbs = QString::fromStdString(hGrp->GetASCII("Disabled", ""));
+    hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Workbenches");
+    disabled_wbs = QString::fromStdString(hGrp->GetASCII("Disabled", "NoneWorkbench,TestWorkbench"));
 #if QT_VERSION >= QT_VERSION_CHECK(5,15,0)
-    disabled_wbs_list = disabled_wbs.split(QLatin1String(","), Qt::SkipEmptyParts);
+    unfiltered_disabled_wbs_list = disabled_wbs.split(QLatin1String(","), Qt::SkipEmptyParts);
 #else
-    disabled_wbs_list = disabled_wbs.split(QLatin1String(","), QString::SkipEmptyParts);
+    unfiltered_disabled_wbs_list = disabled_wbs.split(QLatin1String(","), QString::SkipEmptyParts);
 #endif
+
+    QStringList workbenches = Application::Instance->workbenches();
+
+    for (auto& wbName : unfiltered_disabled_wbs_list) {
+        if (workbenches.contains(wbName)) { //Some wb may have been removed
+            disabled_wbs_list.append(wbName);
+        }
+        else {
+            Base::Console().Log("Ignoring unknown %s workbench found in user preferences.\n", wbName.toStdString().c_str());
+        }
+    }
+
+    disabled_wbs_list.sort();
 
     return disabled_wbs_list;
 }
@@ -461,7 +476,7 @@ void DlgSettingsWorkbenchesImp::loadWorkbenchSelector()
 
 void DlgSettingsWorkbenchesImp::wbToggled(const QString& wbName, bool enabled)
 {
-    requireReboot();
+    requireRestart();
 
     setStartWorkbenchComboItems();
 
@@ -535,7 +550,7 @@ void DlgSettingsWorkbenchesImp::setStartWorkbenchComboItems()
 
 void DlgSettingsWorkbenchesImp::wbItemMoved()
 {
-    requireReboot();
+    requireRestart();
     for (int i = 0; i < ui->wbList->count(); i++) {
         wbListItem* wbItem = dynamic_cast<wbListItem*>(ui->wbList->itemWidget(ui->wbList->item(i)));
         if (wbItem) {
@@ -563,13 +578,13 @@ void DlgSettingsWorkbenchesImp::onStartWbChanged(int index)
 void DlgSettingsWorkbenchesImp::onWbSelectorChanged(int index)
 {
     Q_UNUSED(index);
-    requireReboot();
+    requireRestart();
 }
 
 void DlgSettingsWorkbenchesImp::onWbByTabToggled(bool val)
 {
     Q_UNUSED(val);
-    requireReboot();
+    requireRestart();
 }
 
 #include "moc_DlgSettingsWorkbenchesImp.cpp"
