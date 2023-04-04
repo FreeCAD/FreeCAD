@@ -66,7 +66,7 @@ SoFCBackgroundGradient::SoFCBackgroundGradient()
     fCol.setValue(0.5f, 0.5f, 0.8f);
     tCol.setValue(0.7f, 0.7f, 0.9f);
     mCol.setValue(1.0f, 1.0f, 1.0f);
-    radial = false;
+    gradient = Gradient::LINEAR;
 }
 
 /*!
@@ -96,7 +96,7 @@ void SoFCBackgroundGradient::GLRender (SoGLRenderAction * /*action*/)
     glDisable(GL_LIGHTING);
     glDisable(GL_TEXTURE_2D);
 
-    if (!radial) { // linear gradient
+    if (gradient == Gradient::LINEAR) {
         glBegin(GL_TRIANGLE_STRIP);
         if (mCol[0] < 0) {
             glColor3f(fCol[0],fCol[1],fCol[2]); glVertex2f(-1, 1);
@@ -152,23 +152,29 @@ void SoFCBackgroundGradient::GLRender (SoGLRenderAction * /*action*/)
     glMatrixMode(GL_MODELVIEW);
 }
 
+void SoFCBackgroundGradient::setGradient(SoFCBackgroundGradient::Gradient grad)
+{
+    gradient = grad;
+}
+
+SoFCBackgroundGradient::Gradient SoFCBackgroundGradient::getGradient() const
+{
+    return gradient;
+}
+
 void SoFCBackgroundGradient::setColorGradient(const SbColor& fromColor,
-                                              const SbColor& toColor,
-                                              bool isRadial)
+                                              const SbColor& toColor)
 {
     fCol = fromColor;
     tCol = toColor;
     mCol[0] = -1.0f;
-    radial = isRadial;
 }
 
 void SoFCBackgroundGradient::setColorGradient(const SbColor& fromColor,
                                               const SbColor& toColor,
-                                              const SbColor& midColor,
-                                              bool isRadial)
+                                              const SbColor& midColor)
 {
     fCol = fromColor;
     tCol = toColor;
     mCol = midColor;
-    radial = isRadial;
 }

@@ -437,7 +437,7 @@ Py::Object View3DInventorViewerPy::setBackgroundColor(const Py::Tuple& args)
     }
     try {
         SbColor col(r,g,b);
-        _viewer->setGradientBackgroundColor(col, col, false);
+        _viewer->setGradientBackgroundColor(col, col);
         return Py::None();
     }
     catch (const Base::Exception& e) {

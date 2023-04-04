@@ -40,21 +40,25 @@ class GuiExport SoFCBackgroundGradient : public SoNode {
     SO_NODE_HEADER(Gui::SoFCBackgroundGradient);
 
 public:
+    enum Gradient {
+        LINEAR = 0,
+        RADIAL = 1
+    };
     static void initClass();
     static void finish();
     SoFCBackgroundGradient();
 
     void GLRender (SoGLRenderAction *action);
+    void setGradient(Gradient grad);
+    Gradient getGradient() const;
+    void setColorGradient(const SbColor& fromColor,
+                          const SbColor& toColor);
     void setColorGradient(const SbColor& fromColor,
                           const SbColor& toColor,
-                          bool isRadial);
-    void setColorGradient(const SbColor& fromColor,
-                          const SbColor& toColor,
-                          const SbColor& midColor,
-                          bool isRadial);
+                          const SbColor& midColor);
 
 private:
-    bool radial;
+    Gradient gradient;
 
 protected:
     virtual ~SoFCBackgroundGradient();
