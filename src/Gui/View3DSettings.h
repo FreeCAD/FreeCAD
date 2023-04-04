@@ -32,6 +32,7 @@ class View3DSettings : public ParameterGrp::ObserverType
 {
 public:
     View3DSettings(ParameterGrp::handle hGrp, View3DInventorViewer *);
+    View3DSettings(ParameterGrp::handle hGrp, const std::vector<View3DInventorViewer *>&);
     ~View3DSettings() override;
 
     /// Observer message from the ParameterGrp
@@ -39,9 +40,15 @@ public:
     void applySettings();
     int stopAnimatingIfDeactivated() const;
 
+    bool ignoreNavigationStyle = false;
+    bool ignoreVBO = false;
+    bool ignoreDimensions = false;
+    bool ignoreRenderCache = false;
+    bool ignoreTransparent = false;
+
 private:
     ParameterGrp::handle hGrp;
-    View3DInventorViewer * _viewer;
+    std::vector<View3DInventorViewer*> _viewers;
 };
 
 class NaviCubeSettings : public ParameterGrp::ObserverType
