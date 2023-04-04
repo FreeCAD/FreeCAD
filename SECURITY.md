@@ -12,8 +12,8 @@ subprojects such as our website, forums, etc.) we ask you to join the large comm
 file a report about the issue.
 
 Note that funds may be available from the [FreeCAD Project Association (FPA)](https://fpa.freecad.org) to pursue 
-security research and/or the development of fixes to any vulnerabilities discovered. Contact the FPA at fpa@freecad.org
-for more information.
+security research and/or the development of fixes to any vulnerabilities discovered. However, vulnerabilities held as 
+hostage in demands for "bounties" will not be entertained. Contact the FPA at fpa@freecad.org for more information.
 
 ## Supported Versions
 
