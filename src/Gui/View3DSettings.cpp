@@ -293,9 +293,15 @@ void View3DSettings::OnChange(ParameterGrp::SubjectType &rCaller,ParameterGrp::M
         }
     }
     else if (strcmp(Reason,"Gradient") == 0 || strcmp(Reason,"RadialGradient") == 0) {
+        View3DInventorViewer::Background background = View3DInventorViewer::Background::NoGradient;
+        if (rGrp.GetBool("Gradient", true)) {
+            background = View3DInventorViewer::Background::LinearGradient;
+        }
+        else if (rGrp.GetBool("RadialGradient", false)) {
+            background = View3DInventorViewer::Background::RadialGradient;
+        }
         for (auto _viewer : _viewers) {
-            _viewer->setGradientBackground(rGrp.GetBool("Gradient", true) ||
-                                           rGrp.GetBool("RadialGradient", false));
+            _viewer->setGradientBackground(background);
         }
     }
     else if (strcmp(Reason,"ShowFPS") == 0) {
@@ -412,15 +418,15 @@ void View3DSettings::OnChange(ParameterGrp::SubjectType &rCaller,ParameterGrp::M
         r4 = ((col4 >> 24) & 0xff) / 255.0; g4 = ((col4 >> 16) & 0xff) / 255.0; b4 = ((col4 >> 8) & 0xff) / 255.0;
         for (auto _viewer : _viewers) {
             _viewer->setBackgroundColor(QColor::fromRgbF(r1, g1, b1));
-            if (!rGrp.GetBool("UseBackgroundColorMid",false))
+            if (!rGrp.GetBool("UseBackgroundColorMid",false)) {
+                _viewer->setGradientBackgroundColor(SbColor(r2, g2, b2),
+                                                    SbColor(r3, g3, b3));
+            }
+            else {
                 _viewer->setGradientBackgroundColor(SbColor(r2, g2, b2),
                                                     SbColor(r3, g3, b3),
-                                                    rGrp.GetBool("RadialGradient", false));
-            else
-                _viewer->setGradientBackgroundColor(SbColor(r2, g2, b2),
-                                                    SbColor(r3, g3, b3),
-                                                    SbColor(r4, g4, b4),
-                                                    rGrp.GetBool("RadialGradient", false));
+                                                    SbColor(r4, g4, b4));
+            }
         }
     }
 }
