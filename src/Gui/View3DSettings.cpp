@@ -235,7 +235,7 @@ void View3DSettings::OnChange(ParameterGrp::SubjectType &rCaller,ParameterGrp::M
         _viewer->setAnimationEnabled(rGrp.GetBool("UseAutoRotation", false));
     }
     else if (strcmp(Reason,"Gradient") == 0 || strcmp(Reason,"RadialGradient") == 0) {
-        _viewer->setGradientBackground(rGrp.GetBool("Gradient", true) || rGrp.GetBool("RadialGradient", true));
+        _viewer->setGradientBackground(rGrp.GetBool("Gradient", true) || rGrp.GetBool("RadialGradient", false));
     }
     else if (strcmp(Reason,"ShowFPS") == 0) {
         _viewer->setEnabledFPSCounter(rGrp.GetBool("ShowFPS", false));

@@ -26,6 +26,7 @@
 #include <Inventor/SbColor.h>
 #include <Inventor/nodes/SoNode.h>
 #include <Inventor/nodes/SoSubNode.h>
+#include <FCGlobal.h>
 
 
 class SbColor;
@@ -44,8 +45,13 @@ public:
     SoFCBackgroundGradient();
 
     void GLRender (SoGLRenderAction *action);
-    void setColorGradient(const SbColor& fromColor, const SbColor& toColor, bool isRadial);
-    void setColorGradient(const SbColor& fromColor, const SbColor& toColor, const SbColor& midColor, bool isRadial);
+    void setColorGradient(const SbColor& fromColor,
+                          const SbColor& toColor,
+                          bool isRadial);
+    void setColorGradient(const SbColor& fromColor,
+                          const SbColor& toColor,
+                          const SbColor& midColor,
+                          bool isRadial);
 
 private:
     bool radial;
