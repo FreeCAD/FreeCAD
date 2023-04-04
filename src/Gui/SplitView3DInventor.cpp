@@ -266,7 +266,7 @@ void AbstractSplitView::OnChange(ParameterGrp::SubjectType &rCaller,ParameterGrp
     }
     else if ( strcmp(Reason,"Gradient") == 0 || strcmp(Reason, "RadialGradient") == 0  ) {
         for (std::vector<View3DInventorViewer*>::iterator it = _viewer.begin(); it != _viewer.end(); ++it)
-            (*it)->setGradientBackground(rGrp.GetBool("Gradient", true) || rGrp.GetBool("RadialGradient", true));
+            (*it)->setGradientBackground(rGrp.GetBool("Gradient", true) || rGrp.GetBool("RadialGradient", false));
     }
     else if (strcmp(Reason,"ShowFPS") == 0) {
         for (std::vector<View3DInventorViewer*>::iterator it = _viewer.begin(); it != _viewer.end(); ++it)
