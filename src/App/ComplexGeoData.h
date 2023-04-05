@@ -166,20 +166,12 @@ public:
 
     /** @name Element name mapping */
     //@{
-    /// Special prefix to mark the beginning of a mapped sub-element name
-    static const std::string &elementMapPrefix();
-    /// Special postfix to mark the following tag
-    static const std::string &tagPostfix();
-    /// Special postfix to mark the index of an array element
-    static const std::string &indexPostfix();
-    /// Special prefix to mark a missing element
-    static const std::string &missingPrefix();
     /// Check if a subname contains missing element
     static bool hasMissingElement(const char *subname);
-    /** Check if the name starts with elementMapPrefix()
+    /** Check if the name starts with ELEMENT_MAP_PREFIX
      *
      * @param name: input name
-     * @return Returns the name stripped with elementMapPrefix(), or 0 if not
+     * @return Returns the name stripped with ELEMENT_MAP_PREFIX, or 0 if not
      * start with the prefix
      */
     static const char *isMappedElement(const char *name);

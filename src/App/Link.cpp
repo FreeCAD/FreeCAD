@@ -30,6 +30,7 @@
 
 #include "Application.h"
 #include "ComplexGeoData.h"
+#include "PostfixStringReferences.h"
 #include "ComplexGeoDataPy.h"
 #include "Document.h"
 #include "DocumentObserver.h"
@@ -1394,7 +1395,7 @@ bool LinkBaseExtension::extensionGetSubObject(DocumentObject *&ret, const char *
         }
         else {
             if(idx) {
-                postfix = Data::ComplexGeoData::indexPostfix();
+                postfix = Data::POSTFIX_INDEX;
                 postfix += std::to_string(idx);
             }
             if(mat)

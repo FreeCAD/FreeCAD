@@ -38,6 +38,7 @@
 #include "ComplexGeoData.h"
 #include "IndexedName.h"
 #include "StringHasher.h"
+#include "PostfixStringReferences.h"
 
 
 namespace Data
@@ -65,8 +66,8 @@ public:
         if (!name) {
             return;
         }
-        if (boost::starts_with(name, ComplexGeoData::elementMapPrefix())) {
-            name += ComplexGeoData::elementMapPrefix().size();
+        if (boost::starts_with(name, ELEMENT_MAP_PREFIX)) {
+            name += ELEMENT_MAP_PREFIX.size();
         }
 
         data = size < 0 ? QByteArray(name) : QByteArray(name, size);
@@ -81,9 +82,9 @@ public:
     {
         auto size = nameString.size();
         const char* name = nameString.c_str();
-        if (boost::starts_with(nameString, ComplexGeoData::elementMapPrefix())) {
-            name += ComplexGeoData::elementMapPrefix().size();
-            size -= ComplexGeoData::elementMapPrefix().size();
+        if (boost::starts_with(nameString, ELEMENT_MAP_PREFIX)) {
+            name += ELEMENT_MAP_PREFIX.size();
+            size -= ELEMENT_MAP_PREFIX.size();
         }
         data = QByteArray(name, static_cast<int>(size));
     }
@@ -625,7 +626,7 @@ public:
     const char* appendToBufferWithPrefix(std::string& buf) const
     {
         if (!toIndexedName()) {
-            buf += ComplexGeoData::elementMapPrefix();
+            buf += ELEMENT_MAP_PREFIX;
         }
         appendToBuffer(buf);
         return buf.c_str();

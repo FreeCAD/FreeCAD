@@ -1,6 +1,7 @@
 
 
 #include "ElementMap.h"
+#include "PostfixStringReferences.h"
 
 #include "App/Application.h"
 #include "Base/Console.h"
@@ -49,7 +50,7 @@ static int findTagInElementName(const MappedName& name, long* tag = 0, int* len 
                                 bool recursive = true)
 {
     bool hex = true;
-    int pos = name.rfind(ComplexGeoData::tagPostfix());
+    int pos = name.rfind(POSTFIX_TAG);
 
     // Example name, tagPosfix == ;:H
     // #94;:G0;XTR;:H19:8,F;:H1a,F;BND:-1:0;:H1b:10,F
@@ -63,7 +64,7 @@ static int findTagInElementName(const MappedName& name, long* tag = 0, int* len 
             return -1;
         hex = false;
     }
-    int offset = pos + (int)ComplexGeoData::tagPostfix().size();
+    int offset = pos + (int)POSTFIX_TAG.size();
     long _tag = 0;
     int _len = 0;
     char sep = 0;
@@ -112,9 +113,9 @@ static int findTagInElementName(const MappedName& name, long* tag = 0, int* len 
         //
         // For decTagPostfix() (i.e. older encoding scheme), this is the length
         // of the string before the entire postfix (A postfix may contain
-        // multiple segments usually separated by elementMapPrefix().
+        // multiple segments usually separated by ELEMENT_MAP_PREFIX.
         //
-        // For newer tagPostfix(), this counts the number of characters that
+        // For newer POSTFIX_TAG, this counts the number of characters that
         // proceeds this tag postfix segment that forms the op code (see
         // example above).
         //
@@ -143,7 +144,7 @@ static int findTagInElementName(const MappedName& name, long* tag = 0, int* len 
         if (_len && recursive && (tag || len)) {
             // in case of recursive tag postfix (used by hierarchy element
             // map), look for any embedded tag postifx
-            int next = MappedName::fromRawData(name, pos-_len, _len).rfind(ComplexGeoData::tagPostfix());
+            int next = MappedName::fromRawData(name, pos-_len, _len).rfind(POSTFIX_TAG);
             if (next >= 0) {
                 next += pos - _len;
                 // #94;:G0;XTR;:H19:8,F;:H1a,F;BND:-1:0;:H1b:10,F
@@ -159,7 +160,7 @@ static int findTagInElementName(const MappedName& name, long* tag = 0, int* len 
                     end = -1;
                 else
                     end = MappedName::fromRawData(
-                        name, next+1, pos-next-1).find(ComplexGeoData::elementMapPrefix());
+                        name, next+1, pos-next-1).find(ELEMENT_MAP_PREFIX);
                 if (end >= 0) {
                     end += next+1;
                     // #94;:G0;XTR;:H19:8,F;:H1a,F;BND:-1:0;:H1b:10,F
@@ -1005,8 +1006,8 @@ void ElementMap::addChildElements(ComplexGeoData& master, const std::vector<Mapp
             entry->sids += grandchild.sids;
             if (grandchild.postfix.size()) {
                 if (entry->postfix.size()
-                    && !entry->postfix.startsWith(ComplexGeoData::elementMapPrefix().c_str())) {
-                    entry->postfix = grandchild.postfix + ComplexGeoData::elementMapPrefix().c_str()
+                    && !entry->postfix.startsWith(ELEMENT_MAP_PREFIX.c_str())) {
+                    entry->postfix = grandchild.postfix + ELEMENT_MAP_PREFIX.c_str()
                         + entry->postfix;
                 }
                 else
@@ -1083,7 +1084,7 @@ void ElementMap::addChildElements(ComplexGeoData& master, const std::vector<Mapp
             // purposes. Here, we just need some postfix for
             // disambiguation. We don't need to extract the index.
             ss.str("");
-            ss << ComplexGeoData::elementMapPrefix() << ":C" << entry->index - 1;
+            ss << ELEMENT_MAP_PREFIX << ":C" << entry->index - 1;
 
             tmp.clear();
             master.encodeElementName(

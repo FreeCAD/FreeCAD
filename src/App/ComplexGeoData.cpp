@@ -31,6 +31,8 @@
 #include <boost/regex.hpp>
 
 #include "ComplexGeoData.h"
+#include "PostfixStringReferences.h"
+
 #include <Base/BoundBox.h>
 #include <Base/Placement.h>
 #include <Base/Rotation.h>
@@ -166,14 +168,9 @@ bool ComplexGeoData::getCenterOfGravity(Base::Vector3d&) const
     return false;
 }
 
-const std::string &ComplexGeoData::elementMapPrefix() {
-    static std::string prefix(";");
-    return prefix;
-}
-
 const char *ComplexGeoData::isMappedElement(const char *name) {
-    if(name && boost::starts_with(name,elementMapPrefix()))
-        return name+elementMapPrefix().size();
+    if(name && boost::starts_with(name, ELEMENT_MAP_PREFIX))
+        return name + ELEMENT_MAP_PREFIX.size();
     return nullptr;
 }
 
@@ -242,26 +239,11 @@ const char *ComplexGeoData::findElementName(const char *subname) {
     return element;
 }
 
-const std::string &ComplexGeoData::tagPostfix() {
-    static std::string postfix(elementMapPrefix() + ":T");
-    return postfix;
-}
-
-const std::string &ComplexGeoData::indexPostfix() {
-    static std::string postfix(elementMapPrefix() + ":I");
-    return postfix;
-}
-
-const std::string &ComplexGeoData::missingPrefix() {
-    static std::string prefix("?");
-    return prefix;
-}
-
 bool ComplexGeoData::hasMissingElement(const char *subname) {
     if(!subname)
         return false;
     auto dot = strrchr(subname,'.');
     if(dot)
         subname = dot+1;
-    return boost::starts_with(subname,missingPrefix());
+    return boost::starts_with(subname, MISSING_PREFIX);
 }

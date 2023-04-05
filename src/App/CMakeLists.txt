@@ -296,6 +296,7 @@ SET(FreeCADApp_HPP_SRCS
     MappedElement.h
     Material.h
     Metadata.h
+    PostfixStringReferences.h
     StringHasher.h
 )
 

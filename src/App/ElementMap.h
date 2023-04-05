@@ -41,18 +41,6 @@
 namespace Data
 {
 
-static constexpr const char* POSTFIX_TAG = ";:H";
-static constexpr const char* POSTFIX_DECIMAL_TAG = ";:T";
-static constexpr const char* POSTFIX_EXTERNAL_TAG = ";:X";
-static constexpr const char* POSTFIX_CHILD = ";:C";
-static constexpr const char* POSTFIX_INDEX = ";:I";
-static constexpr const char* POSTFIX_UPPER = ";:U";
-static constexpr const char* POSTFIX_LOWER = ";:L";
-static constexpr const char* POSTFIX_MOD = ";:M";
-static constexpr const char* POSTFIX_GEN = ";:G";
-static constexpr const char* POSTFIX_MODGEN = ";:MG";
-static constexpr const char* POSTFIX_DUPLICATE = ";D";
-
 class ElementMap;
 typedef std::shared_ptr<ElementMap> ElementMapPtr;
 
