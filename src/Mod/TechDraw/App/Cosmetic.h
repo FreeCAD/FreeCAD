@@ -63,61 +63,6 @@ public:
     std::string toString() const;
 };
 
-//********** Cosmetic Vertex ***************************************************
-class TechDrawExport CosmeticVertex: public Base::Persistence, public TechDraw::Vertex
-{
-    TYPESYSTEM_HEADER_WITH_OVERRIDE();
-
-public:
-    CosmeticVertex();
-    CosmeticVertex(const CosmeticVertex* cv);
-    CosmeticVertex(Base::Vector3d loc);
-    ~CosmeticVertex() override = default;
-
-    void move(Base::Vector3d newPos);
-    void moveRelative(Base::Vector3d movement);
-
-    std::string toString() const;
-    void dump(const char* title) override;
-    Base::Vector3d scaled(double factor);
-
-    static bool restoreCosmetic();
-
-    // Persistence implementer ---------------------
-    unsigned int getMemSize() const override;
-    void Save(Base::Writer &/*writer*/) const override;
-    void Restore(Base::XMLReader &/*reader*/) override;
-
-    PyObject *getPyObject() override;
-    CosmeticVertex* copy() const;
-    CosmeticVertex* clone() const;
-
-    Base::Vector3d permaPoint;           //permanent, unscaled value
-    int            linkGeom;             //connection to corresponding "geom" Vertex (fragile - index based!)
-                                         //better to do reverse search for CosmeticTag in vertex geometry
-    App::Color     color;
-    double         size;
-    int            style;
-    bool           visible;              //base class vertex also has visible property
-
-    boost::uuids::uuid getTag() const;
-    std::string getTagAsString() const override;
-
-protected:
-    //Uniqueness
-    void createNewTag();
-    void assignTag(const TechDraw::CosmeticVertex* cv);
-
-    boost::uuids::uuid tag;
-
-    Py::Object PythonObject;
-
-
-};
-
-
-
-
 //********** CosmeticEdge ******************************************************
 
 class TechDrawExport CosmeticEdge : public Base::Persistence, public TechDraw::BaseGeom
