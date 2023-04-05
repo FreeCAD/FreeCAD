@@ -162,7 +162,8 @@ public:
                                         const double* derivparam = nullptr) const = 0;
 
     // returns normal vector at parameter instead of at the given point.
-    virtual DeriVector2 CalculateNormal(const double* param, const double* derivparam = nullptr)
+    virtual DeriVector2 CalculateNormal(const double* param,
+                                        const double* derivparam = nullptr) const
     {
         DeriVector2 pointDV = Value(*param, 0.0);
         Point p(&pointDV.x, &pointDV.y);
@@ -423,8 +424,8 @@ public:
     VEC_D flattenedknots;
     DeriVector2 CalculateNormal(const Point& p, const double* derivparam = nullptr) const override;
     // TODO: override parametric version
-    // DeriVector2 CalculateNormal(const double* param, const double* derivparam = nullptr) const
-    // override;
+    DeriVector2 CalculateNormal(const double* param,
+                                const double* derivparam = nullptr) const override;
     DeriVector2 Value(double u, double du, const double* derivparam = nullptr) const override;
     int PushOwnParams(VEC_pD& pvec) override;
     void ReconstructOnNewPvec(VEC_pD& pvec, int& cnt) override;
