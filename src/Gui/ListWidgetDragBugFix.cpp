@@ -39,14 +39,19 @@ ListWidgetDragBugFix::~ListWidgetDragBugFix()
 {
 }
 
-void ListWidgetDragBugFix::dragMoveEvent(QDragMoveEvent *e)
+void ListWidgetDragBugFix::dragMoveEvent(QDragMoveEvent *event)
 {
-    if ((row(itemAt(e->pos())) == currentRow() + 1)
-        || (currentRow() == count() - 1 && row(itemAt(e->pos())) == -1)) {
-        e->ignore();
+#if QT_VERSION < QT_VERSION_CHECK(6,0,0)
+    QPoint pos = event->pos();
+#else
+    QPoint pos = event->position().toPoint();
+#endif
+    if ((row(itemAt(pos)) == currentRow() + 1)
+        || (currentRow() == count() - 1 && row(itemAt(pos)) == -1)) {
+        event->ignore();
         return;
     }
-    QListWidget::dragMoveEvent(e);
+    QListWidget::dragMoveEvent(event);
 }
 
 #include "moc_ListWidgetDragBugFix.cpp"
