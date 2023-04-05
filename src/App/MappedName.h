@@ -890,6 +890,22 @@ public:
             offset);
     }
 
+    /// Extract tag and other information from a encoded element name
+    ///
+    /// \param tag: optional pointer to receive the extracted tag
+    /// \param len: optional pointer to receive the length field after the tag field.
+    ///             This gives the length of the previous hashsed element name starting
+    ///             from the beginning of the give element name.
+    /// \param postfix: optional pointer to receive the postfix starting at the found tag field.
+    /// \param type: optional pointer to receive the element type character
+    /// \param negative: return negative tag as it is. If disabled, then always return positive tag.
+    ///                  Negative tag is sometimes used for element disambiguation.
+    /// \param recursive: recursively find the last non-zero tag
+    ///
+    /// \return Return the end position of the tag field, or return -1 if not found.
+    int findTagInElementName(long* tag = 0, int* len = 0, const char* postfix = 0, char* type = 0,
+                             bool negative = false, bool recursive = true) const;
+
     /// Get a hash for this MappedName
     std::size_t hash() const
     {
