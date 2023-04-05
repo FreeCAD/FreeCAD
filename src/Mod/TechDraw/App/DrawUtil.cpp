@@ -1050,6 +1050,21 @@ bool DrawUtil::circulation(Base::Vector3d A, Base::Vector3d B, Base::Vector3d C)
     }
 }
 
+Base::Vector3d DrawUtil::getTrianglePoint(Base::Vector3d p1, Base::Vector3d dir, Base::Vector3d p2)
+{
+    // get third point of a perpendicular triangle
+    // p1, p2 ...vertexes of hypothenusis, dir ...direction of one kathete, p3 ...3rd vertex
+    float a = -dir.y;
+    float b = dir.x;
+    float c1 = p1.x * a + p1.y * b;
+    float c2 = -p2.x * b + p2.y * a;
+    float ab = a * a + b * b;
+    float x = (c1 * a - c2 * b) / ab;
+    float y = (c2 * a + c1 * b) / ab;
+    Base::Vector3d p3(x,y,0.0);
+    return p3;
+}
+
 int DrawUtil::countSubShapes(TopoDS_Shape shape, TopAbs_ShapeEnum subShape)
 {
     int count = 0;
