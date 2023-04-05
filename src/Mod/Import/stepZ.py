@@ -23,7 +23,7 @@ from PySide import QtCore
 from PySide import QtGui
 import tempfile
 
-___stpZversion___ = "1.3.9"
+___stpZversion___ = "1.4.0"
 # support both gz and zipfile archives
 # Catia seems to use gz, Inventor zipfile
 # improved import, open and export
@@ -93,8 +93,6 @@ def import_stpz(fn,fc,doc):
 
 def open(filename,doc=None):
 
-    sayz("stpZ version "+___stpZversion___)
-
     if zf.is_zipfile(filename):
         with zf.ZipFile(filename, 'r') as fz:
             file_names = fz.namelist()
@@ -115,7 +113,6 @@ def insert(filename,doc):
 
     doc = FreeCAD.ActiveDocument
     open(filename, doc)
-    sayz("stpZ version "+___stpZversion___)
 
 ####
 
@@ -149,7 +146,7 @@ def export(objs,filename):
         os.remove(outfpathT_stp)
         sayzw("Old temp file with the same name removed '"+ outfpathT_stp +"'")
     ImportGui.export(objs,outfpathT_stp)
-    with builtin.open(outfpathT_stp, 'rb') as f_in:
+    with builtins.open(outfpathT_stp, 'rb') as f_in:
         file_content = f_in.read()
         new_f_content = file_content
         f_in.close()
