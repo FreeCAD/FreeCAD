@@ -202,6 +202,7 @@ public:
     static bool isCrazy(TopoDS_Edge e);
     static Base::Vector3d getFaceCenter(TopoDS_Face f);
     static bool circulation(Base::Vector3d A, Base::Vector3d B, Base::Vector3d C);
+    static Base::Vector3d getTrianglePoint(Base::Vector3d p1, Base::Vector3d d, Base::Vector3d p2);
     static int countSubShapes(TopoDS_Shape shape, TopAbs_ShapeEnum subShape);
     static void encodeXmlSpecialChars(std::string& inoutText);
     static std::list<TopoDS_Edge> sort_Edges(double tol3d, std::list<TopoDS_Edge>& edges);
