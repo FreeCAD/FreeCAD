@@ -307,6 +307,6 @@ def convertToDwg(dxffilename, dwgfilename):
             if conv != 0:
                 FCC.PrintError(translate("draft", "QCAD error") + "\n")
             else:
-                FCC.PrintError(translate("draft", """No suitable DWG convertor has been found.
+                FCC.PrintError(translate("draft", """No suitable DWG converter has been found.
 Please set one manually under menu Edit -> Preferences -> Import/Export -> DWG""") + "\n")
     return None
