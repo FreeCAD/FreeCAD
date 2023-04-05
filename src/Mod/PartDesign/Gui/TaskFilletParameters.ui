@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>208</width>
-    <height>164</height>
+    <width>232</width>
+    <height>181</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -73,6 +73,12 @@ click again to end selection</string>
    <header>Gui/QuantitySpinBox.h</header>
   </customwidget>
  </customwidgets>
+ <tabstops>
+  <tabstop>buttonRefSel</tabstop>
+  <tabstop>listWidgetReferences</tabstop>
+  <tabstop>filletRadius</tabstop>
+  <tabstop>checkBoxUseAllEdges</tabstop>
+ </tabstops>
  <resources/>
  <connections/>
 </ui>

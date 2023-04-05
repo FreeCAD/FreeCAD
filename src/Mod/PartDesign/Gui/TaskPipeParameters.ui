@@ -152,6 +152,16 @@
    </item>
   </layout>
  </widget>
+ <tabstops>
+  <tabstop>buttonProfileBase</tabstop>
+  <tabstop>profileBaseEdit</tabstop>
+  <tabstop>comboBoxTransition</tabstop>
+  <tabstop>buttonSpineBase</tabstop>
+  <tabstop>spineBaseEdit</tabstop>
+  <tabstop>buttonRefAdd</tabstop>
+  <tabstop>buttonRefRemove</tabstop>
+  <tabstop>listWidgetReferences</tabstop>
+ </tabstops>
  <resources/>
  <connections/>
 </ui>

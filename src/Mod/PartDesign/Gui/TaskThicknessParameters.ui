@@ -143,14 +143,13 @@ click again to end selection</string>
   </customwidget>
  </customwidgets>
  <tabstops>
+  <tabstop>buttonRefSel</tabstop>
+  <tabstop>listWidgetReferences</tabstop>
   <tabstop>Value</tabstop>
   <tabstop>modeComboBox</tabstop>
   <tabstop>joinComboBox</tabstop>
   <tabstop>checkIntersection</tabstop>
   <tabstop>checkReverse</tabstop>
-  <tabstop>buttonRefAdd</tabstop>
-  <tabstop>buttonRefRemove</tabstop>
-  <tabstop>listWidgetReferences</tabstop>
  </tabstops>
  <resources/>
  <connections/>

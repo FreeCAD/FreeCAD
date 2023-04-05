@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>300</width>
-    <height>490</height>
+    <height>598</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -401,17 +401,19 @@ measured along the specified direction</string>
   <tabstop>lengthEdit</tabstop>
   <tabstop>offsetEdit</tabstop>
   <tabstop>directionCB</tabstop>
-  <tabstop>checkBoxAlongDirection</tabstop>
-  <tabstop>checkBoxMidplane</tabstop>
-  <tabstop>checkBoxReversed</tabstop>
-  <tabstop>lengthEdit2</tabstop>
-  <tabstop>buttonFace</tabstop>
-  <tabstop>lineFaceName</tabstop>
-  <tabstop>checkBoxUpdateView</tabstop>
   <tabstop>checkBoxDirection</tabstop>
   <tabstop>XDirectionEdit</tabstop>
   <tabstop>YDirectionEdit</tabstop>
   <tabstop>ZDirectionEdit</tabstop>
+  <tabstop>checkBoxAlongDirection</tabstop>
+  <tabstop>checkBoxMidplane</tabstop>
+  <tabstop>checkBoxReversed</tabstop>
+  <tabstop>taperEdit</tabstop>
+  <tabstop>lengthEdit2</tabstop>
+  <tabstop>taperEdit2</tabstop>
+  <tabstop>buttonFace</tabstop>
+  <tabstop>lineFaceName</tabstop>
+  <tabstop>checkBoxUpdateView</tabstop>
  </tabstops>
  <resources/>
  <connections/>

@@ -62,6 +62,12 @@
    </item>
   </layout>
  </widget>
+ <tabstops>
+  <tabstop>buttonBodyAdd</tabstop>
+  <tabstop>buttonBodyRemove</tabstop>
+  <tabstop>listWidgetBodies</tabstop>
+  <tabstop>comboType</tabstop>
+ </tabstops>
  <resources/>
  <connections/>
 </ui>
