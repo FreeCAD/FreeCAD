@@ -78,6 +78,13 @@
    </item>
   </layout>
  </widget>
+ <tabstops>
+  <tabstop>buttonBase</tabstop>
+  <tabstop>baseEdit</tabstop>
+  <tabstop>buttonRefAdd</tabstop>
+  <tabstop>buttonRefRemove</tabstop>
+  <tabstop>listWidgetReferences</tabstop>
+ </tabstops>
  <resources/>
  <connections/>
 </ui>

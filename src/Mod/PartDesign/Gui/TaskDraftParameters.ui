@@ -15,7 +15,6 @@
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
-
     <widget class="QToolButton" name="buttonRefSel">
      <property name="toolTip">
       <string>Click button to enter selection mode,
@@ -115,6 +114,7 @@ click again to end selection</string>
     </widget>
    </item>
   </layout>
+  <zorder>buttonRefSel</zorder>
   <zorder>checkReverse</zorder>
   <zorder>listWidgetReferences</zorder>
  </widget>
@@ -125,6 +125,16 @@ click again to end selection</string>
    <header>Gui/QuantitySpinBox.h</header>
   </customwidget>
  </customwidgets>
+ <tabstops>
+  <tabstop>buttonRefSel</tabstop>
+  <tabstop>listWidgetReferences</tabstop>
+  <tabstop>draftAngle</tabstop>
+  <tabstop>buttonPlane</tabstop>
+  <tabstop>linePlane</tabstop>
+  <tabstop>buttonLine</tabstop>
+  <tabstop>lineLine</tabstop>
+  <tabstop>checkReverse</tabstop>
+ </tabstops>
  <resources/>
  <connections/>
 </ui>

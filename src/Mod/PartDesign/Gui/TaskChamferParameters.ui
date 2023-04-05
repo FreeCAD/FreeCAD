@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>263</width>
-    <height>240</height>
+    <height>254</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -213,6 +213,16 @@ click again to end selection</string>
    <header>Gui/QuantitySpinBox.h</header>
   </customwidget>
  </customwidgets>
+ <tabstops>
+  <tabstop>buttonRefSel</tabstop>
+  <tabstop>listWidgetReferences</tabstop>
+  <tabstop>chamferType</tabstop>
+  <tabstop>flipDirection</tabstop>
+  <tabstop>chamferSize</tabstop>
+  <tabstop>checkBoxUseAllEdges</tabstop>
+  <tabstop>chamferSize2</tabstop>
+  <tabstop>chamferAngle</tabstop>
+ </tabstops>
  <resources/>
  <connections>
   <connection>
