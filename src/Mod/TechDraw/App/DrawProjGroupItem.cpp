@@ -269,29 +269,28 @@ Base::Vector3d DrawProjGroupItem::getLegacyX(const Base::Vector3d& pt,
                                         const bool flip)  const
 {
 //    Base::Console().Message("DPGI::getLegacyX() - %s\n", Label.getValue());
-    Base::Vector3d result(1.0, 0.0, 0.0);
     App::Property* prop = getPropertyByName("RotationVector");
     if (prop) {
-        result = RotationVector.getValue();
+        Base::Vector3d result = RotationVector.getValue();
         if (DrawUtil::fpCompare(result.Length(), 0.0))  {  //have RotationVector property, but not set
             gp_Ax2 va = getViewAxis(pt,
                                     axis,
                                     flip);
             gp_Dir gXDir = va.XDirection();
-            result = Base::Vector3d(gXDir.X(),
-                                    gXDir.Y(),
-                                    gXDir.Z());
+            return Base::Vector3d(gXDir.X(),
+                                  gXDir.Y(),
+                                  gXDir.Z());
         }
-    } else {
-        gp_Ax2 va = getViewAxis(pt,
-                                axis,
-                                flip);
-        gp_Dir gXDir = va.XDirection();
-        result = Base::Vector3d(gXDir.X(),
-                                gXDir.Y(),
-                                gXDir.Z());
+        return result;
     }
-    return result;
+
+    gp_Ax2 va = getViewAxis(pt,
+                            axis,
+                            flip);
+    gp_Dir gXDir = va.XDirection();
+    return Base::Vector3d(gXDir.X(),
+                            gXDir.Y(),
+                            gXDir.Z());
 }
 
 //get the angle between the current RotationVector vector and the original X dir angle
@@ -320,15 +319,15 @@ double DrawProjGroupItem::getRotateAngle()
 
 double DrawProjGroupItem::getScale(void) const
 {
-    double result = 1.0;
     auto pgroup = getPGroup();
     if (pgroup) {
-        result = pgroup->getScale();
+        double result = pgroup->getScale();
         if (!(result > 0.0)) {
-            result = 1.0;                                   //kludgy protective fix. autoscale sometimes serves up 0.0!
+            return 1.0;                                   //kludgy protective fix. autoscale sometimes serves up 0.0!
         }
+        return result;
     }
-    return result;
+    return 1.0;
 }
 
 void DrawProjGroupItem::unsetupObject()
@@ -358,8 +357,7 @@ int DrawProjGroupItem::countParentPages() const
 {
     DrawProjGroup* dpg = getPGroup();
     if (dpg) {
-        int count = dpg->countParentPages();
-        return count;
+        return dpg->countParentPages();
     }
     return 0;
 }
@@ -368,8 +366,7 @@ DrawPage* DrawProjGroupItem::findParentPage() const
 {
     DrawProjGroup* dpg = getPGroup();
     if (dpg) {
-        DrawPage* dp = dpg->findParentPage();
-        return dp;
+        return dpg->findParentPage();
     }
     return nullptr;
 }
@@ -378,11 +375,9 @@ std::vector<DrawPage*> DrawProjGroupItem::findAllParentPages() const
 {
     DrawProjGroup* dpg = getPGroup();
     if (dpg) {
-        std::vector<DrawPage*> dps = dpg->findAllParentPages();
-        return dps;
+        return dpg->findAllParentPages();
     }
-    std::vector<DrawPage*> empty;
-    return empty;
+    return std::vector<DrawPage*>();
 }
 
 PyObject *DrawProjGroupItem::getPyObject(void)

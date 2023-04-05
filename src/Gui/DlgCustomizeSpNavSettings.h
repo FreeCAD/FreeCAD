@@ -46,6 +46,9 @@ namespace Gui
             void onAddMacroAction(const QByteArray&) override;
             void onRemoveMacroAction(const QByteArray&) override;
             void onModifyMacroAction(const QByteArray&) override;
+
+        protected:
+            void setupConnections();
             void on_CBDominant_clicked();
             void on_CBFlipYZ_clicked();
             void on_CBRotations_clicked();

@@ -1495,6 +1495,15 @@ void CmdTechDrawExtensionPositionSectionView::activated(int iMsg)
             sectionView->Y.setValue(yPos);
         else if ((direction == "Up") || (direction == "Down"))
             sectionView->X.setValue(xPos);
+        else if (direction == "Aligned")
+        {
+            Base::Vector3d pBase(xPos,yPos,0.0);
+            Base::Vector3d dirView(sectionView->Direction.getValue());
+            Base::Vector3d pSection(sectionView->X.getValue(),sectionView->Y.getValue(),0.0);
+            Base::Vector3d newPos = DrawUtil::getTrianglePoint(pBase, dirView, pSection);
+            sectionView->X.setValue(newPos.x);
+            sectionView->Y.setValue(newPos.y);
+        }
     }
 }
 

@@ -49,12 +49,12 @@ protected:
     void accept() override;
     void reject() override;
 
-protected Q_SLOTS:
+protected:
     void textChanged(const QString);
     void valueChanged(const Base::Quantity&);
-    void on_unitsBox_activated(int);
-    void on_comboBoxScheme_activated(int);
-    void on_spinBoxDecimals_valueChanged(int);
+    void onUnitsBoxActivated(int);
+    void onComboBoxSchemeActivated(int);
+    void onSpinBoxDecimalsValueChanged(int);
 
     void copy();
     void returnPressed();

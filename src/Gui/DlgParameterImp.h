@@ -55,15 +55,16 @@ public:
 
     void activateParameterSet(const char*);
 
-protected Q_SLOTS:
+protected:
+    void setupConnections();
     void onChangeParameterSet(int);
-    void on_buttonFind_clicked();
-    void on_findGroupLE_textChanged(const QString &SearchStr);
-    void on_buttonSaveToDisk_clicked();
+    void onButtonFindClicked();
+    void onFindGroupTtextChanged(const QString &SearchStr);
+    void onButtonSaveToDiskClicked();
 
     void onGroupSelected(QTreeWidgetItem *);
-    void on_closeButton_clicked();
-    void on_checkSort_toggled(bool);
+    void onCloseButtonClicked();
+    void onCheckSortToggled(bool);
 
 protected:
     void changeEvent(QEvent *e) override;

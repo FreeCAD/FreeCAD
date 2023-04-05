@@ -60,6 +60,7 @@ SketcherValidation::SketcherValidation(Sketcher::SketchObject* Obj, QWidget* par
 
     ui->fixButton->setEnabled(false);
     ui->fixConstraint->setEnabled(false);
+    ui->fixDegenerated->setEnabled(false);
     ui->swapReversed->setEnabled(false);
     ui->checkBoxIgnoreConstruction->setEnabled(true);
     double tolerances[8] = {
