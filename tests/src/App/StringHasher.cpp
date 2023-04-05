@@ -377,7 +377,7 @@ TEST_F(StringIDTest, fromStringQByteArray)
 TEST_F(StringIDTest, dataToTextHashed)
 {
     // Arrange
-    QByteArray buffer {"120ca87015d849dbea060eaf2295fcc4ee981427", 40};  // NOLINT
+    QByteArray buffer {"120ca87015d849dbea060eaf2295fcc4ee981427", 40};// NOLINT
     auto id = App::StringID(1, buffer, App::StringID::Flag::Hashed);
 
     // Act
@@ -390,7 +390,7 @@ TEST_F(StringIDTest, dataToTextHashed)
 TEST_F(StringIDTest, dataToTextBinary)
 {
     // Arrange
-    QByteArray buffer {"120ca87015d849dbea060eaf2295fcc4ee981427", 40};  // NOLINT
+    QByteArray buffer {"120ca87015d849dbea060eaf2295fcc4ee981427", 40};// NOLINT
     auto id = App::StringID(1, buffer, App::StringID::Flag::Binary);
 
     // Act
@@ -403,7 +403,7 @@ TEST_F(StringIDTest, dataToTextBinary)
 TEST_F(StringIDTest, dataToTextNoIndex)
 {
     // Arrange
-    QByteArray data{"data", 4};
+    QByteArray data {"data", 4};
     auto id = App::StringID(1, data);
 
     // Act
@@ -416,23 +416,23 @@ TEST_F(StringIDTest, dataToTextNoIndex)
 TEST_F(StringIDTest, dataToTextWithIndex)
 {
     // Arrange
-    QByteArray data{"data", 4};
+    QByteArray data {"data", 4};
     auto id = App::StringID(1, data);
 
     // Act
     auto resultA = id.dataToText(1);
-    auto resultB = id.dataToText(1024);  // NOLINT
+    auto resultB = id.dataToText(1024);// NOLINT
 
     // Assert
     EXPECT_EQ(resultA, "data1");
-    EXPECT_EQ(resultB, "data1024"); // Not hex!
+    EXPECT_EQ(resultB, "data1024");// Not hex!
 }
 
 TEST_F(StringIDTest, dataToTextWithPostfix)
 {
     // Arrange
-    QByteArray data{"data", 4};
-    QByteArray postfix{"postfix", 7};  // NOLINT
+    QByteArray data {"data", 4};
+    QByteArray postfix {"postfix", 7};// NOLINT
     auto id = App::StringID(1, data);
     id.setPostfix(postfix);
 
@@ -446,7 +446,7 @@ TEST_F(StringIDTest, dataToTextWithPostfix)
 TEST_F(StringIDTest, dataToBytesNoIndex)
 {
     // Arrange
-    QByteArray data{"data", 4};
+    QByteArray data {"data", 4};
     auto id = App::StringID(1, data);
 
     // Act
@@ -459,7 +459,7 @@ TEST_F(StringIDTest, dataToBytesNoIndex)
 TEST_F(StringIDTest, dataToBytesWithIndex)
 {
     // Arrange
-    QByteArray data{"data", 4};
+    QByteArray data {"data", 4};
     const int index {1234};
     auto id = App::StringID(1, data);
 
@@ -473,8 +473,8 @@ TEST_F(StringIDTest, dataToBytesWithIndex)
 TEST_F(StringIDTest, dataToBytesWithPostfix)
 {
     // Arrange
-    QByteArray data{"data", 4};
-    QByteArray postfix{"postfix", 7}; // NOLINT
+    QByteArray data {"data", 4};
+    QByteArray postfix {"postfix", 7};// NOLINT
     auto id = App::StringID(1, data);
     id.setPostfix(postfix);
 
@@ -488,8 +488,8 @@ TEST_F(StringIDTest, dataToBytesWithPostfix)
 TEST_F(StringIDTest, dataToBytesWithIndexAndPostfix)
 {
     // Arrange
-    QByteArray data{"data", 4};
-    QByteArray postfix{"postfix", 7}; // NOLINT
+    QByteArray data {"data", 4};
+    QByteArray postfix {"postfix", 7};// NOLINT
     const int index {1234};
     auto id = App::StringID(1, data);
     id.setPostfix(postfix);
@@ -504,7 +504,7 @@ TEST_F(StringIDTest, dataToBytesWithIndexAndPostfix)
 TEST_F(StringIDTest, mark)
 {
     // Arrange
-    QByteArray data{"data", 4};
+    QByteArray data {"data", 4};
     auto id = App::StringID(1, data);
     ASSERT_FALSE(id.isMarked());
 
@@ -518,7 +518,7 @@ TEST_F(StringIDTest, mark)
 TEST_F(StringIDTest, setPersistent)
 {
     // Arrange
-    QByteArray data{"data", 4};
+    QByteArray data {"data", 4};
     auto id = App::StringID(1, data);
     ASSERT_FALSE(id.isPersistent());
 
@@ -539,13 +539,520 @@ TEST_F(StringIDTest, compare)
     // Can't test without a _hasher
 }
 
+TEST_F(StringIDTest, IndexIDBooleanConversion)
+{
+    // Arrange
+    const long id {42};
+    const int index {123};
+    App::StringID::IndexID indexIdTrue {id, index};
+    App::StringID::IndexID indexIdFalse {0, index};
+
+    // Act & Assert
+    EXPECT_TRUE(indexIdTrue);
+    EXPECT_FALSE(indexIdFalse);
+}
+
+TEST_F(StringIDTest, IndexIDStreamInsertionOperator)
+{
+    // Arrange
+    const long id {42};
+    const int index {123};
+    App::StringID::IndexID indexIdNonZero {id, index};
+    App::StringID::IndexID indexIdZero {id, 0};
+    std::ostringstream stream;
+
+    // Act
+    stream << indexIdNonZero << " " << indexIdZero;
+
+    // Assert
+    EXPECT_EQ("42:123 42", stream.str());
+}
+
 
 class StringIDRefTest: public ::testing::Test
 {
 protected:
     // void SetUp() override {}
     // void TearDown() override {}
+
+    App::StringID* createStringID() const
+    {
+        return new App::StringID {_id, _data};
+    }
+
+private:
+    QByteArray _data {"data", 4};
+    int _id {1};
 };
+
+
+TEST_F(StringIDRefTest, defaultConstructor)
+{
+    // Arrange & Act
+    auto idRef = App::StringIDRef();
+
+    // Assert
+    EXPECT_FALSE(idRef);
+}
+
+TEST_F(StringIDRefTest, constructFromNewStringID)
+{
+    // Arrange & Act
+    auto idRef = App::StringIDRef(createStringID());
+
+    // Assert
+    EXPECT_TRUE(idRef);
+    EXPECT_EQ(1, idRef.getRefCount());
+
+    // NOTE: the dynamically-allocated StringID is automatically deallocated by the StringIDRef
+    // when its destructor is called (upon exit from this test function).
+}
+
+TEST_F(StringIDRefTest, constructFromStringIDAndIndex)
+{
+    // Arrange
+    const int index {42};
+
+    // Act
+    auto idRef = App::StringIDRef(createStringID(), index);
+
+    // Assert
+    EXPECT_TRUE(idRef);
+    EXPECT_EQ(1, idRef.getRefCount());
+    EXPECT_EQ(index, idRef.getIndex());
+
+    // NOTE: the dynamically-allocated StringID is automatically deallocated by the StringIDRef
+    // when its destructor is called (upon exit from this test function).
+}
+
+TEST_F(StringIDRefTest, copyConstructor)
+{
+    // Arrange
+    const int index {42};
+    auto idRef = App::StringIDRef(createStringID(), index);
+
+    // Act
+    auto newIdRef = App::StringIDRef(idRef);
+
+    // Assert
+    EXPECT_TRUE(newIdRef);
+    EXPECT_EQ(2, newIdRef.getRefCount());
+    EXPECT_EQ(index, idRef.getIndex());
+    EXPECT_EQ(index, newIdRef.getIndex());
+}
+
+TEST_F(StringIDRefTest, copyConstructorWithIndex)
+{
+    // Arrange
+    const int index {42};
+    const int otherIndex {12345};
+    auto idRef = App::StringIDRef(createStringID(), index);
+
+    // Act
+    auto newIdRef = App::StringIDRef(idRef, otherIndex);
+
+    // Assert
+    EXPECT_TRUE(newIdRef);
+    EXPECT_EQ(2, newIdRef.getRefCount());
+    EXPECT_EQ(index, idRef.getIndex());
+    EXPECT_EQ(otherIndex, newIdRef.getIndex());
+}
+
+TEST_F(StringIDRefTest, moveConstructor)
+{
+    // Arrange
+    auto idRef = App::StringIDRef(createStringID());
+
+    // Act
+    auto newIdRef = App::StringIDRef(std::move(idRef));
+
+    // Assert
+    EXPECT_EQ(1, newIdRef.getRefCount());
+}
+
+TEST_F(StringIDRefTest, destructor)
+{
+    // Arrange
+    auto idRef = App::StringIDRef(createStringID());
+
+    {
+        auto newIdRef = App::StringIDRef(idRef);
+        ASSERT_EQ(2, idRef.getRefCount());// Verify the test setup
+
+        // Act
+        // The scope ends, causing newIdRef destructor execution
+    }
+
+    // Assert
+    EXPECT_EQ(1, idRef.getRefCount());
+}
+
+TEST_F(StringIDRefTest, reset)
+{
+    // Arrange
+    auto idRef = App::StringIDRef(createStringID());
+
+    // Act
+    idRef.reset();
+
+    // Assert
+    EXPECT_FALSE(idRef);
+}
+
+TEST_F(StringIDRefTest, resetWithStringID)
+{
+    // Arrange
+    const int index {42};
+    auto idRef = App::StringIDRef(createStringID(), index);
+
+    // Act
+    idRef.reset(createStringID());
+
+    // Assert
+    EXPECT_TRUE(idRef);
+    EXPECT_NE(index, idRef.getIndex());
+}
+
+TEST_F(StringIDRefTest, resetWithStringIDAndIndex)
+{
+    // Arrange
+    const int indexA {42};
+    const int indexB {12345};
+    auto idRef = App::StringIDRef(createStringID(), indexA);
+
+    // Act
+    idRef.reset(createStringID(), indexB);
+
+    // Assert
+    EXPECT_TRUE(idRef);
+    EXPECT_EQ(indexB, idRef.getIndex());
+}
+
+TEST_F(StringIDRefTest, swap)
+{
+    // Arrange
+    const int indexA {42};
+    const int indexB {12345};
+    auto idRefA = App::StringIDRef(createStringID(), indexA);
+    auto idRefB = App::StringIDRef(createStringID(), indexB);
+
+    // Act
+    idRefA.swap(idRefB);
+
+    // Assert
+    EXPECT_EQ(indexB, idRefA.getIndex());
+    EXPECT_EQ(indexA, idRefB.getIndex());
+}
+
+TEST_F(StringIDRefTest, assignmentFromSelf)
+{
+    // Arrange
+    auto idRef = App::StringIDRef(createStringID());
+
+    // Act
+    idRef = idRef;
+
+    // Assert
+    EXPECT_EQ(1, idRef.getRefCount());
+}
+
+TEST_F(StringIDRefTest, assignmentToEmptyFromStringID)
+{
+    // Arrange
+    Py_Initialize();
+    auto idRef = App::StringIDRef();
+    ASSERT_FALSE(idRef);// Verify setup
+
+    // Act
+    idRef = createStringID();
+
+    // Assert
+    EXPECT_TRUE(idRef);
+}
+
+TEST_F(StringIDRefTest, assignmentFromStringIDRef)
+{
+    // Arrange
+    auto firstIdRef = App::StringIDRef(createStringID());
+    auto firstIdRefExtra = firstIdRef;
+    auto secondIdRef = App::StringIDRef(createStringID());
+
+    // Act
+    firstIdRef = secondIdRef;
+
+    // Assert
+    EXPECT_EQ(2, secondIdRef.getRefCount());
+    EXPECT_EQ(2, firstIdRef.getRefCount());
+    EXPECT_EQ(1, firstIdRefExtra.getRefCount());
+}
+
+TEST_F(StringIDRefTest, moveAssignmentFromStringIDRef)
+{
+    auto emptyIdRef = App::StringIDRef();
+    auto goodIdRef = App::StringIDRef(createStringID());
+    ASSERT_FALSE(emptyIdRef);// Verify setup
+
+    // Act
+    emptyIdRef = std::move(goodIdRef);
+
+    // Assert
+    EXPECT_TRUE(emptyIdRef);
+    EXPECT_EQ(1, emptyIdRef.getRefCount());
+}
+
+TEST_F(StringIDRefTest, operatorLess)
+{
+    // Arrange
+    auto emptySIDA = App::StringIDRef();
+    auto emptySIDB = App::StringIDRef();
+    auto lowID = App::StringIDRef(new App::StringID{1, nullptr});
+    auto highID = App::StringIDRef(new App::StringID{2, nullptr});
+
+    // Act & Assert
+    EXPECT_FALSE(emptySIDA < emptySIDB);
+    EXPECT_FALSE(emptySIDB < emptySIDA);
+    EXPECT_TRUE(emptySIDA < lowID);
+    EXPECT_TRUE(emptySIDA < highID);
+    EXPECT_TRUE(lowID < highID);
+    EXPECT_FALSE(highID < lowID);
+
+    // NOTE: Cannot test the impact of hasher without a StringHasher
+}
+
+TEST_F(StringIDRefTest, operatorEquality)
+{
+    // Arrange
+    auto emptySIDA = App::StringIDRef();
+    auto emptySIDB = App::StringIDRef();
+    auto nonEmptyA = App::StringIDRef(new App::StringID{1, nullptr});
+    auto nonEmptyB = App::StringIDRef(new App::StringID{1, nullptr});
+    auto nonEmptyOther = App::StringIDRef(new App::StringID{2, nullptr});
+
+    // Act & Assert
+    EXPECT_TRUE(emptySIDA == emptySIDB);
+    EXPECT_TRUE(nonEmptyA == nonEmptyB);
+    EXPECT_FALSE(emptySIDA == nonEmptyA);
+    EXPECT_FALSE(nonEmptyA == nonEmptyOther);
+}
+
+TEST_F(StringIDRefTest, operatorInequality)
+{
+    // Arrange
+    auto emptySIDA = App::StringIDRef();
+    auto emptySIDB = App::StringIDRef();
+    auto nonEmptyA = App::StringIDRef(new App::StringID{1, nullptr});
+    auto nonEmptyB = App::StringIDRef(new App::StringID{1, nullptr});
+    auto nonEmptyOther = App::StringIDRef(new App::StringID{2, nullptr});
+
+    // Act & Assert
+    EXPECT_FALSE(emptySIDA != emptySIDB);
+    EXPECT_FALSE(nonEmptyA != nonEmptyB);
+    EXPECT_TRUE(emptySIDA != nonEmptyA);
+    EXPECT_TRUE(nonEmptyA != nonEmptyOther);
+}
+
+TEST_F(StringIDRefTest, booleanConversion)
+{
+    // Arrange
+    auto emptySID = App::StringIDRef();
+    auto nonEmpty = App::StringIDRef(new App::StringID{1, nullptr});
+
+    // Act & Assert
+    EXPECT_FALSE(emptySID);
+    EXPECT_TRUE(nonEmpty);
+}
+
+TEST_F(StringIDRefTest, getRefCount)
+{
+    // Arrange
+    auto stringID = createStringID();
+    auto stringIDRef = App::StringIDRef(stringID);
+
+    // Act
+    auto firstCount = stringIDRef.getRefCount();
+    auto stringIDRef2 = App::StringIDRef(stringID);
+    auto secondCount = stringIDRef.getRefCount();
+
+    // Assert
+    EXPECT_EQ(1, firstCount);
+    EXPECT_EQ(2, secondCount);
+}
+
+TEST_F(StringIDRefTest, toString)
+{
+    // Arrange
+    auto emptySID = App::StringIDRef();
+    auto nonEmpty = App::StringIDRef(createStringID());
+
+    // Act
+    auto empty = emptySID.toString();
+    auto nonempty = nonEmpty.toString();
+
+    // Assert
+    // Only confirm that the function call is passed along: the real test is in the StringID class
+    EXPECT_TRUE(empty.empty());
+    EXPECT_FALSE(nonempty.empty());
+}
+
+TEST_F(StringIDRefTest, dataToText)
+{
+    // Arrange
+    auto emptySID = App::StringIDRef();
+    auto nonEmpty = App::StringIDRef(createStringID());
+
+    // Act
+    auto empty = emptySID.dataToText();
+    auto nonempty = nonEmpty.dataToText();
+
+    // Assert
+    // Only confirm that the function call is passed along: the real test is in the StringID class
+    EXPECT_TRUE(empty.empty());
+    EXPECT_FALSE(nonempty.empty());
+}
+
+TEST_F(StringIDRefTest, constData)
+{
+    // Arrange
+    auto sid = App::StringIDRef(createStringID());
+
+    // Act
+    auto constData = sid.constData();
+
+    // Assert
+    ASSERT_NE(constData, nullptr);
+    EXPECT_STREQ(constData, "data");
+}
+
+TEST_F(StringIDRefTest, deref)
+{
+    // Arrange
+    auto sid = createStringID();
+    auto ref = App::StringIDRef(sid);
+
+    // Act & Assert
+    EXPECT_EQ(sid, &(ref.deref()));
+}
+
+TEST_F(StringIDRefTest, value)
+{
+    // Arrange
+    auto empty = App::StringIDRef();
+    auto nonEmpty = App::StringIDRef(createStringID());
+
+    // Act
+    auto emptyValue = empty.value();
+    auto nonEmptyValue = nonEmpty.value();
+
+    // Assert
+    EXPECT_EQ(0, emptyValue);
+    EXPECT_NE(0, nonEmptyValue);
+}
+
+TEST_F(StringIDRefTest, relatedIDs)
+{
+    // Nothing to test without a StringHasher
+}
+
+TEST_F(StringIDRefTest, isBinary)
+{
+    // Arrange
+    auto nothing = App::StringIDRef();
+    auto binary = App::StringIDRef(new App::StringID{1, nullptr, App::StringID::Flag::Binary});
+    auto nonBinary = App::StringIDRef(new App::StringID{1, nullptr, App::StringID::Flag::None});
+
+    // Act & Assert
+    EXPECT_FALSE(nothing.isBinary());
+    EXPECT_TRUE(binary.isBinary());
+    EXPECT_FALSE(nonBinary.isBinary());
+}
+
+TEST_F(StringIDRefTest, isHashed)
+{
+    // Arrange
+    auto nothing = App::StringIDRef();
+    auto hashed = App::StringIDRef(new App::StringID{1, nullptr, App::StringID::Flag::Hashed});
+    auto nonHashed = App::StringIDRef(new App::StringID{1, nullptr, App::StringID::Flag::None});
+
+    // Act & Assert
+    EXPECT_FALSE(nothing.isHashed());
+    EXPECT_TRUE(hashed.isHashed());
+    EXPECT_FALSE(nonHashed.isHashed());
+}
+
+TEST_F(StringIDRefTest, toBytes)
+{
+    // Arrange
+    QByteArray byteStorage;
+    auto ref = App::StringIDRef(createStringID());
+
+    // Act
+    ref.toBytes(byteStorage);
+
+    // Assert
+    EXPECT_FALSE(byteStorage.isNull());
+}
+
+TEST_F(StringIDRefTest, getPyObject)
+{
+    // Arrange
+    auto ref = App::StringIDRef(createStringID());
+    auto empty = App::StringIDRef();
+
+    // Act
+    Py::Object pyObject(ref.getPyObject());
+    Py::Object none(empty.getPyObject());
+
+    // Assert
+    EXPECT_TRUE(PyObject_TypeCheck(pyObject.ptr(), &App::StringIDPy::Type));
+    EXPECT_TRUE(Py_IsNone(none.ptr()));
+}
+
+TEST_F(StringIDRefTest, mark)
+{
+    // Arrange
+    auto ref = App::StringIDRef(createStringID());
+    ASSERT_FALSE(ref.isMarked());
+
+    // Act
+    ref.mark();
+
+    // Assert
+    EXPECT_TRUE(ref.isMarked());
+}
+
+TEST_F(StringIDRefTest, isMarked)
+{
+    // Arrange
+    auto marked = App::StringIDRef(new App::StringID(1, nullptr, App::StringID::Flag::Marked));
+    auto notMarked = App::StringIDRef(createStringID());
+
+    // Act & Assert
+    EXPECT_TRUE(marked.isMarked());
+    EXPECT_FALSE(notMarked.isMarked());
+}
+
+TEST_F(StringIDRefTest, isFromSameHasher)
+{
+    // Nothing to test, requires a StringHasher
+}
+
+TEST_F(StringIDRefTest, getHasher)
+{
+    // Nothing to test, requires a StringHasher
+}
+
+TEST_F(StringIDRefTest, setPersistent)
+{
+    // Arrange
+    auto persistent = App::StringIDRef(createStringID());
+    ASSERT_FALSE(persistent.deref().isPersistent());
+
+    // Act
+    persistent.setPersistent(true);
+
+    // Assert
+    ASSERT_TRUE(persistent.deref().isPersistent());
+}
 
 
 class StringHasherTest: public ::testing::Test

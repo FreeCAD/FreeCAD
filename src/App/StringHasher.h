@@ -317,11 +317,19 @@ private:
 class StringIDRef
 {
 public:
+
+    /// Default construction results in an empty StringIDRef object: it will evaluate to boolean
+    /// "false" if queried.
     StringIDRef()
         : _sid(nullptr),
           _index(0)
     {}
 
+    /// Standard construction from a heap-allocated StringID. This reference-counting class manages
+    /// the lifetime of the StringID, ensuring it is deallocated when its reference count goes to
+    /// zero.
+    /// \param stringID A pointer to a StringID allocated with "new"
+    /// \param index (optional) An index value to store along with the StringID. Defaults to zero.
     StringIDRef(StringID* stringID, int index = 0)
         : _sid(stringID),
           _index(index)
@@ -331,6 +339,7 @@ public:
         }
     }
 
+    /// Copy construction results in an incremented reference count for the stored StringID
     StringIDRef(const StringIDRef& other)
         : _sid(other._sid),
           _index(other._index)
@@ -340,6 +349,8 @@ public:
         }
     }
 
+    /// Move construction does NOT increase the reference count of the StringID (instead, it
+    /// invalidates the pointer in the moved object).
     StringIDRef(StringIDRef&& other) noexcept
         : _sid(other._sid),
           _index(other._index)
@@ -432,11 +443,11 @@ public:
 
     bool operator<(const StringIDRef& stringID) const
     {
-        if (!_sid) {
-            return true;
-        }
         if (!stringID._sid) {
             return false;
+        }
+        if (!_sid) {
+            return true;
         }
         int res = _sid->compare(*stringID._sid);
         if (res < 0) {
@@ -450,12 +461,15 @@ public:
 
     bool operator==(const StringIDRef& stringID) const
     {
-        return _sid == stringID._sid && _index == stringID._index;
+        if (_sid && stringID._sid) {
+            return _sid->compare(*stringID._sid) == 0 && _index == stringID._index;
+        }
+        return _sid == stringID._sid;
     }
 
     bool operator!=(const StringIDRef& stringID) const
     {
-        return _sid != stringID._sid || _index != stringID._index;
+        return !(*this == stringID);
     }
 
     explicit operator bool() const
@@ -487,6 +501,8 @@ public:
         return {};
     }
 
+    /// Get a reference to the data: only makes sense if index and postfix are both empty, but
+    /// calling code is responsible for ensuring that.
     const char* constData() const
     {
         if (_sid) {
@@ -580,6 +596,13 @@ public:
         if (_sid) {
             _sid->setPersistent(enable);
         }
+    }
+
+    /// Used predominantly by the unit test code to verify that index is set correctly. In general
+    /// user code should not need to call this function.
+    int getIndex()
+    {
+        return _index;
     }
 
     friend class StringHasher;
