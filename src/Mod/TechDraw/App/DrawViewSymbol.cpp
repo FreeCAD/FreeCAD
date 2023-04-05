@@ -94,8 +94,7 @@ QRectF DrawViewSymbol::getRect() const
 bool DrawViewSymbol::checkFit(TechDraw::DrawPage* p) const
 {
     (void)p;
-    bool result = true;
-    return result;
+    return true;
 }
 
 //get editable fields from symbol
