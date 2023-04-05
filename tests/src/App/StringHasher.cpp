@@ -805,8 +805,8 @@ TEST_F(StringIDRefTest, operatorLess)
     // Arrange
     auto emptySIDA = App::StringIDRef();
     auto emptySIDB = App::StringIDRef();
-    auto lowID = App::StringIDRef(new App::StringID{1, nullptr});
-    auto highID = App::StringIDRef(new App::StringID{2, nullptr});
+    auto lowID = App::StringIDRef(new App::StringID {1, nullptr});
+    auto highID = App::StringIDRef(new App::StringID {2, nullptr});
 
     // Act & Assert
     EXPECT_FALSE(emptySIDA < emptySIDB);
@@ -824,9 +824,9 @@ TEST_F(StringIDRefTest, operatorEquality)
     // Arrange
     auto emptySIDA = App::StringIDRef();
     auto emptySIDB = App::StringIDRef();
-    auto nonEmptyA = App::StringIDRef(new App::StringID{1, nullptr});
-    auto nonEmptyB = App::StringIDRef(new App::StringID{1, nullptr});
-    auto nonEmptyOther = App::StringIDRef(new App::StringID{2, nullptr});
+    auto nonEmptyA = App::StringIDRef(new App::StringID {1, nullptr});
+    auto nonEmptyB = App::StringIDRef(new App::StringID {1, nullptr});
+    auto nonEmptyOther = App::StringIDRef(new App::StringID {2, nullptr});
 
     // Act & Assert
     EXPECT_TRUE(emptySIDA == emptySIDB);
@@ -840,9 +840,9 @@ TEST_F(StringIDRefTest, operatorInequality)
     // Arrange
     auto emptySIDA = App::StringIDRef();
     auto emptySIDB = App::StringIDRef();
-    auto nonEmptyA = App::StringIDRef(new App::StringID{1, nullptr});
-    auto nonEmptyB = App::StringIDRef(new App::StringID{1, nullptr});
-    auto nonEmptyOther = App::StringIDRef(new App::StringID{2, nullptr});
+    auto nonEmptyA = App::StringIDRef(new App::StringID {1, nullptr});
+    auto nonEmptyB = App::StringIDRef(new App::StringID {1, nullptr});
+    auto nonEmptyOther = App::StringIDRef(new App::StringID {2, nullptr});
 
     // Act & Assert
     EXPECT_FALSE(emptySIDA != emptySIDB);
@@ -855,7 +855,7 @@ TEST_F(StringIDRefTest, booleanConversion)
 {
     // Arrange
     auto emptySID = App::StringIDRef();
-    auto nonEmpty = App::StringIDRef(new App::StringID{1, nullptr});
+    auto nonEmpty = App::StringIDRef(new App::StringID {1, nullptr});
 
     // Act & Assert
     EXPECT_FALSE(emptySID);
@@ -957,8 +957,8 @@ TEST_F(StringIDRefTest, isBinary)
 {
     // Arrange
     auto nothing = App::StringIDRef();
-    auto binary = App::StringIDRef(new App::StringID{1, nullptr, App::StringID::Flag::Binary});
-    auto nonBinary = App::StringIDRef(new App::StringID{1, nullptr, App::StringID::Flag::None});
+    auto binary = App::StringIDRef(new App::StringID {1, nullptr, App::StringID::Flag::Binary});
+    auto nonBinary = App::StringIDRef(new App::StringID {1, nullptr, App::StringID::Flag::None});
 
     // Act & Assert
     EXPECT_FALSE(nothing.isBinary());
@@ -970,8 +970,8 @@ TEST_F(StringIDRefTest, isHashed)
 {
     // Arrange
     auto nothing = App::StringIDRef();
-    auto hashed = App::StringIDRef(new App::StringID{1, nullptr, App::StringID::Flag::Hashed});
-    auto nonHashed = App::StringIDRef(new App::StringID{1, nullptr, App::StringID::Flag::None});
+    auto hashed = App::StringIDRef(new App::StringID {1, nullptr, App::StringID::Flag::Hashed});
+    auto nonHashed = App::StringIDRef(new App::StringID {1, nullptr, App::StringID::Flag::None});
 
     // Act & Assert
     EXPECT_FALSE(nothing.isHashed());
@@ -1004,7 +1004,7 @@ TEST_F(StringIDRefTest, getPyObject)
 
     // Assert
     EXPECT_TRUE(PyObject_TypeCheck(pyObject.ptr(), &App::StringIDPy::Type));
-    EXPECT_TRUE(Py_IsNone(none.ptr()));
+    EXPECT_EQ(none.ptr(), Py_None);
 }
 
 TEST_F(StringIDRefTest, mark)

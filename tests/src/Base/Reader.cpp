@@ -8,7 +8,6 @@
 #include <filesystem>
 #include <fmt/format.h>
 #include <fstream>
-#include <random>
 
 namespace fs = std::filesystem;
 
@@ -19,13 +18,15 @@ protected:
     {
         xercesc_3_2::XMLPlatformUtils::Initialize();
         _tempDir = fs::temp_directory_path();
-        std::string filename = uniqueName() + ".xml";
+        std::string filename = "unit_test_Reader.xml";
         _tempFile = _tempDir / filename;
     }
 
     void TearDown() override
     {
-        std::filesystem::remove(_tempFile);
+        if (std::filesystem::exists(_tempFile)) {
+            std::filesystem::remove(_tempFile);
+        }
     }
 
     void givenDataAsXMLStream(const std::string& data)
@@ -40,28 +41,10 @@ protected:
         _reader = std::make_unique<Base::XMLReader>(_tempFile.string().c_str(), inputStream);
     }
 
-    /// Generate a random, probably-unique 16-character alphanumeric filename.
-    static std::string uniqueName()
-    {
-        constexpr size_t filenameLength {16};
-        static std::default_random_engine _generator;
-        auto random_char = []() -> char {
-            constexpr int numChars {63};
-            std::array<char, numChars> charset {
-                "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"};
-            std::uniform_int_distribution<int> distribution(0, numChars - 1);
-            return charset.at(distribution(_generator));
-        };
-        std::string str(filenameLength, 0);
-        std::generate_n(str.begin(), filenameLength, random_char);
-        return str;
-    }
-
     Base::XMLReader* Reader()
     {
         return _reader.get();
     }
-
 
 private:
     std::unique_ptr<Base::XMLReader> _reader;
