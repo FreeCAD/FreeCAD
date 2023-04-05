@@ -65,12 +65,12 @@ unsigned int DrawParametricTemplate::getMemSize() const
 }
 
 double DrawParametricTemplate::getWidth() const {
-  throw Base::NotImplementedError("Need to Implement");
+    throw Base::NotImplementedError("Need to Implement");
 }
 
 
 double DrawParametricTemplate::getHeight() const {
-  throw Base::NotImplementedError("Need to Implement");
+    throw Base::NotImplementedError("Need to Implement");
 }
 
 
@@ -88,21 +88,22 @@ void DrawParametricTemplate::onChanged(const App::Property* prop)
 App::DocumentObjectExecReturn *DrawParametricTemplate::execute()
 {
     std::string temp = Template.getValue();
-    if (!temp.empty()) {
-        Base::FileInfo tfi(temp);
-        if (!tfi.isReadable()) {
-            // if there is a old absolute template file set use a redirect
-            return App::DocumentObject::StdReturn;
-        }
-        try {
-            Base::Interpreter().runFile(temp.c_str(), true);
-        }
-    catch(const Base::Exception& e) {
-        PyErr_SetString(PyExc_ImportError, e.what());
+    if (temp.empty()) {
         return App::DocumentObject::StdReturn;
     }
+
+    Base::FileInfo tfi(temp);
+    if (!tfi.isReadable()) {
+        // if there is a old absolute template file set use a redirect
+        return App::DocumentObject::StdReturn;
     }
 
+    try {
+        Base::Interpreter().runFile(temp.c_str(), true);
+    }
+    catch(const Base::Exception& e) {
+        PyErr_SetString(PyExc_ImportError, e.what());
+    }
     return App::DocumentObject::StdReturn;
 }
 
