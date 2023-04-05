@@ -100,14 +100,17 @@ protected:
                                      AccelLineEdit *editor,
                                      AccelLineEdit *current);
     //@}
+protected:
+    void setupConnections();
+    void onCategoryBoxActivated(int index);
+    void onCommandTreeWidgetCurrentItemChanged(QTreeWidgetItem*);
+    void onButtonAssignClicked();
+    void onButtonClearClicked();
+    void onButtonResetClicked();
+    void onButtonResetAllClicked();
+    void onEditShortcutTextChanged(const QString&);
+
 protected Q_SLOTS:
-    void on_categoryBox_activated(int index);
-    void on_commandTreeWidget_currentItemChanged(QTreeWidgetItem*);
-    void on_buttonAssign_clicked();
-    void on_buttonClear_clicked();
-    void on_buttonReset_clicked();
-    void on_buttonResetAll_clicked();
-    void on_editShortcut_textChanged(const QString&);
     void onAddMacroAction(const QByteArray&) override;
     void onRemoveMacroAction(const QByteArray&) override;
     void onModifyMacroAction(const QByteArray&) override;

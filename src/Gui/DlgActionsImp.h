@@ -66,17 +66,20 @@ protected:
     bool event(QEvent* e) override;
     void changeEvent(QEvent *e) override;
 
-protected Q_SLOTS:
+protected:
+    void setupConnections();
     /** Enables/disables buttons for deletion */
-    void on_actionListWidget_itemActivated( QTreeWidgetItem *i );
+    void onActionListWidgetItemActivated( QTreeWidgetItem *i );
     /** Opens a iconview to select a pixmap */
-    void on_buttonChoosePixmap_clicked();
+    void onButtonChoosePixmapClicked();
     /** Adds a custom action */
-    void on_buttonAddAction_clicked();
+    void onButtonAddActionClicked();
     /** Deletes a custom action */
-    void on_buttonRemoveAction_clicked();
+    void onButtonRemoveActionClicked();
     /** Shows the setup of the action */
-    void on_buttonReplaceAction_clicked();
+    void onButtonReplaceActionClicked();
+
+protected Q_SLOTS:
     void onAddMacroAction(const QByteArray&) override;
     void onRemoveMacroAction(const QByteArray&) override;
     void onModifyMacroAction(const QByteArray&) override;
@@ -102,7 +105,7 @@ public:
     void resizeEvent(QResizeEvent*) override;
     QListWidgetItem* currentItem() const;
 
-private Q_SLOTS:
+private:
     void onAddIconPath();
 
 private:
@@ -118,7 +121,7 @@ public:
     ~IconFolders() override;
     QStringList getPaths() const;
 
-private Q_SLOTS:
+private:
     void addFolder();
     void removeFolder();
 
