@@ -59,6 +59,8 @@ DlgCustomActionsImp::DlgCustomActionsImp( QWidget* parent )
   , ui(new Ui_DlgCustomActions)
 {
     ui->setupUi(this);
+    setupConnections();
+
     // search for all macros
     std::string cMacroPath = App::GetApplication().
         GetParameterGroupByPath("User parameter:BaseApp/Preferences/Macro")
@@ -90,6 +92,20 @@ DlgCustomActionsImp::~DlgCustomActionsImp()
 {
     if (bChanged)
         MacroCommand::save();
+}
+
+void DlgCustomActionsImp::setupConnections()
+{
+    connect(ui->actionListWidget, &QTreeWidget::itemActivated,
+            this, &DlgCustomActionsImp::onActionListWidgetItemActivated);
+    connect(ui->buttonChoosePixmap, &QToolButton::clicked,
+            this, &DlgCustomActionsImp::onButtonChoosePixmapClicked);
+    connect(ui->buttonAddAction, &QPushButton::clicked,
+            this, &DlgCustomActionsImp::onButtonAddActionClicked);
+    connect(ui->buttonRemoveAction, &QPushButton::clicked,
+            this, &DlgCustomActionsImp::onButtonRemoveActionClicked);
+    connect(ui->buttonReplaceAction, &QPushButton::clicked,
+            this, &DlgCustomActionsImp::onButtonReplaceActionClicked);
 }
 
 bool DlgCustomActionsImp::event(QEvent* e)
@@ -159,7 +175,7 @@ void DlgCustomActionsImp::showActions()
     }
 }
 
-void DlgCustomActionsImp::on_actionListWidget_itemActivated(QTreeWidgetItem *item)
+void DlgCustomActionsImp::onActionListWidgetItemActivated(QTreeWidgetItem *item)
 {
     if (!item)
         return; // no valid item
@@ -210,7 +226,7 @@ void DlgCustomActionsImp::on_actionListWidget_itemActivated(QTreeWidgetItem *ite
     }
 }
 
-void DlgCustomActionsImp::on_buttonAddAction_clicked()
+void DlgCustomActionsImp::onButtonAddActionClicked()
 {
     if (ui->actionMacros-> currentText().isEmpty())
     {
@@ -277,7 +293,7 @@ void DlgCustomActionsImp::on_buttonAddAction_clicked()
     Q_EMIT addMacroAction(actionName);
 }
 
-void DlgCustomActionsImp::on_buttonReplaceAction_clicked()
+void DlgCustomActionsImp::onButtonReplaceActionClicked()
 {
     QTreeWidgetItem* item = ui->actionListWidget->currentItem();
     if (!item)
@@ -353,7 +369,7 @@ void DlgCustomActionsImp::on_buttonReplaceAction_clicked()
         item->setIcon(0, Gui::BitmapFactory().pixmap(macro->getPixmap()));
 }
 
-void DlgCustomActionsImp::on_buttonRemoveAction_clicked()
+void DlgCustomActionsImp::onButtonRemoveActionClicked()
 {
     // remove item from list view
     QTreeWidgetItem* item = ui->actionListWidget->currentItem();
@@ -466,7 +482,7 @@ void IconDialog::onAddIconPath()
     }
 }
 
-void DlgCustomActionsImp::on_buttonChoosePixmap_clicked()
+void DlgCustomActionsImp::onButtonChoosePixmapClicked()
 {
     // create a dialog showing all pixmaps
     Gui::Dialog::IconDialog dlg(this);

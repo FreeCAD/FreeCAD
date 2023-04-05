@@ -71,6 +71,13 @@ DlgPropertyLink::DlgPropertyLink(QWidget* parent)
   , ui(new Ui_DlgPropertyLink)
 {
     ui->setupUi(this);
+    connect(ui->checkObjectType, &QCheckBox::toggled,
+            this, &DlgPropertyLink::onObjectTypeToggled);
+    connect(ui->typeTree, &QTreeWidget::itemSelectionChanged,
+            this, &DlgPropertyLink::onTypeTreeItemSelectionChanged);
+    connect(ui->searchBox, &ExpressionLineEdit::textChanged,
+            this, &DlgPropertyLink::onSearchBoxTextChanged);
+
     ui->typeTree->hide();
     ui->searchBox->installEventFilter(this);
     ui->searchBox->setNoProperty(true);
@@ -1047,13 +1054,13 @@ void DlgPropertyLink::onItemExpanded(QTreeWidgetItem * item) {
     }
 }
 
-void DlgPropertyLink::on_checkObjectType_toggled(bool on)
+void DlgPropertyLink::onObjectTypeToggled(bool on)
 {
     ui->typeTree->setVisible(on);
     filterObjects();
 }
 
-void DlgPropertyLink::on_typeTree_itemSelectionChanged() {
+void DlgPropertyLink::onTypeTreeItemSelectionChanged() {
 
     selectedTypes.clear();
     const auto items = ui->typeTree->selectedItems();
@@ -1064,7 +1071,7 @@ void DlgPropertyLink::on_typeTree_itemSelectionChanged() {
         filterObjects();
 }
 
-void DlgPropertyLink::on_searchBox_textChanged(const QString& text)
+void DlgPropertyLink::onSearchBoxTextChanged(const QString& text)
 {
     itemSearch(text,false);
 }

@@ -362,7 +362,8 @@ CameraDialog::CameraDialog(QWidget* parent)
 
     connect(buttonBox, &QDialogButtonBox::accepted, this, &QDialog::accept);
     connect(buttonBox, &QDialogButtonBox::rejected, this, &QDialog::reject);
-    QMetaObject::connectSlotsByName(this);
+    connect(currentViewButton, &QPushButton::clicked, this,
+            &CameraDialog::onCurrentViewClicked);
 }
 
 CameraDialog::~CameraDialog()
@@ -385,7 +386,7 @@ void CameraDialog::getValues(double& q0, double& q1, double& q2, double& q3) con
     q3 = sb3->value();
 }
 
-void CameraDialog::on_currentView_clicked()
+void CameraDialog::onCurrentViewClicked()
 {
     auto mdi = qobject_cast<View3DInventor*>(getMainWindow()->activeWindow());
     if (mdi) {
