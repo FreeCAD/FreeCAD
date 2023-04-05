@@ -651,9 +651,7 @@ void System::removeConstraint(Constraint *constr)
     }
     c2p.erase(constr);
 
-    std::vector<Constraint *> constrvec;
-    constrvec.push_back(constr);
-    free(constrvec);
+    delete(constr);
 }
 
 // basic constraints
