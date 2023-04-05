@@ -187,6 +187,54 @@ bool isGeoConcentricCompatible(const Part::Geometry* geo)
     return (isEllipse(*geo) || isArcOfEllipse(*geo) || isCircle(*geo) || isArcOfCircle(*geo));
 }
 
+// Removes point-on-object constraints made redundant with certain constraints
+// under certain conditions. Currently, that happens only when the constraint is on
+// a B-spline, for 3-selection tangent, perpendicular, and angle constraints.
+// Returns true if constraints were removed.
+// GeoId3 HAS to be the point, and the other two are the curves.
+bool removeRedundantPointOnObject(SketchObject* Obj, int GeoId1, int GeoId2, int GeoId3)
+{
+    const std::vector<Constraint*>& cvals = Obj->Constraints.getValues();
+
+    std::vector<int> cidsToBeRemoved;
+
+    int cid = 0;
+    for (auto it = cvals.begin(); it != cvals.end(); ++it, ++cid) {
+        if ((*it)->Type == Sketcher::PointOnObject &&
+            (((*it)->First == GeoId3 && (*it)->Second == GeoId1) ||
+             ((*it)->First == GeoId3 && (*it)->Second == GeoId2))) {
+
+            // ONLY do this if it is a B-spline (or any other where point
+            // on object is implied).
+            const Part::Geometry* geom = Obj->getGeometry((*it)->Second);
+            if (isBSplineCurve(*geom))
+                cidsToBeRemoved.push_back(cid);
+        }
+    }
+
+    if (!cidsToBeRemoved.empty()) {
+        for (auto it = cidsToBeRemoved.rbegin(); it != cidsToBeRemoved.rend(); ++it) {
+            Gui::cmdAppObjectArgs(Obj,
+                                  "delConstraint(%d)",
+                                  *it);// remove the preexisting point on object constraint.
+        }
+
+        // A substitution requires a solve() so that the autoremove redundants works when
+        // Autorecompute not active. However, delConstraint includes such solve() internally. So
+        // at this point it is already solved.
+        tryAutoRecomputeIfNotSolve(Obj);
+
+        notifyConstraintSubstitutions(QObject::tr("One or two point on object constraint(s) was/were deleted, "
+                                                  "since the latest constraint being applied internally applies point-on-object as well."));
+
+        // TODO: find way to get selection here, or clear elsewhere
+        // getSelection().clearSelection();
+        return true;
+    }
+
+    return false;
+}
+
 /// Makes an angle constraint between 2 lines
 void SketcherGui::makeAngleBetweenTwoLines(Sketcher::SketchObject* Obj,
     Gui::Command* cmd,
@@ -231,8 +279,6 @@ void SketcherGui::makeAngleBetweenTwoLines(Sketcher::SketchObject* Obj,
         finishDatumConstraint(cmd, Obj, true);
     }
 }
-
-
 
 bool SketcherGui::calculateAngle(Sketcher::SketchObject* Obj, int& GeoId1, int& GeoId2, Sketcher::PointPos& PosId1, Sketcher::PointPos& PosId2, double& ActAngle)
 {
@@ -311,7 +357,6 @@ bool SketcherGui::calculateAngle(Sketcher::SketchObject* Obj, int& GeoId1, int& 
 
     return true;
 }
-
 
 /// Makes a simple tangency constraint using extra point + tangent via point
 /// ellipse => an ellipse
@@ -5699,11 +5744,11 @@ void CmdSketcherConstrainPerpendicular::activated(int iMsg)
         if (isVertex(GeoId1, PosId1)) {
             std::swap(GeoId1, GeoId2);
             std::swap(PosId1, PosId2);
-        };
+        }
         if (isVertex(GeoId2, PosId2)) {
             std::swap(GeoId2, GeoId3);
             std::swap(PosId2, PosId3);
-        };
+        }
 
         if (isEdge(GeoId1, PosId1) && isEdge(GeoId2, PosId2) && isVertex(GeoId3, PosId3)) {
 
@@ -5720,35 +5765,45 @@ void CmdSketcherConstrainPerpendicular::activated(int iMsg)
             bool safe = addConstraintSafely(Obj, [&]() {
                 // add missing point-on-object constraints
                 if (!IsPointAlreadyOnCurve(GeoId1, GeoId3, PosId3, Obj)) {
-                    Gui::cmdAppObjectArgs(
-                        selection[0].getObject(),
-                        "addConstraint(Sketcher.Constraint('PointOnObject',%d,%d,%d))",
-                        GeoId3,
-                        static_cast<int>(PosId3),
-                        GeoId1);
-                };
+                    const Part::Geometry *geom1 = Obj->getGeometry(GeoId1);
+                    if (!(geom1 && isBSplineCurve(*geom1))) {
+                        Gui::cmdAppObjectArgs(
+                            selection[0].getObject(),
+                            "addConstraint(Sketcher.Constraint('PointOnObject',%d,%d,%d))",
+                            GeoId3,
+                            static_cast<int>(PosId3),
+                            GeoId1);
+                    }
+                }
 
                 if (!IsPointAlreadyOnCurve(GeoId2, GeoId3, PosId3, Obj)) {
-                    Gui::cmdAppObjectArgs(
-                        selection[0].getObject(),
-                        "addConstraint(Sketcher.Constraint('PointOnObject',%d,%d,%d))",
-                        GeoId3,
-                        static_cast<int>(PosId3),
-                        GeoId2);
-                };
+                    const Part::Geometry *geom2 = Obj->getGeometry(GeoId2);
+                    if (!(geom2 && isBSplineCurve(*geom2))) {
+                        Gui::cmdAppObjectArgs(
+                            selection[0].getObject(),
+                            "addConstraint(Sketcher.Constraint('PointOnObject',%d,%d,%d))",
+                            GeoId3,
+                            static_cast<int>(PosId3),
+                            GeoId2);
+                    }
+                }
 
                 if (!IsPointAlreadyOnCurve(
                         GeoId1,
                         GeoId3,
                         PosId3,
-                        Obj)) {// FIXME: it's a good idea to add a check if the sketch is solved
-                    Gui::cmdAppObjectArgs(
-                        selection[0].getObject(),
-                        "addConstraint(Sketcher.Constraint('PointOnObject',%d,%d,%d))",
-                        GeoId3,
-                        static_cast<int>(PosId3),
-                        GeoId1);
-                };
+                        Obj)) {
+                    // FIXME: it's a good idea to add a check if the sketch is solved
+                    const Part::Geometry *geom1 = Obj->getGeometry(GeoId1);
+                    if (!(geom1 && isBSplineCurve(*geom1))) {
+                        Gui::cmdAppObjectArgs(
+                            selection[0].getObject(),
+                            "addConstraint(Sketcher.Constraint('PointOnObject',%d,%d,%d))",
+                            GeoId3,
+                            static_cast<int>(PosId3),
+                            GeoId1);
+                    }
+                }
 
                 Gui::cmdAppObjectArgs(
                     selection[0].getObject(),
@@ -5757,6 +5812,8 @@ void CmdSketcherConstrainPerpendicular::activated(int iMsg)
                     GeoId2,
                     GeoId3,
                     static_cast<int>(PosId3));
+
+                removeRedundantPointOnObject(Obj, GeoId1, GeoId2, GeoId3);
             });
 
             if (!safe) {
@@ -5770,7 +5827,7 @@ void CmdSketcherConstrainPerpendicular::activated(int iMsg)
             getSelection().clearSelection();
 
             return;
-        };
+        }
 
         Gui::TranslatedUserWarning(
             Obj,
@@ -5833,15 +5890,6 @@ void CmdSketcherConstrainPerpendicular::activated(int iMsg)
 
             const Part::Geometry* geom2 = Obj->getGeometry(GeoId2);
 
-            if (geom2 && isBSplineCurve(*geom2)) {
-                // unsupported until normal to B-spline at any point implemented.
-                Gui::TranslatedUserWarning(
-                    Obj,
-                    QObject::tr("Wrong selection"),
-                    QObject::tr("Perpendicular to B-spline edge currently unsupported."));
-                return;
-            }
-
             if (isBsplinePole(geom2)) {
                 Gui::TranslatedUserWarning(
                     Obj,
@@ -5879,14 +5927,14 @@ void CmdSketcherConstrainPerpendicular::activated(int iMsg)
                 return;
             }
 
-            if (isBSplineCurve(*geo1) || isBSplineCurve(*geo2)) {
-                // unsupported until tangent to B-spline at any point implemented.
-                Gui::TranslatedUserWarning(
-                    Obj,
-                    QObject::tr("Wrong selection"),
-                    QObject::tr("Perpendicular to B-spline edge currently unsupported."));
-                return;
-            }
+            // if (isBSplineCurve(*geo1) || isBSplineCurve(*geo2)) {
+            //     // unsupported until tangent to B-spline at any point implemented.
+            //     Gui::TranslatedUserWarning(
+            //         Obj,
+            //         QObject::tr("Wrong selection"),
+            //         QObject::tr("Perpendicular to B-spline edge currently unsupported."));
+            //     return;
+            // }
 
             if (isLineSegment(*geo1)) {
                 std::swap(GeoId1, GeoId2);
@@ -6080,14 +6128,14 @@ void CmdSketcherConstrainPerpendicular::applyConstraint(std::vector<SelIdPair>& 
                 return;
             }
 
-            if (isBSplineCurve(*geo1) || isBSplineCurve(*geo2)) {
-                // unsupported until tangent to B-spline at any point implemented.
-                Gui::TranslatedUserWarning(
-                    Obj,
-                    QObject::tr("Wrong selection"),
-                    QObject::tr("Perpendicular to B-spline edge currently unsupported."));
-                return;
-            }
+            // if (isBSplineCurve(*geo1) || isBSplineCurve(*geo2)) {
+            //     // unsupported until tangent to B-spline at any point implemented.
+            //     Gui::TranslatedUserWarning(
+            //         Obj,
+            //         QObject::tr("Wrong selection"),
+            //         QObject::tr("Perpendicular to B-spline edge currently unsupported."));
+            //     return;
+            // }
 
             if (isLineSegment(*geo1)) {
                 std::swap(GeoId1, GeoId2);
@@ -6285,35 +6333,41 @@ void CmdSketcherConstrainPerpendicular::applyConstraint(std::vector<SelIdPair>& 
         bool safe = addConstraintSafely(Obj, [&]() {
             // add missing point-on-object constraints
             if (!IsPointAlreadyOnCurve(GeoId1, GeoId3, PosId3, Obj)) {
-                Gui::cmdAppObjectArgs(
-                    Obj,
-                    "addConstraint(Sketcher.Constraint('PointOnObject',%d,%d,%d))",
-                    GeoId3,
-                    static_cast<int>(PosId3),
-                    GeoId1);
-            };
+                const Part::Geometry *geom1 = Obj->getGeometry(GeoId1);
+                if (!(geom1 && isBSplineCurve(*geom1))) {
+                    Gui::cmdAppObjectArgs(
+                        Obj,
+                        "addConstraint(Sketcher.Constraint('PointOnObject',%d,%d,%d))",
+                        GeoId3,
+                        static_cast<int>(PosId3),
+                        GeoId1);
+                }
+            }
 
             if (!IsPointAlreadyOnCurve(GeoId2, GeoId3, PosId3, Obj)) {
-                Gui::cmdAppObjectArgs(
-                    Obj,
-                    "addConstraint(Sketcher.Constraint('PointOnObject',%d,%d,%d))",
-                    GeoId3,
-                    static_cast<int>(PosId3),
-                    GeoId2);
-            };
+                const Part::Geometry *geom2 = Obj->getGeometry(GeoId2);
+                if (!(geom2 && isBSplineCurve(*geom2))) {
+                    Gui::cmdAppObjectArgs(
+                        Obj,
+                        "addConstraint(Sketcher.Constraint('PointOnObject',%d,%d,%d))",
+                        GeoId3,
+                        static_cast<int>(PosId3),
+                        GeoId2);
+                }
+            }
 
-            if (!IsPointAlreadyOnCurve(
-                    GeoId1,
-                    GeoId3,
-                    PosId3,
-                    Obj)) {// FIXME: it's a good idea to add a check if the sketch is solved
-                Gui::cmdAppObjectArgs(
-                    Obj,
-                    "addConstraint(Sketcher.Constraint('PointOnObject',%d,%d,%d))",
-                    GeoId3,
-                    static_cast<int>(PosId3),
-                    GeoId1);
-            };
+            if (!IsPointAlreadyOnCurve(GeoId1, GeoId3, PosId3, Obj)) {
+                // FIXME: it's a good idea to add a check if the sketch is solved
+                const Part::Geometry *geom1 = Obj->getGeometry(GeoId1);
+                if (!(geom1 && isBSplineCurve(*geom1))) {
+                    Gui::cmdAppObjectArgs(
+                        Obj,
+                        "addConstraint(Sketcher.Constraint('PointOnObject',%d,%d,%d))",
+                        GeoId3,
+                        static_cast<int>(PosId3),
+                        GeoId1);
+                }
+            }
 
             Gui::cmdAppObjectArgs(
                 Obj,
@@ -6322,6 +6376,8 @@ void CmdSketcherConstrainPerpendicular::applyConstraint(std::vector<SelIdPair>& 
                 GeoId2,
                 GeoId3,
                 static_cast<int>(PosId3));
+
+            removeRedundantPointOnObject(Obj, GeoId1, GeoId2, GeoId3);
         });
 
         if (!safe) {
@@ -6335,7 +6391,7 @@ void CmdSketcherConstrainPerpendicular::applyConstraint(std::vector<SelIdPair>& 
         getSelection().clearSelection();
 
         return;
-    };
+    }
 }
 
 // ======================================================================================
@@ -6519,11 +6575,11 @@ void CmdSketcherConstrainTangent::activated(int iMsg)
         if (isVertex(GeoId1, PosId1)) {
             std::swap(GeoId1, GeoId2);
             std::swap(PosId1, PosId2);
-        };
+        }
         if (isVertex(GeoId2, PosId2)) {
             std::swap(GeoId2, GeoId3);
             std::swap(PosId2, PosId3);
-        };
+        }
 
         if (isEdge(GeoId1, PosId1) && isEdge(GeoId2, PosId2) && isVertex(GeoId3, PosId3)) {
 
@@ -6540,35 +6596,41 @@ void CmdSketcherConstrainTangent::activated(int iMsg)
             bool safe = addConstraintSafely(Obj, [&]() {
                 // add missing point-on-object constraints
                 if (!IsPointAlreadyOnCurve(GeoId1, GeoId3, PosId3, Obj)) {
-                    Gui::cmdAppObjectArgs(
-                        selection[0].getObject(),
-                        "addConstraint(Sketcher.Constraint('PointOnObject',%d,%d,%d))",
-                        GeoId3,
-                        static_cast<int>(PosId3),
-                        GeoId1);
-                };
+                    const Part::Geometry *geom1 = Obj->getGeometry(GeoId1);
+                    if (!(geom1 && isBSplineCurve(*geom1))) {
+                        Gui::cmdAppObjectArgs(
+                            selection[0].getObject(),
+                            "addConstraint(Sketcher.Constraint('PointOnObject',%d,%d,%d))",
+                            GeoId3,
+                            static_cast<int>(PosId3),
+                            GeoId1);
+                    }
+                }
 
                 if (!IsPointAlreadyOnCurve(GeoId2, GeoId3, PosId3, Obj)) {
-                    Gui::cmdAppObjectArgs(
-                        selection[0].getObject(),
-                        "addConstraint(Sketcher.Constraint('PointOnObject',%d,%d,%d))",
-                        GeoId3,
-                        static_cast<int>(PosId3),
-                        GeoId2);
-                };
+                    const Part::Geometry *geom2 = Obj->getGeometry(GeoId2);
+                    if (!(geom2 && isBSplineCurve(*geom2))) {
+                        Gui::cmdAppObjectArgs(
+                            selection[0].getObject(),
+                            "addConstraint(Sketcher.Constraint('PointOnObject',%d,%d,%d))",
+                            GeoId3,
+                            static_cast<int>(PosId3),
+                            GeoId2);
+                    }
+                }
 
-                if (!IsPointAlreadyOnCurve(
-                        GeoId1,
-                        GeoId3,
-                        PosId3,
-                        Obj)) {// FIXME: it's a good idea to add a check if the sketch is solved
-                    Gui::cmdAppObjectArgs(
-                        selection[0].getObject(),
-                        "addConstraint(Sketcher.Constraint('PointOnObject',%d,%d,%d))",
-                        GeoId3,
-                        static_cast<int>(PosId3),
-                        GeoId1);
-                };
+                if (!IsPointAlreadyOnCurve(GeoId1, GeoId3, PosId3, Obj)) {
+                    // FIXME: it's a good idea to add a check if the sketch is solved
+                    const Part::Geometry *geom1 = Obj->getGeometry(GeoId1);
+                    if (!(geom1 && isBSplineCurve(*geom1))) {
+                        Gui::cmdAppObjectArgs(
+                            selection[0].getObject(),
+                            "addConstraint(Sketcher.Constraint('PointOnObject',%d,%d,%d))",
+                            GeoId3,
+                            static_cast<int>(PosId3),
+                            GeoId1);
+                    }
+                }
 
                 Gui::cmdAppObjectArgs(
                     selection[0].getObject(),
@@ -6577,6 +6639,8 @@ void CmdSketcherConstrainTangent::activated(int iMsg)
                     GeoId2,
                     GeoId3,
                     static_cast<int>(PosId3));
+
+                removeRedundantPointOnObject(Obj, GeoId1, GeoId2, GeoId3);
             });
 
             if (!safe) {
@@ -6590,7 +6654,7 @@ void CmdSketcherConstrainTangent::activated(int iMsg)
             getSelection().clearSelection();
 
             return;
-        };
+        }
 
         Gui::TranslatedUserWarning(
             Obj,
@@ -6669,15 +6733,6 @@ void CmdSketcherConstrainTangent::activated(int iMsg)
 
             const Part::Geometry* geom2 = Obj->getGeometry(GeoId2);
 
-            if (geom2 && isBSplineCurve(*geom2)) {
-                // unsupported until tangent to B-spline at any point implemented.
-                Gui::TranslatedUserWarning(
-                    Obj,
-                    QObject::tr("Wrong selection"),
-                    QObject::tr("Tangency to B-spline edge currently unsupported."));
-                return;
-            }
-
             if (isBsplinePole(geom2)) {
                 Gui::TranslatedUserWarning(
                     Obj,
@@ -6686,16 +6741,18 @@ void CmdSketcherConstrainTangent::activated(int iMsg)
                 return;
             }
 
-            openCommand(QT_TRANSLATE_NOOP("Command", "Add tangent constraint"));
-            Gui::cmdAppObjectArgs(selection[0].getObject(),
-                                  "addConstraint(Sketcher.Constraint('Tangent',%d,%d,%d))",
-                                  GeoId1,
-                                  static_cast<int>(PosId1),
-                                  GeoId2);
-            commitCommand();
-            tryAutoRecompute(Obj);
+            if (!substituteConstraintCombinations(Obj, GeoId1, GeoId2)) {
+                openCommand(QT_TRANSLATE_NOOP("Command", "Add tangent constraint"));
+                Gui::cmdAppObjectArgs(selection[0].getObject(),
+                                      "addConstraint(Sketcher.Constraint('Tangent',%d,%d,%d))",
+                                      GeoId1,
+                                      static_cast<int>(PosId1),
+                                      GeoId2);
+                commitCommand();
+                tryAutoRecompute(Obj);
 
-            getSelection().clearSelection();
+                getSelection().clearSelection();
+            }
             return;
         }
         else if (isEdge(GeoId1, PosId1)
@@ -6703,15 +6760,6 @@ void CmdSketcherConstrainTangent::activated(int iMsg)
 
             const Part::Geometry* geom1 = Obj->getGeometry(GeoId1);
             const Part::Geometry* geom2 = Obj->getGeometry(GeoId2);
-
-            if (geom1 && geom2 && (isBSplineCurve(*geom1) || isBSplineCurve(*geom2))) {
-                // unsupported until tangent to B-spline at any point implemented.
-                Gui::TranslatedUserWarning(
-                    Obj,
-                    QObject::tr("Wrong selection"),
-                    QObject::tr("Tangency to B-spline edge currently unsupported."));
-                return;
-            }
 
             if (isBsplinePole(geom1) || isBsplinePole(geom2)) {
                 Gui::TranslatedUserWarning(
@@ -6872,6 +6920,14 @@ void CmdSketcherConstrainTangent::activated(int iMsg)
                     return;
                 }
             }
+            else if (geom1 && geom2 && (isBSplineCurve(*geom1) || isBSplineCurve(*geom2))) {
+                Gui::TranslatedUserWarning(
+                    Obj,
+                    QObject::tr("Wrong selection"),
+                    QObject::tr("Only tangent-via-point is supported with a B-spline."));
+                getSelection().clearSelection();
+                return;
+            }
 
             openCommand(QT_TRANSLATE_NOOP("Command", "Add tangent constraint"));
             Gui::cmdAppObjectArgs(selection[0].getObject(),
@@ -6916,15 +6972,6 @@ void CmdSketcherConstrainTangent::applyConstraint(std::vector<SelIdPair>& selSeq
 
             const Part::Geometry* geom1 = Obj->getGeometry(GeoId1);
             const Part::Geometry* geom2 = Obj->getGeometry(GeoId2);
-
-            if (geom1 && geom2 && (isBSplineCurve(*geom1) || isBSplineCurve(*geom2))) {
-                // unsupported until tangent to B-spline at any point implemented.
-                Gui::TranslatedUserWarning(
-                    Obj,
-                    QObject::tr("Wrong selection"),
-                    QObject::tr("Tangency to B-spline edge currently unsupported."));
-                return;
-            }
 
             if (isBsplinePole(geom1) || isBsplinePole(geom2)) {
                 Gui::TranslatedUserWarning(
@@ -7158,35 +7205,41 @@ void CmdSketcherConstrainTangent::applyConstraint(std::vector<SelIdPair>& selSeq
         bool safe = addConstraintSafely(Obj, [&]() {
             // add missing point-on-object constraints
             if (!IsPointAlreadyOnCurve(GeoId1, GeoId3, PosId3, Obj)) {
-                Gui::cmdAppObjectArgs(
-                    Obj,
-                    "addConstraint(Sketcher.Constraint('PointOnObject',%d,%d,%d))",
-                    GeoId3,
-                    static_cast<int>(PosId3),
-                    GeoId1);
-            };
+                const Part::Geometry *geom1 = Obj->getGeometry(GeoId1);
+                if (!(geom1 && isBSplineCurve(*geom1))) {
+                    Gui::cmdAppObjectArgs(
+                        Obj,
+                        "addConstraint(Sketcher.Constraint('PointOnObject',%d,%d,%d))",
+                        GeoId3,
+                        static_cast<int>(PosId3),
+                        GeoId1);
+                }
+            }
 
             if (!IsPointAlreadyOnCurve(GeoId2, GeoId3, PosId3, Obj)) {
-                Gui::cmdAppObjectArgs(
-                    Obj,
-                    "addConstraint(Sketcher.Constraint('PointOnObject',%d,%d,%d))",
-                    GeoId3,
-                    static_cast<int>(PosId3),
-                    GeoId2);
-            };
+                const Part::Geometry *geom2 = Obj->getGeometry(GeoId2);
+                if (!(geom2 && isBSplineCurve(*geom2))) {
+                    Gui::cmdAppObjectArgs(
+                        Obj,
+                        "addConstraint(Sketcher.Constraint('PointOnObject',%d,%d,%d))",
+                        GeoId3,
+                        static_cast<int>(PosId3),
+                        GeoId2);
+                }
+            }
 
-            if (!IsPointAlreadyOnCurve(
-                    GeoId1,
-                    GeoId3,
-                    PosId3,
-                    Obj)) {// FIXME: it's a good idea to add a check if the sketch is solved
-                Gui::cmdAppObjectArgs(
-                    Obj,
-                    "addConstraint(Sketcher.Constraint('PointOnObject',%d,%d,%d))",
-                    GeoId3,
-                    static_cast<int>(PosId3),
-                    GeoId1);
-            };
+            if (!IsPointAlreadyOnCurve(GeoId1, GeoId3, PosId3, Obj)) {
+                // FIXME: it's a good idea to add a check if the sketch is solved
+                const Part::Geometry *geom1 = Obj->getGeometry(GeoId1);
+                if (!(geom1 && isBSplineCurve(*geom1))) {
+                    Gui::cmdAppObjectArgs(
+                        Obj,
+                        "addConstraint(Sketcher.Constraint('PointOnObject',%d,%d,%d))",
+                        GeoId3,
+                        static_cast<int>(PosId3),
+                        GeoId1);
+                }
+            }
 
             Gui::cmdAppObjectArgs(
                 Obj,
@@ -7195,6 +7248,8 @@ void CmdSketcherConstrainTangent::applyConstraint(std::vector<SelIdPair>& selSeq
                 GeoId2,
                 GeoId3,
                 static_cast<int>(PosId3));
+
+            removeRedundantPointOnObject(Obj, GeoId1, GeoId2, GeoId3);
         });
 
         if (!safe) {
@@ -7208,7 +7263,7 @@ void CmdSketcherConstrainTangent::applyConstraint(std::vector<SelIdPair>& selSeq
         getSelection().clearSelection();
 
         return;
-    };
+    }
 }
 
 // ======================================================================================
@@ -8530,11 +8585,11 @@ void CmdSketcherConstrainAngle::activated(int iMsg)
         if (isVertex(GeoId1, PosId1)) {
             std::swap(GeoId1, GeoId2);
             std::swap(PosId1, PosId2);
-        };
+        }
         if (isVertex(GeoId2, PosId2)) {
             std::swap(GeoId2, GeoId3);
             std::swap(PosId2, PosId3);
-        };
+        }
 
         bool bothexternal = areBothPointsOrSegmentsFixed(Obj, GeoId1, GeoId2);
 
@@ -8554,32 +8609,38 @@ void CmdSketcherConstrainAngle::activated(int iMsg)
 
             // add missing point-on-object constraints
             if (!IsPointAlreadyOnCurve(GeoId1, GeoId3, PosId3, Obj)) {
-                Gui::cmdAppObjectArgs(
-                    selection[0].getObject(),
-                    "addConstraint(Sketcher.Constraint('PointOnObject',%d,%d,%d))",
-                    GeoId3,
-                    static_cast<int>(PosId3),
-                    GeoId1);
+                const Part::Geometry *geom1 = Obj->getGeometry(GeoId1);
+                if (!(geom1 && isBSplineCurve(*geom1))) {
+                    Gui::cmdAppObjectArgs(
+                        selection[0].getObject(),
+                        "addConstraint(Sketcher.Constraint('PointOnObject',%d,%d,%d))",
+                        GeoId3,
+                        static_cast<int>(PosId3),
+                        GeoId1);
+                }
             }
             if (!IsPointAlreadyOnCurve(GeoId2, GeoId3, PosId3, Obj)) {
-                Gui::cmdAppObjectArgs(
-                    selection[0].getObject(),
-                    "addConstraint(Sketcher.Constraint('PointOnObject',%d,%d,%d))",
-                    GeoId3,
-                    static_cast<int>(PosId3),
-                    GeoId2);
+                const Part::Geometry *geom2 = Obj->getGeometry(GeoId2);
+                if (!(geom2 && isBSplineCurve(*geom2))) {
+                    Gui::cmdAppObjectArgs(
+                        selection[0].getObject(),
+                        "addConstraint(Sketcher.Constraint('PointOnObject',%d,%d,%d))",
+                        GeoId3,
+                        static_cast<int>(PosId3),
+                        GeoId2);
+                }
             }
-            if (!IsPointAlreadyOnCurve(
-                    GeoId1,
-                    GeoId3,
-                    PosId3,
-                    Obj)) {// FIXME: it's a good idea to add a check if the sketch is solved
-                Gui::cmdAppObjectArgs(
-                    selection[0].getObject(),
-                    "addConstraint(Sketcher.Constraint('PointOnObject',%d,%d,%d))",
-                    GeoId3,
-                    static_cast<int>(PosId3),
-                    GeoId1);
+            if (!IsPointAlreadyOnCurve(GeoId1, GeoId3, PosId3, Obj)) {
+                // FIXME: it's a good idea to add a check if the sketch is solved
+                const Part::Geometry *geom1 = Obj->getGeometry(GeoId1);
+                if (!(geom1 && isBSplineCurve(*geom1))) {
+                    Gui::cmdAppObjectArgs(
+                        selection[0].getObject(),
+                        "addConstraint(Sketcher.Constraint('PointOnObject',%d,%d,%d))",
+                        GeoId3,
+                        static_cast<int>(PosId3),
+                        GeoId1);
+                }
             }
 
             // assuming point-on-curves have been solved, calculate the angle.
@@ -8604,6 +8665,8 @@ void CmdSketcherConstrainAngle::activated(int iMsg)
                 static_cast<int>(PosId3),
                 ActAngle);
 
+            removeRedundantPointOnObject(Obj, GeoId1, GeoId2, GeoId3);
+
             if (bothexternal
                 || constraintCreationMode
                     == Reference) {// it is a constraint on a external line, make it non-driving
@@ -8620,7 +8683,7 @@ void CmdSketcherConstrainAngle::activated(int iMsg)
             }
 
             return;
-        };
+        }
     }
     else if (SubNames.size() < 3) {
 
@@ -8707,7 +8770,7 @@ void CmdSketcherConstrainAngle::activated(int iMsg)
                 return;
             }
         }
-    };
+    }
 
     Gui::TranslatedUserWarning(
         Obj,
@@ -8783,26 +8846,35 @@ void CmdSketcherConstrainAngle::applyConstraint(std::vector<SelIdPair>& selSeq, 
 
         // add missing point-on-object constraints
         if (!IsPointAlreadyOnCurve(GeoId1, GeoId3, PosId3, Obj)) {
-            Gui::cmdAppObjectArgs(Obj,
-                                  "addConstraint(Sketcher.Constraint('PointOnObject',%d,%d,%d))",
-                                  GeoId3,
-                                  static_cast<int>(PosId3),
-                                  GeoId1);
+            const Part::Geometry *geom1 = Obj->getGeometry(GeoId1);
+            if (!(geom1 && isBSplineCurve(*geom1))) {
+                Gui::cmdAppObjectArgs(Obj,
+                                      "addConstraint(Sketcher.Constraint('PointOnObject',%d,%d,%d))",
+                                      GeoId3,
+                                      static_cast<int>(PosId3),
+                                      GeoId1);
+            }
         }
         if (!IsPointAlreadyOnCurve(GeoId2, GeoId3, PosId3, Obj)) {
-            Gui::cmdAppObjectArgs(Obj,
-                                  "addConstraint(Sketcher.Constraint('PointOnObject',%d,%d,%d))",
-                                  GeoId3,
-                                  static_cast<int>(PosId3),
-                                  GeoId2);
+            const Part::Geometry *geom2 = Obj->getGeometry(GeoId2);
+            if (!(geom2 && isBSplineCurve(*geom2))) {
+                Gui::cmdAppObjectArgs(Obj,
+                                      "addConstraint(Sketcher.Constraint('PointOnObject',%d,%d,%d))",
+                                      GeoId3,
+                                      static_cast<int>(PosId3),
+                                      GeoId2);
+            }
         }
         if (!IsPointAlreadyOnCurve(GeoId1, GeoId3, PosId3, Obj)) {
             // FIXME: it's a good idea to add a check if the sketch is solved
-            Gui::cmdAppObjectArgs(Obj,
-                                  "addConstraint(Sketcher.Constraint('PointOnObject',%d,%d,%d))",
-                                  GeoId3,
-                                  static_cast<int>(PosId3),
-                                  GeoId1);
+            const Part::Geometry *geom1 = Obj->getGeometry(GeoId1);
+            if (!(geom1 && isBSplineCurve(*geom1))) {
+                Gui::cmdAppObjectArgs(Obj,
+                                      "addConstraint(Sketcher.Constraint('PointOnObject',%d,%d,%d))",
+                                      GeoId3,
+                                      static_cast<int>(PosId3),
+                                      GeoId1);
+            }
         }
 
         // assuming point-on-curves have been solved, calculate the angle.
@@ -8826,6 +8898,8 @@ void CmdSketcherConstrainAngle::applyConstraint(std::vector<SelIdPair>& selSeq, 
                               static_cast<int>(PosId3),
                               ActAngle);
 
+        removeRedundantPointOnObject(Obj, GeoId1, GeoId2, GeoId3);
+
         if (bothexternal || constraintCreationMode == Reference) {
             // it is a constraint on a external line, make it non-driving
             const std::vector<Sketcher::Constraint*>& ConStr = Obj->Constraints.getValues();
@@ -8838,7 +8912,7 @@ void CmdSketcherConstrainAngle::applyConstraint(std::vector<SelIdPair>& selSeq, 
         }
 
         return;
-    };
+    }
 }
 
 void CmdSketcherConstrainAngle::updateAction(int mode)
@@ -9566,18 +9640,18 @@ void CmdSketcherConstrainSnellsLaw::activated(int iMsg)
                                    QObject::tr("Wrong selection"),
                                    QObject::tr("Incompatible geometry is selected."));
         return;
-    };
+    }
 
     const Part::Geometry* geo = Obj->getGeometry(GeoId3);
 
-    if (geo && isBSplineCurve(*geo)) {
-        // unsupported until normal to B-spline at any point implemented.
-        Gui::TranslatedUserWarning(
-            Obj,
-            QObject::tr("Wrong selection"),
-            QObject::tr("SnellsLaw on B-spline edge is currently unsupported."));
-        return;
-    }
+    // if (geo && isBSplineCurve(*geo)) {
+    //     // unsupported until normal to B-spline at any point implemented.
+    //     Gui::TranslatedUserWarning(
+    //         Obj,
+    //         QObject::tr("Wrong selection"),
+    //         QObject::tr("SnellsLaw on B-spline edge is currently unsupported."));
+    //     return;
+    // }
 
     if (isBsplinePole(geo)) {
         Gui::TranslatedUserWarning(Obj,

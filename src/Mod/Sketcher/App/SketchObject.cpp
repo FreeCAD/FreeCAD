@@ -8578,12 +8578,23 @@ double SketchObject::calculateAngleViaPoint(int GeoId1, int GeoId2, double px, d
     // Temporary sketch based calculation. Slow, but guaranteed consistency with constraints.
     Sketcher::Sketch sk;
 
-    const Part::Geometry* p1 = this->getGeometry(GeoId1);
-    const Part::Geometry* p2 = this->getGeometry(GeoId2);
+    const Part::GeomCurve* p1 = dynamic_cast<const Part::GeomCurve*>(this->getGeometry(GeoId1));
+    const Part::GeomCurve* p2 = dynamic_cast<const Part::GeomCurve*>(this->getGeometry(GeoId2));
 
     if (p1 && p2) {
+        // TODO: Check if any of these are B-splines
         int i1 = sk.addGeometry(this->getGeometry(GeoId1));
         int i2 = sk.addGeometry(this->getGeometry(GeoId2));
+
+        if (p1->is<Part::GeomBSplineCurve>() ||
+            p2->is<Part::GeomBSplineCurve>()) {
+            double p1ClosestParam, p2ClosestParam;
+            Base::Vector3d pt(px, py, 0);
+            p1->closestParameter(pt, p1ClosestParam);
+            p2->closestParameter(pt, p2ClosestParam);
+
+            return sk.calculateAngleViaParams(i1, i2, p1ClosestParam, p2ClosestParam);
+        }
 
         return sk.calculateAngleViaPoint(i1, i2, px, py);
     }
