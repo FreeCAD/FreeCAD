@@ -38,6 +38,7 @@
 #include <Mod/Part/App/TopoShapeEdgePy.h>
 #include <Mod/Part/App/TopoShapeVertexPy.h>
 
+#include "CenterLine.h"
 #include "DrawViewPart.h"
 #include "Geometry.h"
 #include "GeometryObject.h"

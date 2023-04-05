@@ -61,6 +61,7 @@
 #include <Base/Parameter.h>
 
 #include "Cosmetic.h"
+#include "CenterLine.h"
 #include "DrawGeomHatch.h"
 #include "DrawHatch.h"
 #include "DrawPage.h"
