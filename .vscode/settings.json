@@ -1,7 +1,9 @@
 {
   "files.associations": {
     "__config": "cpp",
-    "iosfwd": "cpp"
+    "iosfwd": "cpp",
+    "vector": "cpp",
+    "tuple": "cpp"
   },
   "editor.formatOnType": true,
   "cmake.preferredGenerators": ["Ninja", "NMake Makefiles"],
