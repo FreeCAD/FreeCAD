@@ -1679,7 +1679,6 @@ bool DrawViewPart::prefHardViz()
                                              ->GetGroup("Preferences")
                                              ->GetGroup("Mod/TechDraw/HLR");
     return hGrp->GetBool("HardViz", true);
-    return result;
 }
 
 bool DrawViewPart::prefSeamViz()
