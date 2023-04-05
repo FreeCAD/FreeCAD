@@ -317,6 +317,21 @@ public:
                                    double* angle,
                                    int tagId = 0,
                                    bool driving = true);
+    int addConstraintAngleViaPointAndParam(Curve& crv1,
+                                           Curve& crv2,
+                                           Point& p,
+                                           double* cparam,
+                                           double* angle,
+                                           int tagId = 0,
+                                           bool driving = true);
+    int addConstraintAngleViaPointAndTwoParams(Curve& crv1,
+                                               Curve& crv2,
+                                               Point& p,
+                                               double* cparam1,
+                                               double* cparam2,
+                                               double* angle,
+                                               int tagId = 0,
+                                               bool driving = true);
     int addConstraintMidpointOnLine(Line& l1, Line& l2, int tagId = 0, bool driving = true);
     int addConstraintMidpointOnLine(Point& l1p1,
                                     Point& l1p2,

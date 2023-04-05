@@ -774,6 +774,36 @@ int System::addConstraintAngleViaPoint(Curve& crv1,
     return addConstraint(constr);
 }
 
+int System::addConstraintAngleViaPointAndParam(Curve& crv1,
+                                               Curve& crv2,
+                                               Point& p,
+                                               double* cparam,
+                                               double* angle,
+                                               int tagId,
+                                               bool driving)
+{
+    Constraint* constr = new ConstraintAngleViaPointAndParam(crv1, crv2, p, cparam, angle);
+    constr->setTag(tagId);
+    constr->setDriving(driving);
+    return addConstraint(constr);
+}
+
+int System::addConstraintAngleViaPointAndTwoParams(Curve& crv1,
+                                                   Curve& crv2,
+                                                   Point& p,
+                                                   double* cparam1,
+                                                   double* cparam2,
+                                                   double* angle,
+                                                   int tagId,
+                                                   bool driving)
+{
+    Constraint* constr =
+        new ConstraintAngleViaPointAndTwoParams(crv1, crv2, p, cparam1, cparam2, angle);
+    constr->setTag(tagId);
+    constr->setDriving(driving);
+    return addConstraint(constr);
+}
+
 int System::addConstraintMidpointOnLine(Line& l1, Line& l2, int tagId, bool driving)
 {
     Constraint* constr = new ConstraintMidpointOnLine(l1, l2);
