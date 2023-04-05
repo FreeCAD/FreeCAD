@@ -186,6 +186,8 @@ SET(Geometry_SRCS
     GeometryObject.h
     Cosmetic.cpp
     Cosmetic.h
+    CosmeticVertex.cpp
+    CosmeticVertex.h
     PropertyGeomFormatList.cpp
     PropertyGeomFormatList.h
     PropertyCenterLineList.cpp

@@ -28,6 +28,8 @@
 #include <vector>
 #include <App/Property.h>
 
+#include "CosmeticVertex.h"
+
 
 namespace Base {
 class Writer;
