@@ -171,22 +171,20 @@ bool EdgeWalker::prepare()
 
 std::vector<TopoDS_Wire> EdgeWalker::execute(std::vector<TopoDS_Edge> edgeList, bool biggie)
 {
-    std::vector<TopoDS_Wire> sortedWires;
     loadEdges(edgeList);
     bool success = prepare();
     if (success) {
         std::vector<TopoDS_Wire> rw = getResultNoDups();
-        sortedWires = sortStrip(rw, biggie);
+        return sortStrip(rw, biggie);
     }
-    return sortedWires;
+    return std::vector<TopoDS_Wire>();
 }
 
 ewWireList EdgeWalker::getResult()
 {
     //Base::Console().Message("TRACE - EW::getResult()\n");
-    ewWireList result = m_eV.getResult();
-    // result is a list of many wires each of which is a list of many WE
-    return result;
+    // Return value is a list of many wires each of which is a list of many WE
+    return m_eV.getResult();
 }
 
 std::vector<TopoDS_Wire> EdgeWalker::getResultWires()
@@ -265,9 +263,7 @@ TopoDS_Wire EdgeWalker::makeCleanWire(std::vector<TopoDS_Edge> edges, double tol
     fixer->FixReorderMode() = Standard_True;
     fixer->Perform();
 
-    result = fixer->WireAPIMake();
-
-    return result;
+    return fixer->WireAPIMake();
 }
 
 std::vector<TopoDS_Vertex> EdgeWalker:: makeUniqueVList(std::vector<TopoDS_Edge> edges)
@@ -334,17 +330,15 @@ size_t EdgeWalker::findUniqueVert(TopoDS_Vertex vx, std::vector<TopoDS_Vertex> &
 {
 //    Base::Console().Message("TRACE - EW::findUniqueVert()\n");
     std::size_t idx = 0;
-    std::size_t result = SIZE_MAX;
     Base::Vector3d vx3d = DrawUtil::vertex2Vector(vx);
     for(auto& v : uniqueVert) {
         Base::Vector3d v3d = DrawUtil::vertex2Vector(v);
         if (vx3d.IsEqual(v3d, EWTOLERANCE)) {
-            result = idx;
-            break;
+            return idx;
         }
         idx++;
     }
-    return result;
+    return SIZE_MAX;
 }
 
 std::vector<TopoDS_Wire> EdgeWalker::sortStrip(std::vector<TopoDS_Wire> fw, bool includeBiggest)
@@ -458,12 +452,11 @@ std::vector<edge_t> EdgeWalker::getEmbeddingRow(int v)
 //*******************************************
 bool WalkerEdge::isEqual(WalkerEdge w)
 {
-    bool result = false;
-    if ((( v1 == w.v1) && (v2 == w.v2))  ||
-        (( v1 == w.v2) && (v2 == w.v1)) ) {
-        result = true;
+    if ((v1 == w.v1 && v2 == w.v2)  ||
+        (v1 == w.v2 && v2 == w.v1) ) {
+        return true;
     }
-    return result;
+    return false;
 }
 
 
@@ -477,8 +470,7 @@ std::string WalkerEdge::dump()
     std::string result;
     std::stringstream builder;
     builder << "WalkerEdge - v1: " << v1  << " v2: " << v2 << " idx: " << idx << " ed: " << ed;
-    result = builder.str();
-    return result;
+    return builder.str();
 }
 
 //*****************************************
@@ -486,20 +478,18 @@ std::string WalkerEdge::dump()
 //*****************************************
 bool ewWire::isEqual(ewWire w2)
 {
-    bool result = true;
     if (wedges.size() != w2.wedges.size()) {
-        result = false;
-    } else {
-        std::sort(wedges.begin(), wedges.end(), WalkerEdge::weCompare);
-        std::sort(w2.wedges.begin(), w2.wedges.end(), WalkerEdge::weCompare);
-        for (unsigned int i = 0; i < w2.wedges.size(); i ++) {
-            if (wedges.at(i).idx != w2.wedges.at(i).idx) {
-                result = false;
-                break;
-            }
+        return false;
+    }
+
+    std::sort(wedges.begin(), wedges.end(), WalkerEdge::weCompare);
+    std::sort(w2.wedges.begin(), w2.wedges.end(), WalkerEdge::weCompare);
+    for (unsigned int i = 0; i < w2.wedges.size(); i ++) {
+        if (wedges.at(i).idx != w2.wedges.at(i).idx) {
+            return false;
         }
     }
-    return result;
+    return true;
 }
 
 void ewWire::push_back(WalkerEdge w)
@@ -561,8 +551,7 @@ std::string embedItem::dump()
     for (auto& ii : incidenceList) {
         builder << " e:" << ii.iEdge << "/a:" << (ii.angle * (180.0/M_PI)) << "/ed:" << ii.eDesc;
     }
-    result = builder.str();
-    return result;
+    return builder.str();
 }
 
 std::vector<incidenceItem> embedItem::sortIncidenceList (std::vector<incidenceItem> &list, bool ascend)
@@ -588,8 +577,7 @@ std::vector<incidenceItem> embedItem::sortIncidenceList (std::vector<incidenceIt
 /*static*/bool incidenceItem::iiEqual(const incidenceItem& i1, const incidenceItem& i2)
 {
     //TODO: this should compare edges also but eDesc comparison is by address
-    bool result = false;
     if (i1.angle == i2.angle) {
     }
-    return result;
+    return false;
 }
