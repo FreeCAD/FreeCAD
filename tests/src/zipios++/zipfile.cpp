@@ -1,6 +1,6 @@
 #include "gtest/gtest.h"
-#include <memory>
 #include <cstdio>
+#include <memory>
 #include <zipios++/zipfile.h>
 
 // NOLINTBEGIN(cppcoreguidelines-avoid-magic-numbers,readability-magic-numbers)
@@ -9,10 +9,14 @@ TEST(ZipFile, TestValidity)
     zipios::ZipFile zf;
     EXPECT_EQ(zf.isValid(), false);
     EXPECT_THROW(zf.entries(), zipios::InvalidStateException);
-    EXPECT_THROW(zf.getEntry("inexistant", zipios::FileCollection::MatchPath::MATCH), zipios::InvalidStateException);
-    EXPECT_THROW(zf.getEntry("inexistant", zipios::FileCollection::MatchPath::IGNORE), zipios::InvalidStateException);
-    EXPECT_THROW(zf.getInputStream("inexistant", zipios::FileCollection::MatchPath::MATCH), zipios::InvalidStateException);
-    EXPECT_THROW(zf.getInputStream("inexistant", zipios::FileCollection::MatchPath::IGNORE), zipios::InvalidStateException);
+    EXPECT_THROW(zf.getEntry("inexistant", zipios::FileCollection::MatchPath::MATCH),
+                 zipios::InvalidStateException);
+    EXPECT_THROW(zf.getEntry("inexistant", zipios::FileCollection::MatchPath::IGNORE),
+                 zipios::InvalidStateException);
+    EXPECT_THROW(zf.getInputStream("inexistant", zipios::FileCollection::MatchPath::MATCH),
+                 zipios::InvalidStateException);
+    EXPECT_THROW(zf.getInputStream("inexistant", zipios::FileCollection::MatchPath::IGNORE),
+                 zipios::InvalidStateException);
     EXPECT_THROW(zf.getName(), zipios::InvalidStateException);
     EXPECT_THROW(zf.size(), zipios::InvalidStateException);
     zf.close();
@@ -25,9 +29,11 @@ TEST(ZipFile, TestNonExisting)
     EXPECT_EQ(zf.isValid(), false);
 }
 
-class ZipFileTest : public ::testing::Test {
+class ZipFileTest: public ::testing::Test
+{
 protected:
-    void SetUp() override {
+    void SetUp() override
+    {
         std::ofstream os("empty.zip", std::ios::out | std::ios::binary);
         os << static_cast<char>(0x50);
         os << static_cast<char>(0x4B);
@@ -52,7 +58,8 @@ protected:
         os << static_cast<char>(0x00);
         os << static_cast<char>(0x00);
     }
-    void TearDown() override {
+    void TearDown() override
+    {
         // delete empty.zip
         std::remove("empty.zip");
     }
