@@ -849,7 +849,7 @@ Base::Vector2d QGIViewDimension::getIsoRefOutsetPoint(const Base::BoundBox2d& la
 {
     return Base::Vector2d(right ? labelRectangle.MinX - getDefaultIsoReferenceLineOverhang()
                                 : labelRectangle.MaxX + getDefaultIsoReferenceLineOverhang(),
-                          labelRectangle.MinY - getDefaultIsoDimensionLineSpacing());
+                          labelRectangle.MinY - getIsoDimensionLineSpacing());
 }
 
 Base::Vector2d QGIViewDimension::getIsoRefJointPoint(const Base::BoundBox2d& labelRectangle,
@@ -1146,10 +1146,10 @@ bool QGIViewDimension::constructDimensionArc(
         double borderRadius = (labelRectangle.GetCenter() - arcCenter).Length();
 
         if (borderRadius > arcRadius) {
-            borderRadius = arcRadius + getDefaultIsoDimensionLineSpacing();
+            borderRadius = arcRadius + getIsoDimensionLineSpacing();
         }
         else if (borderRadius < arcRadius) {
-            borderRadius = arcRadius - getDefaultIsoDimensionLineSpacing();
+            borderRadius = arcRadius - getIsoDimensionLineSpacing();
         }
 
         // ISO oriented labels are symmetrical along their center axis
@@ -1576,7 +1576,7 @@ void QGIViewDimension::drawDistanceExecutive(const Base::Vector2d& startPoint,
             labelCenter
             + Base::Vector2d::FromPolar(
                 placementFactor
-                    * (labelRectangle.Height() * 0.5 + getDefaultIsoDimensionLineSpacing()),
+                    * (labelRectangle.Height() * 0.5 + getIsoDimensionLineSpacing()),
                 lineAngle + M_PI_2));
 
         // Compute the dimensional line start and end crossings with (virtual) extension lines
@@ -1786,7 +1786,7 @@ void QGIViewDimension::drawDistanceOverride(const Base::Vector2d& startPoint,
             labelCenter
             + Base::Vector2d::FromPolar(
                 placementFactor
-                    * (labelRectangle.Height() * 0.5 + getDefaultIsoDimensionLineSpacing()),
+                    * (labelRectangle.Height() * 0.5 + getIsoDimensionLineSpacing()),
                 lineAngle + M_PI_2));
 
         // Compute the dimensional line start and end crossings with (virtual) extension lines
@@ -1990,7 +1990,7 @@ void QGIViewDimension::drawRadiusExecutive(const Base::Vector2d& centerPoint,
         double lineAngle;
         double devAngle = computeLineAndLabelAngles(centerPoint, labelCenter,
                                                     labelRectangle.Height() * 0.5
-                                                        + getDefaultIsoDimensionLineSpacing(),
+                                                        + getIsoDimensionLineSpacing(),
                                                     lineAngle, labelAngle);
 
         // Is there point on the arc, where line from center intersects it perpendicularly?
@@ -2014,7 +2014,7 @@ void QGIViewDimension::drawRadiusExecutive(const Base::Vector2d& centerPoint,
 
             devAngle = computeLineAndLabelAngles(arcPoint, labelCenter,
                                                  labelRectangle.Height() * 0.5
-                                                     + getDefaultIsoDimensionLineSpacing(),
+                                                     + getIsoDimensionLineSpacing(),
                                                  lineAngle, labelAngle);
             lineAngle = DrawUtil::angleComposition(lineAngle, M_PI);
 
@@ -2239,7 +2239,7 @@ void QGIViewDimension::drawDiameter(TechDraw::DrawViewDimension* dimension,
             double lineAngle;
             double devAngle = computeLineAndLabelAngles(curveCenter, labelCenter,
                                                         labelRectangle.Height() * 0.5
-                                                            + getDefaultIsoDimensionLineSpacing(),
+                                                            + getIsoDimensionLineSpacing(),
                                                         lineAngle, labelAngle);
 
             // Correct the label center distance projected on the leader line and subtract radius
@@ -2437,7 +2437,7 @@ void QGIViewDimension::drawAngle(TechDraw::DrawViewDimension* dimension,
 
         arcRadius = labelDirection.Length()
             - placementFactor
-                * (labelRectangle.Height() * 0.5 + getDefaultIsoDimensionLineSpacing());
+                * (labelRectangle.Height() * 0.5 + getIsoDimensionLineSpacing());
         if (arcRadius < 0.0) {
             arcRadius = labelDirection.Length();
         }
@@ -2631,6 +2631,13 @@ double QGIViewDimension::getDefaultIsoDimensionLineSpacing() const
 {
     // Not specified directly, but seems to be 2x Line Width according to ISO 129-1 Annex A
     return Rez::appX(m_lineWidth * 2.0);
+}
+
+// Returns the line spacing for ISO dimension based on the user inputted factor
+double QGIViewDimension::getIsoDimensionLineSpacing() const
+{
+    auto vp = static_cast<ViewProviderDimension*>(getViewProvider(getViewObject()));
+    return Rez::appX(m_lineWidth * vp->LineSpacingFactorISO.getValue());
 }
 
 double QGIViewDimension::getDefaultIsoReferenceLineOverhang() const

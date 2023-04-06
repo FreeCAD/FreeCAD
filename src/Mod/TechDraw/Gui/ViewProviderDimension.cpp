@@ -1,4 +1,4 @@
-﻿/***************************************************************************
+/***************************************************************************
  *   Copyright (c) 2004 Jürgen Riegel <juergen.riegel@web.de>              *
  *   Copyright (c) 2012 Luke Parry <l.parry@warwick.ac.uk>                 *
  *                                                                         *
@@ -86,6 +86,8 @@ ViewProviderDimension::ViewProviderDimension()
                       "Adjusts the gap between dimension point and extension line");
     ADD_PROPERTY_TYPE(GapFactorASME, (Preferences::GapASME()), group, App::Prop_None,
                       "Adjusts the gap between dimension point and extension line");
+    ADD_PROPERTY_TYPE(LineSpacingFactorISO, (2.0), group, App::Prop_None,
+                      "Adjusts the gap between dimension line and dimension text");
 
    StackOrder.setValue(ZVALUE::DIMENSION);
 }
@@ -198,7 +200,8 @@ void ViewProviderDimension::onChanged(const App::Property* p)
         (p == &RenderingExtent) ||
         (p == &FlipArrowheads) ||
         (p == &GapFactorASME) ||
-        (p == &GapFactorISO))  {
+        (p == &GapFactorISO) ||
+        p == &LineSpacingFactorISO)  {
         QGIView* qgiv = getQView();
         if (qgiv) {
             qgiv->updateView(true);

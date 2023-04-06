@@ -559,6 +559,40 @@ Multiplier of 'Font Size'</string>
           </property>
          </widget>
         </item>
+        <item row="11" column="0">
+         <widget class="QLabel" name="label_18">
+          <property name="font">
+           <font>
+            <italic>true</italic>
+           </font>
+          </property>
+          <property name="toolTip">
+           <string>Controls the size of spacing between dimension line and dimension text for ISO dimensions.</string>
+          </property>
+          <property name="text">
+           <string>Line Spacing - ISO</string>
+          </property>
+         </widget>
+        </item>
+        <item row="11" column="2">
+         <widget class="Gui::PrefDoubleSpinBox" name="pdsbLineSpacingFactorISO">
+          <property name="toolTip">
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Controls the size of spacing between dimension line and dimension text. Value * linewidth is the line spacing.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+          </property>
+          <property name="value">
+           <double></double>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>LineSpacingFactorISO</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Mod/TechDraw/Dimensions</cstring>
+          </property>
+         </widget>
+        </item>
        </layout>
       </item>
      </layout>
