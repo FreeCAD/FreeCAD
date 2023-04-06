@@ -2,8 +2,8 @@
 
 #include "gtest/gtest.h"
 
-#include "App/MappedName.h"
 #include "App/ComplexGeoData.h"
+#include "App/MappedName.h"
 
 #include <string>
 
@@ -102,7 +102,7 @@ TEST(MappedName, constructFromIndexedNameNoIndex)
     Data::MappedName mappedName {indexedName};
 
     // Assert
-    EXPECT_EQ(mappedName.dataBytes().constData(), indexedName.getType()); // shared memory
+    EXPECT_EQ(mappedName.dataBytes().constData(), indexedName.getType());// shared memory
     EXPECT_EQ(mappedName.isRaw(), true);
 }
 
@@ -115,7 +115,7 @@ TEST(MappedName, constructFromIndexedNameWithIndex)
     Data::MappedName mappedName {indexedName};
 
     // Assert
-    EXPECT_NE(mappedName.dataBytes().constData(), indexedName.getType()); // NOT shared memory
+    EXPECT_NE(mappedName.dataBytes().constData(), indexedName.getType());// NOT shared memory
     EXPECT_EQ(mappedName.isRaw(), false);
     EXPECT_EQ(mappedName.toString(), indexedName.toString());
 }
@@ -241,7 +241,7 @@ TEST(MappedName, fromRawDataCopy)
     // Arrange
     Data::MappedName temp = Data::MappedName::fromRawData(QByteArray("TESTTEST", 10));
     temp.append("TESTPOSTFIX");
-    temp.compact(); //Always call compact before accessing data!
+    temp.compact();// Always call compact before accessing data!
 
     // Act
     Data::MappedName mappedName = Data::MappedName::fromRawData(temp, 0);
@@ -258,8 +258,8 @@ TEST(MappedName, fromRawDataCopyStartposAndSize)
 {
     // Arrange
     Data::MappedName temp = Data::MappedName::fromRawData(QByteArray("TESTTEST", 8));
-    temp.append("ABCDEFGHIJKLM"); //postfix
-    temp.compact(); //Always call compact before accessing data!
+    temp.append("ABCDEFGHIJKLM");// postfix
+    temp.compact();              // Always call compact before accessing data!
 
     // Act
     Data::MappedName mappedName = Data::MappedName::fromRawData(temp, 2, 13);
@@ -483,17 +483,17 @@ TEST(MappedName, toConstString)
 {
     // Arrange
     Data::MappedName mappedName(Data::MappedName("TEST"), "POSTFIXTEST");
-    int size{0};
+    int size {0};
 
     // Act
-    const char *temp = mappedName.toConstString(0, size);
+    const char* temp = mappedName.toConstString(0, size);
 
     // Assert
     EXPECT_EQ(QByteArray(temp, size), QByteArray("TEST"));
     EXPECT_EQ(size, 4);
 
     // Act
-    const char *temp2 = mappedName.toConstString(7, size);
+    const char* temp2 = mappedName.toConstString(7, size);
 
     // Assert
     EXPECT_EQ(QByteArray(temp2, size), QByteArray("TFIXTEST"));
@@ -569,13 +569,16 @@ TEST(MappedName, appendToBufferWithPrefix)
     EXPECT_EQ(buffer, std::string("STUFF") + elemMapPrefix + std::string("TESTPOSTFIXTEST"));
 
     // Arrange
-    Data::MappedName mappedName2("TEST"); //If mappedName does not have a postfix and is a valid indexedName: prefix is not added
+    Data::MappedName mappedName2("TEST");// If mappedName does not have a postfix and is a valid
+                                         // indexedName: prefix is not added
 
     // Act
     mappedName2.appendToBufferWithPrefix(buffer);
 
     // Assert
-    EXPECT_EQ(buffer, std::string("STUFF") + elemMapPrefix + std::string("TESTPOSTFIXTEST") + /*missing prefix*/ std::string("TEST"));
+    EXPECT_EQ(buffer,
+              std::string("STUFF") + elemMapPrefix + std::string("TESTPOSTFIXTEST")
+                  + /*missing prefix*/ std::string("TEST"));
 }
 
 TEST(MappedName, toPrefixedString)
@@ -592,13 +595,16 @@ TEST(MappedName, toPrefixedString)
     EXPECT_EQ(buffer, std::string("STUFF") + elemMapPrefix + std::string("TESTPOSTFIXTEST"));
 
     // Arrange
-    Data::MappedName mappedName2("TEST"); //If mappedName does not have a postfix and is a valid indexedName: prefix is not added
+    Data::MappedName mappedName2("TEST");// If mappedName does not have a postfix and is a valid
+                                         // indexedName: prefix is not added
 
     // Act
     buffer += mappedName2.toPrefixedString();
 
     // Assert
-    EXPECT_EQ(buffer, std::string("STUFF") + elemMapPrefix + std::string("TESTPOSTFIXTEST") + /*missing prefix*/ std::string("TEST"));
+    EXPECT_EQ(buffer,
+              std::string("STUFF") + elemMapPrefix + std::string("TESTPOSTFIXTEST")
+                  + /*missing prefix*/ std::string("TEST"));
 }
 
 TEST(MappedName, toBytes)
@@ -719,7 +725,7 @@ TEST(MappedName, find)
     EXPECT_EQ(mappedName.find(""), 0);
     EXPECT_EQ(mappedName.find(std::string("")), 0);
     EXPECT_EQ(mappedName.find("TEST"), 0);
-    EXPECT_EQ(mappedName.find("STPO"), -1); //sentence must be fully contained in data or postfix
+    EXPECT_EQ(mappedName.find("STPO"), -1);// sentence must be fully contained in data or postfix
     EXPECT_EQ(mappedName.find("POST"), 4);
     EXPECT_EQ(mappedName.find("POST", 4), 4);
     EXPECT_EQ(mappedName.find("POST", 5), -1);
@@ -753,7 +759,7 @@ TEST(MappedName, rfind)
     EXPECT_EQ(mappedName.rfind(""), mappedName.size());
     EXPECT_EQ(mappedName.rfind(std::string("")), mappedName.size());
     EXPECT_EQ(mappedName.rfind("TEST"), 11);
-    EXPECT_EQ(mappedName.rfind("STPO"), -1); //sentence must be fully contained in data or postfix
+    EXPECT_EQ(mappedName.rfind("STPO"), -1);// sentence must be fully contained in data or postfix
     EXPECT_EQ(mappedName.rfind("POST"), 4);
     EXPECT_EQ(mappedName.rfind("POST", 4), 4);
     EXPECT_EQ(mappedName.rfind("POST", 3), -1);

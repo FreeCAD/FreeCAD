@@ -6,12 +6,13 @@
 
 #include <sstream>
 
-class ElementMapTest : public ::testing::Test {
+class ElementMapTest: public ::testing::Test
+{
 };
 
 TEST_F(ElementMapTest, defaultConstruction)
 {
-  // Act
+    // Act
 
-  // Assert
+    // Assert
 }

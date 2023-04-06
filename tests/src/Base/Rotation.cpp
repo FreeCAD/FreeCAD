@@ -69,10 +69,10 @@ TEST(Rotation, TestUniformScaleLT1)
 TEST(Rotation, TestRotationFailure)
 {
     Base::Matrix4D mat;
-    mat.setCol(0, Base::Vector3d{1, 0, 0});
-    mat.setCol(1, Base::Vector3d{1, 1, 0});
-    mat.setCol(2, Base::Vector3d{0, 0, 1});
+    mat.setCol(0, Base::Vector3d {1, 0, 0});
+    mat.setCol(1, Base::Vector3d {1, 1, 0});
+    mat.setCol(2, Base::Vector3d {0, 0, 1});
 
-    EXPECT_THROW(Base::Rotation{mat}, Base::ValueError);
+    EXPECT_THROW(Base::Rotation {mat}, Base::ValueError);
 }
 // NOLINTEND(cppcoreguidelines-avoid-magic-numbers,readability-magic-numbers)

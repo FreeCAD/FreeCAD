@@ -2,6 +2,5 @@
 
 #include "Gui/Assistant.h"
 
-TEST(Assistant, first){
-
-}
+TEST(Assistant, first)
+{}
