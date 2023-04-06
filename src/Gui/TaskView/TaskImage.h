@@ -21,8 +21,8 @@
  *                                                                         *
  **************************************************************************/
 
-#ifndef GUI_TASKIMAGESCALE_H
-#define GUI_TASKIMAGESCALE_H
+#ifndef GUI_TASKIMAGE_H
+#define GUI_TASKIMAGE_H
 
 #include <QPointer>
 #include <Gui/TaskView/TaskDialog.h>
@@ -78,18 +78,23 @@ private:
     std::vector<SbVec3f> points;
 };
 
-class Ui_TaskImageScale;
-class TaskImageScale : public QWidget
+class Ui_TaskImage;
+class TaskImage : public QWidget
 {
     Q_OBJECT
 
 public:
-    explicit TaskImageScale(Image::ImagePlane* obj, QWidget* parent = nullptr);
-    ~TaskImageScale() override;
+    explicit TaskImage(Image::ImagePlane* obj, QWidget* parent = nullptr);
+    ~TaskImage() override;
+
+    void open();
+    void accept();
+    void reject();
 
 private:
-    void changeWidth();
-    void changeHeight();
+    void initialiseTransparency();
+    void connectSignals();
+
     void onInteractiveScale();
     View3DInventorViewer* getViewer() const;
     void selectedPoints(size_t num);
@@ -98,13 +103,43 @@ private:
     void acceptScale();
     void rejectScale();
 
+    void restore(const Base::Placement&);
+    void onPreview();
+    void updateIcon();
+    void updatePlacement();
+
+private Q_SLOTS:
+    void changeTransparency(int val);
+    void changeWidth(double val);
+    void changeHeight(double val);
+
 private:
-    std::unique_ptr<Ui_TaskImageScale> ui;
+    std::unique_ptr<Ui_TaskImage> ui;
     QPointer<InteractiveScale> scale;
     App::WeakPtrT<Image::ImagePlane> feature;
     double aspectRatio;
 };
 
+class TaskImageDialog : public Gui::TaskView::TaskDialog
+{
+    Q_OBJECT
+
+public:
+    explicit TaskImageDialog(Image::ImagePlane* obj);
+
+public:
+    void open() override;
+    bool accept() override;
+    bool reject() override;
+
+    QDialogButtonBox::StandardButtons getStandardButtons() const override {
+        return QDialogButtonBox::Ok | QDialogButtonBox::Cancel;
+    }
+
+private:
+    TaskImage* widget;
+};
+
 }
 
-#endif // GUI_TASKIMAGESCALE_H
+#endif // GUI_TASKIMAGE_H

@@ -48,38 +48,31 @@
 #include <Gui/ViewProviderDocumentObject.h>
 #include <Gui/TaskView/TaskView.h>
 
-#include "TaskImageScale.h"
-#include "ui_TaskImageScale.h"
+#include "TaskImage.h"
+#include "ui_TaskImage.h"
 
 
 using namespace Gui;
 
-/* TRANSLATOR Gui::TaskImageScale */
+/* TRANSLATOR Gui::TaskImage */
 
-TaskImageScale::TaskImageScale(Image::ImagePlane* obj, QWidget* parent)
+TaskImage::TaskImage(Image::ImagePlane* obj, QWidget* parent)
   : QWidget(parent)
-  , ui(new Ui_TaskImageScale)
+  , ui(new Ui_TaskImage)
   , feature(obj)
-  , aspectRatio{1.0}
+  , aspectRatio(1.0)
 {
     ui->setupUi(this);
     ui->pushButtonCancel->hide();
-    ui->spinBoxWidth->setValue(obj->getXSizeInPixel());
-    ui->spinBoxHeight->setValue(obj->getYSizeInPixel());
+
+    initialiseTransparency();
 
     aspectRatio = obj->XSize.getValue() / obj->YSize.getValue();
 
-    connect(ui->spinBoxWidth, qOverload<int>(&QSpinBox::valueChanged),
-            this, &TaskImageScale::changeWidth);
-    connect(ui->spinBoxHeight, qOverload<int>(&QSpinBox::valueChanged),
-            this, &TaskImageScale::changeHeight);
-    connect(ui->pushButtonScale, &QPushButton::clicked,
-            this, &TaskImageScale::onInteractiveScale);
-    connect(ui->pushButtonCancel, &QPushButton::clicked,
-            this, &TaskImageScale::rejectScale);
+    connectSignals();
 }
 
-TaskImageScale::~TaskImageScale()
+TaskImage::~TaskImage()
 {
     if (scale) {
         if (scale->isActive()) {
@@ -89,33 +82,93 @@ TaskImageScale::~TaskImageScale()
     }
 }
 
-void TaskImageScale::changeWidth()
+void TaskImage::connectSignals()
+{
+    connect(ui->Reverse_checkBox, &QCheckBox::clicked,
+        this, &TaskImage::onPreview);
+    connect(ui->XY_radioButton, &QRadioButton::clicked,
+        this, &TaskImage::onPreview);
+    connect(ui->XZ_radioButton, &QRadioButton::clicked,
+        this, &TaskImage::onPreview);
+    connect(ui->YZ_radioButton, &QRadioButton::clicked,
+        this, &TaskImage::onPreview);
+    connect(ui->spinBoxZ, qOverload<double>(&QuantitySpinBox::valueChanged),
+        this, &TaskImage::onPreview);
+    connect(ui->spinBoxX, qOverload<double>(&QuantitySpinBox::valueChanged),
+        this, &TaskImage::onPreview);
+    connect(ui->spinBoxY, qOverload<double>(&QuantitySpinBox::valueChanged),
+        this, &TaskImage::onPreview);
+    connect(ui->spinBoxRotation, qOverload<double>(&QuantitySpinBox::valueChanged),
+        this, &TaskImage::onPreview);
+    connect(ui->spinBoxTransparency, qOverload<int>(&QSpinBox::valueChanged),
+        this, &TaskImage::changeTransparency);
+    connect(ui->sliderTransparency, qOverload<int>(&QSlider::valueChanged),
+        this, &TaskImage::changeTransparency);
+
+    connect(ui->spinBoxWidth, qOverload<double>(&QuantitySpinBox::valueChanged),
+        this, &TaskImage::changeWidth);
+    connect(ui->spinBoxHeight, qOverload<double>(&QuantitySpinBox::valueChanged),
+        this, &TaskImage::changeHeight);
+    connect(ui->pushButtonScale, &QPushButton::clicked,
+        this, &TaskImage::onInteractiveScale);
+    connect(ui->pushButtonCancel, &QPushButton::clicked,
+        this, &TaskImage::rejectScale);
+}
+
+void TaskImage::initialiseTransparency()
+{
+    auto vp = Application::Instance->getViewProvider(feature.get());
+    App::Property* prop = vp->getPropertyByName("Transparency");
+    if (prop && prop->getTypeId().isDerivedFrom(App::PropertyInteger::getClassTypeId())) {
+        auto Transparency = static_cast<App::PropertyInteger*>(prop);
+        ui->spinBoxTransparency->setValue(Transparency->getValue());
+        ui->sliderTransparency->setValue(Transparency->getValue());
+    }
+}
+
+void TaskImage::changeTransparency(int val)
+{
+    if (feature.expired())
+        return;
+
+    auto vp = Application::Instance->getViewProvider(feature.get());
+    App::Property* prop = vp->getPropertyByName("Transparency");
+    if (prop && prop->getTypeId().isDerivedFrom(App::PropertyInteger::getClassTypeId())) {
+        auto Transparency = static_cast<App::PropertyInteger*>(prop);
+        Transparency->setValue(val);
+
+        QSignalBlocker block(ui->spinBoxTransparency);
+        QSignalBlocker blocks(ui->sliderTransparency);
+        ui->spinBoxTransparency->setValue(val);
+        ui->sliderTransparency->setValue(val);
+    }
+}
+
+void TaskImage::changeWidth(double val)
 {
     if (!feature.expired()) {
-        int value = ui->spinBoxWidth->value();
-        feature->setXSizeInPixel(value);
+        feature->XSize.setValue(val);
 
         if (ui->checkBoxRatio->isChecked()) {
             QSignalBlocker block(ui->spinBoxWidth);
-            ui->spinBoxHeight->setValue(int(double(value) / aspectRatio));
+            ui->spinBoxHeight->setValue(val / aspectRatio);
         }
     }
 }
 
-void TaskImageScale::changeHeight()
+void TaskImage::changeHeight(double val)
 {
     if (!feature.expired()) {
-        int value = ui->spinBoxHeight->value();
-        feature->setYSizeInPixel(value);
+        feature->YSize.setValue(val);
 
         if (ui->checkBoxRatio->isChecked()) {
             QSignalBlocker block(ui->spinBoxHeight);
-            ui->spinBoxWidth->setValue(int(double(value) * aspectRatio));
+            ui->spinBoxWidth->setValue(val * aspectRatio);
         }
     }
 }
 
-View3DInventorViewer* TaskImageScale::getViewer() const
+View3DInventorViewer* TaskImage::getViewer() const
 {
     if (!feature.expired()) {
         auto vp = Application::Instance->getViewProvider(feature.get());
@@ -129,7 +182,7 @@ View3DInventorViewer* TaskImageScale::getViewer() const
     return nullptr;
 }
 
-void TaskImageScale::selectedPoints(size_t num)
+void TaskImage::selectedPoints(size_t num)
 {
     if (num == 1) {
         ui->labelInstruction->setText(tr("Select second point"));
@@ -139,23 +192,24 @@ void TaskImageScale::selectedPoints(size_t num)
         ui->pushButtonScale->setEnabled(true);
         ui->quantitySpinBox->setEnabled(true);
         ui->quantitySpinBox->setValue(scale->getDistance());
+        ui->quantitySpinBox->setFocus();
     }
 }
 
-void TaskImageScale::scaleImage(double factor)
+void TaskImage::scaleImage(double factor)
 {
     if (!feature.expired()) {
         feature->XSize.setValue(feature->XSize.getValue() * factor);
         feature->YSize.setValue(feature->YSize.getValue() * factor);
 
         QSignalBlocker blockW(ui->spinBoxWidth);
-        ui->spinBoxWidth->setValue(feature->getXSizeInPixel());
+        ui->spinBoxWidth->setValue(feature->XSize.getValue());
         QSignalBlocker blockH(ui->spinBoxHeight);
-        ui->spinBoxHeight->setValue(feature->getYSizeInPixel());
+        ui->spinBoxHeight->setValue(feature->YSize.getValue());
     }
 }
 
-void TaskImageScale::startScale()
+void TaskImage::startScale()
 {
     scale->activate(ui->checkBoxOutside->isChecked());
     if (ui->checkBoxOutside->isChecked()) {
@@ -171,13 +225,13 @@ void TaskImageScale::startScale()
     ui->quantitySpinBox->setEnabled(false);
 }
 
-void TaskImageScale::acceptScale()
+void TaskImage::acceptScale()
 {
     scaleImage(ui->quantitySpinBox->value().getValue() / scale->getDistance());
     rejectScale();
 }
 
-void TaskImageScale::rejectScale()
+void TaskImage::rejectScale()
 {
     scale->deactivate();
     ui->labelInstruction->clear();
@@ -190,7 +244,7 @@ void TaskImageScale::rejectScale()
     scale->clearPoints();
 }
 
-void TaskImageScale::onInteractiveScale()
+void TaskImage::onInteractiveScale()
 {
     if (!feature.expired() && !scale) {
         View3DInventorViewer* viewer = getViewer();
@@ -198,7 +252,7 @@ void TaskImageScale::onInteractiveScale()
             auto vp = Application::Instance->getViewProvider(feature.get());
             scale = new InteractiveScale(viewer, vp);
             connect(scale, &InteractiveScale::selectedPoints,
-                    this, &TaskImageScale::selectedPoints);
+                    this, &TaskImage::selectedPoints);
         }
     }
 
@@ -210,6 +264,143 @@ void TaskImageScale::onInteractiveScale()
             startScale();
         }
     }
+}
+
+void TaskImage::open()
+{
+    if (!feature.expired()) {
+        App::Document* doc = feature->getDocument();
+        doc->openTransaction(QT_TRANSLATE_NOOP("Command", "Edit image"));
+        restore(feature->Placement.getValue());
+    }
+}
+
+void TaskImage::accept()
+{
+    if (!feature.expired()) {
+        App::Document* doc = feature->getDocument();
+        doc->commitTransaction();
+        doc->recompute();
+    }
+}
+
+void TaskImage::reject()
+{
+    if (!feature.expired()) {
+        App::Document* doc = feature->getDocument();
+        doc->abortTransaction();
+        feature->purgeTouched();
+    }
+}
+
+void TaskImage::onPreview()
+{
+    updateIcon();
+    updatePlacement();
+}
+
+void TaskImage::restore(const Base::Placement& plm)
+{
+    if (feature.expired())
+        return;
+
+    QSignalBlocker blockW(ui->spinBoxWidth);
+    QSignalBlocker blockH(ui->spinBoxHeight);
+    ui->spinBoxWidth->setValue(feature->XSize.getValue());
+    ui->spinBoxHeight->setValue(feature->YSize.getValue());
+
+    Base::Rotation rot = plm.getRotation();
+    Base::Vector3d pos = plm.getPosition();
+
+    double yaw, pitch, roll;
+    rot.getYawPitchRoll(yaw, pitch, roll);
+
+    double tol = 1.0e-5;
+    bool reverse = false;
+    if (fabs(pitch) < tol && (fabs(roll) < tol || fabs(roll - 180.) < tol)) {
+        if (fabs(roll - 180.) < tol)
+            reverse = true;
+        int inv = reverse ? -1 : 1;
+        ui->XY_radioButton->setChecked(true);
+        ui->spinBoxX->setValue(pos.x);
+        ui->spinBoxY->setValue(pos.y * inv);
+        ui->spinBoxZ->setValue(pos.z * inv);
+        ui->spinBoxRotation->setValue(yaw * inv);
+    }
+    else if (fabs(roll - 90.) < tol && (fabs(yaw) < tol || fabs(yaw - 180.) < tol)) {
+        if (fabs(yaw - 180.) < tol)
+            reverse = true;
+        int inv = reverse ? -1 : 1;
+        ui->XZ_radioButton->setChecked(true);
+        ui->spinBoxX->setValue(- inv * pos.x);
+        ui->spinBoxY->setValue(pos.z);
+        ui->spinBoxZ->setValue(inv * pos.y);
+        ui->spinBoxRotation->setValue(- pitch);
+    }
+    else if (fabs(roll - 90.) < tol && (fabs(yaw - 90.) < tol || fabs(yaw + 90.) < tol)) {
+        if (fabs(yaw + 90.) < tol)
+            reverse = true;
+        int inv = reverse ? -1 : 1;
+        ui->YZ_radioButton->setChecked(true);
+        ui->spinBoxX->setValue(-inv * pos.y);
+        ui->spinBoxY->setValue(pos.z);
+        ui->spinBoxZ->setValue(inv * pos.x);
+        ui->spinBoxRotation->setValue(-pitch);
+    }
+
+    ui->Reverse_checkBox->setChecked(reverse);
+
+    onPreview();
+}
+
+void TaskImage::updatePlacement()
+{
+    Base::Placement Pos;
+    double offsetX = ui->spinBoxX->value().getValue();
+    double offsetY = ui->spinBoxY->value().getValue();
+    double offsetZ = ui->spinBoxZ->value().getValue();
+    double angle = ui->spinBoxRotation->value().getValue();
+    bool reverse = ui->Reverse_checkBox->isChecked();
+
+    Base::Rotation rot;
+    double dir = reverse ? 180. : 0.;
+    int inv = reverse ? -1 : 1;
+
+    if (ui->XY_radioButton->isChecked()) {
+        rot.setYawPitchRoll(inv * angle, 0., dir);
+        Pos = Base::Placement(Base::Vector3d(offsetX, inv * offsetY, inv * offsetZ), rot);
+    }
+    else if (ui->XZ_radioButton->isChecked()) {
+        rot.setYawPitchRoll(dir, -angle, 90.);
+        Pos = Base::Placement(Base::Vector3d(- inv * offsetX, inv * offsetZ, offsetY), rot);
+    }
+    else if (ui->YZ_radioButton->isChecked()) {
+        rot.setYawPitchRoll(90. - dir, -angle, 90.);
+        Pos = Base::Placement(Base::Vector3d(inv * offsetZ, - inv * offsetX, offsetY), rot);
+    }
+
+    if (!feature.expired()) {
+        feature->Placement.setValue(Pos);
+    }
+}
+
+void TaskImage::updateIcon()
+{
+    std::string icon;
+    bool reverse = ui->Reverse_checkBox->isChecked();
+    if (ui->XY_radioButton->isChecked()) {
+        icon = reverse ? "view-bottom" : "view-top";
+    }
+    else if (ui->XZ_radioButton->isChecked()) {
+        icon = reverse ? "view-rear" : "view-front";
+    }
+    else if (ui->YZ_radioButton->isChecked()) {
+        icon = reverse ? "view-left" : "view-right";
+    }
+
+    ui->previewLabel->setPixmap(
+        Gui::BitmapFactory().pixmapFromSvg(icon.c_str(),
+            ui->previewLabel->size()));
 }
 
 // ----------------------------------------------------------------------------
@@ -366,4 +557,32 @@ void InteractiveScale::getMousePosition(void * ud, SoEventCallback * ecb)
     }
 }
 
-#include "moc_TaskImageScale.cpp"
+// ----------------------------------------------------------------------------
+
+TaskImageDialog::TaskImageDialog(Image::ImagePlane* obj)
+{
+    widget = new TaskImage(obj);
+    Gui::TaskView::TaskBox* taskbox = new Gui::TaskView::TaskBox(
+        QPixmap(), widget->windowTitle(), true, nullptr);
+    taskbox->groupLayout()->addWidget(widget);
+    Content.push_back(taskbox);
+}
+
+void TaskImageDialog::open()
+{
+    widget->open();
+}
+
+bool TaskImageDialog::accept()
+{
+    widget->accept();
+    return true;
+}
+
+bool TaskImageDialog::reject()
+{
+    widget->reject();
+    return true;
+}
+
+#include "moc_TaskImage.cpp"
