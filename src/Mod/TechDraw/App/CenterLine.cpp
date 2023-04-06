@@ -651,77 +651,77 @@ void CenterLine::Save(Base::Writer &writer) const
                 << "X=\"" <<  m_start.x <<
                 "\" Y=\"" <<  m_start.y <<
                 "\" Z=\"" <<  m_start.z <<
-                 "\"/>" << endl;
+                 "\"/>" << std::endl;
     writer.Stream() << writer.ind() << "<End "
                 << "X=\"" <<  m_end.x <<
                 "\" Y=\"" <<  m_end.y <<
                 "\" Z=\"" <<  m_end.z <<
-                 "\"/>" << endl;
-    writer.Stream() << writer.ind() << "<Mode value=\"" << m_mode <<"\"/>" << endl;
-    writer.Stream() << writer.ind() << "<HShift value=\"" << m_hShift <<"\"/>" << endl;
-    writer.Stream() << writer.ind() << "<VShift value=\"" << m_vShift <<"\"/>" << endl;
-    writer.Stream() << writer.ind() << "<Rotate value=\"" << m_rotate <<"\"/>" << endl;
-    writer.Stream() << writer.ind() << "<Extend value=\"" << m_extendBy <<"\"/>" << endl;
-    writer.Stream() << writer.ind() << "<Type value=\"" << m_type <<"\"/>" << endl;
-    writer.Stream() << writer.ind() << "<Flip value=\"" << m_flip2Line <<"\"/>" << endl;
+                 "\"/>" << std::endl;
+    writer.Stream() << writer.ind() << "<Mode value=\"" << m_mode <<"\"/>" << std::endl;
+    writer.Stream() << writer.ind() << "<HShift value=\"" << m_hShift <<"\"/>" << std::endl;
+    writer.Stream() << writer.ind() << "<VShift value=\"" << m_vShift <<"\"/>" << std::endl;
+    writer.Stream() << writer.ind() << "<Rotate value=\"" << m_rotate <<"\"/>" << std::endl;
+    writer.Stream() << writer.ind() << "<Extend value=\"" << m_extendBy <<"\"/>" << std::endl;
+    writer.Stream() << writer.ind() << "<Type value=\"" << m_type <<"\"/>" << std::endl;
+    writer.Stream() << writer.ind() << "<Flip value=\"" << m_flip2Line <<"\"/>" << std::endl;
     writer.Stream()
          << writer.ind()
              << "<Faces "
                 << "FaceCount=\"" <<  m_faces.size() <<
-             "\">" << endl;
+             "\">" << std::endl;
 
     writer.incInd();
     for (auto& f: m_faces) {
         writer.Stream()
             << writer.ind()
-            << "<Face value=\"" << f <<"\"/>" << endl;
+            << "<Face value=\"" << f <<"\"/>" << std::endl;
     }
     writer.decInd();
 
-    writer.Stream() << writer.ind() << "</Faces>" << endl ;
+    writer.Stream() << writer.ind() << "</Faces>" << std::endl;
 
     writer.Stream()
          << writer.ind()
              << "<Edges "
                 << "EdgeCount=\"" <<  m_edges.size() <<
-             "\">" << endl;
+             "\">" << std::endl;
 
     writer.incInd();
     for (auto& e: m_edges) {
         writer.Stream()
             << writer.ind()
-            << "<Edge value=\"" << e <<"\"/>" << endl;
+            << "<Edge value=\"" << e <<"\"/>" << std::endl;
     }
     writer.decInd();
-    writer.Stream() << writer.ind() << "</Edges>" << endl ;
+    writer.Stream() << writer.ind() << "</Edges>" << std::endl;
 
     writer.Stream()
          << writer.ind()
              << "<CLPoints "
                 << "CLPointCount=\"" <<  m_verts.size() <<
-             "\">" << endl;
+             "\">" << std::endl;
 
     writer.incInd();
     for (auto& p: m_verts) {
         writer.Stream()
             << writer.ind()
-            << "<CLPoint value=\"" << p <<"\"/>" << endl;
+            << "<CLPoint value=\"" << p <<"\"/>" << std::endl;
     }
     writer.decInd();
     writer.Stream() << writer.ind() << "</CLPoints>" << endl ;
 
-    writer.Stream() << writer.ind() << "<Style value=\"" <<  m_format.m_style << "\"/>" << endl;
-    writer.Stream() << writer.ind() << "<Weight value=\"" <<  m_format.m_weight << "\"/>" << endl;
-    writer.Stream() << writer.ind() << "<Color value=\"" <<  m_format.m_color.asHexString() << "\"/>" << endl;
+    writer.Stream() << writer.ind() << "<Style value=\"" <<  m_format.m_style << "\"/>" << std::endl;
+    writer.Stream() << writer.ind() << "<Weight value=\"" <<  m_format.m_weight << "\"/>" << std::endl;
+    writer.Stream() << writer.ind() << "<Color value=\"" <<  m_format.m_color.asHexString() << "\"/>" << std::endl;
     const char v = m_format.m_visible?'1':'0';
-    writer.Stream() << writer.ind() << "<Visible value=\"" <<  v << "\"/>" << endl;
+    writer.Stream() << writer.ind() << "<Visible value=\"" <<  v << "\"/>" << std::endl;
 
 //stored geometry
     if (!m_geometry) {
         return Base::Console().Error("CL::Save - m_geometry is null\n");
     }
 
-    writer.Stream() << writer.ind() << "<GeometryType value=\"" << m_geometry->getGeomType() <<"\"/>" << endl;
+    writer.Stream() << writer.ind() << "<GeometryType value=\"" << m_geometry->getGeomType() <<"\"/>" << std::endl;
     if (m_geometry->getGeomType() == TechDraw::GeomType::GENERIC) {
         GenericPtr gen = std::static_pointer_cast<Generic>(m_geometry);
         gen->Save(writer);
