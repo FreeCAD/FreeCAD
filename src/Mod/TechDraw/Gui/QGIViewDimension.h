@@ -294,6 +294,7 @@ private:
     double getDefaultExtensionLineOverhang() const;
     double getDefaultArrowTailLength() const;
     double getDefaultIsoDimensionLineSpacing() const;
+    double getIsoDimensionLineSpacing() const;
     double getDefaultIsoReferenceLineOverhang() const;
     double getDefaultAsmeHorizontalLeaderLength() const;
 

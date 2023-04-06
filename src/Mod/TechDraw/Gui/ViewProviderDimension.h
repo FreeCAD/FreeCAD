@@ -1,4 +1,4 @@
-﻿/***************************************************************************
+/***************************************************************************
  *   Copyright (c) 2004 Jürgen Riegel <juergen.riegel@web.de>              *
  *   Copyright (c) 2012 Luke Parry <l.parry@warwick.ac.uk>                 *
  *                                                                         *
@@ -66,6 +66,7 @@ public:
 
     App::PropertyFloat GapFactorISO;
     App::PropertyFloat GapFactorASME;
+    App::PropertyFloat LineSpacingFactorISO;
 
     void attach(App::DocumentObject *) override;
     bool useNewSelectionModel() const override {return false;}
