@@ -327,13 +327,18 @@ void PathSegmentWalker::walk(PathSegmentVisitor &cb, const Base::Vector3d &start
             }
 
             Base::Vector3d p3(next);
-            p3.*pz = last.*pz;
+            if (retract_mode == 99)  // G81,G83 need to account for G99 and retract to R only
+                p3.*pz = p2.*pz;
+            else
+                p3.*pz = last.*pz;            
+              
+           
             Base::Vector3d p3r = compensateRotation(p3, nrot, rotCenter);
 
             plist.push_back(p1r);
             plist.push_back(p2r);
-            plist.push_back(p3r);
-
+            plist.push_back(p3r); 
+            
             cb.g8x(i, last, next, points, plist, qlist);
 
             last = p3;
@@ -353,6 +358,10 @@ void PathSegmentWalker::walk(PathSegmentVisitor &cb, const Base::Vector3d &start
             pz = &Base::Vector3d::y;
         } else if(name=="G19") {
             pz = &Base::Vector3d::x;
+        } else if(name=="G98") {
+            retract_mode = 98;
+        } else if(name=="G99") {
+            retract_mode = 99;
         }
     }
 }
