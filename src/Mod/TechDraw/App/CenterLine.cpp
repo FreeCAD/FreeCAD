@@ -708,7 +708,7 @@ void CenterLine::Save(Base::Writer &writer) const
             << "<CLPoint value=\"" << p <<"\"/>" << std::endl;
     }
     writer.decInd();
-    writer.Stream() << writer.ind() << "</CLPoints>" << endl ;
+    writer.Stream() << writer.ind() << "</CLPoints>" << std::endl ;
 
     writer.Stream() << writer.ind() << "<Style value=\"" <<  m_format.m_style << "\"/>" << std::endl;
     writer.Stream() << writer.ind() << "<Weight value=\"" <<  m_format.m_weight << "\"/>" << std::endl;
