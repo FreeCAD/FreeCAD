@@ -45,7 +45,6 @@
 
 #include "DlgToolbarsImp.h"
 #include "DlgActionsImp.h"
-#include "DlgCommandsImp.h"
 #include "DlgKeyboardImp.h"
 #include "DlgCustomizeSpaceball.h"
 #include "DlgCustomizeSpNavSettings.h"
@@ -82,7 +81,6 @@ WidgetFactorySupplier::WidgetFactorySupplier()
     // ADD YOUR CUSTOMIZE PAGES HERE
     //
     //
-    new CustomPageProducer<DlgCustomCommandsImp>;
     new CustomPageProducer<DlgCustomKeyboardImp>;
     new CustomPageProducer<DlgCustomToolbarsImp>;
     new CustomPageProducer<DlgCustomActionsImp>;
