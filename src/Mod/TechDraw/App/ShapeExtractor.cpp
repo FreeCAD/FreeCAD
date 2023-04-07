@@ -148,7 +148,7 @@ TopoDS_Shape ShapeExtractor::getShapes(const std::vector<App::DocumentObject*> l
 
 std::vector<TopoDS_Shape> ShapeExtractor::getXShapes(const App::Link* xLink)
 {
-//    Base::Console().Message("SE::getXShapes(%X) - %s\n", xLink, xLink->getNameInDocument());
+//    Base::Console().Message("SE::getXShapes() - %s\n", xLink->getNameInDocument());
     std::vector<TopoDS_Shape> xSourceShapes;
     if (!xLink) {
         return xSourceShapes;
@@ -170,6 +170,7 @@ std::vector<TopoDS_Shape> ShapeExtractor::getXShapes(const App::Link* xLink)
     Base::Matrix4D netTransform;
     if (!children.empty()) {
         for (auto& l:children) {
+            Base::Console().Message("SE::getXShapes - processing a child\n");
             bool childNeedsTransform = false;
             Base::Placement childPlm;
             Base::Matrix4D childScale;
@@ -185,12 +186,16 @@ std::vector<TopoDS_Shape> ShapeExtractor::getXShapes(const App::Link* xLink)
                 }
             }
             auto shape = Part::Feature::getShape(l);
+            Part::TopoShape ts(shape);
+            if (ts.isInfinite()) {
+                shape = stripInfiniteShapes(shape);
+                ts = Part::TopoShape(shape);
+            }
             if(!shape.IsNull()) {
                 if (needsTransform || childNeedsTransform) {
                     // Multiplication is associative, but the braces show the idea of combining the two transforms:
                     // ( link placement and scale ) combined to ( child placement and scale )
                     netTransform = (linkPlm.toMatrix() * linkScale) * (childPlm.toMatrix() * childScale);
-                    Part::TopoShape ts(shape);
                     ts.transformGeometry(netTransform);
                     shape = ts.getShape();
                 }
@@ -204,11 +209,15 @@ std::vector<TopoDS_Shape> ShapeExtractor::getXShapes(const App::Link* xLink)
         App::DocumentObject* link = xLink->getLink(depth);
         if (link) {
             auto shape = Part::Feature::getShape(link);
+            Part::TopoShape ts(shape);
+            if (ts.isInfinite()) {
+                shape = stripInfiniteShapes(shape);
+                ts = Part::TopoShape(shape);
+            }
             if(!shape.IsNull()) {
                 if (needsTransform) {
                     // Transform is just link placement and scale, no child objects
                     netTransform = linkPlm.toMatrix() * linkScale;
-                    Part::TopoShape ts(shape);
                     ts.transformGeometry(netTransform);
                     shape = ts.getShape();
                 }
@@ -308,7 +317,7 @@ TopoDS_Shape ShapeExtractor::getShapesFused(const std::vector<App::DocumentObjec
 //Infinite shapes can not be projected, so they need to be removed.
 TopoDS_Shape ShapeExtractor::stripInfiniteShapes(TopoDS_Shape inShape)
 {
-//    Base::Console().Message("SE::stripInfiniteShapes() - shapeType: %d\n", inShape.ShapeType());
+//    Base::Console().Message("SE::stripInfiniteShapes()\n");
     BRep_Builder builder;
     TopoDS_Compound comp;
     builder.MakeCompound(comp);
