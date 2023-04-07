@@ -37,12 +37,14 @@
 
 #include <Base/Console.h>
 #include <Base/Precision.h>
+#include <Base/Quantity.h>
 #include <Base/Tools.h>
 #include <App/Document.h>
 #include <Gui/Application.h>
 #include <Gui/BitmapFactory.h>
 #include <Gui/Camera.h>
 #include <Gui/Document.h>
+#include <Gui/SoDatumLabel.h>
 #include <Gui/View3DInventor.h>
 #include <Gui/View3DInventorViewer.h>
 #include <Gui/ViewProviderDocumentObject.h>
@@ -240,8 +242,6 @@ void TaskImage::rejectScale()
     ui->pushButtonCancel->hide();
     ui->quantitySpinBox->setEnabled(false);
     ui->checkBoxOutside->setEnabled(true);
-
-    scale->clearPoints();
 }
 
 void TaskImage::onInteractiveScale()
@@ -250,7 +250,7 @@ void TaskImage::onInteractiveScale()
         View3DInventorViewer* viewer = getViewer();
         if (viewer) {
             auto vp = Application::Instance->getViewProvider(feature.get());
-            scale = new InteractiveScale(viewer, vp);
+            scale = new InteractiveScale(viewer, vp, getNorm());
             connect(scale, &InteractiveScale::selectedPoints,
                     this, &TaskImage::selectedPoints);
         }
@@ -403,31 +403,51 @@ void TaskImage::updateIcon()
             ui->previewLabel->size()));
 }
 
+SbVec3f TaskImage::getNorm()
+{
+    if (feature.expired())
+        return SbVec3f(0., 0., 1.);
+
+    // Get imagePlane normal
+    Base::Vector3d RN(0, 0, 1);
+
+    // move to position of Sketch
+    Base::Placement Plz = feature->Placement.getValue();
+    Base::Rotation tmp(Plz.getRotation());
+    tmp.multVec(RN, RN);
+    Plz.setRotation(tmp);
+    return SbVec3f(RN.x, RN.y, RN.z);
+}
+
 // ----------------------------------------------------------------------------
 
-InteractiveScale::InteractiveScale(View3DInventorViewer* view, ViewProvider* vp)
+InteractiveScale::InteractiveScale(View3DInventorViewer* view, ViewProvider* vp, SbVec3f normal)
     : active{false}
     , allowOutsideImage{false}
     , viewer{view}
     , viewProv{vp}
+    , norm{normal}
 {
-    coords = new SoCoordinate3;
-    coords->ref();
     root = new SoAnnotation;
     root->ref();
+    root->renderCaching = SoSeparator::OFF;
 
-    root->addChild(coords);
-
-    SoBaseColor* color = new SoBaseColor;
-    color->rgb.setValue(1.0F, 0.0F, 0.0F);
-    root->addChild(color);
-    root->addChild(new SoLineSet);
+    measureLabel = new SoDatumLabel();
+    measureLabel->ref();
+    measureLabel->norm.setValue(norm);
+    measureLabel->string = "";
+    measureLabel->textColor = SbColor(1.0f, 0.149f, 0.0f);
+    measureLabel->size.setValue(17);
+    measureLabel->lineWidth = 2.0;
+    measureLabel->useAntialiasing = false;
+    measureLabel->param1 = 0.;
+    measureLabel->param2 = 0.;
 }
 
 InteractiveScale::~InteractiveScale()
 {
-    coords->unref();
     root->unref();
+    measureLabel->unref();
 }
 
 void InteractiveScale::activate(bool allowOutside)
@@ -447,6 +467,8 @@ void InteractiveScale::activate(bool allowOutside)
 void InteractiveScale::deactivate()
 {
     if (viewer) {
+        points.clear();
+        root->removeChild(measureLabel);
         static_cast<SoSeparator*>(viewer->getSceneGraph())->removeChild(root);
         viewer->setEditing(false);
         viewer->removeEventCallback(SoLocation2Event::getClassTypeId(), InteractiveScale::getMousePosition, this);
@@ -471,12 +493,6 @@ double InteractiveScale::getDistance(const SbVec3f& pt) const
         return 0.0;
 
     return (points[0] - pt).length();
-}
-
-void InteractiveScale::clearPoints()
-{
-    points.clear();
-    coords->point.setNum(0);
 }
 
 void InteractiveScale::findPointOnPlane(SoEventCallback * ecb)
@@ -516,13 +532,13 @@ void InteractiveScale::collectPoint(const SbVec3f& pos3d)
 {
     if (points.empty()) {
         points.push_back(pos3d);
-        coords->point.set1Value(0, pos3d);
+
+        root->addChild(measureLabel);
     }
     else if (points.size() == 1) {
         double distance = getDistance(pos3d);
         if (distance > Base::Precision::Confusion()) {
             points.push_back(pos3d);
-            coords->point.set1Value(1, pos3d);
         }
         else {
             Base::Console().Warning(std::string("Image scale"), "The second point is too close. Retry!\n");
@@ -551,9 +567,39 @@ void InteractiveScale::getMousePosition(void * ud, SoEventCallback * ecb)
 
     if (scale->points.size() == 1) {
         ecb->setHandled();
-        auto pos2d = l2e->getPosition();
-        auto pos3d = view->getPointOnFocalPlane(pos2d);
-        scale->coords->point.set1Value(1, pos3d);
+        SbVec3f pos3d;
+        if (scale->allowOutsideImage) {
+            auto pos2d = l2e->getPosition();
+            pos3d = view->getPointOnFocalPlane(pos2d);
+        }
+        else {
+            std::unique_ptr<SoPickedPoint> pp(view->getPointOnRay(l2e->getPosition(), scale->viewProv));
+            if (pp.get()) {
+                pos3d = pp->getPoint();
+            }
+            else {
+                return;
+            }
+        }
+
+        Base::Quantity quantity;
+        quantity.setValue((pos3d - scale->points[0]).length());
+        quantity.setUnit(Base::Unit::Length);
+
+        //Update the displayed distance
+        double factor;
+        QString unitStr, valueStr;
+        valueStr = quantity.getUserString(factor, unitStr);
+        scale->measureLabel->string = SbString(valueStr.toUtf8().constData());
+
+        //Update the points.
+        scale->measureLabel->pnts.setNum(2);
+        SbVec3f* verts = scale->measureLabel->pnts.startEditing();
+
+        verts[0] = scale->points[0];
+        verts[1] = pos3d;
+
+        scale->measureLabel->pnts.finishEditing();
     }
 }
 

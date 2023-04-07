@@ -33,9 +33,8 @@
 
 class SbVec3f;
 class SoEventCallback;
-class SoCoordinate3;
 class SoSeparator;
-class SoLineSet;
+class SoDatumLabel;
 
 namespace Gui {
 
@@ -46,7 +45,7 @@ class InteractiveScale : public QObject
     Q_OBJECT
 
 public:
-    explicit InteractiveScale(View3DInventorViewer* view, ViewProvider* vp);
+    explicit InteractiveScale(View3DInventorViewer* view, ViewProvider* vp, SbVec3f normal);
     ~InteractiveScale();
     void activate(bool allowOutside);
     void deactivate();
@@ -55,7 +54,6 @@ public:
     }
     double getDistance() const;
     double getDistance(const SbVec3f&) const;
-    void clearPoints();
 
 private:
     static void getMouseClick(void * ud, SoEventCallback * ecb);
@@ -71,11 +69,12 @@ Q_SIGNALS:
 private:
     bool active;
     bool allowOutsideImage;
-    SoCoordinate3* coords;
     SoSeparator* root;
+    SoDatumLabel* measureLabel;
     QPointer<Gui::View3DInventorViewer> viewer;
     ViewProvider* viewProv;
     std::vector<SbVec3f> points;
+    SbVec3f norm;
 };
 
 class Ui_TaskImage;
@@ -102,6 +101,7 @@ private:
     void startScale();
     void acceptScale();
     void rejectScale();
+    SbVec3f getNorm();
 
     void restore(const Base::Placement&);
     void onPreview();
