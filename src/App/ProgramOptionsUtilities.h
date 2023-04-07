@@ -24,6 +24,8 @@
 #ifndef PROGRAMOPTIONSUTILITIES_H
 #define PROGRAMOPTIONSUTILITIES_H
 
+#include <algorithm>
+#include <array>
 #include <string>
 
 namespace App::Util{
