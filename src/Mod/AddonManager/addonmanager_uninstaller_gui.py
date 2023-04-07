@@ -98,7 +98,7 @@ class AddonUninstallerGUI(QtCore.QObject):
             )
             + "...",
             QtWidgets.QMessageBox.Cancel,
-            parent = utils.get_main_am_window()
+            parent=utils.get_main_am_window(),
         )
         self.progress_dialog.rejected.connect(self._cancel_removal)
         self.progress_dialog.show()

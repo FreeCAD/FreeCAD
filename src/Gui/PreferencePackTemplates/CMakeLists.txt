@@ -8,6 +8,7 @@ SET(PreferencePackTemplates_Files
     Main_window_layout.cfg
     Part_Colors.cfg
     Path_Colors.cfg
+    Shortcuts.cfg
     Sketcher_Colors.cfg
     Start_Colors.cfg
     TechDraw_Colors.cfg

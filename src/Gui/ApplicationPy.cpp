@@ -51,6 +51,7 @@
 #include "DocumentObserverPython.h"
 #include "DownloadManager.h"
 #include "EditorView.h"
+#include "FileHandler.h"
 #include "Macro.h"
 #include "MainWindow.h"
 #include "MainWindowPy.h"
@@ -599,60 +600,9 @@ PyObject* Application::sOpen(PyObject * /*self*/, PyObject *args)
     PyMem_Free(Name);
     PY_TRY {
         QString fileName = QString::fromUtf8(Utf8Name.c_str());
-        QFileInfo fi;
-        fi.setFile(fileName);
-        QString ext = fi.suffix().toLower();
-        QList<EditorView*> views = getMainWindow()->findChildren<EditorView*>();
-        for (QList<EditorView*>::Iterator it = views.begin(); it != views.end(); ++it) {
-            if ((*it)->fileName() == fileName) {
-                (*it)->setFocus();
-                Py_Return;
-            }
-        }
-
-        if (ext == QLatin1String("iv")) {
-            if (!Application::Instance->activeDocument())
-                App::GetApplication().newDocument();
-            //QString cmd = QString("Gui.activeDocument().addAnnotation(\"%1\",\"%2\")").arg(fi.baseName()).arg(fi.absoluteFilePath());
-            QString cmd = QString::fromLatin1(
-                "App.ActiveDocument.addObject(\"App::InventorObject\",\"%1\")."
-                "FileName=\"%2\"\n"
-                "App.ActiveDocument.ActiveObject.Label=\"%1\"\n"
-                "App.ActiveDocument.recompute()")
-                .arg(fi.baseName(), fi.absoluteFilePath());
-            Base::Interpreter().runString(cmd.toUtf8());
-        }
-        else if (ext == QLatin1String("wrl") ||
-                 ext == QLatin1String("vrml") ||
-                 ext == QLatin1String("wrz")) {
-            if (!Application::Instance->activeDocument())
-                App::GetApplication().newDocument();
-
-            // Add this to the search path in order to read inline files (#0002029)
-            QByteArray path = fi.absolutePath().toUtf8();
-            SoInput::addDirectoryFirst(path.constData());
-
-            //QString cmd = QString("Gui.activeDocument().addAnnotation(\"%1\",\"%2\")").arg(fi.baseName()).arg(fi.absoluteFilePath());
-            QString cmd = QString::fromLatin1(
-                "App.ActiveDocument.addObject(\"App::VRMLObject\",\"%1\")."
-                "VrmlFile=\"%2\"\n"
-                "App.ActiveDocument.ActiveObject.Label=\"%1\"\n"
-                "App.ActiveDocument.recompute()")
-                .arg(fi.baseName(), fi.absoluteFilePath());
-            Base::Interpreter().runString(cmd.toUtf8());
-            SoInput::removeDirectory(path.constData());
-        }
-        else if (ext == QLatin1String("py") ||
-                 ext == QLatin1String("fcmacro") ||
-                 ext == QLatin1String("fcscript")) {
-            auto editor = new PythonEditor();
-            editor->setWindowIcon(Gui::BitmapFactory().iconFromTheme("applications-python"));
-            auto edit = new PythonEditorView(editor, getMainWindow());
-            edit->open(fileName);
-            edit->resize(400, 300);
-            getMainWindow()->addWindow( edit );
-        }
-        else {
+        FileHandler handler(fileName);
+        if (!handler.openFile()) {
+            QString ext = handler.extension();
             Base::Console().Error("File type '%s' not supported\n", ext.toLatin1().constData());
         }
     }
@@ -673,60 +623,9 @@ PyObject* Application::sInsert(PyObject * /*self*/, PyObject *args)
 
     PY_TRY {
         QString fileName = QString::fromUtf8(Utf8Name.c_str());
-        QFileInfo fi;
-        fi.setFile(fileName);
-        QString ext = fi.suffix().toLower();
-        if (ext == QLatin1String("iv")) {
-            App::Document *doc = nullptr;
-            if (DocName)
-                doc = App::GetApplication().getDocument(DocName);
-            else
-                doc = App::GetApplication().getActiveDocument();
-            if (!doc)
-                doc = App::GetApplication().newDocument(DocName);
-
-            App::DocumentObject* obj = doc->addObject("App::InventorObject",
-                (const char*)fi.baseName().toUtf8());
-            obj->Label.setValue((const char*)fi.baseName().toUtf8());
-            static_cast<App::PropertyString*>(obj->getPropertyByName("FileName"))
-                ->setValue((const char*)fi.absoluteFilePath().toUtf8());
-            doc->recompute();
-        }
-        else if (ext == QLatin1String("wrl") ||
-                 ext == QLatin1String("vrml") ||
-                 ext == QLatin1String("wrz")) {
-            App::Document *doc = nullptr;
-            if (DocName)
-                doc = App::GetApplication().getDocument(DocName);
-            else
-                doc = App::GetApplication().getActiveDocument();
-            if (!doc)
-                doc = App::GetApplication().newDocument(DocName);
-
-            // Add this to the search path in order to read inline files (#0002029)
-            QByteArray path = fi.absolutePath().toUtf8();
-            SoInput::addDirectoryFirst(path.constData());
-
-            App::DocumentObject* obj = doc->addObject("App::VRMLObject",
-                (const char*)fi.baseName().toUtf8());
-            obj->Label.setValue((const char*)fi.baseName().toUtf8());
-            static_cast<App::PropertyFileIncluded*>(obj->getPropertyByName("VrmlFile"))
-                ->setValue((const char*)fi.absoluteFilePath().toUtf8());
-            doc->recompute();
-
-            SoInput::removeDirectory(path.constData());
-        }
-        else if (ext == QLatin1String("py") ||
-                 ext == QLatin1String("fcmacro") ||
-                 ext == QLatin1String("fcscript")) {
-            auto editor = new PythonEditor();
-            editor->setWindowIcon(Gui::BitmapFactory().iconFromTheme("applications-python"));
-            auto edit = new PythonEditorView(editor, getMainWindow());
-            edit->open(fileName);
-            edit->resize(400, 300);
-            getMainWindow()->addWindow( edit );
-        }
-        else {
+        FileHandler handler(fileName);
+        if (!handler.importFile(std::string(DocName ? DocName : ""))) {
+            QString ext = handler.extension();
             Base::Console().Error("File type '%s' not supported\n", ext.toLatin1().constData());
         }
     } PY_CATCH;

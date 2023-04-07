@@ -24,6 +24,7 @@
 #ifndef GUI_MACRO_H
 #define GUI_MACRO_H
 
+#include <tuple>
 #include <QString>
 #include <QStringList>
 #include <Base/Observer.h>
@@ -34,6 +35,64 @@ namespace Gui {
 struct ApplicationP;
 class PythonConsole;
 class PythonDebugger;
+
+class MacroFile
+{
+public:
+    MacroFile();
+    void open(const char *sName);
+    /// indicates if a macro recording is in progress
+    bool isOpen() const {
+        return openMacro;
+    }
+    void append(const QString&);
+    void append(const QStringList&);
+    QString fileName() const {
+        return macroName;
+    }
+    bool commit();
+    void cancel();
+
+private:
+    QStringList macroInProgress;    /**< Container for the macro */
+    QString macroName;              /**< name of the macro */
+    bool openMacro;
+};
+
+class MacroOutputBuffer
+{
+public:
+    MacroOutputBuffer();
+    /// Return the added lines regardless of recording or not
+    long getLines() const {
+        return totalLines;
+    }
+    /// insert a new pending line in the macro
+    void addPendingLine(int type, const char* line);
+    bool addPendingLineIfComment(int type, const char* line);
+    bool hasPendingLines() const {
+        return !pendingLine.empty();
+    }
+    void incrementIfNoComment(int type);
+
+    long totalLines;
+    std::vector<std::pair<int, std::string> > pendingLine;
+};
+
+class MacroOutputOption
+{
+public:
+    MacroOutputOption();
+    std::tuple<bool, bool> values(int type) const;
+
+    static bool isComment(int type);
+    static bool isGuiCommand(int type);
+    static bool isAppCommand(int type);
+
+    bool recordGui;
+    bool guiAsComment;
+    bool scriptToPyConsole;
+};
 
 /** Macro recording and play back management
  * The purpos of this class is to handle record function calls from a command and save it in
@@ -77,9 +136,13 @@ public:
     /// cancels the recording session
     void cancel();
     /// indicates if a macro recording is in progress
-    bool isOpen() const {return openMacro;}
+    bool isOpen() const {
+        return macroFile.isOpen();
+    }
     /// insert a new line in the macro
-    void addLine(LineType Type,const char* sLine,bool pending=false);
+    void addLine(LineType Type, const char* sLine);
+    /// insert a new pending line in the macro
+    void addPendingLine(LineType type, const char* line);
     /** Set the active module
      * This is normally done by the workbench switch. It sets
      * the actually active application module so when the macro
@@ -89,25 +152,28 @@ public:
     void run(MacroType eType,const char *sName);
     /// Get the Python debugger
     PythonDebugger* debugger() const;
+    PythonConsole* getPythonConsole() const;
     /** Observes its parameter group. */
     void OnChange(Base::Subject<const char*> &rCaller, const char * sReason) override;
 
     /// Return the added lines regardless of recording or not
-    long getLines() const {return totalLines;}
+    long getLines() const {
+        return buffer.getLines();
+    }
 
-protected:
-    QStringList macroInProgress;    /**< Container for the macro */
-    QString macroName;              /**< name of the macro */
-    bool openMacro;
-    bool recordGui;
-    bool guiAsComment;
-    bool scriptToPyConsole;
+private:
+    void processPendingLines();
+    void makeComment(QStringList& lines) const;
+    void addToOutput(LineType type, const char* line);
+
+private:
+    MacroFile macroFile;
+    MacroOutputBuffer buffer;
+    MacroOutputOption option;
     bool localEnv;
-    PythonConsole* pyConsole;       // link to the python console
+    mutable PythonConsole* pyConsole;       // link to the python console
     PythonDebugger* pyDebugger;
     Base::Reference<ParameterGrp> params;  // link to the Macro parameter group
-    long totalLines;
-    std::vector<std::pair<LineType,std::string> > pendingLine;
 
     friend struct ApplicationP;
 };

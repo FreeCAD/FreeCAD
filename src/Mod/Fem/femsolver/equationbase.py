@@ -69,6 +69,16 @@ class BaseViewProxy(object):
         return mode
 
 
+class DeformationProxy(BaseProxy):
+    pass
+
+
+class DeformationViewProxy(BaseViewProxy):
+
+    def getIcon(self):
+        return ":/icons/FEM_EquationDeformation.svg"
+
+
 class ElasticityProxy(BaseProxy):
     pass
 

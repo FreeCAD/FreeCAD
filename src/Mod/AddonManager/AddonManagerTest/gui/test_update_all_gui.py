@@ -122,6 +122,7 @@ class TestUpdateAllGui(unittest.TestCase):
                 self.counter = 0
                 self.LIMIT = 100
                 self.limit_reached = False
+
             def run(self):
                 while self.counter < self.LIMIT:
                     if QtCore.QThread.currentThread().isInterruptionRequested():
@@ -129,6 +130,7 @@ class TestUpdateAllGui(unittest.TestCase):
                     self.counter += 1
                     sleep(0.01)
                 self.limit_reached = True
+
         worker = Worker()
         self.factory.work_function = worker.run
         self.test_object.run()

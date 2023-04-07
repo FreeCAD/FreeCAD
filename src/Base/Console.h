@@ -630,7 +630,7 @@ public:
         MsgType_Log                     = 2, // ConsoleObserverStd sends this and higher to stderr
         MsgType_Wrn                     = 4,
         MsgType_Err                     = 8,
-        MsgType_Critical             = 16,  // Special message to notify critical information
+        MsgType_Critical                = 16,  // Special message to notify critical information
         MsgType_Notification            = 32, // Special message to for notifications to the user
         MsgType_TranslatedNotification  = 64, // Special message for already translated notifications to the user
     };

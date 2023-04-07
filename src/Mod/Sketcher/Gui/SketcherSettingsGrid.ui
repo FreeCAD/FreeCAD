@@ -160,7 +160,7 @@ The grid spacing change if it becomes smaller than this number of pixel.</string
       <item>
        <widget class="QGroupBox" name="groupBox_3">
         <property name="title">
-         <string>Subdivision lines</string>
+         <string>Minor grid lines</string>
         </property>
         <property name="sizePolicy">
          <sizepolicy hsizetype="Expanding" vsizetype="Minimum">
@@ -266,7 +266,7 @@ The grid spacing change if it becomes smaller than this number of pixel.</string
       <item>
        <widget class="QGroupBox" name="groupBox_4">
         <property name="title">
-         <string>Division lines</string>
+         <string>Major grid lines</string>
         </property>
         <property name="sizePolicy">
          <sizepolicy hsizetype="Expanding" vsizetype="Minimum">
@@ -278,7 +278,7 @@ The grid spacing change if it becomes smaller than this number of pixel.</string
          <item row="0" column="0">
           <widget class="QLabel" name="label_gridNumberSubdivision">
            <property name="text">
-            <string>Number of subdivisions per division</string>
+            <string>Major grid line every:</string>
            </property>
            <property name="buddy">
             <cstring>gridNumberSubdivision</cstring>
@@ -288,7 +288,7 @@ The grid spacing change if it becomes smaller than this number of pixel.</string
          <item row="0" column="1">
           <widget class="Gui::PrefSpinBox" name="gridNumberSubdivision">
            <property name="toolTip">
-            <string>Number of subdivisions of each grid division. Set to 1 to disable divisions.</string>
+            <string>Every N lines there will be a major line. Set to 1 to disable major lines.</string>
            </property>
            <property name="minimum">
             <number>1</number>

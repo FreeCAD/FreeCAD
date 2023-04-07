@@ -577,7 +577,7 @@ class ObjectJob:
         This will also create any TCs stored in the template."""
         tcs = []
         if template:
-            with open(PathUtil.toUnicode(template), "rb") as fp:
+            with open(str(template), "rb") as fp:
                 attrs = json.load(fp)
 
             if attrs.get(JobTemplate.Version) and 1 == int(attrs[JobTemplate.Version]):

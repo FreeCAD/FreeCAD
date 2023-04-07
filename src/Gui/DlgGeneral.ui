@@ -38,7 +38,7 @@
       <item>
        <widget class="QGroupBox" name="GroupBox7">
         <property name="title">
-         <string>Language</string>
+         <string>Language and number format</string>
         </property>
         <layout class="QGridLayout">
          <property name="leftMargin">
@@ -59,7 +59,7 @@
          <item row="0" column="0">
           <widget class="QLabel" name="TextLabel1_4">
            <property name="text">
-            <string>Change language:</string>
+            <string>Language:</string>
            </property>
           </widget>
          </item>
@@ -71,13 +71,100 @@
           </widget>
          </item>
          <item row="1" column="0">
+          <widget class="QLabel" name="unitSystemLabel">
+           <property name="text">
+            <string>Unit system:</string>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="1">
+          <widget class="QComboBox" name="comboBox_UnitSystem">
+           <property name="toolTip">
+            <string>Unit system that should be used for all parts of the application</string>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="2">
+          <layout class="QHBoxLayout" name="horizontalLayout_3">
+           <item>
+            <widget class="QLabel" name="decimalsLabel">
+             <property name="text">
+              <string>Number of decimals:</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QSpinBox" name="spinBoxDecimals">
+             <property name="toolTip">
+              <string>Number of decimals that should be shown for numbers and dimensions</string>
+             </property>
+             <property name="minimum">
+              <number>1</number>
+             </property>
+             <property name="maximum">
+              <number>12</number>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+		 <item row="2" column="0">
+          <widget class="QLabel" name="fractionalInchLabel">
+           <property name="text">
+            <string>Minimum fractional inch:</string>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="1">
+          <widget class="QComboBox" name="comboBox_FracInch">
+           <property name="toolTip">
+            <string>Minimum fractional inch to be displayed</string>
+           </property>
+           <item>
+            <property name="text">
+             <string notr="true">1/2"</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string notr="true">1/4"</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string notr="true">1/8"</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string notr="true">1/16"</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string notr="true">1/32"</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string notr="true">1/64"</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string notr="true">1/128"</string>
+            </property>
+           </item>
+          </widget>
+         </item>
+         <item row="3" column="0">
           <widget class="QLabel" name="TextLabel1_5">
            <property name="text">
             <string>Number format:</string>
            </property>
           </widget>
          </item>
-         <item row="1" column="1">
+         <item row="3" column="1">
           <widget class="Gui::PrefComboBox" name="UseLocaleFormatting">
            <property name="prefEntry" stdset="0">
             <cstring>UseLocaleFormatting</cstring>
@@ -102,7 +189,7 @@
            </item>
           </widget>
          </item>
-         <item row="1" column="2">
+         <item row="3" column="2">
           <widget class="Gui::PrefCheckBox" name="SubstituteDecimal">
            <property name="toolTip">
             <string>If enabled, numerical keypad decimal separator
@@ -508,43 +595,6 @@ this according to your screen size or personal taste</string>
            </item>
           </layout>
          </item>
-         <item>
-          <layout class="QHBoxLayout">
-           <property name="spacing">
-            <number>6</number>
-           </property>
-           <property name="leftMargin">
-            <number>0</number>
-           </property>
-           <property name="topMargin">
-            <number>0</number>
-           </property>
-           <property name="rightMargin">
-            <number>0</number>
-           </property>
-           <property name="bottomMargin">
-            <number>0</number>
-           </property>
-           <item>
-            <widget class="QLabel" name="WorkbenchSelectorPositionLabel">
-             <property name="text">
-              <string>Workbench selector position :</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QComboBox" name="WorkbenchSelectorPosition">
-             <property name="toolTip">
-              <string>Customize where the workbench selector appears (restart required).
-
-'Toolbar': In the toolbars, as a movable toolbar.
-'Left Corner': In the menu bar, on the left corner.
-'Right Corner': In the menu bar, on the right corner.</string>
-             </property>
-            </widget>
-           </item>
-          </layout>
-         </item>
         </layout>
        </widget>
       </item>
@@ -570,40 +620,6 @@ this according to your screen size or personal taste</string>
           <number>6</number>
          </property>
          <item row="0" column="0">
-          <layout class="QGridLayout">
-           <property name="leftMargin">
-            <number>0</number>
-           </property>
-           <property name="topMargin">
-            <number>0</number>
-           </property>
-           <property name="rightMargin">
-            <number>0</number>
-           </property>
-           <property name="bottomMargin">
-            <number>0</number>
-           </property>
-           <property name="spacing">
-            <number>6</number>
-           </property>
-           <item row="0" column="0">
-            <widget class="QLabel" name="autoModuleLabel">
-             <property name="text">
-              <string>Auto load module after start up:</string>
-             </property>
-            </widget>
-           </item>
-           <item row="0" column="1">
-            <widget class="QComboBox" name="AutoloadModuleCombo">
-             <property name="toolTip">
-              <string>Choose which workbench will be activated and shown
-after FreeCAD launches</string>
-             </property>
-            </widget>
-           </item>
-          </layout>
-         </item>
-         <item row="2" column="0">
           <widget class="Gui::PrefCheckBox" name="SplashScreen">
            <property name="toolTip">
             <string>A Splash screen is a small loading window that is shown

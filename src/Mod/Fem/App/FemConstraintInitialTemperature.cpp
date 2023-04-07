@@ -34,12 +34,16 @@ PROPERTY_SOURCE(Fem::ConstraintInitialTemperature, Fem::Constraint)
 
 ConstraintInitialTemperature::ConstraintInitialTemperature()
 {
-    ADD_PROPERTY(initialTemperature,(300.0));
+    ADD_PROPERTY(initialTemperature, (300.0));
 
-    ADD_PROPERTY_TYPE(Points,(Base::Vector3d()),"ConstraintInitialTemperature",App::PropertyType(App::Prop_ReadOnly|App::Prop_Output),
+    ADD_PROPERTY_TYPE(Points, (Base::Vector3d()),
+                      "ConstraintInitialTemperature",
+                      App::PropertyType(App::Prop_ReadOnly | App::Prop_Output),
                       "Points where symbols are drawn");
-    ADD_PROPERTY_TYPE(Normals,(Base::Vector3d()),"ConstraintInitialTemperature",App::PropertyType(App::Prop_ReadOnly|App::Prop_Output),
-                                                                             "Normals where symbols are drawn");
+    ADD_PROPERTY_TYPE(Normals, (Base::Vector3d()),
+                      "ConstraintInitialTemperature",
+                      App::PropertyType(App::Prop_ReadOnly | App::Prop_Output),
+                      "Normals where symbols are drawn");
     Points.setValues(std::vector<Base::Vector3d>());
     Normals.setValues(std::vector<Base::Vector3d>());
 
@@ -55,6 +59,19 @@ App::DocumentObjectExecReturn *ConstraintInitialTemperature::execute()
 const char* ConstraintInitialTemperature::getViewProviderName() const
 {
     return "FemGui::ViewProviderFemConstraintInitialTemperature";
+}
+
+void ConstraintInitialTemperature::handleChangedPropertyType(Base::XMLReader& reader,
+                                                             const char* TypeName,
+                                                             App::Property* prop)
+{
+    // property initialTemperature had App::PropertyFloat, was changed to App::PropertyTemperature
+    if (prop == &initialTemperature && strcmp(TypeName, "App::PropertyFloat") == 0) {
+        App::PropertyFloat initialTemperatureProperty;
+        // restore the PropertyFloat to be able to set its value
+        initialTemperatureProperty.Restore(reader);
+        initialTemperature.setValue(initialTemperatureProperty.getValue());
+    }
 }
 
 void ConstraintInitialTemperature::onChanged(const App::Property* prop)

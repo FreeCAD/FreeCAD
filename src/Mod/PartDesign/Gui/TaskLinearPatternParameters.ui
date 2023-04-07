@@ -143,6 +143,17 @@
    <container>1</container>
   </customwidget>
  </customwidgets>
+ <tabstops>
+  <tabstop>buttonAddFeature</tabstop>
+  <tabstop>buttonRemoveFeature</tabstop>
+  <tabstop>listWidgetFeatures</tabstop>
+  <tabstop>comboDirection</tabstop>
+  <tabstop>checkReverse</tabstop>
+  <tabstop>spinLength</tabstop>
+  <tabstop>spinOccurrences</tabstop>
+  <tabstop>buttonOK</tabstop>
+  <tabstop>checkBoxUpdateView</tabstop>
+ </tabstops>
  <resources/>
  <connections>
   <connection>

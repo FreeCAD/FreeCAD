@@ -224,7 +224,7 @@ class OpsDefaultEditor:
         self.ops = sorted(
             [
                 OpTaskPanel(self.obj, name, op)
-                for name, op in PathUtil.keyValueIter(PathSetupSheet._RegisteredOps)
+                for name, op in PathSetupSheet._RegisteredOps.items()
             ],
             key=lambda op: op.name,
         )

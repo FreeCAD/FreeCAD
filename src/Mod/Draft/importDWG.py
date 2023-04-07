@@ -222,7 +222,9 @@ def convertToDxf(dwgfilename):
                 FCC.PrintMessage(translate("draft", "Conversion successful") + "\n")
                 return result
             else:
-                FCC.PrintError(translate("draft","Error during DWG conversion. Try moving the DWG file to a directory path without spaces and non-english characters, or try saving to a lower DWG version.") + "\n")
+                FCC.PrintError(translate("draft","""Error during DWG conversion.
+Try moving the DWG file to a directory path without spaces and non-english characters,
+or try saving to a lower DWG version.""") + "\n")
         else:
             if conv != 0:
                     FCC.PrintError(translate("draft", "ODA File Converter not found") + "\n")
@@ -302,6 +304,9 @@ def convertToDwg(dxffilename, dwgfilename):
             proc.communicate()
             return dwgfilename
         except Exception:
-            FCC.PrintError(translate("draft", "QCAD error") + "\n")
-
+            if conv != 0:
+                FCC.PrintError(translate("draft", "QCAD error") + "\n")
+            else:
+                FCC.PrintError(translate("draft", """No suitable DWG converter has been found.
+Please set one manually under menu Edit -> Preferences -> Import/Export -> DWG""") + "\n")
     return None

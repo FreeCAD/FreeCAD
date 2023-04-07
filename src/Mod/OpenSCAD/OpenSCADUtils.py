@@ -153,9 +153,9 @@ def callopenscad(inputfilename,outputfilename=None, outputext='csg', keepname=Fa
             raise OpenSCADError('%s %s\n' % (stdoutd.strip(),stderrd.strip()))
             #raise Exception,'stdout %s\n stderr%s' %(stdoutd,stderrd)
         if stderrd.strip():
-            FreeCAD.Console.PrintWarning(stderrd+u'\n')
+            FreeCAD.Console.PrintWarning(stderrd + '\n')
         if stdoutd.strip():
-            FreeCAD.Console.PrintMessage(stdoutd+u'\n')
+            FreeCAD.Console.PrintMessage(stdoutd + '\n')
             return stdoutd
 
     preferences = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/OpenSCAD")
@@ -651,7 +651,7 @@ def process_ObjectsViaOpenSCADShape(doc, children, name, maxmeshpoints=None):
         return process3D_ObjectsViaOpenSCADShape(children,name,maxmeshpoints)
     else:
         FreeCAD.Console.PrintError( translate('OpenSCAD',\
-            "OpenSCAD file contains both 2D and 3D shapes. That is not supported in this importer, all shapes must have the same dimensionality.")+u'\n')
+            "OpenSCAD file contains both 2D and 3D shapes. That is not supported in this importer, all shapes must have the same dimensionality.")+'\n')
 
 def process_ObjectsViaOpenSCAD(doc,children,name):
     if all((not obj.Shape.isNull() and obj.Shape.Volume == 0) \
@@ -662,7 +662,7 @@ def process_ObjectsViaOpenSCAD(doc,children,name):
         return process3D_ObjectsViaOpenSCAD(doc,children,name)
     else:
         FreeCAD.Console.PrintError( translate('OpenSCAD',\
-            "Error: either all shapes must be 2D or all shapes must be 3D")+u'\n')
+            "Error: either all shapes must be 2D or all shapes must be 3D") + '\n')
 
 
 def removesubtree(objs):

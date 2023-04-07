@@ -74,14 +74,14 @@ class Template:
 def _traverseTemplateAttributes(attrs, codec):
     Path.Log.debug(attrs)
     coded = {}
-    for key, value in PathUtil.keyValueIter(attrs):
+    for key, value in attrs.items():
         if type(value) == dict:
             Path.Log.debug("%s is a dict" % key)
             coded[key] = _traverseTemplateAttributes(value, codec)
         elif type(value) == list:
             Path.Log.debug("%s is a list" % key)
             coded[key] = [_traverseTemplateAttributes(attr, codec) for attr in value]
-        elif PathUtil.isString(value):
+        elif isinstance(value, str):
             Path.Log.debug("%s is a string" % key)
             coded[key] = codec(value)
         else:
@@ -276,7 +276,7 @@ class SetupSheet:
             if attrs.get(name) is not None:
                 setattr(self.obj, name, attrs[name])
 
-        for opName, op in PathUtil.keyValueIter(_RegisteredOps):
+        for opName, op in _RegisteredOps.items():
             opSetting = attrs.get(opName)
             if opSetting is not None:
                 prototype = op.prototype(opName)
@@ -364,13 +364,13 @@ class SetupSheet:
 
     def encodeAttributeString(self, attr):
         """encodeAttributeString(attr) ... return the encoded string of a template attribute."""
-        return PathUtil.toUnicode(
+        return str(
             attr.replace(self.expressionReference(), self.TemplateReference)
         )
 
     def decodeAttributeString(self, attr):
         """decodeAttributeString(attr) ... return the decoded string of a template attribute."""
-        return PathUtil.toUnicode(
+        return str(
             attr.replace(self.TemplateReference, self.expressionReference())
         )
 
@@ -385,7 +385,7 @@ class SetupSheet:
     def operationsWithSettings(self):
         """operationsWithSettings() ... returns a list of operations which currently have some settings defined."""
         ops = []
-        for name, value in PathUtil.keyValueIter(_RegisteredOps):
+        for name, value in _RegisteredOps.items():
             for prop in value.registeredPropertyNames(name):
                 if hasattr(self.obj, prop):
                     ops.append(name)

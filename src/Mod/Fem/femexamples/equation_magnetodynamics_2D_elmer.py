@@ -23,8 +23,6 @@
 
 import sys
 import FreeCAD
-from FreeCAD import Placement
-from FreeCAD import Rotation
 from FreeCAD import Vector
 
 import Draft
@@ -35,6 +33,7 @@ from BOPTools import SplitFeatures
 from . import manager
 from .manager import get_meshname
 from .manager import init_doc
+
 
 def get_information():
     return {
@@ -47,6 +46,7 @@ def get_information():
         "equations": ["electromagnetic"]
     }
 
+
 def get_explanation(header=""):
     return header + """
 
@@ -57,6 +57,7 @@ setup()
 Magnetodynamic2D equation - Elmer solver
 
 """
+
 
 def setup(doc=None, solvertype="elmer"):
 
@@ -115,7 +116,7 @@ def setup(doc=None, solvertype="elmer"):
     Powder.ViewObject.Visibility = False
 
     # a half circle defining later the air volume
-    Air_Circle =Part.makeCircle(
+    Air_Circle = Part.makeCircle(
         140.0, Vector(0.0, 60.0, 0.0), Vector(0.0, 0.0, 1.0), -90.0, 90.0)
     Air_Line = Part.makeLine((0.0, -80.0, 0.0), (0.0, 200.0, 0.0))
     Air_Area = doc.addObject("Part::Feature", "Air_Area")

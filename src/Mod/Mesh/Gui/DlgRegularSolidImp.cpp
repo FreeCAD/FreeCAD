@@ -49,6 +49,8 @@ DlgRegularSolidImp::DlgRegularSolidImp(QWidget* parent, Qt::WindowFlags fl)
   , ui(new Ui_DlgRegularSolid)
 {
     ui->setupUi(this);
+    connect(ui->createSolidButton, &QPushButton::clicked,
+            this, &DlgRegularSolidImp::onCreateSolidButtonClicked);
     Gui::Command::doCommand(Gui::Command::Doc, "import Mesh,BuildRegularGeoms");
 
     // set limits
@@ -114,7 +116,7 @@ void DlgRegularSolidImp::changeEvent(QEvent *e)
 /**
  * Builds a mesh solid from the currently active solid type.
  */
-void DlgRegularSolidImp::on_createSolidButton_clicked()
+void DlgRegularSolidImp::onCreateSolidButtonClicked()
 {
     try {
         Gui::WaitCursor wc;

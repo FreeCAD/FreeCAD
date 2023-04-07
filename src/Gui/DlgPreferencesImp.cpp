@@ -1,24 +1,26 @@
-/***************************************************************************
- *   Copyright (c) 2002 Jürgen Riegel <juergen.riegel@web.de>              *
- *                                                                         *
- *   This file is part of the FreeCAD CAx development system.              *
- *                                                                         *
- *   This library is free software; you can redistribute it and/or         *
- *   modify it under the terms of the GNU Library General Public           *
- *   License as published by the Free Software Foundation; either          *
- *   version 2 of the License, or (at your option) any later version.      *
- *                                                                         *
- *   This library  is distributed in the hope that it will be useful,      *
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
- *   GNU Library General Public License for more details.                  *
- *                                                                         *
- *   You should have received a copy of the GNU Library General Public     *
- *   License along with this library; see the file COPYING.LIB. If not,    *
- *   write to the Free Software Foundation, Inc., 59 Temple Place,         *
- *   Suite 330, Boston, MA  02111-1307, USA                                *
- *                                                                         *
- ***************************************************************************/
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
+ /****************************************************************************
+  *   Copyright (c) 2002 Jürgen Riegel <juergen.riegel@web.de>               *
+  *   Copyright (c) 2023 FreeCAD Project Association                         *
+  *                                                                          *
+  *   This file is part of FreeCAD.                                          *
+  *                                                                          *
+  *   FreeCAD is free software: you can redistribute it and/or modify it     *
+  *   under the terms of the GNU Lesser General Public License as            *
+  *   published by the Free Software Foundation, either version 2.1 of the   *
+  *   License, or (at your option) any later version.                        *
+  *                                                                          *
+  *   FreeCAD is distributed in the hope that it will be useful, but         *
+  *   WITHOUT ANY WARRANTY; without even the implied warranty of             *
+  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU       *
+  *   Lesser General Public License for more details.                        *
+  *                                                                          *
+  *   You should have received a copy of the GNU Lesser General Public       *
+  *   License along with FreeCAD. If not, see                                *
+  *   <https://www.gnu.org/licenses/>.                                       *
+  *                                                                          *
+  ***************************************************************************/
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
@@ -32,6 +34,8 @@
 # include <QScreen>
 # include <QScrollArea>
 # include <QScrollBar>
+# include <QTimer>
+# include <QProcess>
 #endif
 
 #include <App/Application.h>
@@ -67,7 +71,7 @@ DlgPreferencesImp* DlgPreferencesImp::_activeDialog = nullptr;
  */
 DlgPreferencesImp::DlgPreferencesImp(QWidget* parent, Qt::WindowFlags fl)
     : QDialog(parent, fl), ui(new Ui_DlgPreferences),
-      invalidParameter(false), canEmbedScrollArea(true)
+      invalidParameter(false), canEmbedScrollArea(true), restartRequired(false)
 {
     ui->setupUi(this);
     QFontMetrics fm(font());
@@ -305,10 +309,27 @@ void DlgPreferencesImp::activateGroupPage(const QString& group, int index)
         QListWidgetItem* item = ui->listBox->item(i);
         if (item->data(GroupNameRole).toString() == group) {
             ui->listBox->setCurrentItem(item);
-            auto tabWidget = static_cast<QTabWidget*>(ui->tabWidgetStack->widget(i));
-            tabWidget->setCurrentIndex(index);
-            break;
+            auto tabWidget = dynamic_cast<QTabWidget*>(ui->tabWidgetStack->widget(i));
+            if (tabWidget) {
+                tabWidget->setCurrentIndex(index);
+                break;
+            }
         }
+    }
+}
+
+/**
+ * Returns the group name \a group and position \a index of the active page.
+ */
+void DlgPreferencesImp::activeGroupPage(QString& group, int& index) const
+{
+    int row = ui->listBox->currentRow();
+    auto item = ui->listBox->item(row);
+    auto tabWidget = dynamic_cast<QTabWidget*>(ui->tabWidgetStack->widget(row));
+
+    if (item && tabWidget) {
+        group = item->data(GroupNameRole).toString();
+        index = tabWidget->currentIndex();
     }
 }
 
@@ -316,8 +337,16 @@ void DlgPreferencesImp::accept()
 {
     this->invalidParameter = false;
     applyChanges();
-    if (!this->invalidParameter)
+    if (!this->invalidParameter) {
         QDialog::accept();
+        restartIfRequired();
+    }
+}
+
+void DlgPreferencesImp::reject()
+{
+    QDialog::reject();
+    restartIfRequired();
 }
 
 void DlgPreferencesImp::onButtonBoxClicked(QAbstractButton* btn)
@@ -441,8 +470,10 @@ void DlgPreferencesImp::applyChanges()
         auto tabWidget = static_cast<QTabWidget*>(ui->tabWidgetStack->widget(i));
         for (int j=0; j<tabWidget->count(); j++) {
             auto page = qobject_cast<PreferencePage*>(tabWidget->widget(j));
-            if (page)
+            if (page) {
                 page->saveSettings();
+                restartRequired = restartRequired || page->isRestartRequired();
+            }
         }
     }
 
@@ -451,6 +482,35 @@ void DlgPreferencesImp::applyChanges()
     if (saveParameter) {
         ParameterManager* parmgr = App::GetApplication().GetParameterSet("User parameter");
         parmgr->SaveDocument(App::Application::Config()["UserParameter"].c_str());
+    }
+}
+
+void DlgPreferencesImp::restartIfRequired()
+{
+    if (restartRequired) {
+        QMessageBox* restartBox = new QMessageBox();
+        restartBox->setIcon(QMessageBox::Warning);
+        restartBox->setWindowTitle(tr("Restart required"));
+        restartBox->setText(tr("You must restart FreeCAD for changes to take effect."));
+        restartBox->setStandardButtons(QMessageBox::Ok | QMessageBox::Cancel);
+        restartBox->setDefaultButton(QMessageBox::Cancel);
+        auto okBtn = restartBox->button(QMessageBox::Ok);
+        auto cancelBtn = restartBox->button(QMessageBox::Cancel);
+        okBtn->setText(tr("Restart now"));
+        cancelBtn->setText(tr("Restart later"));
+
+        int exec = restartBox->exec();
+
+        if (exec == QMessageBox::Ok) {
+            //restart FreeCAD after a delay to give time to this dialog to close
+            QTimer::singleShot(1000, []() 
+            {
+                QStringList args = QApplication::arguments();
+                args.pop_front();
+                if (getMainWindow()->close())
+                    QProcess::startDetached(QApplication::applicationFilePath(), args);
+            });
+        }
     }
 }
 

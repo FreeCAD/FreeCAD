@@ -243,6 +243,8 @@ AboutDialog::AboutDialog(bool showLic, QWidget* parent)
 
     setModal(true);
     ui->setupUi(this);
+    connect(ui->copyButton, &QPushButton::clicked,
+            this, &AboutDialog::copyToClipboard);
 
     // remove the automatic help button in dialog title since we don't use it
     setWindowFlag(Qt::WindowContextHelpButtonHint, false);
@@ -718,7 +720,7 @@ void AboutDialog::linkActivated(const QUrl& link)
     licenseView->setSource(link);
 }
 
-void AboutDialog::on_copyButton_clicked()
+void AboutDialog::copyToClipboard()
 {
     QString data;
     QTextStream str(&data);

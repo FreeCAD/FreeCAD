@@ -29,7 +29,7 @@
 # include <QMessageBox>
 #endif
 
-#include <Gui/Application.h>
+#include <App/Application.h>
 
 #include "DlgSettingsFemCcxImp.h"
 #include "ui_DlgSettingsFemCcx.h"

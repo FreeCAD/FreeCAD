@@ -518,7 +518,7 @@ Each unit is approx. 0.1 mm wide</string>
         <item row="4" column="0">
          <widget class="Gui::PrefCheckBox" name="cbAutoCorrectRefs">
           <property name="toolTip">
-           <string>If checked, sytem will attempt to automatically correct dimension references when the model changes.</string>
+           <string>If checked, system will attempt to automatically correct dimension references when the model changes.</string>
           </property>
           <property name="statusTip">
            <string/>
@@ -527,7 +527,7 @@ Each unit is approx. 0.1 mm wide</string>
            <string>Auto Correct Dimension Refs</string>
           </property>
           <property name="checked">
-           <bool>false</bool>
+           <bool>true</bool>
           </property>
           <property name="prefEntry" stdset="0">
            <cstring>AutoCorrectRefs</cstring>

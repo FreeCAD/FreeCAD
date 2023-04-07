@@ -77,11 +77,12 @@ public:
     /// checks if the filter is currently met
     inline bool isSelectionValid() const {return Filter->match();}
 
-private Q_SLOTS:
-    void on_Remove_clicked(bool);
-    void on_Add_clicked(bool);
-    void on_Invert_clicked(bool);
-    void on_Help_clicked(bool);
+private:
+    void setupConnections();
+    void onRemoveClicked(bool);
+    void onAddClicked(bool);
+    void onInvertClicked(bool);
+    void onHelpClicked(bool);
 
 Q_SIGNALS:
     void emitSelectionFit();

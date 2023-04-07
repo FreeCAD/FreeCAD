@@ -107,20 +107,13 @@ void DrawLeaderLine::onChanged(const App::Property* prop)
 
 short DrawLeaderLine::mustExecute() const
 {
-    bool result = 0;
-    if (!isRestoring()) {
-        result =  (LeaderParent.isTouched());          //Property changed
-    }
-    if (result) {
-        return result;
+    if (!isRestoring() && LeaderParent.isTouched()) {
+        return true;  // Property changed
     }
 
     const App::DocumentObject* docObj = getBaseObject();
-    if (docObj) {
-        result = docObj->isTouched();                 //object property points to is touched
-    }
-    if (result) {
-        return result;
+    if (docObj && docObj->isTouched()) {
+        return true;  // Object property points to is touched
     }
 
     return DrawView::mustExecute();
@@ -139,35 +132,27 @@ App::DocumentObjectExecReturn *DrawLeaderLine::execute()
 
 DrawView* DrawLeaderLine::getBaseView() const
 {
-    DrawView* result = nullptr;
     App::DocumentObject* baseObj = LeaderParent.getValue();
-    if (baseObj) {
-        DrawView* cast = dynamic_cast<DrawView*>(baseObj);
-        if (cast) {
-            result = cast;
-        }
+    if (!baseObj) {
+        return nullptr;
     }
-    return result;
+
+    DrawView* cast = dynamic_cast<DrawView*>(baseObj);
+    return cast;
 }
 
 App::DocumentObject* DrawLeaderLine::getBaseObject() const
 {
-    App::DocumentObject* result = nullptr;
-    DrawView* view = getBaseView();
-    if (view) {
-        result = view;
-    }
-    return result;
+    return getBaseView();
 }
 
 bool DrawLeaderLine::keepUpdated()
 {
-    bool result = false;
     DrawView* view = getBaseView();
-    if (view) {
-        result = view->keepUpdated();
+    if (!view) {
+        return false;
     }
-    return result;
+    return view->keepUpdated();
 }
 
 //need separate getParentScale()???
@@ -175,33 +160,34 @@ bool DrawLeaderLine::keepUpdated()
 double DrawLeaderLine::getBaseScale() const
 {
 //    Base::Console().Message("DLL::getBaseScale()\n");
-    double result = 1.0;
     DrawView* parent = getBaseView();
-    if (parent) {
-        result = parent->getScale();
+    if (!parent) {
+        return 1.0;
     }
-    return result;
+    return parent->getScale();
 }
 
 double DrawLeaderLine::getScale() const
 {
 //    Base::Console().Message("DLL::getScale()\n");
-    double result = 1.0;
-    if (Scalable.getValue()) {
-        DrawView* parent = getBaseView();
-        if (parent) {
-            result = parent->getScale();
-        }
+    if (!Scalable.getValue()) {
+        return 1.0;
     }
-    return result;
+
+    DrawView* parent = getBaseView();
+    if (!parent) {
+        return 1.0;
+    }
+    return parent->getScale();
 }
 
 Base::Vector3d DrawLeaderLine::getAttachPoint()
 {
-    Base::Vector3d result(X.getValue(),
-                          Y.getValue(),
-                          0.0);
-    return result;
+    return Base::Vector3d(
+        X.getValue(),
+        Y.getValue(),
+        0.0
+    );
 }
 
 void DrawLeaderLine::adjustLastSegment()
@@ -209,15 +195,13 @@ void DrawLeaderLine::adjustLastSegment()
 //    Base::Console().Message("DLL::adjustLastSegment()\n");
     bool adjust = AutoHorizontal.getValue();
     std::vector<Base::Vector3d> wp = WayPoints.getValues();
-    if (adjust) {
-        if (wp.size() > 1) {
-            int iLast = wp.size() - 1;
-            int iPen  = wp.size() - 2;
-            Base::Vector3d last = wp.at(iLast);
-            Base::Vector3d penUlt = wp.at(iPen);
-            last.y = penUlt.y;
-            wp.at(iLast) = last;
-        }
+    if (adjust && wp.size() > 1) {
+        int iLast = wp.size() - 1;
+        int iPen  = wp.size() - 2;
+        Base::Vector3d last = wp.at(iLast);
+        Base::Vector3d penUlt = wp.at(iPen);
+        last.y = penUlt.y;
+        wp.at(iLast) = last;
     }
     WayPoints.setValues(wp);
 }
@@ -225,46 +209,39 @@ void DrawLeaderLine::adjustLastSegment()
 //middle of last line segment
 Base::Vector3d DrawLeaderLine::getTileOrigin() const
 {
-    Base::Vector3d result;
     std::vector<Base::Vector3d> wp = WayPoints.getValues();
     if (wp.size() > 1) {
         Base::Vector3d last = wp.rbegin()[0];
         Base::Vector3d second = wp.rbegin()[1];
-        result = (last + second) / 2.0;
-    } else {
-        Base::Console().Warning("DLL::getTileOrigin - no waypoints\n");
+        return (last + second) / 2.0;
     }
-    return result;
+    
+    Base::Console().Warning("DLL::getTileOrigin - no waypoints\n");
+    return Base::Vector3d();
 }
 
 //start of last line segment
 Base::Vector3d DrawLeaderLine::getKinkPoint() const
 {
-    Base::Vector3d result;
     std::vector<Base::Vector3d> wp = WayPoints.getValues();
     if (wp.size() > 1) {
-        Base::Vector3d second = wp.rbegin()[1];
-        result = second;
-    } else {
-        Base::Console().Warning("DLL::getKinkPoint - no waypoints\n");
+        return wp.rbegin()[1];  // Second
     }
 
-    return result;
+    Base::Console().Warning("DLL::getKinkPoint - no waypoints\n");
+    return Base::Vector3d();
 }
 
 //end of last line segment
 Base::Vector3d DrawLeaderLine::getTailPoint() const
 {
-    Base::Vector3d result;
     std::vector<Base::Vector3d> wp = WayPoints.getValues();
     if (!wp.empty()) {
-        Base::Vector3d last = wp.rbegin()[0];
-        result = last;
-    } else {
-        Base::Console().Warning("DLL::getTailPoint - no waypoints\n");
+        return wp.rbegin()[0];  // Last
     }
-
-    return result;
+    
+    Base::Console().Warning("DLL::getTailPoint - no waypoints\n");
+    return Base::Vector3d();
 }
 
 
@@ -272,8 +249,7 @@ bool DrawLeaderLine::getDefAuto() const
 {
     Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter().GetGroup("BaseApp")->
                                          GetGroup("Preferences")->GetGroup("Mod/TechDraw/LeaderLine");
-    bool result = hGrp->GetBool("AutoHorizontal", true);
-    return result;
+    return hGrp->GetBool("AutoHorizontal", true);
 }
 
 

@@ -23,6 +23,7 @@
 #ifndef GUI_NOTIFICATIONBOX_H
 #define GUI_NOTIFICATIONBOX_H
 
+#include <type_traits>
 
 namespace Gui
 {
@@ -48,22 +49,40 @@ class NotificationBox
     NotificationBox() = delete;
 
 public:
+    enum class Options
+    {
+        None = 0x0,
+        RestrictAreaToReference = 0x1,
+        OnlyIfReferenceActive = 0x2,
+        HideIfReferenceWidgetDeactivated = 0x4,
+    };
+
     /** Shows a non-intrusive notification.
      * @param pos Position at which the notification will be shown
+     * @param text Message to be shown
+     * @param referenceWidget If provided, will set the reference to calculate a restrictionarea
+     * (see below options) and to prevent notifications for being shown if not active.
      * @param displayTime Time after which the notification will auto-close (unless it is closed by
      * an event, see class documentation above)
      * @param minShowTime  Time during which the notification can only be made disappear by popping
      * it out (clicking inside it).
-     * @param restrictionarea Try to keep the NotificationBox within this area. If this area is not
-     * provided, the whole screen is used as restriction area. This are must be provided in global
-     * screen coordinates.
+     * @param options Different flag options:
+     *  - HideIfReferenceWidgetDeactivated - Hides a notification if the main window becomes
+     * inactive.
+     *  - RestrictAreaToReference - Try to keep the NotificationBox within the QRect of the
+     *  referenceWidget. if false or referenceWidget is nullptr, the whole screen is used as
+     *  restriction area.
+     *  - OnlyIfReferenceActive - Show only if the reference window is active.
+     *
      * @param width Fixes the width of the notification. Default value makes the width to be system
      * determined (dependent on the text). If a fixed width is provided it is enforced over the
      * restrictionarea.
+     *
+     * @return returns whether the notification was shown or not
      */
-    static void showText(const QPoint& pos, const QString& text, int displayTime = -1,
-                         unsigned int minShowTime = 0, const QRect& restrictionarea = {},
-                         int width = 0);
+    static bool showText(const QPoint& pos, const QString& text, QWidget* referenceWidget = nullptr,
+                         int displayTime = -1, unsigned int minShowTime = 0,
+                         Options options = Options::None, int width = 0);
     /// Hides a notification.
     static inline void hideText()
     {
@@ -83,6 +102,19 @@ public:
     static void setFont(const QFont&);
 };
 
+inline NotificationBox::Options operator|(NotificationBox::Options lhs,
+                                          NotificationBox::Options rhs)
+{
+    return static_cast<NotificationBox::Options>(
+        static_cast<std::underlying_type<NotificationBox::Options>::type>(lhs)
+        | static_cast<std::underlying_type<NotificationBox::Options>::type>(rhs));
+}
+
+inline bool operator&(NotificationBox::Options lhs, NotificationBox::Options rhs)
+{
+    return (static_cast<std::underlying_type<NotificationBox::Options>::type>(lhs)
+            & static_cast<std::underlying_type<NotificationBox::Options>::type>(rhs));
+}
 
 }// namespace Gui
 

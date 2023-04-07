@@ -58,10 +58,11 @@
 #include "GCS.h"
 #include "qp_eq.h"
 
-// NOTE: In CMakeList.txt -DEIGEN_NO_DEBUG is set (it does not work with a define here), to solve this:
-// this is needed to fix this SparseQR crash http://forum.freecadweb.org/viewtopic.php?f=10&t=11341&p=92146#p92146,
-// until Eigen library fixes its own problem with the assertion (definitely not solved in 3.2.0 branch)
-// NOTE2: solved in eigen3.3
+// NOTE: In CMakeList.txt -DEIGEN_NO_DEBUG is set (it does not work with a define here), to solve
+// this: this is needed to fix this SparseQR crash
+// http://forum.freecadweb.org/viewtopic.php?f=10&t=11341&p=92146#p92146, until Eigen library fixes
+// its own problem with the assertion (definitely not solved in 3.2.0 branch) NOTE2: solved in
+// eigen3.3
 
 
 
@@ -72,11 +73,11 @@
 #endif
 #endif
 
-#if EIGEN_VERSION > 30290   // This regulates that only starting in Eigen 3.3, the problem with
-                            // http://forum.freecadweb.org/viewtopic.php?f=3&t=4651&start=40
-                            // was solved in Eigen:
-                            // http://forum.freecadweb.org/viewtopic.php?f=10&t=12769&start=60#p106492
-                            // https://forum.kde.org/viewtopic.php?f=74&t=129439
+#if EIGEN_VERSION > 30290 // This regulates that only starting in Eigen 3.3, the problem with
+                          // http://forum.freecadweb.org/viewtopic.php?f=3&t=4651&start=40
+                          // was solved in Eigen:
+                          // http://forum.freecadweb.org/viewtopic.php?f=10&t=12769&start=60#p106492
+                          // https://forum.kde.org/viewtopic.php?f=74&t=129439
 #define EIGEN_STOCK_FULLPIVLU_COMPUTE
 #endif
 
@@ -92,7 +93,11 @@
 #if defined(_GCS_EXTRACT_SOLVER_SUBSYSTEM_) || defined(_DEBUG_TO_FILE)
 #include <fstream>
 
-#define CASE_NOT_IMP(X) case X: { subsystemfile << "//" #X "not yet implemented" << std::endl; break; }
+#define CASE_NOT_IMP(X)                                                                            \
+    case X: {                                                                                      \
+        subsystemfile << "//" #X "not yet implemented" << std::endl;                               \
+        break;                                                                                     \
+    }
 #endif
 
 #include <FCConfig.h>
@@ -122,57 +127,60 @@ namespace Eigen {
         // can't accumulate on-the-fly because that will be done in reverse order for the rows.
         m_rowsTranspositions.resize(matrix.rows());
         m_colsTranspositions.resize(matrix.cols());
-        Index number_of_transpositions = 0; // number of NONTRIVIAL transpositions, i.e. m_rowsTranspositions[i]!=i
+        Index number_of_transpositions =
+            0;// number of NONTRIVIAL transpositions, i.e. m_rowsTranspositions[i]!=i
 
-        m_nonzero_pivots = size; // the generic case is that in which all pivots are nonzero (invertible case)
+        m_nonzero_pivots =
+            size;// the generic case is that in which all pivots are nonzero (invertible case)
         m_maxpivot = RealScalar(0);
         RealScalar cutoff(0);
 
-        for(Index k = 0; k < size; ++k)
-        {
+        for (Index k = 0; k < size; ++k) {
             // First, we need to find the pivot.
 
             // biggest coefficient in the remaining bottom-right corner (starting at row k, col k)
             Index row_of_biggest_in_corner, col_of_biggest_in_corner;
             RealScalar biggest_in_corner;
-            biggest_in_corner = m_lu.bottomRightCorner(rows-k, cols-k)
-            .cwiseAbs()
-            .maxCoeff(&row_of_biggest_in_corner, &col_of_biggest_in_corner);
-            row_of_biggest_in_corner += k; // correct the values! since they were computed in the corner,
-            col_of_biggest_in_corner += k; // need to add k to them.
+            biggest_in_corner = m_lu.bottomRightCorner(rows - k, cols - k)
+                                    .cwiseAbs()
+                                    .maxCoeff(&row_of_biggest_in_corner, &col_of_biggest_in_corner);
+            row_of_biggest_in_corner +=
+                k;// correct the values! since they were computed in the corner,
+            col_of_biggest_in_corner += k;// need to add k to them.
 
-            // when k==0, biggest_in_corner is the biggest coeff absolute value in the original matrix
-            if(k == 0) cutoff = biggest_in_corner * NumTraits<Scalar>::epsilon();
+            // when k==0, biggest_in_corner is the biggest coeff absolute value in the original
+            // matrix
+            if (k == 0)
+                cutoff = biggest_in_corner * NumTraits<Scalar>::epsilon();
 
-            // if the pivot (hence the corner) is "zero", terminate to avoid generating nan/inf values.
-            // Notice that using an exact comparison (biggest_in_corner==0) here, as Golub-van Loan do in
-            // their pseudo-code, results in numerical instability! The cutoff here has been validated
-            // by running the unit test 'lu' with many repetitions.
-            if(biggest_in_corner < cutoff)
-            {
+            // if the pivot (hence the corner) is "zero", terminate to avoid generating nan/inf
+            // values. Notice that using an exact comparison (biggest_in_corner==0) here, as
+            // Golub-van Loan do in their pseudo-code, results in numerical instability! The cutoff
+            // here has been validated by running the unit test 'lu' with many repetitions.
+            if (biggest_in_corner < cutoff) {
                 // before exiting, make sure to initialize the still uninitialized transpositions
                 // in a sane state without destroying what we already have.
                 m_nonzero_pivots = k;
-                for(Index i = k; i < size; ++i)
-                {
+                for (Index i = k; i < size; ++i) {
                     m_rowsTranspositions.coeffRef(i) = i;
                     m_colsTranspositions.coeffRef(i) = i;
                 }
                 break;
             }
 
-            if(biggest_in_corner > m_maxpivot) m_maxpivot = biggest_in_corner;
+            if (biggest_in_corner > m_maxpivot)
+                m_maxpivot = biggest_in_corner;
 
             // Now that we've found the pivot, we need to apply the row/col swaps to
             // bring it to the location (k,k).
 
             m_rowsTranspositions.coeffRef(k) = row_of_biggest_in_corner;
             m_colsTranspositions.coeffRef(k) = col_of_biggest_in_corner;
-            if(k != row_of_biggest_in_corner) {
+            if (k != row_of_biggest_in_corner) {
                 m_lu.row(k).swap(m_lu.row(row_of_biggest_in_corner));
                 ++number_of_transpositions;
             }
-            if(k != col_of_biggest_in_corner) {
+            if (k != col_of_biggest_in_corner) {
                 m_lu.col(k).swap(m_lu.col(col_of_biggest_in_corner));
                 ++number_of_transpositions;
             }
@@ -180,10 +188,11 @@ namespace Eigen {
             // Now that the pivot is at the right location, we update the remaining
             // bottom-right corner by Gaussian elimination.
 
-            if(k<rows-1)
-                m_lu.col(k).tail(rows-k-1) /= m_lu.coeff(k,k);
-            if(k<size-1)
-                m_lu.block(k+1,k+1,rows-k-1,cols-k-1).noalias() -= m_lu.col(k).tail(rows-k-1) * m_lu.row(k).tail(cols-k-1);
+            if (k < rows - 1)
+                m_lu.col(k).tail(rows - k - 1) /= m_lu.coeff(k, k);
+            if (k < size - 1)
+                m_lu.block(k + 1, k + 1, rows - k - 1, cols - k - 1).noalias() -=
+                    m_lu.col(k).tail(rows - k - 1) * m_lu.row(k).tail(cols - k - 1);
         }
 
         // the main loop is over, we still have to accumulate the transpositions to find the
@@ -223,11 +232,14 @@ public:
 
     inline void LogToFile(const std::string& str);
 
-    void LogQRSystemInformation(const System &system, int paramsNum = 0, int constrNum = 0, int rank = 0);
+    void LogQRSystemInformation(const System& system, int paramsNum = 0, int constrNum = 0,
+                                int rank = 0);
 
-    void LogGroupOfConstraints(const std::string & str, std::vector< std::vector<Constraint *> > constraintgroups);
-    void LogSetOfConstraints(const std::string & str,  std::set<Constraint *> constraintset);
-    void LogGroupOfParameters(const std::string & str, std::vector< std::vector<double *> > parametergroups);
+    void LogGroupOfConstraints(const std::string& str,
+                               std::vector<std::vector<Constraint*>> constraintgroups);
+    void LogSetOfConstraints(const std::string& str, std::set<Constraint*> constraintset);
+    void LogGroupOfParameters(const std::string& str,
+                              std::vector<std::vector<double*>> parametergroups);
 
     void LogMatrix(const std::string str, Eigen::MatrixXd matrix);
     void LogMatrix(const std::string str, MatrixIndexType matrix);
@@ -311,54 +323,53 @@ void SolverReportingManager::LogString(const std::string& str)
     #endif
 }
 
-void SolverReportingManager::LogQRSystemInformation(const System &system, int paramsNum, int constrNum, int rank)
+void SolverReportingManager::LogQRSystemInformation(const System& system, int paramsNum,
+                                                    int constrNum, int rank)
 {
 
     std::stringstream tempstream;
 
-    tempstream  << (system.qrAlgorithm==EigenSparseQR?"EigenSparseQR":(system.qrAlgorithm==EigenDenseQR?"DenseQR":""));
+    tempstream << (system.qrAlgorithm == EigenSparseQR
+                       ? "EigenSparseQR"
+                       : (system.qrAlgorithm == EigenDenseQR ? "DenseQR" : ""));
 
     if (paramsNum > 0) {
         tempstream
-        #ifdef EIGEN_SPARSEQR_COMPATIBLE
-        << ", Threads: " << Eigen::nbThreads()
-        #endif
-        #ifdef EIGEN_VECTORIZE
-        << ", Vectorization: On"
-        #endif
-        << ", Pivot Threshold: " << system.qrpivotThreshold
-        << ", Params: " << paramsNum
-        << ", Constr: " << constrNum
-        << ", Rank: "   << rank
-        << std::endl;
+#ifdef EIGEN_SPARSEQR_COMPATIBLE
+            << ", Threads: " << Eigen::nbThreads()
+#endif
+#ifdef EIGEN_VECTORIZE
+            << ", Vectorization: On"
+#endif
+            << ", Pivot Threshold: " << system.qrpivotThreshold << ", Params: " << paramsNum
+            << ", Constr: " << constrNum << ", Rank: " << rank << std::endl;
     }
     else {
         tempstream
-        #ifdef EIGEN_SPARSEQR_COMPATIBLE
-        << ", Threads: " << Eigen::nbThreads()
-        #endif
-        #ifdef EIGEN_VECTORIZE
-        << ", Vectorization: On"
-        #endif
-        << ", Empty Sketch, nothing to solve"
-        << std::endl;
+#ifdef EIGEN_SPARSEQR_COMPATIBLE
+            << ", Threads: " << Eigen::nbThreads()
+#endif
+#ifdef EIGEN_VECTORIZE
+            << ", Vectorization: On"
+#endif
+            << ", Empty Sketch, nothing to solve" << std::endl;
     }
 
     LogString(tempstream.str());
-
 }
 
-void SolverReportingManager::LogGroupOfConstraints(const std::string & str, std::vector< std::vector<Constraint *> > constraintgroups)
+void SolverReportingManager::LogGroupOfConstraints(
+    const std::string& str, std::vector<std::vector<Constraint*>> constraintgroups)
 {
     std::stringstream tempstream;
 
     tempstream << str << ":" << '\n';
 
-    for(const auto& group : constraintgroups)  {
+    for (const auto& group : constraintgroups) {
         tempstream << "[";
 
-        for(auto c :group)
-            tempstream << c->getTag() << " ";
+        for (auto c : group)
+                tempstream << c->getTag() << " ";
 
         tempstream << "]" << '\n';
     }
@@ -366,13 +377,14 @@ void SolverReportingManager::LogGroupOfConstraints(const std::string & str, std:
     LogString(tempstream.str());
 }
 
-void SolverReportingManager::LogSetOfConstraints(const std::string & str,  std::set<Constraint *> constraintset)
+void SolverReportingManager::LogSetOfConstraints(const std::string& str,
+                                                 std::set<Constraint*> constraintset)
 {
     std::stringstream tempstream;
 
     tempstream << str << ": [";
 
-    for(auto c : constraintset)
+    for (auto c : constraintset)
         tempstream << c->getTag() << " ";
 
     tempstream << "]" << '\n';
@@ -380,17 +392,18 @@ void SolverReportingManager::LogSetOfConstraints(const std::string & str,  std::
     LogString(tempstream.str());
 }
 
-void SolverReportingManager::LogGroupOfParameters(const std::string & str, std::vector< std::vector<double *> > parametergroups)
+void SolverReportingManager::LogGroupOfParameters(const std::string& str,
+                                                  std::vector<std::vector<double*>> parametergroups)
 {
     std::stringstream tempstream;
 
     tempstream << str << ":" << '\n';
 
-    for(size_t i = 0; i < parametergroups.size(); i++)  {
+    for (size_t i = 0; i < parametergroups.size(); i++) {
         tempstream << "[";
 
-        for(auto p : parametergroups[i])
-            tempstream << std::hex << p << " ";
+        for (auto p : parametergroups[i])
+                tempstream << std::hex << p << " ";
 
         tempstream << "]" << '\n';
     }
@@ -638,25 +651,25 @@ void System::removeConstraint(Constraint *constr)
     }
     c2p.erase(constr);
 
-    std::vector<Constraint *> constrvec;
-    constrvec.push_back(constr);
-    free(constrvec);
+    delete(constr);
 }
 
 // basic constraints
 
-int System::addConstraintEqual(double *param1, double *param2, int tagId, bool driving, Constraint::Alignment internalalignment)
+int System::addConstraintEqual(double* param1, double* param2, int tagId, bool driving,
+                               Constraint::Alignment internalalignment)
 {
-    Constraint *constr = new ConstraintEqual(param1, param2);
+    Constraint* constr = new ConstraintEqual(param1, param2);
     constr->setTag(tagId);
     constr->setDriving(driving);
     constr->setInternalAlignment(internalalignment);
     return addConstraint(constr);
 }
 
-int System::addConstraintProportional(double *param1, double *param2, double ratio, int tagId, bool driving)
+int System::addConstraintProportional(double* param1, double* param2, double ratio, int tagId,
+                                      bool driving)
 {
-    Constraint *constr = new ConstraintEqual(param1, param2, ratio);
+    Constraint* constr = new ConstraintEqual(param1, param2, ratio);
     constr->setTag(tagId);
     constr->setDriving(driving);
     return addConstraint(constr);
@@ -671,9 +684,10 @@ int System::addConstraintDifference(double *param1, double *param2,
     return addConstraint(constr);
 }
 
-int System::addConstraintP2PDistance(Point &p1, Point &p2, double *distance, int tagId, bool driving)
+int System::addConstraintP2PDistance(Point& p1, Point& p2, double* distance, int tagId,
+                                     bool driving)
 {
-    Constraint *constr = new ConstraintP2PDistance(p1, p2, distance);
+    Constraint* constr = new ConstraintP2PDistance(p1, p2, distance);
     constr->setTag(tagId);
     constr->setDriving(driving);
     return addConstraint(constr);
@@ -1147,35 +1161,40 @@ int System::addConstraintSnellsLaw(Curve &ray1, Curve &ray2,
     return addConstraint(constr);
 }
 
-int System::addConstraintInternalAlignmentPoint2Ellipse(Ellipse &e, Point &p1, InternalAlignmentType alignmentType, int tagId, bool driving)
+int System::addConstraintInternalAlignmentPoint2Ellipse(Ellipse& e, Point& p1,
+                                                        InternalAlignmentType alignmentType,
+                                                        int tagId, bool driving)
 {
-    Constraint *constr = new ConstraintInternalAlignmentPoint2Ellipse(e, p1, alignmentType);
+    Constraint* constr = new ConstraintInternalAlignmentPoint2Ellipse(e, p1, alignmentType);
     constr->setTag(tagId);
     constr->setDriving(driving);
     constr->setInternalAlignment(Constraint::Alignment::InternalAlignment);
     return addConstraint(constr);
 }
 
-int System::addConstraintInternalAlignmentPoint2Hyperbola(Hyperbola &e, Point &p1, InternalAlignmentType alignmentType, int tagId, bool driving)
+int System::addConstraintInternalAlignmentPoint2Hyperbola(Hyperbola& e, Point& p1,
+                                                          InternalAlignmentType alignmentType,
+                                                          int tagId, bool driving)
 {
-    Constraint *constr = new ConstraintInternalAlignmentPoint2Hyperbola(e, p1, alignmentType);
+    Constraint* constr = new ConstraintInternalAlignmentPoint2Hyperbola(e, p1, alignmentType);
     constr->setTag(tagId);
     constr->setDriving(driving);
     constr->setInternalAlignment(Constraint::Alignment::InternalAlignment);
     return addConstraint(constr);
 }
 
-int System::addConstraintInternalAlignmentEllipseMajorDiameter(Ellipse &e, Point &p1, Point &p2, int tagId, bool driving)
+int System::addConstraintInternalAlignmentEllipseMajorDiameter(Ellipse& e, Point& p1, Point& p2,
+                                                               int tagId, bool driving)
 {
-    double X_1=*p1.x;
-    double Y_1=*p1.y;
-    double X_2=*p2.x;
-    double Y_2=*p2.y;
-    double X_c=*e.center.x;
-    double Y_c=*e.center.y;
-    double X_F1=*e.focus1.x;
-    double Y_F1=*e.focus1.y;
-    double b=*e.radmin;
+    double X_1 = *p1.x;
+    double Y_1 = *p1.y;
+    double X_2 = *p2.x;
+    double Y_2 = *p2.y;
+    double X_c = *e.center.x;
+    double Y_c = *e.center.y;
+    double X_F1 = *e.focus1.x;
+    double Y_F1 = *e.focus1.y;
+    double b = *e.radmin;
 
     // P1=vector([X_1,Y_1])
     // P2=vector([X_2,Y_2])
@@ -1183,89 +1202,108 @@ int System::addConstraintInternalAlignmentEllipseMajorDiameter(Ellipse &e, Point
     // print "these are the extreme points of the major axis"
     // PA = C + a * dF1
     // PN = C - a * dF1
-    // print "this is a simple function to know which point is closer to the positive edge of the ellipse"
-    // DMC=(P1-PA)*(P1-PA)-(P2-PA)*(P2-PA)
-    double closertopositivemajor=pow(X_1 - X_c - (X_F1 - X_c)*sqrt(pow(b, 2) + pow(X_F1 - X_c,
-        2) + pow(Y_F1 - Y_c, 2))/sqrt(pow(X_F1 - X_c, 2) + pow(Y_F1 - Y_c, 2)),
-        2) - pow(X_2 - X_c - (X_F1 - X_c)*sqrt(pow(b, 2) + pow(X_F1 - X_c, 2) +
-        pow(Y_F1 - Y_c, 2))/sqrt(pow(X_F1 - X_c, 2) + pow(Y_F1 - Y_c, 2)), 2) +
-        pow(Y_1 - Y_c - (Y_F1 - Y_c)*sqrt(pow(b, 2) + pow(X_F1 - X_c, 2) +
-        pow(Y_F1 - Y_c, 2))/sqrt(pow(X_F1 - X_c, 2) + pow(Y_F1 - Y_c, 2)), 2) -
-        pow(Y_2 - Y_c - (Y_F1 - Y_c)*sqrt(pow(b, 2) + pow(X_F1 - X_c, 2) +
-        pow(Y_F1 - Y_c, 2))/sqrt(pow(X_F1 - X_c, 2) + pow(Y_F1 - Y_c, 2)), 2);
+    // print "this is a simple function to know which point is closer to the positive edge of the
+    // ellipse" DMC=(P1-PA)*(P1-PA)-(P2-PA)*(P2-PA)
+    double closertopositivemajor =
+        pow(X_1 - X_c
+                - (X_F1 - X_c) * sqrt(pow(b, 2) + pow(X_F1 - X_c, 2) + pow(Y_F1 - Y_c, 2))
+                    / sqrt(pow(X_F1 - X_c, 2) + pow(Y_F1 - Y_c, 2)),
+            2)
+        - pow(X_2 - X_c
+                  - (X_F1 - X_c) * sqrt(pow(b, 2) + pow(X_F1 - X_c, 2) + pow(Y_F1 - Y_c, 2))
+                      / sqrt(pow(X_F1 - X_c, 2) + pow(Y_F1 - Y_c, 2)),
+              2)
+        + pow(Y_1 - Y_c
+                  - (Y_F1 - Y_c) * sqrt(pow(b, 2) + pow(X_F1 - X_c, 2) + pow(Y_F1 - Y_c, 2))
+                      / sqrt(pow(X_F1 - X_c, 2) + pow(Y_F1 - Y_c, 2)),
+              2)
+        - pow(Y_2 - Y_c
+                  - (Y_F1 - Y_c) * sqrt(pow(b, 2) + pow(X_F1 - X_c, 2) + pow(Y_F1 - Y_c, 2))
+                      / sqrt(pow(X_F1 - X_c, 2) + pow(Y_F1 - Y_c, 2)),
+              2);
 
-    if(closertopositivemajor>0){
-        //p2 is closer to  positivemajor. Assign constraints back-to-front.
-        addConstraintInternalAlignmentPoint2Ellipse(e,p2,EllipsePositiveMajorX,tagId, driving);
-        addConstraintInternalAlignmentPoint2Ellipse(e,p2,EllipsePositiveMajorY,tagId, driving);
-        addConstraintInternalAlignmentPoint2Ellipse(e,p1,EllipseNegativeMajorX,tagId, driving);
-        return addConstraintInternalAlignmentPoint2Ellipse(e,p1,EllipseNegativeMajorY,tagId, driving);
+    if (closertopositivemajor > 0) {
+        // p2 is closer to  positivemajor. Assign constraints back-to-front.
+        addConstraintInternalAlignmentPoint2Ellipse(e, p2, EllipsePositiveMajorX, tagId, driving);
+        addConstraintInternalAlignmentPoint2Ellipse(e, p2, EllipsePositiveMajorY, tagId, driving);
+        addConstraintInternalAlignmentPoint2Ellipse(e, p1, EllipseNegativeMajorX, tagId, driving);
+        return addConstraintInternalAlignmentPoint2Ellipse(
+            e, p1, EllipseNegativeMajorY, tagId, driving);
     }
-    else{
-        //p1 is closer to  positivemajor
-        addConstraintInternalAlignmentPoint2Ellipse(e,p1,EllipsePositiveMajorX,tagId, driving);
-        addConstraintInternalAlignmentPoint2Ellipse(e,p1,EllipsePositiveMajorY,tagId, driving);
-        addConstraintInternalAlignmentPoint2Ellipse(e,p2,EllipseNegativeMajorX,tagId, driving);
-        return addConstraintInternalAlignmentPoint2Ellipse(e,p2,EllipseNegativeMajorY,tagId, driving);
+    else {
+        // p1 is closer to  positivemajor
+        addConstraintInternalAlignmentPoint2Ellipse(e, p1, EllipsePositiveMajorX, tagId, driving);
+        addConstraintInternalAlignmentPoint2Ellipse(e, p1, EllipsePositiveMajorY, tagId, driving);
+        addConstraintInternalAlignmentPoint2Ellipse(e, p2, EllipseNegativeMajorX, tagId, driving);
+        return addConstraintInternalAlignmentPoint2Ellipse(
+            e, p2, EllipseNegativeMajorY, tagId, driving);
     }
 }
 
-int System::addConstraintInternalAlignmentEllipseMinorDiameter(Ellipse &e, Point &p1, Point &p2, int tagId, bool driving)
+int System::addConstraintInternalAlignmentEllipseMinorDiameter(Ellipse& e, Point& p1, Point& p2,
+                                                               int tagId, bool driving)
 {
-    double X_1=*p1.x;
-    double Y_1=*p1.y;
-    double X_2=*p2.x;
-    double Y_2=*p2.y;
-    double X_c=*e.center.x;
-    double Y_c=*e.center.y;
-    double X_F1=*e.focus1.x;
-    double Y_F1=*e.focus1.y;
-    double b=*e.radmin;
+    double X_1 = *p1.x;
+    double Y_1 = *p1.y;
+    double X_2 = *p2.x;
+    double Y_2 = *p2.y;
+    double X_c = *e.center.x;
+    double Y_c = *e.center.y;
+    double X_F1 = *e.focus1.x;
+    double Y_F1 = *e.focus1.y;
+    double b = *e.radmin;
 
     // Same idea as for major above, but for minor
     // DMC=(P1-PA)*(P1-PA)-(P2-PA)*(P2-PA)
-    double closertopositiveminor= pow(X_1 - X_c + b*(Y_F1 - Y_c)/sqrt(pow(X_F1 - X_c, 2) +
-        pow(Y_F1 - Y_c, 2)), 2) - pow(X_2 - X_c + b*(Y_F1 - Y_c)/sqrt(pow(X_F1 -
-        X_c, 2) + pow(Y_F1 - Y_c, 2)), 2) + pow(-Y_1 + Y_c + b*(X_F1 -
-        X_c)/sqrt(pow(X_F1 - X_c, 2) + pow(Y_F1 - Y_c, 2)), 2) - pow(-Y_2 + Y_c
-        + b*(X_F1 - X_c)/sqrt(pow(X_F1 - X_c, 2) + pow(Y_F1 - Y_c, 2)), 2);
+    double closertopositiveminor =
+        pow(X_1 - X_c + b * (Y_F1 - Y_c) / sqrt(pow(X_F1 - X_c, 2) + pow(Y_F1 - Y_c, 2)), 2)
+        - pow(X_2 - X_c + b * (Y_F1 - Y_c) / sqrt(pow(X_F1 - X_c, 2) + pow(Y_F1 - Y_c, 2)), 2)
+        + pow(-Y_1 + Y_c + b * (X_F1 - X_c) / sqrt(pow(X_F1 - X_c, 2) + pow(Y_F1 - Y_c, 2)), 2)
+        - pow(-Y_2 + Y_c + b * (X_F1 - X_c) / sqrt(pow(X_F1 - X_c, 2) + pow(Y_F1 - Y_c, 2)), 2);
 
-    if(closertopositiveminor>0){
-        addConstraintInternalAlignmentPoint2Ellipse(e,p2,EllipsePositiveMinorX,tagId, driving);
-        addConstraintInternalAlignmentPoint2Ellipse(e,p2,EllipsePositiveMinorY,tagId, driving);
-        addConstraintInternalAlignmentPoint2Ellipse(e,p1,EllipseNegativeMinorX,tagId, driving);
-        return addConstraintInternalAlignmentPoint2Ellipse(e,p1,EllipseNegativeMinorY,tagId, driving);
-    } else {
-        addConstraintInternalAlignmentPoint2Ellipse(e,p1,EllipsePositiveMinorX,tagId, driving);
-        addConstraintInternalAlignmentPoint2Ellipse(e,p1,EllipsePositiveMinorY,tagId, driving);
-        addConstraintInternalAlignmentPoint2Ellipse(e,p2,EllipseNegativeMinorX,tagId, driving);
-        return addConstraintInternalAlignmentPoint2Ellipse(e,p2,EllipseNegativeMinorY,tagId, driving);
+    if (closertopositiveminor > 0) {
+        addConstraintInternalAlignmentPoint2Ellipse(e, p2, EllipsePositiveMinorX, tagId, driving);
+        addConstraintInternalAlignmentPoint2Ellipse(e, p2, EllipsePositiveMinorY, tagId, driving);
+        addConstraintInternalAlignmentPoint2Ellipse(e, p1, EllipseNegativeMinorX, tagId, driving);
+        return addConstraintInternalAlignmentPoint2Ellipse(
+            e, p1, EllipseNegativeMinorY, tagId, driving);
+    }
+    else {
+        addConstraintInternalAlignmentPoint2Ellipse(e, p1, EllipsePositiveMinorX, tagId, driving);
+        addConstraintInternalAlignmentPoint2Ellipse(e, p1, EllipsePositiveMinorY, tagId, driving);
+        addConstraintInternalAlignmentPoint2Ellipse(e, p2, EllipseNegativeMinorX, tagId, driving);
+        return addConstraintInternalAlignmentPoint2Ellipse(
+            e, p2, EllipseNegativeMinorY, tagId, driving);
     }
 }
 
-int System::addConstraintInternalAlignmentEllipseFocus1(Ellipse &e, Point &p1, int tagId, bool driving)
+int System::addConstraintInternalAlignmentEllipseFocus1(Ellipse& e, Point& p1, int tagId,
+                                                        bool driving)
 {
     addConstraintEqual(e.focus1.x, p1.x, tagId, driving, Constraint::Alignment::InternalAlignment);
-    return addConstraintEqual(e.focus1.y, p1.y, tagId, driving, Constraint::Alignment::InternalAlignment);
+    return addConstraintEqual(
+        e.focus1.y, p1.y, tagId, driving, Constraint::Alignment::InternalAlignment);
 }
 
-int System::addConstraintInternalAlignmentEllipseFocus2(Ellipse &e, Point &p1, int tagId, bool driving)
+int System::addConstraintInternalAlignmentEllipseFocus2(Ellipse& e, Point& p1, int tagId,
+                                                        bool driving)
 {
-    addConstraintInternalAlignmentPoint2Ellipse(e,p1,EllipseFocus2X,tagId, driving);
-    return addConstraintInternalAlignmentPoint2Ellipse(e,p1,EllipseFocus2Y,tagId, driving);
+    addConstraintInternalAlignmentPoint2Ellipse(e, p1, EllipseFocus2X, tagId, driving);
+    return addConstraintInternalAlignmentPoint2Ellipse(e, p1, EllipseFocus2Y, tagId, driving);
 }
 
-int System::addConstraintInternalAlignmentHyperbolaMajorDiameter(Hyperbola &e, Point &p1, Point &p2, int tagId, bool driving)
+int System::addConstraintInternalAlignmentHyperbolaMajorDiameter(Hyperbola& e, Point& p1, Point& p2,
+                                                                 int tagId, bool driving)
 {
-    double X_1=*p1.x;
-    double Y_1=*p1.y;
-    double X_2=*p2.x;
-    double Y_2=*p2.y;
-    double X_c=*e.center.x;
-    double Y_c=*e.center.y;
-    double X_F1=*e.focus1.x;
-    double Y_F1=*e.focus1.y;
-    double b=*e.radmin;
+    double X_1 = *p1.x;
+    double Y_1 = *p1.y;
+    double X_2 = *p2.x;
+    double Y_2 = *p2.y;
+    double X_c = *e.center.x;
+    double Y_c = *e.center.y;
+    double X_F1 = *e.focus1.x;
+    double Y_F1 = *e.focus1.y;
+    double b = *e.radmin;
 
     // P1=vector([X_1,Y_1])
     // P2=vector([X_2,Y_2])
@@ -1273,93 +1311,135 @@ int System::addConstraintInternalAlignmentHyperbolaMajorDiameter(Hyperbola &e, P
     // print "these are the extreme points of the major axis"
     // PA = C + a * dF1
     // PN = C - a * dF1
-    // print "this is a simple function to know which point is closer to the positive edge of the ellipse"
-    // DMC=(P1-PA)*(P1-PA)-(P2-PA)*(P2-PA)
-    double closertopositivemajor= pow(-X_1 + X_c + (X_F1 - X_c)*(-pow(b, 2) + pow(X_F1 - X_c, 2)
-        + pow(Y_F1 - Y_c, 2))/sqrt(pow(X_F1 - X_c, 2) + pow(Y_F1 - Y_c, 2)), 2)
-        - pow(-X_2 + X_c + (X_F1 - X_c)*(-pow(b, 2) + pow(X_F1 - X_c, 2) +
-        pow(Y_F1 - Y_c, 2))/sqrt(pow(X_F1 - X_c, 2) + pow(Y_F1 - Y_c, 2)), 2) +
-        pow(-Y_1 + Y_c + (Y_F1 - Y_c)*(-pow(b, 2) + pow(X_F1 - X_c, 2) +
-        pow(Y_F1 - Y_c, 2))/sqrt(pow(X_F1 - X_c, 2) + pow(Y_F1 - Y_c, 2)), 2) -
-        pow(-Y_2 + Y_c + (Y_F1 - Y_c)*(-pow(b, 2) + pow(X_F1 - X_c, 2) +
-        pow(Y_F1 - Y_c, 2))/sqrt(pow(X_F1 - X_c, 2) + pow(Y_F1 - Y_c, 2)), 2);
+    // print "this is a simple function to know which point is closer to the positive edge of the
+    // ellipse" DMC=(P1-PA)*(P1-PA)-(P2-PA)*(P2-PA)
+    double closertopositivemajor =
+        pow(-X_1 + X_c
+                + (X_F1 - X_c) * (-pow(b, 2) + pow(X_F1 - X_c, 2) + pow(Y_F1 - Y_c, 2))
+                    / sqrt(pow(X_F1 - X_c, 2) + pow(Y_F1 - Y_c, 2)),
+            2)
+        - pow(-X_2 + X_c
+                  + (X_F1 - X_c) * (-pow(b, 2) + pow(X_F1 - X_c, 2) + pow(Y_F1 - Y_c, 2))
+                      / sqrt(pow(X_F1 - X_c, 2) + pow(Y_F1 - Y_c, 2)),
+              2)
+        + pow(-Y_1 + Y_c
+                  + (Y_F1 - Y_c) * (-pow(b, 2) + pow(X_F1 - X_c, 2) + pow(Y_F1 - Y_c, 2))
+                      / sqrt(pow(X_F1 - X_c, 2) + pow(Y_F1 - Y_c, 2)),
+              2)
+        - pow(-Y_2 + Y_c
+                  + (Y_F1 - Y_c) * (-pow(b, 2) + pow(X_F1 - X_c, 2) + pow(Y_F1 - Y_c, 2))
+                      / sqrt(pow(X_F1 - X_c, 2) + pow(Y_F1 - Y_c, 2)),
+              2);
 
-    if(closertopositivemajor>0){
-        //p2 is closer to  positivemajor. Assign constraints back-to-front.
-        addConstraintInternalAlignmentPoint2Hyperbola(e,p2,HyperbolaPositiveMajorX,tagId, driving);
-        addConstraintInternalAlignmentPoint2Hyperbola(e,p2,HyperbolaPositiveMajorY,tagId, driving);
-        addConstraintInternalAlignmentPoint2Hyperbola(e,p1,HyperbolaNegativeMajorX,tagId, driving);
-        return addConstraintInternalAlignmentPoint2Hyperbola(e,p1,HyperbolaNegativeMajorY,tagId, driving);
+    if (closertopositivemajor > 0) {
+        // p2 is closer to  positivemajor. Assign constraints back-to-front.
+        addConstraintInternalAlignmentPoint2Hyperbola(
+            e, p2, HyperbolaPositiveMajorX, tagId, driving);
+        addConstraintInternalAlignmentPoint2Hyperbola(
+            e, p2, HyperbolaPositiveMajorY, tagId, driving);
+        addConstraintInternalAlignmentPoint2Hyperbola(
+            e, p1, HyperbolaNegativeMajorX, tagId, driving);
+        return addConstraintInternalAlignmentPoint2Hyperbola(
+            e, p1, HyperbolaNegativeMajorY, tagId, driving);
     }
-    else{
-        //p1 is closer to  positivemajor
-        addConstraintInternalAlignmentPoint2Hyperbola(e,p1,HyperbolaPositiveMajorX,tagId, driving);
-        addConstraintInternalAlignmentPoint2Hyperbola(e,p1,HyperbolaPositiveMajorY,tagId, driving);
-        addConstraintInternalAlignmentPoint2Hyperbola(e,p2,HyperbolaNegativeMajorX,tagId, driving);
-        return addConstraintInternalAlignmentPoint2Hyperbola(e,p2,HyperbolaNegativeMajorY,tagId, driving);
+    else {
+        // p1 is closer to  positivemajor
+        addConstraintInternalAlignmentPoint2Hyperbola(
+            e, p1, HyperbolaPositiveMajorX, tagId, driving);
+        addConstraintInternalAlignmentPoint2Hyperbola(
+            e, p1, HyperbolaPositiveMajorY, tagId, driving);
+        addConstraintInternalAlignmentPoint2Hyperbola(
+            e, p2, HyperbolaNegativeMajorX, tagId, driving);
+        return addConstraintInternalAlignmentPoint2Hyperbola(
+            e, p2, HyperbolaNegativeMajorY, tagId, driving);
     }
 }
 
-int System::addConstraintInternalAlignmentHyperbolaMinorDiameter(Hyperbola &e, Point &p1, Point &p2, int tagId, bool driving)
+int System::addConstraintInternalAlignmentHyperbolaMinorDiameter(Hyperbola& e, Point& p1, Point& p2,
+                                                                 int tagId, bool driving)
 {
-    double X_1=*p1.x;
-    double Y_1=*p1.y;
-    double X_2=*p2.x;
-    double Y_2=*p2.y;
-    double X_c=*e.center.x;
-    double Y_c=*e.center.y;
-    double X_F1=*e.focus1.x;
-    double Y_F1=*e.focus1.y;
-    double b=*e.radmin;
+    double X_1 = *p1.x;
+    double Y_1 = *p1.y;
+    double X_2 = *p2.x;
+    double Y_2 = *p2.y;
+    double X_c = *e.center.x;
+    double Y_c = *e.center.y;
+    double X_F1 = *e.focus1.x;
+    double Y_F1 = *e.focus1.y;
+    double b = *e.radmin;
 
     // Same idea as for major above, but for minor
     // DMC=(P1-PA)*(P1-PA)-(P2-PA)*(P2-PA)
-    double closertopositiveminor= pow(-X_1 + X_c + b*(Y_F1 - Y_c)/sqrt(pow(X_F1 - X_c, 2) +
-        pow(Y_F1 - Y_c, 2)) + (X_F1 - X_c)*(-pow(b, 2) + pow(X_F1 - X_c, 2) +
-        pow(Y_F1 - Y_c, 2))/sqrt(pow(X_F1 - X_c, 2) + pow(Y_F1 - Y_c, 2)), 2) -
-        pow(-X_2 + X_c + b*(Y_F1 - Y_c)/sqrt(pow(X_F1 - X_c, 2) + pow(Y_F1 -
-        Y_c, 2)) + (X_F1 - X_c)*(-pow(b, 2) + pow(X_F1 - X_c, 2) + pow(Y_F1 -
-        Y_c, 2))/sqrt(pow(X_F1 - X_c, 2) + pow(Y_F1 - Y_c, 2)), 2) + pow(-Y_1 +
-        Y_c - b*(X_F1 - X_c)/sqrt(pow(X_F1 - X_c, 2) + pow(Y_F1 - Y_c, 2)) +
-        (Y_F1 - Y_c)*(-pow(b, 2) + pow(X_F1 - X_c, 2) + pow(Y_F1 - Y_c,
-        2))/sqrt(pow(X_F1 - X_c, 2) + pow(Y_F1 - Y_c, 2)), 2) - pow(-Y_2 + Y_c -
-        b*(X_F1 - X_c)/sqrt(pow(X_F1 - X_c, 2) + pow(Y_F1 - Y_c, 2)) + (Y_F1 -
-        Y_c)*(-pow(b, 2) + pow(X_F1 - X_c, 2) + pow(Y_F1 - Y_c,
-        2))/sqrt(pow(X_F1 - X_c, 2) + pow(Y_F1 - Y_c, 2)), 2);
+    double closertopositiveminor =
+        pow(-X_1 + X_c + b * (Y_F1 - Y_c) / sqrt(pow(X_F1 - X_c, 2) + pow(Y_F1 - Y_c, 2))
+                + (X_F1 - X_c) * (-pow(b, 2) + pow(X_F1 - X_c, 2) + pow(Y_F1 - Y_c, 2))
+                    / sqrt(pow(X_F1 - X_c, 2) + pow(Y_F1 - Y_c, 2)),
+            2)
+        - pow(-X_2 + X_c + b * (Y_F1 - Y_c) / sqrt(pow(X_F1 - X_c, 2) + pow(Y_F1 - Y_c, 2))
+                  + (X_F1 - X_c) * (-pow(b, 2) + pow(X_F1 - X_c, 2) + pow(Y_F1 - Y_c, 2))
+                      / sqrt(pow(X_F1 - X_c, 2) + pow(Y_F1 - Y_c, 2)),
+              2)
+        + pow(-Y_1 + Y_c - b * (X_F1 - X_c) / sqrt(pow(X_F1 - X_c, 2) + pow(Y_F1 - Y_c, 2))
+                  + (Y_F1 - Y_c) * (-pow(b, 2) + pow(X_F1 - X_c, 2) + pow(Y_F1 - Y_c, 2))
+                      / sqrt(pow(X_F1 - X_c, 2) + pow(Y_F1 - Y_c, 2)),
+              2)
+        - pow(-Y_2 + Y_c - b * (X_F1 - X_c) / sqrt(pow(X_F1 - X_c, 2) + pow(Y_F1 - Y_c, 2))
+                  + (Y_F1 - Y_c) * (-pow(b, 2) + pow(X_F1 - X_c, 2) + pow(Y_F1 - Y_c, 2))
+                      / sqrt(pow(X_F1 - X_c, 2) + pow(Y_F1 - Y_c, 2)),
+              2);
 
-    if(closertopositiveminor<0){
-        addConstraintInternalAlignmentPoint2Hyperbola(e,p2,HyperbolaPositiveMinorX,tagId, driving);
-        addConstraintInternalAlignmentPoint2Hyperbola(e,p2,HyperbolaPositiveMinorY,tagId, driving);
-        addConstraintInternalAlignmentPoint2Hyperbola(e,p1,HyperbolaNegativeMinorX,tagId, driving);
-        return addConstraintInternalAlignmentPoint2Hyperbola(e,p1,HyperbolaNegativeMinorY,tagId, driving);
-    } else {
-        addConstraintInternalAlignmentPoint2Hyperbola(e,p1,HyperbolaPositiveMinorX,tagId, driving);
-        addConstraintInternalAlignmentPoint2Hyperbola(e,p1,HyperbolaPositiveMinorY,tagId, driving);
-        addConstraintInternalAlignmentPoint2Hyperbola(e,p2,HyperbolaNegativeMinorX,tagId, driving);
-        return addConstraintInternalAlignmentPoint2Hyperbola(e,p2,HyperbolaNegativeMinorY,tagId, driving);
+    if (closertopositiveminor < 0) {
+        addConstraintInternalAlignmentPoint2Hyperbola(
+            e, p2, HyperbolaPositiveMinorX, tagId, driving);
+        addConstraintInternalAlignmentPoint2Hyperbola(
+            e, p2, HyperbolaPositiveMinorY, tagId, driving);
+        addConstraintInternalAlignmentPoint2Hyperbola(
+            e, p1, HyperbolaNegativeMinorX, tagId, driving);
+        return addConstraintInternalAlignmentPoint2Hyperbola(
+            e, p1, HyperbolaNegativeMinorY, tagId, driving);
+    }
+    else {
+        addConstraintInternalAlignmentPoint2Hyperbola(
+            e, p1, HyperbolaPositiveMinorX, tagId, driving);
+        addConstraintInternalAlignmentPoint2Hyperbola(
+            e, p1, HyperbolaPositiveMinorY, tagId, driving);
+        addConstraintInternalAlignmentPoint2Hyperbola(
+            e, p2, HyperbolaNegativeMinorX, tagId, driving);
+        return addConstraintInternalAlignmentPoint2Hyperbola(
+            e, p2, HyperbolaNegativeMinorY, tagId, driving);
     }
 }
 
-int System::addConstraintInternalAlignmentHyperbolaFocus(Hyperbola &e, Point &p1, int tagId, bool driving)
+int System::addConstraintInternalAlignmentHyperbolaFocus(Hyperbola& e, Point& p1, int tagId,
+                                                         bool driving)
 {
     addConstraintEqual(e.focus1.x, p1.x, tagId, driving, Constraint::Alignment::InternalAlignment);
-    return addConstraintEqual(e.focus1.y, p1.y, tagId, driving, Constraint::Alignment::InternalAlignment);
+    return addConstraintEqual(
+        e.focus1.y, p1.y, tagId, driving, Constraint::Alignment::InternalAlignment);
 }
 
-int System::addConstraintInternalAlignmentParabolaFocus(Parabola &e, Point &p1, int tagId, bool driving)
+int System::addConstraintInternalAlignmentParabolaFocus(Parabola& e, Point& p1, int tagId,
+                                                        bool driving)
 {
     addConstraintEqual(e.focus1.x, p1.x, tagId, driving, Constraint::Alignment::InternalAlignment);
-    return addConstraintEqual(e.focus1.y, p1.y, tagId, driving, Constraint::Alignment::InternalAlignment);
+    return addConstraintEqual(
+        e.focus1.y, p1.y, tagId, driving, Constraint::Alignment::InternalAlignment);
 }
 
-int System::addConstraintInternalAlignmentBSplineControlPoint(BSpline &b, Circle &c, unsigned int poleindex, int tagId, bool driving)
+int System::addConstraintInternalAlignmentBSplineControlPoint(BSpline& b, Circle& c,
+                                                              unsigned int poleindex, int tagId,
+                                                              bool driving)
 {
-    addConstraintEqual(b.poles[poleindex].x, c.center.x, tagId, driving, Constraint::Alignment::InternalAlignment);
-    addConstraintEqual(b.poles[poleindex].y, c.center.y, tagId, driving, Constraint::Alignment::InternalAlignment);
-    return addConstraintEqual(b.weights[poleindex], c.rad, tagId, driving, Constraint::Alignment::InternalAlignment);
+    addConstraintEqual(
+        b.poles[poleindex].x, c.center.x, tagId, driving, Constraint::Alignment::InternalAlignment);
+    addConstraintEqual(
+        b.poles[poleindex].y, c.center.y, tagId, driving, Constraint::Alignment::InternalAlignment);
+    return addConstraintEqual(
+        b.weights[poleindex], c.rad, tagId, driving, Constraint::Alignment::InternalAlignment);
 }
 
-int System::addConstraintInternalAlignmentKnotPoint(BSpline &b, Point &p, unsigned int knotindex, int tagId, bool driving)
+int System::addConstraintInternalAlignmentKnotPoint(BSpline& b, Point& p, unsigned int knotindex,
+                                                    int tagId, bool driving)
 {
     if (b.periodic && knotindex == 0) {
         // This is done here since knotpoints themselves aren't stored
@@ -1373,7 +1453,7 @@ int System::addConstraintInternalAlignmentKnotPoint(BSpline &b, Point &p, unsign
 
     // `startpole` is the first pole affecting the knot with `knotindex`
     size_t startpole = 0;
-    std::vector<double *> pvec;
+    std::vector<double*> pvec;
     pvec.push_back(p.x);
 
     std::vector<double> factors(numpoles, 1.0 / numpoles);
@@ -1397,11 +1477,13 @@ int System::addConstraintInternalAlignmentKnotPoint(BSpline &b, Point &p, unsign
 
     // Calculate the factors to be passed to weighted linear combination constraint.
     // The if condition has a small performance benefit, but that is not why it is here.
-    // One case when numpoles <= 2 is for the last knot of a non-periodic B-spline.
-    // In this case, the interval `k` passed to `getLinCombFactor` is degenerate, and this is the cleanest way to handle it.
-    if (numpoles > 2)
+    // One case when numpoles <= 1 is for the last knot of a non-periodic B-spline.
+    // In this case, the interval `k` passed to `getLinCombFactor` is degenerate, and this is the
+    // cleanest way to handle it.
+    if (numpoles > 1)
         for (size_t i = 0; i < numpoles; ++i)
-            factors[i] = b.getLinCombFactor(*(b.knots[knotindex]), startpole + b.degree, startpole + i);
+            factors[i] =
+                b.getLinCombFactor(*(b.knots[knotindex]), startpole + b.degree, startpole + i);
 
     // The mod operation is to adjust for periodic B-splines.
     // This can be separated for performance reasons but it will be less readable.
@@ -1410,7 +1492,7 @@ int System::addConstraintInternalAlignmentKnotPoint(BSpline &b, Point &p, unsign
     for (size_t i = 0; i < numpoles; ++i)
         pvec.push_back(b.weights[(startpole + i) % b.poles.size()]);
 
-    Constraint *constr = new ConstraintWeightedLinearCombination(numpoles, pvec, factors);
+    Constraint* constr = new ConstraintWeightedLinearCombination(numpoles, pvec, factors);
     constr->setTag(tagId);
     constr->setDriving(driving);
     constr->setInternalAlignment(Constraint::Alignment::InternalAlignment);
@@ -1430,23 +1512,25 @@ int System::addConstraintInternalAlignmentKnotPoint(BSpline &b, Point &p, unsign
     return addConstraint(constr);
 }
 
-//calculates angle between two curves at point of their intersection p. If two
-//points are supplied, p is used for first curve and p2 for second, yielding a
-//remote angle computation (this is useful when the endpoints haven't) been
-//made coincident yet
-double System::calculateAngleViaPoint(const Curve &crv1, const Curve &crv2, Point &p) const
+// calculates angle between two curves at point of their intersection p. If two
+// points are supplied, p is used for first curve and p2 for second, yielding a
+// remote angle computation (this is useful when the endpoints haven't) been
+// made coincident yet
+double System::calculateAngleViaPoint(const Curve& crv1, const Curve& crv2, Point& p) const
 {
     return calculateAngleViaPoint(crv1, crv2, p, p);
 }
 
-double System::calculateAngleViaPoint(const Curve &crv1, const Curve &crv2, Point &p1, Point &p2) const
+double System::calculateAngleViaPoint(const Curve& crv1, const Curve& crv2, Point& p1,
+                                      Point& p2) const
 {
     GCS::DeriVector2 n1 = crv1.CalculateNormal(p1);
     GCS::DeriVector2 n2 = crv2.CalculateNormal(p2);
-    return atan2(-n2.x*n1.y+n2.y*n1.x, n2.x*n1.x + n2.y*n1.y);
+    return atan2(-n2.x * n1.y + n2.y * n1.x, n2.x * n1.x + n2.y * n1.y);
 }
 
-void System::calculateNormalAtPoint(const Curve &crv, const Point &p, double &rtnX, double &rtnY) const
+void System::calculateNormalAtPoint(const Curve& crv, const Point& p, double& rtnX,
+                                    double& rtnY) const
 {
     GCS::DeriVector2 n1 = crv.CalculateNormal(p);
     rtnX = n1.x;
@@ -1530,13 +1614,15 @@ void System::initSolution(Algorithm alg)
     }
     std::vector<Constraint *> clistR;
     if (!redundant.empty()) {
-        for (std::vector<Constraint *>::const_iterator constr=clist.begin(); constr != clist.end(); ++constr) {
+        for (std::vector<Constraint*>::const_iterator constr = clist.begin(); constr != clist.end();
+             ++constr) {
             if (redundant.count(*constr) == 0)
-                clistR.push_back(*constr);
+                    clistR.push_back(*constr);
         }
     }
-    else
+    else {
         clistR = clist;
+    }
 
     // partitioning into decoupled components
     Graph g;
@@ -1673,7 +1759,8 @@ int System::solve(bool isFine, Algorithm alg, bool isRedundantsolving)
              isReset = true;
         }
         if (subSystems[cid] && subSystemsAux[cid])
-            res = std::max(res, solve(subSystems[cid], subSystemsAux[cid], isFine, isRedundantsolving));
+             res = std::max(res,
+                            solve(subSystems[cid], subSystemsAux[cid], isFine, isRedundantsolving));
         else if (subSystems[cid])
             res = std::max(res, solve(subSystems[cid], isFine, alg, isRedundantsolving));
         else if (subSystemsAux[cid])
@@ -1842,8 +1929,9 @@ int System::solve_LM(SubSystem* subsys, bool isRedundantsolving)
     if (xsize == 0)
         return Success;
 
-    Eigen::VectorXd e(csize), e_new(csize); // vector of all function errors (every constraint is one function)
-    Eigen::MatrixXd J(csize, xsize);        // Jacobi of the subsystem
+    Eigen::VectorXd e(csize),
+        e_new(csize);// vector of all function errors (every constraint is one function)
+    Eigen::MatrixXd J(csize, xsize);// Jacobi of the subsystem
     Eigen::MatrixXd A(xsize, xsize);
     Eigen::VectorXd x(xsize), h(xsize), x_new(xsize), g(xsize), diag_A(xsize);
 
@@ -2020,16 +2108,17 @@ int System::solve_DL(SubSystem* subsys, bool isRedundantsolving)
         (sketchSizeMultiplierRedundant?maxIterRedundant * xsize:maxIterRedundant):
         (sketchSizeMultiplier?maxIter * xsize:maxIter));
 
-    if(debugMode==IterationLevel) {
+    if (debugMode == IterationLevel) {
         std::stringstream stream;
-        stream  << "DL: tolg: "         << tolg
-                << ", tolx: "           << tolx
-                << ", tolf: "           << tolf
-                << ", convergence: "    << (isRedundantsolving?convergenceRedundant:convergence)
-                << ", dogLegGaussStep: " << (dogLegGaussStep==FullPivLU?"FullPivLU":(dogLegGaussStep==LeastNormFullPivLU?"LeastNormFullPivLU":"LeastNormLdlt"))
-                << ", xsize: "          << xsize
-                << ", csize: "          << csize
-                << ", maxIter: "        << maxIterNumber  << "\n";
+        stream << "DL: tolg: " << tolg << ", tolx: " << tolx << ", tolf: " << tolf
+               << ", convergence: " << (isRedundantsolving ? convergenceRedundant : convergence)
+               << ", dogLegGaussStep: "
+               << (dogLegGaussStep == FullPivLU
+                       ? "FullPivLU"
+                       : (dogLegGaussStep == LeastNormFullPivLU ? "LeastNormFullPivLU"
+                                                                : "LeastNormLdlt"))
+               << ", xsize: " << xsize << ", csize: " << csize << ", maxIter: " << maxIterNumber
+               << "\n";
 
         const std::string tmp = stream.str();
         Base::Console().Log(tmp.c_str());
@@ -2208,10 +2297,10 @@ int System::solve_DL(SubSystem* subsys, bool isRedundantsolving)
 }
 
 #ifdef _GCS_EXTRACT_SOLVER_SUBSYSTEM_
-void System::extractSubsystem(SubSystem *subsys, bool isRedundantsolving)
+void System::extractSubsystem(SubSystem* subsys, bool isRedundantsolving)
 {
-    VEC_pD plistout; //std::vector<double *>
-    std::vector<Constraint *> clist_;
+    VEC_pD plistout;// std::vector<double *>
+    std::vector<Constraint*> clist_;
     VEC_pD clist_params_;
 
     subsys->getParamList(plistout);
@@ -2219,333 +2308,441 @@ void System::extractSubsystem(SubSystem *subsys, bool isRedundantsolving)
 
     std::ofstream subsystemfile;
     subsystemfile.open("subsystemfile.txt", std::ofstream::out | std::ofstream::app);
-    subsystemfile <<  std::endl;
-    subsystemfile <<  std::endl;
-    subsystemfile << "Solving: " << (isRedundantsolving?"Redundant":"Normal") << " Subsystem Dump starts here................................" << std::endl;
+    subsystemfile << std::endl;
+    subsystemfile << std::endl;
+    subsystemfile << "Solving: " << (isRedundantsolving ? "Redundant" : "Normal")
+                  << " Subsystem Dump starts here................................" << std::endl;
 
-    int ip=0;
+    int ip = 0;
 
-    subsystemfile << "GCS::VEC_pD plist_;" <<  std::endl; // all SYSTEM params
-    subsystemfile << "std::vector<GCS::Constraint *> clist_;" <<  std::endl; // SUBSYSTEM constraints
-    subsystemfile << "GCS::VEC_pD plistsub_;" <<  std::endl; // all SUBSYSTEM params
-    subsystemfile << "GCS::VEC_pD clist_params_;" <<  std::endl; // constraint params not within SYSTEM params
+    subsystemfile << "GCS::VEC_pD plist_;" << std::endl;                   // all SYSTEM params
+    subsystemfile << "std::vector<GCS::Constraint *> clist_;" << std::endl;// SUBSYSTEM constraints
+    subsystemfile << "GCS::VEC_pD plistsub_;" << std::endl;                // all SUBSYSTEM params
+    subsystemfile << "GCS::VEC_pD clist_params_;"
+                  << std::endl;// constraint params not within SYSTEM params
 
     // these are all the parameters, including those not in the subsystem to
     // which constraints in the subsystem may make reference.
-    for( VEC_pD::iterator it = plist.begin(); it != plist.end(); ++it, ++ip) {
-        subsystemfile << "plist_.push_back(new double("<< *(*it) <<")); // "<< ip <<" address: " << (void *)(*it) << std::endl;
+    for (VEC_pD::iterator it = plist.begin(); it != plist.end(); ++it, ++ip) {
+        subsystemfile << "plist_.push_back(new double(" << *(*it) << ")); // " << ip
+                      << " address: " << (void*)(*it) << std::endl;
     }
 
-    int ips=0;
-    for( VEC_pD::iterator it = plistout.begin(); it != plistout.end(); ++it, ++ips) {
-        VEC_pD::iterator p = std::find(plist.begin(), plist.end(),(*it));
+    int ips = 0;
+    for (VEC_pD::iterator it = plistout.begin(); it != plistout.end(); ++it, ++ips) {
+        VEC_pD::iterator p = std::find(plist.begin(), plist.end(), (*it));
         size_t p_index = std::distance(plist.begin(), p);
 
-        if(p_index == plist.size()) {
-            subsystemfile << "// Error: Subsystem parameter not in system params" << "address: " << (void *)(*it)  << std::endl;
+        if (p_index == plist.size()) {
+            subsystemfile << "// Error: Subsystem parameter not in system params"
+                          << "address: " << (void*)(*it) << std::endl;
         }
 
-        subsystemfile << "plistsub_.push_back(plist_[" << p_index <<"]); // "<< ips << std::endl;
+        subsystemfile << "plistsub_.push_back(plist_[" << p_index << "]); // " << ips << std::endl;
     }
 
-    int ic=0; // constraint index
-    int icp=0; // index of constraint params not within SYSTEM params
-    for (std::vector<Constraint *>::iterator it = clist_.begin(); it != clist_.end(); ++it,++ic) {
+    int ic = 0; // constraint index
+    int icp = 0;// index of constraint params not within SYSTEM params
+    for (std::vector<Constraint*>::iterator it = clist_.begin(); it != clist_.end(); ++it, ++ic) {
 
-        switch((*it)->getTypeId())
-        {
-            case Equal:
-            { // 2
-                VEC_pD::iterator p1 = std::find(plist.begin(), plist.end(),(*it)->pvec[0]);
-                VEC_pD::iterator p2 = std::find(plist.begin(), plist.end(),(*it)->pvec[1]);
+        switch ((*it)->getTypeId()) {
+            case Equal: {// 2
+                VEC_pD::iterator p1 = std::find(plist.begin(), plist.end(), (*it)->pvec[0]);
+                VEC_pD::iterator p2 = std::find(plist.begin(), plist.end(), (*it)->pvec[1]);
                 size_t i1 = std::distance(plist.begin(), p1);
                 size_t i2 = std::distance(plist.begin(), p2);
 
-                bool npb1=false;
-                VEC_pD::iterator np1 = std::find(clist_params_.begin(), clist_params_.end(),(*it)->pvec[0]);
+                bool npb1 = false;
+                VEC_pD::iterator np1 =
+                    std::find(clist_params_.begin(), clist_params_.end(), (*it)->pvec[0]);
                 size_t ni1 = std::distance(clist_params_.begin(), np1);
 
-                if(i1 == plist.size()) {
-                    if(ni1 == clist_params_.size()) {
-                        subsystemfile << "// Address not in System params...rebuilding into clist_params_" << std::endl;
-                        clist_params_.push_back((*it)->pvec[0]);
-                        subsystemfile << "clist_params_.push_back(new double("<< *((*it)->pvec[0]) <<")); // "<< icp <<" address: " << (void *)(*it)->pvec[0] << std::endl;
-                        icp++;
+                if (i1 == plist.size()) {
+                    if (ni1 == clist_params_.size()) {
+                       subsystemfile
+                           << "// Address not in System params...rebuilding into clist_params_"
+                           << std::endl;
+                       clist_params_.push_back((*it)->pvec[0]);
+                       subsystemfile << "clist_params_.push_back(new double(" << *((*it)->pvec[0])
+                                     << ")); // " << icp << " address: " << (void*)(*it)->pvec[0]
+                                     << std::endl;
+                       icp++;
                     }
-                    npb1=true;
+                    npb1 = true;
                 }
 
-                bool npb2=false;
-                VEC_pD::iterator np2 = std::find(clist_params_.begin(), clist_params_.end(),(*it)->pvec[1]);
+                bool npb2 = false;
+                VEC_pD::iterator np2 =
+                    std::find(clist_params_.begin(), clist_params_.end(), (*it)->pvec[1]);
                 size_t ni2 = std::distance(clist_params_.begin(), np2);
 
-                if(i2 == plist.size()) {
-                    if(ni2 == clist_params_.size()) {
-                        subsystemfile << "// Address not in System params...rebuilding into clist_params_" << std::endl;
-                        clist_params_.push_back((*it)->pvec[1]);
-                        subsystemfile << "clist_params_.push_back(new double("<< *((*it)->pvec[1]) <<")); // "<< icp <<" address: " << (void *)(*it)->pvec[1] << std::endl;
-                        icp++;
+                if (i2 == plist.size()) {
+                    if (ni2 == clist_params_.size()) {
+                       subsystemfile
+                           << "// Address not in System params...rebuilding into clist_params_"
+                           << std::endl;
+                       clist_params_.push_back((*it)->pvec[1]);
+                       subsystemfile << "clist_params_.push_back(new double(" << *((*it)->pvec[1])
+                                     << ")); // " << icp << " address: " << (void*)(*it)->pvec[1]
+                                     << std::endl;
+                       icp++;
                     }
-                    npb2=true;
+                    npb2 = true;
                 }
 
-                subsystemfile << "clist_.push_back(new ConstraintEqual(" << (npb1?("clist_params_["):("plist_[")) << (npb1?ni1:i1) << "]," \
-                << (npb2?("clist_params_["):("plist_[")) << (npb2?ni2:i2) << "])); // addresses = "<< (*it)->pvec[0] << "," << (*it)->pvec[1] << std::endl;
+                subsystemfile << "clist_.push_back(new ConstraintEqual("
+                              << (npb1 ? ("clist_params_[") : ("plist_[")) << (npb1 ? ni1 : i1)
+                              << "]," << (npb2 ? ("clist_params_[") : ("plist_["))
+                              << (npb2 ? ni2 : i2) << "])); // addresses = " << (*it)->pvec[0]
+                              << "," << (*it)->pvec[1] << std::endl;
                 break;
             }
-            case Difference:
-            { // 3
-                VEC_pD::iterator p1 = std::find(plist.begin(), plist.end(),(*it)->pvec[0]);
-                VEC_pD::iterator p2 = std::find(plist.begin(), plist.end(),(*it)->pvec[1]);
-                VEC_pD::iterator p3 = std::find(plist.begin(), plist.end(),(*it)->pvec[2]);
-                size_t i1 = std::distance(plist.begin(), p1);
-                size_t i2 = std::distance(plist.begin(), p2);
-                size_t i3 = std::distance(plist.begin(), p3);
-
-                bool npb1=false;
-                VEC_pD::iterator np1 = std::find(clist_params_.begin(), clist_params_.end(),(*it)->pvec[0]);
-                size_t ni1 = std::distance(clist_params_.begin(), np1);
-
-                if(i1 == plist.size()) {
-                    if(ni1 == clist_params_.size()) {
-                        subsystemfile << "// Address not in System params...rebuilding into clist_params_" << std::endl;
-                        clist_params_.push_back((*it)->pvec[0]);
-                        subsystemfile << "clist_params_.push_back(new double("<< *((*it)->pvec[0]) <<")); // "<< icp <<" address: " << (void *)(*it)->pvec[0] << std::endl;
-                        icp++;
-                    }
-                    npb1=true;
-                }
-
-                bool npb2=false;
-                VEC_pD::iterator np2 = std::find(clist_params_.begin(), clist_params_.end(),(*it)->pvec[1]);
-                size_t ni2 = std::distance(clist_params_.begin(), np2);
-
-                if(i2 == plist.size()) {
-                    if(ni2 == clist_params_.size()) {
-                        subsystemfile << "// Address not in System params...rebuilding into clist_params_" << std::endl;
-                        clist_params_.push_back((*it)->pvec[1]);
-                        subsystemfile << "clist_params_.push_back(new double("<< *((*it)->pvec[1]) <<")); // "<< icp <<" address: " << (void *)(*it)->pvec[1] << std::endl;
-                        icp++;
-                    }
-                    npb2=true;
-                }
-
-                bool npb3=false;
-                VEC_pD::iterator np3 = std::find(clist_params_.begin(), clist_params_.end(),(*it)->pvec[2]);
-                size_t ni3 = std::distance(clist_params_.begin(), np3);
-
-                if(i3 == plist.size()) {
-                    if(ni3 == clist_params_.size()) {
-                        subsystemfile << "// Address not in System params...rebuilding into clist_params_" << std::endl;
-                        clist_params_.push_back((*it)->pvec[2]);
-                        subsystemfile << "clist_params_.push_back(new double("<< *((*it)->pvec[2]) <<")); // "<< icp <<" address: " << (void *)(*it)->pvec[2] << std::endl;
-                        icp++;
-                    }
-                    npb3=true;
-                }
-
-                subsystemfile << "clist_.push_back(new ConstraintDifference(" << (npb1?("clist_params_["):("plist_[")) << (npb1?ni1:i1) << "]," \
-                << (npb2?("clist_params_["):("plist_[")) << (npb2?ni2:i2) << "]," \
-                << (npb3?("clist_params_["):("plist_[")) << (npb3?ni3:i3) << "])); // addresses = "<< (*it)->pvec[0] << "," << (*it)->pvec[1] << "," << (*it)->pvec[2] << std::endl;
-                break;
-            }
-            case P2PDistance:
-            { // 5
-                VEC_pD::iterator p1 = std::find(plist.begin(), plist.end(),(*it)->pvec[0]);
-                VEC_pD::iterator p2 = std::find(plist.begin(), plist.end(),(*it)->pvec[1]);
-                VEC_pD::iterator p3 = std::find(plist.begin(), plist.end(),(*it)->pvec[2]);
-                VEC_pD::iterator p4 = std::find(plist.begin(), plist.end(),(*it)->pvec[3]);
-                VEC_pD::iterator p5 = std::find(plist.begin(), plist.end(),(*it)->pvec[4]);
+            case Difference: {// 3
+                VEC_pD::iterator p1 = std::find(plist.begin(), plist.end(), (*it)->pvec[0]);
+                VEC_pD::iterator p2 = std::find(plist.begin(), plist.end(), (*it)->pvec[1]);
+                VEC_pD::iterator p3 = std::find(plist.begin(), plist.end(), (*it)->pvec[2]);
                 size_t i1 = std::distance(plist.begin(), p1);
                 size_t i2 = std::distance(plist.begin(), p2);
                 size_t i3 = std::distance(plist.begin(), p3);
-                size_t i4 = std::distance(plist.begin(), p4);
-                size_t i5 = std::distance(plist.begin(), p5);
 
-                bool npb1=false;
-                VEC_pD::iterator np1 = std::find(clist_params_.begin(), clist_params_.end(),(*it)->pvec[0]);
+                bool npb1 = false;
+                VEC_pD::iterator np1 =
+                    std::find(clist_params_.begin(), clist_params_.end(), (*it)->pvec[0]);
                 size_t ni1 = std::distance(clist_params_.begin(), np1);
 
-                if(i1 == plist.size()) {
-                    if(ni1 == clist_params_.size()) {
-                        subsystemfile << "// Address not in System params...rebuilding into clist_params_" << std::endl;
-                        clist_params_.push_back((*it)->pvec[0]);
-                        subsystemfile << "clist_params_.push_back(new double("<< *((*it)->pvec[0]) <<")); // "<< icp <<" address: " << (void *)(*it)->pvec[0] << std::endl;
-                        icp++;
+                if (i1 == plist.size()) {
+                    if (ni1 == clist_params_.size()) {
+                       subsystemfile
+                           << "// Address not in System params...rebuilding into clist_params_"
+                           << std::endl;
+                       clist_params_.push_back((*it)->pvec[0]);
+                       subsystemfile << "clist_params_.push_back(new double(" << *((*it)->pvec[0])
+                                     << ")); // " << icp << " address: " << (void*)(*it)->pvec[0]
+                                     << std::endl;
+                       icp++;
                     }
-                    npb1=true;
+                    npb1 = true;
                 }
 
-                bool npb2=false;
-                VEC_pD::iterator np2 = std::find(clist_params_.begin(), clist_params_.end(),(*it)->pvec[1]);
+                bool npb2 = false;
+                VEC_pD::iterator np2 =
+                    std::find(clist_params_.begin(), clist_params_.end(), (*it)->pvec[1]);
                 size_t ni2 = std::distance(clist_params_.begin(), np2);
 
-                if(i2 == plist.size()) {
-                    if(ni2 == clist_params_.size()) {
-                        subsystemfile << "// Address not in System params...rebuilding into clist_params_" << std::endl;
-                        clist_params_.push_back((*it)->pvec[1]);
-                        subsystemfile << "clist_params_.push_back(new double("<< *((*it)->pvec[1]) <<")); // "<< icp <<" address: " << (void *)(*it)->pvec[1] << std::endl;
-                        icp++;
+                if (i2 == plist.size()) {
+                    if (ni2 == clist_params_.size()) {
+                       subsystemfile
+                           << "// Address not in System params...rebuilding into clist_params_"
+                           << std::endl;
+                       clist_params_.push_back((*it)->pvec[1]);
+                       subsystemfile << "clist_params_.push_back(new double(" << *((*it)->pvec[1])
+                                     << ")); // " << icp << " address: " << (void*)(*it)->pvec[1]
+                                     << std::endl;
+                       icp++;
                     }
-                    npb2=true;
+                    npb2 = true;
                 }
 
-                bool npb3=false;
-                VEC_pD::iterator np3 = std::find(clist_params_.begin(), clist_params_.end(),(*it)->pvec[2]);
+                bool npb3 = false;
+                VEC_pD::iterator np3 =
+                    std::find(clist_params_.begin(), clist_params_.end(), (*it)->pvec[2]);
                 size_t ni3 = std::distance(clist_params_.begin(), np3);
 
-                if(i3 == plist.size()) {
-                    if(ni3 == clist_params_.size()) {
-                        subsystemfile << "// Address not in System params...rebuilding into clist_params_" << std::endl;
-                        clist_params_.push_back((*it)->pvec[2]);
-                        subsystemfile << "clist_params_.push_back(new double("<< *((*it)->pvec[2]) <<")); // "<< icp <<" address: " << (void *)(*it)->pvec[2] << std::endl;
-                        icp++;
+                if (i3 == plist.size()) {
+                    if (ni3 == clist_params_.size()) {
+                       subsystemfile
+                           << "// Address not in System params...rebuilding into clist_params_"
+                           << std::endl;
+                       clist_params_.push_back((*it)->pvec[2]);
+                       subsystemfile << "clist_params_.push_back(new double(" << *((*it)->pvec[2])
+                                     << ")); // " << icp << " address: " << (void*)(*it)->pvec[2]
+                                     << std::endl;
+                       icp++;
                     }
-                    npb3=true;
+                    npb3 = true;
                 }
 
-                bool npb4=false;
-                VEC_pD::iterator np4 = std::find(clist_params_.begin(), clist_params_.end(),(*it)->pvec[3]);
-                size_t ni4 = std::distance(clist_params_.begin(), np4);
-
-                if(i4 == plist.size()) {
-                    if(ni4 == clist_params_.size()) {
-                        subsystemfile << "// Address not in System params...rebuilding into clist_params_" << std::endl;
-                        clist_params_.push_back((*it)->pvec[3]);
-                        subsystemfile << "clist_params_.push_back(new double("<< *((*it)->pvec[3]) <<")); // "<< icp <<" address: " << (void *)(*it)->pvec[3] << std::endl;
-                        icp++;
-                    }
-                    npb4=true;
-                }
-
-                bool npb5=false;
-                VEC_pD::iterator np5 = std::find(clist_params_.begin(), clist_params_.end(),(*it)->pvec[4]);
-                size_t ni5 = std::distance(clist_params_.begin(), np5);
-
-                if(i5 == plist.size()) {
-                    if(ni5 == clist_params_.size()) {
-                        subsystemfile << "// Address not in System params...rebuilding into clist_params_" << std::endl;
-                        clist_params_.push_back((*it)->pvec[4]);
-                        subsystemfile << "clist_params_.push_back(new double("<< *((*it)->pvec[4]) <<")); // "<< icp <<" address: " << (void *)(*it)->pvec[4] << std::endl;
-                        icp++;
-                    }
-                    npb5=true;
-                }
-
-                subsystemfile << "ConstraintP2PDistance * c" << ic <<"=new ConstraintP2PDistance();" << std::endl;
-                subsystemfile << "c" << ic << "->pvec.push_back(" << (npb1?("clist_params_["):("plist_[")) << (npb1?ni1:i1) <<"]);" << std::endl;
-                subsystemfile << "c" << ic << "->pvec.push_back(" << (npb2?("clist_params_["):("plist_[")) << (npb2?ni2:i2) <<"]);" << std::endl;
-                subsystemfile << "c" << ic << "->pvec.push_back(" << (npb3?("clist_params_["):("plist_[")) << (npb3?ni3:i3) <<"]);" << std::endl;
-                subsystemfile << "c" << ic << "->pvec.push_back(" << (npb4?("clist_params_["):("plist_[")) << (npb4?ni4:i4) <<"]);" << std::endl;
-                subsystemfile << "c" << ic << "->pvec.push_back(" << (npb5?("clist_params_["):("plist_[")) << (npb5?ni5:i5) <<"]);" << std::endl;
-                subsystemfile << "c" << ic << "->origpvec=c" << ic << "->pvec;" << std::endl;
-                subsystemfile << "c" << ic << "->rescale();" << std::endl;
-                subsystemfile << "clist_.push_back(c" << ic << "); // addresses = "<< (*it)->pvec[0] << "," << (*it)->pvec[1] << "," << (*it)->pvec[2] << "," << (*it)->pvec[3] << "," << (*it)->pvec[4] << std::endl;
+                subsystemfile << "clist_.push_back(new ConstraintDifference("
+                              << (npb1 ? ("clist_params_[") : ("plist_[")) << (npb1 ? ni1 : i1)
+                              << "]," << (npb2 ? ("clist_params_[") : ("plist_["))
+                              << (npb2 ? ni2 : i2) << "],"
+                              << (npb3 ? ("clist_params_[") : ("plist_[")) << (npb3 ? ni3 : i3)
+                              << "])); // addresses = " << (*it)->pvec[0] << "," << (*it)->pvec[1]
+                              << "," << (*it)->pvec[2] << std::endl;
                 break;
             }
-            case P2PAngle:
-            { // 5
-                VEC_pD::iterator p1 = std::find(plist.begin(), plist.end(),(*it)->pvec[0]);
-                VEC_pD::iterator p2 = std::find(plist.begin(), plist.end(),(*it)->pvec[1]);
-                VEC_pD::iterator p3 = std::find(plist.begin(), plist.end(),(*it)->pvec[2]);
-                VEC_pD::iterator p4 = std::find(plist.begin(), plist.end(),(*it)->pvec[3]);
-                VEC_pD::iterator p5 = std::find(plist.begin(), plist.end(),(*it)->pvec[4]);
+            case P2PDistance: {// 5
+                VEC_pD::iterator p1 = std::find(plist.begin(), plist.end(), (*it)->pvec[0]);
+                VEC_pD::iterator p2 = std::find(plist.begin(), plist.end(), (*it)->pvec[1]);
+                VEC_pD::iterator p3 = std::find(plist.begin(), plist.end(), (*it)->pvec[2]);
+                VEC_pD::iterator p4 = std::find(plist.begin(), plist.end(), (*it)->pvec[3]);
+                VEC_pD::iterator p5 = std::find(plist.begin(), plist.end(), (*it)->pvec[4]);
                 size_t i1 = std::distance(plist.begin(), p1);
                 size_t i2 = std::distance(plist.begin(), p2);
                 size_t i3 = std::distance(plist.begin(), p3);
                 size_t i4 = std::distance(plist.begin(), p4);
                 size_t i5 = std::distance(plist.begin(), p5);
 
-                bool npb1=false;
-                VEC_pD::iterator np1 = std::find(clist_params_.begin(), clist_params_.end(),(*it)->pvec[0]);
+                bool npb1 = false;
+                VEC_pD::iterator np1 =
+                    std::find(clist_params_.begin(), clist_params_.end(), (*it)->pvec[0]);
                 size_t ni1 = std::distance(clist_params_.begin(), np1);
 
-                if(i1 == plist.size()) {
-                    if(ni1 == clist_params_.size()) {
-                        subsystemfile << "// Address not in System params...rebuilding into clist_params_" << std::endl;
-                        clist_params_.push_back((*it)->pvec[0]);
-                        subsystemfile << "clist_params_.push_back(new double("<< *((*it)->pvec[0]) <<")); // "<< icp <<" address: " << (void *)(*it)->pvec[0] << std::endl;
-                        icp++;
+                if (i1 == plist.size()) {
+                    if (ni1 == clist_params_.size()) {
+                       subsystemfile
+                           << "// Address not in System params...rebuilding into clist_params_"
+                           << std::endl;
+                       clist_params_.push_back((*it)->pvec[0]);
+                       subsystemfile << "clist_params_.push_back(new double(" << *((*it)->pvec[0])
+                                     << ")); // " << icp << " address: " << (void*)(*it)->pvec[0]
+                                     << std::endl;
+                       icp++;
                     }
-                    npb1=true;
+                    npb1 = true;
                 }
 
-                bool npb2=false;
-                VEC_pD::iterator np2 = std::find(clist_params_.begin(), clist_params_.end(),(*it)->pvec[1]);
+                bool npb2 = false;
+                VEC_pD::iterator np2 =
+                    std::find(clist_params_.begin(), clist_params_.end(), (*it)->pvec[1]);
                 size_t ni2 = std::distance(clist_params_.begin(), np2);
 
-                if(i2 == plist.size()) {
-                    if(ni2 == clist_params_.size()) {
-                        subsystemfile << "// Address not in System params...rebuilding into clist_params_" << std::endl;
-                        clist_params_.push_back((*it)->pvec[1]);
-                        subsystemfile << "clist_params_.push_back(new double("<< *((*it)->pvec[1]) <<")); // "<< icp <<" address: " << (void *)(*it)->pvec[1] << std::endl;
-                        icp++;
+                if (i2 == plist.size()) {
+                    if (ni2 == clist_params_.size()) {
+                       subsystemfile
+                           << "// Address not in System params...rebuilding into clist_params_"
+                           << std::endl;
+                       clist_params_.push_back((*it)->pvec[1]);
+                       subsystemfile << "clist_params_.push_back(new double(" << *((*it)->pvec[1])
+                                     << ")); // " << icp << " address: " << (void*)(*it)->pvec[1]
+                                     << std::endl;
+                       icp++;
                     }
-                    npb2=true;
+                    npb2 = true;
                 }
 
-                bool npb3=false;
-                VEC_pD::iterator np3 = std::find(clist_params_.begin(), clist_params_.end(),(*it)->pvec[2]);
+                bool npb3 = false;
+                VEC_pD::iterator np3 =
+                    std::find(clist_params_.begin(), clist_params_.end(), (*it)->pvec[2]);
                 size_t ni3 = std::distance(clist_params_.begin(), np3);
 
-                if(i3 == plist.size()) {
-                    if(ni3 == clist_params_.size()) {
-                        subsystemfile << "// Address not in System params...rebuilding into clist_params_" << std::endl;
-                        clist_params_.push_back((*it)->pvec[2]);
-                        subsystemfile << "clist_params_.push_back(new double("<< *((*it)->pvec[2]) <<")); // "<< icp <<" address: " << (void *)(*it)->pvec[2] << std::endl;
-                        icp++;
+                if (i3 == plist.size()) {
+                    if (ni3 == clist_params_.size()) {
+                       subsystemfile
+                           << "// Address not in System params...rebuilding into clist_params_"
+                           << std::endl;
+                       clist_params_.push_back((*it)->pvec[2]);
+                       subsystemfile << "clist_params_.push_back(new double(" << *((*it)->pvec[2])
+                                     << ")); // " << icp << " address: " << (void*)(*it)->pvec[2]
+                                     << std::endl;
+                       icp++;
                     }
-                    npb3=true;
+                    npb3 = true;
                 }
 
-                bool npb4=false;
-                VEC_pD::iterator np4 = std::find(clist_params_.begin(), clist_params_.end(),(*it)->pvec[3]);
+                bool npb4 = false;
+                VEC_pD::iterator np4 =
+                    std::find(clist_params_.begin(), clist_params_.end(), (*it)->pvec[3]);
                 size_t ni4 = std::distance(clist_params_.begin(), np4);
 
-                if(i4 == plist.size()) {
-                    if(ni4 == clist_params_.size()) {
-                        subsystemfile << "// Address not in System params...rebuilding into clist_params_" << std::endl;
-                        clist_params_.push_back((*it)->pvec[3]);
-                        subsystemfile << "clist_params_.push_back(new double("<< *((*it)->pvec[3]) <<")); // "<< icp <<" address: " << (void *)(*it)->pvec[3] << std::endl;
-                        icp++;
+                if (i4 == plist.size()) {
+                    if (ni4 == clist_params_.size()) {
+                       subsystemfile
+                           << "// Address not in System params...rebuilding into clist_params_"
+                           << std::endl;
+                       clist_params_.push_back((*it)->pvec[3]);
+                       subsystemfile << "clist_params_.push_back(new double(" << *((*it)->pvec[3])
+                                     << ")); // " << icp << " address: " << (void*)(*it)->pvec[3]
+                                     << std::endl;
+                       icp++;
                     }
-                    npb4=true;
+                    npb4 = true;
                 }
 
-                bool npb5=false;
-                VEC_pD::iterator np5 = std::find(clist_params_.begin(), clist_params_.end(),(*it)->pvec[4]);
+                bool npb5 = false;
+                VEC_pD::iterator np5 =
+                    std::find(clist_params_.begin(), clist_params_.end(), (*it)->pvec[4]);
                 size_t ni5 = std::distance(clist_params_.begin(), np5);
 
-                if(i5 == plist.size()) {
-                    if(ni5 == clist_params_.size()) {
-                        subsystemfile << "// Address not in System params...rebuilding into clist_params_" << std::endl;
-                        clist_params_.push_back((*it)->pvec[4]);
-                        subsystemfile << "clist_params_.push_back(new double("<< *((*it)->pvec[4]) <<")); // "<< icp <<" address: " << (void *)(*it)->pvec[4] << std::endl;
-                        icp++;
+                if (i5 == plist.size()) {
+                    if (ni5 == clist_params_.size()) {
+                       subsystemfile
+                           << "// Address not in System params...rebuilding into clist_params_"
+                           << std::endl;
+                       clist_params_.push_back((*it)->pvec[4]);
+                       subsystemfile << "clist_params_.push_back(new double(" << *((*it)->pvec[4])
+                                     << ")); // " << icp << " address: " << (void*)(*it)->pvec[4]
+                                     << std::endl;
+                       icp++;
                     }
-                    npb5=true;
+                    npb5 = true;
                 }
 
-                subsystemfile << "ConstraintP2PAngle * c" << ic <<"=new ConstraintP2PAngle();" << std::endl;
-                subsystemfile << "c" << ic << "->pvec.push_back(" << (npb1?("clist_params_["):("plist_[")) << (npb1?ni1:i1) <<"]);" << std::endl;
-                subsystemfile << "c" << ic << "->pvec.push_back(" << (npb2?("clist_params_["):("plist_[")) << (npb2?ni2:i2) <<"]);" << std::endl;
-                subsystemfile << "c" << ic << "->pvec.push_back(" << (npb3?("clist_params_["):("plist_[")) << (npb3?ni3:i3) <<"]);" << std::endl;
-                subsystemfile << "c" << ic << "->pvec.push_back(" << (npb4?("clist_params_["):("plist_[")) << (npb4?ni4:i4) <<"]);" << std::endl;
-                subsystemfile << "c" << ic << "->pvec.push_back(" << (npb5?("clist_params_["):("plist_[")) << (npb5?ni5:i5) <<"]);" << std::endl;
+                subsystemfile << "ConstraintP2PDistance * c" << ic
+                              << "=new ConstraintP2PDistance();" << std::endl;
+                subsystemfile << "c" << ic << "->pvec.push_back("
+                              << (npb1 ? ("clist_params_[") : ("plist_[")) << (npb1 ? ni1 : i1)
+                              << "]);" << std::endl;
+                subsystemfile << "c" << ic << "->pvec.push_back("
+                              << (npb2 ? ("clist_params_[") : ("plist_[")) << (npb2 ? ni2 : i2)
+                              << "]);" << std::endl;
+                subsystemfile << "c" << ic << "->pvec.push_back("
+                              << (npb3 ? ("clist_params_[") : ("plist_[")) << (npb3 ? ni3 : i3)
+                              << "]);" << std::endl;
+                subsystemfile << "c" << ic << "->pvec.push_back("
+                              << (npb4 ? ("clist_params_[") : ("plist_[")) << (npb4 ? ni4 : i4)
+                              << "]);" << std::endl;
+                subsystemfile << "c" << ic << "->pvec.push_back("
+                              << (npb5 ? ("clist_params_[") : ("plist_[")) << (npb5 ? ni5 : i5)
+                              << "]);" << std::endl;
                 subsystemfile << "c" << ic << "->origpvec=c" << ic << "->pvec;" << std::endl;
                 subsystemfile << "c" << ic << "->rescale();" << std::endl;
-                subsystemfile << "clist_.push_back(c" << ic << "); // addresses = "<< (*it)->pvec[0] << "," << (*it)->pvec[1] << "," << (*it)->pvec[2] << "," << (*it)->pvec[3] << "," << (*it)->pvec[4] << std::endl;
+                subsystemfile << "clist_.push_back(c" << ic
+                              << "); // addresses = " << (*it)->pvec[0] << "," << (*it)->pvec[1]
+                              << "," << (*it)->pvec[2] << "," << (*it)->pvec[3] << ","
+                              << (*it)->pvec[4] << std::endl;
                 break;
             }
-            case P2LDistance:
-            { // 7
-                VEC_pD::iterator p1 = std::find(plist.begin(), plist.end(),(*it)->pvec[0]);
-                VEC_pD::iterator p2 = std::find(plist.begin(), plist.end(),(*it)->pvec[1]);
-                VEC_pD::iterator p3 = std::find(plist.begin(), plist.end(),(*it)->pvec[2]);
-                VEC_pD::iterator p4 = std::find(plist.begin(), plist.end(),(*it)->pvec[3]);
-                VEC_pD::iterator p5 = std::find(plist.begin(), plist.end(),(*it)->pvec[4]);
-                VEC_pD::iterator p6 = std::find(plist.begin(), plist.end(),(*it)->pvec[5]);
-                VEC_pD::iterator p7 = std::find(plist.begin(), plist.end(),(*it)->pvec[6]);
+            case P2PAngle: {// 5
+                VEC_pD::iterator p1 = std::find(plist.begin(), plist.end(), (*it)->pvec[0]);
+                VEC_pD::iterator p2 = std::find(plist.begin(), plist.end(), (*it)->pvec[1]);
+                VEC_pD::iterator p3 = std::find(plist.begin(), plist.end(), (*it)->pvec[2]);
+                VEC_pD::iterator p4 = std::find(plist.begin(), plist.end(), (*it)->pvec[3]);
+                VEC_pD::iterator p5 = std::find(plist.begin(), plist.end(), (*it)->pvec[4]);
+                size_t i1 = std::distance(plist.begin(), p1);
+                size_t i2 = std::distance(plist.begin(), p2);
+                size_t i3 = std::distance(plist.begin(), p3);
+                size_t i4 = std::distance(plist.begin(), p4);
+                size_t i5 = std::distance(plist.begin(), p5);
+
+                bool npb1 = false;
+                VEC_pD::iterator np1 =
+                    std::find(clist_params_.begin(), clist_params_.end(), (*it)->pvec[0]);
+                size_t ni1 = std::distance(clist_params_.begin(), np1);
+
+                if (i1 == plist.size()) {
+                    if (ni1 == clist_params_.size()) {
+                       subsystemfile
+                           << "// Address not in System params...rebuilding into clist_params_"
+                           << std::endl;
+                       clist_params_.push_back((*it)->pvec[0]);
+                       subsystemfile << "clist_params_.push_back(new double(" << *((*it)->pvec[0])
+                                     << ")); // " << icp << " address: " << (void*)(*it)->pvec[0]
+                                     << std::endl;
+                       icp++;
+                    }
+                    npb1 = true;
+                }
+
+                bool npb2 = false;
+                VEC_pD::iterator np2 =
+                    std::find(clist_params_.begin(), clist_params_.end(), (*it)->pvec[1]);
+                size_t ni2 = std::distance(clist_params_.begin(), np2);
+
+                if (i2 == plist.size()) {
+                    if (ni2 == clist_params_.size()) {
+                       subsystemfile
+                           << "// Address not in System params...rebuilding into clist_params_"
+                           << std::endl;
+                       clist_params_.push_back((*it)->pvec[1]);
+                       subsystemfile << "clist_params_.push_back(new double(" << *((*it)->pvec[1])
+                                     << ")); // " << icp << " address: " << (void*)(*it)->pvec[1]
+                                     << std::endl;
+                       icp++;
+                    }
+                    npb2 = true;
+                }
+
+                bool npb3 = false;
+                VEC_pD::iterator np3 =
+                    std::find(clist_params_.begin(), clist_params_.end(), (*it)->pvec[2]);
+                size_t ni3 = std::distance(clist_params_.begin(), np3);
+
+                if (i3 == plist.size()) {
+                    if (ni3 == clist_params_.size()) {
+                       subsystemfile
+                           << "// Address not in System params...rebuilding into clist_params_"
+                           << std::endl;
+                       clist_params_.push_back((*it)->pvec[2]);
+                       subsystemfile << "clist_params_.push_back(new double(" << *((*it)->pvec[2])
+                                     << ")); // " << icp << " address: " << (void*)(*it)->pvec[2]
+                                     << std::endl;
+                       icp++;
+                    }
+                    npb3 = true;
+                }
+
+                bool npb4 = false;
+                VEC_pD::iterator np4 =
+                    std::find(clist_params_.begin(), clist_params_.end(), (*it)->pvec[3]);
+                size_t ni4 = std::distance(clist_params_.begin(), np4);
+
+                if (i4 == plist.size()) {
+                    if (ni4 == clist_params_.size()) {
+                       subsystemfile
+                           << "// Address not in System params...rebuilding into clist_params_"
+                           << std::endl;
+                       clist_params_.push_back((*it)->pvec[3]);
+                       subsystemfile << "clist_params_.push_back(new double(" << *((*it)->pvec[3])
+                                     << ")); // " << icp << " address: " << (void*)(*it)->pvec[3]
+                                     << std::endl;
+                       icp++;
+                    }
+                    npb4 = true;
+                }
+
+                bool npb5 = false;
+                VEC_pD::iterator np5 =
+                    std::find(clist_params_.begin(), clist_params_.end(), (*it)->pvec[4]);
+                size_t ni5 = std::distance(clist_params_.begin(), np5);
+
+                if (i5 == plist.size()) {
+                    if (ni5 == clist_params_.size()) {
+                       subsystemfile
+                           << "// Address not in System params...rebuilding into clist_params_"
+                           << std::endl;
+                       clist_params_.push_back((*it)->pvec[4]);
+                       subsystemfile << "clist_params_.push_back(new double(" << *((*it)->pvec[4])
+                                     << ")); // " << icp << " address: " << (void*)(*it)->pvec[4]
+                                     << std::endl;
+                       icp++;
+                    }
+                    npb5 = true;
+                }
+
+                subsystemfile << "ConstraintP2PAngle * c" << ic << "=new ConstraintP2PAngle();"
+                              << std::endl;
+                subsystemfile << "c" << ic << "->pvec.push_back("
+                              << (npb1 ? ("clist_params_[") : ("plist_[")) << (npb1 ? ni1 : i1)
+                              << "]);" << std::endl;
+                subsystemfile << "c" << ic << "->pvec.push_back("
+                              << (npb2 ? ("clist_params_[") : ("plist_[")) << (npb2 ? ni2 : i2)
+                              << "]);" << std::endl;
+                subsystemfile << "c" << ic << "->pvec.push_back("
+                              << (npb3 ? ("clist_params_[") : ("plist_[")) << (npb3 ? ni3 : i3)
+                              << "]);" << std::endl;
+                subsystemfile << "c" << ic << "->pvec.push_back("
+                              << (npb4 ? ("clist_params_[") : ("plist_[")) << (npb4 ? ni4 : i4)
+                              << "]);" << std::endl;
+                subsystemfile << "c" << ic << "->pvec.push_back("
+                              << (npb5 ? ("clist_params_[") : ("plist_[")) << (npb5 ? ni5 : i5)
+                              << "]);" << std::endl;
+                subsystemfile << "c" << ic << "->origpvec=c" << ic << "->pvec;" << std::endl;
+                subsystemfile << "c" << ic << "->rescale();" << std::endl;
+                subsystemfile << "clist_.push_back(c" << ic
+                              << "); // addresses = " << (*it)->pvec[0] << "," << (*it)->pvec[1]
+                              << "," << (*it)->pvec[2] << "," << (*it)->pvec[3] << ","
+                              << (*it)->pvec[4] << std::endl;
+                break;
+            }
+            case P2LDistance: {// 7
+                VEC_pD::iterator p1 = std::find(plist.begin(), plist.end(), (*it)->pvec[0]);
+                VEC_pD::iterator p2 = std::find(plist.begin(), plist.end(), (*it)->pvec[1]);
+                VEC_pD::iterator p3 = std::find(plist.begin(), plist.end(), (*it)->pvec[2]);
+                VEC_pD::iterator p4 = std::find(plist.begin(), plist.end(), (*it)->pvec[3]);
+                VEC_pD::iterator p5 = std::find(plist.begin(), plist.end(), (*it)->pvec[4]);
+                VEC_pD::iterator p6 = std::find(plist.begin(), plist.end(), (*it)->pvec[5]);
+                VEC_pD::iterator p7 = std::find(plist.begin(), plist.end(), (*it)->pvec[6]);
                 size_t i1 = std::distance(plist.begin(), p1);
                 size_t i2 = std::distance(plist.begin(), p2);
                 size_t i3 = std::distance(plist.begin(), p3);
@@ -2554,125 +2751,178 @@ void System::extractSubsystem(SubSystem *subsys, bool isRedundantsolving)
                 size_t i6 = std::distance(plist.begin(), p6);
                 size_t i7 = std::distance(plist.begin(), p7);
 
-                bool npb1=false;
-                VEC_pD::iterator np1 = std::find(clist_params_.begin(), clist_params_.end(),(*it)->pvec[0]);
+                bool npb1 = false;
+                VEC_pD::iterator np1 =
+                    std::find(clist_params_.begin(), clist_params_.end(), (*it)->pvec[0]);
                 size_t ni1 = std::distance(clist_params_.begin(), np1);
 
-                if(i1 == plist.size()) {
-                    if(ni1 == clist_params_.size()) {
-                        subsystemfile << "// Address not in System params...rebuilding into clist_params_" << std::endl;
-                        clist_params_.push_back((*it)->pvec[0]);
-                        subsystemfile << "clist_params_.push_back(new double("<< *((*it)->pvec[0]) <<")); // "<< icp <<" address: " << (void *)(*it)->pvec[0] << std::endl;
-                        icp++;
+                if (i1 == plist.size()) {
+                    if (ni1 == clist_params_.size()) {
+                       subsystemfile
+                           << "// Address not in System params...rebuilding into clist_params_"
+                           << std::endl;
+                       clist_params_.push_back((*it)->pvec[0]);
+                       subsystemfile << "clist_params_.push_back(new double(" << *((*it)->pvec[0])
+                                     << ")); // " << icp << " address: " << (void*)(*it)->pvec[0]
+                                     << std::endl;
+                       icp++;
                     }
-                    npb1=true;
+                    npb1 = true;
                 }
 
-                bool npb2=false;
-                VEC_pD::iterator np2 = std::find(clist_params_.begin(), clist_params_.end(),(*it)->pvec[1]);
+                bool npb2 = false;
+                VEC_pD::iterator np2 =
+                    std::find(clist_params_.begin(), clist_params_.end(), (*it)->pvec[1]);
                 size_t ni2 = std::distance(clist_params_.begin(), np2);
 
-                if(i2 == plist.size()) {
-                    if(ni2 == clist_params_.size()) {
-                        subsystemfile << "// Address not in System params...rebuilding into clist_params_" << std::endl;
-                        clist_params_.push_back((*it)->pvec[1]);
-                        subsystemfile << "clist_params_.push_back(new double("<< *((*it)->pvec[1]) <<")); // "<< icp <<" address: " << (void *)(*it)->pvec[1] << std::endl;
-                        icp++;
+                if (i2 == plist.size()) {
+                    if (ni2 == clist_params_.size()) {
+                       subsystemfile
+                           << "// Address not in System params...rebuilding into clist_params_"
+                           << std::endl;
+                       clist_params_.push_back((*it)->pvec[1]);
+                       subsystemfile << "clist_params_.push_back(new double(" << *((*it)->pvec[1])
+                                     << ")); // " << icp << " address: " << (void*)(*it)->pvec[1]
+                                     << std::endl;
+                       icp++;
                     }
-                    npb2=true;
+                    npb2 = true;
                 }
 
-                bool npb3=false;
-                VEC_pD::iterator np3 = std::find(clist_params_.begin(), clist_params_.end(),(*it)->pvec[2]);
+                bool npb3 = false;
+                VEC_pD::iterator np3 =
+                    std::find(clist_params_.begin(), clist_params_.end(), (*it)->pvec[2]);
                 size_t ni3 = std::distance(clist_params_.begin(), np3);
 
-                if(i3 == plist.size()) {
-                    if(ni3 == clist_params_.size()) {
-                        subsystemfile << "// Address not in System params...rebuilding into clist_params_" << std::endl;
-                        clist_params_.push_back((*it)->pvec[2]);
-                        subsystemfile << "clist_params_.push_back(new double("<< *((*it)->pvec[2]) <<")); // "<< icp <<" address: " << (void *)(*it)->pvec[2] << std::endl;
-                        icp++;
+                if (i3 == plist.size()) {
+                    if (ni3 == clist_params_.size()) {
+                       subsystemfile
+                           << "// Address not in System params...rebuilding into clist_params_"
+                           << std::endl;
+                       clist_params_.push_back((*it)->pvec[2]);
+                       subsystemfile << "clist_params_.push_back(new double(" << *((*it)->pvec[2])
+                                     << ")); // " << icp << " address: " << (void*)(*it)->pvec[2]
+                                     << std::endl;
+                       icp++;
                     }
-                    npb3=true;
+                    npb3 = true;
                 }
 
-                bool npb4=false;
-                VEC_pD::iterator np4 = std::find(clist_params_.begin(), clist_params_.end(),(*it)->pvec[3]);
+                bool npb4 = false;
+                VEC_pD::iterator np4 =
+                    std::find(clist_params_.begin(), clist_params_.end(), (*it)->pvec[3]);
                 size_t ni4 = std::distance(clist_params_.begin(), np4);
 
-                if(i4 == plist.size()) {
-                    if(ni4 == clist_params_.size()) {
-                        subsystemfile << "// Address not in System params...rebuilding into clist_params_" << std::endl;
-                        clist_params_.push_back((*it)->pvec[3]);
-                        subsystemfile << "clist_params_.push_back(new double("<< *((*it)->pvec[3]) <<")); // "<< icp <<" address: " << (void *)(*it)->pvec[3] << std::endl;
-                        icp++;
+                if (i4 == plist.size()) {
+                    if (ni4 == clist_params_.size()) {
+                       subsystemfile
+                           << "// Address not in System params...rebuilding into clist_params_"
+                           << std::endl;
+                       clist_params_.push_back((*it)->pvec[3]);
+                       subsystemfile << "clist_params_.push_back(new double(" << *((*it)->pvec[3])
+                                     << ")); // " << icp << " address: " << (void*)(*it)->pvec[3]
+                                     << std::endl;
+                       icp++;
                     }
-                    npb4=true;
+                    npb4 = true;
                 }
 
-                bool npb5=false;
-                VEC_pD::iterator np5 = std::find(clist_params_.begin(), clist_params_.end(),(*it)->pvec[4]);
+                bool npb5 = false;
+                VEC_pD::iterator np5 =
+                    std::find(clist_params_.begin(), clist_params_.end(), (*it)->pvec[4]);
                 size_t ni5 = std::distance(clist_params_.begin(), np5);
 
-                if(i5 == plist.size()) {
-                    if(ni5 == clist_params_.size()) {
-                        subsystemfile << "// Address not in System params...rebuilding into clist_params_" << std::endl;
-                        clist_params_.push_back((*it)->pvec[4]);
-                        subsystemfile << "clist_params_.push_back(new double("<< *((*it)->pvec[4]) <<")); // "<< icp <<" address: " << (void *)(*it)->pvec[4] << std::endl;
-                        icp++;
+                if (i5 == plist.size()) {
+                    if (ni5 == clist_params_.size()) {
+                       subsystemfile
+                           << "// Address not in System params...rebuilding into clist_params_"
+                           << std::endl;
+                       clist_params_.push_back((*it)->pvec[4]);
+                       subsystemfile << "clist_params_.push_back(new double(" << *((*it)->pvec[4])
+                                     << ")); // " << icp << " address: " << (void*)(*it)->pvec[4]
+                                     << std::endl;
+                       icp++;
                     }
-                    npb5=true;
+                    npb5 = true;
                 }
 
-                bool npb6=false;
-                VEC_pD::iterator np6 = std::find(clist_params_.begin(), clist_params_.end(),(*it)->pvec[5]);
+                bool npb6 = false;
+                VEC_pD::iterator np6 =
+                    std::find(clist_params_.begin(), clist_params_.end(), (*it)->pvec[5]);
                 size_t ni6 = std::distance(clist_params_.begin(), np6);
 
-                if(i6 == plist.size()) {
-                    if(ni6 == clist_params_.size()) {
-                        subsystemfile << "// Address not in System params...rebuilding into clist_params_" << std::endl;
-                        clist_params_.push_back((*it)->pvec[5]);
-                        subsystemfile << "clist_params_.push_back(new double("<< *((*it)->pvec[5]) <<")); // "<< icp <<" address: " << (void *)(*it)->pvec[5] << std::endl;
-                        icp++;
+                if (i6 == plist.size()) {
+                    if (ni6 == clist_params_.size()) {
+                       subsystemfile
+                           << "// Address not in System params...rebuilding into clist_params_"
+                           << std::endl;
+                       clist_params_.push_back((*it)->pvec[5]);
+                       subsystemfile << "clist_params_.push_back(new double(" << *((*it)->pvec[5])
+                                     << ")); // " << icp << " address: " << (void*)(*it)->pvec[5]
+                                     << std::endl;
+                       icp++;
                     }
-                    npb6=true;
+                    npb6 = true;
                 }
 
-                bool npb7=false;
-                VEC_pD::iterator np7 = std::find(clist_params_.begin(), clist_params_.end(),(*it)->pvec[6]);
+                bool npb7 = false;
+                VEC_pD::iterator np7 =
+                    std::find(clist_params_.begin(), clist_params_.end(), (*it)->pvec[6]);
                 size_t ni7 = std::distance(clist_params_.begin(), np7);
 
-                if(i7 == plist.size()) {
-                    if(ni7 == clist_params_.size()) {
-                        subsystemfile << "// Address not in System params...rebuilding into clist_params_" << std::endl;
-                        clist_params_.push_back((*it)->pvec[6]);
-                        subsystemfile << "clist_params_.push_back(new double("<< *((*it)->pvec[6]) <<")); // "<< icp <<" address: " << (void *)(*it)->pvec[6] << std::endl;
-                        icp++;
+                if (i7 == plist.size()) {
+                    if (ni7 == clist_params_.size()) {
+                       subsystemfile
+                           << "// Address not in System params...rebuilding into clist_params_"
+                           << std::endl;
+                       clist_params_.push_back((*it)->pvec[6]);
+                       subsystemfile << "clist_params_.push_back(new double(" << *((*it)->pvec[6])
+                                     << ")); // " << icp << " address: " << (void*)(*it)->pvec[6]
+                                     << std::endl;
+                       icp++;
                     }
-                    npb7=true;
+                    npb7 = true;
                 }
 
-                subsystemfile << "ConstraintP2LDistance * c" << ic <<"=new ConstraintP2LDistance();" << std::endl;
-                subsystemfile << "c" << ic << "->pvec.push_back(" << (npb1?("clist_params_["):("plist_[")) << (npb1?ni1:i1) <<"]);" << std::endl;
-                subsystemfile << "c" << ic << "->pvec.push_back(" << (npb2?("clist_params_["):("plist_[")) << (npb2?ni2:i2) <<"]);" << std::endl;
-                subsystemfile << "c" << ic << "->pvec.push_back(" << (npb3?("clist_params_["):("plist_[")) << (npb3?ni3:i3) <<"]);" << std::endl;
-                subsystemfile << "c" << ic << "->pvec.push_back(" << (npb4?("clist_params_["):("plist_[")) << (npb4?ni4:i4) <<"]);" << std::endl;
-                subsystemfile << "c" << ic << "->pvec.push_back(" << (npb5?("clist_params_["):("plist_[")) << (npb5?ni5:i5) <<"]);" << std::endl;
-                subsystemfile << "c" << ic << "->pvec.push_back(" << (npb6?("clist_params_["):("plist_[")) << (npb6?ni6:i6) <<"]);" << std::endl;
-                subsystemfile << "c" << ic << "->pvec.push_back(" << (npb7?("clist_params_["):("plist_[")) << (npb7?ni7:i7) <<"]);" << std::endl;
+                subsystemfile << "ConstraintP2LDistance * c" << ic
+                              << "=new ConstraintP2LDistance();" << std::endl;
+                subsystemfile << "c" << ic << "->pvec.push_back("
+                              << (npb1 ? ("clist_params_[") : ("plist_[")) << (npb1 ? ni1 : i1)
+                              << "]);" << std::endl;
+                subsystemfile << "c" << ic << "->pvec.push_back("
+                              << (npb2 ? ("clist_params_[") : ("plist_[")) << (npb2 ? ni2 : i2)
+                              << "]);" << std::endl;
+                subsystemfile << "c" << ic << "->pvec.push_back("
+                              << (npb3 ? ("clist_params_[") : ("plist_[")) << (npb3 ? ni3 : i3)
+                              << "]);" << std::endl;
+                subsystemfile << "c" << ic << "->pvec.push_back("
+                              << (npb4 ? ("clist_params_[") : ("plist_[")) << (npb4 ? ni4 : i4)
+                              << "]);" << std::endl;
+                subsystemfile << "c" << ic << "->pvec.push_back("
+                              << (npb5 ? ("clist_params_[") : ("plist_[")) << (npb5 ? ni5 : i5)
+                              << "]);" << std::endl;
+                subsystemfile << "c" << ic << "->pvec.push_back("
+                              << (npb6 ? ("clist_params_[") : ("plist_[")) << (npb6 ? ni6 : i6)
+                              << "]);" << std::endl;
+                subsystemfile << "c" << ic << "->pvec.push_back("
+                              << (npb7 ? ("clist_params_[") : ("plist_[")) << (npb7 ? ni7 : i7)
+                              << "]);" << std::endl;
                 subsystemfile << "c" << ic << "->origpvec=c" << ic << "->pvec;" << std::endl;
                 subsystemfile << "c" << ic << "->rescale();" << std::endl;
-                subsystemfile << "clist_.push_back(c" << ic << "); // addresses = "<< (*it)->pvec[0] << "," << (*it)->pvec[1] << "," << (*it)->pvec[2] << "," << (*it)->pvec[3] << "," << (*it)->pvec[4] << "," << (*it)->pvec[5] << "," << (*it)->pvec[6] << std::endl;
+                subsystemfile << "clist_.push_back(c" << ic
+                              << "); // addresses = " << (*it)->pvec[0] << "," << (*it)->pvec[1]
+                              << "," << (*it)->pvec[2] << "," << (*it)->pvec[3] << ","
+                              << (*it)->pvec[4] << "," << (*it)->pvec[5] << "," << (*it)->pvec[6]
+                              << std::endl;
                 break;
             }
-            case PointOnLine:
-            { // 6
-                VEC_pD::iterator p1 = std::find(plist.begin(), plist.end(),(*it)->pvec[0]);
-                VEC_pD::iterator p2 = std::find(plist.begin(), plist.end(),(*it)->pvec[1]);
-                VEC_pD::iterator p3 = std::find(plist.begin(), plist.end(),(*it)->pvec[2]);
-                VEC_pD::iterator p4 = std::find(plist.begin(), plist.end(),(*it)->pvec[3]);
-                VEC_pD::iterator p5 = std::find(plist.begin(), plist.end(),(*it)->pvec[4]);
-                VEC_pD::iterator p6 = std::find(plist.begin(), plist.end(),(*it)->pvec[5]);
+            case PointOnLine: {// 6
+                VEC_pD::iterator p1 = std::find(plist.begin(), plist.end(), (*it)->pvec[0]);
+                VEC_pD::iterator p2 = std::find(plist.begin(), plist.end(), (*it)->pvec[1]);
+                VEC_pD::iterator p3 = std::find(plist.begin(), plist.end(), (*it)->pvec[2]);
+                VEC_pD::iterator p4 = std::find(plist.begin(), plist.end(), (*it)->pvec[3]);
+                VEC_pD::iterator p5 = std::find(plist.begin(), plist.end(), (*it)->pvec[4]);
+                VEC_pD::iterator p6 = std::find(plist.begin(), plist.end(), (*it)->pvec[5]);
                 size_t i1 = std::distance(plist.begin(), p1);
                 size_t i2 = std::distance(plist.begin(), p2);
                 size_t i3 = std::distance(plist.begin(), p3);
@@ -2680,110 +2930,155 @@ void System::extractSubsystem(SubSystem *subsys, bool isRedundantsolving)
                 size_t i5 = std::distance(plist.begin(), p5);
                 size_t i6 = std::distance(plist.begin(), p6);
 
-                bool npb1=false;
-                VEC_pD::iterator np1 = std::find(clist_params_.begin(), clist_params_.end(),(*it)->pvec[0]);
+                bool npb1 = false;
+                VEC_pD::iterator np1 =
+                    std::find(clist_params_.begin(), clist_params_.end(), (*it)->pvec[0]);
                 size_t ni1 = std::distance(clist_params_.begin(), np1);
 
-                if(i1 == plist.size()) {
-                    if(ni1 == clist_params_.size()) {
-                        subsystemfile << "// Address not in System params...rebuilding into clist_params_" << std::endl;
-                        clist_params_.push_back((*it)->pvec[0]);
-                        subsystemfile << "clist_params_.push_back(new double("<< *((*it)->pvec[0]) <<")); // "<< icp <<" address: " << (void *)(*it)->pvec[0] << std::endl;
-                        icp++;
+                if (i1 == plist.size()) {
+                    if (ni1 == clist_params_.size()) {
+                       subsystemfile
+                           << "// Address not in System params...rebuilding into clist_params_"
+                           << std::endl;
+                       clist_params_.push_back((*it)->pvec[0]);
+                       subsystemfile << "clist_params_.push_back(new double(" << *((*it)->pvec[0])
+                                     << ")); // " << icp << " address: " << (void*)(*it)->pvec[0]
+                                     << std::endl;
+                       icp++;
                     }
-                    npb1=true;
+                    npb1 = true;
                 }
 
-                bool npb2=false;
-                VEC_pD::iterator np2 = std::find(clist_params_.begin(), clist_params_.end(),(*it)->pvec[1]);
+                bool npb2 = false;
+                VEC_pD::iterator np2 =
+                    std::find(clist_params_.begin(), clist_params_.end(), (*it)->pvec[1]);
                 size_t ni2 = std::distance(clist_params_.begin(), np2);
 
-                if(i2 == plist.size()) {
-                    if(ni2 == clist_params_.size()) {
-                        subsystemfile << "// Address not in System params...rebuilding into clist_params_" << std::endl;
-                        clist_params_.push_back((*it)->pvec[1]);
-                        subsystemfile << "clist_params_.push_back(new double("<< *((*it)->pvec[1]) <<")); // "<< icp <<" address: " << (void *)(*it)->pvec[1] << std::endl;
-                        icp++;
+                if (i2 == plist.size()) {
+                    if (ni2 == clist_params_.size()) {
+                       subsystemfile
+                           << "// Address not in System params...rebuilding into clist_params_"
+                           << std::endl;
+                       clist_params_.push_back((*it)->pvec[1]);
+                       subsystemfile << "clist_params_.push_back(new double(" << *((*it)->pvec[1])
+                                     << ")); // " << icp << " address: " << (void*)(*it)->pvec[1]
+                                     << std::endl;
+                       icp++;
                     }
-                    npb2=true;
+                    npb2 = true;
                 }
 
-                bool npb3=false;
-                VEC_pD::iterator np3 = std::find(clist_params_.begin(), clist_params_.end(),(*it)->pvec[2]);
+                bool npb3 = false;
+                VEC_pD::iterator np3 =
+                    std::find(clist_params_.begin(), clist_params_.end(), (*it)->pvec[2]);
                 size_t ni3 = std::distance(clist_params_.begin(), np3);
 
-                if(i3 == plist.size()) {
-                    if(ni3 == clist_params_.size()) {
-                        subsystemfile << "// Address not in System params...rebuilding into clist_params_" << std::endl;
-                        clist_params_.push_back((*it)->pvec[2]);
-                        subsystemfile << "clist_params_.push_back(new double("<< *((*it)->pvec[2]) <<")); // "<< icp <<" address: " << (void *)(*it)->pvec[2] << std::endl;
-                        icp++;
+                if (i3 == plist.size()) {
+                    if (ni3 == clist_params_.size()) {
+                       subsystemfile
+                           << "// Address not in System params...rebuilding into clist_params_"
+                           << std::endl;
+                       clist_params_.push_back((*it)->pvec[2]);
+                       subsystemfile << "clist_params_.push_back(new double(" << *((*it)->pvec[2])
+                                     << ")); // " << icp << " address: " << (void*)(*it)->pvec[2]
+                                     << std::endl;
+                       icp++;
                     }
-                    npb3=true;
+                    npb3 = true;
                 }
 
-                bool npb4=false;
-                VEC_pD::iterator np4 = std::find(clist_params_.begin(), clist_params_.end(),(*it)->pvec[3]);
+                bool npb4 = false;
+                VEC_pD::iterator np4 =
+                    std::find(clist_params_.begin(), clist_params_.end(), (*it)->pvec[3]);
                 size_t ni4 = std::distance(clist_params_.begin(), np4);
 
-                if(i4 == plist.size()) {
-                    if(ni4 == clist_params_.size()) {
-                        subsystemfile << "// Address not in System params...rebuilding into clist_params_" << std::endl;
-                        clist_params_.push_back((*it)->pvec[3]);
-                        subsystemfile << "clist_params_.push_back(new double("<< *((*it)->pvec[3]) <<")); // "<< icp <<" address: " << (void *)(*it)->pvec[3] << std::endl;
-                        icp++;
+                if (i4 == plist.size()) {
+                    if (ni4 == clist_params_.size()) {
+                       subsystemfile
+                           << "// Address not in System params...rebuilding into clist_params_"
+                           << std::endl;
+                       clist_params_.push_back((*it)->pvec[3]);
+                       subsystemfile << "clist_params_.push_back(new double(" << *((*it)->pvec[3])
+                                     << ")); // " << icp << " address: " << (void*)(*it)->pvec[3]
+                                     << std::endl;
+                       icp++;
                     }
-                    npb4=true;
+                    npb4 = true;
                 }
 
-                bool npb5=false;
-                VEC_pD::iterator np5 = std::find(clist_params_.begin(), clist_params_.end(),(*it)->pvec[4]);
+                bool npb5 = false;
+                VEC_pD::iterator np5 =
+                    std::find(clist_params_.begin(), clist_params_.end(), (*it)->pvec[4]);
                 size_t ni5 = std::distance(clist_params_.begin(), np5);
 
-                if(i5 == plist.size()) {
-                    if(ni5 == clist_params_.size()) {
-                        subsystemfile << "// Address not in System params...rebuilding into clist_params_" << std::endl;
-                        clist_params_.push_back((*it)->pvec[4]);
-                        subsystemfile << "clist_params_.push_back(new double("<< *((*it)->pvec[4]) <<")); // "<< icp <<" address: " << (void *)(*it)->pvec[4] << std::endl;
-                        icp++;
+                if (i5 == plist.size()) {
+                    if (ni5 == clist_params_.size()) {
+                       subsystemfile
+                           << "// Address not in System params...rebuilding into clist_params_"
+                           << std::endl;
+                       clist_params_.push_back((*it)->pvec[4]);
+                       subsystemfile << "clist_params_.push_back(new double(" << *((*it)->pvec[4])
+                                     << ")); // " << icp << " address: " << (void*)(*it)->pvec[4]
+                                     << std::endl;
+                       icp++;
                     }
-                    npb5=true;
+                    npb5 = true;
                 }
 
-                bool npb6=false;
-                VEC_pD::iterator np6 = std::find(clist_params_.begin(), clist_params_.end(),(*it)->pvec[5]);
+                bool npb6 = false;
+                VEC_pD::iterator np6 =
+                    std::find(clist_params_.begin(), clist_params_.end(), (*it)->pvec[5]);
                 size_t ni6 = std::distance(clist_params_.begin(), np6);
 
-                if(i6 == plist.size()) {
-                    if(ni6 == clist_params_.size()) {
-                        subsystemfile << "// Address not in System params...rebuilding into clist_params_" << std::endl;
-                        clist_params_.push_back((*it)->pvec[5]);
-                        subsystemfile << "clist_params_.push_back(new double("<< *((*it)->pvec[5]) <<")); // "<< icp <<" address: " << (void *)(*it)->pvec[5] << std::endl;
-                        icp++;
+                if (i6 == plist.size()) {
+                    if (ni6 == clist_params_.size()) {
+                       subsystemfile
+                           << "// Address not in System params...rebuilding into clist_params_"
+                           << std::endl;
+                       clist_params_.push_back((*it)->pvec[5]);
+                       subsystemfile << "clist_params_.push_back(new double(" << *((*it)->pvec[5])
+                                     << ")); // " << icp << " address: " << (void*)(*it)->pvec[5]
+                                     << std::endl;
+                       icp++;
                     }
-                    npb6=true;
+                    npb6 = true;
                 }
 
-                subsystemfile << "ConstraintPointOnLine * c" << ic <<"=new ConstraintPointOnLine();" << std::endl;
-                subsystemfile << "c" << ic << "->pvec.push_back(" << (npb1?("clist_params_["):("plist_[")) << (npb1?ni1:i1) <<"]);" << std::endl;
-                subsystemfile << "c" << ic << "->pvec.push_back(" << (npb2?("clist_params_["):("plist_[")) << (npb2?ni2:i2) <<"]);" << std::endl;
-                subsystemfile << "c" << ic << "->pvec.push_back(" << (npb3?("clist_params_["):("plist_[")) << (npb3?ni3:i3) <<"]);" << std::endl;
-                subsystemfile << "c" << ic << "->pvec.push_back(" << (npb4?("clist_params_["):("plist_[")) << (npb4?ni4:i4) <<"]);" << std::endl;
-                subsystemfile << "c" << ic << "->pvec.push_back(" << (npb5?("clist_params_["):("plist_[")) << (npb5?ni5:i5) <<"]);" << std::endl;
-                subsystemfile << "c" << ic << "->pvec.push_back(" << (npb6?("clist_params_["):("plist_[")) << (npb6?ni6:i6) <<"]);" << std::endl;
+                subsystemfile << "ConstraintPointOnLine * c" << ic
+                              << "=new ConstraintPointOnLine();" << std::endl;
+                subsystemfile << "c" << ic << "->pvec.push_back("
+                              << (npb1 ? ("clist_params_[") : ("plist_[")) << (npb1 ? ni1 : i1)
+                              << "]);" << std::endl;
+                subsystemfile << "c" << ic << "->pvec.push_back("
+                              << (npb2 ? ("clist_params_[") : ("plist_[")) << (npb2 ? ni2 : i2)
+                              << "]);" << std::endl;
+                subsystemfile << "c" << ic << "->pvec.push_back("
+                              << (npb3 ? ("clist_params_[") : ("plist_[")) << (npb3 ? ni3 : i3)
+                              << "]);" << std::endl;
+                subsystemfile << "c" << ic << "->pvec.push_back("
+                              << (npb4 ? ("clist_params_[") : ("plist_[")) << (npb4 ? ni4 : i4)
+                              << "]);" << std::endl;
+                subsystemfile << "c" << ic << "->pvec.push_back("
+                              << (npb5 ? ("clist_params_[") : ("plist_[")) << (npb5 ? ni5 : i5)
+                              << "]);" << std::endl;
+                subsystemfile << "c" << ic << "->pvec.push_back("
+                              << (npb6 ? ("clist_params_[") : ("plist_[")) << (npb6 ? ni6 : i6)
+                              << "]);" << std::endl;
                 subsystemfile << "c" << ic << "->origpvec=c" << ic << "->pvec;" << std::endl;
                 subsystemfile << "c" << ic << "->rescale();" << std::endl;
-                subsystemfile << "clist_.push_back(c" << ic << "); // addresses = "<< (*it)->pvec[0] << "," << (*it)->pvec[1] << "," << (*it)->pvec[2] << "," << (*it)->pvec[3] << "," << (*it)->pvec[4] << "," << (*it)->pvec[5] << std::endl;
+                subsystemfile << "clist_.push_back(c" << ic
+                              << "); // addresses = " << (*it)->pvec[0] << "," << (*it)->pvec[1]
+                              << "," << (*it)->pvec[2] << "," << (*it)->pvec[3] << ","
+                              << (*it)->pvec[4] << "," << (*it)->pvec[5] << std::endl;
                 break;
             }
-            case PointOnPerpBisector:
-            { // 6
-                VEC_pD::iterator p1 = std::find(plist.begin(), plist.end(),(*it)->pvec[0]);
-                VEC_pD::iterator p2 = std::find(plist.begin(), plist.end(),(*it)->pvec[1]);
-                VEC_pD::iterator p3 = std::find(plist.begin(), plist.end(),(*it)->pvec[2]);
-                VEC_pD::iterator p4 = std::find(plist.begin(), plist.end(),(*it)->pvec[3]);
-                VEC_pD::iterator p5 = std::find(plist.begin(), plist.end(),(*it)->pvec[4]);
-                VEC_pD::iterator p6 = std::find(plist.begin(), plist.end(),(*it)->pvec[5]);
+            case PointOnPerpBisector: {// 6
+                VEC_pD::iterator p1 = std::find(plist.begin(), plist.end(), (*it)->pvec[0]);
+                VEC_pD::iterator p2 = std::find(plist.begin(), plist.end(), (*it)->pvec[1]);
+                VEC_pD::iterator p3 = std::find(plist.begin(), plist.end(), (*it)->pvec[2]);
+                VEC_pD::iterator p4 = std::find(plist.begin(), plist.end(), (*it)->pvec[3]);
+                VEC_pD::iterator p5 = std::find(plist.begin(), plist.end(), (*it)->pvec[4]);
+                VEC_pD::iterator p6 = std::find(plist.begin(), plist.end(), (*it)->pvec[5]);
                 size_t i1 = std::distance(plist.begin(), p1);
                 size_t i2 = std::distance(plist.begin(), p2);
                 size_t i3 = std::distance(plist.begin(), p3);
@@ -2791,112 +3086,157 @@ void System::extractSubsystem(SubSystem *subsys, bool isRedundantsolving)
                 size_t i5 = std::distance(plist.begin(), p5);
                 size_t i6 = std::distance(plist.begin(), p6);
 
-                bool npb1=false;
-                VEC_pD::iterator np1 = std::find(clist_params_.begin(), clist_params_.end(),(*it)->pvec[0]);
+                bool npb1 = false;
+                VEC_pD::iterator np1 =
+                    std::find(clist_params_.begin(), clist_params_.end(), (*it)->pvec[0]);
                 size_t ni1 = std::distance(clist_params_.begin(), np1);
 
-                if(i1 == plist.size()) {
-                    if(ni1 == clist_params_.size()) {
-                        subsystemfile << "// Address not in System params...rebuilding into clist_params_" << std::endl;
-                        clist_params_.push_back((*it)->pvec[0]);
-                        subsystemfile << "clist_params_.push_back(new double("<< *((*it)->pvec[0]) <<")); // "<< icp <<" address: " << (void *)(*it)->pvec[0] << std::endl;
-                        icp++;
+                if (i1 == plist.size()) {
+                    if (ni1 == clist_params_.size()) {
+                       subsystemfile
+                           << "// Address not in System params...rebuilding into clist_params_"
+                           << std::endl;
+                       clist_params_.push_back((*it)->pvec[0]);
+                       subsystemfile << "clist_params_.push_back(new double(" << *((*it)->pvec[0])
+                                     << ")); // " << icp << " address: " << (void*)(*it)->pvec[0]
+                                     << std::endl;
+                       icp++;
                     }
-                    npb1=true;
+                    npb1 = true;
                 }
 
-                bool npb2=false;
-                VEC_pD::iterator np2 = std::find(clist_params_.begin(), clist_params_.end(),(*it)->pvec[1]);
+                bool npb2 = false;
+                VEC_pD::iterator np2 =
+                    std::find(clist_params_.begin(), clist_params_.end(), (*it)->pvec[1]);
                 size_t ni2 = std::distance(clist_params_.begin(), np2);
 
-                if(i2 == plist.size()) {
-                    if(ni2 == clist_params_.size()) {
-                        subsystemfile << "// Address not in System params...rebuilding into clist_params_" << std::endl;
-                        clist_params_.push_back((*it)->pvec[1]);
-                        subsystemfile << "clist_params_.push_back(new double("<< *((*it)->pvec[1]) <<")); // "<< icp <<" address: " << (void *)(*it)->pvec[1] << std::endl;
-                        icp++;
+                if (i2 == plist.size()) {
+                    if (ni2 == clist_params_.size()) {
+                       subsystemfile
+                           << "// Address not in System params...rebuilding into clist_params_"
+                           << std::endl;
+                       clist_params_.push_back((*it)->pvec[1]);
+                       subsystemfile << "clist_params_.push_back(new double(" << *((*it)->pvec[1])
+                                     << ")); // " << icp << " address: " << (void*)(*it)->pvec[1]
+                                     << std::endl;
+                       icp++;
                     }
-                    npb2=true;
+                    npb2 = true;
                 }
 
-                bool npb3=false;
-                VEC_pD::iterator np3 = std::find(clist_params_.begin(), clist_params_.end(),(*it)->pvec[2]);
+                bool npb3 = false;
+                VEC_pD::iterator np3 =
+                    std::find(clist_params_.begin(), clist_params_.end(), (*it)->pvec[2]);
                 size_t ni3 = std::distance(clist_params_.begin(), np3);
 
-                if(i3 == plist.size()) {
-                    if(ni3 == clist_params_.size()) {
-                        subsystemfile << "// Address not in System params...rebuilding into clist_params_" << std::endl;
-                        clist_params_.push_back((*it)->pvec[2]);
-                        subsystemfile << "clist_params_.push_back(new double("<< *((*it)->pvec[2]) <<")); // "<< icp <<" address: " << (void *)(*it)->pvec[2] << std::endl;
-                        icp++;
+                if (i3 == plist.size()) {
+                    if (ni3 == clist_params_.size()) {
+                       subsystemfile
+                           << "// Address not in System params...rebuilding into clist_params_"
+                           << std::endl;
+                       clist_params_.push_back((*it)->pvec[2]);
+                       subsystemfile << "clist_params_.push_back(new double(" << *((*it)->pvec[2])
+                                     << ")); // " << icp << " address: " << (void*)(*it)->pvec[2]
+                                     << std::endl;
+                       icp++;
                     }
-                    npb3=true;
+                    npb3 = true;
                 }
 
-                bool npb4=false;
-                VEC_pD::iterator np4 = std::find(clist_params_.begin(), clist_params_.end(),(*it)->pvec[3]);
+                bool npb4 = false;
+                VEC_pD::iterator np4 =
+                    std::find(clist_params_.begin(), clist_params_.end(), (*it)->pvec[3]);
                 size_t ni4 = std::distance(clist_params_.begin(), np4);
 
-                if(i4 == plist.size()) {
-                    if(ni4 == clist_params_.size()) {
-                        subsystemfile << "// Address not in System params...rebuilding into clist_params_" << std::endl;
-                        clist_params_.push_back((*it)->pvec[3]);
-                        subsystemfile << "clist_params_.push_back(new double("<< *((*it)->pvec[3]) <<")); // "<< icp <<" address: " << (void *)(*it)->pvec[3] << std::endl;
-                        icp++;
+                if (i4 == plist.size()) {
+                    if (ni4 == clist_params_.size()) {
+                       subsystemfile
+                           << "// Address not in System params...rebuilding into clist_params_"
+                           << std::endl;
+                       clist_params_.push_back((*it)->pvec[3]);
+                       subsystemfile << "clist_params_.push_back(new double(" << *((*it)->pvec[3])
+                                     << ")); // " << icp << " address: " << (void*)(*it)->pvec[3]
+                                     << std::endl;
+                       icp++;
                     }
-                    npb4=true;
+                    npb4 = true;
                 }
 
-                bool npb5=false;
-                VEC_pD::iterator np5 = std::find(clist_params_.begin(), clist_params_.end(),(*it)->pvec[4]);
+                bool npb5 = false;
+                VEC_pD::iterator np5 =
+                    std::find(clist_params_.begin(), clist_params_.end(), (*it)->pvec[4]);
                 size_t ni5 = std::distance(clist_params_.begin(), np5);
 
-                if(i5 == plist.size()) {
-                    if(ni5 == clist_params_.size()) {
-                        subsystemfile << "// Address not in System params...rebuilding into clist_params_" << std::endl;
-                        clist_params_.push_back((*it)->pvec[4]);
-                        subsystemfile << "clist_params_.push_back(new double("<< *((*it)->pvec[4]) <<")); // "<< icp <<" address: " << (void *)(*it)->pvec[4] << std::endl;
-                        icp++;
+                if (i5 == plist.size()) {
+                    if (ni5 == clist_params_.size()) {
+                       subsystemfile
+                           << "// Address not in System params...rebuilding into clist_params_"
+                           << std::endl;
+                       clist_params_.push_back((*it)->pvec[4]);
+                       subsystemfile << "clist_params_.push_back(new double(" << *((*it)->pvec[4])
+                                     << ")); // " << icp << " address: " << (void*)(*it)->pvec[4]
+                                     << std::endl;
+                       icp++;
                     }
-                    npb5=true;
+                    npb5 = true;
                 }
 
-                bool npb6=false;
-                VEC_pD::iterator np6 = std::find(clist_params_.begin(), clist_params_.end(),(*it)->pvec[5]);
+                bool npb6 = false;
+                VEC_pD::iterator np6 =
+                    std::find(clist_params_.begin(), clist_params_.end(), (*it)->pvec[5]);
                 size_t ni6 = std::distance(clist_params_.begin(), np6);
 
-                if(i6 == plist.size()) {
-                    if(ni6 == clist_params_.size()) {
-                        subsystemfile << "// Address not in System params...rebuilding into clist_params_" << std::endl;
-                        clist_params_.push_back((*it)->pvec[5]);
-                        subsystemfile << "clist_params_.push_back(new double("<< *((*it)->pvec[5]) <<")); // "<< icp <<" address: " << (void *)(*it)->pvec[5] << std::endl;
-                        icp++;
+                if (i6 == plist.size()) {
+                    if (ni6 == clist_params_.size()) {
+                       subsystemfile
+                           << "// Address not in System params...rebuilding into clist_params_"
+                           << std::endl;
+                       clist_params_.push_back((*it)->pvec[5]);
+                       subsystemfile << "clist_params_.push_back(new double(" << *((*it)->pvec[5])
+                                     << ")); // " << icp << " address: " << (void*)(*it)->pvec[5]
+                                     << std::endl;
+                       icp++;
                     }
-                    npb6=true;
+                    npb6 = true;
                 }
 
-                subsystemfile << "ConstraintPointOnPerpBisector * c" << ic <<"=new ConstraintPointOnPerpBisector();" << std::endl;
-                subsystemfile << "c" << ic << "->pvec.push_back(" << (npb1?("clist_params_["):("plist_[")) << (npb1?ni1:i1) <<"]);" << std::endl;
-                subsystemfile << "c" << ic << "->pvec.push_back(" << (npb2?("clist_params_["):("plist_[")) << (npb2?ni2:i2) <<"]);" << std::endl;
-                subsystemfile << "c" << ic << "->pvec.push_back(" << (npb3?("clist_params_["):("plist_[")) << (npb3?ni3:i3) <<"]);" << std::endl;
-                subsystemfile << "c" << ic << "->pvec.push_back(" << (npb4?("clist_params_["):("plist_[")) << (npb4?ni4:i4) <<"]);" << std::endl;
-                subsystemfile << "c" << ic << "->pvec.push_back(" << (npb5?("clist_params_["):("plist_[")) << (npb5?ni5:i5) <<"]);" << std::endl;
-                subsystemfile << "c" << ic << "->pvec.push_back(" << (npb6?("clist_params_["):("plist_[")) << (npb6?ni6:i6) <<"]);" << std::endl;
+                subsystemfile << "ConstraintPointOnPerpBisector * c" << ic
+                              << "=new ConstraintPointOnPerpBisector();" << std::endl;
+                subsystemfile << "c" << ic << "->pvec.push_back("
+                              << (npb1 ? ("clist_params_[") : ("plist_[")) << (npb1 ? ni1 : i1)
+                              << "]);" << std::endl;
+                subsystemfile << "c" << ic << "->pvec.push_back("
+                              << (npb2 ? ("clist_params_[") : ("plist_[")) << (npb2 ? ni2 : i2)
+                              << "]);" << std::endl;
+                subsystemfile << "c" << ic << "->pvec.push_back("
+                              << (npb3 ? ("clist_params_[") : ("plist_[")) << (npb3 ? ni3 : i3)
+                              << "]);" << std::endl;
+                subsystemfile << "c" << ic << "->pvec.push_back("
+                              << (npb4 ? ("clist_params_[") : ("plist_[")) << (npb4 ? ni4 : i4)
+                              << "]);" << std::endl;
+                subsystemfile << "c" << ic << "->pvec.push_back("
+                              << (npb5 ? ("clist_params_[") : ("plist_[")) << (npb5 ? ni5 : i5)
+                              << "]);" << std::endl;
+                subsystemfile << "c" << ic << "->pvec.push_back("
+                              << (npb6 ? ("clist_params_[") : ("plist_[")) << (npb6 ? ni6 : i6)
+                              << "]);" << std::endl;
                 subsystemfile << "c" << ic << "->origpvec=c" << ic << "->pvec;" << std::endl;
                 subsystemfile << "c" << ic << "->rescale();" << std::endl;
-                subsystemfile << "clist_.push_back(c" << ic << "); // addresses = "<< (*it)->pvec[0] << "," << (*it)->pvec[1] << "," << (*it)->pvec[2] << "," << (*it)->pvec[3] << "," << (*it)->pvec[4] << "," << (*it)->pvec[5] << std::endl;
+                subsystemfile << "clist_.push_back(c" << ic
+                              << "); // addresses = " << (*it)->pvec[0] << "," << (*it)->pvec[1]
+                              << "," << (*it)->pvec[2] << "," << (*it)->pvec[3] << ","
+                              << (*it)->pvec[4] << "," << (*it)->pvec[5] << std::endl;
                 break;
             }
-            case Parallel:
-            { // 8
-                VEC_pD::iterator p1 = std::find(plist.begin(), plist.end(),(*it)->pvec[0]);
-                VEC_pD::iterator p2 = std::find(plist.begin(), plist.end(),(*it)->pvec[1]);
-                VEC_pD::iterator p3 = std::find(plist.begin(), plist.end(),(*it)->pvec[2]);
-                VEC_pD::iterator p4 = std::find(plist.begin(), plist.end(),(*it)->pvec[3]);
-                VEC_pD::iterator p5 = std::find(plist.begin(), plist.end(),(*it)->pvec[4]);
-                VEC_pD::iterator p6 = std::find(plist.begin(), plist.end(),(*it)->pvec[5]);
-                VEC_pD::iterator p7 = std::find(plist.begin(), plist.end(),(*it)->pvec[6]);
-                VEC_pD::iterator p8 = std::find(plist.begin(), plist.end(),(*it)->pvec[7]);
+            case Parallel: {// 8
+                VEC_pD::iterator p1 = std::find(plist.begin(), plist.end(), (*it)->pvec[0]);
+                VEC_pD::iterator p2 = std::find(plist.begin(), plist.end(), (*it)->pvec[1]);
+                VEC_pD::iterator p3 = std::find(plist.begin(), plist.end(), (*it)->pvec[2]);
+                VEC_pD::iterator p4 = std::find(plist.begin(), plist.end(), (*it)->pvec[3]);
+                VEC_pD::iterator p5 = std::find(plist.begin(), plist.end(), (*it)->pvec[4]);
+                VEC_pD::iterator p6 = std::find(plist.begin(), plist.end(), (*it)->pvec[5]);
+                VEC_pD::iterator p7 = std::find(plist.begin(), plist.end(), (*it)->pvec[6]);
+                VEC_pD::iterator p8 = std::find(plist.begin(), plist.end(), (*it)->pvec[7]);
                 size_t i1 = std::distance(plist.begin(), p1);
                 size_t i2 = std::distance(plist.begin(), p2);
                 size_t i3 = std::distance(plist.begin(), p3);
@@ -2906,142 +3246,202 @@ void System::extractSubsystem(SubSystem *subsys, bool isRedundantsolving)
                 size_t i7 = std::distance(plist.begin(), p7);
                 size_t i8 = std::distance(plist.begin(), p8);
 
-                bool npb1=false;
-                VEC_pD::iterator np1 = std::find(clist_params_.begin(), clist_params_.end(),(*it)->pvec[0]);
+                bool npb1 = false;
+                VEC_pD::iterator np1 =
+                    std::find(clist_params_.begin(), clist_params_.end(), (*it)->pvec[0]);
                 size_t ni1 = std::distance(clist_params_.begin(), np1);
 
-                if(i1 == plist.size()) {
-                    if(ni1 == clist_params_.size()) {
-                        subsystemfile << "// Address not in System params...rebuilding into clist_params_" << std::endl;
-                        clist_params_.push_back((*it)->pvec[0]);
-                        subsystemfile << "clist_params_.push_back(new double("<< *((*it)->pvec[0]) <<")); // "<< icp <<" address: " << (void *)(*it)->pvec[0] << std::endl;
-                        icp++;
+                if (i1 == plist.size()) {
+                    if (ni1 == clist_params_.size()) {
+                       subsystemfile
+                           << "// Address not in System params...rebuilding into clist_params_"
+                           << std::endl;
+                       clist_params_.push_back((*it)->pvec[0]);
+                       subsystemfile << "clist_params_.push_back(new double(" << *((*it)->pvec[0])
+                                     << ")); // " << icp << " address: " << (void*)(*it)->pvec[0]
+                                     << std::endl;
+                       icp++;
                     }
-                    npb1=true;
+                    npb1 = true;
                 }
 
-                bool npb2=false;
-                VEC_pD::iterator np2 = std::find(clist_params_.begin(), clist_params_.end(),(*it)->pvec[1]);
+                bool npb2 = false;
+                VEC_pD::iterator np2 =
+                    std::find(clist_params_.begin(), clist_params_.end(), (*it)->pvec[1]);
                 size_t ni2 = std::distance(clist_params_.begin(), np2);
 
-                if(i2 == plist.size()) {
-                    if(ni2 == clist_params_.size()) {
-                        subsystemfile << "// Address not in System params...rebuilding into clist_params_" << std::endl;
-                        clist_params_.push_back((*it)->pvec[1]);
-                        subsystemfile << "clist_params_.push_back(new double("<< *((*it)->pvec[1]) <<")); // "<< icp <<" address: " << (void *)(*it)->pvec[1] << std::endl;
-                        icp++;
+                if (i2 == plist.size()) {
+                    if (ni2 == clist_params_.size()) {
+                       subsystemfile
+                           << "// Address not in System params...rebuilding into clist_params_"
+                           << std::endl;
+                       clist_params_.push_back((*it)->pvec[1]);
+                       subsystemfile << "clist_params_.push_back(new double(" << *((*it)->pvec[1])
+                                     << ")); // " << icp << " address: " << (void*)(*it)->pvec[1]
+                                     << std::endl;
+                       icp++;
                     }
-                    npb2=true;
+                    npb2 = true;
                 }
 
-                bool npb3=false;
-                VEC_pD::iterator np3 = std::find(clist_params_.begin(), clist_params_.end(),(*it)->pvec[2]);
+                bool npb3 = false;
+                VEC_pD::iterator np3 =
+                    std::find(clist_params_.begin(), clist_params_.end(), (*it)->pvec[2]);
                 size_t ni3 = std::distance(clist_params_.begin(), np3);
 
-                if(i3 == plist.size()) {
-                    if(ni3 == clist_params_.size()) {
-                        subsystemfile << "// Address not in System params...rebuilding into clist_params_" << std::endl;
-                        clist_params_.push_back((*it)->pvec[2]);
-                        subsystemfile << "clist_params_.push_back(new double("<< *((*it)->pvec[2]) <<")); // "<< icp <<" address: " << (void *)(*it)->pvec[2] << std::endl;
-                        icp++;
+                if (i3 == plist.size()) {
+                    if (ni3 == clist_params_.size()) {
+                       subsystemfile
+                           << "// Address not in System params...rebuilding into clist_params_"
+                           << std::endl;
+                       clist_params_.push_back((*it)->pvec[2]);
+                       subsystemfile << "clist_params_.push_back(new double(" << *((*it)->pvec[2])
+                                     << ")); // " << icp << " address: " << (void*)(*it)->pvec[2]
+                                     << std::endl;
+                       icp++;
                     }
-                    npb3=true;
+                    npb3 = true;
                 }
 
-                bool npb4=false;
-                VEC_pD::iterator np4 = std::find(clist_params_.begin(), clist_params_.end(),(*it)->pvec[3]);
+                bool npb4 = false;
+                VEC_pD::iterator np4 =
+                    std::find(clist_params_.begin(), clist_params_.end(), (*it)->pvec[3]);
                 size_t ni4 = std::distance(clist_params_.begin(), np4);
 
-                if(i4 == plist.size()) {
-                    if(ni4 == clist_params_.size()) {
-                        subsystemfile << "// Address not in System params...rebuilding into clist_params_" << std::endl;
-                        clist_params_.push_back((*it)->pvec[3]);
-                        subsystemfile << "clist_params_.push_back(new double("<< *((*it)->pvec[3]) <<")); // "<< icp <<" address: " << (void *)(*it)->pvec[3] << std::endl;
-                        icp++;
+                if (i4 == plist.size()) {
+                    if (ni4 == clist_params_.size()) {
+                       subsystemfile
+                           << "// Address not in System params...rebuilding into clist_params_"
+                           << std::endl;
+                       clist_params_.push_back((*it)->pvec[3]);
+                       subsystemfile << "clist_params_.push_back(new double(" << *((*it)->pvec[3])
+                                     << ")); // " << icp << " address: " << (void*)(*it)->pvec[3]
+                                     << std::endl;
+                       icp++;
                     }
-                    npb4=true;
+                    npb4 = true;
                 }
 
-                bool npb5=false;
-                VEC_pD::iterator np5 = std::find(clist_params_.begin(), clist_params_.end(),(*it)->pvec[4]);
+                bool npb5 = false;
+                VEC_pD::iterator np5 =
+                    std::find(clist_params_.begin(), clist_params_.end(), (*it)->pvec[4]);
                 size_t ni5 = std::distance(clist_params_.begin(), np5);
 
-                if(i5 == plist.size()) {
-                    if(ni5 == clist_params_.size()) {
-                        subsystemfile << "// Address not in System params...rebuilding into clist_params_" << std::endl;
-                        clist_params_.push_back((*it)->pvec[4]);
-                        subsystemfile << "clist_params_.push_back(new double("<< *((*it)->pvec[4]) <<")); // "<< icp <<" address: " << (void *)(*it)->pvec[4] << std::endl;
-                        icp++;
+                if (i5 == plist.size()) {
+                    if (ni5 == clist_params_.size()) {
+                       subsystemfile
+                           << "// Address not in System params...rebuilding into clist_params_"
+                           << std::endl;
+                       clist_params_.push_back((*it)->pvec[4]);
+                       subsystemfile << "clist_params_.push_back(new double(" << *((*it)->pvec[4])
+                                     << ")); // " << icp << " address: " << (void*)(*it)->pvec[4]
+                                     << std::endl;
+                       icp++;
                     }
-                    npb5=true;
+                    npb5 = true;
                 }
 
-                bool npb6=false;
-                VEC_pD::iterator np6 = std::find(clist_params_.begin(), clist_params_.end(),(*it)->pvec[5]);
+                bool npb6 = false;
+                VEC_pD::iterator np6 =
+                    std::find(clist_params_.begin(), clist_params_.end(), (*it)->pvec[5]);
                 size_t ni6 = std::distance(clist_params_.begin(), np6);
 
-                if(i6 == plist.size()) {
-                    if(ni6 == clist_params_.size()) {
-                        subsystemfile << "// Address not in System params...rebuilding into clist_params_" << std::endl;
-                        clist_params_.push_back((*it)->pvec[5]);
-                        subsystemfile << "clist_params_.push_back(new double("<< *((*it)->pvec[5]) <<")); // "<< icp <<" address: " << (void *)(*it)->pvec[5] << std::endl;
-                        icp++;
+                if (i6 == plist.size()) {
+                    if (ni6 == clist_params_.size()) {
+                       subsystemfile
+                           << "// Address not in System params...rebuilding into clist_params_"
+                           << std::endl;
+                       clist_params_.push_back((*it)->pvec[5]);
+                       subsystemfile << "clist_params_.push_back(new double(" << *((*it)->pvec[5])
+                                     << ")); // " << icp << " address: " << (void*)(*it)->pvec[5]
+                                     << std::endl;
+                       icp++;
                     }
-                    npb6=true;
+                    npb6 = true;
                 }
 
-                bool npb7=false;
-                VEC_pD::iterator np7 = std::find(clist_params_.begin(), clist_params_.end(),(*it)->pvec[6]);
+                bool npb7 = false;
+                VEC_pD::iterator np7 =
+                    std::find(clist_params_.begin(), clist_params_.end(), (*it)->pvec[6]);
                 size_t ni7 = std::distance(clist_params_.begin(), np7);
 
-                if(i7 == plist.size()) {
-                    if(ni7 == clist_params_.size()) {
-                        subsystemfile << "// Address not in System params...rebuilding into clist_params_" << std::endl;
-                        clist_params_.push_back((*it)->pvec[6]);
-                        subsystemfile << "clist_params_.push_back(new double("<< *((*it)->pvec[6]) <<")); // "<< icp <<" address: " << (void *)(*it)->pvec[6] << std::endl;
-                        icp++;
+                if (i7 == plist.size()) {
+                    if (ni7 == clist_params_.size()) {
+                       subsystemfile
+                           << "// Address not in System params...rebuilding into clist_params_"
+                           << std::endl;
+                       clist_params_.push_back((*it)->pvec[6]);
+                       subsystemfile << "clist_params_.push_back(new double(" << *((*it)->pvec[6])
+                                     << ")); // " << icp << " address: " << (void*)(*it)->pvec[6]
+                                     << std::endl;
+                       icp++;
                     }
-                    npb7=true;
+                    npb7 = true;
                 }
 
-                bool npb8=false;
-                VEC_pD::iterator np8 = std::find(clist_params_.begin(), clist_params_.end(),(*it)->pvec[7]);
+                bool npb8 = false;
+                VEC_pD::iterator np8 =
+                    std::find(clist_params_.begin(), clist_params_.end(), (*it)->pvec[7]);
                 size_t ni8 = std::distance(clist_params_.begin(), np8);
 
-                if(i8 == plist.size()) {
-                    if(ni8 == clist_params_.size()) {
-                        subsystemfile << "// Address not in System params...rebuilding into clist_params_" << std::endl;
-                        clist_params_.push_back((*it)->pvec[7]);
-                        subsystemfile << "clist_params_.push_back(new double("<< *((*it)->pvec[7]) <<")); // "<< icp <<" address: " << (void *)(*it)->pvec[7] << std::endl;
-                        icp++;
+                if (i8 == plist.size()) {
+                    if (ni8 == clist_params_.size()) {
+                       subsystemfile
+                           << "// Address not in System params...rebuilding into clist_params_"
+                           << std::endl;
+                       clist_params_.push_back((*it)->pvec[7]);
+                       subsystemfile << "clist_params_.push_back(new double(" << *((*it)->pvec[7])
+                                     << ")); // " << icp << " address: " << (void*)(*it)->pvec[7]
+                                     << std::endl;
+                       icp++;
                     }
-                    npb8=true;
+                    npb8 = true;
                 }
 
-                subsystemfile << "ConstraintParallel * c" << ic <<"=new ConstraintParallel();" << std::endl;
-                subsystemfile << "c" << ic << "->pvec.push_back(" << (npb1?("clist_params_["):("plist_[")) << (npb1?ni1:i1) <<"]);" << std::endl;
-                subsystemfile << "c" << ic << "->pvec.push_back(" << (npb2?("clist_params_["):("plist_[")) << (npb2?ni2:i2) <<"]);" << std::endl;
-                subsystemfile << "c" << ic << "->pvec.push_back(" << (npb3?("clist_params_["):("plist_[")) << (npb3?ni3:i3) <<"]);" << std::endl;
-                subsystemfile << "c" << ic << "->pvec.push_back(" << (npb4?("clist_params_["):("plist_[")) << (npb4?ni4:i4) <<"]);" << std::endl;
-                subsystemfile << "c" << ic << "->pvec.push_back(" << (npb5?("clist_params_["):("plist_[")) << (npb5?ni5:i5) <<"]);" << std::endl;
-                subsystemfile << "c" << ic << "->pvec.push_back(" << (npb6?("clist_params_["):("plist_[")) << (npb6?ni6:i6) <<"]);" << std::endl;
-                subsystemfile << "c" << ic << "->pvec.push_back(" << (npb7?("clist_params_["):("plist_[")) << (npb7?ni7:i7) <<"]);" << std::endl;
-                subsystemfile << "c" << ic << "->pvec.push_back(" << (npb8?("clist_params_["):("plist_[")) << (npb8?ni8:i8) <<"]);" << std::endl;
+                subsystemfile << "ConstraintParallel * c" << ic << "=new ConstraintParallel();"
+                              << std::endl;
+                subsystemfile << "c" << ic << "->pvec.push_back("
+                              << (npb1 ? ("clist_params_[") : ("plist_[")) << (npb1 ? ni1 : i1)
+                              << "]);" << std::endl;
+                subsystemfile << "c" << ic << "->pvec.push_back("
+                              << (npb2 ? ("clist_params_[") : ("plist_[")) << (npb2 ? ni2 : i2)
+                              << "]);" << std::endl;
+                subsystemfile << "c" << ic << "->pvec.push_back("
+                              << (npb3 ? ("clist_params_[") : ("plist_[")) << (npb3 ? ni3 : i3)
+                              << "]);" << std::endl;
+                subsystemfile << "c" << ic << "->pvec.push_back("
+                              << (npb4 ? ("clist_params_[") : ("plist_[")) << (npb4 ? ni4 : i4)
+                              << "]);" << std::endl;
+                subsystemfile << "c" << ic << "->pvec.push_back("
+                              << (npb5 ? ("clist_params_[") : ("plist_[")) << (npb5 ? ni5 : i5)
+                              << "]);" << std::endl;
+                subsystemfile << "c" << ic << "->pvec.push_back("
+                              << (npb6 ? ("clist_params_[") : ("plist_[")) << (npb6 ? ni6 : i6)
+                              << "]);" << std::endl;
+                subsystemfile << "c" << ic << "->pvec.push_back("
+                              << (npb7 ? ("clist_params_[") : ("plist_[")) << (npb7 ? ni7 : i7)
+                              << "]);" << std::endl;
+                subsystemfile << "c" << ic << "->pvec.push_back("
+                              << (npb8 ? ("clist_params_[") : ("plist_[")) << (npb8 ? ni8 : i8)
+                              << "]);" << std::endl;
                 subsystemfile << "c" << ic << "->origpvec=c" << ic << "->pvec;" << std::endl;
                 subsystemfile << "c" << ic << "->rescale();" << std::endl;
-                subsystemfile << "clist_.push_back(c" << ic << "); // addresses = "<< (*it)->pvec[0] << "," << (*it)->pvec[1] << "," << (*it)->pvec[2] << "," << (*it)->pvec[3] << "," << (*it)->pvec[4] << "," << (*it)->pvec[5] << "," << (*it)->pvec[6] << "," << (*it)->pvec[7] << std::endl;
+                subsystemfile << "clist_.push_back(c" << ic
+                              << "); // addresses = " << (*it)->pvec[0] << "," << (*it)->pvec[1]
+                              << "," << (*it)->pvec[2] << "," << (*it)->pvec[3] << ","
+                              << (*it)->pvec[4] << "," << (*it)->pvec[5] << "," << (*it)->pvec[6]
+                              << "," << (*it)->pvec[7] << std::endl;
                 break;
             }
-            case Perpendicular:
-            { // 8
-                VEC_pD::iterator p1 = std::find(plist.begin(), plist.end(),(*it)->pvec[0]);
-                VEC_pD::iterator p2 = std::find(plist.begin(), plist.end(),(*it)->pvec[1]);
-                VEC_pD::iterator p3 = std::find(plist.begin(), plist.end(),(*it)->pvec[2]);
-                VEC_pD::iterator p4 = std::find(plist.begin(), plist.end(),(*it)->pvec[3]);
-                VEC_pD::iterator p5 = std::find(plist.begin(), plist.end(),(*it)->pvec[4]);
-                VEC_pD::iterator p6 = std::find(plist.begin(), plist.end(),(*it)->pvec[5]);
-                VEC_pD::iterator p7 = std::find(plist.begin(), plist.end(),(*it)->pvec[6]);
-                VEC_pD::iterator p8 = std::find(plist.begin(), plist.end(),(*it)->pvec[7]);
+            case Perpendicular: {// 8
+                VEC_pD::iterator p1 = std::find(plist.begin(), plist.end(), (*it)->pvec[0]);
+                VEC_pD::iterator p2 = std::find(plist.begin(), plist.end(), (*it)->pvec[1]);
+                VEC_pD::iterator p3 = std::find(plist.begin(), plist.end(), (*it)->pvec[2]);
+                VEC_pD::iterator p4 = std::find(plist.begin(), plist.end(), (*it)->pvec[3]);
+                VEC_pD::iterator p5 = std::find(plist.begin(), plist.end(), (*it)->pvec[4]);
+                VEC_pD::iterator p6 = std::find(plist.begin(), plist.end(), (*it)->pvec[5]);
+                VEC_pD::iterator p7 = std::find(plist.begin(), plist.end(), (*it)->pvec[6]);
+                VEC_pD::iterator p8 = std::find(plist.begin(), plist.end(), (*it)->pvec[7]);
                 size_t i1 = std::distance(plist.begin(), p1);
                 size_t i2 = std::distance(plist.begin(), p2);
                 size_t i3 = std::distance(plist.begin(), p3);
@@ -3051,143 +3451,203 @@ void System::extractSubsystem(SubSystem *subsys, bool isRedundantsolving)
                 size_t i7 = std::distance(plist.begin(), p7);
                 size_t i8 = std::distance(plist.begin(), p8);
 
-                bool npb1=false;
-                VEC_pD::iterator np1 = std::find(clist_params_.begin(), clist_params_.end(),(*it)->pvec[0]);
+                bool npb1 = false;
+                VEC_pD::iterator np1 =
+                    std::find(clist_params_.begin(), clist_params_.end(), (*it)->pvec[0]);
                 size_t ni1 = std::distance(clist_params_.begin(), np1);
 
-                if(i1 == plist.size()) {
-                    if(ni1 == clist_params_.size()) {
-                        subsystemfile << "// Address not in System params...rebuilding into clist_params_" << std::endl;
-                        clist_params_.push_back((*it)->pvec[0]);
-                        subsystemfile << "clist_params_.push_back(new double("<< *((*it)->pvec[0]) <<")); // "<< icp <<" address: " << (void *)(*it)->pvec[0] << std::endl;
-                        icp++;
+                if (i1 == plist.size()) {
+                    if (ni1 == clist_params_.size()) {
+                       subsystemfile
+                           << "// Address not in System params...rebuilding into clist_params_"
+                           << std::endl;
+                       clist_params_.push_back((*it)->pvec[0]);
+                       subsystemfile << "clist_params_.push_back(new double(" << *((*it)->pvec[0])
+                                     << ")); // " << icp << " address: " << (void*)(*it)->pvec[0]
+                                     << std::endl;
+                       icp++;
                     }
-                    npb1=true;
+                    npb1 = true;
                 }
 
-                bool npb2=false;
-                VEC_pD::iterator np2 = std::find(clist_params_.begin(), clist_params_.end(),(*it)->pvec[1]);
+                bool npb2 = false;
+                VEC_pD::iterator np2 =
+                    std::find(clist_params_.begin(), clist_params_.end(), (*it)->pvec[1]);
                 size_t ni2 = std::distance(clist_params_.begin(), np2);
 
-                if(i2 == plist.size()) {
-                    if(ni2 == clist_params_.size()) {
-                        subsystemfile << "// Address not in System params...rebuilding into clist_params_" << std::endl;
-                        clist_params_.push_back((*it)->pvec[1]);
-                        subsystemfile << "clist_params_.push_back(new double("<< *((*it)->pvec[1]) <<")); // "<< icp <<" address: " << (void *)(*it)->pvec[1] << std::endl;
-                        icp++;
+                if (i2 == plist.size()) {
+                    if (ni2 == clist_params_.size()) {
+                       subsystemfile
+                           << "// Address not in System params...rebuilding into clist_params_"
+                           << std::endl;
+                       clist_params_.push_back((*it)->pvec[1]);
+                       subsystemfile << "clist_params_.push_back(new double(" << *((*it)->pvec[1])
+                                     << ")); // " << icp << " address: " << (void*)(*it)->pvec[1]
+                                     << std::endl;
+                       icp++;
                     }
-                    npb2=true;
+                    npb2 = true;
                 }
 
-                bool npb3=false;
-                VEC_pD::iterator np3 = std::find(clist_params_.begin(), clist_params_.end(),(*it)->pvec[2]);
+                bool npb3 = false;
+                VEC_pD::iterator np3 =
+                    std::find(clist_params_.begin(), clist_params_.end(), (*it)->pvec[2]);
                 size_t ni3 = std::distance(clist_params_.begin(), np3);
 
-                if(i3 == plist.size()) {
-                    if(ni3 == clist_params_.size()) {
-                        subsystemfile << "// Address not in System params...rebuilding into clist_params_" << std::endl;
-                        clist_params_.push_back((*it)->pvec[2]);
-                        subsystemfile << "clist_params_.push_back(new double("<< *((*it)->pvec[2]) <<")); // "<< icp <<" address: " << (void *)(*it)->pvec[2] << std::endl;
-                        icp++;
+                if (i3 == plist.size()) {
+                    if (ni3 == clist_params_.size()) {
+                       subsystemfile
+                           << "// Address not in System params...rebuilding into clist_params_"
+                           << std::endl;
+                       clist_params_.push_back((*it)->pvec[2]);
+                       subsystemfile << "clist_params_.push_back(new double(" << *((*it)->pvec[2])
+                                     << ")); // " << icp << " address: " << (void*)(*it)->pvec[2]
+                                     << std::endl;
+                       icp++;
                     }
-                    npb3=true;
+                    npb3 = true;
                 }
 
-                bool npb4=false;
-                VEC_pD::iterator np4 = std::find(clist_params_.begin(), clist_params_.end(),(*it)->pvec[3]);
+                bool npb4 = false;
+                VEC_pD::iterator np4 =
+                    std::find(clist_params_.begin(), clist_params_.end(), (*it)->pvec[3]);
                 size_t ni4 = std::distance(clist_params_.begin(), np4);
 
-                if(i4 == plist.size()) {
-                    if(ni4 == clist_params_.size()) {
-                        subsystemfile << "// Address not in System params...rebuilding into clist_params_" << std::endl;
-                        clist_params_.push_back((*it)->pvec[3]);
-                        subsystemfile << "clist_params_.push_back(new double("<< *((*it)->pvec[3]) <<")); // "<< icp <<" address: " << (void *)(*it)->pvec[3] << std::endl;
-                        icp++;
+                if (i4 == plist.size()) {
+                    if (ni4 == clist_params_.size()) {
+                       subsystemfile
+                           << "// Address not in System params...rebuilding into clist_params_"
+                           << std::endl;
+                       clist_params_.push_back((*it)->pvec[3]);
+                       subsystemfile << "clist_params_.push_back(new double(" << *((*it)->pvec[3])
+                                     << ")); // " << icp << " address: " << (void*)(*it)->pvec[3]
+                                     << std::endl;
+                       icp++;
                     }
-                    npb4=true;
+                    npb4 = true;
                 }
 
-                bool npb5=false;
-                VEC_pD::iterator np5 = std::find(clist_params_.begin(), clist_params_.end(),(*it)->pvec[4]);
+                bool npb5 = false;
+                VEC_pD::iterator np5 =
+                    std::find(clist_params_.begin(), clist_params_.end(), (*it)->pvec[4]);
                 size_t ni5 = std::distance(clist_params_.begin(), np5);
 
-                if(i5 == plist.size()) {
-                    if(ni5 == clist_params_.size()) {
-                        subsystemfile << "// Address not in System params...rebuilding into clist_params_" << std::endl;
-                        clist_params_.push_back((*it)->pvec[4]);
-                        subsystemfile << "clist_params_.push_back(new double("<< *((*it)->pvec[4]) <<")); // "<< icp <<" address: " << (void *)(*it)->pvec[4] << std::endl;
-                        icp++;
+                if (i5 == plist.size()) {
+                    if (ni5 == clist_params_.size()) {
+                       subsystemfile
+                           << "// Address not in System params...rebuilding into clist_params_"
+                           << std::endl;
+                       clist_params_.push_back((*it)->pvec[4]);
+                       subsystemfile << "clist_params_.push_back(new double(" << *((*it)->pvec[4])
+                                     << ")); // " << icp << " address: " << (void*)(*it)->pvec[4]
+                                     << std::endl;
+                       icp++;
                     }
-                    npb5=true;
+                    npb5 = true;
                 }
 
-                bool npb6=false;
-                VEC_pD::iterator np6 = std::find(clist_params_.begin(), clist_params_.end(),(*it)->pvec[5]);
+                bool npb6 = false;
+                VEC_pD::iterator np6 =
+                    std::find(clist_params_.begin(), clist_params_.end(), (*it)->pvec[5]);
                 size_t ni6 = std::distance(clist_params_.begin(), np6);
 
-                if(i6 == plist.size()) {
-                    if(ni6 == clist_params_.size()) {
-                        subsystemfile << "// Address not in System params...rebuilding into clist_params_" << std::endl;
-                        clist_params_.push_back((*it)->pvec[5]);
-                        subsystemfile << "clist_params_.push_back(new double("<< *((*it)->pvec[5]) <<")); // "<< icp <<" address: " << (void *)(*it)->pvec[5] << std::endl;
-                        icp++;
+                if (i6 == plist.size()) {
+                    if (ni6 == clist_params_.size()) {
+                       subsystemfile
+                           << "// Address not in System params...rebuilding into clist_params_"
+                           << std::endl;
+                       clist_params_.push_back((*it)->pvec[5]);
+                       subsystemfile << "clist_params_.push_back(new double(" << *((*it)->pvec[5])
+                                     << ")); // " << icp << " address: " << (void*)(*it)->pvec[5]
+                                     << std::endl;
+                       icp++;
                     }
-                    npb6=true;
+                    npb6 = true;
                 }
 
-                bool npb7=false;
-                VEC_pD::iterator np7 = std::find(clist_params_.begin(), clist_params_.end(),(*it)->pvec[6]);
+                bool npb7 = false;
+                VEC_pD::iterator np7 =
+                    std::find(clist_params_.begin(), clist_params_.end(), (*it)->pvec[6]);
                 size_t ni7 = std::distance(clist_params_.begin(), np7);
 
-                if(i7 == plist.size()) {
-                    if(ni7 == clist_params_.size()) {
-                        subsystemfile << "// Address not in System params...rebuilding into clist_params_" << std::endl;
-                        clist_params_.push_back((*it)->pvec[6]);
-                        subsystemfile << "clist_params_.push_back(new double("<< *((*it)->pvec[6]) <<")); // "<< icp <<" address: " << (void *)(*it)->pvec[6] << std::endl;
-                        icp++;
+                if (i7 == plist.size()) {
+                    if (ni7 == clist_params_.size()) {
+                       subsystemfile
+                           << "// Address not in System params...rebuilding into clist_params_"
+                           << std::endl;
+                       clist_params_.push_back((*it)->pvec[6]);
+                       subsystemfile << "clist_params_.push_back(new double(" << *((*it)->pvec[6])
+                                     << ")); // " << icp << " address: " << (void*)(*it)->pvec[6]
+                                     << std::endl;
+                       icp++;
                     }
-                    npb7=true;
+                    npb7 = true;
                 }
 
-                bool npb8=false;
-                VEC_pD::iterator np8 = std::find(clist_params_.begin(), clist_params_.end(),(*it)->pvec[7]);
+                bool npb8 = false;
+                VEC_pD::iterator np8 =
+                    std::find(clist_params_.begin(), clist_params_.end(), (*it)->pvec[7]);
                 size_t ni8 = std::distance(clist_params_.begin(), np8);
 
-                if(i8 == plist.size()) {
-                    if(ni8 == clist_params_.size()) {
-                        subsystemfile << "// Address not in System params...rebuilding into clist_params_" << std::endl;
-                        clist_params_.push_back((*it)->pvec[7]);
-                        subsystemfile << "clist_params_.push_back(new double("<< *((*it)->pvec[7]) <<")); // "<< icp <<" address: " << (void *)(*it)->pvec[7] << std::endl;
-                        icp++;
+                if (i8 == plist.size()) {
+                    if (ni8 == clist_params_.size()) {
+                       subsystemfile
+                           << "// Address not in System params...rebuilding into clist_params_"
+                           << std::endl;
+                       clist_params_.push_back((*it)->pvec[7]);
+                       subsystemfile << "clist_params_.push_back(new double(" << *((*it)->pvec[7])
+                                     << ")); // " << icp << " address: " << (void*)(*it)->pvec[7]
+                                     << std::endl;
+                       icp++;
                     }
-                    npb8=true;
+                    npb8 = true;
                 }
 
-                subsystemfile << "ConstraintPerpendicular * c" << ic <<"=new ConstraintPerpendicular();" << std::endl;
-                subsystemfile << "c" << ic << "->pvec.push_back(" << (npb1?("clist_params_["):("plist_[")) << (npb1?ni1:i1) <<"]);" << std::endl;
-                subsystemfile << "c" << ic << "->pvec.push_back(" << (npb2?("clist_params_["):("plist_[")) << (npb2?ni2:i2) <<"]);" << std::endl;
-                subsystemfile << "c" << ic << "->pvec.push_back(" << (npb3?("clist_params_["):("plist_[")) << (npb3?ni3:i3) <<"]);" << std::endl;
-                subsystemfile << "c" << ic << "->pvec.push_back(" << (npb4?("clist_params_["):("plist_[")) << (npb4?ni4:i4) <<"]);" << std::endl;
-                subsystemfile << "c" << ic << "->pvec.push_back(" << (npb5?("clist_params_["):("plist_[")) << (npb5?ni5:i5) <<"]);" << std::endl;
-                subsystemfile << "c" << ic << "->pvec.push_back(" << (npb6?("clist_params_["):("plist_[")) << (npb6?ni6:i6) <<"]);" << std::endl;
-                subsystemfile << "c" << ic << "->pvec.push_back(" << (npb7?("clist_params_["):("plist_[")) << (npb7?ni7:i7) <<"]);" << std::endl;
-                subsystemfile << "c" << ic << "->pvec.push_back(" << (npb8?("clist_params_["):("plist_[")) << (npb8?ni8:i8) <<"]);" << std::endl;
+                subsystemfile << "ConstraintPerpendicular * c" << ic
+                              << "=new ConstraintPerpendicular();" << std::endl;
+                subsystemfile << "c" << ic << "->pvec.push_back("
+                              << (npb1 ? ("clist_params_[") : ("plist_[")) << (npb1 ? ni1 : i1)
+                              << "]);" << std::endl;
+                subsystemfile << "c" << ic << "->pvec.push_back("
+                              << (npb2 ? ("clist_params_[") : ("plist_[")) << (npb2 ? ni2 : i2)
+                              << "]);" << std::endl;
+                subsystemfile << "c" << ic << "->pvec.push_back("
+                              << (npb3 ? ("clist_params_[") : ("plist_[")) << (npb3 ? ni3 : i3)
+                              << "]);" << std::endl;
+                subsystemfile << "c" << ic << "->pvec.push_back("
+                              << (npb4 ? ("clist_params_[") : ("plist_[")) << (npb4 ? ni4 : i4)
+                              << "]);" << std::endl;
+                subsystemfile << "c" << ic << "->pvec.push_back("
+                              << (npb5 ? ("clist_params_[") : ("plist_[")) << (npb5 ? ni5 : i5)
+                              << "]);" << std::endl;
+                subsystemfile << "c" << ic << "->pvec.push_back("
+                              << (npb6 ? ("clist_params_[") : ("plist_[")) << (npb6 ? ni6 : i6)
+                              << "]);" << std::endl;
+                subsystemfile << "c" << ic << "->pvec.push_back("
+                              << (npb7 ? ("clist_params_[") : ("plist_[")) << (npb7 ? ni7 : i7)
+                              << "]);" << std::endl;
+                subsystemfile << "c" << ic << "->pvec.push_back("
+                              << (npb8 ? ("clist_params_[") : ("plist_[")) << (npb8 ? ni8 : i8)
+                              << "]);" << std::endl;
                 subsystemfile << "c" << ic << "->origpvec=c" << ic << "->pvec;" << std::endl;
                 subsystemfile << "c" << ic << "->rescale();" << std::endl;
-                subsystemfile << "clist_.push_back(c" << ic << "); // addresses = "<< (*it)->pvec[0] << "," << (*it)->pvec[1] << "," << (*it)->pvec[2] << "," << (*it)->pvec[3] << "," << (*it)->pvec[4] << "," << (*it)->pvec[5] << "," << (*it)->pvec[6] << "," << (*it)->pvec[7] << std::endl;
+                subsystemfile << "clist_.push_back(c" << ic
+                              << "); // addresses = " << (*it)->pvec[0] << "," << (*it)->pvec[1]
+                              << "," << (*it)->pvec[2] << "," << (*it)->pvec[3] << ","
+                              << (*it)->pvec[4] << "," << (*it)->pvec[5] << "," << (*it)->pvec[6]
+                              << "," << (*it)->pvec[7] << std::endl;
                 break;
             }
-            case L2LAngle:
-            { // 9
-                VEC_pD::iterator p1 = std::find(plist.begin(), plist.end(),(*it)->pvec[0]);
-                VEC_pD::iterator p2 = std::find(plist.begin(), plist.end(),(*it)->pvec[1]);
-                VEC_pD::iterator p3 = std::find(plist.begin(), plist.end(),(*it)->pvec[2]);
-                VEC_pD::iterator p4 = std::find(plist.begin(), plist.end(),(*it)->pvec[3]);
-                VEC_pD::iterator p5 = std::find(plist.begin(), plist.end(),(*it)->pvec[4]);
-                VEC_pD::iterator p6 = std::find(plist.begin(), plist.end(),(*it)->pvec[5]);
-                VEC_pD::iterator p7 = std::find(plist.begin(), plist.end(),(*it)->pvec[6]);
-                VEC_pD::iterator p8 = std::find(plist.begin(), plist.end(),(*it)->pvec[7]);
-                VEC_pD::iterator p9 = std::find(plist.begin(), plist.end(),(*it)->pvec[8]);
+            case L2LAngle: {// 9
+                VEC_pD::iterator p1 = std::find(plist.begin(), plist.end(), (*it)->pvec[0]);
+                VEC_pD::iterator p2 = std::find(plist.begin(), plist.end(), (*it)->pvec[1]);
+                VEC_pD::iterator p3 = std::find(plist.begin(), plist.end(), (*it)->pvec[2]);
+                VEC_pD::iterator p4 = std::find(plist.begin(), plist.end(), (*it)->pvec[3]);
+                VEC_pD::iterator p5 = std::find(plist.begin(), plist.end(), (*it)->pvec[4]);
+                VEC_pD::iterator p6 = std::find(plist.begin(), plist.end(), (*it)->pvec[5]);
+                VEC_pD::iterator p7 = std::find(plist.begin(), plist.end(), (*it)->pvec[6]);
+                VEC_pD::iterator p8 = std::find(plist.begin(), plist.end(), (*it)->pvec[7]);
+                VEC_pD::iterator p9 = std::find(plist.begin(), plist.end(), (*it)->pvec[8]);
                 size_t i1 = std::distance(plist.begin(), p1);
                 size_t i2 = std::distance(plist.begin(), p2);
                 size_t i3 = std::distance(plist.begin(), p3);
@@ -3198,157 +3658,224 @@ void System::extractSubsystem(SubSystem *subsys, bool isRedundantsolving)
                 size_t i8 = std::distance(plist.begin(), p8);
                 size_t i9 = std::distance(plist.begin(), p9);
 
-                bool npb1=false;
-                VEC_pD::iterator np1 = std::find(clist_params_.begin(), clist_params_.end(),(*it)->pvec[0]);
+                bool npb1 = false;
+                VEC_pD::iterator np1 =
+                    std::find(clist_params_.begin(), clist_params_.end(), (*it)->pvec[0]);
                 size_t ni1 = std::distance(clist_params_.begin(), np1);
 
-                if(i1 == plist.size()) {
-                    if(ni1 == clist_params_.size()) {
-                        subsystemfile << "// Address not in System params...rebuilding into clist_params_" << std::endl;
-                        clist_params_.push_back((*it)->pvec[0]);
-                        subsystemfile << "clist_params_.push_back(new double("<< *((*it)->pvec[0]) <<")); // "<< icp <<" address: " << (void *)(*it)->pvec[0] << std::endl;
-                        icp++;
+                if (i1 == plist.size()) {
+                    if (ni1 == clist_params_.size()) {
+                       subsystemfile
+                           << "// Address not in System params...rebuilding into clist_params_"
+                           << std::endl;
+                       clist_params_.push_back((*it)->pvec[0]);
+                       subsystemfile << "clist_params_.push_back(new double(" << *((*it)->pvec[0])
+                                     << ")); // " << icp << " address: " << (void*)(*it)->pvec[0]
+                                     << std::endl;
+                       icp++;
                     }
-                    npb1=true;
+                    npb1 = true;
                 }
 
-                bool npb2=false;
-                VEC_pD::iterator np2 = std::find(clist_params_.begin(), clist_params_.end(),(*it)->pvec[1]);
+                bool npb2 = false;
+                VEC_pD::iterator np2 =
+                    std::find(clist_params_.begin(), clist_params_.end(), (*it)->pvec[1]);
                 size_t ni2 = std::distance(clist_params_.begin(), np2);
 
-                if(i2 == plist.size()) {
-                    if(ni2 == clist_params_.size()) {
-                        subsystemfile << "// Address not in System params...rebuilding into clist_params_" << std::endl;
-                        clist_params_.push_back((*it)->pvec[1]);
-                        subsystemfile << "clist_params_.push_back(new double("<< *((*it)->pvec[1]) <<")); // "<< icp <<" address: " << (void *)(*it)->pvec[1] << std::endl;
-                        icp++;
+                if (i2 == plist.size()) {
+                    if (ni2 == clist_params_.size()) {
+                       subsystemfile
+                           << "// Address not in System params...rebuilding into clist_params_"
+                           << std::endl;
+                       clist_params_.push_back((*it)->pvec[1]);
+                       subsystemfile << "clist_params_.push_back(new double(" << *((*it)->pvec[1])
+                                     << ")); // " << icp << " address: " << (void*)(*it)->pvec[1]
+                                     << std::endl;
+                       icp++;
                     }
-                    npb2=true;
+                    npb2 = true;
                 }
 
-                bool npb3=false;
-                VEC_pD::iterator np3 = std::find(clist_params_.begin(), clist_params_.end(),(*it)->pvec[2]);
+                bool npb3 = false;
+                VEC_pD::iterator np3 =
+                    std::find(clist_params_.begin(), clist_params_.end(), (*it)->pvec[2]);
                 size_t ni3 = std::distance(clist_params_.begin(), np3);
 
-                if(i3 == plist.size()) {
-                    if(ni3 == clist_params_.size()) {
-                        subsystemfile << "// Address not in System params...rebuilding into clist_params_" << std::endl;
-                        clist_params_.push_back((*it)->pvec[2]);
-                        subsystemfile << "clist_params_.push_back(new double("<< *((*it)->pvec[2]) <<")); // "<< icp <<" address: " << (void *)(*it)->pvec[2] << std::endl;
-                        icp++;
+                if (i3 == plist.size()) {
+                    if (ni3 == clist_params_.size()) {
+                       subsystemfile
+                           << "// Address not in System params...rebuilding into clist_params_"
+                           << std::endl;
+                       clist_params_.push_back((*it)->pvec[2]);
+                       subsystemfile << "clist_params_.push_back(new double(" << *((*it)->pvec[2])
+                                     << ")); // " << icp << " address: " << (void*)(*it)->pvec[2]
+                                     << std::endl;
+                       icp++;
                     }
-                    npb3=true;
+                    npb3 = true;
                 }
 
-                bool npb4=false;
-                VEC_pD::iterator np4 = std::find(clist_params_.begin(), clist_params_.end(),(*it)->pvec[3]);
+                bool npb4 = false;
+                VEC_pD::iterator np4 =
+                    std::find(clist_params_.begin(), clist_params_.end(), (*it)->pvec[3]);
                 size_t ni4 = std::distance(clist_params_.begin(), np4);
 
-                if(i4 == plist.size()) {
-                    if(ni4 == clist_params_.size()) {
-                        subsystemfile << "// Address not in System params...rebuilding into clist_params_" << std::endl;
-                        clist_params_.push_back((*it)->pvec[3]);
-                        subsystemfile << "clist_params_.push_back(new double("<< *((*it)->pvec[3]) <<")); // "<< icp <<" address: " << (void *)(*it)->pvec[3] << std::endl;
-                        icp++;
+                if (i4 == plist.size()) {
+                    if (ni4 == clist_params_.size()) {
+                       subsystemfile
+                           << "// Address not in System params...rebuilding into clist_params_"
+                           << std::endl;
+                       clist_params_.push_back((*it)->pvec[3]);
+                       subsystemfile << "clist_params_.push_back(new double(" << *((*it)->pvec[3])
+                                     << ")); // " << icp << " address: " << (void*)(*it)->pvec[3]
+                                     << std::endl;
+                       icp++;
                     }
-                    npb4=true;
+                    npb4 = true;
                 }
 
-                bool npb5=false;
-                VEC_pD::iterator np5 = std::find(clist_params_.begin(), clist_params_.end(),(*it)->pvec[4]);
+                bool npb5 = false;
+                VEC_pD::iterator np5 =
+                    std::find(clist_params_.begin(), clist_params_.end(), (*it)->pvec[4]);
                 size_t ni5 = std::distance(clist_params_.begin(), np5);
 
-                if(i5 == plist.size()) {
-                    if(ni5 == clist_params_.size()) {
-                        subsystemfile << "// Address not in System params...rebuilding into clist_params_" << std::endl;
-                        clist_params_.push_back((*it)->pvec[4]);
-                        subsystemfile << "clist_params_.push_back(new double("<< *((*it)->pvec[4]) <<")); // "<< icp <<" address: " << (void *)(*it)->pvec[4] << std::endl;
-                        icp++;
+                if (i5 == plist.size()) {
+                    if (ni5 == clist_params_.size()) {
+                       subsystemfile
+                           << "// Address not in System params...rebuilding into clist_params_"
+                           << std::endl;
+                       clist_params_.push_back((*it)->pvec[4]);
+                       subsystemfile << "clist_params_.push_back(new double(" << *((*it)->pvec[4])
+                                     << ")); // " << icp << " address: " << (void*)(*it)->pvec[4]
+                                     << std::endl;
+                       icp++;
                     }
-                    npb5=true;
+                    npb5 = true;
                 }
 
-                bool npb6=false;
-                VEC_pD::iterator np6 = std::find(clist_params_.begin(), clist_params_.end(),(*it)->pvec[5]);
+                bool npb6 = false;
+                VEC_pD::iterator np6 =
+                    std::find(clist_params_.begin(), clist_params_.end(), (*it)->pvec[5]);
                 size_t ni6 = std::distance(clist_params_.begin(), np6);
 
-                if(i6 == plist.size()) {
-                    if(ni6 == clist_params_.size()) {
-                        subsystemfile << "// Address not in System params...rebuilding into clist_params_" << std::endl;
-                        clist_params_.push_back((*it)->pvec[5]);
-                        subsystemfile << "clist_params_.push_back(new double("<< *((*it)->pvec[5]) <<")); // "<< icp <<" address: " << (void *)(*it)->pvec[5] << std::endl;
-                        icp++;
+                if (i6 == plist.size()) {
+                    if (ni6 == clist_params_.size()) {
+                       subsystemfile
+                           << "// Address not in System params...rebuilding into clist_params_"
+                           << std::endl;
+                       clist_params_.push_back((*it)->pvec[5]);
+                       subsystemfile << "clist_params_.push_back(new double(" << *((*it)->pvec[5])
+                                     << ")); // " << icp << " address: " << (void*)(*it)->pvec[5]
+                                     << std::endl;
+                       icp++;
                     }
-                    npb6=true;
+                    npb6 = true;
                 }
 
-                bool npb7=false;
-                VEC_pD::iterator np7 = std::find(clist_params_.begin(), clist_params_.end(),(*it)->pvec[6]);
+                bool npb7 = false;
+                VEC_pD::iterator np7 =
+                    std::find(clist_params_.begin(), clist_params_.end(), (*it)->pvec[6]);
                 size_t ni7 = std::distance(clist_params_.begin(), np7);
 
-                if(i7 == plist.size()) {
-                    if(ni7 == clist_params_.size()) {
-                        subsystemfile << "// Address not in System params...rebuilding into clist_params_" << std::endl;
-                        clist_params_.push_back((*it)->pvec[6]);
-                        subsystemfile << "clist_params_.push_back(new double("<< *((*it)->pvec[6]) <<")); // "<< icp <<" address: " << (void *)(*it)->pvec[6] << std::endl;
-                        icp++;
+                if (i7 == plist.size()) {
+                    if (ni7 == clist_params_.size()) {
+                       subsystemfile
+                           << "// Address not in System params...rebuilding into clist_params_"
+                           << std::endl;
+                       clist_params_.push_back((*it)->pvec[6]);
+                       subsystemfile << "clist_params_.push_back(new double(" << *((*it)->pvec[6])
+                                     << ")); // " << icp << " address: " << (void*)(*it)->pvec[6]
+                                     << std::endl;
+                       icp++;
                     }
-                    npb7=true;
+                    npb7 = true;
                 }
 
-                bool npb8=false;
-                VEC_pD::iterator np8 = std::find(clist_params_.begin(), clist_params_.end(),(*it)->pvec[7]);
+                bool npb8 = false;
+                VEC_pD::iterator np8 =
+                    std::find(clist_params_.begin(), clist_params_.end(), (*it)->pvec[7]);
                 size_t ni8 = std::distance(clist_params_.begin(), np8);
 
-                if(i8 == plist.size()) {
-                    if(ni8 == clist_params_.size()) {
-                        subsystemfile << "// Address not in System params...rebuilding into clist_params_" << std::endl;
-                        clist_params_.push_back((*it)->pvec[7]);
-                        subsystemfile << "clist_params_.push_back(new double("<< *((*it)->pvec[7]) <<")); // "<< icp <<" address: " << (void *)(*it)->pvec[7] << std::endl;
-                        icp++;
+                if (i8 == plist.size()) {
+                    if (ni8 == clist_params_.size()) {
+                       subsystemfile
+                           << "// Address not in System params...rebuilding into clist_params_"
+                           << std::endl;
+                       clist_params_.push_back((*it)->pvec[7]);
+                       subsystemfile << "clist_params_.push_back(new double(" << *((*it)->pvec[7])
+                                     << ")); // " << icp << " address: " << (void*)(*it)->pvec[7]
+                                     << std::endl;
+                       icp++;
                     }
-                    npb8=true;
+                    npb8 = true;
                 }
 
-                bool npb9=false;
-                VEC_pD::iterator np9 = std::find(clist_params_.begin(), clist_params_.end(),(*it)->pvec[8]);
+                bool npb9 = false;
+                VEC_pD::iterator np9 =
+                    std::find(clist_params_.begin(), clist_params_.end(), (*it)->pvec[8]);
                 size_t ni9 = std::distance(clist_params_.begin(), np9);
 
-                if(i9 == plist.size()) {
-                    if(ni9 == clist_params_.size()) {
-                        subsystemfile << "// Address not in System params...rebuilding into clist_params_" << std::endl;
-                        clist_params_.push_back((*it)->pvec[8]);
-                        subsystemfile << "clist_params_.push_back(new double("<< *((*it)->pvec[8]) <<")); // "<< icp <<" address: " << (void *)(*it)->pvec[8] << std::endl;
-                        icp++;
+                if (i9 == plist.size()) {
+                    if (ni9 == clist_params_.size()) {
+                       subsystemfile
+                           << "// Address not in System params...rebuilding into clist_params_"
+                           << std::endl;
+                       clist_params_.push_back((*it)->pvec[8]);
+                       subsystemfile << "clist_params_.push_back(new double(" << *((*it)->pvec[8])
+                                     << ")); // " << icp << " address: " << (void*)(*it)->pvec[8]
+                                     << std::endl;
+                       icp++;
                     }
-                    npb9=true;
+                    npb9 = true;
                 }
 
-                subsystemfile << "ConstraintL2LAngle * c" << ic <<"=new ConstraintL2LAngle();" << std::endl;
-                subsystemfile << "c" << ic << "->pvec.push_back(" << (npb1?("clist_params_["):("plist_[")) << (npb1?ni1:i1) <<"]);" << std::endl;
-                subsystemfile << "c" << ic << "->pvec.push_back(" << (npb2?("clist_params_["):("plist_[")) << (npb2?ni2:i2) <<"]);" << std::endl;
-                subsystemfile << "c" << ic << "->pvec.push_back(" << (npb3?("clist_params_["):("plist_[")) << (npb3?ni3:i3) <<"]);" << std::endl;
-                subsystemfile << "c" << ic << "->pvec.push_back(" << (npb4?("clist_params_["):("plist_[")) << (npb4?ni4:i4) <<"]);" << std::endl;
-                subsystemfile << "c" << ic << "->pvec.push_back(" << (npb5?("clist_params_["):("plist_[")) << (npb5?ni5:i5) <<"]);" << std::endl;
-                subsystemfile << "c" << ic << "->pvec.push_back(" << (npb6?("clist_params_["):("plist_[")) << (npb6?ni6:i6) <<"]);" << std::endl;
-                subsystemfile << "c" << ic << "->pvec.push_back(" << (npb7?("clist_params_["):("plist_[")) << (npb7?ni7:i7) <<"]);" << std::endl;
-                subsystemfile << "c" << ic << "->pvec.push_back(" << (npb8?("clist_params_["):("plist_[")) << (npb8?ni8:i8) <<"]);" << std::endl;
-                subsystemfile << "c" << ic << "->pvec.push_back(" << (npb9?("clist_params_["):("plist_[")) << (npb9?ni9:i9) <<"]);" << std::endl;
+                subsystemfile << "ConstraintL2LAngle * c" << ic << "=new ConstraintL2LAngle();"
+                              << std::endl;
+                subsystemfile << "c" << ic << "->pvec.push_back("
+                              << (npb1 ? ("clist_params_[") : ("plist_[")) << (npb1 ? ni1 : i1)
+                              << "]);" << std::endl;
+                subsystemfile << "c" << ic << "->pvec.push_back("
+                              << (npb2 ? ("clist_params_[") : ("plist_[")) << (npb2 ? ni2 : i2)
+                              << "]);" << std::endl;
+                subsystemfile << "c" << ic << "->pvec.push_back("
+                              << (npb3 ? ("clist_params_[") : ("plist_[")) << (npb3 ? ni3 : i3)
+                              << "]);" << std::endl;
+                subsystemfile << "c" << ic << "->pvec.push_back("
+                              << (npb4 ? ("clist_params_[") : ("plist_[")) << (npb4 ? ni4 : i4)
+                              << "]);" << std::endl;
+                subsystemfile << "c" << ic << "->pvec.push_back("
+                              << (npb5 ? ("clist_params_[") : ("plist_[")) << (npb5 ? ni5 : i5)
+                              << "]);" << std::endl;
+                subsystemfile << "c" << ic << "->pvec.push_back("
+                              << (npb6 ? ("clist_params_[") : ("plist_[")) << (npb6 ? ni6 : i6)
+                              << "]);" << std::endl;
+                subsystemfile << "c" << ic << "->pvec.push_back("
+                              << (npb7 ? ("clist_params_[") : ("plist_[")) << (npb7 ? ni7 : i7)
+                              << "]);" << std::endl;
+                subsystemfile << "c" << ic << "->pvec.push_back("
+                              << (npb8 ? ("clist_params_[") : ("plist_[")) << (npb8 ? ni8 : i8)
+                              << "]);" << std::endl;
+                subsystemfile << "c" << ic << "->pvec.push_back("
+                              << (npb9 ? ("clist_params_[") : ("plist_[")) << (npb9 ? ni9 : i9)
+                              << "]);" << std::endl;
                 subsystemfile << "c" << ic << "->origpvec=c" << ic << "->pvec;" << std::endl;
                 subsystemfile << "c" << ic << "->rescale();" << std::endl;
-                subsystemfile << "clist_.push_back(c" << ic << "); // addresses = "<< (*it)->pvec[0] << "," << (*it)->pvec[1] << "," << (*it)->pvec[2] << "," << (*it)->pvec[3] << "," << (*it)->pvec[4] << "," << (*it)->pvec[5] << "," << (*it)->pvec[6] << "," << (*it)->pvec[7] << "," << (*it)->pvec[8] << std::endl;
+                subsystemfile << "clist_.push_back(c" << ic
+                              << "); // addresses = " << (*it)->pvec[0] << "," << (*it)->pvec[1]
+                              << "," << (*it)->pvec[2] << "," << (*it)->pvec[3] << ","
+                              << (*it)->pvec[4] << "," << (*it)->pvec[5] << "," << (*it)->pvec[6]
+                              << "," << (*it)->pvec[7] << "," << (*it)->pvec[8] << std::endl;
                 break;
             }
-            case MidpointOnLine:
-            { // 8
-                VEC_pD::iterator p1 = std::find(plist.begin(), plist.end(),(*it)->pvec[0]);
-                VEC_pD::iterator p2 = std::find(plist.begin(), plist.end(),(*it)->pvec[1]);
-                VEC_pD::iterator p3 = std::find(plist.begin(), plist.end(),(*it)->pvec[2]);
-                VEC_pD::iterator p4 = std::find(plist.begin(), plist.end(),(*it)->pvec[3]);
-                VEC_pD::iterator p5 = std::find(plist.begin(), plist.end(),(*it)->pvec[4]);
-                VEC_pD::iterator p6 = std::find(plist.begin(), plist.end(),(*it)->pvec[5]);
-                VEC_pD::iterator p7 = std::find(plist.begin(), plist.end(),(*it)->pvec[6]);
-                VEC_pD::iterator p8 = std::find(plist.begin(), plist.end(),(*it)->pvec[7]);
+            case MidpointOnLine: {// 8
+                VEC_pD::iterator p1 = std::find(plist.begin(), plist.end(), (*it)->pvec[0]);
+                VEC_pD::iterator p2 = std::find(plist.begin(), plist.end(), (*it)->pvec[1]);
+                VEC_pD::iterator p3 = std::find(plist.begin(), plist.end(), (*it)->pvec[2]);
+                VEC_pD::iterator p4 = std::find(plist.begin(), plist.end(), (*it)->pvec[3]);
+                VEC_pD::iterator p5 = std::find(plist.begin(), plist.end(), (*it)->pvec[4]);
+                VEC_pD::iterator p6 = std::find(plist.begin(), plist.end(), (*it)->pvec[5]);
+                VEC_pD::iterator p7 = std::find(plist.begin(), plist.end(), (*it)->pvec[6]);
+                VEC_pD::iterator p8 = std::find(plist.begin(), plist.end(), (*it)->pvec[7]);
                 size_t i1 = std::distance(plist.begin(), p1);
                 size_t i2 = std::distance(plist.begin(), p2);
                 size_t i3 = std::distance(plist.begin(), p3);
@@ -3358,140 +3885,200 @@ void System::extractSubsystem(SubSystem *subsys, bool isRedundantsolving)
                 size_t i7 = std::distance(plist.begin(), p7);
                 size_t i8 = std::distance(plist.begin(), p8);
 
-                bool npb1=false;
-                VEC_pD::iterator np1 = std::find(clist_params_.begin(), clist_params_.end(),(*it)->pvec[0]);
+                bool npb1 = false;
+                VEC_pD::iterator np1 =
+                    std::find(clist_params_.begin(), clist_params_.end(), (*it)->pvec[0]);
                 size_t ni1 = std::distance(clist_params_.begin(), np1);
 
-                if(i1 == plist.size()) {
-                    if(ni1 == clist_params_.size()) {
-                        subsystemfile << "// Address not in System params...rebuilding into clist_params_" << std::endl;
-                        clist_params_.push_back((*it)->pvec[0]);
-                        subsystemfile << "clist_params_.push_back(new double("<< *((*it)->pvec[0]) <<")); // "<< icp <<" address: " << (void *)(*it)->pvec[0] << std::endl;
-                        icp++;
+                if (i1 == plist.size()) {
+                    if (ni1 == clist_params_.size()) {
+                       subsystemfile
+                           << "// Address not in System params...rebuilding into clist_params_"
+                           << std::endl;
+                       clist_params_.push_back((*it)->pvec[0]);
+                       subsystemfile << "clist_params_.push_back(new double(" << *((*it)->pvec[0])
+                                     << ")); // " << icp << " address: " << (void*)(*it)->pvec[0]
+                                     << std::endl;
+                       icp++;
                     }
-                    npb1=true;
+                    npb1 = true;
                 }
 
-                bool npb2=false;
-                VEC_pD::iterator np2 = std::find(clist_params_.begin(), clist_params_.end(),(*it)->pvec[1]);
+                bool npb2 = false;
+                VEC_pD::iterator np2 =
+                    std::find(clist_params_.begin(), clist_params_.end(), (*it)->pvec[1]);
                 size_t ni2 = std::distance(clist_params_.begin(), np2);
 
-                if(i2 == plist.size()) {
-                    if(ni2 == clist_params_.size()) {
-                        subsystemfile << "// Address not in System params...rebuilding into clist_params_" << std::endl;
-                        clist_params_.push_back((*it)->pvec[1]);
-                        subsystemfile << "clist_params_.push_back(new double("<< *((*it)->pvec[1]) <<")); // "<< icp <<" address: " << (void *)(*it)->pvec[1] << std::endl;
-                        icp++;
+                if (i2 == plist.size()) {
+                    if (ni2 == clist_params_.size()) {
+                       subsystemfile
+                           << "// Address not in System params...rebuilding into clist_params_"
+                           << std::endl;
+                       clist_params_.push_back((*it)->pvec[1]);
+                       subsystemfile << "clist_params_.push_back(new double(" << *((*it)->pvec[1])
+                                     << ")); // " << icp << " address: " << (void*)(*it)->pvec[1]
+                                     << std::endl;
+                       icp++;
                     }
-                    npb2=true;
+                    npb2 = true;
                 }
 
-                bool npb3=false;
-                VEC_pD::iterator np3 = std::find(clist_params_.begin(), clist_params_.end(),(*it)->pvec[2]);
+                bool npb3 = false;
+                VEC_pD::iterator np3 =
+                    std::find(clist_params_.begin(), clist_params_.end(), (*it)->pvec[2]);
                 size_t ni3 = std::distance(clist_params_.begin(), np3);
 
-                if(i3 == plist.size()) {
-                    if(ni3 == clist_params_.size()) {
-                        subsystemfile << "// Address not in System params...rebuilding into clist_params_" << std::endl;
-                        clist_params_.push_back((*it)->pvec[2]);
-                        subsystemfile << "clist_params_.push_back(new double("<< *((*it)->pvec[2]) <<")); // "<< icp <<" address: " << (void *)(*it)->pvec[2] << std::endl;
-                        icp++;
+                if (i3 == plist.size()) {
+                    if (ni3 == clist_params_.size()) {
+                       subsystemfile
+                           << "// Address not in System params...rebuilding into clist_params_"
+                           << std::endl;
+                       clist_params_.push_back((*it)->pvec[2]);
+                       subsystemfile << "clist_params_.push_back(new double(" << *((*it)->pvec[2])
+                                     << ")); // " << icp << " address: " << (void*)(*it)->pvec[2]
+                                     << std::endl;
+                       icp++;
                     }
-                    npb3=true;
+                    npb3 = true;
                 }
 
-                bool npb4=false;
-                VEC_pD::iterator np4 = std::find(clist_params_.begin(), clist_params_.end(),(*it)->pvec[3]);
+                bool npb4 = false;
+                VEC_pD::iterator np4 =
+                    std::find(clist_params_.begin(), clist_params_.end(), (*it)->pvec[3]);
                 size_t ni4 = std::distance(clist_params_.begin(), np4);
 
-                if(i4 == plist.size()) {
-                    if(ni4 == clist_params_.size()) {
-                        subsystemfile << "// Address not in System params...rebuilding into clist_params_" << std::endl;
-                        clist_params_.push_back((*it)->pvec[3]);
-                        subsystemfile << "clist_params_.push_back(new double("<< *((*it)->pvec[3]) <<")); // "<< icp <<" address: " << (void *)(*it)->pvec[3] << std::endl;
-                        icp++;
+                if (i4 == plist.size()) {
+                    if (ni4 == clist_params_.size()) {
+                       subsystemfile
+                           << "// Address not in System params...rebuilding into clist_params_"
+                           << std::endl;
+                       clist_params_.push_back((*it)->pvec[3]);
+                       subsystemfile << "clist_params_.push_back(new double(" << *((*it)->pvec[3])
+                                     << ")); // " << icp << " address: " << (void*)(*it)->pvec[3]
+                                     << std::endl;
+                       icp++;
                     }
-                    npb4=true;
+                    npb4 = true;
                 }
 
-                bool npb5=false;
-                VEC_pD::iterator np5 = std::find(clist_params_.begin(), clist_params_.end(),(*it)->pvec[4]);
+                bool npb5 = false;
+                VEC_pD::iterator np5 =
+                    std::find(clist_params_.begin(), clist_params_.end(), (*it)->pvec[4]);
                 size_t ni5 = std::distance(clist_params_.begin(), np5);
 
-                if(i5 == plist.size()) {
-                    if(ni5 == clist_params_.size()) {
-                        subsystemfile << "// Address not in System params...rebuilding into clist_params_" << std::endl;
-                        clist_params_.push_back((*it)->pvec[4]);
-                        subsystemfile << "clist_params_.push_back(new double("<< *((*it)->pvec[4]) <<")); // "<< icp <<" address: " << (void *)(*it)->pvec[4] << std::endl;
-                        icp++;
+                if (i5 == plist.size()) {
+                    if (ni5 == clist_params_.size()) {
+                       subsystemfile
+                           << "// Address not in System params...rebuilding into clist_params_"
+                           << std::endl;
+                       clist_params_.push_back((*it)->pvec[4]);
+                       subsystemfile << "clist_params_.push_back(new double(" << *((*it)->pvec[4])
+                                     << ")); // " << icp << " address: " << (void*)(*it)->pvec[4]
+                                     << std::endl;
+                       icp++;
                     }
-                    npb5=true;
+                    npb5 = true;
                 }
 
-                bool npb6=false;
-                VEC_pD::iterator np6 = std::find(clist_params_.begin(), clist_params_.end(),(*it)->pvec[5]);
+                bool npb6 = false;
+                VEC_pD::iterator np6 =
+                    std::find(clist_params_.begin(), clist_params_.end(), (*it)->pvec[5]);
                 size_t ni6 = std::distance(clist_params_.begin(), np6);
 
-                if(i6 == plist.size()) {
-                    if(ni6 == clist_params_.size()) {
-                        subsystemfile << "// Address not in System params...rebuilding into clist_params_" << std::endl;
-                        clist_params_.push_back((*it)->pvec[5]);
-                        subsystemfile << "clist_params_.push_back(new double("<< *((*it)->pvec[5]) <<")); // "<< icp <<" address: " << (void *)(*it)->pvec[5] << std::endl;
-                        icp++;
+                if (i6 == plist.size()) {
+                    if (ni6 == clist_params_.size()) {
+                       subsystemfile
+                           << "// Address not in System params...rebuilding into clist_params_"
+                           << std::endl;
+                       clist_params_.push_back((*it)->pvec[5]);
+                       subsystemfile << "clist_params_.push_back(new double(" << *((*it)->pvec[5])
+                                     << ")); // " << icp << " address: " << (void*)(*it)->pvec[5]
+                                     << std::endl;
+                       icp++;
                     }
-                    npb6=true;
+                    npb6 = true;
                 }
 
-                bool npb7=false;
-                VEC_pD::iterator np7 = std::find(clist_params_.begin(), clist_params_.end(),(*it)->pvec[6]);
+                bool npb7 = false;
+                VEC_pD::iterator np7 =
+                    std::find(clist_params_.begin(), clist_params_.end(), (*it)->pvec[6]);
                 size_t ni7 = std::distance(clist_params_.begin(), np7);
 
-                if(i7 == plist.size()) {
-                    if(ni7 == clist_params_.size()) {
-                        subsystemfile << "// Address not in System params...rebuilding into clist_params_" << std::endl;
-                        clist_params_.push_back((*it)->pvec[6]);
-                        subsystemfile << "clist_params_.push_back(new double("<< *((*it)->pvec[6]) <<")); // "<< icp <<" address: " << (void *)(*it)->pvec[6] << std::endl;
-                        icp++;
+                if (i7 == plist.size()) {
+                    if (ni7 == clist_params_.size()) {
+                       subsystemfile
+                           << "// Address not in System params...rebuilding into clist_params_"
+                           << std::endl;
+                       clist_params_.push_back((*it)->pvec[6]);
+                       subsystemfile << "clist_params_.push_back(new double(" << *((*it)->pvec[6])
+                                     << ")); // " << icp << " address: " << (void*)(*it)->pvec[6]
+                                     << std::endl;
+                       icp++;
                     }
-                    npb7=true;
+                    npb7 = true;
                 }
 
-                bool npb8=false;
-                VEC_pD::iterator np8 = std::find(clist_params_.begin(), clist_params_.end(),(*it)->pvec[7]);
+                bool npb8 = false;
+                VEC_pD::iterator np8 =
+                    std::find(clist_params_.begin(), clist_params_.end(), (*it)->pvec[7]);
                 size_t ni8 = std::distance(clist_params_.begin(), np8);
 
-                if(i8 == plist.size()) {
-                    if(ni8 == clist_params_.size()) {
-                        subsystemfile << "// Address not in System params...rebuilding into clist_params_" << std::endl;
-                        clist_params_.push_back((*it)->pvec[7]);
-                        subsystemfile << "clist_params_.push_back(new double("<< *((*it)->pvec[7]) <<")); // "<< icp <<" address: " << (void *)(*it)->pvec[7] << std::endl;
-                        icp++;
+                if (i8 == plist.size()) {
+                    if (ni8 == clist_params_.size()) {
+                       subsystemfile
+                           << "// Address not in System params...rebuilding into clist_params_"
+                           << std::endl;
+                       clist_params_.push_back((*it)->pvec[7]);
+                       subsystemfile << "clist_params_.push_back(new double(" << *((*it)->pvec[7])
+                                     << ")); // " << icp << " address: " << (void*)(*it)->pvec[7]
+                                     << std::endl;
+                       icp++;
                     }
-                    npb8=true;
+                    npb8 = true;
                 }
 
-                subsystemfile << "ConstraintMidpointOnLine * c" << ic <<"=new ConstraintMidpointOnLine();" << std::endl;
-                subsystemfile << "c" << ic << "->pvec.push_back(" << (npb1?("clist_params_["):("plist_[")) << (npb1?ni1:i1) <<"]);" << std::endl;
-                subsystemfile << "c" << ic << "->pvec.push_back(" << (npb2?("clist_params_["):("plist_[")) << (npb2?ni2:i2) <<"]);" << std::endl;
-                subsystemfile << "c" << ic << "->pvec.push_back(" << (npb3?("clist_params_["):("plist_[")) << (npb3?ni3:i3) <<"]);" << std::endl;
-                subsystemfile << "c" << ic << "->pvec.push_back(" << (npb4?("clist_params_["):("plist_[")) << (npb4?ni4:i4) <<"]);" << std::endl;
-                subsystemfile << "c" << ic << "->pvec.push_back(" << (npb5?("clist_params_["):("plist_[")) << (npb5?ni5:i5) <<"]);" << std::endl;
-                subsystemfile << "c" << ic << "->pvec.push_back(" << (npb6?("clist_params_["):("plist_[")) << (npb6?ni6:i6) <<"]);" << std::endl;
-                subsystemfile << "c" << ic << "->pvec.push_back(" << (npb7?("clist_params_["):("plist_[")) << (npb7?ni7:i7) <<"]);" << std::endl;
-                subsystemfile << "c" << ic << "->pvec.push_back(" << (npb8?("clist_params_["):("plist_[")) << (npb8?ni8:i8) <<"]);" << std::endl;
+                subsystemfile << "ConstraintMidpointOnLine * c" << ic
+                              << "=new ConstraintMidpointOnLine();" << std::endl;
+                subsystemfile << "c" << ic << "->pvec.push_back("
+                              << (npb1 ? ("clist_params_[") : ("plist_[")) << (npb1 ? ni1 : i1)
+                              << "]);" << std::endl;
+                subsystemfile << "c" << ic << "->pvec.push_back("
+                              << (npb2 ? ("clist_params_[") : ("plist_[")) << (npb2 ? ni2 : i2)
+                              << "]);" << std::endl;
+                subsystemfile << "c" << ic << "->pvec.push_back("
+                              << (npb3 ? ("clist_params_[") : ("plist_[")) << (npb3 ? ni3 : i3)
+                              << "]);" << std::endl;
+                subsystemfile << "c" << ic << "->pvec.push_back("
+                              << (npb4 ? ("clist_params_[") : ("plist_[")) << (npb4 ? ni4 : i4)
+                              << "]);" << std::endl;
+                subsystemfile << "c" << ic << "->pvec.push_back("
+                              << (npb5 ? ("clist_params_[") : ("plist_[")) << (npb5 ? ni5 : i5)
+                              << "]);" << std::endl;
+                subsystemfile << "c" << ic << "->pvec.push_back("
+                              << (npb6 ? ("clist_params_[") : ("plist_[")) << (npb6 ? ni6 : i6)
+                              << "]);" << std::endl;
+                subsystemfile << "c" << ic << "->pvec.push_back("
+                              << (npb7 ? ("clist_params_[") : ("plist_[")) << (npb7 ? ni7 : i7)
+                              << "]);" << std::endl;
+                subsystemfile << "c" << ic << "->pvec.push_back("
+                              << (npb8 ? ("clist_params_[") : ("plist_[")) << (npb8 ? ni8 : i8)
+                              << "]);" << std::endl;
                 subsystemfile << "c" << ic << "->origpvec=c" << ic << "->pvec;" << std::endl;
                 subsystemfile << "c" << ic << "->rescale();" << std::endl;
-                subsystemfile << "clist_.push_back(c" << ic << "); // addresses = "<< (*it)->pvec[0] << "," << (*it)->pvec[1] << "," << (*it)->pvec[2] << "," << (*it)->pvec[3] << "," << (*it)->pvec[4] << "," << (*it)->pvec[5] << "," << (*it)->pvec[6] << "," << (*it)->pvec[7] << std::endl;
+                subsystemfile << "clist_.push_back(c" << ic
+                              << "); // addresses = " << (*it)->pvec[0] << "," << (*it)->pvec[1]
+                              << "," << (*it)->pvec[2] << "," << (*it)->pvec[3] << ","
+                              << (*it)->pvec[4] << "," << (*it)->pvec[5] << "," << (*it)->pvec[6]
+                              << "," << (*it)->pvec[7] << std::endl;
                 break;
             }
-            case TangentCircumf:
-            { // 6
-                VEC_pD::iterator p1 = std::find(plist.begin(), plist.end(),(*it)->pvec[0]);
-                VEC_pD::iterator p2 = std::find(plist.begin(), plist.end(),(*it)->pvec[1]);
-                VEC_pD::iterator p3 = std::find(plist.begin(), plist.end(),(*it)->pvec[2]);
-                VEC_pD::iterator p4 = std::find(plist.begin(), plist.end(),(*it)->pvec[3]);
-                VEC_pD::iterator p5 = std::find(plist.begin(), plist.end(),(*it)->pvec[4]);
-                VEC_pD::iterator p6 = std::find(plist.begin(), plist.end(),(*it)->pvec[5]);
+            case TangentCircumf: {// 6
+                VEC_pD::iterator p1 = std::find(plist.begin(), plist.end(), (*it)->pvec[0]);
+                VEC_pD::iterator p2 = std::find(plist.begin(), plist.end(), (*it)->pvec[1]);
+                VEC_pD::iterator p3 = std::find(plist.begin(), plist.end(), (*it)->pvec[2]);
+                VEC_pD::iterator p4 = std::find(plist.begin(), plist.end(), (*it)->pvec[3]);
+                VEC_pD::iterator p5 = std::find(plist.begin(), plist.end(), (*it)->pvec[4]);
+                VEC_pD::iterator p6 = std::find(plist.begin(), plist.end(), (*it)->pvec[5]);
                 size_t i1 = std::distance(plist.begin(), p1);
                 size_t i2 = std::distance(plist.begin(), p2);
                 size_t i3 = std::distance(plist.begin(), p3);
@@ -3499,111 +4086,160 @@ void System::extractSubsystem(SubSystem *subsys, bool isRedundantsolving)
                 size_t i5 = std::distance(plist.begin(), p5);
                 size_t i6 = std::distance(plist.begin(), p6);
 
-                bool npb1=false;
-                VEC_pD::iterator np1 = std::find(clist_params_.begin(), clist_params_.end(),(*it)->pvec[0]);
+                bool npb1 = false;
+                VEC_pD::iterator np1 =
+                    std::find(clist_params_.begin(), clist_params_.end(), (*it)->pvec[0]);
                 size_t ni1 = std::distance(clist_params_.begin(), np1);
 
-                if(i1 == plist.size()) {
-                    if(ni1 == clist_params_.size()) {
-                        subsystemfile << "// Address not in System params...rebuilding into clist_params_" << std::endl;
-                        clist_params_.push_back((*it)->pvec[0]);
-                        subsystemfile << "clist_params_.push_back(new double("<< *((*it)->pvec[0]) <<")); // "<< icp <<" address: " << (void *)(*it)->pvec[0] << std::endl;
-                        icp++;
+                if (i1 == plist.size()) {
+                    if (ni1 == clist_params_.size()) {
+                       subsystemfile
+                           << "// Address not in System params...rebuilding into clist_params_"
+                           << std::endl;
+                       clist_params_.push_back((*it)->pvec[0]);
+                       subsystemfile << "clist_params_.push_back(new double(" << *((*it)->pvec[0])
+                                     << ")); // " << icp << " address: " << (void*)(*it)->pvec[0]
+                                     << std::endl;
+                       icp++;
                     }
-                    npb1=true;
+                    npb1 = true;
                 }
 
-                bool npb2=false;
-                VEC_pD::iterator np2 = std::find(clist_params_.begin(), clist_params_.end(),(*it)->pvec[1]);
+                bool npb2 = false;
+                VEC_pD::iterator np2 =
+                    std::find(clist_params_.begin(), clist_params_.end(), (*it)->pvec[1]);
                 size_t ni2 = std::distance(clist_params_.begin(), np2);
 
-                if(i2 == plist.size()) {
-                    if(ni2 == clist_params_.size()) {
-                        subsystemfile << "// Address not in System params...rebuilding into clist_params_" << std::endl;
-                        clist_params_.push_back((*it)->pvec[1]);
-                        subsystemfile << "clist_params_.push_back(new double("<< *((*it)->pvec[1]) <<")); // "<< icp <<" address: " << (void *)(*it)->pvec[1] << std::endl;
-                        icp++;
+                if (i2 == plist.size()) {
+                    if (ni2 == clist_params_.size()) {
+                       subsystemfile
+                           << "// Address not in System params...rebuilding into clist_params_"
+                           << std::endl;
+                       clist_params_.push_back((*it)->pvec[1]);
+                       subsystemfile << "clist_params_.push_back(new double(" << *((*it)->pvec[1])
+                                     << ")); // " << icp << " address: " << (void*)(*it)->pvec[1]
+                                     << std::endl;
+                       icp++;
                     }
-                    npb2=true;
+                    npb2 = true;
                 }
 
-                bool npb3=false;
-                VEC_pD::iterator np3 = std::find(clist_params_.begin(), clist_params_.end(),(*it)->pvec[2]);
+                bool npb3 = false;
+                VEC_pD::iterator np3 =
+                    std::find(clist_params_.begin(), clist_params_.end(), (*it)->pvec[2]);
                 size_t ni3 = std::distance(clist_params_.begin(), np3);
 
-                if(i3 == plist.size()) {
-                    if(ni3 == clist_params_.size()) {
-                        subsystemfile << "// Address not in System params...rebuilding into clist_params_" << std::endl;
-                        clist_params_.push_back((*it)->pvec[2]);
-                        subsystemfile << "clist_params_.push_back(new double("<< *((*it)->pvec[2]) <<")); // "<< icp <<" address: " << (void *)(*it)->pvec[2] << std::endl;
-                        icp++;
+                if (i3 == plist.size()) {
+                    if (ni3 == clist_params_.size()) {
+                       subsystemfile
+                           << "// Address not in System params...rebuilding into clist_params_"
+                           << std::endl;
+                       clist_params_.push_back((*it)->pvec[2]);
+                       subsystemfile << "clist_params_.push_back(new double(" << *((*it)->pvec[2])
+                                     << ")); // " << icp << " address: " << (void*)(*it)->pvec[2]
+                                     << std::endl;
+                       icp++;
                     }
-                    npb3=true;
+                    npb3 = true;
                 }
 
-                bool npb4=false;
-                VEC_pD::iterator np4 = std::find(clist_params_.begin(), clist_params_.end(),(*it)->pvec[3]);
+                bool npb4 = false;
+                VEC_pD::iterator np4 =
+                    std::find(clist_params_.begin(), clist_params_.end(), (*it)->pvec[3]);
                 size_t ni4 = std::distance(clist_params_.begin(), np4);
 
-                if(i4 == plist.size()) {
-                    if(ni4 == clist_params_.size()) {
-                        subsystemfile << "// Address not in System params...rebuilding into clist_params_" << std::endl;
-                        clist_params_.push_back((*it)->pvec[3]);
-                        subsystemfile << "clist_params_.push_back(new double("<< *((*it)->pvec[3]) <<")); // "<< icp <<" address: " << (void *)(*it)->pvec[3] << std::endl;
-                        icp++;
+                if (i4 == plist.size()) {
+                    if (ni4 == clist_params_.size()) {
+                       subsystemfile
+                           << "// Address not in System params...rebuilding into clist_params_"
+                           << std::endl;
+                       clist_params_.push_back((*it)->pvec[3]);
+                       subsystemfile << "clist_params_.push_back(new double(" << *((*it)->pvec[3])
+                                     << ")); // " << icp << " address: " << (void*)(*it)->pvec[3]
+                                     << std::endl;
+                       icp++;
                     }
-                    npb4=true;
+                    npb4 = true;
                 }
 
-                bool npb5=false;
-                VEC_pD::iterator np5 = std::find(clist_params_.begin(), clist_params_.end(),(*it)->pvec[4]);
+                bool npb5 = false;
+                VEC_pD::iterator np5 =
+                    std::find(clist_params_.begin(), clist_params_.end(), (*it)->pvec[4]);
                 size_t ni5 = std::distance(clist_params_.begin(), np5);
 
-                if(i5 == plist.size()) {
-                    if(ni5 == clist_params_.size()) {
-                        subsystemfile << "// Address not in System params...rebuilding into clist_params_" << std::endl;
-                        clist_params_.push_back((*it)->pvec[4]);
-                        subsystemfile << "clist_params_.push_back(new double("<< *((*it)->pvec[4]) <<")); // "<< icp <<" address: " << (void *)(*it)->pvec[4] << std::endl;
-                        icp++;
+                if (i5 == plist.size()) {
+                    if (ni5 == clist_params_.size()) {
+                       subsystemfile
+                           << "// Address not in System params...rebuilding into clist_params_"
+                           << std::endl;
+                       clist_params_.push_back((*it)->pvec[4]);
+                       subsystemfile << "clist_params_.push_back(new double(" << *((*it)->pvec[4])
+                                     << ")); // " << icp << " address: " << (void*)(*it)->pvec[4]
+                                     << std::endl;
+                       icp++;
                     }
-                    npb5=true;
+                    npb5 = true;
                 }
 
-                bool npb6=false;
-                VEC_pD::iterator np6 = std::find(clist_params_.begin(), clist_params_.end(),(*it)->pvec[5]);
+                bool npb6 = false;
+                VEC_pD::iterator np6 =
+                    std::find(clist_params_.begin(), clist_params_.end(), (*it)->pvec[5]);
                 size_t ni6 = std::distance(clist_params_.begin(), np6);
 
-                if(i6 == plist.size()) {
-                    if(ni6 == clist_params_.size()) {
-                        subsystemfile << "// Address not in System params...rebuilding into clist_params_" << std::endl;
-                        clist_params_.push_back((*it)->pvec[5]);
-                        subsystemfile << "clist_params_.push_back(new double("<< *((*it)->pvec[5]) <<")); // "<< icp <<" address: " << (void *)(*it)->pvec[5] << std::endl;
-                        icp++;
+                if (i6 == plist.size()) {
+                    if (ni6 == clist_params_.size()) {
+                       subsystemfile
+                           << "// Address not in System params...rebuilding into clist_params_"
+                           << std::endl;
+                       clist_params_.push_back((*it)->pvec[5]);
+                       subsystemfile << "clist_params_.push_back(new double(" << *((*it)->pvec[5])
+                                     << ")); // " << icp << " address: " << (void*)(*it)->pvec[5]
+                                     << std::endl;
+                       icp++;
                     }
-                    npb6=true;
+                    npb6 = true;
                 }
 
-                subsystemfile << "ConstraintTangentCircumf * c" << ic <<"=new ConstraintTangentCircumf(" << (static_cast<ConstraintTangentCircumf *>(*it)->getInternal()?"true":"false") <<");" << std::endl;
-                subsystemfile << "c" << ic << "->pvec.push_back(" << (npb1?("clist_params_["):("plist_[")) << (npb1?ni1:i1) <<"]);" << std::endl;
-                subsystemfile << "c" << ic << "->pvec.push_back(" << (npb2?("clist_params_["):("plist_[")) << (npb2?ni2:i2) <<"]);" << std::endl;
-                subsystemfile << "c" << ic << "->pvec.push_back(" << (npb3?("clist_params_["):("plist_[")) << (npb3?ni3:i3) <<"]);" << std::endl;
-                subsystemfile << "c" << ic << "->pvec.push_back(" << (npb4?("clist_params_["):("plist_[")) << (npb4?ni4:i4) <<"]);" << std::endl;
-                subsystemfile << "c" << ic << "->pvec.push_back(" << (npb5?("clist_params_["):("plist_[")) << (npb5?ni5:i5) <<"]);" << std::endl;
-                subsystemfile << "c" << ic << "->pvec.push_back(" << (npb6?("clist_params_["):("plist_[")) << (npb6?ni6:i6) <<"]);" << std::endl;
+                subsystemfile << "ConstraintTangentCircumf * c" << ic
+                              << "=new ConstraintTangentCircumf("
+                              << (static_cast<ConstraintTangentCircumf*>(*it)->getInternal()
+                                      ? "true"
+                                      : "false")
+                              << ");" << std::endl;
+                subsystemfile << "c" << ic << "->pvec.push_back("
+                              << (npb1 ? ("clist_params_[") : ("plist_[")) << (npb1 ? ni1 : i1)
+                              << "]);" << std::endl;
+                subsystemfile << "c" << ic << "->pvec.push_back("
+                              << (npb2 ? ("clist_params_[") : ("plist_[")) << (npb2 ? ni2 : i2)
+                              << "]);" << std::endl;
+                subsystemfile << "c" << ic << "->pvec.push_back("
+                              << (npb3 ? ("clist_params_[") : ("plist_[")) << (npb3 ? ni3 : i3)
+                              << "]);" << std::endl;
+                subsystemfile << "c" << ic << "->pvec.push_back("
+                              << (npb4 ? ("clist_params_[") : ("plist_[")) << (npb4 ? ni4 : i4)
+                              << "]);" << std::endl;
+                subsystemfile << "c" << ic << "->pvec.push_back("
+                              << (npb5 ? ("clist_params_[") : ("plist_[")) << (npb5 ? ni5 : i5)
+                              << "]);" << std::endl;
+                subsystemfile << "c" << ic << "->pvec.push_back("
+                              << (npb6 ? ("clist_params_[") : ("plist_[")) << (npb6 ? ni6 : i6)
+                              << "]);" << std::endl;
                 subsystemfile << "c" << ic << "->origpvec=c" << ic << "->pvec;" << std::endl;
                 subsystemfile << "c" << ic << "->rescale();" << std::endl;
-                subsystemfile << "clist_.push_back(c" << ic << "); // addresses = "<< (*it)->pvec[0] << "," << (*it)->pvec[1] << "," << (*it)->pvec[2] << "," << (*it)->pvec[3] << "," << (*it)->pvec[4] << "," << (*it)->pvec[5] << std::endl;
+                subsystemfile << "clist_.push_back(c" << ic
+                              << "); // addresses = " << (*it)->pvec[0] << "," << (*it)->pvec[1]
+                              << "," << (*it)->pvec[2] << "," << (*it)->pvec[3] << ","
+                              << (*it)->pvec[4] << "," << (*it)->pvec[5] << std::endl;
                 break;
             }
-            case PointOnEllipse:
-            { // 7
-                VEC_pD::iterator p1 = std::find(plist.begin(), plist.end(),(*it)->pvec[0]);
-                VEC_pD::iterator p2 = std::find(plist.begin(), plist.end(),(*it)->pvec[1]);
-                VEC_pD::iterator p3 = std::find(plist.begin(), plist.end(),(*it)->pvec[2]);
-                VEC_pD::iterator p4 = std::find(plist.begin(), plist.end(),(*it)->pvec[3]);
-                VEC_pD::iterator p5 = std::find(plist.begin(), plist.end(),(*it)->pvec[4]);
-                VEC_pD::iterator p6 = std::find(plist.begin(), plist.end(),(*it)->pvec[5]);
-                VEC_pD::iterator p7 = std::find(plist.begin(), plist.end(),(*it)->pvec[6]);
+            case PointOnEllipse: {// 7
+                VEC_pD::iterator p1 = std::find(plist.begin(), plist.end(), (*it)->pvec[0]);
+                VEC_pD::iterator p2 = std::find(plist.begin(), plist.end(), (*it)->pvec[1]);
+                VEC_pD::iterator p3 = std::find(plist.begin(), plist.end(), (*it)->pvec[2]);
+                VEC_pD::iterator p4 = std::find(plist.begin(), plist.end(), (*it)->pvec[3]);
+                VEC_pD::iterator p5 = std::find(plist.begin(), plist.end(), (*it)->pvec[4]);
+                VEC_pD::iterator p6 = std::find(plist.begin(), plist.end(), (*it)->pvec[5]);
+                VEC_pD::iterator p7 = std::find(plist.begin(), plist.end(), (*it)->pvec[6]);
                 size_t i1 = std::distance(plist.begin(), p1);
                 size_t i2 = std::distance(plist.begin(), p2);
                 size_t i3 = std::distance(plist.begin(), p3);
@@ -3612,124 +4248,178 @@ void System::extractSubsystem(SubSystem *subsys, bool isRedundantsolving)
                 size_t i6 = std::distance(plist.begin(), p6);
                 size_t i7 = std::distance(plist.begin(), p7);
 
-                bool npb1=false;
-                VEC_pD::iterator np1 = std::find(clist_params_.begin(), clist_params_.end(),(*it)->pvec[0]);
+                bool npb1 = false;
+                VEC_pD::iterator np1 =
+                    std::find(clist_params_.begin(), clist_params_.end(), (*it)->pvec[0]);
                 size_t ni1 = std::distance(clist_params_.begin(), np1);
 
-                if(i1 == plist.size()) {
-                    if(ni1 == clist_params_.size()) {
-                        subsystemfile << "// Address not in System params...rebuilding into clist_params_" << std::endl;
-                        clist_params_.push_back((*it)->pvec[0]);
-                        subsystemfile << "clist_params_.push_back(new double("<< *((*it)->pvec[0]) <<")); // "<< icp <<" address: " << (void *)(*it)->pvec[0] << std::endl;
-                        icp++;
+                if (i1 == plist.size()) {
+                    if (ni1 == clist_params_.size()) {
+                       subsystemfile
+                           << "// Address not in System params...rebuilding into clist_params_"
+                           << std::endl;
+                       clist_params_.push_back((*it)->pvec[0]);
+                       subsystemfile << "clist_params_.push_back(new double(" << *((*it)->pvec[0])
+                                     << ")); // " << icp << " address: " << (void*)(*it)->pvec[0]
+                                     << std::endl;
+                       icp++;
                     }
-                    npb1=true;
+                    npb1 = true;
                 }
 
-                bool npb2=false;
-                VEC_pD::iterator np2 = std::find(clist_params_.begin(), clist_params_.end(),(*it)->pvec[1]);
+                bool npb2 = false;
+                VEC_pD::iterator np2 =
+                    std::find(clist_params_.begin(), clist_params_.end(), (*it)->pvec[1]);
                 size_t ni2 = std::distance(clist_params_.begin(), np2);
 
-                if(i2 == plist.size()) {
-                    if(ni2 == clist_params_.size()) {
-                        subsystemfile << "// Address not in System params...rebuilding into clist_params_" << std::endl;
-                        clist_params_.push_back((*it)->pvec[1]);
-                        subsystemfile << "clist_params_.push_back(new double("<< *((*it)->pvec[1]) <<")); // "<< icp <<" address: " << (void *)(*it)->pvec[1] << std::endl;
-                        icp++;
+                if (i2 == plist.size()) {
+                    if (ni2 == clist_params_.size()) {
+                       subsystemfile
+                           << "// Address not in System params...rebuilding into clist_params_"
+                           << std::endl;
+                       clist_params_.push_back((*it)->pvec[1]);
+                       subsystemfile << "clist_params_.push_back(new double(" << *((*it)->pvec[1])
+                                     << ")); // " << icp << " address: " << (void*)(*it)->pvec[1]
+                                     << std::endl;
+                       icp++;
                     }
-                    npb2=true;
+                    npb2 = true;
                 }
 
-                bool npb3=false;
-                VEC_pD::iterator np3 = std::find(clist_params_.begin(), clist_params_.end(),(*it)->pvec[2]);
+                bool npb3 = false;
+                VEC_pD::iterator np3 =
+                    std::find(clist_params_.begin(), clist_params_.end(), (*it)->pvec[2]);
                 size_t ni3 = std::distance(clist_params_.begin(), np3);
 
-                if(i3 == plist.size()) {
-                    if(ni3 == clist_params_.size()) {
-                        subsystemfile << "// Address not in System params...rebuilding into clist_params_" << std::endl;
-                        clist_params_.push_back((*it)->pvec[2]);
-                        subsystemfile << "clist_params_.push_back(new double("<< *((*it)->pvec[2]) <<")); // "<< icp <<" address: " << (void *)(*it)->pvec[2] << std::endl;
-                        icp++;
+                if (i3 == plist.size()) {
+                    if (ni3 == clist_params_.size()) {
+                       subsystemfile
+                           << "// Address not in System params...rebuilding into clist_params_"
+                           << std::endl;
+                       clist_params_.push_back((*it)->pvec[2]);
+                       subsystemfile << "clist_params_.push_back(new double(" << *((*it)->pvec[2])
+                                     << ")); // " << icp << " address: " << (void*)(*it)->pvec[2]
+                                     << std::endl;
+                       icp++;
                     }
-                    npb3=true;
+                    npb3 = true;
                 }
 
-                bool npb4=false;
-                VEC_pD::iterator np4 = std::find(clist_params_.begin(), clist_params_.end(),(*it)->pvec[3]);
+                bool npb4 = false;
+                VEC_pD::iterator np4 =
+                    std::find(clist_params_.begin(), clist_params_.end(), (*it)->pvec[3]);
                 size_t ni4 = std::distance(clist_params_.begin(), np4);
 
-                if(i4 == plist.size()) {
-                    if(ni4 == clist_params_.size()) {
-                        subsystemfile << "// Address not in System params...rebuilding into clist_params_" << std::endl;
-                        clist_params_.push_back((*it)->pvec[3]);
-                        subsystemfile << "clist_params_.push_back(new double("<< *((*it)->pvec[3]) <<")); // "<< icp <<" address: " << (void *)(*it)->pvec[3] << std::endl;
-                        icp++;
+                if (i4 == plist.size()) {
+                    if (ni4 == clist_params_.size()) {
+                       subsystemfile
+                           << "// Address not in System params...rebuilding into clist_params_"
+                           << std::endl;
+                       clist_params_.push_back((*it)->pvec[3]);
+                       subsystemfile << "clist_params_.push_back(new double(" << *((*it)->pvec[3])
+                                     << ")); // " << icp << " address: " << (void*)(*it)->pvec[3]
+                                     << std::endl;
+                       icp++;
                     }
-                    npb4=true;
+                    npb4 = true;
                 }
 
-                bool npb5=false;
-                VEC_pD::iterator np5 = std::find(clist_params_.begin(), clist_params_.end(),(*it)->pvec[4]);
+                bool npb5 = false;
+                VEC_pD::iterator np5 =
+                    std::find(clist_params_.begin(), clist_params_.end(), (*it)->pvec[4]);
                 size_t ni5 = std::distance(clist_params_.begin(), np5);
 
-                if(i5 == plist.size()) {
-                    if(ni5 == clist_params_.size()) {
-                        subsystemfile << "// Address not in System params...rebuilding into clist_params_" << std::endl;
-                        clist_params_.push_back((*it)->pvec[4]);
-                        subsystemfile << "clist_params_.push_back(new double("<< *((*it)->pvec[4]) <<")); // "<< icp <<" address: " << (void *)(*it)->pvec[4] << std::endl;
-                        icp++;
+                if (i5 == plist.size()) {
+                    if (ni5 == clist_params_.size()) {
+                       subsystemfile
+                           << "// Address not in System params...rebuilding into clist_params_"
+                           << std::endl;
+                       clist_params_.push_back((*it)->pvec[4]);
+                       subsystemfile << "clist_params_.push_back(new double(" << *((*it)->pvec[4])
+                                     << ")); // " << icp << " address: " << (void*)(*it)->pvec[4]
+                                     << std::endl;
+                       icp++;
                     }
-                    npb5=true;
+                    npb5 = true;
                 }
 
-                bool npb6=false;
-                VEC_pD::iterator np6 = std::find(clist_params_.begin(), clist_params_.end(),(*it)->pvec[5]);
+                bool npb6 = false;
+                VEC_pD::iterator np6 =
+                    std::find(clist_params_.begin(), clist_params_.end(), (*it)->pvec[5]);
                 size_t ni6 = std::distance(clist_params_.begin(), np6);
 
-                if(i6 == plist.size()) {
-                    if(ni6 == clist_params_.size()) {
-                        subsystemfile << "// Address not in System params...rebuilding into clist_params_" << std::endl;
-                        clist_params_.push_back((*it)->pvec[5]);
-                        subsystemfile << "clist_params_.push_back(new double("<< *((*it)->pvec[5]) <<")); // "<< icp <<" address: " << (void *)(*it)->pvec[5] << std::endl;
-                        icp++;
+                if (i6 == plist.size()) {
+                    if (ni6 == clist_params_.size()) {
+                       subsystemfile
+                           << "// Address not in System params...rebuilding into clist_params_"
+                           << std::endl;
+                       clist_params_.push_back((*it)->pvec[5]);
+                       subsystemfile << "clist_params_.push_back(new double(" << *((*it)->pvec[5])
+                                     << ")); // " << icp << " address: " << (void*)(*it)->pvec[5]
+                                     << std::endl;
+                       icp++;
                     }
-                    npb6=true;
+                    npb6 = true;
                 }
 
-                bool npb7=false;
-                VEC_pD::iterator np7 = std::find(clist_params_.begin(), clist_params_.end(),(*it)->pvec[6]);
+                bool npb7 = false;
+                VEC_pD::iterator np7 =
+                    std::find(clist_params_.begin(), clist_params_.end(), (*it)->pvec[6]);
                 size_t ni7 = std::distance(clist_params_.begin(), np7);
 
-                if(i7 == plist.size()) {
-                    if(ni7 == clist_params_.size()) {
-                        subsystemfile << "// Address not in System params...rebuilding into clist_params_" << std::endl;
-                        clist_params_.push_back((*it)->pvec[6]);
-                        subsystemfile << "clist_params_.push_back(new double("<< *((*it)->pvec[6]) <<")); // "<< icp <<" address: " << (void *)(*it)->pvec[6] << std::endl;
-                        icp++;
+                if (i7 == plist.size()) {
+                    if (ni7 == clist_params_.size()) {
+                       subsystemfile
+                           << "// Address not in System params...rebuilding into clist_params_"
+                           << std::endl;
+                       clist_params_.push_back((*it)->pvec[6]);
+                       subsystemfile << "clist_params_.push_back(new double(" << *((*it)->pvec[6])
+                                     << ")); // " << icp << " address: " << (void*)(*it)->pvec[6]
+                                     << std::endl;
+                       icp++;
                     }
-                    npb7=true;
+                    npb7 = true;
                 }
 
-                subsystemfile << "ConstraintPointOnEllipse * c" << ic <<"=new ConstraintPointOnEllipse();" << std::endl;
-                subsystemfile << "c" << ic << "->pvec.push_back(" << (npb1?("clist_params_["):("plist_[")) << (npb1?ni1:i1) <<"]);" << std::endl;
-                subsystemfile << "c" << ic << "->pvec.push_back(" << (npb2?("clist_params_["):("plist_[")) << (npb2?ni2:i2) <<"]);" << std::endl;
-                subsystemfile << "c" << ic << "->pvec.push_back(" << (npb3?("clist_params_["):("plist_[")) << (npb3?ni3:i3) <<"]);" << std::endl;
-                subsystemfile << "c" << ic << "->pvec.push_back(" << (npb4?("clist_params_["):("plist_[")) << (npb4?ni4:i4) <<"]);" << std::endl;
-                subsystemfile << "c" << ic << "->pvec.push_back(" << (npb5?("clist_params_["):("plist_[")) << (npb5?ni5:i5) <<"]);" << std::endl;
-                subsystemfile << "c" << ic << "->pvec.push_back(" << (npb6?("clist_params_["):("plist_[")) << (npb6?ni6:i6) <<"]);" << std::endl;
-                subsystemfile << "c" << ic << "->pvec.push_back(" << (npb7?("clist_params_["):("plist_[")) << (npb7?ni7:i7) <<"]);" << std::endl;
+                subsystemfile << "ConstraintPointOnEllipse * c" << ic
+                              << "=new ConstraintPointOnEllipse();" << std::endl;
+                subsystemfile << "c" << ic << "->pvec.push_back("
+                              << (npb1 ? ("clist_params_[") : ("plist_[")) << (npb1 ? ni1 : i1)
+                              << "]);" << std::endl;
+                subsystemfile << "c" << ic << "->pvec.push_back("
+                              << (npb2 ? ("clist_params_[") : ("plist_[")) << (npb2 ? ni2 : i2)
+                              << "]);" << std::endl;
+                subsystemfile << "c" << ic << "->pvec.push_back("
+                              << (npb3 ? ("clist_params_[") : ("plist_[")) << (npb3 ? ni3 : i3)
+                              << "]);" << std::endl;
+                subsystemfile << "c" << ic << "->pvec.push_back("
+                              << (npb4 ? ("clist_params_[") : ("plist_[")) << (npb4 ? ni4 : i4)
+                              << "]);" << std::endl;
+                subsystemfile << "c" << ic << "->pvec.push_back("
+                              << (npb5 ? ("clist_params_[") : ("plist_[")) << (npb5 ? ni5 : i5)
+                              << "]);" << std::endl;
+                subsystemfile << "c" << ic << "->pvec.push_back("
+                              << (npb6 ? ("clist_params_[") : ("plist_[")) << (npb6 ? ni6 : i6)
+                              << "]);" << std::endl;
+                subsystemfile << "c" << ic << "->pvec.push_back("
+                              << (npb7 ? ("clist_params_[") : ("plist_[")) << (npb7 ? ni7 : i7)
+                              << "]);" << std::endl;
                 subsystemfile << "c" << ic << "->origpvec=c" << ic << "->pvec;" << std::endl;
                 subsystemfile << "c" << ic << "->rescale();" << std::endl;
-                subsystemfile << "clist_.push_back(c" << ic << "); // addresses = "<< (*it)->pvec[0] << "," << (*it)->pvec[1] << "," << (*it)->pvec[2] << "," << (*it)->pvec[3] << "," << (*it)->pvec[4] << "," << (*it)->pvec[5] << "," << (*it)->pvec[6] << std::endl;
+                subsystemfile << "clist_.push_back(c" << ic
+                              << "); // addresses = " << (*it)->pvec[0] << "," << (*it)->pvec[1]
+                              << "," << (*it)->pvec[2] << "," << (*it)->pvec[3] << ","
+                              << (*it)->pvec[4] << "," << (*it)->pvec[5] << "," << (*it)->pvec[6]
+                              << std::endl;
                 break;
             }
-            CASE_NOT_IMP(TangentEllipseLine)
-            CASE_NOT_IMP(InternalAlignmentPoint2Ellipse)
-            CASE_NOT_IMP(EqualMajorAxesEllipse)
-            CASE_NOT_IMP(EllipticalArcRangeToEndPoints)
-            CASE_NOT_IMP(AngleViaPoint)
-            CASE_NOT_IMP(Snell)
-            CASE_NOT_IMP(None)
+                CASE_NOT_IMP(TangentEllipseLine)
+                CASE_NOT_IMP(InternalAlignmentPoint2Ellipse)
+                CASE_NOT_IMP(EqualMajorAxesEllipse)
+                CASE_NOT_IMP(EllipticalArcRangeToEndPoints)
+                CASE_NOT_IMP(AngleViaPoint)
+                CASE_NOT_IMP(Snell)
+                CASE_NOT_IMP(None)
         }
     }
 
@@ -3988,12 +4678,15 @@ SolverReportingManager::Manager().LogToFile("GCS::System::diagnose()\n");
 #endif
 
     // Input parameters' lists:
-    // plist            =>  list of all the parameters of the system, e.g. each coordinate of a point
-    // pdrivenlist      =>  list of the parameters that are driven by other parameters (e.g. value of driven constraints)
+    // plist            =>  list of all the parameters of the system, e.g. each coordinate
+    //                      of a point
+    // pdrivenlist      =>  list of the parameters that are driven by other parameters
+    //                      (e.g. value of driven constraints)
 
-    // When adding an external geometry or a constraint on an external geometry the array 'plist' is empty.
-    // So, we must abort here because otherwise we would create an invalid matrix and make the application
-    // eventually crash. This fixes issues #0002372/#0002373.
+    // When adding an external geometry or a constraint on an external geometry the array
+    // 'plist' is empty.
+    // So, we must abort here because otherwise we would create an invalid matrix and make
+    // the application eventually crash. This fixes issues #0002372/#0002373.
     if (plist.empty() || (plist.size() - pdrivenlist.size()) == 0) {
         hasDiagnosis = true;
         emptyDiagnoseMatrix = true;
@@ -4006,8 +4699,8 @@ SolverReportingManager::Manager().LogToFile("GCS::System::diagnose()\n");
     redundantTags.clear();
     partiallyRedundantTags.clear();
 
-    // This QR diagnosis uses a reduced Jacobian matrix to calculate the rank of the system and identify
-    // conflicting and redundant constraints.
+    // This QR diagnosis uses a reduced Jacobian matrix to calculate the rank of the system
+    // and identify conflicting and redundant constraints.
     //
     // reduced Jacobian matrix
     // The Jacobian has been reduced to:
@@ -4019,17 +4712,20 @@ SolverReportingManager::Manager().LogToFile("GCS::System::diagnose()\n");
     // the index those constraints would have in a full size Jacobian matrix
     std::map<int,int> jacobianconstraintmap;
 
-    // list of parameters to be diagnosed in this routine (removes value parameters from driven constraints)
+    // list of parameters to be diagnosed in this routine (removes value parameters from driven
+    // constraints)
     GCS::VEC_pD pdiagnoselist;
 
     // tag multiplicity gives the number of solver constraints associated with the same tag
-    // A tag generally corresponds to the Sketcher constraint index - There are special tag values, like 0 and -1.
-    std::map< int , int> tagmultiplicity;
+    // A tag generally corresponds to the Sketcher constraint index - There are special tag values,
+    // like 0 and -1.
+    std::map<int, int> tagmultiplicity;
 
 
     makeReducedJacobian(J, jacobianconstraintmap, pdiagnoselist, tagmultiplicity);
 
-    // this function will exit with a diagnosis and, unless overridden by functions below, with full DoFs
+    // this function will exit with a diagnosis and, unless overridden by functions below, with full
+    // DoFs
     hasDiagnosis = true;
     dofs = pdiagnoselist.size();
 
@@ -4038,8 +4734,10 @@ SolverReportingManager::Manager().LogToFile("GCS::System::diagnose()\n");
 
     // There is a legacy decision to use QR decomposition. I (abdullah) do not know all the
     // consideration taken in that decisions. I see that:
-    // - QR decomposition is able to provide information about the rank and redundant/conflicting constraints
-    // - The QR decomposition of J and the QR decomposition of the transpose of J are unrelated (for reasons see below):
+    // - QR decomposition is able to provide information about the rank and redundant/conflicting
+    //   constraints
+    // - The QR decomposition of J and the QR decomposition of the transpose of J are unrelated
+    //   (for reasons see below):
     //   https://mathoverflow.net/questions/338729/translate-between-qr-decomposition-of-a-and-a-transpose
     // - QR is cheaper than a SVD decomposition
     // - QR is more expensive than a rank revealing LU factorization
@@ -4050,27 +4748,28 @@ SolverReportingManager::Manager().LogToFile("GCS::System::diagnose()\n");
     // - A = QR decomposition can be used for the diagonise of dependency of the "columns" of A. the
     // reason is that matrix R is upper triangular with columns of A showing the dependencies.
     // - The same does not apply to the "rows".
-    // - For this reason, to enable a full diagnose of constraints, a QR decomposition must be done on
-    // the transpose of the Jacobian matrix (J), this is JT.
+    // - For this reason, to enable a full diagnose of constraints, a QR decomposition must be done
+    //   on the transpose of the Jacobian matrix (J), this is JT.
 
     // Eigen capabilities:
-    // - If Eigen full pivoting QR decomposition is used, it is possible to track the rows of JT during
-    //   the decomposition. This can be leveraged to identify a set of independent rows of JT (geometry)
-    //   that form a rank N basis. However, because the R matrix is of the JT decomposition and not the J
-    //   decomposition, it is not possible to reduce the system to identify exactly which rows are dependent.
-    // - The effect is that it provides a set of parameters of geometry that are not constraint, but it does not
-    //   identify ALL geometries that are not fixed.
-    // - If SpareQR is used, then it is not possible to track the rows of JT during decomposition. I do not know
-    //   if it is still possible to obtain geometry information at all from SparseQR. After several years these
-    //   questions remain open:
+    // - If Eigen full pivoting QR decomposition is used, it is possible to track the rows of JT
+    //   during the decomposition. This can be leveraged to identify a set of independent rows of
+    //   JT (geometry) that form a rank N basis. However, because the R matrix is of the JT
+    //   decomposition and not the J decomposition, it is not possible to reduce the system to
+    //   identify exactly which rows are dependent.
+    // - The effect is that it provides a set of parameters of geometry that are not constraint,
+    //   but it does not identify ALL geometries that are not fixed.
+    // - If SpareQR is used, then it is not possible to track the rows of JT during decomposition.
+    //   I do not know if it is still possible to obtain geometry information at all from SparseQR.
+    //   After several years these questions remain open:
     //      https://stackoverflow.com/questions/49009771/getting-rows-transpositions-with-sparse-qr
     //      https://forum.kde.org/viewtopic.php?f=74&t=151239
     //
-    //
     // Implementation below:
     //
-    // Two QR decompositions are used below. One for diagnosis of constraints and a second one for diagnosis of parameters, i.e.
-    // to identify whether the parameter is fully constraint (independent) or not (i.e. it is dependent).
+    // Two QR decompositions are used below. One for diagnosis of constraints and a second one for
+    // diagnosis of parameters, i.e. to identify whether the parameter is fully constraint
+    // (independent) or not (i.e. it is dependent).
 
     // QR decomposition method selection: SparseQR vs DenseQR
 
@@ -4089,13 +4788,15 @@ SolverReportingManager::Manager().LogToFile("GCS::System::diagnose()\n");
             int rank = 0; // rank is not cheap to retrieve from qrJT in DenseQR
             Eigen::MatrixXd R;
             Eigen::FullPivHouseholderQR<Eigen::MatrixXd> qrJT;
-            // Here we give the system the possibility to run the two QR decompositions in parallel, depending on the load of the system
-            // so we are using the default std::launch::async | std::launch::deferred policy, as nobody better than the system
-            // nows if it can run the task in parallel or is oversubscribed and should deferred it.
-            // Care to wait() for the future before any prospective detection of conflicting/redundant, because the redundant solve
-            // modifies pdiagnoselist and it would NOT be thread-safe. Care to call the thread with silent=true, unless the present thread
-            // does not use Base::Console, or the launch policy is set to std::launch::deferred policy, as it is not thread-safe to use them
-            // in both at the same time.
+            // Here we give the system the possibility to run the two QR decompositions in parallel,
+            // depending on the load of the system so we are using the default std::launch::async |
+            // std::launch::deferred policy, as nobody better than the system nows if it can run the
+            // task in parallel or is oversubscribed and should deferred it. Care to wait() for the
+            // future before any prospective detection of conflicting/redundant, because the
+            // redundant solve modifies pdiagnoselist and it would NOT be thread-safe. Care to call
+            // the thread with silent=true, unless the present thread does not use Base::Console, or
+            // the launch policy is set to std::launch::deferred policy, as it is not thread-safe to
+            // use them in both at the same time.
             //
             // identifyDependentParametersDenseQR(J, jacobianconstraintmap, pdiagnoselist, true)
             //
@@ -4106,23 +4807,29 @@ SolverReportingManager::Manager().LogToFile("GCS::System::diagnose()\n");
             int paramsNum = qrJT.rows();
             int constrNum = qrJT.cols();
 
-            // This function is legacy code that was used to obtain partial geometry dependency information from a SINGLE Dense QR
-            // decomposition. I am reluctant to remove it from here until everything new is well tested.
-            //identifyDependentGeometryParametersInTransposedJacobianDenseQRDecomposition( qrJT, pdiagnoselist, paramsNum, rank);
+            // This function is legacy code that was used to obtain partial geometry dependency
+            // information from a SINGLE Dense QR decomposition. I am reluctant to remove it from
+            // here until everything new is well tested.
+            // identifyDependentGeometryParametersInTransposedJacobianDenseQRDecomposition( qrJT,
+            // pdiagnoselist, paramsNum, rank);
 
             fut.wait(); // wait for the execution of identifyDependentParametersSparseQR to finish
 
             dofs = paramsNum - rank; // unless overconstraint, which will be overridden below
 
             // Detecting conflicting or redundant constraints
-            if (constrNum > rank) { // conflicting or redundant constraints
-
+            if (constrNum > rank) {// conflicting or redundant constraints
                 int nonredundantconstrNum;
-
-                identifyConflictingRedundantConstraints(alg, qrJT, jacobianconstraintmap, tagmultiplicity, pdiagnoselist,
-                                                        R, constrNum, rank, nonredundantconstrNum);
-
-                if (paramsNum == rank && nonredundantconstrNum > rank) // over-constrained
+                identifyConflictingRedundantConstraints(alg,
+                                                        qrJT,
+                                                        jacobianconstraintmap,
+                                                        tagmultiplicity,
+                                                        pdiagnoselist,
+                                                        R,
+                                                        constrNum,
+                                                        rank,
+                                                        nonredundantconstrNum);
+                if (paramsNum == rank && nonredundantconstrNum > rank)// over-constrained
                     dofs = paramsNum - nonredundantconstrNum;
             }
         }
@@ -4144,38 +4851,55 @@ SolverReportingManager::Manager().LogToFile("GCS::System::diagnose()\n");
             int rank = 0;
             Eigen::MatrixXd R;
             Eigen::SparseQR<Eigen::SparseMatrix<double>, Eigen::COLAMDOrdering<int> > SqrJT;
-            // Here we give the system the possibility to run the two QR decompositions in parallel, depending on the load of the system
-            // so we are using the default std::launch::async | std::launch::deferred policy, as nobody better than the system
-            // nows if it can run the task in parallel or is oversubscribed and should deferred it.
-            // Care to wait() for the future before any prospective detection of conflicting/redundant, because the redundant solve
-            // modifies pdiagnoselist and it would NOT be thread-safe. Care to call the thread with silent=true, unless the present thread
-            // does not use Base::Console, or the launch policy is set to std::launch::deferred policy, as it is not thread-safe to use them
-            // in both at the same time.
+            // Here we give the system the possibility to run the two QR decompositions in parallel,
+            // depending on the load of the system so we are using the default std::launch::async |
+            // std::launch::deferred policy, as nobody better than the system nows if it can run the
+            // task in parallel or is oversubscribed and should deferred it. Care to wait() for the
+            // future before any prospective detection of conflicting/redundant, because the
+            // redundant solve modifies pdiagnoselist and it would NOT be thread-safe. Care to call
+            // the thread with silent=true, unless the present thread does not use Base::Console, or
+            // the launch policy is set to std::launch::deferred policy, as it is not thread-safe to
+            // use them in both at the same time.
             //
             // identifyDependentParametersSparseQR(J, jacobianconstraintmap, pdiagnoselist, true)
             //
             // Debug:
-            //auto fut = std::async(std::launch::deferred,&System::identifyDependentParametersSparseQR,this,J,jacobianconstraintmap, pdiagnoselist, false);
-            auto fut = std::async(&System::identifyDependentParametersSparseQR,this,J,jacobianconstraintmap, pdiagnoselist, /*silent=*/true);
+            // auto fut =
+            // std::async(std::launch::deferred,&System::identifyDependentParametersSparseQR,this,J,jacobianconstraintmap,
+            // pdiagnoselist, false);
+            auto fut = std::async(&System::identifyDependentParametersSparseQR,
+                                  this,
+                                  J,
+                                  jacobianconstraintmap,
+                                  pdiagnoselist,
+                                  /*silent=*/true);
 
-            makeSparseQRDecomposition( J, jacobianconstraintmap, SqrJT, rank, R, /*transposed=*/true, /*silent=*/false);
+            makeSparseQRDecomposition(
+                J, jacobianconstraintmap, SqrJT, rank, R, /*transposed=*/true, /*silent=*/false);
 
             int paramsNum = SqrJT.rows();
             int constrNum = SqrJT.cols();
 
-            fut.wait(); // wait for the execution of identifyDependentParametersSparseQR to finish
+            fut.wait();// wait for the execution of identifyDependentParametersSparseQR to finish
 
-            dofs = paramsNum - rank; // unless overconstraint, which will be overridden below
+            dofs = paramsNum - rank;// unless overconstraint, which will be overridden below
 
             // Detecting conflicting or redundant constraints
-            if (constrNum > rank) { // conflicting or redundant constraints
+            if (constrNum > rank) {// conflicting or redundant constraints
 
                 int nonredundantconstrNum;
 
-                identifyConflictingRedundantConstraints(alg, SqrJT, jacobianconstraintmap, tagmultiplicity, pdiagnoselist,
-                                                        R, constrNum, rank, nonredundantconstrNum);
+                identifyConflictingRedundantConstraints(alg,
+                                                        SqrJT,
+                                                        jacobianconstraintmap,
+                                                        tagmultiplicity,
+                                                        pdiagnoselist,
+                                                        R,
+                                                        constrNum,
+                                                        rank,
+                                                        nonredundantconstrNum);
 
-                if (paramsNum == rank && nonredundantconstrNum > rank) // over-constrained
+                if (paramsNum == rank && nonredundantconstrNum > rank)// over-constrained
                     dofs = paramsNum - nonredundantconstrNum;
             }
         }
@@ -4206,7 +4930,8 @@ void System::makeDenseQRDecomposition(  const Eigen::MatrixXd &J,
 
 #ifdef _GCS_DEBUG_SOLVER_JACOBIAN_QR_DECOMPOSITION_TRIANGULAR_MATRIX
     Eigen::MatrixXd Q; // Obtaining the Q matrix with Sparse QR is buggy, see comments below
-    Eigen::MatrixXd R2; // Intended for a trapezoidal matrix, where R is the top triangular matrix of the R2 trapezoidal matrix
+    Eigen::MatrixXd R2;// Intended for a trapezoidal matrix, where R is the top triangular matrix of
+                       // the R2 trapezoidal matrix
 #endif
 
     // For a transposed J SJG rows are paramsNum and cols are constrNum
@@ -4264,13 +4989,13 @@ void System::makeDenseQRDecomposition(  const Eigen::MatrixXd &J,
 }
 
 #ifdef EIGEN_SPARSEQR_COMPATIBLE
-void System::makeSparseQRDecomposition( const Eigen::MatrixXd &J,
-                                        const std::map<int,int> &jacobianconstraintmap,
-                                        Eigen::SparseQR<Eigen::SparseMatrix<double>, Eigen::COLAMDOrdering<int> > &SqrJT,
-                                        int &rank, Eigen::MatrixXd & R, bool transposeJ, bool silent)
+void System::makeSparseQRDecomposition(
+    const Eigen::MatrixXd& J, const std::map<int, int>& jacobianconstraintmap,
+    Eigen::SparseQR<Eigen::SparseMatrix<double>, Eigen::COLAMDOrdering<int>>& SqrJT, int& rank,
+    Eigen::MatrixXd& R, bool transposeJ, bool silent)
 {
 
-   Eigen::SparseMatrix<double> SJ;
+    Eigen::SparseMatrix<double> SJ;
 
     // this creation is not optimized (done using triplets)
     // however the time this takes is negligible compared to the
@@ -4278,15 +5003,16 @@ void System::makeSparseQRDecomposition( const Eigen::MatrixXd &J,
     SJ = J.sparseView();
     SJ.makeCompressed();
 
-    #ifdef _GCS_DEBUG
-    if(!silent)
-        SolverReportingManager::Manager().LogMatrix("J",J);
-    #endif
+#ifdef _GCS_DEBUG
+    if (!silent)
+        SolverReportingManager::Manager().LogMatrix("J", J);
+#endif
 
-    #ifdef _GCS_DEBUG_SOLVER_JACOBIAN_QR_DECOMPOSITION_TRIANGULAR_MATRIX
+#ifdef _GCS_DEBUG_SOLVER_JACOBIAN_QR_DECOMPOSITION_TRIANGULAR_MATRIX
     Eigen::MatrixXd Q; // Obtaining the Q matrix with Sparse QR is buggy, see comments below
-    Eigen::MatrixXd R2; // Intended for a trapezoidal matrix, where R is the top triangular matrix of the R2 trapezoidal matrix
-    #endif
+    Eigen::MatrixXd R2;// Intended for a trapezoidal matrix, where R is the top triangular matrix of
+                       // the R2 trapezoidal matrix
+#endif
 
     // For a transposed J SJG rows are paramsNum and cols are constrNum
     // For a non-transposed J SJG rows are constrNum and cols are paramsNum
@@ -4295,20 +5021,20 @@ void System::makeSparseQRDecomposition( const Eigen::MatrixXd &J,
 
     if (SJ.rows() > 0) {
         Eigen::SparseMatrix<double> SJG;
-        if(transposeJ)
+        if (transposeJ)
             SJG = SJ.topRows(jacobianconstraintmap.size()).transpose();
         else
             SJG = SJ.topRows(jacobianconstraintmap.size());
 
         if (SJG.rows() > 0 && SJG.cols() > 0) {
             SqrJT.compute(SJG);
-            // Do not ask for Q Matrix!!
-            // At Eigen 3.2 still has a bug that this only works for square matrices
-            // if enabled it will crash
-            #ifdef SPARSE_Q_MATRIX
+// Do not ask for Q Matrix!!
+// At Eigen 3.2 still has a bug that this only works for square matrices
+// if enabled it will crash
+#ifdef SPARSE_Q_MATRIX
             Q = SqrJT.matrixQ();
-            //Q = QS;
-            #endif
+// Q = QS;
+#endif
 
             rowsNum = SqrJT.rows();
             colsNum = SqrJT.cols();
@@ -4318,12 +5044,11 @@ void System::makeSparseQRDecomposition( const Eigen::MatrixXd &J,
             if (colsNum >= rowsNum)
                 R = SqrJT.matrixR().triangularView<Eigen::Upper>();
             else
-                R = SqrJT.matrixR().topRows(colsNum)
-                .triangularView<Eigen::Upper>();
+                R = SqrJT.matrixR().topRows(colsNum).triangularView<Eigen::Upper>();
 
-            #ifdef _GCS_DEBUG_SOLVER_JACOBIAN_QR_DECOMPOSITION_TRIANGULAR_MATRIX
+#ifdef _GCS_DEBUG_SOLVER_JACOBIAN_QR_DECOMPOSITION_TRIANGULAR_MATRIX
             R2 = SqrJT.matrixR();
-            #endif
+#endif
         }
         else {
             rowsNum = SJG.rows();
@@ -4331,23 +5056,23 @@ void System::makeSparseQRDecomposition( const Eigen::MatrixXd &J,
         }
     }
 
-    if(debugMode==IterationLevel && !silent)
+    if (debugMode == IterationLevel && !silent)
         SolverReportingManager::Manager().LogQRSystemInformation(*this, rowsNum, colsNum, rank);
 
-   #ifdef _GCS_DEBUG_SOLVER_JACOBIAN_QR_DECOMPOSITION_TRIANGULAR_MATRIX
+#ifdef _GCS_DEBUG_SOLVER_JACOBIAN_QR_DECOMPOSITION_TRIANGULAR_MATRIX
     if (J.rows() > 0 && !silent) {
 
         SolverReportingManager::Manager().LogMatrix("R", R);
 
         SolverReportingManager::Manager().LogMatrix("R2", R2);
 
-        #ifdef SPARSE_Q_MATRIX
+#ifdef SPARSE_Q_MATRIX
         SolverReportingManager::Manager().LogMatrix("Q", Q);
-        #endif
+#endif
     }
-    #endif //_GCS_DEBUG_SOLVER_JACOBIAN_QR_DECOMPOSITION_TRIANGULAR_MATRIX
+#endif//_GCS_DEBUG_SOLVER_JACOBIAN_QR_DECOMPOSITION_TRIANGULAR_MATRIX
 }
-#endif // EIGEN_SPARSEQR_COMPATIBLE
+#endif// EIGEN_SPARSEQR_COMPATIBLE
 
 void System::identifyDependentParametersDenseQR( const Eigen::MatrixXd &J,
                                                   const std::map<int,int> &jacobianconstraintmap,
@@ -4375,7 +5100,13 @@ void System::identifyDependentParametersSparseQR( const Eigen::MatrixXd &J,
 
     int nontransprank;
 
-    makeSparseQRDecomposition( J, jacobianconstraintmap, SqrJ, nontransprank, Rparams, false, true); // do not transpose allow to diagnose parameters
+    makeSparseQRDecomposition(J,
+                              jacobianconstraintmap,
+                              SqrJ,
+                              nontransprank,
+                              Rparams,
+                              false,
+                              true);// do not transpose allow to diagnose parameters
 
     identifyDependentParameters(SqrJ, Rparams, nontransprank, pdiagnoselist, silent);
 }
@@ -4388,7 +5119,8 @@ void System::identifyDependentParameters(   T & qrJ,
                                             const GCS::VEC_pD &pdiagnoselist,
                                             bool silent)
 {
-    (void) silent; // silent is only used in debug code, but it is important as Base::Console is not thread-safe. Removes warning in non Debug mode.
+    (void)silent;// silent is only used in debug code, but it is important as Base::Console is not
+                 // thread-safe. Removes warning in non Debug mode.
 
     //int constrNum = SqrJ.rows(); // this is the other way around than for the transposed J
     //int paramsNum = SqrJ.cols();
@@ -4417,10 +5149,12 @@ void System::identifyDependentParameters(   T & qrJ,
     }
 
 #ifdef _GCS_DEBUG
-    if(!silent) {
-        SolverReportingManager::Manager().LogMatrix("PermMatrix", (Eigen::MatrixXd)qrJ.colsPermutation());
+    if (!silent) {
+        SolverReportingManager::Manager().LogMatrix("PermMatrix",
+                                                    (Eigen::MatrixXd)qrJ.colsPermutation());
 
-        SolverReportingManager::Manager().LogGroupOfParameters("ParameterGroups",pDependentParametersGroups);
+        SolverReportingManager::Manager().LogGroupOfParameters("ParameterGroups",
+                                                               pDependentParametersGroups);
     }
 
 #endif
@@ -4433,8 +5167,8 @@ void System::identifyDependentGeometryParametersInTransposedJacobianDenseQRDecom
 {
     // DETECTING CONSTRAINT SOLVER PARAMETERS
     //
-    // NOTE: This is only true for dense QR with full pivoting, because solve parameters get reordered.
-    // I am unable to adapt it to Sparse QR. (abdullah). See:
+    // NOTE: This is only true for dense QR with full pivoting, because solve parameters get
+    // reordered. I am unable to adapt it to Sparse QR. (abdullah). See:
     //
     // https://stackoverflow.com/questions/49009771/getting-rows-transpositions-with-sparse-qr
     // https://forum.kde.org/viewtopic.php?f=74&t=151239
@@ -4461,16 +5195,16 @@ void System::identifyDependentGeometryParametersInTransposedJacobianDenseQRDecom
     std::set<int> indepParamCols;
     std::set<int> depParamCols;
 
-    for (int j=0; j < rank; j++) {
+    for (int j = 0; j < rank; j++) {
 
-            int origRow = rowPermutations.indices()[j];
+        int origRow = rowPermutations.indices()[j];
 
-            indepParamCols.insert(origRow);
+        indepParamCols.insert(origRow);
 
-            // NOTE: Q*R = transpose(J), so the row of R corresponds to the col of J (the rows of transpose(J)).
-            // The cols of J are the parameters, the rows are the constraints.
+        // NOTE: Q*R = transpose(J), so the row of R corresponds to the col of J (the rows of
+        // transpose(J)). The cols of J are the parameters, the rows are the constraints.
 #ifdef _GCS_DEBUG_SOLVER_JACOBIAN_QR_DECOMPOSITION_TRIANGULAR_MATRIX
-            stream << "R row " << j << " = J col " << origRow << std::endl;
+        stream << "R row " << j << " = J col " << origRow << std::endl;
 #endif
     }
 
@@ -4528,15 +5262,10 @@ void System::eliminateNonZerosOverPivotInUpperTriangularMatrix( Eigen::MatrixXd 
 }
 
 template <typename T>
-void System::identifyConflictingRedundantConstraints(   Algorithm alg,
-                                                        const T & qrJT,
-                                                        const std::map<int,int> &jacobianconstraintmap,
-                                                        const std::map< int , int> &tagmultiplicity,
-                                                        GCS::VEC_pD &pdiagnoselist,
-                                                        Eigen::MatrixXd &R,
-                                                        int constrNum, int rank,
-                                                        int &nonredundantconstrNum
-                                                    )
+void System::identifyConflictingRedundantConstraints(
+    Algorithm alg, const T& qrJT, const std::map<int, int>& jacobianconstraintmap,
+    const std::map<int, int>& tagmultiplicity, GCS::VEC_pD& pdiagnoselist, Eigen::MatrixXd& R,
+    int constrNum, int rank, int& nonredundantconstrNum)
 {
     eliminateNonZerosOverPivotInUpperTriangularMatrix(R, rank);
 
@@ -4555,8 +5284,9 @@ void System::identifyConflictingRedundantConstraints(   Algorithm alg,
     }
 
     // Augment the information regarding the group of constraints that are conflicting or redundant.
-    if(debugMode==IterationLevel) {
-        SolverReportingManager::Manager().LogGroupOfConstraints("Analysing groups of constraints of special interest", conflictGroups);
+    if (debugMode == IterationLevel) {
+        SolverReportingManager::Manager().LogGroupOfConstraints(
+            "Analysing groups of constraints of special interest", conflictGroups);
     }
 
     // try to remove the conflicting constraints and solve the
@@ -4565,19 +5295,22 @@ void System::identifyConflictingRedundantConstraints(   Algorithm alg,
     std::set<Constraint *> skipped;
     SET_I satisfiedGroups;
     while (1) {
-        // conflictingMap contains all the eligible constraints of conflict groups not yet satisfied.
-        // as groups get satisfied, the map created on every iteration is smaller, until such time it is
-        // empty and the infinite loop is exited.
-        // The guarantee that the loop will be exited originates from the fact that in each iteration the algorithm will
-        // select one constraint from the conflict groups, which will satisfy at least one group.
-        std::map< Constraint *, SET_I > conflictingMap;
-        for (std::size_t i=0; i < conflictGroups.size(); i++) {
+        // conflictingMap contains all the eligible constraints of conflict groups not yet
+        // satisfied. as groups get satisfied, the map created on every iteration is smaller, until
+        // such time it is empty and the infinite loop is exited. The guarantee that the loop will
+        // be exited originates from the fact that in each iteration the algorithm will select one
+        // constraint from the conflict groups, which will satisfy at least one group.
+        std::map<Constraint*, SET_I> conflictingMap;
+        for (std::size_t i = 0; i < conflictGroups.size(); i++) {
             if (satisfiedGroups.count(i) == 0) {
-                for (std::size_t j=0; j < conflictGroups[i].size(); j++) {
-                    Constraint *constr = conflictGroups[i][j];
-                    bool isinternalalignment = (constr->isInternalAlignment() == Constraint::Alignment::InternalAlignment);
+                for (std::size_t j = 0; j < conflictGroups[i].size(); j++) {
+                    Constraint* constr = conflictGroups[i][j];
+                    bool isinternalalignment =
+                        (constr->isInternalAlignment() == Constraint::Alignment::InternalAlignment);
                     bool priorityconstraint = (constr->getTag() == 0);
-                    if (!priorityconstraint && !isinternalalignment) // exclude constraints tagged with zero and internal alignment
+                    if (!priorityconstraint
+                        && !isinternalalignment)// exclude constraints tagged with zero and internal
+                                                // alignment
                         conflictingMap[constr].insert(i);
                 }
             }
@@ -4587,28 +5320,42 @@ void System::identifyConflictingRedundantConstraints(   Algorithm alg,
             break;
 
         int maxPopularity = 0;
-        Constraint *mostPopular = nullptr;
-        for (std::map< Constraint *, SET_I >::const_iterator it=conflictingMap.begin();
-                it != conflictingMap.end(); ++it) {
+        Constraint* mostPopular = nullptr;
+        for (std::map<Constraint*, SET_I>::const_iterator it = conflictingMap.begin();
+             it != conflictingMap.end();
+             ++it) {
 
-            int numberofsets =  static_cast<int>(it->second.size()); // number of sets in which the constraint appears
+            int numberofsets = static_cast<int>(
+                it->second.size());// number of sets in which the constraint appears
 
-            /* This is a heuristic algorithm to propose the user which constraints from a redundant/conflicting set should be removed. It is based on the following principles:
-             * 1. if the current constraint is more popular than previous ones (appears in more sets), take it. This prioritises removal of constraints that cause several independent groups of constraints to be conflicting/redundant. It is based on the observation that the redundancy/conflict is caused by the lesser amount of constraints.
-             * 2. if there is already a constraint ranking in the contest, and the current one is as popular, prefer the constraint that removes a lesser amount of DoFs. This prioritises removal of sketcher constraints (not solver constraints) that generates a higher amount of solver constraints. It is based on
-             * the observation that constraints taking a higher amount of DoFs (such as symmetry) are preferred by the user, who may not see the redundancy of simpler
-             * ones.
-             * 3. if there is already a constraint ranking in the context, the current one is as popular, and they remove the same amount of DoFs, prefer removal of
-             * the latest introduced.
+            /* This is a heuristic algorithm to propose the user which constraints from a
+             * redundant/conflicting set should be removed. It is based on the following principles:
+             * 1. if the current constraint is more popular than previous ones (appears in more
+             * sets), take it. This prioritises removal of constraints that cause several
+             * independent groups of constraints to be conflicting/redundant. It is based on the
+             * observation that the redundancy/conflict is caused by the lesser amount of
+             * constraints.
+             * 2. if there is already a constraint ranking in the contest, and the current one is as
+             * popular, prefer the constraint that removes a lesser amount of DoFs. This prioritises
+             * removal of sketcher constraints (not solver constraints) that generates a higher
+             * amount of solver constraints. It is based on the observation that constraints taking
+             * a higher amount of DoFs (such as symmetry) are preferred by the user, who may not see
+             * the redundancy of simpler ones.
+             * 3. if there is already a constraint ranking in the context, the current one is as
+             * popular, and they remove the same amount of DoFs, prefer removal of the latest
+             * introduced.
              */
 
-            if ( (   numberofsets > maxPopularity || // (1)
-                    (numberofsets == maxPopularity && mostPopular &&
-                    tagmultiplicity.at(it->first->getTag()) < tagmultiplicity.at(mostPopular->getTag())) || // (2)
+            if ((numberofsets > maxPopularity ||// (1)
+                 (numberofsets == maxPopularity && mostPopular
+                  && tagmultiplicity.at(it->first->getTag())
+                      < tagmultiplicity.at(mostPopular->getTag()))
+                 ||// (2)
 
-                    (numberofsets == maxPopularity && mostPopular &&
-                    tagmultiplicity.at(it->first->getTag()) == tagmultiplicity.at(mostPopular->getTag()) &&
-                        it->first->getTag() > mostPopular->getTag())) // (3)
+                 (numberofsets == maxPopularity && mostPopular
+                  && tagmultiplicity.at(it->first->getTag())
+                      == tagmultiplicity.at(mostPopular->getTag())
+                  && it->first->getTag() > mostPopular->getTag()))// (3)
 
             ) {
                 mostPopular = it->first;
@@ -4617,8 +5364,9 @@ void System::identifyConflictingRedundantConstraints(   Algorithm alg,
         }
         if (maxPopularity > 0) {
             skipped.insert(mostPopular);
-            for (SET_I::const_iterator it=conflictingMap[mostPopular].begin();
-                    it != conflictingMap[mostPopular].end(); ++it)
+            for (SET_I::const_iterator it = conflictingMap[mostPopular].begin();
+                 it != conflictingMap[mostPopular].end();
+                 ++it)
                 satisfiedGroups.insert(*it);
         }
     }
@@ -4666,20 +5414,23 @@ void System::identifyConflictingRedundantConstraints(   Algorithm alg,
         }
         resetToReference();
 
-        if(debugMode==Minimal || debugMode==IterationLevel) {
-            Base::Console().Log("Sketcher Redundant solving: %d redundants\n",redundant.size());
+        if (debugMode == Minimal || debugMode == IterationLevel) {
+            Base::Console().Log("Sketcher Redundant solving: %d redundants\n", redundant.size());
         }
 
-        std::vector< std::vector<Constraint *> > conflictGroupsOrig=conflictGroups;
+        std::vector<std::vector<Constraint*>> conflictGroupsOrig = conflictGroups;
         conflictGroups.clear();
-        for (int i=conflictGroupsOrig.size()-1; i >= 0; i--) {
+        for (int i = conflictGroupsOrig.size() - 1; i >= 0; i--) {
             bool isRedundant = false;
-            for (std::size_t j=0; j < conflictGroupsOrig[i].size(); j++) {
+            for (std::size_t j = 0; j < conflictGroupsOrig[i].size(); j++) {
                 if (redundant.count(conflictGroupsOrig[i][j]) > 0) {
                     isRedundant = true;
 
-                    if(debugMode==IterationLevel) {
-                        Base::Console().Log("(Partially) Redundant, Group %d, index %d, Tag: %d\n", i,j, (conflictGroupsOrig[i][j])->getTag());
+                    if (debugMode == IterationLevel) {
+                        Base::Console().Log("(Partially) Redundant, Group %d, index %d, Tag: %d\n",
+                                            i,
+                                            j,
+                                            (conflictGroupsOrig[i][j])->getTag());
                     }
 
                     break;
@@ -4695,10 +5446,13 @@ void System::identifyConflictingRedundantConstraints(   Algorithm alg,
 
     // simplified output of conflicting tags
     SET_I conflictingTagsSet;
-    for (std::size_t i=0; i < conflictGroups.size(); i++) {
-        for (std::size_t j=0; j < conflictGroups[i].size(); j++) {
-            bool isinternalalignment = (conflictGroups[i][j]->isInternalAlignment() == Constraint::Alignment::InternalAlignment);
-            if (conflictGroups[i][j]->getTag() != 0 && !isinternalalignment) // exclude constraints tagged with zero and internal alignment
+    for (std::size_t i = 0; i < conflictGroups.size(); i++) {
+        for (std::size_t j = 0; j < conflictGroups[i].size(); j++) {
+            bool isinternalalignment = (conflictGroups[i][j]->isInternalAlignment()
+                                        == Constraint::Alignment::InternalAlignment);
+            if (conflictGroups[i][j]->getTag() != 0
+                && !isinternalalignment)// exclude constraints tagged with zero and internal
+                                        // alignment
                 conflictingTagsSet.insert(conflictGroups[i][j]->getTag());
         }
     }
@@ -4709,7 +5463,8 @@ void System::identifyConflictingRedundantConstraints(   Algorithm alg,
 
     // output of redundant tags
     SET_I redundantTagsSet, partiallyRedundantTagsSet;
-    for (std::set<Constraint *>::iterator constr=redundant.begin(); constr != redundant.end(); ++constr) {
+    for (std::set<Constraint*>::iterator constr = redundant.begin(); constr != redundant.end();
+         ++constr) {
         redundantTagsSet.insert((*constr)->getTag());
         partiallyRedundantTagsSet.insert((*constr)->getTag());
     }

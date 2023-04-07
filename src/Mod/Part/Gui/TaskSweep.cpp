@@ -136,6 +136,8 @@ SweepWidget::SweepWidget(QWidget* parent)
     d->ui.selector->setSelectedLabel(tr("Selected profiles"));
     d->ui.labelPath->clear();
 
+    connect(d->ui.buttonPath, &QPushButton::toggled,
+            this, &SweepWidget::onButtonPathToggled);
     connect(d->ui.selector->availableTreeWidget(), &QTreeWidget::currentItemChanged,
             this, &SweepWidget::onCurrentItemChanged);
     connect(d->ui.selector->selectedTreeWidget(), &QTreeWidget::currentItemChanged,
@@ -402,7 +404,7 @@ void SweepWidget::onCurrentItemChanged(QTreeWidgetItem* current, QTreeWidgetItem
     }
 }
 
-void SweepWidget::on_buttonPath_toggled(bool on)
+void SweepWidget::onButtonPathToggled(bool on)
 {
     if (on) {
         QList<QWidget*> c = this->findChildren<QWidget*>();

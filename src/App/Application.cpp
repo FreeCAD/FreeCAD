@@ -94,6 +94,7 @@
 #include "FeaturePython.h"
 #include "GeoFeature.h"
 #include "GeoFeatureGroupExtension.h"
+#include "ImagePlane.h"
 #include "InventorObject.h"
 #include "Link.h"
 #include "LinkBaseExtensionPy.h"
@@ -216,6 +217,18 @@ init_freecad_module(void)
     return PyModule_Create(&FreeCADModuleDef);
 }
 
+PyMODINIT_FUNC
+init_image_module()
+{
+    static struct PyModuleDef ImageModuleDef = {
+        PyModuleDef_HEAD_INIT,
+        "Image", "", -1,
+        nullptr,
+        nullptr, nullptr, nullptr, nullptr
+    };
+    return PyModule_Create(&ImageModuleDef);
+}
+
 Application::Application(std::map<std::string,std::string> &mConfig)
   : _mConfig(mConfig), _pActiveDoc(nullptr), _isRestoring(false),_allowPartial(false)
   , _isClosingAll(false), _objCount(-1), _activeTransactionID(0)
@@ -252,6 +265,10 @@ void Application::setupPythonTypes()
         nullptr, nullptr, nullptr, nullptr
     };
     PyObject* pConsoleModule = PyModule_Create(&ConsoleModuleDef);
+
+    // fake Image module
+    PyObject* imageModule = init_image_module();
+    PyDict_SetItemString(modules, "Image", imageModule);
 
     // introducing additional classes
 
@@ -2053,12 +2070,13 @@ void Application::initTypes()
     App::DocumentObjectGroup       ::init();
     App::DocumentObjectGroupPython ::init();
     App::DocumentObjectFileIncluded::init();
+    Image::ImagePlane              ::init();
     App::InventorObject            ::init();
     App::VRMLObject                ::init();
     App::Annotation                ::init();
     App::AnnotationLabel           ::init();
     App::MeasureDistance           ::init();
-    App ::MaterialObject           ::init();
+    App::MaterialObject            ::init();
     App::MaterialObjectPython      ::init();
     App::TextDocument              ::init();
     App::Placement                 ::init();

@@ -73,22 +73,17 @@ short PolarPattern::mustExecute() const
 
 const std::list<gp_Trsf> PolarPattern::getTransformations(const std::vector<App::DocumentObject*>)
 {
-    double angle = Angle.getValue();
-    double radians = Base::toRadians<double>(angle);
-    if (radians < Precision::Angular())
-        throw Base::ValueError("Pattern angle too small");
     int occurrences = Occurrences.getValue();
     if (occurrences < 1)
         throw Base::ValueError("At least one occurrence required");
 
-    // Note: The original feature is NOT included in the list of transformations! Therefore
-    // we start with occurrence number 1, not number 0
-    std::list<gp_Trsf> transformations;
-    gp_Trsf trans;
-    transformations.push_back(trans); // identity transformation
+    if (occurrences == 1)
+        return {gp_Trsf()};
 
-    if (occurrences < 2)
-        return transformations;
+    double angle = Angle.getValue();
+    double radians = Base::toRadians<double>(angle);
+    if (radians < Precision::Angular())
+        throw Base::ValueError("Pattern angle too small");
 
     bool reversed = Reversed.getValue();
     double offset;
@@ -171,6 +166,12 @@ const std::list<gp_Trsf> PolarPattern::getTransformations(const std::vector<App:
     if (reversed)
         axis.SetDirection(axis.Direction().Reversed());
 
+    std::list<gp_Trsf> transformations;
+    gp_Trsf trans;
+    transformations.push_back(trans);
+
+    // Note: The original feature is already included in the list of transformations!
+    // Therefore we start with occurrence number 1
     for (int i = 1; i < occurrences; i++) {
         trans.SetRotation(axis.Axis(), i * offset);
         transformations.push_back(trans);

@@ -20,7 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
@@ -51,6 +50,7 @@
 #include "TaskFeaturePick.h"
 #include "TaskSketchBasedParameters.h"
 #include "Utils.h"
+
 
 Q_DECLARE_METATYPE(App::PropertyLinkSubList::SubSet)
 
@@ -165,9 +165,7 @@ TaskPipeParameters::~TaskPipeParameters()
 }
 
 void TaskPipeParameters::updateUI()
-{
-
-}
+{}
 
 void TaskPipeParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
 {

@@ -62,8 +62,7 @@ TaskChamferParameters::TaskChamferParameters(ViewProviderDressUp *DressUpView, Q
 
     bool useAllEdges = pcChamfer->UseAllEdges.getValue();
     ui->checkBoxUseAllEdges->setChecked(useAllEdges);
-    ui->buttonRefAdd->setEnabled(!useAllEdges);
-    ui->buttonRefRemove->setEnabled(!useAllEdges);
+    ui->buttonRefSel->setEnabled(!useAllEdges);
     ui->listWidgetReferences->setEnabled(!useAllEdges);
     QMetaObject::invokeMethod(ui->chamferSize, "setFocus", Qt::QueuedConnection);
 
@@ -85,15 +84,13 @@ TaskChamferParameters::TaskChamferParameters(ViewProviderDressUp *DressUpView, Q
         this, &TaskChamferParameters::onAngleChanged);
     connect(ui->flipDirection, &QCheckBox::toggled,
         this, &TaskChamferParameters::onFlipDirection);
-    connect(ui->buttonRefAdd, &QToolButton::toggled,
-        this, &TaskChamferParameters::onButtonRefAdd);
-    connect(ui->buttonRefRemove, &QToolButton::toggled,
-        this, &TaskChamferParameters::onButtonRefRemove);
+    connect(ui->buttonRefSel, &QToolButton::toggled,
+        this, &TaskChamferParameters::onButtonRefSel);
     connect(ui->checkBoxUseAllEdges, &QCheckBox::toggled,
             this, &TaskChamferParameters::onCheckBoxUseAllEdgesToggled);
 
     // Create context menu
-    createDeleteAction(ui->listWidgetReferences, ui->buttonRefRemove);
+    createDeleteAction(ui->listWidgetReferences);
     connect(deleteAction, &QAction::triggered, this, &TaskChamferParameters::onRefDeleted);
 
     createAddAllEdgesAction(ui->listWidgetReferences);
@@ -106,8 +103,10 @@ TaskChamferParameters::TaskChamferParameters(ViewProviderDressUp *DressUpView, Q
     connect(ui->listWidgetReferences, &QListWidget::itemDoubleClicked,
         this, &TaskChamferParameters::doubleClicked);
 
-    // the dialog can be called on a broken chamfer, then hide the chamfer
-    hideOnError();
+    if (strings.size() == 0)
+        setSelectionMode(refSel);
+    else
+        hideOnError();
 }
 
 void TaskChamferParameters::setUpUI(PartDesign::Chamfer* pcChamfer)
@@ -155,119 +154,43 @@ void TaskChamferParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
     // executed when the user selected something in the CAD object
     // adds/deletes the selection accordingly
 
-    if (selectionMode == none)
-        return;
-
     if (msg.Type == Gui::SelectionChanges::AddSelection) {
-        if (referenceSelected(msg)) {
-            if (selectionMode == refAdd) {
-                ui->listWidgetReferences->addItem(QString::fromStdString(msg.pSubName));
-                // it might be the second one so we can enable the context menu
-                if (ui->listWidgetReferences->count() > 1) {
-                    deleteAction->setEnabled(true);
-                    deleteAction->setStatusTip(QString());
-                    ui->buttonRefRemove->setEnabled(true);
-                    ui->buttonRefRemove->setToolTip(tr("Click button to enter selection mode,\nclick again to end selection"));
-                }
-            }
-            else {
-                removeItemFromListWidget(ui->listWidgetReferences, msg.pSubName);
-                // remove its selection too
-                Gui::Selection().clearSelection();
-                // if there is only one item left, it cannot be deleted
-                if (ui->listWidgetReferences->count() == 1) {
-                    deleteAction->setEnabled(false);
-                    deleteAction->setStatusTip(tr("There must be at least one item"));
-                    ui->buttonRefRemove->setEnabled(false);
-                    ui->buttonRefRemove->setToolTip(tr("There must be at least one item"));
-                    // we must also end the selection mode
-                    exitSelectionMode();
-                    clearButtons(none);
-                }
-            }
-            // highlight existing references for possible further selections
-            DressUpView->highlightReferences(true);
+        if (selectionMode == refSel) {
+            referenceSelected(msg, ui->listWidgetReferences);
         }
     }
 }
 
 void TaskChamferParameters::onCheckBoxUseAllEdgesToggled(bool checked)
 {
+    if(checked)
+        setSelectionMode(none);
     PartDesign::Chamfer* pcChamfer = static_cast<PartDesign::Chamfer*>(DressUpView->getObject());
-    ui->buttonRefRemove->setEnabled(!checked);
-    ui->buttonRefAdd->setEnabled(!checked);
+    ui->buttonRefSel->setEnabled(!checked);
     ui->listWidgetReferences->setEnabled(!checked);
     pcChamfer->UseAllEdges.setValue(checked);
     pcChamfer->getDocument()->recomputeFeature(pcChamfer);
 }
 
-void TaskChamferParameters::clearButtons(const selectionModes notThis)
+void TaskChamferParameters::setButtons(const selectionModes mode)
 {
-    if (notThis != refAdd) ui->buttonRefAdd->setChecked(false);
-    if (notThis != refRemove) ui->buttonRefRemove->setChecked(false);
-    DressUpView->highlightReferences(false);
+    ui->buttonRefSel->setChecked(mode == refSel);
+    ui->buttonRefSel->setText(mode == refSel ? btnPreviewStr : btnSelectStr);
 }
 
 void TaskChamferParameters::onRefDeleted()
 {
-    // assure we we are not in selection mode
-    exitSelectionMode();
-    clearButtons(none);
-    // delete any selections since the reference(s) might be highlighted
-    Gui::Selection().clearSelection();
-    DressUpView->highlightReferences(false);
-
-    // get the list of items to be deleted
-    QList<QListWidgetItem*> selectedList = ui->listWidgetReferences->selectedItems();
-
-    // if all items are selected, we must stop because one must be kept to avoid that the feature gets broken
-    if (selectedList.count() == ui->listWidgetReferences->model()->rowCount()) {
-        QMessageBox::warning(this, tr("Selection error"), tr("At least one item must be kept."));
-        return;
-    }
-
-    // get the chamfer object
-    PartDesign::Chamfer* pcChamfer = static_cast<PartDesign::Chamfer*>(DressUpView->getObject());
-    App::DocumentObject* base = pcChamfer->Base.getValue();
-    // get all chamfer references
-    std::vector<std::string> refs = pcChamfer->Base.getSubValues();
-    setupTransaction();
-
-    // delete the selection backwards to assure the list index keeps valid for the deletion
-    for (int i = selectedList.count() - 1; i > -1; i--) {
-        // the ref index is the same as the listWidgetReferences index
-        // so we can erase using the row number of the element to be deleted
-        int rowNumber = ui->listWidgetReferences->row(selectedList.at(i));
-        // erase the reference
-        refs.erase(refs.begin() + rowNumber);
-        // remove from the list
-        ui->listWidgetReferences->model()->removeRow(rowNumber);
-    }
-
-    // update the object
-    pcChamfer->Base.setValue(base, refs);
-    // recompute the feature
-    pcChamfer->recomputeFeature();
-    // hide the chamfer if there was a computation error
-    hideOnError();
-
-    // if there is only one item left, it cannot be deleted
-    if (ui->listWidgetReferences->count() == 1) {
-        deleteAction->setEnabled(false);
-        deleteAction->setStatusTip(tr("There must be at least one item"));
-        ui->buttonRefRemove->setEnabled(false);
-        ui->buttonRefRemove->setToolTip(tr("There must be at least one item"));
-    }
+    TaskDressUpParameters::deleteRef(ui->listWidgetReferences);
 }
 
 void TaskChamferParameters::onAddAllEdges()
 {
     TaskDressUpParameters::addAllEdges(ui->listWidgetReferences);
-    ui->buttonRefRemove->setEnabled(true);
 }
 
 void TaskChamferParameters::onTypeChanged(int index)
 {
+    setSelectionMode(none);
     PartDesign::Chamfer* pcChamfer = static_cast<PartDesign::Chamfer*>(DressUpView->getObject());
     pcChamfer->ChamferType.setValue(index);
     ui->stackedWidget->setCurrentIndex(index);
@@ -279,6 +202,7 @@ void TaskChamferParameters::onTypeChanged(int index)
 
 void TaskChamferParameters::onSizeChanged(double len)
 {
+    setSelectionMode(none);
     PartDesign::Chamfer* pcChamfer = static_cast<PartDesign::Chamfer*>(DressUpView->getObject());
     setupTransaction();
     pcChamfer->Size.setValue(len);
@@ -289,6 +213,7 @@ void TaskChamferParameters::onSizeChanged(double len)
 
 void TaskChamferParameters::onSize2Changed(double len)
 {
+    setSelectionMode(none);
     PartDesign::Chamfer* pcChamfer = static_cast<PartDesign::Chamfer*>(DressUpView->getObject());
     setupTransaction();
     pcChamfer->Size2.setValue(len);
@@ -299,6 +224,7 @@ void TaskChamferParameters::onSize2Changed(double len)
 
 void TaskChamferParameters::onAngleChanged(double angle)
 {
+    setSelectionMode(none);
     PartDesign::Chamfer* pcChamfer = static_cast<PartDesign::Chamfer*>(DressUpView->getObject());
     setupTransaction();
     pcChamfer->Angle.setValue(angle);
@@ -309,6 +235,7 @@ void TaskChamferParameters::onAngleChanged(double angle)
 
 void TaskChamferParameters::onFlipDirection(bool flip)
 {
+    setSelectionMode(none);
     PartDesign::Chamfer* pcChamfer = static_cast<PartDesign::Chamfer*>(DressUpView->getObject());
     setupTransaction();
     pcChamfer->FlipDirection.setValue(flip);
@@ -391,6 +318,10 @@ void TaskChamferParameters::apply()
             ui->chamferAngle->apply();
             break;
     }
+
+    //Alert user if he created an empty feature
+    if (ui->listWidgetReferences->count() == 0)
+        Base::Console().Warning(tr("Empty chamfer created !\n").toStdString().c_str());
 }
 
 //**************************************************************************

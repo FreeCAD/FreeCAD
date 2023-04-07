@@ -86,6 +86,8 @@ DlgBooleanOperation::DlgBooleanOperation(QWidget* parent)
   : QWidget(parent), ui(new Ui_DlgBooleanOperation)
 {
     ui->setupUi(this);
+    connect(ui->swapButton, &QPushButton::clicked,
+            this, &DlgBooleanOperation::onSwapButtonClicked);
     connect(ui->firstShape, &QTreeWidget::currentItemChanged,
             this, &DlgBooleanOperation::currentItemChanged);
     connect(ui->secondShape, &QTreeWidget::currentItemChanged,
@@ -316,7 +318,7 @@ void DlgBooleanOperation::currentItemChanged(QTreeWidgetItem* current, QTreeWidg
     //    previous->setCheckState(0, Qt::Unchecked);
 }
 
-void DlgBooleanOperation::on_swapButton_clicked()
+void DlgBooleanOperation::onSwapButtonClicked()
 {
     QTreeWidgetItem* lChild = ui->firstShape->currentItem();
     bool lsel = (lChild && (lChild->checkState(0) & Qt::Checked));

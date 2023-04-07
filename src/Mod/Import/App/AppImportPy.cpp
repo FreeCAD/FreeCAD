@@ -108,7 +108,7 @@ public:
             "export(list,string) -- Export a list of objects into a single file."
         );
          add_varargs_method("readDXF",&Module::readDXF,
-            "readDXF(filename,[document,ignore_errors]): Imports a DXF file into the given document. ignore_errors is True by default."
+            "readDXF(filename,[document,ignore_errors,option_source]): Imports a DXF file into the given document. ignore_errors is True by default."
         );
         add_varargs_method("writeDXFShape",&Module::writeDXFShape,
             "writeDXFShape([shape],filename [version,usePolyline,optionSource]): Exports Shape(s) to a DXF file."
@@ -407,7 +407,7 @@ private:
         char* Name;
         const char* DocName=nullptr;
         const char* optionSource = nullptr;
-        std::string defaultOptions = "User parameter:BaseApp/Preferences/Mod/Import";
+        std::string defaultOptions = "User parameter:BaseApp/Preferences/Mod/Draft";
         bool IgnoreErrors=true;
         if (!PyArg_ParseTuple(args.ptr(), "et|sbs","utf-8",&Name,&DocName,&IgnoreErrors,&optionSource))
             throw Py::Exception();

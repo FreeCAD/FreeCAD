@@ -1689,11 +1689,9 @@ void CmdPartOffset::activated(int iMsg)
     doCommand(Doc,"App.ActiveDocument.%s.Source = App.ActiveDocument.%s" ,offset.c_str(), shape->getNameInDocument());
     doCommand(Doc,"App.ActiveDocument.%s.Value = 1.0",offset.c_str());
     updateActive();
-    //if (isActiveObjectValid())
-    //    doCommand(Gui,"Gui.ActiveDocument.hide(\"%s\")",shape->getNameInDocument());
+
     doCommand(Gui,"Gui.ActiveDocument.setEdit('%s')",offset.c_str());
 
-    //commitCommand();
     adjustCameraPosition();
 
     copyVisual(offset.c_str(), "ShapeColor", shape->getNameInDocument());
@@ -1703,15 +1701,9 @@ void CmdPartOffset::activated(int iMsg)
 
 bool CmdPartOffset::isActive()
 {
-    {
-        bool hasShapes = PartGui::hasShapesInSelection();
-        std::vector<App::DocumentObject*> docobjs = Gui::Selection().getObjectsOfType(App::DocumentObject::getClassTypeId());
-        return (hasShapes && !Gui::Control().activeDialog() && docobjs.size() == 1);
-    }
-
-//    Base::Type partid = Base::Type::fromName("Part::Feature");
-//    bool objectsSelected = Gui::Selection().countObjectsOfType(partid,0,3) == 1;
-//    return (objectsSelected && !Gui::Control().activeDialog());
+     bool hasShapes = PartGui::hasShapesInSelection();
+     std::vector<App::DocumentObject*> docobjs = Gui::Selection().getObjectsOfType(App::DocumentObject::getClassTypeId());
+     return (hasShapes && !Gui::Control().activeDialog() && docobjs.size() == 1);
 }
 
 
@@ -1755,11 +1747,7 @@ void CmdPartOffset2D::activated(int iMsg)
     doCommand(Doc,"App.ActiveDocument.%s.Source = App.ActiveDocument.%s" ,offset.c_str(), shape->getNameInDocument());
     doCommand(Doc,"App.ActiveDocument.%s.Value = 1.0",offset.c_str());
     updateActive();
-    //if (isActiveObjectValid())
-    //    doCommand(Gui,"Gui.ActiveDocument.hide(\"%s\")",shape->getNameInDocument());
     doCommand(Gui,"Gui.ActiveDocument.setEdit('%s')",offset.c_str());
-
-    //commitCommand();
     adjustCameraPosition();
 
     copyVisual(offset.c_str(), "ShapeColor", shape->getNameInDocument());
@@ -1944,8 +1932,6 @@ void CmdPartThickness::activated(int iMsg)
                   obj->getDocument()->getName(), obj->getNameInDocument());
     }
     doCommand(Gui,"Gui.ActiveDocument.setEdit('%s')",thick.c_str());
-
-    //commitCommand();
     adjustCameraPosition();
 
     copyVisual(thick.c_str(), "ShapeColor", obj->getNameInDocument());
@@ -1981,68 +1967,6 @@ CmdShapeInfo::CmdShapeInfo()
 void CmdShapeInfo::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-#if 0
-    static const char * const part_pipette[]={
-        "32 32 17 1",
-        "# c #000000",
-        "j c #080808",
-        "b c #101010",
-        "f c #1c1c1c",
-        "g c #4c4c4c",
-        "c c #777777",
-        "a c #848484",
-        "i c #9c9c9c",
-        "l c #b9b9b9",
-        "e c #cacaca",
-        "n c #d6d6d6",
-        "k c #dedede",
-        "d c #e7e7e7",
-        "m c #efefef",
-        "h c #f7f7f7",
-        "w c #ffffff",
-        ". c None",
-        "................................",
-        ".....................#####......",
-        "...................#######......",
-        "...................#########....",
-        "..................##########....",
-        "..................##########....",
-        "..................##########....",
-        ".................###########....",
-        "...............#############....",
-        ".............###############....",
-        ".............#############......",
-        ".............#############......",
-        "...............ab######.........",
-        "..............cdef#####.........",
-        ".............ghdacf####.........",
-        "............#ehiacj####.........",
-        "............awiaaf####..........",
-        "...........iheacf##.............",
-        "..........#kdaag##..............",
-        ".........gedaacb#...............",
-        ".........lwiac##................",
-        ".......#amlaaf##................",
-        ".......cheaag#..................",
-        "......#ndaag##..................",
-        ".....#imaacb#...................",
-        ".....iwlacf#....................",
-        "....#nlaag##....................",
-        "....feaagj#.....................",
-        "....caag##......................",
-        "....ffbj##......................",
-        "................................",
-        "................................"};
-
-    Gui::Document* doc = Gui::Application::Instance->activeDocument();
-    Gui::View3DInventor* view = static_cast<Gui::View3DInventor*>(doc->getActiveView());
-#endif
-    //if (view) {
-    //    Gui::View3DInventorViewer* viewer = view->getViewer();
-    //    viewer->setEditing(true);
-    //    viewer->getWidget()->setCursor(QCursor(QPixmap(part_pipette),4,29));
-    //    viewer->addEventCallback(SoMouseButtonEvent::getClassTypeId(), PartGui::ViewProviderPart::shapeInfoCallback);
-    // }
 }
 
 bool CmdShapeInfo::isActive()
@@ -2143,8 +2067,6 @@ void CmdPartRuledSurface::activated(int iMsg)
             }
         }
     }
-
-
 
     if (!ok) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
@@ -2543,9 +2465,6 @@ CmdPartSectionCut::CmdPartSectionCut()
 Gui::Action* CmdPartSectionCut::createAction()
 {
     Gui::Action* pcAction = Gui::Command::createAction();
-#if 0
-    pcAction->setCheckable(true);
-#endif
     return pcAction;
 }
 
@@ -2587,8 +2506,6 @@ void CreatePartCommands()
     rcCmdMgr.addCommand(new CmdPartCompCompoundTools());
     rcCmdMgr.addCommand(new CmdPartCompound());
     rcCmdMgr.addCommand(new CmdPartSection());
-    //rcCmdMgr.addCommand(new CmdPartBox2());
-    //rcCmdMgr.addCommand(new CmdPartBox3());
     rcCmdMgr.addCommand(new CmdPartPrimitives());
 
     rcCmdMgr.addCommand(new CmdPartImport());

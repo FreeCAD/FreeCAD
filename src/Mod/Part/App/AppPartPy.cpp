@@ -736,21 +736,15 @@ private:
         if (file.hasExtension("stp") || file.hasExtension("step")) {
             // create new document and add Import feature
             App::Document *pcDoc = App::GetApplication().newDocument();
-#if 1
             ImportStepParts(pcDoc,EncodedName.c_str());
-#else
-            Part::ImportStep *pcFeature = (Part::ImportStep *)pcDoc->addObject("Part::ImportStep",file.fileNamePure().c_str());
-            pcFeature->FileName.setValue(Name);
-#endif
+
             pcDoc->recompute();
         }
-#if 1
         else if (file.hasExtension("igs") || file.hasExtension("iges")) {
             App::Document *pcDoc = App::GetApplication().newDocument();
             ImportIgesParts(pcDoc,EncodedName.c_str());
             pcDoc->recompute();
         }
-#endif
         else {
             TopoShape shape;
             shape.read(EncodedName.c_str());
@@ -788,21 +782,14 @@ private:
         }
 
         if (file.hasExtension("stp") || file.hasExtension("step")) {
-#if 1
             ImportStepParts(pcDoc,EncodedName.c_str());
-#else
-            // add Import feature
-            Part::ImportStep *pcFeature = (Part::ImportStep *)pcDoc->addObject("Part::ImportStep",file.fileNamePure().c_str());
-            pcFeature->FileName.setValue(Name);
-#endif
+
             pcDoc->recompute();
         }
-#if 1
         else if (file.hasExtension("igs") || file.hasExtension("iges")) {
             ImportIgesParts(pcDoc,EncodedName.c_str());
             pcDoc->recompute();
         }
-#endif
         else {
             TopoShape shape;
             shape.read(EncodedName.c_str());
@@ -1833,50 +1820,6 @@ private:
     }
     Py::Object makeLoft(const Py::Tuple& args)
     {
-#if 0
-        PyObject *pcObj;
-        if (!PyArg_ParseTuple(args.ptr(), "O", &pcObj))
-            throw Py::Exception;
-
-        NCollection_List<Handle(Geom_Curve)> theSections;
-        Py::Sequence list(pcObj);
-        for (Py::Sequence::iterator it = list.begin(); it != list.end(); ++it) {
-            if (PyObject_TypeCheck((*it).ptr(), &(Part::GeometryCurvePy::Type))) {
-                Handle(Geom_Curve) hCurve = Handle(Geom_Curve)::DownCast(
-                    static_cast<GeometryCurvePy*>((*it).ptr())->getGeomCurvePtr()->handle());
-                theSections.Append(hCurve);
-            }
-        }
-
-        //populate section generator
-        GeomFill_SectionGenerator aSecGenerator;
-        for (NCollection_List<Handle(Geom_Curve)>::Iterator anIt(theSections); anIt.More(); anIt.Next()) {
-            const Handle(Geom_Curve)& aCurve = anIt.Value();
-            aSecGenerator.AddCurve (aCurve);
-        }
-        aSecGenerator.Perform (Precision::PConfusion());
-
-        Handle(GeomFill_Line) aLine = new GeomFill_Line (theSections.Size());
-
-        //parameters
-        const Standard_Integer aMinDeg = 1, aMaxDeg = BSplCLib::MaxDegree(), aNbIt = 0;
-        Standard_Real aTol3d = 1e-4, aTol2d = Precision::Parametric (aTol3d);
-
-        //algorithm
-        GeomFill_AppSurf anAlgo (aMinDeg, aMaxDeg, aTol3d, aTol2d, aNbIt);
-        anAlgo.Perform (aLine, aSecGenerator);
-
-        if (!anAlgo.IsDone()) {
-            PyErr_SetString(PartExceptionOCCError, "Failed to create loft surface");
-            return 0;
-        }
-
-        Handle(Geom_BSplineSurface) aRes;
-        aRes = new Geom_BSplineSurface(anAlgo.SurfPoles(), anAlgo.SurfWeights(),
-            anAlgo.SurfUKnots(), anAlgo.SurfVKnots(), anAlgo.SurfUMults(), anAlgo.SurfVMults(),
-            anAlgo.UDegree(), anAlgo.VDegree());
-        return new BSplineSurfacePy(new GeomBSplineSurface(aRes));
-#else
         PyObject *pcObj;
         PyObject *psolid=Py_False;
         PyObject *pruled=Py_False;
@@ -1907,7 +1850,7 @@ private:
         Standard_Boolean anIsClosed = Base::asBoolean(pclosed);
         TopoDS_Shape aResult = myShape.makeLoft(profiles, anIsSolid, anIsRuled, anIsClosed, degMax);
         return Py::asObject(new TopoShapePy(new TopoShape(aResult)));
-#endif
+
     }
     Py::Object makeSplitShape(const Py::Tuple& args)
     {

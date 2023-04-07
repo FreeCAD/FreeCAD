@@ -67,6 +67,8 @@ public:
     Py::Object setupEditingRoot(const Py::Tuple &args);
     Py::Object resetEditingRoot(const Py::Tuple &args);
 
+    Py::Object setGradientBackground(const Py::Tuple& args);
+    Py::Object setGradientBackgroundColor(const Py::Tuple& args);
     Py::Object setBackgroundColor(const Py::Tuple& args);
     Py::Object setRedirectToSceneGraph(const Py::Tuple& args);
     Py::Object isRedirectedToSceneGraph(const Py::Tuple& args);

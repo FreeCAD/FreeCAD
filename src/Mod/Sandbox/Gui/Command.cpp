@@ -358,23 +358,23 @@ void CmdSandboxPythonNolockThread::activated(int)
 
 // -------------------------------------------------------------------------------
 
-DEF_STD_CMD(CmdSandboxPyQtThread)
+DEF_STD_CMD(CmdSandboxPySideThread)
 
-CmdSandboxPyQtThread::CmdSandboxPyQtThread()
-  :Command("Sandbox_PyQtThread")
+CmdSandboxPySideThread::CmdSandboxPySideThread()
+  :Command("Sandbox_PySideThread")
 {
     sAppModule    = "Sandbox";
     sGroup        = QT_TR_NOOP("Sandbox");
-    sMenuText     = QT_TR_NOOP("PyQt threads");
-    sToolTipText  = QT_TR_NOOP("Use PyQt's thread module");
-    sWhatsThis    = "Sandbox_PyQtThread";
-    sStatusTip    = QT_TR_NOOP("Use PyQt's thread module");
+    sMenuText     = QT_TR_NOOP("PySide threads");
+    sToolTipText  = QT_TR_NOOP("Use PySide's thread module");
+    sWhatsThis    = "Sandbox_PySideThread";
+    sStatusTip    = QT_TR_NOOP("Use PySide's thread module");
 }
 
-void CmdSandboxPyQtThread::activated(int)
+void CmdSandboxPySideThread::activated(int)
 {
     doCommand(Doc,
-        "from PyQt4 import QtCore; import Sandbox\n"
+        "from PySide import QtCore; import Sandbox\n"
         "class Thread(QtCore.QThread):\n"
         "    def run(self):\n"
         "        dp=Sandbox.DocumentProtector(doc)\n"
@@ -1432,7 +1432,7 @@ void CreateSandboxCommands()
     rcCmdMgr.addCommand(new CmdSandboxWorkerThread());
     rcCmdMgr.addCommand(new CmdSandboxPythonLockThread());
     rcCmdMgr.addCommand(new CmdSandboxPythonNolockThread());
-    rcCmdMgr.addCommand(new CmdSandboxPyQtThread());
+    rcCmdMgr.addCommand(new CmdSandboxPySideThread());
     rcCmdMgr.addCommand(new CmdSandboxPythonThread());
     rcCmdMgr.addCommand(new CmdSandboxPythonMainThread());
     rcCmdMgr.addCommand(new CmdSandboxDocThreadWithDialog());

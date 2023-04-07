@@ -53,8 +53,8 @@ protected:
     void changeEvent(QEvent *e) override;
     void setup();
 
-private Q_SLOTS:
-    void on_startButton_clicked();
+private:
+    void onStartButtonClicked();
 
 private:
     Ui_TaskCurveOnMesh* ui;

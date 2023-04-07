@@ -50,18 +50,19 @@ public:
     void reject();
     void createSegment();
 
-public Q_SLOTS:
-    void on_selectRegion_clicked();
-    void on_selectAll_clicked();
-    void on_selectComponents_clicked();
-    void on_selectTriangle_clicked();
-    void on_deselectAll_clicked();
-    void on_visibleTriangles_toggled(bool);
-    void on_screenTriangles_toggled(bool);
-    void on_cbSelectComp_toggled(bool);
-    void on_planeDetect_clicked();
-    void on_cylinderDetect_clicked();
-    void on_sphereDetect_clicked();
+public:
+    void setupConnections();
+    void onSelectRegionClicked();
+    void onSelectAllClicked();
+    void onSelectComponentsClicked();
+    void onSelectTriangleClicked();
+    void onDeselectAllClicked();
+    void onVisibleTrianglesToggled(bool);
+    void onScreenTrianglesToggled(bool);
+    void onSelectCompToggled(bool);
+    void onPlaneDetectClicked();
+    void onCylinderDetectClicked();
+    void onSphereDetectClicked();
 
 protected:
     void changeEvent(QEvent *e) override;

@@ -104,14 +104,15 @@ protected:
     void slotDeletedObject(const Gui::ViewProviderDocumentObject& Obj) override;
     void modifyBoundary(bool);
 
-private Q_SLOTS:
-    void on_buttonInitFace_clicked();
-    void on_buttonEdgeAdd_toggled(bool checked);
-    void on_buttonEdgeRemove_toggled(bool checked);
-    void on_lineInitFaceName_textChanged(const QString&);
-    void on_listBoundary_itemDoubleClicked(QListWidgetItem*);
-    void on_buttonAccept_clicked();
-    void on_buttonIgnore_clicked();
+private:
+    void setupConnections();
+    void onButtonInitFaceClicked();
+    void onButtonEdgeAddToggled(bool checked);
+    void onButtonEdgeRemoveToggled(bool checked);
+    void onLineInitFaceNameTextChanged(const QString&);
+    void onListBoundaryItemDoubleClicked(QListWidgetItem*);
+    void onButtonAcceptClicked();
+    void onButtonIgnoreClicked();
     void onDeleteEdge();
     void onIndexesMoved();
     void clearSelection();

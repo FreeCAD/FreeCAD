@@ -44,9 +44,9 @@ public:
     App::PropertyVectorList Normals;
     App::PropertyVector BasePoint;
     App::PropertyVector Axis;
-    App::PropertyFloat X_rot;
-    App::PropertyFloat Y_rot;
-    App::PropertyFloat Z_rot;
+    App::PropertyAngle X_rot;
+    App::PropertyAngle Y_rot;
+    App::PropertyAngle Z_rot;
     App::PropertyEnumeration TransformType;
     //etc
 /* */
@@ -58,6 +58,8 @@ public:
     const char* getViewProviderName() const override;
 
 protected:
+    void handleChangedPropertyType(Base::XMLReader& reader, const char* TypeName,
+                                   App::Property* prop);
     void onChanged(const App::Property* prop) override;
 
 };

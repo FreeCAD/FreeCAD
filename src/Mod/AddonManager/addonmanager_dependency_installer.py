@@ -28,8 +28,8 @@ import subprocess
 from typing import List
 
 import addonmanager_freecad_interface as fci
+from addonmanager_pyside_interface import QObject, Signal, is_interruption_requested
 
-from PySide import QtCore
 import addonmanager_utilities as utils
 from addonmanager_installer import AddonInstaller, MacroInstaller
 from Addon import Addon
@@ -37,14 +37,14 @@ from Addon import Addon
 translate = fci.translate
 
 
-class DependencyInstaller(QtCore.QObject):
+class DependencyInstaller(QObject):
     """Install Python dependencies using pip. Intended to be instantiated and then moved into a
     QThread: connect the run() function to the QThread's started() signal."""
 
-    no_python_exe = QtCore.Signal()
-    no_pip = QtCore.Signal(str)  # Attempted command
-    failure = QtCore.Signal(str, str)  # Short message, detailed message
-    finished = QtCore.Signal()
+    no_python_exe = Signal()
+    no_pip = Signal(str)  # Attempted command
+    failure = Signal(str, str)  # Short message, detailed message
+    finished = Signal()
 
     def __init__(
         self,
@@ -69,9 +69,9 @@ class DependencyInstaller(QtCore.QObject):
         signal."""
         if self._verify_pip():
             if self.python_requires or self.python_optional:
-                if not QtCore.QThread.currentThread().isInterruptionRequested():
+                if not is_interruption_requested():
                     self._install_python_packages()
-        if not QtCore.QThread.currentThread().isInterruptionRequested():
+        if not is_interruption_requested():
             self._install_addons()
         self.finished.emit()
 
@@ -107,7 +107,7 @@ class DependencyInstaller(QtCore.QObject):
         signal is emitted and the function exits without proceeding with any additional
         installations."""
         for pymod in self.python_requires:
-            if QtCore.QThread.currentThread().isInterruptionRequested():
+            if is_interruption_requested():
                 return False
             try:
                 proc = self._run_pip(
@@ -136,7 +136,7 @@ class DependencyInstaller(QtCore.QObject):
         """Install the optional Python package dependencies. If any fail a message is printed to
         the console, but installation of the others continues."""
         for pymod in self.python_optional:
-            if QtCore.QThread.currentThread().isInterruptionRequested():
+            if is_interruption_requested():
                 return
             try:
                 proc = self._run_pip(
@@ -179,7 +179,7 @@ class DependencyInstaller(QtCore.QObject):
 
     def _install_addons(self):
         for addon in self.addons:
-            if QtCore.QThread.currentThread().isInterruptionRequested():
+            if is_interruption_requested():
                 return
             fci.Console.PrintMessage(
                 translate(

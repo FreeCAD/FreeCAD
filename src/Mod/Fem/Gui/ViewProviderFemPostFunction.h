@@ -171,7 +171,7 @@ private Q_SLOTS:
     void heightChanged(double);
 
 private:
-    Ui_BoxWidget* ui;
+    std::unique_ptr<Ui_BoxWidget> ui;
 };
 
 class FemGuiExport ViewProviderFemPostBoxFunction : public ViewProviderFemPostFunction
@@ -209,7 +209,7 @@ private Q_SLOTS:
     void radiusChanged(double);
 
 private:
-    Ui_CylinderWidget* ui;
+    std::unique_ptr<Ui_CylinderWidget> ui;
 };
 
 class FemGuiExport ViewProviderFemPostCylinderFunction : public ViewProviderFemPostFunction
@@ -246,7 +246,7 @@ private Q_SLOTS:
     void normalChanged(double);
 
 private:
-    Ui_PlaneWidget* ui;
+    std::unique_ptr<Ui_PlaneWidget> ui;
 };
 
 class FemGuiExport ViewProviderFemPostPlaneFunction : public ViewProviderFemPostFunction
@@ -289,7 +289,7 @@ private Q_SLOTS:
     void radiusChanged(double);
 
 private:
-    Ui_SphereWidget* ui;
+    std::unique_ptr<Ui_SphereWidget> ui;
 };
 
 class FemGuiExport ViewProviderFemPostSphereFunction : public ViewProviderFemPostFunction
@@ -310,7 +310,6 @@ protected:
 
 namespace ShapeNodes
 {
-
     SoGroup* postBox();
     SoGroup* postCylinder();
     SoGroup* postPlane();

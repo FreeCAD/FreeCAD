@@ -133,6 +133,16 @@ public:
     };
     //@}
 
+    /** @name Background
+      */
+    //@{
+    enum Background {
+        NoGradient,
+        LinearGradient,
+        RadialGradient
+    };
+    //@}
+
     explicit View3DInventorViewer (QWidget *parent, const QtGLWidget* sharewidget = nullptr);
     View3DInventorViewer (const QtGLFormat& format, QWidget *parent, const QtGLWidget* sharewidget = nullptr);
     ~View3DInventorViewer() override;
@@ -370,8 +380,8 @@ public:
      */
     void viewSelection();
 
-    void setGradientBackground(bool b);
-    bool hasGradientBackground() const;
+    void setGradientBackground(Background);
+    Background getGradientBackground() const;
     void setGradientBackgroundColor(const SbColor& fromColor,
                                     const SbColor& toColor);
     void setGradientBackgroundColor(const SbColor& fromColor,

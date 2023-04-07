@@ -892,7 +892,7 @@ class Plane:
             and a `Rotation` (`Base::Rotation`).
         """
         if rotated:
-            m = DraftVecUtils.getPlaneRotation(self.u, self.v)
+            m = DraftVecUtils.getPlaneRotation(self.u, self.axis)
         else:
             m = DraftVecUtils.getPlaneRotation(self.u, self.v)
         m.move(self.position)

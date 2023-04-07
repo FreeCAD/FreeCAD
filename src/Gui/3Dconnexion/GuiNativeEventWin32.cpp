@@ -297,15 +297,15 @@ void Gui::GuiNativeEvent::initSpaceball(QMainWindow *mainWindow)
 // Methods for windows events
 
 /*!
-	Converts a hid device keycode (button identifier) of a pre-2009 3Dconnexion USB device to the standard 3d mouse virtual key definition.
+    Converts a hid device keycode (button identifier) of a pre-2009 3Dconnexion USB device to the standard 3d mouse virtual key definition.
 
-	\a pid USB Product ID (PID) of 3D mouse device
-	\a hidKeyCode  Hid keycode as retrieved from a Raw Input packet
+    \a pid USB Product ID (PID) of 3D mouse device
+    \a hidKeyCode  Hid keycode as retrieved from a Raw Input packet
 
-	\return The standard 3d mouse virtual key (button identifier) or zero if an error occurs.
+    \return The standard 3d mouse virtual key (button identifier) or zero if an error occurs.
 
-	Converts a hid device keycode (button identifier) of a pre-2009 3Dconnexion USB device
-	to the standard 3d mouse virtual key definition.
+    Converts a hid device keycode (button identifier) of a pre-2009 3Dconnexion USB device
+    to the standard 3d mouse virtual key definition.
 */
 
 unsigned short HidToVirtualKey(unsigned long pid, unsigned short hidKeyCode)
@@ -346,29 +346,29 @@ bool Gui::GuiNativeEvent::RawInputEventFilter(void *msg, long *result)
 
 
 /*!
-	Access the mouse parameters structure
+    Access the mouse parameters structure
 */
 I3dMouseParam& Gui::GuiNativeEvent::MouseParams()
 {
-	return f3dMouseParams;
+    return f3dMouseParams;
 }
 
 /*!
-	Access the mouse parameters structure
+    Access the mouse parameters structure
 */
 const I3dMouseParam& Gui::GuiNativeEvent::MouseParams() const
 {
-	return f3dMouseParams;
+    return f3dMouseParams;
 }
 
 /*!
-	Called with the processed motion data when a 3D mouse event is received
+    Called with the processed motion data when a 3D mouse event is received
 
-	The default implementation emits a Move3d signal with the motion data
+    The default implementation emits a Move3d signal with the motion data
 */
 void Gui::GuiNativeEvent::Move3d(HANDLE device, std::vector<float>& motionData)
 {
-	Q_UNUSED(device);
+    Q_UNUSED(device);
 
     motionDataArray[0] = -ceil(motionData[0]);
     motionDataArray[1] = ceil(motionData[1]);
@@ -381,21 +381,21 @@ void Gui::GuiNativeEvent::Move3d(HANDLE device, std::vector<float>& motionData)
 }
 
 /*!
-	Called when a 3D mouse key is pressed
+    Called when a 3D mouse key is pressed
 
-	The default implementation emits a On3dmouseKeyDown signal with the key code.
+    The default implementation emits a On3dmouseKeyDown signal with the key code.
 */
 void Gui::GuiNativeEvent::On3dmouseKeyDown(HANDLE device, int virtualKeyCode)
 {
-	Q_UNUSED(device);
+    Q_UNUSED(device);
 
     mainApp->postButtonEvent(virtualKeyCode - 1, 1);
 }
 
 /*!
-	Called when a 3D mouse key is released
+    Called when a 3D mouse key is released
 
-	The default implementation emits a On3dmouseKeyUp signal with the key code.
+    The default implementation emits a On3dmouseKeyUp signal with the key code.
 */
 void Gui::GuiNativeEvent::On3dmouseKeyUp(HANDLE device, int virtualKeyCode)
 {
@@ -405,9 +405,9 @@ void Gui::GuiNativeEvent::On3dmouseKeyUp(HANDLE device, int virtualKeyCode)
 }
 
 /*!
-	Get an initialized array of PRAWINPUTDEVICE for the 3D devices
+    Get an initialized array of PRAWINPUTDEVICE for the 3D devices
 
-	pNumDevices returns the number of devices to register. Currently this is always 1.
+    pNumDevices returns the number of devices to register. Currently this is always 1.
  */
 static PRAWINPUTDEVICE GetDevicesToRegister(unsigned int *pNumDevices)
 {
@@ -426,7 +426,7 @@ static PRAWINPUTDEVICE GetDevicesToRegister(unsigned int *pNumDevices)
 }
 
 /*!
-	Detect the 3D mouse
+    Detect the 3D mouse
 */
 bool Gui::GuiNativeEvent::Is3dmouseAttached()
 {
@@ -475,9 +475,9 @@ bool Gui::GuiNativeEvent::Is3dmouseAttached()
 
 
 /*!
-	Initialize the window to receive raw-input messages
+    Initialize the window to receive raw-input messages
 
-	This needs to be called initially so that Windows will send the messages from the 3D mouse to the window.
+    This needs to be called initially so that Windows will send the messages from the 3D mouse to the window.
 */
 bool Gui::GuiNativeEvent::InitializeRawInput(HWND hwndTarget)
 {
@@ -512,10 +512,10 @@ bool Gui::GuiNativeEvent::InitializeRawInput(HWND hwndTarget)
 
 
 /*!
-	Get the raw input data from Windows
+    Get the raw input data from Windows
 
-	Includes workaround for incorrect alignment of the RAWINPUT structure on x64 os
-	when running as Wow64 (copied directly from 3DConnexion code)
+    Includes workaround for incorrect alignment of the RAWINPUT structure on x64 os
+    when running as Wow64 (copied directly from 3DConnexion code)
 */
 
 UINT Gui::GuiNativeEvent::GetRawInputBuffer(PRAWINPUT pData, PUINT pcbSize, UINT cbSizeHeader)
@@ -575,10 +575,10 @@ UINT Gui::GuiNativeEvent::GetRawInputBuffer(PRAWINPUT pData, PUINT pcbSize, UINT
 }
 
 /*!
-	Process the raw input device data
+    Process the raw input device data
 
-	On3dmouseInput() does all the preprocessing of the rawinput device data before
-	finally calling the Move3d method.
+    On3dmouseInput() does all the preprocessing of the rawinput device data before
+    finally calling the Move3d method.
 */
 
 void Gui::GuiNativeEvent::On3dmouseInput()
@@ -713,7 +713,7 @@ void Gui::GuiNativeEvent::On3dmouseInput()
 }
 
 /*!
-	Called when new raw input data is available
+    Called when new raw input data is available
 */
 void Gui::GuiNativeEvent::OnRawInput(UINT nInputCode, HRAWINPUT hRawInput)
 {

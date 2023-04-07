@@ -11,7 +11,6 @@
 # OCC7 doesn't support non-ASCII characters at the moment
 # https://forum.freecadweb.org/viewtopic.php?t=20815
 
-import six
 
 import FreeCAD
 import FreeCADGui
@@ -24,14 +23,14 @@ from PySide import QtCore
 from PySide import QtGui
 import tempfile
 
-___stpZversion___ = "1.3.9"
+___stpZversion___ = "1.4.0"
 # support both gz and zipfile archives
 # Catia seems to use gz, Inventor zipfile
 # improved import, open and export
 
 
 import gzip as gz
-import builtins as builtin  #py3
+import builtins
 import importlib
 
 
@@ -78,8 +77,7 @@ def import_stpz(fn,fc,doc):
     tempdir = tempfile.gettempdir() # get the current temporary directory
     tempfilepath = os.path.join(tempdir,fname + u'.stp')
 
-    #with six.builtins.open(tempfilepath, 'wb') as f: #py3
-    with builtin.open(tempfilepath, 'wb') as f: #py3
+    with builtins.open(tempfilepath, 'wb') as f: #py3
         f.write(fc)
     #ImportGui.insert(filepath)
     if doc is None:
@@ -94,8 +92,6 @@ def import_stpz(fn,fc,doc):
 ###
 
 def open(filename,doc=None):
-
-    sayz("stpZ version "+___stpZversion___)
 
     if zf.is_zipfile(filename):
         with zf.ZipFile(filename, 'r') as fz:
@@ -117,7 +113,6 @@ def insert(filename,doc):
 
     doc = FreeCAD.ActiveDocument
     open(filename, doc)
-    sayz("stpZ version "+___stpZversion___)
 
 ####
 
@@ -151,7 +146,7 @@ def export(objs,filename):
         os.remove(outfpathT_stp)
         sayzw("Old temp file with the same name removed '"+ outfpathT_stp +"'")
     ImportGui.export(objs,outfpathT_stp)
-    with builtin.open(outfpathT_stp, 'rb') as f_in:
+    with builtins.open(outfpathT_stp, 'rb') as f_in:
         file_content = f_in.read()
         new_f_content = file_content
         f_in.close()

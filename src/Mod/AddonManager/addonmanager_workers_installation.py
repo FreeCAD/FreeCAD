@@ -178,21 +178,7 @@ class UpdateMetadataCacheWorker(QtCore.QThread):
 
         # Grab a new copy of the icon as well: we couldn't enqueue this earlier because
         # we didn't know the path to it, which is stored in the package.xml file.
-        icon = metadata.icon
-        if not icon:
-            # If there is no icon set for the entire package, see if there are
-            # any workbenches, which are required to have icons, and grab the first
-            # one we find:
-            content = repo.metadata.content
-            if "workbench" in content:
-                wb = content["workbench"][0]
-                if wb.icon:
-                    if wb.subdirectory:
-                        subdir = wb.subdirectory
-                    else:
-                        subdir = wb.name
-                    repo.icon = subdir + wb.icon
-                    icon = repo.icon
+        icon = repo.get_best_icon_relative_path()
 
         icon_url = utils.construct_git_url(repo, icon)
         index = NetworkManager.AM_NETWORK_MANAGER.submit_unmonitored_get(icon_url)

@@ -149,6 +149,17 @@
    <container>1</container>
   </customwidget>
  </customwidgets>
+ <tabstops>
+  <tabstop>buttonAddFeature</tabstop>
+  <tabstop>buttonRemoveFeature</tabstop>
+  <tabstop>listWidgetFeatures</tabstop>
+  <tabstop>comboAxis</tabstop>
+  <tabstop>checkReverse</tabstop>
+  <tabstop>polarAngle</tabstop>
+  <tabstop>spinOccurrences</tabstop>
+  <tabstop>buttonOK</tabstop>
+  <tabstop>checkBoxUpdateView</tabstop>
+ </tabstops>
  <resources/>
  <connections>
   <connection>

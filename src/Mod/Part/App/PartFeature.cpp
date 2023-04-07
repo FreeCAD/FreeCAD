@@ -130,14 +130,8 @@ App::DocumentObject *Feature::getSubObject(const char *subname,
         mat *= Placement.getValue().toMatrix();
 
     if(!pyObj) {
-#if 0
-        if(subname==0 || *subname==0 || Shape.getShape().hasSubShape(subname))
-            return const_cast<Feature*>(this);
-        return nullptr;
-#else
         // TopoShape::hasSubShape is kind of slow, let's cut outself some slack here.
         return const_cast<Feature*>(this);
-#endif
     }
 
     try {
@@ -296,25 +290,16 @@ static TopoShape _getTopoShape(const App::DocumentObject *obj, const char *subna
     }
 
     if(_ShapeCache.getShape(obj,shape,subname)) {
-        if(noElementMap) {
-            // shape.resetElementMap();
-            // shape.Tag = 0;
-            // shape.Hasher.reset();
-        }
     }
 
     App::DocumentObject *linked = nullptr;
     App::DocumentObject *owner = nullptr;
     Base::Matrix4D linkMat;
-    // App::StringHasherRef hasher;
-    // long tag;
     {
         Base::PyGILStateLocker lock;
         owner = obj->getSubObject(subname,shape.isNull()?&pyobj:nullptr,&mat,false);
         if(!owner)
             return shape;
-        // tag = owner->getID();
-        // hasher = owner->getDocument()->getStringHasher();
         linked = owner->getLinkedObject(true,&linkMat,false);
         if(pmat) {
             if(resolveLink && obj!=owner)
@@ -335,11 +320,6 @@ static TopoShape _getTopoShape(const App::DocumentObject *obj, const char *subna
             if(!shape.isNull()) {
                 if(obj->getDocument() != linked->getDocument())
                     _ShapeCache.setShape(obj,shape,subname);
-                if(noElementMap) {
-                    // shape.resetElementMap();
-                    // shape.Tag = 0;
-                    // shape.Hasher.reset();
-                }
                 Py_DECREF(pyobj);
                 return shape;
             }
@@ -363,11 +343,6 @@ static TopoShape _getTopoShape(const App::DocumentObject *obj, const char *subna
                 _ShapeCache.setShape(obj,shape,subname);
         }
         if(!shape.isNull()) {
-            if(noElementMap) {
-                // shape.resetElementMap();
-                // shape.Tag = 0;
-                // shape.Hasher.reset();
-            }
             return shape;
         }
     }
@@ -386,7 +361,6 @@ static TopoShape _getTopoShape(const App::DocumentObject *obj, const char *subna
             shape.transformShape(mat*linkMat,false,true);
         else
             shape.transformShape(linkMat,false,true);
-        // shape.reTagElementMap(tag,hasher);
 
     } else {
 
@@ -406,8 +380,6 @@ static TopoShape _getTopoShape(const App::DocumentObject *obj, const char *subna
             linked = link->getTrueLinkedObject(false,&baseMat);
             if(linked && linked!=owner) {
                 baseShape = Feature::getTopoShape(linked,nullptr,false,nullptr,nullptr,false,false);
-                // if(!link->getShowElementValue())
-                //     baseShape.reTagElementMap(owner->getID(),owner->getDocument()->getStringHasher());
             }
         }
         for(auto &sub : owner->getSubObjects()) {
@@ -444,7 +416,6 @@ static TopoShape _getTopoShape(const App::DocumentObject *obj, const char *subna
                     shape = baseShape.makeTransform(mat,(TopoShape::indexPostfix()+childName).c_str());
                 else {
                     shape = baseShape.makeTransform(mat);
-                //     shape.reTagElementMap(subObj->getID(),subObj->getDocument()->getStringHasher());
                 }
             }
             shapes.push_back(shape);
@@ -456,8 +427,6 @@ static TopoShape _getTopoShape(const App::DocumentObject *obj, const char *subna
         if(shapes.empty())
             return shape;
 
-        // shape.Tag = tag;
-        // shape.Hasher = hasher;
         shape.makeCompound(shapes);
     }
 
@@ -466,15 +435,9 @@ static TopoShape _getTopoShape(const App::DocumentObject *obj, const char *subna
     if(owner!=obj) {
         scaled = shape.transformShape(mat,false,true);
         if(owner->getDocument()!=obj->getDocument()) {
-            // shape.reTagElementMap(obj->getID(),obj->getDocument()->getStringHasher());
             _ShapeCache.setShape(obj,shape,subname);
         }else if(scaled)
             _ShapeCache.setShape(obj,shape,subname);
-    }
-    if(noElementMap) {
-        // shape.resetElementMap();
-        // shape.Tag = 0;
-        // shape.Hasher.reset();
     }
     return shape;
 }
@@ -701,15 +664,6 @@ template<> PyObject* Part::FeaturePython::getPyObject() {
 template class PartExport FeaturePythonT<Part::Feature>;
 }
 
-// ----------------------------------------------------------------
-/*
-#include <GProp_GProps.hxx>
-#include <BRepGProp.hxx>
-#include <gce_MakeLin.hxx>
-#include <BRepIntCurveSurface_Inter.hxx>
-#include <IntCurveSurface_IntersectionPoint.hxx>
-#include <gce_MakeDir.hxx>
-*/
 std::vector<Part::cutFaces> Part::findAllFacesCutBy(
         const TopoDS_Shape& shape, const TopoDS_Shape& face, const gp_Dir& dir)
 {
@@ -767,37 +721,6 @@ bool Part::checkIntersection(const TopoDS_Shape& first, const TopoDS_Shape& seco
         return false; // no intersection
     if (quick && !first_bb.IsOut(second_bb))
         return true; // assumed intersection
-
-    // Try harder
-
-    // This has been disabled because of:
-    // https://www.freecadweb.org/tracker/view.php?id=3065
-
-    //extrema method
-    /*BRepExtrema_DistShapeShape extrema(first, second);
-    if (!extrema.IsDone())
-      return true;
-    if (extrema.Value() > Precision::Confusion())
-      return false;
-    if (extrema.InnerSolution())
-      return true;
-
-    //here we should have touching shapes.
-    if (touch_is_intersection)
-    {
-
-    //non manifold condition. 1 has to be a face
-    for (int index = 1; index < extrema.NbSolution() + 1; ++index)
-    {
-        if (extrema.SupportTypeShape1(index) == BRepExtrema_IsInFace || extrema.SupportTypeShape2(index) == BRepExtrema_IsInFace)
-            return true;
-        }
-      return false;
-    }
-    else
-      return false;*/
-
-    //boolean method.
 
     if (touch_is_intersection) {
         // If both shapes fuse to a single solid, then they intersect

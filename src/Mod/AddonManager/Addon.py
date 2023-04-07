@@ -24,6 +24,7 @@
 """ Defines the Addon class to encapsulate information about FreeCAD Addons """
 
 import os
+import re
 from urllib.parse import urlparse
 from typing import Dict, Set, List, Optional
 from threading import Lock
@@ -188,7 +189,7 @@ class Addon:
         else:
             self.metadata_url = None
         self.metadata: Optional[Metadata] = None
-        self.icon = None  # Relative path to remote icon file
+        self.icon = None  # A QIcon version of this Addon's icon
         self.icon_file: str = ""  # Absolute local path to cached icon file
         self.best_icon_relative_path = ""
         self.macro = None  # Bridge to Gaël Écorchard's macro management class
@@ -592,6 +593,9 @@ class Addon:
                 "The existence of this file prevents FreeCAD from loading this Addon. To re-enable, delete the file."
             )
 
+        if self.contains_workbench():
+            self.disable_workbench()
+
     def enable(self):
         """Re-enable loading this addon by deleting the stopfile"""
 
@@ -600,6 +604,113 @@ class Addon:
             os.unlink(stopfile)
         except FileNotFoundError:
             pass
+
+        if self.contains_workbench():
+            self.enable_workbench()
+
+    def enable_workbench(self):
+        wbName = self.get_workbench_name()
+
+        # Remove from the list of disabled.
+        self.remove_from_disabled_wbs(wbName)
+
+    def disable_workbench(self):
+        pref = fci.ParamGet("User parameter:BaseApp/Preferences/Workbenches")
+        wbName = self.get_workbench_name()
+
+        # Add the wb to the list of disabled if it was not already
+        disabled_wbs = pref.GetString("Disabled", "NoneWorkbench,TestWorkbench")
+        # print(f"start disabling {disabled_wbs}")
+        disabled_wbs_list = disabled_wbs.split(",")
+        if not (wbName in disabled_wbs_list):
+            disabled_wbs += "," + wbName
+        pref.SetString("Disabled", disabled_wbs)
+        # print(f"done disabling :  {disabled_wbs} \n")
+
+    def desinstall_workbench(self):
+        pref = fci.ParamGet("User parameter:BaseApp/Preferences/Workbenches")
+        wbName = self.get_workbench_name()
+
+        # Remove from the list of ordered.
+        ordered_wbs = pref.GetString("Ordered", "")
+        # print(f"start remove from ordering {ordered_wbs}")
+        ordered_wbs_list = ordered_wbs.split(",")
+        ordered_wbs = ""
+        for wb in ordered_wbs_list:
+            if wb != wbName:
+                if ordered_wbs != "":
+                    ordered_wbs += ","
+                ordered_wbs += wb
+        pref.SetString("Ordered", ordered_wbs)
+        # print(f"end remove from ordering {ordered_wbs}")
+
+        # Remove from the list of disabled.
+        self.remove_from_disabled_wbs(wbName)
+
+    def remove_from_disabled_wbs(self, wbName: str):
+        pref = fci.ParamGet("User parameter:BaseApp/Preferences/Workbenches")
+
+        disabled_wbs = pref.GetString("Disabled", "NoneWorkbench,TestWorkbench")
+        # print(f"start enabling : {disabled_wbs}")
+        disabled_wbs_list = disabled_wbs.split(",")
+        disabled_wbs = ""
+        for wb in disabled_wbs_list:
+            if wb != wbName:
+                if disabled_wbs != "":
+                    disabled_wbs += ","
+                disabled_wbs += wb
+        pref.SetString("Disabled", disabled_wbs)
+        # print(f"Done enabling {disabled_wbs} \n")
+
+    def get_workbench_name(self) -> str:
+        """Find the name of the workbench class (ie the name under which it's
+        registered in freecad core)'"""
+        wb_name = ""
+
+        if self.repo_type == Addon.Kind.PACKAGE:
+            for wb in self.metadata.content[
+                "workbench"
+            ]:  # we may have more than one wb.
+                if wb_name != "":
+                    wb_name += ","
+                wb_name += wb.classname
+        if self.repo_type == Addon.Kind.WORKBENCH or wb_name == "":
+            wb_name = self.try_find_wbname_in_files()
+        if wb_name == "":
+            wb_name = self.name
+        return wb_name
+
+    def try_find_wbname_in_files(self) -> str:
+        """Attempt to locate a line with an addWorkbench command in the workbench's
+        Python files. If it is directly instantiating a workbench, then we can use
+        the line to determine classname for this workbench. If it uses a variable,
+        or if the line doesn't exist at all, an empty string is returned."""
+        mod_dir = os.path.join(self.mod_directory, self.name)
+
+        for root, _, files in os.walk(mod_dir):
+            for f in files:
+                current_file = os.path.join(root, f)
+                if not os.path.isdir(current_file):
+                    filename, extension = os.path.splitext(current_file)
+                    if extension == ".py":
+                        wb_classname = self._find_classname_in_file(current_file)
+                        print(f"Current file: {current_file} ")
+                        if wb_classname:
+                            print(f"Found name {wb_classname} \n")
+                            return wb_classname
+        return ""
+
+    @staticmethod
+    def _find_classname_in_file(current_file) -> str:
+        try:
+            with open(current_file, "r", encoding="utf-8") as python_file:
+                content = python_file.read()
+                search_result = re.search(r"Gui.addWorkbench\s*\(\s*(\w+)\s*\(\s*\)\s*\)", content)
+                if search_result:
+                    return search_result.group(1)
+        except OSError:
+            pass
+        return ""
 
 
 # @dataclass(frozen)
@@ -664,7 +775,9 @@ class MissingDependencies:
                         translate(
                             "AddonsInstaller",
                             "Got an error when trying to import {}",
-                        ).format(py_dep) + ":\n" + str(e)
+                        ).format(py_dep)
+                        + ":\n"
+                        + str(e)
                     )
 
         self.python_optional = []
@@ -678,7 +791,9 @@ class MissingDependencies:
                     translate(
                         "AddonsInstaller",
                         "Got an error when trying to import {}",
-                    ).format(py_dep) + ":\n" + str(e)
+                    ).format(py_dep)
+                    + ":\n"
+                    + str(e)
                 )
 
         self.wbs.sort()

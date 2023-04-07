@@ -394,10 +394,10 @@ class GmshTools():
                     self.group_elements[ge] = new_group_elements[ge]
                 else:
                     Console.PrintError("  A group with this name exists already.\n")
-        #else:
+        # else:
         #    Console.PrintMessage("  No Group meshing for analysis.\n")
 
-        #if self.group_elements:
+        # if self.group_elements:
         #    Console.PrintMessage("  {}\n".format(self.group_elements))
 
     def get_gmsh_version(self):
@@ -447,7 +447,7 @@ class GmshTools():
             # print("  No mesh regions.")
             pass
         else:
-            #Console.PrintMessage("  Mesh regions, we need to get the elements.\n")
+            # Console.PrintMessage("  Mesh regions, we need to get the elements.\n")
             # by the use of MeshRegion object and a BooleanSplitCompound
             # there could be problems with node numbers see
             # http://forum.freecadweb.org/viewtopic.php?f=18&t=18780&start=40#p149467
@@ -530,8 +530,8 @@ class GmshTools():
                 ele_shape = geomtools.get_element(self.part_obj, eleml)
                 ele_vertexes = geomtools.get_vertexes_by_element(self.part_obj.Shape, ele_shape)
                 self.ele_node_map[eleml] = ele_vertexes
-            #Console.PrintMessage("  {}\n".format(self.ele_length_map))
-            #Console.PrintMessage("  {}\n".format(self.ele_node_map))
+            # Console.PrintMessage("  {}\n".format(self.ele_length_map))
+            # Console.PrintMessage("  {}\n".format(self.ele_node_map))
 
     def get_boundary_layer_data(self):
         # mesh boundary layer
@@ -543,7 +543,7 @@ class GmshTools():
             # print("  No mesh boundary layer setting document object.")
             pass
         else:
-            #Console.PrintMessage("  Mesh boundary layers, we need to get the elements.\n")
+            # Console.PrintMessage("  Mesh boundary layers, we need to get the elements.\n")
             if self.part_obj.Shape.ShapeType == "Compound":
                 # see http://forum.freecadweb.org/viewtopic.php?f=18&t=18780&start=40#p149467 and
                 # http://forum.freecadweb.org/viewtopic.php?f=18&t=18780&p=149520#p149520

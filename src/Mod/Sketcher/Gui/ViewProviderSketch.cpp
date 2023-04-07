@@ -51,7 +51,6 @@
 #include <Gui/Selection.h>
 #include <Gui/SelectionObject.h>
 #include <Gui/SoFCUnifiedSelection.h>
-#include "Gui/ToolBarManager.h"
 #include <Gui/Utilities.h>
 #include <Gui/View3DInventor.h>
 #include <Gui/View3DInventorViewer.h>
@@ -70,6 +69,7 @@
 #include "TaskSketcherValidation.h"
 #include "Utils.h"
 #include "ViewProviderSketchGeometryExtension.h"
+#include "Workbench.h"
 
 
 FC_LOG_LEVEL_INIT("Sketch",true,true)
@@ -221,10 +221,6 @@ void ViewProviderSketch::ParameterObserver::initParameters()
             {[this](const std::string & string, App::Property * property){ updateBoolProperty(string, property, true);}, &Client.Autoconstraints }},
         {"AvoidRedundantAutoconstraints",
             {[this](const std::string & string, App::Property * property){ updateBoolProperty(string, property, true);}, &Client.AvoidRedundant }},
-        {"SketchEdgeColor",
-            {[this](const std::string & string, App::Property * property){ updateColorProperty(string, property, 1.f, 1.f, 1.f);}, &Client.LineColor }},
-        {"SketchVertexColor",
-            {[this](const std::string & string, App::Property * property){ updateColorProperty(string, property, 1.f, 1.f, 1.f);}, &Client.PointColor }},
         {"updateEscapeKeyBehaviour",
             {[this](const std::string & string, App::Property * property){ updateEscapeKeyBehaviour(string, property);}, nullptr }},
         {"AutoRecompute",
@@ -806,7 +802,7 @@ bool ViewProviderSketch::mouseButtonPressed(int Button, bool pressed, const SbVe
                         if (GeoId != Sketcher::GeoEnum::GeoUndef && PosId != Sketcher::PointPos::none) {
                             getDocument()->openCommand(QT_TRANSLATE_NOOP("Command", "Drag Point"));
                             try {
-                                Gui::cmdAppObjectArgs(getObject(), "movePoint(%i,%i,App.Vector(%f,%f,0),%i)"
+                                Gui::cmdAppObjectArgs(getObject(), "movePoint(%d,%d,App.Vector(%f,%f,0),%d)"
                                         ,GeoId, static_cast<int>(PosId), x-drag.xInit, y-drag.yInit, 0);
 
                                 getDocument()->commitCommand();
@@ -867,7 +863,7 @@ bool ViewProviderSketch::mouseButtonPressed(int Button, bool pressed, const SbVe
                             }
 
                             try {
-                                Gui::cmdAppObjectArgs(getObject(), "movePoint(%i,%i,App.Vector(%f,%f,0),%i)"
+                                Gui::cmdAppObjectArgs(getObject(), "movePoint(%d,%d,App.Vector(%f,%f,0),%d)"
                                         ,drag.DragCurve, static_cast<int>(Sketcher::PointPos::none), vec.x, vec.y, drag.relative ? 1 : 0);
 
                                 getDocument()->commitCommand();
@@ -2774,25 +2770,6 @@ void ViewProviderSketch::setupContextMenu(QMenu *menu, QObject *receiver, const 
     Gui::ViewProvider::setupContextMenu(menu, receiver, member);
 }
 
-namespace
-{
-    inline const QStringList editModeToolbarNames()
-    {
-        return QStringList{ QString::fromLatin1("Sketcher Edit Mode"),
-                            QString::fromLatin1("Sketcher geometries"),
-                            QString::fromLatin1("Sketcher constraints"),
-                            QString::fromLatin1("Sketcher tools"),
-                            QString::fromLatin1("Sketcher B-spline tools"),
-                            QString::fromLatin1("Sketcher virtual space") };
-    }
-
-    inline const QStringList nonEditModeToolbarNames()
-    {
-        return QStringList{ QString::fromLatin1("Structure"),
-                            QString::fromLatin1("Sketcher") };
-    }
-}
-
 bool ViewProviderSketch::setEdit(int ModNum)
 {
     Q_UNUSED(ModNum)
@@ -2811,7 +2788,7 @@ bool ViewProviderSketch::setEdit(int ModNum)
         msgBox.setDefaultButton(QMessageBox::Yes);
         int ret = msgBox.exec();
         if (ret == QMessageBox::Yes)
-            Gui::Control().reject();
+            Gui::Control().closeDialog();
         else
             return false;
     }
@@ -2939,13 +2916,7 @@ bool ViewProviderSketch::setEdit(int ModNum)
 
     Gui::getMainWindow()->installEventFilter(listener);
 
-    /*Modify toolbars dynamically.
-    First save state of toolbars in case user changed visibility of a toolbar but he's not changing the wb.
-    This happens in someone works directly from sketcher, changing from edit mode to not-edit-mode*/
-    Gui::ToolBarManager::getInstance()->saveState();
-
-    Gui::ToolBarManager::getInstance()->setToolbarVisibility(true, editModeToolbarNames());
-    Gui::ToolBarManager::getInstance()->setToolbarVisibility(false, nonEditModeToolbarNames());
+    Workbench::enterEditMode();
 
     return true;
 }
@@ -3082,13 +3053,7 @@ void ViewProviderSketch::unsetEdit(int ModNum)
     auto gridnode = getGridNode();
     pcRoot->removeChild(gridnode);
 
-    /*Modify toolbars dynamically.
-    First save state of toolbars in case user changed visibility of a toolbar but he's not changing the wb.
-    This happens in someone works directly from sketcher, changing from edit mode to not-edit-mode*/
-    Gui::ToolBarManager::getInstance()->saveState();
-
-    Gui::ToolBarManager::getInstance()->setToolbarVisibility(false, editModeToolbarNames());
-    Gui::ToolBarManager::getInstance()->setToolbarVisibility(true, nonEditModeToolbarNames());
+    Workbench::leaveEditMode();
 
     if(listener) {
         Gui::getMainWindow()->removeEventFilter(listener);
@@ -3384,7 +3349,7 @@ bool ViewProviderSketch::onDelete(const std::vector<std::string> &subList)
 
         for (rit = delConstraints.rbegin(); rit != delConstraints.rend(); ++rit) {
             try {
-                Gui::cmdAppObjectArgs(getObject(), "delConstraint(%i)", *rit);
+                Gui::cmdAppObjectArgs(getObject(), "delConstraint(%d)", *rit);
             }
             catch (const Base::Exception& e) {
                 Base::Console().Error("%s\n", e.what());
@@ -3408,7 +3373,7 @@ bool ViewProviderSketch::onDelete(const std::vector<std::string> &subList)
                     if (((*it)->Type == Sketcher::Coincident) && (((*it)->First == GeoId && (*it)->FirstPos == PosId) ||
                         ((*it)->Second == GeoId && (*it)->SecondPos == PosId)) ) {
                         try {
-                            Gui::cmdAppObjectArgs(getObject(), "delConstraintOnPoint(%i,%i)", GeoId, (int)PosId);
+                            Gui::cmdAppObjectArgs(getObject(), "delConstraintOnPoint(%d,%d)", GeoId, (int)PosId);
                         }
                         catch (const Base::Exception& e) {
                             Base::Console().Error("%s\n", e.what());
@@ -3443,7 +3408,7 @@ bool ViewProviderSketch::onDelete(const std::vector<std::string> &subList)
 
         for (rit = delExternalGeometries.rbegin(); rit != delExternalGeometries.rend(); ++rit) {
             try {
-                Gui::cmdAppObjectArgs(getObject(), "delExternal(%i)", *rit);
+                Gui::cmdAppObjectArgs(getObject(), "delExternal(%d)", *rit);
             }
             catch (const Base::Exception& e) {
                 Base::Console().Error("%s\n", e.what());

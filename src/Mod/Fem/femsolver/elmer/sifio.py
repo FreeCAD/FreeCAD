@@ -29,7 +29,6 @@ __url__ = "https://www.freecadweb.org"
 #  @{
 
 import collections
-import six
 
 SIMULATION = "Simulation"
 CONSTANTS = "Constants"
@@ -334,7 +333,7 @@ class _Writer(object):
 
     def _isCollection(self, data):
         return (
-            not isinstance(data, six.string_types)
+            not isinstance(data, str)
             and isinstance(data, collections.abc.Iterable)
         )
 
@@ -364,7 +363,7 @@ class _Writer(object):
                 attrType = _TYPE_VARIABLE
         if attrType is not _TYPE_VARIABLE:
             self._stream.write(attrType)
-        self._stream.write(_WHITESPACE)
+            self._stream.write(_WHITESPACE)
         output = self._preprocess(data, type(data))
         # in case of a variable the output must be without the quatoation marks
         if attrType is _TYPE_VARIABLE:
@@ -418,16 +417,14 @@ class _Writer(object):
             return _TYPE_INTEGER
         if issubclass(dataType, float):
             return _TYPE_REAL
-        # use six to be sure to be Python 2.7 and 3.x compatible
-        if issubclass(dataType, six.string_types):
+        if issubclass(dataType, str):
             return _TYPE_STRING
         raise ValueError("Unsupported data type: %s" % dataType)
 
     def _preprocess(self, data, dataType):
         if issubclass(dataType, Section):
             return str(self._idMgr.getId(data))
-        # use six to be sure to be Python 2.7 and 3.x compatible
-        if issubclass(dataType, six.string_types):
+        if issubclass(dataType, str):
             return '"%s"' % data
         return str(data)
 

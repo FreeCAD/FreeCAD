@@ -317,10 +317,14 @@ int ConstraintPy::PyInit(PyObject* args, PyObject* /*kwd*/)
 
                 valid = true;
 
-                if(strstr(ConstraintType,"BSplineControlPoint")) {
+                if (strstr(ConstraintType,"BSplineControlPoint")) {
                     this->getConstraintPtr()->AlignmentType=BSplineControlPoint;
                 }
-                else {
+                else if (strstr(ConstraintType,"BSplineKnotPoint")) {
+                    this->getConstraintPtr()->AlignmentType=BSplineKnotPoint;
+                }
+                else
+                {
                     this->getConstraintPtr()->AlignmentType=Undef;
                     valid = false;
                 }

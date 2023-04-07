@@ -49,10 +49,11 @@ public:
 
     void slotSetUp(const QString& state, const QString& msg, const QString& link, const QString& linkText);
 
-private Q_SLOTS:
-    void on_labelConstrainStatusLink_linkClicked(const QString &);
+private:
+    void setupConnections();
+    void onLabelConstrainStatusLinkClicked(const QString &);
     void onAutoUpdateStateChanged();
-    void on_manualUpdate_clicked(bool checked);
+    void onManualUpdateClicked(bool checked);
     
 protected:
     ViewProviderSketch *sketchView;

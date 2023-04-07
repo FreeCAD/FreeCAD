@@ -280,7 +280,7 @@ void Translator::setLocale(const std::string& language) const
 
 void Translator::updateLocaleChange() const
 {
-    for (auto &topLevelWidget: qApp->topLevelWidgets()) {
+    for (auto &topLevelWidget : qApp->topLevelWidgets()) {
         topLevelWidget->setLocale(QLocale());
     }
 }
@@ -413,6 +413,11 @@ void Translator::enableDecimalPointConversion(bool on)
         );
         qApp->installEventFilter(decimalPointConverter.get());
     }
+}
+
+bool Translator::isEnabledDecimalPointConversion() const
+{
+    return static_cast<bool>(decimalPointConverter);
 }
 
 #include "moc_Translator.cpp"

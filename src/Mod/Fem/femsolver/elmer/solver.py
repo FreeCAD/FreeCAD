@@ -34,6 +34,7 @@ import os
 import FreeCAD
 
 from . import tasks
+from .equations import deformation
 from .equations import elasticity
 from .equations import electricforce
 from .equations import electrostatic
@@ -67,12 +68,13 @@ class Proxy(solverbase.Proxy):
     Type = "Fem::SolverElmer"
 
     _EQUATIONS = {
-        "Heat": heat,
+        "Deformation": deformation,
         "Elasticity": elasticity,
         "Electrostatic": electrostatic,
         "Flux": flux,
         "Electricforce": electricforce,
         "Flow": flow,
+        "Heat": heat,
         "Magnetodynamic": magnetodynamic,
         "Magnetodynamic2D": magnetodynamic2D,
     }
@@ -101,10 +103,18 @@ class Proxy(solverbase.Proxy):
 
         obj.addProperty(
             "App::PropertyIntegerList",
+            "OutputIntervals",
+            "Timestepping",
+            "After how many time steps a result file is output"
+        )
+        obj.OutputIntervals = [1]
+
+        obj.addProperty(
+            "App::PropertyIntegerList",
             "TimestepIntervals",
             "Timestepping",
             (
-                "List of maximum optimization rounds if 'Simulation Type'\n"
+                "List of times if 'Simulation Type'\n"
                 "is either 'Scanning' or 'Transient'"
             )
         )
@@ -113,7 +123,7 @@ class Proxy(solverbase.Proxy):
             "TimestepSizes",
             "Timestepping",
             (
-                "List of time steps of optimization if 'Simulation Type'\n"
+                "List of time steps sizes if 'Simulation Type'\n"
                 "is either 'Scanning' or 'Transient'"
             )
         )
@@ -150,6 +160,14 @@ class Proxy(solverbase.Proxy):
         obj.addProperty(
             "App::PropertyLink",
             "ElmerResult",
+            "Base",
+            "",
+            4 | 8
+        )
+
+        obj.addProperty(
+            "App::PropertyLinkList",
+            "ElmerTimeResults",
             "Base",
             "",
             4 | 8

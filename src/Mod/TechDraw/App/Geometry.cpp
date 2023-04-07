@@ -74,13 +74,18 @@
 #include <Base/Reader.h>
 #include <Base/Writer.h>
 
+#include <Mod/Part/App/Geometry.h>
+#include <Mod/Part/App/TopoShape.h>
+
 #include "Geometry.h"
 #include "GeometryObject.h"
 #include "DrawUtil.h"
 
 
 using namespace TechDraw;
+using namespace Part;
 using namespace std;
+using DU = DrawUtil;
 
 #if OCC_VERSION_HEX >= 0x070600
 using BRepAdaptor_HCurve = BRepAdaptor_Curve;
@@ -702,6 +707,14 @@ void BaseGeom::intersectionCC(TechDraw::BaseGeomPtr geom1,
             interPoints.push_back(interPoint2);
         }
     }
+}
+
+TopoShape BaseGeom::asTopoShape(double scale)
+{
+//    Base::Console().Message("BG::asTopoShape(%.3f) - dump: %s\n", scale, dump().c_str());
+    TopoDS_Shape unscaledShape = TechDraw::scaleShape(getOCCEdge(), 1.0 / scale);
+    TopoDS_Edge unscaledEdge = TopoDS::Edge(unscaledShape);
+    return unscaledEdge;
 }
 
 Ellipse::Ellipse(const TopoDS_Edge &e)
@@ -1494,6 +1507,14 @@ void Vertex::dump(const char* title)
     Base::Console().Message("TD::Vertex - %s - point: %s vis: %d cosmetic: %d  cosLink: %d cosTag: %s\n",
                             title, DrawUtil::formatVector(pnt).c_str(), hlrVisible, cosmetic, cosmeticLink,
                             cosmeticTag.c_str());
+}
+
+TopoShape Vertex::asTopoShape(double scale)
+{
+    Base::Vector3d point = DU::toVector3d(BRep_Tool::Pnt(getOCCVertex()));
+    point = point / scale;
+    BRepBuilderAPI_MakeVertex mkVert(DU::togp_Pnt(point));
+    return TopoShape(mkVert.Vertex());
 }
 
 

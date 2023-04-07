@@ -80,6 +80,8 @@ public:
     bool eventFilter(QObject* obj, QEvent* ev);
     /** Enables/disables decimal separator conversion **/
     void enableDecimalPointConversion(bool on);
+    /** Returns whether decimal separator conversion is enabled */
+    bool isEnabledDecimalPointConversion() const;
 
 private:
     Translator();

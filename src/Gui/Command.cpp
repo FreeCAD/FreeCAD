@@ -329,13 +329,13 @@ int Command::_busy;
 class PendingLine {
 public:
     PendingLine(MacroManager::LineType type, const char *line) {
-        Application::Instance->macroManager()->addLine(type,line,true);
+        Application::Instance->macroManager()->addPendingLine(type, line);
     }
     ~PendingLine() {
         cancel();
     }
     void cancel() {
-        Application::Instance->macroManager()->addLine(MacroManager::Cmt,nullptr,true);
+        Application::Instance->macroManager()->addPendingLine(MacroManager::Cmt, nullptr);
     }
 };
 

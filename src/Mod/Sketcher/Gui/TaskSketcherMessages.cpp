@@ -47,7 +47,7 @@ TaskSketcherMessages::TaskSketcherMessages(ViewProviderSketch *sketchView) :
     // we need a separate container widget to add all controls to
     proxy = new QWidget(this);
     ui->setupUi(proxy);
-    QMetaObject::connectSlotsByName(this);
+    setupConnections();
 
     this->groupLayout()->addWidget(proxy);
 
@@ -57,8 +57,8 @@ TaskSketcherMessages::TaskSketcherMessages(ViewProviderSketch *sketchView) :
 
     // Set up the possible state values for the status label
     ui->labelConstrainStatus->setParameterGroup("User parameter:BaseApp/Preferences/Mod/Sketcher/General");
-    ui->labelConstrainStatus->registerState(QString::fromUtf8("empty_sketch"), QColor("black"), std::string("EmptySketchMessageColor"));
-    ui->labelConstrainStatus->registerState(QString::fromUtf8("under_constrained"), QColor("black"), std::string("UnderconstrainedMessageColor"));
+    ui->labelConstrainStatus->registerState(QString::fromUtf8("empty_sketch"), palette().windowText().color(), std::string("EmptySketchMessageColor"));
+    ui->labelConstrainStatus->registerState(QString::fromUtf8("under_constrained"), palette().windowText().color(), std::string("UnderconstrainedMessageColor"));
     ui->labelConstrainStatus->registerState(QString::fromUtf8("malformed_constraints"), QColor("red"), std::string("MalformedConstraintMessageColor"));
     ui->labelConstrainStatus->registerState(QString::fromUtf8("conflicting_constraints"), QColor("orangered"), std::string("ConflictingConstraintMessageColor"));
     ui->labelConstrainStatus->registerState(QString::fromUtf8("redundant_constraints"), QColor("red"), std::string("RedundantConstraintMessageColor"));
@@ -67,10 +67,6 @@ TaskSketcherMessages::TaskSketcherMessages(ViewProviderSketch *sketchView) :
     ui->labelConstrainStatus->registerState(QString::fromUtf8("fully_constrained"), QColor("green"), std::string("FullyConstrainedMessageColor"));
 
     ui->labelConstrainStatusLink->setLaunchExternal(false);
-
-    // Manually connect the link since it uses "clicked()", which labels don't have natively
-    connect(ui->labelConstrainStatusLink, &Gui::UrlLabel::linkClicked,
-            this, &TaskSketcherMessages::on_labelConstrainStatusLink_linkClicked);
 
     //Set Auto Update in the 'Manual Update' button menu.
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
@@ -88,20 +84,19 @@ TaskSketcherMessages::TaskSketcherMessages(ViewProviderSketch *sketchView) :
         qAsConst(ui->manualUpdate)->actions()[0], &QAction::changed,
         this, &TaskSketcherMessages::onAutoUpdateStateChanged
     );
-
-    /*QObject::connect(
-        ui->labelConstrainStatus, SIGNAL(linkActivated(const QString &)),
-        this                     , SLOT  (on_labelConstrainStatus_linkActivated(const QString &))
-       );
-    QObject::connect(
-        ui->manualUpdate, SIGNAL(clicked(bool)),
-        this                     , SLOT  (on_manualUpdate_clicked(bool))
-       );*/
 }
 
 TaskSketcherMessages::~TaskSketcherMessages()
 {
     connectionSetUp.disconnect();
+}
+
+void TaskSketcherMessages::setupConnections()
+{
+    connect(ui->labelConstrainStatusLink, &Gui::UrlLabel::linkClicked,
+            this, &TaskSketcherMessages::onLabelConstrainStatusLinkClicked);
+    connect(ui->manualUpdate, &QToolButton::clicked,
+            this, &TaskSketcherMessages::onManualUpdateClicked);
 }
 
 void TaskSketcherMessages::slotSetUp(const QString& state, const QString& msg, const QString& link, const QString& linkText)
@@ -112,7 +107,7 @@ void TaskSketcherMessages::slotSetUp(const QString& state, const QString& msg, c
     ui->labelConstrainStatusLink->setText(linkText);
 }
 
-void TaskSketcherMessages::on_labelConstrainStatusLink_linkClicked(const QString &str)
+void TaskSketcherMessages::onLabelConstrainStatusLinkClicked(const QString &str)
 {
     if( str == QString::fromLatin1("#conflicting"))
         Gui::Application::Instance->commandManager().runCommandByName("Sketcher_SelectConflictingConstraints");
@@ -140,7 +135,7 @@ void TaskSketcherMessages::onAutoUpdateStateChanged()
     sketchView->getSketchObject()->noRecomputes = !state;
 }
 
-void TaskSketcherMessages::on_manualUpdate_clicked(bool checked)
+void TaskSketcherMessages::onManualUpdateClicked(bool checked)
 {
     Q_UNUSED(checked);
     Gui::Command::updateActive();

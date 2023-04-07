@@ -30,7 +30,6 @@ __url__ = "https://www.freecadweb.org"
 #  \ingroup FEM
 #  \brief view provider as base for all FEM objects
 
-from six import string_types
 
 import FreeCAD
 import FreeCADGui
@@ -61,7 +60,7 @@ class VPBaseFemObject(object):
             )
             return ""
         if (
-            isinstance(self.Object.Proxy.Type, string_types)
+            isinstance(self.Object.Proxy.Type, str)
             and self.Object.Proxy.Type.startswith("Fem::")
         ):
             icon_path = "/icons/{}.svg".format(self.Object.Proxy.Type.replace("Fem::", "FEM_"))

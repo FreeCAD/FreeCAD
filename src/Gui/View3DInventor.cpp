@@ -57,6 +57,7 @@
 #include "View3DInventor.h"
 #include "View3DSettings.h"
 #include "Application.h"
+#include "Camera.h"
 #include "Document.h"
 #include "FileDialog.h"
 #include "MainWindow.h"
@@ -422,18 +423,31 @@ bool View3DInventor::onMsg(const char* pMsg, const char** ppReturn)
         getGuiDocument()->saveCopy();
         return true;
     }
+    else if (strcmp("ZoomIn", pMsg) == 0) {
+        View3DInventorViewer* viewer = getViewer();
+        viewer->navigationStyle()->zoomIn();
+        return true;
+    }
+    else if (strcmp("ZoomOut", pMsg) == 0) {
+        View3DInventorViewer* viewer = getViewer();
+        viewer->navigationStyle()->zoomOut();
+        return true;
+    }
 
     return false;
 }
 
 bool View3DInventor::onHasMsg(const char* pMsg) const
 {
-    if  (strcmp("Save",pMsg) == 0)
+    if  (strcmp("Save",pMsg) == 0) {
         return true;
-    else if (strcmp("SaveAs",pMsg) == 0)
+    }
+    else if (strcmp("SaveAs",pMsg) == 0) {
         return true;
-    else if (strcmp("SaveCopy",pMsg) == 0)
+    }
+    else if (strcmp("SaveCopy",pMsg) == 0) {
         return true;
+    }
     else if (strcmp("Undo",pMsg) == 0) {
         App::Document* doc = getAppDocument();
         return doc && doc->getAvailableUndos() > 0;
@@ -442,58 +456,89 @@ bool View3DInventor::onHasMsg(const char* pMsg) const
         App::Document* doc = getAppDocument();
         return doc && doc->getAvailableRedos() > 0;
     }
-    else if (strcmp("Print",pMsg) == 0)
+    else if (strcmp("Print",pMsg) == 0) {
         return true;
-    else if (strcmp("PrintPreview",pMsg) == 0)
+    }
+    else if (strcmp("PrintPreview",pMsg) == 0) {
         return true;
-    else if (strcmp("PrintPdf",pMsg) == 0)
+    }
+    else if (strcmp("PrintPdf",pMsg) == 0) {
         return true;
-    else if(strcmp("SetStereoRedGreen",pMsg) == 0)
+    }
+    else if(strcmp("SetStereoRedGreen",pMsg) == 0) {
         return true;
-    else if(strcmp("SetStereoQuadBuff",pMsg) == 0)
+    }
+    else if(strcmp("SetStereoQuadBuff",pMsg) == 0) {
         return true;
-    else if(strcmp("SetStereoInterleavedRows",pMsg) == 0)
+    }
+    else if(strcmp("SetStereoInterleavedRows",pMsg) == 0) {
         return true;
-    else if(strcmp("SetStereoInterleavedColumns",pMsg) == 0)
+    }
+    else if(strcmp("SetStereoInterleavedColumns",pMsg) == 0) {
         return true;
-    else if(strcmp("SetStereoOff",pMsg) == 0)
+    }
+    else if(strcmp("SetStereoOff",pMsg) == 0) {
         return true;
-    else if(strcmp("Example1",pMsg) == 0)
+    }
+    else if(strcmp("Example1",pMsg) == 0) {
         return true;
-    else if(strcmp("Example2",pMsg) == 0)
+    }
+    else if(strcmp("Example2",pMsg) == 0) {
         return true;
-    else if(strcmp("Example3",pMsg) == 0)
+    }
+    else if(strcmp("Example3",pMsg) == 0) {
         return true;
-    else if(strcmp("ViewFit",pMsg) == 0)
+    }
+    else if(strcmp("ViewFit",pMsg) == 0) {
         return true;
-    else if(strcmp("ViewVR",pMsg) == 0)
+    }
+    else if(strcmp("ViewVR",pMsg) == 0) {
 #ifdef BUILD_VR
         return true;
 #else
         return false;
 #endif
-    else if(strcmp("ViewSelection",pMsg) == 0)
+    }
+    else if(strcmp("ViewSelection",pMsg) == 0) {
         return true;
-    else if(strcmp("ViewBottom",pMsg) == 0)
+    }
+    else if(strcmp("ViewBottom",pMsg) == 0) {
         return true;
-    else if(strcmp("ViewFront",pMsg) == 0)
+    }
+    else if(strcmp("ViewFront",pMsg) == 0) {
         return true;
-    else if(strcmp("ViewLeft",pMsg) == 0)
+    }
+    else if(strcmp("ViewLeft",pMsg) == 0) {
         return true;
-    else if(strcmp("ViewRear",pMsg) == 0)
+    }
+    else if(strcmp("ViewRear",pMsg) == 0) {
         return true;
-    else if(strcmp("ViewRight",pMsg) == 0)
+    }
+    else if(strcmp("ViewRight",pMsg) == 0) {
         return true;
-    else if(strcmp("ViewTop",pMsg) == 0)
+    }
+    else if(strcmp("ViewTop",pMsg) == 0) {
         return true;
-    else if(strcmp("ViewAxo",pMsg) == 0)
+    }
+    else if(strcmp("ViewAxo",pMsg) == 0) {
         return true;
-    else if(strcmp("GetCamera",pMsg) == 0)
+    }
+    else if(strcmp("GetCamera",pMsg) == 0) {
         return true;
-    else if(strncmp("SetCamera",pMsg,9) == 0)
+    }
+    else if(strncmp("SetCamera",pMsg,9) == 0) {
         return true;
-    else if(strncmp("Dump",pMsg,4) == 0)
+    }
+    else if(strncmp("Dump",pMsg,4) == 0) {
         return true;
+    }
+    if (strcmp("ZoomIn", pMsg) == 0) {
+        return true;
+    }
+    if (strcmp("ZoomOut", pMsg) == 0) {
+        return true;
+    }
+
     return false;
 }
 

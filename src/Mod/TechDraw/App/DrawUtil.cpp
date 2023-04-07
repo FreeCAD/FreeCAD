@@ -137,10 +137,7 @@ bool DrawUtil::isSamePoint(TopoDS_Vertex v1, TopoDS_Vertex v2, double tolerance)
 {
     gp_Pnt p1 = BRep_Tool::Pnt(v1);
     gp_Pnt p2 = BRep_Tool::Pnt(v2);
-    if (p1.IsEqual(p2, tolerance)) {
-        return true;
-    }
-    return false;
+    return p1.IsEqual(p2, tolerance);
 }
 
 bool DrawUtil::isZeroEdge(TopoDS_Edge e, double tolerance)
@@ -264,27 +261,18 @@ double DrawUtil::incidenceAngleAtVertex(TopoDS_Edge e, TopoDS_Vertex v, double t
 bool DrawUtil::isFirstVert(TopoDS_Edge e, TopoDS_Vertex v, double tolerance)
 {
     TopoDS_Vertex first = TopExp::FirstVertex(e);
-    if (isSamePoint(first, v, tolerance)) {
-        return true;
-    }
-    return false;
+    return isSamePoint(first, v, tolerance);
 }
 
 bool DrawUtil::isLastVert(TopoDS_Edge e, TopoDS_Vertex v, double tolerance)
 {
     TopoDS_Vertex last = TopExp::LastVertex(e);
-    if (isSamePoint(last, v, tolerance)) {
-        return true;
-    }
-    return false;
+    return isSamePoint(last, v, tolerance);
 }
 
 bool DrawUtil::fpCompare(const double& d1, const double& d2, double tolerance)
 {
-    if (std::fabs(d1 - d2) < tolerance) {
-        return true;
-    }
-    return false;
+    return std::fabs(d1 - d2) < tolerance;
 }
 
 //brute force intersection points of line(point, dir) with box(xRange, yRange)
@@ -600,10 +588,7 @@ bool DrawUtil::checkParallel(const Base::Vector3d v1, Base::Vector3d v2, double 
 {
     double dot = fabs(v1.Dot(v2));
     double mag = v1.Length() * v2.Length();
-    if (DrawUtil::fpCompare(dot, mag, tolerance)) {
-        return true;
-    }
-    return false;
+    return DrawUtil::fpCompare(dot, mag, tolerance);
 }
 
 //! rotate vector by angle radians around axis through org
@@ -1065,6 +1050,21 @@ bool DrawUtil::circulation(Base::Vector3d A, Base::Vector3d B, Base::Vector3d C)
     }
 }
 
+Base::Vector3d DrawUtil::getTrianglePoint(Base::Vector3d p1, Base::Vector3d dir, Base::Vector3d p2)
+{
+    // get third point of a perpendicular triangle
+    // p1, p2 ...vertexes of hypothenusis, dir ...direction of one kathete, p3 ...3rd vertex
+    float a = -dir.y;
+    float b = dir.x;
+    float c1 = p1.x * a + p1.y * b;
+    float c2 = -p2.x * b + p2.y * a;
+    float ab = a * a + b * b;
+    float x = (c1 * a - c2 * b) / ab;
+    float y = (c2 * a + c1 * b) / ab;
+    Base::Vector3d p3(x,y,0.0);
+    return p3;
+}
+
 int DrawUtil::countSubShapes(TopoDS_Shape shape, TopAbs_ShapeEnum subShape)
 {
     int count = 0;
@@ -1197,8 +1197,8 @@ std::list<TopoDS_Edge> DrawUtil::sort_Edges(double tol3d, std::list<TopoDS_Edge>
             }
         }
 
-        if ((itEdgePoint == edge_points.end())
-            || (gpChainLast.SquareDistance(gpChainFirst) <= tol3d)) {
+        if (itEdgePoint == edge_points.end()
+            || gpChainLast.SquareDistance(gpChainFirst) <= tol3d) {
             // no adjacent edge found or polyline is closed
             return sorted;
         }
@@ -1245,7 +1245,7 @@ double DrawUtil::angleDifference(double fi1, double fi2, bool reflex)
 
     fi1 -= fi2;
 
-    if (((fi1 > +M_PI) || (fi1 <= -M_PI)) != reflex) {
+    if ((fi1 > +M_PI || fi1 <= -M_PI) != reflex) {
         fi1 += fi1 > 0.0 ? -M_2PI : +M_2PI;
     }
 

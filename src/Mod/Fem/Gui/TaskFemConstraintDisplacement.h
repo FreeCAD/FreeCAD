@@ -26,6 +26,7 @@
 #ifndef GUI_TASKVIEW_TaskFemConstraintDisplacement_H
 #define GUI_TASKVIEW_TaskFemConstraintDisplacement_H
 
+#include <memory>
 #include <QObject>
 
 #include <Gui/Selection.h>
@@ -44,48 +45,52 @@ class TaskFemConstraintDisplacement : public TaskFemConstraintOnBoundary
     Q_OBJECT
 
 public:
-    explicit TaskFemConstraintDisplacement(ViewProviderFemConstraintDisplacement *ConstraintView, QWidget *parent = nullptr);
+    explicit TaskFemConstraintDisplacement(ViewProviderFemConstraintDisplacement* ConstraintView,
+                                           QWidget* parent = nullptr);
     ~TaskFemConstraintDisplacement() override;
+
     const std::string getReferences() const override;
-    double get_spinxDisplacement()const;
-    double get_spinyDisplacement()const;
-    double get_spinzDisplacement()const;
-    double get_spinxRotation()const;
-    double get_spinyRotation()const;
-    double get_spinzRotation()const;
-    bool get_dispxfix()const;
-    bool get_dispxfree()const;
-    bool get_dispyfix()const;
-    bool get_dispyfree()const;
-    bool get_dispzfix()const;
-    bool get_dispzfree()const;
-    bool get_rotxfix()const;
-    bool get_rotxfree()const;
-    bool get_rotyfix()const;
-    bool get_rotyfree()const;
-    bool get_rotzfix()const;
-    bool get_rotzfree()const;
+    std::string get_spinxDisplacement() const;
+    std::string get_spinyDisplacement() const;
+    std::string get_spinzDisplacement() const;
+    std::string get_spinxRotation() const;
+    std::string get_spinyRotation() const;
+    std::string get_spinzRotation() const;
+    std::string get_xFormula() const;
+    std::string get_yFormula() const;
+    std::string get_zFormula() const;
+    bool get_dispxfix() const;
+    bool get_dispxfree() const;
+    bool get_hasDispXFormula() const;
+    bool get_dispyfix() const;
+    bool get_dispyfree() const;
+    bool get_hasDispYFormula() const;
+    bool get_dispzfix() const;
+    bool get_dispzfree() const;
+    bool get_hasDispZFormula() const;
+    bool get_rotxfix() const;
+    bool get_rotxfree() const;
+    bool get_rotyfix() const;
+    bool get_rotyfree() const;
+    bool get_rotzfix() const;
+    bool get_rotzfree() const;
+    bool get_useFlowSurfaceForce() const;
 
 private Q_SLOTS:
     void onReferenceDeleted();
-    void x_changed(double);
-    void y_changed(double);
-    void z_changed(double);
-    void x_rot(double);
-    void y_rot(double);
-    void z_rot(double);
-    void fixx(int);
-    void freex(int);
-    void fixy(int);
-    void freey(int);
-    void fixz(int);
-    void freez(int);
-    void rotfixx(int);
-    void rotfreex(int);
-    void rotfixy(int);
-    void rotfreey(int);
-    void rotfixz(int);
-    void rotfreez(int);
+    void fixx(bool);
+    void formulaX(bool);
+    void fixy(bool);
+    void formulaY(bool);
+    void fixz(bool);
+    void formulaZ(bool);
+    void flowForce(bool);
+    void rotfixx(bool);
+    void formulaRotx(bool);
+    void rotfixy(bool);
+    void formulaRoty(bool);
+    void rotfixz(bool);
+    void formulaRotz(bool);
 
     void addToSelection() override;
     void removeFromSelection() override;
@@ -97,8 +102,7 @@ protected:
 
 private:
     void updateUI();
-    Ui_TaskFemConstraintDisplacement* ui;
-
+    std::unique_ptr<Ui_TaskFemConstraintDisplacement> ui;
 };
 
 class TaskDlgFemConstraintDisplacement : public TaskDlgFemConstraint
@@ -106,7 +110,8 @@ class TaskDlgFemConstraintDisplacement : public TaskDlgFemConstraint
     Q_OBJECT
 
 public:
-    explicit TaskDlgFemConstraintDisplacement(ViewProviderFemConstraintDisplacement *ConstraintView);
+    explicit TaskDlgFemConstraintDisplacement(
+        ViewProviderFemConstraintDisplacement* ConstraintView);
     void open() override;
     bool accept() override;
     bool reject() override;

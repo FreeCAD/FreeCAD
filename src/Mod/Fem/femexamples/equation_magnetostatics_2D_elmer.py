@@ -34,6 +34,7 @@ from . import manager
 from .manager import get_meshname
 from .manager import init_doc
 
+
 def get_information():
     return {
         "name": "Magnetostatic - Elmer 2D",
@@ -45,6 +46,7 @@ def get_information():
         "equations": ["magnetostatic"]
     }
 
+
 def get_explanation(header=""):
     return header + """
 
@@ -55,6 +57,7 @@ setup()
 Magnetodynamic2D equation - Elmer solver
 
 """
+
 
 def setup(doc=None, solvertype="elmer"):
 
@@ -88,25 +91,25 @@ def setup(doc=None, solvertype="elmer"):
 
     # the U-part of the horse shoe
     # credits: https://forum.freecad.org/viewtopic.php?p=663051#p663051
-    vpairs = [[Vector (340.0, 200.0, 0.0), Vector (200.0, 200.0, 0.0)],
-              [Vector (200.0, 200.0, 0.0), Vector (200.0, 100.0, 0.0)],
-              [Vector (200.0, 100.0, 0.0), Vector (325.0, 100.0, 0.0)],
-              [Vector (325.0, 100.0, 0.0), Vector (325.0, -100.0, 0.0)],
-              [Vector (325.0, -100.0, 0.0), Vector (200.0, -100.0, 0.0)],
-              [Vector (200.0, -100.0, 0.0), Vector (200.0, -200.0, 0.0)],
-              [Vector (200.0, -200.0, 0.0), Vector (340.0, -200.0, 0.0)],
-              [Vector (340.0, 200.0, 0.0), Vector (340.0, -200.0, 0.0)]]
+    vpairs = [[Vector(340.0, 200.0, 0.0), Vector(200.0, 200.0, 0.0)],
+              [Vector(200.0, 200.0, 0.0), Vector(200.0, 100.0, 0.0)],
+              [Vector(200.0, 100.0, 0.0), Vector(325.0, 100.0, 0.0)],
+              [Vector(325.0, 100.0, 0.0), Vector(325.0, -100.0, 0.0)],
+              [Vector(325.0, -100.0, 0.0), Vector(200.0, -100.0, 0.0)],
+              [Vector(200.0, -100.0, 0.0), Vector(200.0, -200.0, 0.0)],
+              [Vector(200.0, -200.0, 0.0), Vector(340.0, -200.0, 0.0)],
+              [Vector(340.0, 200.0, 0.0), Vector(340.0, -200.0, 0.0)]]
     typeId = ['Part::GeomLine', 'Part::GeomLine', 'Part::GeomLine', 'Part::GeomBSplineCurve',
               'Part::GeomLine', 'Part::GeomLine', 'Part::GeomLine', 'Part::GeomBSplineCurve']
-    e3Poles = [Vector (325.0, 100.0, 0.0), Vector (400.0, 100.0, 0.0),
-               Vector (400.0, 0.0, 0.0), Vector (400.0, -100.0, 0.0),
-               Vector (325.0, -100.0, 0.0)]
+    e3Poles = [Vector(325.0, 100.0, 0.0), Vector(400.0, 100.0, 0.0),
+               Vector(400.0, 0.0, 0.0), Vector(400.0, -100.0, 0.0),
+               Vector(325.0, -100.0, 0.0)]
     e3Knots = [0.0, 0.5, 1.0]
     e3Mults = [4, 1, 4]
     e3Degree = 3
-    e7Poles = [Vector (340.0, 200.0, 0.0), Vector (500.0, 200.0, 0.0),
-               Vector (500.0, 0.0, 0.0), Vector (500.0, -200.0, 0.0),
-               Vector (340.0, -200.0, 0.0)]
+    e7Poles = [Vector(340.0, 200.0, 0.0), Vector(500.0, 200.0, 0.0),
+               Vector(500.0, 0.0, 0.0), Vector(500.0, -200.0, 0.0),
+               Vector(340.0, -200.0, 0.0)]
     e7Knots = [0.0, 0.5, 1.0]
     e7Mults = [4, 1, 4]
     e7Degree = 3

@@ -125,6 +125,10 @@
         <file>icons/geometry/Sketcher_CreateArc_Constr.svg</file>
         <file>icons/geometry/Sketcher_CreateBSpline.svg</file>
         <file>icons/geometry/Sketcher_CreateBSpline_Constr.svg</file>
+        <file>icons/geometry/Sketcher_CreateBSplineByInterpolation.svg</file>
+        <file>icons/geometry/Sketcher_CreateBSplineByInterpolation_Constr.svg</file>
+        <file>icons/geometry/Sketcher_Create_Periodic_BSplineByInterpolation.svg</file>
+        <file>icons/geometry/Sketcher_Create_Periodic_BSplineByInterpolation_Constr.svg</file>
         <file>icons/geometry/Sketcher_CreateCircle.svg</file>
         <file>icons/geometry/Sketcher_CreateCircle_Constr.svg</file>
         <file>icons/geometry/Sketcher_CreateEllipse_3points.svg</file>

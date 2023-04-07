@@ -57,6 +57,8 @@ public:
     TaskDialog();
     ~TaskDialog() override;
 
+    void addTaskBox(QWidget*);
+
     void setButtonPosition(ButtonPosition p)
     { pos = p; }
     ButtonPosition buttonPosition() const

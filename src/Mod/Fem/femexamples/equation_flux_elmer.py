@@ -31,6 +31,7 @@ from . import manager
 from .manager import get_meshname
 from .manager import init_doc
 
+
 def get_information():
     return {
         "name": "Flux - Elmer",
@@ -42,6 +43,7 @@ def get_information():
         "equations": ["electrostatic", "flux", "heat"]
     }
 
+
 def get_explanation(header=""):
     return header + """
 
@@ -52,6 +54,7 @@ setup()
 Potential flux and heat flux - Elmer solver
 
 """
+
 
 def setup(doc=None, solvertype="elmer"):
 
@@ -82,8 +85,8 @@ def setup(doc=None, solvertype="elmer"):
     # solver
     if solvertype == "elmer":
         solver_obj = ObjectsFem.makeSolverElmer(doc, "SolverElmer")
-        equation_electrostatic = ObjectsFem.makeEquationElectrostatic(doc, solver_obj)
-        equation_heat = ObjectsFem.makeEquationHeat(doc, solver_obj)
+        ObjectsFem.makeEquationElectrostatic(doc, solver_obj)
+        ObjectsFem.makeEquationHeat(doc, solver_obj)
         equation_flux_potential = ObjectsFem.makeEquationFlux(doc, solver_obj)
         equation_flux_temperature = ObjectsFem.makeEquationFlux(doc, solver_obj)
     else:

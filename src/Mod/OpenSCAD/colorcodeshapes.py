@@ -100,7 +100,7 @@ def colorcodeshapes(objs):
                 if obj.Shape.isNull():
                     continue
                 if not obj.Shape.isValid():
-                        color = (1.0,0.4,0.4)
+                    color = (1.0,0.4,0.4)
                 else:
                     st=obj.Shape.ShapeType
                     if st in ["Compound", "CompSolid"]:

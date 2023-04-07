@@ -2,8 +2,8 @@
 
 #include "gtest/gtest.h"
 
-#include "App/MappedName.h"
 #include "App/ComplexGeoData.h"
+#include "App/MappedName.h"
 
 #include <string>
 
@@ -39,7 +39,7 @@ TEST(MappedName, namedConstructionWithMaxSize)
 {
     // Act
     Data::MappedName mappedName("TEST", 2);
-    
+
     // Assert
     EXPECT_EQ(mappedName.isRaw(), false);
     EXPECT_EQ(mappedName.empty(), false);
@@ -52,10 +52,10 @@ TEST(MappedName, namedConstructionDiscardPrefix)
 {
     // Arrange
     std::string name = Data::ComplexGeoData::elementMapPrefix() + "TEST";
-    
+
     // Act
     Data::MappedName mappedName(name.c_str());
-        
+
     // Assert
     EXPECT_EQ(mappedName.isRaw(), false);
     EXPECT_EQ(mappedName.empty(), false);
@@ -68,7 +68,7 @@ TEST(MappedName, stringNamedConstruction)
 {
     // Act
     Data::MappedName mappedName(std::string("TEST"));
-        
+
     // Assert
     EXPECT_EQ(mappedName.isRaw(), false);
     EXPECT_EQ(mappedName.empty(), false);
@@ -81,10 +81,10 @@ TEST(MappedName, stringNamedConstructionDiscardPrefix)
 {
     // Arrange
     std::string name = Data::ComplexGeoData::elementMapPrefix() + "TEST";
-    
+
     // Act
     Data::MappedName mappedName(name);
-        
+
     // Assert
     EXPECT_EQ(mappedName.isRaw(), false);
     EXPECT_EQ(mappedName.empty(), false);
@@ -102,7 +102,7 @@ TEST(MappedName, constructFromIndexedNameNoIndex)
     Data::MappedName mappedName {indexedName};
 
     // Assert
-    EXPECT_EQ(mappedName.dataBytes().constData(), indexedName.getType()); // shared memory
+    EXPECT_EQ(mappedName.dataBytes().constData(), indexedName.getType());// shared memory
     EXPECT_EQ(mappedName.isRaw(), true);
 }
 
@@ -115,7 +115,7 @@ TEST(MappedName, constructFromIndexedNameWithIndex)
     Data::MappedName mappedName {indexedName};
 
     // Assert
-    EXPECT_NE(mappedName.dataBytes().constData(), indexedName.getType()); // NOT shared memory
+    EXPECT_NE(mappedName.dataBytes().constData(), indexedName.getType());// NOT shared memory
     EXPECT_EQ(mappedName.isRaw(), false);
     EXPECT_EQ(mappedName.toString(), indexedName.toString());
 }
@@ -124,10 +124,10 @@ TEST(MappedName, copyConstructor)
 {
     // Arrange
     Data::MappedName temp("TEST");
-    
+
     // Act
     Data::MappedName mappedName(temp);
-        
+
     // Assert
     EXPECT_EQ(mappedName.isRaw(), false);
     EXPECT_EQ(mappedName.empty(), false);
@@ -143,7 +143,7 @@ TEST(MappedName, copyConstructorWithPostfix)
 
     // Act
     Data::MappedName mappedName(temp, "POSTFIXTEST");
-        
+
     // Assert
     EXPECT_EQ(mappedName.isRaw(), false);
     EXPECT_EQ(mappedName.empty(), false);
@@ -153,7 +153,7 @@ TEST(MappedName, copyConstructorWithPostfix)
 
     // Act
     Data::MappedName mappedName2(mappedName, "ANOTHERPOSTFIX");
-        
+
     // Assert
     EXPECT_EQ(mappedName2.isRaw(), false);
     EXPECT_EQ(mappedName2.empty(), false);
@@ -166,10 +166,10 @@ TEST(MappedName, copyConstructorStartpos)
 {
     // Arrange
     Data::MappedName temp(Data::MappedName("TEST"), "POSTFIXTEST");
-    
+
     // Act
     Data::MappedName mappedName(temp, 2, -1);
-        
+
     // Assert
     EXPECT_EQ(mappedName.isRaw(), false);
     EXPECT_EQ(mappedName.empty(), false);
@@ -182,10 +182,10 @@ TEST(MappedName, copyConstructorStartposAndSize)
 {
     // Arrange
     Data::MappedName temp(Data::MappedName("TEST"), "POSTFIXTEST");
-    
+
     // Act
     Data::MappedName mappedName(temp, 2, 6);
-        
+
     // Assert
     EXPECT_EQ(mappedName.isRaw(), false);
     EXPECT_EQ(mappedName.empty(), false);
@@ -198,10 +198,10 @@ TEST(MappedName, moveConstructor)
 {
     // Arrange
     Data::MappedName temp(Data::MappedName("TEST"), "POSTFIXTEST");
-    
+
     // Act
     Data::MappedName mappedName(std::move(temp));
-        
+
     // Assert
     EXPECT_EQ(mappedName.isRaw(), false);
     EXPECT_EQ(mappedName.empty(), false);
@@ -214,7 +214,7 @@ TEST(MappedName, fromRawData)
 {
     // Act
     Data::MappedName mappedName = Data::MappedName::fromRawData("TESTTEST", 10);
-        
+
     // Assert
     EXPECT_EQ(mappedName.isRaw(), true);
     EXPECT_EQ(mappedName.empty(), false);
@@ -227,7 +227,7 @@ TEST(MappedName, fromRawDataQByteArray)
 {
     // Act
     Data::MappedName mappedName = Data::MappedName::fromRawData(QByteArray("TESTTEST", 10));
-        
+
     // Assert
     EXPECT_EQ(mappedName.isRaw(), true);
     EXPECT_EQ(mappedName.empty(), false);
@@ -241,11 +241,11 @@ TEST(MappedName, fromRawDataCopy)
     // Arrange
     Data::MappedName temp = Data::MappedName::fromRawData(QByteArray("TESTTEST", 10));
     temp.append("TESTPOSTFIX");
-    temp.compact(); //Always call compact before accessing data!
-    
+    temp.compact();// Always call compact before accessing data!
+
     // Act
     Data::MappedName mappedName = Data::MappedName::fromRawData(temp, 0);
-        
+
     // Assert
     EXPECT_EQ(mappedName.isRaw(), true);
     EXPECT_EQ(mappedName.empty(), false);
@@ -254,12 +254,12 @@ TEST(MappedName, fromRawDataCopy)
     EXPECT_EQ(mappedName.postfixBytes(), QByteArray("TESTPOSTFIX"));
 }
 
-TEST(MappedName, fromRawDataCopyStartposAndSize) 
+TEST(MappedName, fromRawDataCopyStartposAndSize)
 {
     // Arrange
     Data::MappedName temp = Data::MappedName::fromRawData(QByteArray("TESTTEST", 8));
-    temp.append("ABCDEFGHIJKLM"); //postfix
-    temp.compact(); //Always call compact before accessing data!
+    temp.append("ABCDEFGHIJKLM");// postfix
+    temp.compact();              // Always call compact before accessing data!
 
     // Act
     Data::MappedName mappedName = Data::MappedName::fromRawData(temp, 2, 13);
@@ -268,7 +268,7 @@ TEST(MappedName, fromRawDataCopyStartposAndSize)
     EXPECT_EQ(mappedName.isRaw(), true);
     EXPECT_EQ(mappedName.empty(), false);
     EXPECT_EQ(mappedName.size(), 13);
-    EXPECT_EQ(mappedName.dataBytes(), QByteArray("STTEST", 6)); 
+    EXPECT_EQ(mappedName.dataBytes(), QByteArray("STTEST", 6));
     EXPECT_EQ(mappedName.postfixBytes(), QByteArray("ABCDEFG"));
 }
 
@@ -276,10 +276,10 @@ TEST(MappedName, assignmentOperator)
 {
     // Arrange
     Data::MappedName temp(Data::MappedName("TEST"), "POSTFIXTEST");
-    
+
     // Act
     Data::MappedName mappedName = temp;
-        
+
     // Assert
     EXPECT_EQ(mappedName.isRaw(), false);
     EXPECT_EQ(mappedName.empty(), false);
@@ -295,7 +295,7 @@ TEST(MappedName, assignmentOperatorString)
 
     // Act
     mappedName = std::string("TEST");
-        
+
     // Assert
     EXPECT_EQ(mappedName.isRaw(), false);
     EXPECT_EQ(mappedName.empty(), false);
@@ -311,7 +311,7 @@ TEST(MappedName, assignmentOperatorConstCharPtr)
 
     // Act
     mappedName = "TEST";
-        
+
     // Assert
     EXPECT_EQ(mappedName.isRaw(), false);
     EXPECT_EQ(mappedName.empty(), false);
@@ -327,7 +327,7 @@ TEST(MappedName, assignmentOperatorMove)
 
     // Act
     Data::MappedName mappedName = std::move(temp);
-        
+
     // Assert
     EXPECT_EQ(mappedName.isRaw(), false);
     EXPECT_EQ(mappedName.empty(), false);
@@ -356,7 +356,7 @@ TEST(MappedName, comparisonOperators)
     Data::MappedName mappedName2(Data::MappedName("TEST"), "POSTFIXTEST");
     Data::MappedName mappedName3(Data::MappedName("TESTPOST"), "FIXTEST");
     Data::MappedName mappedName4(Data::MappedName("THIS"), "ISDIFFERENT");
-       
+
     // Act & Assert
     EXPECT_EQ(mappedName1 == mappedName1, true);
     EXPECT_EQ(mappedName1 == mappedName2, true);
@@ -373,13 +373,13 @@ TEST(MappedName, additionOperators)
 {
     // Arrange
     Data::MappedName mappedName(Data::MappedName("TEST"), "POSTFIXTEST");
-    
+
     // Act
     mappedName += "POST1";
     mappedName += std::string("POST2");
     mappedName += QByteArray("POST3");
     mappedName += Data::MappedName("POST4");
-        
+
     // Assert
     EXPECT_EQ(mappedName.isRaw(), false);
     EXPECT_EQ(mappedName.empty(), false);
@@ -395,7 +395,7 @@ TEST(MappedName, additionOperators)
     mappedName = mappedName + "POST6";
     mappedName = mappedName + std::string("POST7");
     mappedName = mappedName + QByteArray("POST8");
-        
+
     // Assert
     EXPECT_EQ(mappedName.isRaw(), false);
     EXPECT_EQ(mappedName.empty(), false);
@@ -411,7 +411,7 @@ TEST(MappedName, append)
 
     // Act
     mappedName.append("TEST");
-        
+
     // Assert
     EXPECT_EQ(mappedName.isRaw(), false);
     EXPECT_EQ(mappedName.empty(), false);
@@ -421,7 +421,7 @@ TEST(MappedName, append)
 
     // Act
     mappedName.append("POSTFIX");
-        
+
     // Assert
     EXPECT_EQ(mappedName.isRaw(), false);
     EXPECT_EQ(mappedName.empty(), false);
@@ -431,7 +431,7 @@ TEST(MappedName, append)
 
     // Act
     mappedName.append("ANOTHERPOSTFIX", 5);
-        
+
     // Assert
     EXPECT_EQ(mappedName.isRaw(), false);
     EXPECT_EQ(mappedName.empty(), false);
@@ -448,7 +448,7 @@ TEST(MappedName, appendMappedNameObj)
 
     // Act
     mappedName.append(temp);
-        
+
     // Assert
     EXPECT_EQ(mappedName.isRaw(), false);
     EXPECT_EQ(mappedName.empty(), false);
@@ -458,7 +458,7 @@ TEST(MappedName, appendMappedNameObj)
 
     // Act
     mappedName.append(temp, 2, 7);
-        
+
     // Assert
     EXPECT_EQ(mappedName.isRaw(), false);
     EXPECT_EQ(mappedName.empty(), false);
@@ -471,7 +471,7 @@ TEST(MappedName, toString)
 {
     // Arrange
     Data::MappedName mappedName(Data::MappedName("TEST"), "POSTFIXTEST");
-        
+
     // Act & Assert
     EXPECT_EQ(mappedName.toString(0), "TESTPOSTFIXTEST");
     EXPECT_EQ(mappedName.toString(0), std::string("TESTPOSTFIXTEST"));
@@ -483,17 +483,17 @@ TEST(MappedName, toConstString)
 {
     // Arrange
     Data::MappedName mappedName(Data::MappedName("TEST"), "POSTFIXTEST");
-    int size{0};
+    int size {0};
 
     // Act
-    const char *temp = mappedName.toConstString(0, size);
-    
+    const char* temp = mappedName.toConstString(0, size);
+
     // Assert
     EXPECT_EQ(QByteArray(temp, size), QByteArray("TEST"));
     EXPECT_EQ(size, 4);
 
     // Act
-    const char *temp2 = mappedName.toConstString(7, size);
+    const char* temp2 = mappedName.toConstString(7, size);
 
     // Assert
     EXPECT_EQ(QByteArray(temp2, size), QByteArray("TFIXTEST"));
@@ -504,7 +504,7 @@ TEST(MappedName, toRawBytes)
 {
     // Arrange
     Data::MappedName mappedName(Data::MappedName("TEST"), "POSTFIXTEST");
-        
+
     // Act & Assert
     EXPECT_EQ(mappedName.toRawBytes(), QByteArray("TESTPOSTFIXTEST"));
     EXPECT_EQ(mappedName.toRawBytes(3), QByteArray("TPOSTFIXTEST"));
@@ -569,13 +569,16 @@ TEST(MappedName, appendToBufferWithPrefix)
     EXPECT_EQ(buffer, std::string("STUFF") + elemMapPrefix + std::string("TESTPOSTFIXTEST"));
 
     // Arrange
-    Data::MappedName mappedName2("TEST"); //If mappedName does not have a postfix and is a valid indexedName: prefix is not added
+    Data::MappedName mappedName2("TEST");// If mappedName does not have a postfix and is a valid
+                                         // indexedName: prefix is not added
 
     // Act
-    mappedName2.appendToBufferWithPrefix(buffer); 
+    mappedName2.appendToBufferWithPrefix(buffer);
 
     // Assert
-    EXPECT_EQ(buffer, std::string("STUFF") + elemMapPrefix + std::string("TESTPOSTFIXTEST") + /*missing prefix*/ std::string("TEST"));
+    EXPECT_EQ(buffer,
+              std::string("STUFF") + elemMapPrefix + std::string("TESTPOSTFIXTEST")
+                  + /*missing prefix*/ std::string("TEST"));
 }
 
 TEST(MappedName, toPrefixedString)
@@ -592,20 +595,23 @@ TEST(MappedName, toPrefixedString)
     EXPECT_EQ(buffer, std::string("STUFF") + elemMapPrefix + std::string("TESTPOSTFIXTEST"));
 
     // Arrange
-    Data::MappedName mappedName2("TEST"); //If mappedName does not have a postfix and is a valid indexedName: prefix is not added
+    Data::MappedName mappedName2("TEST");// If mappedName does not have a postfix and is a valid
+                                         // indexedName: prefix is not added
 
     // Act
-    buffer += mappedName2.toPrefixedString(); 
+    buffer += mappedName2.toPrefixedString();
 
     // Assert
-    EXPECT_EQ(buffer, std::string("STUFF") + elemMapPrefix + std::string("TESTPOSTFIXTEST") + /*missing prefix*/ std::string("TEST"));
+    EXPECT_EQ(buffer,
+              std::string("STUFF") + elemMapPrefix + std::string("TESTPOSTFIXTEST")
+                  + /*missing prefix*/ std::string("TEST"));
 }
 
 TEST(MappedName, toBytes)
 {
     // Arrange
     Data::MappedName mappedName(Data::MappedName("TEST"), "POSTFIXTEST");
-        
+
     // Act & Assert
     EXPECT_EQ(mappedName.toBytes(), QByteArray("TESTPOSTFIXTEST"));
 }
@@ -619,7 +625,7 @@ TEST(MappedName, compare)
     Data::MappedName mappedName4(Data::MappedName("THIS"), "ISDIFFERENT");
     Data::MappedName mappedName5(Data::MappedName("SH"), "ORTHER");
     Data::MappedName mappedName6(Data::MappedName("VERYVERYVERY"), "VERYMUCHLONGER");
-        
+
     // Act & Assert
     EXPECT_EQ(mappedName1.compare(mappedName1), 0);
     EXPECT_EQ(mappedName1.compare(mappedName2), 0);
@@ -640,7 +646,7 @@ TEST(MappedName, subscriptOperator)
 {
     // Arrange
     Data::MappedName mappedName(Data::MappedName("TEST"), "POSTFIXTEST");
-        
+
     // Act & Assert
     EXPECT_EQ(mappedName[0], 'T');
     EXPECT_EQ(mappedName[1], 'E');
@@ -658,10 +664,10 @@ TEST(MappedName, copy)
 {
     // Arrange
     Data::MappedName mappedName(Data::MappedName("TEST"), "POSTFIXTEST");
-    
+
     // Act
     Data::MappedName mappedName2 = mappedName.copy();
-        
+
     // Assert
     EXPECT_EQ(mappedName, mappedName2);
 }
@@ -673,7 +679,7 @@ TEST(MappedName, compact)
 
     // Act
     mappedName.compact();
-        
+
     // Assert
     EXPECT_EQ(mappedName.isRaw(), false);
     EXPECT_EQ(mappedName.empty(), false);
@@ -686,13 +692,13 @@ TEST(MappedName, boolOperator)
 {
     // Arrange
     Data::MappedName mappedName;
-        
+
     // Act & Assert
     EXPECT_EQ((bool)mappedName, false);
 
     // Arrange
     mappedName.append("TEST");
-        
+
     // Act & Assert
     EXPECT_EQ((bool)mappedName, true);
 }
@@ -704,7 +710,7 @@ TEST(MappedName, clear)
 
     // Act
     mappedName.clear();
-        
+
     // Assert
     EXPECT_EQ(mappedName.empty(), true);
 }
@@ -713,88 +719,88 @@ TEST(MappedName, find)
 {
     // Arrange
     Data::MappedName mappedName(Data::MappedName("TEST"), "POSTFIXTEST");
-        
+
     // Act & Assert
     EXPECT_EQ(mappedName.find(nullptr), -1);
     EXPECT_EQ(mappedName.find(""), 0);
     EXPECT_EQ(mappedName.find(std::string("")), 0);
     EXPECT_EQ(mappedName.find("TEST"), 0);
-    EXPECT_EQ(mappedName.find("STPO"), -1); //sentence must be fully contained in data or postfix
+    EXPECT_EQ(mappedName.find("STPO"), -1);// sentence must be fully contained in data or postfix
     EXPECT_EQ(mappedName.find("POST"), 4);
     EXPECT_EQ(mappedName.find("POST", 4), 4);
     EXPECT_EQ(mappedName.find("POST", 5), -1);
-    
-    EXPECT_EQ(mappedName.rfind("ST"), 13); 
-    EXPECT_EQ(mappedName.rfind("ST", 15), 13); 
-    EXPECT_EQ(mappedName.rfind("ST", 14), 13); 
-    EXPECT_EQ(mappedName.rfind("ST", 13), 13); 
-    EXPECT_EQ(mappedName.rfind("ST", 12), 6); 
-    EXPECT_EQ(mappedName.rfind("ST", 11), 6); 
-    EXPECT_EQ(mappedName.rfind("ST", 10), 6); 
+
+    EXPECT_EQ(mappedName.rfind("ST"), 13);
+    EXPECT_EQ(mappedName.rfind("ST", 15), 13);
+    EXPECT_EQ(mappedName.rfind("ST", 14), 13);
+    EXPECT_EQ(mappedName.rfind("ST", 13), 13);
+    EXPECT_EQ(mappedName.rfind("ST", 12), 6);
+    EXPECT_EQ(mappedName.rfind("ST", 11), 6);
+    EXPECT_EQ(mappedName.rfind("ST", 10), 6);
     EXPECT_EQ(mappedName.rfind("ST", 9), 6);
     EXPECT_EQ(mappedName.rfind("ST", 8), 6);
     EXPECT_EQ(mappedName.rfind("ST", 7), 6);
     EXPECT_EQ(mappedName.rfind("ST", 6), 6);
-    EXPECT_EQ(mappedName.rfind("ST", 5), 2); 
-    EXPECT_EQ(mappedName.rfind("ST", 4), 2); 
-    EXPECT_EQ(mappedName.rfind("ST", 3), 2); 
-    EXPECT_EQ(mappedName.rfind("ST", 2), 2); 
-    EXPECT_EQ(mappedName.rfind("ST", 1), -1); 
-    EXPECT_EQ(mappedName.rfind("ST", 0), -1); 
+    EXPECT_EQ(mappedName.rfind("ST", 5), 2);
+    EXPECT_EQ(mappedName.rfind("ST", 4), 2);
+    EXPECT_EQ(mappedName.rfind("ST", 3), 2);
+    EXPECT_EQ(mappedName.rfind("ST", 2), 2);
+    EXPECT_EQ(mappedName.rfind("ST", 1), -1);
+    EXPECT_EQ(mappedName.rfind("ST", 0), -1);
 }
 
 TEST(MappedName, rfind)
 {
     // Arrange
     Data::MappedName mappedName(Data::MappedName("TEST"), "POSTFIXTEST");
-        
+
     // Act & Assert
     EXPECT_EQ(mappedName.rfind(nullptr), -1);
     EXPECT_EQ(mappedName.rfind(""), mappedName.size());
     EXPECT_EQ(mappedName.rfind(std::string("")), mappedName.size());
     EXPECT_EQ(mappedName.rfind("TEST"), 11);
-    EXPECT_EQ(mappedName.rfind("STPO"), -1); //sentence must be fully contained in data or postfix
+    EXPECT_EQ(mappedName.rfind("STPO"), -1);// sentence must be fully contained in data or postfix
     EXPECT_EQ(mappedName.rfind("POST"), 4);
     EXPECT_EQ(mappedName.rfind("POST", 4), 4);
     EXPECT_EQ(mappedName.rfind("POST", 3), -1);
 
-    EXPECT_EQ(mappedName.rfind("ST"), 13); 
-    EXPECT_EQ(mappedName.rfind("ST", 0), -1); 
-    EXPECT_EQ(mappedName.rfind("ST", 1), -1); 
-    EXPECT_EQ(mappedName.rfind("ST", 2), 2); 
-    EXPECT_EQ(mappedName.rfind("ST", 3), 2); 
-    EXPECT_EQ(mappedName.rfind("ST", 4), 2); 
-    EXPECT_EQ(mappedName.rfind("ST", 5), 2); 
+    EXPECT_EQ(mappedName.rfind("ST"), 13);
+    EXPECT_EQ(mappedName.rfind("ST", 0), -1);
+    EXPECT_EQ(mappedName.rfind("ST", 1), -1);
+    EXPECT_EQ(mappedName.rfind("ST", 2), 2);
+    EXPECT_EQ(mappedName.rfind("ST", 3), 2);
+    EXPECT_EQ(mappedName.rfind("ST", 4), 2);
+    EXPECT_EQ(mappedName.rfind("ST", 5), 2);
     EXPECT_EQ(mappedName.rfind("ST", 6), 6);
     EXPECT_EQ(mappedName.rfind("ST", 7), 6);
     EXPECT_EQ(mappedName.rfind("ST", 8), 6);
     EXPECT_EQ(mappedName.rfind("ST", 9), 6);
-    EXPECT_EQ(mappedName.rfind("ST", 10), 6); 
-    EXPECT_EQ(mappedName.rfind("ST", 11), 6); 
-    EXPECT_EQ(mappedName.rfind("ST", 12), 6); 
-    EXPECT_EQ(mappedName.rfind("ST", 13), 13); 
-    EXPECT_EQ(mappedName.rfind("ST", 14), 13); 
-    EXPECT_EQ(mappedName.rfind("ST", 15), 13); 
+    EXPECT_EQ(mappedName.rfind("ST", 10), 6);
+    EXPECT_EQ(mappedName.rfind("ST", 11), 6);
+    EXPECT_EQ(mappedName.rfind("ST", 12), 6);
+    EXPECT_EQ(mappedName.rfind("ST", 13), 13);
+    EXPECT_EQ(mappedName.rfind("ST", 14), 13);
+    EXPECT_EQ(mappedName.rfind("ST", 15), 13);
 }
 
 TEST(MappedName, endswith)
 {
     // Arrange
     Data::MappedName mappedName("TEST");
-        
+
     // Act & Assert
     EXPECT_EQ(mappedName.endsWith(nullptr), false);
     EXPECT_EQ(mappedName.endsWith("TEST"), true);
     EXPECT_EQ(mappedName.endsWith(std::string("TEST")), true);
-    EXPECT_EQ(mappedName.endsWith("WASD"), false); 
+    EXPECT_EQ(mappedName.endsWith("WASD"), false);
 
     // Arrange
     mappedName.append("POSTFIX");
-   
+
     // Act & Assert
     EXPECT_EQ(mappedName.endsWith(nullptr), false);
     EXPECT_EQ(mappedName.endsWith("TEST"), false);
-    EXPECT_EQ(mappedName.endsWith("FIX"), true); 
+    EXPECT_EQ(mappedName.endsWith("FIX"), true);
 }
 
 TEST(MappedName, startsWith)
@@ -807,8 +813,8 @@ TEST(MappedName, startsWith)
     EXPECT_EQ(mappedName.startsWith(QByteArray()), true);
     EXPECT_EQ(mappedName.startsWith(""), true);
     EXPECT_EQ(mappedName.startsWith(std::string("")), true);
-    EXPECT_EQ(mappedName.startsWith("WASD"), false); 
-        
+    EXPECT_EQ(mappedName.startsWith("WASD"), false);
+
     // Arrange
     mappedName.append("TEST");
 
@@ -817,14 +823,14 @@ TEST(MappedName, startsWith)
     EXPECT_EQ(mappedName.startsWith(QByteArray()), true);
     EXPECT_EQ(mappedName.startsWith("TEST"), true);
     EXPECT_EQ(mappedName.startsWith(std::string("TEST")), true);
-    EXPECT_EQ(mappedName.startsWith("WASD"), false); 
+    EXPECT_EQ(mappedName.startsWith("WASD"), false);
 }
 
 TEST(MappedName, hash)
 {
     // Arrange
     Data::MappedName mappedName(Data::MappedName("TEST"), "POSTFIXTEST");
-        
+
     // Act & Assert
     EXPECT_EQ(mappedName.hash(), qHash(QByteArray("TEST"), qHash(QByteArray("POSTFIXTEST"))));
 }

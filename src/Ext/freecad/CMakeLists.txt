@@ -15,6 +15,7 @@ else()
 endif()
 
 configure_file(__init__.py.template ${NAMESPACE_INIT})
+configure_file(project_utility.py ${NAMESPACE_DIR}/project_utility.py)
 configure_file(UiTools.py ${NAMESPACE_DIR}/UiTools.py)
 
 if (INSTALL_TO_SITEPACKAGES)
@@ -26,6 +27,7 @@ endif()
 INSTALL(
     FILES
         ${NAMESPACE_INIT}
+        project_utility.py
         UiTools.py
     DESTINATION
         ${SITE_PACKAGE_DIR}

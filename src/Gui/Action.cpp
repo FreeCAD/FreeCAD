@@ -48,7 +48,7 @@
 #include "BitmapFactory.h"
 #include "Command.h"
 #include "DlgUndoRedo.h"
-#include "DlgWorkbenchesImp.h"
+#include "DlgSettingsWorkbenchesImp.h"
 #include "Document.h"
 #include "EditorView.h"
 #include "FileDialog.h"
@@ -800,36 +800,12 @@ void WorkbenchGroup::setWorkbenchData(int index, const QString& wb)
 
 void WorkbenchGroup::refreshWorkbenchList()
 {
-    QStringList items = Application::Instance->workbenches();
-    QStringList enabled_wbs_list = DlgWorkbenchesImp::load_enabled_workbenches();
-    QStringList disabled_wbs_list = DlgWorkbenchesImp::load_disabled_workbenches();
-    QStringList enable_wbs;
+    QStringList enabled_wbs_list = DlgSettingsWorkbenchesImp::getEnabledWorkbenches();
 
-    // Go through the list of enabled workbenches and verify that they really exist because
-    // it might be possible that a workbench has been removed after setting up the list of
-    // enabled workbenches.
-    for (const auto& it : enabled_wbs_list) {
-        int index = items.indexOf(it);
-        if (index >= 0) {
-            enable_wbs << it;
-            items.removeAt(index);
-        }
-    }
-
-    // Filter out the actively disabled workbenches
-    for (const auto& it : disabled_wbs_list) {
-        int index = items.indexOf(it);
-        if (index >= 0) {
-            items.removeAt(index);
-        }
-    }
-
-    // Now add the remaining workbenches of 'items'. They have been added to the application
-    // after setting up the list of enabled workbenches.
-    enable_wbs.append(items);
+    // Resize the action group.
     QList<QAction*> workbenches = groupAction()->actions();
     int numActions = workbenches.size();
-    int extend = enable_wbs.size() - numActions;
+    int extend = enabled_wbs_list.size() - numActions;
     if (extend > 0) {
         for (int i=0; i<extend; i++) {
             QAction* action = groupAction()->addAction(QLatin1String(""));
@@ -840,7 +816,7 @@ void WorkbenchGroup::refreshWorkbenchList()
 
     // Show all enabled wb
     int index = 0;
-    for (const auto& it : enable_wbs) {
+    for (const auto& it : enabled_wbs_list) {
         setWorkbenchData(index++, it);
     }
 }

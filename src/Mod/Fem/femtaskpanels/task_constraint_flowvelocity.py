@@ -1,5 +1,6 @@
 # ***************************************************************************
 # *   Copyright (c) 2017 Markus Hovorka <m.hovorka@live.de>                 *
+# *   Copyright (c) 2023 Uwe Stöhr <uwestoehr@lyx.org>                      *
 # *                                                                         *
 # *   This file is part of the FreeCAD CAx development system.              *
 # *                                                                         *
@@ -22,7 +23,7 @@
 # ***************************************************************************
 
 __title__ = "FreeCAD FEM constraint flow velocity task panel for the document object"
-__author__ = "Markus Hovorka, Bernd Hahnebach"
+__author__ = "Markus Hovorka, Bernd Hahnebach, Uwe Stöhr"
 __url__ = "https://www.freecadweb.org"
 
 ## @package task_constraint_flowvelocity
@@ -47,7 +48,7 @@ class _TaskPanel(object):
         self._paramWidget = FreeCADGui.PySideUic.loadUi(
             FreeCAD.getHomePath() + "Mod/Fem/Resources/ui/FlowVelocity.ui"
         )
-        
+
         # geometry selection widget
         # start with Solid in list!
         self._selectionWidget = selection_widgets.GeometryElementsSelection(

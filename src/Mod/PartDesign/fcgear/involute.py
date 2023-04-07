@@ -229,7 +229,7 @@ def _create_involute_profile(
 
     # ****** calculate angles (all in radians)
     angular_pitch = 2 * pi / number_of_teeth # angle subtended by complete tooth/space pair
-    base_to_ref = genInvolutePolar(Rb, Rref) # angle between base and refernce circle
+    base_to_ref = genInvolutePolar(Rb, Rref) # angle between base and reference circle
     ref_to_stop = genInvolutePolar(Rb, Rfo) - base_to_ref # angle between ref and involute end
     if has_non_involute_flank: # involute starts at base circle
         start_to_ref = base_to_ref
@@ -261,7 +261,7 @@ def _create_involute_profile(
     tooth_thickness_half_angle = angular_pitch / 4 + enlargement_by_shift
     psi = tooth_thickness_half_angle # for the formulae below, a symbol is more readable
 
-    # rotate all points to make the tooth symetric to the X axis
+    # rotate all points to make the tooth symmetric to the X axis
     inv = [rotate(pt, -base_to_ref - psi) for pt in inv]
 
     # create the back profile of tooth (mirror image on X axis)

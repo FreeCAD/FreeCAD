@@ -301,11 +301,6 @@ void TaskRevolutionParameters::onReversed(bool on)
     recomputeFeature();
 }
 
-double TaskRevolutionParameters::getAngle() const
-{
-    return ui->revolveAngle->value().getValue();
-}
-
 void TaskRevolutionParameters::getReferenceAxis(App::DocumentObject*& obj, std::vector<std::string>& sub) const
 {
     if (axesInList.empty())

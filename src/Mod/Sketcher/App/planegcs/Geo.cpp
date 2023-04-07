@@ -24,16 +24,19 @@
 #if DEBUG_DERIVS
 #endif
 
+#include <cassert>
+
 #include "Geo.h"
 
-#include <cassert>
 
 namespace GCS{
 
 DeriVector2::DeriVector2(const Point &p, const double *derivparam)
 {
-    x=*p.x; y=*p.y;
-    dx=0.0; dy=0.0;
+    x = *p.x;
+    y = *p.y;
+    dx = 0.0;
+    dy = 0.0;
     if (derivparam == p.x)
         dx = 1.0;
     if (derivparam == p.y)
@@ -43,31 +46,33 @@ DeriVector2::DeriVector2(const Point &p, const double *derivparam)
 double DeriVector2::length(double &dlength) const
 {
     double l = length();
-    if(l==0){
+    if (l == 0) {
         dlength = 1.0;
         return l;
-    } else {
-        dlength = (x*dx + y*dy)/l;
+    }
+    else {
+        dlength = (x * dx + y * dy) / l;
         return l;
     }
 }
 
 DeriVector2 DeriVector2::getNormalized() const
 {
-    double l=length();
-    if(l==0.0) {
+    double l = length();
+    if (l == 0.0) {
         return DeriVector2(0, 0, dx, dy);
-    } else {
+    }
+    else {
         DeriVector2 rtn;
-        rtn.x = x/l;
-        rtn.y = y/l;
-        //first, simply scale the derivative accordingly.
-        rtn.dx = dx/l;
-        rtn.dy = dy/l;
-        //next, remove the collinear part of dx,dy (make a projection onto a normal)
-        double dsc = rtn.dx*rtn.x + rtn.dy*rtn.y;//scalar product d*v
-        rtn.dx -= dsc*rtn.x;//subtract the projection
-        rtn.dy -= dsc*rtn.y;
+        rtn.x = x / l;
+        rtn.y = y / l;
+        // first, simply scale the derivative accordingly.
+        rtn.dx = dx / l;
+        rtn.dy = dy / l;
+        // next, remove the collinear part of dx,dy (make a projection onto a normal)
+        double dsc = rtn.dx * rtn.x + rtn.dy * rtn.y;// scalar product d*v
+        rtn.dx -= dsc * rtn.x;                       // subtract the projection
+        rtn.dy -= dsc * rtn.y;
         return rtn;
     }
 }
@@ -75,17 +80,15 @@ DeriVector2 DeriVector2::getNormalized() const
 double DeriVector2::scalarProd(const DeriVector2 &v2, double *dprd) const
 {
     if (dprd) {
-        *dprd = dx*v2.x + x*v2.dx + dy*v2.y + y*v2.dy;
+        *dprd = dx * v2.x + x * v2.dx + dy * v2.y + y * v2.dy;
     };
-    return x*v2.x + y*v2.y;
+    return x * v2.x + y * v2.y;
 }
 
 DeriVector2 DeriVector2::divD(double val, double dval) const
 {
-    return DeriVector2(x/val,y/val,
-                       dx/val - x*dval/(val*val),
-                       dy/val - y*dval/(val*val)
-                       );
+    return DeriVector2(
+        x / val, y / val, dx / val - x * dval / (val * val), dy / val - y * dval / (val * val));
 }
 
 DeriVector2 Curve::Value(double /*u*/, double /*du*/, const double* /*derivparam*/) const
@@ -149,17 +152,18 @@ DeriVector2 Circle::CalculateNormal(const Point &p, const double* derivparam) co
 
 DeriVector2 Circle::Value(double u, double du, const double* derivparam) const
 {
-    //(x,y) = center + cos(u)*(r,0) + sin(u)*(0,r)
-
-    DeriVector2 cv (center, derivparam);
+    DeriVector2 cv(center, derivparam);
     double r, dr;
-    r = *(this->rad);  dr = (derivparam == this->rad) ? 1.0 : 0.0;
-    DeriVector2 ex (r,0.0,dr,0.0);
+    r = *(this->rad);
+    dr = (derivparam == this->rad) ? 1.0 : 0.0;
+    DeriVector2 ex(r, 0.0, dr, 0.0);
     DeriVector2 ey = ex.rotate90ccw();
     double si, dsi, co, dco;
-    si = std::sin(u); dsi = du*std::cos(u);
-    co = std::cos(u); dco = du*(-std::sin(u));
-    return cv.sum(ex.multD(co,dco).sum(ey.multD(si,dsi)));
+    si = std::sin(u);
+    dsi = du * std::cos(u);
+    co = std::cos(u);
+    dco = du * (-std::sin(u));
+    return cv.sum(ex.multD(co, dco).sum(ey.multD(si, dsi)));
 }
 
 int Circle::PushOwnParams(VEC_pD &pvec)
@@ -214,13 +218,18 @@ Arc* Arc::Copy()
 
 //--------------ellipse
 
-//this function is exposed to allow reusing pre-filled derivectors in constraints code
-double Ellipse::getRadMaj(const DeriVector2 &center, const DeriVector2 &f1, double b, double db, double &ret_dRadMaj) const
+// this function is exposed to allow reusing pre-filled derivectors in constraints code
+double Ellipse::getRadMaj(const DeriVector2& center, const DeriVector2& f1, double b, double db,
+                          double& ret_dRadMaj) const
 {
     double cf, dcf;
     cf = f1.subtr(center).length(dcf);
-    DeriVector2 hack (b, cf,
-                      db, dcf);//hack = a nonsense vector to calculate major radius with derivatives, useful just because the calculation formula is the same as vector length formula
+    DeriVector2 hack(
+        b,
+        cf,
+        db,
+        dcf);// hack = a nonsense vector to calculate major radius with derivatives, useful just
+             // because the calculation formula is the same as vector length formula
     return hack.length(ret_dRadMaj);
 }
 
@@ -370,14 +379,15 @@ ArcOfEllipse* ArcOfEllipse::Copy()
 
 //---------------hyperbola
 
-//this function is exposed to allow reusing pre-filled derivectors in constraints code
-double Hyperbola::getRadMaj(const DeriVector2 &center, const DeriVector2 &f1, double b, double db, double &ret_dRadMaj) const
+// this function is exposed to allow reusing pre-filled derivectors in constraints code
+double Hyperbola::getRadMaj(const DeriVector2& center, const DeriVector2& f1, double b, double db,
+                            double& ret_dRadMaj) const
 {
     double cf, dcf;
     cf = f1.subtr(center).length(dcf);
     double a, da;
-    a = sqrt(cf*cf - b*b);
-    da = (dcf*cf - db*b)/a;
+    a = sqrt(cf * cf - b * b);
+    da = (dcf * cf - db * b) / a;
     ret_dRadMaj = da;
     return a;
 }
@@ -397,21 +407,22 @@ double Hyperbola::getRadMaj() const
     return getRadMaj(nullptr,dradmaj);
 }
 
-DeriVector2 Hyperbola::CalculateNormal(const Point &p, const double* derivparam) const
+DeriVector2 Hyperbola::CalculateNormal(const Point& p, const double* derivparam) const
 {
-    //fill some vectors in
-    DeriVector2 cv (center, derivparam);
-    DeriVector2 f1v (focus1, derivparam);
-    DeriVector2 pv (p, derivparam);
+    // fill some vectors in
+    DeriVector2 cv(center, derivparam);
+    DeriVector2 f1v(focus1, derivparam);
+    DeriVector2 pv(p, derivparam);
 
-    //calculation.
-    //focus2:
-    DeriVector2 f2v = cv.linCombi(2.0, f1v, -1.0); // 2*cv - f1v
+    // calculation.
+    // focus2:
+    DeriVector2 f2v = cv.linCombi(2.0, f1v, -1.0);// 2*cv - f1v
 
-    //pf1, pf2 = vectors from p to focus1,focus2
-    DeriVector2 pf1 = f1v.subtr(pv).mult(-1.0);  // <--- differs from ellipse normal calculation code by inverting this vector
+    // pf1, pf2 = vectors from p to focus1,focus2
+    DeriVector2 pf1 = f1v.subtr(pv).mult(
+        -1.0);// <--- differs from ellipse normal calculation code by inverting this vector
     DeriVector2 pf2 = f2v.subtr(pv);
-    //return sum of normalized pf2, pf2
+    // return sum of normalized pf2, pf2
     DeriVector2 ret = pf1.getNormalized().sum(pf2.getNormalized());
 
     return ret;
@@ -506,17 +517,17 @@ ArcOfHyperbola* ArcOfHyperbola::Copy()
 
 //---------------parabola
 
-DeriVector2 Parabola::CalculateNormal(const Point &p, const double* derivparam) const
+DeriVector2 Parabola::CalculateNormal(const Point& p, const double* derivparam) const
 {
-    //fill some vectors in
-    DeriVector2 cv (vertex, derivparam);
-    DeriVector2 f1v (focus1, derivparam);
-    DeriVector2 pv (p, derivparam);
+    // fill some vectors in
+    DeriVector2 cv(vertex, derivparam);
+    DeriVector2 f1v(focus1, derivparam);
+    DeriVector2 pv(p, derivparam);
 
-    // the normal is the vector from the focus to the intersection of ano thru the point p and direction
-    // of the symmetry axis of the parabola with the directrix.
-    // As both point to directrix and point to focus are of equal magnitude, we can work with unitary vectors
-    // to calculate the normal, substraction of those vectors.
+    // the normal is the vector from the focus to the intersection of ano thru the point p and
+    // direction of the symmetry axis of the parabola with the directrix. As both point to directrix
+    // and point to focus are of equal magnitude, we can work with unitary vectors to calculate the
+    // normal, substraction of those vectors.
 
     DeriVector2 ret = cv.subtr(f1v).getNormalized().subtr(f1v.subtr(pv).getNormalized());
 
@@ -613,9 +624,9 @@ DeriVector2 BSpline::CalculateNormal(const Point &p, const double* derivparam) c
     // place holder
     DeriVector2 ret;
 
-    // even if this method is call CalculateNormal, the returned vector is not the normal strictu sensus
-    // but a normal vector, where the vector should point to the left when one walks along the curve from
-    // start to end.
+    // even if this method is call CalculateNormal, the returned vector is not the normal strictu
+    // sensus but a normal vector, where the vector should point to the left when one walks along
+    // the curve from start to end.
     //
     // https://forum.freecadweb.org/viewtopic.php?f=10&t=26312#p209486
 
@@ -736,10 +747,9 @@ double BSpline::getLinCombFactor(double x, size_t k, size_t i, unsigned int p)
 
     for (size_t r = 1; r < p + 1; ++r) {
         for (size_t j = p; j > r - 1; --j) {
-            double alpha =
-                (x - flattenedknots[j + k - p]) /
-                (flattenedknots[j + 1 + k - r] - flattenedknots[j + k - p]);
-            d[j] = (1.0 - alpha) * d[j-1] + alpha * d[j];
+            double alpha = (x - flattenedknots[j + k - p])
+                / (flattenedknots[j + 1 + k - r] - flattenedknots[j + k - p]);
+            d[j] = (1.0 - alpha) * d[j - 1] + alpha * d[j];
         }
     }
 
@@ -751,9 +761,8 @@ double BSpline::splineValue(double x, size_t k, unsigned int p, VEC_D& d, const 
     for (size_t r = 1; r < p + 1; ++r) {
         for (size_t j = p; j > r - 1; --j) {
             double alpha =
-                (x - flatknots[j + k - p]) /
-                (flatknots[j + 1 + k - r] - flatknots[j + k - p]);
-            d[j] = (1.0 - alpha) * d[j-1] + alpha * d[j];
+                (x - flatknots[j + k - p]) / (flatknots[j + 1 + k - r] - flatknots[j + k - p]);
+            d[j] = (1.0 - alpha) * d[j - 1] + alpha * d[j];
         }
     }
 

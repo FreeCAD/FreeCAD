@@ -467,7 +467,7 @@ void View3DInventorViewer::init()
     setViewing(false);
 
     setBackgroundColor(QColor(25, 25, 25));
-    setGradientBackground(true);
+    setGradientBackground(Background::LinearGradient);
 
     // set some callback functions for user interaction
     addStartCallback(interactionStartCB);
@@ -1070,17 +1070,40 @@ void View3DInventorViewer::handleEventCB(void* ud, SoEventCallback* n)
     SoGLWidgetElement::set(action->getState(), qobject_cast<QtGLWidget*>(that->getGLWidget()));
 }
 
-void View3DInventorViewer::setGradientBackground(bool on)
+void View3DInventorViewer::setGradientBackground(View3DInventorViewer::Background grad)
 {
-    if (on && backgroundroot->findChild(pcBackGround) == -1)
-        backgroundroot->addChild(pcBackGround);
-    else if (!on && backgroundroot->findChild(pcBackGround) != -1)
-        backgroundroot->removeChild(pcBackGround);
+    switch (grad) {
+    case Background::NoGradient:
+        if (backgroundroot->findChild(pcBackGround) != -1) {
+            backgroundroot->removeChild(pcBackGround);
+        }
+        break;
+    case Background::LinearGradient:
+        pcBackGround->setGradient(SoFCBackgroundGradient::LINEAR);
+        if (backgroundroot->findChild(pcBackGround) == -1) {
+            backgroundroot->addChild(pcBackGround);
+        }
+        break;
+    case Background::RadialGradient:
+        pcBackGround->setGradient(SoFCBackgroundGradient::RADIAL);
+        if (backgroundroot->findChild(pcBackGround) == -1) {
+            backgroundroot->addChild(pcBackGround);
+        }
+        break;
+    }
 }
 
-bool View3DInventorViewer::hasGradientBackground() const
+View3DInventorViewer::Background View3DInventorViewer::getGradientBackground() const
 {
-    return (backgroundroot->findChild(pcBackGround) != -1);
+    if (backgroundroot->findChild(pcBackGround) == -1) {
+        return Background::NoGradient;
+    }
+
+    if (pcBackGround->getGradient() == SoFCBackgroundGradient::LINEAR) {
+        return Background::LinearGradient;
+    }
+
+    return Background::RadialGradient;
 }
 
 void View3DInventorViewer::setGradientBackgroundColor(const SbColor& fromColor,
@@ -1878,7 +1901,7 @@ void View3DInventorViewer::imageFromFramebuffer(int width, int height, int sampl
     QtGLFramebufferObject fbo(width, height, fboFormat);
 
     const QColor col = backgroundColor();
-    bool on = hasGradientBackground();
+    auto grad = getGradientBackground();
 
     int alpha = 255;
     QColor bgopaque = bgcolor;
@@ -1888,12 +1911,12 @@ void View3DInventorViewer::imageFromFramebuffer(int width, int height, int sampl
         if (alpha < 255)
             bgopaque.setRgb(255,255,255);
         setBackgroundColor(bgopaque);
-        setGradientBackground(false);
+        setGradientBackground(Background::NoGradient);
     }
 
     renderToFramebuffer(&fbo);
     setBackgroundColor(col);
-    setGradientBackground(on);
+    setGradientBackground(grad);
     img = fbo.toImage();
 
     // if background color isn't opaque manipulate the image

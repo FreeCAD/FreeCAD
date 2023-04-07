@@ -55,8 +55,8 @@ protected:
     QString createProjectFile(const QString&);
     void cleanup(QDir&, const QList<QFileInfo>&, const QString&);
 
-protected Q_SLOTS:
-    void on_buttonCleanup_clicked();
+protected:
+    void onButtonCleanupClicked();
     void onDeleteSection();
 
 private:

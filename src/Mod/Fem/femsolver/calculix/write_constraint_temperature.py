@@ -25,6 +25,8 @@ __title__ = "FreeCAD FEM calculix constraint temperature"
 __author__ = "Bernd Hahnebach"
 __url__ = "https://www.freecadweb.org"
 
+import FreeCAD
+
 
 def get_analysis_types():
     return ["thermomech"]
@@ -68,12 +70,19 @@ def write_constraint(f, femobj, temp_obj, ccxwriter):
     NumberOfNodes = len(femobj["Nodes"])
     if temp_obj.ConstraintType == "Temperature":
         f.write("*BOUNDARY\n")
-        f.write("{},11,11,{:.13G}\n".format(temp_obj.Name, temp_obj.Temperature))
+        f.write(
+            "{},11,11,{}\n".format(
+                temp_obj.Name, FreeCAD.Units.Quantity(temp_obj.Temperature.getValueAs("K"))
+            )
+        )
         f.write("\n")
     elif temp_obj.ConstraintType == "CFlux":
         f.write("*CFLUX\n")
-        f.write("{},11,{:.13G}\n".format(
-            temp_obj.Name,
-            temp_obj.CFlux * 0.001 / NumberOfNodes
-        ))
+        # CFLUX has to be specified in mW
+        f.write(
+            "{},11,{}\n".format(
+                temp_obj.Name,
+                FreeCAD.Units.Quantity(temp_obj.CFlux.getValueAs("mW")) / NumberOfNodes
+            )
+        )
         f.write("\n")

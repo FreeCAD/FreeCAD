@@ -212,8 +212,6 @@ std::vector<TopoDS_Edge> DrawProjectSplit::getEdges(TechDraw::GeometryObject* ge
 //note param gets modified here
 bool DrawProjectSplit::isOnEdge(TopoDS_Edge e, TopoDS_Vertex v, double& param, bool allowEnds)
 {
-    bool result = false;
-    bool outOfBox = false;
     param = -2;
 
     //eliminate obvious cases
@@ -223,34 +221,33 @@ bool DrawProjectSplit::isOnEdge(TopoDS_Edge e, TopoDS_Vertex v, double& param, b
     if (!sBox.IsVoid()) {
         gp_Pnt pt = BRep_Tool::Pnt(v);
         if (sBox.IsOut(pt)) {
-            outOfBox = true;
+            return false;  // Out of box
         }
     }
-    if (!outOfBox) {
-            double dist = DrawUtil::simpleMinDist(v, e);
-            if (dist < 0.0) {
-                Base::Console().Error("DPS::isOnEdge - simpleMinDist failed: %.3f\n", dist);
-                result = false;
-            } else if (dist < Precision::Confusion()) {
-                const gp_Pnt pt = BRep_Tool::Pnt(v);                         //have to duplicate method 3 to get param
-                BRepAdaptor_Curve adapt(e);
-                const Handle(Geom_Curve) c = adapt.Curve().Curve();
-                double maxDist = 0.000001;     //magic number.  less than this gives false positives.
-                //bool found =
-                (void) GeomLib_Tool::Parameter(c, pt, maxDist, param);  //already know point it on curve
-                result = true;
+
+    double dist = DrawUtil::simpleMinDist(v, e);
+    if (dist < 0.0) {
+        Base::Console().Error("DPS::isOnEdge - simpleMinDist failed: %.3f\n", dist);
+        return false;
+    } else if (dist < Precision::Confusion()) {
+        const gp_Pnt pt = BRep_Tool::Pnt(v);                         //have to duplicate method 3 to get param
+        BRepAdaptor_Curve adapt(e);
+        const Handle(Geom_Curve) c = adapt.Curve().Curve();
+        double maxDist = 0.000001;     //magic number.  less than this gives false positives.
+        //bool found =
+        (void) GeomLib_Tool::Parameter(c, pt, maxDist, param);  //already know point it on curve
+
+        TopoDS_Vertex v1 = TopExp::FirstVertex(e);
+        TopoDS_Vertex v2 = TopExp::LastVertex(e);
+        if (DrawUtil::isSamePoint(v, v1) || DrawUtil::isSamePoint(v, v2)) {
+            if (!allowEnds) {
+                return false;
             }
-            if (result) {
-                TopoDS_Vertex v1 = TopExp::FirstVertex(e);
-                TopoDS_Vertex v2 = TopExp::LastVertex(e);
-                if (DrawUtil::isSamePoint(v, v1) || DrawUtil::isSamePoint(v, v2)) {
-                    if (!allowEnds) {
-                        result = false;
-                    }
-                }
-            }
-    } //!outofbox
-    return result;
+        }
+        return true;
+    }
+
+    return false;
 }
 
 
@@ -266,7 +263,7 @@ std::vector<TopoDS_Edge> DrawProjectSplit::splitEdges(std::vector<TopoDS_Edge> e
     int endSplit = splits.size();
     int imax = std::numeric_limits<int>::max();
 
-    while ((iEdge < endEdge) )  {
+    while (iEdge < endEdge)  {
         if (iSplit < endSplit) {
             ii = splits[iSplit].i;
         } else {
@@ -354,28 +351,26 @@ std::vector<splitPoint> DrawProjectSplit::sortSplits(std::vector<splitPoint>& s,
 //return true if p1 "is greater than" p2
 /*static*/bool DrawProjectSplit::splitCompare(const splitPoint& p1, const splitPoint& p2)
 {
-    bool result = false;
     if (p1.i > p2.i) {
-        result = true;
+        return true;
     } else if (p1.i < p2.i) {
-        result = false;
+        return false;
     } else if (p1.param > p2.param) {
-        result = true;
+        return true;
     } else if (p1.param < p2.param) {
-        result = false;
+        return false;
     }
-    return result;
+    return false;
 }
 
 //return true if p1 "is equal to" p2
 /*static*/bool DrawProjectSplit::splitEqual(const splitPoint& p1, const splitPoint& p2)
 {
-    bool result = false;
-    if ((p1.i == p2.i) &&
-        (fabs(p1.param - p2.param) < Precision::Confusion())) {
-        result = true;
+    if (p1.i == p2.i &&
+        fabs(p1.param - p2.param) < Precision::Confusion()) {
+        return true;
     }
-    return result;
+    return false;
 }
 
 std::vector<TopoDS_Edge> DrawProjectSplit::removeDuplicateEdges(std::vector<TopoDS_Edge>& inEdges)
@@ -441,46 +436,45 @@ std::string edgeSortItem::dump()
     std::stringstream builder;
     builder << "edgeSortItem - s: " << DrawUtil::formatVector(start)  << " e: " << DrawUtil::formatVector(end) <<
                               " sa: " << startAngle * 180.0/M_PI << " ea: " << endAngle* 180.0/M_PI << " idx: " << idx;
-    result = builder.str();
-    return result;
+    return builder.str();
 }
 
 
 //true if "e1 < e2" - for sorting
 /*static*/bool edgeSortItem::edgeLess(const edgeSortItem& e1, const edgeSortItem& e2)
 {
-    bool result = false;
     if (!((e1.start - e2.start).Length() < Precision::Confusion())) {  //e1 != e2
-        if ( DrawUtil::vectorLess(e1.start, e2.start)) {
-            result = true;
+        if (DrawUtil::vectorLess(e1.start, e2.start)) {
+            return true;
         }
     } else if (!DrawUtil::fpCompare(e1.startAngle, e2.startAngle)) {
         if (e1.startAngle < e2.startAngle) {
-            result = true;
+            return true;
         }
     } else if (!DrawUtil::fpCompare(e1.endAngle, e2.endAngle)) {
         if (e1.endAngle < e2.endAngle) {
-            result = true;
+            return true;
         }
     } else if (e1.idx < e2.idx) {
-        result = true;
+        return true;
     }
-    return result;
+    return false;
 }
 
 //true if "e1 = e2" - for sorting/unique test
 /*static*/bool edgeSortItem::edgeEqual(const edgeSortItem& e1, const edgeSortItem& e2)
 {
-    bool result = false;
     double startDif = (e1.start - e2.start).Length();
     double endDif   = (e1.end   - e2.end).Length();
-    if ( (startDif < Precision::Confusion()) &&
-         (endDif   < Precision::Confusion()) &&
-         (DrawUtil::fpCompare(e1.startAngle, e2.startAngle)) &&
-         (DrawUtil::fpCompare(e1.endAngle, e2.endAngle)) ) {
-        result = true;
+    if (
+        startDif < Precision::Confusion() &&
+        endDif   < Precision::Confusion() &&
+        DrawUtil::fpCompare(e1.startAngle, e2.startAngle) &&
+        DrawUtil::fpCompare(e1.endAngle, e2.endAngle)
+    ) {
+        return true;
     }
-    return result;
+    return false;
 }
 
 //*****************************************
@@ -542,10 +536,7 @@ std::vector<TopoDS_Edge> DrawProjectSplit::scrubEdges(std::vector<TopoDS_Edge>& 
     //find all the unique vertices and count how many edges terminate at each, then
     //remove edges that can't be part of a closed region since they are not connected at both ends
     vertexMap verts = DrawProjectSplit::getUniqueVertexes(openEdges);
-    std::vector<TopoDS_Edge> cleanEdges;
-    cleanEdges = DrawProjectSplit::pruneUnconnected(verts, openEdges);
-
-    return cleanEdges;
+    return DrawProjectSplit::pruneUnconnected(verts, openEdges);
 }
 
 //extract a map of unique vertexes based on start and end point of each edge in
@@ -616,7 +607,6 @@ std::vector<TopoDS_Edge> DrawProjectSplit::pruneUnconnected(vertexMap verts,
 
 bool DrawProjectSplit::sameEndPoints(TopoDS_Edge& e1, TopoDS_Edge& e2)
 {
-    bool result = false;
     TopoDS_Vertex first1 = TopExp::FirstVertex(e1);
     TopoDS_Vertex last1 = TopExp::LastVertex(e1);
     TopoDS_Vertex first2 = TopExp::FirstVertex(e2);
@@ -624,13 +614,14 @@ bool DrawProjectSplit::sameEndPoints(TopoDS_Edge& e1, TopoDS_Edge& e2)
 
     if (DrawUtil::vertexEqual(first1, first2) &&
         DrawUtil::vertexEqual(last1, last2) ) {
-       result = true;
-    } else if (DrawUtil::vertexEqual(first1, last2) &&
-               DrawUtil::vertexEqual(last1, first2) ) {
-       result = true;
+        return true;
+    }
+    else if (DrawUtil::vertexEqual(first1, last2) &&
+             DrawUtil::vertexEqual(last1, first2) ) {
+        return true;
     }
 
-    return result;
+    return false;
 }
 
 #define e0ISSUBSET 0
