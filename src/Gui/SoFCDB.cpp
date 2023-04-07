@@ -69,6 +69,7 @@
 #include "SoMouseWheelEvent.h"
 #include "SoNavigationDragger.h"
 #include "SoTextLabel.h"
+#include "SoDatumLabel.h"
 #include "Inventor/MarkerBitmaps.h"
 #include "Inventor/SmSwitchboard.h"
 #include "Inventor/SoAutoZoomTranslation.h"
@@ -124,6 +125,7 @@ void Gui::SoFCDB::init()
     SoVRMLAction                    ::initClass();
     SoSkipBoundingGroup             ::initClass();
     SoTextLabel                     ::initClass();
+    SoDatumLabel                    ::initClass();
     SoColorBarLabel                 ::initClass();
     SoStringLabel                   ::initClass();
     SoFrameLabel                    ::initClass();

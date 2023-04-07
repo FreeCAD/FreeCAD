@@ -20,8 +20,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef SKETCHERGUI_SODATUMLABEL_H
-#define SKETCHERGUI_SODATUMLABEL_H
+#ifndef GUI_SODATUMLABEL_H
+#define GUI_SODATUMLABEL_H
 
 #include <Inventor/SbBox3f.h>
 #include <Inventor/fields/SoSFColor.h>
@@ -35,12 +35,12 @@
 #include <Inventor/fields/SoMFVec3f.h>
 #include <Inventor/nodes/SoShape.h>
 
-#include <Mod/Sketcher/SketcherGlobal.h>
+#include <FCGlobal.h>
 
 
-namespace SketcherGui {
+namespace Gui {
 
-class SketcherGuiExport SoDatumLabel : public SoShape {
+class GuiExport SoDatumLabel : public SoShape {
     using inherited = SoShape;
 
     SO_NODE_HEADER(SoDatumLabel);
@@ -99,4 +99,4 @@ private:
 }
 
 
-#endif // SKETCHERGUI_SODATUMLABEL_H
+#endif // GUI_SODATUMLABEL_H

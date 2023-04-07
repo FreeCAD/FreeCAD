@@ -55,7 +55,7 @@
 
 #define ZCONSTR 0.006f
 
-using namespace SketcherGui;
+using namespace Gui;
 
 // ------------------------------------------------------
 
