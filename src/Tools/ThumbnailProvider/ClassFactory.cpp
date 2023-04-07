@@ -44,7 +44,7 @@ CClassFactory::~CClassFactory()
 STDMETHODIMP CClassFactory::QueryInterface(REFIID riid,
                                            void** ppvObject)
 {
-    static const QITAB qit[] = 
+    static const QITAB qit[] =
     {
         QITABENT(CClassFactory, IClassFactory),
         {0},
