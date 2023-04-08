@@ -2429,7 +2429,7 @@ QPoint View3DInventorViewer::toQPoint(const SbVec2s& pnt) const
     const SbViewportRegion& vp = this->getSoRenderManager()->getViewportRegion();
     const SbVec2s& vps = vp.getViewportSizePixels();
     int xpos = pnt[0];
-    int ypos = vps[1] - pnt[0] - 1;
+    int ypos = vps[1] - pnt[1] - 1;
 
     qreal dev_pix_ratio = devicePixelRatio();
     xpos = int(std::roundf(xpos / dev_pix_ratio));
