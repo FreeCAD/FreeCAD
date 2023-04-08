@@ -1312,9 +1312,11 @@ Py::Object View3DInventorPy::getCursorPos(const Py::Tuple& args)
         throw Py::Exception();
     try {
         QPoint pos = getView3DIventorPtr()->mapFromGlobal(QCursor::pos());
+        auto viewer = getView3DIventorPtr()->getViewer();
+        SbVec2s vec = viewer->fromQPoint(pos);
         Py::Tuple tuple(2);
-        tuple.setItem(0, Py::Int(pos.x()));
-        tuple.setItem(1, Py::Int(getView3DIventorPtr()->height()-pos.y()-1));
+        tuple.setItem(0, Py::Int(vec[0]));
+        tuple.setItem(1, Py::Int(vec[1]));
         return tuple;
     }
     catch (const Py::Exception&) {
