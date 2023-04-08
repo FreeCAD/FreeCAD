@@ -2408,7 +2408,7 @@ SbVec3f View3DInventorViewer::getPointOnFocalPlane(const SbVec2s& pnt) const
     return pt;
 }
 
-SbVec2s View3DInventorViewer::getPointOnScreen(const SbVec3f& pnt) const
+SbVec2s View3DInventorViewer::getPointOnViewport(const SbVec3f& pnt) const
 {
     const SbViewportRegion& vp = this->getSoRenderManager()->getViewportRegion();
     float fRatio = vp.getViewportAspectRatio();

@@ -312,8 +312,8 @@ public:
     /** Returns the 3d point on the focal plane to the given 2d point. */
     SbVec3f getPointOnFocalPlane(const SbVec2s&) const;
 
-    /** Returns the 2d coordinates on the screen to the given 3d point. */
-    SbVec2s getPointOnScreen(const SbVec3f&) const;
+    /** Returns the 2d coordinates on the viewport to the given 3d point. */
+    SbVec2s getPointOnViewport(const SbVec3f&) const;
 
     /** Converts Inventor coordinates into Qt coordinates.
      * The conversion takes the device pixel ratio into account.
