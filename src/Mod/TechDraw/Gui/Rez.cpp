@@ -22,12 +22,12 @@
 
 #include "PreCompiled.h"
 
-#include <App/Application.h>
 #include <Base/Parameter.h>
+#include <Mod/TechDraw/App/Preferences.h>
 
 #include "Rez.h"
 
-
+using namespace TechDraw;
 using namespace TechDrawGui;
 
 //*** initial static var outside methods!
@@ -123,9 +123,7 @@ QSize Rez::appSize(QSize s)
 
 double Rez::getParameter()
 {
-    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
-        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Rez");
-    double rezFactor  = hGrp->GetFloat("Resolution", 10.0);
+    double rezFactor  = Preferences::getPreferenceGroup("Rez")->GetFloat("Resolution", 10.0);
     return rezFactor;
 }
 

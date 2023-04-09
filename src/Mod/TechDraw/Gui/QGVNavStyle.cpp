@@ -30,12 +30,14 @@
 #include <App/Application.h>
 #include <Base/Parameter.h>
 #include <Mod/TechDraw/App/DrawPage.h>
+#include <Mod/TechDraw/App/Preferences.h>
 
 #include "QGSPage.h"
 #include "QGVNavStyle.h"
 #include "QGVPage.h"
 
 
+using namespace TechDraw;
 using namespace TechDrawGui;
 
 namespace TechDrawGui
@@ -63,13 +65,8 @@ void QGVNavStyle::initialize()
                          .GetParameterGroupByPath("User parameter:BaseApp/Preferences/View")
                          ->GetFloat("ZoomStep", 0.2f);
 
-    Base::Reference<ParameterGrp> hGrp = App::GetApplication()
-                                             .GetUserParameter()
-                                             .GetGroup("BaseApp")
-                                             ->GetGroup("Preferences")
-                                             ->GetGroup("Mod/TechDraw/General");
-    m_reversePan = hGrp->GetInt("KbPan", 1);
-    m_reverseScroll = hGrp->GetInt("KbScroll", 1);
+    m_reversePan = Preferences::getPreferenceGroup("General")->GetInt("KbPan", 1);
+    m_reverseScroll = Preferences::getPreferenceGroup("General")->GetInt("KbScroll", 1);
 
     panningActive = false;
     zoomingActive = false;

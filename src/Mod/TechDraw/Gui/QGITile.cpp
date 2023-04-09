@@ -322,17 +322,13 @@ bool QGITile::getAltWeld()
 //TODO: this is Pen, not Brush. sb Brush to colour background
 QColor QGITile::getTileColor() const
 {
-    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
-        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Colors");
-    App::Color fcColor = App::Color((uint32_t) hGrp->GetUnsigned("TileColor", 0x00000000));
+    App::Color fcColor = App::Color((uint32_t) Preferences::getPreferenceGroup("Colors")->GetUnsigned("TileColor", 0x00000000));
     return PreferencesGui::getAccessibleQColor( fcColor.asValue<QColor>());
 }
 
 double QGITile::getSymbolWidth() const
 {
-    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter().GetGroup("BaseApp")->
-                                         GetGroup("Preferences")->GetGroup("Mod/TechDraw/Dimensions");
-    double w = hGrp->GetFloat("SymbolSize", 64);
+    double w = Preferences::getPreferenceGroup("Dimensions")->GetFloat("SymbolSize", 64);
 //     symbols are only nominally 64x64. they actually have a "border" of 4 - 0.5*stroke(0.5)
 //     so we'll say effectively 62x62? 60 x 60
 //    double w = 64.0;
@@ -344,9 +340,7 @@ double QGITile::getSymbolWidth() const
 
 double QGITile::getSymbolHeight() const
 {
-    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter().GetGroup("BaseApp")->
-                                         GetGroup("Preferences")->GetGroup("Mod/TechDraw/Dimensions");
-    double h = hGrp->GetFloat("SymbolSize", 64);
+    double h = Preferences::getPreferenceGroup("Dimensions")->GetFloat("SymbolSize", 64);
     double fudge = 4.0;
     h = h - fudge;
 //    double h = 60.0;
@@ -357,17 +351,14 @@ double QGITile::getSymbolHeight() const
 //make symbols larger or smaller than standard
 double QGITile::getSymbolFactor() const
 {
-    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter().GetGroup("BaseApp")->
-                                         GetGroup("Preferences")->GetGroup("Mod/TechDraw/Decorations");
-    double s = hGrp->GetFloat("SymbolFactor", 1.25);
+    double s = Preferences::getPreferenceGroup("Decorations")->GetFloat("SymbolFactor", 1.25);
 //    double s = 1.25;
     return s;
 }
 
 double QGITile::prefFontSize() const
 {
-//    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter().
-//                       GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Dimensions");
+//    Base::Reference<ParameterGrp> hGrp = Preferences::getPreferenceGroup("Dimensions");
     return Preferences::dimFontSizeMM();
 }
 

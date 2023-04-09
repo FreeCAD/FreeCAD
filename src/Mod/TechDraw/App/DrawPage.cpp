@@ -75,12 +75,7 @@ DrawPage::DrawPage(void)
     ProjectionType.setEnums(ProjectionTypeEnums);
     ADD_PROPERTY(ProjectionType, ((long)Preferences::projectionAngle()));
 
-    Base::Reference<ParameterGrp> hGrp = App::GetApplication()
-                                             .GetUserParameter()
-                                             .GetGroup("BaseApp")
-                                             ->GetGroup("Preferences")
-                                             ->GetGroup("Mod/TechDraw/General");
-    double defScale = hGrp->GetFloat("DefaultScale", 1.0);
+    double defScale = Preferences::getPreferenceGroup("General")->GetFloat("DefaultScale", 1.0);
     ADD_PROPERTY_TYPE(Scale, (defScale), group, (App::PropertyType)(App::Prop_None),
                       "Scale factor for this Page");
 
@@ -464,23 +459,13 @@ bool DrawPage::hasObject(App::DocumentObject* obj)
 //allow/prevent drawing updates for all Pages
 bool DrawPage::GlobalUpdateDrawings(void)
 {
-    Base::Reference<ParameterGrp> hGrp = App::GetApplication()
-                                             .GetUserParameter()
-                                             .GetGroup("BaseApp")
-                                             ->GetGroup("Preferences")
-                                             ->GetGroup("Mod/TechDraw/General");
-    return hGrp->GetBool("GlobalUpdateDrawings", true);
+    return Preferences::getPreferenceGroup("General")->GetBool("GlobalUpdateDrawings", true);
 }
 
 //allow/prevent a single page to update despite GlobalUpdateDrawings setting
 bool DrawPage::AllowPageOverride(void)
 {
-    Base::Reference<ParameterGrp> hGrp = App::GetApplication()
-                                             .GetUserParameter()
-                                             .GetGroup("BaseApp")
-                                             ->GetGroup("Preferences")
-                                             ->GetGroup("Mod/TechDraw/General");
-    return hGrp->GetBool("AllowPageOverride", true);
+    return Preferences::getPreferenceGroup("General")->GetBool("AllowPageOverride", true);
 }
 
 

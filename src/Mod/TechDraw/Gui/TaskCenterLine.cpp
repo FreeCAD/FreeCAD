@@ -417,9 +417,7 @@ double TaskCenterLine::getCenterWidth()
 
 Qt::PenStyle TaskCenterLine::getCenterStyle()
 {
-    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter().GetGroup("BaseApp")->
-                                         GetGroup("Preferences")->GetGroup("Mod/TechDraw/Decorations");
-    Qt::PenStyle centerStyle = static_cast<Qt::PenStyle> (hGrp->GetInt("CenterLine", 2));
+    Qt::PenStyle centerStyle = static_cast<Qt::PenStyle> (Preferences::getPreferenceGroup("Decorations")->GetInt("CenterLine", 2));
     return centerStyle;
 }
 
@@ -430,9 +428,7 @@ QColor TaskCenterLine::getCenterColor()
 
 double TaskCenterLine::getExtendBy()
 {
-    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter().GetGroup("BaseApp")->
-                                         GetGroup("Preferences")->GetGroup("Mod/TechDraw/Decorations");
-    double ext = hGrp->GetFloat("CosmoCLExtend", 3.0);
+    double ext = Preferences::getPreferenceGroup("Decorations")->GetFloat("CosmoCLExtend", 3.0);
     return ext;
 }
 

@@ -407,12 +407,7 @@ int QGIDatumLabel::getPrecision()
         precision = Base::UnitsApi::getDecimals();
     }
     else {
-        Base::Reference<ParameterGrp> hGrp = App::GetApplication()
-                                                 .GetUserParameter()
-                                                 .GetGroup("BaseApp")
-                                                 ->GetGroup("Preferences")
-                                                 ->GetGroup("Mod/TechDraw/Dimensions");
-        precision = hGrp->GetInt("AltDecimals", 2);
+        precision = Preferences::getPreferenceGroup("Dimensions")->GetInt("AltDecimals", 2);
     }
     return precision;
 }
@@ -420,12 +415,7 @@ int QGIDatumLabel::getPrecision()
 double QGIDatumLabel::getTolAdjust()
 {
     double adjust;
-    Base::Reference<ParameterGrp> hGrp = App::GetApplication()
-                                             .GetUserParameter()
-                                             .GetGroup("BaseApp")
-                                             ->GetGroup("Preferences")
-                                             ->GetGroup("Mod/TechDraw/Dimensions");
-    adjust = hGrp->GetFloat("TolSizeAdjust", 0.50);
+    adjust = Preferences::getPreferenceGroup("Dimensions")->GetFloat("TolSizeAdjust", 0.50);
     return adjust;
 }
 

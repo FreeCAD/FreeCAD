@@ -244,10 +244,7 @@ double ViewProviderDimension::prefWeight() const
 
 int ViewProviderDimension::prefStandardAndStyle() const
 {
-    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
-                                        .GetGroup("BaseApp")->GetGroup("Preferences")->
-                                         GetGroup("Mod/TechDraw/Dimensions");
-    int standardStyle = hGrp->GetInt("StandardAndStyle", STD_STYLE_ISO_ORIENTED);
+    int standardStyle = Preferences::getPreferenceGroup("Dimensions")->GetInt("StandardAndStyle", STD_STYLE_ISO_ORIENTED);
     return standardStyle;
 }
 
