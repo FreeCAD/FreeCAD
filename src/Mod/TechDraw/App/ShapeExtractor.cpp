@@ -91,7 +91,6 @@ std::vector<TopoDS_Shape> ShapeExtractor::getShapes2d(const std::vector<App::Doc
 TopoDS_Shape ShapeExtractor::getShapes(const std::vector<App::DocumentObject*> links)
 {
 //    Base::Console().Message("SE::getShapes() - links in: %d\n", links.size());
-    TopoDS_Shape result;
     std::vector<TopoDS_Shape> sourceShapes;
 
     for (auto& l:links) {
@@ -125,25 +124,22 @@ TopoDS_Shape ShapeExtractor::getShapes(const std::vector<App::DocumentObject*> l
             TopoDS_Shape cleanShape = stripInfiniteShapes(s);
             if (!cleanShape.IsNull()) {
                 builder.Add(comp, cleanShape);
-                found = true;
+                return comp;
             }
         } else if (Part::TopoShape(s).isInfinite()) {
             continue;    //simple shape is infinite
         } else {
             //a simple shape - add to compound
             builder.Add(comp, s);
-            found = true;
+            return comp;
         }
     }
     //it appears that an empty compound is !IsNull(), so we need to check a different way
     //if we added anything to the compound.
-    if (!found) {
-        Base::Console().Error("ShapeExtractor failed to get shape.\n");
-    } else {
-        result = comp;
-    }
+    //Nothing found
+    Base::Console().Error("ShapeExtractor failed to get shape.\n");
 //    BRepTools::Write(result, "SEresult.brep");            //debug
-    return result;
+    return TopoDS_Shape();
 }
 
 std::vector<TopoDS_Shape> ShapeExtractor::getXShapes(const App::Link* xLink)
@@ -368,40 +364,37 @@ bool ShapeExtractor::isEdgeType(App::DocumentObject* obj)
 bool ShapeExtractor::isPointType(App::DocumentObject* obj)
 {
 //    Base::Console().Message("SE::isPointType(%s)\n", obj->getNameInDocument());
-    bool result = false;
     if (obj) {
         Base::Type t = obj->getTypeId();
         if (t.isDerivedFrom(Part::Vertex::getClassTypeId())) {
-            result = true;
+            return true;
         } else if (isDraftPoint(obj)) {
-            result = true;
+            return true;
         }
     }
-    return result;
+    return false;
 }
 
 bool ShapeExtractor::isDraftPoint(App::DocumentObject* obj)
 {
 //    Base::Console().Message("SE::isDraftPoint()\n");
-    bool result = false;
     //if the docObj doesn't have a Proxy property, it definitely isn't a Draft point
     App::PropertyPythonObject* proxy = dynamic_cast<App::PropertyPythonObject*>(obj->getPropertyByName("Proxy"));
     if (proxy) {
         std::string  pp = proxy->toString();
 //        Base::Console().Message("SE::isDraftPoint - pp: %s\n", pp.c_str());
         if (pp.find("Point") != std::string::npos) {
-            result = true;
+            return true;
         }
     }
-    return result;
+    return false;
 }
 
 Base::Vector3d ShapeExtractor::getLocation3dFromFeat(App::DocumentObject* obj)
 {
 //    Base::Console().Message("SE::getLocation3dFromFeat()\n");
-    Base::Vector3d result(0.0, 0.0, 0.0);
     if (!isPointType(obj)) {
-        return result;
+        return Base::Vector3d(0.0, 0.0, 0.0);
     }
 //    if (isDraftPoint(obj) {
 //        //Draft Points are not necc. Part::PartFeature??
@@ -414,13 +407,13 @@ Base::Vector3d ShapeExtractor::getLocation3dFromFeat(App::DocumentObject* obj)
         TopoDS_Shape ts = pts.getShape();
         if (ts.ShapeType() == TopAbs_VERTEX)  {
             TopoDS_Vertex v = TopoDS::Vertex(ts);
-            result = DrawUtil::vertex2Vector(v);
+            return DrawUtil::vertex2Vector(v);
         }
     }
 
 //    Base::Console().Message("SE::getLocation3dFromFeat - returns: %s\n",
 //                            DrawUtil::formatVector(result).c_str());
-    return result;
+    return Base::Vector3d(0.0, 0.0, 0.0);
 }
 
 bool ShapeExtractor::prefAdd2d()

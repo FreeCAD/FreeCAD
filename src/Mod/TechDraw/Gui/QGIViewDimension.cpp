@@ -696,18 +696,15 @@ void QGIViewDimension::datumLabelDragFinished()
 //this is for formatting and finding centers, not display
 QString QGIViewDimension::getLabelText()
 {
-    QString result;
     QString first = datumLabel->getDimText()->toPlainText();
     QString second = datumLabel->getTolTextOver()->toPlainText();
     QString third = datumLabel->getTolTextUnder()->toPlainText();
     if (second.length() > third.length()) {
-        result = first + second;
+        return first + second;
     }
     else {
-        result = first + third;
+        return first + third;
     }
-
-    return result;
 }
 
 void QGIViewDimension::draw()
@@ -2545,7 +2542,6 @@ Base::Vector3d QGIViewDimension::findIsoDir(Base::Vector3d ortho) const
 //! find the iso extension direction corresponding to an iso dist direction
 Base::Vector3d QGIViewDimension::findIsoExt(Base::Vector3d dir) const
 {
-    Base::Vector3d dirExt(1, 0, 0);
     Base::Vector3d isoX(0.866, 0.5, 0.0);   //iso X
     Base::Vector3d isoXr(-0.866, -0.5, 0.0);//iso -X
     Base::Vector3d isoY(-0.866, 0.5, 0.0);  //iso -Y?
@@ -2553,29 +2549,28 @@ Base::Vector3d QGIViewDimension::findIsoExt(Base::Vector3d dir) const
     Base::Vector3d isoZ(0.0, 1.0, 0.0);     //iso Z
     Base::Vector3d isoZr(0.0, -1.0, 0.0);   //iso -Z
     if (dir.IsEqual(isoX, FLT_EPSILON)) {
-        dirExt = isoY;
+        return isoY;
     }
     else if (dir.IsEqual(-isoX, FLT_EPSILON)) {
-        dirExt = -isoY;
+        return -isoY;
     }
     else if (dir.IsEqual(isoY, FLT_EPSILON)) {
-        dirExt = isoZ;
+        return isoZ;
     }
     else if (dir.IsEqual(-isoY, FLT_EPSILON)) {
-        dirExt = -isoZ;
+        return -isoZ;
     }
     else if (dir.IsEqual(isoZ, FLT_EPSILON)) {
-        dirExt = isoX;
+        return isoX;
     }
     else if (dir.IsEqual(-isoZ, FLT_EPSILON)) {
-        dirExt = -isoX;
+        return -isoX;
     }
-    else {//tarfu
-        Base::Console().Message("QGIVD::findIsoExt - %s - input is not iso axis\n",
-                                getViewObject()->getNameInDocument());
-    }
-
-    return dirExt;
+    
+    //tarfu
+    Base::Console().Message("QGIVD::findIsoExt - %s - input is not iso axis\n",
+                            getViewObject()->getNameInDocument());
+    return Base::Vector3d(1, 0, 0);
 }
 
 void QGIViewDimension::onPrettyChanged(int state)

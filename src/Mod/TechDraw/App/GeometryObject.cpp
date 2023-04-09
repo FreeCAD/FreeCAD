@@ -290,10 +290,8 @@ void GeometryObject::makeTDGeometry()
 //mirror a shape thru XZ plane for Qt's inverted Y coordinate
 TopoDS_Shape GeometryObject::invertGeometry(const TopoDS_Shape s)
 {
-    TopoDS_Shape result;
     if (s.IsNull()) {
-        result = s;
-        return result;
+        return s;
     }
 
     gp_Trsf mirrorY;
@@ -302,8 +300,7 @@ TopoDS_Shape GeometryObject::invertGeometry(const TopoDS_Shape s)
     gp_Ax2 mirrorPlane(org, Y);
     mirrorY.SetMirror(mirrorPlane);
     BRepBuilderAPI_Transform mkTrf(s, mirrorY, true);
-    result = mkTrf.Shape();
-    return result;
+    return mkTrf.Shape();
 }
 
 //!set up a hidden line remover and project a shape with it
@@ -760,14 +757,11 @@ void GeometryObject::addFaceGeom(FacePtr f) { faceGeom.push_back(f); }
 
 TechDraw::DrawViewDetail* GeometryObject::isParentDetail()
 {
-    TechDraw::DrawViewDetail* result = nullptr;
-    if (m_parent) {
-        TechDraw::DrawViewDetail* detail = dynamic_cast<TechDraw::DrawViewDetail*>(m_parent);
-        if (detail) {
-            result = detail;
-        }
+    if (!m_parent) {
+        return nullptr;
     }
-    return result;
+    TechDraw::DrawViewDetail* detail = dynamic_cast<TechDraw::DrawViewDetail*>(m_parent);
+    return detail;
 }
 
 
@@ -851,16 +845,14 @@ void GeometryObject::pruneVertexGeom(Base::Vector3d center, double radius)
 //! does this GeometryObject already have this vertex
 bool GeometryObject::findVertex(Base::Vector3d v)
 {
-    bool found = false;
     std::vector<VertexPtr>::iterator it = vertexGeom.begin();
     for (; it != vertexGeom.end(); it++) {
         double dist = (v - (*it)->point()).Length();
         if (dist < Precision::Confusion()) {
-            found = true;
-            break;
+            return true;
         }
     }
-    return found;
+    return false;
 }
 
 /// utility non-class member functions
@@ -904,10 +896,9 @@ gp_Ax2 TechDraw::getViewAxis(const Base::Vector3d origin, const Base::Vector3d& 
     //    Base::Console().Message("GO::getViewAxis() - 2\n");
     (void)flip;
     gp_Pnt inputCenter(origin.x, origin.y, origin.z);
-    gp_Ax2 viewAxis;
-    viewAxis = gp_Ax2(inputCenter, gp_Dir(direction.x, direction.y, direction.z),
-                      gp_Dir(xAxis.x, xAxis.y, xAxis.z));
-    return viewAxis;
+    return gp_Ax2(inputCenter,
+                  gp_Dir(direction.x, direction.y, direction.z),
+                  gp_Dir(xAxis.x, xAxis.y, xAxis.z));
 }
 
 // was getViewAxis 1
@@ -916,7 +907,6 @@ gp_Ax2 TechDraw::legacyViewAxis1(const Base::Vector3d origin, const Base::Vector
                                  const bool flip)
 {
     //    Base::Console().Message("GO::legacyViewAxis1()\n");
-    gp_Ax2 viewAxis;
     gp_Pnt inputCenter(origin.x, origin.y, origin.z);
     Base::Vector3d stdZ(0.0, 0.0, 1.0);
     Base::Vector3d stdOrg(0.0, 0.0, 0.0);
@@ -935,12 +925,12 @@ gp_Ax2 TechDraw::legacyViewAxis1(const Base::Vector3d origin, const Base::Vector
     }
 
     if (cross.IsEqual(stdOrg, FLT_EPSILON)) {
-        viewAxis = gp_Ax2(inputCenter, gp_Dir(flipDirection.x, flipDirection.y, flipDirection.z));
-        return viewAxis;
+        return gp_Ax2(inputCenter, gp_Dir(flipDirection.x, flipDirection.y, flipDirection.z));
     }
 
-    viewAxis = gp_Ax2(inputCenter, gp_Dir(flipDirection.x, flipDirection.y, flipDirection.z),
-                      gp_Dir(cross.x, cross.y, cross.z));
+    gp_Ax2 viewAxis = gp_Ax2(inputCenter,
+                             gp_Dir(flipDirection.x, flipDirection.y, flipDirection.z),
+                             gp_Dir(cross.x, cross.y, cross.z));
 
     //this bit is to handle the old mirror Y logic, but it messes up
     //some old files.

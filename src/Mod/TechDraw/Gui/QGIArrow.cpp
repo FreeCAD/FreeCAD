@@ -317,35 +317,24 @@ double QGIArrow::getOverlapAdjust(int style, double size)
     // open circle sb = radius
     // NOTE: this may need to be adjusted to account for line thickness too.
 //    Base::Console().Message("QGIA::getOverlapAdjust(%d, %.3f) \n", style, size);
-    double result = 1.0;
     switch(style) {
         case FILLED_ARROW:
-            result = 0.50 * size;
-            break;
+            return 0.50 * size;
         case OPEN_ARROW:
-            result = 0.10 * size;
-            break;
+            return 0.10 * size;
         case TICK:
-            result = 0.0;
-            break;
+            return 0.0;
         case DOT:
-            result = 0.0;
-            break;
+            return 0.0;
         case OPEN_CIRCLE:
                         //diameter is size/2 so radius is size/4
-            result = 0.25 * size;
-            break;
+            return 0.25 * size;
         case FORK:
-            result = 0.0;
-            break;
+            return 0.0;
         case FILLED_TRIANGLE:
-            result = size;
-            break;
+            return size;
         case NONE:
-            result = 0.0;
-            break;
-        default:        //unknown
-            result = 1.0;
+            return 0.0;
     }
-    return result;
+    return 1.0;  // Unknown
 }

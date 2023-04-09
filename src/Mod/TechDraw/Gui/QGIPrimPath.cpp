@@ -146,12 +146,10 @@ void QGIPrimPath::setPrettySel() {
 //this always goes to parameter
 QColor QGIPrimPath::getNormalColor()
 {
-    QColor result;
     QGIView *parent;
 
     if (m_colOverride) {
-        result = m_colNormal;
-        return result;
+        return m_colNormal;
     }
 
     QGraphicsItem* qparent = parentItem();
@@ -162,17 +160,13 @@ QColor QGIPrimPath::getNormalColor()
     }
 
     if (parent) {
-        result = parent->getNormalColor();
-    } else {
-        result = PreferencesGui::normalQColor();
+        return parent->getNormalColor();
     }
-
-    return result;
+    return PreferencesGui::normalQColor();
 }
 
 QColor QGIPrimPath::getPreColor()
 {
-    QColor result;
     QGIView *parent;
     QGraphicsItem* qparent = parentItem();
     if (!qparent) {
@@ -182,16 +176,13 @@ QColor QGIPrimPath::getPreColor()
     }
 
     if (parent) {
-        result = parent->getPreColor();
-    } else {
-        result = PreferencesGui::preselectQColor();
+        return parent->getPreColor();
     }
-    return result;
+    return PreferencesGui::preselectQColor();
 }
 
 QColor QGIPrimPath::getSelectColor()
 {
-    QColor result;
     QGIView *parent;
     QGraphicsItem* qparent = parentItem();
     if (!qparent) {
@@ -201,11 +192,9 @@ QColor QGIPrimPath::getSelectColor()
     }
 
     if (parent) {
-        result = parent->getSelectColor();
-    } else {
-        result = PreferencesGui::selectQColor();
+        return parent->getSelectColor();
     }
-    return result;
+    return PreferencesGui::selectQColor();
 }
 
 void QGIPrimPath::setWidth(double w)
