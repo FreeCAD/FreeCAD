@@ -942,8 +942,7 @@ int QGIViewBalloon::prefDefaultArrow() const { return Preferences::balloonArrow(
 //when would you want a crooked pyramid?
 bool QGIViewBalloon::prefOrthoPyramid() const
 {
-    bool ortho = Preferences::getPreferenceGroup("Decorations")->GetBool("PyramidOrtho", true);
-    return ortho;
+    return Preferences::getPreferenceGroup("Decorations")->GetBool("PyramidOrtho", true);
 }
 
 DrawView* QGIViewBalloon::getSourceView() const

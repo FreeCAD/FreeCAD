@@ -351,9 +351,8 @@ double QGITile::getSymbolHeight() const
 //make symbols larger or smaller than standard
 double QGITile::getSymbolFactor() const
 {
-    double s = Preferences::getPreferenceGroup("Decorations")->GetFloat("SymbolFactor", 1.25);
-//    double s = 1.25;
-    return s;
+//    return 1.25;
+    return Preferences::getPreferenceGroup("Decorations")->GetFloat("SymbolFactor", 1.25);
 }
 
 double QGITile::prefFontSize() const

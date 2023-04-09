@@ -571,20 +571,18 @@ void DrawView::setScaleAttribute()
 
 int DrawView::prefScaleType()
 {
-    int result = Preferences::getPreferenceGroup("General")->GetInt("DefaultScaleType", 0);
-    return result;
+    return Preferences::getPreferenceGroup("General")->GetInt("DefaultScaleType", 0);
 }
 
 double DrawView::prefScale()
 {
-    double result = Preferences::getPreferenceGroup("General")->GetFloat("DefaultViewScale", 1.0);
     if (ScaleType.isValue("Page")) {
         auto page = findParentPage();
         if (page) {
-            result = page->Scale.getValue();
+            return page->Scale.getValue();
         }
     }
-    return result;
+    return Preferences::getPreferenceGroup("General")->GetFloat("DefaultViewScale", 1.0);
 }
 
 void DrawView::requestPaint()

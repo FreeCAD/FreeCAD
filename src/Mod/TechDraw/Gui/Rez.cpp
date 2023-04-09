@@ -123,7 +123,6 @@ QSize Rez::appSize(QSize s)
 
 double Rez::getParameter()
 {
-    double rezFactor  = Preferences::getPreferenceGroup("Rez")->GetFloat("Resolution", 10.0);
-    return rezFactor;
+    return Preferences::getPreferenceGroup("Rez")->GetFloat("Resolution", 10.0);
 }
 
