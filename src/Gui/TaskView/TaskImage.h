@@ -26,6 +26,7 @@
 
 #include <QPointer>
 #include <Gui/TaskView/TaskDialog.h>
+#include <Gui/QuantitySpinBox.h>
 #include <App/DocumentObserver.h>
 #include <App/ImagePlane.h>
 #include <memory>
@@ -35,6 +36,8 @@ class SbVec3f;
 class SoEventCallback;
 class SoSeparator;
 class SoDatumLabel;
+class SoNodeSensor;
+class SoTransform;
 
 namespace Gui {
 
@@ -45,7 +48,7 @@ class InteractiveScale : public QObject
     Q_OBJECT
 
 public:
-    explicit InteractiveScale(View3DInventorViewer* view, ViewProvider* vp, SbVec3f normal);
+    explicit InteractiveScale(View3DInventorViewer* view, ViewProvider* vp, Base::Placement plc);
     ~InteractiveScale();
     void activate(bool allowOutside);
     void deactivate();
@@ -54,6 +57,7 @@ public:
     }
     double getDistance() const;
     double getDistance(const SbVec3f&) const;
+    void setPlacement(Base::Placement plc);
 
 private:
     static void getMouseClick(void * ud, SoEventCallback * ecb);
@@ -62,19 +66,30 @@ private:
     void findPointOnImagePlane(SoEventCallback * ecb);
     void findPointOnFocalPlane(SoEventCallback * ecb);
     void collectPoint(const SbVec3f&);
+    void positionWidget();
+
+    /// give the coordinates of a line on the image plane in imagePlane (2D) coordinates
+    SbVec3f getCoordsOnImagePlane(const SbVec3f& point);
 
 Q_SIGNALS:
-    void selectedPoints(size_t);
+    void scaleRequired(double);
+
+protected Q_SLOTS:
+    void distanceEntered(double);
 
 private:
     bool active;
     bool allowOutsideImage;
+    Base::Placement placement;
     SoSeparator* root;
     SoDatumLabel* measureLabel;
+    SoTransform* transform;
     QPointer<Gui::View3DInventorViewer> viewer;
     ViewProvider* viewProv;
     std::vector<SbVec3f> points;
-    SbVec3f norm;
+    SbVec3f midPoint;
+    QuantitySpinBox* distanceBox;
+    SoNodeSensor* cameraSensor;
 };
 
 class Ui_TaskImage;
@@ -96,12 +111,10 @@ private:
 
     void onInteractiveScale();
     View3DInventorViewer* getViewer() const;
-    void selectedPoints(size_t num);
     void scaleImage(double);
     void startScale();
-    void acceptScale();
+    void acceptScale(double val);
     void rejectScale();
-    SbVec3f getNorm();
 
     void restore(const Base::Placement&);
     void onPreview();

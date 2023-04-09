@@ -25,14 +25,18 @@
 #ifndef _PreComp_
 # include <QDialog>
 # include <QPushButton>
+# include <QAction>
 # include <map>
 # include <Inventor/SoPickedPoint.h>
 # include <Inventor/events/SoLocation2Event.h>
 # include <Inventor/events/SoMouseButtonEvent.h>
+# include <Inventor/sensors/SoNodeSensor.h>
+# include <Inventor/nodes/SoOrthographicCamera.h>
 # include <Inventor/nodes/SoBaseColor.h>
 # include <Inventor/nodes/SoCoordinate3.h>
 # include <Inventor/nodes/SoLineSet.h>
 # include <Inventor/nodes/SoAnnotation.h>
+# include <Inventor/nodes/SoTransform.h>
 #endif
 
 #include <Base/Console.h>
@@ -70,6 +74,11 @@ TaskImage::TaskImage(Image::ImagePlane* obj, QWidget* parent)
     initialiseTransparency();
 
     aspectRatio = obj->XSize.getValue() / obj->YSize.getValue();
+
+    QAction* action = new QAction(tr("Allow points outside the image"), this);
+    action->setCheckable(true);
+    action->setChecked(false);
+    ui->pushButtonScale->addAction(action);
 
     connectSignals();
 }
@@ -184,20 +193,6 @@ View3DInventorViewer* TaskImage::getViewer() const
     return nullptr;
 }
 
-void TaskImage::selectedPoints(size_t num)
-{
-    if (num == 1) {
-        ui->labelInstruction->setText(tr("Select second point"));
-    }
-    else if (num == 2) {
-        ui->labelInstruction->setText(tr("Enter desired distance between the points"));
-        ui->pushButtonScale->setEnabled(true);
-        ui->quantitySpinBox->setEnabled(true);
-        ui->quantitySpinBox->setValue(scale->getDistance());
-        ui->quantitySpinBox->setFocus();
-    }
-}
-
 void TaskImage::scaleImage(double factor)
 {
     if (!feature.expired()) {
@@ -213,35 +208,22 @@ void TaskImage::scaleImage(double factor)
 
 void TaskImage::startScale()
 {
-    scale->activate(ui->checkBoxOutside->isChecked());
-    if (ui->checkBoxOutside->isChecked()) {
-        ui->labelInstruction->setText(tr("Select two points in the 3d view"));
-    }
-    else {
-        ui->labelInstruction->setText(tr("Select two points on the image"));
-    }
-    ui->checkBoxOutside->setEnabled(false);
-    ui->pushButtonScale->setEnabled(false);
-    ui->pushButtonScale->setText(tr("Accept"));
+    scale->activate(qAsConst(ui->pushButtonScale)->actions()[0]->isChecked());
+    ui->pushButtonScale->hide();
     ui->pushButtonCancel->show();
-    ui->quantitySpinBox->setEnabled(false);
 }
 
-void TaskImage::acceptScale()
+void TaskImage::acceptScale(double val)
 {
-    scaleImage(ui->quantitySpinBox->value().getValue() / scale->getDistance());
+    scaleImage(val / scale->getDistance());
     rejectScale();
 }
 
 void TaskImage::rejectScale()
 {
     scale->deactivate();
-    ui->labelInstruction->clear();
-    ui->pushButtonScale->setEnabled(true);
-    ui->pushButtonScale->setText(tr("Interactive"));
+    ui->pushButtonScale->show();
     ui->pushButtonCancel->hide();
-    ui->quantitySpinBox->setEnabled(false);
-    ui->checkBoxOutside->setEnabled(true);
 }
 
 void TaskImage::onInteractiveScale()
@@ -250,20 +232,14 @@ void TaskImage::onInteractiveScale()
         View3DInventorViewer* viewer = getViewer();
         if (viewer) {
             auto vp = Application::Instance->getViewProvider(feature.get());
-            scale = new InteractiveScale(viewer, vp, getNorm());
-            connect(scale, &InteractiveScale::selectedPoints,
-                    this, &TaskImage::selectedPoints);
+            Base::Placement placement = feature->Placement.getValue();
+            scale = new InteractiveScale(viewer, vp, placement);
+            connect(scale, &InteractiveScale::scaleRequired,
+                this, &TaskImage::acceptScale);
         }
     }
 
-    if (scale) {
-        if (scale->isActive()) {
-            acceptScale();
-        }
-        else {
-            startScale();
-        }
-    }
+    startScale();
 }
 
 void TaskImage::open()
@@ -381,6 +357,8 @@ void TaskImage::updatePlacement()
 
     if (!feature.expired()) {
         feature->Placement.setValue(Pos);
+        if(scale)
+            scale->setPlacement(Pos);
     }
 }
 
@@ -403,30 +381,20 @@ void TaskImage::updateIcon()
             ui->previewLabel->size()));
 }
 
-SbVec3f TaskImage::getNorm()
-{
-    if (feature.expired())
-        return SbVec3f(0., 0., 1.);
-
-    // Get imagePlane normal
-    Base::Vector3d RN(0, 0, 1);
-
-    // move to position of Sketch
-    Base::Placement Plz = feature->Placement.getValue();
-    Base::Rotation tmp(Plz.getRotation());
-    tmp.multVec(RN, RN);
-    Plz.setRotation(tmp);
-    return SbVec3f(RN.x, RN.y, RN.z);
-}
-
 // ----------------------------------------------------------------------------
 
-InteractiveScale::InteractiveScale(View3DInventorViewer* view, ViewProvider* vp, SbVec3f normal)
+
+struct NodeData {
+    InteractiveScale* scale;
+};
+
+InteractiveScale::InteractiveScale(View3DInventorViewer* view, ViewProvider* vp, Base::Placement plc)
     : active{false}
     , allowOutsideImage{false}
+    , placement{plc}
     , viewer{view}
     , viewProv{vp}
-    , norm{normal}
+    , midPoint{SbVec3f(0,0,0)}
 {
     root = new SoAnnotation;
     root->ref();
@@ -434,7 +402,6 @@ InteractiveScale::InteractiveScale(View3DInventorViewer* view, ViewProvider* vp,
 
     measureLabel = new SoDatumLabel();
     measureLabel->ref();
-    measureLabel->norm.setValue(norm);
     measureLabel->string = "";
     measureLabel->textColor = SbColor(1.0f, 0.149f, 0.0f);
     measureLabel->size.setValue(17);
@@ -442,12 +409,39 @@ InteractiveScale::InteractiveScale(View3DInventorViewer* view, ViewProvider* vp,
     measureLabel->useAntialiasing = false;
     measureLabel->param1 = 0.;
     measureLabel->param2 = 0.;
+
+    transform = new SoTransform();
+    root->addChild(transform);
+    setPlacement(placement);
+
+    Gui::MDIView* mdi = Gui::Application::Instance->activeDocument()->getActiveView();
+    distanceBox = new QuantitySpinBox(mdi);
+    distanceBox->setUnit(Base::Unit::Length);
+    distanceBox->setMinimum(0.0);
+    distanceBox->setMaximum(INT_MAX);
+    distanceBox->setButtonSymbols(QAbstractSpinBox::NoButtons);
+    distanceBox->setToolTip(tr("Enter desired distance between the points"));
+    distanceBox->setKeyboardTracking(false);
+
+    // Pressing enter will validate the tool.
+    connect(distanceBox, qOverload<double>(& QuantitySpinBox::valueChanged),
+        this, &InteractiveScale::distanceEntered);
+
+    //track camera movements to update spinbox position.
+    NodeData* info = new NodeData{ this };
+    cameraSensor = new SoNodeSensor([](void* data, SoSensor* sensor) {
+        NodeData* info = static_cast<NodeData*>(data);
+        info->scale->positionWidget();
+    }, info);
+    cameraSensor->attach(viewer->getCamera());
 }
 
 InteractiveScale::~InteractiveScale()
 {
     root->unref();
     measureLabel->unref();
+    distanceBox->deleteLater();
+    cameraSensor->detach();
 }
 
 void InteractiveScale::activate(bool allowOutside)
@@ -467,6 +461,7 @@ void InteractiveScale::activate(bool allowOutside)
 void InteractiveScale::deactivate()
 {
     if (viewer) {
+        distanceBox->hide();
         points.clear();
         root->removeChild(measureLabel);
         static_cast<SoSeparator*>(viewer->getSceneGraph())->removeChild(root);
@@ -539,13 +534,30 @@ void InteractiveScale::collectPoint(const SbVec3f& pos3d)
         double distance = getDistance(pos3d);
         if (distance > Base::Precision::Confusion()) {
             points.push_back(pos3d);
+
+            midPoint = points[0] + (points[1] - points[0]) / 2;
+
+            measureLabel->string = "";
+            positionWidget();
+            QSignalBlocker block(distanceBox);
+            distanceBox->setValue((points[1] - points[0]).length());
+            distanceBox->show();
+            distanceBox->selectNumber();
+            distanceBox->setFocus();
         }
         else {
             Base::Console().Warning(std::string("Image scale"), "The second point is too close. Retry!\n");
         }
     }
+}
 
-    Q_EMIT selectedPoints(points.size());
+void InteractiveScale::positionWidget()
+{
+    QSize wSize = distanceBox->size();
+    QPoint pxCoord = viewer->toQPoint(viewer->getPointOnViewport(midPoint));
+    pxCoord.setX(std::max(pxCoord.x() - wSize.width() / 2, 0));
+    pxCoord.setY(std::max(pxCoord.y() - wSize.height() / 2, 0));
+    distanceBox->move(pxCoord);
 }
 
 void InteractiveScale::getMouseClick(void * ud, SoEventCallback * ecb)
@@ -592,15 +604,46 @@ void InteractiveScale::getMousePosition(void * ud, SoEventCallback * ecb)
         valueStr = quantity.getUserString(factor, unitStr);
         scale->measureLabel->string = SbString(valueStr.toUtf8().constData());
 
-        //Update the points.
+        //Update the SoDatumLabel. It needs 2D points!
         scale->measureLabel->pnts.setNum(2);
         SbVec3f* verts = scale->measureLabel->pnts.startEditing();
-
-        verts[0] = scale->points[0];
-        verts[1] = pos3d;
-
+        verts[0] = scale->getCoordsOnImagePlane(scale->points[0]);
+        verts[1] = scale->getCoordsOnImagePlane(pos3d);
         scale->measureLabel->pnts.finishEditing();
     }
+}
+
+void InteractiveScale::distanceEntered(double val)
+{
+    Q_EMIT scaleRequired(val);
+}
+
+void InteractiveScale::setPlacement(Base::Placement plc)
+{
+    placement = plc;
+    double x, y, z, w;
+    placement.getRotation().getValue(x, y, z, w);
+    transform->rotation.setValue(x, y, z, w);
+
+    Base::Vector3d RN(0, 0, 1);
+    RN = placement.getRotation().multVec(RN);
+    measureLabel->norm.setValue(SbVec3f(RN.x, RN.y, RN.z));
+}
+
+SbVec3f InteractiveScale::getCoordsOnImagePlane(const SbVec3f& point)
+{
+    // Plane form
+    Base::Vector3d R0(0, 0, 0), RX(1, 0, 0), RY(0, 1, 0);
+
+    // move to position of Sketch
+    Base::Rotation tmp(placement.getRotation());
+    RX = tmp.multVec(RX);
+    RY = tmp.multVec(RY);
+
+    Base::Vector3d S(point[0], point[1], point[2]);
+    S.TransformToCoordinateSystem(R0, RX, RY);
+
+    return SbVec3f(S.x, S.y, 0.);
 }
 
 // ----------------------------------------------------------------------------

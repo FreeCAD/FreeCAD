@@ -245,24 +245,18 @@
         </property>
        </widget>
       </item>
-     </layout>
-    </widget>
-   </item>
-   <item row="8" column="0" colspan="2">
-    <widget class="QGroupBox" name="groupBox_2">
-     <property name="title">
-      <string/>
-     </property>
-     <layout class="QGridLayout" name="gridLayout_3">
-      <item row="0" column="0">
+	  <item row="2" column="0">
        <layout class="QHBoxLayout" name="horizontalLayout">
         <item>
-         <widget class="QPushButton" name="pushButtonScale">
+         <widget class="QToolButton" name="pushButtonScale">
           <property name="toolTip">
            <string>Interactively scale the image</string>
           </property>
           <property name="text">
            <string>Interactive</string>
+          </property>
+          <property name="popupMode">
+           <enum>QToolButton::MenuButtonPopup</enum>
           </property>
          </widget>
         </item>
@@ -286,48 +280,7 @@
           </property>
          </spacer>
         </item>
-        <item>
-         <widget class="QCheckBox" name="checkBoxOutside">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="text">
-           <string>Allow points outside the image</string>
-          </property>
-         </widget>
-        </item>
        </layout>
-      </item>
-      <item row="1" column="0">
-       <layout class="QHBoxLayout" name="horizontalLayout_2">
-        <item>
-         <widget class="QLabel" name="labelDistance">
-          <property name="text">
-           <string>Desired distance:</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="Gui::QuantitySpinBox" name="quantitySpinBox">
-          <property name="enabled">
-           <bool>false</bool>
-          </property>
-          <property name="unit" stdset="0">
-           <string notr="true">mm</string>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </item>
-      <item row="2" column="0">
-       <widget class="QLabel" name="labelInstruction">
-        <property name="text">
-         <string/>
-        </property>
-       </widget>
       </item>
      </layout>
     </widget>
