@@ -439,7 +439,7 @@ void ViewProviderSketch::moveCursorToSketchPoint(Base::Vector2d point) {
 
     Gui::View3DInventorViewer* viewer = view->getViewer();
 
-    SbVec2s screencoords = viewer->getPointOnScreen(sbpoint);
+    SbVec2s screencoords = viewer->getPointOnViewport(sbpoint);
 
     short x,y; screencoords.getValue(x,y);
 
@@ -475,7 +475,7 @@ void ViewProviderSketch::preselectAtPoint(Base::Vector2d point)
 
         Gui::View3DInventorViewer* viewer = view->getViewer();
 
-        SbVec2s screencoords = viewer->getPointOnScreen(sbpoint);
+        SbVec2s screencoords = viewer->getPointOnViewport(sbpoint);
 
         std::unique_ptr<SoPickedPoint> Point(this->getPointOnRay(screencoords, viewer));
 

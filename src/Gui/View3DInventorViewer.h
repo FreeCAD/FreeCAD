@@ -305,27 +305,48 @@ public:
     void    setViewDirection(SbVec3f);
     /** Returns the up direction */
     SbVec3f getUpDirection() const;
+
     /** Returns the orientation of the camera. */
     SbRotation getCameraOrientation() const;
+
     /** Returns the 3d point on the focal plane to the given 2d point. */
     SbVec3f getPointOnFocalPlane(const SbVec2s&) const;
-    /** Returns the 2d coordinates on the screen to the given 3d point. */
-    SbVec2s getPointOnScreen(const SbVec3f&) const;
+
+    /** Returns the 2d coordinates on the viewport to the given 3d point. */
+    SbVec2s getPointOnViewport(const SbVec3f&) const;
+
+    /** Converts Inventor coordinates into Qt coordinates.
+     * The conversion takes the device pixel ratio into account.
+     */
+    QPoint toQPoint(const SbVec2s&) const;
+
+    /** Converts Qt coordinates into Inventor coordinates.
+     * The conversion takes the device pixel ratio into account.
+     */
+    SbVec2s fromQPoint(const QPoint&) const;
+
     /** Returns the near plane represented by its normal and base point. */
     void getNearPlane(SbVec3f& rcPt, SbVec3f& rcNormal) const;
+
     /** Returns the far plane represented by its normal and base point. */
     void getFarPlane(SbVec3f& rcPt, SbVec3f& rcNormal) const;
+
     /** Adds or remove a manipulator to/from the scenegraph. */
     void toggleClippingPlane(int toggle=-1, bool beforeEditing=false,
             bool noManip=false, const Base::Placement &pla = Base::Placement());
+
     /** Checks whether a clipping plane is set or not. */
     bool hasClippingPlane() const;
+
     /** Project the given normalized 2d point onto the near plane */
     SbVec3f projectOnNearPlane(const SbVec2f&) const;
+
     /** Project the given normalized 2d point onto the far plane */
     SbVec3f projectOnFarPlane(const SbVec2f&) const;
+
     /** Project the given 2d point to a line */
     void projectPointToLine(const SbVec2s&, SbVec3f& pt1, SbVec3f& pt2) const;
+
     /** Get the normalized position of the 2d point. */
     SbVec2f getNormalizedPosition(const SbVec2s&) const;
     //@}

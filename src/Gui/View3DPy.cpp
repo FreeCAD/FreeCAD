@@ -161,8 +161,10 @@ void View3DInventorPy::init_type()
         "\n"
         "Return the according 3D point on the focal plane to the given 2D point (in\n"
         "pixel coordinates).\n");
-    add_varargs_method("getPointOnScreen",&View3DInventorPy::getPointOnScreen,
-        "getPointOnScreen(3D vector) -> pixel coords (as integer)\n"
+    add_varargs_method("getPointOnScreen",&View3DInventorPy::getPointOnViewport,
+        "Same as getPointOnViewport");
+    add_varargs_method("getPointOnViewport",&View3DInventorPy::getPointOnViewport,
+        "getPointOnViewport(3D vector) -> pixel coords (as integer)\n"
         "\n"
         "Return the projected 3D point (in pixel coordinates).\n");
     add_varargs_method("projectPointToLine",&View3DInventorPy::projectPointToLine,
@@ -1312,9 +1314,11 @@ Py::Object View3DInventorPy::getCursorPos(const Py::Tuple& args)
         throw Py::Exception();
     try {
         QPoint pos = getView3DIventorPtr()->mapFromGlobal(QCursor::pos());
+        auto viewer = getView3DIventorPtr()->getViewer();
+        SbVec2s vec = viewer->fromQPoint(pos);
         Py::Tuple tuple(2);
-        tuple.setItem(0, Py::Int(pos.x()));
-        tuple.setItem(1, Py::Int(getView3DIventorPtr()->height()-pos.y()-1));
+        tuple.setItem(0, Py::Int(vec[0]));
+        tuple.setItem(1, Py::Int(vec[1]));
         return tuple;
     }
     catch (const Py::Exception&) {
@@ -1577,7 +1581,7 @@ Py::Object View3DInventorPy::getPointOnFocalPlane(const Py::Tuple& args)
     }
 }
 
-Py::Object View3DInventorPy::getPointOnScreen(const Py::Tuple& args)
+Py::Object View3DInventorPy::getPointOnViewport(const Py::Tuple& args)
 {
     PyObject* v;
     double vx,vy,vz;
@@ -1595,7 +1599,7 @@ Py::Object View3DInventorPy::getPointOnScreen(const Py::Tuple& args)
     }
 
     try {
-        SbVec2s pt = getView3DIventorPtr()->getViewer()->getPointOnScreen(SbVec3f(vx,vy,vz));
+        SbVec2s pt = getView3DIventorPtr()->getViewer()->getPointOnViewport(SbVec3f(vx,vy,vz));
         Py::Tuple tuple(2);
         tuple.setItem(0, Py::Int(pt[0]));
         tuple.setItem(1, Py::Int(pt[1]));

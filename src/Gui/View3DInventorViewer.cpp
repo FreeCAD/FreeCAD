@@ -2408,7 +2408,7 @@ SbVec3f View3DInventorViewer::getPointOnFocalPlane(const SbVec2s& pnt) const
     return pt;
 }
 
-SbVec2s View3DInventorViewer::getPointOnScreen(const SbVec3f& pnt) const
+SbVec2s View3DInventorViewer::getPointOnViewport(const SbVec3f& pnt) const
 {
     const SbViewportRegion& vp = this->getSoRenderManager()->getViewportRegion();
     float fRatio = vp.getViewportAspectRatio();
@@ -2422,6 +2422,34 @@ SbVec2s View3DInventorViewer::getPointOnScreen(const SbVec3f& pnt) const
     auto y = short(std::roundf(pt[1] * sp[1]));
 
     return SbVec2s(x, y);
+}
+
+QPoint View3DInventorViewer::toQPoint(const SbVec2s& pnt) const
+{
+    const SbViewportRegion& vp = this->getSoRenderManager()->getViewportRegion();
+    const SbVec2s& vps = vp.getViewportSizePixels();
+    int xpos = pnt[0];
+    int ypos = vps[1] - pnt[1] - 1;
+
+    qreal dev_pix_ratio = devicePixelRatio();
+    xpos = int(std::roundf(xpos / dev_pix_ratio));
+    ypos = int(std::roundf(ypos / dev_pix_ratio));
+
+    return QPoint(xpos, ypos);
+}
+
+SbVec2s View3DInventorViewer::fromQPoint(const QPoint& pnt) const
+{
+    const SbViewportRegion& vp = this->getSoRenderManager()->getViewportRegion();
+    const SbVec2s& vps = vp.getViewportSizePixels();
+    int xpos = pnt.x();
+    int ypos = pnt.y();
+
+    qreal dev_pix_ratio = devicePixelRatio();
+    xpos = int(std::roundf(xpos * dev_pix_ratio));
+    ypos = int(std::roundf(ypos * dev_pix_ratio));
+
+    return SbVec2s(short(xpos), vps[1] - short(ypos) - 1);
 }
 
 void View3DInventorViewer::getNearPlane(SbVec3f& rcPt, SbVec3f& rcNormal) const
