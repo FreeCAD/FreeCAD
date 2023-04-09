@@ -68,7 +68,7 @@ ViewProviderDimension::ViewProviderDimension()
     ADD_PROPERTY_TYPE(Font, (Preferences::labelFont().c_str()),
                                               group, App::Prop_None, "The name of the font to use");
     ADD_PROPERTY_TYPE(Fontsize, (Preferences::dimFontSizeMM()),
-    								 group, (App::PropertyType)(App::Prop_None),
+                                     group, (App::PropertyType)(App::Prop_None),
                                                                      "Dimension text size in units");
     ADD_PROPERTY_TYPE(LineWidth, (prefWeight()), group, (App::PropertyType)(App::Prop_None),
                                                         "Dimension line width");
