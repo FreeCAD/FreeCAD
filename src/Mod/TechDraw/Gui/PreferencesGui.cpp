@@ -48,8 +48,7 @@ using namespace TechDraw;
 QFont PreferencesGui::labelFontQFont()
 {
     QString name = Preferences::labelFontQString();
-    QFont f(name);
-    return f;
+    return QFont(name);
 }
 
 int PreferencesGui::labelFontSizePX()
@@ -101,8 +100,7 @@ QColor PreferencesGui::sectionLineQColor()
 
 App::Color PreferencesGui::centerColor()
 {
-    App::Color fcColor = App::Color((uint32_t) Preferences::getPreferenceGroup("Decorations")->GetUnsigned("CenterColor", 0x000000FF));
-    return fcColor;
+    return App::Color((uint32_t) Preferences::getPreferenceGroup("Decorations")->GetUnsigned("CenterColor", 0x000000FF));
 }
 
 QColor PreferencesGui::centerQColor()
@@ -146,21 +144,18 @@ QColor PreferencesGui::leaderQColor()
 
 int PreferencesGui::dimArrowStyle()
 {
-    int style = Preferences::getPreferenceGroup("Dimensions")->GetInt("ArrowStyle", 0);
-    return style;
+    return Preferences::getPreferenceGroup("Dimensions")->GetInt("ArrowStyle", 0);
 }
 
 double PreferencesGui::dimArrowSize()
 {
-    double size = Preferences::getPreferenceGroup("Dimensions")->GetFloat("ArrowSize", Preferences::dimFontSizeMM());
-    return size;
+    return Preferences::getPreferenceGroup("Dimensions")->GetFloat("ArrowSize", Preferences::dimFontSizeMM());
 }
 
 
 double PreferencesGui::edgeFuzz()
 {
-    double result = Preferences::getPreferenceGroup("General")->GetFloat("EdgeFuzz", 10.0);
-    return result;
+    return Preferences::getPreferenceGroup("General")->GetFloat("EdgeFuzz", 10.0);
 }
 
 Qt::PenStyle PreferencesGui::sectionLineStyle()
@@ -207,14 +202,12 @@ QColor PreferencesGui::gridQColor()
 
 double PreferencesGui::gridSpacing()
 {
-    double spacing = Preferences::getPreferenceGroup("General")->GetFloat("gridSpacing", 10.0);
-    return spacing;
+    return Preferences::getPreferenceGroup("General")->GetFloat("gridSpacing", 10.0);
 }
 
 bool PreferencesGui::showGrid()
 {
-    bool show = Preferences::getPreferenceGroup("General")->GetBool("showGrid", false);
-    return show;
+    return Preferences::getPreferenceGroup("General")->GetBool("showGrid", false);
 }
 
 App::Color PreferencesGui::pageColor()
