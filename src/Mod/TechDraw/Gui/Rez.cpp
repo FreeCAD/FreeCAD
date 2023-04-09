@@ -52,8 +52,7 @@ double Rez::guiX(double x)
 
 Base::Vector3d Rez::guiX(Base::Vector3d v)
 {
-    Base::Vector3d result(guiX(v.x), guiX(v.y), guiX(v.z));
-    return result;
+    return Base::Vector3d(guiX(v.x), guiX(v.y), guiX(v.z));
 }
 
 Base::Vector2d Rez::guiX(Base::Vector3d v, bool planar)
@@ -75,8 +74,7 @@ double Rez::appX(double x)
 
 Base::Vector3d Rez::appX(Base::Vector3d v)
 {
-    Base::Vector3d result(appX(v.x), appX(v.y), appX(v.z));
-    return result;
+    return Base::Vector3d(appX(v.x), appX(v.y), appX(v.z));
 }
 
 QPointF Rez::appX(QPointF p)
@@ -89,36 +87,30 @@ QPointF Rez::appX(QPointF p)
 //Misc conversions
 QPointF Rez::guiPt(QPointF p)
 {
-    QPointF result = p;
-    result *= getRezFactor();
-    return result;
+    return p * getRezFactor();
 }
 
 QPointF Rez::appPt(QPointF p)
 {
-    QPointF result(appX(p.x()), appX(p.y()));
-    return result;
+    return QPointF(appX(p.x()), appX(p.y()));
 }
 
 QRectF Rez::guiRect(QRectF r)
 {
-    QRectF result(guiX(r.left()),
+    return QRectF(guiX(r.left()),
                   guiX(r.top()),
                   guiX(r.width()),
                   guiX(r.height()));
-    return result;
 }
 
 QSize Rez::guiSize(QSize s)
 {
-    QSize result((int)guiX(s.width()), (int)guiX(s.height()));
-    return result;
+    return QSize((int)guiX(s.width()), (int)guiX(s.height()));
 }
 
 QSize Rez::appSize(QSize s)
 {
-    QSize result((int)appX(s.width()), (int)appX(s.height()));
-    return result;
+    return QSize((int)appX(s.width()), (int)appX(s.height()));
 }
 
 double Rez::getParameter()

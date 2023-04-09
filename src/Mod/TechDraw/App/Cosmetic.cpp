@@ -179,8 +179,7 @@ TopoDS_Edge CosmeticEdge::TopoDS_EdgeFromVectors(Base::Vector3d pt1, Base::Vecto
     Base::Vector3d p2 = DrawUtil::invertY(pt2);
     gp_Pnt gp1(p1.x, p1.y, p1.z);
     gp_Pnt gp2(p2.x, p2.y, p2.z);
-    TopoDS_Edge e = BRepBuilderAPI_MakeEdge(gp1, gp2);
-    return e;
+    return BRepBuilderAPI_MakeEdge(gp1, gp2);
 }
 
 TechDraw::BaseGeomPtr CosmeticEdge::scaledGeometry(double scale)

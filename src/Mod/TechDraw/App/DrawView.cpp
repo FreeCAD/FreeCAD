@@ -221,8 +221,7 @@ short DrawView::mustExecute() const
 ////you must override this in derived class
 QRectF DrawView::getRect() const
 {
-    QRectF result(0, 0,1, 1);
-    return result;
+    return QRectF(0, 0,1, 1);
 }
 
 //get the rectangle centered on the position

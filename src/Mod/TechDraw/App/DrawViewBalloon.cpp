@@ -244,8 +244,7 @@ Base::Vector3d DrawViewBalloon::getOriginOffset() const
     double ox = OriginX.getValue();
     double oy = OriginY.getValue();
     Base::Vector3d org(ox, oy, 0.0);
-    Base::Vector3d offset = pos - org;
-    return offset;
+    return Base::Vector3d(pos - org);
 }
 
 /*
