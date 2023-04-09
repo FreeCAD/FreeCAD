@@ -487,9 +487,7 @@ Qt::PenStyle QGISectionLine::getSectionStyle()
 //ASME("traditional") vs ISO("reference arrow method") arrows
 int QGISectionLine::getPrefSectionStandard()
 {
-    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter().
-                                         GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Standards");
-    int format = hGrp->GetInt("SectionLineStandard", ISOSTANDARD);
+    int format = Preferences::getPreferenceGroup("Standards")->GetInt("SectionLineStandard", ISOSTANDARD);
     return format;
 }
 

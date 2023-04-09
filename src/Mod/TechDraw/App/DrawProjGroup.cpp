@@ -61,12 +61,7 @@ DrawProjGroup::DrawProjGroup()
     static const char* group = "Base";
     static const char* agroup = "Distribute";
 
-    Base::Reference<ParameterGrp> hGrp = App::GetApplication()
-                                             .GetUserParameter()
-                                             .GetGroup("BaseApp")
-                                             ->GetGroup("Preferences")
-                                             ->GetGroup("Mod/TechDraw/General");
-    bool autoDist = hGrp->GetBool("AutoDist", true);
+    bool autoDist = Preferences::getPreferenceGroup("General")->GetBool("AutoDist", true);
 
     ADD_PROPERTY_TYPE(Source, (nullptr), group, App::Prop_None, "Shape to view");
     Source.setScope(App::LinkScope::Global);

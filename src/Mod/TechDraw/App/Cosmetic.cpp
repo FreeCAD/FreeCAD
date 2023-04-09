@@ -96,9 +96,7 @@ App::Color LineFormat::getDefEdgeColor()
 
 int LineFormat::getDefEdgeStyle()
 {
-    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
-        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Decorations");
-    int style = hGrp->GetInt("CosmoCLStyle", 2);   //dashed
+    int style = Preferences::getPreferenceGroup("Decorations")->GetInt("CosmoCLStyle", 2);   //dashed
     return style;
 }
 
@@ -507,8 +505,6 @@ PyObject* GeomFormat::getPyObject()
 
 bool CosmeticVertex::restoreCosmetic()
 {
-    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
-        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/General");
-    return hGrp->GetBool("restoreCosmetic", true);
+    return Preferences::getPreferenceGroup("General")->GetBool("restoreCosmetic", true);
 }
 

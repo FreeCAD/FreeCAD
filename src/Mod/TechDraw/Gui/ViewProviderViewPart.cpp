@@ -92,11 +92,8 @@ ViewProviderViewPart::ViewProviderViewPart()
     weight = TechDraw::LineGroup::getDefaultWidth("Extra");
     ADD_PROPERTY_TYPE(ExtraWidth, (weight), group, App::Prop_None, "The thickness of LineGroup Extra lines, if enabled");
 
-    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter().GetGroup("BaseApp")->
-                                                    GetGroup("Preferences")->GetGroup("Mod/TechDraw/Decorations");
-
-    double defScale = hGrp->GetFloat("CenterMarkScale", 0.50);
-    bool   defShowCenters = hGrp->GetBool("ShowCenterMarks", false);
+    double defScale = Preferences::getPreferenceGroup("Decorations")->GetFloat("CenterMarkScale", 0.50);
+    bool   defShowCenters = Preferences::getPreferenceGroup("Decorations")->GetBool("ShowCenterMarks", false);
 
     //decorations
     ADD_PROPERTY_TYPE(HorizCenterLine ,(false), dgroup, App::Prop_None, "Show a horizontal centerline through view");
@@ -357,18 +354,14 @@ App::Color ViewProviderViewPart::prefSectionColor()
 
 App::Color ViewProviderViewPart::prefHighlightColor()
 {
-    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
-        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Decorations");
     App::Color fcColor;
-    fcColor.setPackedValue(hGrp->GetUnsigned("HighlightColor", 0x00000000));
+    fcColor.setPackedValue(Preferences::getPreferenceGroup("Decorations")->GetUnsigned("HighlightColor", 0x00000000));
     return fcColor;
 }
 
 int ViewProviderViewPart::prefHighlightStyle()
 {
-    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
-        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Decorations");
-    return hGrp->GetInt("HighlightStyle", 2);
+    return Preferences::getPreferenceGroup("Decorations")->GetInt("HighlightStyle", 2);
 }
 
 

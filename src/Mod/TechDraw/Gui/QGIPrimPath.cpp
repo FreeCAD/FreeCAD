@@ -243,19 +243,15 @@ void QGIPrimPath::setCapStyle(Qt::PenCapStyle c)
 
 Base::Reference<ParameterGrp> QGIPrimPath::getParmGroup()
 {
-    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
-        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Colors");
-    return hGrp;
+    return Preferences::getPreferenceGroup("Colors");
 }
 
 //EdgeCapStyle param changed from UInt (Qt::PenCapStyle) to Int (QComboBox index)
 Qt::PenCapStyle QGIPrimPath::prefCapStyle()
 {
-    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
-        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/General");
     Qt::PenCapStyle result;
     int newStyle;
-    newStyle = hGrp->GetInt("EdgeCapStyle", 32);    //0x00 FlatCap, 0x10 SquareCap, 0x20 RoundCap
+    newStyle = Preferences::getPreferenceGroup("General")->GetInt("EdgeCapStyle", 32);    //0x00 FlatCap, 0x10 SquareCap, 0x20 RoundCap
     switch (newStyle) {
         case 0:
             result = static_cast<Qt::PenCapStyle>(0x20);   //round;

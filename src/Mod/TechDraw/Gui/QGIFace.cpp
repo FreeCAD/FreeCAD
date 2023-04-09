@@ -704,23 +704,13 @@ void QGIFace::setLineWeight(double w) {
 
 void QGIFace::getParameters()
 {
-    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
-        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/PAT");
+    m_maxSeg = Preferences::getPreferenceGroup("PAT")->GetInt("MaxSeg", 10000l);
+    m_maxTile = Preferences::getPreferenceGroup("Decorations")->GetInt("MaxSVGTile", 10000l);
 
-    m_maxSeg = hGrp->GetInt("MaxSeg", 10000l);
-
-    hGrp = App::GetApplication().GetUserParameter()
-        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Decorations");
-    m_maxTile = hGrp->GetInt("MaxSVGTile", 10000l);
-
-    hGrp = App::GetApplication().GetUserParameter()
-        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Colors");
-    App::Color temp {static_cast<uint32_t>(hGrp->GetUnsigned("FaceColor",0xffffffff))};
+    App::Color temp {static_cast<uint32_t>(Preferences::getPreferenceGroup("Colors")->GetUnsigned("FaceColor",0xffffffff))};
     setFillColor(temp.asValue<QColor>());
 
-    hGrp = App::GetApplication().GetUserParameter()
-        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Colors");
-    m_defClearFace = hGrp->GetBool("ClearFace", false);
+    m_defClearFace = Preferences::getPreferenceGroup("Colors")->GetBool("ClearFace", false);
 }
 
 QRectF QGIFace::boundingRect() const
