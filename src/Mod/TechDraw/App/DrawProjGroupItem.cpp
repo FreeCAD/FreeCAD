@@ -97,7 +97,6 @@ bool DrawProjGroupItem::isLocked(void) const
 
 bool DrawProjGroupItem::showLock(void) const
 {
-    bool result = DrawView::showLock();
     DrawProjGroup* parent = getPGroup();
     bool parentLock = false;
     if (parent) {
@@ -106,10 +105,10 @@ bool DrawProjGroupItem::showLock(void) const
 
     if (isAnchor() &&                         //don't show lock for Front if DPG is not locked
         !parentLock) {
-        result = false;
+        return false;
     }
 
-    return result;
+    return DrawView::showLock();
 }
 
 App::DocumentObjectExecReturn *DrawProjGroupItem::execute(void)
@@ -181,15 +180,14 @@ void DrawProjGroupItem::onDocumentRestored()
 
 DrawProjGroup* DrawProjGroupItem::getPGroup() const
 {
-    DrawProjGroup* result = nullptr;
     std::vector<App::DocumentObject*> parent = getInList();
     for (std::vector<App::DocumentObject*>::iterator it = parent.begin(); it != parent.end(); ++it) {
         if ((*it)->getTypeId().isDerivedFrom(DrawProjGroup::getClassTypeId())) {
-            result = dynamic_cast<TechDraw::DrawProjGroup *>(*it);
-            break;
+            DrawProjGroup* result = dynamic_cast<TechDraw::DrawProjGroup *>(*it);
+            return result;
         }
     }
-    return result;
+    return nullptr;
 }
 
 bool DrawProjGroupItem::isAnchor(void) const

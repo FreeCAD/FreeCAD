@@ -741,7 +741,6 @@ void MRichTextEdit::onSelectionChanged()
 bool MRichTextEdit::hasMultipleSizes()
 {
 //    qDebug() << "MRTE::hasMultipleSizes()";
-    bool result = false;
     QTextCursor cursor = f_textedit->textCursor();
     if (cursor.hasSelection()) {
         int begin = cursor.selectionStart();
@@ -761,10 +760,10 @@ bool MRichTextEdit::hasMultipleSizes()
             }
         }
         if (countMap.size() > 1) {
-            result = true;
+            return true;
         }
     }
-    return result;
+    return false;
 }
 
 void MRichTextEdit::setDefFontSize(int fontSize)

@@ -207,13 +207,11 @@ void DrawView::handleXYLock()
 
 short DrawView::mustExecute() const
 {
-    short result = 0;
     if (!isRestoring()) {
-        result  =  (Scale.isTouched()  ||
-                    ScaleType.isTouched());
-    }
-    if ((bool) result) {
-        return result;
+        if (Scale.isTouched() ||
+            ScaleType.isTouched()) {
+            return true;
+        }
     }
     return App::DocumentObject::mustExecute();
 }
@@ -358,16 +356,15 @@ DrawViewClip* DrawView::getClipGroup()
 {
     std::vector<App::DocumentObject*> parent = getInList();
     App::DocumentObject* obj = nullptr;
-    DrawViewClip* result = nullptr;
     for (std::vector<App::DocumentObject*>::iterator it = parent.begin(); it != parent.end(); ++it) {
         if ((*it)->getTypeId().isDerivedFrom(DrawViewClip::getClassTypeId())) {
             obj = (*it);
-            result = dynamic_cast<DrawViewClip*>(obj);
-            break;
+            DrawViewClip* result = dynamic_cast<DrawViewClip*>(obj);
+            return result;
 
         }
     }
-    return result;
+    return nullptr;
 }
 
 double DrawView::autoScale() const

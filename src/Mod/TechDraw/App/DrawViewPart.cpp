@@ -1300,13 +1300,12 @@ void DrawViewPart::unsetupObject()
 //! is this an Isometric projection?
 bool DrawViewPart::isIso() const
 {
-    bool result = false;
     Base::Vector3d dir = Direction.getValue();
     if (DrawUtil::fpCompare(fabs(dir.x), fabs(dir.y))
         && DrawUtil::fpCompare(fabs(dir.x), fabs(dir.z))) {
-        result = true;
+        return true;
     }
-    return result;
+    return false;
 }
 
 bool DrawViewPart::checkXDirection() const

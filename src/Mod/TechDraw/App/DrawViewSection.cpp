@@ -1066,22 +1066,22 @@ TopoDS_Face DrawViewSection::getSectionTopoDSFace(int i)
 
 TechDraw::DrawViewPart* DrawViewSection::getBaseDVP() const
 {
-    TechDraw::DrawViewPart* baseDVP = nullptr;
     App::DocumentObject* base = BaseView.getValue();
     if (base && base->getTypeId().isDerivedFrom(TechDraw::DrawViewPart::getClassTypeId())) {
-        baseDVP = static_cast<TechDraw::DrawViewPart*>(base);
+        TechDraw::DrawViewPart* baseDVP = static_cast<TechDraw::DrawViewPart*>(base);
+        return baseDVP;
     }
-    return baseDVP;
+    return nullptr;
 }
 
 TechDraw::DrawProjGroupItem* DrawViewSection::getBaseDPGI() const
 {
-    TechDraw::DrawProjGroupItem* baseDPGI = nullptr;
     App::DocumentObject* base = BaseView.getValue();
     if (base && base->getTypeId().isDerivedFrom(TechDraw::DrawProjGroupItem::getClassTypeId())) {
-        baseDPGI = static_cast<TechDraw::DrawProjGroupItem*>(base);
+        TechDraw::DrawProjGroupItem* baseDPGI = static_cast<TechDraw::DrawProjGroupItem*>(base);
+        return baseDPGI;
     }
-    return baseDPGI;
+    return nullptr;
 }
 
 // setup / tear down routines
