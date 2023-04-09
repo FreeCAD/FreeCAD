@@ -1192,7 +1192,7 @@ int DrawViewSection::prefCutSurface(void) const
 
 bool DrawViewSection::showSectionEdges(void)
 {
-    return (Preferences::getPreferenceGroup("General")->GetBool("ShowSectionEdges", true));
+    return Preferences::getPreferenceGroup("General")->GetBool("ShowSectionEdges", true);
 }
 
 bool DrawViewSection::trimAfterCut() const { return TrimAfterCut.getValue(); }

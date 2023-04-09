@@ -126,8 +126,7 @@ double ViewProviderWeld::prefFontSize()
 
 double ViewProviderWeld::prefTileTextAdjust()
 {
-    double adjust   = Preferences::getPreferenceGroup("Dimensions")->GetFloat("TileTextAdjust", 0.75);
-    return adjust;
+    return Preferences::getPreferenceGroup("Dimensions")->GetFloat("TileTextAdjust", 0.75);
 }
 
 bool ViewProviderWeld::onDelete(const std::vector<std::string> &)

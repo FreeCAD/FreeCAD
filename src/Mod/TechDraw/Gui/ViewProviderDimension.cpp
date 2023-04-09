@@ -244,8 +244,7 @@ double ViewProviderDimension::prefWeight() const
 
 int ViewProviderDimension::prefStandardAndStyle() const
 {
-    int standardStyle = Preferences::getPreferenceGroup("Dimensions")->GetInt("StandardAndStyle", STD_STYLE_ISO_ORIENTED);
-    return standardStyle;
+    return Preferences::getPreferenceGroup("Dimensions")->GetInt("StandardAndStyle", STD_STYLE_ISO_ORIENTED);
 }
 
 void ViewProviderDimension::handleChangedPropertyType(Base::XMLReader &reader, const char *TypeName, App::Property *prop)

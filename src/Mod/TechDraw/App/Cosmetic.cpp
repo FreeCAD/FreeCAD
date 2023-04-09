@@ -96,8 +96,7 @@ App::Color LineFormat::getDefEdgeColor()
 
 int LineFormat::getDefEdgeStyle()
 {
-    int style = Preferences::getPreferenceGroup("Decorations")->GetInt("CosmoCLStyle", 2);   //dashed
-    return style;
+    return Preferences::getPreferenceGroup("Decorations")->GetInt("CosmoCLStyle", 2);   //dashed
 }
 
 //******************************************

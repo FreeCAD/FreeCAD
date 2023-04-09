@@ -425,7 +425,6 @@ Base::Vector3d ShapeExtractor::getLocation3dFromFeat(App::DocumentObject* obj)
 
 bool ShapeExtractor::prefAdd2d()
 {
-    bool result = Preferences::getPreferenceGroup("General")->GetBool("ShowLoose2d", false);
-    return result;
+    return Preferences::getPreferenceGroup("General")->GetBool("ShowLoose2d", false);
 }
 

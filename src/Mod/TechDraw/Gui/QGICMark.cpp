@@ -101,7 +101,6 @@ QPainterPath QGICMark::shape() const
 
  double QGICMark::getMarkFuzz() const
 {
-    double result = Preferences::getPreferenceGroup("General")->GetFloat("MarkFuzz", 5.0);
-    return result;
+    return Preferences::getPreferenceGroup("General")->GetFloat("MarkFuzz", 5.0);
 }
 

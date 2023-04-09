@@ -428,8 +428,7 @@ QColor TaskCenterLine::getCenterColor()
 
 double TaskCenterLine::getExtendBy()
 {
-    double ext = Preferences::getPreferenceGroup("Decorations")->GetFloat("CosmoCLExtend", 3.0);
-    return ext;
+    return Preferences::getPreferenceGroup("Decorations")->GetFloat("CosmoCLExtend", 3.0);
 }
 
 //******************************************************************************
