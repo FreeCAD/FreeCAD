@@ -158,8 +158,7 @@ std::string CosmeticExtension::addCosmeticEdge(Base::Vector3d start,
     TechDraw::CosmeticEdge* ce = new TechDraw::CosmeticEdge(start, end);
     edges.push_back(ce);
     CosmeticEdges.setValues(edges);
-    std::string result = ce->getTagAsString();
-    return result;
+    return ce->getTagAsString();
 }
 
 std::string CosmeticExtension::addCosmeticEdge(TechDraw::BaseGeomPtr bg)
@@ -169,8 +168,7 @@ std::string CosmeticExtension::addCosmeticEdge(TechDraw::BaseGeomPtr bg)
     TechDraw::CosmeticEdge* ce = new TechDraw::CosmeticEdge(bg);
     edges.push_back(ce);
     CosmeticEdges.setValues(edges);
-    std::string result = ce->getTagAsString();
-    return result;
+    return ce->getTagAsString();
 }
 
 //get CE by unique id
@@ -258,8 +256,7 @@ std::string CosmeticExtension::addCenterLine(Base::Vector3d start,
     TechDraw::CenterLine* cl = new TechDraw::CenterLine(start, end);
     cLines.push_back(cl);
     CenterLines.setValues(cLines);
-    std::string result = cl->getTagAsString();
-    return result;
+    return cl->getTagAsString();
 }
 
 std::string CosmeticExtension::addCenterLine(TechDraw::CenterLine* cl)
@@ -268,8 +265,7 @@ std::string CosmeticExtension::addCenterLine(TechDraw::CenterLine* cl)
     std::vector<CenterLine*> cLines = CenterLines.getValues();
     cLines.push_back(cl);
     CenterLines.setValues(cLines);
-    std::string result = cl->getTagAsString();
-    return result;
+    return cl->getTagAsString();
 }
 
 
@@ -280,8 +276,7 @@ std::string CosmeticExtension::addCenterLine(TechDraw::BaseGeomPtr bg)
     TechDraw::CenterLine* cl = new TechDraw::CenterLine(bg);
     cLines.push_back(cl);
     CenterLines.setValues(cLines);
-    std::string result = cl->getTagAsString();
-    return result;
+    return cl->getTagAsString();
 }
 
 
@@ -361,8 +356,7 @@ std::string CosmeticExtension::addGeomFormat(TechDraw::GeomFormat* gf)
     TechDraw::GeomFormat* newGF = new TechDraw::GeomFormat(gf);
     formats.push_back(newGF);
     GeomFormats.setValues(formats);
-    std::string result = newGF->getTagAsString();
-    return result;
+    return newGF->getTagAsString();
 }
 
 
@@ -407,10 +401,9 @@ TechDraw::GeomFormat* CosmeticExtension::getGeomFormatBySelection(std::string na
 TechDraw::GeomFormat* CosmeticExtension::getGeomFormatBySelection(int i) const
 {
 //    Base::Console().Message("CEx::getCEBySelection(%d)\n", i);
-    std::stringstream ss;
-    ss << "Edge" << i;
-    std::string eName = ss.str();
-    return getGeomFormatBySelection(eName);
+    std::stringstream edgeName;
+    edgeName << "Edge" << i;
+    return getGeomFormatBySelection(edgeName.str());
 }
 
 void CosmeticExtension::removeGeomFormat(std::string delTag)

@@ -82,8 +82,7 @@ bool QGCustomImage::load(QPixmap map)
 
 QSize QGCustomImage::imageSize()
 {
-    QSize result = m_px.size() * scale();
-    return result;
+    return m_px.size() * scale();
 }
 
 void QGCustomImage::paint ( QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget) {

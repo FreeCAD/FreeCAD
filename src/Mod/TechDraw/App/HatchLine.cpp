@@ -73,8 +73,7 @@ double LineSet::getMaxY()
 
 bool LineSet::isDashed()
 {
-    bool result = m_hatchLine.isDashed();
-    return result;
+    return m_hatchLine.isDashed();
 }
 
 //! calculates the apparent start point (ie start of overlay line) for dashed lines
@@ -414,18 +413,16 @@ double PATLineSpec::getSlope()
 
     //only dealing with angles -180:180 for now
     if (angle > 90.0) {
-         angle = -(180.0 - angle);
+        angle = -(180.0 - angle);
     } else if (angle < -90.0) {
         angle = (180 + angle);
     }
-    double slope = tan(angle * M_PI/180.0);
-    return slope;
+    return tan(angle * M_PI/180.0);
 }
 
 bool PATLineSpec::isDashed()
 {
-    bool result = !m_dashParms.empty();
-    return result;
+    return !m_dashParms.empty();
 }
 
 //! X component of distance between lines
@@ -470,8 +467,7 @@ DashSpec DashSpec::reversed()
 {
     std::vector<double> p = get();
     std::reverse(p.begin(), p.end());
-    DashSpec result(p);
-    return result;
+    return DashSpec(p);
 }
 
 void DashSpec::dump(const char* title)

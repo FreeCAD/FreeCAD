@@ -159,10 +159,8 @@ DrawViewPart::~DrawViewPart()
 std::vector<TopoDS_Shape> DrawViewPart::getSourceShape2d() const
 {
     //    Base::Console().Message("DVP::getSourceShape2d()\n");
-    std::vector<TopoDS_Shape> result;
     const std::vector<App::DocumentObject*>& links = getAllSources();
-    result = ShapeExtractor::getShapes2d(links);
-    return result;
+    return ShapeExtractor::getShapes2d(links);
 }
 
 TopoDS_Shape DrawViewPart::getSourceShape() const

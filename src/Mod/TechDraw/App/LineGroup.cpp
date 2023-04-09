@@ -66,17 +66,16 @@ void LineGroup::init()
 
 double LineGroup::getWeight(std::string s)
 {
-    double result = 0.55;
     if (s == "Thin") {
-       result = m_thin;
+       return m_thin;
     } else if (s == "Graphic") {
-       result = m_graphic;
+       return m_graphic;
     } else if (s == "Thick") {
-       result = m_thick;
+       return m_thick;
     } else if (s == "Extra") {
-       result = m_extra;
+       return m_extra;
     }
-    return result;
+    return 0.55;
 }
 
 void LineGroup::setWeight(std::string s, double weight)

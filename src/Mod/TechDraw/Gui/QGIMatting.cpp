@@ -111,9 +111,7 @@ int QGIMatting::getHoleStyle()
 //need this because QQGIG only updates BR when items added/deleted.
 QRectF QGIMatting::boundingRect() const
 {
-    QRectF result ;
-    result = childrenBoundingRect().adjusted(-1, -1, 1,1);
-    return result;
+    return childrenBoundingRect().adjusted(-1, -1, 1,1);
 }
 
 void QGIMatting::paint ( QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget) {
