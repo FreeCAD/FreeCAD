@@ -308,6 +308,22 @@ private:
     StringHasher* _hasher = nullptr;
     mutable Flags _flags;
     mutable QVector<StringIDRef> _sids;
+
+private:
+    StringID([[maybe_unused]] const StringID& other)
+        : _id(0),
+          _flags(StringID::Flag::None) {};
+    StringID([[maybe_unused]] StringID&& other) noexcept
+        : _id(0),
+          _flags(StringID::Flag::None) {};
+    StringID& operator=([[maybe_unused]] const StringID& rhs)
+    {
+        return *this;
+    };// NOLINT
+    StringID& operator=([[maybe_unused]] StringID&& rhs) noexcept
+    {
+        return *this;
+    };
 };
 
 //////////////////////////////////////////////////////////////////////////
@@ -317,7 +333,6 @@ private:
 class StringIDRef
 {
 public:
-
     /// Default construction results in an empty StringIDRef object: it will evaluate to boolean
     /// "false" if queried.
     StringIDRef()
@@ -600,7 +615,7 @@ public:
 
     /// Used predominantly by the unit test code to verify that index is set correctly. In general
     /// user code should not need to call this function.
-    int getIndex()
+    int getIndex() const
     {
         return _index;
     }
@@ -612,7 +627,17 @@ private:
     int _index;
 };
 
-/// A String table to map string from/to a unique integer
+
+/// \brief A bidirectional map  of strings and their integer identifier.
+///
+/// Maps an arbitrary text string to a unique integer ID, maintaining a reference-counted shared
+/// pointer for each. This permits elimination of unused strings based on their reference
+/// count. If a duplicate string is added, no additional copy is made, and a new reference to the
+/// original storage is returned (incrementing the reference counter of the instance).
+///
+/// If the string is longer than a given threshold, instead of storing the string, instead its
+/// SHA1 hash is stored (and the original string discarded). This allows an upper threshold on the
+/// length of a stored string, while still effectively guaranteeing uniqueness in the table.
 class AppExport StringHasher: public Base::Persistence, public Base::Handled
 {
 
@@ -633,38 +658,40 @@ public:
     /** Maps an arbitrary string to an integer
      *
      * @param text: input string.
-     * @param len: length of the string, or -1 if the string is 0 terminated.
-     * @param hashable: whether the string is hashable.
-     * @return Return a shared pointer to the internally stored StringID.
+     * @param len: length of the string: optional if the string is null-terminated.
+     * @param hashable: whether hashing the string is permitted.
+     * @return A shared pointer to the internally-stored StringID.
      *
-     * The function maps an arbitrary text string to a unique integer ID, which
-     * is returned as a shared pointer to reference count the ID so that it is
-     * possible to prune any unused strings.
+     * Maps an arbitrary text string to a unique integer ID, returning a reference-counted shared
+     * pointer to the StringID. This permits elimination of unused strings based on their reference
+     * count. If a duplicate string is added, no additional copy is made, and a new reference to the
+     * original storage is returned (incrementing the reference counter of the instance).
      *
-     * If \c hashable is true and the string is longer than the threshold
-     * setting of this StringHasher, it will be sha1 hashed before storing, and
-     * the original content of the string is discarded. If else, the string is
-     * copied and stored inside a StringID instance.
+     * If \c hashable is true and the string is longer than the threshold setting of this
+     * StringHasher, only the SHA1 hash of the string is stored: the original content of the string
+     * is discarded. If \c hashable is false, the string is copied and stored inside a StringID
+     * instance.
      *
-     * The purpose of function is to provide a short form of a stable string
-     * identification.
+     * The purpose of this function is to provide a short form of a stable string identification.
      */
     StringIDRef getID(const char* text, int len = -1, bool hashable = false);
 
-    /// Option for string string data
+    /// Options for string string data
     enum class Option
     {
-        /// No option
+        /// No option is set
         None = 0,
+
         /// The input data is binary
         Binary = 1 << 0,
-        /** The input data is hashable. If the data length is longer than the
-         * threshold setting of the StringHasher, it will be sha1 hashed before
-         * storing, and the original content of the string is discarded.
-         */
+
+        /// Hashing is permitted for this input data. If the data length is longer than the
+        /// threshold setting of the StringHasher, it will be sha1 hashed before storing, and the
+        /// original content of the string is discarded.
         Hashable = 1 << 1,
-        /// Do not copy the data, assuming the data is constant. If this option
-        // is not set, the data will be copied before storing.
+
+        /// Do not copy the data: assume it is constant and exists for the lifetime of this hasher.
+        /// If this option is not set, the data will be copied before storing.
         NoCopy = 1 << 2,
     };
     using Options = Base::Flags<Option>;
@@ -672,15 +699,10 @@ public:
     /** Map text or binary data to an integer
      *
      * @param data: input data.
-     * @param options: options describing how to store the data. @sa Option.
-     * @return Return a shared pointer to the internally stored StringID.
+     * @param options: options describing how to store the data.
+     * @return A shared pointer to the internally stored StringID.
      *
-     * The function maps an arbitrary text string to a unique integer ID, which
-     * is returned as a shared pointer to reference count the ID so that it is
-     * possible to prune any unused strings.
-     *
-     * The purpose of function is to provide a short form of a stable string
-     * identification.
+     * \sa getID (const char*, int, bool);
      */
     StringIDRef getID(const QByteArray& data, Options options = Option::Hashable);
 
@@ -724,14 +746,15 @@ public:
 
     /** Enable/disable saving all string ID
      *
-     * If disabled, then only save string ID that are used.
+     * If saveAll is true, then compact() does nothing even when called explicitly. Setting
+     * saveAll it to false causes compact() to be run immediately.
      */
     void setSaveAll(bool enable);
     bool getSaveAll() const;
 
     /** Set threshold of string hashing
      *
-     * For hashable string that are longer than the threshold, the string will
+     * For hashable strings that are longer than this threshold, the string will
      * be replaced by its sha1 hash.
      */
     void setThreshold(int threshold);
@@ -744,7 +767,7 @@ public:
      */
     void clearMarks() const;
 
-    /// Compact string storage
+    /// Compact string storage by eliminating unused strings from the table.
     void compact();
 
     class HashMap;
@@ -758,8 +781,14 @@ protected:
     void restoreStreamNew(std::istream& stream, std::size_t count);
 
 private:
-    std::unique_ptr<HashMap> _hashes;
+    std::unique_ptr<HashMap> _hashes;///< Bidirectional map of StringID and its index (a long int).
     mutable std::string _filename;
+
+private:
+    StringHasher(const StringHasher&);
+    StringHasher(StringHasher&&) noexcept;
+    StringHasher& operator=(StringHasher& other);
+    StringHasher& operator=(StringHasher&& other) noexcept;
 };
 }// namespace App
 

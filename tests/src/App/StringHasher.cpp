@@ -6,6 +6,7 @@
 #include <App/StringIDPy.h>
 
 #include <QCryptographicHash>
+#include <array>
 
 class StringIDTest: public ::testing::Test
 {
@@ -1058,6 +1059,310 @@ TEST_F(StringIDRefTest, setPersistent)
 class StringHasherTest: public ::testing::Test
 {
 protected:
-    // void SetUp() override {}
-    // void TearDown() override {}
+    void SetUp() override
+    {
+        _hasher = std::make_unique<App::StringHasher>();
+    }
+
+    void TearDown() override
+    {
+        _hasher.reset();
+    }
+
+    App::StringHasher* Hasher()
+    {
+        return _hasher.get();
+    };
+
+private:
+    std::unique_ptr<App::StringHasher> _hasher;
 };
+
+TEST_F(StringHasherTest, defaultConstructor)
+{
+    // Arrange
+    // Done in Setup()
+
+    // Act
+    // Done in Setup()
+
+    // Assert
+    EXPECT_EQ(0, Hasher()->size());
+}
+
+TEST_F(StringHasherTest, getMemSize)
+{
+    // Arrange
+    // Act
+    // Assert
+}
+
+TEST_F(StringHasherTest, Save)
+{
+    // Arrange
+    // Act
+    // Assert
+}
+
+TEST_F(StringHasherTest, Restore)
+{
+    // Arrange
+    // Act
+    // Assert
+}
+
+TEST_F(StringHasherTest, SaveDocFile)
+{
+    // Arrange
+    // Act
+    // Assert
+}
+
+TEST_F(StringHasherTest, RestoreDocFile)
+{
+    // Arrange
+    // Act
+    // Assert
+}
+
+TEST_F(StringHasherTest, setPersistenceFileName)
+{
+    // Arrange
+    // Act
+    // Assert
+}
+
+TEST_F(StringHasherTest, getPersistenceFileName)
+{
+    // Arrange
+    // Act
+    // Assert
+}
+
+TEST_F(StringHasherTest, getIDFromQByteArrayShort)
+{
+    // Arrange
+    const std::array<char, 5> string {"data"};
+    QByteArray qba(string.data(), string.size());
+    Hasher()->setThreshold(string.size() + 1);
+
+    // Act
+    auto id = Hasher()->getID(qba, App::StringHasher::Option::Hashable);
+
+    // Assert
+    EXPECT_STREQ(string.data(), id.constData());
+    EXPECT_FALSE(id.isHashed());
+    EXPECT_NE(qba.constData(), id.constData());// A copy was made, the pointers differ
+    EXPECT_EQ(2, id.getRefCount());
+}
+
+TEST_F(StringHasherTest, getIDFromQByteArrayLongHashable)
+{
+    // Arrange
+    const std::array<char, 47> string {"data that is longer than our hasher threshold"};
+    QByteArray qba(string.data(), string.size());
+    Hasher()->setThreshold(string.size() - 1);
+
+    // Act
+    auto id = Hasher()->getID(qba, App::StringHasher::Option::Hashable);
+
+    // Assert
+    EXPECT_STRNE(string.data(), id.constData());
+    EXPECT_TRUE(id.isHashed());
+    EXPECT_NE(qba.constData(), id.constData());// A copy was made, the pointers differ
+}
+
+TEST_F(StringHasherTest, getIDFromQByteArrayLongUnhashable)
+{
+    // Arrange
+    const std::array<char, 47> string {"data that is longer than our hasher threshold"};
+    QByteArray qba(string.data(), string.size());
+    Hasher()->setThreshold(string.size() - 1);
+
+    // Act
+    auto id = Hasher()->getID(qba, App::StringHasher::Option::None);
+
+    // Assert
+    EXPECT_STREQ(string.data(), id.constData());
+    EXPECT_FALSE(id.isHashed());
+    EXPECT_NE(qba.constData(), id.constData());// A copy was made, the pointers differ
+}
+
+TEST_F(StringHasherTest, getIDFromQByteArrayNoCopy)
+{
+    // Arrange
+    const std::array<char, 5> string {"data"};
+    QByteArray qba(string.data(), string.size());
+    Hasher()->setThreshold(string.size() + 1);
+
+    // Act
+    auto id = Hasher()->getID(qba, App::StringHasher::Option::NoCopy);
+
+    // Assert
+    EXPECT_STREQ(string.data(), id.constData());
+    EXPECT_EQ(qba.constData(), id.constData());// No copy was made, the pointers are the same
+}
+
+TEST_F(StringHasherTest, getIDFromQByteArrayTwoDifferentStrings)
+{
+    // Arrange
+    const std::array<char, 6> stringA {"dataA"};
+    QByteArray qbaA(stringA.data(), stringA.size());
+    const std::array<char, 6> stringB {"dataB"};
+    QByteArray qbaB(stringB.data(), stringB.size());
+
+    // Act
+    auto idA = Hasher()->getID(qbaA);
+    auto idB = Hasher()->getID(qbaB);
+
+    // Assert
+    EXPECT_EQ(2, Hasher()->size());
+}
+
+TEST_F(StringHasherTest, getIDFromQByteArrayTwoIdenticalStrings)
+{
+    // Arrange
+    const std::array<char, 5> stringA {"data"};
+    QByteArray qbaA(stringA.data(), stringA.size());
+    const std::array<char, 5> stringB {"data"};
+    QByteArray qbaB(stringB.data(), stringB.size());
+
+    // Act
+    auto idA = Hasher()->getID(qbaA);
+    auto idB = Hasher()->getID(qbaB);
+
+    // Assert
+    EXPECT_EQ(1, Hasher()->size());
+}
+
+TEST_F(StringHasherTest, getIDFromQByteArrayBinaryFlag)
+{
+    // Arrange
+    const std::array<char, 5> string {"data"};
+    QByteArray qba(string.data(), string.size());
+
+    // Act
+    auto id = Hasher()->getID(qba, App::StringHasher::Option::Binary);
+
+    // Assert
+    EXPECT_TRUE(id.isBinary());
+}
+
+TEST_F(StringHasherTest, getIDFromCString)
+{
+    // Arrange
+    // Act
+    // Assert
+}
+
+/*
+ * Things that have to be tested for getIDFromMappedName:
+ *   1. With and without postfix (every other path must test both)
+ *   2. Existing entry: short circuits
+ *   3. Raw data and non-raw
+ *   4. Postfix contains # and not
+ *   5. Indexed name and not
+ *   6. sids empty and sids with content
+ *   7. sids whose hasher==this and whose hasher is something else
+ *   8. If sids.size() > 10, something happens to sids
+ *
+ *
+ */
+
+TEST_F(StringHasherTest, getIDFromMappedName)
+{
+    // Arrange
+    // Act
+    // Assert
+}
+
+TEST_F(StringHasherTest, getIDFromIntegerID)
+{
+    // Arrange
+    // Act
+    // Assert
+}
+
+TEST_F(StringHasherTest, getIDFromIndexID)
+{
+    // Arrange
+    // Act
+    // Assert
+}
+
+TEST_F(StringHasherTest, getIDMap)
+{
+    // Arrange
+    // Act
+    // Assert
+}
+
+TEST_F(StringHasherTest, clear)
+{
+    // Arrange
+    // Act
+    // Assert
+}
+
+TEST_F(StringHasherTest, size)
+{
+    // Arrange
+    // Act
+    // Assert
+}
+
+TEST_F(StringHasherTest, count)
+{
+    // Arrange
+    // Act
+    // Assert
+}
+
+TEST_F(StringHasherTest, getPyObject)
+{
+    // Arrange
+    // Act
+    // Assert
+}
+
+TEST_F(StringHasherTest, setSaveAll)
+{
+    // Arrange
+    // Act
+    // Assert
+}
+
+TEST_F(StringHasherTest, getSaveAll)
+{
+    // Arrange
+    // Act
+    // Assert
+}
+
+TEST_F(StringHasherTest, setThreshold)
+{
+    // Arrange
+    // Act
+    // Assert
+}
+
+TEST_F(StringHasherTest, getThreshold)
+{
+    // Arrange
+    // Act
+    // Assert
+}
+
+TEST_F(StringHasherTest, clearMarks)
+{
+    // Arrange
+    // Act
+    // Assert
+}
+
+TEST_F(StringHasherTest, compact)
+{
+    // Arrange
+    // Act
+    // Assert
+}

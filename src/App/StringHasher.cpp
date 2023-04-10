@@ -180,6 +180,23 @@ StringHasher::~StringHasher()
     clear();
 }
 
+StringHasher::StringHasher([[maybe_unused]] StringHasher &&other) noexcept
+{
+    // Private: unimplemented
+}
+
+StringHasher& StringHasher::operator=([[maybe_unused]] StringHasher &other)
+{
+    // Private: unimplemented
+    return *this;
+}
+
+StringHasher& StringHasher::operator=([[maybe_unused]] StringHasher &&other) noexcept
+{
+    // Private: unimplemented
+    return *this;
+}
+
 void StringHasher::setSaveAll(bool enable)
 {
     if (_hashes->SaveAll == enable) {
@@ -195,23 +212,31 @@ void StringHasher::compact()
         return;
     }
 
+    // Make a list of all the table entries that have only a single reference and are not marked
+    // "persistent"
     std::deque<StringIDRef> pendings;
     for (auto& hasher : _hashes->right) {
         if (!hasher.second->isPersistent() && hasher.second->getRefCount() == 1) {
             pendings.emplace_back(hasher.second);
         }
     }
+
+    // Recursively remove the unused StringIDs
     while (!pendings.empty()) {
         StringIDRef sid = pendings.front();
         pendings.pop_front();
+        // Try to erase the map entry for this StringID
         if (_hashes->right.erase(sid.value()) == 0U) {
-            continue;
+            continue;// If nothing was erased, there's nothing more to do
         }
         sid._sid->_hasher = nullptr;
         sid._sid->unref();
         for (auto& hasher : sid._sid->_sids) {
             if (hasher._sid->_hasher == this && !hasher._sid->isPersistent()
                 && hasher._sid->getRefCount() == 2) {
+                // If the related StringID also uses this hasher, is not marked persistent, and has
+                // a current reference count of 2 (which will be its hasher reference and its entry
+                // in the related SIDs list), then prep it for removal as well.
                 pendings.push_back(hasher);
             }
         }
@@ -332,10 +357,10 @@ StringIDRef StringHasher::getID(const Data::MappedName& name, const QVector<Stri
     }
 
     StringIDRef sid(new StringID(lastID() + 1, anID._data));
-    StringID& id = *sid._sid;
+    StringID& newStringID = *sid._sid;
     if (anID._postfix.size() != 0) {
-        id._flags.setFlag(StringID::Flag::Postfixed);
-        id._postfix = anID._postfix;
+        newStringID._flags.setFlag(StringID::Flag::Postfixed);
+        newStringID._postfix = anID._postfix;
     }
 
     int count = 0;
@@ -347,43 +372,50 @@ StringIDRef StringHasher::getID(const Data::MappedName& name, const QVector<Stri
 
     int extra = (postfixRef ? 1 : 0) + (indexRef ? 1 : 0);
     if (count == sids.size() && !postfixRef && !indexRef) {
-        id._sids = sids;
+        newStringID._sids = sids;
     }
     else {
-        id._sids.reserve(count + extra);
+        newStringID._sids.reserve(count + extra);
         if (postfixRef) {
-            id._flags.setFlag(StringID::Flag::PostfixEncoded);
-            id._sids.push_back(postfixRef);
+            newStringID._flags.setFlag(StringID::Flag::PostfixEncoded);
+            newStringID._sids.push_back(postfixRef);
         }
         if (indexRef) {
-            id._flags.setFlag(StringID::Flag::Indexed);
-            id._sids.push_back(indexRef);
+            newStringID._flags.setFlag(StringID::Flag::Indexed);
+            newStringID._sids.push_back(indexRef);
         }
         for (const auto& hasher : sids) {
             if (hasher && hasher._sid->_hasher == this) {
-                id._sids.push_back(hasher);
+                newStringID._sids.push_back(hasher);
             }
         }
     }
-    if (id._sids.size() > 10) {
-        std::sort(id._sids.begin() + extra, id._sids.end());
-        id._sids.erase(std::unique(id._sids.begin() + extra, id._sids.end()), id._sids.end());
+    if (newStringID._sids.size() > 10) {
+        std::sort(newStringID._sids.begin() + extra, newStringID._sids.end());
+        newStringID._sids.erase(std::unique(newStringID._sids.begin() + extra, newStringID._sids.end()),
+            newStringID._sids.end());
     }
 
-    if ((id._postfix.size() != 0) && !indexed) {
-        StringID::IndexID res = StringID::fromString(id._data);
-        if (res.id > 0) {
-            int offset = id.isPostfixEncoded() ? 1 : 0;
-            for (int i = offset; i < id._sids.size(); ++i) {
-                if (id._sids[i].value() == res.id) {
+    // If the new StringID has a postfix, but is not indexed, see if the data string itself
+    // contains an index.
+    if ((newStringID._postfix.size() != 0) && !indexed) {
+        // Use the fromString function to parse the new StringID's data field for a possible index
+        StringID::IndexID res = StringID::fromString(newStringID._data);
+        if (res.id > 0) { // If the data had an index
+            int offset = newStringID.isPostfixEncoded() ? 1 : 0;
+            // Search for the SID with that index
+            for (int i = offset; i < newStringID._sids.size(); ++i) {
+                if (newStringID._sids[i].value() == res.id) {
                     if (i != offset) {
-                        std::swap(id._sids[offset], id._sids[i]);
+                        // If this SID is not already the first element in sids, move it there by
+                        // swapping it with
+                        std::swap(newStringID._sids[offset], newStringID._sids[i]);
                     }
                     if (res.index != 0) {
-                        id._flags.setFlag(StringID::Flag::PrefixIDIndex);
+                        newStringID._flags.setFlag(StringID::Flag::PrefixIDIndex);
                     }
                     else {
-                        id._flags.setFlag(StringID::Flag::PrefixID);
+                        newStringID._flags.setFlag(StringID::Flag::PrefixID);
                     }
                     break;
                 }
