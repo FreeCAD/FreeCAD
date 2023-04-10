@@ -55,8 +55,8 @@ Py::Object CommandActionPy::getAction()
         cmd = Application::Instance->commandManager().getCommandByName(cmdName.c_str());
     }
 
-    if (cmd) {
-        Action* action = cmd->getAction();
+    Action* action = cmd ? cmd->getAction() : nullptr;
+    if (action) {
         PythonWrapper wrap;
         wrap.loadWidgetsModule();
 
