@@ -92,6 +92,12 @@ DrawViewBalloon::DrawViewBalloon()
                       "Distance from symbol to leader kink");
 
     SourceView.setScope(App::LinkScope::Global);
+    // hide the DrawView properties that don't apply to Dimensions
+    ScaleType.setStatus(App::Property::ReadOnly, true);
+    ScaleType.setStatus(App::Property::Hidden, true);
+    Scale.setStatus(App::Property::ReadOnly, true);
+    Scale.setStatus(App::Property::Hidden, true);
+    Rotation.setStatus(App::Property::ReadOnly, true);
     Rotation.setStatus(App::Property::Hidden, true);
     Caption.setStatus(App::Property::Hidden, true);
 }
