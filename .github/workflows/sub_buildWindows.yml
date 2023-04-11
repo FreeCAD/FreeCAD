@@ -115,7 +115,7 @@ jobs:
           -DXercesC_LIBRARY_RELEASE="${{ env.libpackdir }}lib/xerces-c_3.lib"
           -DXercesC_LIBRARY_DEBUG="${{ env.libpackdir }}lib/xerces-c_3D.lib"
           -DFREECAD_COPY_DEPEND_DIRS_TO_BUILD=ON
-          -DFREECAD_COPY_LIBPACK_BIN_TO_BUILD=ON
+          -DFREECAD_COPY_LIBPACK_BIN_TO_BUILD=OFF
           -DFREECAD_COPY_PLUGINS_BIN_TO_BUILD=ON
       - name: Add msbuild to PATH
         uses: microsoft/setup-msbuild@v1.1
@@ -126,6 +126,9 @@ jobs:
       - name: Print Ccache statistics after build
         run: |
           . $env:ccachebindir\ccache -s
+      - name: Move libpack bin folder to build folder # Shorter in time than copying with CMake FREECAD_COPY_LIBPACK_BIN_TO_BUILD
+        run: |
+          Move-Item -Force -Path ${{ env.libpackdir }}bin -Destination ${{ env.builddir }}
       - name: C++ unit tests
         if: false # Disabled because seems to not exist on Windows build
         timeout-minutes: 1

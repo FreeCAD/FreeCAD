@@ -294,8 +294,7 @@ double QGIRichAnno::prefPointSize()
 //    double mmToPts = 2.83;  //theoretical value
     double mmToPts = 2.00;  //practical value. seems to be reasonable for common fonts.
 
-    double ptsSize = round(fontSize * mmToPts);
-    return ptsSize;
+    return round(fontSize * mmToPts);
 }
 
 void QGIRichAnno::mouseDoubleClickEvent(QGraphicsSceneMouseEvent* event) {

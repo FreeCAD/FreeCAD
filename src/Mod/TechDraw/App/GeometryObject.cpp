@@ -994,16 +994,14 @@ Base::Vector3d TechDraw::findCentroidVec(const TopoDS_Shape& shape, const Base::
 {
     //    Base::Console().Message("GO::findCentroidVec() - 1\n");
     gp_Pnt p = TechDraw::findCentroid(shape, direction);
-    Base::Vector3d result(p.X(), p.Y(), p.Z());
-    return result;
+    return Base::Vector3d(p.X(), p.Y(), p.Z());
 }
 
 Base::Vector3d TechDraw::findCentroidVec(const TopoDS_Shape& shape, const gp_Ax2& cs)
 {
     //    Base::Console().Message("GO::findCentroidVec() - 2\n");
     gp_Pnt p = TechDraw::findCentroid(shape, cs);
-    Base::Vector3d result(p.X(), p.Y(), p.Z());
-    return result;
+    return Base::Vector3d(p.X(), p.Y(), p.Z());
 }
 
 //! Returns the XY plane center of shape with respect to coordSys

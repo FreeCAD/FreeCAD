@@ -434,6 +434,5 @@ std::pair<Base::Vector3d, Base::Vector3d> DrawGuiUtil::getProjDirFromFace(App::D
         }
     }
 
-    dirs = std::make_pair(projDir, rotVec);
-    return dirs;
+    return std::make_pair(projDir, rotVec);
 }

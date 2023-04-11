@@ -393,6 +393,7 @@ void  Workbench::addPermanentMenuItems(MenuItem* mb) const
 
 void Workbench::activated()
 {
+    Application::Instance->commandManager().signalPyCmdInitialized();
 }
 
 void Workbench::deactivated()

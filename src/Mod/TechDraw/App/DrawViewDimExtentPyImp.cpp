@@ -38,8 +38,7 @@ std::string DrawViewDimExtentPy::representation() const
 PyObject* DrawViewDimExtentPy::tbd(PyObject* args)
 {
     (void) args;
-    PyObject *pyText = nullptr;
-    return pyText;
+    return nullptr;
 }
 
 

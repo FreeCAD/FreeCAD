@@ -68,7 +68,7 @@ ViewProviderDimension::ViewProviderDimension()
     ADD_PROPERTY_TYPE(Font, (Preferences::labelFont().c_str()),
                                               group, App::Prop_None, "The name of the font to use");
     ADD_PROPERTY_TYPE(Fontsize, (Preferences::dimFontSizeMM()),
-    								 group, (App::PropertyType)(App::Prop_None),
+                                     group, (App::PropertyType)(App::Prop_None),
                                                                      "Dimension text size in units");
     ADD_PROPERTY_TYPE(LineWidth, (prefWeight()), group, (App::PropertyType)(App::Prop_None),
                                                         "Dimension line width");
@@ -244,11 +244,7 @@ double ViewProviderDimension::prefWeight() const
 
 int ViewProviderDimension::prefStandardAndStyle() const
 {
-    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
-                                        .GetGroup("BaseApp")->GetGroup("Preferences")->
-                                         GetGroup("Mod/TechDraw/Dimensions");
-    int standardStyle = hGrp->GetInt("StandardAndStyle", STD_STYLE_ISO_ORIENTED);
-    return standardStyle;
+    return Preferences::getPreferenceGroup("Dimensions")->GetInt("StandardAndStyle", STD_STYLE_ISO_ORIENTED);
 }
 
 void ViewProviderDimension::handleChangedPropertyType(Base::XMLReader &reader, const char *TypeName, App::Property *prop)

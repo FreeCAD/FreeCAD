@@ -531,8 +531,7 @@ QPointF TaskDetail::getAnchorScene()
     Base::Vector3d xyScene = Rez::guiX(basePos);
     Base::Vector3d anchorOffsetScene = Rez::guiX(anchorPos) * scale;
     Base::Vector3d netPos = xyScene + anchorOffsetScene;
-    QPointF qAnchor(netPos.x, netPos.y);
-    return qAnchor;
+    return QPointF(netPos.x, netPos.y);
 }
 
 // protects against stale pointers

@@ -62,6 +62,7 @@
 #include "AxisOriginPy.h"
 #include "BitmapFactory.h"
 #include "Command.h"
+#include "CommandActionPy.h"
 #include "CommandPy.h"
 #include "Control.h"
 #include "DlgSettingsCacheDirectory.h"
@@ -468,6 +469,10 @@ Application::Application(bool GUIenabled)
         Py::Module(module).setAttr(std::string("Control"),
             Py::Object(Gui::TaskView::ControlPy::getInstance(), true));
         Gui::TaskView::TaskDialogPy::init_type();
+
+        CommandActionPy::init_type();
+        Base::Interpreter().addType(CommandActionPy::type_object(),
+            module, "CommandAction");
 
         Base::Interpreter().addType(&LinkViewPy::Type, module, "LinkView");
         Base::Interpreter().addType(&AxisOriginPy::Type, module, "AxisOrigin");

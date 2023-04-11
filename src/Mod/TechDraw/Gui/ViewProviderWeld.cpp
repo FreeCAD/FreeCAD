@@ -126,11 +126,7 @@ double ViewProviderWeld::prefFontSize()
 
 double ViewProviderWeld::prefTileTextAdjust()
 {
-    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
-                                         .GetGroup("BaseApp")->GetGroup("Preferences")->
-                                 GetGroup("Mod/TechDraw/Dimensions");
-    double adjust   = hGrp->GetFloat("TileTextAdjust", 0.75);
-    return adjust;
+    return Preferences::getPreferenceGroup("Dimensions")->GetFloat("TileTextAdjust", 0.75);
 }
 
 bool ViewProviderWeld::onDelete(const std::vector<std::string> &)

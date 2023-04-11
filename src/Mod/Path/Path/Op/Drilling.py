@@ -172,8 +172,12 @@ class ObjectDrilling(PathCircularHoleBase.ObjectOp):
             "Drill",
             QT_TRANSLATE_NOOP("App::Property", "How far the drilling depth is extended"),
         )
-        obj.addProperty("App::PropertyBool", "KeepToolDown", "Drill",
-            QT_TRANSLATE_NOOP("App::Property", "Apply G99 retraction: only retract to RetractHeight between holes in this operation"))
+        obj.addProperty(
+            "App::PropertyBool", "KeepToolDown", "Drill",
+            QT_TRANSLATE_NOOP(
+                "App::Property",
+                "Apply G99 retraction: only retract to RetractHeight between holes in this operation")
+        )
 
         for n in self.propertyEnumerations():
             setattr(obj, n[0], n[1])
@@ -199,11 +203,15 @@ class ObjectDrilling(PathCircularHoleBase.ObjectOp):
         elif obj.ExtraOffset == "2x Drill Tip":
             endoffset = PathUtils.drillTipLength(self.tool) * 2
 
-        if not hasattr(obj,"KeepToolDown"):
-            obj.addProperty("App::PropertyBool", "KeepToolDown", "Drill",
-                QT_TRANSLATE_NOOP("App::Property", "Apply G99 retraction: only retract to RetractHeight between holes in this operation"))
+        if not hasattr(obj, "KeepToolDown"):
+            obj.addProperty(
+                "App::PropertyBool", "KeepToolDown", "Drill",
+                QT_TRANSLATE_NOOP(
+                    "App::Property",
+                    "Apply G99 retraction: only retract to RetractHeight between holes in this operation")
+            )
 
-        if not hasattr(obj,"RetractMode"):
+        if not hasattr(obj, "RetractMode"):
             obj.addProperty(
                 "App::PropertyEnumeration",
                 "RetractMode",
@@ -213,14 +221,13 @@ class ObjectDrilling(PathCircularHoleBase.ObjectOp):
                     "Controls tool retract height between holes in same op, Default=G98: safety height"
                 ),
             )
-			# ensure new enums exist in old class
+            # ensure new enums exist in old class
             for n in self.propertyEnumerations():
                 setattr(obj, n[0], n[1])
 
-
         # http://linuxcnc.org/docs/html/gcode/g-code.html#gcode:g98-g99
-        if obj.KeepToolDown : obj.RetractMode = "G99"
-        else : obj.RetractMode = "G98"
+        if obj.KeepToolDown: obj.RetractMode = "G99"
+        else: obj.RetractMode = "G98"
         self.commandlist.append(Path.Command(obj.RetractMode))
 
         holes = PathUtils.sort_locations(holes, ["x", "y"])
@@ -229,8 +236,6 @@ class ObjectDrilling(PathCircularHoleBase.ObjectOp):
         # target shapes should be factored out for re-use.
         # This will likely mean refactoring upstream CircularHoleBase to pass
         # spotshapes instead of holes.
-
-        startHeight = obj.StartDepth.Value + self.job.SetupSheet.SafeHeightOffset.Value
 
         edgelist = []
         for hole in holes:
@@ -247,17 +252,11 @@ class ObjectDrilling(PathCircularHoleBase.ObjectOp):
 
             startPoint = edge.Vertexes[0].Point
 
-#            command = Path.Command("G0", {"X": startPoint.x, "Y": startPoint.y})
-#            self.commandlist.append(command)
-#            machine.addCommand(command)
-
-#            command = Path.Command("G0", {"Z": startHeight})
-#            self.commandlist.append(command)
-#            machine.addCommand(command)
-
-            # command = Path.Command("G1", {"Z": obj.StartDepth.Value})
-            # self.commandlist.append(command)
-            # machine.addCommand(command)
+            # G81,83 will do this move anyway but FreeCAD sets feedrate according to _isVertical,
+            # so do this explicitly before drilling.
+            command = Path.Command("G0", {"X": startPoint.x, "Y": startPoint.y})
+            self.commandlist.append(command)
+            machine.addCommand(command)
 
             # Technical Debt:  We are assuming the edges are aligned.
             # This assumption should be corrected and the necessary rotations
@@ -300,7 +299,7 @@ class ObjectDrilling(PathCircularHoleBase.ObjectOp):
         """opSetDefaultValues(obj, job) ... set default value for RetractHeight"""
         obj.ExtraOffset = "None"
         obj.KeepToolDown = False  # default to safest option: G98
-        
+
         if hasattr(job.SetupSheet, "RetractHeight"):
             obj.RetractHeight = job.SetupSheet.RetractHeight
         elif self.applyExpression(
@@ -332,7 +331,7 @@ def SetupProperties():
     setup.append("RetractMode")
     setup.append("ExtraOffset")
     setup.append("RetractHeight")
-    setup.append("KeepToolDown")    
+    setup.append("KeepToolDown")
     return setup
 
 

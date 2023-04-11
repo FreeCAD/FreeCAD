@@ -450,13 +450,7 @@ double DrawViewDetail::getFudgeRadius() { return Radius.getValue() * m_fudge; }
 
 bool DrawViewDetail::debugDetail() const
 {
-    Base::Reference<ParameterGrp> hGrp = App::GetApplication()
-                                             .GetUserParameter()
-                                             .GetGroup("BaseApp")
-                                             ->GetGroup("Preferences")
-                                             ->GetGroup("Mod/TechDraw/debug");
-
-    return hGrp->GetBool("debugDetail", false);
+    return Preferences::getPreferenceGroup("debug")->GetBool("debugDetail", false);
 }
 
 void DrawViewDetail::unsetupObject()
