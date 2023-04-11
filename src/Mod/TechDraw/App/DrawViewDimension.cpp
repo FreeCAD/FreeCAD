@@ -1817,12 +1817,7 @@ bool DrawViewDimension::hasOverUnderTolerance() const
 
 bool DrawViewDimension::showUnits() const
 {
-    Base::Reference<ParameterGrp> hGrp = App::GetApplication()
-                                             .GetUserParameter()
-                                             .GetGroup("BaseApp")
-                                             ->GetGroup("Preferences")
-                                             ->GetGroup("Mod/TechDraw/Dimensions");
-    return hGrp->GetBool("ShowUnits", false);
+    return Preferences::getPreferenceGroup("Dimensions")->GetBool("ShowUnits", false);
 }
 
 bool DrawViewDimension::useDecimals() const { return Preferences::useGlobalDecimals(); }
@@ -1833,12 +1828,7 @@ std::string DrawViewDimension::getPrefixForDimType() const
         return "R";
     }
     else if (Type.isValue("Diameter")) {
-        Base::Reference<ParameterGrp> hGrp = App::GetApplication()
-                                                 .GetUserParameter()
-                                                 .GetGroup("BaseApp")
-                                                 ->GetGroup("Preferences")
-                                                 ->GetGroup("Mod/TechDraw/Dimensions");
-        return std::string(hGrp->GetASCII("DiameterSymbol", "\xe2\x8c\x80"));// Diameter symbol
+        return std::string(Preferences::getPreferenceGroup("Dimensions")->GetASCII("DiameterSymbol", "\xe2\x8c\x80"));// Diameter symbol
     }
 
     return "";

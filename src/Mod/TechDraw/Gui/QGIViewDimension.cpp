@@ -400,33 +400,15 @@ void QGIDatumLabel::setUnitString(QString text)
 
 int QGIDatumLabel::getPrecision()
 {
-    int precision;
-    bool global = false;
-    global = Preferences::useGlobalDecimals();
-    if (global) {
-        precision = Base::UnitsApi::getDecimals();
+    if (Preferences::useGlobalDecimals()) {
+        return Base::UnitsApi::getDecimals();
     }
-    else {
-        Base::Reference<ParameterGrp> hGrp = App::GetApplication()
-                                                 .GetUserParameter()
-                                                 .GetGroup("BaseApp")
-                                                 ->GetGroup("Preferences")
-                                                 ->GetGroup("Mod/TechDraw/Dimensions");
-        precision = hGrp->GetInt("AltDecimals", 2);
-    }
-    return precision;
+    return Preferences::getPreferenceGroup("Dimensions")->GetInt("AltDecimals", 2);
 }
 
 double QGIDatumLabel::getTolAdjust()
 {
-    double adjust;
-    Base::Reference<ParameterGrp> hGrp = App::GetApplication()
-                                             .GetUserParameter()
-                                             .GetGroup("BaseApp")
-                                             ->GetGroup("Preferences")
-                                             ->GetGroup("Mod/TechDraw/Dimensions");
-    adjust = hGrp->GetFloat("TolSizeAdjust", 0.50);
-    return adjust;
+    return Preferences::getPreferenceGroup("Dimensions")->GetFloat("TolSizeAdjust", 0.50);
 }
 
 

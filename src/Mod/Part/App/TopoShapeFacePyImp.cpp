@@ -757,6 +757,40 @@ PyObject* TopoShapeFacePy::validate(PyObject *args)
     }
 }
 
+PyObject* TopoShapeFacePy::countNodes(PyObject *args)
+{
+    if (!PyArg_ParseTuple(args, ""))
+        return nullptr;
+
+    const TopoDS_Shape& shape = this->getTopoShapePtr()->getShape();
+    TopoDS_Face aFace = TopoDS::Face(shape);
+    TopLoc_Location aLoc;
+    const Handle(Poly_Triangulation)& aTriangulation = BRep_Tool::Triangulation(aFace, aLoc);
+    int count = 0;
+    if (!aTriangulation.IsNull()) {
+        count = aTriangulation->NbNodes();
+    }
+
+    return Py::new_reference_to(Py::Long(count));
+}
+
+PyObject* TopoShapeFacePy::countTriangles(PyObject *args)
+{
+    if (!PyArg_ParseTuple(args, ""))
+        return nullptr;
+
+    const TopoDS_Shape& shape = this->getTopoShapePtr()->getShape();
+    TopoDS_Face aFace = TopoDS::Face(shape);
+    TopLoc_Location aLoc;
+    const Handle(Poly_Triangulation)& aTriangulation = BRep_Tool::Triangulation(aFace, aLoc);
+    int count = 0;
+    if (!aTriangulation.IsNull()) {
+        count = aTriangulation->NbTriangles();
+    }
+
+    return Py::new_reference_to(Py::Long(count));
+}
+
 PyObject* TopoShapeFacePy::curveOnSurface(PyObject *args)
 {
     PyObject* e;

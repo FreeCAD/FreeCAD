@@ -570,24 +570,18 @@ void DrawView::setScaleAttribute()
 
 int DrawView::prefScaleType()
 {
-    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
-          .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/General");
-    int result = hGrp->GetInt("DefaultScaleType", 0);
-    return result;
+    return Preferences::getPreferenceGroup("General")->GetInt("DefaultScaleType", 0);
 }
 
 double DrawView::prefScale()
 {
-    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
-          .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/General");
-    double result = hGrp->GetFloat("DefaultViewScale", 1.0);
     if (ScaleType.isValue("Page")) {
         auto page = findParentPage();
         if (page) {
-            result = page->Scale.getValue();
+            return page->Scale.getValue();
         }
     }
-    return result;
+    return Preferences::getPreferenceGroup("General")->GetFloat("DefaultViewScale", 1.0);
 }
 
 void DrawView::requestPaint()

@@ -32,7 +32,6 @@
 # include <TopoDS_Vertex.hxx>
 #endif
 
-#include <App/Application.h>
 #include <App/Document.h>
 #include <App/GroupExtension.h>
 #include <App/Link.h>
@@ -45,6 +44,7 @@
 
 #include "ShapeExtractor.h"
 #include "DrawUtil.h"
+#include "Preferences.h"
 
 
 using namespace TechDraw;
@@ -425,9 +425,6 @@ Base::Vector3d ShapeExtractor::getLocation3dFromFeat(App::DocumentObject* obj)
 
 bool ShapeExtractor::prefAdd2d()
 {
-    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
-          .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/General");
-    bool result = hGrp->GetBool("ShowLoose2d", false);
-    return result;
+    return Preferences::getPreferenceGroup("General")->GetBool("ShowLoose2d", false);
 }
 

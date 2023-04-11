@@ -57,7 +57,6 @@
 #include <gp_Vec.hxx>
 #endif
 
-#include <App/Application.h>
 #include <Base/Console.h>
 #include <Base/FileInfo.h>
 #include <Base/Parameter.h>
@@ -68,6 +67,7 @@
 #include "DrawUtil.h"
 #include "GeometryObject.h"
 #include "LineGroup.h"
+#include "Preferences.h"
 
 
 using namespace TechDraw;
@@ -979,12 +979,7 @@ bool DrawUtil::isCrazy(TopoDS_Edge e)
         return true;
     }
 
-    Base::Reference<ParameterGrp> hGrp = App::GetApplication()
-                                             .GetUserParameter()
-                                             .GetGroup("BaseApp")
-                                             ->GetGroup("Preferences")
-                                             ->GetGroup("Mod/TechDraw/debug");
-    bool crazyOK = hGrp->GetBool("allowCrazyEdge", false);
+    bool crazyOK = Preferences::getPreferenceGroup("debug")->GetBool("allowCrazyEdge", false);
     if (crazyOK) {
         return false;
     }
