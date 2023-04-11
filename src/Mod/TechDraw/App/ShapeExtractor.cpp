@@ -115,7 +115,6 @@ TopoDS_Shape ShapeExtractor::getShapes(const std::vector<App::DocumentObject*> l
     BRep_Builder builder;
     TopoDS_Compound comp;
     builder.MakeCompound(comp);
-    bool found = false;
     for (auto& s:sourceShapes) {
         if (s.IsNull()) {
             continue;

@@ -166,7 +166,6 @@ int LandmarkDimension::getRefType() const
 
 DrawViewPart* LandmarkDimension::getViewPart() const
 {
-    DrawViewPart* result = nullptr;
     std::vector<App::DocumentObject*> refs2d = References2D.getValues();
     App::DocumentObject* obj = refs2d.front();
     DrawViewPart* dvp = dynamic_cast<DrawViewPart*>(obj);
