@@ -71,6 +71,12 @@ public:
 + if (self.export.RichCompare):
     static PyObject * richCompare(PyObject *v, PyObject *w, int op);
 -
++ if (self.export.DescriptorGetter):
+    static PyObject* descriptorGetter(PyObject* self, PyObject* obj, PyObject* type);
+-
++ if (self.export.DescriptorSetter):
+    static int descriptorSetter(PyObject* self, PyObject* obj, PyObject* value);
+-
     static PyGetSetDef    GetterSetter[];
     virtual PyTypeObject *GetType() {return &Type;}
 
@@ -325,8 +331,16 @@ PyTypeObject @self.export.Name@::Type = {
     @self.export.Namespace@::@self.export.Name@::GetterSetter,                     /*tp_getset */
     &@self.export.FatherNamespace@::@self.export.Father@::Type,                        /*tp_base */
     nullptr,                                          /*tp_dict */
++ if (self.export.DescriptorGetter):
+    @self.export.Namespace@::@self.export.Name@::descriptorGetter,                       /*tp_descr_get */
+= else:
     nullptr,                                          /*tp_descr_get */
+-
++ if (self.export.DescriptorSetter):
+    @self.export.Namespace@::@self.export.Name@::descriptorSetter,                       /*tp_descr_set */
+= else:
     nullptr,                                          /*tp_descr_set */
+-
     0,                                                /*tp_dictoffset */
     __PyInit,                                         /*tp_init */
     nullptr,                                          /*tp_alloc */
@@ -1125,6 +1139,22 @@ int @self.export.Name@::setCustomAttributes(const char* /*attr*/, PyObject* /*ob
     return 0; 
 }
 -
+
++ if (self.export.DescriptorGetter):
+PyObject* @self.export.Name@::descriptorGetter(PyObject* self, PyObject* obj, PyObject* type)
+{
+    PyErr_SetString(PyExc_NotImplementedError, "Not yet implemented");
+    return nullptr;
+}
+-
+
++ if (self.export.DescriptorSetter):
+int @self.export.Name@::descriptorSetter(PyObject* self, PyObject* obj, PyObject* value)
+{
+    PyErr_SetString(PyExc_NotImplementedError, "Not yet implemented");
+    return -1;
+}
+-
 #endif
 
 
@@ -1450,6 +1480,22 @@ PyObject *@self.export.Name@::getCustomAttributes(const char* /*attr*/) const
 int @self.export.Name@::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)
 {
     return 0; 
+}
+-
+
++ if (self.export.DescriptorGetter):
+PyObject* @self.export.Name@::descriptorGetter(PyObject* self, PyObject* obj, PyObject* type)
+{
+    PyErr_SetString(PyExc_NotImplementedError, "Not yet implemented");
+    return nullptr;
+}
+-
+
++ if (self.export.DescriptorSetter):
+int @self.export.Name@::descriptorSetter(PyObject* self, PyObject* obj, PyObject* value)
+{
+    PyErr_SetString(PyExc_NotImplementedError, "Not yet implemented");
+    return -1;
 }
 -
 

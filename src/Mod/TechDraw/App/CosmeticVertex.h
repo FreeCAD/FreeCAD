@@ -24,11 +24,10 @@
 #define TECHDRAW_COSMETIC_VERTEX_H
 
 #include "PreCompiled.h"
-#ifndef _PreComp_
-    #include <App/FeaturePython.h>
-    #include <Base/Persistence.h>
-    #include <Base/Vector3D.h>
-#endif
+
+#include <App/FeaturePython.h>
+#include <Base/Persistence.h>
+#include <Base/Vector3D.h>
 
 #include "Geometry.h"
 

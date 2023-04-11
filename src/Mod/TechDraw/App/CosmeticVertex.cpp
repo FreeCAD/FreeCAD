@@ -21,8 +21,11 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <boost/uuid/uuid_generators.hpp>
-#include <boost/uuid/uuid_io.hpp>
+#include "PreCompiled.h"
+#ifndef _PreComp_
+    #include <boost/uuid/uuid_generators.hpp>
+    #include <boost/uuid/uuid_io.hpp>
+#endif // _PreComp_
 
 #include <App/Application.h>
 #include <Base/Persistence.h>
