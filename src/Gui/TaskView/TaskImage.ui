@@ -250,13 +250,20 @@
         <item>
          <widget class="QToolButton" name="pushButtonScale">
           <property name="toolTip">
-           <string>Interactively scale the image</string>
+           <string>Interactively scale the image by setting a length between two points of the image.</string>
           </property>
           <property name="text">
-           <string>Interactive</string>
+           <string>Calibrate</string>
           </property>
           <property name="popupMode">
            <enum>QToolButton::MenuButtonPopup</enum>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="pushButtonApply">
+          <property name="text">
+           <string>Apply</string>
           </property>
          </widget>
         </item>

@@ -57,7 +57,7 @@ public:
     bool isActive() const {
         return active;
     }
-    double getDistance() const;
+    double getScaleFactor() const;
     double getDistance(const SbVec3f&) const;
     void setPlacement(Base::Placement plc);
 
@@ -74,11 +74,8 @@ private:
     SbVec3f getCoordsOnImagePlane(const SbVec3f& point);
 
 Q_SIGNALS:
-    void scaleRequired(double);
+    void scaleRequired();
     void scaleCanceled();
-
-private Q_SLOTS:
-    void scaleValidated();
 
 private:
     bool active;
@@ -92,7 +89,6 @@ private:
     std::vector<SbVec3f> points;
     SbVec3f midPoint;
     QuantitySpinBox* distanceBox;
-    QWidget* overlayWidget;
     SoNodeSensor* cameraSensor;
 };
 
@@ -117,7 +113,7 @@ private:
     View3DInventorViewer* getViewer() const;
     void scaleImage(double);
     void startScale();
-    void acceptScale(double val);
+    void acceptScale();
     void rejectScale();
 
     void restore(const Base::Placement&);
