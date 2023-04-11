@@ -26,6 +26,7 @@
 # include <QDialog>
 # include <QPushButton>
 # include <QAction>
+# include <QKeyEvent>
 # include <map>
 # include <Inventor/SoPickedPoint.h>
 # include <Inventor/events/SoLocation2Event.h>
@@ -236,6 +237,8 @@ void TaskImage::onInteractiveScale()
             scale = new InteractiveScale(viewer, vp, placement);
             connect(scale, &InteractiveScale::scaleRequired,
                 this, &TaskImage::acceptScale);
+            connect(scale, &InteractiveScale::scaleCanceled,
+                this, &TaskImage::rejectScale);
         }
     }
 
@@ -415,17 +418,38 @@ InteractiveScale::InteractiveScale(View3DInventorViewer* view, ViewProvider* vp,
     setPlacement(placement);
 
     Gui::MDIView* mdi = Gui::Application::Instance->activeDocument()->getActiveView();
-    distanceBox = new QuantitySpinBox(mdi);
+    overlayWidget = new QWidget(mdi);
+
+    distanceBox = new QuantitySpinBox(overlayWidget);
     distanceBox->setUnit(Base::Unit::Length);
     distanceBox->setMinimum(0.0);
     distanceBox->setMaximum(INT_MAX);
     distanceBox->setButtonSymbols(QAbstractSpinBox::NoButtons);
     distanceBox->setToolTip(tr("Enter desired distance between the points"));
     distanceBox->setKeyboardTracking(false);
+    distanceBox->installEventFilter(this);
 
-    // Pressing enter will validate the tool.
-    connect(distanceBox, qOverload<double>(& QuantitySpinBox::valueChanged),
-        this, &InteractiveScale::distanceEntered);
+    QToolButton* okBtn = new QToolButton(overlayWidget);
+    QIcon icon1;
+    icon1.addFile(QString::fromUtf8(":/icons/edit_OK.svg"), QSize(), QIcon::Normal, QIcon::Off);
+    okBtn->setIcon(icon1);
+    connect(okBtn, &QToolButton::clicked, this, &InteractiveScale::scaleValidated);
+
+    QToolButton* cancelBtn = new QToolButton(overlayWidget);
+    QIcon icon2;
+    icon2.addFile(QString::fromUtf8(":/icons/edit_Cancel.svg"), QSize(), QIcon::Normal, QIcon::Off);
+    cancelBtn->setIcon(icon2);
+    connect(cancelBtn, &QToolButton::clicked, this, &InteractiveScale::scaleCanceled);
+
+    auto* layout = new QHBoxLayout(overlayWidget);
+    layout->addWidget(distanceBox);
+    layout->addWidget(okBtn);
+    layout->addWidget(cancelBtn);
+    layout->setContentsMargins(0, 0, 0, 0);
+    layout->setSpacing(0);
+    overlayWidget->setLayout(layout);
+
+    this->installEventFilter(this);
 
     //track camera movements to update spinbox position.
     NodeData* info = new NodeData{ this };
@@ -440,7 +464,7 @@ InteractiveScale::~InteractiveScale()
 {
     root->unref();
     measureLabel->unref();
-    distanceBox->deleteLater();
+    overlayWidget->deleteLater();
     cameraSensor->detach();
 }
 
@@ -461,7 +485,7 @@ void InteractiveScale::activate(bool allowOutside)
 void InteractiveScale::deactivate()
 {
     if (viewer) {
-        distanceBox->hide();
+        overlayWidget->hide();
         points.clear();
         root->removeChild(measureLabel);
         static_cast<SoSeparator*>(viewer->getSceneGraph())->removeChild(root);
@@ -539,9 +563,10 @@ void InteractiveScale::collectPoint(const SbVec3f& pos3d)
 
             measureLabel->string = "";
             positionWidget();
+            overlayWidget->show();
+            overlayWidget->adjustSize();
             QSignalBlocker block(distanceBox);
             distanceBox->setValue((points[1] - points[0]).length());
-            distanceBox->show();
             distanceBox->selectNumber();
             distanceBox->setFocus();
         }
@@ -553,11 +578,11 @@ void InteractiveScale::collectPoint(const SbVec3f& pos3d)
 
 void InteractiveScale::positionWidget()
 {
-    QSize wSize = distanceBox->size();
+    QSize wSize = overlayWidget->size();
     QPoint pxCoord = viewer->toQPoint(viewer->getPointOnViewport(midPoint));
     pxCoord.setX(std::max(pxCoord.x() - wSize.width() / 2, 0));
     pxCoord.setY(std::max(pxCoord.y() - wSize.height() / 2, 0));
-    distanceBox->move(pxCoord);
+    overlayWidget->move(pxCoord);
 }
 
 void InteractiveScale::getMouseClick(void * ud, SoEventCallback * ecb)
@@ -613,9 +638,28 @@ void InteractiveScale::getMousePosition(void * ud, SoEventCallback * ecb)
     }
 }
 
-void InteractiveScale::distanceEntered(double val)
+bool InteractiveScale::eventFilter(QObject* object, QEvent* event)
 {
-    Q_EMIT scaleRequired(val);
+    if (event->type() == QEvent::KeyRelease) {
+        QKeyEvent* keyEvent = static_cast<QKeyEvent*>(event);
+
+        /* If user press enter in the spinbox, then we validate the tool.*/
+        if (keyEvent->key() == Qt::Key_Enter && dynamic_cast<QuantitySpinBox*>(object)) {
+            Q_EMIT scaleRequired(distanceBox->value().getValue());
+        }
+
+        /* If user press escape, then we cancel the tool.*/
+        if (keyEvent->key() == Qt::Key_Escape) {
+            Q_EMIT scaleCanceled();
+        }
+    }
+
+    return false;
+}
+
+void InteractiveScale::scaleValidated()
+{
+    Q_EMIT scaleRequired(distanceBox->value().getValue());
 }
 
 void InteractiveScale::setPlacement(Base::Placement plc)

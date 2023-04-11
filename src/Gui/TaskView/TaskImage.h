@@ -50,6 +50,8 @@ class InteractiveScale : public QObject
 public:
     explicit InteractiveScale(View3DInventorViewer* view, ViewProvider* vp, Base::Placement plc);
     ~InteractiveScale();
+
+    bool eventFilter(QObject* object, QEvent* event);
     void activate(bool allowOutside);
     void deactivate();
     bool isActive() const {
@@ -73,9 +75,10 @@ private:
 
 Q_SIGNALS:
     void scaleRequired(double);
+    void scaleCanceled();
 
-protected Q_SLOTS:
-    void distanceEntered(double);
+private Q_SLOTS:
+    void scaleValidated();
 
 private:
     bool active;
@@ -89,6 +92,7 @@ private:
     std::vector<SbVec3f> points;
     SbVec3f midPoint;
     QuantitySpinBox* distanceBox;
+    QWidget* overlayWidget;
     SoNodeSensor* cameraSensor;
 };
 
