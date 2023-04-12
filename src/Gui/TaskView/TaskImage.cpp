@@ -373,7 +373,7 @@ void TaskImage::updatePlacement()
     if (!feature.expired()) {
         feature->Placement.setValue(Pos);
         if(scale)
-            scale->setPlacement(Pos);
+            scale->setPlacement(feature->globalPlacement());
     }
 }
 
