@@ -893,12 +893,12 @@ void NaviCubeImplementation::initNaviCube(QtGLWidget* gl) {
         labels.clear();
         ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
             "User parameter:BaseApp/Preferences/NaviCube");
-        labels.push_back(hGrp->GetASCII("TextFront", "FRONT"));
-        labels.push_back(hGrp->GetASCII("TextRear", "REAR"));
-        labels.push_back(hGrp->GetASCII("TextTop", "TOP"));
-        labels.push_back(hGrp->GetASCII("TextBottom", "BOTTOM"));
-        labels.push_back(hGrp->GetASCII("TextRight", "RIGHT"));
-        labels.push_back(hGrp->GetASCII("TextLeft", "LEFT"));
+        labels.push_back(hGrp->GetASCII("TextFront", QT_TR_NOOP("FRONT")));
+        labels.push_back(hGrp->GetASCII("TextRear", QT_TR_NOOP("REAR")));
+        labels.push_back(hGrp->GetASCII("TextTop", QT_TR_NOOP("TOP")));
+        labels.push_back(hGrp->GetASCII("TextBottom", QT_TR_NOOP("BOTTOM")));
+        labels.push_back(hGrp->GetASCII("TextRight", QT_TR_NOOP("RIGHT")));
+        labels.push_back(hGrp->GetASCII("TextLeft", QT_TR_NOOP("LEFT")));
     }
     // create the main faces
     m_Textures[TEX_FRONT] = createCubeFaceTex(gl, gap, labels[0].c_str(), SHAPE_SQUARE);
