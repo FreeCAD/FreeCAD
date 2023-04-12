@@ -30,7 +30,9 @@
 # include <map>
 # include <Inventor/SoPickedPoint.h>
 # include <Inventor/events/SoLocation2Event.h>
+# include <Inventor/events/SoButtonEvent.h>
 # include <Inventor/events/SoMouseButtonEvent.h>
+# include <Inventor/events/SoKeyboardEvent.h>
 # include <Inventor/sensors/SoNodeSensor.h>
 # include <Inventor/nodes/SoOrthographicCamera.h>
 # include <Inventor/nodes/SoBaseColor.h>
