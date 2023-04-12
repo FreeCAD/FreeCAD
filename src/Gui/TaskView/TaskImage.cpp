@@ -679,15 +679,16 @@ void InteractiveScale::setPlacement(Base::Placement plc)
 SbVec3f InteractiveScale::getCoordsOnImagePlane(const SbVec3f& point)
 {
     // Plane form
-    Base::Vector3d R0(0, 0, 0), RX(1, 0, 0), RY(0, 1, 0);
+    Base::Vector3d RX(1, 0, 0), RY(0, 1, 0);
 
     // move to position of Sketch
     Base::Rotation tmp(placement.getRotation());
     RX = tmp.multVec(RX);
     RY = tmp.multVec(RY);
+    Base::Vector3d pos = placement.getPosition();
 
     Base::Vector3d S(point[0], point[1], point[2]);
-    S.TransformToCoordinateSystem(R0, RX, RY);
+    S.TransformToCoordinateSystem(pos, RX, RY);
 
     return SbVec3f(S.x, S.y, 0.);
 }
