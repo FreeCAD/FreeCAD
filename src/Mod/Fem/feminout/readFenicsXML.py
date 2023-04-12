@@ -244,7 +244,7 @@ def read_fenics_mesh_xml(xmlfilename):
         for (elm, numbers) in list(element_dict.items()):
             lst = sorted(list(numbers.items()), key=lambda x: x[0])
             if lst != []:
-                Console.PrintWarning(elm, " min: ", lst[0], " max: ", lst[-1], "\n")
+                Console.PrintWarning("{} min: {} max: {}\n".format(elm, lst[0], lst[-1]))
     else:
         Console.PrintError("No mesh found\n")
 
