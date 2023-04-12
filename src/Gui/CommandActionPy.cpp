@@ -21,6 +21,7 @@
  *                                                                         *
  **************************************************************************/
 
+#include "PreCompiled.h"
 #include <Base/PythonTypeExt.h>
 
 #include "Command.h"
