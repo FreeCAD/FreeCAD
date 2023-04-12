@@ -62,7 +62,7 @@ public:
     void setPlacement(Base::Placement plc);
 
 private:
-    static void getMouseClick(void * ud, SoEventCallback * ecb);
+    static void soEventFilter(void * ud, SoEventCallback * ecb);
     static void getMousePosition(void * ud, SoEventCallback * ecb);
     void findPointOnPlane(SoEventCallback * ecb);
     void findPointOnImagePlane(SoEventCallback * ecb);
@@ -76,6 +76,7 @@ private:
 Q_SIGNALS:
     void scaleRequired();
     void scaleCanceled();
+    void enableApplyBtn();
 
 private:
     bool active;
@@ -115,6 +116,7 @@ private:
     void startScale();
     void acceptScale();
     void rejectScale();
+    void enableApplyBtn();
 
     void restore(const Base::Placement&);
     void onPreview();

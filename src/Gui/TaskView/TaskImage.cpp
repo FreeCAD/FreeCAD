@@ -70,8 +70,7 @@ TaskImage::TaskImage(Image::ImagePlane* obj, QWidget* parent)
   , aspectRatio(1.0)
 {
     ui->setupUi(this);
-    ui->pushButtonApply->hide();
-    ui->pushButtonCancel->hide();
+    ui->groupBoxCalibration->hide();
 
     initialiseTransparency();
 
@@ -214,8 +213,8 @@ void TaskImage::startScale()
 {
     scale->activate(qAsConst(ui->pushButtonScale)->actions()[0]->isChecked());
     ui->pushButtonScale->hide();
-    ui->pushButtonApply->show();
-    ui->pushButtonCancel->show();
+    ui->groupBoxCalibration->show();
+    ui->pushButtonApply->setEnabled(false);
 }
 
 void TaskImage::acceptScale()
@@ -224,12 +223,16 @@ void TaskImage::acceptScale()
     rejectScale();
 }
 
+void TaskImage::enableApplyBtn()
+{
+    ui->pushButtonApply->setEnabled(true);
+}
+
 void TaskImage::rejectScale()
 {
     scale->deactivate();
     ui->pushButtonScale->show();
-    ui->pushButtonApply->hide();
-    ui->pushButtonCancel->hide();
+    ui->groupBoxCalibration->hide();
 }
 
 void TaskImage::onInteractiveScale()
@@ -244,6 +247,8 @@ void TaskImage::onInteractiveScale()
                 this, &TaskImage::acceptScale);
             connect(scale, &InteractiveScale::scaleCanceled,
                 this, &TaskImage::rejectScale);
+            connect(scale, &InteractiveScale::enableApplyBtn,
+                this, &TaskImage::enableApplyBtn);
         }
     }
 
@@ -432,8 +437,6 @@ InteractiveScale::InteractiveScale(View3DInventorViewer* view, ViewProvider* vp,
     distanceBox->setKeyboardTracking(false);
     distanceBox->installEventFilter(this);
 
-    this->installEventFilter(this);
-
     //track camera movements to update spinbox position.
     NodeData* info = new NodeData{ this };
     cameraSensor = new SoNodeSensor([](void* data, SoSensor* sensor) {
@@ -457,7 +460,7 @@ void InteractiveScale::activate(bool allowOutside)
         static_cast<SoSeparator*>(viewer->getSceneGraph())->addChild(root);
         viewer->setEditing(true);
         viewer->addEventCallback(SoLocation2Event::getClassTypeId(), InteractiveScale::getMousePosition, this);
-        viewer->addEventCallback(SoMouseButtonEvent::getClassTypeId(), InteractiveScale::getMouseClick, this);
+        viewer->addEventCallback(SoButtonEvent::getClassTypeId(), InteractiveScale::soEventFilter, this);
         viewer->setSelectionEnabled(false);
         viewer->getWidget()->setCursor(QCursor(Qt::CrossCursor));
         active = true;
@@ -474,7 +477,7 @@ void InteractiveScale::deactivate()
         static_cast<SoSeparator*>(viewer->getSceneGraph())->removeChild(root);
         viewer->setEditing(false);
         viewer->removeEventCallback(SoLocation2Event::getClassTypeId(), InteractiveScale::getMousePosition, this);
-        viewer->removeEventCallback(SoMouseButtonEvent::getClassTypeId(), InteractiveScale::getMouseClick, this);
+        viewer->removeEventCallback(SoButtonEvent::getClassTypeId(), InteractiveScale::soEventFilter, this);
         viewer->setSelectionEnabled(true);
         viewer->getWidget()->setCursor(QCursor(Qt::ArrowCursor));
         active = false;
@@ -545,13 +548,15 @@ void InteractiveScale::collectPoint(const SbVec3f& pos3d)
             midPoint = points[0] + (points[1] - points[0]) / 2;
 
             measureLabel->string = "";
-            positionWidget();
             distanceBox->show();
-            distanceBox->adjustSize();
             QSignalBlocker block(distanceBox);
             distanceBox->setValue((points[1] - points[0]).length());
+            distanceBox->adjustSize();
+            positionWidget();
             distanceBox->selectNumber();
             distanceBox->setFocus();
+
+            Q_EMIT enableApplyBtn();
         }
         else {
             Base::Console().Warning(std::string("Image scale"), "The second point is too close. Retry!\n");
@@ -566,17 +571,6 @@ void InteractiveScale::positionWidget()
     pxCoord.setX(std::max(pxCoord.x() - wSize.width() / 2, 0));
     pxCoord.setY(std::max(pxCoord.y() - wSize.height() / 2, 0));
     distanceBox->move(pxCoord);
-}
-
-void InteractiveScale::getMouseClick(void * ud, SoEventCallback * ecb)
-{
-    InteractiveScale* scale = static_cast<InteractiveScale*>(ud);
-    const SoMouseButtonEvent * mbe = static_cast<const SoMouseButtonEvent *>(ecb->getEvent());
-
-    if (mbe->getButton() == SoMouseButtonEvent::BUTTON1 && mbe->getState() == SoButtonEvent::DOWN) {
-        ecb->setHandled();
-        scale->findPointOnPlane(ecb);
-    }
 }
 
 void InteractiveScale::getMousePosition(void * ud, SoEventCallback * ecb)
@@ -621,9 +615,40 @@ void InteractiveScale::getMousePosition(void * ud, SoEventCallback * ecb)
     }
 }
 
+void InteractiveScale::soEventFilter(void* ud, SoEventCallback* ecb)
+{
+    InteractiveScale* scale = static_cast<InteractiveScale*>(ud);
+
+    const SoEvent* soEvent = ecb->getEvent();
+    if (soEvent->isOfType(SoKeyboardEvent::getClassTypeId())) {
+        /* If user press escape, then we cancel the tool.*/
+        const auto kbe = static_cast<const SoKeyboardEvent*>(soEvent);
+
+        if (kbe->getKey() == SoKeyboardEvent::ESCAPE && kbe->getState() == SoButtonEvent::UP) {
+            ecb->setHandled();
+            ecb->getAction()->setHandled();
+            Q_EMIT scale->scaleCanceled();
+        }
+    }
+    else if (soEvent->isOfType(SoMouseButtonEvent::getClassTypeId())) {
+        const auto mbe = static_cast<const SoMouseButtonEvent*>(soEvent);
+
+        if (mbe->getButton() == SoMouseButtonEvent::BUTTON1 && mbe->getState() == SoButtonEvent::DOWN)
+        {
+            ecb->setHandled();
+            scale->findPointOnPlane(ecb);
+        }
+        if (mbe->getButton() == SoMouseButtonEvent::BUTTON2 && mbe->getState() == SoButtonEvent::DOWN)
+        {
+            ecb->setHandled();
+            Q_EMIT scale->scaleCanceled();
+        }
+    }
+}
+
 bool InteractiveScale::eventFilter(QObject* object, QEvent* event)
 {
-    if (event->type() == QEvent::KeyRelease) {
+    if (event->type() == QEvent::KeyPress) {
         QKeyEvent* keyEvent = static_cast<QKeyEvent*>(event);
 
         /* If user press enter in the spinbox, then we validate the tool.*/
@@ -631,12 +656,11 @@ bool InteractiveScale::eventFilter(QObject* object, QEvent* event)
             Q_EMIT scaleRequired();
         }
 
-        /* If user press escape, then we cancel the tool.*/
+        /* If user press escape, then we cancel the tool. Required here as well for when checkbox has focus.*/
         if (keyEvent->key() == Qt::Key_Escape) {
             Q_EMIT scaleCanceled();
         }
     }
-
     return false;
 }
 
@@ -674,7 +698,7 @@ TaskImageDialog::TaskImageDialog(Image::ImagePlane* obj)
 {
     widget = new TaskImage(obj);
     Gui::TaskView::TaskBox* taskbox = new Gui::TaskView::TaskBox(
-        QPixmap(), widget->windowTitle(), true, nullptr);
+        Gui::BitmapFactory().pixmap("image-plane"), widget->windowTitle(), true, nullptr);
     taskbox->groupLayout()->addWidget(widget);
     Content.push_back(taskbox);
 }
