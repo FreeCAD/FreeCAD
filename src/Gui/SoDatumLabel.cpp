@@ -1021,3 +1021,12 @@ void SoDatumLabel::GLRender(SoGLRenderAction * action)
     glPopAttrib();
     state->pop();
 }
+
+void SoDatumLabel::setPoints(SbVec3f p1, SbVec3f p2)
+{
+    pnts.setNum(2);
+    SbVec3f* verts = pnts.startEditing();
+    verts[0] = p1;
+    verts[1] = p2;
+    pnts.finishEditing();
+}

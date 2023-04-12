@@ -540,6 +540,7 @@ void InteractiveScale::collectPoint(const SbVec3f& pos3d)
     if (points.empty()) {
         points.push_back(pos3d);
 
+        measureLabel->setPoints(getCoordsOnImagePlane(pos3d), getCoordsOnImagePlane(pos3d));
         root->addChild(measureLabel);
     }
     else if (points.size() == 1) {
@@ -608,12 +609,7 @@ void InteractiveScale::getMousePosition(void * ud, SoEventCallback * ecb)
         valueStr = quantity.getUserString(factor, unitStr);
         scale->measureLabel->string = SbString(valueStr.toUtf8().constData());
 
-        //Update the SoDatumLabel. It needs 2D points!
-        scale->measureLabel->pnts.setNum(2);
-        SbVec3f* verts = scale->measureLabel->pnts.startEditing();
-        verts[0] = scale->getCoordsOnImagePlane(scale->points[0]);
-        verts[1] = scale->getCoordsOnImagePlane(pos3d);
-        scale->measureLabel->pnts.finishEditing();
+        scale->measureLabel->setPoints(scale->getCoordsOnImagePlane(scale->points[0]), scale->getCoordsOnImagePlane(pos3d));
     }
 }
 
@@ -672,6 +668,8 @@ void InteractiveScale::setPlacement(Base::Placement plc)
     double x, y, z, w;
     placement.getRotation().getValue(x, y, z, w);
     transform->rotation.setValue(x, y, z, w);
+    Base::Vector3d pos = placement.getPosition();
+    transform->translation.setValue(pos.x, pos.y, pos.z);
 
     Base::Vector3d RN(0, 0, 1);
     RN = placement.getRotation().multVec(RN);
