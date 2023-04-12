@@ -646,7 +646,7 @@ void InteractiveScale::soEventFilter(void* ud, SoEventCallback* ecb)
 
 bool InteractiveScale::eventFilter(QObject* object, QEvent* event)
 {
-    if (event->type() == QEvent::KeyPress) {
+    if (event->type() == QEvent::KeyRelease) {
         QKeyEvent* keyEvent = static_cast<QKeyEvent*>(event);
 
         /* If user press enter in the spinbox, then we validate the tool.*/
