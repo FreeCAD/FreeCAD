@@ -404,12 +404,12 @@ struct NodeData {
 };
 
 InteractiveScale::InteractiveScale(View3DInventorViewer* view, ViewProvider* vp, Base::Placement plc)
-    : active{false}
-    , allowOutsideImage{false}
-    , placement{plc}
-    , viewer{view}
-    , viewProv{vp}
-    , midPoint{SbVec3f(0,0,0)}
+    : active(false)
+    , allowOutsideImage(false)
+    , placement(plc)
+    , viewer(view)
+    , viewProv(vp)
+    , midPoint(SbVec3f(0,0,0))
 {
     root = new SoAnnotation;
     root->ref();
