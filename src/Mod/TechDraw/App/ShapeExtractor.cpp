@@ -115,6 +115,7 @@ TopoDS_Shape ShapeExtractor::getShapes(const std::vector<App::DocumentObject*> l
     BRep_Builder builder;
     TopoDS_Compound comp;
     builder.MakeCompound(comp);
+    bool found = false;
     for (auto& s:sourceShapes) {
         if (s.IsNull()) {
             continue;
@@ -123,21 +124,24 @@ TopoDS_Shape ShapeExtractor::getShapes(const std::vector<App::DocumentObject*> l
             TopoDS_Shape cleanShape = stripInfiniteShapes(s);
             if (!cleanShape.IsNull()) {
                 builder.Add(comp, cleanShape);
-                return comp;
+                found = true;
             }
         } else if (Part::TopoShape(s).isInfinite()) {
             continue;    //simple shape is infinite
         } else {
             //a simple shape - add to compound
             builder.Add(comp, s);
-            return comp;
+            found = true;
         }
     }
     //it appears that an empty compound is !IsNull(), so we need to check a different way
     //if we added anything to the compound.
-    //Nothing found
+    if (found) {
+//    BRepTools::Write(comp, "SEResult.brep");            //debug
+        return comp;
+    }
+
     Base::Console().Error("ShapeExtractor failed to get shape.\n");
-//    BRepTools::Write(result, "SEresult.brep");            //debug
     return TopoDS_Shape();
 }
 
