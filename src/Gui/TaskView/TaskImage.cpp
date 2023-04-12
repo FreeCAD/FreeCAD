@@ -312,9 +312,6 @@ void TaskImage::restore(const Base::Placement& plm)
             reverse = true;
         int inv = reverse ? -1 : 1;
         ui->XY_radioButton->setChecked(true);
-        ui->spinBoxX->setValue(pos.x);
-        ui->spinBoxY->setValue(pos.y * inv);
-        ui->spinBoxZ->setValue(pos.z * inv);
         ui->spinBoxRotation->setValue(yaw * inv);
     }
     else if (fabs(roll - 90.) < tol && (fabs(yaw) < tol || fabs(yaw - 180.) < tol)) {
@@ -322,9 +319,6 @@ void TaskImage::restore(const Base::Placement& plm)
             reverse = true;
         int inv = reverse ? -1 : 1;
         ui->XZ_radioButton->setChecked(true);
-        ui->spinBoxX->setValue(inv * pos.x);
-        ui->spinBoxY->setValue(pos.z);
-        ui->spinBoxZ->setValue(inv * pos.y);
         ui->spinBoxRotation->setValue(- pitch);
     }
     else if (fabs(roll - 90.) < tol && (fabs(yaw - 90.) < tol || fabs(yaw + 90.) < tol)) {
@@ -332,42 +326,45 @@ void TaskImage::restore(const Base::Placement& plm)
             reverse = true;
         int inv = reverse ? -1 : 1;
         ui->YZ_radioButton->setChecked(true);
-        ui->spinBoxX->setValue(inv * pos.y);
-        ui->spinBoxY->setValue(pos.z);
-        ui->spinBoxZ->setValue(inv * pos.x);
         ui->spinBoxRotation->setValue(-pitch);
     }
-
     ui->Reverse_checkBox->setChecked(reverse);
+
+    Base::Vector3d R0(0, 0, 0), RX(1, 0, 0), RY(0, 1, 0);
+
+    RX = rot.multVec(RX);
+    RY = rot.multVec(RY);
+    pos.TransformToCoordinateSystem(R0, RX, RY);
+    ui->spinBoxX->setValue(pos.x);
+    ui->spinBoxY->setValue(pos.y);
+    ui->spinBoxZ->setValue(pos.z);
 
     onPreview();
 }
 
 void TaskImage::updatePlacement()
 {
-    Base::Placement Pos;
-    double offsetX = ui->spinBoxX->value().getValue();
-    double offsetY = ui->spinBoxY->value().getValue();
-    double offsetZ = ui->spinBoxZ->value().getValue();
     double angle = ui->spinBoxRotation->value().getValue();
     bool reverse = ui->Reverse_checkBox->isChecked();
 
+    Base::Placement Pos;
     Base::Rotation rot;
     double dir = reverse ? 180. : 0.;
     int inv = reverse ? -1 : 1;
 
     if (ui->XY_radioButton->isChecked()) {
         rot.setYawPitchRoll(inv * angle, 0., dir);
-        Pos = Base::Placement(Base::Vector3d(offsetX, inv * offsetY, inv * offsetZ), rot);
     }
     else if (ui->XZ_radioButton->isChecked()) {
         rot.setYawPitchRoll(dir, -angle, 90.);
-        Pos = Base::Placement(Base::Vector3d(inv * offsetX, inv * offsetZ, offsetY), rot);
     }
     else if (ui->YZ_radioButton->isChecked()) {
         rot.setYawPitchRoll(90. - dir, -angle, 90.);
-        Pos = Base::Placement(Base::Vector3d(inv * offsetZ, inv * offsetX, offsetY), rot);
     }
+
+    Base::Vector3d offset = Base::Vector3d(ui->spinBoxX->value().getValue(), ui->spinBoxY->value().getValue(), ui->spinBoxZ->value().getValue());
+    offset = rot.multVec(offset);
+    Pos = Base::Placement(offset, rot);
 
     if (!feature.expired()) {
         feature->Placement.setValue(Pos);
