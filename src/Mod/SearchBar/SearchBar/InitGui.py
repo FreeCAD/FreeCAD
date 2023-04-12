@@ -1,6 +1,3 @@
-import sys
-print("HIIIIIIIIIIIIIIII")
-print("HOOOOOOOOOOOOOOOOOOO", file=sys.stderr)
 # Avoid garbage collection by storing the action in a global variable
 wax = None
 sea = None
