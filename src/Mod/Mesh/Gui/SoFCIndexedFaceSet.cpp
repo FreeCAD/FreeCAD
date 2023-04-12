@@ -592,6 +592,9 @@ void SoFCIndexedFaceSet::drawFaces(SoGLRenderAction *action)
         drawCoords(static_cast<const SoGLCoordinateElement*>(coords), cindices, numindices,
                    normals, nindices, &mb, mindices, binding, &tb, tindices);
 
+        // getVertexData() internally calls readLockNormalCache() that read locks
+        // the normal cache. When the cache is not needed any more we must call
+        // readUnlockNormalCache()
         if (normalCacheUsed)
             this->readUnlockNormalCache();
 
