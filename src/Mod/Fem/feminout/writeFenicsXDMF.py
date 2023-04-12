@@ -52,13 +52,13 @@ FreeCAD_Group_Dimensions = {
 }
 
 FreeCAD_to_Fenics_XDMF_dict = {
-    ("Node", 1): ("polyvertex", 1),
-    ("Edge", 1): ("polyline", 2),
-    ("Edge", 2): ("edge_3", 3),
-    ("Triangle", 1): ("triangle", 3),
-    ("Triangle", 2): ("tri_6", 6),
-    ("Tetra", 1): ("tetrahedron", 4),
-    ("Tetra", 2): ("tet_10", 10)
+    ("Node", 1): ("Polyvertex", 1),
+    ("Edge", 1): ("Polyline", 2),
+    ("Edge", 2): ("Edge_3", 3),
+    ("Triangle", 1): ("Triangle", 3),
+    ("Triangle", 2): ("Tri_6", 6),
+    ("Tetra", 1): ("Tetrahedron", 4),
+    ("Tetra", 2): ("Tet_10", 10)
 }
 
 # we need numpy functions to later access and process large data sets in a fast manner
@@ -265,18 +265,6 @@ def write_fenics_mesh_xdmf(
         For the export of xdmf.
     """
 
-    FreeCAD_to_Fenics_dict = {
-        "Triangle": "triangle",
-        "Tetra": "tetrahedron",
-        "Hexa": "hexahedron",
-        "Edge": "interval",
-        "Node": "point",
-        "Quadrangle": "quadrilateral",
-
-        "Polygon": "unknown", "Polyhedron": "unknown",
-        "Prism": "unknown", "Pyramid": "unknown",
-    }
-
     Console.PrintMessage("Converting " + fem_mesh_obj.Label + " to fenics XDMF File\n")
     Console.PrintMessage("Dimension of mesh: %d\n" % (get_FemMeshObjectDimension(fem_mesh_obj),))
 
@@ -284,13 +272,8 @@ def write_fenics_mesh_xdmf(
     Console.PrintMessage("Elements appearing in mesh: %s\n" % (str(elements_in_mesh),))
     celltype_in_mesh = get_MaxDimElementFromList(elements_in_mesh)
     (num_cells, cellname_fc, dim_cell) = celltype_in_mesh
-    cellname_fenics = FreeCAD_to_Fenics_dict[cellname_fc]
-    Console.PrintMessage(
-        "Celltype in mesh -> {} and its Fenics dolfin name: {}\n"
-        .format(celltype_in_mesh, cellname_fenics)
-    )
 
-    root = ET.Element("Xdmf", version="3.0")
+    root = ET.Element("Xdmf", Version="3.0")
     domain = ET.SubElement(root, "Domain")
     base_grid = ET.SubElement(domain, "Grid", Name="base_mesh", GridType="Uniform")
     base_topology = ET.SubElement(base_grid, "Topology")

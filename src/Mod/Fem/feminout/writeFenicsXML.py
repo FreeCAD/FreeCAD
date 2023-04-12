@@ -118,7 +118,8 @@ def write_fenics_mesh_xml(fem_mesh_obj, outputfile):
 
         ET.SubElement(cells, cellname_fenics, index=str(fen_ind), **cell_args)
 
-    ET.SubElement(meshchild, "data")
+    # ET.SubElement(meshchild, "data")
+    # removed to eliminate warning from meshio
 
     fp = open(outputfile, "wb")
     fp.write(ET.tostring(root))
