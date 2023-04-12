@@ -243,8 +243,7 @@ void TaskImage::onInteractiveScale()
         View3DInventorViewer* viewer = getViewer();
         if (viewer) {
             auto vp = Application::Instance->getViewProvider(feature.get());
-            Base::Placement placement = feature->Placement.getValue();
-            scale = new InteractiveScale(viewer, vp, placement);
+            scale = new InteractiveScale(viewer, vp, feature->globalPlacement());
             connect(scale, &InteractiveScale::scaleRequired,
                 this, &TaskImage::acceptScale);
             connect(scale, &InteractiveScale::scaleCanceled,
@@ -687,6 +686,7 @@ SbVec3f InteractiveScale::getCoordsOnImagePlane(const SbVec3f& point)
     RY = tmp.multVec(RY);
     Base::Vector3d pos = placement.getPosition();
 
+    //we use pos as the Base because in setPlacement we set transform->translation using placement.getPosition() to fix the Zoffset. But this applies the X & Y translation too.
     Base::Vector3d S(point[0], point[1], point[2]);
     S.TransformToCoordinateSystem(pos, RX, RY);
 
