@@ -1,1 +1,0 @@
-SearchBar/SafeViewer.py
