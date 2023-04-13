@@ -338,7 +338,7 @@ See the FreeCAD Wiki for details about the image.</string>
          <item>
           <widget class="QLabel" name="styleSheetLabel">
            <property name="text">
-            <string>Style sheet:</string>
+            <string>Theme:</string>
            </property>
           </widget>
          </item>
