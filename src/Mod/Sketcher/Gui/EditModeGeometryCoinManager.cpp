@@ -111,6 +111,7 @@ void EditModeGeometryCoinManager::processGeometry(const GeoListFacade & geolistf
     analysisResults.combRepresentationScale = gcconv.getCombRepresentationScale();
     analysisResults.boundingBoxMagnitudeOrder = exp(ceil(log(std::abs(gcconv.getBoundingBoxMaxMagnitude()))));
     analysisResults.bsplineGeoIds = gcconv.getBSplineGeoIds();
+    analysisResults.arcGeoIds = gcconv.getArcGeoIds();
 }
 
 void EditModeGeometryCoinManager::updateGeometryColor(const GeoListFacade & geolistfacade, bool issketchinvalid)
