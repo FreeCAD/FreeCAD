@@ -173,7 +173,7 @@ ViewProviderPartExt::ViewProviderPartExt()
             "in the 3D view (tessellation). Lower values indicate better quality.\n"
             "The value is in percent of object's size.");
     Deviation.setConstraints(&tessRange);
-    ADD_PROPERTY_TYPE(AngularDeflection,(28.65), osgroup, App::Prop_None,
+    ADD_PROPERTY_TYPE(AngularDeflection,(28.5), osgroup, App::Prop_None,
             "Specify how finely to generate the mesh for rendering on screen or when exporting.\n"
             "The default value is 28.5 degrees, or 0.5 radians. The smaller the value\n"
             "the smoother the appearance in the 3D view, and the finer the mesh that will be exported.");
