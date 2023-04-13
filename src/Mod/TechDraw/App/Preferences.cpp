@@ -283,16 +283,17 @@ std::string Preferences::bitmapFill()
     return prefBitmapFile;
 }
 
+//! Returns the factor for calculating the ISO extension line gap, not the actual distance.
 double Preferences::GapISO()
 {
-    double factor = getPreferenceGroup("Dimensions")->GetFloat("GapISO", 8.0);
+    double factor = getPreferenceGroup("Dimensions")->GetFloat("GapISO", 0.0);
     return factor;
 }
 
-//! Returns the factor for calculating the ISO gap, not the actual distance.
+//! Returns the factor for calculating the ASME extension line gap, not the actual distance.
 double Preferences::GapASME()
 {
-    double factor = getPreferenceGroup("Dimensions")->GetFloat("GapASME", 6.0);
+    double factor = getPreferenceGroup("Dimensions")->GetFloat("GapASME", 0.0);
     return factor;
 }
 
