@@ -177,7 +177,7 @@ in Python Console and Macro Editor where a
 dot/period will always be printed.</string>
          </property>
          <property name="text">
-          <string>Substitute decimal separator (numpad)</string>
+          <string>Substitute decimal separator</string>
          </property>
          <property name="prefEntry" stdset="0">
           <cstring>SubstituteDecimalSeparator</cstring>
