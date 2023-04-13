@@ -214,7 +214,7 @@ dot/period will always be printed.</string>
        <item row="0" column="0">
         <widget class="QLabel" name="styleSheetLabel">
          <property name="text">
-          <string>Theme:</string>
+          <string>Style sheet:</string>
          </property>
         </widget>
        </item>
@@ -284,7 +284,7 @@ this according to your screen size or personal taste</string>
        <item row="4" column="0">
         <widget class="QCheckBox" name="tiledBackground">
          <property name="toolTip">
-          <string>Background of the main window will consist of tiles of a special image.
+          <string>Background of the main window (when no document is opened) will consist of tiles of a special image.
 See the FreeCAD Wiki for details about the image.</string>
          </property>
          <property name="text">
