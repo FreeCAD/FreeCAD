@@ -111,7 +111,8 @@ class SketcherGuiExport EditModeCoinManager
             BSplineControlPolygonVisible,
             BSplineCombVisible,
             BSplineKnotMultiplicityVisible,
-            BSplinePoleWeightVisible
+            BSplinePoleWeightVisible,
+            ArcCircleHelperVisible
         };
 
     public:

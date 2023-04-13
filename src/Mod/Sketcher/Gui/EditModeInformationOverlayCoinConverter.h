@@ -64,7 +64,7 @@ namespace SketcherGui {
  * addUpdateNode is responsible for creating or updating the node structure (depending on overlayParameters.rebuildInformationLayer)
  *
  * Supported:
- * Currently it only supports information of Part::Geometry objects and implements calculations only for GeomBSplineCurve.
+ * Currently it only supports information of Part::Geometry objects and implements calculations only for GeomBSplineCurve and GeomArc.
  *
  * Caveats:
  * - This class relies on the order of creation to perform the update. Any parallel execution that does not deterministically
@@ -81,7 +81,8 @@ private:
         BSplineControlPolygon,
         BSplineCurvatureComb,
         BSplineKnotMultiplicity,
-        BSplinePoleWeight
+        BSplinePoleWeight,
+        ArcCircleHelper
     };
     enum class VisualisationType
     {
@@ -196,6 +197,7 @@ private:
     NodeText<CalculationType::BSplinePoleWeight> poleWeights;
     NodePolygon<CalculationType::BSplineControlPolygon> controlPolygon;
     NodePolygon<CalculationType::BSplineCurvatureComb> curvatureComb;
+    NodePolygon<CalculationType::ArcCircleHelper> circleHelper;
 
     // Node Management
     int nodeId;
