@@ -231,7 +231,23 @@ dot/period will always be printed.</string>
          <item>
           <widget class="QLabel" name="recentFileListLabel">
            <property name="text">
-            <string>Size of recent file list</string>
+            <string>Size of recent file list:</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="Gui::PrefSpinBox" name="RecentFiles">
+           <property name="toolTip">
+            <string>How many files should be listed in recent files list</string>
+           </property>
+           <property name="value">
+            <number>4</number>
+           </property>
+           <property name="prefEntry" stdset="0">
+            <cstring>RecentFiles</cstring>
+           </property>
+           <property name="prefPath" stdset="0">
+            <cstring>RecentFiles</cstring>
            </property>
           </widget>
          </item>
@@ -250,22 +266,6 @@ dot/period will always be printed.</string>
             </size>
            </property>
           </spacer>
-         </item>
-         <item>
-          <widget class="Gui::PrefSpinBox" name="RecentFiles">
-           <property name="toolTip">
-            <string>How many files should be listed in recent files list</string>
-           </property>
-           <property name="value">
-            <number>4</number>
-           </property>
-           <property name="prefEntry" stdset="0">
-            <cstring>RecentFiles</cstring>
-           </property>
-           <property name="prefPath" stdset="0">
-            <cstring>RecentFiles</cstring>
-           </property>
-          </widget>
          </item>
         </layout>
        </item>
