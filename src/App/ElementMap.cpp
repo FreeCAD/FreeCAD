@@ -18,6 +18,199 @@ namespace Data
 {
 
 
+MappedName ElementMap::hashElementName(const MappedName & name, ElementIDRefs &sids) const
+{
+    if(!this->hasher || !name)
+        return name;
+    if (name.find(ELEMENT_MAP_PREFIX) < 0)
+        return name;
+    App::StringIDRef sid = this->hasher->getID(name, sids);
+    const auto &related = sid.relatedIDs();
+    if (related == sids) {
+        sids.clear();
+        sids.push_back(sid);
+    } else {
+        ElementIDRefs tmp;
+        tmp.push_back(sid);
+        for (auto &s : sids) {
+            if (related.indexOf(s) < 0)
+                tmp.push_back(s);
+        }
+        sids = tmp;
+    }
+    return MappedName(sid.toString());
+}
+
+
+MappedName ElementMap::dehashElementName(const MappedName & name) const {
+    if(name.empty())
+        return name;
+    if(!this->hasher)
+        return name;
+    auto id = App::StringID::fromString(name.toRawBytes());
+    if(!id)
+        return name;
+    auto sid = this->hasher->getID(id);
+    if(!sid) {
+        if(FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_TRACE))
+            FC_WARN("failed to find hash id " << id);
+        else
+            FC_LOG("failed to find hash id " << id);
+        return name;
+    }
+    if(sid.isHashed()) {
+        FC_LOG("cannot dehash id " << id);
+        return name;
+    }
+    MappedName ret(sid.toString()); //FIXME .toString() was missing in original function. is this correct?
+    FC_TRACE("dehash " << name << " -> " << ret);
+    return ret;
+}
+
+
+// try to hash element name while preserving the source tag
+void ElementMap::encodeElementName(char element_type,
+                                       MappedName &name,
+                                       std::ostringstream &ss,
+                                       ElementIDRefs *sids,
+                                       ComplexGeoData& master,
+                                       const char* postfix,
+                                       long tag,
+                                       bool forceTag) const
+{
+    if(postfix && postfix[0]) {
+        if (!boost::starts_with(postfix, ELEMENT_MAP_PREFIX))
+            ss << ELEMENT_MAP_PREFIX;
+        ss << postfix;
+    }
+    long inputTag = 0;
+    if (!forceTag && !ss.tellp()) {
+        if(!tag || tag==master.Tag)
+            return;
+        name.findTagInElementName(&inputTag,nullptr,nullptr,nullptr,true);
+        if(inputTag == tag)
+            return;
+    }
+    else if (!tag || (!forceTag && tag==master.Tag)) {
+        int pos = name.findTagInElementName(&inputTag,nullptr,nullptr,nullptr,true);
+        if(inputTag) {
+            tag = inputTag;
+            // About to encode the same tag used last time. This usually means
+            // the owner object is doing multi step modeling. Let's not
+            // recursively encode the same tag too many time. It will be a
+            // waste of memory, because the intermediate shapes has no
+            // corresponding objects, so no real value for history tracing.
+            //
+            // On the other hand, we still need to distinguish the original name
+            // from the input object from the element name of the intermediate
+            // shapes. So we limit ourselves to encode only one extra level
+            // using the same tag. In order to do that, we need to dehash the
+            // previous level name, and check for its tag.
+            Data::MappedName n(name, 0, pos);
+            Data::MappedName prev = dehashElementName(n);
+            long prevTag = 0;
+            prev.findTagInElementName(&prevTag,nullptr,nullptr,nullptr,true);
+            if (prevTag == inputTag || prevTag == -inputTag)
+                name = n;
+        }
+    }
+
+    if(sids && this->hasher) {
+        name = hashElementName(name, *sids);
+        if (!forceTag && !tag && ss.tellp())
+            forceTag = true;
+    }
+    if(forceTag || tag) {
+        assert(element_type);
+        int pos = ss.tellp();
+        boost::io::ios_flags_saver ifs(ss);
+        ss << POSTFIX_TAG << std::hex;
+        if (tag < 0)
+            ss << '-' << -tag;
+        else if (tag)
+            ss << tag;
+        assert(pos >= 0);
+        if (pos != 0)
+            ss << ':' << pos;
+        ss << ',' << element_type;
+    }
+    name += ss.str();
+}
+
+
+MappedName ElementMap::setElementName(const IndexedName & element,
+                                          const MappedName & name,
+                                          ComplexGeoData& master,
+                                          const ElementIDRefs *sid,
+                                          bool overwrite)
+{
+    if(!element)
+        throw Base::ValueError("Invalid input");
+    if(!name)  {
+        this->erase(element);
+        return MappedName();
+    }
+
+    for(int i=0, count=name.size(); i<count; ++i) {
+        char c = name[i];
+        if(c == '.' || std::isspace((int)c))
+            FC_THROWM(Base::RuntimeError,"Illegal character in mapped name: " << name);
+    }
+    for(const char *s=element.getType();*s;++s) {
+        char c = *s;
+        if(c == '.' || std::isspace((int)c))
+            FC_THROWM(Base::RuntimeError,"Illegal character in element name: " << element);
+    }
+
+    resetElementMap(std::make_shared<ElementMap>());
+
+    ElementIDRefs _sid;
+    if (!sid)
+        sid = &_sid;
+
+    std::ostringstream ss;
+    Data::MappedName n(name);
+    for(int i=0;;) {
+        IndexedName existing;
+        MappedName res = this->addName(n, element, *sid, overwrite, &existing);
+        if (res)
+            return res;
+        if (++i == 100) {
+            FC_ERR("unresolved duplicate element mapping '" << name
+                    <<' ' << element << '/' << existing);
+            return name;
+        }
+        if(sid != &_sid)
+            _sid = *sid;
+        n = renameDuplicateElement(i,element,existing,name,_sid, master);
+        if (!n)
+            return name;
+        sid = &_sid;
+    }
+
+}
+
+MappedName ElementMap::renameDuplicateElement(int index,
+                                                  const IndexedName & element,
+                                                  const IndexedName & element2,
+                                                  const MappedName & name,
+                                                  ElementIDRefs &sids, 
+                                                  ComplexGeoData& master)
+{
+    std::ostringstream ss;
+    ss << ELEMENT_MAP_PREFIX << 'D' << std::hex << index;
+    MappedName renamed(name);
+    encodeElementName(element.getType()[0],renamed,ss,&sids, master);
+    if (FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG))
+        FC_WARN("duplicate element mapping '" << name << " -> " << renamed << ' ' 
+                << element << '/' << element2);
+    return renamed;
+}
+
+
+
+
+
 // Because the existence of hierarchical element maps, for the same document
 // we may store an element map more than once in multiple objects. And because
 // we may want to support partial loading, we choose to tolerate such redundancy
@@ -509,8 +702,8 @@ MappedName ElementMap::addName(MappedName& name, const IndexedName& idx, const E
         if (overwrite)
             erase(idx);
         auto ret = mappedNames.insert(std::make_pair(name, idx));
-        if (ret.second) {
-            ret.first->first.compact();
+        if (ret.second) { //element just inserted did not exist yet in the map
+            ret.first->first.compact(); //FIXME see MappedName.cpp
             mappedRef(idx).append(ret.first->first, sids);
             FC_TRACE(idx << " -> " << name);
             return ret.first->first;
@@ -712,7 +905,7 @@ bool ElementMap::hasChildElementMap() const
 
 void ElementMap::hashChildMaps(ComplexGeoData& master)
 {
-    if (childElements.empty() || !master.Hasher)
+    if (childElements.empty() || !this->hasher)
         return;
     std::ostringstream ss;
     for (auto& v : this->indexedNames) {
@@ -723,13 +916,13 @@ void ElementMap::hashChildMaps(ComplexGeoData& master)
             int pos = MappedName::fromRawData(child.postfix).findTagInElementName(
                 &tag, &len, nullptr, nullptr, false, false);
             if (pos > 10) {
-                MappedName postfix = master.hashElementName(
+                MappedName postfix = hashElementName(
                     MappedName::fromRawData(child.postfix.constData(), pos), child.sids);
                 ss.str("");
                 ss << MappedChildElements::prefix() << postfix;
                 MappedName tmp;
-                master.encodeElementName(
-                    child.indexedName[0], tmp, ss, nullptr, nullptr, child.tag, true);
+                encodeElementName(
+                    child.indexedName[0], tmp, ss, nullptr, master, nullptr, child.tag, true);
                 this->childElements.remove(child.postfix);
                 child.postfix = tmp.toBytes();
                 this->childElements[child.postfix].childMap = &child;
@@ -839,8 +1032,8 @@ void ElementMap::addChildElements(ComplexGeoData& master, const std::vector<Mapp
 
         // do child mapping only if the child element count >= 5
         if (child.count >= 5 || !child.elementMap) {
-            master.encodeElementName(
-                child.indexedName[0], tmp, ss, nullptr, child.postfix.constData(), child.tag, true);
+            encodeElementName(
+                child.indexedName[0], tmp, ss, nullptr, master, child.postfix.constData(), child.tag, true);
 
             // Perform some disambiguation in case the same shape is mapped
             // multiple times, e.g. draft array.
@@ -869,9 +1062,9 @@ void ElementMap::addChildElements(ComplexGeoData& master, const std::vector<Mapp
                     name = MappedName(childIdx);
                 }
                 ss.str("");
-                master.encodeElementName(
-                    idx[0], name, ss, &sids, child.postfix.constData(), child.tag);
-                master.setElementName(idx, name, &sids);
+                encodeElementName(
+                    idx[0], name, ss, &sids, master, child.postfix.constData(), child.tag);
+                setElementName(idx, name, master, &sids);
             }
             continue;
         }
@@ -887,8 +1080,8 @@ void ElementMap::addChildElements(ComplexGeoData& master, const std::vector<Mapp
             ss << ELEMENT_MAP_PREFIX << ":C" << entry->index - 1;
 
             tmp.clear();
-            master.encodeElementName(
-                child.indexedName[0], tmp, ss, nullptr, child.postfix.constData(), child.tag, true);
+            encodeElementName(
+                child.indexedName[0], tmp, ss, nullptr, master, child.postfix.constData(), child.tag, true);
 
             entry = &childElements[tmp.toBytes()];
             if (entry->childMap) {

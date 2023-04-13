@@ -44,7 +44,7 @@ namespace Data
 class ElementMap;
 typedef std::shared_ptr<ElementMap> ElementMapPtr;
 
-//FIXME
+// FIXME
 struct AppExport MappedChildElements
 {
     IndexedName indexedName;
@@ -55,11 +55,11 @@ struct AppExport MappedChildElements
     QByteArray postfix;
     ElementIDRefs sids;
 
-    static const std::string & prefix();
+    static const std::string& prefix();
 };
 
 
-class ElementMap: public std::enable_shared_from_this<ElementMap>
+class ElementMap: public std::enable_shared_from_this<ElementMap> //TODO can remove shared_from_this?
 {
 public:
     ElementMap();
@@ -156,6 +156,48 @@ private:
     std::size_t childElementSize = 0;
 
     mutable unsigned _id = 0;
+
+
+    /// String hasher for element name shortening
+    mutable App::StringHasherRef hasher;
+
+    /** Convenience method to hash the main element name
+     *
+     * @param name: main element name
+     * @param sid: store any output string ID references
+     * @return the hashed element name;
+     */
+    MappedName hashElementName(const MappedName& name, ElementIDRefs& sids) const;
+
+    /// Reverse hashElementName()
+    MappedName dehashElementName(const MappedName& name) const;
+
+    void encodeElementName(char element_type, MappedName& name, std::ostringstream& ss,
+                           ElementIDRefs* sids, ComplexGeoData& master, const char* postfix = 0,
+                           long tag = 0, bool forceTag = false) const;
+
+    /** Add a sub-element name mapping.
+     *
+     * @param element: the original \c Type + \c Index element name
+     * @param name: the mapped sub-element name. May or may not start with
+     * elementMapPrefix().
+     * @param sid: in case you use a hasher to hash the element name, pass in
+     * the string id reference using this parameter. You can have more than one
+     * string id associated with the same name.
+     * @param overwrite: if true, it will overwrite existing names
+     *
+     * @return Returns the stored mapped element name.
+     *
+     * An element can have multiple mapped names. However, a name can only be
+     * mapped to one element
+     */
+    MappedName setElementName(const IndexedName& element, const MappedName& name, ComplexGeoData& master,
+                              const ElementIDRefs* sid = nullptr, bool overwrite = false);
+
+
+    virtual MappedName renameDuplicateElement(int index, const IndexedName& element,
+                                              const IndexedName& element2, const MappedName& name,
+                                              ElementIDRefs& sids, ComplexGeoData& master);
 };
 
 
