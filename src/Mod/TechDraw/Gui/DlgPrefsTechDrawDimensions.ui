@@ -524,13 +524,13 @@ Multiplier of 'Font Size'</string>
         <item row="9" column="2">
          <widget class="Gui::PrefDoubleSpinBox" name="pdsbGapISO">
           <property name="toolTip">
-           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Controls the size of gap between dimension point and start of extension line for ISO dimensions. Value * linewidth is the gap.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Controls the size of gap between dimension point and start of extension line for ISO dimensions. Value * linewidth is the gap.  Normally, no gap is used.  If using a gap, the recommended value 8.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
           </property>
           <property name="alignment">
            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
           </property>
           <property name="value">
-           <double>8.000000000000000</double>
+           <double>0.000000000000000</double>
           </property>
           <property name="prefEntry" stdset="0">
            <cstring>GapISO</cstring>
@@ -543,13 +543,13 @@ Multiplier of 'Font Size'</string>
         <item row="10" column="2">
          <widget class="Gui::PrefDoubleSpinBox" name="pdsbGapASME">
           <property name="toolTip">
-           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Controls the size of gap between dimension point and start of extension line for ASME dimensions. Value * linewidth is the gap.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Controls the size of gap between dimension point and start of extension line for ASME dimensions. Value * linewidth is the gap.  Normally, no gap is used.  If a gap is used, the recommended value is 6.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
           </property>
           <property name="alignment">
            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
           </property>
           <property name="value">
-           <double>6.000000000000000</double>
+           <double>0.000000000000000</double>
           </property>
           <property name="prefEntry" stdset="0">
            <cstring>GapASME</cstring>
