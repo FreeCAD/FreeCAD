@@ -76,24 +76,29 @@ class SearchBox(QtGui.QLineEdit):
     # Connect signals and slots
     self.listView.clicked.connect(lambda x: self.selectResult('select', x))
     self.listView.selectionModel().selectionChanged.connect(self.onSelectionChanged)
-    QtGui.QShortcut(QtGui.QKeySequence(QtCore.Qt.Key_Down), self).activated.connect(self.listDown)
-    QtGui.QShortcut(QtGui.QKeySequence(QtCore.Qt.Key_Up), self).activated.connect(self.listUp)
-    QtGui.QShortcut(QtGui.QKeySequence(QtCore.Qt.Key_PageDown), self).activated.connect(self.listPageDown)
-    QtGui.QShortcut(QtGui.QKeySequence(QtCore.Qt.Key_PageUp), self).activated.connect(self.listPageUp)
+
+    # Note: should probably use the eventFilter method instead...
+    wdgctx = QtCore.Qt.ShortcutContext.WidgetShortcut
+
+    QtGui.QShortcut(QtGui.QKeySequence(QtCore.Qt.Key_Down), self, context = wdgctx).activated.connect(self.listDown)
+    QtGui.QShortcut(QtGui.QKeySequence(QtCore.Qt.Key_Up), self, context = wdgctx).activated.connect(self.listUp)
+    QtGui.QShortcut(QtGui.QKeySequence(QtCore.Qt.Key_PageDown), self, context = wdgctx).activated.connect(self.listPageDown)
+    QtGui.QShortcut(QtGui.QKeySequence(QtCore.Qt.Key_PageUp), self, context = wdgctx).activated.connect(self.listPageUp)
 
     # Home and End do not work, for some reason.
-    #QtGui.QShortcut(QtGui.QKeySequence.MoveToEndOfDocument, self).activated.connect(self.listEnd)
-    #QtGui.QShortcut(QtGui.QKeySequence.MoveToStartOfDocument, self).activated.connect(self.listStart)
-    #QtGui.QShortcut(QtGui.QKeySequence(QtCore.Qt.Key_End), self).activated.connect(self.listEnd)
-    #QtGui.QShortcut(QtGui.QKeySequence('Home'), self).activated.connect(self.listStart)
+    #QtGui.QShortcut(QtGui.QKeySequence.MoveToEndOfDocument, self, context = wdgctx).activated.connect(self.listEnd)
+    #QtGui.QShortcut(QtGui.QKeySequence.MoveToStartOfDocument, self, context = wdgctx).activated.connect(self.listStart)
+    #QtGui.QShortcut(QtGui.QKeySequence(QtCore.Qt.Key_End), self, context = wdgctx).activated.connect(self.listEnd)
+    #QtGui.QShortcut(QtGui.QKeySequence('Home'), self, context = wdgctx).activated.connect(self.listStart)
     
-    QtGui.QShortcut(QtGui.QKeySequence(QtCore.Qt.Key_Enter), self).activated.connect(self.listAccept)
-    QtGui.QShortcut(QtGui.QKeySequence(QtCore.Qt.Key_Return), self).activated.connect(self.listAccept)
-    QtGui.QShortcut(QtGui.QKeySequence('Ctrl+Return'), self).activated.connect(self.listAcceptToggle)
-    QtGui.QShortcut(QtGui.QKeySequence('Ctrl+Enter'), self).activated.connect(self.listAcceptToggle)
-    QtGui.QShortcut(QtGui.QKeySequence('Ctrl+Space'), self).activated.connect(self.listAcceptToggle)
+    QtGui.QShortcut(QtGui.QKeySequence(QtCore.Qt.Key_Enter), self, context = wdgctx).activated.connect(self.listAccept)
+    QtGui.QShortcut(QtGui.QKeySequence(QtCore.Qt.Key_Return), self, context = wdgctx).activated.connect(self.listAccept)
+    QtGui.QShortcut(QtGui.QKeySequence('Ctrl+Return'), self, context = wdgctx).activated.connect(self.listAcceptToggle)
+    QtGui.QShortcut(QtGui.QKeySequence('Ctrl+Enter'), self, context = wdgctx).activated.connect(self.listAcceptToggle)
+    QtGui.QShortcut(QtGui.QKeySequence('Ctrl+Space'), self, context = wdgctx).activated.connect(self.listAcceptToggle)
+    
+    QtGui.QShortcut(QtGui.QKeySequence(QtCore.Qt.Key_Escape), self, context = wdgctx).activated.connect(self.listCancel)
 
-    QtGui.QShortcut(QtGui.QKeySequence(QtCore.Qt.Key_Escape), self).activated.connect(self.listCancel)
     # Initialize the model with the full list (assuming the text() is empty)
     #self.proxyFilterModel(self.text()) # This is done by refreshItemGroups on focusInEvent, because the initial loading from cache can take time
     self.firstShowList = True
