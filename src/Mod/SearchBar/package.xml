@@ -16,10 +16,12 @@
       <name>SearchBar</name>
       <description>Adds a search bar widget for tools, document objects, and preferences</description>
       <classname></classname>
+      <icon>Tango-System-search.svg</icon>
       <subdirectory>./</subdirectory>
       <tag>search</tag>
       <tag>widget</tag>
       <tag>ui/ux</tag>
+      <version>0.1.0</version>
     </workbench>
   </content>
 </package>
