@@ -165,7 +165,7 @@ void TaskDraftParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
 
 void TaskDraftParameters::setButtons(const selectionModes mode)
 {
-    ui->buttonRefSel->setText(mode == refSel ? btnPreviewStr : btnSelectStr);
+    ui->buttonRefSel->setText(mode == refSel ? btnPreviewStr() : btnSelectStr());
     ui->buttonRefSel->setChecked(mode == refSel);
     ui->buttonLine->setChecked(mode == line);
     ui->buttonPlane->setChecked(mode == plane);
