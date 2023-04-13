@@ -426,48 +426,24 @@ this according to your screen size or personal taste</string>
      </widget>
     </item>
     <item>
-     <widget class="QGroupBox" name="GroupBox10">
-      <property name="title">
-       <string>Start up</string>
-      </property>
-      <layout class="QGridLayout">
-       <property name="leftMargin">
-        <number>11</number>
-       </property>
-       <property name="topMargin">
-        <number>11</number>
-       </property>
-       <property name="rightMargin">
-        <number>11</number>
-       </property>
-       <property name="bottomMargin">
-        <number>11</number>
-       </property>
-       <property name="spacing">
-        <number>6</number>
-       </property>
-       <item row="0" column="0">
-        <widget class="Gui::PrefCheckBox" name="SplashScreen">
-         <property name="toolTip">
-          <string>A Splash screen is a small loading window that is shown
+     <widget class="Gui::PrefCheckBox" name="SplashScreen">
+      <property name="toolTip">
+       <string>A Splash screen is a small loading window that is shown
 when FreeCAD is launching. If this option is checked, FreeCAD will
 display the splash screen</string>
-         </property>
-         <property name="text">
-          <string>Enable splash screen at start up</string>
-         </property>
-         <property name="checked">
-          <bool>true</bool>
-         </property>
-         <property name="prefEntry" stdset="0">
-          <cstring>ShowSplasher</cstring>
-         </property>
-         <property name="prefPath" stdset="0">
-          <cstring>General</cstring>
-         </property>
-        </widget>
-       </item>
-      </layout>
+      </property>
+      <property name="text">
+       <string>Enable splash screen at start up</string>
+      </property>
+      <property name="checked">
+       <bool>true</bool>
+      </property>
+      <property name="prefEntry" stdset="0">
+       <cstring>ShowSplasher</cstring>
+      </property>
+      <property name="prefPath" stdset="0">
+       <cstring>General</cstring>
+      </property>
      </widget>
     </item>
     <item>
