@@ -51,8 +51,6 @@ FC_LOG_LEVEL_INIT("PartDesign",true,true)
 using namespace PartDesignGui;
 using namespace Gui;
 
-const QString TaskDressUpParameters::btnPreviewStr = tr("Preview");
-const QString TaskDressUpParameters::btnSelectStr = tr("Select");
 
 /* TRANSLATOR PartDesignGui::TaskDressUpParameters */
 
@@ -79,6 +77,18 @@ TaskDressUpParameters::~TaskDressUpParameters()
 {
     // make sure to remove selection gate in all cases
     Gui::Selection().rmvSelectionGate();
+}
+
+const QString TaskDressUpParameters::btnPreviewStr()
+{
+    static const QString text{ tr("Preview") };
+    return text;
+}
+
+const QString TaskDressUpParameters::btnSelectStr()
+{
+    static const QString text{ tr("Select") };
+    return text;
 }
 
 void TaskDressUpParameters::setupTransaction()
