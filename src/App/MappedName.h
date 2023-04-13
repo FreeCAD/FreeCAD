@@ -718,7 +718,7 @@ public:
     }
 
     /// Ensure that this data is unshared, making a copy if necessary.
-    void compact();
+    void compact() const;
 
     /// Boolean conversion is the inverse of empty(), returning true if there is data in either the
     /// data or postfix, and false if there is nothing in either.

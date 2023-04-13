@@ -39,12 +39,13 @@ FC_LOG_LEVEL_INIT("MappedName", true, 2);
 
 namespace Data {
 
-void MappedName::compact()
+void MappedName::compact() const
 {
+    auto self = const_cast<MappedName*>(this); //FIXME this is a workaround for a single call in ElementMap::addName()
 
     if (this->raw) {
-        this->data = QByteArray(this->data.constData(), this->data.size());
-        this->raw = false;
+        self->data = QByteArray(self->data.constData(), self->data.size());
+        self->raw = false;
     }
 
 #if 0
