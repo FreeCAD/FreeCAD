@@ -2186,8 +2186,7 @@ void Application::runApplication()
                 QTextStream bodyMessageStream(&bodyMessage);
                 bodyMessageStream << QObject::tr("This system is running OpenGL version");
                 bodyMessageStream << " " << major << "." << minor;
-                bodyMessageStream << ", " << QObject::tr("FreeCAD requires OpenGL version");
-                bodyMessageStream << " 2.0 " << QObject::tr("or above");
+                bodyMessageStream << ", " << QObject::tr("FreeCAD requires OpenGL version 2.0 or above");
                 bodyMessageStream << ". " << QObject::tr("Please upgrade your graphics driver and/or card as required") << ".\n\n";
                 QMessageBox::critical(0, msgboxtitle + QObject::tr("Invalid OpenGL Version"), bodyMessage);
                 throw Base::RuntimeError("Invalid OpenGL Version");
