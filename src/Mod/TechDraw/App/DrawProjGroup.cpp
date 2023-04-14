@@ -61,12 +61,7 @@ DrawProjGroup::DrawProjGroup()
     static const char* group = "Base";
     static const char* agroup = "Distribute";
 
-    Base::Reference<ParameterGrp> hGrp = App::GetApplication()
-                                             .GetUserParameter()
-                                             .GetGroup("BaseApp")
-                                             ->GetGroup("Preferences")
-                                             ->GetGroup("Mod/TechDraw/General");
-    bool autoDist = hGrp->GetBool("AutoDist", true);
+    bool autoDist = Preferences::getPreferenceGroup("General")->GetBool("AutoDist", true);
 
     ADD_PROPERTY_TYPE(Source, (nullptr), group, App::Prop_None, "Shape to view");
     Source.setScope(App::LinkScope::Global);
@@ -585,9 +580,6 @@ std::pair<Base::Vector3d, Base::Vector3d> DrawProjGroup::getDirsFromFront(std::s
     std::pair<Base::Vector3d, Base::Vector3d> result;
 
     Base::Vector3d projDir, rotVec;
-    Base::Console().Error("DrawProjGroup - %s unknown projection: %s\n", getNameInDocument(),
-                            viewType.c_str());
-                            
     DrawProjGroupItem* anch = getAnchor();
     if (!anch) {
         Base::Console().Warning("DPG::getDirsFromFront - %s - No Anchor!\n", Label.getValue());
@@ -652,11 +644,16 @@ std::pair<Base::Vector3d, Base::Vector3d> DrawProjGroup::getDirsFromFront(std::s
         projDir = dir2vec(newDir);
         gp_Dir newXDir = gp_Dir(gp_Vec(gXDir) - gp_Vec(gDir));
         rotVec = dir2vec(newXDir);
+    } else {
+        // not one of the standard view directions, so complain and use the values for "Front"
+        Base::Console().Error("DrawProjGroup - %s unknown projection: %s\n", getNameInDocument(),
+                            viewType.c_str());
+        Base::Vector3d dirAnch = anch->Direction.getValue();
+        Base::Vector3d rotAnch = anch->getXDirection();
+        return std::make_pair(dirAnch, rotAnch);
     }
-    
-    Base::Vector3d dirAnch = anch->Direction.getValue();
-    Base::Vector3d rotAnch = anch->getXDirection();
-    return std::make_pair(dirAnch, rotAnch);
+
+    return std::make_pair(projDir, rotVec);
 }
 
 Base::Vector3d DrawProjGroup::dir2vec(gp_Dir d)
@@ -893,7 +890,7 @@ int DrawProjGroup::getViewIndex(const char* viewTypeCStr) const
     else if (strcmp(viewTypeCStr, "FrontBottomRight") == 0) {
         return thirdAngle ? 9 : 0;
     }
-    
+
     throw Base::TypeError("Unknown view type in DrawProjGroup::getViewIndex()");
     return 4;  // Default to front view's position;
 }

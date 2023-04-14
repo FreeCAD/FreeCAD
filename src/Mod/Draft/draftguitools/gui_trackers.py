@@ -798,6 +798,7 @@ class editTracker(Tracker):
         self.marker.markerIndex = marker
         self.coords = coin.SoCoordinate3()  # this is the coordinate
         self.coords.point.setValue((pos.x, pos.y, pos.z))
+        self.position = pos
         if inactive:
             self.selnode = coin.SoSeparator()
         else:
@@ -820,11 +821,11 @@ class editTracker(Tracker):
     def set(self, pos):
         """Set the point to the position."""
         self.coords.point.setValue((pos.x, pos.y, pos.z))
+        self.position = pos
 
     def get(self):
         """Get a vector from the point."""
-        p = self.coords.point.getValues()[0]
-        return Vector(p[0], p[1], p[2])
+        return self.position
 
     def get_doc_name(self):
         """Get the document name."""

@@ -594,10 +594,8 @@ std::string DrawGeomHatch::prefGeomHatchFile()
 
 std::string DrawGeomHatch::prefGeomHatchName()
 {
-    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
-        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/PAT");
     std::string defaultNamePattern = "Diamond";
-    std::string result = hGrp->GetASCII("NamePattern", defaultNamePattern.c_str());
+    std::string result = Preferences::getPreferenceGroup("PAT")->GetASCII("NamePattern", defaultNamePattern.c_str());
     if (result.empty()) {
         return defaultNamePattern;
     }
@@ -606,10 +604,8 @@ std::string DrawGeomHatch::prefGeomHatchName()
 
 App::Color DrawGeomHatch::prefGeomHatchColor()
 {
-    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
-        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Colors");
     App::Color fcColor;
-    fcColor.setPackedValue(hGrp->GetUnsigned("GeomHatch", 0x00FF0000));
+    fcColor.setPackedValue(Preferences::getPreferenceGroup("Colors")->GetUnsigned("GeomHatch", 0x00FF0000));
     return fcColor;
 }
 

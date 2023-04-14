@@ -566,12 +566,7 @@ void QGIViewPart::drawViewPart()
 
 
     // Draw Vertexs:
-    Base::Reference<ParameterGrp> hGrp = App::GetApplication()
-                                             .GetUserParameter()
-                                             .GetGroup("BaseApp")
-                                             ->GetGroup("Preferences")
-                                             ->GetGroup("Mod/TechDraw/General");
-    double vertexScaleFactor = hGrp->GetFloat("VertexScale", 3.0);
+    double vertexScaleFactor = Preferences::getPreferenceGroup("General")->GetFloat("VertexScale", 3.0);
     QColor vertexColor = PreferencesGui::getAccessibleQColor(PreferencesGui::vertexQColor());
     bool showVertices = true;
     bool showCenterMarks = true;
@@ -1285,22 +1280,12 @@ void QGIViewPart::rotateView() {}
 bool QGIViewPart::prefFaceEdges()
 {
     bool result = false;
-    Base::Reference<ParameterGrp> hGrp = App::GetApplication()
-                                             .GetUserParameter()
-                                             .GetGroup("BaseApp")
-                                             ->GetGroup("Preferences")
-                                             ->GetGroup("Mod/TechDraw/General");
-    result = hGrp->GetBool("DrawFaceEdges", 0l);
+    result = Preferences::getPreferenceGroup("General")->GetBool("DrawFaceEdges", 0l);
     return result;
 }
 
 bool QGIViewPart::prefPrintCenters()
 {
-    Base::Reference<ParameterGrp> hGrp = App::GetApplication()
-                                             .GetUserParameter()
-                                             .GetGroup("BaseApp")
-                                             ->GetGroup("Preferences")
-                                             ->GetGroup("Mod/TechDraw/Decorations");
-    bool printCenters = hGrp->GetBool("PrintCenterMarks", false);//true matches v0.18 behaviour
+    bool printCenters = Preferences::getPreferenceGroup("Decorations")->GetBool("PrintCenterMarks", false);//true matches v0.18 behaviour
     return printCenters;
 }

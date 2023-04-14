@@ -741,7 +741,6 @@ void MRichTextEdit::onSelectionChanged()
 bool MRichTextEdit::hasMultipleSizes()
 {
 //    qDebug() << "MRTE::hasMultipleSizes()";
-    bool result = false;
     QTextCursor cursor = f_textedit->textCursor();
     if (cursor.hasSelection()) {
         int begin = cursor.selectionStart();
@@ -761,10 +760,10 @@ bool MRichTextEdit::hasMultipleSizes()
             }
         }
         if (countMap.size() > 1) {
-            result = true;
+            return true;
         }
     }
-    return result;
+    return false;
 }
 
 void MRichTextEdit::setDefFontSize(int fontSize)
@@ -796,15 +795,13 @@ int MRichTextEdit::getDefFontSizeNum()
 //    double mmToPts = 2.83;  //theoretical value
     double mmToPts = 2.00;  //practical value. seems to be reasonable for common fonts.
 
-    int ptsSize = round(fontSize * mmToPts);
-    return ptsSize;
+    return round(fontSize * mmToPts);
 }
 
 QString MRichTextEdit::getDefFontSize()
 {
 //    Base::Console().Message("MRTE::getDefFontSize()\n");
-    QString result = QString::number(getDefFontSizeNum());
-    return result;
+    return QString::number(getDefFontSizeNum());
 }
 
 //not used.

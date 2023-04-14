@@ -630,6 +630,23 @@ PyObject* TopoShapeEdgePy::discretize(PyObject *args, PyObject *kwds)
     return nullptr;
 }
 
+PyObject* TopoShapeEdgePy::countNodes(PyObject *args)
+{
+    if (!PyArg_ParseTuple(args, ""))
+        return nullptr;
+
+    const TopoDS_Shape& shape = this->getTopoShapePtr()->getShape();
+    TopoDS_Edge aEdge = TopoDS::Edge(shape);
+    TopLoc_Location aLoc;
+    const Handle(Poly_Polygon3D)& aPoly = BRep_Tool::Polygon3D(aEdge, aLoc);
+    int count = 0;
+    if (!aPoly.IsNull()) {
+        count = aPoly->NbNodes();
+    }
+
+    return Py::new_reference_to(Py::Long(count));
+}
+
 PyObject* TopoShapeEdgePy::split(PyObject *args)
 {
     PyObject* float_or_list;

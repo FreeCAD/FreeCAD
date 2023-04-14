@@ -138,17 +138,6 @@ jobs:
                             swig                                        \
                             ccache                                      \
                             xvfb
-      - name: Install Pivy version compatible with Python 3.10
-        run: |
-          sudo apt-get purge python3-pivy
-          cd /tmp/
-          git clone --depth 1 --branch 0.6.8 https://github.com/coin3d/pivy.git
-          cd pivy
-          mkdir build
-          cd build
-          cmake ..
-          make -j$(nproc)
-          sudo make install
       - name: Make needed directories, files and initializations
         id: Init
         run: |

@@ -393,6 +393,7 @@ void  Workbench::addPermanentMenuItems(MenuItem* mb) const
 
 void Workbench::activated()
 {
+    Application::Instance->commandManager().signalPyCmdInitialized();
 }
 
 void Workbench::deactivated()
@@ -685,7 +686,7 @@ MenuItem* StdWorkbench::setupMenuBar() const
           << "Std_ViewVR"
 #endif
           << "Separator" << visu
-          << "Std_ToggleVisibility" << "Std_ToggleNavigation"
+          << "Std_ToggleNavigation"
           << "Std_SetAppearance" << "Std_RandomColor" << "Separator"
           << "Std_Workbench" << "Std_ToolBarMenu" << "Std_DockViewMenu" << "Separator"
           << "Std_TreeViewActions"

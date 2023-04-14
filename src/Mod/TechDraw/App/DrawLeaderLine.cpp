@@ -22,7 +22,6 @@
 
 #include "PreCompiled.h"
 
-#include <App/Application.h>
 #include <Base/Console.h>
 #include <Base/Parameter.h>
 
@@ -30,6 +29,7 @@
 #include "DrawLeaderLinePy.h"  // generated from DrawLeaderLinePy.xml
 #include "ArrowPropEnum.h"
 #include "DrawView.h"
+#include "Preferences.h"
 
 
 using namespace TechDraw;
@@ -247,9 +247,7 @@ Base::Vector3d DrawLeaderLine::getTailPoint() const
 
 bool DrawLeaderLine::getDefAuto() const
 {
-    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter().GetGroup("BaseApp")->
-                                         GetGroup("Preferences")->GetGroup("Mod/TechDraw/LeaderLine");
-    return hGrp->GetBool("AutoHorizontal", true);
+    return Preferences::getPreferenceGroup("LeaderLine")->GetBool("AutoHorizontal", true);
 }
 
 

@@ -132,6 +132,7 @@ class Macro:
         for key, value in parser.parse_results.items():
             if value:
                 self.__dict__[key] = value
+        self.clean_icon()
         self.parsed = True
 
     def fill_details_from_wiki(self, url):

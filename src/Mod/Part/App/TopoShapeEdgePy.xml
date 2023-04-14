@@ -347,6 +347,11 @@ Part.show(s)
           </UserDocu>
         </Documentation>
       </Methode>
+      <Methode Name="countNodes" Const="true">
+      <Documentation>
+        <UserDocu>Returns the number of nodes of the 3D polygon of the edge.</UserDocu>
+      </Documentation>
+      </Methode>
       <Methode Name="split" Const="true">
         <Documentation>
           <UserDocu>Splits the edge at the given parameter values and builds a wire out of it

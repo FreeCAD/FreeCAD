@@ -59,8 +59,7 @@ void DlgTemplateField::setFieldContent(std::string content)
 
 QString DlgTemplateField::getFieldContent()
 {
-    QString result = ui->leInput->text();
-    return result;
+    return ui->leInput->text();
 }
 
 void DlgTemplateField::accept()

@@ -456,17 +456,14 @@ std::vector<double> QGIFace::offsetDash(const std::vector<double> dv, const doub
 //! find remaining length of a dash pattern after offset
 double QGIFace::dashRemain(const std::vector<double> dv, const double offset)
 {
-    double result;
     double length = 0.0;
     for (auto& d: dv) {
         length += fabs(d);
     }
     if (offset > length) {
-        result = 0.0;
-    } else {
-        result = length - offset;
+        return 0.0;
     }
-    return result;
+    return length - offset;
 }
 
 //! get zoom level (scale) from QGraphicsView
@@ -474,17 +471,16 @@ double QGIFace::dashRemain(const std::vector<double> dv, const double offset)
 double QGIFace::getXForm()
 {
     //try to keep the pattern the same when View scales
-    double result = 1.0;
     auto s = scene();
     if (s) {
         auto vs = s->views();     //ptrs to views
         if (!vs.empty()) {
             auto v = vs.at(0);
             auto i = v->transform().inverted();
-            result = i.m11();
+            return i.m11();
         }
     }
-    return result;
+    return 1.0;
 }
 
 void QGIFace::clearFillItems()
@@ -647,18 +643,17 @@ void QGIFace::buildPixHatch()
 //this isn't used currently
 QPixmap QGIFace::textureFromSvg(std::string fileSpec)
 {
-    QPixmap result;
     QString qs(QString::fromStdString(fileSpec));
     QFileInfo ffi(qs);
-    if (ffi.isReadable()) {
-        QSvgRenderer renderer(qs);
-        QPixmap pixMap(renderer.defaultSize());
-        pixMap.fill(Qt::white);                                            //try  Qt::transparent?
-        QPainter painter(&pixMap);
-        renderer.render(&painter);                                         //svg texture -> bitmap
-        result = pixMap.scaled(m_fillScale, m_fillScale);
-    }  //else return empty pixmap
-    return result;
+    if (!ffi.isReadable()) {
+        return QPixmap();
+    }
+    QSvgRenderer renderer(qs);
+    QPixmap pixMap(renderer.defaultSize());
+    pixMap.fill(Qt::white);                                            //try  Qt::transparent?
+    QPainter painter(&pixMap);
+    renderer.render(&painter);                                         //svg texture -> bitmap
+    return pixMap.scaled(m_fillScale, m_fillScale);
 }
 
 void QGIFace::setHatchColor(App::Color c)
@@ -704,23 +699,13 @@ void QGIFace::setLineWeight(double w) {
 
 void QGIFace::getParameters()
 {
-    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
-        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/PAT");
+    m_maxSeg = Preferences::getPreferenceGroup("PAT")->GetInt("MaxSeg", 10000l);
+    m_maxTile = Preferences::getPreferenceGroup("Decorations")->GetInt("MaxSVGTile", 10000l);
 
-    m_maxSeg = hGrp->GetInt("MaxSeg", 10000l);
-
-    hGrp = App::GetApplication().GetUserParameter()
-        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Decorations");
-    m_maxTile = hGrp->GetInt("MaxSVGTile", 10000l);
-
-    hGrp = App::GetApplication().GetUserParameter()
-        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Colors");
-    App::Color temp {static_cast<uint32_t>(hGrp->GetUnsigned("FaceColor",0xffffffff))};
+    App::Color temp {static_cast<uint32_t>(Preferences::getPreferenceGroup("Colors")->GetUnsigned("FaceColor",0xffffffff))};
     setFillColor(temp.asValue<QColor>());
 
-    hGrp = App::GetApplication().GetUserParameter()
-        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Colors");
-    m_defClearFace = hGrp->GetBool("ClearFace", false);
+    m_defClearFace = Preferences::getPreferenceGroup("Colors")->GetBool("ClearFace", false);
 }
 
 QRectF QGIFace::boundingRect() const

@@ -75,7 +75,6 @@
 #include <QtConcurrentRun>
 #endif
 
-#include <App/Application.h>
 #include <App/Document.h>
 #include <Base/BoundBox.h>
 #include <Base/Console.h>
@@ -90,6 +89,7 @@
 #include "DrawUtil.h"
 #include "EdgeWalker.h"
 #include "GeometryObject.h"
+#include "Preferences.h"
 
 #include "DrawViewSection.h"
 
@@ -1066,22 +1066,22 @@ TopoDS_Face DrawViewSection::getSectionTopoDSFace(int i)
 
 TechDraw::DrawViewPart* DrawViewSection::getBaseDVP() const
 {
-    TechDraw::DrawViewPart* baseDVP = nullptr;
     App::DocumentObject* base = BaseView.getValue();
     if (base && base->getTypeId().isDerivedFrom(TechDraw::DrawViewPart::getClassTypeId())) {
-        baseDVP = static_cast<TechDraw::DrawViewPart*>(base);
+        TechDraw::DrawViewPart* baseDVP = static_cast<TechDraw::DrawViewPart*>(base);
+        return baseDVP;
     }
-    return baseDVP;
+    return nullptr;
 }
 
 TechDraw::DrawProjGroupItem* DrawViewSection::getBaseDPGI() const
 {
-    TechDraw::DrawProjGroupItem* baseDPGI = nullptr;
     App::DocumentObject* base = BaseView.getValue();
     if (base && base->getTypeId().isDerivedFrom(TechDraw::DrawProjGroupItem::getClassTypeId())) {
-        baseDPGI = static_cast<TechDraw::DrawProjGroupItem*>(base);
+        TechDraw::DrawProjGroupItem* baseDPGI = static_cast<TechDraw::DrawProjGroupItem*>(base);
+        return baseDPGI;
     }
-    return baseDPGI;
+    return nullptr;
 }
 
 // setup / tear down routines
@@ -1174,47 +1174,25 @@ void DrawViewSection::replacePatIncluded(std::string newPatFile)
 void DrawViewSection::getParameters()
 {
     //    Base::Console().Message("DVS::getParameters()\n");
-    Base::Reference<ParameterGrp> hGrp = App::GetApplication()
-                                             .GetUserParameter()
-                                             .GetGroup("BaseApp")
-                                             ->GetGroup("Preferences")
-                                             ->GetGroup("Mod/TechDraw/General");
-
-    bool fuseFirst = hGrp->GetBool("SectionFuseFirst", false);
+    bool fuseFirst = Preferences::getPreferenceGroup("General")->GetBool("SectionFuseFirst", false);
     FuseBeforeCut.setValue(fuseFirst);
 }
 
 bool DrawViewSection::debugSection(void) const
 {
-    Base::Reference<ParameterGrp> hGrp = App::GetApplication()
-                                             .GetUserParameter()
-                                             .GetGroup("BaseApp")
-                                             ->GetGroup("Preferences")
-                                             ->GetGroup("Mod/TechDraw/debug");
-
-    return hGrp->GetBool("debugSection", false);
+    return Preferences::getPreferenceGroup("debug")->GetBool("debugSection", false);
 }
 
 int DrawViewSection::prefCutSurface(void) const
 {
     //    Base::Console().Message("DVS::prefCutSurface()\n");
-    Base::Reference<ParameterGrp> hGrp = App::GetApplication()
-                                             .GetUserParameter()
-                                             .GetGroup("BaseApp")
-                                             ->GetGroup("Preferences")
-                                             ->GetGroup("Mod/TechDraw/Decorations");
 
-    return hGrp->GetInt("CutSurfaceDisplay", 2);//default to SvgHatch
+    return Preferences::getPreferenceGroup("Decorations")->GetInt("CutSurfaceDisplay", 2);//default to SvgHatch
 }
 
 bool DrawViewSection::showSectionEdges(void)
 {
-    Base::Reference<ParameterGrp> hGrp = App::GetApplication()
-                                             .GetUserParameter()
-                                             .GetGroup("BaseApp")
-                                             ->GetGroup("Preferences")
-                                             ->GetGroup("Mod/TechDraw/General");
-    return (hGrp->GetBool("ShowSectionEdges", true));
+    return Preferences::getPreferenceGroup("General")->GetBool("ShowSectionEdges", true);
 }
 
 bool DrawViewSection::trimAfterCut() const { return TrimAfterCut.getValue(); }

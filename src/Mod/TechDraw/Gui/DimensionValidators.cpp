@@ -695,8 +695,6 @@ long int TechDraw::mapGeometryTypeToDimType(long int dimType, DimensionGeometryT
                 return DrawViewDimension::Angle;
             case isAngle3Pt:
                 return DrawViewDimension::Angle3Pt;
-            default:
-                return dimType;
         }
     } else if (geometry2d != isViewReference) {
         switch (geometry2d) {
@@ -710,8 +708,6 @@ long int TechDraw::mapGeometryTypeToDimType(long int dimType, DimensionGeometryT
                 return DrawViewDimension::Angle;
             case isAngle3Pt:
                 return DrawViewDimension::Angle3Pt;
-            default:
-                return dimType;
         }
     }
     return dimType;

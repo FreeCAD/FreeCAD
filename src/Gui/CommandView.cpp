@@ -1850,7 +1850,7 @@ void StdViewScreenShot::activated(int iMsg)
         FileOptionsDialog fd(getMainWindow(), Qt::WindowFlags());
         fd.setFileMode(QFileDialog::AnyFile);
         fd.setAcceptMode(QFileDialog::AcceptSave);
-        fd.setWindowTitle(QObject::tr("Save picture"));
+        fd.setWindowTitle(QObject::tr("Save image"));
         fd.setNameFilters(filter);
         if (!selFilter.isEmpty())
             fd.selectNameFilter(selFilter);
@@ -1981,9 +1981,9 @@ StdViewLoadImage::StdViewLoadImage()
 {
     sGroup      = "Standard-View";
     sMenuText   = QT_TR_NOOP("Load image...");
-    sToolTipText= QT_TR_NOOP("Loads a image");
+    sToolTipText= QT_TR_NOOP("Loads an image");
     sWhatsThis  = "Std_ViewLoadImage";
-    sStatusTip  = QT_TR_NOOP("Loads a image");
+    sStatusTip  = QT_TR_NOOP("Loads an image");
     sPixmap     = "image-open";
     eType       = 0;
 }

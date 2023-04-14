@@ -32,7 +32,6 @@
 #include <QTextStream>
 #endif
 
-#include <App/Application.h>
 #include <App/Document.h>
 #include <Base/Console.h>
 #include <Base/Parameter.h>
@@ -60,6 +59,7 @@
 #include <Mod/TechDraw/App/DrawViewSpreadsheet.h>
 #include <Mod/TechDraw/App/DrawViewSymbol.h>
 #include <Mod/TechDraw/App/DrawWeldSymbol.h>
+#include <Mod/TechDraw/App/Preferences.h>
 
 #include "MDIViewPage.h"
 #include "QGIDrawingTemplate.h"
@@ -1271,13 +1271,8 @@ TechDraw::DrawPage* QGSPage::getDrawPage() { return m_vpPage->getDrawPage(); }
 
 QColor QGSPage::getBackgroundColor()
 {
-    Base::Reference<ParameterGrp> hGrp = App::GetApplication()
-                                             .GetUserParameter()
-                                             .GetGroup("BaseApp")
-                                             ->GetGroup("Preferences")
-                                             ->GetGroup("Mod/TechDraw/Colors");
     App::Color fcColor;
-    fcColor.setPackedValue(hGrp->GetUnsigned("Background", 0x70707000));
+    fcColor.setPackedValue(Preferences::getPreferenceGroup("Colors")->GetUnsigned("Background", 0x70707000));
     return fcColor.asValue<QColor>();
 }
 

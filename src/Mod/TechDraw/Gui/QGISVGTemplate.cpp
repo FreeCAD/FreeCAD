@@ -165,12 +165,7 @@ void QGISVGTemplate::createClickHandles()
 
     //TODO: Find location of special fields (first/third angle) and make graphics items for them
 
-    Base::Reference<ParameterGrp> hGrp = App::GetApplication()
-                                             .GetUserParameter()
-                                             .GetGroup("BaseApp")
-                                             ->GetGroup("Preferences")
-                                             ->GetGroup("Mod/TechDraw/General");
-    double editClickBoxSize = Rez::guiX(hGrp->GetFloat("TemplateDotSize", 3.0));
+    double editClickBoxSize = Rez::guiX(Preferences::getPreferenceGroup("General")->GetFloat("TemplateDotSize", 3.0));
 
     QColor editClickBoxColor = Qt::green;
     editClickBoxColor.setAlpha(128);//semi-transparent

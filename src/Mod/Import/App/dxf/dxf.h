@@ -26,7 +26,7 @@
 #define HAVE_IOSTREAM
 #endif
 
-typedef int Aci_t; // AutoCAD color index
+typedef int ColorIndex_t; // DXF color index
 
 typedef enum
 {
@@ -118,6 +118,22 @@ struct LWPolyDataOut
     std::vector<double> Bulge;
     point3D Extr;
 };
+typedef enum
+{
+    RUnknown,
+    ROlder,
+    R10,
+    R11_12,
+    R13,
+    R14,
+    R2000,
+    R2004,
+    R2007,
+    R2010,
+    R2013,
+    R2018,
+    RNewer,
+} eDXFVersion_t;
 //********************
 
 class CDxfWrite{
@@ -256,8 +272,9 @@ private:
     bool m_ignore_errors;
 
 
-    typedef std::map< std::string,Aci_t > LayerAciMap_t;
-    LayerAciMap_t m_layer_aci;  // layer names -> layer color aci map
+    std::map<std::string,ColorIndex_t> m_layer_ColorIndex_map;  // Mapping from layer name -> layer color index
+    const ColorIndex_t ColorBylayer = 256;
+    const ColorIndex_t ColorByBlock = 0;
 
     bool ReadUnits();
     bool ReadLayer();
@@ -277,13 +294,25 @@ private:
     bool ReadInsert();
     bool ReadDimension();
     bool ReadBlockInfo();
+    bool ReadVersion();
+    bool ReadDWGCodePage();
+    bool ResolveEncoding();
 
     void get_line();
     void put_line(const char *value);
-    void DerefACI();
+    void ResolveColorIndex();
 
 protected:
-    Aci_t m_aci; // manifest color name or 256 for layer color
+    ColorIndex_t m_ColorIndex;
+    eDXFVersion_t m_version;// Version from $ACADVER variable in DXF
+    const char* (CDxfRead::*stringToUTF8)(const char*) const;
+
+private:
+    const std::string* m_CodePage;     // Code Page name from $DWGCODEPAGE or null if none/not read yet
+    // The following was going to be python's canonical name for the encoding, but this is (a) not easily found and (b) does not speed up finding the encoding object.
+    const std::string* m_encoding;// A name for the encoding implied by m_version and m_CodePage
+    const char* UTF8ToUTF8(const char* encoded) const;
+    const char* GeneralToUTF8(const char* encoded) const;
 
 public:
     ImportExport CDxfRead(const char* filepath); // this opens the file
