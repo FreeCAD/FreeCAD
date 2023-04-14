@@ -130,14 +130,14 @@ class TaskPanelOpPage(PathCircularHoleBaseGui.TaskPanelOpPage):
         self.updateQuantitySpinBoxes()
 
         if not hasattr(obj,"KeepToolDown"):
-            obj.addProperty("App::PropertyBool", "KeepToolDown", "Drill", 
+            obj.addProperty("App::PropertyBool", "KeepToolDown", "Drill",
                 QtCore.QT_TRANSLATE_NOOP("App::Property", "Apply G99 retraction: only retract to RetractHeight between holes in this operation"))
 
         if obj.KeepToolDown:
             self.form.KeepToolDownEnabled.setCheckState(QtCore.Qt.Checked)
         else:
             self.form.KeepToolDownEnabled.setCheckState(QtCore.Qt.Unchecked)
-            
+
         if obj.DwellEnabled:
             self.form.dwellEnabled.setCheckState(QtCore.Qt.Checked)
         else:
@@ -173,7 +173,7 @@ class TaskPanelOpPage(PathCircularHoleBaseGui.TaskPanelOpPage):
         signals.append(self.form.coolantController.currentIndexChanged)
         signals.append(self.form.ExtraOffset.currentIndexChanged)
         signals.append(self.form.KeepToolDownEnabled.stateChanged)
-        
+
         return signals
 
     def updateData(self, obj, prop):
