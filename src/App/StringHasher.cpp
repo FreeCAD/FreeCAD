@@ -180,18 +180,18 @@ StringHasher::~StringHasher()
     clear();
 }
 
-StringHasher::StringHasher([[maybe_unused]] StringHasher &&other) noexcept
+StringHasher::StringHasher([[maybe_unused]] StringHasher&& other) noexcept
 {
     // Private: unimplemented
 }
 
-StringHasher& StringHasher::operator=([[maybe_unused]] StringHasher &other)
+StringHasher& StringHasher::operator=([[maybe_unused]] StringHasher& other)
 {
     // Private: unimplemented
     return *this;
 }
 
-StringHasher& StringHasher::operator=([[maybe_unused]] StringHasher &&other) noexcept
+StringHasher& StringHasher::operator=([[maybe_unused]] StringHasher&& other) noexcept
 {
     // Private: unimplemented
     return *this;
@@ -317,22 +317,28 @@ StringIDRef StringHasher::getID(const QByteArray& data, Options options)
 
 StringIDRef StringHasher::getID(const Data::MappedName& name, const QVector<StringIDRef>& sids)
 {
-    StringID anID;
-    anID._postfix = name.postfixBytes();
+    StringID tempID;
+    tempID._postfix = name.postfixBytes();
 
     Data::IndexedName indexed;
-    if (anID._postfix.size() == 0) {
+    if (tempID._postfix.size() == 0) {
+        // Restrict this optimization to only cases with no postfix because it is causing some
+        // problems during recomputes. TODO: This needs to be investigated further
         indexed = Data::IndexedName(name.dataBytes());
     }
     if (indexed) {
-        anID._data =
+        // If this is an IndexedName, then _data only stores the base part of the name, without the
+        // integer index
+        tempID._data =
             QByteArray::fromRawData(indexed.getType(), static_cast<int>(strlen(indexed.getType())));
     }
     else {
-        anID._data = name.dataBytes();
+        // Store the entire name in _data, but temporarily re-use the existing memory
+        tempID._data = name.dataBytes();
     }
 
-    auto it = _hashes->left.find(&anID);
+    // Check to see if there is already an entry in the hash table for this StringID
+    auto it = _hashes->left.find(&tempID);
     if (it != _hashes->left.end()) {
         auto res = StringIDRef(it->first);
         if (indexed) {
@@ -342,40 +348,47 @@ StringIDRef StringHasher::getID(const Data::MappedName& name, const QVector<Stri
     }
 
     if (!indexed && name.isRaw()) {
-        anID._data = QByteArray(name.dataBytes().constData(), name.dataBytes().size());
+        // Make a copy of the memory if we didn't do so earlier
+        tempID._data = QByteArray(name.dataBytes().constData(), name.dataBytes().size());
     }
 
+    // If the postfix is not already encoded, use getID to encode it:
     StringIDRef postfixRef;
-    if ((anID._postfix.size() != 0) && anID._postfix.indexOf("#") < 0) {
-        postfixRef = getID(anID._postfix);
-        postfixRef.toBytes(anID._postfix);
+    if ((tempID._postfix.size() != 0) && tempID._postfix.indexOf("#") < 0) {
+        postfixRef = getID(tempID._postfix);
+        postfixRef.toBytes(tempID._postfix);
     }
 
+    // If _data is an IndexedName, use getID to encode it:
     StringIDRef indexRef;
     if (indexed) {
-        indexRef = getID(anID._data);
+        indexRef = getID(tempID._data);
     }
 
-    StringIDRef sid(new StringID(lastID() + 1, anID._data));
-    StringID& newStringID = *sid._sid;
-    if (anID._postfix.size() != 0) {
+    // The real StringID object that we are going to insert
+    StringIDRef newStringIDRef(new StringID(lastID() + 1, tempID._data));
+    StringID& newStringID = *newStringIDRef._sid;
+    if (tempID._postfix.size() != 0) {
         newStringID._flags.setFlag(StringID::Flag::Postfixed);
-        newStringID._postfix = anID._postfix;
+        newStringID._postfix = tempID._postfix;
     }
 
-    int count = 0;
-    for (const auto& hasher : sids) {
-        if (hasher && hasher._sid->_hasher == this) {
-            ++count;
+    // Count the related SIDs that use this hasher
+    int numSIDs = 0;
+    for (const auto& relatedID : sids) {
+        if (relatedID && relatedID._sid->_hasher == this) {
+            ++numSIDs;
         }
     }
 
-    int extra = (postfixRef ? 1 : 0) + (indexRef ? 1 : 0);
-    if (count == sids.size() && !postfixRef && !indexRef) {
+    int numAddedSIDs = (postfixRef ? 1 : 0) + (indexRef ? 1 : 0);
+    if (numSIDs == sids.size() && !postfixRef && !indexRef) {
+        // The simplest case: just copy the whole list
         newStringID._sids = sids;
     }
     else {
-        newStringID._sids.reserve(count + extra);
+        // Put the added SIDs at the front of the SID list
+        newStringID._sids.reserve(numSIDs + numAddedSIDs);
         if (postfixRef) {
             newStringID._flags.setFlag(StringID::Flag::PostfixEncoded);
             newStringID._sids.push_back(postfixRef);
@@ -384,15 +397,21 @@ StringIDRef StringHasher::getID(const Data::MappedName& name, const QVector<Stri
             newStringID._flags.setFlag(StringID::Flag::Indexed);
             newStringID._sids.push_back(indexRef);
         }
-        for (const auto& hasher : sids) {
-            if (hasher && hasher._sid->_hasher == this) {
-                newStringID._sids.push_back(hasher);
+        // Append the sids from the input list whose hasher is this one
+        for (const auto& relatedID : sids) {
+            if (relatedID && relatedID._sid->_hasher == this) {
+                newStringID._sids.push_back(relatedID);
             }
         }
     }
-    if (newStringID._sids.size() > 10) {
-        std::sort(newStringID._sids.begin() + extra, newStringID._sids.end());
-        newStringID._sids.erase(std::unique(newStringID._sids.begin() + extra, newStringID._sids.end()),
+
+    // If the number of related IDs is larger than some threshold (hardcoded to 10 right now), then
+    // remove any duplicates (ignoring the new SIDs we may have just added)
+    const int relatedIDSizeThreshold {10};
+    if (newStringID._sids.size() > relatedIDSizeThreshold) {
+        std::sort(newStringID._sids.begin() + numAddedSIDs, newStringID._sids.end());
+        newStringID._sids.erase(
+            std::unique(newStringID._sids.begin() + numAddedSIDs, newStringID._sids.end()),
             newStringID._sids.end());
     }
 
@@ -401,14 +420,14 @@ StringIDRef StringHasher::getID(const Data::MappedName& name, const QVector<Stri
     if ((newStringID._postfix.size() != 0) && !indexed) {
         // Use the fromString function to parse the new StringID's data field for a possible index
         StringID::IndexID res = StringID::fromString(newStringID._data);
-        if (res.id > 0) { // If the data had an index
+        if (res.id > 0) {// If the data had an index
             int offset = newStringID.isPostfixEncoded() ? 1 : 0;
             // Search for the SID with that index
             for (int i = offset; i < newStringID._sids.size(); ++i) {
                 if (newStringID._sids[i].value() == res.id) {
                     if (i != offset) {
                         // If this SID is not already the first element in sids, move it there by
-                        // swapping it with
+                        // swapping it with whatever WAS there
                         std::swap(newStringID._sids[offset], newStringID._sids[i]);
                     }
                     if (res.index != 0) {
@@ -423,7 +442,7 @@ StringIDRef StringHasher::getID(const Data::MappedName& name, const QVector<Stri
         }
     }
 
-    return {insert(sid), indexed.getIndex()};
+    return {insert(newStringIDRef), indexed.getIndex()};
 }
 
 StringIDRef StringHasher::getID(long id, int index) const

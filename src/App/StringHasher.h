@@ -74,7 +74,7 @@ using StringHasherRef = Base::Reference<StringHasher>;
  */
 class AppExport StringID: public Base::BaseClass, public Base::Handled
 {
-    TYPESYSTEM_HEADER_WITH_OVERRIDE();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();// NOLINT
 
 public:
     /// Flag of the stored string data
@@ -316,10 +316,10 @@ private:
     StringID([[maybe_unused]] StringID&& other) noexcept
         : _id(0),
           _flags(StringID::Flag::None) {};
-    StringID& operator=([[maybe_unused]] const StringID& rhs)
+    StringID& operator=([[maybe_unused]] const StringID& rhs)// NOLINT
     {
         return *this;
-    };// NOLINT
+    };
     StringID& operator=([[maybe_unused]] StringID&& rhs) noexcept
     {
         return *this;
@@ -590,12 +590,12 @@ public:
 
     bool isMarked() const
     {
-        return _sid && _sid->isMarked();
+        return _sid && _sid->isMarked();// NOLINT
     }
 
     bool isFromSameHasher(const StringHasherRef& hasher) const
     {
-        return _sid && _sid->isFromSameHasher(hasher);
+        return _sid && _sid->isFromSameHasher(hasher);// NOLINT
     }
 
     StringHasherRef getHasher() const
@@ -635,13 +635,13 @@ private:
 /// count. If a duplicate string is added, no additional copy is made, and a new reference to the
 /// original storage is returned (incrementing the reference counter of the instance).
 ///
-/// If the string is longer than a given threshold, instead of storing the string, instead its
-/// SHA1 hash is stored (and the original string discarded). This allows an upper threshold on the
-/// length of a stored string, while still effectively guaranteeing uniqueness in the table.
+/// If the string is longer than a given threshold, instead of storing the string, its SHA1 hash is
+/// stored (and the original string discarded). This allows an upper threshold on the length of a
+/// stored string, while still effectively guaranteeing uniqueness in the table.
 class AppExport StringHasher: public Base::Persistence, public Base::Handled
 {
 
-    TYPESYSTEM_HEADER_WITH_OVERRIDE();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();// NOLINT
 
 public:
     StringHasher();

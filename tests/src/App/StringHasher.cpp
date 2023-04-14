@@ -1,8 +1,10 @@
 // SPDX-License-Identifier: LGPL-2.1-or-later
 
+#include "App/MappedName.h"
 #include "gtest/gtest.h"
 
 #include <App/StringHasher.h>
+#include <App/StringHasherPy.h>
 #include <App/StringIDPy.h>
 
 #include <QCryptographicHash>
@@ -22,7 +24,7 @@ protected:
     }
 };
 
-TEST_F(StringIDTest, stringIDManualConstructionNoFlags)
+TEST_F(StringIDTest, stringIDManualConstructionNoFlags)// NOLINT
 {
     // Arrange
     const long expectedValue {42};
@@ -37,7 +39,7 @@ TEST_F(StringIDTest, stringIDManualConstructionNoFlags)
     EXPECT_FALSE(id.isBinary());
 }
 
-TEST_F(StringIDTest, stringIDManualConstructionWithFlag)
+TEST_F(StringIDTest, stringIDManualConstructionWithFlag)// NOLINT
 {
     // Arrange
     const long expectedValue {42};
@@ -53,7 +55,7 @@ TEST_F(StringIDTest, stringIDManualConstructionWithFlag)
     EXPECT_TRUE(id.isBinary());
 }
 
-TEST_F(StringIDTest, stringIDDefaultConstruction)
+TEST_F(StringIDTest, stringIDDefaultConstruction)// NOLINT
 {
     // Arrange & Act
     auto id = App::StringID();
@@ -62,7 +64,7 @@ TEST_F(StringIDTest, stringIDDefaultConstruction)
     EXPECT_EQ(0, id.value());
 }
 
-TEST_F(StringIDTest, value)
+TEST_F(StringIDTest, value)// NOLINT
 {
     // Arrange
     const long expectedValueA {0};
@@ -83,12 +85,12 @@ TEST_F(StringIDTest, value)
     EXPECT_EQ(expectedValueC, valueC);
 }
 
-TEST_F(StringIDTest, relatedIDs)
+TEST_F(StringIDTest, relatedIDs)// NOLINT
 {
     // Nothing to test -- relatedIDs are storage-only in this class
 }
 
-TEST_F(StringIDTest, isBinary)
+TEST_F(StringIDTest, isBinary)// NOLINT
 {
     // Arrange
     auto flaggedID = givenFlaggedStringID(App::StringID::Flag::Binary);
@@ -99,7 +101,7 @@ TEST_F(StringIDTest, isBinary)
     EXPECT_FALSE(controlID.isBinary());
 }
 
-TEST_F(StringIDTest, isHashed)
+TEST_F(StringIDTest, isHashed)// NOLINT
 {
     // Arrange
     auto flaggedID = givenFlaggedStringID(App::StringID::Flag::Hashed);
@@ -110,7 +112,7 @@ TEST_F(StringIDTest, isHashed)
     EXPECT_FALSE(controlID.isHashed());
 }
 
-TEST_F(StringIDTest, isPostfixed)
+TEST_F(StringIDTest, isPostfixed)// NOLINT
 {
     // Arrange
     auto flaggedID = givenFlaggedStringID(App::StringID::Flag::Postfixed);
@@ -121,7 +123,7 @@ TEST_F(StringIDTest, isPostfixed)
     EXPECT_FALSE(controlID.isPostfixed());
 }
 
-TEST_F(StringIDTest, isPostfixEncoded)
+TEST_F(StringIDTest, isPostfixEncoded)// NOLINT
 {
     // Arrange
     auto flaggedID = givenFlaggedStringID(App::StringID::Flag::PostfixEncoded);
@@ -132,7 +134,7 @@ TEST_F(StringIDTest, isPostfixEncoded)
     EXPECT_FALSE(controlID.isPostfixEncoded());
 }
 
-TEST_F(StringIDTest, isIndexed)
+TEST_F(StringIDTest, isIndexed)// NOLINT
 {
     // Arrange
     auto flaggedID = givenFlaggedStringID(App::StringID::Flag::Indexed);
@@ -143,7 +145,7 @@ TEST_F(StringIDTest, isIndexed)
     EXPECT_FALSE(controlID.isIndexed());
 }
 
-TEST_F(StringIDTest, isPrefixID)
+TEST_F(StringIDTest, isPrefixID)// NOLINT
 {
     // Arrange
     auto flaggedID = givenFlaggedStringID(App::StringID::Flag::PrefixID);
@@ -154,7 +156,7 @@ TEST_F(StringIDTest, isPrefixID)
     EXPECT_FALSE(controlID.isPrefixID());
 }
 
-TEST_F(StringIDTest, isPrefixIDIndex)
+TEST_F(StringIDTest, isPrefixIDIndex)// NOLINT
 {
     // Arrange
     auto flaggedID = givenFlaggedStringID(App::StringID::Flag::PrefixIDIndex);
@@ -165,7 +167,7 @@ TEST_F(StringIDTest, isPrefixIDIndex)
     EXPECT_FALSE(controlID.isPrefixIDIndex());
 }
 
-TEST_F(StringIDTest, isMarked)
+TEST_F(StringIDTest, isMarked)// NOLINT
 {
     // Arrange
     auto flaggedID = givenFlaggedStringID(App::StringID::Flag::Marked);
@@ -176,7 +178,7 @@ TEST_F(StringIDTest, isMarked)
     EXPECT_FALSE(controlID.isMarked());
 }
 
-TEST_F(StringIDTest, isPersistent)
+TEST_F(StringIDTest, isPersistent)// NOLINT
 {
     // Arrange
     auto flaggedID = givenFlaggedStringID(App::StringID::Flag::Persistent);
@@ -187,17 +189,17 @@ TEST_F(StringIDTest, isPersistent)
     EXPECT_FALSE(controlID.isPersistent());
 }
 
-TEST_F(StringIDTest, isFromSameHasher)
+TEST_F(StringIDTest, isFromSameHasher)// NOLINT
 {
     // Nothing to test except when used by StringHasher
 }
 
-TEST_F(StringIDTest, getHasher)
+TEST_F(StringIDTest, getHasher)// NOLINT
 {
     // Nothing to test except when used by StringHasher
 }
 
-TEST_F(StringIDTest, data)
+TEST_F(StringIDTest, data)// NOLINT
 {
     // Arrange
     QByteArray expectedData {"data", 4};
@@ -210,12 +212,12 @@ TEST_F(StringIDTest, data)
     EXPECT_EQ(expectedData, data);
 }
 
-TEST_F(StringIDTest, postfix)
+TEST_F(StringIDTest, postfix)// NOLINT
 {
     // Nothing to test except when used by StringHasher
 }
 
-TEST_F(StringIDTest, getPyObject)
+TEST_F(StringIDTest, getPyObject)// NOLINT
 {
     // Arrange
     Py_Initialize();
@@ -230,7 +232,7 @@ TEST_F(StringIDTest, getPyObject)
     EXPECT_TRUE(PyObject_TypeCheck(py.ptr(), &App::StringIDPy::Type));
 }
 
-TEST_F(StringIDTest, getPyObjectWithIndex)
+TEST_F(StringIDTest, getPyObjectWithIndex)// NOLINT
 {
     // Arrange
     Py_Initialize();
@@ -245,7 +247,7 @@ TEST_F(StringIDTest, getPyObjectWithIndex)
     ASSERT_TRUE(PyObject_TypeCheck(py.ptr(), &App::StringIDPy::Type));
 }
 
-TEST_F(StringIDTest, toStringWithoutIndex)
+TEST_F(StringIDTest, toStringWithoutIndex)// NOLINT
 {
     // Arrange
     const long bigHex = 0xfcad10;
@@ -261,7 +263,7 @@ TEST_F(StringIDTest, toStringWithoutIndex)
     EXPECT_EQ(std::string("#fcad10"), resultB);// Make sure result is in hex
 }
 
-TEST_F(StringIDTest, toStringWithIndex)
+TEST_F(StringIDTest, toStringWithIndex)// NOLINT
 {
     // Arrange
     const long bigHex = 0xfcad10;
@@ -276,7 +278,7 @@ TEST_F(StringIDTest, toStringWithIndex)
     EXPECT_EQ(std::string("#1"), resultB);
 }
 
-TEST_F(StringIDTest, fromStringWithEOFAndLengthGood)
+TEST_F(StringIDTest, fromStringWithEOFAndLengthGood)// NOLINT
 {
     // Arrange
     const std::string testString {"#1:fcad"};
@@ -290,7 +292,7 @@ TEST_F(StringIDTest, fromStringWithEOFAndLengthGood)
     EXPECT_EQ(result.index, 0xfcad);
 }
 
-TEST_F(StringIDTest, fromStringExtraData)
+TEST_F(StringIDTest, fromStringExtraData)// NOLINT
 {
     // Arrange
     const std::string testString {"#1:fcad#2:bad"};
@@ -306,7 +308,7 @@ TEST_F(StringIDTest, fromStringExtraData)
     EXPECT_EQ(falseResult.id, 1);
 }
 
-TEST_F(StringIDTest, fromStringLengthUnspecified)
+TEST_F(StringIDTest, fromStringLengthUnspecified)// NOLINT
 {
     // Arrange
     const std::string testString {"#1:fcad#2:bad"};
@@ -320,7 +322,7 @@ TEST_F(StringIDTest, fromStringLengthUnspecified)
     EXPECT_EQ(falseResult.id, 1);
 }
 
-TEST_F(StringIDTest, fromStringShorterLength)
+TEST_F(StringIDTest, fromStringShorterLength)// NOLINT
 {
     // Arrange
     const int dataLength {7};
@@ -335,7 +337,7 @@ TEST_F(StringIDTest, fromStringShorterLength)
     EXPECT_EQ(falseResult.id, 1);
 }
 
-TEST_F(StringIDTest, fromStringNoHashtag)
+TEST_F(StringIDTest, fromStringNoHashtag)// NOLINT
 {
     // Arrange
     const std::string testString {"1:fcad"};
@@ -347,7 +349,7 @@ TEST_F(StringIDTest, fromStringNoHashtag)
     EXPECT_EQ(result.id, -1);
 }
 
-TEST_F(StringIDTest, fromStringNotHex)
+TEST_F(StringIDTest, fromStringNotHex)// NOLINT
 {
     // Arrange
     const std::string testStringA {"1:freecad"};
@@ -362,7 +364,7 @@ TEST_F(StringIDTest, fromStringNotHex)
     EXPECT_EQ(resultB.id, -1);
 }
 
-TEST_F(StringIDTest, fromStringQByteArray)
+TEST_F(StringIDTest, fromStringQByteArray)// NOLINT
 {
     // Arrange
     const QByteArray testString {"#1:fcad", 7};
@@ -375,7 +377,7 @@ TEST_F(StringIDTest, fromStringQByteArray)
     EXPECT_EQ(result.index, 0xfcad);
 }
 
-TEST_F(StringIDTest, dataToTextHashed)
+TEST_F(StringIDTest, dataToTextHashed)// NOLINT
 {
     // Arrange
     QByteArray buffer {"120ca87015d849dbea060eaf2295fcc4ee981427", 40};// NOLINT
@@ -388,7 +390,7 @@ TEST_F(StringIDTest, dataToTextHashed)
     EXPECT_EQ(result, buffer.toBase64().constData());
 }
 
-TEST_F(StringIDTest, dataToTextBinary)
+TEST_F(StringIDTest, dataToTextBinary)// NOLINT
 {
     // Arrange
     QByteArray buffer {"120ca87015d849dbea060eaf2295fcc4ee981427", 40};// NOLINT
@@ -401,7 +403,7 @@ TEST_F(StringIDTest, dataToTextBinary)
     EXPECT_EQ(result, buffer.toBase64().constData());
 }
 
-TEST_F(StringIDTest, dataToTextNoIndex)
+TEST_F(StringIDTest, dataToTextNoIndex)// NOLINT
 {
     // Arrange
     QByteArray data {"data", 4};
@@ -414,7 +416,7 @@ TEST_F(StringIDTest, dataToTextNoIndex)
     EXPECT_EQ(result, "data");
 }
 
-TEST_F(StringIDTest, dataToTextWithIndex)
+TEST_F(StringIDTest, dataToTextWithIndex)// NOLINT
 {
     // Arrange
     QByteArray data {"data", 4};
@@ -429,7 +431,7 @@ TEST_F(StringIDTest, dataToTextWithIndex)
     EXPECT_EQ(resultB, "data1024");// Not hex!
 }
 
-TEST_F(StringIDTest, dataToTextWithPostfix)
+TEST_F(StringIDTest, dataToTextWithPostfix)// NOLINT
 {
     // Arrange
     QByteArray data {"data", 4};
@@ -444,7 +446,7 @@ TEST_F(StringIDTest, dataToTextWithPostfix)
     EXPECT_EQ(result, "data1postfix");
 }
 
-TEST_F(StringIDTest, dataToBytesNoIndex)
+TEST_F(StringIDTest, dataToBytesNoIndex)// NOLINT
 {
     // Arrange
     QByteArray data {"data", 4};
@@ -457,7 +459,7 @@ TEST_F(StringIDTest, dataToBytesNoIndex)
     EXPECT_EQ(data, result);
 }
 
-TEST_F(StringIDTest, dataToBytesWithIndex)
+TEST_F(StringIDTest, dataToBytesWithIndex)// NOLINT
 {
     // Arrange
     QByteArray data {"data", 4};
@@ -471,7 +473,7 @@ TEST_F(StringIDTest, dataToBytesWithIndex)
     EXPECT_EQ(data + QByteArray::number(index), result);
 }
 
-TEST_F(StringIDTest, dataToBytesWithPostfix)
+TEST_F(StringIDTest, dataToBytesWithPostfix)// NOLINT
 {
     // Arrange
     QByteArray data {"data", 4};
@@ -486,7 +488,7 @@ TEST_F(StringIDTest, dataToBytesWithPostfix)
     EXPECT_EQ(data + postfix, result);
 }
 
-TEST_F(StringIDTest, dataToBytesWithIndexAndPostfix)
+TEST_F(StringIDTest, dataToBytesWithIndexAndPostfix)// NOLINT
 {
     // Arrange
     QByteArray data {"data", 4};
@@ -502,7 +504,7 @@ TEST_F(StringIDTest, dataToBytesWithIndexAndPostfix)
     EXPECT_EQ(data + QByteArray::number(index) + postfix, result);
 }
 
-TEST_F(StringIDTest, mark)
+TEST_F(StringIDTest, mark)// NOLINT
 {
     // Arrange
     QByteArray data {"data", 4};
@@ -516,7 +518,7 @@ TEST_F(StringIDTest, mark)
     EXPECT_TRUE(id.isMarked());
 }
 
-TEST_F(StringIDTest, setPersistent)
+TEST_F(StringIDTest, setPersistent)// NOLINT
 {
     // Arrange
     QByteArray data {"data", 4};
@@ -530,17 +532,17 @@ TEST_F(StringIDTest, setPersistent)
     EXPECT_TRUE(id.isPersistent());
 }
 
-TEST_F(StringIDTest, operatorLessThan)
+TEST_F(StringIDTest, operatorLessThan)// NOLINT
 {
     // Can't test without a _hasher
 }
 
-TEST_F(StringIDTest, compare)
+TEST_F(StringIDTest, compare)// NOLINT
 {
     // Can't test without a _hasher
 }
 
-TEST_F(StringIDTest, IndexIDBooleanConversion)
+TEST_F(StringIDTest, IndexIDBooleanConversion)// NOLINT
 {
     // Arrange
     const long id {42};
@@ -553,7 +555,7 @@ TEST_F(StringIDTest, IndexIDBooleanConversion)
     EXPECT_FALSE(indexIdFalse);
 }
 
-TEST_F(StringIDTest, IndexIDStreamInsertionOperator)
+TEST_F(StringIDTest, IndexIDStreamInsertionOperator)// NOLINT
 {
     // Arrange
     const long id {42};
@@ -587,7 +589,7 @@ private:
 };
 
 
-TEST_F(StringIDRefTest, defaultConstructor)
+TEST_F(StringIDRefTest, defaultConstructor)// NOLINT
 {
     // Arrange & Act
     auto idRef = App::StringIDRef();
@@ -596,7 +598,7 @@ TEST_F(StringIDRefTest, defaultConstructor)
     EXPECT_FALSE(idRef);
 }
 
-TEST_F(StringIDRefTest, constructFromNewStringID)
+TEST_F(StringIDRefTest, constructFromNewStringID)// NOLINT
 {
     // Arrange & Act
     auto idRef = App::StringIDRef(createStringID());
@@ -609,7 +611,7 @@ TEST_F(StringIDRefTest, constructFromNewStringID)
     // when its destructor is called (upon exit from this test function).
 }
 
-TEST_F(StringIDRefTest, constructFromStringIDAndIndex)
+TEST_F(StringIDRefTest, constructFromStringIDAndIndex)// NOLINT
 {
     // Arrange
     const int index {42};
@@ -626,7 +628,7 @@ TEST_F(StringIDRefTest, constructFromStringIDAndIndex)
     // when its destructor is called (upon exit from this test function).
 }
 
-TEST_F(StringIDRefTest, copyConstructor)
+TEST_F(StringIDRefTest, copyConstructor)// NOLINT
 {
     // Arrange
     const int index {42};
@@ -642,7 +644,7 @@ TEST_F(StringIDRefTest, copyConstructor)
     EXPECT_EQ(index, newIdRef.getIndex());
 }
 
-TEST_F(StringIDRefTest, copyConstructorWithIndex)
+TEST_F(StringIDRefTest, copyConstructorWithIndex)// NOLINT
 {
     // Arrange
     const int index {42};
@@ -659,7 +661,7 @@ TEST_F(StringIDRefTest, copyConstructorWithIndex)
     EXPECT_EQ(otherIndex, newIdRef.getIndex());
 }
 
-TEST_F(StringIDRefTest, moveConstructor)
+TEST_F(StringIDRefTest, moveConstructor)// NOLINT
 {
     // Arrange
     auto idRef = App::StringIDRef(createStringID());
@@ -671,7 +673,7 @@ TEST_F(StringIDRefTest, moveConstructor)
     EXPECT_EQ(1, newIdRef.getRefCount());
 }
 
-TEST_F(StringIDRefTest, destructor)
+TEST_F(StringIDRefTest, destructor)// NOLINT
 {
     // Arrange
     auto idRef = App::StringIDRef(createStringID());
@@ -688,7 +690,7 @@ TEST_F(StringIDRefTest, destructor)
     EXPECT_EQ(1, idRef.getRefCount());
 }
 
-TEST_F(StringIDRefTest, reset)
+TEST_F(StringIDRefTest, reset)// NOLINT
 {
     // Arrange
     auto idRef = App::StringIDRef(createStringID());
@@ -700,7 +702,7 @@ TEST_F(StringIDRefTest, reset)
     EXPECT_FALSE(idRef);
 }
 
-TEST_F(StringIDRefTest, resetWithStringID)
+TEST_F(StringIDRefTest, resetWithStringID)// NOLINT
 {
     // Arrange
     const int index {42};
@@ -714,7 +716,7 @@ TEST_F(StringIDRefTest, resetWithStringID)
     EXPECT_NE(index, idRef.getIndex());
 }
 
-TEST_F(StringIDRefTest, resetWithStringIDAndIndex)
+TEST_F(StringIDRefTest, resetWithStringIDAndIndex)// NOLINT
 {
     // Arrange
     const int indexA {42};
@@ -729,7 +731,7 @@ TEST_F(StringIDRefTest, resetWithStringIDAndIndex)
     EXPECT_EQ(indexB, idRef.getIndex());
 }
 
-TEST_F(StringIDRefTest, swap)
+TEST_F(StringIDRefTest, swap)// NOLINT
 {
     // Arrange
     const int indexA {42};
@@ -745,7 +747,7 @@ TEST_F(StringIDRefTest, swap)
     EXPECT_EQ(indexA, idRefB.getIndex());
 }
 
-TEST_F(StringIDRefTest, assignmentFromSelf)
+TEST_F(StringIDRefTest, assignmentFromSelf)// NOLINT
 {
     // Arrange
     auto idRef = App::StringIDRef(createStringID());
@@ -757,7 +759,7 @@ TEST_F(StringIDRefTest, assignmentFromSelf)
     EXPECT_EQ(1, idRef.getRefCount());
 }
 
-TEST_F(StringIDRefTest, assignmentToEmptyFromStringID)
+TEST_F(StringIDRefTest, assignmentToEmptyFromStringID)// NOLINT
 {
     // Arrange
     Py_Initialize();
@@ -771,7 +773,7 @@ TEST_F(StringIDRefTest, assignmentToEmptyFromStringID)
     EXPECT_TRUE(idRef);
 }
 
-TEST_F(StringIDRefTest, assignmentFromStringIDRef)
+TEST_F(StringIDRefTest, assignmentFromStringIDRef)// NOLINT
 {
     // Arrange
     auto firstIdRef = App::StringIDRef(createStringID());
@@ -787,7 +789,7 @@ TEST_F(StringIDRefTest, assignmentFromStringIDRef)
     EXPECT_EQ(1, firstIdRefExtra.getRefCount());
 }
 
-TEST_F(StringIDRefTest, moveAssignmentFromStringIDRef)
+TEST_F(StringIDRefTest, moveAssignmentFromStringIDRef)// NOLINT
 {
     auto emptyIdRef = App::StringIDRef();
     auto goodIdRef = App::StringIDRef(createStringID());
@@ -801,7 +803,7 @@ TEST_F(StringIDRefTest, moveAssignmentFromStringIDRef)
     EXPECT_EQ(1, emptyIdRef.getRefCount());
 }
 
-TEST_F(StringIDRefTest, operatorLess)
+TEST_F(StringIDRefTest, operatorLess)// NOLINT
 {
     // Arrange
     auto emptySIDA = App::StringIDRef();
@@ -820,7 +822,7 @@ TEST_F(StringIDRefTest, operatorLess)
     // NOTE: Cannot test the impact of hasher without a StringHasher
 }
 
-TEST_F(StringIDRefTest, operatorEquality)
+TEST_F(StringIDRefTest, operatorEquality)// NOLINT
 {
     // Arrange
     auto emptySIDA = App::StringIDRef();
@@ -836,7 +838,7 @@ TEST_F(StringIDRefTest, operatorEquality)
     EXPECT_FALSE(nonEmptyA == nonEmptyOther);
 }
 
-TEST_F(StringIDRefTest, operatorInequality)
+TEST_F(StringIDRefTest, operatorInequality)// NOLINT
 {
     // Arrange
     auto emptySIDA = App::StringIDRef();
@@ -852,7 +854,7 @@ TEST_F(StringIDRefTest, operatorInequality)
     EXPECT_TRUE(nonEmptyA != nonEmptyOther);
 }
 
-TEST_F(StringIDRefTest, booleanConversion)
+TEST_F(StringIDRefTest, booleanConversion)// NOLINT
 {
     // Arrange
     auto emptySID = App::StringIDRef();
@@ -863,7 +865,7 @@ TEST_F(StringIDRefTest, booleanConversion)
     EXPECT_TRUE(nonEmpty);
 }
 
-TEST_F(StringIDRefTest, getRefCount)
+TEST_F(StringIDRefTest, getRefCount)// NOLINT
 {
     // Arrange
     auto stringID = createStringID();
@@ -879,7 +881,7 @@ TEST_F(StringIDRefTest, getRefCount)
     EXPECT_EQ(2, secondCount);
 }
 
-TEST_F(StringIDRefTest, toString)
+TEST_F(StringIDRefTest, toString)// NOLINT
 {
     // Arrange
     auto emptySID = App::StringIDRef();
@@ -895,7 +897,7 @@ TEST_F(StringIDRefTest, toString)
     EXPECT_FALSE(nonempty.empty());
 }
 
-TEST_F(StringIDRefTest, dataToText)
+TEST_F(StringIDRefTest, dataToText)// NOLINT
 {
     // Arrange
     auto emptySID = App::StringIDRef();
@@ -911,7 +913,7 @@ TEST_F(StringIDRefTest, dataToText)
     EXPECT_FALSE(nonempty.empty());
 }
 
-TEST_F(StringIDRefTest, constData)
+TEST_F(StringIDRefTest, constData)// NOLINT
 {
     // Arrange
     auto sid = App::StringIDRef(createStringID());
@@ -924,7 +926,7 @@ TEST_F(StringIDRefTest, constData)
     EXPECT_STREQ(constData, "data");
 }
 
-TEST_F(StringIDRefTest, deref)
+TEST_F(StringIDRefTest, deref)// NOLINT
 {
     // Arrange
     auto sid = createStringID();
@@ -934,7 +936,7 @@ TEST_F(StringIDRefTest, deref)
     EXPECT_EQ(sid, &(ref.deref()));
 }
 
-TEST_F(StringIDRefTest, value)
+TEST_F(StringIDRefTest, value)// NOLINT
 {
     // Arrange
     auto empty = App::StringIDRef();
@@ -949,12 +951,12 @@ TEST_F(StringIDRefTest, value)
     EXPECT_NE(0, nonEmptyValue);
 }
 
-TEST_F(StringIDRefTest, relatedIDs)
+TEST_F(StringIDRefTest, relatedIDs)// NOLINT
 {
     // Nothing to test without a StringHasher
 }
 
-TEST_F(StringIDRefTest, isBinary)
+TEST_F(StringIDRefTest, isBinary)// NOLINT
 {
     // Arrange
     auto nothing = App::StringIDRef();
@@ -967,7 +969,7 @@ TEST_F(StringIDRefTest, isBinary)
     EXPECT_FALSE(nonBinary.isBinary());
 }
 
-TEST_F(StringIDRefTest, isHashed)
+TEST_F(StringIDRefTest, isHashed)// NOLINT
 {
     // Arrange
     auto nothing = App::StringIDRef();
@@ -980,7 +982,7 @@ TEST_F(StringIDRefTest, isHashed)
     EXPECT_FALSE(nonHashed.isHashed());
 }
 
-TEST_F(StringIDRefTest, toBytes)
+TEST_F(StringIDRefTest, toBytes)// NOLINT
 {
     // Arrange
     QByteArray byteStorage;
@@ -993,7 +995,7 @@ TEST_F(StringIDRefTest, toBytes)
     EXPECT_FALSE(byteStorage.isNull());
 }
 
-TEST_F(StringIDRefTest, getPyObject)
+TEST_F(StringIDRefTest, getPyObject)// NOLINT
 {
     // Arrange
     auto ref = App::StringIDRef(createStringID());
@@ -1008,7 +1010,7 @@ TEST_F(StringIDRefTest, getPyObject)
     EXPECT_EQ(none.ptr(), Py_None);
 }
 
-TEST_F(StringIDRefTest, mark)
+TEST_F(StringIDRefTest, mark)// NOLINT
 {
     // Arrange
     auto ref = App::StringIDRef(createStringID());
@@ -1021,7 +1023,7 @@ TEST_F(StringIDRefTest, mark)
     EXPECT_TRUE(ref.isMarked());
 }
 
-TEST_F(StringIDRefTest, isMarked)
+TEST_F(StringIDRefTest, isMarked)// NOLINT
 {
     // Arrange
     auto marked = App::StringIDRef(new App::StringID(1, nullptr, App::StringID::Flag::Marked));
@@ -1032,17 +1034,17 @@ TEST_F(StringIDRefTest, isMarked)
     EXPECT_FALSE(notMarked.isMarked());
 }
 
-TEST_F(StringIDRefTest, isFromSameHasher)
+TEST_F(StringIDRefTest, isFromSameHasher)// NOLINT
 {
     // Nothing to test, requires a StringHasher
 }
 
-TEST_F(StringIDRefTest, getHasher)
+TEST_F(StringIDRefTest, getHasher)// NOLINT
 {
     // Nothing to test, requires a StringHasher
 }
 
-TEST_F(StringIDRefTest, setPersistent)
+TEST_F(StringIDRefTest, setPersistent)// NOLINT
 {
     // Arrange
     auto persistent = App::StringIDRef(createStringID());
@@ -1061,24 +1063,48 @@ class StringHasherTest: public ::testing::Test
 protected:
     void SetUp() override
     {
-        _hasher = std::make_unique<App::StringHasher>();
+        Py_Initialize();
+        _hasher = Base::Reference<App::StringHasher>(new App::StringHasher);
     }
 
     void TearDown() override
     {
-        _hasher.reset();
+        _hasher->clear();
     }
 
-    App::StringHasher* Hasher()
+    Base::Reference<App::StringHasher> Hasher()
     {
-        return _hasher.get();
-    };
+        return _hasher;
+    }
+
+    static Data::MappedName givenMappedName(const char* name, const char* postfix = nullptr)
+    {
+        QByteArray expectedPrefix {name, static_cast<int>(std::strlen(name))};
+        Data::MappedName mappedName(expectedPrefix);
+        if (postfix) {
+            QByteArray expectedPostfix {postfix, static_cast<int>(std::strlen(postfix))};
+            Data::MappedName mappedNameA(mappedName, expectedPostfix.data());
+            return mappedNameA;
+        }
+        return mappedName;
+    }
+
+    /// Put a couple of things into the hash table: at the end of this call the size of the table
+    /// is 2, one postfix string and one prefix+postfix combination.
+    App::StringIDRef givenSomeHashedValues()
+    {
+        const std::string prefix {"Test1"};
+        const std::string postfix {";:M;FUS;:Hb:7,F"};
+        auto mappedName = givenMappedName(prefix.c_str(), postfix.c_str());
+        QVector<App::StringIDRef> sids;
+        return Hasher()->getID(mappedName, sids);
+    }
 
 private:
-    std::unique_ptr<App::StringHasher> _hasher;
+    Base::Reference<App::StringHasher> _hasher;
 };
 
-TEST_F(StringHasherTest, defaultConstructor)
+TEST_F(StringHasherTest, defaultConstructor)// NOLINT
 {
     // Arrange
     // Done in Setup()
@@ -1090,56 +1116,63 @@ TEST_F(StringHasherTest, defaultConstructor)
     EXPECT_EQ(0, Hasher()->size());
 }
 
-TEST_F(StringHasherTest, getMemSize)
+TEST_F(StringHasherTest, getMemSize)// NOLINT
+{
+    // Arrange
+    givenSomeHashedValues();
+
+    // Act
+    auto result = Hasher()->getMemSize();
+
+    // Assert
+    // getMemSize is advisory only, so the only thing we can confidently assert is that it is larger
+    // than the number of values in the hash table.
+    EXPECT_LT(Hasher()->size(), result);
+}
+
+TEST_F(StringHasherTest, Save)// NOLINT
 {
     // Arrange
     // Act
     // Assert
 }
 
-TEST_F(StringHasherTest, Save)
+TEST_F(StringHasherTest, Restore)// NOLINT
 {
     // Arrange
     // Act
     // Assert
 }
 
-TEST_F(StringHasherTest, Restore)
+TEST_F(StringHasherTest, SaveDocFile)// NOLINT
 {
     // Arrange
     // Act
     // Assert
 }
 
-TEST_F(StringHasherTest, SaveDocFile)
+TEST_F(StringHasherTest, RestoreDocFile)// NOLINT
 {
     // Arrange
     // Act
     // Assert
 }
 
-TEST_F(StringHasherTest, RestoreDocFile)
+TEST_F(StringHasherTest, setPersistenceFileName)// NOLINT
 {
     // Arrange
     // Act
     // Assert
 }
 
-TEST_F(StringHasherTest, setPersistenceFileName)
+TEST_F(StringHasherTest, getPersistenceFileName)// NOLINT
 {
     // Arrange
     // Act
     // Assert
 }
 
-TEST_F(StringHasherTest, getPersistenceFileName)
-{
-    // Arrange
-    // Act
-    // Assert
-}
-
-TEST_F(StringHasherTest, getIDFromQByteArrayShort)
+TEST_F(StringHasherTest, getIDFromQByteArrayShort)// NOLINT
 {
     // Arrange
     const std::array<char, 5> string {"data"};
@@ -1156,7 +1189,7 @@ TEST_F(StringHasherTest, getIDFromQByteArrayShort)
     EXPECT_EQ(2, id.getRefCount());
 }
 
-TEST_F(StringHasherTest, getIDFromQByteArrayLongHashable)
+TEST_F(StringHasherTest, getIDFromQByteArrayLongHashable)// NOLINT
 {
     // Arrange
     const std::array<char, 47> string {"data that is longer than our hasher threshold"};
@@ -1172,7 +1205,7 @@ TEST_F(StringHasherTest, getIDFromQByteArrayLongHashable)
     EXPECT_NE(qba.constData(), id.constData());// A copy was made, the pointers differ
 }
 
-TEST_F(StringHasherTest, getIDFromQByteArrayLongUnhashable)
+TEST_F(StringHasherTest, getIDFromQByteArrayLongUnhashable)// NOLINT
 {
     // Arrange
     const std::array<char, 47> string {"data that is longer than our hasher threshold"};
@@ -1188,7 +1221,7 @@ TEST_F(StringHasherTest, getIDFromQByteArrayLongUnhashable)
     EXPECT_NE(qba.constData(), id.constData());// A copy was made, the pointers differ
 }
 
-TEST_F(StringHasherTest, getIDFromQByteArrayNoCopy)
+TEST_F(StringHasherTest, getIDFromQByteArrayNoCopy)// NOLINT
 {
     // Arrange
     const std::array<char, 5> string {"data"};
@@ -1203,7 +1236,7 @@ TEST_F(StringHasherTest, getIDFromQByteArrayNoCopy)
     EXPECT_EQ(qba.constData(), id.constData());// No copy was made, the pointers are the same
 }
 
-TEST_F(StringHasherTest, getIDFromQByteArrayTwoDifferentStrings)
+TEST_F(StringHasherTest, getIDFromQByteArrayTwoDifferentStrings)// NOLINT
 {
     // Arrange
     const std::array<char, 6> stringA {"dataA"};
@@ -1219,7 +1252,7 @@ TEST_F(StringHasherTest, getIDFromQByteArrayTwoDifferentStrings)
     EXPECT_EQ(2, Hasher()->size());
 }
 
-TEST_F(StringHasherTest, getIDFromQByteArrayTwoIdenticalStrings)
+TEST_F(StringHasherTest, getIDFromQByteArrayTwoIdenticalStrings)// NOLINT
 {
     // Arrange
     const std::array<char, 5> stringA {"data"};
@@ -1235,7 +1268,7 @@ TEST_F(StringHasherTest, getIDFromQByteArrayTwoIdenticalStrings)
     EXPECT_EQ(1, Hasher()->size());
 }
 
-TEST_F(StringHasherTest, getIDFromQByteArrayBinaryFlag)
+TEST_F(StringHasherTest, getIDFromQByteArrayBinaryFlag)// NOLINT
 {
     // Arrange
     const std::array<char, 5> string {"data"};
@@ -1248,7 +1281,7 @@ TEST_F(StringHasherTest, getIDFromQByteArrayBinaryFlag)
     EXPECT_TRUE(id.isBinary());
 }
 
-TEST_F(StringHasherTest, getIDFromCString)
+TEST_F(StringHasherTest, getIDFromCString)// NOLINT
 {
     // Arrange
     // Act
@@ -1264,105 +1297,357 @@ TEST_F(StringHasherTest, getIDFromCString)
  *   5. Indexed name and not
  *   6. sids empty and sids with content
  *   7. sids whose hasher==this and whose hasher is something else
- *   8. If sids.size() > 10, something happens to sids
- *
- *
+ *   8. If sids.size() > 10, duplicates get removed
  */
 
-TEST_F(StringHasherTest, getIDFromMappedName)
+TEST_F(StringHasherTest, getIDFromMappedNameWithoutPostfixWithoutIndex)// NOLINT
 {
     // Arrange
+    const char* name {"Face"};
+    QByteArray expectedPrefix {name, static_cast<int>(std::strlen(name))};
+    Data::MappedName mappedName1(expectedPrefix);
+    QVector<App::StringIDRef> sids;
+
     // Act
+    auto id = Hasher()->getID(mappedName1, sids);
+
     // Assert
+    EXPECT_EQ(expectedPrefix, id.deref().data());
+    EXPECT_EQ(nullptr, id.deref().postfix());
+    EXPECT_EQ(0, id.getIndex());
+    EXPECT_EQ(id, Hasher()->getID(expectedPrefix));
 }
 
-TEST_F(StringHasherTest, getIDFromIntegerID)
+TEST_F(StringHasherTest, getIDFromMappedNameWithoutPostfixWithIndex)// NOLINT
 {
     // Arrange
+    const char* expectedName {"Face"};
+    QByteArray expectedPrefix {expectedName, static_cast<int>(std::strlen(expectedName))};
+    const char* name {"Face3"};
+    QByteArray prefix {name, static_cast<int>(std::strlen(name))};
+    Data::MappedName mappedName1(prefix);
+    QVector<App::StringIDRef> sids;
+
     // Act
+    auto id = Hasher()->getID(mappedName1, sids);
+
     // Assert
+    EXPECT_EQ(expectedPrefix, id.deref().data());
+    EXPECT_EQ(nullptr, id.deref().postfix());
+    EXPECT_EQ(3, id.getIndex());
 }
 
-TEST_F(StringHasherTest, getIDFromIndexID)
+TEST_F(StringHasherTest, getIDFromMappedNameWithoutIndexWithPostfix)// NOLINT
 {
     // Arrange
+    const char* name {"Face"};
+    QByteArray expectedPrefix {name, static_cast<int>(std::strlen(name))};
+    const char* postfix {";:M;FUS;:Hb:7,F"};
+    QByteArray expectedPostfix {postfix, static_cast<int>(std::strlen(postfix))};
+    Data::MappedName mappedName1(expectedPrefix);
+    Data::MappedName mappedName2(mappedName1, expectedPostfix.data());
+    QVector<App::StringIDRef> sids;
+
     // Act
+    auto id = Hasher()->getID(mappedName2, sids);
+
     // Assert
+    EXPECT_EQ(expectedPrefix, id.deref().data());
+    EXPECT_EQ(expectedPostfix, id.deref().postfix());
 }
 
-TEST_F(StringHasherTest, getIDMap)
+TEST_F(StringHasherTest, getIDFromMappedNameWithIndexWithPostfix)// NOLINT
 {
     // Arrange
+    const char* name {"Face3"};
+    QByteArray expectedPrefix {name, static_cast<int>(std::strlen(name))};
+    const char* postfix {";:M;FUS;:Hb:7,F"};
+    QByteArray expectedPostfix {postfix, static_cast<int>(std::strlen(postfix))};
+    Data::MappedName mappedName1(expectedPrefix);
+    Data::MappedName mappedName2(mappedName1, expectedPostfix.data());
+    QVector<App::StringIDRef> sids;
+
     // Act
+    auto id = Hasher()->getID(mappedName2, sids);
+
     // Assert
+    // Because there is a postfix, the index is basically ignored, and hashed along with the rest
+    // of the string.
+    EXPECT_EQ(expectedPrefix, id.deref().data());
+    EXPECT_EQ(expectedPostfix, id.deref().postfix());
+    EXPECT_EQ(0, id.getIndex());
 }
 
-TEST_F(StringHasherTest, clear)
+TEST_F(StringHasherTest, getIDFromMappedNameExistingNameNoIndex)// NOLINT
 {
     // Arrange
+    Data::MappedName mappedName1 = givenMappedName("SomeTestName");
+    QVector<App::StringIDRef> sids;
+    auto firstIDInserted = Hasher()->getID(mappedName1, sids);
+    ASSERT_EQ(1, Hasher()->size());
+
     // Act
+    auto secondIDInserted = Hasher()->getID(mappedName1, sids);
+
     // Assert
+    EXPECT_EQ(1, Hasher()->size());
 }
 
-TEST_F(StringHasherTest, size)
+TEST_F(StringHasherTest, getIDFromMappedNameExistingNameWithIndex)// NOLINT
 {
     // Arrange
+    auto mappedNameA = givenMappedName("Test1");
+    auto mappedNameB = givenMappedName("Test2");
+    QVector<App::StringIDRef> sids;
+    auto firstIDInserted = Hasher()->getID(mappedNameA, sids);
+    ASSERT_EQ(1, Hasher()->size());
+    ASSERT_EQ(1, firstIDInserted.getIndex());
+
     // Act
+    auto secondIDInserted = Hasher()->getID(mappedNameB, sids);
+
     // Assert
+    EXPECT_EQ(1, Hasher()->size());
+    EXPECT_EQ(2, secondIDInserted.getIndex());
 }
 
-TEST_F(StringHasherTest, count)
+TEST_F(StringHasherTest, getIDFromMappedNameExistingNameWithIndexAndPostfix)// NOLINT
 {
     // Arrange
+    auto mappedNameA = givenMappedName("Test1", ";:M;FUS;:Hb:7,F");
+    auto mappedNameB = givenMappedName("Test2", ";:M;FUS;:Hb:7,F");
+    QVector<App::StringIDRef> sids;
+    auto firstIDInserted = Hasher()->getID(mappedNameA, sids);
+    ASSERT_EQ(2, Hasher()->size());// 2 because the postfix gets inserted alone as well
+    ASSERT_EQ(0, firstIDInserted.getIndex());
+
     // Act
+    auto secondIDInserted = Hasher()->getID(mappedNameB, sids);
+
     // Assert
+    // Second ID has a different index, and since it also has a postfix, that index is encoded as
+    // part of the string. So the strings don't match, and a second copy is inserted.
+    EXPECT_EQ(3, Hasher()->size());
+    EXPECT_EQ(0, secondIDInserted.getIndex());
+    EXPECT_EQ(1, secondIDInserted.relatedIDs().size());// The postfix is in the list
 }
 
-TEST_F(StringHasherTest, getPyObject)
+TEST_F(StringHasherTest, getIDFromMappedNameDuplicateWithEncodedPostfix)// NOLINT
 {
     // Arrange
+    auto mappedNameA = givenMappedName("Test1", ";:M;FUS;:Hb:7,F");
+    auto mappedNameB = givenMappedName("Test1", "#1");
+    QVector<App::StringIDRef> sids;
+    auto firstIDInserted = Hasher()->getID(mappedNameA, sids);
+    ASSERT_EQ(2, Hasher()->size());// 2 because the postfix gets inserted alone as well
+    ASSERT_EQ(0, firstIDInserted.getIndex());
+
     // Act
+    auto secondIDInserted = Hasher()->getID(mappedNameB, sids);
+
     // Assert
+    // The #1 is NOT inserted into the string table because it refers to the ";:M;FUS;:Hb:7,F",
+    // but mappedNameB IS inserted, even though conceptually it is already in the table
+    EXPECT_EQ(3, Hasher()->size());
 }
 
-TEST_F(StringHasherTest, setSaveAll)
+TEST_F(StringHasherTest, getIDFromIntegerID)// NOLINT
 {
     // Arrange
+    const std::string prefix {"Test1"};
+    const std::string postfix {";:M;FUS;:Hb:7,F"};
+    auto mappedName = givenMappedName(prefix.c_str(), postfix.c_str());
+    QVector<App::StringIDRef> sids;
+    auto inserted = Hasher()->getID(mappedName, sids);
+    ASSERT_EQ(2, Hasher()->size());// 2 because the postfix gets inserted alone as well
+
     // Act
+    auto result1 = Hasher()->getID(1);
+    auto result2 = Hasher()->getID(2);
+
     // Assert
+    EXPECT_EQ(postfix, result1.dataToText());
+    EXPECT_EQ(prefix + postfix, result2.dataToText());
 }
 
-TEST_F(StringHasherTest, getSaveAll)
+TEST_F(StringHasherTest, getIDFromIntegerIDNoSuchID)// NOLINT
 {
     // Arrange
+    // Do nothing, so the hash table is empty
+
     // Act
+    auto result = Hasher()->getID(1);
+
     // Assert
+    EXPECT_FALSE(result);
 }
 
-TEST_F(StringHasherTest, setThreshold)
+TEST_F(StringHasherTest, getIDFromIntegerIDBadID)// NOLINT
 {
     // Arrange
+    const std::string prefix {"Test1"};
+    auto mappedName = givenMappedName(prefix.c_str());
+    QVector<App::StringIDRef> sids;
+    auto inserted = Hasher()->getID(mappedName, sids);
+    ASSERT_EQ(1, Hasher()->size());
+
     // Act
+    auto result = Hasher()->getID(-1);
+
     // Assert
+    EXPECT_FALSE(result);
 }
 
-TEST_F(StringHasherTest, getThreshold)
+
+TEST_F(StringHasherTest, getIDFromIntegerWithIndex)// NOLINT
 {
     // Arrange
+    const std::string prefix {"Test1"};
+    const std::string postfix {";:M;FUS;:Hb:7,F"};
+    auto mappedName = givenMappedName(prefix.c_str(), postfix.c_str());
+    QVector<App::StringIDRef> sids;
+    auto inserted = Hasher()->getID(mappedName, sids);
+    ASSERT_EQ(2, Hasher()->size());// 2 because the postfix gets inserted alone as well
+
     // Act
+    auto result = Hasher()->getID(2, 3);
+
     // Assert
+    EXPECT_EQ(prefix + "3" + postfix, result.dataToText());
+    EXPECT_EQ(result.getIndex(), 3);
 }
 
-TEST_F(StringHasherTest, clearMarks)
+TEST_F(StringHasherTest, getIDFromIndexID)// NOLINT
 {
     // Arrange
+    const std::string prefix {"Test1"};
+    const std::string postfix {";:M;FUS;:Hb:7,F"};
+    auto mappedName = givenMappedName(prefix.c_str(), postfix.c_str());
+    QVector<App::StringIDRef> sids;
+    auto inserted = Hasher()->getID(mappedName, sids);
+    App::StringID::IndexID indexId {2, 3};
+    ASSERT_EQ(2, Hasher()->size());// 2 because the postfix gets inserted alone as well
+
     // Act
+    auto result = Hasher()->getID(indexId);
+
     // Assert
+    EXPECT_EQ(prefix + "3" + postfix, result.dataToText());
+    EXPECT_EQ(result.getIndex(), 3);
 }
 
-TEST_F(StringHasherTest, compact)
+TEST_F(StringHasherTest, getIDMap)// NOLINT
 {
     // Arrange
+    givenSomeHashedValues();
+
     // Act
+    auto map = Hasher()->getIDMap();
+
     // Assert
+    EXPECT_EQ(2, map.size());
+}
+
+TEST_F(StringHasherTest, clear)// NOLINT
+{
+    // Arrange
+    givenSomeHashedValues();
+
+    // Act
+    Hasher()->clear();
+
+    // Assert
+    EXPECT_EQ(0, Hasher()->size());
+}
+
+TEST_F(StringHasherTest, size)// NOLINT
+{
+    // Arrange
+    givenSomeHashedValues();
+
+    // Act
+    auto result = Hasher()->size();
+
+    // Assert
+    EXPECT_EQ(2, result);
+}
+
+TEST_F(StringHasherTest, count)// NOLINT
+{
+    // Arrange
+    givenSomeHashedValues();
+
+    // Act
+    auto result = Hasher()->count();
+
+    // Assert
+    // This is 1 because the hash table itself, which has not yet been compacted, still retains one
+    // reference to the postfix string. Even though all real references have been deleted when they
+    // went out of scope, one reference still exists.
+    EXPECT_EQ(1, result);
+}
+
+TEST_F(StringHasherTest, getPyObject)// NOLINT
+{
+    // Arrange - done in setUp()
+
+    // Act
+    Py::Object py(Hasher()->getPyObject(), true);
+
+    // Assert
+    EXPECT_TRUE(PyObject_TypeCheck(py.ptr(), &App::StringHasherPy::Type));
+}
+
+TEST_F(StringHasherTest, setGetSaveAll)// NOLINT
+{
+    // Arrange - done by setUp()
+
+    // Act
+    Hasher()->setSaveAll(true);
+    bool expectedTrue = Hasher()->getSaveAll();
+    Hasher()->setSaveAll(false);
+    bool expectedFalse = Hasher()->getSaveAll();
+
+    // Assert
+    EXPECT_TRUE(expectedTrue);
+    EXPECT_FALSE(expectedFalse);
+}
+
+TEST_F(StringHasherTest, setGetThreshold)// NOLINT
+{
+    // Arrange
+    const int expectedThreshold {42};
+
+    // Act
+    Hasher()->setThreshold(expectedThreshold);
+    auto foundThreshold = Hasher()->getThreshold();
+
+    // Assert
+    EXPECT_EQ(expectedThreshold, foundThreshold);
+}
+
+TEST_F(StringHasherTest, clearMarks)// NOLINT
+{
+    // Arrange
+    auto ref = givenSomeHashedValues();
+    ref.mark();
+    ASSERT_TRUE(ref.isMarked());
+
+    // Act
+    Hasher()->clearMarks();
+
+    // Assert
+    ASSERT_FALSE(ref.isMarked());
+}
+
+TEST_F(StringHasherTest, compact)// NOLINT
+{
+    // Arrange
+    givenSomeHashedValues();
+
+    // Act
+    Hasher()->compact();
+
+    // Assert
+    EXPECT_EQ(0, Hasher()->count());
 }
