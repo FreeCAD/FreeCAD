@@ -245,8 +245,7 @@ def export(objectslist, filename, argstring):
     if FreeCAD.GuiUp and SHOW_EDITOR:
         dia = PostUtils.GCodeEditorDialog()
         dia.editor.setText(gcode)
-        result = dia.exec_()
-        if result:
+        if dia.exec_():
             final = dia.editor.toPlainText()
         else:
             final = gcode
@@ -378,35 +377,16 @@ def parse(pathobj):
             # Now add the remaining parameters in order
             for param in params:
                 if param in c.Parameters:
-                    if param == 'F' and (currLocation[param] != c.Parameters[param] or OUTPUT_DOUBLES):
-                        if c.Name not in ["G0", "G00"]:  # mach3_4 doesn't use rapid speeds
-                            speed = Units.Quantity(c.Parameters['F'], FreeCAD.Units.Velocity)
-                            if speed.getValueAs(UNIT_SPEED_FORMAT) > 0.0:
-                                outstring.append(param + format(float(speed.getValueAs(UNIT_SPEED_FORMAT)), precision_string))
-                            else:
-                                continue
-                    elif param == 'T':
-                        outstring.append(param + str(int(c.Parameters['T'])))
-                    elif param == 'H':
-                        outstring.append(param + str(int(c.Parameters['H'])))
-                    elif param == 'D':
-                        outstring.append(param + str(int(c.Parameters['D'])))
-                    elif param == 'S':
-                        outstring.append(param + str(int(c.Parameters['S'])))
+                    if (param == 'F'):
+                        continue
+                    elif param in ['T', 'H', 'D', 'S']:
+                        outstring.append(param + str(int(c.Parameters[param])))
+                    elif not OUTPUT_DOUBLES and param in currLocation and currLocation[param] == c.Parameters[param]:
+                        continue
                     else:
-                        if (not OUTPUT_DOUBLES) and (param in currLocation) and (currLocation[param] == c.Parameters[param]):
-                            continue
-                        else:
-                            pos = Units.Quantity(c.Parameters[param], FreeCAD.Units.Length)
-                            outstring.append(
-                                param + format(float(pos.getValueAs(UNIT_FORMAT)), precision_string))
-
-            if adaptiveOp and c.Name in ["G0", "G00"]:
-                if opHorizRapid and opVertRapid:
-                    if 'Z' not in c.Parameters:
-                        outstring.append('F' + format(float(opHorizRapid.getValueAs(UNIT_SPEED_FORMAT)), precision_string))
-                    else:
-                        outstring.append('F' + format(float(opVertRapid.getValueAs(UNIT_SPEED_FORMAT)), precision_string))
+                        pos = Units.Quantity(c.Parameters[param], FreeCAD.Units.Length)
+                        outstring.append(
+                            param + format(float(pos.getValueAs(UNIT_FORMAT)), precision_string))
 
             # store the latest command
             lastcommand = command
@@ -430,7 +410,7 @@ def parse(pathobj):
                 print('M6 tool change removed')
 
             if command == "message":
-                if OUTPUT_COMMENTS is False:
+                if not OUTPUT_COMMENTS:
                     out = []
                 else:
                     outstring.pop(0)  # remove the command
