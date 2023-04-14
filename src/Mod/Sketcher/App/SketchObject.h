@@ -354,7 +354,11 @@ public:
       \param geoId1, posId1, geoId2, posId2: the end points to join
       \retval - 0 on success, -1 on failure
     */
-    int join(int geoId1, Sketcher::PointPos posId1, int geoId2, Sketcher::PointPos posId2);
+    int join(int geoId1,
+             Sketcher::PointPos posId1,
+             int geoId2,
+             Sketcher::PointPos posId2,
+             int continuity = 0);
 
     /// adds symmetric geometric elements with respect to the refGeoId (line or point)
     int addSymmetric(const std::vector<int>& geoIdList,

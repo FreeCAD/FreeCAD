@@ -1336,15 +1336,17 @@ PyObject* SketchObjectPy::join(PyObject* args)
     int GeoId1(Sketcher::GeoEnum::GeoUndef), GeoId2(Sketcher::GeoEnum::GeoUndef);
     int PosId1 = static_cast<int>(Sketcher::PointPos::none),
         PosId2 = static_cast<int>(Sketcher::PointPos::none);
+    int continuity = 0;
 
-    if (!PyArg_ParseTuple(args, "iiii", &GeoId1, &PosId1, &GeoId2, &PosId2)) {
+    if (!PyArg_ParseTuple(args, "iiii|i", &GeoId1, &PosId1, &GeoId2, &PosId2, &continuity)) {
         return nullptr;
     }
 
     if (this->getSketchObjectPtr()->join(GeoId1,
                                          (Sketcher::PointPos)PosId1,
                                          GeoId2,
-                                         (Sketcher::PointPos)PosId2)) {
+                                         (Sketcher::PointPos)PosId2,
+                                         continuity)) {
         std::stringstream str;
         str << "Not able to join the curves with end points: (" << GeoId1 << ", " << PosId1
             << "), (" << GeoId2 << ", " << PosId2 << ")";
