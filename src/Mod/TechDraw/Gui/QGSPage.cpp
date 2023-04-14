@@ -249,28 +249,30 @@ int QGSPage::addQView(QGIView* view)
 {
     //don't add twice!
     QGIView* existing = getQGIVByName(view->getViewName());
-    if (!existing) {
-        addItem(view);
-
-        // Find if it belongs to a parent
-        QGIView* parent = nullptr;
-        parent = findParent(view);
-
-        QPointF viewPos(Rez::guiX(view->getViewObject()->X.getValue()),
-                        Rez::guiX(view->getViewObject()->Y.getValue() * -1));
-
-        if (parent) {
-            // move child view to center of parent
-            QPointF posRef(0., 0.);
-            QPointF mapPos = view->mapToItem(parent, posRef);
-            view->moveBy(-mapPos.x(), -mapPos.y());
-
-            parent->addToGroup(view);
-        }
-
-        view->setPos(viewPos);
-        view->updateView(true);
+    if (existing) {
+        return 0;
     }
+
+    addItem(view);
+
+    // Find if it belongs to a parent
+    QGIView* parent = nullptr;
+    parent = findParent(view);
+
+    QPointF viewPos(Rez::guiX(view->getViewObject()->X.getValue()),
+                    Rez::guiX(view->getViewObject()->Y.getValue() * -1));
+
+    if (parent) {
+        // move child view to center of parent
+        QPointF posRef(0., 0.);
+        QPointF mapPos = view->mapToItem(parent, posRef);
+        view->moveBy(-mapPos.x(), -mapPos.y());
+
+        parent->addToGroup(view);
+    }
+
+    view->setPos(viewPos);
+    view->updateView(true);
     return 0;
 }
 
@@ -287,25 +289,18 @@ int QGSPage::removeQViewByName(const char* name)
 {
     std::vector<QGIView*> items = getViews();
     QString qsName = QString::fromUtf8(name);
-    bool found = false;
-    QGIView* ourItem = nullptr;
-    for (auto& i : items) {
+    for (auto& item : items) {
         if (qsName == i->data(1).toString()) {//is there a QGIV with this name in scene?
             found = true;
-            ourItem = i;
-            break;
+            int balloonItemType = QGraphicsItem::UserType + 140;
+            if (item->type() == balloonItemType) {
+                QGIViewBalloon* balloon = dynamic_cast<QGIViewBalloon*>(item);
+                balloon->disconnect();
+            }
+            removeQViewFromScene(item);
+            delete item;//commenting this prevents crash but means a small memory waste.
+                        //alternate fix(?) is to change indexing/caching option in scene/view
         }
-    }
-
-    if (found) {
-        int balloonItemType = QGraphicsItem::UserType + 140;
-        if (ourItem->type() == balloonItemType) {
-            QGIViewBalloon* balloon = dynamic_cast<QGIViewBalloon*>(ourItem);
-            balloon->disconnect();
-        }
-        removeQViewFromScene(ourItem);
-        delete ourItem;//commenting this prevents crash but means a small memory waste.
-                       //alternate fix(?) is to change indexing/caching option in scene/view
     }
 
     return 0;
@@ -496,8 +491,7 @@ QGIView* QGSPage::addViewBalloon(TechDraw::DrawViewBalloon* balloonFeat)
 
     vBalloon->setViewPartFeature(balloonFeat);
 
-    QGIView* parent = nullptr;
-    parent = findParent(vBalloon);
+    QGIView* parent = findParent(vBalloon);
 
     if (parent) {
         addBalloonToParent(vBalloon, parent);
@@ -569,8 +563,7 @@ QGIView* QGSPage::addViewDimension(TechDraw::DrawViewDimension* dimFeat)
     dimGroup->setViewPartFeature(dimFeat);
 
     // Find if it belongs to a parent
-    QGIView* parent = nullptr;
-    parent = findParent(dimGroup);
+    QGIView* parent = findParent(dimGroup);
 
     if (parent) {
         addDimToParent(dimGroup, parent);
@@ -599,9 +592,7 @@ QGIView* QGSPage::addViewLeader(TechDraw::DrawLeaderLine* leaderFeat)
 
     leaderGroup->setLeaderFeature(leaderFeat);
 
-    QGIView* parent = nullptr;
-    parent = findParent(leaderGroup);
-
+    QGIView* parent = findParent(leaderGroup);
     if (parent) {
         addLeaderToParent(leaderGroup, parent);
     }
@@ -644,26 +635,26 @@ void QGSPage::addAnnoToParent(QGIRichAnno* anno, QGIView* parent)
 QGIView* QGSPage::addWeldSymbol(TechDraw::DrawWeldSymbol* weldFeat)
 {
     //    Base::Console().Message("QGSP::addWeldSymbol()\n");
-    QGIWeldSymbol* weldGroup = nullptr;
-    TechDraw::DrawView* parentDV = nullptr;
 
     App::DocumentObject* parentObj = weldFeat->Leader.getValue();
-    if (parentObj) {
-        parentDV = dynamic_cast<TechDraw::DrawView*>(parentObj);
+    if (!parentObj) {
+        // Base::Console().Message("QGSP::addWeldSymbol - no parent doc obj\n");
     }
-    else {
-        //        Base::Console().Message("QGSP::addWeldSymbol - no parent doc obj\n");
+    
+    TechDraw::DrawView* parentDV = parentDV = dynamic_cast<TechDraw::DrawView*>(parentObj);
+    if (!parentDV) {
+        return nullptr;
     }
-    if (parentDV) {
-        QGIView* parentQV = findQViewForDocObj(parentObj);
-        QGILeaderLine* leadParent = dynamic_cast<QGILeaderLine*>(parentQV);
-        if (leadParent) {
-            weldGroup = new QGIWeldSymbol(leadParent);
-            weldGroup->setFeature(weldFeat);    //for QGIWS
-            weldGroup->setViewFeature(weldFeat);//for QGIV
-            weldGroup->updateView(true);
-        }
+    
+    QGIView* parentQV = findQViewForDocObj(parentObj);
+    QGILeaderLine* leadParent = dynamic_cast<QGILeaderLine*>(parentQV);
+    if (!leadParent) {
+        return nullptr;
     }
+    QGIWeldSymbol* weldGroup = new QGIWeldSymbol(leadParent);
+    weldGroup->setFeature(weldFeat);    //for QGIWS
+    weldGroup->setViewFeature(weldFeat);//for QGIV
+    weldGroup->updateView(true);
     return weldGroup;
 }
 
@@ -966,45 +957,30 @@ void QGSPage::fixOrphans(bool force)
             //no DrawView anywhere in Document
             removeQView(qv);
         }
-        else {
-            //DrawView exists in Document.  Does it belong to this DrawPage?
-            int numParentPages = qv->getViewObject()->countParentPages();
-            if (numParentPages == 0) {
-                //DrawView does not belong to any DrawPage
-                //remove QGItem from QGScene
-                removeQView(qv);
-            }
-            else if (numParentPages == 1) {
-                //Does DrawView belong to this DrawPage?
-                TechDraw::DrawPage* parentPage = qv->getViewObject()->findParentPage();
-                if (thisPage != parentPage) {
-                    //DrawView does not belong to this DrawPage
-                    //remove QGItem from QGScene
-                    removeQView(qv);
-                }
-            }
-            else if (numParentPages > 1) {
-                //DrawView belongs to multiple DrawPages
-                //check if this MDIViewPage corresponds to any parent DrawPage
-                //if not, delete the QGItem
-                std::vector<TechDraw::DrawPage*> potentialParentPages =
-                    qv->getViewObject()->findAllParentPages();
-                bool found = false;
-                for (auto p : potentialParentPages) {
-                    if (thisPage == p) {
-                        found = true;
-                        break;
-                    }
-                }
-                if (!found) {
-                    //none of the parent Pages for View correspond to this Page
-                    removeQView(qv);
-                }
-            }
-        }
+
+        // DrawView exists in Document.  Does it belong to this DrawPage?
+        int numParentPages = qv->getViewObject()->countParentPages();
+        // If not, delete it
+        deleteParentless(qv);
     }
 
     setRichAnnoGroups();//hack to fix QGIRA parentage;
+}
+
+// Deletes view if it doesn't belong to a page
+void QGSPage::deleteParentless(QGIView* view, TechDraw::DrawPage page) {
+    //check if this MDIViewPage corresponds to any parent DrawPage
+    //if not, delete the QGItem
+    std::vector<TechDraw::DrawPage*> potentialParentPages =
+        view->getViewObject()->findAllParentPages();
+    for (auto p : potentialParentPages) {
+        if (thisPage == p) {
+            return;
+        }
+    }
+
+    //none of the parent Pages for View correspond to this Page
+    removeQView(qv);
 }
 
 bool QGSPage::orphanExists(const char* viewName, const std::vector<App::DocumentObject*>& list)
@@ -1197,47 +1173,7 @@ void QGSPage::postProcessXml(QTemporaryFile& temporaryFile, QString fileName, QS
     rootGroup.setAttribute(QString::fromUtf8("inkscape:groupmode"), QString::fromUtf8("layer"));
     rootGroup.setAttribute(QString::fromUtf8("inkscape:label"), QString::fromUtf8("TechDraw"));
 
-    // Now insert our template
-    QGISVGTemplate* svgTemplate = dynamic_cast<QGISVGTemplate*>(pageTemplate);
-    if (svgTemplate) {
-        DrawSVGTemplate* drawTemplate = svgTemplate->getSVGTemplate();
-        if (drawTemplate) {
-            QFile templateResultFile(QString::fromUtf8(drawTemplate->PageResult.getValue()));
-            if (templateResultFile.open(QIODevice::ReadOnly)) {
-                QDomDocument templateResultDoc(QString::fromUtf8("SvgDoc"));
-                if (templateResultDoc.setContent(&templateResultFile)) {
-                    QDomElement templateDocElem = templateResultDoc.documentElement();
-
-                    // Insert the template into a new group with id set to template name
-                    QDomElement templateGroup = exportDoc.createElement(QString::fromUtf8("g"));
-                    Base::FileInfo fi(drawTemplate->Template.getValue());
-                    templateGroup.setAttribute(QString::fromUtf8("id"),
-                                               QString::fromUtf8(fi.fileName().c_str()));
-                    templateGroup.setAttribute(QString::fromUtf8("style"),
-                                               QString::fromUtf8("stroke: none;"));
-
-                    // Scale the template group correctly
-#if QT_VERSION < QT_VERSION_CHECK(5, 14, 0)
-                    templateGroup.setAttribute(
-                        QString::fromUtf8("transform"),
-                        QString().sprintf("scale(%f, %f)", Rez::guiX(1.0), Rez::guiX(1.0)));
-#else
-                    templateGroup.setAttribute(QString::fromUtf8("transform"),
-                                               QString::fromLatin1("scale(%1, %2)")
-                                                   .arg(Rez::guiX(1.0), 0, 'f')
-                                                   .arg(Rez::guiX(1.0), 0, 'f'));
-#endif
-
-                    // Finally, transfer all template document child nodes under the template group
-                    while (!templateDocElem.firstChild().isNull()) {
-                        templateGroup.appendChild(templateDocElem.firstChild());
-                    }
-
-                    rootGroup.appendChild(templateGroup);
-                }
-            }
-        }
-    }
+    insertSVGtemplate(rootGroup);
 
     // Obtain the drawing group element, move it under root node and set its id to "DrawingContent"
     QDomElement drawingGroup = exportDocElem.firstChildElement(QLatin1String("g"));
@@ -1265,6 +1201,56 @@ void QGSPage::postProcessXml(QTemporaryFile& temporaryFile, QString fileName, QS
 
     stream << exportDoc.toByteArray();
     outFile.close();
+}
+
+void QGSPage::insertSVGtemplate() {
+    // Now insert our template
+    QGISVGTemplate* svgTemplate = dynamic_cast<QGISVGTemplate*>(pageTemplate);
+    if (!svgTemplate) {
+        return;
+    }
+
+    DrawSVGTemplate* drawTemplate = svgTemplate->getSVGTemplate();
+    if (!drawTemplate) {
+        return;
+    }
+
+    QFile templateResultFile(QString::fromUtf8(drawTemplate->PageResult.getValue()));
+    if (!templateResultFile.open(QIODevice::ReadOnly)) {
+        return;
+    }
+
+    QDomDocument templateResultDoc(QString::fromUtf8("SvgDoc"));
+    if (templateResultDoc.setContent(&templateResultFile)) {
+        QDomElement templateDocElem = templateResultDoc.documentElement();
+
+        // Insert the template into a new group with id set to template name
+        QDomElement templateGroup = exportDoc.createElement(QString::fromUtf8("g"));
+        Base::FileInfo fi(drawTemplate->Template.getValue());
+        templateGroup.setAttribute(QString::fromUtf8("id"),
+                                    QString::fromUtf8(fi.fileName().c_str()));
+        templateGroup.setAttribute(QString::fromUtf8("style"),
+                                    QString::fromUtf8("stroke: none;"));
+
+        // Scale the template group correctly
+#if QT_VERSION < QT_VERSION_CHECK(5, 14, 0)
+        templateGroup.setAttribute(
+            QString::fromUtf8("transform"),
+            QString().sprintf("scale(%f, %f)", Rez::guiX(1.0), Rez::guiX(1.0)));
+#else
+        templateGroup.setAttribute(QString::fromUtf8("transform"),
+                                    QString::fromLatin1("scale(%1, %2)")
+                                        .arg(Rez::guiX(1.0), 0, 'f')
+                                        .arg(Rez::guiX(1.0), 0, 'f'));
+#endif
+
+        // Finally, transfer all template document child nodes under the template group
+        while (!templateDocElem.firstChild().isNull()) {
+            templateGroup.appendChild(templateDocElem.firstChild());
+        }
+
+        rootGroup.appendChild(templateGroup);
+    }
 }
 
 TechDraw::DrawPage* QGSPage::getDrawPage() { return m_vpPage->getDrawPage(); }
