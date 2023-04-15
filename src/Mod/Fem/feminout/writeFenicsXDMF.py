@@ -171,10 +171,8 @@ def write_fenics_mesh_codim_xdmf(
         fc_topo = fem_mesh_obj.FemMesh.Nodes
     else:
         fc_topo = []
-        Console.PrintError(
-            "Dimension of mesh incompatible with export XDMF function: %d\n"
-            % (dim_topo,)
-        )
+        Console.PrintError("Dimension of mesh incompatible with export" + 
+                           f" XDMF function: {dim_topo}\n")
 
     nodeindices = [(
         nodes_dict[ind] for ind in fem_mesh_obj.FemMesh.getElementNodes(fc_topo_ind)
@@ -265,11 +263,11 @@ def write_fenics_mesh_xdmf(
         For the export of xdmf.
     """
 
-    Console.PrintMessage("Converting " + fem_mesh_obj.Label + " to fenics XDMF File\n")
-    Console.PrintMessage("Dimension of mesh: %d\n" % (get_FemMeshObjectDimension(fem_mesh_obj),))
+    Console.PrintMessage(f"Converting {fem_mesh_obj.Label} to fenics XDMF File\n")
+    Console.PrintMessage(f"Dimension of mesh: {get_FemMeshObjectDimension(fem_mesh_obj)}\n")
 
     elements_in_mesh = get_FemMeshObjectElementTypes(fem_mesh_obj)
-    Console.PrintMessage("Elements appearing in mesh: %s\n" % (str(elements_in_mesh),))
+    Console.PrintMessage(f"Elements appearing in mesh: {str(elements_in_mesh)}\n")
     celltype_in_mesh = get_MaxDimElementFromList(elements_in_mesh)
     (num_cells, cellname_fc, dim_cell) = celltype_in_mesh
 
@@ -309,10 +307,9 @@ def write_fenics_mesh_xdmf(
         mesh_function_codim = dim_cell - FreeCAD_Group_Dimensions[mesh_function_type]
         mesh_function_name = fem_mesh.getGroupName(g)
 
-        Console.PrintMessage(
-            "group id: %d (label: %s) with element type %s and codim %d\n"
-            % (g, mesh_function_name, mesh_function_type, mesh_function_codim)
-        )
+        Console.PrintMessage(f"group id: {g} (label: {mesh_function_name})" + 
+                             f" with element type {mesh_function_type} and" + 
+                             " codim {mesh_function_codim}\n")
 
         mesh_function_grid = ET.SubElement(
             domain, "Grid",
@@ -328,7 +325,8 @@ def write_fenics_mesh_xdmf(
             codim=mesh_function_codim, encoding=encoding
         )
 
-        mesh_function_geometry = ET.SubElement(mesh_function_grid, "Geometry", Reference="XML")
+        mesh_function_geometry = ET.SubElement(mesh_function_grid, "Geometry", 
+                                               Reference="XML")
         mesh_function_geometry.text = "/Xdmf/Domain/Grid/Geometry"
         mesh_function_attribute = ET.SubElement(mesh_function_grid, "Attribute")
 

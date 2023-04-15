@@ -59,8 +59,8 @@ def read_fenics_mesh_xml(xmlfilename):
 
         vertex_size = 0
 
-        Console.PrintLog("Mesh dimension: %d\n" % (dim,))
-        Console.PrintLog("Mesh cell type: %s\n" % (cell_type,))
+        Console.PrintLog(f"Mesh dimension: {dim}\n")
+        Console.PrintLog(f"Mesh cell type: {cell_type}\n")
 
         # every cell type contains a dict with key=dimension and value=number
 
@@ -81,7 +81,7 @@ def read_fenics_mesh_xml(xmlfilename):
             Console.PrintWarning("No vertices found!\n")
         else:
             vertex_size = int(find_vertices.attrib.get("size"))
-            Console.PrintLog("Reading %d vertices\n" % (vertex_size,))
+            Console.PrintLog(f"Reading {vertex_size} vertices\n")
 
             for vertex in find_vertices:
                 ind = int(vertex.get("index"))
@@ -95,20 +95,19 @@ def read_fenics_mesh_xml(xmlfilename):
                     # increase node index by one, since fenics starts at 0, FreeCAD at 1
                     # print("%d %f %f %f" % (ind, node_x, node_y, node_z))
                 else:
-                    Console.PrintWarning("found strange vertex tag: %s\n" % (vertex.tag,))
+                    Console.PrintWarning(f"found strange vertex tag: {vertex.tag}\n")
 
         if find_cells is None:
             Console.PrintWarning("No cells found!\n")
         else:
-            Console.PrintLog("Reading %d cells\n" % (int(find_cells.attrib.get("size")),))
+            Console.PrintLog(f"Reading {int(find_cells.attrib.get('size'))} cells\n")
             for cell in find_cells:
                 ind = int(cell.get("index"))
 
                 if cell.tag.lower() != cell_type.lower():
-                    Console.PrintWarning(
-                        "Strange mismatch between cell type {} and cell tag {}\n"
-                        .format(cell_type, cell.tag.lower())
-                    )
+                    Console.PrintWarning("Strange mismatch between cell type " + 
+                                         f"{cell_type} and " + 
+                                         f"cell tag {cell.tag.lower()}\n")
                 num_vertices = cells_parts_dim[cell_type][0]
 
                 vtupel = tuple([
@@ -244,7 +243,7 @@ def read_fenics_mesh_xml(xmlfilename):
         for (elm, numbers) in list(element_dict.items()):
             lst = sorted(list(numbers.items()), key=lambda x: x[0])
             if lst != []:
-                Console.PrintWarning("{} min: {} max: {}\n".format(elm, lst[0], lst[-1]))
+                Console.PrintMessage(f"{elm} min: {lst[0]} max: {lst[-1]}\n")
     else:
         Console.PrintError("No mesh found\n")
 
