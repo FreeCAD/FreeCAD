@@ -128,6 +128,11 @@ public:
           _flags(Flag::None)
     {}
 
+    StringID(const StringID& other) = delete;
+    StringID(StringID&& other) noexcept = delete;
+    StringID& operator=(const StringID& rhs) = delete;
+    StringID& operator=(StringID&& rhs) noexcept = delete;
+
     ~StringID() override;
 
     /// Returns the ID of this StringID
@@ -250,7 +255,7 @@ public:
      * @return Return the text content of this StringID. If the data is binary,
      *         then output in base64 encoded string.
      */
-    std::string dataToText(int index) const;
+    std::string dataToText(int index = 0) const;
 
     /** Get the content of this StringID as QByteArray
      * @param index: optional index.
@@ -308,22 +313,6 @@ private:
     StringHasher* _hasher = nullptr;
     mutable Flags _flags;
     mutable QVector<StringIDRef> _sids;
-
-private:
-    StringID([[maybe_unused]] const StringID& other)
-        : _id(0),
-          _flags(StringID::Flag::None) {};
-    StringID([[maybe_unused]] StringID&& other) noexcept
-        : _id(0),
-          _flags(StringID::Flag::None) {};
-    StringID& operator=([[maybe_unused]] const StringID& rhs)// NOLINT
-    {
-        return *this;
-    };
-    StringID& operator=([[maybe_unused]] StringID&& rhs) noexcept
-    {
-        return *this;
-    };
 };
 
 //////////////////////////////////////////////////////////////////////////
@@ -647,6 +636,11 @@ public:
     StringHasher();
     ~StringHasher() override;
 
+    StringHasher(const StringHasher&) = delete;
+    StringHasher(StringHasher&&) noexcept = delete;
+    StringHasher& operator=(StringHasher& other) = delete;
+    StringHasher& operator=(StringHasher&& other) noexcept = delete;
+
     unsigned int getMemSize() const override;
     void Save(Base::Writer& /*writer*/) const override;
     void Restore(Base::XMLReader& /*reader*/) override;
@@ -783,12 +777,6 @@ protected:
 private:
     std::unique_ptr<HashMap> _hashes;///< Bidirectional map of StringID and its index (a long int).
     mutable std::string _filename;
-
-private:
-    StringHasher(const StringHasher&);
-    StringHasher(StringHasher&&) noexcept;
-    StringHasher& operator=(StringHasher& other);
-    StringHasher& operator=(StringHasher&& other) noexcept;
 };
 }// namespace App
 

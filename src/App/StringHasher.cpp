@@ -180,23 +180,6 @@ StringHasher::~StringHasher()
     clear();
 }
 
-StringHasher::StringHasher([[maybe_unused]] StringHasher&& other) noexcept
-{
-    // Private: unimplemented
-}
-
-StringHasher& StringHasher::operator=([[maybe_unused]] StringHasher& other)
-{
-    // Private: unimplemented
-    return *this;
-}
-
-StringHasher& StringHasher::operator=([[maybe_unused]] StringHasher&& other) noexcept
-{
-    // Private: unimplemented
-    return *this;
-}
-
 void StringHasher::setSaveAll(bool enable)
 {
     if (_hashes->SaveAll == enable) {
