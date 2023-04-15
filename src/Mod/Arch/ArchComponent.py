@@ -31,7 +31,10 @@ __title__  = "FreeCAD Arch Component"
 __author__ = "Yorik van Havre"
 __url__    = "https://www.freecadweb.org"
 
-import FreeCAD,Draft,ArchCommands,ArchIFC
+import FreeCAD
+import ArchCommands
+import ArchIFC
+import Draft
 if FreeCAD.GuiUp:
     import FreeCADGui
     from PySide import QtGui,QtCore
@@ -713,7 +716,8 @@ class Component(ArchIFC.IfcProduct):
             The base shape, with the additions and subtractions performed.
         """
 
-        import Draft,Part
+        import Draft
+        import Part
         #print("Processing subshapes of ",obj.Label, " : ",obj.Additions)
 
         if placement:
@@ -986,7 +990,8 @@ class Component(ArchIFC.IfcProduct):
             obj.PerimeterLength = 0
             return
 
-        import TechDraw, Part
+        import Part
+        import TechDraw
         fmax = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch").GetInt("MaxComputeAreas",20)
         if len(obj.Shape.Faces) > fmax:
             obj.VerticalArea = 0
@@ -1972,7 +1977,10 @@ class ComponentTaskPanel:
             return
         if not isinstance(self.obj.IfcProperties,dict):
             return
-        import Arch_rc, csv, os, ArchIFCSchema
+        import Arch_rc
+        import csv
+        import os
+        import ArchIFCSchema
 
         # get presets
         self.ptypes = list(ArchIFCSchema.IfcTypes.keys())

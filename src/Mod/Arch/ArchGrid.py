@@ -19,7 +19,10 @@
 #*                                                                         *
 #***************************************************************************
 
-import FreeCAD, Part, math
+import math
+
+import FreeCAD
+import Part
 if FreeCAD.GuiUp:
     import FreeCADGui
     from PySide import QtCore, QtGui

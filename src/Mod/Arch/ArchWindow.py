@@ -21,7 +21,11 @@
 
 import os
 
-import FreeCAD, Draft, ArchComponent, DraftVecUtils, ArchCommands
+import FreeCAD
+import ArchCommands
+import ArchComponent
+import Draft
+import DraftVecUtils
 import ArchWindowPresets
 from FreeCAD import Units
 from FreeCAD import Vector
@@ -524,7 +528,8 @@ class _CommandWindow:
                     path = self.librarypresets[i-len(WindowPresets)][1]
                     if path.lower().endswith(".fcstd"):
                         try:
-                            import zipfile,tempfile
+                            import tempfile
+                            import zipfile
                         except Exception:
                             pass
                         else:
@@ -667,7 +672,9 @@ class _Window(ArchComponent.Component):
 
     def buildShapes(self,obj):
 
-        import Part,DraftGeomUtils,math
+        import Part
+        import DraftGeomUtils
+        import math
         self.sshapes = []
         self.vshapes = []
         shapes = []
@@ -877,7 +884,9 @@ class _Window(ArchComponent.Component):
                 self.boxes = clonedProxy.boxes
             return
 
-        import Part,DraftGeomUtils,math
+        import Part
+        import DraftGeomUtils
+        import math
         pl = obj.Placement
         base = None
         self.sshapes = []

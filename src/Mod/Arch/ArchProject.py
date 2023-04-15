@@ -25,7 +25,9 @@ objects specifically for better IFC compatibility, allowing the user to tweak
 certain IFC relevant values.
 """
 
-import FreeCAD,ArchIFC,ArchIFCView
+import FreeCAD
+import ArchIFC
+import ArchIFCView
 if FreeCAD.GuiUp:
     import FreeCADGui
     from draftutils.translate import translate

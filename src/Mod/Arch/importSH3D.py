@@ -23,7 +23,17 @@ __title__  = "FreeCAD SweetHome3D Importer"
 __author__ = "Yorik van Havre"
 __url__    = "https://www.freecadweb.org"
 
-import os,zipfile,xml.sax,FreeCAD,Part,Draft,Arch,Mesh,tempfile,math
+import math
+import os
+import tempfile
+import xml.sax
+import zipfile
+
+import FreeCAD
+import Arch
+import Draft
+import Mesh
+import Part
 
 ## @package importSH3D
 #  \ingroup ARCH

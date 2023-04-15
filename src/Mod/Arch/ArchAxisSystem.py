@@ -19,9 +19,11 @@
 #*                                                                         *
 #***************************************************************************
 
-import FreeCAD, DraftGeomUtils
+import FreeCAD
+import DraftGeomUtils
 if FreeCAD.GuiUp:
-    import FreeCADGui, Draft
+    import FreeCADGui
+    import Draft
     from PySide import QtCore, QtGui
     from draftutils.translate import translate
     from pivy import coin

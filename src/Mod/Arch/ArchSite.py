@@ -24,7 +24,15 @@
 containers for Arch objects, and also define a terrain surface.
 """
 
-import FreeCAD,Draft,ArchCommands,ArchComponent,math,re,datetime,ArchIFC
+import datetime
+import math
+import re
+
+import FreeCAD
+import ArchCommands
+import ArchComponent
+import ArchIFC
+import Draft
 
 if FreeCAD.GuiUp:
     import FreeCADGui
@@ -758,7 +766,8 @@ class _Site(ArchIFC.IfcProduct):
                 obj.SubtractionVolume = 0
             return
 
-        import TechDraw, Part
+        import TechDraw
+        import Part
         area = 0
         perim = 0
         addvol = 0

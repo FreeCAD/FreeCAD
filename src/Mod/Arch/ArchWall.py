@@ -802,7 +802,8 @@ class _Wall(ArchComponent.Component):
         if self.clone(obj):
             return
 
-        import Part, DraftGeomUtils
+        import Part
+        import DraftGeomUtils
         base = None
         pl = obj.Placement
         extdata = self.getExtrusionData(obj)
@@ -1098,7 +1099,8 @@ class _Wall(ArchComponent.Component):
             placement needed to move the face back from the (0,0,0) origin.
         """
 
-        import Part,DraftGeomUtils
+        import Part
+        import DraftGeomUtils
 
         # If ArchComponent.Component.getExtrusionData() can successfully get
         # extrusion data, just use that.
