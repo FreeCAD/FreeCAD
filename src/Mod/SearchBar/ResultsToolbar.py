@@ -47,7 +47,9 @@ def subToolAction(nfo):
   print('Tool ' + toolPath + ' not found, was it offered by an extension that is no longer present?')
 
 def toolbarToolTip(nfo, setParent):
-  return '<p>Show the ' + nfo['text'] + ' toolbar</p><p>This toolbar appears in the following workbenches: <ul>' + ''.join(['<li>' + Serialize.iconToHTML(QtGui.QIcon(FreeCADGui.listWorkbenches()[wb].Icon)) + wb + '</li>' for wb in nfo['action']['workbenches']]) + '</ul></p>'
+  workbenches = FreeCADGui.listWorkbenches()
+  in_workbenches = ['<li>' + (Serialize.iconToHTML(QtGui.QIcon(workbenches[wb].Icon)) if wb in workbenches else '? ') + wb + '</li>' for wb in nfo['action']['workbenches']]
+  return '<p>Show the ' + nfo['text'] + ' toolbar</p><p>This toolbar appears in the following workbenches: <ul>' + ''.join(in_workbenches) + '</ul></p>'
 
 def subToolToolTip(nfo, setParent):
   return Serialize.iconToHTML(nfo['icon'], 32) + '<p>' + nfo['toolTip'] + '</p>'
