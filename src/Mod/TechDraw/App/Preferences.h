@@ -99,6 +99,7 @@ public:
     static App::Color getAccessibleColor(App::Color orig);
 
     static bool autoCorrectDimRefs();
+    static int scrubCount();
 };
 
 }//end namespace TechDraw

@@ -309,7 +309,6 @@ bool Preferences::lightOnDark()
 
 void Preferences::lightOnDark(bool state)
 {
-    Base::Console().Message("Pref::useLightText - set to %d\n", state);
     getPreferenceGroup("Colors")->SetBool("LightOnDark", state);
 }
 
@@ -375,4 +374,9 @@ App::Color Preferences::getAccessibleColor(App::Color orig)
 bool Preferences::autoCorrectDimRefs()
 {
     return getPreferenceGroup("Dimensions")->GetBool("AutoCorrectRefs", true);
+}
+
+int Preferences::scrubCount()
+{
+    return getPreferenceGroup("General")->GetInt("ScrubCount", 0);
 }
