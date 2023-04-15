@@ -70,7 +70,8 @@
 #include "DrawViewDetail.h"
 #include "DrawViewPart.h"
 #include "GeometryObject.h"
-
+#include "DrawProjectSplit.h"
+#include "Preferences.h"
 
 using namespace TechDraw;
 using namespace std;
@@ -531,13 +532,26 @@ void GeometryObject::extractGeometry(edgeClass category, bool hlrVisible)
 void GeometryObject::addGeomFromCompound(TopoDS_Shape edgeCompound, edgeClass category,
                                          bool hlrVisible)
 {
-    //    Base::Console().Message("GO::addGeomFromCompound(%d, %d)\n", category, hlrVisible);
+//    Base::Console().Message("GO::addGeomFromCompound(%d, %d)\n", category, hlrVisible);
     if (edgeCompound.IsNull()) {
-        return;// There is no OpenCascade Geometry to be calculated
+        return;    // There is no OpenCascade Geometry to be calculated
+    }
+
+    // remove overlapping edges
+    TopoDS_Shape cleanShape;
+    int passes = Preferences::scrubCount();
+    if (passes > 0) {
+        std::vector<TopoDS_Edge> edgeVector = DU::shapeToVector(edgeCompound);
+        for (int iPass = 0; iPass < passes; iPass++)  {
+            edgeVector = DrawProjectSplit::removeOverlapEdges(edgeVector);
+        }
+        cleanShape = DU::vectorToCompound(edgeVector);
+    } else {
+        cleanShape = edgeCompound;
     }
 
     BaseGeomPtr base;
-    TopExp_Explorer edges(edgeCompound, TopAbs_EDGE);
+    TopExp_Explorer edges(cleanShape, TopAbs_EDGE);
     int i = 1;
     for (; edges.More(); edges.Next(), i++) {
         const TopoDS_Edge& edge = TopoDS::Edge(edges.Current());
