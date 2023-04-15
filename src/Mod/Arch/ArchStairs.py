@@ -109,7 +109,7 @@ def makeStairs(baseobj=None,length=None,width=None,height=None,steps=None,name="
             stairs[i].Label = translate("Arch",name)
             stairs[i].Base = baseobjI
 
-            if (len(baseobjI.Shape.Edges) > 1):
+            if len(baseobjI.Shape.Edges) > 1:
                 stepsI = 1                              #'landing' if 'multi-edges' currently
             elif steps:
                 stepsI = steps
@@ -178,7 +178,8 @@ def makeRailing(stairs):
         sel = FreeCADGui.Selection.getSelection()
         sel0 = sel[0]
         stairs = []
-        if Draft.getType(sel[0]) == "Stairs":                       # TODO currently consider 1st selected object, then would tackle multiple objects ?
+        # TODO currently consider 1st selected object, then would tackle multiple objects?
+        if Draft.getType(sel[0]) == "Stairs":
             stairs.append(sel0)
             if Draft.getType(sel0.Base) == "Stairs":
                 stairs.append(sel0.Base)
@@ -985,7 +986,7 @@ class _Stairs(ArchComponent.Component):
                 else:
                     print ("obj.Base has 0 z-value")
                     print (h)
-        if h==0 and obj.Height.Value != 0:
+        if (h == 0) and obj.Height.Value != 0:
             h = obj.Height.Value
         else:
             print (h)
@@ -1118,7 +1119,7 @@ class _Stairs(ArchComponent.Component):
         "builds a simple, straight staircase from a straight edge"
 
         # Upgrade obj if it is from an older version of FreeCAD
-        if not(hasattr(obj, "StringerOverlap")):
+        if not hasattr(obj, "StringerOverlap"):
             obj.addProperty("App::PropertyLength","StringerOverlap","Structure",QT_TRANSLATE_NOOP("App::Property","The overlap of the stringers above the bottom of the treads"))
 
         # general data
