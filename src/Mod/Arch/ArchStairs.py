@@ -492,15 +492,15 @@ class _Stairs(ArchComponent.Component):
                 if (len(obj.Base.Shape.Edges) == 1):
                     edge = obj.Base.Shape.Edges[0]
                     if isinstance(edge.Curve,(Part.LineSegment,Part.Line)):
-                      # preparing for multi-edges landing / segment staircase
-                      if obj.NumberOfSteps > 1:
+                        # preparing for multi-edges landing / segment staircase
+                        if obj.NumberOfSteps > 1:
                             self.makeStraightStairsWithLanding(obj,edge)    # all cases use makeStraightStairsWithLanding()
 
-                      # preparing for multi-edges landing / segment staircase
-                      if obj.NumberOfSteps == 1:
+                        # preparing for multi-edges landing / segment staircase
+                        if obj.NumberOfSteps == 1:
                             # TODO - All use self.makeMultiEdgesLanding(obj,edges) ?
                             self.makeStraightLanding(obj,edge)
-                      if obj.NumberOfSteps == 0:
+                        if obj.NumberOfSteps == 0:
                             pass # Should delete the whole shape
 
                     else:
@@ -510,12 +510,12 @@ class _Stairs(ArchComponent.Component):
                         else:
                             self.makeCurvedStairs(obj,edge)
 
-                elif (len(obj.Base.Shape.Edges) >= 1):
-                      #if obj.NumberOfSteps == 1:
-                            # Sort the edges so each vertex tested of its tangent direction in order
-                            ## TODO - Found Part.sortEdges() occasionally return less edges then 'input'
-                            edges = Part.sortEdges(obj.Base.Shape.Edges)[0]
-                            self.makeMultiEdgesLanding(obj,edges)
+                elif len(obj.Base.Shape.Edges) >= 1:
+                    #if obj.NumberOfSteps == 1:
+                    # Sort the edges so each vertex tested of its tangent direction in order
+                    ## TODO - Found Part.sortEdges() occasionally return less edges then 'input'
+                    edges = Part.sortEdges(obj.Base.Shape.Edges)[0]
+                    self.makeMultiEdgesLanding(obj,edges)
             else:
                 if not obj.Length.Value:
                     return
@@ -718,7 +718,7 @@ class _Stairs(ArchComponent.Component):
                         netWidthI = widthFirstSegment.Value - offsetHLeft.Value - offsetHRight.Value  #2*offsetH
 
             else:
-               netWidthI = widthFirstSegment.Value - offsetHLeft.Value - offsetHRight.Value  #2*offsetH
+                netWidthI = widthFirstSegment.Value - offsetHLeft.Value - offsetHRight.Value  #2*offsetH
 
 
             ''' (3) append vBase '''
@@ -773,15 +773,15 @@ class _Stairs(ArchComponent.Component):
                 vOffsetH2 = DraftVecUtils.scaleTo(dvec2,offsetHLeft.Value)
 
             if align == "Left":
-              vBase[i] = _Stairs.align(vBase[i], "Right", -vOffsetH)
-              if isArc:
-                vBase1 = _Stairs.align(vBase1, "Right", -vOffsetH1)
-                vBase2 = _Stairs.align(vBase2, "Right", -vOffsetH2)
+                vBase[i] = _Stairs.align(vBase[i], "Right", -vOffsetH)
+                if isArc:
+                    vBase1 = _Stairs.align(vBase1, "Right", -vOffsetH1)
+                    vBase2 = _Stairs.align(vBase2, "Right", -vOffsetH2)
             elif align == "Right":
-              vBase[i] = _Stairs.align(vBase[i], "Right", vOffsetH)
-              if isArc:
-                vBase1 = _Stairs.align(vBase1, "Right", vOffsetH1)
-                vBase2 = _Stairs.align(vBase2, "Right", vOffsetH2)
+                vBase[i] = _Stairs.align(vBase[i], "Right", vOffsetH)
+                if isArc:
+                    vBase1 = _Stairs.align(vBase1, "Right", vOffsetH1)
+                    vBase2 = _Stairs.align(vBase2, "Right", vOffsetH2)
 
 
             ''' (3b, 2b/1c) get + alter [p1, p2, p3, p4] - Need vBase '''
@@ -831,8 +831,8 @@ class _Stairs(ArchComponent.Component):
                 outlineP3P4.insert(0, intersectionP3P4)
 
             else:
-                    outlineP1P2.append(p1[i])
-                    outlineP3P4.insert(0, p4[i])
+                outlineP1P2.append(p1[i])
+                outlineP3P4.insert(0, p4[i])
 
         # add back last/first 'missing' point(s)
         outlineP1P2.append(p2[i])
@@ -861,40 +861,40 @@ class _Stairs(ArchComponent.Component):
             outlineP3P4Closed[i+1] = intersectionP3P4    #intersection[0]
 
         if mode in ["OrderedOpen", "OrderedCloseAndOrderedOpen"]:
-          if i > 0: # Multi-edge, otherwise no use
+            if i > 0: # Multi-edge, otherwise no use
 
-            outlineP1P2Ordered = list(outlineP1P2)
+                outlineP1P2Ordered = list(outlineP1P2)
 
-            ''' Guessing the 1st Start Point based on Intersection '''
-            vx1 = Vector(outlineP1P2[1].x, outlineP1P2[1].y, 0)
-            l0 = Part.LineSegment(edges[0].Vertexes[0].Point, edges[0].Vertexes[1].Point)
-            try:
-                distFrom1stParameter = l0.parameter(vx1)
-                distFrom2ndParameter = l0.length()-distFrom1stParameter
+                ''' Guessing the 1st Start Point based on Intersection '''
+                vx1 = Vector(outlineP1P2[1].x, outlineP1P2[1].y, 0)
+                l0 = Part.LineSegment(edges[0].Vertexes[0].Point, edges[0].Vertexes[1].Point)
+                try:
+                    distFrom1stParameter = l0.parameter(vx1)
+                    distFrom2ndParameter = l0.length()-distFrom1stParameter
 
-                ''' Further point of this line from intersection '''
-                if distFrom2ndParameter > distFrom1stParameter:
-                    foundStart = edges[0].Vertexes[1].Point
-                else: # if distFrom2ndParameter = / < distFrom1stParameter (i.e. if equal, Vertexes[0].Point is taken ?)
-                    foundStart = edges[0].Vertexes[0].Point
-            except Exception:
-                print('Intersection point Not on this edge')
+                    ''' Further point of this line from intersection '''
+                    if distFrom2ndParameter > distFrom1stParameter:
+                        foundStart = edges[0].Vertexes[1].Point
+                    else: # if distFrom2ndParameter = / < distFrom1stParameter (i.e. if equal, Vertexes[0].Point is taken ?)
+                        foundStart = edges[0].Vertexes[0].Point
+                except Exception:
+                    print('Intersection point Not on this edge')
 
-            ''' Guessing the last End Point based on Intersection '''
-            vx99 = Vector(outlineP1P2[i].x, outlineP1P2[i].y, 0)
-            l99 = Part.LineSegment(edges[i].Vertexes[0].Point, edges[i].Vertexes[1].Point)
-            try:
-                distFrom1stParameter = l99.parameter(vx99)
-                distFrom2ndParameter = l99.length()-distFrom1stParameter
-                if distFrom2ndParameter > distFrom1stParameter:
-                    foundEnd = edges[i].Vertexes[1].Point
-                else:
-                    foundEnd = edges[i].Vertexes[0].Point
-            except Exception:
-                print('Intersection point Not on this edge')
+                ''' Guessing the last End Point based on Intersection '''
+                vx99 = Vector(outlineP1P2[i].x, outlineP1P2[i].y, 0)
+                l99 = Part.LineSegment(edges[i].Vertexes[0].Point, edges[i].Vertexes[1].Point)
+                try:
+                    distFrom1stParameter = l99.parameter(vx99)
+                    distFrom2ndParameter = l99.length()-distFrom1stParameter
+                    if distFrom2ndParameter > distFrom1stParameter:
+                        foundEnd = edges[i].Vertexes[1].Point
+                    else:
+                        foundEnd = edges[i].Vertexes[0].Point
+                except Exception:
+                    print('Intersection point Not on this edge')
 
-            outlineP1P2Ordered[0] = foundStart
-            outlineP1P2Ordered[i+1] = foundEnd
+                outlineP1P2Ordered[0] = foundStart
+                outlineP1P2Ordered[i+1] = foundEnd
 
         return outline, outlineP1P2, outlineP3P4, vBase, outlineP1P2Closed, outlineP3P4Closed, outlineP1P2Ordered, pArc, pArc1, pArc2
 
@@ -991,11 +991,11 @@ class _Stairs(ArchComponent.Component):
             print (h)
 
         if obj.TreadDepthEnforce != 0:
-                l = obj.TreadDepthEnforce.Value * (numberofsteps-2)
-                if obj.LandingDepth:
-                    l += obj.LandingDepth.Value
-                else:
-                    l += obj.Width.Value
+            l = obj.TreadDepthEnforce.Value * (numberofsteps-2)
+            if obj.LandingDepth:
+                l += obj.LandingDepth.Value
+            else:
+                l += obj.Width.Value
         elif obj.Base:
             if hasattr(obj.Base,'Shape'):
                 l = obj.Base.Shape.Length #.Value?
