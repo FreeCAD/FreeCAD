@@ -171,7 +171,7 @@ def write_fenics_mesh_codim_xdmf(
         fc_topo = fem_mesh_obj.FemMesh.Nodes
     else:
         fc_topo = []
-        Console.PrintError("Dimension of mesh incompatible with export" + 
+        Console.PrintError("Dimension of mesh incompatible with export" +
                            f" XDMF function: {dim_topo}\n")
 
     nodeindices = [(
@@ -307,8 +307,8 @@ def write_fenics_mesh_xdmf(
         mesh_function_codim = dim_cell - FreeCAD_Group_Dimensions[mesh_function_type]
         mesh_function_name = fem_mesh.getGroupName(g)
 
-        Console.PrintMessage(f"group id: {g} (label: {mesh_function_name})" + 
-                             f" with element type {mesh_function_type} and" + 
+        Console.PrintMessage(f"group id: {g} (label: {mesh_function_name})" +
+                             f" with element type {mesh_function_type} and" +
                              " codim {mesh_function_codim}\n")
 
         mesh_function_grid = ET.SubElement(
@@ -325,7 +325,7 @@ def write_fenics_mesh_xdmf(
             codim=mesh_function_codim, encoding=encoding
         )
 
-        mesh_function_geometry = ET.SubElement(mesh_function_grid, "Geometry", 
+        mesh_function_geometry = ET.SubElement(mesh_function_grid, "Geometry",
                                                Reference="XML")
         mesh_function_geometry.text = "/Xdmf/Domain/Grid/Geometry"
         mesh_function_attribute = ET.SubElement(mesh_function_grid, "Attribute")

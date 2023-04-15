@@ -1,5 +1,5 @@
 # ***************************************************************************
-# *   Copyright (c) 2017-2023 Johannes Hartung <j.hartung@gmx.net>               *
+# *   Copyright (c) 2017-2023 Johannes Hartung <j.hartung@gmx.net>          *
 # *                                                                         *
 # *   This file is part of the FreeCAD CAx development system.              *
 # *                                                                         *
@@ -54,6 +54,7 @@ if FreeCAD.GuiUp:
         This task panel is used to write mesh groups with user defined values.
         It will called if there are mesh groups detected. Else it will be bypassed.
         """
+
         def __init__(self, fem_mesh_obj, fileString):
             self.form = FreeCADGui.PySideUic.loadUi(os.path.join(
                 FreeCAD.getHomePath(),
@@ -176,8 +177,8 @@ def export(objectslist, fileString, group_values_dict_nogui=None):
         if fileExtension.lower() == ".xml":
             if obj.ElementOrder != "1st":
                 Console.PrintWarning(
-                    "XML is not designed to save higher order elements.\n" + 
-                    "Reducing order for second order mesh.\n" + 
+                    "XML is not designed to save higher order elements.\n" +
+                    "Reducing order for second order mesh.\n" +
                     "Tri6 -> Tri3, Tet10 -> Tet4, etc.\n")
             writeFenicsXML.write_fenics_mesh_xml(obj, fileString)
         elif fileExtension.lower() == ".xdmf":

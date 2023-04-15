@@ -105,8 +105,8 @@ def read_fenics_mesh_xml(xmlfilename):
                 ind = int(cell.get("index"))
 
                 if cell.tag.lower() != cell_type.lower():
-                    Console.PrintWarning("Strange mismatch between cell type " + 
-                                         f"{cell_type} and " + 
+                    Console.PrintWarning("Strange mismatch between cell type " +
+                                         f"{cell_type} and " +
                                          f"cell tag {cell.tag.lower()}\n")
                 num_vertices = cells_parts_dim[cell_type][0]
 
