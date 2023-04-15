@@ -1,5 +1,5 @@
 # ***************************************************************************
-# *   Copyright (c) 2017 Johannes Hartung <j.hartung@gmx.net>               *
+# *   Copyright (c) 2017-2023 Johannes Hartung <j.hartung@gmx.net>          *
 # *                                                                         *
 # *   This file is part of the FreeCAD CAx development system.              *
 # *                                                                         *
