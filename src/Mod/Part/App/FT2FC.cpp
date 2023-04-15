@@ -142,7 +142,7 @@ PyObject* FT2FC(const Py_UNICODE *PyUString,
     int bytesNeeded = fontfile.tellg();
     fontfile.clear();
     fontfile.seekg (0, fontfile.beg);
-    auto buffer = std::unique_ptr <char> (new char[bytesNeeded]);
+    std::unique_ptr <char[]> buffer (new char[bytesNeeded]);
     fontfile.read(buffer.get(), bytesNeeded);
     if (!fontfile) {
         //get indignant
