@@ -23,6 +23,7 @@
 import FreeCAD
 import Path
 import Path.Post.Utils as PostUtils
+import PathScripts.PathUtils as PathUtils
 
 TOOLTIP = """Example Post, using Path.Commands instead of Path.toGCode strings for Path gcode output."""
 
@@ -95,7 +96,7 @@ def export(obj, filename, argstring):
     gcode += firstcommand.Name
 
     if hasattr(fp, "Path"):
-        for c in fp.Path.Commands:
+        for c in PathUtils.getPathWithPlacement(fp).Commands:
             gcode += lineout(c, oldvals, modal) + "\n"
             oldvals = saveVals(c)
         gcode += "M2\n"

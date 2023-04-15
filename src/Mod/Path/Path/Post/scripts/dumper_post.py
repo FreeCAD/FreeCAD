@@ -30,6 +30,7 @@ shows the dialog so you can see it.  Useful for debugging, but not much else.
 """
 import datetime
 import Path.Post.Utils as PostUtils
+import PathScripts.PathUtils as PathUtils
 
 now = datetime.datetime.now()
 SHOW_EDITOR = True
@@ -94,7 +95,7 @@ def parse(pathobj):
 
         out += "(Path: " + pathobj.Label + ")\n"
 
-        for c in pathobj.Path.Commands:
+        for c in PathUtils.getPathWithPlacement(pathobj).Commands:
             out += str(c) + "\n"
         return out
 

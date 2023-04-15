@@ -39,6 +39,7 @@ import argparse
 import datetime
 import shlex
 from PathScripts import PathUtils
+import PathScripts.PathUtils as PathUtils
 
 TOOLTIP = """
 This is a postprocessor file for the Path workbench. It is used to
@@ -344,7 +345,7 @@ def parse(pathobj):
         # if OUTPUT_COMMENTS:
         #     out += linenumber() + "(" + pathobj.Label + ")\n"
 
-        for c in pathobj.Path.Commands:
+        for c in PathUtils.getPathWithPlacement(pathobj).Commands:
 
             outstring = []
             command = c.Name

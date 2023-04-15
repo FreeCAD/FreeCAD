@@ -30,6 +30,7 @@ import datetime
 import shlex
 import os.path
 import Path.Post.Utils as PostUtils
+import PathScripts.PathUtils as PathUtils
 
 TOOLTIP = """
 This is a postprocessor file for the Path workbench. It is used to
@@ -410,14 +411,15 @@ def parse(pathobj):
                         "Tool Controller Vertical Rapid Values are unset" + "\n"
                     )
 
-        for index, c in enumerate(pathobj.Path.Commands):
+        commands = PathUtils.getPathWithPlacement(pathobj).Commands
+        for index, c in enumerate(commands):
 
             outstring = []
             command = c.Name
-            if index + 1 == len(pathobj.Path.Commands):
+            if index + 1 == len(commands):
                 nextcommand = ""
             else:
-                nextcommand = pathobj.Path.Commands[index + 1].Name
+                nextcommand = commands[index + 1].Name
 
             if adaptiveOp and c.Name in ["G0", "G00"]:
                 if opHorizRapid and opVertRapid:

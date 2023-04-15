@@ -27,6 +27,7 @@ import os
 import FreeCAD
 from FreeCAD import Units
 import Path.Post.Utils as PostUtils
+import PathScripts.PathUtils as PathUtils
 import datetime
 import Path
 
@@ -276,7 +277,7 @@ def parse(pathobj):
         # if OUTPUT_COMMENTS:
         #     out += linenumber() + "(" + pathobj.Label + ")\n"
 
-        for c in pathobj.Path.Commands:
+        for c in PathUtils.getPathWithPlacement(pathobj).Commands:
             commandlist = []  # list of elements in the command, code and params.
             command = c.Name  # command M or G code or comment string
 
