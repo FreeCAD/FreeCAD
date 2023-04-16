@@ -1,5 +1,6 @@
 # ***************************************************************************
 # *   Copyright (c) 2014 sliptonic <shopinthewoods@gmail.com>               *
+# *                 2023 Nicklas SB Karlsson <nk@nksb.eu>                   *
 # *                                                                         *
 # *   This file is part of the FreeCAD CAx development system.              *
 # *                                                                         *
@@ -212,20 +213,18 @@ def export(objectslist, filename, argstring):
         # fetch machine details
         job = PathUtils.findParentJob(obj)
 
-        myMachine = 'not set'
-
-        if hasattr(job, "MachineName"):
-            myMachine = job.MachineName
-
         if hasattr(job, "MachineUnits"):
             if job.MachineUnits == "Metric":
                 UNITS = "G21"
                 UNIT_FORMAT = 'mm'
                 UNIT_SPEED_FORMAT = 'mm/min'
-            else:
+            elif job.MachineUnits == "Imperial":
                 UNITS = "G20"
                 UNIT_FORMAT = 'in'
                 UNIT_SPEED_FORMAT = 'in/min'
+            else:
+                print("Machine units " + job.MachineUnits + " could not be handled.")
+                return None
 
         if hasattr(job, "SetupSheet"):
             if hasattr(job.SetupSheet, "HorizRapid"):
@@ -254,10 +253,7 @@ def export(objectslist, filename, argstring):
 
     print("done postprocessing.")
 
-    if not filename == '-':
-        gfile = pythonopen(filename, "w")
-        gfile.write(final)
-        gfile.close()
+    writeFile(filename, final)
 
     return final
 
@@ -265,7 +261,7 @@ def export(objectslist, filename, argstring):
 def linenumber():
     # pylint: disable=global-statement
     global LINENR
-    if OUTPUT_LINE_NUMBERS is True:
+    if OUTPUT_LINE_NUMBERS:
         LINENR += 10
         return "N" + str(LINENR) + " "
     return ""
@@ -330,7 +326,7 @@ def parse(pathobj):
 
             outstring = []
             command = c.Name
-			
+
             if c.Name in ["G0", "G00"] and lastcommand in ["G1", "G2", "G3"]:
                     # A rapid move following a positioning move indicates the cut is complete
                     # print ("end of cut")
@@ -428,3 +424,12 @@ def parse(pathobj):
         return out
 
 # print(__name__ + " gcode postprocessor loaded.")
+
+
+def writeFile(filename, final):
+    if not filename == '-':
+        gfile = pythonopen(filename, "w")
+        gfile.write(final)
+        gfile.close()
+    
+    return
