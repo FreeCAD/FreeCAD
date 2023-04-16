@@ -22,7 +22,14 @@
 
 
 import FreeCAD, os, sys, unittest, Part, Sketcher
+from Part import Precision
 App = FreeCAD
+
+xy_normal = FreeCAD.Vector(0, 0, 1)
+
+def vec(x, y):
+    """Shorthand to create a vector in the XY-plane"""
+    return FreeCAD.Vector(x, y, 0)
 
 def CreateRectangleSketch(SketchFeature, corner, lengths):
     hmin, hmax = corner[0], corner[0] + lengths[0]
@@ -267,6 +274,69 @@ class TestSketcherSolver(unittest.TestCase):
         sketch.addConstraint(Sketcher.Constraint('Coincident',1,2,0,2))
         sketch.addConstraint(Sketcher.Constraint('Coincident',2,1,1,2))
         self.assertEqual(sketch.detectMissingPointOnPointConstraints(0.0001), 0)
+
+    def testCircleToLineDistance_Driving_Passant(self):
+        sketch = self.Doc.addObject('Sketcher::SketchObject','Sketch')
+        radius = 20
+        circle = Part.Circle(vec(0, 0), xy_normal, radius)
+        line = Part.LineSegment(vec(-radius, 2*radius), vec(radius, 2*radius))
+        c_idx = sketch.addGeometry(circle)
+        l_idx = sketch.addGeometry(line)
+        # use a positive distance, other than the initial distance of the line
+        wanted_distance = radius/2
+        sketch.addConstraint(Sketcher.Constraint('Distance', c_idx, l_idx, wanted_distance))
+        self.assertSuccessfulSolve(sketch)
+        c_shape = sketch.Geometry[c_idx].toShape()
+        l_shape = sketch.Geometry[l_idx].toShape()
+        self.assertShapeDistance(c_shape, l_shape, wanted_distance)
+
+    @unittest.skip("Support for secants still under discussion, see comments in PR 9044")
+    def testCircleToLineDistance_Driving_Secant(self):
+        sketch = self.Doc.addObject('Sketcher::SketchObject','Sketch')
+        radius = 20
+        c_idx = sketch.addGeometry(Part.Circle(vec(0, 0), xy_normal, radius))
+        l_idx = sketch.addGeometry(Part.LineSegment(vec(-radius, 2*radius), vec(radius, 2*radius)))
+        # use a negative distance to tell "line is within the circle"
+        wanted_distance = -radius/2
+        sketch.addConstraint(Sketcher.Constraint('Distance', c_idx, l_idx, wanted_distance))
+        self.assertSuccessfulSolve(sketch)
+        c_shape = sketch.Geometry[c_idx].toShape()
+        l_shape = sketch.Geometry[l_idx].toShape()
+        self.assertShapeDistance(c_shape, l_shape, 0) # secant intersects circle, thus no distance
+
+    def testCircleToLineDistance_Reference_Secant(self):
+        sketch = self.Doc.addObject('Sketcher::SketchObject','Sketch')
+        radius = 20
+        c_idx = sketch.addGeometry(Part.Circle(vec(0, 0), xy_normal, radius))
+        l_idx = sketch.addGeometry(Part.LineSegment(vec(-radius, radius/2), vec(radius, radius/2)))
+        # The block constraints are required to ensure the geometry does not move.
+        # Without this, the solver may find another valid solution than what we assert.
+        sketch.addConstraint([
+            Sketcher.Constraint('Block', c_idx),
+            Sketcher.Constraint('Block', l_idx)])
+        # use a negative distance to tell "line is within the circle"
+        expected_distance = -radius/2 # note that we don't set this in the constraint below!
+        # TODO: addConstraint(constraint) triggers a solve (for godd reasons) however, this way
+        # one cannot add non-driving constraints. In contrast, addConstraint(list(constraint))
+        # does not solve automatically, thus we use this "overload".
+        # Much nicer would be an addConstraint(constraint, isReference=False), like addGeometry
+        dist_idx = sketch.addConstraint([Sketcher.Constraint('Distance', c_idx, l_idx, 0)])[0]
+        sketch.setDriving(dist_idx, False)
+        self.assertSuccessfulSolve(sketch)
+        actual_distance = sketch.Constraints[dist_idx].Value
+        self.assertAlmostEqual(expected_distance, actual_distance, delta=Precision.confusion(),
+            msg="Reference constraint did not return the expected distance.")
+
+    def assertSuccessfulSolve(self, sketch, msg=None):
+        status = sketch.solve()
+        # TODO: can we get the solver's messages somehow to improve the message?
+        self.failUnless(status == 0, msg=msg or "solver didn't converge")
+
+    def assertShapeDistance(self, shape1, shape2, expected_distance, msg=None):
+        distance, _, _ = shape1.distToShape(shape2)
+        self.assertAlmostEqual(distance, expected_distance,
+            delta=Precision.confusion(),
+            msg=msg or "The given shapes are not spaced by the expected distance.")
 
     def tearDown(self):
         #closing doc
