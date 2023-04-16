@@ -1327,7 +1327,7 @@ private:
     CmdSketcherSnap& operator= (const CmdSketcherSnap&) = delete;
     CmdSketcherSnap& operator= (CmdSketcherSnap&&) = delete;
 
-    bool snapEnabled;
+    bool snapEnabled = true;
 };
 
 CmdSketcherSnap::CmdSketcherSnap()
