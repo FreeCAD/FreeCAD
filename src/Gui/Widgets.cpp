@@ -804,6 +804,7 @@ void ColorButton::showModeless()
         if (DialogOptions::dontUseNativeColorDialog())
             dlg->setOptions(QColorDialog::DontUseNativeDialog);
         dlg->setOption(QColorDialog::ColorDialogOption::ShowAlphaChannel, d->allowTransparency);
+        dlg->setCurrentColor(d->old);
         connect(dlg, &QColorDialog::rejected, this, &ColorButton::onRejected);
         connect(dlg, &QColorDialog::currentColorChanged, this, &ColorButton::onColorChosen);
         d->cd = dlg;
