@@ -486,7 +486,7 @@ std::string edgeSortItem::dump()
 std::vector<TopoDS_Edge> DrawProjectSplit::scrubEdges(const std::vector<TechDraw::BaseGeomPtr>& origEdges,
                                                       std::vector<TopoDS_Edge> &closedEdges)
 {
-//    Base::Console().Message("DPS::scrubEdges() - edges in: %d\n", origEdges.size());
+//    Base::Console().Message("DPS::scrubEdges() - BaseGeom in: %d\n", origEdges.size());
     //make a copy of the input edges so the loose tolerances of face finding are
     //not applied to the real edge geometry.  See TopoDS_Shape::TShape().
     std::vector<TopoDS_Edge> copyEdges;
@@ -505,6 +505,8 @@ std::vector<TopoDS_Edge> DrawProjectSplit::scrubEdges(const std::vector<TechDraw
 std::vector<TopoDS_Edge> DrawProjectSplit::scrubEdges(std::vector<TopoDS_Edge>& origEdges,
                                                       std::vector<TopoDS_Edge> &closedEdges)
 {
+//    Base::Console().Message("DPS::scrubEdges() - TopoDS_Edges in: %d\n", origEdges.size());
+
     if (origEdges.empty()) {
         //how did this happen? if Scale is zero, all the edges will be zero length,
         //but Scale property has constraint, so this shouldn't happen!
@@ -605,7 +607,7 @@ std::vector<TopoDS_Edge> DrawProjectSplit::pruneUnconnected(vertexMap verts,
     return newPile;
 }
 
-bool DrawProjectSplit::sameEndPoints(TopoDS_Edge& e1, TopoDS_Edge& e2)
+bool DrawProjectSplit::sameEndPoints(const TopoDS_Edge &e1, const TopoDS_Edge &e2)
 {
     TopoDS_Vertex first1 = TopExp::FirstVertex(e1);
     TopoDS_Vertex last1 = TopExp::LastVertex(e1);
@@ -630,7 +632,7 @@ bool DrawProjectSplit::sameEndPoints(TopoDS_Edge& e1, TopoDS_Edge& e2)
 #define NOTASUBSET 3
 
 //eliminate edges that overlap another edge
-std::vector<TopoDS_Edge> DrawProjectSplit::removeOverlapEdges(std::vector<TopoDS_Edge> inEdges)
+std::vector<TopoDS_Edge> DrawProjectSplit::removeOverlapEdges(const std::vector<TopoDS_Edge> &inEdges)
 {
 //    Base::Console().Message("DPS::removeOverlapEdges() - %d edges in\n", inEdges.size());
     std::vector<TopoDS_Edge> outEdges;
@@ -676,11 +678,14 @@ std::vector<TopoDS_Edge> DrawProjectSplit::removeOverlapEdges(std::vector<TopoDS
     if (!overlapEdges.empty()) {
         outEdges.insert(outEdges.end(), overlapEdges.begin(), overlapEdges.end());
     }
+
+//    Base::Console().Message("DPS::removeOverlapEdges() - %d edges out\n", outEdges.size());
+
     return outEdges;
 }
 
 //determine if edge0 & edge1 are superimposed, and classify the type of overlap
-int DrawProjectSplit::isSubset(TopoDS_Edge& edge0, TopoDS_Edge& edge1)
+int DrawProjectSplit::isSubset(const TopoDS_Edge &edge0, const TopoDS_Edge &edge1)
 {
     if (!boxesIntersect(edge0, edge1)) {
         return NOTASUBSET;      //boxes don't intersect, so edges do not overlap
@@ -722,7 +727,7 @@ int DrawProjectSplit::isSubset(TopoDS_Edge& edge0, TopoDS_Edge& edge1)
 }
 
 //edge0 and edge1 overlap, so we need to make 3 edges - part of edge0, common segment, part of edge1
-std::vector<TopoDS_Edge> DrawProjectSplit::fuseEdges(TopoDS_Edge &edge0, TopoDS_Edge &edge1)
+std::vector<TopoDS_Edge> DrawProjectSplit::fuseEdges(const TopoDS_Edge &edge0, const TopoDS_Edge &edge1)
 {
     std::vector<TopoDS_Edge> edgeList;
     BRepAlgoAPI_Fuse anOp;
@@ -864,7 +869,7 @@ std::vector<TopoDS_Edge> DrawProjectSplit::splitIntersectingEdges(std::vector<To
     return outEdges;
 }
 
-bool DrawProjectSplit::boxesIntersect(TopoDS_Edge& edge0, TopoDS_Edge& edge1)
+bool DrawProjectSplit::boxesIntersect(const TopoDS_Edge &edge0, const TopoDS_Edge &edge1)
 {
     Bnd_Box box0, box1;
     BRepBndLib::Add(edge0, box0);

@@ -545,7 +545,9 @@ void GeometryObject::addGeomFromCompound(TopoDS_Shape edgeCompound, edgeClass ca
         for (int iPass = 0; iPass < passes; iPass++)  {
             edgeVector = DrawProjectSplit::removeOverlapEdges(edgeVector);
         }
-        cleanShape = DU::vectorToCompound(edgeVector);
+        bool invertResult = false;
+        cleanShape = DU::vectorToCompound(edgeVector, invertResult);
+
     } else {
         cleanShape = edgeCompound;
     }

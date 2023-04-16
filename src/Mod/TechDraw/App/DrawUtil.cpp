@@ -536,7 +536,7 @@ bool DrawUtil::vectorEqual(Base::Vector3d& v1, Base::Vector3d& v2)
 
 //TODO: the next 2 could be templated
 //construct a compound shape from a list of edges
-TopoDS_Shape DrawUtil::vectorToCompound(std::vector<TopoDS_Edge> vecIn)
+TopoDS_Shape DrawUtil::vectorToCompound(std::vector<TopoDS_Edge> vecIn, bool invert)
 {
     BRep_Builder builder;
     TopoDS_Compound compOut;
@@ -544,11 +544,14 @@ TopoDS_Shape DrawUtil::vectorToCompound(std::vector<TopoDS_Edge> vecIn)
     for (auto& v : vecIn) {
         builder.Add(compOut, v);
     }
-    return TechDraw::mirrorShape(compOut);
+    if (invert) {
+        return TechDraw::mirrorShape(compOut);
+    }
+    return compOut;
 }
 
 //construct a compound shape from a list of wires
-TopoDS_Shape DrawUtil::vectorToCompound(std::vector<TopoDS_Wire> vecIn)
+TopoDS_Shape DrawUtil::vectorToCompound(std::vector<TopoDS_Wire> vecIn, bool invert)
 {
     BRep_Builder builder;
     TopoDS_Compound compOut;
@@ -556,7 +559,10 @@ TopoDS_Shape DrawUtil::vectorToCompound(std::vector<TopoDS_Wire> vecIn)
     for (auto& v : vecIn) {
         builder.Add(compOut, v);
     }
-    return TechDraw::mirrorShape(compOut);
+    if (invert) {
+        return TechDraw::mirrorShape(compOut);
+    }
+    return compOut;
 }
 
 //constructs a list of edges from a shape

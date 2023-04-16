@@ -120,17 +120,17 @@ public:
     static vertexMap                getUniqueVertexes(std::vector<TopoDS_Edge> inEdges);
     static std::vector<TopoDS_Edge> pruneUnconnected(vertexMap verts,
                                                      std::vector<TopoDS_Edge> edges);
-    static std::vector<TopoDS_Edge> removeOverlapEdges(std::vector<TopoDS_Edge> inEdges);
+    static std::vector<TopoDS_Edge> removeOverlapEdges(const std::vector<TopoDS_Edge>& inEdges);
     static std::vector<TopoDS_Edge> splitIntersectingEdges(std::vector<TopoDS_Edge>& inEdges);
 
-    static bool                     sameEndPoints(TopoDS_Edge& e1,
-                                                  TopoDS_Edge& e2);
-    static int                      isSubset(TopoDS_Edge &e0,
-                                             TopoDS_Edge &e1);
-    static std::vector<TopoDS_Edge> fuseEdges(TopoDS_Edge& e0,
-                                              TopoDS_Edge& e1);
-    static bool                     boxesIntersect(TopoDS_Edge& e0,
-                                                   TopoDS_Edge& e1);
+    static bool                     sameEndPoints(const TopoDS_Edge& e1,
+                                                  const TopoDS_Edge& e2);
+    static int                      isSubset(const TopoDS_Edge &e0,
+                                             const TopoDS_Edge &e1);
+    static std::vector<TopoDS_Edge> fuseEdges(const TopoDS_Edge& e0,
+                                              const TopoDS_Edge& e1);
+    static bool                     boxesIntersect(const TopoDS_Edge& e0,
+                                                   const TopoDS_Edge& e1);
     static void dumpVertexMap(vertexMap verts);
 
 protected:
