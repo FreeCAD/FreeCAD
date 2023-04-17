@@ -44,40 +44,19 @@ namespace Data
 class ElementMap;
 typedef std::shared_ptr<ElementMap> ElementMapPtr;
 
-// FIXME
-struct AppExport MappedChildElements
-{
-    IndexedName indexedName;
-    int count;
-    int offset;
-    long tag;
-    ElementMapPtr elementMap;
-    QByteArray postfix;
-    ElementIDRefs sids;
 
-    static const std::string& prefix();
-};
-
-
-class ElementMap: public std::enable_shared_from_this<ElementMap> //TODO can remove shared_from_this?
+class ElementMap: public std::enable_shared_from_this<ElementMap>
 {
 public:
     ElementMap();
 
+    /** Ensures that this->_id is properly assigned. Then marks as "used" all the StringID
+     * that are used to make up this particular map and are stored in the hasher passed
+     * as a parameter. Finally do this recursively for all childEelementMaps as well.
+     * 
+     * @param hasher where all the StringID needed to build the map are stored.
+    */
     void beforeSave(const ::App::StringHasherRef& hasher) const;
-
-    const MappedNameRef* findMappedRef(const IndexedName& idx) const;
-    MappedNameRef* findMappedRef(const IndexedName& idx);
-
-    MappedNameRef& mappedRef(const IndexedName& idx);
-
-    static void addPostfix(const QByteArray& postfix, std::map<QByteArray, int>& postfixMap,
-                           std::vector<QByteArray>& postfixes);
-
-    void collectChildMaps(std::map<const ElementMap*, int>& childMapSet,
-                          std::vector<const ElementMap*>& childMaps,
-                          std::map<QByteArray, int>& postfixMap,
-                          std::vector<QByteArray>& postfixes) const;
 
     void save(std::ostream& s, int index, const std::map<const ElementMap*, int>& childMapSet,
               const std::map<QByteArray, int>& postfixMap) const;
@@ -93,88 +72,8 @@ public:
     MappedName addName(MappedName& name, const IndexedName& idx, const ElementIDRefs& sids,
                        bool overwrite, IndexedName* existing);
 
-    bool erase(const MappedName& name);
-
-    bool erase(const IndexedName& idx);
-
-    IndexedName find(const MappedName& name, ElementIDRefs* sids = nullptr) const;
-
-    MappedName find(const IndexedName& idx, ElementIDRefs* sids = nullptr) const;
-
-    std::vector<std::pair<MappedName, ElementIDRefs>> findAll(const IndexedName& idx) const;
-
-    // prefix searching is disabled, as TopoShape::getRelatedElement() is
-    // deprecated in favor of GeoFeature::getRelatedElement(). Besides, there
-    // is efficient way to support child element map if we were to implement
-    // prefix search.
-#if 0
-    std::vector<MappedElement> findAllStartsWith(const char *prefix) const;
-#endif
-
-    unsigned long size() const;
-
-    bool empty() const;
-
-    bool hasChildElementMap() const;
-    void hashChildMaps(ComplexGeoData& master);
-    void addChildElements(ComplexGeoData& master, const std::vector<MappedChildElements>& children);
-
-    std::vector<MappedChildElements> getChildElements() const;
-
-    std::vector<MappedElement> getAll() const;
-
-private:
-    struct CStringComp
-    {
-    public:
-        bool operator()(const char* str1, const char* str2) const
-        {
-            return std::strcmp(str1, str2) < 0;
-        }
-    };
-
-
-    struct IndexedElements
-    {
-        std::deque<MappedNameRef> names;
-        std::map<int, MappedChildElements> children;
-    };
-
-    std::map<const char*, IndexedElements, CStringComp> indexedNames;
-
-    std::map<MappedName, IndexedName, std::less<MappedName>> mappedNames;
-
-
-    struct ChildMapInfo
-    {
-        int index = 0;
-        MappedChildElements* childMap = nullptr;
-        std::map<ElementMap*, int> mapIndices;
-    };
-
-    QHash<QByteArray, ChildMapInfo> childElements;
-    std::size_t childElementSize = 0;
-
-    mutable unsigned _id = 0;
-
-
-    /// String hasher for element name shortening
-    mutable App::StringHasherRef hasher;
-
-    /** Convenience method to hash the main element name
-     *
-     * @param name: main element name
-     * @param sid: store any output string ID references
-     * @return the hashed element name;
-     */
-    MappedName hashElementName(const MappedName& name, ElementIDRefs& sids) const;
-
-    /// Reverse hashElementName()
-    MappedName dehashElementName(const MappedName& name) const;
-
-    void encodeElementName(char element_type, MappedName& name, std::ostringstream& ss,
-                           ElementIDRefs* sids, ComplexGeoData& master, const char* postfix = 0,
-                           long tag = 0, bool forceTag = false) const;
+    static void addPostfix(const QByteArray& postfix, std::map<QByteArray, int>& postfixMap,
+                           std::vector<QByteArray>& postfixes);
 
     /** Add a sub-element name mapping.
      *
@@ -191,13 +90,118 @@ private:
      * An element can have multiple mapped names. However, a name can only be
      * mapped to one element
      */
-    MappedName setElementName(const IndexedName& element, const MappedName& name, ComplexGeoData& master,
+    MappedName setElementName(const IndexedName& element, const MappedName& name,
+                              ElementMapPtr& elementMap, ComplexGeoData& master,
                               const ElementIDRefs* sid = nullptr, bool overwrite = false);
 
+    void encodeElementName(char element_type, MappedName& name, std::ostringstream& ss,
+                           ElementIDRefs* sids, ComplexGeoData& master, const char* postfix = 0,
+                           long tag = 0, bool forceTag = false) const;
+
+    /** Convenience method to hash the main element name
+     *
+     * @param name: main element name
+     * @param sid: store any output string ID references
+     * @return the hashed element name;
+     */
+    MappedName hashElementName(const MappedName& name, ElementIDRefs& sids) const;
+
+    /// Reverse hashElementName()
+    MappedName dehashElementName(const MappedName& name) const;
 
     virtual MappedName renameDuplicateElement(int index, const IndexedName& element,
                                               const IndexedName& element2, const MappedName& name,
                                               ElementIDRefs& sids, ComplexGeoData& master);
+
+    bool erase(const MappedName& name);
+
+    bool erase(const IndexedName& idx);
+
+    unsigned long size() const;
+
+    bool empty() const;
+
+    IndexedName find(const MappedName& name, ElementIDRefs* sids = nullptr) const;
+
+    MappedName find(const IndexedName& idx, ElementIDRefs* sids = nullptr) const;
+
+    std::vector<std::pair<MappedName, ElementIDRefs>> findAll(const IndexedName& idx) const;
+
+    // prefix searching is disabled, as TopoShape::getRelatedElement() is
+    // deprecated in favor of GeoFeature::getRelatedElement(). Besides, there
+    // is efficient way to support child element map if we were to implement
+    // prefix search.
+#if 0
+    std::vector<MappedElement> findAllStartsWith(const char *prefix) const;
+#endif
+
+    const MappedNameRef* findMappedRef(const IndexedName& idx) const;
+    MappedNameRef* findMappedRef(const IndexedName& idx);
+
+    MappedNameRef& mappedRef(const IndexedName& idx);
+
+    bool hasChildElementMap() const;
+    void hashChildMaps(ComplexGeoData& master);
+
+    void collectChildMaps(std::map<const ElementMap*, int>& childMapSet,
+                          std::vector<const ElementMap*>& childMaps,
+                          std::map<QByteArray, int>& postfixMap,
+                          std::vector<QByteArray>& postfixes) const;
+
+    struct AppExport MappedChildElements
+    {
+        IndexedName indexedName;
+        int count;
+        int offset;
+        long tag;
+        ElementMapPtr elementMap;
+        QByteArray postfix;
+        ElementIDRefs sids;
+
+        // prefix() has been moved to PostfixStringReferences.h
+    };
+
+    void addChildElements(ElementMapPtr& elementMap, ComplexGeoData& master,
+                          const std::vector<MappedChildElements>& children);
+
+    std::vector<MappedChildElements> getChildElements() const;
+
+    std::vector<MappedElement> getAll() const;
+
+private:
+    struct CStringComp
+    {
+    public:
+        bool operator()(const char* str1, const char* str2) const
+        {
+            return std::strcmp(str1, str2) < 0;
+        }
+    };
+
+    struct IndexedElements
+    {
+        std::deque<MappedNameRef> names;
+        std::map<int, MappedChildElements> children;
+    };
+
+    std::map<const char*, IndexedElements, CStringComp> indexedNames;
+
+    std::map<MappedName, IndexedName, std::less<MappedName>> mappedNames;
+
+    struct ChildMapInfo
+    {
+        int index = 0;
+        MappedChildElements* childMap = nullptr;
+        std::map<ElementMap*, int> mapIndices;
+    };
+
+    QHash<QByteArray, ChildMapInfo> childElements;
+    std::size_t childElementSize = 0;
+
+    mutable unsigned _id = 0;
+
+    /// String hasher for element name shortening
+    App::StringHasherRef hasher;
 };
 
 
