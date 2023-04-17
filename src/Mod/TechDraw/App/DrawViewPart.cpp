@@ -137,6 +137,8 @@ DrawViewPart::DrawViewPart(void)
                       "Show Hidden Iso u, v lines");
     ADD_PROPERTY_TYPE(IsoCount, (prefIsoCount()), sgroup, App::Prop_None,
                       "Number of iso parameters lines");
+    ADD_PROPERTY_TYPE(ScrubCount, (Preferences::scrubCount()), sgroup, App::Prop_None,
+                      "The number of times FreeCAD should try to clean the HLR result.");
 
     //initialize bbox to non-garbage
     bbox = Base::BoundBox3d(Base::Vector3d(0.0, 0.0, 0.0), 0.0);
@@ -361,6 +363,7 @@ TechDraw::GeometryObjectPtr DrawViewPart::buildGeometryObject(TopoDS_Shape& shap
     go->isPerspective(Perspective.getValue());
     go->setFocus(Focus.getValue());
     go->usePolygonHLR(CoarseView.getValue());
+    go->setScrubCount(ScrubCount.getValue());
 
     if (CoarseView.getValue()) {
         //the polygon approximation HLR process runs quickly, so doesn't need to be in a

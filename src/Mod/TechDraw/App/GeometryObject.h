@@ -132,6 +132,9 @@ public:
     bool usePolygonHLR() const { return m_usePolygonHLR; }
     void setFocus(double f) { m_focus = f; }
     double getFocus() { return m_focus; }
+    void setScrubCount(int count) { m_scrubCount = count; }
+
+
     void pruneVertexGeom(Base::Vector3d center, double radius);
 
     //dupl mirrorShape???
@@ -199,6 +202,7 @@ protected:
     bool m_isPersp;
     double m_focus;
     bool m_usePolygonHLR;
+    int m_scrubCount;
 };
 
 using GeometryObjectPtr = std::shared_ptr<GeometryObject>;
