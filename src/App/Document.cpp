@@ -809,6 +809,12 @@ Document::Document(const char* documentName)
                       0,
                       PropertyType(Prop_Transient | Prop_ReadOnly),
                       "The path to the file where the document is saved to");
+
+    if (!myName.empty() && fs::exists(fs::absolute(fs::path(FileName.getValue()))))
+        myEditTime = fs::last_write_time(fs::absolute(fs::path(FileName.getValue())));
+    else
+        myEditTime = std::chrono::system_clock::to_time_t(std::chrono::system_clock::now());
+
     ADD_PROPERTY_TYPE(CreatedBy, (Author.c_str()), 0, Prop_None, "The creator of the document");
     ADD_PROPERTY_TYPE(
         CreationDate, (CreationDateString.c_str()), 0, Prop_ReadOnly, "Date of creation");
@@ -857,11 +863,6 @@ Document::Document(const char* documentName)
                       0,
                       PropertyType(Prop_Hidden | Prop_ReadOnly),
                       "Link of the tip object of the document");
-
-    if (!myName.empty())
-        myEditTime = fs::last_write_time(fs::absolute(fs::path(FileName.getValue())));
-    else
-        myEditTime = std::chrono::system_clock::to_time_t(std::chrono::system_clock::now());
 
     Uid.touch();
 }
