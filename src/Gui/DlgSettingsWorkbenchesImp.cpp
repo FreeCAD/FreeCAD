@@ -212,8 +212,6 @@ void wbListItem::onWbToggled(bool checked)
     loadLabel->setEnabled(checked);
     loadButton->setEnabled(checked);
     autoloadCheckBox->setEnabled(checked);
-    if (!checked) //disabling wb disable auto-load.
-        autoloadCheckBox->setChecked(false);
 
     // Reset the start combo items.
     Q_EMIT wbToggled(objectName(), checked);
