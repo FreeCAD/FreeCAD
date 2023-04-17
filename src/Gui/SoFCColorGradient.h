@@ -27,6 +27,8 @@
 #include <Inventor/SbBox2f.h>
 #include <Inventor/nodes/SoSeparator.h>
 
+#include <QCoreApplication> // For translation functions
+
 #include "SoFCColorBar.h"
 
 
@@ -40,6 +42,7 @@ class GuiExport SoFCColorGradient : public SoFCColorBarBase {
   using inherited = SoFCColorBarBase;
 
   SO_NODE_HEADER(Gui::SoFCColorGradient);
+  Q_DECLARE_TR_FUNCTIONS(SoFCColorGradient);
 
 public:
   static void initClass();
@@ -71,7 +74,7 @@ public:
    */
   void customize(SoFCColorBarBase*) override;
   /** Returns the name of the color bar. */
-  const char* getColorBarName() const override { return "Color Gradient"; }
+  const char* getColorBarName() const override { return tr("Color Gradient").toStdString().c_str(); }
 
 protected:
   /**
