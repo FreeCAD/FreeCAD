@@ -78,11 +78,6 @@ TaskImage::TaskImage(Image::ImagePlane* obj, QWidget* parent)
 
     aspectRatio = obj->XSize.getValue() / obj->YSize.getValue();
 
-    QAction* action = new QAction(tr("Allow points outside the image"), this);
-    action->setCheckable(true);
-    action->setChecked(false);
-    ui->pushButtonScale->addAction(action);
-
     connectSignals();
 }
 
@@ -213,7 +208,7 @@ void TaskImage::scaleImage(double factor)
 
 void TaskImage::startScale()
 {
-    scale->activate(qAsConst(ui->pushButtonScale)->actions()[0]->isChecked());
+    scale->activate();
     ui->pushButtonScale->hide();
     ui->groupBoxCalibration->show();
     ui->pushButtonApply->setEnabled(false);
@@ -401,7 +396,6 @@ struct NodeData {
 
 InteractiveScale::InteractiveScale(View3DInventorViewer* view, ViewProvider* vp, Base::Placement plc)
     : active(false)
-    , allowOutsideImage(false)
     , placement(plc)
     , viewer(view)
     , viewProv(vp)
@@ -452,7 +446,7 @@ InteractiveScale::~InteractiveScale()
     cameraSensor->detach();
 }
 
-void InteractiveScale::activate(bool allowOutside)
+void InteractiveScale::activate()
 {
     if (viewer) {
         static_cast<SoSeparator*>(viewer->getSceneGraph())->addChild(root);
@@ -462,7 +456,6 @@ void InteractiveScale::activate(bool allowOutside)
         viewer->setSelectionEnabled(false);
         viewer->getWidget()->setCursor(QCursor(Qt::CrossCursor));
         active = true;
-        allowOutsideImage = allowOutside;
     }
 }
 
@@ -498,16 +491,6 @@ double InteractiveScale::getDistance(const SbVec3f& pt) const
     return (points[0] - pt).length();
 }
 
-void InteractiveScale::findPointOnPlane(SoEventCallback * ecb)
-{
-    if (allowOutsideImage) {
-        findPointOnFocalPlane(ecb);
-    }
-    else {
-        findPointOnImagePlane(ecb);
-    }
-}
-
 void InteractiveScale::findPointOnImagePlane(SoEventCallback * ecb)
 {
     const SoMouseButtonEvent * mbe = static_cast<const SoMouseButtonEvent *>(ecb->getEvent());
@@ -518,17 +501,6 @@ void InteractiveScale::findPointOnImagePlane(SoEventCallback * ecb)
 
         collectPoint(pos3d);
     }
-}
-
-void InteractiveScale::findPointOnFocalPlane(SoEventCallback * ecb)
-{
-    const SoMouseButtonEvent * mbe = static_cast<const SoMouseButtonEvent *>(ecb->getEvent());
-    Gui::View3DInventorViewer* view  = static_cast<Gui::View3DInventorViewer*>(ecb->getUserData());
-
-    auto pos2d = mbe->getPosition();
-    auto pos3d = view->getPointOnFocalPlane(pos2d);
-
-    collectPoint(pos3d);
 }
 
 void InteractiveScale::collectPoint(const SbVec3f& pos3d)
@@ -581,18 +553,13 @@ void InteractiveScale::getMousePosition(void * ud, SoEventCallback * ecb)
     if (scale->points.size() == 1) {
         ecb->setHandled();
         SbVec3f pos3d;
-        if (scale->allowOutsideImage) {
-            auto pos2d = l2e->getPosition();
-            pos3d = view->getPointOnFocalPlane(pos2d);
+
+        std::unique_ptr<SoPickedPoint> pp(view->getPointOnRay(l2e->getPosition(), scale->viewProv));
+        if (pp.get()) {
+            pos3d = pp->getPoint();
         }
         else {
-            std::unique_ptr<SoPickedPoint> pp(view->getPointOnRay(l2e->getPosition(), scale->viewProv));
-            if (pp.get()) {
-                pos3d = pp->getPoint();
-            }
-            else {
-                return;
-            }
+            return;
         }
 
         Base::Quantity quantity;
@@ -630,7 +597,7 @@ void InteractiveScale::soEventFilter(void* ud, SoEventCallback* ecb)
         if (mbe->getButton() == SoMouseButtonEvent::BUTTON1 && mbe->getState() == SoButtonEvent::DOWN)
         {
             ecb->setHandled();
-            scale->findPointOnPlane(ecb);
+            scale->findPointOnImagePlane(ecb);
         }
         if (mbe->getButton() == SoMouseButtonEvent::BUTTON2 && mbe->getState() == SoButtonEvent::DOWN)
         {

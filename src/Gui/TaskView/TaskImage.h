@@ -52,7 +52,7 @@ public:
     ~InteractiveScale();
 
     bool eventFilter(QObject* object, QEvent* event);
-    void activate(bool allowOutside);
+    void activate();
     void deactivate();
     bool isActive() const {
         return active;
@@ -64,9 +64,7 @@ public:
 private:
     static void soEventFilter(void * ud, SoEventCallback * ecb);
     static void getMousePosition(void * ud, SoEventCallback * ecb);
-    void findPointOnPlane(SoEventCallback * ecb);
     void findPointOnImagePlane(SoEventCallback * ecb);
-    void findPointOnFocalPlane(SoEventCallback * ecb);
     void collectPoint(const SbVec3f&);
     void positionWidget();
 
@@ -80,7 +78,6 @@ Q_SIGNALS:
 
 private:
     bool active;
-    bool allowOutsideImage;
     Base::Placement placement;
     SoSeparator* root;
     SoDatumLabel* measureLabel;
