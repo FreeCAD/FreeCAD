@@ -41,8 +41,7 @@
 #include <Gui/ActionFunction.h>
 #include <Gui/BitmapFactory.h>
 #include <Gui/Control.h>
-#include <Gui/TaskView/TaskOrientation.h>
-#include <Gui/TaskView/TaskImageScale.h>
+#include <Gui/TaskView/TaskImage.h>
 #include <App/ImagePlane.h>
 
 #include "ViewProviderImagePlane.h"
@@ -159,12 +158,9 @@ bool ViewProviderImagePlane::doubleClicked()
 
 void ViewProviderImagePlane::manipulateImage()
 {
-    auto dialog = new TaskOrientationDialog(
-        dynamic_cast<App::GeoFeature*>(getObject())
-    );
-    dialog->addTaskBox(new TaskImageScale(
+    auto dialog = new TaskImageDialog(
         dynamic_cast<Image::ImagePlane*>(getObject())
-    ));
+    );
 
     Gui::Control().showDialog(dialog);
 }

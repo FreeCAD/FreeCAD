@@ -50,6 +50,7 @@
 #include <Gui/Tools.h>
 #include <Gui/Utilities.h>
 #include <Gui/Inventor/SmSwitchboard.h>
+#include <Gui/SoDatumLabel.h>
 #include <Mod/Part/App/Geometry.h>
 #include <Mod/Sketcher/App/GeometryFacade.h>
 #include <Mod/Sketcher/App/SolverGeometryExtension.h>
@@ -58,13 +59,13 @@
 #include <Mod/Sketcher/App/GeoList.h>
 
 #include "EditModeConstraintCoinManager.h"
-#include "SoDatumLabel.h"
 #include "SoZoomTranslation.h"
 #include "ViewProviderSketch.h"
 #include "ViewProviderSketchCoinAttorney.h"
 #include "Utils.h"
 
 
+using namespace Gui;
 using namespace SketcherGui;
 using namespace Sketcher;
 
