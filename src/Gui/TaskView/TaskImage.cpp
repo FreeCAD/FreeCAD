@@ -83,7 +83,7 @@ TaskImage::TaskImage(Image::ImagePlane* obj, QWidget* parent)
 
 TaskImage::~TaskImage()
 {
-    if (scale) {
+    if (!feature.expired() && scale) {
         if (scale->isActive()) {
             scale->deactivate();
         }
