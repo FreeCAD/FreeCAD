@@ -19,8 +19,19 @@
 #*                                                                         *
 #***************************************************************************
 
-import FreeCAD, DraftGeomUtils, Part, Draft, Arch, Mesh, MeshPart, os, codecs, ntpath
+import os
+import codecs
+import ntpath
 # import numpy as np
+
+import FreeCAD
+import Arch
+import Draft
+import DraftGeomUtils
+import Mesh
+import MeshPart
+import Part
+
 if FreeCAD.GuiUp:
     from draftutils.translate import translate
 else:

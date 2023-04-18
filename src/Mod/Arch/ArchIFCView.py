@@ -21,7 +21,8 @@
 
 """View providers and UI elements for the Ifc classes."""
 
-import FreeCAD, ArchIFC
+import FreeCAD
+import ArchIFC
 
 if FreeCAD.GuiUp:
     import FreeCADGui

@@ -19,7 +19,14 @@
 #*                                                                         *
 #***************************************************************************
 
-import FreeCAD,Draft,ArchComponent,DraftVecUtils,ArchCommands,math, Part
+import math
+
+import FreeCAD
+import ArchCommands
+import ArchComponent
+import Draft
+import DraftVecUtils
+import Part
 from FreeCAD import Vector
 if FreeCAD.GuiUp:
     import FreeCADGui
@@ -846,7 +853,8 @@ class PanelCut(Draft.DraftObject):
             base = None
             n = None
             if Draft.getType(obj.Source) == "Panel":
-                import Part,DraftGeomUtils
+                import DraftGeomUtils
+                import Part
                 baseobj = None
                 if obj.Source.CloneOf:
                     baseobj = obj.Source.CloneOf.Base

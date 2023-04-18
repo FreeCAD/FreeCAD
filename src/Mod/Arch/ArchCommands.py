@@ -20,7 +20,10 @@
 #*                                                                         *
 #***************************************************************************
 
-import FreeCAD,Draft,ArchComponent,DraftVecUtils
+import FreeCAD
+import ArchComponent
+import Draft
+import DraftVecUtils
 from FreeCAD import Vector
 if FreeCAD.GuiUp:
     import FreeCADGui
@@ -354,7 +357,8 @@ def makeFace(wires,method=2,cleanup=False):
 
 def closeHole(shape):
     '''closeHole(shape): closes a hole in an open shape'''
-    import DraftGeomUtils, Part
+    import DraftGeomUtils
+    import Part
     # creating an edges lookup table
     lut = {}
     for face in shape.Faces:
@@ -461,7 +465,9 @@ def getCutVolume(cutplane,shapes,clip=False,depth=None):
         return cutface,cutvolume,invcutvolume
 
 def getShapeFromMesh(mesh,fast=True,tolerance=0.001,flat=False,cut=True):
-    import Part, MeshPart, DraftGeomUtils
+    import Part
+    import MeshPart
+    import DraftGeomUtils
     if mesh.isSolid() and (mesh.countComponents() == 1) and fast:
         # use the best method
         faces = []
@@ -1153,7 +1159,8 @@ def toggleIfcBrepFlag(obj):
 def makeCompoundFromSelected(objects=None):
     """makeCompoundFromSelected([objects]): Creates a new compound object from the given
     subobjects (faces, edges) or from the selection if objects is None"""
-    import FreeCADGui,Part
+    import FreeCADGui
+    import Part
     so = []
     if not objects:
         objects = FreeCADGui.Selection.getSelectionEx()
@@ -1169,7 +1176,8 @@ def makeCompoundFromSelected(objects=None):
 def cleanArchSplitter(objects=None):
     """cleanArchSplitter([objects]): removes the splitters from the base shapes
     of the given Arch objects or selected Arch objects if objects is None"""
-    import FreeCAD,FreeCADGui
+    import FreeCAD
+    import FreeCADGui
     if not objects:
         objects = FreeCADGui.Selection.getSelection()
     if not isinstance(objects,list):
@@ -1189,7 +1197,8 @@ def cleanArchSplitter(objects=None):
 def rebuildArchShape(objects=None):
     """rebuildArchShape([objects]): takes the faces from the base shape of the given (or selected
     if objects is None) Arch objects, and tries to rebuild a valid solid from them."""
-    import FreeCAD,Part
+    import FreeCAD
+    import Part
     if not objects and FreeCAD.GuiUp:
         objects = FreeCADGui.Selection.getSelection()
     if not isinstance(objects,list):

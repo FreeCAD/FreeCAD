@@ -19,7 +19,10 @@
 #*                                                                         *
 #***************************************************************************
 
-import FreeCAD,Draft,ArchComponent,DraftVecUtils
+import FreeCAD
+import ArchComponent
+import Draft
+import DraftVecUtils
 if FreeCAD.GuiUp:
     import FreeCADGui
     from draftutils.translate import translate
@@ -162,7 +165,9 @@ class _Frame(ArchComponent.Component):
                 for w in obj.Profile.Shape.Wires:
                     if not w.isClosed():
                         return
-            import DraftGeomUtils, Part, math
+            import math
+            import DraftGeomUtils
+            import Part
             baseprofile = obj.Profile.Shape.copy()
             if hasattr(obj,"ProfilePlacement"):
                 if not obj.ProfilePlacement.isNull():

@@ -24,7 +24,9 @@ __title__  = "FreeCAD Equipment"
 __author__ = "Yorik van Havre"
 __url__    = "https://www.freecadweb.org"
 
-import FreeCAD,ArchComponent,DraftVecUtils
+import FreeCAD
+import ArchComponent
+import DraftVecUtils
 if FreeCAD.GuiUp:
     import FreeCADGui
     from PySide import QtGui
@@ -76,7 +78,10 @@ def createMeshView(obj,direction=FreeCAD.Vector(0,0,-1),outeronly=False,largesto
     outeronly is True, only the outer contour is taken into consideration, discarding the inner
     holes. If largestonly is True, only the largest segment of the given mesh will be used."""
 
-    import Mesh, math, Part, DraftGeomUtils
+    import math
+    import DraftGeomUtils
+    import Mesh
+    import Part
     if not obj.isDerivedFrom("Mesh::Feature"):
         return
     mesh = obj.Mesh

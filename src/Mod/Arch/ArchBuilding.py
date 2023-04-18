@@ -20,7 +20,10 @@
 #*                                                                         *
 #***************************************************************************
 
-import FreeCAD,Draft,ArchCommands,ArchFloor
+import FreeCAD
+import ArchCommands
+import ArchFloor
+import Draft
 if FreeCAD.GuiUp:
     import FreeCADGui
     from PySide import QtCore

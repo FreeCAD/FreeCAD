@@ -145,7 +145,11 @@ ConditioningTypes = [
 "NaturallyVentedOnly"
 ]
 
-import FreeCAD,ArchComponent,ArchCommands,Draft
+import FreeCAD
+import ArchComponent
+import ArchCommands
+import Draft
+
 if FreeCAD.GuiUp:
     import FreeCADGui
     from PySide import QtCore, QtGui
@@ -465,7 +469,8 @@ class _Space(ArchComponent.Component):
 
         "returns a face that represents the footprint of this space"
 
-        import Part,DraftGeomUtils
+        import Part
+        import DraftGeomUtils
         if not hasattr(obj.Shape,"CenterOfMass"):
             return None
         try:
