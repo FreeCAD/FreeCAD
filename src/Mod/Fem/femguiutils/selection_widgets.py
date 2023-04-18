@@ -273,12 +273,10 @@ class GeometryElementsSelection(QtGui.QWidget):
         self._helpTextLbl = QtGui.QLabel()
         self._helpTextLbl.setWordWrap(True)
         helpTextPart1 = self.tr(
-            'Click on "Add" and select geometric elements to add them to the list.{}'
-            "The following geometry elements are allowed to select: {}{}{}"
-            .format("<br>", "<b>", self.sel_elem_text, "</b>")
-        )
+            'Click on "Add" and select geometric elements to add them to the list.{}The following geometry elements can be selected: {}{}{}'
+        ).format("<br>", "<b>", self.sel_elem_text, "</b>")
         helpTextEmpty = self.tr(
-            "{}If no geometry is added to the list, all remaining ones are used.".format("<br>")
+            "{}If no geometry is added to the list, all remaining ones are used.").format("<br>"
         )
         if self.showHintEmptyList is True:
             self._helpTextLbl.setText(
