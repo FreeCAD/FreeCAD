@@ -527,6 +527,10 @@ std::list<std::string> Workbench::listCommandbars() const
 
     qApp->translate("Workbench", "&File");
     qApp->translate("Workbench", "&Edit");
+    qApp->translate("Workbench", "Edit");
+    qApp->translate("Workbench", "Clipboard");
+    qApp->translate("Workbench", "Workbench");
+    qApp->translate("Workbench", "Structure");
     qApp->translate("Workbench", "Standard views");
     qApp->translate("Workbench", "Axonometric");
     qApp->translate("Workbench", "&Stereo");
@@ -538,6 +542,7 @@ std::list<std::string> Workbench::listCommandbars() const
     qApp->translate("Workbench", "&Windows");
     qApp->translate("Workbench", "&On-line help");
     qApp->translate("Workbench", "&Help");
+    qApp->translate("Workbench", "Help");
     qApp->translate("Workbench", "File");
     qApp->translate("Workbench", "Macro");
     qApp->translate("Workbench", "View");
