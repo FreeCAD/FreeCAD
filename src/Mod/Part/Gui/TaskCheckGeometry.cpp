@@ -584,7 +584,7 @@ void TaskCheckGeometryResults::buildShapeContent(App::DocumentObject *pObject, c
     std::ostringstream stream;
     if (!shapeContentString.empty())
         stream << std::endl << std::endl;
-    stream << "Checked object: ";
+    stream << tr("Checked object").toStdString() << ": ";
     Base::PyGILStateLocker lock;
     try {
         PyObject* module = PyImport_ImportModule("BasicShapes.ShapeContent");
