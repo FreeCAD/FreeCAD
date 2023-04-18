@@ -319,7 +319,7 @@ void SoFCColorBar::handleEvent (SoHandleEventAction *action)
                 QMenu menu;
                 int i=0;
                 for (std::vector<SoFCColorBarBase*>::const_iterator it = _colorBars.begin(); it != _colorBars.end(); ++it) {
-                    QAction* item = menu.addAction(QLatin1String((*it)->getColorBarName()));
+                    QAction* item = menu.addAction(QObject::tr((*it)->getColorBarName()));
                     item->setCheckable(true);
                     item->setChecked((*it) == current);
                     item->setData(QVariant(i++));
