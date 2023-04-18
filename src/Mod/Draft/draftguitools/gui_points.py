@@ -161,9 +161,9 @@ class Point(gui_base_original.Creator):
         """
         super(Point, self).finish()
         if self.callbackClick:
-                self.view.removeEventCallbackPivy(coin.SoMouseButtonEvent.getClassTypeId(), self.callbackClick)
+            self.view.removeEventCallbackPivy(coin.SoMouseButtonEvent.getClassTypeId(), self.callbackClick)
         if self.callbackMove:
-                self.view.removeEventCallbackPivy(coin.SoLocation2Event.getClassTypeId(), self.callbackMove)
+            self.view.removeEventCallbackPivy(coin.SoLocation2Event.getClassTypeId(), self.callbackMove)
         if cont or (cont is None and self.ui and self.ui.continueMode):
             self.Activated()
 
