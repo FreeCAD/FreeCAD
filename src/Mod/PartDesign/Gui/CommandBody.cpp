@@ -198,7 +198,7 @@ void CmdPartDesignBody::activated(int iMsg)
     doCommand(Doc,"App.ActiveDocument.getObject('%s').Label = '%s'", bodyString, labelByteArray.constData());
     if (baseFeature) {
         if (partOfBaseFeature){
-            //withdraw base feature from Part, otherwise visibility mandess results
+            //withdraw base feature from Part, otherwise visibility madness results
             doCommand(Doc,"App.activeDocument().%s.removeObject(App.activeDocument().%s)",
                     partOfBaseFeature->getNameInDocument(), baseFeature->getNameInDocument());
         }
