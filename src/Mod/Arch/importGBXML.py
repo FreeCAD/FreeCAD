@@ -496,7 +496,3 @@ def export(objectslist,filename):
 ... repeat
 
 </gbXML>'''
-
-
-
-

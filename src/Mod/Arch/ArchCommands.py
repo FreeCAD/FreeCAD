@@ -178,33 +178,33 @@ def removeComponents(objectsList,host=None):
     else:
         for o in objectsList:
             if o.InList:
-               h = o.InList[0]
-               tp = Draft.getType(h)
-               if tp in ["Floor","Building","Site","BuildingPart"]:
-                   c = h.Group
-                   if o in c:
-                       c.remove(o)
-                       h.Group = c
-                       o.ViewObject.show()
-               elif tp in ["Wall","Structure","Precast"]:
-                   a = h.Additions
-                   s = h.Subtractions
-                   if o in a:
-                       a.remove(o)
-                       h.Additions = a
-                       o.ViewObject.show()
-                   elif o in s:
-                       s.remove(o)
-                       h.Subtractions = s
-                       o.ViewObject.show()
-                   elif o == s.Base:
-                       s.Base = None
-                       o.ViewObject.show()
-               elif tp in ["SectionPlane"]:
-                   a = h.Objects
-                   if o in a:
-                       a.remove(o)
-                       h.Objects = a
+                h = o.InList[0]
+                tp = Draft.getType(h)
+                if tp in ["Floor","Building","Site","BuildingPart"]:
+                    c = h.Group
+                    if o in c:
+                        c.remove(o)
+                        h.Group = c
+                        o.ViewObject.show()
+                elif tp in ["Wall","Structure","Precast"]:
+                    a = h.Additions
+                    s = h.Subtractions
+                    if o in a:
+                        a.remove(o)
+                        h.Additions = a
+                        o.ViewObject.show()
+                    elif o in s:
+                        s.remove(o)
+                        h.Subtractions = s
+                        o.ViewObject.show()
+                    elif o == s.Base:
+                        s.Base = None
+                        o.ViewObject.show()
+                elif tp in ["SectionPlane"]:
+                    a = h.Objects
+                    if o in a:
+                        a.remove(o)
+                        h.Objects = a
 
 def makeComponent(baseobj=None,name="Component",delete=False):
     '''makeComponent([baseobj]): creates an undefined, non-parametric Arch
@@ -638,7 +638,7 @@ def mergeCells(objectslist):
         return None
     typ = Draft.getType(objectslist[0])
     if not(typ in ["Cell","Floor","Building","Site"]):
-               return None
+        return None
     for o in objectslist:
         if Draft.getType(o) != typ:
             return None
@@ -1102,7 +1102,7 @@ class SurveyTaskPanel:
         import csv
         rows = self.tree.topLevelItemCount()
         if rows:
-            filename = QtGui.QFileDialog.getSaveFileName(QtGui.QApplication.activeWindow(), translate("Arch","Export CSV File"), None, "CSV file (*.csv)");
+            filename = QtGui.QFileDialog.getSaveFileName(QtGui.QApplication.activeWindow(), translate("Arch","Export CSV File"), None, "CSV file (*.csv)")
             if filename:
                 with open(filename[0].encode("utf8"), "w") as csvfile:
                     csvfile = csv.writer(csvfile,delimiter="\t")

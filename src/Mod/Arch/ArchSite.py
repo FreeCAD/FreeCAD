@@ -1066,7 +1066,7 @@ class _ViewProviderSite:
         """Updates the 'terrain' switches."""
 
         if not hasattr(self, "terrain_switches"):
-              return
+            return
 
         idx = 0 if self.Object.Terrain is None else 1
         for switch in self.terrain_switches:

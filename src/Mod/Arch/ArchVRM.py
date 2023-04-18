@@ -654,4 +654,3 @@ class Renderer:
             svg += '"/>\n'
         svg += '</g>\n'
         return svg
-
