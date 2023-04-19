@@ -264,20 +264,21 @@ class GeometryElementsSelection(QtGui.QWidget):
     def initUI(self):
         # ArchPanel is coded without ui-file too
         # title
-        self.setWindowTitle(
-            self.tr("Geometry reference selector for a") + " " + self.sel_elem_text
-        )
+        self.setWindowTitle(self.tr(
+            "Geometry reference selector for a {}"
+        ).format(self.sel_elem_text))
         # button
         self.pushButton_Add = QtGui.QPushButton(self.tr("Add"))
         # label
         self._helpTextLbl = QtGui.QLabel()
         self._helpTextLbl.setWordWrap(True)
         helpTextPart1 = self.tr(
-            'Click on "Add" and select geometric elements to add them to the list.{}The following geometry elements can be selected: {}{}{}'
+            'Click on "Add" and select geometric elements to add them to the list.{}'
+            "The following geometry elements can be selected: {}{}{}"
         ).format("<br>", "<b>", self.sel_elem_text, "</b>")
         helpTextEmpty = self.tr(
-            "{}If no geometry is added to the list, all remaining ones are used.").format("<br>"
-        )
+            "{}If no geometry is added to the list, all remaining ones are used."
+        ).format("<br>")
         if self.showHintEmptyList is True:
             self._helpTextLbl.setText(
                 helpTextPart1 + helpTextEmpty
