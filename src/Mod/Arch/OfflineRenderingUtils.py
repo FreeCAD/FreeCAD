@@ -285,7 +285,7 @@ def getColors(filename,nodiffuse=False):
         if ("DiffuseColor" in v) and (not nodiffuse):
             if len(v["DiffuseColor"]["value"]) == 1:
                 # only one color in DiffuseColor: used for the whole object
-                 colors[k] = v["DiffuseColor"]["value"][0]
+                colors[k] = v["DiffuseColor"]["value"][0]
             else:
                 colors[k] = v["DiffuseColor"]["value"]
         elif "ShapeColor" in v:

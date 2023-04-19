@@ -1746,12 +1746,12 @@ class _ViewProviderWall(ArchComponent.ViewProviderComponent):
 
     def flipDirection(self):
 
-       if hasattr(self,"Object") and self.Object:
-           obj = self.Object
-           if obj.Align == "Left":
+        if hasattr(self,"Object") and self.Object:
+            obj = self.Object
+            if obj.Align == "Left":
                 obj.Align = "Right"
                 FreeCAD.ActiveDocument.recompute()
-           elif obj.Align == "Right":
+            elif obj.Align == "Right":
                 obj.Align = "Left"
                 FreeCAD.ActiveDocument.recompute()
 

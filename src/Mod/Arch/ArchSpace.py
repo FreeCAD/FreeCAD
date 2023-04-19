@@ -405,12 +405,12 @@ class _Space(ArchComponent.Component):
         # 3: identifying boundary faces
         goodfaces = []
         for b in obj.Boundaries:
-                if hasattr(b[0],'Shape'):
-                    for sub in b[1]:
-                        if "Face" in sub:
-                            fn = int(sub[4:])-1
-                            faces.append(b[0].Shape.Faces[fn])
-                            #print("adding face ",fn," of object ",b[0].Name)
+            if hasattr(b[0],'Shape'):
+                for sub in b[1]:
+                    if "Face" in sub:
+                        fn = int(sub[4:])-1
+                        faces.append(b[0].Shape.Faces[fn])
+                        #print("adding face ",fn," of object ",b[0].Name)
 
         #print("total: ", len(faces), " faces")
 
@@ -669,7 +669,7 @@ class _ViewProviderSpace(ArchComponent.ViewProviderComponent):
             if hasattr(self,"font") and hasattr(vobj,"FontName"):
                 self.font.name = str(vobj.FontName)
 
-        elif (prop == "FontSize"):
+        elif prop == "FontSize":
             if hasattr(self,"font") and hasattr(vobj,"FontSize"):
                 self.font.size = vobj.FontSize.Value
                 if hasattr(vobj,"FirstLine"):
@@ -677,7 +677,7 @@ class _ViewProviderSpace(ArchComponent.ViewProviderComponent):
                     self.header.scaleFactor.setValue([scale,scale,scale])
                     self.onChanged(vobj, "TextPosition")
 
-        elif (prop == "FirstLine"):
+        elif prop == "FirstLine":
             if hasattr(self,"header") and hasattr(vobj,"FontSize") and hasattr(vobj,"FirstLine"):
                 scale = vobj.FirstLine.Value/vobj.FontSize.Value
                 self.header.scaleFactor.setValue([scale,scale,scale])

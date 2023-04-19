@@ -83,7 +83,7 @@ class _Fence(ArchComponent.Component):
 
     def __getstate__(self):
         if hasattr(self, 'sectionFaceNumbers'):
-            return (self.sectionFaceNumbers)
+            return self.sectionFaceNumbers
 
         return None
 

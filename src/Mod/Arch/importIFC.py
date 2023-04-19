@@ -610,7 +610,7 @@ def insert(srcfile, docname, skip=[], only=[], root=None, preferences=None):
                                     baseobj.Dir = ex[1]
                                 if FreeCAD.GuiUp:
                                     baseface.ViewObject.hide()
-                        if (not baseobj):
+                        if not baseobj:
                             baseobj = doc.addObject("Part::Feature",name+"_body")
                             baseobj.Shape = shape
         else:
@@ -921,7 +921,7 @@ def insert(srcfile, docname, skip=[], only=[], root=None, preferences=None):
                     # of the (twodimensional) direction vector for TrueNorth shall be greater than zero.
                     (x, y) = modelRC.TrueNorth.DirectionRatios[:2]
                     obj.Declination = ((math.degrees(math.atan2(y,x))-90+180) % 360)-180
-                    if (FreeCAD.GuiUp):
+                    if FreeCAD.GuiUp:
                         obj.ViewObject.CompassRotation.Value = obj.Declination
 
         try:

@@ -342,7 +342,7 @@ class AxisSystemTaskPanel:
 
         if self.obj:
             for o in FreeCADGui.Selection.getSelection():
-                if (not(o in self.obj.Axes)) and (o != self.obj):
+                if not(o in self.obj.Axes) and (o != self.obj):
                     g = self.obj.Axes
                     g.append(o)
                     self.obj.Axes = g

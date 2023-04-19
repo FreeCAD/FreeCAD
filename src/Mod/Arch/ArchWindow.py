@@ -533,13 +533,13 @@ class _CommandWindow:
                         except Exception:
                             pass
                         else:
-                            zfile=zipfile.ZipFile(path)
-                            files=zfile.namelist()
+                            zfile = zipfile.ZipFile(path)
+                            files = zfile.namelist()
                             # check for meta-file if it's really a FreeCAD document
                             if files[0] == "Document.xml":
                                 image="thumbnails/Thumbnail.png"
                                 if image in files:
-                                    image=zfile.read(image)
+                                    image = zfile.read(image)
                                     thumbfile = tempfile.mkstemp(suffix='.png')[1]
                                     thumb = open(thumbfile,"wb")
                                     thumb.write(image)
