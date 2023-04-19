@@ -167,7 +167,7 @@ class ShapeString(DraftObject):
         ''' remove cuts, fuse overlapping contours, retain islands '''
         import Part
         if len(facelist) == 1:
-            return(facelist[0])
+            return facelist[0]
 
         sortedfaces = sorted(facelist,key=(lambda shape: shape.Area),reverse=True)
 

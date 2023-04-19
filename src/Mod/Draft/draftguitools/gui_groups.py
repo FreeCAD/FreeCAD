@@ -122,8 +122,8 @@ class AddToGroup(gui_base.GuiCommandNeedsSelection):
 
             #if new group is selected then launch AddNamedGroup
             if labelname == self.addNewGroupStr:
-               add=AddNamedGroup()
-               add.Activated()
+                add=AddNamedGroup()
+                add.Activated()
             else:
             #else add selection to the selected group
                 if labelname in self.labels :

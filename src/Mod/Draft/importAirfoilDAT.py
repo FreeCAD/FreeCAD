@@ -38,7 +38,11 @@ __title__ = "FreeCAD Draft Workbench - Airfoil data importer"
 __author__ = "Heiko Jakob <heiko.jakob@gediegos.de>"
 __url__ = "https://www.freecadweb.org"
 
-import re, FreeCAD, Draft, Part, os
+import re
+import os
+import FreeCAD
+import Draft
+import Part
 from FreeCAD import Vector
 from FreeCAD import Console as FCC
 
