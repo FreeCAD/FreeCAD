@@ -24,6 +24,7 @@
 #ifndef GUI_TASKIMAGE_H
 #define GUI_TASKIMAGE_H
 
+#include <Inventor/SbVec3f.h>
 #include <QPointer>
 #include <Gui/TaskView/TaskDialog.h>
 #include <Gui/QuantitySpinBox.h>
@@ -67,6 +68,8 @@ private:
     void findPointOnImagePlane(SoEventCallback * ecb);
     void collectPoint(const SbVec3f&);
     void positionWidget();
+    void showDistanceField();
+    void setDistance(const SbVec3f&);
 
     /// give the coordinates of a line on the image plane in imagePlane (2D) coordinates
     SbVec3f getCoordsOnImagePlane(const SbVec3f& point);
@@ -120,7 +123,7 @@ private:
     void updateIcon();
     void updatePlacement();
 
-private Q_SLOTS:
+private:
     void changeTransparency(int val);
     void changeWidth(double val);
     void changeHeight(double val);
