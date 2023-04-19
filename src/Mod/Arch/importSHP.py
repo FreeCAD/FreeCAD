@@ -1,6 +1,5 @@
-# -*- coding: utf-8 -*-
 #***************************************************************************
-#*   Copyright (c) 2020 Yorik van Havre <yorik@uncreated.net>              *
+#*   Copyright (c) 2016 Yorik van Havre <yorik@uncreated.net>              *
 #*                                                                         *
 #*   This program is free software; you can redistribute it and/or modify  *
 #*   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -20,144 +19,192 @@
 #*                                                                         *
 #***************************************************************************
 
+__title__  = "FreeCAD SweetHome3D Importer"
+__author__ = "Yorik van Havre"
+__url__    = "https://www.freecadweb.org"
+
+import math
 import os
+import tempfile
+import xml.sax
+import zipfile
+
 import FreeCAD
-translate = FreeCAD.Qt.translate
+import Arch
+import Draft
+import Mesh
+import Part
+
+## @package importSH3D
+#  \ingroup ARCH
+#  \brief SH3D (SweetHome3D) file format importer
+#
+#  This module provides tools to import SH3D files created from Sweet Home 3D.
+
+DEBUG = True
 
 if open.__module__ in ['__builtin__','io']:
-    pythonopen = open
+    pyopen = open # because we'll redefine open below
+
 
 def open(filename):
-
-    """opens a SHP/SHX/DBF file in a new FreeCAD document"""
-
-    docname = os.path.splitext(os.path.basename(filename))[0]
+    "called when freecad wants to open a file"
+    docname = (os.path.splitext(os.path.basename(filename))[0]).encode("utf8")
     doc = FreeCAD.newDocument(docname)
     doc.Label = docname
-    doc = insert(filename,doc.Name)
+    FreeCAD.ActiveDocument = doc
+    read(filename)
     return doc
 
 
-def insert(filename,docname,record=None):
-
-    """imports a SHP/SHX/DBF file in an existing FreeCAD document.
-    the record attribute is an optional string indicating the shapefile
-    field to use to give elevations to the different shapes. If not used,
-    if running in GUI mode, a dialog will pop up to ask the user which
-    field to use."""
-
-    if not checkShapeFileLibrary():
-        return
-
-    import shapefile
-    import Part
-
-    # read the shape file
-    # doc at https://github.com/GeospatialPython/pyshp
-
-    shp = shapefile.Reader(filename)
-
-    # check which record to use for elevation
-    if not record:
-        fields = ["None"] + [field[0] for field in shp.fields]
-        if FreeCAD.GuiUp:
-            import FreeCADGui
-            from PySide import QtGui
-            reply = QtGui.QInputDialog.getItem(FreeCADGui.getMainWindow(),
-                                               translate("Arch","Shapes elevation"),
-                                               translate("Arch","Choose which field provides shapes elevations:"),
-                                               fields)
-            if reply[1] and reply[0] != "None":
-                    record = reply[0]
-
-    # build shapes
-    shapes = []
-    for shaperec in shp.shapeRecords():
-        shape = None
-        pts = []
-        for p in shaperec.shape.points:
-            if len(p) > 2:
-                pts.append(FreeCAD.Vector(p[0],p[1],p[2]))
-            else:
-                pts.append(FreeCAD.Vector(p[0],p[1],0))
-        if shp.shapeTypeName in ["POLYGON","POLYGONZ"]:
-            # faces
-            pts.append(pts[0])
-            shape = Part.makePolygon(pts)
-            shape = Part.Face(shape)
-        elif shp.shapeTypeName in ["POINT","POINTZ"]:
-            # points
-            verts = [Part.Vertex(p) for p in pts]
-            if verts:
-                shape = Part.makeCompound(verts)
-        else:
-            # polylines
-            shape = Part.makePolygon(pts)
-        if record:
-            elev = shaperec.record[record]
-            if elev:
-                shape.translate(FreeCAD.Vector(0,0,elev))
-        if shape:
-            shapes.append(shape)
-    if shapes:
-        result = Part.makeCompound(shapes)
-        obj = FreeCAD.ActiveDocument.addObject("Part::Feature","shapefile")
-        obj.Shape = result
-        obj.Label = os.path.splitext(os.path.basename(filename))[0]
-        FreeCAD.ActiveDocument.recompute()
-    else:
-        FreeCAD.Console.PrintWarning(translate("Arch","No shape found in this file")+"\n")
-
-def getFields(filename):
-
-    """returns the fields found in the given file"""
-
-    if not checkShapeFileLibrary():
-        return
-    import shapefile
-    shp = shapefile.Reader(filename)
-    return [field[0] for field in shp.fields]
-
-def checkShapeFileLibrary():
-
-    """Looks for and/or installs the ShapeFile library"""
-
+def insert(filename,docname):
+    "called when freecad wants to import a file"
     try:
-        import shapefile
-    except Exception:
-        url = "https://raw.githubusercontent.com/GeospatialPython/pyshp/master/shapefile.py"
-        if FreeCAD.GuiUp:
-            import addonmanager_utilities
-            import FreeCADGui
-            from PySide import QtGui
-            reply = QtGui.QMessageBox.question(FreeCADGui.getMainWindow(),
-                                               translate("Arch","Shapefile module not found"),
-                                               translate("Arch","The shapefile python library was not found on your system. Would you like to download it now from <a href=\"https://github.com/GeospatialPython/pyshp\">https://github.com/GeospatialPython/pyshp</a>? It will be placed in your macros folder."),
-                                               QtGui.QMessageBox.Yes | QtGui.QMessageBox.No,
-                                               QtGui.QMessageBox.No)
-            if reply == QtGui.QMessageBox.Yes:
-                u = addonmanager_utilities.urlopen(url)
-                if not u:
-                    FreeCAD.Console.PrintError(translate("Arch","Error: Unable to download from:")+" "+url+"\n")
-                    return False
-                b = u.read()
-                p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Macro")
-                fp = p.GetString("MacroPath",os.path.join(FreeCAD.getUserAppDataDir(),"Macros"))
-                fp = os.path.join(fp,"shapefile.py")
-                f = pythonopen(fp,"wb")
-                f.write(b)
-                f.close()
-                try:
-                    import shapefile
-                except Exception:
-                    FreeCAD.Console.PrintError(translate("Arch","Could not download shapefile module. Aborting.")+"\n")
-                    return False
+        doc = FreeCAD.getDocument(docname)
+    except NameError:
+        doc = FreeCAD.newDocument(docname)
+    FreeCAD.ActiveDocument = doc
+    read(filename)
+    return doc
+
+
+def read(filename):
+    "reads the file and creates objects in the active document"
+
+    z = zipfile.ZipFile(filename)
+    homexml = z.read("Home.xml")
+    handler = SH3DHandler(z)
+    xml.sax.parseString(homexml,handler)
+    FreeCAD.ActiveDocument.recompute()
+    if not handler.makeIndividualWalls:
+        delete = []
+        walls = []
+        for k,lines in handler.lines.items():
+            sk = FreeCAD.ActiveDocument.addObject("Sketcher::SketchObject","Walls_trace")
+            for l in lines:
+                for edge in l.Shape.Edges:
+                    sk.addGeometry(edge.Curve)
+                delete.append(l.Name)
+            FreeCAD.ActiveDocument.recompute()
+            k = k.split(";")
+            walls.append(Arch.makeWall(baseobj=sk,width=float(k[0]),height=float(k[1])))
+        for d in delete:
+            FreeCAD.ActiveDocument.removeObject(d)
+        w = walls.pop()
+        w.Additions = walls
+        w.Subtractions = handler.windows
+    g = FreeCAD.ActiveDocument.addObject("App::DocumentObjectGroup","Furniture")
+    g.Group = handler.furniture
+    FreeCAD.ActiveDocument.recompute()
+
+
+class SH3DHandler(xml.sax.ContentHandler):
+
+    def __init__(self,z):
+
+        super().__init__()
+        self.makeIndividualWalls = False
+        self.z = z
+        self.windows = []
+        self.furniture = []
+        self.lines = {}
+
+    def startElement(self, tag, attributes):
+
+        if tag == "wall":
+            name = attributes["id"]
+            p1 = FreeCAD.Vector(float(attributes["xStart"])*10,float(attributes["yStart"])*10,0)
+            p2 = FreeCAD.Vector(float(attributes["xEnd"])*10,float(attributes["yEnd"])*10,0)
+            height = float(attributes["height"])*10
+            thickness = float(attributes["thickness"])*10
+            if DEBUG: print("Creating wall: ",name)
+            line = Draft.makeLine(p1,p2)
+            if self.makeIndividualWalls:
+                wall = Arch.makeWall(baseobj=line,width=thickness,height=height,name=name)
+                wall.Label = name
             else:
-                FreeCAD.Console.PrintError(translate("Arch","Shapefile module not downloaded. Aborting.")+"\n")
-                return False
-        else:
-            FreeCAD.Console.PrintError(translate("Arch","Shapefile module not found. Aborting.")+"\n")
-            FreeCAD.Console.PrintMessage(translate("Arch","The shapefile library can be downloaded from the following URL and installed in your macros folder:")+"\n")
-            FreeCAD.Console.PrintMessage(url)
-            return False
-    return True
+                self.lines.setdefault(str(thickness)+";"+str(height),[]).append(line)
+
+        elif tag == "pieceOfFurniture":
+            name = attributes["name"]
+            data = self.z.read(attributes["model"])
+            th,tf = tempfile.mkstemp(suffix=".obj")
+            f = pyopen(tf,"wb")
+            f.write(data)
+            f.close()
+            os.close(th)
+            m = Mesh.read(tf)
+            fx = (float(attributes["width"])/100)/m.BoundBox.XLength
+            fy = (float(attributes["height"])/100)/m.BoundBox.YLength
+            fz = (float(attributes["depth"])/100)/m.BoundBox.ZLength
+            mat = FreeCAD.Matrix()
+            mat.scale(1000*fx,1000*fy,1000*fz)
+            mat.rotateX(math.pi/2)
+            mat.rotateZ(math.pi)
+            if DEBUG: print("Creating furniture: ",name)
+            if "angle" in attributes.keys():
+                mat.rotateZ(float(attributes["angle"]))
+            m.transform(mat)
+            os.remove(tf)
+            p = m.BoundBox.Center.negative()
+            p = p.add(FreeCAD.Vector(float(attributes["x"])*10,float(attributes["y"])*10,0))
+            p = p.add(FreeCAD.Vector(0,0,m.BoundBox.Center.z-m.BoundBox.ZMin))
+            m.Placement.Base = p
+            obj = FreeCAD.ActiveDocument.addObject("Mesh::Feature",name)
+            obj.Mesh = m
+            self.furniture.append(obj)
+
+        elif tag == "doorOrWindow":
+            name = attributes["name"]
+            data = self.z.read(attributes["model"])
+            th,tf = tempfile.mkstemp(suffix=".obj")
+            f = pyopen(tf,"wb")
+            f.write(data)
+            f.close()
+            os.close(th)
+            m = Mesh.read(tf)
+            fx = (float(attributes["width"])/100)/m.BoundBox.XLength
+            fy = (float(attributes["height"])/100)/m.BoundBox.YLength
+            fz = (float(attributes["depth"])/100)/m.BoundBox.ZLength
+            mat = FreeCAD.Matrix()
+            mat.scale(1000*fx,1000*fy,1000*fz)
+            mat.rotateX(math.pi/2)
+            m.transform(mat)
+            b = m.BoundBox
+            v1 = FreeCAD.Vector(b.XMin,b.YMin-500,b.ZMin)
+            v2 = FreeCAD.Vector(b.XMax,b.YMin-500,b.ZMin)
+            v3 = FreeCAD.Vector(b.XMax,b.YMax+500,b.ZMin)
+            v4 = FreeCAD.Vector(b.XMin,b.YMax+500,b.ZMin)
+            sub = Part.makePolygon([v1,v2,v3,v4,v1])
+            sub = Part.Face(sub)
+            sub = sub.extrude(FreeCAD.Vector(0,0,b.ZLength))
+            os.remove(tf)
+            shape = Arch.getShapeFromMesh(m)
+            if not shape:
+                shape=Part.Shape()
+                shape.makeShapeFromMesh(m.Topology,0.100000)
+                shape = shape.removeSplitter()
+            if shape:
+                if DEBUG: print("Creating window: ",name)
+                if "angle" in attributes.keys():
+                    shape.rotate(shape.BoundBox.Center,FreeCAD.Vector(0,0,1),math.degrees(float(attributes["angle"])))
+                    sub.rotate(shape.BoundBox.Center,FreeCAD.Vector(0,0,1),math.degrees(float(attributes["angle"])))
+                p = shape.BoundBox.Center.negative()
+                p = p.add(FreeCAD.Vector(float(attributes["x"])*10,float(attributes["y"])*10,0))
+                p = p.add(FreeCAD.Vector(0,0,shape.BoundBox.Center.z-shape.BoundBox.ZMin))
+                if "elevation" in attributes.keys():
+                    p = p.add(FreeCAD.Vector(0,0,float(attributes["elevation"])*10))
+                shape.translate(p)
+                sub.translate(p)
+                obj = FreeCAD.ActiveDocument.addObject("Part::Feature",name+"_body")
+                obj.Shape = shape
+                subobj = FreeCAD.ActiveDocument.addObject("Part::Feature",name+"_sub")
+                subobj.Shape = sub
+                if FreeCAD.GuiUp:
+                    subobj.ViewObject.hide()
+                win = Arch.makeWindow(baseobj=obj,name=name)
+                win.Label = name
+                win.Subvolume = subobj
+                self.windows.append(win)
+            else:
+                print("importSH3D: Error creating shape for door/window "+name)
