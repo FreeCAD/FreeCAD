@@ -23,6 +23,8 @@
 #ifndef PLANEGCS_GCS_H
 #define PLANEGCS_GCS_H
 
+#include <memory>
+
 #include <Eigen/QR>
 
 #include "SubSystem.h"
@@ -113,7 +115,7 @@ namespace GCS
         // GCS ignores from a type point
         std::vector< std::vector<double *> > pDependentParametersGroups;
 
-        std::vector<Constraint *> clist;
+        std::vector<std::unique_ptr<Constraint>> clist;
         std::map<Constraint *,VEC_pD > c2p; // constraint to parameter adjacency list
         std::map<double *,std::vector<Constraint *> > p2c; // parameter to constraint adjacency list
 
@@ -457,7 +459,6 @@ namespace GCS
     ///////////////////////////////////////
 
     void free(VEC_pD &doublevec);
-    void free(std::vector<Constraint *> &constrvec);
     void free(std::vector<SubSystem *> &subsysvec);
 
 } //namespace GCS

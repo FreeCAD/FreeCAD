@@ -587,7 +587,7 @@ void System::clear()
 
     reference.clear();
     clearSubSystems();
-    free(clist);
+    clist.clear();
     c2p.clear();
     p2c.clear();
 }
@@ -601,14 +601,13 @@ void System::invalidatedDiagnosis()
 
 void System::clearByTag(int tagId)
 {
+    // TODO: Check if we could simply remove in reverse order.
     std::vector<Constraint *> constrvec;
-    for (std::vector<Constraint *>::const_iterator
-         constr=clist.begin(); constr != clist.end(); ++constr) {
+    for (auto constr=clist.cbegin(); constr != clist.cend(); ++constr) {
         if ((*constr)->getTag() == tagId)
-            constrvec.push_back(*constr);
+            constrvec.push_back(constr->get());
     }
-    for (std::vector<Constraint *>::const_iterator
-         constr=constrvec.begin(); constr != constrvec.end(); ++constr) {
+    for (auto constr=constrvec.cbegin(); constr != constrvec.cend(); ++constr) {
         removeConstraint(*constr);
     }
 }
@@ -619,7 +618,7 @@ int System::addConstraint(Constraint *constr)
     if (constr->getTag() >= 0) // negatively tagged constraints have no impact
         hasDiagnosis = false;  // on the diagnosis
 
-    clist.push_back(constr);
+    clist.emplace_back(constr);
     VEC_pD constr_params = constr->params();
     for (VEC_pD::const_iterator param=constr_params.begin();
          param != constr_params.end(); ++param) {
@@ -632,12 +631,21 @@ int System::addConstraint(Constraint *constr)
 
 void System::removeConstraint(Constraint *constr)
 {
-    std::vector<Constraint *>::iterator it;
-    it = std::find(clist.begin(), clist.end(), constr);
+    auto it = clist.begin();
+    for(; it != clist.end(); ++it)
+    {
+        if(it->get() == constr)
+        {
+            break;
+        }
+    }
     if (it == clist.end())
+    {
+        // TODO: someone is removing a nonexistent constraint.
+        // Shouldn't we at least emit a warning?
         return;
+    }
 
-    clist.erase(it);
     if (constr->getTag() >= 0)
         hasDiagnosis = false;
     clearSubSystems();
@@ -646,12 +654,12 @@ void System::removeConstraint(Constraint *constr)
     for (VEC_pD::const_iterator param=constr_params.begin();
          param != constr_params.end(); ++param) {
         std::vector<Constraint *> &constraints = p2c[*param];
-        it = std::find(constraints.begin(), constraints.end(), constr);
-        constraints.erase(it);
+        auto i = std::find(constraints.begin(), constraints.end(), constr);
+        constraints.erase(i);
     }
     c2p.erase(constr);
 
-    delete(constr);
+    clist.erase(it);
 }
 
 // basic constraints
@@ -1543,8 +1551,7 @@ double System::calculateConstraintErrorByTag(int tagId)
     double sqErr = 0.0; //accumulator of squared errors
     double err = 0.0;//last computed signed error value
 
-    for (std::vector<Constraint *>::const_iterator
-         constr=clist.begin(); constr != clist.end(); ++constr) {
+    for (auto constr=clist.cbegin(); constr != clist.cend(); ++constr) {
         if ((*constr)->getTag() == tagId){
             err = (*constr)->error();
             sqErr += err*err;
@@ -1613,15 +1620,11 @@ void System::initSolution(Algorithm alg)
             return;
     }
     std::vector<Constraint *> clistR;
-    if (!redundant.empty()) {
-        for (std::vector<Constraint*>::const_iterator constr = clist.begin(); constr != clist.end();
-             ++constr) {
-            if (redundant.count(*constr) == 0)
-                    clistR.push_back(*constr);
+    for (auto constr = clist.cbegin(); constr != clist.cend(); ++constr) {
+        if (redundant.empty() || redundant.count(constr->get()) != 0)
+        {
+            clistR.push_back(constr->get());
         }
-    }
-    else {
-        clistR = clist;
     }
 
     // partitioning into decoupled components
@@ -4632,7 +4635,7 @@ void System::makeReducedJacobian(Eigen::MatrixXd &J,
 
     int jacobianconstraintcount=0;
     int allcount=0;
-    for (std::vector<Constraint *>::iterator constr=clist.begin(); constr != clist.end(); ++constr) {
+    for (auto constr=clist.begin(); constr != clist.end(); ++constr) {
         (*constr)->revertParams();
         ++allcount;
         if ((*constr)->getTag() >= 0 && (*constr)->isDriving()) {
@@ -5275,12 +5278,12 @@ void System::identifyConflictingRedundantConstraints(
             if (fabs(R(row,j)) > 1e-10) {
                 int origCol = qrJT.colsPermutation().indices()[row];
 
-                conflictGroups[j-rank].push_back(clist[jacobianconstraintmap.at(origCol)]);
+                conflictGroups[j-rank].push_back(clist[jacobianconstraintmap.at(origCol)].get());
             }
         }
         int origCol = qrJT.colsPermutation().indices()[j];
 
-        conflictGroups[j-rank].push_back(clist[jacobianconstraintmap.at(origCol)]);
+        conflictGroups[j-rank].push_back(clist[jacobianconstraintmap.at(origCol)].get());
     }
 
     // Augment the information regarding the group of constraints that are conflicting or redundant.
@@ -5378,10 +5381,9 @@ void System::identifyConflictingRedundantConstraints(
 
     std::vector<Constraint *> clistTmp;
     clistTmp.reserve(clist.size());
-    for (std::vector<Constraint *>::iterator constr=clist.begin();
-        constr != clist.end(); ++constr) {
-        if ((*constr)->isDriving() && skipped.count(*constr) == 0)
-            clistTmp.push_back(*constr);
+    for (auto constr=clist.begin(); constr != clist.end(); ++constr) {
+        if ((*constr)->isDriving() && skipped.count(constr->get()) == 0)
+            clistTmp.push_back(constr->get());
     }
 
     SubSystem *subSysTmp = new SubSystem(clistTmp, pdiagnoselist);
@@ -5470,8 +5472,8 @@ void System::identifyConflictingRedundantConstraints(
     }
 
     // remove tags represented at least in one non-redundant constraint
-    for (std::vector<Constraint *>::iterator constr=clist.begin(); constr != clist.end(); ++constr)
-        if (redundant.count(*constr) == 0)
+    for (auto constr=clist.begin(); constr != clist.end(); ++constr)
+        if (redundant.count(constr->get()) == 0)
             redundantTagsSet.erase((*constr)->getTag());
 
     redundantTags.resize(redundantTagsSet.size());
@@ -5581,51 +5583,6 @@ void free(VEC_pD &doublevec)
     doublevec.clear();
 }
 
-void free(std::vector<Constraint *> &constrvec)
-{
-    for (std::vector<Constraint *>::iterator constr=constrvec.begin();
-         constr != constrvec.end(); ++constr) {
-        if (*constr) {
-            switch ((*constr)->getTypeId()) {
-                case Equal:
-                    delete static_cast<ConstraintEqual *>(*constr);
-                    break;
-                case Difference:
-                    delete static_cast<ConstraintDifference *>(*constr);
-                    break;
-                case P2PDistance:
-                    delete static_cast<ConstraintP2PDistance *>(*constr);
-                    break;
-                case P2PAngle:
-                    delete static_cast<ConstraintP2PAngle *>(*constr);
-                    break;
-                case P2LDistance:
-                    delete static_cast<ConstraintP2LDistance *>(*constr);
-                    break;
-                case PointOnLine:
-                    delete static_cast<ConstraintPointOnLine *>(*constr);
-                    break;
-                case Parallel:
-                    delete static_cast<ConstraintParallel *>(*constr);
-                    break;
-                case Perpendicular:
-                    delete static_cast<ConstraintPerpendicular *>(*constr);
-                    break;
-                case L2LAngle:
-                    delete static_cast<ConstraintL2LAngle *>(*constr);
-                    break;
-                case MidpointOnLine:
-                    delete static_cast<ConstraintMidpointOnLine *>(*constr);
-                    break;
-                case None:
-                default:
-                    delete *constr;
-            }
-        }
-    }
-    constrvec.clear();
-}
-
 void free(std::vector<SubSystem *> &subsysvec)
 {
     for (std::vector<SubSystem *>::iterator it=subsysvec.begin();
@@ -5633,6 +5590,5 @@ void free(std::vector<SubSystem *> &subsysvec)
         if (*it) delete *it;
     }
 }
-
 
 } //namespace GCS
