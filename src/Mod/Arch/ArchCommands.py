@@ -29,7 +29,6 @@ if FreeCAD.GuiUp:
     import FreeCADGui
     from PySide import QtGui,QtCore
     from draftutils.translate import translate
-    from draftutils.utils import utf8_decode
 else:
     # \cond
     def translate(ctxt,txt):
@@ -862,14 +861,14 @@ def survey(callback=False):
                                     t = u.getUserPreferred()[0]
                                     t = t.replace("^3","³")
                                     anno.LabelText = "v " + t
-                                    FreeCAD.Console.PrintMessage("Object: " + n + ", Element: Whole, Volume: " + utf8_decode(t) + "\n")
+                                    FreeCAD.Console.PrintMessage("Object: " + n + ", Element: Whole, Volume: " + t + "\n")
                                     FreeCAD.SurveyObserver.totalVolume += u.Value
                                 elif o.Object.Shape.Faces:
                                     u = FreeCAD.Units.Quantity(o.Object.Shape.Area,FreeCAD.Units.Area)
                                     t = u.getUserPreferred()[0]
                                     t = t.replace("^2","²")
                                     anno.LabelText = "a " + t
-                                    FreeCAD.Console.PrintMessage("Object: " + n + ", Element: Whole, Area: " + utf8_decode(t) + "\n")
+                                    FreeCAD.Console.PrintMessage("Object: " + n + ", Element: Whole, Area: " + t + "\n")
                                     FreeCAD.SurveyObserver.totalArea += u.Value
                                     if hasattr(FreeCAD,"SurveyDialog"):
                                         FreeCAD.SurveyDialog.update(2,t)
@@ -878,7 +877,7 @@ def survey(callback=False):
                                     t = u.getUserPreferred()[0]
                                     t = t.encode("utf8")
                                     anno.LabelText = "l " + t
-                                    FreeCAD.Console.PrintMessage("Object: " + n + ", Element: Whole, Length: " + utf8_decode(t) + "\n")
+                                    FreeCAD.Console.PrintMessage("Object: " + n + ", Element: Whole, Length: " + t + "\n")
                                     FreeCAD.SurveyObserver.totalLength += u.Value
                                     if hasattr(FreeCAD,"SurveyDialog"):
                                         FreeCAD.SurveyDialog.update(1,t)
@@ -905,7 +904,7 @@ def survey(callback=False):
                                         t = u.getUserPreferred()[0]
                                         t = t.replace("^2","²")
                                         anno.LabelText = "a " + t
-                                        FreeCAD.Console.PrintMessage("Object: " + n + ", Element: " + el + ", Area: "+ utf8_decode(t)  + "\n")
+                                        FreeCAD.Console.PrintMessage("Object: " + n + ", Element: " + el + ", Area: "+ t + "\n")
                                         FreeCAD.SurveyObserver.totalArea += u.Value
                                         if hasattr(FreeCAD,"SurveyDialog"):
                                             FreeCAD.SurveyDialog.update(2,t)
@@ -913,7 +912,7 @@ def survey(callback=False):
                                         u= FreeCAD.Units.Quantity(e.Length,FreeCAD.Units.Length)
                                         t = u.getUserPreferred()[0]
                                         anno.LabelText = "l " + t
-                                        FreeCAD.Console.PrintMessage("Object: " + n + ", Element: " + el + ", Length: " + utf8_decode(t) + "\n")
+                                        FreeCAD.Console.PrintMessage("Object: " + n + ", Element: " + el + ", Length: " + t + "\n")
                                         FreeCAD.SurveyObserver.totalLength += u.Value
                                         if hasattr(FreeCAD,"SurveyDialog"):
                                             FreeCAD.SurveyDialog.update(1,t)
@@ -921,7 +920,7 @@ def survey(callback=False):
                                         u = FreeCAD.Units.Quantity(e.Z,FreeCAD.Units.Length)
                                         t = u.getUserPreferred()[0]
                                         anno.LabelText = "z " + t
-                                        FreeCAD.Console.PrintMessage("Object: " + n + ", Element: " + el + ", Zcoord: " + utf8_decode(t) + "\n")
+                                        FreeCAD.Console.PrintMessage("Object: " + n + ", Element: " + el + ", Zcoord: " + t + "\n")
                                     if FreeCAD.GuiUp and t:
                                         if showUnit:
                                             QtGui.QApplication.clipboard().setText(t)
@@ -1087,7 +1086,7 @@ class SurveyTaskPanel:
     def update(self,column,txt):
         item = QtGui.QTreeWidgetItem(self.tree)
         self.tree.setCurrentItem(item)
-        item.setText(column,utf8_decode(txt))
+        item.setText(column,txt)
 
     def setDescr(self,item,col):
         self.descr.setText(item.text(0))
@@ -1539,7 +1538,7 @@ class _CommandCheck:
         else:
             FreeCADGui.Selection.clearSelection()
             for i in result:
-                FreeCAD.Console.PrintWarning("Object "+i[0].Name+" ("+i[0].Label+") "+ utf8_decode(i[1]))
+                FreeCAD.Console.PrintWarning("Object "+i[0].Name+" ("+i[0].Label+") "+i[1])
                 FreeCADGui.Selection.addSelection(i[0])
 
 
