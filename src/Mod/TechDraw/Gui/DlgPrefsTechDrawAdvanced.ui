@@ -530,7 +530,7 @@ can be a performance penalty in complex models.</string>
            <string>If checked, FreeCAD will use the new face finder algorithm.  If not checked, FreeCAD will use the original face finder.</string>
           </property>
           <property name="text">
-           <string>Use New Face Finder</string>
+           <string>Use New Face Finder Algorithm</string>
           </property>
           <property name="checked">
            <bool>true</bool>
