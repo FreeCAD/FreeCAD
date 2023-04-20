@@ -39,6 +39,7 @@ public:
     static void initClass();
     SoZoomTranslation();
     SoSFVec3f abPos;
+    float getScaleFactor() const { return scaleFactor;}
 
 protected:
     ~SoZoomTranslation() override {}
@@ -49,7 +50,9 @@ protected:
     void getBoundingBox(SoGetBoundingBoxAction * action) override;
     void callback(SoCallbackAction * action) override;
     void pick(SoPickAction * action) override;
-    float getScaleFactor(SoAction * action) const;
+    float calculateScaleFactor (SoAction * action) const;
+
+    mutable float scaleFactor;
 };
 
 }
