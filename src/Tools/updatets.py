@@ -365,10 +365,10 @@ def update_translation(entry):
             return
 
         with open(f"{cur}/tsupdate_stdout.log", "a", encoding="utf-8") as f:
-            f.write(p.stdout.decode())
-            print(p.stdout.decode())
+            f.write(p.stdout)
+            print(p.stdout)
         with open(f"{cur}/tsupdate_stderr.log", "a", encoding="utf-8") as f:
-            f.write(p.stderr.decode())
+            f.write(p.stderr)
 
         # Strip out obsolete strings, and make sure there are no translations in the main *.ts file
         subprocess.run(
