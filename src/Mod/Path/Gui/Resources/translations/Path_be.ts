@@ -126,7 +126,7 @@
     <message>
       <location filename="../panels/DlgJobModelSelect.ui" line="14"/>
       <source>Select Base Models</source>
-      <translation>Абярыце базавыя мадэлі</translation>
+      <translation>Абярыце асноўныя мадэлі</translation>
     </message>
     <message>
       <location filename="../panels/DlgJobModelSelect.ui" line="24"/>
@@ -141,7 +141,7 @@
     <message>
       <location filename="../panels/DlgJobModelSelect.ui" line="44"/>
       <source>Base Models</source>
-      <translation>Базавыя мадэлі</translation>
+      <translation>Асноўныя мадэлі</translation>
     </message>
     <message>
       <location filename="../panels/DlgJobTemplateExport.ui" line="14"/>
@@ -231,7 +231,7 @@
     <message>
       <location filename="../panels/DlgJobTemplateExport.ui" line="141"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If enabled the creation of stock is included in the template. If a template does not include a stock definition the default stock creation algorithm will be used (creation from the Base object's bound box).&lt;/p&gt;&lt;p&gt;This option is most useful if stock is a box or cylinder, or if the machine has a standard placement for machining.&lt;/p&gt;&lt;p&gt;Note that this option is disabled if a stock object from an existing solid is used in the job - they cannot be stored in a template.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt; Калі ўключана, то стварэнне прыпуску ўключана ў шаблон. Калі шаблон не ўтрымлівае вызначэнне прыпуску, будзе ўжывацца алгарытм стварэння першапачатковага прыпуску (стварэнне з звязанага поля базавага аб'екта).&lt;/p&gt;&lt;p&gt;Гэтая налада найбольш карысная, калі прыпуск уяўляе сабой паралелепіпед ці цыліндр, альбо калі станок мае стандартнае размяшчэнне для апрацоўкі.&lt;/p&gt;&lt;p&gt;Звярніце ўвагу, што гэтая налада адключаная, калі ў заданні ўжываюцца аб'екты загатоўкі з існуючага суцэльнага цела - яны не могуць быць захаваныя ў шаблоне.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt; Калі ўключана, то стварэнне прыпуску ўключана ў шаблон. Калі шаблон не ўтрымлівае вызначэнне прыпуску, будзе ўжывацца алгарытм стварэння першапачатковага прыпуску (стварэнне з звязанага поля асноўнага аб'екту).&lt;/p&gt;&lt;p&gt;Гэтая налада найбольш карысная, калі прыпуск уяўляе сабой паралелепіпед ці цыліндр, альбо калі станок мае стандартнае размяшчэнне для апрацоўкі.&lt;/p&gt;&lt;p&gt;Звярніце ўвагу, што гэтая налада адключаная, калі ў заданні ўжываюцца аб'екты загатоўкі з існуючага суцэльнага цела - яны не могуць быць захаваныя ў шаблоне.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/DlgJobTemplateExport.ui" line="144"/>
@@ -241,7 +241,7 @@
     <message>
       <location filename="../panels/DlgJobTemplateExport.ui" line="153"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If enabled the current size settings for the stock object are included in the template.&lt;/p&gt;&lt;p&gt;For Box and Cylinder stocks this means the actual size of the stock solid being created.&lt;/p&gt;&lt;p&gt;For stock from the Base object's bound box it means the extra material in all directions. A stock object created from such a template will get its basic size from the new job's Base object and apply the stored extra settings.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Калі ўключана, бягучыя налады памеру для аб'екта прыпуску ўключаны ў шаблон.&lt;/p&gt;&lt;p&gt;Для загатоўкі паралелепіпеда і цыліндра гэта азначае фактычны памер створанага аб'екта прыпуску.&lt;/p&gt;&lt;p&gt;Для загатоўкі з звязанага поля базавага аб'екта гэта азначае дадатковы матэрыял ва ўсіх напрамках. Аб'ект загатоўкі, які створаны на аснове такога шаблону, атрымае свой асноўны памер з асноўнага аб'екта новага задання, і прыменіць захаваныя дадатковыя налады.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Калі ўключана, бягучыя налады памеру для аб'екта прыпуску ўключаны ў шаблон.&lt;/p&gt;&lt;p&gt;Для загатоўкі паралелепіпеда і цыліндра гэта азначае фактычны памер створанага аб'екта прыпуску.&lt;/p&gt;&lt;p&gt;Для загатоўкі з звязанага поля асноўнага аб'екту гэта азначае дадатковы матэрыял ва ўсіх напрамках. Аб'ект загатоўкі, які створаны на аснове такога шаблону, атрымае свой асноўны памер з асноўнага аб'екта новага задання, і прыменіць захаваныя дадатковыя налады.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/DlgJobTemplateExport.ui" line="156"/>
@@ -665,7 +665,7 @@
     <message>
       <location filename="../panels/DressupPathBoundary.ui" line="223"/>
       <source>Width</source>
-      <translation type="unfinished">Width</translation>
+      <translation>Шырыня</translation>
     </message>
     <message>
       <location filename="../panels/DressupPathBoundary.ui" line="230"/>
@@ -690,7 +690,7 @@
     <message>
       <location filename="../panels/PageBaseGeometryEdit.ui" line="36"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;List of operations with Base Geometry in current Job.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Спіс аперацый з базавай геаметрыяй у бягучым заданні.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Спіс аперацый з асноўнай геаметрыяй у бягучым заданні.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PageBaseGeometryEdit.ui" line="43"/>
@@ -700,12 +700,12 @@
     <message>
       <location filename="../panels/PageBaseGeometryEdit.ui" line="59"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Select one or more features in the 3d view and press 'Add' to add them as the base items for this operation.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Selected features can be deleted entirely.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Абярыце адзін ці некалькі магчымасцяў у трохмерным прадстаўленні і націсніце 'Дадаць', каб дадаць іх у якасці базавых элементаў для гэтай аперацыі.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Абраныя магчымасці могуць быць цалкам выдаленыя.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Абярыце адзін ці некалькі магчымасцяў у трохмерным прадстаўленні і націсніце 'Дадаць', каб дадаць іх у якасці асноўных элементаў для гэтай аперацыі.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Абраныя магчымасці могуць быць цалкам выдаленыя.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PageBaseGeometryEdit.ui" line="69"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Add selected features to the list of base geometries for this operation.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Дадайце абраныя магчымасці ў спіс базавых геаметрый для гэтай аперацыі.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Дадайце абраныя магчымасці ў спіс асноўных геаметрый для гэтай аперацыі.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PageBaseGeometryEdit.ui" line="72"/>
@@ -717,7 +717,7 @@
     <message>
       <location filename="../panels/PageBaseGeometryEdit.ui" line="79"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Remove the selected list items from the list of base geometries. The operation will not be applied to them.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Выдаліце абраныя элементы з спісу базавых геаметрыі. Аперацыя не будзе прыменена да іх.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Выдаліце абраныя элементы з спісу асноўнай геаметрыі. Аперацыя не будзе прыменена да іх.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PageBaseGeometryEdit.ui" line="82"/>
@@ -730,7 +730,7 @@
     <message>
       <location filename="../panels/PageBaseGeometryEdit.ui" line="89"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Clears list of base geometries.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Ачысціце спіс базавых геаметрый.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Ачысціце спіс асноўных геаметрый.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PageBaseGeometryEdit.ui" line="92"/>
@@ -762,17 +762,17 @@
     <message>
       <location filename="../panels/PageBaseHoleGeometryEdit.ui" line="42"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Add selected items from 3d view to the list of base geometries.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Дадайце абраныя элементы з трохмернага прадстаўлення ў спіс базавых геаметрый.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Дадайце абраныя элементы з трохмернага прадстаўлення ў спіс асноўных геаметрый.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PageBaseHoleGeometryEdit.ui" line="52"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Remove selected list items from the list of base geometries. The operation is no longer applied to them.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Выдаліце абраныя элементы з спісу базавых геаметрыі. Аперацыя больш не ўжываецца да іх.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Выдаліце абраныя элементы з спісу асноўных геаметрыі. Аперацыя больш не ўжываецца да іх.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PageBaseHoleGeometryEdit.ui" line="62"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Remove all list items and fill list with all eligible features from the job's base object.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Выдаліце ўсе элементы спісу і запоўніце спіс усімі падыходнымі магчымасцямі з базавага аб'екта задання.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Выдаліце ўсе элементы спісу і запоўніце спіс усімі падыходнымі магчымасцямі з асноўнага аб'екта задання.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PageBaseHoleGeometryEdit.ui" line="65"/>
@@ -1247,7 +1247,7 @@
     <message>
       <location filename="../panels/PageOpEngraveEdit.ui" line="70"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Specify the vertex number of the underlying shape string at which engraving should start.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Пакажыце нумар вяршыні базавай радкі фігуры, з якой павінна пачынацца гравіроўка.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Пакажыце нумар вяршыні асноўнага радка фігуры, з якой павінна пачынацца гравіроўка.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PageOpHelixEdit.ui" line="63"/>
@@ -1467,7 +1467,7 @@
     <message>
       <location filename="../panels/PageOpPocketFullEdit.ui" line="232"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If selected the operation uses the outline of the selected base geometry and ignores all holes and islands.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Калі абрана, аперацыя ўжывае контур абранай базавай геаметрыі і ігнаруе ўсе адтуліны і астраўкі.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Калі абрана, аперацыя ўжывае контур абранай асноўнай геаметрыі і прапускае ўсе адтуліны і астраўкі.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PageOpPocketFullEdit.ui" line="242"/>
@@ -1553,7 +1553,7 @@
     <message>
       <location filename="../panels/PageOpProfileFullEdit.ui" line="137"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Check if this profile operation should also process holes in the base geometry.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Found holes are automatically offset on the opposite cut side and performed in the opposite direction as perimeters.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Note that this does not include cylindrical holes, the assumption being that they will get drilled.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Правярае, ці павінна гэтая аперацыя прафілявання таксама апрацоўваць адтуліны ў базавай геаметрыі.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Знойдзеныя адтуліны аўтаматычна ссоўваюцца на супрацьлеглы бок апрацоўкі, і выконваецца ў супрацьлеглым напрамку ад перыметраў.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Звярніце ўвагу, што гэта не ўключае круглыя адтуліны, бо мяркуецца, што яны будуць прасвідраваныя.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Правярае, ці павінна гэтая аперацыя прафілявання таксама апрацоўваць адтуліны ў асноўнай геаметрыі.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Знойдзеныя адтуліны аўтаматычна ссоўваюцца на супрацьлеглы бок апрацоўкі, і выконваецца ў супрацьлеглым напрамку ад перыметраў.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Звярніце ўвагу, што гэта не ўключае круглыя адтуліны, бо мяркуецца, што яны будуць прасвідраваныя.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PageOpProfileFullEdit.ui" line="140"/>
@@ -1583,7 +1583,7 @@
     <message>
       <location filename="../panels/PageOpProfileFullEdit.ui" line="167"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Check if this profile operation should also process the outside perimeter of the base geometry shapes.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Праверце, ці павінна гэтая аперацыя прафілявання таксама апрацоўваць вонкавы перыметр базавых геаметрычных фігур.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Праверце, ці павінна гэтая аперацыя прафілявання таксама апрацоўваць вонкавы перыметр асноўных геаметрычных фігур.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PageOpProfileFullEdit.ui" line="170"/>
@@ -1653,12 +1653,12 @@
     <message>
       <location filename="../panels/PageOpSlotEdit.ui" line="222"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;No Base Geometry selected.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Без абранай базавай геаметрыі.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Без абранай асноўнай геаметрыі.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSlotEdit.ui" line="228"/>
       <source>No Base Geometry selected.</source>
-      <translation>Без абранай базавай геаметрыі.</translation>
+      <translation>Без абранай асноўнай геаметрыі.</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSlotEdit.ui" line="241"/>
@@ -1712,7 +1712,7 @@
     <message>
       <location filename="../panels/PageOpSlotEdit.ui" line="366"/>
       <source>Multi-pass</source>
-      <translation type="unfinished">Multi-pass</translation>
+      <translation>Шматпраходны</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSlotEdit.ui" line="374"/>
@@ -1796,7 +1796,7 @@
     <message>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="140"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Avoid cutting the last 'N' faces in the Base Geometry list of selected faces.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Пазбягае апрацоўкі апошніх 'N' граняў у спісе абраных граняў базавай геаметрыі.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Пазбягае апрацоўкі апошніх 'N' граняў у спісе абраных граняў асноўнай геаметрыі.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="147"/>
@@ -2294,7 +2294,7 @@
     <message>
       <location filename="../preferences/PathJob.ui" line="89"/>
       <source>Geometry</source>
-      <translation type="unfinished">Geometry</translation>
+      <translation>Геаметрыя</translation>
     </message>
     <message>
       <location filename="../preferences/PathJob.ui" line="97"/>
@@ -2330,7 +2330,7 @@
     <message>
       <location filename="../preferences/PathJob.ui" line="182"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Enter a path and optionally file name (see below) to be used as the default for the post processor export.&lt;/p&gt;&lt;p&gt;The following substitutions are performed before the name is resolved at the time of the post processing:&lt;/p&gt;&lt;p&gt;Substitution allows the following:&lt;/p&gt;&lt;p&gt;%D ... directory of the active document&lt;/p&gt;&lt;p&gt;%d ... name of the active document (with extension)&lt;/p&gt;&lt;p&gt;%M ... user macro directory&lt;/p&gt;&lt;p&gt;%j ... name of the active Job object&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;The Following can be used if output is being split. If Output is not split&lt;/p&gt;&lt;p&gt;these will be ignored.  &lt;/p&gt;&lt;p&gt;%T ... Tool Number&lt;/p&gt;&lt;p&gt;%t ... Tool Controller label&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;%W ... Work Coordinate System&lt;/p&gt;&lt;p&gt;%O ... Operation Label&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;When splitting output, a sequence number will always be added.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;if %S is included, you can specify where the number occurs.  Without it, the number will be    added to the end of the string.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;%S ... Sequence Number&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;The following example store all files with the same name as the document the directory /home/freecad (please remove quotes):&lt;/p&gt;&lt;p&gt;&amp;quot;/home/cnc/%d.g-code&amp;quot;&lt;/p&gt;&lt;p&gt;See the file save policy below on how to deal with name conflicts.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Увядзіце шлях і неабавязковае імя файла (глядзіце ніжэй), якія будуць ужытыя як першапачатковае значэнне для экспартавання ў пасляапрацоўку.&lt;/p&gt;&lt;p&gt;Наступныя падстаноўкі выконваюцца да дазволу імя падчас пасляапрацоўкі:&lt;/p&gt;&lt;p&gt;Падстаноўка дазваляе наступнае:&lt;/p&gt;&lt;p&gt;%D ... шлях да бягучага дакументу&lt;/p&gt;&lt;p&gt;%d ... імя бягучага дакументу (з пашырэннем)&lt;/p&gt;&lt;p&gt;%M ... каталог макрасаў карыстальніка&lt;/p&gt;&lt;p&gt;%j ... назва бягучага аб'екта задання&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Пры падзеле выходных дадзеных можна ўжываць наступныя налады. Калі выходныя дадзеныя не падзеленыя&lt;/p&gt; &lt;p&gt;яны будуць праігнараваныя.&lt;/p&gt;&lt;p&gt;%T ... нумар інструмента&lt;/p&gt;&lt;p&gt;%t ... метка кантролера інструмента&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;%W ... працоўная сістэма каардынат&lt;/p&gt;&lt;p&gt;%O ... метка аперацыі&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Пры падзеле выходных дадзеных заўсёды будзе дададзены парадкавы нумар.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Калі дададзены %S, вы можаце паказаць, дзе будзе ўстаўлены гэты лік. Без гэтага лік будзе дададзены ў канцы радка.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;%S ... парадкавы нумар&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;У наступным прыкладзе ўсе файлы з тым жа іменем, што і ў дакумента, захоўваюцца ў каталогу /home/freecad (калі ласка, прыбярыце двукоссі):&lt;/p&gt;&lt;p&gt;&amp;quot;/home/cnc/%d.g-code&amp;quot;&lt;/p&gt;&lt;p&gt; Глядзіце палітыку захавання файлаў ніжэй пра тое, як змагацца з канфліктамі імёнаў.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Увядзіце шлях і неабавязковае імя файла (глядзіце ніжэй), якія будуць ужытыя як першапачатковае значэнне для экспартавання ў пасляапрацоўку.&lt;/p&gt;&lt;p&gt;Наступныя падстаноўкі выконваюцца да дазволу імя падчас пасляапрацоўкі:&lt;/p&gt;&lt;p&gt;Падстаноўка дазваляе наступнае:&lt;/p&gt;&lt;p&gt;%D ... шлях да бягучага дакументу&lt;/p&gt;&lt;p&gt;%d ... імя бягучага дакументу (з пашырэннем)&lt;/p&gt;&lt;p&gt;%M ... каталог макрасаў карыстальніка&lt;/p&gt;&lt;p&gt;%j ... назва бягучага аб'екта задання&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Пры падзеле выходных дадзеных можна ўжываць наступныя налады. Калі выходныя дадзеныя не падзеленыя&lt;/p&gt; &lt;p&gt;яны будуць прапушчаныя.&lt;/p&gt;&lt;p&gt;%T ... нумар інструмента&lt;/p&gt;&lt;p&gt;%t ... метка кантролера інструмента&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;%W ... працоўная сістэма каардынат&lt;/p&gt;&lt;p&gt;%O ... метка аперацыі&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Пры падзеле выходных дадзеных заўсёды будзе дададзены парадкавы нумар.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Калі дададзены %S, вы можаце паказаць, дзе будзе ўстаўлены гэты лік. Без гэтага лік будзе дададзены ў канцы радка.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;%S ... парадкавы нумар&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;У наступным прыкладзе ўсе файлы з тым жа іменем, што і ў дакумента, захоўваюцца ў каталогу /home/freecad (калі ласка, прыбярыце двукоссі):&lt;/p&gt;&lt;p&gt;&amp;quot;/home/cnc/%d.g-code&amp;quot;&lt;/p&gt;&lt;p&gt; Глядзіце палітыку захавання файлаў ніжэй пра тое, як змагацца з канфліктамі імёнаў.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../preferences/PathJob.ui" line="200"/>
@@ -2461,7 +2461,7 @@
     <message>
       <location filename="../preferences/PathJob.ui" line="487"/>
       <source>Width</source>
-      <translation type="unfinished">Width</translation>
+      <translation>Шырыня</translation>
     </message>
     <message>
       <location filename="../preferences/PathJob.ui" line="523"/>
@@ -2668,7 +2668,7 @@
     <message>
       <location filename="../preferences/Advanced.ui" line="45"/>
       <source>Suppress warning about setting the rapid speed rates for accurate cycle time calculation. Ignored if all speed warnings are already suppressed.</source>
-      <translation>Адключае папярэджанні аб усталяванні высокіх хуткасцяў для дакладнага разліку часу цыклу. Ігнаруецца, калі ўсе папярэджанні аб перавышэнні хуткасці ўжо адключаныя.</translation>
+      <translation>Адключае папярэджанні аб усталяванні высокіх хуткасцяў для дакладнага разліку часу цыклу. Прапускаецца, калі ўсе папярэджанні аб перавышэнні хуткасці ўжо адключаныя.</translation>
     </message>
     <message>
       <location filename="../preferences/Advanced.ui" line="48"/>
@@ -2983,7 +2983,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/DogboneEdit.ui" line="142"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Enter length for each bone if &lt;span style=" font-weight:600;"&gt;Incision&lt;/span&gt; is set to &lt;span style=" font-weight:600;"&gt;custom&lt;/span&gt;, ignored otherwise.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Калі ласка, увядзіце даўжыню для кожнай косткі, калі &lt;span style=" font-weight:600;"&gt;Надрэз&lt;/span&gt; зададзены ў &lt;span style=" font-weight:600;"&gt;карыстальніцкі&lt;/span&gt;, у адваротным выпадку ігнаруецца.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Калі ласка, увядзіце даўжыню для кожнай косткі, калі &lt;span style=" font-weight:600;"&gt;Надрэз&lt;/span&gt; зададзены ў &lt;span style=" font-weight:600;"&gt;карыстальніцкі&lt;/span&gt;, у адваротным выпадку прапускаюцца.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/DogboneEdit.ui" line="155"/>
@@ -3038,7 +3038,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/HoldingTagsEdit.ui" line="26"/>
       <source>Width</source>
-      <translation type="unfinished">Width</translation>
+      <translation>Шырыня</translation>
     </message>
     <message>
       <location filename="../panels/HoldingTagsEdit.ui" line="33"/>
@@ -3564,7 +3564,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/PathEdit.ui" line="141"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Enter a path and optionally file name (see below) to be used as the default for the post processor export.&lt;/p&gt;&lt;p&gt;The following substitutions are performed before the name is resolved at the time of the post processing:&lt;/p&gt;&lt;p&gt;Substitution allows the following:&lt;/p&gt;&lt;p&gt;%D ... directory of the active document&lt;/p&gt;&lt;p&gt;%d ... name of the active document (with extension)&lt;/p&gt;&lt;p&gt;%M ... user macro directory&lt;/p&gt;&lt;p&gt;%j ... name of the active Job object&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;The Following can be used if output is being split. If Output is not split&lt;/p&gt;&lt;p&gt;these will be ignored.  &lt;/p&gt;&lt;p&gt;%T ... Tool Number&lt;/p&gt;&lt;p&gt;%t ... Tool Controller label&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;%W ... Work Coordinate System&lt;/p&gt;&lt;p&gt;%O ... Operation Label&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;When splitting output, a sequence number will always be added.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;if %S is included, you can specify where the number occurs.  Without it, the number will be    added to the end of the string.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;%S ... Sequence Number&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;The following example store all files with the same name as the document the directory /home/freecad (please remove quotes):&lt;/p&gt;&lt;p&gt;&amp;quot;/home/cnc/%d.g-code&amp;quot;&lt;/p&gt;&lt;p&gt;See the file save policy below on how to deal with name conflicts.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Увядзіце шлях і неабавязковае імя файла (глядзіце ніжэй), якія будуць ужытыя як першапачатковае значэнне для экспартавання ў пасляапрацоўку.&lt;/p&gt;&lt;p&gt;Наступныя падстаноўкі выконваюцца да дазволу імя падчас пасляапрацоўкі:&lt;/p&gt;&lt;p&gt;Падстаноўка дазваляе наступнае:&lt;/p&gt;&lt;p&gt;%D ... шлях да бягучага дакументу&lt;/p&gt;&lt;p&gt;%d ... імя бягучага дакументу (з пашырэннем)&lt;/p&gt;&lt;p&gt;%M ... каталог макрасаў карыстальніка&lt;/p&gt;&lt;p&gt;%j ... назва бягучага аб'екта задання&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Пры падзеле выходных дадзеных можна ўжываць наступныя налады. Калі выходныя дадзеныя не падзеленыя&lt;/p&gt; &lt;p&gt;яны будуць праігнараваныя.&lt;/p&gt;&lt;p&gt;%T ... нумар інструмента&lt;/p&gt;&lt;p&gt;%t ... метка кантролера інструмента&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;%W ... працоўная сістэма каардынат&lt;/p&gt;&lt;p&gt;%O ... метка аперацыі&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Пры падзеле выходных дадзеных заўсёды будзе дададзены парадкавы нумар.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Калі дададзены %S, вы можаце паказаць, дзе будзе ўстаўлены гэты лік. Без гэтага лік будзе дададзены ў канцы радка.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;%S ... парадкавы нумар&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;У наступным прыкладзе ўсе файлы з тым жа іменем, што і ў дакумента, захоўваюцца ў каталогу /home/freecad (калі ласка, прыбярыце двукоссі):&lt;/p&gt;&lt;p&gt;&amp;quot;/home/cnc/%d.g-code&amp;quot;&lt;/p&gt;&lt;p&gt; Глядзіце палітыку захавання файлаў ніжэй пра тое, як змагацца з канфліктамі імёнаў.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Увядзіце шлях і неабавязковае імя файла (глядзіце ніжэй), якія будуць ужытыя як першапачатковае значэнне для экспартавання ў пасляапрацоўку.&lt;/p&gt;&lt;p&gt;Наступныя падстаноўкі выконваюцца да дазволу імя падчас пасляапрацоўкі:&lt;/p&gt;&lt;p&gt;Падстаноўка дазваляе наступнае:&lt;/p&gt;&lt;p&gt;%D ... шлях да бягучага дакументу&lt;/p&gt;&lt;p&gt;%d ... імя бягучага дакументу (з пашырэннем)&lt;/p&gt;&lt;p&gt;%M ... каталог макрасаў карыстальніка&lt;/p&gt;&lt;p&gt;%j ... назва бягучага аб'екта задання&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Пры падзеле выходных дадзеных можна ўжываць наступныя налады. Калі выходныя дадзеныя не падзеленыя&lt;/p&gt; &lt;p&gt;яны будуць прапушчаныя.&lt;/p&gt;&lt;p&gt;%T ... нумар інструмента&lt;/p&gt;&lt;p&gt;%t ... метка кантролера інструмента&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;%W ... працоўная сістэма каардынат&lt;/p&gt;&lt;p&gt;%O ... метка аперацыі&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Пры падзеле выходных дадзеных заўсёды будзе дададзены парадкавы нумар.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Калі дададзены %S, вы можаце паказаць, дзе будзе ўстаўлены гэты лік. Без гэтага лік будзе дададзены ў канцы радка.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;%S ... парадкавы нумар&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;У наступным прыкладзе ўсе файлы з тым жа іменем, што і ў дакумента, захоўваюцца ў каталогу /home/freecad (калі ласка, прыбярыце двукоссі):&lt;/p&gt;&lt;p&gt;&amp;quot;/home/cnc/%d.g-code&amp;quot;&lt;/p&gt;&lt;p&gt; Глядзіце палітыку захавання файлаў ніжэй пра тое, як змагацца з канфліктамі імёнаў.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="366"/>
@@ -3655,7 +3655,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/PathEdit.ui" line="586"/>
       <source>Width</source>
-      <translation type="unfinished">Width</translation>
+      <translation>Шырыня</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="612"/>

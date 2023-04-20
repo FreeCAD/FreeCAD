@@ -517,7 +517,7 @@
     <message>
       <location filename="../../DlgProcessorChooser.ui" line="33"/>
       <source>Arguments</source>
-      <translation type="unfinished">Arguments</translation>
+      <translation>Аргументи</translation>
     </message>
   </context>
   <context>
@@ -2330,7 +2330,7 @@
     <message>
       <location filename="../preferences/PathJob.ui" line="182"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Enter a path and optionally file name (see below) to be used as the default for the post processor export.&lt;/p&gt;&lt;p&gt;The following substitutions are performed before the name is resolved at the time of the post processing:&lt;/p&gt;&lt;p&gt;Substitution allows the following:&lt;/p&gt;&lt;p&gt;%D ... directory of the active document&lt;/p&gt;&lt;p&gt;%d ... name of the active document (with extension)&lt;/p&gt;&lt;p&gt;%M ... user macro directory&lt;/p&gt;&lt;p&gt;%j ... name of the active Job object&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;The Following can be used if output is being split. If Output is not split&lt;/p&gt;&lt;p&gt;these will be ignored.  &lt;/p&gt;&lt;p&gt;%T ... Tool Number&lt;/p&gt;&lt;p&gt;%t ... Tool Controller label&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;%W ... Work Coordinate System&lt;/p&gt;&lt;p&gt;%O ... Operation Label&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;When splitting output, a sequence number will always be added.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;if %S is included, you can specify where the number occurs.  Without it, the number will be    added to the end of the string.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;%S ... Sequence Number&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;The following example store all files with the same name as the document the directory /home/freecad (please remove quotes):&lt;/p&gt;&lt;p&gt;&amp;quot;/home/cnc/%d.g-code&amp;quot;&lt;/p&gt;&lt;p&gt;See the file save policy below on how to deal with name conflicts.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Enter a path and optionally file name (see below) to be used as the default for the post processor export.&lt;/p&gt;&lt;p&gt;The following substitutions are performed before the name is resolved at the time of the post processing:&lt;/p&gt;&lt;p&gt;Substitution allows the following:&lt;/p&gt;&lt;p&gt;%D ... directory of the active document&lt;/p&gt;&lt;p&gt;%d ... name of the active document (with extension)&lt;/p&gt;&lt;p&gt;%M ... user macro directory&lt;/p&gt;&lt;p&gt;%j ... name of the active Job object&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;The Following can be used if output is being split. If Output is not split&lt;/p&gt;&lt;p&gt;these will be ignored.  &lt;/p&gt;&lt;p&gt;%T ... Tool Number&lt;/p&gt;&lt;p&gt;%t ... Tool Controller label&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;%W ... Work Coordinate System&lt;/p&gt;&lt;p&gt;%O ... Operation Label&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;When splitting output, a sequence number will always be added.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;if %S is included, you can specify where the number occurs.  Without it, the number will be    added to the end of the string.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;%S ... Sequence Number&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;The following example store all files with the same name as the document the directory /home/freecad (please remove quotes):&lt;/p&gt;&lt;p&gt;&amp;quot;/home/cnc/%d.g-code&amp;quot;&lt;/p&gt;&lt;p&gt;See the file save policy below on how to deal with name conflicts.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Дефиниши подразумевано име, екстензију и путању излазне Г-код датотеке, које ће користити постпроцесор.&lt;/p&gt;&lt;p&gt;Ако желите можете дефинисати правила како да поспроцесор назове вашу излазну датотеку и где да је смести.&lt;/p&gt;&lt;p&gt;Следећа правила могу постојати:&lt;/p&gt;&lt;p&gt;%D ...Фасцикла активног документа:&lt;/p&gt;&lt;p&gt;%d ... име активног документа:&lt;/p&gt;&lt;p&gt;%M ... фасцикла корисничких макро-а&lt;/p&gt;&lt;p&gt;%j ... име активног објекта Обрада&lt;/p&gt;&lt;p &gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Следећа правила се могу користити ако се излаз дели. Ако излаз није подељен&lt;/p&gt;&lt;p&gt;ова правила ће бити занемарена. &lt;/p&gt;&lt;p&gt;%T ... Број алата&lt;/p&gt;&lt;p&gt;%t ... Ознака контролера алата&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;%W ... Радни координатни систем&lt;/p&gt;&lt;p&gt;%O ... Ознака операције&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Када делите излаз, редни број ће увек бити додат.&lt; /p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;ако је %S укључен, можете одредити где се број појављује. Без тога, број ће бити додат на крај знаковног низа.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;%S ... Редни број&lt;/p&gt;&lt;p&gt;&lt;br/ &gt;&lt;/p&gt;&lt;p&gt;Следећи пример складишти све датотеке са истим именом као и документ у фасциклу /home/freecad (уклоните наводнике):&lt;/p&gt;&lt;p&gt;&amp;quot;/home/cnc/%d.g- code&amp;quot;&lt;/p&gt;&lt;p&gt;Ако  се догоди конфликт са именима погледај у наставку смернице за чување датотеке.&lt;/p&gt;&lt;/bodi&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../preferences/PathJob.ui" line="200"/>
@@ -2395,12 +2395,12 @@
     <message>
       <location filename="../preferences/PathJob.ui" line="295"/>
       <source>Default Arguments</source>
-      <translation type="unfinished">Default Arguments</translation>
+      <translation>Подразумевани Аргументи</translation>
     </message>
     <message>
       <location filename="../preferences/PathJob.ui" line="302"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Optional arguments passed to the default Post Processor specified above. See the Post Processor's documentation for supported arguments.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Optional arguments passed to the default Post Processor specified above. See the Post Processor's documentation for supported arguments.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Опциони аргументи се прослеђују подразумеваном постпроцесору који је горе наведен. Погледајте документацију постпроцесора за подржане аргументе.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../preferences/PathJob.ui" line="340"/>
@@ -3487,7 +3487,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/PathEdit.ui" line="45"/>
       <source>Label</source>
-      <translation type="unfinished">Label</translation>
+      <translation>Име</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="57"/>
@@ -3529,12 +3529,12 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/PathEdit.ui" line="165"/>
       <source>Arguments</source>
-      <translation type="unfinished">Arguments</translation>
+      <translation>Аргументи</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="172"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Optional arguments passed to the Post Processor. The arguments are specific for each Post Processor, please see it's documentation for details.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Optional arguments passed to the Post Processor. The arguments are specific for each Post Processor, please see it's documentation for details.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Опциони аргументи се прослеђују постпроцесору. Аргументи су специфични за сваки постпроцесор, погледајте документацију постпроцесора за детаље.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="185"/>
@@ -3549,12 +3549,12 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/PathEdit.ui" line="198"/>
       <source>Systems</source>
-      <translation type="unfinished">Systems</translation>
+      <translation>Системи</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="205"/>
       <source>Order By</source>
-      <translation type="unfinished">Order By</translation>
+      <translation>Разврстај по</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="224"/>
@@ -3564,7 +3564,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/PathEdit.ui" line="141"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Enter a path and optionally file name (see below) to be used as the default for the post processor export.&lt;/p&gt;&lt;p&gt;The following substitutions are performed before the name is resolved at the time of the post processing:&lt;/p&gt;&lt;p&gt;Substitution allows the following:&lt;/p&gt;&lt;p&gt;%D ... directory of the active document&lt;/p&gt;&lt;p&gt;%d ... name of the active document (with extension)&lt;/p&gt;&lt;p&gt;%M ... user macro directory&lt;/p&gt;&lt;p&gt;%j ... name of the active Job object&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;The Following can be used if output is being split. If Output is not split&lt;/p&gt;&lt;p&gt;these will be ignored.  &lt;/p&gt;&lt;p&gt;%T ... Tool Number&lt;/p&gt;&lt;p&gt;%t ... Tool Controller label&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;%W ... Work Coordinate System&lt;/p&gt;&lt;p&gt;%O ... Operation Label&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;When splitting output, a sequence number will always be added.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;if %S is included, you can specify where the number occurs.  Without it, the number will be    added to the end of the string.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;%S ... Sequence Number&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;The following example store all files with the same name as the document the directory /home/freecad (please remove quotes):&lt;/p&gt;&lt;p&gt;&amp;quot;/home/cnc/%d.g-code&amp;quot;&lt;/p&gt;&lt;p&gt;See the file save policy below on how to deal with name conflicts.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Enter a path and optionally file name (see below) to be used as the default for the post processor export.&lt;/p&gt;&lt;p&gt;The following substitutions are performed before the name is resolved at the time of the post processing:&lt;/p&gt;&lt;p&gt;Substitution allows the following:&lt;/p&gt;&lt;p&gt;%D ... directory of the active document&lt;/p&gt;&lt;p&gt;%d ... name of the active document (with extension)&lt;/p&gt;&lt;p&gt;%M ... user macro directory&lt;/p&gt;&lt;p&gt;%j ... name of the active Job object&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;The Following can be used if output is being split. If Output is not split&lt;/p&gt;&lt;p&gt;these will be ignored.  &lt;/p&gt;&lt;p&gt;%T ... Tool Number&lt;/p&gt;&lt;p&gt;%t ... Tool Controller label&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;%W ... Work Coordinate System&lt;/p&gt;&lt;p&gt;%O ... Operation Label&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;When splitting output, a sequence number will always be added.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;if %S is included, you can specify where the number occurs.  Without it, the number will be    added to the end of the string.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;%S ... Sequence Number&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;The following example store all files with the same name as the document the directory /home/freecad (please remove quotes):&lt;/p&gt;&lt;p&gt;&amp;quot;/home/cnc/%d.g-code&amp;quot;&lt;/p&gt;&lt;p&gt;See the file save policy below on how to deal with name conflicts.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Дефиниши подразумевано име, екстензију и путању излазне Г-код датотеке, које ће користити постпроцесор.&lt;/p&gt;&lt;p&gt;Ако желите можете дефинисати правила како да поспроцесор назове вашу излазну датотеку и где да је смести.&lt;/p&gt;&lt;p&gt;Следећа правила могу постојати:&lt;/p&gt;&lt;p&gt;%D ...Фасцикла активног документа:&lt;/p&gt;&lt;p&gt;%d ... име активног документа:&lt;/p&gt;&lt;p&gt;%M ... фасцикла корисничких макро-а&lt;/p&gt;&lt;p&gt;%j ... име активног објекта Обрада&lt;/p&gt;&lt;p &gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Следећа правила се могу користити ако се излаз дели. Ако излаз није подељен&lt;/p&gt;&lt;p&gt;ова правила ће бити занемарена. &lt;/p&gt;&lt;p&gt;%T ... Број алата&lt;/p&gt;&lt;p&gt;%t ... Ознака контролера алата&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;%W ... Радни координатни систем&lt;/p&gt;&lt;p&gt;%O ... Ознака операције&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Када делите излаз, редни број ће увек бити додат.&lt; /p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;ако је %S укључен, можете одредити где се број појављује. Без тога, број ће бити додат на крај знаковног низа.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;%S ... Редни број&lt;/p&gt;&lt;p&gt;&lt;br/ &gt;&lt;/p&gt;&lt;p&gt;Следећи пример складишти све датотеке са истим именом као и документ у фасциклу /home/freecad (уклоните наводнике):&lt;/p&gt;&lt;p&gt;&amp;quot;/home/cnc/%d.g- code&amp;quot;&lt;/p&gt;&lt;p&gt;Ако  се догоди конфликт са именима погледај у наставку смернице за чување датотеке.&lt;/p&gt;&lt;/bodi&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="366"/>
@@ -3579,7 +3579,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/PathEdit.ui" line="372"/>
       <source>Split Output</source>
-      <translation type="unfinished">Split Output</translation>
+      <translation>Подели излаз</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="396"/>
@@ -3660,7 +3660,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/PathEdit.ui" line="612"/>
       <source>Alignment</source>
-      <translation type="unfinished">Alignment</translation>
+      <translation>Поравнавање</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="618"/>
@@ -3685,7 +3685,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/PathEdit.ui" line="649"/>
       <source>Set</source>
-      <translation type="unfinished">Set</translation>
+      <translation>Подеси</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="655"/>

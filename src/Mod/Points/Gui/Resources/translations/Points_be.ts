@@ -183,7 +183,7 @@
     <message>
       <location filename="../../DlgPointsRead.ui" line="70"/>
       <source>Ignore</source>
-      <translation>Ігнараваць</translation>
+      <translation>Прапускаць</translation>
     </message>
     <message>
       <location filename="../../DlgPointsRead.ui" line="80"/>
@@ -198,7 +198,7 @@
     <message>
       <location filename="../../DlgPointsRead.ui" line="111"/>
       <source>Ignore lines starting with:</source>
-      <translation>Ігнараваць лініі, якія пачынаецца з:</translation>
+      <translation>Прапускаць лініі, якія пачынаецца з:</translation>
     </message>
     <message>
       <location filename="../../DlgPointsRead.ui" line="126"/>

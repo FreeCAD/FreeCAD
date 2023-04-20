@@ -1378,7 +1378,7 @@
     <message>
       <location filename="../panels/PageOpPocketFullEdit.ui" line="97"/>
       <source>Climb</source>
-      <translation type="unfinished">Climb</translation>
+      <translation>攀登</translation>
     </message>
     <message>
       <location filename="../panels/PageOpPocketFullEdit.ui" line="102"/>

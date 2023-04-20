@@ -740,7 +740,7 @@
       <location filename="../../Command.cpp" line="104"/>
       <location filename="../../Command.cpp" line="144"/>
       <source>Mesh Create</source>
-      <translation type="unfinished">Mesh Create</translation>
+      <translation>Vytvořit síť</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="183"/>
@@ -750,7 +750,7 @@
     <message>
       <location filename="../../Command.cpp" line="238"/>
       <source>Mesh union</source>
-      <translation type="unfinished">Mesh union</translation>
+      <translation>Spojit síť</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="307"/>
@@ -765,7 +765,7 @@
     <message>
       <location filename="../../Command.cpp" line="464"/>
       <source>Import Mesh</source>
-      <translation type="unfinished">Import Mesh</translation>
+      <translation>Importovat síť</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="662"/>
@@ -776,7 +776,7 @@
       <location filename="../../Command.cpp" line="1411"/>
       <location filename="../../DlgSmoothing.cpp" line="175"/>
       <source>Mesh Smoothing</source>
-      <translation type="unfinished">Mesh Smoothing</translation>
+      <translation>Vyhlazení sítě</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1502"/>

@@ -170,7 +170,7 @@ Dieser Befehl funktioniert nur mit einem 'mesh'-Objekt.</translation>
       <translation>Kanten verbinden, wenn die Distanz kleiner ist als</translation>
     </message>
     <message>
-      <location filename="../../CrossSections.cpp" line="343"/>
+      <location filename="../../CrossSections.cpp" line="366"/>
       <source>Failure</source>
       <translation>Ein Fehler ist aufgetreten</translation>
     </message>
@@ -489,27 +489,27 @@ Ein Wert im Bereich von 0.2-10.</translation>
       <translation>Gmsh</translation>
     </message>
     <message>
-      <location filename="../../Tessellation.cpp" line="212"/>
-      <location filename="../../Tessellation.cpp" line="218"/>
+      <location filename="../../Tessellation.cpp" line="225"/>
+      <location filename="../../Tessellation.cpp" line="231"/>
       <source>No active document</source>
       <translation>Kein aktives Dokument</translation>
     </message>
     <message>
-      <location filename="../../Tessellation.cpp" line="246"/>
+      <location filename="../../Tessellation.cpp" line="259"/>
       <source>You have selected a body without tip.
 Either set the tip of the body or select a different shape, please.</source>
       <translation>Es wurde ein Körper ohne TIP ausgewählt.
 Bitte TIP des Körpers festlegen oder eine andere Form auswählen.</translation>
     </message>
     <message>
-      <location filename="../../Tessellation.cpp" line="250"/>
+      <location filename="../../Tessellation.cpp" line="263"/>
       <source>You have selected a shape without faces.
 Select a different shape, please.</source>
       <translation>Du hast eine Form ohne Flächen ausgewählt.
 Wähle bitte eine andere Form aus.</translation>
     </message>
     <message>
-      <location filename="../../Tessellation.cpp" line="254"/>
+      <location filename="../../Tessellation.cpp" line="267"/>
       <source>Select a shape for meshing, first.</source>
       <translation>Wählen Sie zuerst eine Form für die Vernetzung.</translation>
     </message>
@@ -578,7 +578,7 @@ Wähle bitte eine andere Form aus.</translation>
     <message>
       <location filename="../../MeshFlatteningCommand.py" line="47"/>
       <source>Unwrap Mesh</source>
-      <translation type="unfinished">Unwrap Mesh</translation>
+      <translation>Netz entpacken</translation>
     </message>
     <message>
       <location filename="../../MeshFlatteningCommand.py" line="50"/>
@@ -591,7 +591,7 @@ Wähle bitte eine andere Form aus.</translation>
     <message>
       <location filename="../../MeshFlatteningCommand.py" line="79"/>
       <source>Unwrap Face</source>
-      <translation type="unfinished">Unwrap Face</translation>
+      <translation>Fläche entpacken</translation>
     </message>
     <message>
       <location filename="../../MeshFlatteningCommand.py" line="82"/>

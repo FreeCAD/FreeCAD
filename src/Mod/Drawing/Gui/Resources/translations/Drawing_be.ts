@@ -36,7 +36,7 @@
       <location filename="../../Command.cpp" line="525"/>
       <location filename="../../Command.cpp" line="527"/>
       <source>Inserts a clip group in the active drawing</source>
-      <translation>Уставіць суполку выглядаў у бягучы чарцёж</translation>
+      <translation>Уставіць суполку выразак у бягучы чарцёж</translation>
     </message>
   </context>
   <context>
