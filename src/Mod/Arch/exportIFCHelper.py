@@ -201,17 +201,21 @@ class recycler:
     # but it checks if a similar entity already exists before creating a new one
     # to compress a new type, just add the necessary method here
 
-    def __init__(self,ifcfile):
+    def __init__(self,ifcfile,template=True):
 
         self.ifcfile = ifcfile
         self.compress = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch").GetBool("ifcCompress",True)
         self.mergeProfiles = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch").GetBool("ifcMergeProfiles",False)
-        self.cartesianpoints = {(0,0,0):self.ifcfile[8]} # from template
-        self.directions = {(1,0,0):self.ifcfile[6],(0,0,1):self.ifcfile[7],(0,1,0):self.ifcfile[10]} # from template
+        self.cartesianpoints = {}
+        self.directions = {}
+        self.axis2placement3ds = {}
+        if template: # we are using the default template from exportIFC.py
+            self.cartesianpoints = {(0,0,0):self.ifcfile[8]} # from template
+            self.directions = {(1,0,0):self.ifcfile[6],(0,0,1):self.ifcfile[7],(0,1,0):self.ifcfile[10]} # from template
+            self.axis2placement3ds = {'(0.0, 0.0, 0.0)(0.0, 0.0, 1.0)(1.0, 0.0, 0.0)':self.ifcfile[9]} # from template
         self.polylines = {}
         self.polyloops = {}
         self.propertysinglevalues = {}
-        self.axis2placement3ds = {'(0.0, 0.0, 0.0)(0.0, 0.0, 1.0)(1.0, 0.0, 0.0)':self.ifcfile[9]} # from template
         self.axis2placement2ds = {}
         self.localplacements = {}
         self.rgbs = {}
