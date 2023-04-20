@@ -170,7 +170,7 @@ Ova naredba radi samo s 'mrežnim' objektom.</translation>
       <translation>Spojite rubove ako je udaljenost manja od</translation>
     </message>
     <message>
-      <location filename="../../CrossSections.cpp" line="343"/>
+      <location filename="../../CrossSections.cpp" line="366"/>
       <source>Failure</source>
       <translation>Neuspjeh</translation>
     </message>
@@ -232,7 +232,7 @@ Ova naredba radi samo s  'mreža', objektom a ne s uobičajenim licem ili površ
     <message>
       <location filename="../../TaskCurveOnMesh.ui" line="44"/>
       <source>Snap tolerance to vertices</source>
-      <translation>Tolerancija kod privuci na vrhove</translation>
+      <translation>Tolerancija kod Prikvači na vrhove</translation>
     </message>
     <message>
       <location filename="../../TaskCurveOnMesh.ui" line="51"/>
@@ -494,27 +494,27 @@ Vrijednost u rasponu 0.2-10.</translation>
       <translation>Gmsh</translation>
     </message>
     <message>
-      <location filename="../../Tessellation.cpp" line="212"/>
-      <location filename="../../Tessellation.cpp" line="218"/>
+      <location filename="../../Tessellation.cpp" line="225"/>
+      <location filename="../../Tessellation.cpp" line="231"/>
       <source>No active document</source>
       <translation>Nema aktivnog dokumenta</translation>
     </message>
     <message>
-      <location filename="../../Tessellation.cpp" line="246"/>
+      <location filename="../../Tessellation.cpp" line="259"/>
       <source>You have selected a body without tip.
 Either set the tip of the body or select a different shape, please.</source>
       <translation>Odabrali ste tijelo bez vrha.
 Postavite vrh tijela ili odaberite drugi oblik, molim.</translation>
     </message>
     <message>
-      <location filename="../../Tessellation.cpp" line="250"/>
+      <location filename="../../Tessellation.cpp" line="263"/>
       <source>You have selected a shape without faces.
 Select a different shape, please.</source>
       <translation>Odabrali ste oblik bez naličja.
 Odaberite drugačiji oblik, molim.</translation>
     </message>
     <message>
-      <location filename="../../Tessellation.cpp" line="254"/>
+      <location filename="../../Tessellation.cpp" line="267"/>
       <source>Select a shape for meshing, first.</source>
       <translation>Prvo daberite oblik za umrežavanje.</translation>
     </message>
