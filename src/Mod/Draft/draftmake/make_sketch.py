@@ -182,7 +182,7 @@ def make_sketch(objects_list, autoconstraints=False, addTo=None,
         if DraftGeomUtils.geomType(edge) == "BezierCurve":
             return(edge.Curve.toBSpline(edge.FirstParameter,edge.LastParameter).toShape())
         else:
-            return(edge)
+            return edge
 
 
     axis = App.Vector(0, 0, 1).cross(normal)

@@ -23,7 +23,8 @@ __title__  = "FreeCAD GbXml exporter"
 __author__ = "Yorik van Havre"
 __url__    = "https://www.freecadweb.org"
 
-import FreeCAD,Draft
+import FreeCAD
+import Draft
 
 if FreeCAD.GuiUp:
     from draftutils.translate import translate
@@ -495,7 +496,3 @@ def export(objectslist,filename):
 ... repeat
 
 </gbXML>'''
-
-
-
-

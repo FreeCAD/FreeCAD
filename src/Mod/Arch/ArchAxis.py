@@ -19,8 +19,12 @@
 #*                                                                         *
 #***************************************************************************
 
+import math
 
-import FreeCAD, Part, Draft, math, ArchCommands
+import FreeCAD
+import ArchCommands
+import Draft
+import Part
 from FreeCAD import Vector
 if FreeCAD.GuiUp:
     import FreeCADGui, re

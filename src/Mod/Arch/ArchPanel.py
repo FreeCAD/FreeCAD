@@ -19,7 +19,14 @@
 #*                                                                         *
 #***************************************************************************
 
-import FreeCAD,Draft,ArchComponent,DraftVecUtils,ArchCommands,math, Part
+import math
+
+import FreeCAD
+import ArchCommands
+import ArchComponent
+import Draft
+import DraftVecUtils
+import Part
 from FreeCAD import Vector
 if FreeCAD.GuiUp:
     import FreeCADGui
@@ -29,7 +36,7 @@ if FreeCAD.GuiUp:
     import draftguitools.gui_trackers as DraftTrackers
 else:
     # \cond
-    def translate(ctxt,txt,utf8_decode=False):
+    def translate(ctxt,txt):
         return txt
     def QT_TRANSLATE_NOOP(ctxt,txt):
         return txt
@@ -198,11 +205,11 @@ class CommandPanel:
 
         w = QtGui.QWidget()
         ui = FreeCADGui.UiLoader()
-        w.setWindowTitle(translate("Arch","Panel options", utf8_decode=True))
+        w.setWindowTitle(translate("Arch","Panel options"))
         grid = QtGui.QGridLayout(w)
 
         # presets box
-        labelp = QtGui.QLabel(translate("Arch","Preset", utf8_decode=True))
+        labelp = QtGui.QLabel(translate("Arch","Preset"))
         valuep = QtGui.QComboBox()
         fpresets = [" "]
         for p in Presets[1:]:
@@ -212,32 +219,32 @@ class CommandPanel:
         grid.addWidget(valuep,0,1,1,1)
 
         # length
-        label1 = QtGui.QLabel(translate("Arch","Length", utf8_decode=True))
+        label1 = QtGui.QLabel(translate("Arch","Length"))
         self.vLength = ui.createWidget("Gui::InputField")
         self.vLength.setText(FreeCAD.Units.Quantity(self.Length,FreeCAD.Units.Length).UserString)
         grid.addWidget(label1,1,0,1,1)
         grid.addWidget(self.vLength,1,1,1,1)
 
         # width
-        label2 = QtGui.QLabel(translate("Arch","Width", utf8_decode=True))
+        label2 = QtGui.QLabel(translate("Arch","Width"))
         self.vWidth = ui.createWidget("Gui::InputField")
         self.vWidth.setText(FreeCAD.Units.Quantity(self.Width,FreeCAD.Units.Length).UserString)
         grid.addWidget(label2,2,0,1,1)
         grid.addWidget(self.vWidth,2,1,1,1)
 
         # height
-        label3 = QtGui.QLabel(translate("Arch","Thickness", utf8_decode=True))
+        label3 = QtGui.QLabel(translate("Arch","Thickness"))
         self.vHeight = ui.createWidget("Gui::InputField")
         self.vHeight.setText(FreeCAD.Units.Quantity(self.Thickness,FreeCAD.Units.Length).UserString)
         grid.addWidget(label3,3,0,1,1)
         grid.addWidget(self.vHeight,3,1,1,1)
 
         # horizontal button
-        value5 = QtGui.QPushButton(translate("Arch","Rotate", utf8_decode=True))
+        value5 = QtGui.QPushButton(translate("Arch","Rotate"))
         grid.addWidget(value5,4,0,1,2)
 
         # continue button
-        label4 = QtGui.QLabel(translate("Arch","Con&tinue", utf8_decode=True))
+        label4 = QtGui.QLabel(translate("Arch","Con&tinue"))
         value4 = QtGui.QCheckBox()
         value4.setObjectName("ContinueCmd")
         value4.setLayoutDirection(QtCore.Qt.RightToLeft)
@@ -846,7 +853,8 @@ class PanelCut(Draft.DraftObject):
             base = None
             n = None
             if Draft.getType(obj.Source) == "Panel":
-                import Part,DraftGeomUtils
+                import DraftGeomUtils
+                import Part
                 baseobj = None
                 if obj.Source.CloneOf:
                     baseobj = obj.Source.CloneOf.Base

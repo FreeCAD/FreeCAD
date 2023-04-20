@@ -71,7 +71,6 @@
 #include "DrawViewPart.h"
 #include "GeometryObject.h"
 #include "DrawProjectSplit.h"
-#include "Preferences.h"
 
 using namespace TechDraw;
 using namespace std;
@@ -85,7 +84,7 @@ struct EdgePoints {
 
 GeometryObject::GeometryObject(const string& parent, TechDraw::DrawView* parentObj)
     : m_parentName(parent), m_parent(parentObj), m_isoCount(0), m_isPersp(false), m_focus(100.0),
-      m_usePolygonHLR(false)
+      m_usePolygonHLR(false), m_scrubCount(0)
 
 {}
 
@@ -539,10 +538,9 @@ void GeometryObject::addGeomFromCompound(TopoDS_Shape edgeCompound, edgeClass ca
 
     // remove overlapping edges
     TopoDS_Shape cleanShape;
-    int passes = Preferences::scrubCount();
-    if (passes > 0) {
+    if (m_scrubCount > 0) {
         std::vector<TopoDS_Edge> edgeVector = DU::shapeToVector(edgeCompound);
-        for (int iPass = 0; iPass < passes; iPass++)  {
+        for (int iPass = 0; iPass < m_scrubCount; iPass++)  {
             edgeVector = DrawProjectSplit::removeOverlapEdges(edgeVector);
         }
         bool invertResult = false;

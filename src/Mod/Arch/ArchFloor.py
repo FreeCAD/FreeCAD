@@ -28,7 +28,11 @@ superseded by the use of the BuildingPart class, set to the "Building Storey"
 IfcType.
 """
 
-import FreeCAD,Draft,ArchCommands, DraftVecUtils, ArchIFC
+import FreeCAD
+import ArchCommands
+import ArchIFC
+import Draft
+import DraftVecUtils
 if FreeCAD.GuiUp:
     import FreeCADGui
     from draftutils.translate import translate

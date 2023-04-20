@@ -55,7 +55,7 @@
 
 #define ZCONSTR 0.006f
 
-using namespace SketcherGui;
+using namespace Gui;
 
 // ------------------------------------------------------
 
@@ -615,11 +615,13 @@ void SoDatumLabel::GLRender(SoGLRenderAction * action)
         }
         // Perp Lines
         glBegin(GL_LINES);
+        if (length != 0.) {
             glVertex2f(p1[0], p1[1]);
             glVertex2f(perp1[0], perp1[1]);
 
             glVertex2f(p2[0], p2[1]);
             glVertex2f(perp2[0], perp2[1]);
+        }
 
             glVertex2f(par1[0], par1[1]);
             glVertex2f(par2[0], par2[1]);
@@ -1018,4 +1020,13 @@ void SoDatumLabel::GLRender(SoGLRenderAction * action)
 
     glPopAttrib();
     state->pop();
+}
+
+void SoDatumLabel::setPoints(SbVec3f p1, SbVec3f p2)
+{
+    pnts.setNum(2);
+    SbVec3f* verts = pnts.startEditing();
+    verts[0] = p1;
+    verts[1] = p2;
+    pnts.finishEditing();
 }

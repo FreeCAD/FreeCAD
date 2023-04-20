@@ -936,8 +936,7 @@ bool QuarterWidget::viewportEvent(QEvent* event)
     // additionally handle it by this viewer. This is e.g. needed when
     // resizing a widget item because the cursor may already be outside
     // this widget.
-    if (event->type() == QEvent::Wheel ||
-        event->type() == QEvent::MouseButtonDblClick ||
+    if (event->type() == QEvent::MouseButtonDblClick ||
         event->type() == QEvent::MouseButtonPress) {
         QMouseEvent* mouse = static_cast<QMouseEvent*>(event);
         QGraphicsItem *item = itemAt(mouse->pos());
@@ -950,6 +949,19 @@ bool QuarterWidget::viewportEvent(QEvent* event)
              event->type() == QEvent::MouseButtonRelease) {
         QGraphicsScene* glScene = this->scene();
         if (!(glScene && glScene->mouseGrabberItem())) {
+            QGraphicsView::viewportEvent(event);
+            return false;
+        }
+    }
+    else if (event->type() == QEvent::Wheel) {
+        auto wheel = static_cast<QWheelEvent*>(event);
+#if QT_VERSION < QT_VERSION_CHECK(5, 15, 0)
+        QPoint pos = wheel->pos();
+#else
+        QPoint pos = wheel->position().toPoint();
+#endif
+        QGraphicsItem* item = itemAt(pos);
+        if (!item) {
             QGraphicsView::viewportEvent(event);
             return false;
         }

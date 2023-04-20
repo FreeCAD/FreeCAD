@@ -61,7 +61,7 @@ def open(filename,skip=None):
     "called when freecad opens a file"
     docname = os.path.splitext(os.path.basename(filename))[0]
     doc = FreeCAD.newDocument(docname)
-    doc.Label = decode(docname)
+    doc.Label = docname
     FreeCAD.ActiveDocument = doc
     getConfig()
     read(filename,skip)
@@ -809,18 +809,6 @@ def getVector(entity):
     return None
 
 # below is only used by the internal parser #########################################
-
-def decode(name):
-    "decodes encoded strings"
-    try:
-        decodedName = (name.decode("utf8"))
-    except UnicodeDecodeError:
-        try:
-            decodedName = (name.decode("latin1"))
-        except UnicodeDecodeError:
-            FreeCAD.Console.PrintError(translate("Arch", "Error: Couldn't determine character encoding")+"\n")
-            decodedName = name
-    return decodedName
 
 def getSchema():
     "retrieves the express schema"
