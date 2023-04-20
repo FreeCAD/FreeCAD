@@ -621,18 +621,32 @@ class TaskPanel:
         vUnit = FreeCAD.Units.Quantity(1, FreeCAD.Units.Velocity).getUserPreferred()[2]
         self.form.toolControllerList.horizontalHeaderItem(1).setText("#")
         self.form.toolControllerList.horizontalHeaderItem(2).setText(
-            translate("Path", "Feed(H)")
+            translate("Path", "H","H is horizontal feed rate. Must be as short as possible")
         )
-        self.form.toolControllerList.horizontalHeaderItem(2).setToolTip(vUnit)
         self.form.toolControllerList.horizontalHeaderItem(3).setText(
-            translate("Path", "Feed(V)")
+            translate("Path", "V","V is vertical feed rate. Must be as short as possible")
         )
-        self.form.toolControllerList.horizontalHeaderItem(3).setToolTip(vUnit)
         self.form.toolControllerList.horizontalHeader().setResizeMode(
             0, QtGui.QHeaderView.Stretch
         )
+        self.form.toolControllerList.horizontalHeaderItem(1).setToolTip(
+            translate("Path", "tool number ")
+        )
+        self.form.toolControllerList.horizontalHeaderItem(2).setToolTip(
+            translate("Path", "horizontal feedrate ")+vUnit
+        )
+        self.form.toolControllerList.horizontalHeaderItem(3).setToolTip(
+            translate("Path", "vertical feedrate ")+vUnit
+        )
+        self.form.toolControllerList.horizontalHeaderItem(4).setToolTip(
+            translate("Path", "spindle RPM ")
+        )
+        
+        # ensure correct ellisis behaviour on tool controller names.
+        self.form.toolControllerList.setWordWrap(False)
+        
         self.form.toolControllerList.resizeColumnsToContents()
-
+        
         currentPostProcessor = self.obj.PostProcessor
         postProcessors = Path.Preferences.allEnabledPostProcessors(
             ["", currentPostProcessor]
