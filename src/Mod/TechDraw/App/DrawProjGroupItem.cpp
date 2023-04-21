@@ -40,17 +40,18 @@
 
 using namespace TechDraw;
 
-const char *DrawProjGroupItem::TypeEnums[] = {"Front",
-                                              "Left",
-                                              "Right",
-                                              "Rear",
-                                              "Top",
-                                              "Bottom",
-                                              "FrontTopLeft",
-                                              "FrontTopRight",
-                                              "FrontBottomLeft",
-                                              "FrontBottomRight",
-                                              nullptr};
+const char *DrawProjGroupItem::TypeEnums[] = {
+    QT_TRANSLATE_NOOP("DrawProjGroupItem", "Front"),
+    QT_TRANSLATE_NOOP("DrawProjGroupItem", "Left"),
+    QT_TRANSLATE_NOOP("DrawProjGroupItem", "Right"),
+    QT_TRANSLATE_NOOP("DrawProjGroupItem", "Rear"),
+    QT_TRANSLATE_NOOP("DrawProjGroupItem", "Top"),
+    QT_TRANSLATE_NOOP("DrawProjGroupItem", "Bottom"),
+    QT_TRANSLATE_NOOP("DrawProjGroupItem", "FrontTopLeft"),
+    QT_TRANSLATE_NOOP("DrawProjGroupItem", "FrontTopRight"),
+    QT_TRANSLATE_NOOP("DrawProjGroupItem", "FrontBottomLeft"),
+    QT_TRANSLATE_NOOP("DrawProjGroupItem", "FrontBottomRight"),
+    nullptr};
 
 PROPERTY_SOURCE(TechDraw::DrawProjGroupItem, TechDraw::DrawViewPart)
 
