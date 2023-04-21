@@ -24,7 +24,7 @@
 
 __title__ = "FreeCAD FEM material task panel for the document object"
 __author__ = "Juergen Riegel, Bernd Hahnebach, Qingfeng Xia"
-__url__ = "https://www.freecadweb.org"
+__url__ = "https://www.freecad.org"
 
 ## @package task_material_common
 #  \ingroup FEM
@@ -521,7 +521,7 @@ class _TaskPanel:
         # Thermal properties
         if "ThermalConductivity" in self.material:
             # TODO implement for all task panel values
-            # https://forum.freecadweb.org/viewtopic.php?f=18&t=56912&p=516826#p516800
+            # https://forum.freecad.org/viewtopic.php?f=18&t=56912&p=516826#p516800
             try:
                 Units.Quantity(self.material["ThermalConductivity"])
             except Exception:
@@ -591,7 +591,7 @@ class _TaskPanel:
             value = Units.Quantity(inputfield_text).Value
             old_value = Units.Quantity(self.material[matProperty]).Value
             # value = float(inputfield_text)  # this fails on locale with comma
-            # https://forum.freecadweb.org/viewtopic.php?f=18&t=56912&p=523313#p523313
+            # https://forum.freecad.org/viewtopic.php?f=18&t=56912&p=523313#p523313
         if value:
             if not (1 - variation < float(old_value) / value < 1 + variation):
                 material = self.material

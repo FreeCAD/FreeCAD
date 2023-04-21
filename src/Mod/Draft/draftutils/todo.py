@@ -44,7 +44,7 @@ from draftutils.messages import _msg, _wrn, _err, _log
 
 __title__ = "FreeCAD Draft Workbench, Todo class"
 __author__ = "Yorik van Havre <yorik@uncreated.net>"
-__url__ = ["http://www.freecadweb.org"]
+__url__ = ["http://www.freecad.org"]
 
 _DEBUG = 0
 _DEBUG_inner = 0

@@ -21,7 +21,7 @@
 
 __title__ = "FreeCAD OpenSCAD Workbench - 2D helper functions"
 __author__ = "Sebastian Hoogen"
-__url__ = ["https://www.freecadweb.org"]
+__url__ = ["https://www.freecad.org"]
 
 '''
 This Script includes python functions to convert imported dxf geometry to Faces

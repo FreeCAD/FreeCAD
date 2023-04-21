@@ -31,7 +31,7 @@ from PySide.QtCore import QT_TRANSLATE_NOOP
 
 __title__ = "Path Thread Milling Operation"
 __author__ = "sliptonic (Brad Collette)"
-__url__ = "http://www.freecadweb.org"
+__url__ = "http://www.freecad.org"
 __doc__ = "Path thread milling operation."
 
 # math.sqrt(3)/2 ... 60deg triangle height

@@ -56,7 +56,7 @@ from draftutils.translate import translate
 
 __title__ = "FreeCAD Draft Snap tools"
 __author__ = "Yorik van Havre"
-__url__ = "https://www.freecadweb.org"
+__url__ = "https://www.freecad.org"
 
 UNSNAPPABLES = ('Image::ImagePlane',)
 

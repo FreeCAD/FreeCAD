@@ -54,7 +54,7 @@ public:
 
     void addInfoNode()
     {
-        Base::InfoItem info{"Created by FreeCAD <https://www.freecadweb.org>"};
+        Base::InfoItem info{"Created by FreeCAD <https://www.freecad.org>"};
         builder.addNode(info);
     }
 

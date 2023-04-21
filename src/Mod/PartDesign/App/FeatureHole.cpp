@@ -2048,7 +2048,7 @@ TopoDS_Shape Hole::makeThread(const gp_Vec& xDir, const gp_Vec& zDir, double len
 
     // construct the cross section going counter-clockwise
     // for graphical explanation of geometrical construction of p1-p6 see:
-    // https://forum.freecadweb.org/viewtopic.php?f=19&t=54284#p466570
+    // https://forum.freecad.org/viewtopic.php?f=19&t=54284#p466570
     gp_Pnt p1 = toPnt((Diam / 2 - 5 * H / 8 + clearance / 2) * xDir + Pitch / 8 * zDir);
     gp_Pnt p2 = toPnt((Diam / 2 + clearance / 2) * xDir + 7 * Pitch / 16 * zDir);
     gp_Pnt p3 = toPnt((Diam / 2 + clearance / 2) * xDir + 9 * Pitch / 16 * zDir);

@@ -39,7 +39,7 @@ else:
 
 __title__  = "FreeCAD Building"
 __author__ = "Yorik van Havre"
-__url__    = "https://www.freecadweb.org"
+__url__    = "https://www.freecad.org"
 
 ## @package ArchBuilding
 #  \ingroup ARCH

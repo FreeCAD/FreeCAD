@@ -174,7 +174,7 @@ void FeatureExtrude::generatePrism(TopoDS_Shape& prism,
 
         // Without taper angle we create a prism because its shells are in every case no B-splines and can therefore
         // be use as support for further features like Pads, Lofts etc. B-spline shells can break certain features,
-        // see e.g. https://forum.freecadweb.org/viewtopic.php?p=560785#p560785
+        // see e.g. https://forum.freecad.org/viewtopic.php?p=560785#p560785
         // It is better not to use BRepFeat_MakePrism here even if we have a support because the
         // resulting shape creates problems with Pocket
         BRepPrimAPI_MakePrism PrismMaker(from, Ltotal * gp_Vec(direction), 0, 1); // finite prism

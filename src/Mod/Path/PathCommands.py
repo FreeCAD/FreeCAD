@@ -42,7 +42,7 @@ if FreeCAD.GuiUp:
 
 __title__ = "FreeCAD Path Commands"
 __author__ = "sliptonic"
-__url__ = "https://www.freecadweb.org"
+__url__ = "https://www.freecad.org"
 
 
 class _CommandSelectLoop:

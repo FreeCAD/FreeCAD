@@ -306,7 +306,7 @@ void GraphvizView::updateSvgItem(const App::Document &doc)
             int ret = QMessageBox::warning(Gui::getMainWindow(),
                                            tr("Graphviz not found"),
                                            QString::fromLatin1("<html><head/><body>%1 "
-                                                               "<a href=\"https://www.freecadweb.org/wiki/Std_DependencyGraph\">%2"
+                                                               "<a href=\"https://www.freecad.org/wiki/Std_DependencyGraph\">%2"
                                                                "</a><p>%3</p></body></html>")
                                            .arg(tr("Graphviz couldn't be found on your system."),
                                                 tr("Read more about it here."),

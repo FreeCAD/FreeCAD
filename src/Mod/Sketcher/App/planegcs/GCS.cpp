@@ -60,7 +60,7 @@
 
 // NOTE: In CMakeList.txt -DEIGEN_NO_DEBUG is set (it does not work with a define here), to solve
 // this: this is needed to fix this SparseQR crash
-// http://forum.freecadweb.org/viewtopic.php?f=10&t=11341&p=92146#p92146, until Eigen library fixes
+// http://forum.freecad.org/viewtopic.php?f=10&t=11341&p=92146#p92146, until Eigen library fixes
 // its own problem with the assertion (definitely not solved in 3.2.0 branch) NOTE2: solved in
 // eigen3.3
 
@@ -74,9 +74,9 @@
 #endif
 
 #if EIGEN_VERSION > 30290 // This regulates that only starting in Eigen 3.3, the problem with
-                          // http://forum.freecadweb.org/viewtopic.php?f=3&t=4651&start=40
+                          // http://forum.freecad.org/viewtopic.php?f=3&t=4651&start=40
                           // was solved in Eigen:
-                          // http://forum.freecadweb.org/viewtopic.php?f=10&t=12769&start=60#p106492
+                          // http://forum.freecad.org/viewtopic.php?f=10&t=12769&start=60#p106492
                           // https://forum.kde.org/viewtopic.php?f=74&t=129439
 #define EIGEN_STOCK_FULLPIVLU_COMPUTE
 #endif
@@ -2168,7 +2168,7 @@ int System::solve_DL(SubSystem* subsys, bool isRedundantsolving)
             h_sd  = alpha*g;
 
             // get the gauss-newton step
-            // http://forum.freecadweb.org/viewtopic.php?f=10&t=12769&start=50#p106220
+            // http://forum.freecad.org/viewtopic.php?f=10&t=12769&start=50#p106220
             // https://forum.kde.org/viewtopic.php?f=74&t=129439#p346104
             switch (dogLegGaussStep){
                 case FullPivLU:
@@ -4503,7 +4503,7 @@ int System::solve(SubSystem *subsysA, SubSystem *subsysB, bool /*isFine*/, bool 
             alpha = std::min(alpha, subsysA->maxStep(plistAB,xdir));
 
             // From the book "Numerical Optimization - Jorge Nocedal, Stephen J. Wright".
-            // See https://forum.freecadweb.org/viewtopic.php?f=10&t=35469.
+            // See https://forum.freecad.org/viewtopic.php?f=10&t=35469.
             // Eq. 18.32
             // double mu = lambda.lpNorm<Eigen::Infinity>() + 0.01;
             // Eq. 18.33

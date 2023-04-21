@@ -736,8 +736,8 @@ std::map<std::string, std::string> _getFreeCADMechResultVectorProperties() {
     std::map<std::string, std::string> resFCVecProp;
     resFCVecProp["DisplacementVectors"] = "Displacement";
     // the following three are filled only if there is a reinforced mat object
-    // https://forum.freecadweb.org/viewtopic.php?f=18&t=33106&start=70#p296317
-    // https://forum.freecadweb.org/viewtopic.php?f=18&t=33106&p=416006#p412800
+    // https://forum.freecad.org/viewtopic.php?f=18&t=33106&start=70#p296317
+    // https://forum.freecad.org/viewtopic.php?f=18&t=33106&p=416006#p412800
     resFCVecProp["PS1Vector"] = "Major Principal Stress Vector";
     resFCVecProp["PS2Vector"] = "Intermediate Principal Stress Vector";
     resFCVecProp["PS3Vector"] = "Minor Principal Stress Vector";
@@ -745,7 +745,7 @@ std::map<std::string, std::string> _getFreeCADMechResultVectorProperties() {
     return resFCVecProp;
 }
 
-// see https://forum.freecadweb.org/viewtopic.php?f=18&t=33106&start=30#p277434 for further
+// see https://forum.freecad.org/viewtopic.php?f=18&t=33106&start=30#p277434 for further
 // information regarding names etc...
 // some scalar list are not needed on VTK file export but they are needed for internal VTK pipeline
 // TODO some filter to only export the needed values to VTK file but have all
@@ -773,7 +773,7 @@ std::map<std::string, std::string> _getFreeCADMechResultScalarProperties() {
     resFCScalProp["CriticalStrainRatio"] = "Critical Strain Ratio";
 
     // the following three are filled in all cases
-    // https://forum.freecadweb.org/viewtopic.php?f=18&t=33106&start=70#p296317
+    // https://forum.freecad.org/viewtopic.php?f=18&t=33106&start=70#p296317
     // it might be these can be generated in paraview from stress tensor values as
     // THE MAJOR PRINCIPAL STRESS MAGNITUDE, THE INTERMEDIATE PRINCIPAL STRESS MAGNITUDE,
     // THE MINOR PRINCIPAL STRESS MAGNITUDE
@@ -781,7 +781,7 @@ std::map<std::string, std::string> _getFreeCADMechResultScalarProperties() {
     // thus TODO they might not be exported to external file format (first I need to know
     // how to generate them in paraview)
     // but there are needed anyway because the pipeline in FreeCAD needs the principal stress values
-    // https://forum.freecadweb.org/viewtopic.php?f=18&t=33106&p=416006#p412800
+    // https://forum.freecad.org/viewtopic.php?f=18&t=33106&p=416006#p412800
     resFCScalProp["PrincipalMax"] =
         "Major Principal Stress";// can be plotted in Paraview as THE MAJOR PRINCIPAL STRESS MAGNITUDE
     resFCScalProp["PrincipalMed"] =

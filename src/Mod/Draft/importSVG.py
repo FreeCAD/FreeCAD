@@ -38,7 +38,7 @@ Currently unsupported:
 
 __title__ = "FreeCAD Draft Workbench - SVG importer/exporter"
 __author__ = "Yorik van Havre, Sebastian Hoogen"
-__url__ = "https://www.freecadweb.org"
+__url__ = "https://www.freecad.org"
 
 # TODO:
 # ignoring CDATA

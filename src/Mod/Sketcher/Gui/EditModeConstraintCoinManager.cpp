@@ -1187,7 +1187,7 @@ Base::Vector3d EditModeConstraintCoinManager::seekConstraintPosition(const Base:
         relPos = norm * 0.5f + dir * multiplier;
         freePos = origPos + relPos * scaled_step;
 
-        // Prevent crash : https://forum.freecadweb.org/viewtopic.php?f=8&t=65305
+        // Prevent crash : https://forum.freecad.org/viewtopic.php?f=8&t=65305
         if (!rp) {
             return relPos * step;
         }

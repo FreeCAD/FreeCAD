@@ -23,7 +23,7 @@
 
 __title__ = "FreeCAD Points command definitions"
 __author__ = "Werner Mayer"
-__url__ = "https://www.freecadweb.org"
+__url__ = "https://www.freecad.org"
 
 ## @package commands
 #  \ingroup Points

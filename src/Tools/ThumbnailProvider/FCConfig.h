@@ -84,7 +84,7 @@
 #	define HAVE_UINTPTR_T
 #endif
 #else
-#	error "FreeCAD is not ported to this OS yet. For help see www.freecadweb.org"
+#	error "FreeCAD is not ported to this OS yet. For help see www.freecad.org"
 #endif
 
 #ifdef FC_OS_WIN32

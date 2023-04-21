@@ -44,7 +44,7 @@ else:
 
 __title__  = "Arch Pipe tools"
 __author__ = "Yorik van Havre"
-__url__    = "https://www.freecadweb.org"
+__url__    = "https://www.freecad.org"
 
 
 def makePipe(baseobj=None,diameter=0,length=0,placement=None,name="Pipe"):

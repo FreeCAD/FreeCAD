@@ -177,7 +177,7 @@ TaskBoxPrimitives::TaskBoxPrimitives(ViewProviderPrimitive* vp, QWidget* parent)
             ui->torusAngle3->setMinimum(static_cast<PartDesign::Torus*>(vp->getObject())->Angle3.getMinimum());
             // this is the outer radius that must not be smaller than the inner one
             // otherwise the geometry is impossible and we can even get a crash:
-            // https://forum.freecadweb.org/viewtopic.php?f=3&t=44467
+            // https://forum.freecad.org/viewtopic.php?f=3&t=44467
             ui->torusRadius1->setMaximum(static_cast<PartDesign::Torus*>(vp->getObject())->Radius1.getMaximum());
             ui->torusRadius1->setMinimum(ui->torusRadius2->rawValue());
             ui->torusRadius2->setMaximum(ui->torusRadius1->rawValue());
@@ -579,7 +579,7 @@ void TaskBoxPrimitives::onTorusRadius1Changed(double v) {
     PartDesign::Torus* sph = static_cast<PartDesign::Torus*>(vp->getObject());
     // this is the outer radius that must not be smaller than the inner one
     // otherwise the geometry is impossible and we can even get a crash:
-    // https://forum.freecadweb.org/viewtopic.php?f=3&t=44467
+    // https://forum.freecad.org/viewtopic.php?f=3&t=44467
     ui->torusRadius2->setMaximum(v);
     sph->Radius1.setValue(v);
     vp->getObject()->getDocument()->recomputeFeature(vp->getObject());

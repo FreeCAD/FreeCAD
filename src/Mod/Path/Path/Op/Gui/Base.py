@@ -39,7 +39,7 @@ from PySide import QtCore, QtGui
 
 __title__ = "Path Operation UI base classes"
 __author__ = "sliptonic (Brad Collette)"
-__url__ = "https://www.freecadweb.org"
+__url__ = "https://www.freecad.org"
 __doc__ = "Base classes and framework for Path operation's UI"
 
 translate = FreeCAD.Qt.translate

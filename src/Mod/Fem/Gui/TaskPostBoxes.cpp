@@ -275,7 +275,7 @@ void TaskPostBox::updateEnumerationList(App::PropertyEnumeration& prop, QComboBo
     int index = prop.getValue();
     // be aware the QComboxBox might be connected to the Property,
     // thus clearing the box will set back the property enumeration index too.
-    // https://forum.freecadweb.org/viewtopic.php?f=10&t=30944
+    // https://forum.freecad.org/viewtopic.php?f=10&t=30944
     box->clear();
     box->insertItems(0, list);
     box->setCurrentIndex(index);

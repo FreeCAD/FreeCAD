@@ -47,7 +47,7 @@ setup()
 
 
 See forum topic post:
-https://forum.freecadweb.org/viewtopic.php?f=18&t=16044
+https://forum.freecad.org/viewtopic.php?f=18&t=16044
 
 CalculiX cantilever modeled with seg3 beam elements
 

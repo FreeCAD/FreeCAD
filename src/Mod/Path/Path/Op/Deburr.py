@@ -37,7 +37,7 @@ Part = LazyLoader("Part", globals(), "Part")
 
 __title__ = "Path Deburr Operation"
 __author__ = "sliptonic (Brad Collette), Schildkroet"
-__url__ = "http://www.freecadweb.org"
+__url__ = "http://www.freecad.org"
 __doc__ = "Deburr operation."
 
 

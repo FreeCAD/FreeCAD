@@ -50,7 +50,7 @@ unicode = str
 
 __title__  = "FreeCAD Arch BuildingPart"
 __author__ = "Yorik van Havre"
-__url__    = "https://www.freecadweb.org"
+__url__    = "https://www.freecad.org"
 
 
 BuildingTypes = ['Undefined',

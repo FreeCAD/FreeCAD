@@ -24,7 +24,7 @@
 
 __title__ = "FreeCAD FEM base constraint ViewProvider"
 __author__ = "Markus Hovorka, Bernd Hahnebach"
-__url__ = "https://www.freecadweb.org"
+__url__ = "https://www.freecad.org"
 
 ## @package view_base_femobject
 #  \ingroup FEM
@@ -49,7 +49,7 @@ class VPBaseFemObject(object):
     # see constraint body heat source as an example
     def getIcon(self):
         """after load from FCStd file, self.icon does not exist, return constant path instead"""
-        # https://forum.freecadweb.org/viewtopic.php?f=18&t=44009
+        # https://forum.freecad.org/viewtopic.php?f=18&t=44009
         if not hasattr(self.Object, "Proxy"):
             FreeCAD.Console.PrintMessage("{}, has no Proxy.\n".format(self.Object.Name))
             return ""
@@ -78,7 +78,7 @@ class VPBaseFemObject(object):
     def setEdit(self, vobj, mode=0, TaskPanel=None, hide_mesh=True):
         if TaskPanel is None:
             # avoid edit mode by return False
-            # https://forum.freecadweb.org/viewtopic.php?t=12139&start=10#p161062
+            # https://forum.freecad.org/viewtopic.php?t=12139&start=10#p161062
             return False
         if hide_mesh:
             # hide all FEM meshes and FemPost function objects
@@ -101,7 +101,7 @@ class VPBaseFemObject(object):
     def doubleClicked(self, vobj):
         guidoc = FreeCADGui.getDocument(vobj.Object.Document)
         # check if another VP is in edit mode
-        # https://forum.freecadweb.org/viewtopic.php?t=13077#p104702
+        # https://forum.freecad.org/viewtopic.php?t=13077#p104702
         if not guidoc.getInEdit():
             guidoc.setEdit(vobj.Object.Name)
         else:
@@ -112,8 +112,8 @@ class VPBaseFemObject(object):
         return True
 
     # they are needed, see:
-    # https://forum.freecadweb.org/viewtopic.php?f=18&t=44021
-    # https://forum.freecadweb.org/viewtopic.php?f=18&t=44009
+    # https://forum.freecad.org/viewtopic.php?f=18&t=44021
+    # https://forum.freecad.org/viewtopic.php?f=18&t=44009
     def __getstate__(self):
         return None
 

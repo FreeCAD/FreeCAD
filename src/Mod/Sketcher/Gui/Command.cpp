@@ -931,7 +931,7 @@ bool CmdSketcherMergeSketches::isActive()
 
 // Acknowledgement of idea and original python macro goes to SpritKopf:
 // https://github.com/Spritkopf/freecad-macros/blob/master/clip-sketch/clip_sketch.FCMacro
-// https://forum.freecadweb.org/viewtopic.php?p=231481#p231085
+// https://forum.freecad.org/viewtopic.php?p=231481#p231085
 DEF_STD_CMD_A(CmdSketcherViewSection)
 
 CmdSketcherViewSection::CmdSketcherViewSection()

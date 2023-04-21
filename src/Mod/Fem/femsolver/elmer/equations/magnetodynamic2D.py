@@ -23,7 +23,7 @@
 
 __title__ = "FreeCAD FEM solver Elmer equation object Magnetodynamic2D"
 __author__ = "Uwe Stöhr"
-__url__ = "https://www.freecadweb.org"
+__url__ = "https://www.freecad.org"
 #
 ## \addtogroup FEM
 #  @{

@@ -33,7 +33,7 @@ from PySide import QtCore, QtGui
 
 __title__ = "Path Probing Operation UI"
 __author__ = "sliptonic (Brad Collette)"
-__url__ = "http://www.freecadweb.org"
+__url__ = "http://www.freecad.org"
 __doc__ = "Probing operation page controller and command implementation."
 
 

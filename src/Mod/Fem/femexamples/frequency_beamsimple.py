@@ -52,7 +52,7 @@ setup()
 
 
 See forum topic post:
-https://forum.freecadweb.org/viewtopic.php?f=18&t=58959#p506565
+https://forum.freecad.org/viewtopic.php?f=18&t=58959#p506565
 
 simple frequency analysis
 

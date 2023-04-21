@@ -1314,7 +1314,7 @@ void NumberExpression::_toString(std::ostream &ss, bool,int) const
 {
     // Restore the old implementation because using digits10 + 2 causes
     // undesired side-effects:
-    // https://forum.freecadweb.org/viewtopic.php?f=3&t=44057&p=375882#p375882
+    // https://forum.freecad.org/viewtopic.php?f=3&t=44057&p=375882#p375882
     // See also:
     // https://en.cppreference.com/w/cpp/types/numeric_limits/digits10
     // https://en.cppreference.com/w/cpp/types/numeric_limits/max_digits10

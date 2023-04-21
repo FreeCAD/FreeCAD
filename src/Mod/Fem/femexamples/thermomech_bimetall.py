@@ -64,7 +64,7 @@ setup()
 
 
 See forum topic post:
-https://forum.freecadweb.org/viewtopic.php?f=18&t=43040&start=10#p366664
+https://forum.freecad.org/viewtopic.php?f=18&t=43040&start=10#p366664
 
 thermomechanical bimetall
 analytical solution 7.05 mm deflection in the invar material direction

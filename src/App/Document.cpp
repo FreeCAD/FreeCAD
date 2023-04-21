@@ -1901,7 +1901,7 @@ bool Document::saveToFile(const char* filename) const
 
         writer.Stream() << "<?xml version='1.0' encoding='utf-8'?>" << endl
                         << "<!--" << endl
-                        << " FreeCAD Document, see https://www.freecadweb.org for more information..." << endl
+                        << " FreeCAD Document, see https://www.freecad.org for more information..." << endl
                         << "-->" << endl;
         Document::Save(writer);
 

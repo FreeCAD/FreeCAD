@@ -528,7 +528,7 @@ class DocumentBasicCases(unittest.TestCase):
     self.assertNotEqual(ext.Link, sli)
 
   def testIssue4823(self):
-    # https://forum.freecadweb.org/viewtopic.php?f=3&t=52775
+    # https://forum.freecad.org/viewtopic.php?f=3&t=52775
     # The issue was only visible in GUI mode and it crashed in the tree view
     obj = self.Doc.addObject("App::Origin")
     self.Doc.removeObject(obj.Name)

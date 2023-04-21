@@ -52,7 +52,7 @@ setup()
 
 
 See forum topic post:
-https://forum.freecadweb.org/viewtopic.php?f=18&t=20217&start=110#p510526
+https://forum.freecad.org/viewtopic.php?f=18&t=20217&start=110#p510526
 
 Simple supported I-beam with a fork support modelled with shell elements.
 Loaded with constant bending moment.

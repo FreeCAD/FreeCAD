@@ -22,7 +22,7 @@
 
 __title__ =  "FreeCAD structural IFC export tools"
 __author__ = "Yorik van Havre"
-__url__ =    "https://www.freecadweb.org"
+__url__ =    "https://www.freecad.org"
 
 ALLOW_LINEAR_OBJECTS = True # allow non-solid objects (wires, etc) to become analytic objects?
 

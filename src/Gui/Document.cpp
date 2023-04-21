@@ -291,7 +291,7 @@ bool Document::setEdit(Gui::ViewProvider* p, int ModNum, const char *subname)
         return false;
     }
 
-    // Fix regression: https://forum.freecadweb.org/viewtopic.php?f=19&t=43629&p=371972#p371972
+    // Fix regression: https://forum.freecad.org/viewtopic.php?f=19&t=43629&p=371972#p371972
     // When an object is already in edit mode a subsequent call for editing is only possible
     // when resetting the currently edited object.
     if (d->_editViewProvider) {
@@ -1512,7 +1512,7 @@ void Document::SaveDocFile (Base::Writer &writer) const
 {
     writer.Stream() << "<?xml version='1.0' encoding='utf-8'?>" << std::endl
                     << "<!--" << std::endl
-                    << " FreeCAD Document, see http://www.freecadweb.org for more information..."
+                    << " FreeCAD Document, see http://www.freecad.org for more information..."
                     << std::endl << "-->" << std::endl;
 
     writer.Stream() << "<Document SchemaVersion=\"1\"";

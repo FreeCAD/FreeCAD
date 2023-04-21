@@ -21,7 +21,7 @@
 
 __title__ = "material cards utilities"
 __author__ = "Bernd Hahnebach"
-__url__ = "http://www.freecadweb.org"
+__url__ = "http://www.freecad.org"
 
 import os
 from os.path import join
@@ -35,7 +35,7 @@ unicode = str
 # TODO:
 # move material GUI preferences from FEM to an own preference tab in Material
 # move preference GUI code to material module
-# https://forum.freecadweb.org/viewtopic.php?f=10&t=35515
+# https://forum.freecad.org/viewtopic.php?f=10&t=35515
 
 
 # TODO:
@@ -59,7 +59,7 @@ icons = { card_path: icon_path, ... }
 a data model which uses a class and attributes as well as methods to access the attributes
 would makes sense, like some material library class
 this has been done already by eivind see
-https://forum.freecadweb.org/viewtopic.php?f=38&t=16714
+https://forum.freecad.org/viewtopic.php?f=38&t=16714
 '''
 
 
@@ -69,7 +69,7 @@ def get_material_resources(category='Solid'):
     resources = {}  # { resource_path: icon_path, ... }
 
     # TODO: move GUI preferences from FEM to a new side tab Material
-    # https://forum.freecadweb.org/viewtopic.php?f=10&t=35515
+    # https://forum.freecad.org/viewtopic.php?f=10&t=35515
     mat_prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Material/Resources")
     use_built_in_materials = mat_prefs.GetBool("UseBuiltInMaterials", True)
     use_mat_from_config_dir = mat_prefs.GetBool("UseMaterialsFromConfigDir", True)
@@ -217,8 +217,8 @@ def get_material_template(withSpaces=False):
     # material properties
     # see the following resources in the FreeCAD wiki for more
     # information about the material specific properties:
-    # https://www.freecadweb.org/wiki/Material_data_model
-    # https://www.freecadweb.org/wiki/Material
+    # https://www.freecad.org/wiki/Material_data_model
+    # https://www.freecad.org/wiki/Material
 
     import yaml
     template_data = yaml.safe_load(
@@ -282,7 +282,7 @@ def create_mat_template_card(write_group_section=True):
     f.write('; TEMPLATE\n')
     f.write('; (c) 2013-2015 Juergen Riegel (CC-BY 3.0)\n')
     f.write('; information about the content of such cards can be found on the wiki:\n')
-    f.write('; https://www.freecadweb.org/wiki/Material\n')
+    f.write('; https://www.freecad.org/wiki/Material\n')
     f.write(': this template card was created by FreeCAD ' + rev + '\n\n')
     f.write('; localized Name, Description and KindOfMaterial uses 2 letter codes\n')
     f.write('; defined in ISO-639-1, see https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes\n')

@@ -45,7 +45,7 @@ else:
 __title__ = "FreeCAD Draft Workbench"
 __author__ = ("Yorik van Havre, Werner Mayer, Martin Burbaum, Ken Cline, "
               "Dmitry Chigrin, Daniel Falck")
-__url__ = "https://www.freecadweb.org"
+__url__ = "https://www.freecad.org"
 
 # ---------------------------------------------------------------------------
 # Utility functions

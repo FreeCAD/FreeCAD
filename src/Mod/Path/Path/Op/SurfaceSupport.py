@@ -23,7 +23,7 @@
 
 __title__ = "Path Surface Support Module"
 __author__ = "russ4262 (Russell Johnson)"
-__url__ = "http://www.freecadweb.org"
+__url__ = "http://www.freecad.org"
 __doc__ = "Support functions and classes for 3D Surface and Waterline operations."
 __contributors__ = ""
 

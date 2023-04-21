@@ -33,7 +33,7 @@ from PySide import QtCore
 
 __title__ = "Path Drilling Operation UI."
 __author__ = "sliptonic (Brad Collette)"
-__url__ = "https://www.freecadweb.org"
+__url__ = "https://www.freecad.org"
 __doc__ = "UI and Command for Path Drilling Operation."
 __contributors__ = "IMBack!"
 

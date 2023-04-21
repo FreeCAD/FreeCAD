@@ -39,7 +39,7 @@ QString ExpressionTokenizer::perform(const QString& prefix, int pos)
 {
     // ExpressionParser::tokenize() only supports std::string but we need a tuple QString
     // because due to UTF-8 encoding a std::string may be longer than a QString
-    // See https://forum.freecadweb.org/viewtopic.php?f=3&t=69931
+    // See https://forum.freecad.org/viewtopic.php?f=3&t=69931
     auto tokenizeExpression = [](const QString& expr) {
         std::vector<std::tuple<int, int, std::string>> result =
             ExpressionParser::tokenize(expr.toStdString());

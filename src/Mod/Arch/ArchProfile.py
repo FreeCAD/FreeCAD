@@ -21,7 +21,7 @@
 
 __title__  = "FreeCAD Profile"
 __author__ = "Yorik van Havre"
-__url__    = "https://www.freecadweb.org"
+__url__    = "https://www.freecad.org"
 
 ## @package ArchProfile
 #  \ingroup ARCH

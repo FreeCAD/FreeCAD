@@ -22,7 +22,7 @@
 
 __title__ = "BOPTools.JoinFeatures module"
 __author__ = "DeepSOIC"
-__url__ = "http://www.freecadweb.org"
+__url__ = "http://www.freecad.org"
 __doc__ = "Implementation of document objects (features) for connect, ebmed and cutout operations."
 
 from . import JoinAPI
@@ -36,7 +36,7 @@ if FreeCAD.GuiUp:
 
 # -------------------------- translation-related code -------------------------
 # Thanks, yorik! (see forum thread "A new Part tool is being born... JoinFeatures!"
-# http://forum.freecadweb.org/viewtopic.php?f=22&t=11112&start=30#p90239 )
+# http://forum.freecad.org/viewtopic.php?f=22&t=11112&start=30#p90239 )
 
     try:
         _fromUtf8 = QtCore.QString.fromUtf8
