@@ -99,7 +99,7 @@ class TechDrawExport arcPoints
 {
 public:
     arcPoints();
-    arcPoints(const arcPoints& ap);
+    arcPoints(const arcPoints& ap) = default;
 
     arcPoints& operator= (const arcPoints& ap);
 

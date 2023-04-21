@@ -27,6 +27,7 @@
 #include <App/DocumentObject.h>
 #include <App/FeaturePython.h>
 #include <App/PropertyLinks.h>
+#include <App/PropertyUnits.h>
 #include <Base/Vector3D.h>
 #include <Mod/Fem/FemGlobal.h>
 

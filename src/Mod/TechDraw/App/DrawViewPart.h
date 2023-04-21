@@ -109,6 +109,8 @@ public:
     App::PropertyBool IsoHidden;
     App::PropertyInteger IsoCount;
 
+    App::PropertyInteger ScrubCount;
+
     short mustExecute() const override;
     App::DocumentObjectExecReturn* execute() override;
     const char* getViewProviderName() const override { return "TechDrawGui::ViewProviderViewPart"; }

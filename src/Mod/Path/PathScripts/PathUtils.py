@@ -838,3 +838,69 @@ def RtoIJ(startpoint, command):
     newcommand.Parameters = params
 
     return newcommand
+
+def getPathWithPlacement(pathobj):
+    """
+    Applies the rotation, and then postition of the obj's Placement
+    to the obj's path
+    """
+
+    if not hasattr(pathobj, "Placement") or pathobj.Path is None:
+        return pathobj.Path
+
+    return applyPlacementToPath(pathobj.Placement, pathobj.Path)
+
+def applyPlacementToPath(placement, path):
+    """
+    Applies the rotation, and then postition of the placement to path
+    """
+
+    CmdMoveRapid = ["G0", "G00"]
+    CmdMoveStraight = ["G1", "G01"]
+    CmdMoveCW = ["G2", "G02"]
+    CmdMoveCCW = ["G3", "G03"]
+    CmdDrill = ["G73", "G81", "G82", "G83"]
+    CmdMoveArc = CmdMoveCW + CmdMoveCCW
+    CmdMove = CmdMoveStraight + CmdMoveArc
+
+    commands = []
+    currX = 0
+    currY = 0
+    currZ = 0
+    for cmd in path.Commands:
+        if (
+            (cmd.Name in CmdMoveRapid)
+            or (cmd.Name in CmdMove)
+            or (cmd.Name in CmdDrill)
+        ):
+            params = cmd.Parameters
+            currX = x = params.get("X", currX)
+            currY = y = params.get("Y", currY)
+            currZ = z = params.get("Z", currZ)
+
+            x, y, z = placement.Rotation.multVec(FreeCAD.Vector(x, y ,z))
+
+            if x != currX:
+                params.update({"X": x})
+            if y != currY:
+                params.update({"Y": y})
+            if z != currZ:
+                params.update({"Z": z})
+
+            # Arcs need to have the I and J params rotated as well
+            if cmd.Name in CmdMoveArc:
+                currI = i = params.get("I", 0)
+                currJ = j = params.get("J", 0)
+
+                i, j, k = placement.Rotation.multVec(FreeCAD.Vector(i, j, 0))
+
+                if currI != i:
+                    params.update({"I": i})
+                if currJ != j:
+                    params.update({"J": j})
+
+            cmd.Parameters = params
+        commands.append(cmd.transform(placement))
+    newPath = Path.Path(commands)
+
+    return newPath

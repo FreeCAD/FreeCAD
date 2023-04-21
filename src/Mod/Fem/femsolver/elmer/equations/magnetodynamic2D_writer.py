@@ -34,6 +34,7 @@ from FreeCAD import Units
 from .. import sifio
 from .. import writer as general_writer
 
+
 class MgDyn2Dwriter:
 
     def __init__(self, writer, solver):
@@ -106,7 +107,7 @@ class MgDyn2Dwriter:
     def handleMagnetodynamic2DMaterial(self, bodies):
         # check that all bodies have a set material
         for name in bodies:
-            if self.write.getBodyMaterial(name) == None:
+            if self.write.getBodyMaterial(name) is None:
                 raise general_writer.WriteError(
                     "The body {} is not referenced in any material.\n\n".format(name)
                 )
@@ -129,7 +130,7 @@ class MgDyn2Dwriter:
                     )
                 self.write.material(name, "Name", m["Name"])
                 conductivity = self.write.convert(m["ElectricalConductivity"], "T^3*I^2/(L^3*M)")
-                conductivity = round(conductivity, 10) # to get rid of numerical artifacts
+                conductivity = round(conductivity, 10)  # to get rid of numerical artifacts
                 self.write.material(name, "Electric Conductivity", conductivity)
                 self.write.material(
                     name, "Relative Permeability",

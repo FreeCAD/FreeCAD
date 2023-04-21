@@ -63,6 +63,8 @@ FitBSplineSurfaceWidget::FitBSplineSurfaceWidget(const App::DocumentObjectT& obj
 {
     Q_UNUSED(parent);
     d->ui.setupUi(this);
+    connect(d->ui.makePlacement, &QPushButton::clicked,
+            this, &FitBSplineSurfaceWidget::onMakePlacementClicked);
     d->obj = obj;
     restoreSettings();
 }
@@ -103,7 +105,7 @@ void FitBSplineSurfaceWidget::saveSettings()
     d->ui.uvdir->onSave();
 }
 
-void FitBSplineSurfaceWidget::on_makePlacement_clicked()
+void FitBSplineSurfaceWidget::onMakePlacementClicked()
 {
     try {
         App::GeoFeature* geo = d->obj.getObjectAs<App::GeoFeature>();

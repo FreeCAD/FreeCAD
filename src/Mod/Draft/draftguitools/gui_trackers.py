@@ -58,7 +58,8 @@ class Tracker:
     def __init__(self, dotted=False, scolor=None, swidth=None,
                  children=[], ontop=False, name=None):
         global Part, DraftGeomUtils
-        import Part, DraftGeomUtils
+        import Part
+        import DraftGeomUtils
         self.ontop = ontop
         self.color = coin.SoBaseColor()
         self.color.rgb = scolor or FreeCADGui.draftToolBar.getDefaultColor("line")
@@ -798,6 +799,7 @@ class editTracker(Tracker):
         self.marker.markerIndex = marker
         self.coords = coin.SoCoordinate3()  # this is the coordinate
         self.coords.point.setValue((pos.x, pos.y, pos.z))
+        self.position = pos
         if inactive:
             self.selnode = coin.SoSeparator()
         else:
@@ -820,11 +822,11 @@ class editTracker(Tracker):
     def set(self, pos):
         """Set the point to the position."""
         self.coords.point.setValue((pos.x, pos.y, pos.z))
+        self.position = pos
 
     def get(self):
         """Get a vector from the point."""
-        p = self.coords.point.getValues()[0]
-        return Vector(p[0], p[1], p[2])
+        return self.position
 
     def get_doc_name(self):
         """Get the document name."""
@@ -1265,7 +1267,8 @@ class boxTracker(Tracker):
 
     def update(self, line=None, normal=None):
         """Update the tracker."""
-        import WorkingPlane, DraftGeomUtils
+        import WorkingPlane
+        import DraftGeomUtils
         if not normal:
             normal = FreeCAD.DraftWorkingPlane.axis
         if line:

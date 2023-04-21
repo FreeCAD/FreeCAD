@@ -24,8 +24,6 @@
 #define PLANEGCS_CONSTRAINTS_H
 
 #include "Geo.h"
-#include "Util.h"
-#include <boost/graph/graph_concepts.hpp>
 
 //#define _GCS_EXTRACT_SOLVER_SUBSYSTEM_ // This enables debugging code intended to extract information to file bug reports against Eigen, not for production code
 
@@ -34,6 +32,7 @@
 #else
 #define _PROTECTED_UNLESS_EXTRACT_MODE_ protected
 #endif
+
 
 namespace GCS
 {
@@ -72,7 +71,8 @@ namespace GCS
         CenterOfGravity = 26,
         WeightedLinearCombination = 27,
         SlopeAtBSplineKnot = 28,
-        PointOnBSpline = 29
+        PointOnBSpline = 29,
+        C2CDistance = 30
     };
 
     enum InternalAlignmentType {
@@ -745,6 +745,22 @@ namespace GCS
         double grad(double *) override;
     };
 
+    class ConstraintC2CDistance : public Constraint
+    {
+    private:
+        Circle c1;
+        Circle c2;
+        double *d;
+        inline double* distance() { return pvec[0]; }
+        void ReconstructGeomPointers(); //writes pointers in pvec to the parameters of c1, c2
+        void errorgrad(double* err, double* grad, double *param); //error and gradient combined. Values are returned through pointers.
+    public:
+        ConstraintC2CDistance(Circle &c1, Circle &c2, double *d);
+        ConstraintType getTypeId() override;
+        void rescale(double coef=1.) override;
+        double error() override;
+        double grad(double *) override;
+    };
 
 } //namespace GCS
 

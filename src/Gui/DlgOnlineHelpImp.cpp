@@ -97,7 +97,7 @@ void DlgOnlineHelpImp::changeEvent(QEvent *e)
     }
 }
 
-void DlgOnlineHelpImp::on_lineEditDownload_fileNameSelected( const QString& url )
+void DlgOnlineHelpImp::onLineEditDownloadFileNameSelected( const QString& url )
 {
     QDir dir(url);
     if (dir.exists() && dir.count() == 0) {

@@ -52,14 +52,12 @@ TaskFilletParameters::TaskFilletParameters(ViewProviderDressUp *DressUpView, QWi
     // we need a separate container widget to add all controls to
     proxy = new QWidget(this);
     ui->setupUi(proxy);
-
     this->groupLayout()->addWidget(proxy);
 
     PartDesign::Fillet* pcFillet = static_cast<PartDesign::Fillet*>(DressUpView->getObject());
     bool useAllEdges = pcFillet->UseAllEdges.getValue();
     ui->checkBoxUseAllEdges->setChecked(useAllEdges);
-    ui->buttonRefAdd->setEnabled(!useAllEdges);
-    ui->buttonRefRemove->setEnabled(!useAllEdges);
+    ui->buttonRefSel->setEnabled(!useAllEdges);
     ui->listWidgetReferences->setEnabled(!useAllEdges);
     double r = pcFillet->Radius.getValue();
 
@@ -79,15 +77,13 @@ TaskFilletParameters::TaskFilletParameters(ViewProviderDressUp *DressUpView, QWi
 
     connect(ui->filletRadius, qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
         this, &TaskFilletParameters::onLengthChanged);
-    connect(ui->buttonRefAdd, &QToolButton::toggled,
-        this, &TaskFilletParameters::onButtonRefAdd);
-    connect(ui->buttonRefRemove, &QToolButton::toggled,
-        this, &TaskFilletParameters::onButtonRefRemove);
+    connect(ui->buttonRefSel, &QToolButton::toggled,
+        this, &TaskFilletParameters::onButtonRefSel);
     connect(ui->checkBoxUseAllEdges, &QToolButton::toggled,
         this, &TaskFilletParameters::onCheckBoxUseAllEdgesToggled);
 
     // Create context menu
-    createDeleteAction(ui->listWidgetReferences, ui->buttonRefRemove);
+    createDeleteAction(ui->listWidgetReferences);
     connect(deleteAction, &QAction::triggered, this, &TaskFilletParameters::onRefDeleted);
 
     createAddAllEdgesAction(ui->listWidgetReferences);
@@ -100,8 +96,10 @@ TaskFilletParameters::TaskFilletParameters(ViewProviderDressUp *DressUpView, QWi
     connect(ui->listWidgetReferences, &QListWidget::itemDoubleClicked,
         this, &TaskFilletParameters::doubleClicked);
 
-    // the dialog can be called on a broken fillet, then hide the fillet
-    hideOnError();
+    if (strings.size() == 0)
+        setSelectionMode(refSel);
+    else
+        hideOnError();
 }
 
 void TaskFilletParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
@@ -109,120 +107,43 @@ void TaskFilletParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
     // executed when the user selected something in the CAD object
     // adds/deletes the selection accordingly
 
-    if (selectionMode == none)
-        return;
-
     if (msg.Type == Gui::SelectionChanges::AddSelection) {
-        if (referenceSelected(msg)) {
-            if (selectionMode == refAdd) {
-                ui->listWidgetReferences->addItem(QString::fromStdString(msg.pSubName));
-                // it might be the second one so we can enable the context menu
-                if (ui->listWidgetReferences->count() > 1) {
-                    deleteAction->setEnabled(true);
-                    deleteAction->setStatusTip(QString());
-                    ui->buttonRefRemove->setEnabled(true);
-                    ui->buttonRefRemove->setToolTip(tr("Click button to enter selection mode,\nclick again to end selection"));
-                }
-            }
-            else {
-                removeItemFromListWidget(ui->listWidgetReferences, msg.pSubName);
-                // remove its selection too
-                Gui::Selection().clearSelection();
-                // if there is only one item left, it cannot be deleted
-                if (ui->listWidgetReferences->count() == 1) {
-                    deleteAction->setEnabled(false);
-                    deleteAction->setStatusTip(tr("There must be at least one item"));
-                    ui->buttonRefRemove->setEnabled(false);
-                    ui->buttonRefRemove->setToolTip(tr("There must be at least one item"));
-                    // we must also end the selection mode
-                    exitSelectionMode();
-                    clearButtons(none);
-                }
-            }
-            // highlight existing references for possible further selections
-            DressUpView->highlightReferences(true);
+        if (selectionMode == refSel) {
+            referenceSelected(msg, ui->listWidgetReferences);
         }
     }
 }
 
 void TaskFilletParameters::onCheckBoxUseAllEdgesToggled(bool checked)
 {
+    if (checked)
+        setSelectionMode(none);
     PartDesign::Fillet* pcFillet = static_cast<PartDesign::Fillet*>(DressUpView->getObject());
-    ui->buttonRefRemove->setEnabled(!checked);
-    ui->buttonRefAdd->setEnabled(!checked);
+    ui->buttonRefSel->setEnabled(!checked);
     ui->listWidgetReferences->setEnabled(!checked);
     pcFillet->UseAllEdges.setValue(checked);
     pcFillet->getDocument()->recomputeFeature(pcFillet);
 }
 
-void TaskFilletParameters::clearButtons(const selectionModes notThis)
+void TaskFilletParameters::setButtons(const selectionModes mode)
 {
-    if (notThis != refAdd) ui->buttonRefAdd->setChecked(false);
-    if (notThis != refRemove) ui->buttonRefRemove->setChecked(false);
-    DressUpView->highlightReferences(false);
+    ui->buttonRefSel->setChecked(mode == refSel);
+    ui->buttonRefSel->setText(mode == refSel ? btnPreviewStr() : btnSelectStr());
 }
 
 void TaskFilletParameters::onRefDeleted()
 {
-    // assure we we are not in selection mode
-    exitSelectionMode();
-    clearButtons(none);
-    // delete any selections since the reference(s) might be highlighted
-    Gui::Selection().clearSelection();
-    DressUpView->highlightReferences(false);
-
-    // get the list of items to be deleted
-    QList<QListWidgetItem*> selectedList = ui->listWidgetReferences->selectedItems();
-
-    // if all items are selected, we must stop because one must be kept to avoid that the feature gets broken
-    if (selectedList.count() == ui->listWidgetReferences->model()->rowCount()){
-        QMessageBox::warning(this, tr("Selection error"), tr("At least one item must be kept."));
-        return;
-    }
-
-    // get the fillet object
-    PartDesign::Fillet* pcFillet = static_cast<PartDesign::Fillet*>(DressUpView->getObject());
-    App::DocumentObject* base = pcFillet->Base.getValue();
-    // get all fillet references
-    std::vector<std::string> refs = pcFillet->Base.getSubValues();
-    setupTransaction();
-
-    // delete the selection backwards to assure the list index keeps valid for the deletion
-    for (int i = selectedList.count()-1; i > -1; i--) {
-        // the ref index is the same as the listWidgetReferences index
-        // so we can erase using the row number of the element to be deleted
-        int rowNumber = ui->listWidgetReferences->row(selectedList.at(i));
-        // erase the reference
-        refs.erase(refs.begin() + rowNumber);
-        // remove from the list
-        ui->listWidgetReferences->model()->removeRow(rowNumber);
-    }
-
-    // update the object
-    pcFillet->Base.setValue(base, refs);
-    // recompute the feature
-    pcFillet->recomputeFeature();
-    // hide the fillet if there was a computation error
-    hideOnError();
-
-    // if there is only one item left, it cannot be deleted
-    if (ui->listWidgetReferences->count() == 1) {
-        deleteAction->setEnabled(false);
-        deleteAction->setStatusTip(tr("There must be at least one item"));
-        ui->buttonRefRemove->setEnabled(false);
-        ui->buttonRefRemove->setToolTip(tr("There must be at least one item"));
-    }
+    TaskDressUpParameters::deleteRef(ui->listWidgetReferences);
 }
 
 void TaskFilletParameters::onAddAllEdges()
 {
     TaskDressUpParameters::addAllEdges(ui->listWidgetReferences);
-    ui->buttonRefRemove->setEnabled(true);
 }
 
 void TaskFilletParameters::onLengthChanged(double len)
 {
-    clearButtons(none);
+    setSelectionMode(none);
     PartDesign::Fillet* pcFillet = static_cast<PartDesign::Fillet*>(DressUpView->getObject());
     setupTransaction();
     pcFillet->Radius.setValue(len);
@@ -267,6 +188,10 @@ void TaskFilletParameters::apply()
 
     //Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Fillet changed"));
     ui->filletRadius->apply();
+
+    //Alert user if he created an empty feature
+    if(ui->listWidgetReferences->count() == 0)
+        Base::Console().Warning(tr("Empty fillet created !\n").toStdString().c_str());
 }
 
 //**************************************************************************

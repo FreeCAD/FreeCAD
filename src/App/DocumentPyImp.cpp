@@ -40,6 +40,37 @@
 using namespace App;
 
 
+PyObject*  DocumentPy::addProperty(PyObject *args)
+{
+    char *sType,*sName=nullptr,*sGroup=nullptr,*sDoc=nullptr;
+    short attr=0;
+    std::string sDocStr;
+    PyObject *ro = Py_False, *hd = Py_False;
+    if (!PyArg_ParseTuple(args, "s|ssethO!O!", &sType,&sName,&sGroup,"utf-8",&sDoc,&attr,
+        &PyBool_Type, &ro, &PyBool_Type, &hd))
+        return nullptr;
+
+    if (sDoc) {
+        sDocStr = sDoc;
+        PyMem_Free(sDoc);
+    }
+
+    getDocumentPtr()->addDynamicProperty(sType,sName,sGroup,sDocStr.c_str(),attr,
+            Base::asBoolean(ro), Base::asBoolean(hd));
+
+    return Py::new_reference_to(this);
+}
+
+PyObject*  DocumentPy::removeProperty(PyObject *args)
+{
+    char *sName;
+    if (!PyArg_ParseTuple(args, "s", &sName))
+        return nullptr;
+
+    bool ok = getDocumentPtr()->removeDynamicProperty(sName);
+    return Py_BuildValue("O", (ok ? Py_True : Py_False));
+}
+
 // returns a string which represent the object e.g. when printed in python
 std::string DocumentPy::representation() const
 {

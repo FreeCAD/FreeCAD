@@ -34,6 +34,7 @@ from FreeCAD import Units
 from .. import sifio
 from .. import writer as general_writer
 
+
 class MgDynwriter:
 
     def __init__(self, writer, solver):
@@ -131,7 +132,7 @@ class MgDynwriter:
     def handleMagnetodynamicMaterial(self, bodies):
         # check that all bodies have a set material
         for name in bodies:
-            if self.write.getBodyMaterial(name) == None:
+            if self.write.getBodyMaterial(name) is None:
                 raise general_writer.WriteError(
                     "The body {} is not referenced in any material.\n\n".format(name)
                 )
@@ -154,7 +155,7 @@ class MgDynwriter:
                     )
                 self.write.material(name, "Name", m["Name"])
                 conductivity = self.write.convert(m["ElectricalConductivity"], "T^3*I^2/(L^3*M)")
-                conductivity = round(conductivity, 10) # to get rid of numerical artifacts
+                conductivity = round(conductivity, 10)  # to get rid of numerical artifacts
                 self.write.material(name, "Electric Conductivity", conductivity)
                 self.write.material(
                     name, "Relative Permeability",
@@ -218,7 +219,7 @@ class MgDynwriter:
             # check for PotentialEnabled not Potential since PotentialEnabled was
             # added later and only with this the imaginary property is available
             if obj.PotentialEnabled:
-            # output only if potential is enabled and needed
+                # output only if potential is enabled and needed
                 potential = float(obj.Potential.getValueAs("V"))
                 self.write.bodyForce(name, "Electric Potential", round(potential, 6))
             # imaginary is only needed for harmonic equation

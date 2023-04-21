@@ -61,12 +61,7 @@ DrawProjGroup::DrawProjGroup()
     static const char* group = "Base";
     static const char* agroup = "Distribute";
 
-    Base::Reference<ParameterGrp> hGrp = App::GetApplication()
-                                             .GetUserParameter()
-                                             .GetGroup("BaseApp")
-                                             ->GetGroup("Preferences")
-                                             ->GetGroup("Mod/TechDraw/General");
-    bool autoDist = hGrp->GetBool("AutoDist", true);
+    bool autoDist = Preferences::getPreferenceGroup("General")->GetBool("AutoDist", true);
 
     ADD_PROPERTY_TYPE(Source, (nullptr), group, App::Prop_None, "Shape to view");
     Source.setScope(App::LinkScope::Global);
@@ -209,15 +204,23 @@ App::DocumentObjectExecReturn* DrawProjGroup::execute()
 
 short DrawProjGroup::mustExecute() const
 {
-    short result = 0;
     if (!isRestoring()) {
-        result = Views.isTouched() || Source.isTouched() || XSource.isTouched() || Scale.isTouched()
-            || ScaleType.isTouched() || ProjectionType.isTouched() || Anchor.isTouched()
-            || AutoDistribute.isTouched() || LockPosition.isTouched() || spacingX.isTouched()
-            || spacingY.isTouched();
+        if(
+            Views.isTouched() ||
+            Source.isTouched() ||
+            XSource.isTouched() ||
+            Scale.isTouched() ||
+            ScaleType.isTouched() ||
+            ProjectionType.isTouched() ||
+            Anchor.isTouched() ||
+            AutoDistribute.isTouched() ||
+            LockPosition.isTouched() ||
+            spacingX.isTouched() ||
+            spacingY.isTouched()
+        ) {
+            return true;
+        }
     }
-    if (result)
-        return result;
     return TechDraw::DrawViewCollection::mustExecute();
 }
 
@@ -382,13 +385,18 @@ DrawProjGroupItem* DrawProjGroup::getProjItem(const char* viewProjType) const
 
 bool DrawProjGroup::checkViewProjType(const char* in)
 {
-    if (strcmp(in, "Front") == 0 || strcmp(in, "Left") == 0 || strcmp(in, "Right") == 0
-        || strcmp(in, "Top") == 0 || strcmp(in, "Bottom") == 0 || strcmp(in, "Rear") == 0
-        || strcmp(in, "FrontTopLeft") == 0 || strcmp(in, "FrontTopRight") == 0
-        || strcmp(in, "FrontBottomLeft") == 0 || strcmp(in, "FrontBottomRight") == 0) {
-        return true;
-    }
-    return false;
+    return (
+        strcmp(in, "Front") == 0 ||
+        strcmp(in, "Left") == 0 ||
+        strcmp(in, "Right") == 0 ||
+        strcmp(in, "Top") == 0 ||
+        strcmp(in, "Bottom") == 0 ||
+        strcmp(in, "Rear") == 0 ||
+        strcmp(in, "FrontTopLeft") == 0 ||
+        strcmp(in, "FrontTopRight") == 0 ||
+        strcmp(in, "FrontBottomLeft") == 0 ||
+        strcmp(in, "FrontBottomRight") == 0
+    );
 }
 
 //********************************
@@ -415,7 +423,6 @@ bool DrawProjGroup::hasProjection(const char* viewProjType) const
 bool DrawProjGroup::canDelete(const char* viewProjType) const
 {
     //    Base::Console().Message("DPG::canDelete(%s)\n", viewProjType);
-    TechDraw::DrawProjGroupItem* foundItem(nullptr);
     for (const auto it : Views.getValues()) {
         auto view(dynamic_cast<TechDraw::DrawProjGroupItem*>(it));
         if (!view) {
@@ -425,14 +432,11 @@ bool DrawProjGroup::canDelete(const char* viewProjType) const
             throw Base::TypeError("Error: projection in DPG list is not a DPGI!");
         }
 
-        if (strcmp(viewProjType, view->Type.getValueAsString()) == 0) {
-            foundItem = view;
-            break;
+        if (strcmp(viewProjType, view->Type.getValueAsString()) != 0) {
+            continue;
         }
-    }
 
-    if (foundItem) {
-        auto linkedItems = foundItem->getInList();
+        auto linkedItems = view->getInList();
         for (auto& item : linkedItems) {
             if (item == this) {
                 continue;
@@ -442,6 +446,7 @@ bool DrawProjGroup::canDelete(const char* viewProjType) const
             }
         }
     }
+
     return true;
 }
 
@@ -566,8 +571,7 @@ std::pair<Base::Vector3d, Base::Vector3d> DrawProjGroup::getDirsFromFront(DrawPr
 {
     std::pair<Base::Vector3d, Base::Vector3d> result;
     std::string viewType = view->Type.getValueAsString();
-    result = getDirsFromFront(viewType);
-    return result;
+    return getDirsFromFront(viewType);
 }
 
 std::pair<Base::Vector3d, Base::Vector3d> DrawProjGroup::getDirsFromFront(std::string viewType)
@@ -581,10 +585,6 @@ std::pair<Base::Vector3d, Base::Vector3d> DrawProjGroup::getDirsFromFront(std::s
         Base::Console().Warning("DPG::getDirsFromFront - %s - No Anchor!\n", Label.getValue());
         throw Base::RuntimeError("Project Group missing Anchor projection item");
     }
-
-    Base::Vector3d dirAnch = anch->Direction.getValue();
-    Base::Vector3d rotAnch = anch->getXDirection();
-    result = std::make_pair(dirAnch, rotAnch);
 
     Base::Vector3d org(0.0, 0.0, 0.0);
     gp_Ax2 anchorCS = anch->getProjectionCS(org);
@@ -644,27 +644,26 @@ std::pair<Base::Vector3d, Base::Vector3d> DrawProjGroup::getDirsFromFront(std::s
         projDir = dir2vec(newDir);
         gp_Dir newXDir = gp_Dir(gp_Vec(gXDir) - gp_Vec(gDir));
         rotVec = dir2vec(newXDir);
-    }
-    else {
+    } else {
+        // not one of the standard view directions, so complain and use the values for "Front"
         Base::Console().Error("DrawProjGroup - %s unknown projection: %s\n", getNameInDocument(),
-                              viewType.c_str());
-        return result;
+                            viewType.c_str());
+        Base::Vector3d dirAnch = anch->Direction.getValue();
+        Base::Vector3d rotAnch = anch->getXDirection();
+        return std::make_pair(dirAnch, rotAnch);
     }
 
-    result = std::make_pair(projDir, rotVec);
-    return result;
+    return std::make_pair(projDir, rotVec);
 }
 
 Base::Vector3d DrawProjGroup::dir2vec(gp_Dir d)
 {
-    Base::Vector3d result(d.X(), d.Y(), d.Z());
-    return result;
+    return Base::Vector3d(d.X(), d.Y(), d.Z());
 }
 
 gp_Dir DrawProjGroup::vec2dir(Base::Vector3d v)
 {
-    gp_Dir result(v.x, v.y, v.z);
-    return result;
+    return gp_Dir(v.x, v.y, v.z);
 }
 
 //this can be improved.  this implementation positions views too far apart.
@@ -679,10 +678,9 @@ Base::Vector3d DrawProjGroup::getXYPosition(const char* viewTypeCStr)
     //                  Right   F   L  Rear     3  4  5  6
     //                 FTRight  T  FTL          7  8  9
 
-    Base::Vector3d result(0.0, 0.0, 0.0);
     //Front view position is always (0, 0)
     if (strcmp(viewTypeCStr, "Front") == 0) {// Front!
-        return result;
+        return Base::Vector3d(0.0, 0.0, 0.0);
     }
     const int idxCount = MAXPROJECTIONCOUNT;
     std::array<DrawProjGroupItem*, MAXPROJECTIONCOUNT> viewPtrs;
@@ -692,116 +690,114 @@ Base::Vector3d DrawProjGroup::getXYPosition(const char* viewTypeCStr)
     //TODO: bounding boxes do not take view orientation into account
     //      i.e. X&Y widths might be swapped on page
 
-    if (viewPtrs[viewIndex]->LockPosition.getValue()) {
-        result.x = viewPtrs[viewIndex]->X.getValue();
-        result.y = viewPtrs[viewIndex]->Y.getValue();
-        return result;
+    if (viewPtrs[viewIndex]->LockPosition.getValue() || !AutoDistribute.getValue()) {
+        return Base::Vector3d(
+            viewPtrs[viewIndex]->X.getValue(),
+            viewPtrs[viewIndex]->Y.getValue(),
+            0.0
+        );
     }
 
-    if (AutoDistribute.getValue()) {
-        std::vector<Base::Vector3d> position(idxCount);
+    std::vector<Base::Vector3d> position(idxCount);
 
-        // Calculate bounding boxes for each displayed view
-        std::array<Base::BoundBox3d, MAXPROJECTIONCOUNT> bboxes;
-        makeViewBbs(viewPtrs, bboxes);//scaled
+    // Calculate bounding boxes for each displayed view
+    std::array<Base::BoundBox3d, MAXPROJECTIONCOUNT> bboxes;
+    makeViewBbs(viewPtrs, bboxes);//scaled
 
-        double xSpacing = spacingX.getValue();//in mm, no scale
-        double ySpacing = spacingY.getValue();//in mm, no scale
+    double xSpacing = spacingX.getValue();//in mm, no scale
+    double ySpacing = spacingY.getValue();//in mm, no scale
 
-        std::array<int, 3> topRowBoxes {0, 1, 2};
-        std::array<int, 3> middleRowBoxes {3, 4, 5};
-        std::array<int, 3> bottomRowBoxes {7, 8, 9};
-        std::array<int, 3> leftColBoxes {0, 3, 7};
-        std::array<int, 3> middleColBoxes {1, 4, 8};
-        std::array<int, 3> rightColBoxes {2, 5, 9};
-        double bigHeightTop = getMaxRowHeight(topRowBoxes, bboxes);
-        double bigHeightMiddle = getMaxRowHeight(middleRowBoxes, bboxes);
-        double bigHeightBottom = getMaxRowHeight(bottomRowBoxes, bboxes);
-        double bigWidthLeft = getMaxColWidth(leftColBoxes, bboxes);
-        double bigWidthMiddle = getMaxColWidth(middleColBoxes, bboxes);
-        double bigWidthRight = getMaxColWidth(rightColBoxes, bboxes);
-        double bigWidthFarRight = 0.0;
-        if (bboxes[6].IsValid()) {
-            bigWidthFarRight = bboxes[6].LengthX();
-        }
-
-
-        if (viewPtrs[4] &&//Front
-            bboxes[4].IsValid()) {
-            position[4].x = 0.0;
-            position[4].y = 0.0;
-        }
-
-        if (viewPtrs[3] &&// L/R  (third/first) middle/left
-            bboxes[3].IsValid() && bboxes[4].IsValid()) {
-            position[3].x = -(0.5 * bigWidthMiddle + xSpacing + 0.5 * bigWidthLeft);
-            position[3].y = 0.0;
-        }
-
-        if (viewPtrs[5] &&// R/L (third/first) middle/right
-            bboxes[5].IsValid() && bboxes[4].IsValid()) {
-            position[5].x = 0.5 * bigWidthMiddle + xSpacing + 0.5 * bigWidthRight;
-            position[5].y = 0.0;
-        }
-
-        if (viewPtrs[6] && bboxes[6].IsValid()) {//"Rear"  middle/far right
-            if (viewPtrs[5] && bboxes[5].IsValid()) {
-                //there is a view between Front and Rear
-                position[6].x = 0.5 * bigWidthMiddle + xSpacing + bigWidthRight + xSpacing
-                    + 0.5 * bigWidthFarRight;
-                position[6].y = 0.0;
-            }
-            else if (viewPtrs[4] && bboxes[4].IsValid()) {
-                // there is no view between Front and Rear
-                position[6].x = 0.5 * bigWidthMiddle + xSpacing + 0.5 * bigWidthRight;
-                position[6].y = 0.0;
-            }
-        }
-
-        if (viewPtrs[1] &&// T/B (third/first) top/middle
-            bboxes[1].IsValid() && bboxes[4].IsValid()) {
-            position[1].x = 0.0;
-            position[1].y = 0.5 * bigHeightMiddle + ySpacing + 0.5 * bigHeightTop;
-        }
-
-        if (viewPtrs[8] &&// B/T (third/first) bottom/middle
-            bboxes[8].IsValid() && bboxes[4].IsValid()) {
-            position[8].x = 0.0;
-            position[8].y = -(0.5 * bigHeightMiddle + ySpacing + 0.5 * bigHeightBottom);
-        }
-
-        if (viewPtrs[0] &&// iso top left
-            bboxes[0].IsValid()) {
-            position[0].x = -(0.5 * bigWidthMiddle + xSpacing + 0.5 * bigWidthLeft);
-            position[0].y = 0.5 * bigHeightMiddle + ySpacing + 0.5 * bigHeightTop;
-        }
-
-        if (viewPtrs[2] &&// iso top right
-            bboxes[2].IsValid()) {
-            position[2].x = 0.5 * bigWidthMiddle + xSpacing + 0.5 * bigWidthRight;
-            position[2].y = 0.5 * bigHeightMiddle + ySpacing + 0.5 * bigHeightTop;
-        }
-
-        if (viewPtrs[7] &&// iso bottom left
-            bboxes[7].IsValid()) {
-            position[7].x = -(0.5 * bigWidthMiddle + xSpacing + 0.5 * bigWidthLeft);
-            position[7].y = -(0.5 * bigHeightMiddle + ySpacing + 0.5 * bigHeightBottom);
-        }
-
-        if (viewPtrs[9] &&// iso bottom right
-            bboxes[9].IsValid()) {
-            position[9].x = 0.5 * bigWidthMiddle + xSpacing + 0.5 * bigWidthRight;
-            position[9].y = -(0.5 * bigHeightMiddle + ySpacing + 0.5 * bigHeightBottom);
-        }
-
-        result.x = position[viewIndex].x;
-        result.y = position[viewIndex].y;
+    std::array<int, 3> topRowBoxes {0, 1, 2};
+    std::array<int, 3> middleRowBoxes {3, 4, 5};
+    std::array<int, 3> bottomRowBoxes {7, 8, 9};
+    std::array<int, 3> leftColBoxes {0, 3, 7};
+    std::array<int, 3> middleColBoxes {1, 4, 8};
+    std::array<int, 3> rightColBoxes {2, 5, 9};
+    double bigHeightTop = getMaxRowHeight(topRowBoxes, bboxes);
+    double bigHeightMiddle = getMaxRowHeight(middleRowBoxes, bboxes);
+    double bigHeightBottom = getMaxRowHeight(bottomRowBoxes, bboxes);
+    double bigWidthLeft = getMaxColWidth(leftColBoxes, bboxes);
+    double bigWidthMiddle = getMaxColWidth(middleColBoxes, bboxes);
+    double bigWidthRight = getMaxColWidth(rightColBoxes, bboxes);
+    double bigWidthFarRight = 0.0;
+    if (bboxes[6].IsValid()) {
+        bigWidthFarRight = bboxes[6].LengthX();
     }
-    else {
-        result.x = viewPtrs[viewIndex]->X.getValue();
-        result.y = viewPtrs[viewIndex]->Y.getValue();
+
+
+    if (viewPtrs[4] &&//Front
+        bboxes[4].IsValid()) {
+        position[4].x = 0.0;
+        position[4].y = 0.0;
     }
-    return result;
+
+    if (viewPtrs[3] &&// L/R  (third/first) middle/left
+        bboxes[3].IsValid() && bboxes[4].IsValid()) {
+        position[3].x = -(0.5 * bigWidthMiddle + xSpacing + 0.5 * bigWidthLeft);
+        position[3].y = 0.0;
+    }
+
+    if (viewPtrs[5] &&// R/L (third/first) middle/right
+        bboxes[5].IsValid() && bboxes[4].IsValid()) {
+        position[5].x = 0.5 * bigWidthMiddle + xSpacing + 0.5 * bigWidthRight;
+        position[5].y = 0.0;
+    }
+
+    if (viewPtrs[6] && bboxes[6].IsValid()) {//"Rear"  middle/far right
+        if (viewPtrs[5] && bboxes[5].IsValid()) {
+            //there is a view between Front and Rear
+            position[6].x = 0.5 * bigWidthMiddle + xSpacing + bigWidthRight + xSpacing
+                + 0.5 * bigWidthFarRight;
+            position[6].y = 0.0;
+        }
+        else if (viewPtrs[4] && bboxes[4].IsValid()) {
+            // there is no view between Front and Rear
+            position[6].x = 0.5 * bigWidthMiddle + xSpacing + 0.5 * bigWidthRight;
+            position[6].y = 0.0;
+        }
+    }
+
+    if (viewPtrs[1] &&// T/B (third/first) top/middle
+        bboxes[1].IsValid() && bboxes[4].IsValid()) {
+        position[1].x = 0.0;
+        position[1].y = 0.5 * bigHeightMiddle + ySpacing + 0.5 * bigHeightTop;
+    }
+
+    if (viewPtrs[8] &&// B/T (third/first) bottom/middle
+        bboxes[8].IsValid() && bboxes[4].IsValid()) {
+        position[8].x = 0.0;
+        position[8].y = -(0.5 * bigHeightMiddle + ySpacing + 0.5 * bigHeightBottom);
+    }
+
+    if (viewPtrs[0] &&// iso top left
+        bboxes[0].IsValid()) {
+        position[0].x = -(0.5 * bigWidthMiddle + xSpacing + 0.5 * bigWidthLeft);
+        position[0].y = 0.5 * bigHeightMiddle + ySpacing + 0.5 * bigHeightTop;
+    }
+
+    if (viewPtrs[2] &&// iso top right
+        bboxes[2].IsValid()) {
+        position[2].x = 0.5 * bigWidthMiddle + xSpacing + 0.5 * bigWidthRight;
+        position[2].y = 0.5 * bigHeightMiddle + ySpacing + 0.5 * bigHeightTop;
+    }
+
+    if (viewPtrs[7] &&// iso bottom left
+        bboxes[7].IsValid()) {
+        position[7].x = -(0.5 * bigWidthMiddle + xSpacing + 0.5 * bigWidthLeft);
+        position[7].y = -(0.5 * bigHeightMiddle + ySpacing + 0.5 * bigHeightBottom);
+    }
+
+    if (viewPtrs[9] &&// iso bottom right
+        bboxes[9].IsValid()) {
+        position[9].x = 0.5 * bigWidthMiddle + xSpacing + 0.5 * bigWidthRight;
+        position[9].y = -(0.5 * bigHeightMiddle + ySpacing + 0.5 * bigHeightBottom);
+    }
+
+    return Base::Vector3d(
+        position[viewIndex].x,
+        position[viewIndex].y,
+        0.0
+    );
 }
 
 double DrawProjGroup::getMaxRowHeight(std::array<int, 3> list,
@@ -832,7 +828,6 @@ double DrawProjGroup::getMaxColWidth(std::array<int, 3> list,
 
 int DrawProjGroup::getViewIndex(const char* viewTypeCStr) const
 {
-    int result = 4;//default to front view's position
     // Determine layout - should be either "First Angle" or "Third Angle"
     const char* projType;
     DrawPage* dp = findParentPage();
@@ -852,54 +847,52 @@ int DrawProjGroup::getViewIndex(const char* viewTypeCStr) const
         projType = ProjectionType.getValueAsString();
     }
 
-    if (strcmp(projType, "Third Angle") == 0 || strcmp(projType, "First Angle") == 0) {
-        //   Third Angle:  FTL  T  FTRight          0  1  2
-        //                  L   F   Right   Rear    3  4  5  6
-        //                 FBL  B  FBRight          7  8  9
-        //
-        //   First Angle:  FBRight  B  FBL          0  1  2
-        //                  Right   F   L  Rear     3  4  5  6
-        //                 FTRight  T  FTL          7  8  9
-
-        bool thirdAngle = (strcmp(projType, "Third Angle") == 0);
-        if (strcmp(viewTypeCStr, "Front") == 0) {
-            result = 4;
-        }
-        else if (strcmp(viewTypeCStr, "Left") == 0) {
-            result = thirdAngle ? 3 : 5;
-        }
-        else if (strcmp(viewTypeCStr, "Right") == 0) {
-            result = thirdAngle ? 5 : 3;
-        }
-        else if (strcmp(viewTypeCStr, "Top") == 0) {
-            result = thirdAngle ? 1 : 8;
-        }
-        else if (strcmp(viewTypeCStr, "Bottom") == 0) {
-            result = thirdAngle ? 8 : 1;
-        }
-        else if (strcmp(viewTypeCStr, "Rear") == 0) {
-            result = 6;
-        }
-        else if (strcmp(viewTypeCStr, "FrontTopLeft") == 0) {
-            result = thirdAngle ? 0 : 9;
-        }
-        else if (strcmp(viewTypeCStr, "FrontTopRight") == 0) {
-            result = thirdAngle ? 2 : 7;
-        }
-        else if (strcmp(viewTypeCStr, "FrontBottomLeft") == 0) {
-            result = thirdAngle ? 7 : 2;
-        }
-        else if (strcmp(viewTypeCStr, "FrontBottomRight") == 0) {
-            result = thirdAngle ? 9 : 0;
-        }
-        else {
-            throw Base::TypeError("Unknown view type in DrawProjGroup::getViewIndex()");
-        }
-    }
-    else {
+    if (strcmp(projType, "Third Angle") != 0 && strcmp(projType, "First Angle") != 0) {
         throw Base::ValueError("Unknown Projection convention in DrawProjGroup::getViewIndex()");
     }
-    return result;
+
+    //   Third Angle:  FTL  T  FTRight          0  1  2
+    //                  L   F   Right   Rear    3  4  5  6
+    //                 FBL  B  FBRight          7  8  9
+    //
+    //   First Angle:  FBRight  B  FBL          0  1  2
+    //                  Right   F   L  Rear     3  4  5  6
+    //                 FTRight  T  FTL          7  8  9
+
+    bool thirdAngle = (strcmp(projType, "Third Angle") == 0);
+    if (strcmp(viewTypeCStr, "Front") == 0) {
+        return 4;
+    }
+    else if (strcmp(viewTypeCStr, "Left") == 0) {
+        return thirdAngle ? 3 : 5;
+    }
+    else if (strcmp(viewTypeCStr, "Right") == 0) {
+        return thirdAngle ? 5 : 3;
+    }
+    else if (strcmp(viewTypeCStr, "Top") == 0) {
+        return thirdAngle ? 1 : 8;
+    }
+    else if (strcmp(viewTypeCStr, "Bottom") == 0) {
+        return thirdAngle ? 8 : 1;
+    }
+    else if (strcmp(viewTypeCStr, "Rear") == 0) {
+        return 6;
+    }
+    else if (strcmp(viewTypeCStr, "FrontTopLeft") == 0) {
+        return thirdAngle ? 0 : 9;
+    }
+    else if (strcmp(viewTypeCStr, "FrontTopRight") == 0) {
+        return thirdAngle ? 2 : 7;
+    }
+    else if (strcmp(viewTypeCStr, "FrontBottomLeft") == 0) {
+        return thirdAngle ? 7 : 2;
+    }
+    else if (strcmp(viewTypeCStr, "FrontBottomRight") == 0) {
+        return thirdAngle ? 9 : 0;
+    }
+
+    throw Base::TypeError("Unknown view type in DrawProjGroup::getViewIndex()");
+    return 4;  // Default to front view's position;
 }
 
 void DrawProjGroup::arrangeViewPointers(
@@ -931,72 +924,71 @@ void DrawProjGroup::arrangeViewPointers(
     }
 
     // Iterate through views and populate viewPtrs
-    if (strcmp(projType, "Third Angle") == 0 || strcmp(projType, "First Angle") == 0) {
-        //   Third Angle:  FTL  T  FTRight          0  1  2
-        //                  L   F   Right   Rear    3  4  5  6
-        //                 FBL  B  FBRight          7  8  9
-        //
-        //   First Angle:  FBRight  B  FBL          0  1  2
-        //                  Right   F   L  Rear     3  4  5  6
-        //                 FTRight  T  FTL          7  8  9
-
-        bool thirdAngle = (strcmp(projType, "Third Angle") == 0);
-        for (auto it : Views.getValues()) {
-            auto oView(dynamic_cast<DrawProjGroupItem*>(it));
-            if (!oView) {
-                //if an element in Views is not a DPGI, something really bad has happened somewhere
-                Base::Console().Error(
-                    "PROBLEM - DPG::arrangeViewPointers - non DPGI in Views! %s\n",
-                    getNameInDocument());
-                throw Base::TypeError("Error: projection in DPG list is not a DPGI!");
-            }
-            else {
-                const char* viewTypeCStr = oView->Type.getValueAsString();
-                if (strcmp(viewTypeCStr, "Front") == 0) {
-                    //viewPtrs[thirdAngle ? 4 : 4] = oView;
-                    viewPtrs[4] = oView;
-                }
-                else if (strcmp(viewTypeCStr, "Left") == 0) {
-                    viewPtrs[thirdAngle ? 3 : 5] = oView;
-                }
-                else if (strcmp(viewTypeCStr, "Right") == 0) {
-                    viewPtrs[thirdAngle ? 5 : 3] = oView;
-                }
-                else if (strcmp(viewTypeCStr, "Top") == 0) {
-                    viewPtrs[thirdAngle ? 1 : 8] = oView;
-                }
-                else if (strcmp(viewTypeCStr, "Bottom") == 0) {
-                    viewPtrs[thirdAngle ? 8 : 1] = oView;
-                }
-                else if (strcmp(viewTypeCStr, "Rear") == 0) {
-                    viewPtrs[6] = oView;
-                }
-                else if (strcmp(viewTypeCStr, "FrontTopLeft") == 0) {
-                    viewPtrs[thirdAngle ? 0 : 9] = oView;
-                }
-                else if (strcmp(viewTypeCStr, "FrontTopRight") == 0) {
-                    viewPtrs[thirdAngle ? 2 : 7] = oView;
-                }
-                else if (strcmp(viewTypeCStr, "FrontBottomLeft") == 0) {
-                    viewPtrs[thirdAngle ? 7 : 2] = oView;
-                }
-                else if (strcmp(viewTypeCStr, "FrontBottomRight") == 0) {
-                    viewPtrs[thirdAngle ? 9 : 0] = oView;
-                }
-                else {
-                    Base::Console().Warning("DPG: %s - unknown view type: %s. \n",
-                                            getNameInDocument(), viewTypeCStr);
-                    throw Base::TypeError(
-                        "Unknown view type in DrawProjGroup::arrangeViewPointers.");
-                }
-            }
-        }
-    }
-    else {
+    if (strcmp(projType, "Third Angle") != 0 && strcmp(projType, "First Angle") != 0) {
         Base::Console().Warning("DPG: %s - unknown Projection convention: %s\n",
                                 getNameInDocument(), projType);
         throw Base::ValueError(
             "Unknown Projection convention in DrawProjGroup::arrangeViewPointers");
+    }
+
+    //   Third Angle:  FTL  T  FTRight          0  1  2
+    //                  L   F   Right   Rear    3  4  5  6
+    //                 FBL  B  FBRight          7  8  9
+    //
+    //   First Angle:  FBRight  B  FBL          0  1  2
+    //                  Right   F   L  Rear     3  4  5  6
+    //                 FTRight  T  FTL          7  8  9
+
+    bool thirdAngle = (strcmp(projType, "Third Angle") == 0);
+    for (auto it : Views.getValues()) {
+        auto oView(dynamic_cast<DrawProjGroupItem*>(it));
+        if (!oView) {
+            //if an element in Views is not a DPGI, something really bad has happened somewhere
+            Base::Console().Error(
+                "PROBLEM - DPG::arrangeViewPointers - non DPGI in Views! %s\n",
+                getNameInDocument());
+            throw Base::TypeError("Error: projection in DPG list is not a DPGI!");
+        }
+        else {
+            const char* viewTypeCStr = oView->Type.getValueAsString();
+            if (strcmp(viewTypeCStr, "Front") == 0) {
+                //viewPtrs[thirdAngle ? 4 : 4] = oView;
+                viewPtrs[4] = oView;
+            }
+            else if (strcmp(viewTypeCStr, "Left") == 0) {
+                viewPtrs[thirdAngle ? 3 : 5] = oView;
+            }
+            else if (strcmp(viewTypeCStr, "Right") == 0) {
+                viewPtrs[thirdAngle ? 5 : 3] = oView;
+            }
+            else if (strcmp(viewTypeCStr, "Top") == 0) {
+                viewPtrs[thirdAngle ? 1 : 8] = oView;
+            }
+            else if (strcmp(viewTypeCStr, "Bottom") == 0) {
+                viewPtrs[thirdAngle ? 8 : 1] = oView;
+            }
+            else if (strcmp(viewTypeCStr, "Rear") == 0) {
+                viewPtrs[6] = oView;
+            }
+            else if (strcmp(viewTypeCStr, "FrontTopLeft") == 0) {
+                viewPtrs[thirdAngle ? 0 : 9] = oView;
+            }
+            else if (strcmp(viewTypeCStr, "FrontTopRight") == 0) {
+                viewPtrs[thirdAngle ? 2 : 7] = oView;
+            }
+            else if (strcmp(viewTypeCStr, "FrontBottomLeft") == 0) {
+                viewPtrs[thirdAngle ? 7 : 2] = oView;
+            }
+            else if (strcmp(viewTypeCStr, "FrontBottomRight") == 0) {
+                viewPtrs[thirdAngle ? 9 : 0] = oView;
+            }
+            else {
+                Base::Console().Warning("DPG: %s - unknown view type: %s. \n",
+                                        getNameInDocument(), viewTypeCStr);
+                throw Base::TypeError(
+                    "Unknown view type in DrawProjGroup::arrangeViewPointers.");
+            }
+        }
     }
 }
 
@@ -1007,16 +999,19 @@ void DrawProjGroup::makeViewBbs(std::array<DrawProjGroupItem*, MAXPROJECTIONCOUN
     Base::BoundBox3d empty(Base::Vector3d(0.0, 0.0, 0.0), 0.0);
     for (int i = 0; i < MAXPROJECTIONCOUNT; ++i) {
         bboxes[i] = empty;
-        if (viewPtrs[i]) {
-            bboxes[i] = viewPtrs[i]->getBoundingBox();
-            if (!scaled) {
-                double scale = 1.0 / viewPtrs[i]->getScale();//convert bbx to 1:1 scale
-                //                double scale = 1.0 / viewPtrs[i]->getLastScale();    //convert bbx to 1:1 scale
-                bboxes[i].ScaleX(scale);
-                bboxes[i].ScaleY(scale);
-                bboxes[i].ScaleZ(scale);
-            }
+        if (!viewPtrs[i]) {
+            continue;
         }
+
+        bboxes[i] = viewPtrs[i]->getBoundingBox();
+        if (scaled) {
+            continue;
+        }
+        double scale = 1.0 / viewPtrs[i]->getScale();//convert bbx to 1:1 scale
+        //                double scale = 1.0 / viewPtrs[i]->getLastScale();    //convert bbx to 1:1 scale
+        bboxes[i].ScaleX(scale);
+        bboxes[i].ScaleY(scale);
+        bboxes[i].ScaleZ(scale);
     }
 }
 
@@ -1062,11 +1057,10 @@ void DrawProjGroup::updateChildrenScale()
             //if an element in Views is not a DPGI, something really bad has happened somewhere
             throw Base::TypeError("Error: projection in DPG list is not a DPGI!");
         }
-        else {
-            view->Scale.setValue(getScale());
-            view->Scale.purgeTouched();
-            view->purgeTouched();
-        }
+
+        view->Scale.setValue(getScale());
+        view->Scale.purgeTouched();
+        view->purgeTouched();
     }
 }
 
@@ -1084,13 +1078,11 @@ void DrawProjGroup::updateChildrenSource()
                 getNameInDocument());
             throw Base::TypeError("Error: projection in DPG list is not a DPGI!");
         }
-        else {
-            if (view->Source.getValues() != Source.getValues()) {
-                view->Source.setValues(Source.getValues());
-            }
-            if (view->XSource.getValues() != XSource.getValues()) {
-                view->XSource.setValues(XSource.getValues());
-            }
+        if (view->Source.getValues() != Source.getValues()) {
+            view->Source.setValues(Source.getValues());
+        }
+        if (view->XSource.getValues() != XSource.getValues()) {
+            view->XSource.setValues(XSource.getValues());
         }
     }
 }
@@ -1110,9 +1102,7 @@ void DrawProjGroup::updateChildrenLock()
                 getNameInDocument());
             throw Base::TypeError("Error: projection in DPG list is not a DPGI!");
         }
-        else {
-            view->requestPaint();
-        }
+        view->requestPaint();
     }
 }
 
@@ -1127,9 +1117,7 @@ void DrawProjGroup::updateChildrenEnforce(void)
                 getNameInDocument());
             throw Base::TypeError("Error: projection in DPG list is not a DPGI!");
         }
-        else {
-            view->enforceRecompute();
-        }
+        view->enforceRecompute();
     }
 }
 
@@ -1148,22 +1136,21 @@ App::Enumeration DrawProjGroup::usedProjectionType()
 
 bool DrawProjGroup::hasAnchor()
 {
-    bool result = false;
     App::DocumentObject* docObj = Anchor.getValue();
     if (docObj) {
-        result = true;
+        return true;
     }
-    return result;
+    return false;
 }
 
 TechDraw::DrawProjGroupItem* DrawProjGroup::getAnchor()
 {
-    DrawProjGroupItem* result = nullptr;
     App::DocumentObject* docObj = Anchor.getValue();
     if (docObj) {
-        result = static_cast<DrawProjGroupItem*>(docObj);
+        DrawProjGroupItem* result = static_cast<DrawProjGroupItem*>(docObj);
+        return result;
     }
-    return result;
+    return nullptr;
 }
 
 void DrawProjGroup::setAnchorDirection(const Base::Vector3d dir)
@@ -1175,13 +1162,12 @@ void DrawProjGroup::setAnchorDirection(const Base::Vector3d dir)
 
 Base::Vector3d DrawProjGroup::getAnchorDirection()
 {
-    Base::Vector3d result;
     App::DocumentObject* docObj = Anchor.getValue();
-    if (docObj) {
-        DrawProjGroupItem* item = static_cast<DrawProjGroupItem*>(docObj);
-        result = item->Direction.getValue();
+    if (!docObj) {
+        return Base::Vector3d();
     }
-    return result;
+    DrawProjGroupItem* item = static_cast<DrawProjGroupItem*>(docObj);
+    return item->Direction.getValue();
 }
 
 //*************************************
@@ -1362,13 +1348,13 @@ void DrawProjGroup::handleChangedPropertyType(Base::XMLReader& reader, const cha
     DrawView::handleChangedPropertyType(reader, TypeName, prop);
 
     // property spacingX/Y had the App::PropertyFloat and were changed to App::PropertyLength
-    if ((prop == &spacingX) && (strcmp(TypeName, "App::PropertyFloat") == 0)) {
+    if (prop == &spacingX && strcmp(TypeName, "App::PropertyFloat") == 0) {
         App::PropertyFloat spacingXProperty;
         // restore the PropertyFloat to be able to set its value
         spacingXProperty.Restore(reader);
         spacingX.setValue(spacingXProperty.getValue());
     }
-    else if ((prop == &spacingY) && (strcmp(TypeName, "App::PropertyFloat") == 0)) {
+    else if (prop == &spacingY && strcmp(TypeName, "App::PropertyFloat") == 0) {
         App::PropertyFloat spacingYProperty;
         spacingYProperty.Restore(reader);
         spacingY.setValue(spacingYProperty.getValue());

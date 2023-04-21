@@ -398,6 +398,7 @@ private:
             Points::Feature* pcFeature = static_cast<Points::Feature*>(pcDoc->addObject("Points::Feature", name));
             // copy the data
             pcFeature->Points.setValue(*(pPoints->getPointKernelPtr()));
+	    return Py::asObject(pcFeature->getPyObject());
         }
         catch (const Base::Exception& e) {
             throw Py::RuntimeError(e.what());

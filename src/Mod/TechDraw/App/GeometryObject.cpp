@@ -70,7 +70,7 @@
 #include "DrawViewDetail.h"
 #include "DrawViewPart.h"
 #include "GeometryObject.h"
-
+#include "DrawProjectSplit.h"
 
 using namespace TechDraw;
 using namespace std;
@@ -84,7 +84,7 @@ struct EdgePoints {
 
 GeometryObject::GeometryObject(const string& parent, TechDraw::DrawView* parentObj)
     : m_parentName(parent), m_parent(parentObj), m_isoCount(0), m_isPersp(false), m_focus(100.0),
-      m_usePolygonHLR(false)
+      m_usePolygonHLR(false), m_scrubCount(0)
 
 {}
 
@@ -290,10 +290,8 @@ void GeometryObject::makeTDGeometry()
 //mirror a shape thru XZ plane for Qt's inverted Y coordinate
 TopoDS_Shape GeometryObject::invertGeometry(const TopoDS_Shape s)
 {
-    TopoDS_Shape result;
     if (s.IsNull()) {
-        result = s;
-        return result;
+        return s;
     }
 
     gp_Trsf mirrorY;
@@ -302,8 +300,7 @@ TopoDS_Shape GeometryObject::invertGeometry(const TopoDS_Shape s)
     gp_Ax2 mirrorPlane(org, Y);
     mirrorY.SetMirror(mirrorPlane);
     BRepBuilderAPI_Transform mkTrf(s, mirrorY, true);
-    result = mkTrf.Shape();
-    return result;
+    return mkTrf.Shape();
 }
 
 //!set up a hidden line remover and project a shape with it
@@ -534,13 +531,27 @@ void GeometryObject::extractGeometry(edgeClass category, bool hlrVisible)
 void GeometryObject::addGeomFromCompound(TopoDS_Shape edgeCompound, edgeClass category,
                                          bool hlrVisible)
 {
-    //    Base::Console().Message("GO::addGeomFromCompound(%d, %d)\n", category, hlrVisible);
+//    Base::Console().Message("GO::addGeomFromCompound(%d, %d)\n", category, hlrVisible);
     if (edgeCompound.IsNull()) {
-        return;// There is no OpenCascade Geometry to be calculated
+        return;    // There is no OpenCascade Geometry to be calculated
+    }
+
+    // remove overlapping edges
+    TopoDS_Shape cleanShape;
+    if (m_scrubCount > 0) {
+        std::vector<TopoDS_Edge> edgeVector = DU::shapeToVector(edgeCompound);
+        for (int iPass = 0; iPass < m_scrubCount; iPass++)  {
+            edgeVector = DrawProjectSplit::removeOverlapEdges(edgeVector);
+        }
+        bool invertResult = false;
+        cleanShape = DU::vectorToCompound(edgeVector, invertResult);
+
+    } else {
+        cleanShape = edgeCompound;
     }
 
     BaseGeomPtr base;
-    TopExp_Explorer edges(edgeCompound, TopAbs_EDGE);
+    TopExp_Explorer edges(cleanShape, TopAbs_EDGE);
     int i = 1;
     for (; edges.More(); edges.Next(), i++) {
         const TopoDS_Edge& edge = TopoDS::Edge(edges.Current());
@@ -760,14 +771,11 @@ void GeometryObject::addFaceGeom(FacePtr f) { faceGeom.push_back(f); }
 
 TechDraw::DrawViewDetail* GeometryObject::isParentDetail()
 {
-    TechDraw::DrawViewDetail* result = nullptr;
-    if (m_parent) {
-        TechDraw::DrawViewDetail* detail = dynamic_cast<TechDraw::DrawViewDetail*>(m_parent);
-        if (detail) {
-            result = detail;
-        }
+    if (!m_parent) {
+        return nullptr;
     }
-    return result;
+    TechDraw::DrawViewDetail* detail = dynamic_cast<TechDraw::DrawViewDetail*>(m_parent);
+    return detail;
 }
 
 
@@ -851,16 +859,14 @@ void GeometryObject::pruneVertexGeom(Base::Vector3d center, double radius)
 //! does this GeometryObject already have this vertex
 bool GeometryObject::findVertex(Base::Vector3d v)
 {
-    bool found = false;
     std::vector<VertexPtr>::iterator it = vertexGeom.begin();
     for (; it != vertexGeom.end(); it++) {
         double dist = (v - (*it)->point()).Length();
         if (dist < Precision::Confusion()) {
-            found = true;
-            break;
+            return true;
         }
     }
-    return found;
+    return false;
 }
 
 /// utility non-class member functions
@@ -904,10 +910,9 @@ gp_Ax2 TechDraw::getViewAxis(const Base::Vector3d origin, const Base::Vector3d& 
     //    Base::Console().Message("GO::getViewAxis() - 2\n");
     (void)flip;
     gp_Pnt inputCenter(origin.x, origin.y, origin.z);
-    gp_Ax2 viewAxis;
-    viewAxis = gp_Ax2(inputCenter, gp_Dir(direction.x, direction.y, direction.z),
-                      gp_Dir(xAxis.x, xAxis.y, xAxis.z));
-    return viewAxis;
+    return gp_Ax2(inputCenter,
+                  gp_Dir(direction.x, direction.y, direction.z),
+                  gp_Dir(xAxis.x, xAxis.y, xAxis.z));
 }
 
 // was getViewAxis 1
@@ -916,7 +921,6 @@ gp_Ax2 TechDraw::legacyViewAxis1(const Base::Vector3d origin, const Base::Vector
                                  const bool flip)
 {
     //    Base::Console().Message("GO::legacyViewAxis1()\n");
-    gp_Ax2 viewAxis;
     gp_Pnt inputCenter(origin.x, origin.y, origin.z);
     Base::Vector3d stdZ(0.0, 0.0, 1.0);
     Base::Vector3d stdOrg(0.0, 0.0, 0.0);
@@ -935,12 +939,12 @@ gp_Ax2 TechDraw::legacyViewAxis1(const Base::Vector3d origin, const Base::Vector
     }
 
     if (cross.IsEqual(stdOrg, FLT_EPSILON)) {
-        viewAxis = gp_Ax2(inputCenter, gp_Dir(flipDirection.x, flipDirection.y, flipDirection.z));
-        return viewAxis;
+        return gp_Ax2(inputCenter, gp_Dir(flipDirection.x, flipDirection.y, flipDirection.z));
     }
 
-    viewAxis = gp_Ax2(inputCenter, gp_Dir(flipDirection.x, flipDirection.y, flipDirection.z),
-                      gp_Dir(cross.x, cross.y, cross.z));
+    gp_Ax2 viewAxis = gp_Ax2(inputCenter,
+                             gp_Dir(flipDirection.x, flipDirection.y, flipDirection.z),
+                             gp_Dir(cross.x, cross.y, cross.z));
 
     //this bit is to handle the old mirror Y logic, but it messes up
     //some old files.
@@ -1004,16 +1008,14 @@ Base::Vector3d TechDraw::findCentroidVec(const TopoDS_Shape& shape, const Base::
 {
     //    Base::Console().Message("GO::findCentroidVec() - 1\n");
     gp_Pnt p = TechDraw::findCentroid(shape, direction);
-    Base::Vector3d result(p.X(), p.Y(), p.Z());
-    return result;
+    return Base::Vector3d(p.X(), p.Y(), p.Z());
 }
 
 Base::Vector3d TechDraw::findCentroidVec(const TopoDS_Shape& shape, const gp_Ax2& cs)
 {
     //    Base::Console().Message("GO::findCentroidVec() - 2\n");
     gp_Pnt p = TechDraw::findCentroid(shape, cs);
-    Base::Vector3d result(p.X(), p.Y(), p.Z());
-    return result;
+    return Base::Vector3d(p.X(), p.Y(), p.Z());
 }
 
 //! Returns the XY plane center of shape with respect to coordSys

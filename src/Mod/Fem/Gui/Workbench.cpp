@@ -26,8 +26,10 @@
 # include <qobject.h>
 #endif
 
+#include <App/Application.h>
 #include <Gui/MenuManager.h>
 #include <Gui/ToolBarManager.h>
+#include <Mod/Fem/App/FemTools.h>
 
 #include "Workbench.h"
 
@@ -174,12 +176,19 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
 
     Gui::ToolBarItem* solve = new Gui::ToolBarItem(root);
     solve->setCommand("Solve");
-     *solve
-        << "FEM_SolverCalculixCxxtools"
-        << "FEM_SolverElmer"
-        << "FEM_SolverZ88"
-        << "Separator"
-        << "FEM_EquationElasticity"
+    if (!Fem::Tools::checkIfBinaryExists("CCX", "ccx", "ccx").empty())
+        *solve << "FEM_SolverCalculixCxxtools";
+    if (!Fem::Tools::checkIfBinaryExists("Elmer", "elmer", "ElmerSolver").empty())
+        *solve << "FEM_SolverElmer";
+    // also check the multi-CPU Elmer build
+    else if (!Fem::Tools::checkIfBinaryExists("Elmer", "elmer", "ElmerSolver_mpi").empty())
+        *solve << "FEM_SolverElmer";
+    if (!Fem::Tools::checkIfBinaryExists("Mystran", "mystran", "mystran").empty())
+        *solve << "FEM_SolverMystran";
+    if (!Fem::Tools::checkIfBinaryExists("Z88", "z88", "z88r").empty())
+        *solve << "FEM_SolverZ88";
+    *solve << "Separator"
+        << "FEM_CompMechEquations"
         << "FEM_CompEmEquations"
         << "FEM_EquationFlow"
         << "FEM_EquationFlux"
@@ -347,7 +356,7 @@ Gui::MenuItem* Workbench::setupMenuBar() const
         << "FEM_SolverMystran"
         << "FEM_SolverZ88"
         << "Separator"
-        << "FEM_EquationElasticity"
+        << "FEM_CompMechEquations"
         << "FEM_CompEmEquations"
         << "FEM_EquationFlow"
         << "FEM_EquationFlux"

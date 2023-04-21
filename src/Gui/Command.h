@@ -686,8 +686,6 @@ protected:
     bool isActive() override;
     /// Get the help URL
     const char* getHelpUrl() const override;
-    /// Creates the used Action
-    Action * createAction() override;
     //@}
 
 public:
@@ -710,12 +708,18 @@ public:
 protected:
     /// Returns the resource values
     const char* getResource(const char* sName) const;
+    /// Creates the used Action
+    Action * createAction() override;
     /// a pointer to the Python command object
     PyObject * _pcPyCommand;
     /// the command object resource dictionary
     PyObject * _pcPyResourceDict;
     /// the activation sequence
     std::string Activation;
+    //// set the parameters on action creation
+    void onActionInit() const;
+
+    boost::signals2::connection connPyCmdInitialized;
 };
 
 /** The Python group command class
@@ -761,10 +765,14 @@ public:
 protected:
     /// Returns the resource values
     const char* getResource(const char* sName) const;
+    //// set the parameters on action creation
+    void onActionInit() const;
     /// a pointer to the Python command object
     PyObject * _pcPyCommand;
     /// the command object resources
     PyObject * _pcPyResource;
+
+    boost::signals2::connection connPyCmdInitialized;
 };
 
 
@@ -886,6 +894,9 @@ public:
 
     /// Signal on any addition or removal of command
     boost::signals2::signal<void ()> signalChanged;
+
+    /// Signal to Python command on first workbench activation
+    boost::signals2::signal<void ()> signalPyCmdInitialized;
 
     /** 
      * Returns a pointer to a conflicting command, or nullptr if there is no conflict.

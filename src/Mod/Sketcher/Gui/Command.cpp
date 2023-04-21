@@ -995,8 +995,6 @@ public:
                 updateCheckBox(checkbox, propvalue);
             };
 
-            updateCheckBox(gridSnap, sketchView->getSnapMode() == SnapMode::SnapToGrid);
-
             updateCheckBoxFromProperty(gridAutoSpacing, sketchView->GridAuto);
 
             gridSizeBox->setValue(sketchView->GridSize.getValue());
@@ -1005,10 +1003,6 @@ public:
 
     void languageChange()
     {
-        gridSnap->setText(tr("Grid Snap"));
-        gridSnap->setToolTip(tr("New points will snap to the nearest grid line.\nPoints must be set closer than a fifth of the grid spacing to a grid line to snap."));
-        gridSnap->setStatusTip(gridSnap->toolTip());
-
         gridAutoSpacing->setText(tr("Grid Auto Spacing"));
         gridAutoSpacing->setToolTip(tr("Resize grid automatically depending on zoom."));
         gridAutoSpacing->setStatusTip(gridAutoSpacing->toolTip());
@@ -1020,8 +1014,6 @@ public:
 protected:
     QWidget* createWidget(QWidget* parent) override
     {
-        gridSnap = new QCheckBox();
-
         gridAutoSpacing = new QCheckBox();
 
         sizeLabel = new QLabel();
@@ -1034,26 +1026,11 @@ protected:
 
         QWidget* gridSizeW = new QWidget(parent);
         auto* layout = new QGridLayout(gridSizeW);
-        layout->addWidget(gridSnap, 0, 0);
-        layout->addWidget(gridAutoSpacing, 1, 0);
-        layout->addWidget(sizeLabel, 2, 0);
-        layout->addWidget(gridSizeBox, 2, 1);
+        layout->addWidget(gridAutoSpacing, 0, 0, 1, 2);
+        layout->addWidget(sizeLabel, 1, 0);
+        layout->addWidget(gridSizeBox, 1, 1);
 
         languageChange();
-
-        QObject::connect(gridSnap, &QCheckBox::stateChanged, [this](int state) {
-            auto* sketchView = getView();
-
-            if(sketchView) {
-                if(state == Qt::Checked) {
-                    sketchView->setSnapMode(SnapMode::SnapToGrid);
-                }
-                else {
-                    sketchView->setSnapMode(SnapMode::None);
-                }
-            }
-        });
-
 
         QObject::connect(gridAutoSpacing, &QCheckBox::stateChanged, [this](int state) {
             auto* sketchView = getView();
@@ -1086,7 +1063,6 @@ private:
     }
 
 private:
-    QCheckBox * gridSnap;
     QCheckBox * gridAutoSpacing;
     QLabel * sizeLabel;
     Gui::QuantitySpinBox * gridSizeBox;
@@ -1097,13 +1073,13 @@ class CmdSketcherGrid : public Gui::Command
 public:
     CmdSketcherGrid();
     virtual ~CmdSketcherGrid(){}
-    virtual const char* className() const
+    virtual const char* className() const override
     { return "CmdSketcherGrid"; }
-    virtual void languageChange();
+    virtual void languageChange() override;
 protected:
-    virtual void activated(int iMsg);
-    virtual bool isActive(void);
-    virtual Gui::Action * createAction(void);
+    virtual void activated(int iMsg) override;
+    virtual bool isActive(void) override;
+    virtual Gui::Action * createAction(void) override;
 private:
     void updateIcon(bool value);
     void updateInactiveHandlerIcon();
@@ -1213,6 +1189,255 @@ bool CmdSketcherGrid::isActive()
     return false;
 }
 
+/* Snap tool */
+class SnapSpaceAction : public QWidgetAction
+{
+public:
+    SnapSpaceAction(QObject* parent) : QWidgetAction(parent) {
+        setEnabled(false);
+    }
+
+    void updateWidget(bool snapenabled) {
+
+        auto updateCheckBox = [](QCheckBox* checkbox, bool value) {
+            auto checked = checkbox->checkState() == Qt::Checked;
+
+            if (value != checked) {
+                const QSignalBlocker blocker(checkbox);
+                checkbox->setChecked(value);
+            }
+        };
+
+        auto updateSpinBox = [](Gui::QuantitySpinBox* spinbox, double value) {
+            auto currentvalue = spinbox->rawValue();
+
+            if (currentvalue != value) {
+                const QSignalBlocker blocker(spinbox);
+                spinbox->setValue(value);
+            }
+        };
+
+        ParameterGrp::handle hGrp = getParameterPath();
+
+        updateCheckBox(snapToObjects, hGrp->GetBool("SnapToObjects", true));
+
+        updateCheckBox(snapToGrid, hGrp->GetBool("SnapToGrid", false));
+
+        updateSpinBox(snapAngle, hGrp->GetFloat("SnapAngle", 5.0));
+
+        snapToObjects->setEnabled(snapenabled);
+        snapToGrid->setEnabled(snapenabled);
+        angleLabel->setEnabled(snapenabled);
+        snapAngle->setEnabled(snapenabled);
+    }
+
+    void languageChange()
+    {
+        snapToObjects->setText(tr("Snap to objects"));
+        snapToObjects->setToolTip(tr("New points will snap to the currently preselected object. It will also snap to the middle of lines and arcs."));
+        snapToObjects->setStatusTip(snapToObjects->toolTip());
+
+        snapToGrid->setText(tr("Snap to Grid"));
+        snapToGrid->setToolTip(tr("New points will snap to the nearest grid line.\nPoints must be set closer than a fifth of the grid spacing to a grid line to snap."));
+        snapToGrid->setStatusTip(snapToGrid->toolTip());
+
+        angleLabel->setText(tr("Snap angle"));
+        snapAngle->setToolTip(tr("Angular step for tools that use 'Snap at Angle' (line for instance). Hold CTRL to enable 'Snap at Angle'. The angle start from the East axis (horizontal right)"));
+    }
+
+protected:
+    QWidget* createWidget(QWidget* parent) override
+    {
+        snapToObjects = new QCheckBox();
+
+        snapToGrid = new QCheckBox();
+
+        angleLabel = new QLabel();
+
+        snapAngle = new Gui::QuantitySpinBox();
+        snapAngle->setProperty("unit", QVariant(QStringLiteral("deg")));
+        snapAngle->setObjectName(QStringLiteral("snapAngle"));
+        snapAngle->setMaximum(99999999.0);
+        snapAngle->setMinimum(0);
+
+        QWidget* snapW = new QWidget(parent);
+        auto* layout = new QGridLayout(snapW);
+        layout->addWidget(snapToGrid, 0, 0, 1, 2);
+        layout->addWidget(snapToObjects, 1, 0, 1, 2);
+        layout->addWidget(angleLabel, 2, 0);
+        layout->addWidget(snapAngle, 2, 1);
+
+        languageChange();
+
+        QObject::connect(snapToObjects, &QCheckBox::stateChanged, [this](int state) {
+            ParameterGrp::handle hGrp = this->getParameterPath();
+            hGrp->SetBool("SnapToObjects", state == Qt::Checked);
+        });
+
+        QObject::connect(snapToGrid, &QCheckBox::stateChanged, [this](int state) {
+            ParameterGrp::handle hGrp = this->getParameterPath();
+            hGrp->SetBool("SnapToGrid", state == Qt::Checked);
+        });
+
+        QObject::connect(snapAngle, qOverload<double>(&Gui::QuantitySpinBox::valueChanged), [this](double val) {
+            ParameterGrp::handle hGrp = this->getParameterPath();
+            hGrp->SetFloat("SnapAngle", val);
+        });
+
+        return snapW;
+    }
+
+private:
+    ParameterGrp::handle getParameterPath() {
+        return App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher/Snap");
+    }
+
+private:
+    QCheckBox* snapToObjects;
+    QCheckBox* snapToGrid;
+    QLabel* angleLabel;
+    Gui::QuantitySpinBox* snapAngle;
+};
+
+class CmdSketcherSnap : public Gui::Command, public ParameterGrp::ObserverType
+{
+public:
+    CmdSketcherSnap();
+    virtual ~CmdSketcherSnap();
+    virtual const char* className() const override
+    {
+        return "CmdSketcherSnap";
+    }
+    virtual void languageChange() override;
+
+    void OnChange(Base::Subject<const char*> &rCaller, const char * sReason) override;
+protected:
+    virtual void activated(int iMsg) override;
+    virtual bool isActive(void) override;
+    virtual Gui::Action* createAction(void) override;
+private:
+    void updateIcon(bool value);
+
+    ParameterGrp::handle getParameterPath() {
+        return App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher/Snap");
+    }
+
+    CmdSketcherSnap(const CmdSketcherSnap&) = delete;
+    CmdSketcherSnap(CmdSketcherSnap&&) = delete;
+    CmdSketcherSnap& operator= (const CmdSketcherSnap&) = delete;
+    CmdSketcherSnap& operator= (CmdSketcherSnap&&) = delete;
+
+    bool snapEnabled = true;
+};
+
+CmdSketcherSnap::CmdSketcherSnap()
+    : Command("Sketcher_Snap")
+{
+    sAppModule = "Sketcher";
+    sGroup = "Sketcher";
+    sMenuText = QT_TR_NOOP("Toggle Snap");
+    sToolTipText = QT_TR_NOOP("Toggle all snapping functionalities. In the menu you can toggle individually 'Snap to Grid', 'Snap to Objects' and further snap settings");
+    sWhatsThis = "Sketcher_Snap";
+    sStatusTip = sToolTipText;
+    eType = 0;
+
+    ParameterGrp::handle hGrp = this->getParameterPath();
+    hGrp->Attach(this);
+}
+
+CmdSketcherSnap::~CmdSketcherSnap() {
+
+    ParameterGrp::handle hGrp = this->getParameterPath();
+    hGrp->Detach(this);
+}
+
+void CmdSketcherSnap::OnChange(Base::Subject<const char*> &rCaller, const char * sReason)
+{
+    Q_UNUSED(rCaller)
+
+    if (strcmp(sReason, "Snap") == 0) {
+        snapEnabled = getParameterPath()->GetBool("Snap", true);
+    }
+}
+
+void CmdSketcherSnap::updateIcon(bool value)
+{
+    static QIcon active = Gui::BitmapFactory().iconFromTheme("Sketcher_Snap");
+    static QIcon inactive = Gui::BitmapFactory().iconFromTheme("Sketcher_Snap_Deactivated");
+
+    auto* pcAction = qobject_cast<Gui::ActionGroup*>(getAction());
+    pcAction->setIcon(value ? active : inactive);
+}
+
+void CmdSketcherSnap::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+
+    getParameterPath()->SetBool("Snap", !snapEnabled);
+
+    // snapEnable updated via observer
+    updateIcon(snapEnabled);
+
+    //Update the widget :
+    if (!_pcAction)
+        return;
+
+    Gui::ActionGroup* pcAction = qobject_cast<Gui::ActionGroup*>(_pcAction);
+    QList<QAction*> a = pcAction->actions();
+
+    auto* ssa = static_cast<SnapSpaceAction*>(a[0]);
+    ssa->updateWidget(snapEnabled);
+}
+
+Gui::Action* CmdSketcherSnap::createAction()
+{
+    auto* pcAction = new Gui::ActionGroup(this, Gui::getMainWindow());
+    pcAction->setDropDownMenu(true);
+    pcAction->setExclusive(false);
+    applyCommandData(this->className(), pcAction);
+
+    SnapSpaceAction* ssa = new SnapSpaceAction(pcAction);
+    pcAction->addAction(ssa);
+
+    _pcAction = pcAction;
+
+    QObject::connect(pcAction, &Gui::ActionGroup::aboutToShow, [ssa, this](QMenu* menu) {
+        Q_UNUSED(menu)
+            ssa->updateWidget(snapEnabled);
+    });
+
+    // set the right pixmap
+    updateIcon(snapEnabled);
+
+    return pcAction;
+}
+
+void CmdSketcherSnap::languageChange()
+{
+    Command::languageChange();
+
+    if (!_pcAction)
+        return;
+
+    Gui::ActionGroup* pcAction = qobject_cast<Gui::ActionGroup*>(_pcAction);
+    QList<QAction*> a = pcAction->actions();
+
+    auto* ssa = static_cast<SnapSpaceAction*>(a[0]);
+    ssa->languageChange();
+}
+
+bool CmdSketcherSnap::isActive()
+{
+    auto* vp = getInactiveHandlerEditModeSketchViewProvider();
+
+    if (vp) {
+        updateIcon(snapEnabled);
+
+        return true;
+    }
+
+    return false;
+}
 
 void CreateSketcherCommands()
 {
@@ -1230,4 +1455,5 @@ void CreateSketcherCommands()
     rcCmdMgr.addCommand(new CmdSketcherMergeSketches());
     rcCmdMgr.addCommand(new CmdSketcherViewSection());
     rcCmdMgr.addCommand(new CmdSketcherGrid());
+    rcCmdMgr.addCommand(new CmdSketcherSnap());
 }

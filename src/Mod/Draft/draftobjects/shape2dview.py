@@ -145,7 +145,9 @@ class Shape2DView(DraftObject):
     def getProjected(self,obj,shape,direction):
 
         "returns projected edges from a shape and a direction"
-        import Part, TechDraw, DraftGeomUtils
+        import Part
+        import TechDraw
+        import DraftGeomUtils
         edges = []
         _groups = TechDraw.projectEx(shape, direction)
         for g in _groups[0:5]:
@@ -200,7 +202,8 @@ class Shape2DView(DraftObject):
             self.props_changed_clear()
             return
 
-        import Part, DraftGeomUtils
+        import Part
+        import DraftGeomUtils
         pl = obj.Placement
         if obj.Base:
             if utils.get_type(obj.Base) in ["BuildingPart","SectionPlane"]:

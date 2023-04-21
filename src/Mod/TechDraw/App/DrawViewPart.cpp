@@ -53,7 +53,6 @@
 #include <sstream>
 #endif
 
-#include <App/Application.h>
 #include <App/Document.h>
 #include <Base/BoundBox.h>
 #include <Base/Console.h>
@@ -61,6 +60,7 @@
 #include <Base/Parameter.h>
 
 #include "Cosmetic.h"
+#include "CenterLine.h"
 #include "DrawGeomHatch.h"
 #include "DrawHatch.h"
 #include "DrawPage.h"
@@ -76,6 +76,7 @@
 #include "Geometry.h"
 #include "GeometryObject.h"
 #include "ShapeExtractor.h"
+#include "Preferences.h"
 
 
 using namespace TechDraw;
@@ -100,12 +101,7 @@ DrawViewPart::DrawViewPart(void)
 
     CosmeticExtension::initExtension(this);
 
-    Base::Reference<ParameterGrp> hGrp = App::GetApplication()
-                                             .GetUserParameter()
-                                             .GetGroup("BaseApp")
-                                             ->GetGroup("Preferences")
-                                             ->GetGroup("Mod/TechDraw/General");
-    double defDist = hGrp->GetFloat("FocusDistance", 100.0);
+    double defDist = Preferences::getPreferenceGroup("General")->GetFloat("FocusDistance", 100.0);
 
     //properties that affect Geometry
     ADD_PROPERTY_TYPE(Source, (nullptr), group, App::Prop_None, "3D Shape to view");
@@ -123,7 +119,7 @@ DrawViewPart::DrawViewPart(void)
     ADD_PROPERTY_TYPE(Focus, (defDist), group, App::Prop_None, "Perspective view focus distance");
 
     //properties that control HLR algo
-    bool coarseView = hGrp->GetBool("CoarseView", false);
+    bool coarseView = Preferences::getPreferenceGroup("General")->GetBool("CoarseView", false);
     ADD_PROPERTY_TYPE(CoarseView, (coarseView), sgroup, App::Prop_None, "Coarse View on/off");
     ADD_PROPERTY_TYPE(SmoothVisible, (prefSmoothViz()), sgroup, App::Prop_None,
                       "Show Visible Smooth lines");
@@ -141,6 +137,8 @@ DrawViewPart::DrawViewPart(void)
                       "Show Hidden Iso u, v lines");
     ADD_PROPERTY_TYPE(IsoCount, (prefIsoCount()), sgroup, App::Prop_None,
                       "Number of iso parameters lines");
+    ADD_PROPERTY_TYPE(ScrubCount, (Preferences::scrubCount()), sgroup, App::Prop_None,
+                      "The number of times FreeCAD should try to clean the HLR result.");
 
     //initialize bbox to non-garbage
     bbox = Base::BoundBox3d(Base::Vector3d(0.0, 0.0, 0.0), 0.0);
@@ -163,10 +161,8 @@ DrawViewPart::~DrawViewPart()
 std::vector<TopoDS_Shape> DrawViewPart::getSourceShape2d() const
 {
     //    Base::Console().Message("DVP::getSourceShape2d()\n");
-    std::vector<TopoDS_Shape> result;
     const std::vector<App::DocumentObject*>& links = getAllSources();
-    result = ShapeExtractor::getShapes2d(links);
-    return result;
+    return ShapeExtractor::getShapes2d(links);
 }
 
 TopoDS_Shape DrawViewPart::getSourceShape() const
@@ -332,8 +328,7 @@ GeometryObjectPtr DrawViewPart::makeGeometryForShape(TopoDS_Shape& shape)
     m_saveCentroid = DU::toVector3d(gCentroid);
     m_saveShape = centerScaleRotate(this, localShape, m_saveCentroid);
 
-    GeometryObjectPtr go = buildGeometryObject(localShape, getProjectionCS());
-    return go;
+    return buildGeometryObject(localShape, getProjectionCS());
 }
 
 //Modify a shape by centering, scaling and rotating and return the centered (but not rotated) shape
@@ -368,6 +363,7 @@ TechDraw::GeometryObjectPtr DrawViewPart::buildGeometryObject(TopoDS_Shape& shap
     go->isPerspective(Perspective.getValue());
     go->setFocus(Focus.getValue());
     go->usePolygonHLR(CoarseView.getValue());
+    go->setScrubCount(ScrubCount.getValue());
 
     if (CoarseView.getValue()) {
         //the polygon approximation HLR process runs quickly, so doesn't need to be in a
@@ -782,11 +778,10 @@ std::vector<TechDraw::DrawViewBalloon*> DrawViewPart::getBalloons() const
 
 const std::vector<TechDraw::VertexPtr> DrawViewPart::getVertexGeometry() const
 {
-    std::vector<TechDraw::VertexPtr> result;
     if (geometryObject) {
-        result = geometryObject->getVertexGeometry();
+        return geometryObject->getVertexGeometry();
     }
-    return result;
+    return std::vector<TechDraw::VertexPtr>();
 }
 
 TechDraw::VertexPtr DrawViewPart::getVertex(std::string vertexName) const
@@ -884,19 +879,17 @@ TechDraw::VertexPtr DrawViewPart::getProjVertexByIndex(int idx) const
 
 TechDraw::VertexPtr DrawViewPart::getProjVertexByCosTag(std::string cosTag)
 {
-    TechDraw::VertexPtr result = nullptr;
     std::vector<TechDraw::VertexPtr> gVerts = getVertexGeometry();
     if (gVerts.empty()) {
-        return result;
+        return nullptr;
     }
 
     for (auto& gv : gVerts) {
         if (gv->getCosmeticTag() == cosTag) {
-            result = gv;
-            break;
+            return gv;
         }
     }
-    return result;
+    return nullptr;
 }
 
 
@@ -959,8 +952,7 @@ QRectF DrawViewPart::getRect() const
     //    Base::Console().Message("DVP::getRect() - %s\n", getNameInDocument());
     double x = getBoxX();
     double y = getBoxY();
-    QRectF result(0.0, 0.0, x, y);
-    return result;
+    return QRectF(0.0, 0.0, x, y);
 }
 
 //returns a compound of all the visible projected edges
@@ -1187,8 +1179,7 @@ Base::Vector3d DrawViewPart::getLocalOrigin3d() const
 Base::Vector3d DrawViewPart::getLocalOrigin2d() const
 {
     Base::Vector3d centroid = getCurrentCentroid();
-    Base::Vector3d localOrigin = projectPoint(centroid, false);
-    return localOrigin;
+    return projectPoint(centroid, false);
 }
 
 
@@ -1225,23 +1216,12 @@ const BaseGeomPtrVector DrawViewPart::getVisibleFaceEdges() const
 
 bool DrawViewPart::handleFaces()
 {
-    Base::Reference<ParameterGrp> hGrp = App::GetApplication()
-                                             .GetUserParameter()
-                                             .GetGroup("BaseApp")
-                                             ->GetGroup("Preferences")
-                                             ->GetGroup("Mod/TechDraw/General");
-    return hGrp->GetBool("HandleFaces", 1l);
+    return Preferences::getPreferenceGroup("General")->GetBool("HandleFaces", 1l);
 }
 
 bool DrawViewPart::newFaceFinder(void)
 {
-    Base::Reference<ParameterGrp> hGrp = App::GetApplication()
-                                             .GetUserParameter()
-                                             .GetGroup("BaseApp")
-                                             ->GetGroup("Preferences")
-                                             ->GetGroup("Mod/TechDraw/General");
-    bool result = hGrp->GetBool("NewFaceFinder", 0l);
-    return result;
+    return Preferences::getPreferenceGroup("General")->GetBool("NewFaceFinder", 0l);
 }
 
 //! remove features that are useless without this DVP
@@ -1306,13 +1286,12 @@ void DrawViewPart::unsetupObject()
 //! is this an Isometric projection?
 bool DrawViewPart::isIso() const
 {
-    bool result = false;
     Base::Vector3d dir = Direction.getValue();
     if (DrawUtil::fpCompare(fabs(dir.x), fabs(dir.y))
         && DrawUtil::fpCompare(fabs(dir.x), fabs(dir.z))) {
-        result = true;
+        return true;
     }
-    return result;
+    return false;
 }
 
 bool DrawViewPart::checkXDirection() const
@@ -1336,9 +1315,8 @@ Base::Vector3d DrawViewPart::getXDirection() const
             Base::Vector3d dir = Direction.getValue();   //make a sensible default
             Base::Vector3d org(0.0, 0.0, 0.0);
             result = getLegacyX(org, dir);
-        }
-        else {
-            result = propVal;//normal case.  XDirection is set.
+        } else {
+            result = propVal;	//normal case.  XDirection is set.
         }
     }
     else {                                        //no Property.  can this happen?
@@ -1355,8 +1333,7 @@ Base::Vector3d DrawViewPart::getLegacyX(const Base::Vector3d& pt, const Base::Ve
     //    Base::Console().Message("DVP::getLegacyX() - %s\n", Label.getValue());
     gp_Ax2 viewAxis = TechDraw::legacyViewAxis1(pt, axis, flip);
     gp_Dir gXDir = viewAxis.XDirection();
-    Base::Vector3d result(gXDir.X(), gXDir.Y(), gXDir.Z());
-    return result;
+    return Base::Vector3d(gXDir.X(), gXDir.Y(), gXDir.Z());
 }
 
 
@@ -1486,35 +1463,31 @@ void DrawViewPart::refreshCVGeoms()
 int DrawViewPart::getCVIndex(std::string tag)
 {
     //    Base::Console().Message("DVP::getCVIndex(%s)\n", tag.c_str());
-    int result = -1;
     std::vector<TechDraw::VertexPtr> gVerts = getVertexGeometry();
     std::vector<TechDraw::CosmeticVertex*> cVerts = CosmeticVertexes.getValues();
 
     int i = 0;
-    bool found = false;
     for (auto& gv : gVerts) {
         if (gv->getCosmeticTag() == tag) {
-            result = i;
-            found = true;
-            break;
+            return i;
         }
         i++;
     }
-    if (!found) {//not in vertexGeoms
-        int base = gVerts.size();
-        int i = 0;
-        for (auto& cv : cVerts) {
-            //        Base::Console().Message("DVP::getCVIndex - cv tag: %s\n",
-            //                                cv->getTagAsString().c_str());
-            if (cv->getTagAsString() == tag) {
-                result = base + i;
-                break;
-            }
-            i++;
+
+    // Nothing found
+    int base = gVerts.size();
+    i = 0;
+    for (auto& cv : cVerts) {
+        //        Base::Console().Message("DVP::getCVIndex - cv tag: %s\n",
+        //                                cv->getTagAsString().c_str());
+        if (cv->getTagAsString() == tag) {
+            return base + i;
         }
+        i++;
     }
+
     //    Base::Console().Message("DVP::getCVIndex - returns: %d\n", result);
-    return result;
+    return -1;
 }
 
 
@@ -1686,101 +1659,47 @@ void DrawViewPart::handleChangedPropertyName(Base::XMLReader& reader, const char
 
 bool DrawViewPart::prefHardViz()
 {
-    Base::Reference<ParameterGrp> hGrp = App::GetApplication()
-                                             .GetUserParameter()
-                                             .GetGroup("BaseApp")
-                                             ->GetGroup("Preferences")
-                                             ->GetGroup("Mod/TechDraw/HLR");
-    bool result = hGrp->GetBool("HardViz", true);
-    return result;
+    return Preferences::getPreferenceGroup("HLR")->GetBool("HardViz", true);
 }
 
 bool DrawViewPart::prefSeamViz()
 {
-    Base::Reference<ParameterGrp> hGrp = App::GetApplication()
-                                             .GetUserParameter()
-                                             .GetGroup("BaseApp")
-                                             ->GetGroup("Preferences")
-                                             ->GetGroup("Mod/TechDraw/HLR");
-    bool result = hGrp->GetBool("SeamViz", true);
-    return result;
+    return Preferences::getPreferenceGroup("HLR")->GetBool("SeamViz", true);
 }
 
 bool DrawViewPart::prefSmoothViz()
 {
-    Base::Reference<ParameterGrp> hGrp = App::GetApplication()
-                                             .GetUserParameter()
-                                             .GetGroup("BaseApp")
-                                             ->GetGroup("Preferences")
-                                             ->GetGroup("Mod/TechDraw/HLR");
-    bool result = hGrp->GetBool("SmoothViz", true);
-    return result;
+    return Preferences::getPreferenceGroup("HLR")->GetBool("SmoothViz", true);
 }
 
 bool DrawViewPart::prefIsoViz()
 {
-    Base::Reference<ParameterGrp> hGrp = App::GetApplication()
-                                             .GetUserParameter()
-                                             .GetGroup("BaseApp")
-                                             ->GetGroup("Preferences")
-                                             ->GetGroup("Mod/TechDraw/HLR");
-    bool result = hGrp->GetBool("IsoViz", false);
-    return result;
+    return Preferences::getPreferenceGroup("HLR")->GetBool("IsoViz", false);
 }
 
 bool DrawViewPart::prefHardHid()
 {
-    Base::Reference<ParameterGrp> hGrp = App::GetApplication()
-                                             .GetUserParameter()
-                                             .GetGroup("BaseApp")
-                                             ->GetGroup("Preferences")
-                                             ->GetGroup("Mod/TechDraw/HLR");
-    bool result = hGrp->GetBool("HardHid", false);
-    return result;
+    return Preferences::getPreferenceGroup("HLR")->GetBool("HardHid", false);
 }
 
 bool DrawViewPart::prefSeamHid()
 {
-    Base::Reference<ParameterGrp> hGrp = App::GetApplication()
-                                             .GetUserParameter()
-                                             .GetGroup("BaseApp")
-                                             ->GetGroup("Preferences")
-                                             ->GetGroup("Mod/TechDraw/HLR");
-    bool result = hGrp->GetBool("SeamHid", false);
-    return result;
+    return Preferences::getPreferenceGroup("HLR")->GetBool("SeamHid", false);
 }
 
 bool DrawViewPart::prefSmoothHid()
 {
-    Base::Reference<ParameterGrp> hGrp = App::GetApplication()
-                                             .GetUserParameter()
-                                             .GetGroup("BaseApp")
-                                             ->GetGroup("Preferences")
-                                             ->GetGroup("Mod/TechDraw/HLR");
-    bool result = hGrp->GetBool("SmoothHid", false);
-    return result;
+    return Preferences::getPreferenceGroup("HLR")->GetBool("SmoothHid", false);
 }
 
 bool DrawViewPart::prefIsoHid()
 {
-    Base::Reference<ParameterGrp> hGrp = App::GetApplication()
-                                             .GetUserParameter()
-                                             .GetGroup("BaseApp")
-                                             ->GetGroup("Preferences")
-                                             ->GetGroup("Mod/TechDraw/HLR");
-    bool result = hGrp->GetBool("IsoHid", false);
-    return result;
+    return Preferences::getPreferenceGroup("HLR")->GetBool("IsoHid", false);
 }
 
 int DrawViewPart::prefIsoCount()
 {
-    Base::Reference<ParameterGrp> hGrp = App::GetApplication()
-                                             .GetUserParameter()
-                                             .GetGroup("BaseApp")
-                                             ->GetGroup("Preferences")
-                                             ->GetGroup("Mod/TechDraw/HLR");
-    int result = hGrp->GetBool("IsoCount", 0);
-    return result;
+    return Preferences::getPreferenceGroup("HLR")->GetBool("IsoCount", 0);
 }
 
 // Python Drawing feature ---------------------------------------------------------

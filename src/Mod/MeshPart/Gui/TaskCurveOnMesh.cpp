@@ -38,6 +38,8 @@ CurveOnMeshWidget::CurveOnMeshWidget(Gui::View3DInventor* view, QWidget* parent)
     , myView(view)
 {
     ui->setupUi(this);
+    connect(ui->startButton, &QPushButton::clicked,
+            this, &CurveOnMeshWidget::onStartButtonClicked);
     this->setup();
 }
 
@@ -74,7 +76,7 @@ void CurveOnMeshWidget::changeEvent(QEvent *e)
     }
 }
 
-void CurveOnMeshWidget::on_startButton_clicked()
+void CurveOnMeshWidget::onStartButtonClicked()
 {
     int cont = ui->continuity->itemData(ui->continuity->currentIndex()).toInt();
     myCurveHandler->enableApproximation(ui->groupBox_2->isChecked());

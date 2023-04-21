@@ -23,6 +23,7 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
+# include <QActionGroup>
 # include <QApplication>
 # include <QByteArray>
 # include <QCheckBox>
@@ -67,6 +68,7 @@
 #include <Base/FileInfo.h>
 #include <Base/Interpreter.h>
 #include <Base/Stream.h>
+#include <Base/UnitsApi.h>
 #include <DAGView/DAGView.h>
 #include <TaskView/TaskView.h>
 
@@ -148,11 +150,97 @@ private:
     int _timeout;
 };
 
+/**
+ * The DimensionWidget class is aiming at providing a widget used in the status bar that will:
+ *  - Allow application to display dimension information such as the viewportsize
+ *  - Provide a popup menu allowing user to change the used unit schema (and update if changed elsewhere)
+ */
+class DimensionWidget : public QPushButton, WindowParameter
+{
+    Q_OBJECT
+
+public:
+    explicit DimensionWidget(QWidget* parent): QPushButton(parent), WindowParameter("Units")
+    {
+        setFlat(true);
+        setText(qApp->translate("Gui::MainWindow", "Dimension"));
+        setMinimumWidth(120);
+
+        //create the action buttons
+        auto* menu = new QMenu(this);
+        auto* actionGrp = new QActionGroup(menu);
+        int num = static_cast<int>(Base::UnitSystem::NumUnitSystemTypes);
+        for (int i = 0; i < num; i++) {
+            QAction* action = menu->addAction(QStringLiteral("UnitSchema%1").arg(i));
+            actionGrp->addAction(action);
+            action->setCheckable(true);
+            action->setData(i);
+        }
+        QObject::connect(actionGrp, &QActionGroup::triggered, this, [this](QAction* action) {
+            int userSchema = action->data().toInt();
+            // Set and save the Unit System
+            Base::UnitsApi::setSchema(static_cast<Base::UnitSystem>(userSchema));
+            getWindowParameter()->SetInt("UserSchema", userSchema);
+            // Update the application to show the unit change
+            Gui::Application::Instance->onUpdate();
+        } );
+        setMenu(menu);
+        retranslateUi();
+        unitChanged();
+        getWindowParameter()->Attach(this);
+    }
+
+    ~DimensionWidget()
+    {
+        getWindowParameter()->Detach(this);
+    }
+
+    void OnChange(Base::Subject<const char*> &rCaller, const char * sReason) override
+    {
+        Q_UNUSED(rCaller)
+        if (strcmp(sReason, "UserSchema") == 0) {
+            unitChanged();
+        }
+    }
+
+    void changeEvent(QEvent *event) override
+    {
+        if (event->type() == QEvent::LanguageChange) {
+            retranslateUi();
+        }
+        else {
+            QPushButton::changeEvent(event);
+        }
+    }
+
+private:
+    void unitChanged(void)
+    {
+        int userSchema = getWindowParameter()->GetInt("UserSchema", 0);
+        auto actions = menu()->actions();
+        if(Q_UNLIKELY(userSchema < 0 || userSchema >= actions.size())) {
+            userSchema = 0;
+        }
+        actions[userSchema]->setChecked(true);
+    }
+
+    void retranslateUi() {
+        auto actions = menu()->actions();
+        int maxSchema = static_cast<int>(Base::UnitSystem::NumUnitSystemTypes);
+        assert(actions.size() <= maxSchema);
+        for(int i = 0; i < maxSchema ; i++)
+        {
+            actions[i]->setText(qApp->translate("Gui::Dialog::DlgGeneralImp",
+                    Base::UnitsApi::getDescription(static_cast<Base::UnitSystem>(i))));
+        }
+    }
+};
+
 // -------------------------------------
 // Pimpl class
 struct MainWindowP
 {
-    QLabel* sizeLabel;
+    QPushButton* sizeLabel;
     QLabel* actionLabel;
     QTimer* actionTimer;
     QTimer* statusTimer;
@@ -297,8 +385,9 @@ MainWindow::MainWindow(QWidget * parent, Qt::WindowFlags f)
     d->status = new StatusBarObserver();
     d->actionLabel = new QLabel(statusBar());
     // d->actionLabel->setMinimumWidth(120);
-    d->sizeLabel = new QLabel(tr("Dimension"), statusBar());
-    d->sizeLabel->setMinimumWidth(120);
+
+    d->sizeLabel = new DimensionWidget(statusBar());
+
     statusBar()->addWidget(d->actionLabel, 1);
     QProgressBar* progressBar = Gui::SequencerBar::instance()->getProgressBar(statusBar());
     statusBar()->addPermanentWidget(progressBar, 0);
@@ -311,7 +400,6 @@ MainWindow::MainWindow(QWidget * parent, Qt::WindowFlags f)
     if(notificationAreaEnabled) {
         NotificationArea* notificationArea = new NotificationArea(statusBar());
         notificationArea->setObjectName(QString::fromLatin1("notificationArea"));
-        notificationArea->setIcon(QIcon(QString::fromLatin1(":/icons/InTray.svg")));
         notificationArea->setStyleSheet(QStringLiteral("text-align:left;"));
         statusBar()->addPermanentWidget(notificationArea);
     }
@@ -2209,3 +2297,4 @@ ActionStyleEvent::Style ActionStyleEvent::getType() const
 
 
 #include "moc_MainWindow.cpp"
+#include "MainWindow.moc"

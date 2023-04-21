@@ -18,7 +18,7 @@
 #include <Base/FileInfo.h>
 #include <Base/Stream.h>
 #include <Base/Vector3D.h>
-
+#include <Base/Interpreter.h>
 #include "dxf.h"
 
 
@@ -1750,7 +1750,7 @@ CDxfRead::CDxfRead(const char* filepath)
     memset( m_str, '\0', sizeof(m_str) );
     memset( m_unused_line, '\0', sizeof(m_unused_line) );
     m_fail = false;
-    m_aci = 0;
+    m_ColorIndex = 0;
     m_eUnits = eMillimeters;
     m_measurement_inch = false;
     strcpy(m_layer_name, "0");  // Default layer name
@@ -1766,11 +1766,16 @@ CDxfRead::CDxfRead(const char* filepath)
     }
     m_ifs->imbue(std::locale("C"));
 
+    m_version = RUnknown;
+    m_CodePage = NULL;
+    m_encoding = NULL;
 }
 
 CDxfRead::~CDxfRead()
 {
     delete m_ifs;
+    delete m_CodePage;
+    delete m_encoding;
 }
 
 double CDxfRead::mm( double value ) const
@@ -1836,7 +1841,7 @@ bool CDxfRead::ReadLine()
         switch(n){
             case 0:
                 // next item found, so finish with line
-                    DerefACI();
+                    ResolveColorIndex();
                     OnReadLine(s, e, hidden);
                     hidden = false;
                 return true;
@@ -1884,7 +1889,7 @@ bool CDxfRead::ReadLine()
                 case 62:
                 // color index
                 get_line();
-                ss.str(m_str); ss >> m_aci; if(ss.fail()) return false;
+                ss.str(m_str); ss >> m_ColorIndex; if(ss.fail()) return false;
                 break;
 
             case 100:
@@ -1903,7 +1908,7 @@ bool CDxfRead::ReadLine()
     }
 
     try {
-        DerefACI();
+        ResolveColorIndex();
         OnReadLine(s, e, false);
     }
     catch(...)
@@ -1934,7 +1939,7 @@ bool CDxfRead::ReadPoint()
         switch(n){
             case 0:
                 // next item found, so finish with line
-                    DerefACI();
+                    ResolveColorIndex();
                 OnReadPoint(s);
                 return true;
 
@@ -1962,7 +1967,7 @@ bool CDxfRead::ReadPoint()
                 case 62:
                 // color index
                 get_line();
-                ss.str(m_str); ss >> m_aci; if(ss.fail()) return false;
+                ss.str(m_str); ss >> m_ColorIndex; if(ss.fail()) return false;
                 break;
 
             case 100:
@@ -1982,7 +1987,7 @@ bool CDxfRead::ReadPoint()
     }
 
     try {
-        DerefACI();
+        ResolveColorIndex();
         OnReadPoint(s);
     }
     catch(...)
@@ -2017,7 +2022,7 @@ bool CDxfRead::ReadArc()
         switch(n){
             case 0:
                 // next item found, so finish with arc
-                    DerefACI();
+                    ResolveColorIndex();
                     OnReadArc(start_angle, end_angle, radius, c,z_extrusion_dir, hidden);
                     hidden = false;
                     return true;
@@ -2065,7 +2070,7 @@ bool CDxfRead::ReadArc()
                 case 62:
                 // color index
                 get_line();
-                ss.str(m_str); ss >> m_aci; if(ss.fail()) return false;
+                ss.str(m_str); ss >> m_ColorIndex; if(ss.fail()) return false;
                 break;
 
 
@@ -2089,7 +2094,7 @@ bool CDxfRead::ReadArc()
                 break;
         }
     }
-    DerefACI();
+    ResolveColorIndex();
     OnReadArc(start_angle, end_angle, radius, c, z_extrusion_dir, false);
     return false;
 }
@@ -2122,7 +2127,7 @@ bool CDxfRead::ReadSpline()
         switch(n){
             case 0:
                 // next item found, so finish with Spline
-                    DerefACI();
+                    ResolveColorIndex();
                 OnReadSpline(sd);
                 return true;
             case 8: // Layer name follows
@@ -2132,7 +2137,7 @@ bool CDxfRead::ReadSpline()
                 case 62:
                 // color index
                 get_line();
-                ss.str(m_str); ss >> m_aci; if(ss.fail()) return false;
+                ss.str(m_str); ss >> m_ColorIndex; if(ss.fail()) return false;
                 break;
             case 210:
                 // normal x
@@ -2270,7 +2275,7 @@ bool CDxfRead::ReadSpline()
                 break;
         }
     }
-    DerefACI();
+    ResolveColorIndex();
     OnReadSpline(sd);
     return false;
 }
@@ -2296,7 +2301,7 @@ bool CDxfRead::ReadCircle()
         switch(n){
             case 0:
                 // next item found, so finish with Circle
-                DerefACI();
+                ResolveColorIndex();
                 OnReadCircle(c, radius, hidden);
                 hidden = false;
                 return true;
@@ -2334,7 +2339,7 @@ bool CDxfRead::ReadCircle()
                 case 62:
                 // color index
                 get_line();
-                ss.str(m_str); ss >> m_aci; if(ss.fail()) return false;
+                ss.str(m_str); ss >> m_ColorIndex; if(ss.fail()) return false;
                 break;
 
             case 100:
@@ -2351,7 +2356,7 @@ bool CDxfRead::ReadCircle()
                 break;
         }
     }
-    DerefACI();
+    ResolveColorIndex();
     OnReadCircle(c, radius, false);
     return false;
 }
@@ -2361,6 +2366,7 @@ bool CDxfRead::ReadText()
 {
     double c[3]; // coordinate
     double height = 0.03082;
+    std::string textPrefix;
 
     memset( c, 0, sizeof(c) );
 
@@ -2403,17 +2409,32 @@ bool CDxfRead::ReadText()
                 get_line();
                 ss.str(m_str); ss >> height; height = mm(height); if(ss.fail()) return false;
                 break;
+            case 3:
+                // Additional text that goes before the type 1 text
+                get_line();
+                textPrefix.append(m_str);
+                break;
             case 1:
                 // text
+                // Note that we treat this as the end of the TEXT or MTEXT entity but this may cause us to miss
+                // other properties. Officially the entity ends at the start of the next entity, the BLKEND record
+                // that ends the containing BLOCK, or the ENDSEC record that ends the ENTITIES section. These are
+                // all code 0 records. Changing this would require either some sort of peek/pushback ability or the understanding
+                // that ReadText() and all the other Read... methods return having already read a code 0.
                 get_line();
-                DerefACI();
-                OnReadText(c, height * 25.4 / 72.0, m_str);
+                ResolveColorIndex();
+                {
+                    const char* utfStr = (this->*stringToUTF8)(m_str);
+                    OnReadText(c, height * 25.4 / 72.0, utfStr);
+                    if (utfStr != m_str)
+                        delete utfStr;
+                }
                 return(true);
 
             case 62:
                 // color index
                 get_line();
-                ss.str(m_str); ss >> m_aci; if(ss.fail()) return false;
+                ss.str(m_str); ss >> m_ColorIndex; if(ss.fail()) return false;
                 break;
 
             case 100:
@@ -2457,7 +2478,7 @@ bool CDxfRead::ReadEllipse()
         switch(n){
             case 0:
                 // next item found, so finish with Ellipse
-                    DerefACI();
+                    ResolveColorIndex();
                 OnReadEllipse(c, m, ratio, start, end);
                 return true;
             case 8: // Layer name follows
@@ -2513,7 +2534,7 @@ bool CDxfRead::ReadEllipse()
                 case 62:
                 // color index
                 get_line();
-                ss.str(m_str); ss >> m_aci; if(ss.fail()) return false;
+                ss.str(m_str); ss >> m_ColorIndex; if(ss.fail()) return false;
                 break;
             case 100:
             case 210:
@@ -2528,7 +2549,7 @@ bool CDxfRead::ReadEllipse()
                 break;
         }
     }
-    DerefACI();
+    ResolveColorIndex();
     OnReadEllipse(c, m, ratio, start, end);
     return false;
 }
@@ -2628,7 +2649,7 @@ bool CDxfRead::ReadLwPolyLine()
             case 0:
                 // next item found
 
-                    DerefACI();
+                    ResolveColorIndex();
                     if(x_found && y_found){
                     // add point
                     AddPolyLinePoint(this, x, y, z, bulge_found, bulge);
@@ -2682,7 +2703,7 @@ bool CDxfRead::ReadLwPolyLine()
                 case 62:
                 // color index
                 get_line();
-                ss.str(m_str); ss >> m_aci; if(ss.fail()) return false;
+                ss.str(m_str); ss >> m_ColorIndex; if(ss.fail()) return false;
                 break;
             default:
                 // skip the next line
@@ -2696,7 +2717,7 @@ bool CDxfRead::ReadLwPolyLine()
         if(closed && poly_first_found)
         {
             // repeat the first point
-                DerefACI();
+                ResolveColorIndex();
             AddPolyLinePoint(this, poly_first_x, poly_first_y, poly_first_z, false, 0.0);
         }
         return true;
@@ -2732,7 +2753,7 @@ bool CDxfRead::ReadVertex(double *pVertex, bool *bulge_found, double *bulge)
         ss.imbue(std::locale("C"));
         switch(n){
         case 0:
-        DerefACI();
+        ResolveColorIndex();
             put_line(m_str);    // read one line too many.  put it back.
             return(x_found && y_found);
             break;
@@ -2768,7 +2789,7 @@ bool CDxfRead::ReadVertex(double *pVertex, bool *bulge_found, double *bulge)
     case 62:
         // color index
         get_line();
-        ss.str(m_str); ss >> m_aci; if(ss.fail()) return false;
+        ss.str(m_str); ss >> m_ColorIndex; if(ss.fail()) return false;
         break;
 
         default:
@@ -2808,7 +2829,7 @@ bool CDxfRead::ReadPolyLine()
         switch(n){
             case 0:
                 // next item found
-                    DerefACI();
+                    ResolveColorIndex();
                 get_line();
                 if (! strcmp(m_str,"VERTEX"))
                 {
@@ -2843,7 +2864,7 @@ bool CDxfRead::ReadPolyLine()
                 case 62:
                 // color index
                 get_line();
-                ss.str(m_str); ss >> m_aci; if(ss.fail()) return false;
+                ss.str(m_str); ss >> m_ColorIndex; if(ss.fail()) return false;
                 break;
             default:
                 // skip the next line
@@ -2931,7 +2952,7 @@ bool CDxfRead::ReadInsert()
         switch(n){
             case 0:
                 // next item found
-                DerefACI();
+                ResolveColorIndex();
                 OnReadInsert(c, s, name, rot * M_PI/180);
                 return(true);
             case 8:
@@ -2982,7 +3003,7 @@ bool CDxfRead::ReadInsert()
             case 62:
                 // color index
                 get_line();
-                ss.str(m_str); ss >> m_aci; if(ss.fail()) return false;
+                ss.str(m_str); ss >> m_ColorIndex; if(ss.fail()) return false;
                 break;
             case 100:
             case 39:
@@ -3023,7 +3044,7 @@ bool CDxfRead::ReadDimension()
         switch(n){
             case 0:
                 // next item found
-                DerefACI();
+                ResolveColorIndex();
                 OnReadDimension(s, e, p, rot * M_PI/180);
                 return(true);
             case 8:
@@ -3084,7 +3105,7 @@ bool CDxfRead::ReadDimension()
             case 62:
                 // color index
                 get_line();
-                ss.str(m_str); ss >> m_aci; if(ss.fail()) return false;
+                ss.str(m_str); ss >> m_ColorIndex; if(ss.fail()) return false;
                 break;
             case 100:
             case 39:
@@ -3204,7 +3225,7 @@ bool CDxfRead::ReadUnits()
 bool CDxfRead::ReadLayer()
 {
     std::string layername;
-    int aci = -1;
+    ColorIndex_t colorIndex = -1;
 
     while(!((*m_ifs).eof()))
     {
@@ -3226,7 +3247,7 @@ bool CDxfRead::ReadLayer()
                     printf("CDxfRead::ReadLayer() - no layer name\n");
                     return false;
                 }
-                    m_layer_aci[layername] = aci;
+                    m_layer_ColorIndex_map[layername] = colorIndex;
                 return true;
 
             case 2: // Layer name follows
@@ -3237,7 +3258,7 @@ bool CDxfRead::ReadLayer()
             case 62:
                 // layer color ; if negative, layer is off
                 get_line();
-                if(sscanf(m_str, "%d", &aci) != 1)
+                if(sscanf(m_str, "%d", &colorIndex) != 1)
                     return false;
                 break;
 
@@ -3259,7 +3280,117 @@ bool CDxfRead::ReadLayer()
     return false;
 }
 
-void CDxfRead::DoRead(const bool ignore_errors /* = false */ )
+bool CDxfRead::ReadVersion()
+{
+    static const std::vector<std::string> VersionNames = {
+        // This table is indexed by eDXFVersion_t - (ROlder+1)
+        "AC1006",
+        "AC1009",
+        "AC1012",
+        "AC1014",
+        "AC1015",
+        "AC1018",
+        "AC1021",
+        "AC1024",
+        "AC1027",
+        "AC1032"};
+
+    assert(VersionNames.size() == RNewer - ROlder - 1);
+    get_line();
+    get_line();
+    std::vector<std::string>::const_iterator first = VersionNames.cbegin();
+    std::vector<std::string>::const_iterator last = VersionNames.cend();
+    std::vector<std::string>::const_iterator found = std::lower_bound(first, last, m_str);
+    if (found == last)
+        m_version = RNewer;
+    else if (*found == m_str)
+        m_version = (eDXFVersion_t)(std::distance(first, found) + (ROlder + 1));
+    else if (found == first)
+        m_version = ROlder;
+    else
+        m_version = RUnknown;
+
+    return ResolveEncoding();
+}
+
+bool CDxfRead::ReadDWGCodePage()
+{
+    get_line();
+    get_line();
+    assert(m_CodePage == NULL); // If not, we have found two DWGCODEPAGE variables or DoRead was called twice on the same CDxfRead object.
+    m_CodePage = new std::string(m_str);
+
+    return ResolveEncoding();
+}
+
+bool CDxfRead::ResolveEncoding()
+{
+    if (m_encoding != NULL) {
+        delete m_encoding;
+        m_encoding = NULL;
+    }
+    if (m_version >= R2007) {   // Note this does not include RUnknown, but does include RLater
+        m_encoding = new std::string("utf_8");
+        stringToUTF8 = &CDxfRead::UTF8ToUTF8;
+    }
+    else if (m_CodePage == NULL) {
+        // cp1252
+        m_encoding = new std::string("cp1252");
+        stringToUTF8 = &CDxfRead::GeneralToUTF8;
+    }
+    else {
+        // Codepage names may be of the form "ansi_1252" which we map to "cp1252" but we don't map "ansi_x3xxxx" (which happens to mean "ascii")
+        std::string* p = new std::string(*m_CodePage);
+        if (strncmp(p->c_str(), "ansi_", 5) == 0
+            && strncmp(p->c_str(), "ansi_x3", 7) != 0)
+            p->replace(0, 5, "cp");
+        m_encoding = p;
+        // At this point we want to recognize synonyms for "utf_8" and use the custom decoder function.
+        // This is because this is one of the common cases and our decoder function is a fast no-op.
+        // We don't actually use the decoder function we get from PyCodec_Decoder because to call it we have to convert the (char *) text into
+        // a 'bytes' object first so we can pass it to the function using PyObject_Callxxx(), getting the PYObject containing the
+        // Python string, which we then decode back to UTF-8. It is simpler to call PyUnicode_DecodeXxxx which takes a (const char *)
+        // and is just a direct c++ callable.
+        Base::PyGILStateLocker lock;
+        PyObject* pyDecoder = PyCodec_Decoder(m_encoding->c_str());
+        if (pyDecoder == NULL)
+            return false; // A key error exception will have been placed.
+        PyObject* pyUTF8Decoder = PyCodec_Decoder("utf_8");
+        assert(pyUTF8Decoder != NULL);
+        if (pyDecoder == pyUTF8Decoder)
+            stringToUTF8 = &CDxfRead::UTF8ToUTF8;
+        else
+            stringToUTF8 = &CDxfRead::GeneralToUTF8;
+        Py_DECREF(pyDecoder);
+        Py_DECREF(pyUTF8Decoder);
+    }
+    return m_encoding != NULL;
+}
+const char* CDxfRead::UTF8ToUTF8(const char* encoded) const
+{
+    return encoded;
+}
+const char* CDxfRead::GeneralToUTF8(const char* encoded) const
+{
+    Base::PyGILStateLocker lock;
+    PyObject* decoded = PyUnicode_Decode(encoded, strlen(encoded), m_encoding->c_str(), "strict");
+    if (decoded == NULL)
+        return NULL;
+    Py_ssize_t len;
+    const char* converted = PyUnicode_AsUTF8AndSize(decoded, &len);
+    char* result = NULL;
+    if (converted != NULL) {
+        // converted only has lifetime of decoded so we must save a copy.
+        result = (char *)malloc(len + 1);
+        if (result == NULL)
+            PyErr_SetString(PyExc_MemoryError, "Out of memory");
+        else
+            memcpy(result, converted, len + 1);
+    }
+    Py_DECREF(decoded);
+    return result;
+}
+void CDxfRead::DoRead(const bool ignore_errors /* = false */)
 {
     m_ignore_errors = ignore_errors;
     if(m_fail)
@@ -3286,7 +3417,19 @@ void CDxfRead::DoRead(const bool ignore_errors /* = false */ )
             continue;
         } // End if - then
 
-        else if(!strcmp(m_str, "0"))
+        if (!strcmp(m_str, "$ACADVER")) {
+            if (!ReadVersion())
+                return;
+            continue;
+        }// End if - then
+
+        if (!strcmp(m_str, "$DWGCODEPAGE")) {
+            if (!ReadDWGCodePage())
+                return;
+            continue;
+        }// End if - then
+
+        if (!strcmp(m_str, "0"))
         {
             get_line();
             if (!strcmp( m_str, "SECTION" )){
@@ -3431,12 +3574,12 @@ void CDxfRead::DoRead(const bool ignore_errors /* = false */ )
 }
 
 
-void  CDxfRead::DerefACI()
+void  CDxfRead::ResolveColorIndex()
 {
 
-    if (m_aci == 256) // if color = layer color, replace by color from layer
+    if (m_ColorIndex == ColorBylayer) // if color = layer color, replace by color from layer
     {
-         m_aci = m_layer_aci[std::string(m_layer_name)];
+         m_ColorIndex = m_layer_ColorIndex_map[std::string(m_layer_name)];
     }
 }
 

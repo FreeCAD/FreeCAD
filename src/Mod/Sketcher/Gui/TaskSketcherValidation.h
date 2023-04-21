@@ -49,19 +49,20 @@ public:
 protected:
     void changeEvent(QEvent *e) override;
 
-private Q_SLOTS:
-    void on_findButton_clicked();
-    void on_fixButton_clicked();
-    void on_highlightButton_clicked();
-    void on_findConstraint_clicked();
-    void on_fixConstraint_clicked();
-    void on_findReversed_clicked();
-    void on_swapReversed_clicked();
-    void on_orientLockEnable_clicked();
-    void on_orientLockDisable_clicked();
-    void on_delConstrExtr_clicked();
-    void on_findDegenerated_clicked();
-    void on_fixDegenerated_clicked();
+private:
+    void setupConnections();
+    void onFindButtonClicked();
+    void onFixButtonClicked();
+    void onHighlightButtonClicked();
+    void onFindConstraintClicked();
+    void onFixConstraintClicked();
+    void onFindReversedClicked();
+    void onSwapReversedClicked();
+    void onOrientLockEnableClicked();
+    void onOrientLockDisableClicked();
+    void onDelConstrExtrClicked();
+    void onFindDegeneratedClicked();
+    void onFixDegeneratedClicked();
 
 private:
     void showPoints(const std::vector<Base::Vector3d>&);

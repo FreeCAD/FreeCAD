@@ -53,6 +53,7 @@ class QGCustomText;
 class QGIArrow;
 class QGIDimLines;
 class QGIViewDimension;
+class QGCustomSvg;
 class ViewProviderDimension;
 
 class QGIDatumLabel : public QGraphicsObject
@@ -157,7 +158,7 @@ class TechDrawGuiExport QGIViewDimension : public QGIView
 public:
     enum {Type = QGraphicsItem::UserType + 106};
 
-    explicit QGIViewDimension();
+    QGIViewDimension();
     ~QGIViewDimension() = default;
 
     void setViewPartFeature(TechDraw::DrawViewDimension *obj);
@@ -293,6 +294,7 @@ private:
     double getDefaultExtensionLineOverhang() const;
     double getDefaultArrowTailLength() const;
     double getDefaultIsoDimensionLineSpacing() const;
+    double getIsoDimensionLineSpacing() const;
     double getDefaultIsoReferenceLineOverhang() const;
     double getDefaultAsmeHorizontalLeaderLength() const;
 
@@ -303,6 +305,9 @@ private:
     QGIArrow* aHead1;
     QGIArrow* aHead2;
     double m_lineWidth;
+
+    QGCustomSvg* m_refFlag;
+
 };
 
 } // namespace MDIViewPageGui

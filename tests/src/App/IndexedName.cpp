@@ -8,40 +8,34 @@
 
 // NOLINTBEGIN(readability-magic-numbers)
 
-class IndexedNameTest : public ::testing::Test {
+class IndexedNameTest: public ::testing::Test
+{
 protected:
     // void SetUp() override {}
 
     // void TearDown() override {}
 
     // Create and return a list of invalid IndexedNames
-    static std::vector<Data::IndexedName> givenInvalidIndexedNames() {
-        return std::vector<Data::IndexedName> {
-            Data::IndexedName(),
-            Data::IndexedName("",1),
-            Data::IndexedName("INVALID42NAME",1),
-            Data::IndexedName(".EDGE",1)
-        };
+    static std::vector<Data::IndexedName> givenInvalidIndexedNames()
+    {
+        return std::vector<Data::IndexedName> {Data::IndexedName(),
+                                               Data::IndexedName("", 1),
+                                               Data::IndexedName("INVALID42NAME", 1),
+                                               Data::IndexedName(".EDGE", 1)};
     }
 
     // Create and return a list of valid IndexedNames
-    static std::vector<Data::IndexedName> givenValidIndexedNames() {
-        return std::vector<Data::IndexedName> {
-            Data::IndexedName("NAME"),
-            Data::IndexedName("NAME1"),
-            Data::IndexedName("NAME",1),
-            Data::IndexedName("NAME_WITH_UNDERSCORES12345")
-        };
+    static std::vector<Data::IndexedName> givenValidIndexedNames()
+    {
+        return std::vector<Data::IndexedName> {Data::IndexedName("NAME"),
+                                               Data::IndexedName("NAME1"),
+                                               Data::IndexedName("NAME", 1),
+                                               Data::IndexedName("NAME_WITH_UNDERSCORES12345")};
     }
 
     // An arbitrary list of C strings used for testing some types of construction
     // NOLINTNEXTLINE cppcoreguidelines-non-private-member-variables-in-classes
-    std::vector<const char *> allowedTypes {
-        "VERTEX",
-        "EDGE",
-        "FACE",
-        "WIRE"
-    };
+    std::vector<const char*> allowedTypes {"VERTEX", "EDGE", "FACE", "WIRE"};
 };
 
 TEST_F(IndexedNameTest, defaultConstruction)
@@ -94,7 +88,7 @@ TEST_F(IndexedNameTest, nameAndIndexConstructionWithOverride)
 TEST_F(IndexedNameTest, constructionInvalidCharInName)
 {
     // Arrange
-    constexpr int lastASCIICode{127};
+    constexpr int lastASCIICode {127};
     std::vector<char> illegalCharacters = {};
     for (int code = 1; code <= lastASCIICode; ++code) {
         if ((std::isalnum(code) == 0) && code != '_') {
@@ -175,7 +169,7 @@ TEST_F(IndexedNameTest, nameAndTypeListConstructionReusedMemoryCheck)
 TEST_F(IndexedNameTest, byteArrayConstruction)
 {
     // Arrange
-    QByteArray qba{"EDGE42"};
+    QByteArray qba {"EDGE42"};
 
     // Act
     auto indexedName = Data::IndexedName(qba);
@@ -207,7 +201,7 @@ TEST_F(IndexedNameTest, streamInsertionOperator)
     ss << indexedName;
 
     // Assert
-    EXPECT_EQ(ss.str(), std::string{"EDGE42"});
+    EXPECT_EQ(ss.str(), std::string {"EDGE42"});
 }
 
 TEST_F(IndexedNameTest, compoundAssignmentOperator)
@@ -215,9 +209,9 @@ TEST_F(IndexedNameTest, compoundAssignmentOperator)
     // NOTE: Only += is defined for this class
 
     // Arrange
-    constexpr int base{42};
-    constexpr int offset{10};
-    auto indexedName = Data::IndexedName("EDGE",base);
+    constexpr int base {42};
+    constexpr int offset {10};
+    auto indexedName = Data::IndexedName("EDGE", base);
 
     // Act
     indexedName += offset;
@@ -267,7 +261,7 @@ TEST_F(IndexedNameTest, comparisonOperators)
     auto indexedName4 = Data::IndexedName("FACE42");
 
     // Act & Assert
-    EXPECT_EQ(indexedName3.compare(indexedName4), -1);
+    EXPECT_LT(indexedName3.compare(indexedName4), 0);
     EXPECT_FALSE(indexedName3 == indexedName4);
     EXPECT_TRUE(indexedName3 != indexedName4);
     EXPECT_TRUE(indexedName3 < indexedName4);
@@ -277,7 +271,7 @@ TEST_F(IndexedNameTest, comparisonOperators)
     auto indexedName6 = Data::IndexedName("EDGE42");
 
     // Act & Assert
-    EXPECT_EQ(indexedName5.compare(indexedName6), 1);
+    EXPECT_GT(indexedName5.compare(indexedName6), 0);
     EXPECT_FALSE(indexedName5 == indexedName6);
     EXPECT_TRUE(indexedName5 != indexedName6);
     EXPECT_FALSE(indexedName5 < indexedName6);
@@ -287,7 +281,7 @@ TEST_F(IndexedNameTest, comparisonOperators)
     auto indexedName8 = Data::IndexedName("EDGE42");
 
     // Act & Assert
-    EXPECT_EQ(indexedName7.compare(indexedName8), -1);
+    EXPECT_LT(indexedName7.compare(indexedName8), 0);
     EXPECT_FALSE(indexedName7 == indexedName8);
     EXPECT_TRUE(indexedName7 != indexedName8);
     EXPECT_TRUE(indexedName7 < indexedName8);
@@ -297,10 +291,20 @@ TEST_F(IndexedNameTest, comparisonOperators)
     auto indexedName10 = Data::IndexedName("EDGE42");
 
     // Act & Assert
-    EXPECT_EQ(indexedName9.compare(indexedName10), 1);
+    EXPECT_GT(indexedName9.compare(indexedName10), 0);
     EXPECT_FALSE(indexedName9 == indexedName10);
     EXPECT_TRUE(indexedName9 != indexedName10);
     EXPECT_FALSE(indexedName9 < indexedName10);
+
+    // Arrange
+    auto indexedName11 = Data::IndexedName("EDGE2");
+    auto indexedName12 = Data::IndexedName("EDGE12");
+
+    // Act & Assert
+    EXPECT_LT(indexedName11.compare(indexedName12), 0);
+    EXPECT_FALSE(indexedName11 == indexedName12);
+    EXPECT_TRUE(indexedName11 != indexedName12);
+    EXPECT_TRUE(indexedName11 < indexedName12);
 }
 
 TEST_F(IndexedNameTest, subscriptOperator)
@@ -341,7 +345,7 @@ TEST_F(IndexedNameTest, isNullTrue)
 {
     // Arrange
     auto invalidNames = givenInvalidIndexedNames();
-    for (const auto &name : invalidNames) {
+    for (const auto& name : invalidNames) {
 
         // Act & Assert
         EXPECT_TRUE(name.isNull());
@@ -352,7 +356,7 @@ TEST_F(IndexedNameTest, isNullFalse)
 {
     // Arrange
     auto validNames = givenValidIndexedNames();
-    for (const auto &name : validNames) {
+    for (const auto& name : validNames) {
 
         // Act & Assert
         EXPECT_FALSE(name.isNull());
@@ -363,14 +367,14 @@ TEST_F(IndexedNameTest, booleanConversionFalse)
 {
     // Arrange
     auto invalidNames = givenInvalidIndexedNames();
-    for (const auto &name : invalidNames) {
+    for (const auto& name : invalidNames) {
 
         // Act & Assert
         EXPECT_FALSE(static_cast<bool>(name));
     }
 
     // Usage example:
-    auto indexedName = Data::IndexedName(".EDGE",1);  // Invalid name
+    auto indexedName = Data::IndexedName(".EDGE", 1);// Invalid name
     if (indexedName) {
         FAIL() << "indexedName as a boolean should have been false for an invalid name";
     }
@@ -470,7 +474,7 @@ TEST_F(IndexedNameTest, assignmentOperator)
     const int testIndex2 {24};
     auto indexedName1 = Data::IndexedName::fromConst("TestName", testIndex1);
     auto indexedName2 = Data::IndexedName::fromConst("TestName2", testIndex2);
-    EXPECT_NE(indexedName1, indexedName2);  // Ensure the test is set up correctly
+    EXPECT_NE(indexedName1, indexedName2);// Ensure the test is set up correctly
 
     // Act
     indexedName1 = indexedName2;
@@ -480,7 +484,8 @@ TEST_F(IndexedNameTest, assignmentOperator)
 }
 
 
-class ByteArrayTest : public ::testing::Test {
+class ByteArrayTest: public ::testing::Test
+{
 protected:
     // void SetUp() override {}
 
@@ -493,7 +498,7 @@ TEST_F(ByteArrayTest, QByteArrayConstruction)
     QByteArray testQBA("Data in a QByteArray");
 
     // Act
-    Data::ByteArray testByteArray (testQBA);
+    Data::ByteArray testByteArray(testQBA);
 
     // Assert
     EXPECT_EQ(testQBA, testByteArray.bytes);
@@ -503,11 +508,11 @@ TEST_F(ByteArrayTest, CopyConstruction)
 {
     // Arrange
     QByteArray testQBA("Data in a QByteArray");
-    Data::ByteArray originalByteArray (testQBA);
+    Data::ByteArray originalByteArray(testQBA);
 
     // Act
     // NOLINTNEXTLINE performance-unnecessary-copy-initialization
-    Data::ByteArray copiedByteArray (originalByteArray);
+    Data::ByteArray copiedByteArray(originalByteArray);
 
     // Assert
     EXPECT_EQ(originalByteArray, copiedByteArray);
@@ -517,11 +522,11 @@ TEST_F(ByteArrayTest, MoveConstruction)
 {
     // Arrange
     QByteArray testQBA("Data in a QByteArray");
-    Data::ByteArray originalByteArray (testQBA);
-    const auto *originalDataLocation = originalByteArray.bytes.constData();
+    Data::ByteArray originalByteArray(testQBA);
+    const auto* originalDataLocation = originalByteArray.bytes.constData();
 
     // Act
-    Data::ByteArray copiedByteArray (std::move(originalByteArray));
+    Data::ByteArray copiedByteArray(std::move(originalByteArray));
 
     // Assert
     EXPECT_EQ(testQBA, copiedByteArray.bytes);
@@ -532,9 +537,9 @@ TEST_F(ByteArrayTest, ensureUnshared)
 {
     // Arrange
     QByteArray testQBA("Data in a QByteArray");
-    Data::ByteArray originalByteArray (testQBA);
-    const auto *originalDataLocation = originalByteArray.bytes.constData();
-    Data::ByteArray copiedByteArray (originalByteArray);
+    Data::ByteArray originalByteArray(testQBA);
+    const auto* originalDataLocation = originalByteArray.bytes.constData();
+    Data::ByteArray copiedByteArray(originalByteArray);
 
     // Act
     copiedByteArray.ensureUnshared();
@@ -550,9 +555,9 @@ TEST_F(ByteArrayTest, equalityOperator)
     QByteArray testQBA1("Data in a QByteArray");
     QByteArray testQBA2("Data in a QByteArray");
     QByteArray testQBA3("Not the same data in a QByteArray");
-    Data::ByteArray byteArray1 (testQBA1);
-    Data::ByteArray byteArray2 (testQBA2);
-    Data::ByteArray byteArray3 (testQBA3);
+    Data::ByteArray byteArray1(testQBA1);
+    Data::ByteArray byteArray2(testQBA2);
+    Data::ByteArray byteArray3(testQBA3);
 
     // Act & Assert
     EXPECT_TRUE(byteArray1 == byteArray2);
@@ -564,8 +569,8 @@ TEST_F(ByteArrayTest, assignmentOperator)
     // Arrange
     QByteArray testQBA1("Data in a QByteArray");
     QByteArray testQBA2("Different data in a QByteArray");
-    Data::ByteArray originalByteArray (testQBA1);
-    Data::ByteArray newByteArray (testQBA2);
+    Data::ByteArray originalByteArray(testQBA1);
+    Data::ByteArray newByteArray(testQBA2);
     ASSERT_FALSE(originalByteArray == newByteArray);
 
     // Act
@@ -580,9 +585,9 @@ TEST_F(ByteArrayTest, moveAssignmentOperator)
     // Arrange
     QByteArray testQBA1("Data in a QByteArray");
     QByteArray testQBA2("Different data in a QByteArray");
-    Data::ByteArray originalByteArray (testQBA1);
-    const auto *originalByteArrayLocation = originalByteArray.bytes.constData();
-    Data::ByteArray newByteArray (testQBA2);
+    Data::ByteArray originalByteArray(testQBA1);
+    const auto* originalByteArrayLocation = originalByteArray.bytes.constData();
+    Data::ByteArray newByteArray(testQBA2);
     ASSERT_FALSE(originalByteArray == newByteArray);
 
     // Act

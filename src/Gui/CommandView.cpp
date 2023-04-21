@@ -36,6 +36,7 @@
 # include <QFileInfo>
 # include <QFont>
 # include <QFontMetrics>
+# include <QImageReader>
 # include <QMessageBox>
 # include <QPainter>
 # include <QPointer>
@@ -62,6 +63,7 @@
 #include "DlgSettingsImageImp.h"
 #include "Document.h"
 #include "FileDialog.h"
+#include "ImageView.h"
 #include "Macro.h"
 #include "MainWindow.h"
 #include "NavigationStyle.h"
@@ -1807,12 +1809,12 @@ StdViewScreenShot::StdViewScreenShot()
   : Command("Std_ViewScreenShot")
 {
     sGroup      = "Standard-View";
-    sMenuText   = QT_TR_NOOP("Save picture...");
+    sMenuText   = QT_TR_NOOP("Save image...");
     sToolTipText= QT_TR_NOOP("Creates a screenshot of the active view");
     sWhatsThis  = "Std_ViewScreenShot";
     sStatusTip  = QT_TR_NOOP("Creates a screenshot of the active view");
     sPixmap     = "camera-photo";
-    eType         = Alter3DView;
+    eType       = Alter3DView;
 }
 
 void StdViewScreenShot::activated(int iMsg)
@@ -1848,7 +1850,7 @@ void StdViewScreenShot::activated(int iMsg)
         FileOptionsDialog fd(getMainWindow(), Qt::WindowFlags());
         fd.setFileMode(QFileDialog::AnyFile);
         fd.setAcceptMode(QFileDialog::AcceptSave);
-        fd.setWindowTitle(QObject::tr("Save picture"));
+        fd.setWindowTitle(QObject::tr("Save image"));
         fd.setNameFilters(filter);
         if (!selFilter.isEmpty())
             fd.selectNameFilter(selFilter);
@@ -1969,6 +1971,51 @@ bool StdViewScreenShot::isActive()
     return isViewOfType(Gui::View3DInventor::getClassTypeId());
 }
 
+//===========================================================================
+// Std_ViewLoadImage
+//===========================================================================
+DEF_STD_CMD(StdViewLoadImage)
+
+StdViewLoadImage::StdViewLoadImage()
+  : Command("Std_ViewLoadImage")
+{
+    sGroup      = "Standard-View";
+    sMenuText   = QT_TR_NOOP("Load image...");
+    sToolTipText= QT_TR_NOOP("Loads an image");
+    sWhatsThis  = "Std_ViewLoadImage";
+    sStatusTip  = QT_TR_NOOP("Loads an image");
+    sPixmap     = "image-open";
+    eType       = 0;
+}
+
+void StdViewLoadImage::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+
+    // add all supported QImage formats
+    QStringList mimeTypeFilters;
+    QList<QByteArray> supportedMimeTypes = QImageReader::supportedMimeTypes();
+    for (const auto& mimeTypeName : supportedMimeTypes) {
+        mimeTypeFilters.append(QString::fromLatin1(mimeTypeName));
+    }
+
+    // Reading an image
+    QFileDialog dialog(Gui::getMainWindow());
+    dialog.setWindowTitle(QObject::tr("Choose an image file to open"));
+    dialog.setMimeTypeFilters(mimeTypeFilters);
+    dialog.selectMimeTypeFilter(QString::fromLatin1("image/png"));
+    dialog.setDefaultSuffix(QString::fromLatin1("png"));
+    dialog.setAcceptMode(QFileDialog::AcceptOpen);
+    dialog.setOption(QFileDialog::DontUseNativeDialog);
+
+    if (dialog.exec()) {
+        QString fileName = dialog.selectedFiles().constFirst();
+        ImageView* view = new ImageView(Gui::getMainWindow());
+        view->loadFile(fileName);
+        view->resize(400, 300);
+        Gui::getMainWindow()->addWindow(view);
+    }
+}
 
 //===========================================================================
 // Std_ViewCreate
@@ -2392,16 +2439,12 @@ StdViewZoomIn::StdViewZoomIn()
 void StdViewZoomIn::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    auto view = qobject_cast<View3DInventor*>(getMainWindow()->activeWindow());
-    if ( view ) {
-        View3DInventorViewer* viewer = view->getViewer();
-        viewer->navigationStyle()->zoomIn();
-    }
+    getGuiApplication()->sendMsgToFocusView("ZoomIn");
 }
 
 bool StdViewZoomIn::isActive()
 {
-    return (qobject_cast<View3DInventor*>(getMainWindow()->activeWindow()));
+    return getGuiApplication()->sendHasMsgToActiveView("ZoomIn");
 }
 
 //===========================================================================
@@ -2425,16 +2468,12 @@ StdViewZoomOut::StdViewZoomOut()
 void StdViewZoomOut::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    auto view = qobject_cast<View3DInventor*>(getMainWindow()->activeWindow());
-    if (view) {
-        View3DInventorViewer* viewer = view->getViewer();
-        viewer->navigationStyle()->zoomOut();
-    }
+    getGuiApplication()->sendMsgToFocusView("ZoomOut");
 }
 
 bool StdViewZoomOut::isActive()
 {
-    return (qobject_cast<View3DInventor*>(getMainWindow()->activeWindow()));
+    return getGuiApplication()->sendHasMsgToActiveView("ZoomOut");
 }
 
 namespace {
@@ -3775,6 +3814,7 @@ void CreateViewStdCommands()
 
     rcCmdMgr.addCommand(new StdCmdViewCreate());
     rcCmdMgr.addCommand(new StdViewScreenShot());
+    rcCmdMgr.addCommand(new StdViewLoadImage());
     rcCmdMgr.addCommand(new StdMainFullscreen());
     rcCmdMgr.addCommand(new StdViewDockUndockFullscreen());
     rcCmdMgr.addCommand(new StdCmdSetAppearance());

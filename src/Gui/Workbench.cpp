@@ -393,6 +393,7 @@ void  Workbench::addPermanentMenuItems(MenuItem* mb) const
 
 void Workbench::activated()
 {
+    Application::Instance->commandManager().signalPyCmdInitialized();
 }
 
 void Workbench::deactivated()
@@ -526,6 +527,10 @@ std::list<std::string> Workbench::listCommandbars() const
 
     qApp->translate("Workbench", "&File");
     qApp->translate("Workbench", "&Edit");
+    qApp->translate("Workbench", "Edit");
+    qApp->translate("Workbench", "Clipboard");
+    qApp->translate("Workbench", "Workbench");
+    qApp->translate("Workbench", "Structure");
     qApp->translate("Workbench", "Standard views");
     qApp->translate("Workbench", "Axonometric");
     qApp->translate("Workbench", "&Stereo");
@@ -537,6 +542,7 @@ std::list<std::string> Workbench::listCommandbars() const
     qApp->translate("Workbench", "&Windows");
     qApp->translate("Workbench", "&On-line help");
     qApp->translate("Workbench", "&Help");
+    qApp->translate("Workbench", "Help");
     qApp->translate("Workbench", "File");
     qApp->translate("Workbench", "Macro");
     qApp->translate("Workbench", "View");
@@ -685,7 +691,7 @@ MenuItem* StdWorkbench::setupMenuBar() const
           << "Std_ViewVR"
 #endif
           << "Separator" << visu
-          << "Std_ToggleVisibility" << "Std_ToggleNavigation"
+          << "Std_ToggleNavigation"
           << "Std_SetAppearance" << "Std_RandomColor" << "Separator"
           << "Std_Workbench" << "Std_ToolBarMenu" << "Std_DockViewMenu" << "Separator"
           << "Std_TreeViewActions"
@@ -697,6 +703,7 @@ MenuItem* StdWorkbench::setupMenuBar() const
     *tool << "Std_DlgParameter"
           << "Separator"
           << "Std_ViewScreenShot"
+          << "Std_ViewLoadImage"
           << "Std_SceneInspector"
           << "Std_DependencyGraph"
           << "Std_ProjectUtil"

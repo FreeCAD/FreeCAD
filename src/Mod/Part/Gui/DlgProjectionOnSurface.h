@@ -57,21 +57,21 @@ public:
     void apply();
     void reject();
 
-private Q_SLOTS:
-
-  void on_pushButtonAddFace_clicked();
-  void on_pushButtonAddEdge_clicked();
-  void on_pushButtonGetCurrentCamDir_clicked();
-  void on_pushButtonDirX_clicked();
-  void on_pushButtonDirY_clicked();
-  void on_pushButtonDirZ_clicked();
-  void on_pushButtonAddProjFace_clicked();
-  void on_radioButtonShowAll_clicked();
-  void on_radioButtonFaces_clicked();
-  void on_radioButtonEdges_clicked();
-  void on_doubleSpinBoxExtrudeHeight_valueChanged(double arg1);
-  void on_pushButtonAddWire_clicked();
-  void on_doubleSpinBoxSolidDepth_valueChanged(double arg1);
+private:
+    void setupConnections();
+    void onPushButtonAddFaceClicked();
+    void onPushButtonAddEdgeClicked();
+    void onPushButtonGetCurrentCamDirClicked();
+    void onPushButtonDirXClicked();
+    void onPushButtonDirYClicked();
+    void onPushButtonDirZClicked();
+    void onPushButtonAddProjFaceClicked();
+    void onRadioButtonShowAllClicked();
+    void onRadioButtonFacesClicked();
+    void onRadioButtonEdgesClicked();
+    void onDoubleSpinBoxExtrudeHeightValueChanged(double arg1);
+    void onPushButtonAddWireClicked();
+    void onDoubleSpinBoxSolidDepthValueChanged(double arg1);
 
 private:
 

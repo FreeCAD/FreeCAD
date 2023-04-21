@@ -132,6 +132,7 @@ class Macro:
         for key, value in parser.parse_results.items():
             if value:
                 self.__dict__[key] = value
+        self.clean_icon()
         self.parsed = True
 
     def fill_details_from_wiki(self, url):
@@ -189,7 +190,7 @@ class Macro:
         self.fill_details_from_code(self.code)
         if not self.icon and not self.xpm:
             self.parse_wiki_page_for_icon(p)
-            self.clean_icon()
+        self.clean_icon()
 
         if not self.author:
             self.author = self.parse_desc("Author: ")

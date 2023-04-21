@@ -46,7 +46,6 @@ class SpreadsheetCases(unittest.TestCase):
     def testAggregates(self):
         """ Test all aggregate functions """
         sheet = self.doc.addObject('Spreadsheet::Sheet','Spreadsheet')
-        sheet = self.doc.addObject('Spreadsheet::Sheet','Spreadsheet')
         sheet.set('B13',  '4')
         sheet.set('B14',  '5')
         sheet.set('B15',  '6')
@@ -165,7 +164,6 @@ class SpreadsheetCases(unittest.TestCase):
 
     def testFunctions(self):
         """ Test all built-in simple functions """
-        doc = FreeCAD.newDocument()
         sheet = self.doc.addObject('Spreadsheet::Sheet','Spreadsheet')
         sheet.set('A1',  '=cos(60)')   # Cos
         sheet.set('B1',  '=cos(60deg)')
@@ -366,7 +364,6 @@ class SpreadsheetCases(unittest.TestCase):
         self.assertMostlyEqual(sheet.B27, l)
         self.assertTrue(sheet.C27.startswith(u'ERR: Units must be equal'))
         self.assertMostlyEqual(sheet.D27, Units.Quantity("3 mm"))
-        FreeCAD.closeDocument(doc.Name)
 
     def testRelationalOperators(self):
         """ Test relational operators """
@@ -1441,6 +1438,15 @@ class SpreadsheetCases(unittest.TestCase):
         sheet = self.doc.addObject('Spreadsheet::Sheet','Spreadsheet')
         sheet.setAlias('A1', 'aliasOfEmptyCell')
         self.assertEqual(sheet.getCellFromAlias("aliasOfEmptyCell"),"A1")
+
+    def testParensAroundCondition(self):
+        """ Parens around a condition should be accepted """
+        sheet = self.doc.addObject('Spreadsheet::Sheet','Spreadsheet')
+
+        sheet.set('A1', '=(1 == 1) ? 1 : 0')
+        self.doc.recompute()
+        self.assertEqual(sheet.getContents('A1'), '=1 == 1 ? 1 : 0')
+        self.assertEqual(sheet.A1, 1)
 
     def tearDown(self):
         #closing doc

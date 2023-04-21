@@ -21,7 +21,7 @@
 """Provides support for importing and exporting SVG files.
 
 It enables importing/exporting objects directly to/from the 3D document
-but doesn't handle the SVG output from the Drawing and TechDraw modules.
+but doesn't handle the SVG output from the TechDraw module.
 
 Currently it only reads the following entities:
 * paths, lines, circular arcs, rects, circles, ellipses, polygons, polylines.
@@ -1629,32 +1629,6 @@ class svgHandler(xml.sax.ContentHandler):
         return m
     # getMatrix
 # class svgHandler
-
-
-def decodeName(name):
-    """Decode encoded name.
-
-    Parameters
-    ----------
-    name : str
-        The string to decode.
-
-    Returns
-    -------
-    tuple
-    (string)
-        A tuple containing the decoded `name` in 'utf8', otherwise in 'latin1'.
-        If it fails it returns the original `name`.
-    """
-    try:
-        decodedName = (name.decode("utf8"))
-    except UnicodeDecodeError:
-        try:
-            decodedName = (name.decode("latin1"))
-        except UnicodeDecodeError:
-            _err("SVG error: couldn't determine character encoding")
-            decodedName = name
-    return decodedName
 
 
 def getContents(filename, tag, stringmode=False):

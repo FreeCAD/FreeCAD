@@ -56,8 +56,11 @@ SketcherValidation::SketcherValidation(Sketcher::SketchObject* Obj, QWidget* par
 : QWidget(parent), ui(new Ui_TaskSketcherValidation()), sketch(Obj), sketchAnalyser(Obj), coincidenceRoot(nullptr)
 {
     ui->setupUi(this);
+    setupConnections();
+
     ui->fixButton->setEnabled(false);
     ui->fixConstraint->setEnabled(false);
+    ui->fixDegenerated->setEnabled(false);
     ui->swapReversed->setEnabled(false);
     ui->checkBoxIgnoreConstruction->setEnabled(true);
     double tolerances[8] = {
@@ -86,6 +89,34 @@ SketcherValidation::~SketcherValidation()
     hidePoints();
 }
 
+void SketcherValidation::setupConnections()
+{
+    connect(ui->findButton, &QPushButton::clicked,
+            this, &SketcherValidation::onFindButtonClicked);
+    connect(ui->fixButton, &QPushButton::clicked,
+            this, &SketcherValidation::onFixButtonClicked);
+    connect(ui->highlightButton, &QPushButton::clicked,
+            this, &SketcherValidation::onHighlightButtonClicked);
+    connect(ui->findConstraint, &QPushButton::clicked,
+            this, &SketcherValidation::onFindConstraintClicked);
+    connect(ui->fixConstraint, &QPushButton::clicked,
+            this, &SketcherValidation::onFixConstraintClicked);
+    connect(ui->findReversed, &QPushButton::clicked,
+            this, &SketcherValidation::onFindReversedClicked);
+    connect(ui->swapReversed, &QPushButton::clicked,
+            this, &SketcherValidation::onSwapReversedClicked);
+    connect(ui->orientLockEnable, &QPushButton::clicked,
+            this, &SketcherValidation::onOrientLockEnableClicked);
+    connect(ui->orientLockDisable, &QPushButton::clicked,
+            this, &SketcherValidation::onOrientLockDisableClicked);
+    connect(ui->delConstrExtr, &QPushButton::clicked,
+            this, &SketcherValidation::onDelConstrExtrClicked);
+    connect(ui->findDegenerated, &QPushButton::clicked,
+            this, &SketcherValidation::onFindDegeneratedClicked);
+    connect(ui->fixDegenerated, &QPushButton::clicked,
+            this, &SketcherValidation::onFixDegeneratedClicked);
+}
+
 void SketcherValidation::changeEvent(QEvent *e)
 {
     if (e->type() == QEvent::LanguageChange) {
@@ -94,7 +125,7 @@ void SketcherValidation::changeEvent(QEvent *e)
     QWidget::changeEvent(e);
 }
 
-void SketcherValidation::on_findButton_clicked()
+void SketcherValidation::onFindButtonClicked()
 {
     if (sketch.expired())
         return;
@@ -140,7 +171,7 @@ void SketcherValidation::on_findButton_clicked()
     }
 }
 
-void SketcherValidation::on_fixButton_clicked()
+void SketcherValidation::onFixButtonClicked()
 {
     if (sketch.expired())
         return;
@@ -160,7 +191,7 @@ void SketcherValidation::on_fixButton_clicked()
     doc->recompute();
 }
 
-void SketcherValidation::on_highlightButton_clicked()
+void SketcherValidation::onHighlightButtonClicked()
 {
     if (sketch.expired())
         return;
@@ -174,7 +205,7 @@ void SketcherValidation::on_highlightButton_clicked()
         showPoints(points);
 }
 
-void SketcherValidation::on_findConstraint_clicked()
+void SketcherValidation::onFindConstraintClicked()
 {
     if (sketch.expired())
         return;
@@ -191,7 +222,7 @@ void SketcherValidation::on_findConstraint_clicked()
     }
 }
 
-void SketcherValidation::on_fixConstraint_clicked()
+void SketcherValidation::onFixConstraintClicked()
 {
     if (sketch.expired())
         return;
@@ -200,7 +231,7 @@ void SketcherValidation::on_fixConstraint_clicked()
     ui->fixConstraint->setEnabled(false);
 }
 
-void SketcherValidation::on_findReversed_clicked()
+void SketcherValidation::onFindReversedClicked()
 {
     if (sketch.expired())
         return;
@@ -246,7 +277,7 @@ void SketcherValidation::on_findReversed_clicked()
     }
 }
 
-void SketcherValidation::on_swapReversed_clicked()
+void SketcherValidation::onSwapReversedClicked()
 {
     if (sketch.expired())
         return;
@@ -263,7 +294,7 @@ void SketcherValidation::on_swapReversed_clicked()
     doc->commitTransaction();
 }
 
-void SketcherValidation::on_orientLockEnable_clicked()
+void SketcherValidation::onOrientLockEnableClicked()
 {
     if (sketch.expired())
         return;
@@ -280,7 +311,7 @@ void SketcherValidation::on_orientLockEnable_clicked()
     doc->commitTransaction();
 }
 
-void SketcherValidation::on_orientLockDisable_clicked()
+void SketcherValidation::onOrientLockDisableClicked()
 {
     if (sketch.expired())
         return;
@@ -298,7 +329,7 @@ void SketcherValidation::on_orientLockDisable_clicked()
     doc->commitTransaction();
 }
 
-void SketcherValidation::on_delConstrExtr_clicked()
+void SketcherValidation::onDelConstrExtrClicked()
 {
     if (sketch.expired())
         return;
@@ -374,7 +405,7 @@ void SketcherValidation::hidePoints()
     }
 }
 
-void SketcherValidation::on_findDegenerated_clicked()
+void SketcherValidation::onFindDegeneratedClicked()
 {
     if (sketch.expired())
         return;
@@ -394,7 +425,7 @@ void SketcherValidation::on_findDegenerated_clicked()
     }
 }
 
-void SketcherValidation::on_fixDegenerated_clicked()
+void SketcherValidation::onFixDegeneratedClicked()
 {
     if (sketch.expired())
         return;

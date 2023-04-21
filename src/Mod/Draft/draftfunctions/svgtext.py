@@ -165,34 +165,16 @@ def get_text(plane, techdraw,
                                fontname, angle, base, flip)
 
         if len(text) == 1:
-            try:
-                _t = text[0].replace("&", "&amp;").replace("<", "&lt;")
-                svg += _t.replace(">", "&gt;")
-            except Exception:
-                # TODO: trap only specific exception; what is the problem?
-                # Bad UTF8 string specification? This can be removed
-                # once the code is only used with Python 3.
-                _t = text[0].decode("utf8")
-                _t = _t.replace("&", "&amp;").replace("<", "&lt;")
-                svg += _t.replace(">", "&gt;")
+            _t = text[0].replace("&", "&amp;").replace("<", "&lt;")
+            svg += _t.replace(">", "&gt;")
         else:
             for i in range(len(text)):
                 if i == 0:
                     svg += '<tspan>'
                 else:
                     svg += '<tspan x="0" dy="{}">'.format(linespacing)
-
-                try:
-                    _t = text[i].replace("&", "&amp;").replace("<", "&lt;")
-                    svg += _t.replace(">", "&gt;")
-                except Exception:
-                    # TODO: trap only specific exception; what is the problem?
-                    # Bad UTF8 string specification? This can be removed
-                    # once the code is only used with Python 3.
-                    _t = text[i].decode("utf8")
-                    _t = _t.replace("&", "&amp;").replace("<", "&lt;")
-                    svg += _t.replace(">", "&gt;")
-
+                _t = text[i].replace("&", "&amp;").replace("<", "&lt;")
+                svg += _t.replace(">", "&gt;")
                 svg += '</tspan>\n'
         svg += '</text>\n'
     return svg

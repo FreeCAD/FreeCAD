@@ -109,7 +109,8 @@ App::DocumentObjectExecReturn *Chamfer::execute()
     Part::TopoShape TopShape;
     try {
         TopShape = getBaseShape();
-    } catch (Base::Exception& e) {
+    }
+    catch (Base::Exception& e) {
         return new App::DocumentObjectExecReturn(e.what());
     }
 
@@ -130,9 +131,6 @@ App::DocumentObjectExecReturn *Chamfer::execute()
 
     getContinuousEdges(TopShape, SubNames, FaceNames);
 
-    if (SubNames.empty())
-        return new App::DocumentObjectExecReturn("No edges specified");
-
     const int chamferType = ChamferType.getValue();
     const double size = Size.getValue();
     const double size2 = Size2.getValue();
@@ -145,6 +143,13 @@ App::DocumentObjectExecReturn *Chamfer::execute()
     }
 
     this->positionByBaseFeature();
+
+    //If no element is selected, then we use a copy of previous feature.
+    if (SubNames.empty()) {
+        this->Shape.setValue(TopShape);
+        return App::DocumentObject::StdReturn;
+    }
+
     // create an untransformed copy of the basefeature shape
     Part::TopoShape baseShape(TopShape);
     baseShape.setTransform(Base::Matrix4D());

@@ -39,7 +39,7 @@ if FreeCAD.GuiUp:
     import draftguitools.gui_trackers as DraftTrackers
 else:
     # \cond
-    def translate(ctxt,txt, utf8_decode=False):
+    def translate(ctxt,txt):
         return txt
     def QT_TRANSLATE_NOOP(ctxt,txt):
         return txt
@@ -802,7 +802,8 @@ class _Wall(ArchComponent.Component):
         if self.clone(obj):
             return
 
-        import Part, DraftGeomUtils
+        import Part
+        import DraftGeomUtils
         base = None
         pl = obj.Placement
         extdata = self.getExtrusionData(obj)
@@ -1098,7 +1099,8 @@ class _Wall(ArchComponent.Component):
             placement needed to move the face back from the (0,0,0) origin.
         """
 
-        import Part,DraftGeomUtils
+        import Part
+        import DraftGeomUtils
 
         # If ArchComponent.Component.getExtrusionData() can successfully get
         # extrusion data, just use that.
@@ -1744,12 +1746,12 @@ class _ViewProviderWall(ArchComponent.ViewProviderComponent):
 
     def flipDirection(self):
 
-       if hasattr(self,"Object") and self.Object:
-           obj = self.Object
-           if obj.Align == "Left":
+        if hasattr(self,"Object") and self.Object:
+            obj = self.Object
+            if obj.Align == "Left":
                 obj.Align = "Right"
                 FreeCAD.ActiveDocument.recompute()
-           elif obj.Align == "Right":
+            elif obj.Align == "Right":
                 obj.Align = "Left"
                 FreeCAD.ActiveDocument.recompute()
 

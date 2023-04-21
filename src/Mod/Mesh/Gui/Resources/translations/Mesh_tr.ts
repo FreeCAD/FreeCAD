@@ -51,15 +51,13 @@ Sınırlamala Bilgisi...</translation>
     <message>
       <location filename="../../Command.cpp" line="1602"/>
       <source>Regular solid...</source>
-      <translation>Normal katı...
-Düzenli Katı...</translation>
+      <translation>Düzenli katı...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1603"/>
       <location filename="../../Command.cpp" line="1605"/>
       <source>Builds a regular solid</source>
-      <translation>Düzenli bir solid oluşturur
-Düzenli bir katı oluşturma</translation>
+      <translation>Düzenli bir katı oluştur</translation>
     </message>
   </context>
   <context>

@@ -340,7 +340,7 @@ bool DimensionFormatter::isNumericFormat(QString formatSpecifier)
     return false;
 }
 
-//TODO: similiar code here and above
+//TODO: similar code here and above
 QStringList DimensionFormatter::getPrefixSuffixSpec(QString fSpec)
 {
     QStringList result;

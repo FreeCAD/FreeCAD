@@ -22,7 +22,9 @@
 
 #include <iostream>
 #include <iterator>
+
 #include "SubSystem.h"
+
 
 namespace GCS
 {
@@ -56,44 +58,45 @@ void SubSystem::initialize(VEC_pD &params, MAP_pD_pD &reductionmap)
     {
         SET_pD s1(params.begin(), params.end());
         SET_pD s2;
-        for (std::vector<Constraint *>::iterator constr=clist.begin();
-             constr != clist.end(); ++constr) {
-            (*constr)->revertParams(); // ensure that the constraint points to the original parameters
+        for (std::vector<Constraint*>::iterator constr = clist.begin(); constr != clist.end();
+             ++constr) {
+            (*constr)
+                ->revertParams();// ensure that the constraint points to the original parameters
             VEC_pD constr_params = (*constr)->params();
             s2.insert(constr_params.begin(), constr_params.end());
         }
-        std::set_intersection(s1.begin(), s1.end(), s2.begin(), s2.end(),
-                              std::back_inserter(tmpplist) );
+        std::set_intersection(
+            s1.begin(), s1.end(), s2.begin(), s2.end(), std::back_inserter(tmpplist));
     }
 
     plist.clear();
     MAP_pD_I rindex;
     if (!reductionmap.empty()) {
-        int i=0;
+        int i = 0;
         MAP_pD_I pindex;
-        for (VEC_pD::const_iterator itt=tmpplist.begin();
-             itt != tmpplist.end(); ++itt) {
+        for (VEC_pD::const_iterator itt = tmpplist.begin(); itt != tmpplist.end(); ++itt) {
             MAP_pD_pD::const_iterator itr = reductionmap.find(*itt);
             if (itr != reductionmap.end()) {
                 MAP_pD_I::const_iterator itp = pindex.find(itr->second);
-                if (itp == pindex.end()) { // the reduction target is not in plist yet, so add it now
+                if (itp == pindex.end()) {// the reduction target is not in plist yet, so add it now
                     plist.push_back(itr->second);
                     rindex[itr->first] = i;
                     pindex[itr->second] = i;
                     i++;
                 }
-                else // the reduction target is already in plist, just inform rindex
+                else// the reduction target is already in plist, just inform rindex
                     rindex[itr->first] = itp->second;
             }
-            else if (pindex.find(*itt) == pindex.end()) { // not in plist yet, so add it now
+            else if (pindex.find(*itt) == pindex.end()) {// not in plist yet, so add it now
                 plist.push_back(*itt);
                 pindex[*itt] = i;
                 i++;
             }
         }
     }
-    else
+    else {
         plist = tmpplist;
+    }
 
     psize = static_cast<int>(plist.size());
     pvals.resize(psize);
@@ -329,9 +332,8 @@ void SubSystem::applySolution()
         *(it->first) = *(it->second);
 }
 
-void SubSystem::analyse(Eigen::MatrixXd & /*J*/, Eigen::MatrixXd & /*ker*/, Eigen::MatrixXd & /*img*/)
-{
-}
+void SubSystem::analyse(Eigen::MatrixXd& /*J*/, Eigen::MatrixXd& /*ker*/, Eigen::MatrixXd& /*img*/)
+{}
 
 void SubSystem::report()
 {

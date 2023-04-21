@@ -153,7 +153,7 @@ inline void Gui::Notify(TNotifier && notifier, TCaption && caption, TMessage && 
 
         if constexpr( type == Base::LogStyle::TranslatedNotification) {
             // trailing newline is necessary as this may be shown too in a console requiring them (depending on the configuration).
-            auto msg = message.append(QStringLiteral("\n")); // QString
+            auto msg = QStringLiteral("%1. %2\n").arg(caption).arg(message); // QString
 
             if constexpr( std::is_base_of_v<App::DocumentObject, std::remove_pointer_t<typename std::decay<TNotifier>::type>> ) {
                 Base::Console().Send<type>(notifier->getFullLabel(), msg.toUtf8());

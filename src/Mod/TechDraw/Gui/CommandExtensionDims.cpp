@@ -75,7 +75,6 @@ namespace TechDrawGui {
     //internal helper functions
     void _selectDimensionAttributes(Gui::Command* cmd);
     std::vector<TechDraw::DrawViewDimension*>_getDimensions(std::vector<Gui::SelectionObject> selection, std::string needDimType);
-    Base::Vector3d _getTrianglePoint(Base::Vector3d p1, Base::Vector3d d, Base::Vector3d p2);
     std::vector<dimVertex> _getVertexInfo(TechDraw::DrawViewPart* objFeat,
         std::vector<std::string> subNames);
     TechDraw::DrawViewDimension* _createLinDimension(Gui::Command* cmd,
@@ -698,7 +697,7 @@ void execPosObliqueChainDimension(Gui::Command* cmd) {
         float xDim = dim->X.getValue();
         float yDim = dim->Y.getValue();
         Base::Vector3d pDim(xDim, yDim, 0.0);
-        Base::Vector3d p3 = _getTrianglePoint(pMaster, dirMaster, pDim);
+        Base::Vector3d p3 = DrawUtil::getTrianglePoint(pMaster, dirMaster, pDim);
         dim->X.setValue(p3.x);
         dim->Y.setValue(p3.y);
     }
@@ -1014,7 +1013,7 @@ void execCascadeObliqueDimension(Gui::Command* cmd) {
     Base::Vector3d dirMaster = pp.second() - pp.first();
     dirMaster.y = -dirMaster.y;
     Base::Vector3d origin(0.0, 0.0, 0.0);
-    Base::Vector3d ipDelta = _getTrianglePoint(pMaster, dirMaster, origin);
+    Base::Vector3d ipDelta = DrawUtil::getTrianglePoint(pMaster, dirMaster, origin);
     float dimDistance = activeDimAttributes.getCascadeSpacing();
     Base::Vector3d delta = ipDelta.Normalize() * dimDistance;
     int i = 0;
@@ -1022,7 +1021,7 @@ void execCascadeObliqueDimension(Gui::Command* cmd) {
         float xDim = dim->X.getValue();
         float yDim = dim->Y.getValue();
         Base::Vector3d pDim(xDim, yDim, 0.0);
-        Base::Vector3d p3 = _getTrianglePoint(pMaster, dirMaster, pDim);
+        Base::Vector3d p3 = DrawUtil::getTrianglePoint(pMaster, dirMaster, pDim);
         p3 = p3 + delta * i;
         dim->X.setValue(p3.x);
         dim->Y.setValue(p3.y);
@@ -1331,12 +1330,12 @@ void execCreateObliqueChainDimension(Gui::Command* cmd) {
         Base::Vector3d pMaster = allVertexes[0].point;
         Base::Vector3d dirMaster = pMaster - allVertexes[1].point;
         Base::Vector3d origin(0.0, 0.0, 0.0);
-        Base::Vector3d delta = _getTrianglePoint(pMaster, dirMaster, origin);
+        Base::Vector3d delta = DrawUtil::getTrianglePoint(pMaster, dirMaster, origin);
         float dimDistance = activeDimAttributes.getCascadeSpacing();
         delta = delta.Normalize() * dimDistance;
         double scale = objFeat->getScale();
         for (dimVertex oldVertex : allVertexes) {
-            Base::Vector3d nextPoint = _getTrianglePoint(pMaster, dirMaster, oldVertex.point);
+            Base::Vector3d nextPoint = DrawUtil::getTrianglePoint(pMaster, dirMaster, oldVertex.point);
             nextPoint.y = -nextPoint.y;
             oldVertex.point.y = -oldVertex.point.y;
             if ((oldVertex.point - nextPoint).Length() > 0.01) {
@@ -1680,12 +1679,12 @@ void execCreateObliqueCoordDimension(Gui::Command* cmd) {
         Base::Vector3d pMaster = allVertexes[0].point;
         Base::Vector3d dirMaster = pMaster - allVertexes[1].point;
         Base::Vector3d origin(0.0, 0.0, 0.0);
-        Base::Vector3d delta = _getTrianglePoint(pMaster, dirMaster, origin);
+        Base::Vector3d delta = DrawUtil::getTrianglePoint(pMaster, dirMaster, origin);
         float dimDistance = activeDimAttributes.getCascadeSpacing();
         delta = delta.Normalize() * dimDistance;
         double scale = objFeat->getScale();
         for (dimVertex oldVertex : allVertexes) {
-            Base::Vector3d nextPoint = _getTrianglePoint(pMaster, dirMaster, oldVertex.point);
+            Base::Vector3d nextPoint = DrawUtil::getTrianglePoint(pMaster, dirMaster, oldVertex.point);
             nextPoint.y = -nextPoint.y;
             oldVertex.point.y = -oldVertex.point.y;
             if ((oldVertex.point - nextPoint).Length() > 0.01) {
@@ -2317,20 +2316,6 @@ namespace TechDrawGui {
             }
         }
         return vertexes;
-    }
-
-    Base::Vector3d _getTrianglePoint(Base::Vector3d p1, Base::Vector3d dir, Base::Vector3d p2) {
-        // get third point of a perpendicular triangle
-        // p1, p2 ...vertexes of hypothenusis, dir ...direction of one kathete, p3 ...3rd vertex
-        float a = -dir.y;
-        float b = dir.x;
-        float c1 = p1.x * a + p1.y * b;
-        float c2 = -p2.x * b + p2.y * a;
-        float ab = a * a + b * b;
-        float x = (c1 * a - c2 * b) / ab;
-        float y = (c2 * a + c1 * b) / ab;
-        Base::Vector3d p3(x, y, 0.0);
-        return p3;
     }
 
     std::vector<TechDraw::DrawViewDimension*>_getDimensions(std::vector<Gui::SelectionObject> selection, std::string needDimType) {

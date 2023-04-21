@@ -149,6 +149,43 @@ def InitApplications():
             Log('Init:      Initializing ' + Dir + '(InitGui.py not found)... ignore\n')
         return False
 
+    def processMetadataFile(Dir, MetadataFile):
+        meta = FreeCAD.Metadata(MetadataFile)
+        if not meta.supportsCurrentFreeCAD():
+            return None
+        content = meta.Content
+        if "workbench" in content:
+            FreeCAD.Gui.addIconPath(Dir)
+            workbenches = content["workbench"]
+            for workbench_metadata in workbenches:
+                if not workbench_metadata.supportsCurrentFreeCAD():
+                    return None
+                subdirectory = workbench_metadata.Name\
+                    if not workbench_metadata.Subdirectory\
+                    else workbench_metadata.Subdirectory
+                subdirectory = subdirectory.replace("/",os.path.sep)
+                subdirectory = os.path.join(Dir, subdirectory)
+                ran_init = RunInitGuiPy(subdirectory)
+
+                if ran_init:
+                    # Try to generate a new icon from the metadata-specified information
+                    classname = workbench_metadata.Classname
+                    if classname:
+                        try:
+                            wb_handle = FreeCAD.Gui.getWorkbench(classname)
+                        except Exception:
+                            Log(f"Failed to get handle to {classname} -- no icon\
+                                can be generated,\n check classname in package.xml\n")
+                        else:
+                            GeneratePackageIcon(dir, subdirectory, workbench_metadata,
+                                                wb_handle)
+
+    def tryProcessMetadataFile(Dir, MetadataFile):
+        try:
+            processMetadataFile(Dir, MetadataFile)
+        except Exception as exc:
+            Err(str(exc))
+
     for Dir in ModDirs:
         if (Dir != '') & (Dir != 'CVS') & (Dir != '__init__.py'):
             stopFile = os.path.join(Dir, "ADDON_DISABLED")
@@ -157,37 +194,7 @@ def InitApplications():
                 continue
             MetadataFile = os.path.join(Dir, "package.xml")
             if os.path.exists(MetadataFile):
-                meta = FreeCAD.Metadata(MetadataFile)
-                if not meta.supportsCurrentFreeCAD():
-                    continue
-                content = meta.Content
-                if "workbench" in content:
-                    FreeCAD.Gui.addIconPath(Dir)
-                    workbenches = content["workbench"]
-                    for workbench_metadata in workbenches:
-                        if not workbench_metadata.supportsCurrentFreeCAD():
-                            continue
-                        subdirectory = workbench_metadata.Name\
-                            if not workbench_metadata.Subdirectory\
-                            else workbench_metadata.Subdirectory
-                        subdirectory = subdirectory.replace("/",os.path.sep)
-                        subdirectory = os.path.join(Dir, subdirectory)
-                        ran_init = RunInitGuiPy(subdirectory)
-
-                        if ran_init:
-                            # Try to generate a new icon from the metadata-specified information
-                            classname = workbench_metadata.Classname
-                            if classname:
-                                try:
-                                    wb_handle = FreeCAD.Gui.getWorkbench(classname)
-                                except Exception:
-                                    Log(f"Failed to get handle to {classname} -- no icon\
-                                        can be generated,\n check classname in package.xml\n")
-                                else:
-                                    GeneratePackageIcon(dir, subdirectory, workbench_metadata,
-                                                        wb_handle)
-                else:
-                    continue # The package content says there are no workbenches here, so just skip
+                tryProcessMetadataFile(Dir, MetadataFile)
             else:
                 RunInitGuiPy(Dir)
     Log("All modules with GUIs using InitGui.py are now initialized\n")

@@ -24,17 +24,27 @@
 #define PLANEGCS_GEO_H
 
 #include <cmath>
+
 #include "Util.h"
+
 
 namespace GCS
 {
     class Point
     {
     public:
-        Point(){x = nullptr; y = nullptr;}
-        Point(double *px, double *py) {x=px; y=py;}
-        double *x;
-        double *y;
+        Point()
+        {
+            x = nullptr;
+            y = nullptr;
+        }
+        Point(double* px, double* py)
+        {
+            x = px;
+            y = py;
+        }
+        double* x;
+        double* y;
     };
 
     using VEC_P = std::vector<Point>;
@@ -52,36 +62,76 @@ namespace GCS
     class DeriVector2
     {
     public:
-        DeriVector2(){x=0; y=0; dx=0; dy=0;}
-        DeriVector2(double x, double y) {this->x = x; this->y = y; this->dx = 0; this->dy = 0;}
-        DeriVector2(double x, double y, double dx, double dy) {this->x = x; this->y = y; this->dx = dx; this->dy = dy;}
-        DeriVector2(const Point &p, const double* derivparam);
+        DeriVector2()
+        {
+            x = 0;
+            y = 0;
+            dx = 0;
+            dy = 0;
+        }
+        DeriVector2(double x, double y)
+        {
+            this->x = x;
+            this->y = y;
+            this->dx = 0;
+            this->dy = 0;
+        }
+        DeriVector2(double x, double y, double dx, double dy)
+        {
+            this->x = x;
+            this->y = y;
+            this->dx = dx;
+            this->dy = dy;
+        }
+        DeriVector2(const Point& p, const double* derivparam);
         double x, dx;
         double y, dy;
 
-        double length() const {return sqrt(x*x + y*y);}
-        double length(double &dlength) const; //returns length and writes length deriv into the dlength argument.
+        double length() const
+        {
+            return sqrt(x * x + y * y);
+        }
+        double length(double& dlength)
+            const;// returns length and writes length deriv into the dlength argument.
 
 
-        //unlike other vectors in FreeCAD, this normalization creates a new vector instead of modifying existing one.
-        DeriVector2 getNormalized() const; //returns zero vector if the original is zero.
-        double scalarProd(const DeriVector2 &v2, double* dprd=nullptr) const;//calculates scalar product of two vectors and returns the result. The derivative of the result is written into argument dprd.
-        DeriVector2 sum(const DeriVector2 &v2) const {//adds two vectors and returns result
-            return DeriVector2(x + v2.x, y + v2.y,
-                               dx + v2.dx, dy + v2.dy);}
-        DeriVector2 subtr(const DeriVector2 &v2) const {//subtracts two vectors and returns result
-            return DeriVector2(x - v2.x, y - v2.y,
-                               dx - v2.dx, dy - v2.dy);}
-        DeriVector2 mult(double val) const {
-            return DeriVector2(x*val, y*val, dx*val, dy*val);}//multiplies the vector by a number. Derivatives are scaled.
-        DeriVector2 multD(double val, double dval) const {//multiply vector by a variable with a derivative.
-            return DeriVector2(x*val, y*val, dx*val+x*dval, dy*val+y*dval);}
-        DeriVector2 divD(double val, double dval) const;//divide vector by a variable with a derivative
-        DeriVector2 rotate90ccw() const {return DeriVector2(-y,x,-dy,dx);}
-        DeriVector2 rotate90cw() const {return DeriVector2(y,-x,dy,-dx);}
-        DeriVector2 linCombi(double m1, const DeriVector2 &v2, double m2) const {//linear combination of two vectors
-            return DeriVector2(x*m1 + v2.x*m2, y*m1 + v2.y*m2,
-                               dx*m1 + v2.dx*m2, dy*m1 + v2.dy*m2);}
+        // unlike other vectors in FreeCAD, this normalization creates a new vector instead of
+        // modifying existing one.
+        DeriVector2 getNormalized() const;// returns zero vector if the original is zero.
+        double scalarProd(const DeriVector2& v2, double* dprd = nullptr)
+            const;// calculates scalar product of two vectors and returns the result. The derivative
+                  // of the result is written into argument dprd.
+        DeriVector2 sum(const DeriVector2& v2) const
+        {// adds two vectors and returns result
+            return DeriVector2(x + v2.x, y + v2.y, dx + v2.dx, dy + v2.dy);
+        }
+        DeriVector2 subtr(const DeriVector2& v2) const
+        {// subtracts two vectors and returns result
+            return DeriVector2(x - v2.x, y - v2.y, dx - v2.dx, dy - v2.dy);
+        }
+        DeriVector2 mult(double val) const
+        {
+            return DeriVector2(x * val, y * val, dx * val, dy * val);
+        }// multiplies the vector by a number. Derivatives are scaled.
+        DeriVector2 multD(double val, double dval) const
+        {// multiply vector by a variable with a derivative.
+            return DeriVector2(x * val, y * val, dx * val + x * dval, dy * val + y * dval);
+        }
+        DeriVector2 divD(double val,
+                         double dval) const;// divide vector by a variable with a derivative
+        DeriVector2 rotate90ccw() const
+        {
+            return DeriVector2(-y, x, -dy, dx);
+        }
+        DeriVector2 rotate90cw() const
+        {
+            return DeriVector2(y, -x, dy, -dx);
+        }
+        DeriVector2 linCombi(double m1, const DeriVector2& v2, double m2) const
+        {// linear combination of two vectors
+            return DeriVector2(
+                x * m1 + v2.x * m2, y * m1 + v2.y * m2, dx * m1 + v2.dx * m2, dy * m1 + v2.dy * m2);
+        }
 
     };
 

@@ -55,15 +55,16 @@ protected:
     void changeEvent(QEvent *e) override;
     void keyPressEvent(QKeyEvent*) override;
 
-private Q_SLOTS:
-    void on_xyPlane_clicked();
-    void on_xzPlane_clicked();
-    void on_yzPlane_clicked();
-    void on_position_valueChanged(double);
-    void on_distance_valueChanged(double);
-    void on_countSections_valueChanged(int);
-    void on_checkBothSides_toggled(bool);
-    void on_sectionsBox_toggled(bool);
+private:
+    void setupConnections();
+    void xyPlaneClicked();
+    void xzPlaneClicked();
+    void yzPlaneClicked();
+    void positionValueChanged(double);
+    void distanceValueChanged(double);
+    void countSectionsValueChanged(int);
+    void checkBothSidesToggled(bool);
+    void sectionsBoxToggled(bool);
 
 private:
     std::vector<double> getPlanes() const;

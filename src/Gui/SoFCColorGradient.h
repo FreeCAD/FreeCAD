@@ -71,7 +71,7 @@ public:
    */
   void customize(SoFCColorBarBase*) override;
   /** Returns the name of the color bar. */
-  const char* getColorBarName() const override { return "Color Gradient"; }
+  const char* getColorBarName() const override;
 
 protected:
   /**

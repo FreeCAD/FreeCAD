@@ -59,7 +59,7 @@ class MaterialEditor:
         self.initialIndex = -1
         self.card_path = card_path
         filePath = os.path.dirname(__file__) + os.sep
-        self.iconPath = (filePath + "Resources" + os.sep + "Icons" + os.sep)
+        self.iconPath = (filePath + "Resources" + os.sep + "icons" + os.sep)
 
         # load the UI file from the same directory as this script
         self.widget = FreeCADGui.PySideUic.loadUi(filePath + "materials-editor.ui")

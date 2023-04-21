@@ -25,7 +25,6 @@ from PySide.QtCore import QT_TRANSLATE_NOOP
 import FreeCAD
 import FreeCADGui
 import Path
-import Path.Base.Util as PathUtil
 import Path.Main.Gui.JobDlg as PathJobDlg
 import Path.Main.Job as PathJob
 import Path.Main.Stock as PathStock
@@ -192,7 +191,7 @@ class CommandJobTemplateExport:
 
         encoded = job.Proxy.setupSheet.encodeTemplateAttributes(attrs)
         # write template
-        with open(PathUtil.toUnicode(path), "w") as fp:
+        with open(str(path), "w") as fp:
             json.dump(encoded, fp, sort_keys=True, indent=2)
 
 

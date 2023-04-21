@@ -89,10 +89,14 @@ def updateInputField(obj, prop, widget, onBeforeChange=None):
                     break
             if exprSet:
                 widget.setReadOnly(True)
-                widget.setStyleSheet("color: gray")
+                widget.setProperty("exprSet", "true")
+                widget.style().unpolish(widget)
+                widget.ensurePolished()
             else:
                 widget.setReadOnly(False)
-                widget.setStyleSheet("color: black")
+                widget.setProperty("exprSet", "false")
+                widget.style().unpolish(widget)
+                widget.ensurePolished()
             widget.update()
 
     if isDiff:
@@ -199,10 +203,14 @@ class QuantitySpinBox(QtCore.QObject):
             self.lastWidgetText = self.widget.text()  # update last widget value
             if expr:
                 self.widget.setReadOnly(True)
-                self.widget.setStyleSheet("color: gray")
+                self.widget.setProperty("exprSet", "true")
+                self.widget.style().unpolish(self.widget)
+                self.widget.ensurePolished()
             else:
                 self.widget.setReadOnly(False)
-                self.widget.setStyleSheet("color: black")
+                self.widget.setProperty("exprSet", "false")
+                self.widget.style().unpolish(self.widget)
+                self.widget.ensurePolished()
 
     def updateProperty(self):
         """updateProperty() ... update the bound property with the value from the spin box"""

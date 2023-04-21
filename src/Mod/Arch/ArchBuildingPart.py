@@ -398,7 +398,8 @@ class BuildingPart(ArchIFC.IfcProduct):
                             if deltar:
                                 #child.Placement.Rotation = child.Placement.Rotation.multiply(deltar) - not enough, child must also move
                                 # use shape methods to obtain a correct placement
-                                import Part,math
+                                import Part
+                                import math
                                 shape = Part.Shape()
                                 shape.Placement = child.Placement
                                 #print("angle before rotation:",shape.Placement.Rotation.Angle)

@@ -22,8 +22,11 @@
 
 #include "PreCompiled.h"
 
+#include <Mod/Sketcher/App/Constraint.h>
+#include "Utils.h"
 #include "Workbench.h"
-
+#include <Gui/Application.h>
+#include <Gui/Document.h>
 
 using namespace SketcherGui;
 
@@ -142,6 +145,54 @@ Gui::ToolBarItem* Workbench::setupCommandBars() const
     return root;
 }
 
+void Workbench::activated()
+{
+    Gui::Document *doc = Gui::Application::Instance->activeDocument();
+    if (isSketchInEdit(doc)) {
+        enterEditMode();
+    }
+}
+
+namespace
+{
+    inline const QStringList editModeToolbarNames()
+    {
+        return QStringList{ QString::fromLatin1("Sketcher Edit Mode"),
+                            QString::fromLatin1("Sketcher geometries"),
+                            QString::fromLatin1("Sketcher constraints"),
+                            QString::fromLatin1("Sketcher tools"),
+                            QString::fromLatin1("Sketcher B-spline tools"),
+                            QString::fromLatin1("Sketcher virtual space") };
+    }
+
+    inline const QStringList nonEditModeToolbarNames()
+    {
+        return QStringList{ QString::fromLatin1("Structure"),
+                            QString::fromLatin1("Sketcher") };
+    }
+}
+
+void Workbench::enterEditMode()
+{
+    /*Modify toolbars dynamically.
+    First save state of toolbars in case user changed visibility of a toolbar but he's not changing the wb.
+    This happens in someone works directly from sketcher, changing from edit mode to not-edit-mode*/
+    Gui::ToolBarManager::getInstance()->saveState();
+
+    Gui::ToolBarManager::getInstance()->setToolbarVisibility(true, editModeToolbarNames());
+    Gui::ToolBarManager::getInstance()->setToolbarVisibility(false, nonEditModeToolbarNames());
+}
+
+void Workbench::leaveEditMode()
+{
+    /*Modify toolbars dynamically.
+    First save state of toolbars in case user changed visibility of a toolbar but he's not changing the wb.
+    This happens in someone works directly from sketcher, changing from edit mode to not-edit-mode*/
+    Gui::ToolBarManager::getInstance()->saveState();
+
+    Gui::ToolBarManager::getInstance()->setToolbarVisibility(false, editModeToolbarNames());
+    Gui::ToolBarManager::getInstance()->setToolbarVisibility(true, nonEditModeToolbarNames());
+}
 
 namespace SketcherGui {
 
@@ -188,7 +239,8 @@ inline void SketcherAddWorkbenchSketchEditModeActions(Gui::ToolBarItem& sketch)
     sketch  << "Sketcher_LeaveSketch"
             << "Sketcher_ViewSketch"
             << "Sketcher_ViewSection"
-            << "Sketcher_Grid";
+            << "Sketcher_Grid"
+            << "Sketcher_Snap";
 }
 
 template <typename T>
@@ -210,7 +262,9 @@ inline void SketcherAddWorkspaceArcs<Gui::MenuItem>(Gui::MenuItem& geom)
             << "Sketcher_CreateArcOfHyperbola"
             << "Sketcher_CreateArcOfParabola"
             << "Sketcher_CreateBSpline"
-            << "Sketcher_CreatePeriodicBSpline";
+            << "Sketcher_CreatePeriodicBSpline"
+            << "Sketcher_CreateBSplineByInterpolation"
+            << "Sketcher_CreatePeriodicBSplineByInterpolation";
 }
 
 template <>

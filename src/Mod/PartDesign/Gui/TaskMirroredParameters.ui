@@ -85,6 +85,14 @@
    </item>
   </layout>
  </widget>
+ <tabstops>
+  <tabstop>buttonAddFeature</tabstop>
+  <tabstop>buttonRemoveFeature</tabstop>
+  <tabstop>listWidgetFeatures</tabstop>
+  <tabstop>comboPlane</tabstop>
+  <tabstop>buttonOK</tabstop>
+  <tabstop>checkBoxUpdateView</tabstop>
+ </tabstops>
  <resources/>
  <connections>
   <connection>

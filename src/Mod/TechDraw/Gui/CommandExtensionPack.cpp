@@ -43,6 +43,7 @@
 #include <Gui/SelectionObject.h>
 #include <Gui/ViewProvider.h>
 #include <Mod/Part/App/Geometry2d.h>
+#include <Mod/TechDraw/App/CenterLine.h>
 #include <Mod/TechDraw/App/Cosmetic.h>
 #include <Mod/TechDraw/App/DrawPage.h>
 #include <Mod/TechDraw/App/DrawProjGroup.h>
@@ -1495,6 +1496,15 @@ void CmdTechDrawExtensionPositionSectionView::activated(int iMsg)
             sectionView->Y.setValue(yPos);
         else if ((direction == "Up") || (direction == "Down"))
             sectionView->X.setValue(xPos);
+        else if (direction == "Aligned")
+        {
+            Base::Vector3d pBase(xPos,yPos,0.0);
+            Base::Vector3d dirView(sectionView->Direction.getValue());
+            Base::Vector3d pSection(sectionView->X.getValue(),sectionView->Y.getValue(),0.0);
+            Base::Vector3d newPos = DrawUtil::getTrianglePoint(pBase, dirView, pSection);
+            sectionView->X.setValue(newPos.x);
+            sectionView->Y.setValue(newPos.y);
+        }
     }
 }
 
@@ -1782,47 +1792,64 @@ void CmdTechDrawExtensionAreaAnnotation::activated(int iMsg)
         return;
     double faceArea(0.0), totalArea(0.0), xCenter(0.0), yCenter(0.0);
     int totalPoints(0);
-    const std::vector<std::string> subNames = selection[0].getSubNames();
-    if (!subNames.empty()) {
-        for (const std::string& name : subNames) {
-            int idx = TechDraw::DrawUtil::getIndexFromName(name);
-            std::vector<TechDraw::BaseGeomPtr> faceEdges = objFeat->getFaceEdgesByIndex(idx);
-            // We filter arcs, circles etc. which are not allowed.
-            for (const TechDraw::BaseGeomPtr& geoPtr : faceEdges)
-                if (geoPtr->getGeomType() != TechDraw::GENERIC)
-                    throw Base::TypeError(
-                        "CmdTechDrawAreaAnnotation - forbidden border element found\n");
-            // We create a list of all points along the boundary of the face.
-            // The edges form a closed polygon, but their start- and endpoints may be interchanged.
-            std::vector<Base::Vector3d> facePoints;
-            TechDraw::GenericPtr firstEdge =
-                std::static_pointer_cast<TechDraw::Generic>(faceEdges[0]);
-            facePoints.push_back(firstEdge->points.at(0));
-            facePoints.push_back(firstEdge->points.at(1));
-            for (long unsigned int n = 1; n < faceEdges.size() - 1; n++) {
-                TechDraw::GenericPtr nextEdge =
-                    std::static_pointer_cast<TechDraw::Generic>(faceEdges[n]);
-                if ((nextEdge->points.at(0) - facePoints.back()).Length() < 0.01)
-                    facePoints.push_back(nextEdge->points.at(1));
-                else
-                    facePoints.push_back(nextEdge->points.at(0));
-            }
-            facePoints.push_back(facePoints.front());
-            // We calculate the area, using triangles. Each having one point at (0/0).
-            faceArea = 0.0;
-            xCenter = xCenter + facePoints[0].x;
-            yCenter = yCenter + facePoints[0].y;
-            for (long unsigned int n = 0; n < facePoints.size() - 1; n++) {
-                faceArea = faceArea + facePoints[n].x * facePoints[n + 1].y
-                    - facePoints[n].y * facePoints[n + 1].x;
-                xCenter = xCenter + facePoints[n + 1].x;
-                yCenter = yCenter + facePoints[n + 1].y;
-            }
-            faceArea = abs(faceArea) / 2.0;
-            totalArea = totalArea + faceArea;
-            totalPoints = totalPoints + facePoints.size();
+
+    // we must have at least 1 face in the selection
+    const std::vector<std::string> subNamesAll = selection[0].getSubNames();
+    std::vector<std::string> subNames;
+    for (auto& name : subNamesAll) {
+        std::string geomType = DrawUtil::getGeomTypeFromName(name);
+        if (geomType == "Face") {
+            subNames.push_back(name);
         }
     }
+
+    if (subNames.empty()) {
+        QMessageBox::warning(Gui::getMainWindow(),
+                             QObject::tr("Incorrect selection"),
+                             QObject::tr("No faces in selection."));
+        return;
+    }
+
+    // we have at least 1 face
+    for (const std::string& name : subNames) {
+        int idx = TechDraw::DrawUtil::getIndexFromName(name);
+        std::vector<TechDraw::BaseGeomPtr> faceEdges = objFeat->getFaceEdgesByIndex(idx);
+        // We filter arcs, circles etc. which are not allowed.
+        for (const TechDraw::BaseGeomPtr& geoPtr : faceEdges)
+            if (geoPtr->getGeomType() != TechDraw::GENERIC)
+                throw Base::TypeError(
+                    "CmdTechDrawAreaAnnotation - forbidden border element found\n");
+        // We create a list of all points along the boundary of the face.
+        // The edges form a closed polygon, but their start- and endpoints may be interchanged.
+        std::vector<Base::Vector3d> facePoints;
+        TechDraw::GenericPtr firstEdge =
+            std::static_pointer_cast<TechDraw::Generic>(faceEdges[0]);
+        facePoints.push_back(firstEdge->points.at(0));
+        facePoints.push_back(firstEdge->points.at(1));
+        for (long unsigned int n = 1; n < faceEdges.size() - 1; n++) {
+            TechDraw::GenericPtr nextEdge =
+                std::static_pointer_cast<TechDraw::Generic>(faceEdges[n]);
+            if ((nextEdge->points.at(0) - facePoints.back()).Length() < 0.01)
+                facePoints.push_back(nextEdge->points.at(1));
+            else
+                facePoints.push_back(nextEdge->points.at(0));
+        }
+        facePoints.push_back(facePoints.front());
+        // We calculate the area, using triangles. Each having one point at (0/0).
+        faceArea = 0.0;
+        xCenter = xCenter + facePoints[0].x;
+        yCenter = yCenter + facePoints[0].y;
+        for (long unsigned int n = 0; n < facePoints.size() - 1; n++) {
+            faceArea = faceArea + facePoints[n].x * facePoints[n + 1].y
+                - facePoints[n].y * facePoints[n + 1].x;
+            xCenter = xCenter + facePoints[n + 1].x;
+            yCenter = yCenter + facePoints[n + 1].y;
+        }
+        faceArea = abs(faceArea) / 2.0;
+        totalArea = totalArea + faceArea;
+        totalPoints = totalPoints + facePoints.size();
+    }
+
     // if area calculation was successful, start the command
     Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Calculate Face Area"));
     // at first we create the balloon

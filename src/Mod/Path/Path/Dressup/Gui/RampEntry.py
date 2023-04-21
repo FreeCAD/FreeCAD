@@ -222,7 +222,7 @@ class ObjectDressup:
 
         self.angle = obj.Angle
         self.method = obj.Method
-        self.wire, self.rapids = Path.Geom.wireForPath(obj.Base.Path)
+        self.wire, self.rapids = Path.Geom.wireForPath(PathUtils.getPathWithPlacement(obj.Base))
         if self.method in ["RampMethod1", "RampMethod2", "RampMethod3"]:
             self.outedges = self.generateRamps()
         else:

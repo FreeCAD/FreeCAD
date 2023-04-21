@@ -329,13 +329,13 @@ int Command::_busy;
 class PendingLine {
 public:
     PendingLine(MacroManager::LineType type, const char *line) {
-        Application::Instance->macroManager()->addLine(type,line,true);
+        Application::Instance->macroManager()->addPendingLine(type, line);
     }
     ~PendingLine() {
         cancel();
     }
     void cancel() {
-        Application::Instance->macroManager()->addLine(MacroManager::Cmt,nullptr,true);
+        Application::Instance->macroManager()->addPendingLine(MacroManager::Cmt, nullptr);
     }
 };
 
@@ -1259,6 +1259,11 @@ PythonCommand::PythonCommand(const char* name, PyObject * pcPyCommand, const cha
             type += int(NoTransaction);
         eType = type;
     }
+
+    auto& rcCmdMgr = Gui::Application::Instance->commandManager();
+
+    connPyCmdInitialized = rcCmdMgr.signalPyCmdInitialized.connect(
+        boost::bind(&PythonCommand::onActionInit, this));
 }
 
 PythonCommand::~PythonCommand()
@@ -1432,6 +1437,25 @@ bool PythonCommand::isChecked() const
     }
 }
 
+void PythonCommand::onActionInit() const
+{
+    try {
+        Base::PyGILStateLocker lock;
+        Py::Object cmd(_pcPyCommand);
+        if (cmd.hasAttr("OnActionInit")) {
+            Py::Callable call(cmd.getAttr("OnActionInit"));
+            Py::Tuple args;
+            Py::Object ret = call.apply(args);
+        }
+    }
+    catch(Py::Exception& e) {
+        Base::PyGILStateLocker lock;
+        e.clear();
+    }
+
+    connPyCmdInitialized.disconnect();
+}
+
 //===========================================================================
 // PythonGroupCommand
 //===========================================================================
@@ -1466,6 +1490,11 @@ PythonGroupCommand::PythonGroupCommand(const char* name, PyObject * pcPyCommand)
             type += int(ForEdit);
         eType = type;
     }
+
+    auto& rcCmdMgr = Gui::Application::Instance->commandManager();
+
+    connPyCmdInitialized = rcCmdMgr.signalPyCmdInitialized.connect(
+        boost::bind(&PythonGroupCommand::onActionInit, this));
 }
 
 PythonGroupCommand::~PythonGroupCommand()
@@ -1730,6 +1759,25 @@ bool PythonGroupCommand::hasDropDownMenu() const
         throw Base::TypeError("PythonGroupCommand::hasDropDownMenu(): Method GetResources() of the Python "
                               "command object contains the key 'DropDownMenu' which is not a boolean");
     }
+}
+
+void PythonGroupCommand::onActionInit() const
+{
+    try {
+        Base::PyGILStateLocker lock;
+        Py::Object cmd(_pcPyCommand);
+        if (cmd.hasAttr("OnActionInit")) {
+            Py::Callable call(cmd.getAttr("OnActionInit"));
+            Py::Tuple args;
+            Py::Object ret = call.apply(args);
+        }
+    }
+    catch(Py::Exception& e) {
+        Base::PyGILStateLocker lock;
+        e.clear();
+    }
+
+    connPyCmdInitialized.disconnect();
 }
 
 //===========================================================================

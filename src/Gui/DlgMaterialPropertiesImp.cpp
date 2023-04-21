@@ -48,6 +48,8 @@ DlgMaterialPropertiesImp::DlgMaterialPropertiesImp(const std::string& mat, QWidg
   , material(mat)
 {
     ui->setupUi(this);
+    setupConnections();
+
     if (material != "ShapeMaterial") {
         ui->textLabel1->hide();
         ui->diffuseColor->hide();
@@ -66,6 +68,20 @@ DlgMaterialPropertiesImp::~DlgMaterialPropertiesImp()
 {
 }
 
+void DlgMaterialPropertiesImp::setupConnections()
+{
+    connect(ui->ambientColor, &ColorButton::changed,
+            this, &DlgMaterialPropertiesImp::onAmbientColorChanged);
+    connect(ui->diffuseColor, &ColorButton::changed,
+            this, &DlgMaterialPropertiesImp::onDiffuseColorChanged);
+    connect(ui->emissiveColor, &ColorButton::clicked,
+            this, &DlgMaterialPropertiesImp::onEmissiveColorChanged);
+    connect(ui->specularColor, &ColorButton::clicked,
+            this, &DlgMaterialPropertiesImp::onSpecularColorChanged);
+    connect(ui->shininess, qOverload<int>(&QSpinBox::valueChanged),
+            this, &DlgMaterialPropertiesImp::onShininessValueChanged);
+}
+
 QColor DlgMaterialPropertiesImp::diffuseColor() const
 {
     return ui->diffuseColor->color();
@@ -74,7 +90,7 @@ QColor DlgMaterialPropertiesImp::diffuseColor() const
 /**
  * Sets the ambient color.
  */
-void DlgMaterialPropertiesImp::on_ambientColor_changed()
+void DlgMaterialPropertiesImp::onAmbientColorChanged()
 {
     QColor col = ui->ambientColor->color();
     float r = (float)col.red() / 255.0f;
@@ -96,7 +112,7 @@ void DlgMaterialPropertiesImp::on_ambientColor_changed()
 /**
  * Sets the diffuse color.
  */
-void DlgMaterialPropertiesImp::on_diffuseColor_changed()
+void DlgMaterialPropertiesImp::onDiffuseColorChanged()
 {
     QColor col = ui->diffuseColor->color();
     float r = (float)col.red() / 255.0f;
@@ -118,7 +134,7 @@ void DlgMaterialPropertiesImp::on_diffuseColor_changed()
 /**
  * Sets the emissive color.
  */
-void DlgMaterialPropertiesImp::on_emissiveColor_changed()
+void DlgMaterialPropertiesImp::onEmissiveColorChanged()
 {
     QColor col = ui->emissiveColor->color();
     float r = (float)col.red() / 255.0f;
@@ -140,7 +156,7 @@ void DlgMaterialPropertiesImp::on_emissiveColor_changed()
 /**
  * Sets the specular color.
  */
-void DlgMaterialPropertiesImp::on_specularColor_changed()
+void DlgMaterialPropertiesImp::onSpecularColorChanged()
 {
     QColor col = ui->specularColor->color();
     float r = (float)col.red() / 255.0f;
@@ -162,7 +178,7 @@ void DlgMaterialPropertiesImp::on_specularColor_changed()
 /**
  * Sets the current shininess.
  */
-void DlgMaterialPropertiesImp::on_shininess_valueChanged(int sh)
+void DlgMaterialPropertiesImp::onShininessValueChanged(int sh)
 {
     float shininess = (float)sh / 100.0f;
     for (std::vector<ViewProvider*>::iterator it = Objects.begin(); it != Objects.end(); ++it) {

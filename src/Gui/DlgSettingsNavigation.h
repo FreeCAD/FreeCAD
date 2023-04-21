@@ -75,8 +75,8 @@ public:
     void getValues(double& q0, double& q1, double& q2, double& q3) const;
 
 
-private Q_SLOTS:
-    void on_currentView_clicked();
+private:
+    void onCurrentViewClicked();
 
 private:
     QDoubleSpinBox* sb0;

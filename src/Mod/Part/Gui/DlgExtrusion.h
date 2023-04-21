@@ -69,20 +69,21 @@ protected:
     void changeEvent(QEvent *e) override;
     void keyPressEvent(QKeyEvent*) override;
 
-private Q_SLOTS:
-    void on_rbDirModeCustom_toggled(bool on);
-    void on_rbDirModeEdge_toggled(bool on);
-    void on_rbDirModeNormal_toggled(bool on);
-    void on_btnSelectEdge_clicked();
-    void on_btnX_clicked();
-    void on_btnY_clicked();
-    void on_btnZ_clicked();
-    void on_chkSymmetric_toggled(bool on);
-    void on_txtLink_textChanged(QString);
+private:
+    void setupConnections();
+    void onDirModeCustomToggled(bool on);
+    void onDirModeEdgeToggled(bool on);
+    void onDirModeNormalToggled(bool on);
+    void onSelectEdgeClicked();
+    void onButtnoXClicked();
+    void onButtonYClicked();
+    void onButtonZClicked();
+    void onCheckSymmetricToggled(bool on);
+    void onTextLinkTextChanged(QString);
 
 private:
     ///updates enabling of controls
-    void on_DirMode_changed();
+    void onDirModeChanged();
     void onSelectionChanged(const Gui::SelectionChanges& msg) override;
     ///returns link to any of selected source shapes. Throws if nothing is selected for extrusion.
     App::DocumentObject& getShapeToExtrude() const;

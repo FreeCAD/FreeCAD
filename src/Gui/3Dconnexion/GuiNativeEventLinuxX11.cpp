@@ -95,7 +95,7 @@ bool Gui::GuiNativeEvent::xcbEventFilter(void *xcb_void, long* result)
 
     spnav_event navEvent;
 
-	const xcb_client_message_event_t* xcb_ev = static_cast<const xcb_client_message_event_t*>(xcb_void);
+    const xcb_client_message_event_t* xcb_ev = static_cast<const xcb_client_message_event_t*>(xcb_void);
     // Qt4 used XEvents in native event filters, but Qt5 changed to XCB.  The
     // SpaceNavigator API only works with XEvent, so we need to construct a
     // temporary XEvent with just enough information for spnav_x11_event()
@@ -200,7 +200,7 @@ bool Gui::GuiNativeEvent::x11EventFilter(XEvent *event)
         through posting an Spaceball event (flooding situation),
         the motion data provided by the incoming event is added to the saved data.
         */
-    	int dx, dy, dz, drx, dry, drz;
+        int dx, dy, dz, drx, dry, drz;
 
         if (nMotionEvents == 0)
         {

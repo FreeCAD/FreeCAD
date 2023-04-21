@@ -155,8 +155,7 @@ Base::Vector3d LandmarkDimension::projectPoint(const Base::Vector3d& pt, DrawVie
     gp_Pnt2d prjPnt;
     projector.Project(gPt, prjPnt);
     Base::Vector3d result(prjPnt.X(), prjPnt.Y(), 0.0);
-    result = DrawUtil::invertY(result);
-    return result;
+    return DrawUtil::invertY(result);
 }
 
 int LandmarkDimension::getRefType() const
@@ -167,14 +166,10 @@ int LandmarkDimension::getRefType() const
 
 DrawViewPart* LandmarkDimension::getViewPart() const
 {
-    DrawViewPart* result = nullptr;
     std::vector<App::DocumentObject*> refs2d = References2D.getValues();
     App::DocumentObject* obj = refs2d.front();
     DrawViewPart* dvp = dynamic_cast<DrawViewPart*>(obj);
-    if (dvp) {
-        result = dvp;
-    }
-    return result;
+    return dvp;
 }
 
 void LandmarkDimension::onDocumentRestored()

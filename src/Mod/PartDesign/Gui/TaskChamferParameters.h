@@ -55,7 +55,7 @@ private Q_SLOTS:
     void onCheckBoxUseAllEdgesToggled(bool checked);
 
 protected:
-    void clearButtons(const selectionModes notThis) override;
+    void setButtons(const selectionModes mode) override;
     bool event(QEvent *e) override;
     void changeEvent(QEvent *e) override;
     void onSelectionChanged(const Gui::SelectionChanges& msg) override;

@@ -23,8 +23,6 @@
 
 import sys
 import FreeCAD
-from FreeCAD import Rotation
-from FreeCAD import Vector
 
 import Fem
 import ObjectsFem
@@ -34,6 +32,7 @@ from BasicShapes import Shapes
 from . import manager
 from .manager import get_meshname
 from .manager import init_doc
+
 
 def get_information():
     return {
@@ -46,6 +45,7 @@ def get_information():
         "equations": ["electromagnetic"]
     }
 
+
 def get_explanation(header=""):
     return header + """
 
@@ -56,6 +56,7 @@ setup()
 Magnetodynamic equation - Elmer solver
 
 """
+
 
 def setup(doc=None, solvertype="elmer"):
 

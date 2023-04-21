@@ -236,7 +236,7 @@
     <message>
       <location filename="../panels/DlgJobTemplateExport.ui" line="144"/>
       <source>Stock</source>
-      <translation type="unfinished">Stock</translation>
+      <translation>Polotovar</translation>
     </message>
     <message>
       <location filename="../panels/DlgJobTemplateExport.ui" line="153"/>
@@ -401,7 +401,7 @@
     <message>
       <location filename="../panels/PropertyCreate.ui" line="89"/>
       <source>ToolTip</source>
-      <translation type="unfinished">ToolTip</translation>
+      <translation>Špička</translation>
     </message>
     <message>
       <location filename="../panels/PropertyCreate.ui" line="117"/>
@@ -579,7 +579,7 @@
     <message>
       <location filename="../panels/DressupPathBoundary.ui" line="60"/>
       <source>Use Existing Solid</source>
-      <translation type="unfinished">Use Existing Solid</translation>
+      <translation>Použít stávající těleso</translation>
     </message>
     <message>
       <location filename="../panels/DressupPathBoundary.ui" line="87"/>
@@ -828,7 +828,7 @@
       <location filename="../panels/PageDepthsEdit.ui" line="39"/>
       <location filename="../panels/SetupGlobal.ui" line="36"/>
       <source>Start Depth</source>
-      <translation type="unfinished">Start Depth</translation>
+      <translation>Počáteční hloubka</translation>
     </message>
     <message>
       <location filename="../panels/PageDepthsEdit.ui" line="46"/>
@@ -846,7 +846,7 @@
       <location filename="../panels/PageDepthsEdit.ui" line="85"/>
       <location filename="../panels/SetupGlobal.ui" line="50"/>
       <source>Final Depth</source>
-      <translation type="unfinished">Final Depth</translation>
+      <translation>Konečná hloubka</translation>
     </message>
     <message>
       <location filename="../panels/PageDepthsEdit.ui" line="92"/>
@@ -884,17 +884,17 @@
     <message>
       <location filename="../panels/PageDiametersEdit.ui" line="20"/>
       <source>Min Diameter</source>
-      <translation type="unfinished">Min Diameter</translation>
+      <translation>Min. průměr</translation>
     </message>
     <message>
       <location filename="../panels/PageDiametersEdit.ui" line="57"/>
       <source>Max Diameter</source>
-      <translation type="unfinished">Max Diameter</translation>
+      <translation>Max. průměr</translation>
     </message>
     <message>
       <location filename="../panels/PageHeightsEdit.ui" line="24"/>
       <source>Safe Height</source>
-      <translation type="unfinished">Safe Height</translation>
+      <translation>Bezpečná výška</translation>
     </message>
     <message>
       <location filename="../panels/PageHeightsEdit.ui" line="31"/>
@@ -999,7 +999,7 @@
     <message>
       <location filename="../panels/PageOpAdaptiveEdit.ui" line="69"/>
       <source>Operation Type</source>
-      <translation type="unfinished">Operation Type</translation>
+      <translation>Typ operace</translation>
     </message>
     <message>
       <location filename="../panels/PageOpAdaptiveEdit.ui" line="76"/>
@@ -1207,12 +1207,12 @@
     <message>
       <location filename="../panels/PageOpDrillingEdit.ui" line="125"/>
       <source>Dwell</source>
-      <translation type="unfinished">Dwell</translation>
+      <translation>Prodleva</translation>
     </message>
     <message>
       <location filename="../panels/PageOpDrillingEdit.ui" line="78"/>
       <source>Time</source>
-      <translation type="unfinished">Time</translation>
+      <translation>Čas</translation>
     </message>
     <message>
       <location filename="../panels/PageOpDrillingEdit.ui" line="85"/>
@@ -1227,17 +1227,17 @@
     <message>
       <location filename="../panels/PageOpDrillingEdit.ui" line="105"/>
       <source>Drill Tip</source>
-      <translation type="unfinished">Drill Tip</translation>
+      <translation>Špička vrtáku</translation>
     </message>
     <message>
       <location filename="../panels/PageOpDrillingEdit.ui" line="110"/>
       <source>2x Drill Tip</source>
-      <translation type="unfinished">2x Drill Tip</translation>
+      <translation>2x špička vrtáku</translation>
     </message>
     <message>
       <location filename="../panels/PageOpDrillingEdit.ui" line="159"/>
       <source>Chip Break</source>
-      <translation type="unfinished">Chip Break</translation>
+      <translation>Lámání třísky</translation>
     </message>
     <message>
       <location filename="../panels/PageOpEngraveEdit.ui" line="63"/>
@@ -1252,7 +1252,7 @@
     <message>
       <location filename="../panels/PageOpHelixEdit.ui" line="63"/>
       <source>Start from</source>
-      <translation type="unfinished">Start from</translation>
+      <translation>Začít od</translation>
     </message>
     <message>
       <location filename="../panels/PageOpHelixEdit.ui" line="70"/>
@@ -1262,12 +1262,12 @@
     <message>
       <location filename="../panels/PageOpHelixEdit.ui" line="74"/>
       <source>Inside</source>
-      <translation type="unfinished">Inside</translation>
+      <translation>Uvnitř</translation>
     </message>
     <message>
       <location filename="../panels/PageOpHelixEdit.ui" line="79"/>
       <source>Outside</source>
-      <translation type="unfinished">Outside</translation>
+      <translation>Vně</translation>
     </message>
     <message>
       <location filename="../panels/PageOpHelixEdit.ui" line="94"/>
@@ -1318,7 +1318,7 @@
     <message>
       <location filename="../panels/PageOpPocketExtEdit.ui" line="78"/>
       <source>Default Length</source>
-      <translation type="unfinished">Default Length</translation>
+      <translation>Výchozí délka</translation>
     </message>
     <message>
       <location filename="../panels/PageOpPocketExtEdit.ui" line="85"/>
@@ -1388,7 +1388,7 @@
     <message>
       <location filename="../panels/PageOpPocketFullEdit.ui" line="110"/>
       <source>Pattern</source>
-      <translation type="unfinished">Pattern</translation>
+      <translation>Vzor</translation>
     </message>
     <message>
       <location filename="../panels/PageOpPocketFullEdit.ui" line="117"/>
@@ -1398,7 +1398,7 @@
     <message>
       <location filename="../panels/PageOpPocketFullEdit.ui" line="124"/>
       <source>ZigZag</source>
-      <translation type="unfinished">ZigZag</translation>
+      <translation>Pendlování</translation>
     </message>
     <message>
       <location filename="../panels/PageOpPocketFullEdit.ui" line="134"/>
@@ -1604,7 +1604,7 @@
       <location filename="../panels/PageOpSlotEdit.ui" line="97"/>
       <location filename="../panels/PageOpSlotEdit.ui" line="169"/>
       <source>Center of Mass</source>
-      <translation type="unfinished">Center of Mass</translation>
+      <translation>Těžiště</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSlotEdit.ui" line="102"/>
@@ -1616,13 +1616,13 @@
       <location filename="../panels/PageOpSlotEdit.ui" line="107"/>
       <location filename="../panels/PageOpSlotEdit.ui" line="179"/>
       <source>Lowest Point</source>
-      <translation type="unfinished">Lowest Point</translation>
+      <translation>Nejnižší bod</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSlotEdit.ui" line="112"/>
       <location filename="../panels/PageOpSlotEdit.ui" line="184"/>
       <source>Highest Point</source>
-      <translation type="unfinished">Highest Point</translation>
+      <translation>Nejvyšší bod</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSlotEdit.ui" line="117"/>
@@ -1717,7 +1717,7 @@
     <message>
       <location filename="../panels/PageOpSlotEdit.ui" line="374"/>
       <source>Path Orientation</source>
-      <translation type="unfinished">Path Orientation</translation>
+      <translation>Orientace dráhy</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSlotEdit.ui" line="381"/>
@@ -1748,7 +1748,7 @@
       <location filename="../panels/PageOpSurfaceEdit.ui" line="63"/>
       <location filename="../panels/PageOpWaterlineEdit.ui" line="79"/>
       <source>BoundBox</source>
-      <translation type="unfinished">BoundBox</translation>
+      <translation>Hraniční kvádr</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="70"/>
@@ -1922,7 +1922,7 @@
     <message>
       <location filename="../panels/SetupGlobal.ui" line="87"/>
       <source>Expression</source>
-      <translation type="unfinished">Expression</translation>
+      <translation>Výraz</translation>
     </message>
     <message>
       <location filename="../panels/SetupGlobal.ui" line="97"/>
@@ -1932,7 +1932,7 @@
     <message>
       <location filename="../panels/SetupGlobal.ui" line="107"/>
       <source>Clearance</source>
-      <translation type="unfinished">Clearance</translation>
+      <translation>Uvolnění</translation>
     </message>
     <message>
       <location filename="../panels/SetupGlobal.ui" line="114"/>
@@ -1947,7 +1947,7 @@
     <message>
       <location filename="../panels/SetupGlobal.ui" line="128"/>
       <source>Safe</source>
-      <translation type="unfinished">Safe</translation>
+      <translation>Bezpečný</translation>
     </message>
     <message>
       <location filename="../panels/SetupGlobal.ui" line="135"/>
@@ -1962,7 +1962,7 @@
     <message>
       <location filename="../panels/SetupGlobal.ui" line="172"/>
       <source>Rapid Speeds</source>
-      <translation type="unfinished">Rapid Speeds</translation>
+      <translation>Rychloposuvy</translation>
     </message>
     <message>
       <location filename="../panels/SetupGlobal.ui" line="178"/>
@@ -1987,7 +1987,7 @@
     <message>
       <location filename="../panels/PageOpThreadMillingEdit.ui" line="32"/>
       <source>Thread</source>
-      <translation type="unfinished">Thread</translation>
+      <translation>Závit</translation>
     </message>
     <message>
       <location filename="../panels/PageOpThreadMillingEdit.ui" line="38"/>
@@ -2008,7 +2008,7 @@
     <message>
       <location filename="../panels/PageOpThreadMillingEdit.ui" line="85"/>
       <source>Major Diameter</source>
-      <translation type="unfinished">Major Diameter</translation>
+      <translation>Hlavní průměr</translation>
     </message>
     <message>
       <location filename="../panels/PageOpThreadMillingEdit.ui" line="99"/>
@@ -2034,7 +2034,7 @@
     <message>
       <location filename="../panels/PageOpThreadMillingEdit.ui" line="150"/>
       <source>Passes</source>
-      <translation type="unfinished">Passes</translation>
+      <translation>Průchodů</translation>
     </message>
     <message>
       <location filename="../panels/PageOpThreadMillingEdit.ui" line="177"/>
@@ -2070,7 +2070,7 @@
     <message>
       <location filename="../panels/PageOpWaterlineEdit.ui" line="59"/>
       <source>Algorithm</source>
-      <translation type="unfinished">Algorithm</translation>
+      <translation>Algoritmus</translation>
     </message>
     <message>
       <location filename="../panels/PageOpWaterlineEdit.ui" line="66"/>
@@ -2110,7 +2110,7 @@
     <message>
       <location filename="../panels/PropertyBag.ui" line="55"/>
       <source>Modify...</source>
-      <translation type="unfinished">Modify...</translation>
+      <translation>Upravit...</translation>
     </message>
     <message>
       <location filename="../panels/PropertyBag.ui" line="62"/>
@@ -2146,7 +2146,7 @@
       <location filename="../panels/ToolEditor.ui" line="87"/>
       <location filename="../panels/ToolEditor.ui" line="184"/>
       <source>Tool Parameter</source>
-      <translation type="unfinished">Tool Parameter</translation>
+      <translation>Parametr nástroje</translation>
     </message>
     <message>
       <location filename="../panels/ToolEditor.ui" line="103"/>
@@ -2156,27 +2156,27 @@
     <message>
       <location filename="../panels/ToolEditor.ui" line="110"/>
       <source>Corner Radius</source>
-      <translation type="unfinished">Corner Radius</translation>
+      <translation>Poloměr rohu</translation>
     </message>
     <message>
       <location filename="../panels/ToolEditor.ui" line="117"/>
       <source>Point/Tip Angle</source>
-      <translation type="unfinished">Point/Tip Angle</translation>
+      <translation>Úhel bodu/špičky</translation>
     </message>
     <message>
       <location filename="../panels/ToolEditor.ui" line="124"/>
       <source>Cutting Edge Height</source>
-      <translation type="unfinished">Cutting Edge Height</translation>
+      <translation>Výška břitu</translation>
     </message>
     <message>
       <location filename="../panels/ToolEditor.ui" line="196"/>
       <source>D = </source>
-      <translation type="unfinished">D = </translation>
+      <translation>D = </translation>
     </message>
     <message>
       <location filename="../panels/ToolEditor.ui" line="213"/>
       <source>d =</source>
-      <translation type="unfinished">d =</translation>
+      <translation>d =</translation>
     </message>
     <message>
       <location filename="../panels/ToolEditor.ui" line="230"/>
@@ -2345,7 +2345,7 @@
     <message>
       <location filename="../preferences/PathJob.ui" line="221"/>
       <source>Open File Dialog</source>
-      <translation type="unfinished">Open File Dialog</translation>
+      <translation>Otevřít dialog souboru</translation>
     </message>
     <message>
       <location filename="../preferences/PathJob.ui" line="226"/>
@@ -2375,7 +2375,7 @@
     <message>
       <location filename="../preferences/PathJob.ui" line="275"/>
       <source>Default Post Processor</source>
-      <translation type="unfinished">Default Post Processor</translation>
+      <translation>Výchozí postprocesor</translation>
     </message>
     <message>
       <location filename="../preferences/PathJob.ui" line="282"/>
@@ -2385,7 +2385,7 @@
     <message>
       <location filename="../preferences/PathJob.ui" line="285"/>
       <source>DefaultPostProcessor</source>
-      <translation type="unfinished">DefaultPostProcessor</translation>
+      <translation>VýchozíPostprocesor</translation>
     </message>
     <message>
       <location filename="../preferences/PathJob.ui" line="288"/>
@@ -2405,12 +2405,12 @@
     <message>
       <location filename="../preferences/PathJob.ui" line="340"/>
       <source>Setup</source>
-      <translation type="unfinished">Setup</translation>
+      <translation>Nastavení</translation>
     </message>
     <message>
       <location filename="../preferences/PathJob.ui" line="346"/>
       <source>Stock</source>
-      <translation type="unfinished">Stock</translation>
+      <translation>Polotovar</translation>
     </message>
     <message>
       <location filename="../preferences/PathJob.ui" line="365"/>
@@ -2628,7 +2628,7 @@
     <message>
       <location filename="../../DlgSettingsPathColor.ui" line="416"/>
       <source>Classic</source>
-      <translation type="unfinished">Classic</translation>
+      <translation>Klasický</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsPathColor.ui" line="421"/>
@@ -2638,7 +2638,7 @@
     <message>
       <location filename="../../DlgSettingsPathColor.ui" line="426"/>
       <source>Multi Panel</source>
-      <translation type="unfinished">Multi Panel</translation>
+      <translation>Vícenásobný panel</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsPathColor.ui" line="431"/>
@@ -2785,12 +2785,12 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/DressUpLeadInOutEdit.ui" line="242"/>
       <source>Length / Radius:</source>
-      <translation type="unfinished">Length / Radius:</translation>
+      <translation>Délka / Poloměr:</translation>
     </message>
     <message>
       <location filename="../panels/DressUpLeadInOutEdit.ui" line="269"/>
       <source>Radius / Center:</source>
-      <translation type="unfinished">Radius / Center:</translation>
+      <translation>Poloměr / Střed:</translation>
     </message>
     <message>
       <location filename="../panels/DressUpLeadInOutEdit.ui" line="296"/>
@@ -2800,7 +2800,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/DressUpLeadInOutEdit.ui" line="303"/>
       <source>Rapid Plunge</source>
-      <translation type="unfinished">Rapid Plunge</translation>
+      <translation>Rychloposuv zapouštění</translation>
     </message>
     <message>
       <location filename="../panels/DressUpLeadInOutEdit.ui" line="314"/>
@@ -2810,7 +2810,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/DressUpLeadInOutEdit.ui" line="317"/>
       <source>Include Layers</source>
-      <translation type="unfinished">Include Layers</translation>
+      <translation>Zahrnout vrstvy</translation>
     </message>
     <message>
       <location filename="../panels/DressUpLeadInOutEdit.ui" line="324"/>
@@ -2938,7 +2938,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/DogboneEdit.ui" line="80"/>
       <source>Side</source>
-      <translation type="unfinished">Side</translation>
+      <translation>Strana</translation>
     </message>
     <message>
       <location filename="../panels/DogboneEdit.ui" line="87"/>
@@ -3164,12 +3164,12 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/SurfaceEdit.ui" line="136"/>
       <source>Start Depth</source>
-      <translation type="unfinished">Start Depth</translation>
+      <translation>Počáteční hloubka</translation>
     </message>
     <message>
       <location filename="../panels/SurfaceEdit.ui" line="150"/>
       <source>Final Depth</source>
-      <translation type="unfinished">Final Depth</translation>
+      <translation>Konečná hloubka</translation>
     </message>
     <message>
       <location filename="../panels/SurfaceEdit.ui" line="164"/>
@@ -3189,7 +3189,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/SurfaceEdit.ui" line="214"/>
       <source>Safe Height</source>
-      <translation type="unfinished">Safe Height</translation>
+      <translation>Bezpečná výška</translation>
     </message>
     <message>
       <location filename="../panels/SurfaceEdit.ui" line="228"/>
@@ -3219,7 +3219,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/SurfaceEdit.ui" line="299"/>
       <source>Algorithm</source>
-      <translation type="unfinished">Algorithm</translation>
+      <translation>Algoritmus</translation>
     </message>
     <message>
       <location filename="../panels/SurfaceEdit.ui" line="307"/>
@@ -3411,12 +3411,12 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/ToolBitEditor.ui" line="131"/>
       <source>Point/Tip Angle</source>
-      <translation type="unfinished">Point/Tip Angle</translation>
+      <translation>Úhel bodu/špičky</translation>
     </message>
     <message>
       <location filename="../panels/ToolBitEditor.ui" line="148"/>
       <source>Cutting Edge Height</source>
-      <translation type="unfinished">Cutting Edge Height</translation>
+      <translation>Výška břitu</translation>
     </message>
     <message>
       <location filename="../panels/ToolBitEditor.ui" line="155"/>
@@ -3554,7 +3554,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/PathEdit.ui" line="205"/>
       <source>Order By</source>
-      <translation type="unfinished">Order By</translation>
+      <translation>Seřadit podle</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="224"/>
@@ -3584,7 +3584,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/PathEdit.ui" line="396"/>
       <source>Setup</source>
-      <translation type="unfinished">Setup</translation>
+      <translation>Nastavení</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="414"/>
@@ -3594,7 +3594,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/PathEdit.ui" line="420"/>
       <source>Stock</source>
-      <translation type="unfinished">Stock</translation>
+      <translation>Polotovar</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="441"/>
@@ -3614,7 +3614,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/PathEdit.ui" line="456"/>
       <source>Use Existing Solid</source>
-      <translation type="unfinished">Use Existing Solid</translation>
+      <translation>Použít stávající těleso</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="464"/>
@@ -3660,7 +3660,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/PathEdit.ui" line="612"/>
       <source>Alignment</source>
-      <translation type="unfinished">Alignment</translation>
+      <translation>Zarovnání</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="618"/>
@@ -3751,7 +3751,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/PathEdit.ui" line="993"/>
       <source>Start Depth</source>
-      <translation type="unfinished">Start Depth</translation>
+      <translation>Počáteční hloubka</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="1000"/>
@@ -3761,7 +3761,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/PathEdit.ui" line="1007"/>
       <source>Final Depth</source>
-      <translation type="unfinished">Final Depth</translation>
+      <translation>Konečná hloubka</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="1014"/>
@@ -3786,7 +3786,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/PathEdit.ui" line="1044"/>
       <source>Expression</source>
-      <translation type="unfinished">Expression</translation>
+      <translation>Výraz</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="1054"/>
@@ -3796,7 +3796,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/PathEdit.ui" line="1064"/>
       <source>Clearance</source>
-      <translation type="unfinished">Clearance</translation>
+      <translation>Uvolnění</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="1071"/>
@@ -3811,7 +3811,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/PathEdit.ui" line="1085"/>
       <source>Safe</source>
-      <translation type="unfinished">Safe</translation>
+      <translation>Bezpečný</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="1092"/>
@@ -3883,7 +3883,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/PathEdit.ui" line="1274"/>
       <source>Rapid Speeds</source>
-      <translation type="unfinished">Rapid Speeds</translation>
+      <translation>Rychloposuvy</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="1283"/>

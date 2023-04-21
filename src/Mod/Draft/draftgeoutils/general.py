@@ -149,7 +149,7 @@ def isAligned(edge, axis="x"):
     The axis can be 'x', 'y' or 'z'.
     """
     def is_same(a, b):
-      return round(a, precision()) == round(b, precision())
+        return round(a, precision()) == round(b, precision())
 
     if axis == "x":
         if isinstance(edge, Part.Edge):

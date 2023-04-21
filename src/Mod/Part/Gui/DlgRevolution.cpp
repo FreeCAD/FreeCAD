@@ -100,6 +100,7 @@ DlgRevolution::DlgRevolution(QWidget* parent, Qt::WindowFlags fl)
   , filter(nullptr)
 {
     ui->setupUi(this);
+    setupConnections();
 
     ui->xPos->setRange(-DBL_MAX,DBL_MAX);
     ui->yPos->setRange(-DBL_MAX,DBL_MAX);
@@ -125,7 +126,7 @@ DlgRevolution::DlgRevolution(QWidget* parent, Qt::WindowFlags fl)
     sel.applyFrom(Gui::Selection().getObjectsOfType(App::Link::getClassTypeId()));
     sel.applyFrom(Gui::Selection().getObjectsOfType(App::Part::getClassTypeId()));
 
-    connect(ui->txtAxisLink, &QLineEdit::textChanged, this, &DlgRevolution::on_txtAxisLink_textChanged);
+    connect(ui->txtAxisLink, &QLineEdit::textChanged, this, &DlgRevolution::onAxisLinkTextChanged);
 
     autoSolid();
 }
@@ -137,6 +138,20 @@ DlgRevolution::~DlgRevolution()
 {
     // no need to delete child widgets, Qt does it all for us
     Gui::Selection().rmvSelectionGate();
+}
+
+void DlgRevolution::setupConnections()
+{
+    connect(ui->selectLine, &QPushButton::clicked,
+            this, &DlgRevolution::onSelectLineClicked);
+    connect(ui->btnX, &QPushButton::clicked,
+            this, &DlgRevolution::onButtonXClicked);
+    connect(ui->btnY, &QPushButton::clicked,
+            this, &DlgRevolution::onButtonYClicked);
+    connect(ui->btnZ, &QPushButton::clicked,
+            this, &DlgRevolution::onButtonZClicked);
+    connect(ui->txtAxisLink, &QLineEdit::textChanged,
+            this, &DlgRevolution::onAxisLinkTextChanged);
 }
 
 Base::Vector3d DlgRevolution::getDirection() const
@@ -436,7 +451,7 @@ void DlgRevolution::accept()
     QDialog::accept();
 }
 
-void DlgRevolution::on_selectLine_clicked()
+void DlgRevolution::onSelectLineClicked()
 {
     if (!filter) {
         filter = new EdgeSelection();
@@ -449,28 +464,28 @@ void DlgRevolution::on_selectLine_clicked()
     }
 }
 
-void DlgRevolution::on_btnX_clicked()
+void DlgRevolution::onButtonXClicked()
 {
     setDirection(Base::Vector3d(1,0,0));
     if (!ui->xDir->isEnabled())
         ui->txtAxisLink->clear();
 }
 
-void DlgRevolution::on_btnY_clicked()
+void DlgRevolution::onButtonYClicked()
 {
     setDirection(Base::Vector3d(0,1,0));
     if (!ui->xDir->isEnabled())
         ui->txtAxisLink->clear();
 }
 
-void DlgRevolution::on_btnZ_clicked()
+void DlgRevolution::onButtonZClicked()
 {
     setDirection(Base::Vector3d(0,0,1));
     if (!ui->xDir->isEnabled())
         ui->txtAxisLink->clear();
 }
 
-void DlgRevolution::on_txtAxisLink_textChanged(QString)
+void DlgRevolution::onAxisLinkTextChanged(QString)
 {
     bool en = true;
     try{

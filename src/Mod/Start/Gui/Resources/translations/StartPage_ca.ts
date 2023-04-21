@@ -232,12 +232,12 @@
     <message>
       <location filename="../../Command.cpp" line="46"/>
       <source>Start Page</source>
-      <translation>Pàgina Inicial</translation>
+      <translation>Pàgina d'inici</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="47"/>
       <source>Displays the start page in a browser view</source>
-      <translation>Obre la pàgina inicial en una vista del navegador</translation>
+      <translation>Obre la pàgina d'inici en una vista del navegador</translation>
     </message>
   </context>
   <context>
@@ -245,7 +245,7 @@
     <message>
       <location filename="../../DlgStartPreferences.ui" line="14"/>
       <source>Start page options</source>
-      <translation>Opcions de pàgina d'inici</translation>
+      <translation>Opcions de la pàgina d'inici</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="20"/>

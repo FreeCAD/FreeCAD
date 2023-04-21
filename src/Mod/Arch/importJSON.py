@@ -21,8 +21,12 @@
 
 """FreeCAD JSON exporter"""
 
-import FreeCAD, Mesh, Draft, Part
 import json
+
+import FreeCAD
+import Draft
+import Mesh
+import Part
 
 if FreeCAD.GuiUp:
     import FreeCADGui

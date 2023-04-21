@@ -86,10 +86,12 @@ private:
     static inline void setAxisPickStyle(ViewProviderSketch &vp, bool on);
     static inline void moveCursorToSketchPoint(ViewProviderSketch &vp, Base::Vector2d point);
     static inline void preselectAtPoint(ViewProviderSketch &vp, Base::Vector2d point);
+    static inline void setAngleSnapping(ViewProviderSketch &vp, bool enable, Base::Vector2d referencePoint = Base::Vector2d(0., 0.));
 
     static inline int getPreselectPoint(const ViewProviderSketch &vp);
     static inline int getPreselectCurve(const ViewProviderSketch &vp);
     static inline int getPreselectCross(const ViewProviderSketch &vp);
+
 
     friend class DrawSketchHandler;
 };
@@ -202,6 +204,8 @@ protected:
     int getPreselectCross() const;
 
     Sketcher::SketchObject * getSketchObject();
+
+    void setAngleSnapping(bool enable, Base::Vector2d referencePoint = Base::Vector2d(0., 0.));
 
 private:
     void setSvgCursor(const QString &svgName, int x, int y,

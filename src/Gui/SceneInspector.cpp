@@ -135,6 +135,8 @@ DlgInspector::DlgInspector(QWidget* parent, Qt::WindowFlags fl)
   : QDialog(parent, fl), ui(new Ui_SceneInspector())
 {
     ui->setupUi(this);
+    connect(ui->refreshButton, &QPushButton::clicked,
+            this, &DlgInspector::onRefreshButtonClicked);
     setWindowTitle(tr("Scene Inspector"));
 
     auto model = new SceneModel(this);
@@ -208,7 +210,7 @@ void DlgInspector::changeEvent(QEvent *e)
     QDialog::changeEvent(e);
 }
 
-void DlgInspector::on_refreshButton_clicked()
+void DlgInspector::onRefreshButtonClicked()
 {
     Gui::Document* doc = Application::Instance->activeDocument();
     if (doc) {

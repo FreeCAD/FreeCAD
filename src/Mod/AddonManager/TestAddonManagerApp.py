@@ -58,7 +58,7 @@ from AddonManagerTest.app.test_metadata import (
     TestMetadataReaderIntegration as AddonManagerTestMetadataReaderIntegration,
     TestUrlType as AddonManagerTestUrlType,
     TestVersion as AddonManagerTestVersion,
-    TestMetadataAuxiliaryFunctions as AddonManagerTestMetadataAuxiliaryFunctions
+    TestMetadataAuxiliaryFunctions as AddonManagerTestMetadataAuxiliaryFunctions,
 )
 
 
@@ -90,7 +90,7 @@ loaded_gui_tests = [
     AddonManagerTestUrlType,
     AddonManagerTestVersion,
     AddonManagerTestMetadataAuxiliaryFunctions,
-    TestListTerminator  # Needed to prevent the last test from running twice
+    TestListTerminator,  # Needed to prevent the last test from running twice
 ]
 for test in loaded_gui_tests:
     fci.Console.PrintLog(f"Loaded tests from {test.__name__}\n")

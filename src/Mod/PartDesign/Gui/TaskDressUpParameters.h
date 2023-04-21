@@ -25,6 +25,7 @@
 #define GUI_TASKVIEW_TaskDressUpParameters_H
 
 #include <Gui/TaskView/TaskView.h>
+#include <Mod/PartDesign/App/FeatureDressUp.h>
 
 #include "TaskFeatureParameters.h"
 #include "ViewProviderDressUp.h"
@@ -63,26 +64,27 @@ public:
     }
 
 protected Q_SLOTS:
-    void onButtonRefAdd(const bool checked);
-    void onButtonRefRemove(const bool checked);
+    void onButtonRefSel(const bool checked);
     void doubleClicked(QListWidgetItem* item);
     void setSelection(QListWidgetItem* current);
     void itemClickedTimeout();
     virtual void onRefDeleted(void) = 0;
-    void createDeleteAction(QListWidget* parentList, QWidget* parentButton);
+    void createDeleteAction(QListWidget* parentList);
     void createAddAllEdgesAction(QListWidget* parentList);
 
 protected:
-    void exitSelectionMode();
-    bool referenceSelected(const Gui::SelectionChanges& msg);
+    void referenceSelected(const Gui::SelectionChanges& msg, QListWidget* widget);
     bool wasDoubleClicked = false;
     bool KeyEvent(QEvent *e);
     void hideOnError();
     void addAllEdges(QListWidget* listWidget);
+    void deleteRef(QListWidget* listWidget);
+    void updateFeature(PartDesign::DressUp* pcDressUp, const std::vector<std::string>& refs);
 
 protected:
-    enum selectionModes { none, refAdd, refRemove, plane, line };
-    virtual void clearButtons(const selectionModes notThis) = 0;
+    enum selectionModes { none, refSel, plane, line };
+    void setSelectionMode(selectionModes mode);
+    virtual void setButtons(const selectionModes mode) = 0;
     static void removeItemFromListWidget(QListWidget* widget, const char* itemstr);
 
     ViewProviderDressUp* getDressUpView() const
@@ -97,6 +99,9 @@ protected:
     bool allowFaces, allowEdges;
     selectionModes selectionMode;
     int transactionID;
+
+    static const QString btnPreviewStr();
+    static const QString btnSelectStr();
 };
 
 /// simulation dialog for the TaskView

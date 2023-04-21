@@ -75,6 +75,14 @@ class Tessellation : public QWidget
         Gmsh
     };
 
+    enum {
+        VeryCoarse = 0,
+        Coarse = 1,
+        Moderate = 2,
+        Fine = 3,
+        VeryFine = 4
+    };
+
 public:
     explicit Tessellation(QWidget* parent = nullptr);
     ~Tessellation() override;
@@ -91,12 +99,13 @@ protected:
     QString getNetgenParameters() const;
     std::vector<App::Color> getUniqueColors(const std::vector<App::Color>& colors) const;
 
-private Q_SLOTS:
+private:
+    void setupConnections();
     void meshingMethod(int id);
-    void on_estimateMaximumEdgeLength_clicked();
-    void on_comboFineness_currentIndexChanged(int);
-    void on_checkSecondOrder_toggled(bool);
-    void on_checkQuadDominated_toggled(bool);
+    void onEstimateMaximumEdgeLengthClicked();
+    void onComboFinenessCurrentIndexChanged(int);
+    void onCheckSecondOrderToggled(bool);
+    void onCheckQuadDominatedToggled(bool);
     void gmshProcessed();
 
 private:

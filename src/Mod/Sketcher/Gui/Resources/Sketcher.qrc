@@ -106,6 +106,8 @@
         <file>icons/general/Sketcher_ViewSketch.svg</file>
         <file>icons/general/Sketcher_GridToggle.svg</file>
         <file>icons/general/Sketcher_GridToggle_Deactivated.svg</file>
+        <file>icons/general/Sketcher_Snap.svg</file>
+        <file>icons/general/Sketcher_Snap_Deactivated.svg</file>
     </qresource>
     <qresource>
         <file>icons/geometry/Sketcher_AlterFillet.svg</file>
@@ -123,6 +125,10 @@
         <file>icons/geometry/Sketcher_CreateArc_Constr.svg</file>
         <file>icons/geometry/Sketcher_CreateBSpline.svg</file>
         <file>icons/geometry/Sketcher_CreateBSpline_Constr.svg</file>
+        <file>icons/geometry/Sketcher_CreateBSplineByInterpolation.svg</file>
+        <file>icons/geometry/Sketcher_CreateBSplineByInterpolation_Constr.svg</file>
+        <file>icons/geometry/Sketcher_Create_Periodic_BSplineByInterpolation.svg</file>
+        <file>icons/geometry/Sketcher_Create_Periodic_BSplineByInterpolation_Constr.svg</file>
         <file>icons/geometry/Sketcher_CreateCircle.svg</file>
         <file>icons/geometry/Sketcher_CreateCircle_Constr.svg</file>
         <file>icons/geometry/Sketcher_CreateEllipse_3points.svg</file>

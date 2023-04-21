@@ -75,7 +75,6 @@
 #include <QtConcurrentRun>
 #endif
 
-#include <App/Application.h>
 #include <App/Document.h>
 #include <Base/BoundBox.h>
 #include <Base/Console.h>
@@ -90,6 +89,7 @@
 #include "DrawUtil.h"
 #include "EdgeWalker.h"
 #include "GeometryObject.h"
+#include "Preferences.h"
 
 #include "DrawViewSection.h"
 
@@ -542,13 +542,11 @@ void DrawViewSection::postHlrTasks(void)
     DrawViewPart::postHlrTasks();
 
     //second pass if required
-    if (ScaleType.isValue("Automatic")) {
-        if (!checkFit()) {
-            double newScale = autoScale();
-            Scale.setValue(newScale);
-            Scale.purgeTouched();
-            sectionExec(m_saveShape);
-        }
+    if (ScaleType.isValue("Automatic") && !checkFit()) {
+        double newScale = autoScale();
+        Scale.setValue(newScale);
+        Scale.purgeTouched();
+        sectionExec(m_saveShape);
     }
     overrideKeepUpdated(false);
 
@@ -891,30 +889,26 @@ bool DrawViewSection::isReallyInBox(const gp_Pnt p, const Bnd_Box& bb) const
 Base::Vector3d DrawViewSection::getXDirection() const
 {
     //    Base::Console().Message("DVS::getXDirection() - %s\n", Label.getValue());
-    Base::Vector3d result(1.0, 0.0, 0.0);//default X
     App::Property* prop = getPropertyByName("XDirection");
-    if (prop) {
-        //we have an XDirection property
-        if (DrawUtil::fpCompare(XDirection.getValue().Length(), 0.0)) {
-            //but it has no value, so we make a value
-            if (BaseView.getValue()) {
-                gp_Ax2 cs = getCSFromBase(SectionDirection.getValueAsString());
-                gp_Dir gXDir = cs.XDirection();
-                result = Base::Vector3d(gXDir.X(), gXDir.Y(), gXDir.Z());
-            }
-        }
-        else {
-            //XDirection is good, so we use it
-            result = XDirection.getValue();
-        }
-    }
-    else {
-        //no XDirection property.  can this happen?
+    if (!prop) {
+        // No XDirection property.  can this happen?
         gp_Ax2 cs = getCSFromBase(SectionDirection.getValueAsString());
         gp_Dir gXDir = cs.XDirection();
-        result = Base::Vector3d(gXDir.X(), gXDir.Y(), gXDir.Z());
+        return Base::Vector3d(gXDir.X(), gXDir.Y(), gXDir.Z());
     }
-    return result;
+
+    //we have an XDirection property
+    if (DrawUtil::fpCompare(XDirection.getValue().Length(), 0.0)) {
+        //but it has no value, so we make a value
+        if (BaseView.getValue()) {
+            gp_Ax2 cs = getCSFromBase(SectionDirection.getValueAsString());
+            gp_Dir gXDir = cs.XDirection();
+            return Base::Vector3d(gXDir.X(), gXDir.Y(), gXDir.Z());
+        }
+    }
+
+    //XDirection is good, so we use it
+    return XDirection.getValue();
 }
 
 void DrawViewSection::setCSFromBase(const std::string sectionName)
@@ -1053,47 +1047,41 @@ std::vector<LineSet> DrawViewSection::getDrawableLines(int i)
 {
     //    Base::Console().Message("DVS::getDrawableLines(%d) - lineSets: %d\n", i, m_lineSets.size());
     std::vector<LineSet> result;
-    result = DrawGeomHatch::getTrimmedLinesSection(this, m_lineSets, getSectionTopoDSFace(i),
-                                                   HatchScale.getValue(), HatchRotation.getValue(),
-                                                   HatchOffset.getValue());
-    return result;
+    return DrawGeomHatch::getTrimmedLinesSection(this, m_lineSets, getSectionTopoDSFace(i),
+                                                 HatchScale.getValue(), HatchRotation.getValue(),
+                                                 HatchOffset.getValue());
 }
 
 TopoDS_Face DrawViewSection::getSectionTopoDSFace(int i)
 {
-    TopoDS_Face result;
     TopExp_Explorer expl(m_sectionTopoDSFaces, TopAbs_FACE);
     int count = 1;
     for (; expl.More(); expl.Next(), count++) {
         if (count == i + 1) {
-            result = TopoDS::Face(expl.Current());
+            return TopoDS::Face(expl.Current());
         }
     }
-    return result;
+    return TopoDS_Face();
 }
 
 TechDraw::DrawViewPart* DrawViewSection::getBaseDVP() const
 {
-    TechDraw::DrawViewPart* baseDVP = nullptr;
     App::DocumentObject* base = BaseView.getValue();
-    if (base) {
-        if (base->getTypeId().isDerivedFrom(TechDraw::DrawViewPart::getClassTypeId())) {
-            baseDVP = static_cast<TechDraw::DrawViewPart*>(base);
-        }
+    if (base && base->getTypeId().isDerivedFrom(TechDraw::DrawViewPart::getClassTypeId())) {
+        TechDraw::DrawViewPart* baseDVP = static_cast<TechDraw::DrawViewPart*>(base);
+        return baseDVP;
     }
-    return baseDVP;
+    return nullptr;
 }
 
 TechDraw::DrawProjGroupItem* DrawViewSection::getBaseDPGI() const
 {
-    TechDraw::DrawProjGroupItem* baseDPGI = nullptr;
     App::DocumentObject* base = BaseView.getValue();
-    if (base) {
-        if (base->getTypeId().isDerivedFrom(TechDraw::DrawProjGroupItem::getClassTypeId())) {
-            baseDPGI = static_cast<TechDraw::DrawProjGroupItem*>(base);
-        }
+    if (base && base->getTypeId().isDerivedFrom(TechDraw::DrawProjGroupItem::getClassTypeId())) {
+        TechDraw::DrawProjGroupItem* baseDPGI = static_cast<TechDraw::DrawProjGroupItem*>(base);
+        return baseDPGI;
     }
-    return baseDPGI;
+    return nullptr;
 }
 
 // setup / tear down routines
@@ -1141,8 +1129,8 @@ void DrawViewSection::makeLineSets(void)
         return;
     }
 
-    if ((ext == "pat") || (ext == "PAT")) {
-        if ((!fileSpec.empty()) && (!NameGeomPattern.isEmpty())) {
+    if (ext == "pat" || ext == "PAT") {
+        if (!fileSpec.empty() && !NameGeomPattern.isEmpty()) {
             m_lineSets.clear();
             m_lineSets = DrawGeomHatch::makeLineSets(fileSpec, NameGeomPattern.getValue());
         }
@@ -1186,47 +1174,25 @@ void DrawViewSection::replacePatIncluded(std::string newPatFile)
 void DrawViewSection::getParameters()
 {
     //    Base::Console().Message("DVS::getParameters()\n");
-    Base::Reference<ParameterGrp> hGrp = App::GetApplication()
-                                             .GetUserParameter()
-                                             .GetGroup("BaseApp")
-                                             ->GetGroup("Preferences")
-                                             ->GetGroup("Mod/TechDraw/General");
-
-    bool fuseFirst = hGrp->GetBool("SectionFuseFirst", false);
+    bool fuseFirst = Preferences::getPreferenceGroup("General")->GetBool("SectionFuseFirst", false);
     FuseBeforeCut.setValue(fuseFirst);
 }
 
 bool DrawViewSection::debugSection(void) const
 {
-    Base::Reference<ParameterGrp> hGrp = App::GetApplication()
-                                             .GetUserParameter()
-                                             .GetGroup("BaseApp")
-                                             ->GetGroup("Preferences")
-                                             ->GetGroup("Mod/TechDraw/debug");
-
-    return hGrp->GetBool("debugSection", false);
+    return Preferences::getPreferenceGroup("debug")->GetBool("debugSection", false);
 }
 
 int DrawViewSection::prefCutSurface(void) const
 {
     //    Base::Console().Message("DVS::prefCutSurface()\n");
-    Base::Reference<ParameterGrp> hGrp = App::GetApplication()
-                                             .GetUserParameter()
-                                             .GetGroup("BaseApp")
-                                             ->GetGroup("Preferences")
-                                             ->GetGroup("Mod/TechDraw/Decorations");
 
-    return hGrp->GetInt("CutSurfaceDisplay", 2);//default to SvgHatch
+    return Preferences::getPreferenceGroup("Decorations")->GetInt("CutSurfaceDisplay", 2);//default to SvgHatch
 }
 
 bool DrawViewSection::showSectionEdges(void)
 {
-    Base::Reference<ParameterGrp> hGrp = App::GetApplication()
-                                             .GetUserParameter()
-                                             .GetGroup("BaseApp")
-                                             ->GetGroup("Preferences")
-                                             ->GetGroup("Mod/TechDraw/General");
-    return (hGrp->GetBool("ShowSectionEdges", true));
+    return Preferences::getPreferenceGroup("General")->GetBool("ShowSectionEdges", true);
 }
 
 bool DrawViewSection::trimAfterCut() const { return TrimAfterCut.getValue(); }

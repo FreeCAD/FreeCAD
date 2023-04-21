@@ -621,18 +621,32 @@ class TaskPanel:
         vUnit = FreeCAD.Units.Quantity(1, FreeCAD.Units.Velocity).getUserPreferred()[2]
         self.form.toolControllerList.horizontalHeaderItem(1).setText("#")
         self.form.toolControllerList.horizontalHeaderItem(2).setText(
-            translate("Path", "Feed(H)")
+            translate("Path", "H","H is horizontal feed rate. Must be as short as possible")
         )
-        self.form.toolControllerList.horizontalHeaderItem(2).setToolTip(vUnit)
         self.form.toolControllerList.horizontalHeaderItem(3).setText(
-            translate("Path", "Feed(V)")
+            translate("Path", "V","V is vertical feed rate. Must be as short as possible")
         )
-        self.form.toolControllerList.horizontalHeaderItem(3).setToolTip(vUnit)
         self.form.toolControllerList.horizontalHeader().setResizeMode(
             0, QtGui.QHeaderView.Stretch
         )
+        self.form.toolControllerList.horizontalHeaderItem(1).setToolTip(
+            translate("Path", "tool number ")
+        )
+        self.form.toolControllerList.horizontalHeaderItem(2).setToolTip(
+            translate("Path", "horizontal feedrate ")+vUnit
+        )
+        self.form.toolControllerList.horizontalHeaderItem(3).setToolTip(
+            translate("Path", "vertical feedrate ")+vUnit
+        )
+        self.form.toolControllerList.horizontalHeaderItem(4).setToolTip(
+            translate("Path", "spindle RPM ")
+        )
+        
+        # ensure correct ellisis behaviour on tool controller names.
+        self.form.toolControllerList.setWordWrap(False)
+        
         self.form.toolControllerList.resizeColumnsToContents()
-
+        
         currentPostProcessor = self.obj.PostProcessor
         postProcessors = Path.Preferences.allEnabledPostProcessors(
             ["", currentPostProcessor]
@@ -886,14 +900,10 @@ class TaskPanel:
             self.form.operationsList.addItem(item)
 
         self.form.jobModel.clear()
-        for name, count in PathUtil.keyValueIter(
-            Counter(
-                [
+        for name, count in Counter([
                     self.obj.Proxy.baseObject(self.obj, o).Label
                     for o in self.obj.Model.Group
-                ]
-            )
-        ):
+            ]).items():
             if count == 1:
                 self.form.jobModel.addItem(name)
             else:
@@ -1412,7 +1422,7 @@ class TaskPanel:
                 additions = want - have
 
                 # first remove all obsolete base models
-                for model, count in PathUtil.keyValueIter(obsolete):
+                for model, count in obsolete.items():
                     for i in range(count):
                         # it seems natural to remove the last of all the base objects for a given model
                         base = [
@@ -1425,7 +1435,7 @@ class TaskPanel:
                 # do not access any of the retired objects after this point, they don't exist anymore
 
                 # then add all rookie base models
-                for model, count in PathUtil.keyValueIter(additions):
+                for model, count in additions.items():
                     for i in range(count):
                         base = PathJob.createModelResourceClone(obj, model)
                         obj.Model.addObject(base)

@@ -76,8 +76,8 @@ public:
 
     void setDocument(Gui::Document* doc);
 
-private Q_SLOTS:
-    void on_refreshButton_clicked();
+private:
+    void onRefreshButtonClicked();
 
 protected:
     void changeEvent(QEvent *e) override;

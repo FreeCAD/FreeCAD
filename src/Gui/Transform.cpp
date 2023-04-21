@@ -285,6 +285,9 @@ Transform::Transform(QWidget* parent, Qt::WindowFlags fl)
 {
     ui = new Ui_Placement();
     ui->setupUi(this);
+    connect(ui->applyButton, &QPushButton::clicked,
+            this, &Transform::onApplyButtonClicked);
+
     ui->resetButton->hide();
     ui->applyIncrementalPlacement->hide();
 
@@ -348,7 +351,7 @@ void Transform::onTransformChanged(int)
 
 void Transform::accept()
 {
-    on_applyButton_clicked();
+    onApplyButtonClicked();
     QDialog::accept();
 }
 
@@ -358,7 +361,7 @@ void Transform::reject()
     QDialog::reject();
 }
 
-void Transform::on_applyButton_clicked()
+void Transform::onApplyButtonClicked()
 {
     Gui::WaitCursor wc;
     Base::Placement plm = this->getPlacementData();
@@ -461,7 +464,7 @@ bool TaskTransform::reject()
 void TaskTransform::clicked(int id)
 {
     if (id == QDialogButtonBox::Apply) {
-        dialog->on_applyButton_clicked();
+        dialog->onApplyButtonClicked();
     }
 }
 

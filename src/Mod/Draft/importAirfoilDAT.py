@@ -38,7 +38,11 @@ __title__ = "FreeCAD Draft Workbench - Airfoil data importer"
 __author__ = "Heiko Jakob <heiko.jakob@gediegos.de>"
 __url__ = "https://www.freecadweb.org"
 
-import re, FreeCAD, Draft, Part, os
+import re
+import os
+import FreeCAD
+import Draft
+import Part
 from FreeCAD import Vector
 from FreeCAD import Console as FCC
 
@@ -53,38 +57,6 @@ if open.__module__ in ['__builtin__', 'io']:
     pythonopen = open
 
 useDraftWire = True
-
-
-def decodeName(name):
-    """Decode encoded name.
-
-    Parameters
-    ----------
-    name : str
-        The string to decode.
-
-    Returns
-    -------
-    tuple
-    (string)
-        A tuple containing the decoded `name` in 'latin1',
-        otherwise in 'utf8'.
-        If it fails it returns the original `name`.
-    """
-    try:
-        decodedName = name
-    except UnicodeDecodeError:
-        try:
-            decodedName = (name.decode("latin1"))
-        except UnicodeDecodeError:
-            try:
-                decodedName = (name.decode("utf8"))
-            except UnicodeDecodeError:
-                _msg = ("AirfoilDAT error: "
-                        "couldn't determine character encoding.")
-                FCC.PrintError(translate("ImportAirfoilDAT", _msg) + "\n")
-                decodedName = name
-    return decodedName
 
 
 def open(filename):
@@ -102,7 +74,7 @@ def open(filename):
     """
     docname = os.path.splitext(os.path.basename(filename))[0]
     doc = FreeCAD.newDocument(docname)
-    doc.Label = decodeName(docname)
+    doc.Label = docname
     process(filename)
     doc.recompute()
 
@@ -134,7 +106,6 @@ def insert(filename, docname):
     obj = process(filename)
     if obj is not None:
         importgroup = doc.addObject("App::DocumentObjectGroup", groupname)
-        importgroup.Label = decodeName(groupname)
         importgroup.Group = [obj]
     doc.recompute()
 

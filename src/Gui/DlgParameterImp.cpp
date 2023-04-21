@@ -61,6 +61,8 @@ DlgParameterImp::DlgParameterImp( QWidget* parent,  Qt::WindowFlags fl )
   , ui(new Ui_DlgParameter)
 {
     ui->setupUi(this);
+    setupConnections();
+
     ui->checkSort->setVisible(false); // for testing
 
     QStringList groupLabels;
@@ -129,14 +131,28 @@ DlgParameterImp::~DlgParameterImp()
     delete ui;
 }
 
-void DlgParameterImp::on_buttonFind_clicked()
+void DlgParameterImp::setupConnections()
+{
+    connect(ui->buttonFind, &QPushButton::clicked,
+            this, &DlgParameterImp::onButtonFindClicked);
+    connect(ui->findGroupLE, &QLineEdit::textChanged,
+            this, &DlgParameterImp::onFindGroupTtextChanged);
+    connect(ui->buttonSaveToDisk, &QPushButton::clicked,
+            this, &DlgParameterImp::onButtonSaveToDiskClicked);
+    connect(ui->closeButton, &QPushButton::clicked,
+            this, &DlgParameterImp::onCloseButtonClicked);
+    connect(ui->checkSort, &QCheckBox::toggled,
+            this, &DlgParameterImp::onCheckSortToggled);
+}
+
+void DlgParameterImp::onButtonFindClicked()
 {
     if (finder.isNull())
         finder = new DlgParameterFind(this);
     finder->show();
 }
 
-void DlgParameterImp::on_findGroupLE_textChanged(const QString &SearchStr)
+void DlgParameterImp::onFindGroupTtextChanged(const QString &SearchStr)
 {
     // search for group tree items and highlight found results
 
@@ -223,7 +239,7 @@ void DlgParameterImp::changeEvent(QEvent *e)
     }
 }
 
-void DlgParameterImp::on_checkSort_toggled(bool on)
+void DlgParameterImp::onCheckSortToggled(bool on)
 {
     paramGroup->setSortingEnabled(on);
     paramGroup->sortByColumn(0, Qt::AscendingOrder);
@@ -234,7 +250,7 @@ void DlgParameterImp::on_checkSort_toggled(bool on)
     paramValue->header()->setProperty("showSortIndicator", QVariant(on));
 }
 
-void DlgParameterImp::on_closeButton_clicked()
+void DlgParameterImp::onCloseButtonClicked()
 {
     close();
 }
@@ -414,7 +430,7 @@ void DlgParameterImp::onChangeParameterSet(int itemPos)
         paramGroup->setCurrentItem(paramGroup->topLevelItem(0));
 }
 
-void DlgParameterImp::on_buttonSaveToDisk_clicked()
+void DlgParameterImp::onButtonSaveToDiskClicked()
 {
     int index = ui->parameterSet->currentIndex();
     ParameterManager* parmgr = App::GetApplication().GetParameterSet(ui->parameterSet->itemData(index).toByteArray());

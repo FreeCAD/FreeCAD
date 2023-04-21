@@ -114,6 +114,11 @@ inline int ViewProviderSketchDrawSketchHandlerAttorney::getPreselectCross(const 
     return vp.getPreselectCross();
 }
 
+inline void ViewProviderSketchDrawSketchHandlerAttorney::setAngleSnapping(ViewProviderSketch &vp, bool enable, Base::Vector2d referencePoint)
+{
+    vp.setAngleSnapping(enable, referencePoint);
+}
+
 
 /**************************** CurveConverter **********************************************/
 
@@ -250,6 +255,7 @@ void DrawSketchHandler::deactivate()
     drawEditMarkers(std::vector<Base::Vector2d>());
     resetPositionText();
     unsetCursor();
+    setAngleSnapping(false);
 }
 
 void DrawSketchHandler::preActivated()
@@ -800,7 +806,7 @@ void DrawSketchHandler::createAutoConstraints(const std::vector<AutoConstraint> 
                 if (posId1 == Sketcher::PointPos::none)
                     continue;
                 // If the auto constraint has a point create a coincident otherwise it is an edge on a point
-                Gui::cmdAppObjectArgs(sketchgui->getObject(), "addConstraint(Sketcher.Constraint('Coincident',%i,%i,%i,%i)) "
+                Gui::cmdAppObjectArgs(sketchgui->getObject(), "addConstraint(Sketcher.Constraint('Coincident',%d,%d,%d,%d)) "
                                      , geoId1, static_cast<int>(posId1), it->GeoId, static_cast<int>(it->PosId));
                 } break;
             case Sketcher::PointOnObject: {
@@ -811,18 +817,18 @@ void DrawSketchHandler::createAutoConstraints(const std::vector<AutoConstraint> 
                     std::swap(posId1,posId2);
                 }
 
-                Gui::cmdAppObjectArgs(sketchgui->getObject(), "addConstraint(Sketcher.Constraint('PointOnObject',%i,%i,%i)) "
+                Gui::cmdAppObjectArgs(sketchgui->getObject(), "addConstraint(Sketcher.Constraint('PointOnObject',%d,%d,%d)) "
                                      , geoId1, static_cast<int>(posId1), geoId2);
                 } break;
         // In special case of Horizontal/Vertical constraint, geoId2 is normally unused and should be 'Constraint::GeoUndef'
         // However it can be used as a way to require the function to apply these constraints on another geometry
         // In this case the caller as to set geoId2, then it will be used as target instead of geoId2
             case Sketcher::Horizontal: {
-                Gui::cmdAppObjectArgs(sketchgui->getObject(), "addConstraint(Sketcher.Constraint('Horizontal',%i)) ",
+                Gui::cmdAppObjectArgs(sketchgui->getObject(), "addConstraint(Sketcher.Constraint('Horizontal',%d)) ",
                                       geoId2 != GeoEnum::GeoUndef ? geoId2 : geoId1);
                 } break;
             case Sketcher::Vertical: {
-                Gui::cmdAppObjectArgs(sketchgui->getObject(), "addConstraint(Sketcher.Constraint('Vertical',%i)) ",
+                Gui::cmdAppObjectArgs(sketchgui->getObject(), "addConstraint(Sketcher.Constraint('Vertical',%d)) ",
                                       geoId2 != GeoEnum::GeoUndef ? geoId2 : geoId1);
                 } break;
             case Sketcher::Tangent: {
@@ -877,7 +883,7 @@ void DrawSketchHandler::createAutoConstraints(const std::vector<AutoConstraint> 
                     }
                 }
 
-                Gui::cmdAppObjectArgs(sketchgui->getObject(), "addConstraint(Sketcher.Constraint('Tangent',%i, %i)) "
+                Gui::cmdAppObjectArgs(sketchgui->getObject(), "addConstraint(Sketcher.Constraint('Tangent',%d, %d)) "
                                      , geoId1, it->GeoId);
                 } break;
             default:
@@ -992,3 +998,7 @@ Sketcher::SketchObject * DrawSketchHandler::getSketchObject()
     return sketchgui->getSketchObject();
 }
 
+void DrawSketchHandler::setAngleSnapping(bool enable, Base::Vector2d referencePoint)
+{
+    ViewProviderSketchDrawSketchHandlerAttorney::setAngleSnapping(*sketchgui, enable, referencePoint);
+}

@@ -26,6 +26,7 @@
 
 import datetime
 import Path.Post.Utils as PostUtils
+import PathScripts.PathUtils as PathUtils
 
 now = datetime.datetime.now()
 
@@ -253,7 +254,7 @@ def parse(pathobj):
         if OUTPUT_COMMENTS:
             out += linenumber() + "(Path: " + pathobj.Label + ")\n"
 
-        for c in pathobj.Path.Commands:
+        for c in PathUtils.getPathWithPlacement(pathobj).Commands:
             outstring = []
             command = c.Name
 

@@ -68,7 +68,8 @@ App::DocumentObjectExecReturn *Fillet::execute()
     Part::TopoShape TopShape;
     try {
         TopShape = getBaseShape();
-    } catch (Base::Exception& e) {
+    }
+    catch (Base::Exception& e) {
         return new App::DocumentObjectExecReturn(e.what());
     }
     std::vector<std::string> SubNames = std::vector<std::string>(Base.getSubValues());
@@ -86,15 +87,18 @@ App::DocumentObjectExecReturn *Fillet::execute()
 
     getContinuousEdges(TopShape, SubNames);
 
-    if (SubNames.empty())
-        return new App::DocumentObjectExecReturn("Fillet not possible on selected shapes");
-
     double radius = Radius.getValue();
 
     if(radius <= 0)
         return new App::DocumentObjectExecReturn("Fillet radius must be greater than zero");
 
     this->positionByBaseFeature();
+
+    //If no element is selected, then we use a copy of previous feature.
+    if (SubNames.empty()) {
+        this->Shape.setValue(TopShape);
+        return App::DocumentObject::StdReturn;
+    }
 
     // create an untransformed copy of the base shape
     Part::TopoShape baseShape(TopShape);

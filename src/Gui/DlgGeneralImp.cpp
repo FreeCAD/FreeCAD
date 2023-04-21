@@ -1,28 +1,32 @@
-/***************************************************************************
- *   Copyright (c) 2004 Werner Mayer <wmayer[at]users.sourceforge.net>     *
- *                                                                         *
- *   This file is part of the FreeCAD CAx development system.              *
- *                                                                         *
- *   This library is free software; you can redistribute it and/or         *
- *   modify it under the terms of the GNU Library General Public           *
- *   License as published by the Free Software Foundation; either          *
- *   version 2 of the License, or (at your option) any later version.      *
- *                                                                         *
- *   This library  is distributed in the hope that it will be useful,      *
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
- *   GNU Library General Public License for more details.                  *
- *                                                                         *
- *   You should have received a copy of the GNU Library General Public     *
- *   License along with this library; see the file COPYING.LIB. If not,    *
- *   write to the Free Software Foundation, Inc., 59 Temple Place,         *
- *   Suite 330, Boston, MA  02111-1307, USA                                *
- *                                                                         *
- ***************************************************************************/
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
+ /****************************************************************************
+  *   Copyright (c) 2004 Werner Mayer <wmayer[at]users.sourceforge.net>     *
+  *   Copyright (c) 2023 FreeCAD Project Association                         *
+  *                                                                          *
+  *   This file is part of FreeCAD.                                          *
+  *                                                                          *
+  *   FreeCAD is free software: you can redistribute it and/or modify it     *
+  *   under the terms of the GNU Lesser General Public License as            *
+  *   published by the Free Software Foundation, either version 2.1 of the   *
+  *   License, or (at your option) any later version.                        *
+  *                                                                          *
+  *   FreeCAD is distributed in the hope that it will be useful, but         *
+  *   WITHOUT ANY WARRANTY; without even the implied warranty of             *
+  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU       *
+  *   Lesser General Public License for more details.                        *
+  *                                                                          *
+  *   You should have received a copy of the GNU Lesser General Public       *
+  *   License along with FreeCAD. If not, see                                *
+  *   <https://www.gnu.org/licenses/>.                                       *
+  *                                                                          *
+  ***************************************************************************/
 
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
+# include <cmath>
+# include <limits>
 # include <QApplication>
 # include <QFileDialog>
 # include <QLocale>
@@ -30,6 +34,9 @@
 # include <algorithm>
 # include <boost/filesystem.hpp>
 #endif
+
+#include <Base/Parameter.h>
+#include <Base/UnitsApi.h>
 
 #include "DlgGeneralImp.h"
 #include "ui_DlgGeneral.h"
@@ -41,11 +48,11 @@
 #include "DlgRevertToBackupConfigImp.h"
 #include "MainWindow.h"
 #include "PreferencePackManager.h"
-#include "UserSettings.h"
 #include "Language/Translator.h"
 
 using namespace Gui::Dialog;
 namespace fs = boost::filesystem;
+using namespace Base;
 
 /* TRANSLATOR Gui::Dialog::DlgGeneralImp */
 
@@ -63,33 +70,6 @@ DlgGeneralImp::DlgGeneralImp( QWidget* parent )
 {
     ui->setupUi(this);
 
-    // fills the combo box with all available workbenches
-    // sorted by their menu text
-    QStringList work = Application::Instance->workbenches();
-    QMap<QString, QString> menuText;
-    for (const auto & it : work) {
-        QString text = Application::Instance->workbenchMenuText(it);
-        menuText[text] = it;
-    }
-
-    {   // add special workbench to selection
-        QPixmap px = Application::Instance->workbenchIcon(QString::fromLatin1("NoneWorkbench"));
-        QString key = QString::fromLatin1("<last>");
-        QString value = QString::fromLatin1("$LastModule");
-        if (px.isNull())
-            ui->AutoloadModuleCombo->addItem(key, QVariant(value));
-        else
-            ui->AutoloadModuleCombo->addItem(px, key, QVariant(value));
-    }
-
-    for (QMap<QString, QString>::Iterator it = menuText.begin(); it != menuText.end(); ++it) {
-        QPixmap px = Application::Instance->workbenchIcon(it.value());
-        if (px.isNull())
-            ui->AutoloadModuleCombo->addItem(it.key(), QVariant(it.value()));
-        else
-            ui->AutoloadModuleCombo->addItem(px, it.key(), QVariant(it.value()));
-    }
-
     recreatePreferencePackMenu();
 
     connect(ui->ImportConfig, &QPushButton::clicked, this, &DlgGeneralImp::onImportConfigClicked);
@@ -100,11 +80,29 @@ DlgGeneralImp::DlgGeneralImp( QWidget* parent )
 
     // If there are any saved config file backs, show the revert button, otherwise hide it:
     const auto & backups = Application::Instance->prefPackManager()->configBackups();
-    if (backups.empty())
-        ui->RevertToSavedConfig->setEnabled(false);
-    else
-        ui->RevertToSavedConfig->setEnabled(true);
+    ui->RevertToSavedConfig->setEnabled(backups.empty());
     connect(ui->RevertToSavedConfig, &QPushButton::clicked, this, &DlgGeneralImp::revertToSavedConfig);
+
+    connect(ui->comboBox_UnitSystem, qOverload<int>(&QComboBox::currentIndexChanged), this, &DlgGeneralImp::onUnitSystemIndexChanged);
+    ui->spinBoxDecimals->setMaximum(std::numeric_limits<double>::digits10 + 1);
+
+    int num = static_cast<int>(Base::UnitSystem::NumUnitSystemTypes);
+    for (int i = 0; i < num; i++) {
+        QString item = qApp->translate("Gui::Dialog::DlgGeneralImp", Base::UnitsApi::getDescription(static_cast<Base::UnitSystem>(i)));
+        ui->comboBox_UnitSystem->addItem(item, i);
+    }
+
+    // Enable/disable the fractional inch option depending on system
+    if (UnitsApi::getSchema() == UnitSystem::ImperialBuilding)
+    {
+        ui->comboBox_FracInch->setVisible(true);
+        ui->fractionalInchLabel->setVisible(true);
+    }
+    else
+    {
+        ui->comboBox_FracInch->setVisible(false);
+        ui->fractionalInchLabel->setVisible(false);
+    }
 }
 
 /**
@@ -148,8 +146,9 @@ void DlgGeneralImp::setNumberLocale(bool force/* = false*/)
 
     // Only make the change if locale setting has changed or if forced
     // Except if format is "OS" where we don't want to run setLocale
-    if (localeIndex == localeFormat && (!force || localeFormat == 0))
+    if (localeIndex == localeFormat && (!force || localeFormat == 0)) {
         return;
+    }
 
     if (localeFormat == 0) {
         Translator::instance()->setLocale(); // Defaults to system locale
@@ -167,17 +166,43 @@ void DlgGeneralImp::setNumberLocale(bool force/* = false*/)
     localeIndex = localeFormat;
 }
 
-void DlgGeneralImp::setDecimalPointConversion(bool on) {
-    Translator::instance()->enableDecimalPointConversion(on);
+void DlgGeneralImp::setDecimalPointConversion(bool on)
+{
+    if (Translator::instance()->isEnabledDecimalPointConversion() != on) {
+        Translator::instance()->enableDecimalPointConversion(on);
+    }
 }
 
 void DlgGeneralImp::saveSettings()
 {
-    int index = ui->AutoloadModuleCombo->currentIndex();
-    QVariant data = ui->AutoloadModuleCombo->itemData(index);
-    QString startWbName = data.toString();
-    App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/General")->
-                          SetASCII("AutoloadModule", startWbName.toLatin1());
+    // must be done as very first because we create a new instance of NavigatorStyle
+    // where we set some attributes afterwards
+    int FracInch;  // minimum fractional inch to display
+    int viewSystemIndex; // currently selected View System (unit system)
+
+    ParameterGrp::handle hGrpu = App::GetApplication().GetParameterGroupByPath
+    ("User parameter:BaseApp/Preferences/Units");
+    hGrpu->SetInt("UserSchema", ui->comboBox_UnitSystem->currentIndex());
+    hGrpu->SetInt("Decimals", ui->spinBoxDecimals->value());
+
+    // Set actual value
+    Base::UnitsApi::setDecimals(ui->spinBoxDecimals->value());
+
+    // Convert the combobox index to the its integer denominator. Currently
+    // with 1/2, 1/4, through 1/128, this little equation directly computes the
+    // denominator given the combobox integer.
+    //
+    // The inverse conversion is done when loaded. That way only one thing (the
+    // numerical fractional inch value) needs to be stored.
+    FracInch = std::pow(2, ui->comboBox_FracInch->currentIndex() + 1);
+    hGrpu->SetInt("FracInch", FracInch);
+
+    // Set the actual format value
+    Base::QuantityFormat::setDefaultDenominator(FracInch);
+
+    // Set and save the Unit System
+    viewSystemIndex = ui->comboBox_UnitSystem->currentIndex();
+    UnitsApi::setSchema(static_cast<UnitSystem>(viewSystemIndex));
 
     ui->SubstituteDecimal->onSave();
     ui->UseLocaleFormatting->onSave();
@@ -197,11 +222,13 @@ void DlgGeneralImp::saveSettings()
     hGrp->SetInt("ToolbarIconSize", pixel);
     getMainWindow()->setIconSize(QSize(pixel,pixel));
 
-    int blinkTime = hGrp->GetBool("EnableCursorBlinking", true) ? -1 : 0;
+    int blinkTime{hGrp->GetBool("EnableCursorBlinking", true) ? -1 : 0};
     qApp->setCursorFlashTime(blinkTime);
 
     hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/DockWindows");
-    bool treeView=false, propertyView=false, comboView=true;
+    bool treeView=false;
+    bool propertyView=false;
+    bool comboView=true;
     switch(ui->treeMode->currentIndex()) {
     case 1:
         treeView = propertyView = true;
@@ -216,8 +243,6 @@ void DlgGeneralImp::saveSettings()
     hGrp->GetGroup("TreeView")->SetBool("Enabled",treeView);
     hGrp->GetGroup("PropertyView")->SetBool("Enabled",propertyView);
 
-    saveWorkbenchSelector();
-
     hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/MainWindow");
     hGrp->SetBool("TiledBackground", ui->tiledBackground->isChecked());
 
@@ -228,11 +253,22 @@ void DlgGeneralImp::saveSettings()
 
 void DlgGeneralImp::loadSettings()
 {
-    std::string start = App::Application::Config()["StartWorkbench"];
-    start = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/General")->
-                                  GetASCII("AutoloadModule", start.c_str());
-    QString startWbName = QLatin1String(start.c_str());
-    ui->AutoloadModuleCombo->setCurrentIndex(ui->AutoloadModuleCombo->findData(startWbName));
+    int FracInch;
+    int cbIndex;
+
+    ParameterGrp::handle hGrpu = App::GetApplication().GetParameterGroupByPath
+    ("User parameter:BaseApp/Preferences/Units");
+    ui->comboBox_UnitSystem->setCurrentIndex(hGrpu->GetInt("UserSchema", 0));
+    ui->spinBoxDecimals->setValue(hGrpu->GetInt("Decimals", Base::UnitsApi::getDecimals()));
+
+    // Get the current user setting for the minimum fractional inch
+    FracInch = hGrpu->GetInt("FracInch", Base::QuantityFormat::getDefaultDenominator());
+
+    // Convert fractional inch to the corresponding combobox index using this
+    // handy little equation.
+    cbIndex = std::log2(FracInch) - 1;
+    ui->comboBox_FracInch->setCurrentIndex(cbIndex);
+
 
     ui->SubstituteDecimal->onRestore();
     ui->UseLocaleFormatting->onRestore();
@@ -303,9 +339,6 @@ void DlgGeneralImp::loadSettings()
     }
     ui->treeMode->setCurrentIndex(index);
 
-    //workbench selector position combobox setup
-    loadWorkbenchSelector();
-
     hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/MainWindow");
     ui->tiledBackground->setChecked(hGrp->GetBool("TiledBackground", false));
 
@@ -363,8 +396,10 @@ void DlgGeneralImp::changeEvent(QEvent *event)
 {
     if (event->type() == QEvent::LanguageChange) {
         int index = ui->UseLocaleFormatting->currentIndex();
+        int index2 = ui->comboBox_UnitSystem->currentIndex();
         ui->retranslateUi(this);
         ui->UseLocaleFormatting->setCurrentIndex(index);
+        ui->comboBox_UnitSystem->setCurrentIndex(index2);
     }
     else {
         QWidget::changeEvent(event);
@@ -502,21 +537,22 @@ void DlgGeneralImp::onLoadPreferencePackClicked(const std::string& packName)
     }
 }
 
-void DlgGeneralImp::saveWorkbenchSelector()
+void DlgGeneralImp::onUnitSystemIndexChanged(int index)
 {
-    //save workbench selector position
-    auto index = ui->WorkbenchSelectorPosition->currentIndex();
-    WorkbenchSwitcher::setIndex(index);
-}
+    if (index < 0)
+        return; // happens when clearing the combo box in retranslateUi()
 
-void DlgGeneralImp::loadWorkbenchSelector()
-{
-    //workbench selector position combobox setup
-    ui->WorkbenchSelectorPosition->clear();
-    ui->WorkbenchSelectorPosition->addItem(tr("Toolbar"));
-    ui->WorkbenchSelectorPosition->addItem(tr("Left corner"));
-    ui->WorkbenchSelectorPosition->addItem(tr("Right corner"));
-    ui->WorkbenchSelectorPosition->setCurrentIndex(WorkbenchSwitcher::getIndex());
+    // Enable/disable the fractional inch option depending on system
+    if (static_cast<UnitSystem>(index) == UnitSystem::ImperialBuilding)
+    {
+        ui->comboBox_FracInch->setVisible(true);
+        ui->fractionalInchLabel->setVisible(true);
+    }
+    else
+    {
+        ui->comboBox_FracInch->setVisible(false);
+        ui->fractionalInchLabel->setVisible(false);
+    }
 }
 
 #include "moc_DlgGeneralImp.cpp"

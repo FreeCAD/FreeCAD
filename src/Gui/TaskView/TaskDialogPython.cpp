@@ -544,8 +544,7 @@ TaskDialogPython::~TaskDialogPython()
 bool TaskDialogPython::tryLoadUiFile()
 {
     if (dlg.hasAttr(std::string("ui"))) {
-        UiLoader loader;
-        loader.setLanguageChangeEnabled(true);
+        auto loader = UiLoader::newInstance();
         QString fn, icon;
         Py::String ui(dlg.getAttr(std::string("ui")));
         std::string path = static_cast<std::string>(ui);
@@ -554,7 +553,7 @@ bool TaskDialogPython::tryLoadUiFile()
         QFile file(fn);
         QWidget* form = nullptr;
         if (file.open(QFile::ReadOnly))
-            form = loader.load(&file, nullptr);
+            form = loader->load(&file, nullptr);
         file.close();
         if (form) {
             appendForm(form, QPixmap(icon));

@@ -735,7 +735,6 @@ TaskSketcherConstraints::TaskSketcherConstraints(ViewProviderSketch *sketchView)
     ui->setupUi(proxy);
     ui->listWidgetConstraints->setSelectionMode(QAbstractItemView::ExtendedSelection);
     ui->listWidgetConstraints->setEditTriggers(QListWidget::EditKeyPressed);
-    //QMetaObject::connectSlotsByName(this);
 
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher/General");
     ui->filterBox->setChecked(hGrp->GetBool("ConstraintFilterEnabled", true));
@@ -785,39 +784,39 @@ TaskSketcherConstraints::TaskSketcherConstraints(ViewProviderSketch *sketchView)
 
     QObject::connect(
         ui->listWidgetConstraints, &ConstraintView::itemSelectionChanged,
-        this, &TaskSketcherConstraints::on_listWidgetConstraints_itemSelectionChanged
+        this, &TaskSketcherConstraints::onListWidgetConstraintsItemSelectionChanged
     );
     QObject::connect(
         ui->listWidgetConstraints, &ConstraintView::itemActivated,
-        this, &TaskSketcherConstraints::on_listWidgetConstraints_itemActivated
+        this, &TaskSketcherConstraints::onListWidgetConstraintsItemActivated
     );
     QObject::connect(
         ui->listWidgetConstraints, &ConstraintView::itemChanged,
-        this, &TaskSketcherConstraints::on_listWidgetConstraints_itemChanged
+        this, &TaskSketcherConstraints::onListWidgetConstraintsItemChanged
     );
     QObject::connect(
         ui->listWidgetConstraints, &ConstraintView::emitCenterSelectedItems,
-        this, &TaskSketcherConstraints::on_listWidgetConstraints_emitCenterSelectedItems
+        this, &TaskSketcherConstraints::onListWidgetConstraintsEmitCenterSelectedItems
     );
     QObject::connect(
         ui->listWidgetConstraints, &ConstraintView::onUpdateDrivingStatus,
-        this, &TaskSketcherConstraints::on_listWidgetConstraints_updateDrivingStatus
+        this, &TaskSketcherConstraints::onListWidgetConstraintsUpdateDrivingStatus
     );
     QObject::connect(
         ui->listWidgetConstraints, &ConstraintView::onUpdateActiveStatus,
-        this, &TaskSketcherConstraints::on_listWidgetConstraints_updateActiveStatus
+        this, &TaskSketcherConstraints::onListWidgetConstraintsUpdateActiveStatus
     );
     QObject::connect(
         ui->listWidgetConstraints, &ConstraintView::emitHideSelection3DVisibility,
-        this, &TaskSketcherConstraints::on_listWidgetConstraints_emitHideSelection3DVisibility
+        this, &TaskSketcherConstraints::onListWidgetConstraintsEmitHideSelection3DVisibility
     );
     QObject::connect(
         ui->listWidgetConstraints, &ConstraintView::emitShowSelection3DVisibility,
-        this, &TaskSketcherConstraints::on_listWidgetConstraints_emitShowSelection3DVisibility
+        this, &TaskSketcherConstraints::onListWidgetConstraintsEmitShowSelection3DVisibility
     );
     QObject::connect(
         ui->filterBox, &QCheckBox::stateChanged,
-        this, &TaskSketcherConstraints::on_filterBox_stateChanged
+        this, &TaskSketcherConstraints::onFilterBoxStateChanged
     );
     QObject::connect(
         ui->filterButton, &QToolButton::clicked,
@@ -825,7 +824,7 @@ TaskSketcherConstraints::TaskSketcherConstraints(ViewProviderSketch *sketchView)
     );
     QObject::connect(
         ui->showHideButton, &QToolButton::clicked,
-        this, &TaskSketcherConstraints::on_showHideButton_clicked
+        this, &TaskSketcherConstraints::onShowHideButtonClicked
     );
     QObject::connect(
         ui->settingsButton, &QToolButton::clicked,
@@ -833,27 +832,27 @@ TaskSketcherConstraints::TaskSketcherConstraints(ViewProviderSketch *sketchView)
     );
     QObject::connect(
         action1, &QAction::triggered, // 'triggered' is emitted only on user action. This is defensive. See if 'toggled' is needed
-        this, &TaskSketcherConstraints::on_settings_autoConstraints_changed
+        this, &TaskSketcherConstraints::onSettingsAutoConstraintsChanged
     );
     QObject::connect(
         action2, &QAction::triggered,
-        this, &TaskSketcherConstraints::on_settings_autoRemoveRedundant_changed
+        this, &TaskSketcherConstraints::onSettingsAutoRemoveRedundantChanged
     );
     QObject::connect(
         action3, &QAction::triggered,
-        this, &TaskSketcherConstraints::on_settings_restrictVisibility_changed
+        this, &TaskSketcherConstraints::onSettingsRestrictVisibilityChanged
     );
     QObject::connect(
         action4, &QAction::triggered,
-        this, &TaskSketcherConstraints::on_settings_extendedInformation_changed
+        this, &TaskSketcherConstraints::onSettingsExtendedInformationChanged
     );
     QObject::connect(
         action5, &QAction::triggered,
-        this, &TaskSketcherConstraints::on_settings_hideInternalAligment_changed
+        this, &TaskSketcherConstraints::onSettingsHideInternalAligmentChanged
     );
     QObject::connect(
         filterList, &ConstraintFilterList::itemChanged,
-        this, &TaskSketcherConstraints::on_filterList_itemChanged
+        this, &TaskSketcherConstraints::onFilterListItemChanged
     );
 
     connectionConstraintsChanged = sketchView->signalConstraintsChanged.connect(
@@ -871,8 +870,9 @@ TaskSketcherConstraints::TaskSketcherConstraints(ViewProviderSketch *sketchView)
 
     slotConstraintsChanged(); // Populate constraints list
     // Initialize special filters
-    for (int i = filterList->normalFilterCount ; i < filterList->count() ; i++)
-        on_filterList_itemChanged(filterList->item(i));
+    for (int i = filterList->normalFilterCount ; i < filterList->count() ; i++) {
+        onFilterListItemChanged(filterList->item(i));
+    }
 }
 
 TaskSketcherConstraints::~TaskSketcherConstraints()
@@ -881,7 +881,7 @@ TaskSketcherConstraints::~TaskSketcherConstraints()
     App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher")->Detach(this);
 }
 
-void TaskSketcherConstraints::on_settings_extendedInformation_changed(bool value)
+void TaskSketcherConstraints::onSettingsExtendedInformationChanged(bool value)
 {
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
 
@@ -892,7 +892,7 @@ void TaskSketcherConstraints::on_settings_extendedInformation_changed(bool value
     slotConstraintsChanged();
 }
 
-void TaskSketcherConstraints::on_settings_hideInternalAligment_changed(bool value)
+void TaskSketcherConstraints::onSettingsHideInternalAligmentChanged(bool value)
 {
     // synchronise  parameter
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
@@ -904,7 +904,7 @@ void TaskSketcherConstraints::on_settings_hideInternalAligment_changed(bool valu
     slotConstraintsChanged();
 }
 
-void TaskSketcherConstraints::on_settings_restrictVisibility_changed(bool value)
+void TaskSketcherConstraints::onSettingsRestrictVisibilityChanged(bool value)
 {
     // synchronise VisualisationTrackingFilter parameter
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
@@ -918,7 +918,7 @@ void TaskSketcherConstraints::on_settings_restrictVisibility_changed(bool value)
         change3DViewVisibilityToTrackFilter();
 }
 
-void TaskSketcherConstraints::on_settings_autoConstraints_changed(bool value)
+void TaskSketcherConstraints::onSettingsAutoConstraintsChanged(bool value)
 {
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
 
@@ -926,7 +926,7 @@ void TaskSketcherConstraints::on_settings_autoConstraints_changed(bool value)
     sketchView->Autoconstraints.setValue(value);
 }
 
-void TaskSketcherConstraints::on_settings_autoRemoveRedundant_changed(bool value)
+void TaskSketcherConstraints::onSettingsAutoRemoveRedundantChanged(bool value)
 {
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
 
@@ -945,7 +945,7 @@ void TaskSketcherConstraints::onChangedSketchView(const Gui::ViewProvider& vp, c
     }
 }
 
-void TaskSketcherConstraints::on_filterBox_stateChanged(int val)
+void TaskSketcherConstraints::onFilterBoxStateChanged(int val)
 {
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher/General");
     hGrp->SetBool("ConstraintFilterEnabled", val == Qt::Checked);
@@ -955,7 +955,7 @@ void TaskSketcherConstraints::on_filterBox_stateChanged(int val)
 }
 
 /*hide all show all button  =====================================================*/
-void TaskSketcherConstraints::on_showHideButton_clicked(bool val)
+void TaskSketcherConstraints::onShowHideButtonClicked(bool val)
 {
     Q_UNUSED(val)
     bool allSelected = true;
@@ -970,11 +970,11 @@ void TaskSketcherConstraints::on_showHideButton_clicked(bool val)
 }
 
 /* Right click functionalities for constraint list view =========================*/
-void TaskSketcherConstraints::on_listWidgetConstraints_emitHideSelection3DVisibility()
+void TaskSketcherConstraints::onListWidgetConstraintsEmitHideSelection3DVisibility()
 {
     changeFilteredVisibility(false, ActionTarget::Selected);
 }
-void TaskSketcherConstraints::on_listWidgetConstraints_emitShowSelection3DVisibility()
+void TaskSketcherConstraints::onListWidgetConstraintsEmitShowSelection3DVisibility()
 {
     changeFilteredVisibility(true, ActionTarget::Selected);
 }
@@ -1052,7 +1052,7 @@ void TaskSketcherConstraints::changeFilteredVisibility(bool show, ActionTarget t
 
 }
 
-void TaskSketcherConstraints::on_listWidgetConstraints_updateDrivingStatus(QListWidgetItem* item, bool status)
+void TaskSketcherConstraints::onListWidgetConstraintsUpdateDrivingStatus(QListWidgetItem* item, bool status)
 {
     Q_UNUSED(status);
     ConstraintItem* citem = dynamic_cast<ConstraintItem*>(item);
@@ -1063,7 +1063,7 @@ void TaskSketcherConstraints::on_listWidgetConstraints_updateDrivingStatus(QList
     slotConstraintsChanged();
 }
 
-void TaskSketcherConstraints::on_listWidgetConstraints_updateActiveStatus(QListWidgetItem* item, bool status)
+void TaskSketcherConstraints::onListWidgetConstraintsUpdateActiveStatus(QListWidgetItem* item, bool status)
 {
     Q_UNUSED(status);
     ConstraintItem* citem = dynamic_cast<ConstraintItem*>(item);
@@ -1074,7 +1074,7 @@ void TaskSketcherConstraints::on_listWidgetConstraints_updateActiveStatus(QListW
     slotConstraintsChanged();
 }
 
-void TaskSketcherConstraints::on_listWidgetConstraints_itemActivated(QListWidgetItem* item)
+void TaskSketcherConstraints::onListWidgetConstraintsItemActivated(QListWidgetItem* item)
 {
     ConstraintItem* it = dynamic_cast<ConstraintItem*>(item);
     if (!it)
@@ -1088,7 +1088,7 @@ void TaskSketcherConstraints::on_listWidgetConstraints_itemActivated(QListWidget
     }
 }
 
-void TaskSketcherConstraints::on_listWidgetConstraints_itemChanged(QListWidgetItem* item)
+void TaskSketcherConstraints::onListWidgetConstraintsItemChanged(QListWidgetItem* item)
 {
     const ConstraintItem* it = dynamic_cast<const ConstraintItem*>(item);
     if (!it || inEditMode)
@@ -1342,12 +1342,12 @@ void TaskSketcherConstraints::getSelectionGeoId(QString expr, int & geoid, Sketc
     }
 }
 
-void TaskSketcherConstraints::on_listWidgetConstraints_emitCenterSelectedItems()
+void TaskSketcherConstraints::onListWidgetConstraintsEmitCenterSelectedItems()
 {
     sketchView->centerSelection();
 }
 
-void TaskSketcherConstraints::on_listWidgetConstraints_itemSelectionChanged()
+void TaskSketcherConstraints::onListWidgetConstraintsItemSelectionChanged()
 {
     std::string doc_name = sketchView->getSketchObject()->getDocument()->getName();
     std::string obj_name = sketchView->getSketchObject()->getNameInDocument();
@@ -1600,7 +1600,7 @@ void TaskSketcherConstraints::changeEvent(QEvent *e)
 }
 
 /* list for multi filter */
-void TaskSketcherConstraints::on_filterList_itemChanged(QListWidgetItem* item)
+void TaskSketcherConstraints::onFilterListItemChanged(QListWidgetItem* item)
 {
     int filterindex = filterList->row(item);
 

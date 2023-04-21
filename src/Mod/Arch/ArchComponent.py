@@ -31,7 +31,10 @@ __title__  = "FreeCAD Arch Component"
 __author__ = "Yorik van Havre"
 __url__    = "https://www.freecadweb.org"
 
-import FreeCAD,Draft,ArchCommands,ArchIFC
+import FreeCAD
+import ArchCommands
+import ArchIFC
+import Draft
 if FreeCAD.GuiUp:
     import FreeCADGui
     from PySide import QtGui,QtCore
@@ -205,9 +208,9 @@ class Component(ArchIFC.IfcProduct):
         if not "Material" in pl:
             obj.addProperty("App::PropertyLink","Material","Component",QT_TRANSLATE_NOOP("App::Property","A material for this object"))
         if "BaseMaterial" in pl:
-                obj.Material = obj.BaseMaterial
-                obj.removeProperty("BaseMaterial")
-                FreeCAD.Console.PrintMessage("Upgrading "+obj.Label+" BaseMaterial property to Material\n")
+            obj.Material = obj.BaseMaterial
+            obj.removeProperty("BaseMaterial")
+            FreeCAD.Console.PrintMessage("Upgrading "+obj.Label+" BaseMaterial property to Material\n")
         if not "MoveBase" in pl:
             obj.addProperty("App::PropertyBool","MoveBase","Component",QT_TRANSLATE_NOOP("App::Property","Specifies if moving this object moves its base instead"))
             obj.MoveBase = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch").GetBool("MoveBase",False)
@@ -713,7 +716,8 @@ class Component(ArchIFC.IfcProduct):
             The base shape, with the additions and subtractions performed.
         """
 
-        import Draft,Part
+        import Draft
+        import Part
         #print("Processing subshapes of ",obj.Label, " : ",obj.Additions)
 
         if placement:
@@ -805,18 +809,18 @@ class Component(ArchIFC.IfcProduct):
                     if o.Shape:
                         if not o.Shape.isNull():
                             if o.Shape.Solids and base.Solids:
-                                    ## TODO use Part.Shape() instead?
-                                    s = o.Shape.copy()
-                                    if placement:
-                                        # see https://forum.freecadweb.org/viewtopic.php?p=579754#p579754
-                                        s.Placement = placement.multiply(s.Placement)
-                                    try:
-                                        if len(base.Solids) > 1:
-                                            base = Part.makeCompound([sol.cut(s) for sol in base.Solids])
-                                        else:
-                                            base = base.cut(s)
-                                    except Part.OCCError:
-                                        print("Arch: unable to cut object ",o.Name, " from ", obj.Name)
+                                ## TODO use Part.Shape() instead?
+                                s = o.Shape.copy()
+                                if placement:
+                                    # see https://forum.freecadweb.org/viewtopic.php?p=579754#p579754
+                                    s.Placement = placement.multiply(s.Placement)
+                                try:
+                                    if len(base.Solids) > 1:
+                                        base = Part.makeCompound([sol.cut(s) for sol in base.Solids])
+                                    else:
+                                        base = base.cut(s)
+                                except Part.OCCError:
+                                    print("Arch: unable to cut object ",o.Name, " from ", obj.Name)
         return base
 
     def spread(self,obj,shape,placement=None):
@@ -986,7 +990,8 @@ class Component(ArchIFC.IfcProduct):
             obj.PerimeterLength = 0
             return
 
-        import TechDraw, Part
+        import Part
+        import TechDraw
         fmax = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch").GetInt("MaxComputeAreas",20)
         if len(obj.Shape.Faces) > fmax:
             obj.VerticalArea = 0
@@ -1199,10 +1204,10 @@ class ViewProviderComponent:
                                 if obj.ViewObject.ShapeColor != c:
                                     obj.ViewObject.ShapeColor = c
                     if 'Transparency' in obj.Material.Material:
-                            t = int(obj.Material.Material['Transparency'])
-                            if obj.ViewObject:
-                                if obj.ViewObject.Transparency != t:
-                                    obj.ViewObject.Transparency = t
+                        t = int(obj.Material.Material['Transparency'])
+                        if obj.ViewObject:
+                            if obj.ViewObject.Transparency != t:
+                                obj.ViewObject.Transparency = t
         elif prop == "Shape":
             if obj.Base:
                 if obj.Base.isDerivedFrom("Part::Compound"):
@@ -1972,7 +1977,10 @@ class ComponentTaskPanel:
             return
         if not isinstance(self.obj.IfcProperties,dict):
             return
-        import Arch_rc, csv, os, ArchIFCSchema
+        import Arch_rc
+        import csv
+        import os
+        import ArchIFCSchema
 
         # get presets
         self.ptypes = list(ArchIFCSchema.IfcTypes.keys())

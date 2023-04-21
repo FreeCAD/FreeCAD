@@ -88,6 +88,8 @@ DlgSettingsEditorImp::DlgSettingsEditorImp( QWidget* parent )
     ui->setupUi(this);
     ui->EnableFolding->hide(); // Switch off until we have an editor with folding
 
+    setupConnections();
+
 #if QT_VERSION < QT_VERSION_CHECK(5, 10, 0)
     ui->textEdit1->setTabStopWidth(40);
 #else
@@ -176,11 +178,30 @@ DlgSettingsEditorImp::~DlgSettingsEditorImp()
     delete d;
 }
 
+void DlgSettingsEditorImp::setupConnections()
+{
+    connect(ui->displayItems, &QTreeWidget::currentItemChanged,
+            this, &DlgSettingsEditorImp::onDisplayItemsCurrentItemChanged);
+    connect(ui->colorButton, &ColorButton::changed,
+            this, &DlgSettingsEditorImp::onColorButtonChanged);
+#if QT_VERSION < QT_VERSION_CHECK(5, 14, 0)
+    connect(ui->fontFamily, qOverload<const QString&>(&QComboBox::activated),
+            this, &DlgSettingsEditorImp::onFontFamilyActivated);
+    connect(ui->fontSize, qOverload<const QString&>(&PrefSpinBox::valueChanged),
+            this, &DlgSettingsEditorImp::onFontSizeValueChanged);
+#else
+    connect(ui->fontFamily, &QComboBox::textActivated,
+            this, &DlgSettingsEditorImp::onFontFamilyActivated);
+    connect(ui->fontSize, &PrefSpinBox::textChanged,
+            this, &DlgSettingsEditorImp::onFontSizeValueChanged);
+#endif
+}
+
 /** Searches for the color value corresponding to \e name in current editor
  *   settings ColorMap and assigns it to the color button
  *  @see Gui::ColorButton
  */
-void DlgSettingsEditorImp::on_displayItems_currentItemChanged(QTreeWidgetItem *item)
+void DlgSettingsEditorImp::onDisplayItemsCurrentItemChanged(QTreeWidgetItem *item)
 {
     int index = ui->displayItems->indexOfTopLevelItem(item);
     unsigned int col = d->colormap[index].second;
@@ -188,7 +209,7 @@ void DlgSettingsEditorImp::on_displayItems_currentItemChanged(QTreeWidgetItem *i
 }
 
 /** Updates the color map if a color was changed */
-void DlgSettingsEditorImp::on_colorButton_changed()
+void DlgSettingsEditorImp::onColorButtonChanged()
 {
     QColor col = ui->colorButton->color();
     unsigned int lcol = App::Color::asPackedRGB<QColor>(col);
@@ -297,7 +318,7 @@ void DlgSettingsEditorImp::loadSettings()
     if (index < 0)
         index = 0;
     ui->fontFamily->setCurrentIndex(index);
-    on_fontFamily_activated(ui->fontFamily->currentText());
+    onFontFamilyActivated(ui->fontFamily->currentText());
     ui->displayItems->setCurrentItem(ui->displayItems->topLevelItem(0));
 }
 
@@ -316,16 +337,16 @@ void DlgSettingsEditorImp::changeEvent(QEvent *e)
     }
 }
 
-void DlgSettingsEditorImp::on_fontFamily_activated(const QString& fontFamily)
+void DlgSettingsEditorImp::onFontFamilyActivated(const QString& fontFamily)
 {
     int fontSize = ui->fontSize->value();
     QFont ft(fontFamily, fontSize);
     ui->textEdit1->setFont(ft);
 }
 
-void DlgSettingsEditorImp::on_fontSize_valueChanged(const QString&)
+void DlgSettingsEditorImp::onFontSizeValueChanged(const QString&)
 {
-    on_fontFamily_activated(ui->fontFamily->currentText());
+    onFontFamilyActivated(ui->fontFamily->currentText());
 }
 
 #include "moc_DlgEditorImp.cpp"

@@ -22,11 +22,13 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef FEMGUI_DLGSETTINGSFEMEXPORTABAQUSIMP_H
 #define FEMGUI_DLGSETTINGSFEMEXPORTABAQUSIMP_H
 
+#include <memory>
+
 #include <Gui/PropertyPage.h>
+
 
 namespace FemGui {
 
@@ -45,7 +47,7 @@ protected:
     void changeEvent(QEvent *e) override;
 
 private:
-    Ui_DlgSettingsFemExportAbaqus* ui;
+    std::unique_ptr<Ui_DlgSettingsFemExportAbaqus> ui;
 };
 
 } // namespace FemGui

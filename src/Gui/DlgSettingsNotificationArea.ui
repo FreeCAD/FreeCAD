@@ -7,14 +7,108 @@
     <x>0</x>
     <y>0</y>
     <width>654</width>
-    <height>356</height>
+    <height>375</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Notification Area</string>
   </property>
   <layout class="QGridLayout" name="gridLayout_2">
+   <item row="0" column="0">
+    <widget class="QGroupBox" name="GroupBox11">
+     <property name="title">
+      <string>Settings</string>
+     </property>
+     <layout class="QGridLayout" name="gridLayout">
+      <item row="0" column="0">
+       <widget class="Gui::PrefCheckBox" name="NotificationAreaEnabled">
+        <property name="toolTip">
+         <string>The Notification area will appear in the status bar</string>
+        </property>
+        <property name="text">
+         <string>Enable Notification Area</string>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>NotificationAreaEnabled</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>NotificationArea</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="Gui::PrefCheckBox" name="NonIntrusiveNotificationsEnabled">
+        <property name="toolTip">
+         <string>Non-intrusive notifications will appear next to the notification area in the status bar</string>
+        </property>
+        <property name="text">
+         <string>Enable non-intrusive notifications</string>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>NonIntrusiveNotificationsEnabled</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>NotificationArea</cstring>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
    <item row="1" column="0">
+    <widget class="QGroupBox" name="GroupBoxSubscriptions">
+     <property name="title">
+      <string>Additional data Sources</string>
+     </property>
+     <layout class="QGridLayout" name="gridLayout">
+      <item row="0" column="0">
+       <widget class="Gui::PrefCheckBox" name="errorSubscriptionEnabled">
+        <property name="toolTip">
+         <string>Errors will appear in the notification area</string>
+        </property>
+        <property name="text">
+         <string>Errors</string>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>ErrorSubscriptionEnabled</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>NotificationArea</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="Gui::PrefCheckBox" name="warningSubscriptionEnabled">
+        <property name="toolTip">
+         <string>Warnings will appear in the notification area</string>
+        </property>
+        <property name="text">
+         <string>Warnings</string>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>WarningSubscriptionEnabled</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>NotificationArea</cstring>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item row="2" column="0">
     <widget class="QGroupBox" name="groupBox">
      <property name="title">
       <string>Non-Intrusive Notifications</string>
@@ -104,47 +198,67 @@
         </property>
        </widget>
       </item>
-     </layout>
-    </widget>
-   </item>
-   <item row="0" column="0">
-    <widget class="QGroupBox" name="GroupBox11">
-     <property name="title">
-      <string>Settings</string>
-     </property>
-     <layout class="QGridLayout" name="gridLayout">
-      <item row="0" column="0">
-       <widget class="Gui::PrefCheckBox" name="NotificationAreaEnabled">
-        <property name="toolTip">
-         <string>The Notification area will appear in the status bar</string>
-        </property>
+      <item row="3" column="0">
+       <widget class="QLabel" name="label_width">
         <property name="text">
-         <string>Enable Notification Area</string>
+         <string>Notification width:</string>
         </property>
-        <property name="checked">
-         <bool>true</bool>
+       </widget>
+      </item>
+      <item row="3" column="1">
+       <widget class="Gui::PrefSpinBox" name="notificationWidth">
+        <property name="toolTip">
+         <string>Width of the notification in pixels</string>
+        </property>
+        <property name="minimum">
+         <number>300</number>
+        </property>
+        <property name="maximum">
+         <number>10000</number>
+        </property>
+        <property name="value">
+         <number>800</number>
         </property>
         <property name="prefEntry" stdset="0">
-         <cstring>NotificationAreaEnabled</cstring>
+         <cstring>NotificiationWidth</cstring>
         </property>
         <property name="prefPath" stdset="0">
          <cstring>NotificationArea</cstring>
         </property>
        </widget>
       </item>
-      <item row="1" column="0">
-       <widget class="Gui::PrefCheckBox" name="NonIntrusiveNotificationsEnabled">
+      <item row="4" column="0">
+       <widget class="Gui::PrefCheckBox" name="hideNonIntrusiveNotificationsWhenWindowDeactivated">
         <property name="toolTip">
-         <string>Non-intrusive notifications will appear next to the notification area in the status bar</string>
+         <string>Any open non-intrusive notifications will disappear when another window is activated</string>
         </property>
         <property name="text">
-         <string>Enable non-intrusive notifications</string>
+         <string>Hide when other window is activated</string>
         </property>
         <property name="checked">
          <bool>true</bool>
         </property>
         <property name="prefEntry" stdset="0">
-         <cstring>NonIntrusiveNotificationsEnabled</cstring>
+         <cstring>HideNonIntrusiveNotificationsWhenWindowDeactivated</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>NotificationArea</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="5" column="0">
+       <widget class="Gui::PrefCheckBox" name="preventNonIntrusiveNotificationsWhenWindowNotActive">
+        <property name="toolTip">
+         <string>Prevent non-intrusive notifications from appearing when the FreeCAD Window is not the active window</string>
+        </property>
+        <property name="text">
+         <string>Do not show when inactive</string>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>PreventNonIntrusiveNotificationsWhenWindowNotActive</cstring>
         </property>
         <property name="prefPath" stdset="0">
          <cstring>NotificationArea</cstring>
@@ -154,20 +268,7 @@
      </layout>
     </widget>
    </item>
-   <item row="6" column="0">
-    <spacer name="verticalSpacer">
-     <property name="orientation">
-      <enum>Qt::Vertical</enum>
-     </property>
-     <property name="sizeHint" stdset="0">
-      <size>
-       <width>20</width>
-       <height>63</height>
-      </size>
-     </property>
-    </spacer>
-   </item>
-   <item row="2" column="0">
+   <item row="3" column="0">
     <widget class="QGroupBox" name="groupBox_2">
      <property name="title">
       <string>Message List</string>
@@ -220,6 +321,19 @@
       </item>
      </layout>
     </widget>
+   </item>
+   <item row="4" column="0">
+    <spacer name="verticalSpacer">
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>20</width>
+       <height>63</height>
+      </size>
+     </property>
+    </spacer>
    </item>
   </layout>
  </widget>

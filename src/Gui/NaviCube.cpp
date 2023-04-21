@@ -110,6 +110,7 @@ public:
 };
 
 class NaviCubeImplementation : public ParameterGrp::ObserverType {
+	Q_DECLARE_TR_FUNCTIONS(NaviCubeImplementation)
 public:
     explicit NaviCubeImplementation(Gui::View3DInventorViewer*);
     ~NaviCubeImplementation() override;
@@ -893,12 +894,19 @@ void NaviCubeImplementation::initNaviCube(QtGLWidget* gl) {
         labels.clear();
         ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
             "User parameter:BaseApp/Preferences/NaviCube");
-        labels.push_back(hGrp->GetASCII("TextFront", "FRONT"));
-        labels.push_back(hGrp->GetASCII("TextRear", "REAR"));
-        labels.push_back(hGrp->GetASCII("TextTop", "TOP"));
-        labels.push_back(hGrp->GetASCII("TextBottom", "BOTTOM"));
-        labels.push_back(hGrp->GetASCII("TextRight", "RIGHT"));
-        labels.push_back(hGrp->GetASCII("TextLeft", "LEFT"));
+        // see https://wiki.qt.io/Technical_FAQ#How_can_I_convert_a_QString_to_char.2A_and_vice_versa.3F
+        QByteArray frontByteArray = tr("FRONT").toUtf8();
+        labels.push_back(hGrp->GetASCII("TextFront", frontByteArray.constData()));
+        QByteArray rearByteArray = tr("REAR").toUtf8();
+        labels.push_back(hGrp->GetASCII("TextRear", rearByteArray.constData()));
+        QByteArray topByteArray = tr("TOP").toUtf8();
+        labels.push_back(hGrp->GetASCII("TextTop", topByteArray.constData()));
+        QByteArray bottomByteArray = tr("BOTTOM").toUtf8();
+        labels.push_back(hGrp->GetASCII("TextBottom", bottomByteArray.constData()));
+        QByteArray rightByteArray = tr("RIGHT").toUtf8();
+        labels.push_back(hGrp->GetASCII("TextRight", rightByteArray.constData()));
+        QByteArray leftByteArray = tr("LEFT").toUtf8();
+        labels.push_back(hGrp->GetASCII("TextLeft", leftByteArray.constData()));
     }
     // create the main faces
     m_Textures[TEX_FRONT] = createCubeFaceTex(gl, gap, labels[0].c_str(), SHAPE_SQUARE);

@@ -32,6 +32,7 @@
 #include <QMenu>
 #include <QMessageBox>
 #include <QStringList>
+#include <QTextDocument>
 #include <QThread>
 #include <QTimer>
 #include <QTreeWidget>
@@ -79,6 +80,13 @@ struct NotificationAreaP
     bool notificationsDisabled = false;
     /// Control of confirmation mechanism (for Critical Messages)
     bool requireConfirmationCriticalMessageDuringRestoring = true;
+    /// Width of the non-intrusive notification
+    int notificationWidth = 800;
+    /// Any open non-intrusive notifications will disappear when another window is activated
+    bool hideNonIntrusiveNotificationsWhenWindowDeactivated = true;
+    /// Prevent non-intrusive notifications from appearing when the FreeCAD Window is not the active
+    /// window
+    bool preventNonIntrusiveNotificationsWhenWindowNotActive = true;
     //@}
 
     /** @name Widget parameters */
@@ -100,6 +108,8 @@ struct NotificationAreaP
     // The time between two consecutive messages forced by the inhibitTimer
     const unsigned int inhibitNotificationTime = 250;
     //@}
+
+    bool missedNotifications = false;
 
     // Access control
     std::mutex mutexNotification;
@@ -134,6 +144,9 @@ private:
         warning = BitmapFactory().pixmapFromSvg(":/icons/Warning.svg", QSize(16, 16));
         critical = BitmapFactory().pixmapFromSvg(":/icons/critical-info.svg", QSize(16, 16));
         info = BitmapFactory().pixmapFromSvg(":/icons/info.svg", QSize(16, 16));
+        notificationArea = QIcon(QStringLiteral(":/icons/InTray.svg"));
+        notificationAreaMissedNotifications =
+            QIcon(QStringLiteral(":/icons/InTray_missed_notifications.svg"));
     }
 
     inline static const auto& getResourceManager()
@@ -168,11 +181,25 @@ public:
         return rm.info;
     }
 
+    inline static auto NotificationAreaIcon()
+    {
+        auto rm = getResourceManager();
+        return rm.notificationArea;
+    }
+
+    inline static auto notificationAreaMissedNotificationsIcon()
+    {
+        auto rm = getResourceManager();
+        return rm.notificationAreaMissedNotifications;
+    }
+
 private:
     QPixmap error;
     QPixmap warning;
     QPixmap critical;
     QPixmap info;
+    QIcon notificationArea;
+    QIcon notificationAreaMissedNotifications;
 };
 
 /******************** Console Messages Observer (Console Interface) ************************/
@@ -231,7 +258,7 @@ void NotificationAreaObserver::SendLog(const std::string& notifiername, const st
             .trimmed();// remove any leading and trailing whitespace character ('\n')
 
     // avoid processing empty strings
-    if(simplifiedstring.isEmpty())
+    if (simplifiedstring.isEmpty())
         return;
 
     if (level == Base::LogStyle::TranslatedNotification) {
@@ -483,6 +510,11 @@ public:
         pushedItems.push_front(item);
     }
 
+    QSize size()
+    {
+        return tableWidget->size();
+    }
+
 protected:
     /// creates the Notifications Widget
     QWidget* createWidget(QWidget* parent) override
@@ -631,6 +663,33 @@ NotificationArea::ParameterObserver::ParameterObserver(NotificationArea* notific
              auto enabled = hGrp->GetBool(string.c_str(), true);
              notificationArea->pImp->autoRemoveUserNotifications = enabled;
          }},
+        {"NotificiationWidth",
+         [this](const std::string& string) {
+             auto width = hGrp->GetInt(string.c_str(), 800);
+             if (width < 300)
+                 width = 300;
+             notificationArea->pImp->notificationWidth = width;
+         }},
+        {"HideNonIntrusiveNotificationsWhenWindowDeactivated",
+         [this](const std::string& string) {
+             auto enabled = hGrp->GetBool(string.c_str(), true);
+             notificationArea->pImp->hideNonIntrusiveNotificationsWhenWindowDeactivated = enabled;
+         }},
+        {"PreventNonIntrusiveNotificationsWhenWindowNotActive",
+         [this](const std::string& string) {
+             auto enabled = hGrp->GetBool(string.c_str(), true);
+             notificationArea->pImp->preventNonIntrusiveNotificationsWhenWindowNotActive = enabled;
+         }},
+        {"ErrorSubscriptionEnabled",
+         [this](const std::string& string) {
+             auto enabled = hGrp->GetBool(string.c_str(), true);
+             notificationArea->pImp->observer->bErr = enabled;
+         }},
+        {"WarningSubscriptionEnabled",
+         [this](const std::string& string) {
+             auto enabled = hGrp->GetBool(string.c_str(), true);
+             notificationArea->pImp->observer->bWrn = enabled;
+         }},
     };
 
     for (auto& val : parameterMap) {
@@ -699,13 +758,48 @@ NotificationArea::NotificationArea(QWidget* parent)
             pImp->mutexNotification);// guard to avoid modifying the notification list and indices
                                      // while creating the tooltip
         setText(QString::number(0)); // no unread notifications
+        if (pImp->missedNotifications) {
+            setIcon(TrayIcon::Normal);
+            pImp->missedNotifications = false;
+        }
         static_cast<NotificationsAction*>(pImp->notificationaction)->synchroniseWidget();
 
-        // the position of the action has already been calculated (for a non-synchronised widget),
-        // the size could be recalculated here, but not the position according to the previous size.
-        // This resize event forces this recalculation.
-        QResizeEvent re(pImp->menu->size(), pImp->menu->size());
+
+        // There is a Qt bug in not respecting a QMenu size when size changes in aboutToShow.
+        //
+        // https://bugreports.qt.io/browse/QTBUG-54421
+        // https://forum.qt.io/topic/68765/how-to-update-geometry-on-qaction-visibility-change-in-qmenu-abouttoshow/3
+        //
+        // None of this works
+        // pImp->menu->updateGeometry();
+        // pImp->menu->adjustSize();
+        // pImp->menu->ensurePolished();
+        // this->updateGeometry();
+        // this->adjustSize();
+        // this->ensurePolished();
+
+        // This does correct the size
+        QSize size = static_cast<NotificationsAction*>(pImp->notificationaction)->size();
+        QResizeEvent re(size, size);
         qApp->sendEvent(pImp->menu, &re);
+
+        // This corrects the position of the menu
+        QTimer::singleShot(0, [&] {
+            QWidget* statusbar = static_cast<QWidget*>(this->parent());
+            QPoint statusbar_top_right = statusbar->mapToGlobal(statusbar->rect().topRight());
+            QSize menusize = pImp->menu->size();
+            QWidget* w = this;
+            QPoint button_pos = w->mapToGlobal(w->rect().topLeft());
+            QPoint widget_pos;
+            if ((statusbar_top_right.x() - menusize.width()) > button_pos.x()) {
+                widget_pos = QPoint(button_pos.x(), statusbar_top_right.y() - menusize.height());
+            }
+            else {
+                widget_pos = QPoint(statusbar_top_right.x() - menusize.width(),
+                                    statusbar_top_right.y() - menusize.height());
+            }
+            pImp->menu->move(widget_pos);
+        });
     });
 
 
@@ -724,6 +818,8 @@ NotificationArea::NotificationArea(QWidget* parent)
         setText(QString::number(na->getUnreadCount()));
         showInNotificationArea();
     });
+
+    setIcon(TrayIcon::Normal);
 }
 
 NotificationArea::~NotificationArea()
@@ -817,7 +913,7 @@ void NotificationArea::pushNotification(const QString& notifiername, const QStri
     auto timer_thread = pImp->inhibitTimer.thread();
     auto current_thread = QThread::currentThread();
 
-    if(timer_thread == current_thread)
+    if (timer_thread == current_thread)
         pImp->inhibitTimer.start(pImp->inhibitNotificationTime);
 }
 
@@ -882,7 +978,7 @@ void NotificationArea::showInNotificationArea()
         QString msgw =
             QString::fromLatin1(
                 "<style>p { margin: 0 0 0 0 } td { padding: 0 15px }</style>                     \
-        <p style='white-space:nowrap'>                                                                                      \
+        <p style='white-space:normal'>                                                                                      \
         <table>                                                                                                             \
         <tr>                                                                                                               \
         <th><small>%1</small></th>                                                                                        \
@@ -929,6 +1025,9 @@ void NotificationArea::showInNotificationArea()
                     iconstr = QStringLiteral(":/icons/info.svg");
                 }
 
+                QString tmpmessage =
+                    convertFromPlainText(item->msg, Qt::WhiteSpaceMode::WhiteSpaceNormal);
+
                 msgw +=
                     QString::fromLatin1(
                         "                                                                                   \
@@ -939,7 +1038,7 @@ void NotificationArea::showInNotificationArea()
                 </tr>")
                         .arg(iconstr)
                         .arg(item->notifierName)
-                        .arg(item->msg);
+                        .arg(tmpmessage);
 
                 // start a timer for each of these notifications that was not previously shown
                 if (!item->shown) {
@@ -978,11 +1077,28 @@ void NotificationArea::showInNotificationArea()
 
         msgw += QString::fromLatin1("</table></p>");
 
+        NotificationBox::Options options = NotificationBox::Options::RestrictAreaToReference;
 
-        NotificationBox::showText(this->mapToGlobal(QPoint()),
-                                  msgw,
-                                  pImp->notificationExpirationTime,
-                                  pImp->minimumOnScreenTime);
+        if (pImp->preventNonIntrusiveNotificationsWhenWindowNotActive) {
+            options = options | NotificationBox::Options::OnlyIfReferenceActive;
+        }
+
+        if (pImp->hideNonIntrusiveNotificationsWhenWindowDeactivated) {
+            options = options | NotificationBox::Options::HideIfReferenceWidgetDeactivated;
+        }
+
+        bool isshown = NotificationBox::showText(this->mapToGlobal(QPoint()),
+                                                 msgw,
+                                                 getMainWindow(),
+                                                 pImp->notificationExpirationTime,
+                                                 pImp->minimumOnScreenTime,
+                                                 options,
+                                                 pImp->notificationWidth);
+
+        if (!isshown && !pImp->missedNotifications) {
+            pImp->missedNotifications = true;
+            setIcon(TrayIcon::MissedNotifications);
+        }
     }
 }
 
@@ -990,4 +1106,14 @@ void NotificationArea::slotRestoreFinished(const App::Document&)
 {
     // Re-arm on restore critical message modal notifications if another document is loaded
     pImp->requireConfirmationCriticalMessageDuringRestoring = true;
+}
+
+void NotificationArea::setIcon(TrayIcon trayIcon)
+{
+    if (trayIcon == TrayIcon::Normal) {
+        QPushButton::setIcon(ResourceManager::NotificationAreaIcon());
+    }
+    else if (trayIcon == TrayIcon::MissedNotifications) {
+        QPushButton::setIcon(ResourceManager::notificationAreaMissedNotificationsIcon());
+    }
 }

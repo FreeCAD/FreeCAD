@@ -309,8 +309,6 @@ PyObject* TopoShapePy::writeInventor(PyObject * args, PyObject * keywds)
         getTopoShapePtr()->exportFaceSet(dev, angle, faceColors, result);
         getTopoShapePtr()->exportLineSet(result);
     }
-    // NOTE: Cleaning the triangulation may cause problems on some algorithms like BOP
-    //BRepTools::Clean(getTopoShapePtr()->getShape()); // remove triangulation
     return Py::new_reference_to(Py::String(result.str()));
 }
 
@@ -1633,11 +1631,7 @@ PyObject* TopoShapePy::makeChamfer(PyObject *args)
                     if (edge.ShapeType() == TopAbs_EDGE) {
                         //Add edge to fillet algorithm
                         const TopoDS_Face& face = TopoDS::Face(mapEdgeFace.FindFromKey(edge).First());
-#if OCC_VERSION_HEX > 0x070300
                         mkChamfer.Add(radius, radius, TopoDS::Edge(edge), face);
-#else
-                        mkChamfer.Add(radius, TopoDS::Edge(edge), face);
-#endif
                     }
                 }
             }
@@ -2671,7 +2665,6 @@ PyObject* TopoShapePy::optimalBoundingBox(PyObject *args)
         return nullptr;
 
     try {
-#if OCC_VERSION_HEX >= 0x070200
         TopoDS_Shape shape = this->getTopoShapePtr()->getShape();
         Bnd_Box bounds;
         BRepBndLib::AddOptimal(shape, bounds,
@@ -2691,9 +2684,6 @@ PyObject* TopoShapePy::optimalBoundingBox(PyObject *args)
 
         Py::BoundingBox pybox(box);
         return Py::new_reference_to(pybox);
-#else
-        throw Py::RuntimeError("Need OCCT 7.2.0 or higher");
-#endif
     }
     catch (const Standard_Failure& e) {
         throw Py::RuntimeError(e.GetMessageString());
@@ -2727,53 +2717,6 @@ PyObject* TopoShapePy::defeaturing(PyObject *args)
     }
 }
 
-// End of Methods, Start of Attributes
-
-#if 0 // see ComplexGeoDataPy::Matrix which does the same
-Py::Object TopoShapePy::getLocation(void) const
-{
-    const TopLoc_Location& loc = getTopoShapePtr()->getShape().Location();
-    gp_Trsf trf = (gp_Trsf)loc;
-    Base::Matrix4D mat;
-    mat[0][0] = trf.Value(1,1);
-    mat[0][1] = trf.Value(1,2);
-    mat[0][2] = trf.Value(1,3);
-    mat[0][3] = trf.Value(1,4);
-
-    mat[1][0] = trf.Value(2,1);
-    mat[1][1] = trf.Value(2,2);
-    mat[1][2] = trf.Value(2,3);
-    mat[1][3] = trf.Value(2,4);
-
-    mat[2][0] = trf.Value(3,1);
-    mat[2][1] = trf.Value(3,2);
-    mat[2][2] = trf.Value(3,3);
-    mat[2][3] = trf.Value(3,4);
-    return Py::asObject(new Base::MatrixPy(mat));
-}
-
-void TopoShapePy::setLocation(Py::Object o)
-{
-    PyObject* p = o.ptr();
-    if (PyObject_TypeCheck(p, &(Base::MatrixPy::Type))) {
-        Base::Matrix4D mat = static_cast<Base::MatrixPy*>(p)->value();
-        Base::Rotation rot(mat);
-        Base::Vector3d axis;
-        double angle;
-        rot.getValue(axis, angle);
-        gp_Trsf trf;
-        trf.SetRotation(gp_Ax1(gp_Pnt(), gp_Dir(axis.x, axis.y, axis.z)), angle);
-        trf.SetTranslationPart(gp_Vec(mat[0][3],mat[1][3],mat[2][3]));
-        TopLoc_Location loc(trf);
-        getTopoShapePtr()->getShape().Location(loc);
-    }
-    else {
-        std::string error = std::string("type must be 'Matrix', not ");
-        error += p->ob_type->tp_name;
-        throw Py::TypeError(error);
-    }
-}
-#endif
 
 Py::String TopoShapePy::getShapeType() const
 {

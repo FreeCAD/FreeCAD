@@ -36,7 +36,7 @@
       <source>Creates an approximated curve on top of a mesh.
 This command only works with a 'mesh' object.</source>
       <translation>Стварае набліжаную крывую - над паліганальнай сеткай.
-Гэтая каманда працуе толькі з аб'ектам 'паліганальная сетка'.</translation>
+Каманда працуе толькі з аб'ектам 'паліганальная сетка'.</translation>
     </message>
   </context>
   <context>
@@ -170,7 +170,7 @@ This command only works with a 'mesh' object.</source>
       <translation>Злучыць рэбры, калі адлегласць меней, чым</translation>
     </message>
     <message>
-      <location filename="../../CrossSections.cpp" line="343"/>
+      <location filename="../../CrossSections.cpp" line="366"/>
       <source>Failure</source>
       <translation>Няўдача</translation>
     </message>
@@ -222,7 +222,7 @@ This command only works with a 'mesh' object.</source>
 This command only works with a 'mesh' object, not a regular face or surface. To convert an object to a mesh use the tools of the Mesh Workbench.</source>
       <translation>Націсніце 'Пуск', потым абярыце кропкі на паліганальнай сетцы; калі будзе дастатковуя колькасць кропак, пстрыкніце правай кнопкай мышы і абярыце 'Стварыць'. Паўтарыце гэты працэс, каб стварыць больш сплайнаў. Зачыніце гэтую панэль задач, каб завяршыць аперацыю.
 
-Гэтая каманда працуе толькі з аб'ектам 'паліганальная сетка', а не з звычайнымі гранямі ці паверхнямі. Каб пераўтварыць аб'ект у паліганальную сетку, ужывайце інструменты варштата Паліганальная сетка.</translation>
+Каманда працуе толькі з аб'ектам 'паліганальная сетка', а не з звычайнымі гранямі ці паверхнямі. Каб пераўтварыць аб'ект у паліганальную сетку, ужывайце інструменты варштата Паліганальная сетка.</translation>
     </message>
     <message>
       <location filename="../../TaskCurveOnMesh.ui" line="38"/>
@@ -340,8 +340,7 @@ Surface deviation multiplied by the length of the current mesh segment (edge)</s
 These groups will be exported for mesh output formats supporting
 this feature (e.g. the format OBJ).</source>
       <translation>Сегменты паліганальнай сеткі будуць згуртаваныя ў адпаведнасці з колерам граняў аб'екта.
-Гэтыя суполкі будуць экспартаваныя для выходных фарматаў паліганальнай сеткі з падтрымкай
-гэтай функцыі (напрыклад, фармат OBJ).</translation>
+Суполкі будуць экспартаваныя для выходных фарматаў паліганальнай сеткі з падтрымкай гэтай функцыі (напрыклад, фармат OBJ).</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="124"/>
@@ -491,27 +490,27 @@ A value in the range of 0.2-10.</source>
       <translation>Gmsh</translation>
     </message>
     <message>
-      <location filename="../../Tessellation.cpp" line="212"/>
-      <location filename="../../Tessellation.cpp" line="218"/>
+      <location filename="../../Tessellation.cpp" line="225"/>
+      <location filename="../../Tessellation.cpp" line="231"/>
       <source>No active document</source>
       <translation>Без бягучага дакумента</translation>
     </message>
     <message>
-      <location filename="../../Tessellation.cpp" line="246"/>
+      <location filename="../../Tessellation.cpp" line="259"/>
       <source>You have selected a body without tip.
 Either set the tip of the body or select a different shape, please.</source>
       <translation>Вы абралі цела без наканечніка.
 Калі ласка, усталюйце наканечнік цела, альбо абярыце іншую фігуру.</translation>
     </message>
     <message>
-      <location filename="../../Tessellation.cpp" line="250"/>
+      <location filename="../../Tessellation.cpp" line="263"/>
       <source>You have selected a shape without faces.
 Select a different shape, please.</source>
       <translation>Вы абралі фігуру без граняў.
 Калі ласка, абярыце іншую фігуру.</translation>
     </message>
     <message>
-      <location filename="../../Tessellation.cpp" line="254"/>
+      <location filename="../../Tessellation.cpp" line="267"/>
       <source>Select a shape for meshing, first.</source>
       <translation>Спачатку абярыце фігуру для стварэння паліганальнай сеткі.</translation>
     </message>

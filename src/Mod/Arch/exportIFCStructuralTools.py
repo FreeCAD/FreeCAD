@@ -214,9 +214,9 @@ def createStructuralMember(ifcfile, ifcbin, obj):
         # creates geometry
         verts = [None for _ in range(len(edges))]
         for i, edge in enumerate(edges):
-           verts[i] = tuple(edge.Vertexes[0].Point.multiply(scaling))
-           cartPnt = ifcfile.createIfcCartesianPoint(verts[i])
-           vertPnt = ifcfile.createIfcVertexPoint(cartPnt)
+            verts[i] = tuple(edge.Vertexes[0].Point.multiply(scaling))
+            cartPnt = ifcfile.createIfcCartesianPoint(verts[i])
+            vertPnt = ifcfile.createIfcVertexPoint(cartPnt)
         orientedEdges = [None for _ in range(len(edges))]
         for i, vert in enumerate(verts):
             v2Index = (i + 1) if i < len(verts) - 1 else 0

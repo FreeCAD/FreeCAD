@@ -185,15 +185,22 @@ PyObject * VectorPy::sequence_item (PyObject *self, Py_ssize_t index)
         PyErr_SetString(PyExc_TypeError, "first arg must be Vector");
         return nullptr;
     }
-    if (index < 0 || index > 2) {
+    if ((index < 0) || (index > 2)) {
         PyErr_SetString(PyExc_IndexError, "index out of range");
         return nullptr;
     }
 
-    unsigned short pos = index % 3;
+    VectorPy* self_ = static_cast<VectorPy*>(self);
+    if (self_->sequence.length() == 0) {
+        self_->sequence = Py::List{3};
+    }
 
-    Base::Vector3d a = static_cast<VectorPy*>(self)->value();
-    return Py_BuildValue("d", a[pos]);
+    unsigned short pos = index % 3;
+    Base::Vector3d vec = self_->value();
+    Py::Float item{vec[pos]};
+    self_->sequence.setItem(pos, item);
+
+    return Py::new_reference_to(item);
 }
 
 int VectorPy::sequence_ass_item(PyObject *self, Py_ssize_t index, PyObject *value)

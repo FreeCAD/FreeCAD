@@ -46,7 +46,7 @@ from OpenSCADUtils import *
 
 # Save the native open function to avoid collisions
 if open.__module__ in ['__builtin__', 'io']:
-   pythonopen = open
+    pythonopen = open
 import ply.lex as lex
 import ply.yacc as yacc
 
@@ -443,7 +443,7 @@ def CGALFeatureObj(name, children,arguments=[]):
 
 def p_offset_action(p):
     'offset_action : offset LPAREN keywordargument_list RPAREN OBRACE block_list EBRACE'
-    subobj=None
+    subobj = None
     if len(p[6]) == 0:
         newobj = placeholder('group',[],'{}')
     elif (len(p[6]) == 1 ): #single object
@@ -456,16 +456,16 @@ def p_offset_action(p):
         offset = float(p[3]['delta'])
     checkObjShape(subobj)
     if subobj.Shape.Volume == 0 :
-       newobj=doc.addObject("Part::Offset2D",'Offset2D')
-       newobj.Source = subobj
-       newobj.Value = offset
-       if 'r' in p[3]:
-           newobj.Join = 0
-       else:
-           newobj.Join = 2
+        newobj = doc.addObject("Part::Offset2D",'Offset2D')
+        newobj.Source = subobj
+        newobj.Value = offset
+        if 'r' in p[3]:
+            newobj.Join = 0
+        else:
+            newobj.Join = 2
     else:
-       newobj=doc.addObject("Part::Offset",'offset')
-       newobj.Shape = subobj[0].Shape.makeOffset(offset)
+        newobj = doc.addObject("Part::Offset",'offset')
+        newobj.Shape = subobj[0].Shape.makeOffset(offset)
     newobj.Document.recompute()
     if gui:
         subobj.ViewObject.hide()
@@ -513,9 +513,9 @@ def p_resize_action(p):
     old_size = [old_bbox.XLength, old_bbox.YLength, old_bbox.ZLength]
     for r in range(0,3):
         if auto[r] == '1':
-           new_size[r] = new_size[0]
+            new_size[r] = new_size[0]
         if new_size[r] == '0':
-           new_size[r] = str(old_size[r])
+            new_size[r] = str(old_size[r])
 
     # Calculate a transform matrix from the current bounding box to the new one:
     transform_matrix = FreeCAD.Matrix()
@@ -607,28 +607,28 @@ def fuse(lst,name):
     if len(lst) == 0:
         myfuse = placeholder('group',[],'{}')
     elif len(lst) == 1:
-       return lst[0]
+        return lst[0]
     # Is this Multi Fuse
     elif len(lst) > 2:
-       if printverbose: print("Multi Fuse")
-       myfuse = doc.addObject('Part::MultiFuse',name)
-       myfuse.Shapes = lst
-       if gui:
-           for subobj in myfuse.Shapes:
-               subobj.ViewObject.hide()
+        if printverbose: print("Multi Fuse")
+        myfuse = doc.addObject('Part::MultiFuse',name)
+        myfuse.Shapes = lst
+        if gui:
+            for subobj in myfuse.Shapes:
+                subobj.ViewObject.hide()
     else:
-       if printverbose: print("Single Fuse")
-       myfuse = doc.addObject('Part::Fuse',name)
-       myfuse.Base = lst[0]
-       myfuse.Tool = lst[1]
-       checkObjShape(myfuse.Base)
-       checkObjShape(myfuse.Tool)
-       myfuse.Shape = myfuse.Base.Shape.fuse(myfuse.Tool.Shape)
-       if gui:
-           myfuse.Base.ViewObject.hide()
-           myfuse.Tool.ViewObject.hide()
+        if printverbose: print("Single Fuse")
+        myfuse = doc.addObject('Part::Fuse',name)
+        myfuse.Base = lst[0]
+        myfuse.Tool = lst[1]
+        checkObjShape(myfuse.Base)
+        checkObjShape(myfuse.Tool)
+        myfuse.Shape = myfuse.Base.Shape.fuse(myfuse.Tool.Shape)
+        if gui:
+            myfuse.Base.ViewObject.hide()
+            myfuse.Tool.ViewObject.hide()
     myfuse.Placement = FreeCAD.Placement()
-    return(myfuse)
+    return myfuse
 
 def p_empty_union_action(p):
     'union_action : union LPAREN RPAREN SEMICOL'
@@ -662,11 +662,11 @@ def p_difference_action(p):
         mycut.Base = p[5][0]
 #       Can only Cut two objects do we need to fuse extras
         if (len(p[5]) > 2 ):
-           if printverbose: print("Need to Fuse Extra First")
-           mycut.Tool = fuse(p[5][1:],'union')
+            if printverbose: print("Need to Fuse Extra First")
+            mycut.Tool = fuse(p[5][1:],'union')
         else :
-           mycut.Tool = p[5][1]
-           checkObjShape(mycut.Tool)
+            mycut.Tool = p[5][1]
+            checkObjShape(mycut.Tool)
         if gui:
             mycut.Base.ViewObject.hide()
             mycut.Tool.ViewObject.hide()
@@ -680,22 +680,22 @@ def p_intersection_action(p):
     if printverbose: print("intersection")
     # Is this Multi Common
     if (len(p[5]) > 2):
-       if printverbose: print("Multi Common")
-       mycommon = doc.addObject('Part::MultiCommon',p[1])
-       mycommon.Shapes = p[5]
-       if gui:
-           for subobj in mycommon.Shapes:
-               subobj.ViewObject.hide()
+        if printverbose: print("Multi Common")
+        mycommon = doc.addObject('Part::MultiCommon',p[1])
+        mycommon.Shapes = p[5]
+        if gui:
+            for subobj in mycommon.Shapes:
+                subobj.ViewObject.hide()
     elif (len(p[5]) == 2):
-       if printverbose: print("Single Common")
-       mycommon = doc.addObject('Part::Common',p[1])
-       mycommon.Base = p[5][0]
-       mycommon.Tool = p[5][1]
-       checkObjShape(mycommon.Base)
-       checkObjShape(mycommon.Tool)
-       if gui:
-           mycommon.Base.ViewObject.hide()
-           mycommon.Tool.ViewObject.hide()
+        if printverbose: print("Single Common")
+        mycommon = doc.addObject('Part::Common',p[1])
+        mycommon.Base = p[5][0]
+        mycommon.Tool = p[5][1]
+        checkObjShape(mycommon.Base)
+        checkObjShape(mycommon.Tool)
+        if gui:
+            mycommon.Base.ViewObject.hide()
+            mycommon.Tool.ViewObject.hide()
     elif (len(p[5]) == 1):
         mycommon = p[5][0]
     else : # 1 child
@@ -720,10 +720,10 @@ def process_rotate_extrude(obj, angle):
     myrev.Axis = (0.00,1.00,0.00)
     myrev.Base = (0.00,0.00,0.00)
     myrev.Angle = angle
-    myrev.Placement=FreeCAD.Placement(FreeCAD.Vector(),FreeCAD.Rotation(0,0,90))
+    myrev.Placement = FreeCAD.Placement(FreeCAD.Vector(),FreeCAD.Rotation(0,0,90))
     if gui:
         newobj.ViewObject.hide()
-    return(myrev)
+    return myrev
 
 def process_rotate_extrude_prism(obj, angle, n):
     newobj=doc.addObject("Part::FeaturePython",'PrismaticToroid')
@@ -737,7 +737,7 @@ def process_rotate_extrude_prism(obj, angle, n):
         else:
             newobj.ViewObject.Proxy = 0
         obj.ViewObject.hide()
-    return(newobj)
+    return newobj
 
 def p_rotate_extrude_action(p):
     'rotate_extrude_action : rotate_extrude LPAREN keywordargument_list RPAREN OBRACE block_list EBRACE'
@@ -766,7 +766,7 @@ def p_rotate_extrude_file(p):
     angle = 360.0
     if 'angle' in p[3]:
         angle = float(p[3]['angle'])
-    filen,ext =p[3]['file'] .rsplit('.',1)
+    filen,ext = p[3]['file'] .rsplit('.',1)
     obj = process_import_file(filen,ext,p[3]['layer'])
     n = int(round(float(p[3]['$fn'])))
     fnmax = FreeCAD.ParamGet(\
@@ -781,7 +781,7 @@ def p_rotate_extrude_file(p):
 
 def process_linear_extrude(obj,h) :
     #if gui:
-    newobj=doc.addObject("Part::FeaturePython",'RefineLinearExtrude')
+    newobj = doc.addObject("Part::FeaturePython",'RefineLinearExtrude')
     RefineShape(newobj,obj)#mylinear)
     if gui:
         if FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/OpenSCAD").\
@@ -800,11 +800,12 @@ def process_linear_extrude(obj,h) :
     mylinear.Solid = False
     if gui:
         newobj.ViewObject.hide()
-    return(mylinear)
+    return mylinear
 
 def process_linear_extrude_with_transform(base,height,twist,scale) :
-    newobj=doc.addObject("Part::FeaturePython",'transform_extrude')
-    Twist(newobj,base,height,-twist,scale) #base is an FreeCAD Object, height and twist are floats, scale is a two-component vector of floats
+    newobj = doc.addObject("Part::FeaturePython",'transform_extrude')
+    # base is a FreeCAD Object, height & twist are floats, scale is a two-component vector of floats
+    Twist(newobj,base,height,-twist,scale)
     if gui:
         if FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/OpenSCAD").\
             GetBool('useViewProviderTree'):
@@ -814,7 +815,7 @@ def process_linear_extrude_with_transform(base,height,twist,scale) :
             newobj.ViewObject.Proxy = 0
     #import ViewProviderTree from OpenSCADFeatures
     #ViewProviderTree(obj.ViewObject)
-    return(newobj)
+    return newobj
 
 def p_linear_extrude_with_transform(p):
     'linear_extrude_with_transform : linear_extrude LPAREN keywordargument_list RPAREN OBRACE block_list EBRACE'
@@ -843,7 +844,7 @@ def p_linear_extrude_with_transform(p):
     else:
         newobj = process_linear_extrude(obj,h)
     if p[3].get('center','false')=='true' :
-       center(newobj,0,0,h)
+        center(newobj,0,0,h)
     p[0] = [newobj]
     if gui:
         obj.ViewObject.hide()
@@ -852,7 +853,7 @@ def p_linear_extrude_with_transform(p):
 def p_import_file1(p):
     'import_file1 : import LPAREN keywordargument_list RPAREN SEMICOL'
     if printverbose: print("Import File")
-    filen,ext =p[3]['file'].rsplit('.',1)
+    filen,ext = p[3]['file'].rsplit('.',1)
     p[0] = [process_import_file(filen,ext,p[3]['layer'])]
     if printverbose: print("End Import File")
 
@@ -861,7 +862,7 @@ def p_surface_action(p):
     if printverbose: print("Surface")
     obj = doc.addObject("Part::Feature",'surface')
     obj.Shape,xoff,yoff=makeSurfaceVolume(p[3]['file'])
-    if p[3].get('center','false')=='true' :
+    if p[3].get('center','false') == 'true' :
         center(obj,xoff,yoff,0.0)
     p[0] = [obj]
     if printverbose: print("End surface")
@@ -869,78 +870,79 @@ def p_surface_action(p):
 def process_import_file(fname,ext,layer):
     if printverbose: print("Importing : "+fname+"."+ext+" Layer : "+layer)
     if ext.lower() in reverseimporttypes()['Mesh']:
-        obj=process_mesh_file(fname,ext)
+        obj = process_mesh_file(fname,ext)
     elif ext.lower() == 'dxf' :
-        obj=processDXF(fname,layer)
+        obj = processDXF(fname,layer)
     elif ext.lower() == 'svg':
-        obj=processSVG(fname, ext)
+        obj = processSVG(fname, ext)
     else:
         raise ValueError("Unsupported file extension %s" % ext)
-    return(obj)
+    return obj
 
 def processSVG(fname, ext):
-     from importSVG import svgHandler
-     if printverbose: print("SVG Handler")
-     doc = FreeCAD.ActiveDocument
-     docSVG = FreeCAD.newDocument(fname+'_tmp')
-     FreeCAD.ActiveDocument = docSVG
+    from importSVG import svgHandler
+    if printverbose: print("SVG Handler")
+    doc = FreeCAD.ActiveDocument
+    docSVG = FreeCAD.newDocument(fname+'_tmp')
+    FreeCAD.ActiveDocument = docSVG
 
-     # Set up the parser
-     parser = xml.sax.make_parser()
-     parser.setFeature(xml.sax.handler.feature_external_ges, False)
-     parser.setContentHandler(svgHandler())
-     parser._cont_handler.doc = docSVG
+    # Set up the parser
+    parser = xml.sax.make_parser()
+    parser.setFeature(xml.sax.handler.feature_external_ges, False)
+    parser.setContentHandler(svgHandler())
+    parser._cont_handler.doc = docSVG
 
-     # pathName is a Global
-     filename = os.path.join(pathName,fname+'.'+ext)
-     # Use the native Python open which was saved as `pythonopen`
-     parser.parse(pythonopen(filename))
+    # pathName is a Global
+    filename = os.path.join(pathName,fname+'.'+ext)
+    # Use the native Python open which was saved as `pythonopen`
+    parser.parse(pythonopen(filename))
 
-     #combine SVG objects into one
-     shapes = []
-     for obj in FreeCAD.ActiveDocument.Objects:
-         if printverbose: print(obj.Name)
-         if printverbose: print(obj.Shape)
-         shapes.append(obj.Shape)
-     #compoundSVG = Part.makeCompound(shapes)
-     #compoundSVG = Draft.join(objects)
-     FreeCAD.closeDocument(docSVG.Name)
-     FreeCAD.ActiveDocument=doc
-     obj=doc.addObject('Part::Feature',fname)
-     obj.Shape=Part.Compound(shapes)
-     return obj
+    #combine SVG objects into one
+    shapes = []
+    for obj in FreeCAD.ActiveDocument.Objects:
+        if printverbose: print(obj.Name)
+        if printverbose: print(obj.Shape)
+        shapes.append(obj.Shape)
+    #compoundSVG = Part.makeCompound(shapes)
+    #compoundSVG = Draft.join(objects)
+    FreeCAD.closeDocument(docSVG.Name)
+    FreeCAD.ActiveDocument=doc
+    obj=doc.addObject('Part::Feature',fname)
+    obj.Shape=Part.Compound(shapes)
+    return obj
 
 def process_mesh_file(fname,ext):
-    import Mesh,Part
+    import Mesh
+    import Part
     fullname = fname+'.'+ext
     filename = os.path.join(pathName,fullname)
     objname = os.path.split(fname)[1]
     mesh1 = doc.getObject(objname) #reuse imported object
     if not mesh1:
         Mesh.insert(filename)
-        mesh1=doc.getObject(objname)
+        mesh1 = doc.getObject(objname)
     if mesh1 is not None:
         if gui:
             mesh1.ViewObject.hide()
-        sh=Part.Shape()
+        sh = Part.Shape()
         sh.makeShapeFromMesh(mesh1.Mesh.Topology,0.1)
         solid = Part.Solid(sh)
-        obj=doc.addObject('Part::Feature',"Mesh")
+        obj = doc.addObject('Part::Feature',"Mesh")
         #ImportObject(obj,mesh1) #This object is not mutable from the GUI
         #ViewProviderTree(obj.ViewObject)
-        solid=solid.removeSplitter()
+        solid = solid.removeSplitter()
         if solid.Volume < 0:
             #sh.reverse()
             #sh = sh.copy()
             solid.complement()
-        obj.Shape=solid#.removeSplitter()
+        obj.Shape = solid#.removeSplitter()
     else: #mesh1 is None
         FreeCAD.Console.PrintError('Mesh not imported %s.%s %s\n' % \
                 (objname,ext,filename))
         import Part
-        obj=doc.addObject('Part::Feature',"FailedMeshImport")
-        obj.Shape=Part.Compound([])
-    return(obj)
+        obj = doc.addObject('Part::Feature',"FailedMeshImport")
+        obj.Shape = Part.Compound([])
+    return obj
 
 
 def processTextCmd(t):
@@ -948,13 +950,13 @@ def processTextCmd(t):
     tmpfilename = callopenscadstring(t,'dxf')
     from OpenSCAD2Dgeom import importDXFface
     face = importDXFface(tmpfilename,None,None)
-    obj=doc.addObject('Part::Feature','text')
-    obj.Shape=face
+    obj = doc.addObject('Part::Feature','text')
+    obj.Shape = face
     try:
         os.unlink(tmpfilename)
     except OSError:
         pass
-    return(obj)
+    return obj
 
 def processDXF(fname,layer):
     global doc
@@ -976,7 +978,7 @@ def processDXF(fname,layer):
     if printverbose: print("Closed : "+str(obj.Shape.isClosed()))
     if printverbose: print(obj.Shape.check())
     if printverbose: print([w.isClosed() for w in obj.Shape.Wires])
-    return(obj)
+    return obj
 
 def processSTL(fname):
     if printverbose: print("Process STL file")
@@ -1114,7 +1116,7 @@ def myPolygon(n,r1):
 
     polygon = doc.addObject("Part::Feature","Polygon")
     polygon.Shape = Part.Face(polygonwire)
-    return(polygon)
+    return polygon
 
 def p_cylinder_action(p):
     'cylinder_action : cylinder LPAREN keywordargument_list RPAREN SEMICOL'
@@ -1148,7 +1150,8 @@ def p_cylinder_action(p):
                         # If Draft can't import (probably due to lack of Pivy on Mac and
                         # Linux builds of FreeCAD), this is a fallback.
                         # or old level of FreeCAD
-                        if printverbose: print("Draft makePolygon Failed, falling back on manual polygon")
+                        if printverbose:
+                            print("Draft makePolygon Failed, falling back on manual polygon")
                         mycyl.Base = myPolygon(n,r1)
                         # mycyl.Solid = True
 
@@ -1190,7 +1193,7 @@ def p_cylinder_action(p):
         mycyl.Shape = Part.Compound([])
     if printverbose: print("Center = ",tocenter)
     if tocenter=='true' :
-       center(mycyl,0,0,h)
+        center(mycyl,0,0,h)
     if False :
 #   Does not fix problemfile or beltTighener although later is closer
         newobj=doc.addObject("Part::FeaturePython",'RefineCylinder')
@@ -1223,7 +1226,7 @@ def p_cube_action(p):
         mycube=doc.addObject("Part::Feature","emptycube")
         mycube.Shape = Part.Compound([])
     if p[3].get('center','false')=='true' :
-       center(mycube,l,w,h);
+        center(mycube,l,w,h)
     p[0] = [mycube]
     if printverbose: print("End Cube")
 
@@ -1272,7 +1275,7 @@ def p_square_action(p) :
     mysquare.Length=x
     mysquare.Width=y
     if p[3].get('center','false')=='true' :
-       center(mysquare,x,y,0)
+        center(mysquare,x,y,0)
     p[0] = [mysquare]
 
 def addString(t,s,p):
@@ -1313,7 +1316,7 @@ def convert_points_list_to_vector(l):
         if printverbose: print(i)
         v.append(FreeCAD.Vector(i[0],i[1]))
     if printverbose: print(v)
-    return(v)
+    return v
 
 
 def p_polygon_action_nopath(p) :
@@ -1338,21 +1341,21 @@ def p_polygon_action_plus_path(p) :
     if printverbose: print("Path Set List")
     if printverbose: print(p[12])
     for i in p[12] :
-         if printverbose: print(i)
-         mypolygon = doc.addObject('Part::Feature','wire')
-         path_list = []
-         for j in i :
-             j = int(j)
-             if printverbose: print(j)
-             path_list.append(v[j])
-#        Close path
-         path_list.append(v[int(i[0])])
-         if printverbose: print('Path List')
-         if printverbose: print(path_list)
-         wire = Part.makePolygon(path_list)
-         mypolygon.Shape = Part.Face(wire)
-         p[0] = [mypolygon]
-#        This only pushes last polygon
+        if printverbose: print(i)
+        mypolygon = doc.addObject('Part::Feature','wire')
+        path_list = []
+        for j in i :
+            j = int(j)
+            if printverbose: print(j)
+            path_list.append(v[j])
+#       Close path
+        path_list.append(v[int(i[0])])
+        if printverbose: print('Path List')
+        if printverbose: print(path_list)
+        wire = Part.makePolygon(path_list)
+        mypolygon.Shape = Part.Face(wire)
+        p[0] = [mypolygon]
+#       This only pushes last polygon
 
 def make_face(v1,v2,v3):
     wire = Part.makePolygon([v1,v2,v3,v1])
@@ -1380,8 +1383,8 @@ def p_polyhedron_action(p) :
         # Add first point to end of list to close polygon
         pp.append(pp[0])
         try:
-           w = Part.makePolygon(pp)
-           f = Part.Face(w)
+            w = Part.makePolygon(pp)
+            f = Part.Face(w)
         except Exception:
             secWireList = w.Edges[:]
             f = Part.makeFilledFace(Part.__sortEdges__(secWireList))

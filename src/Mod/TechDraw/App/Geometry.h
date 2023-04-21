@@ -36,6 +36,9 @@
 #include <TopoDS_Vertex.hxx>
 #include <TopoDS_Wire.hxx>
 
+namespace Part {
+class TopoShape;
+}
 
 namespace TechDraw {
 
@@ -142,6 +145,7 @@ class TechDrawExport BaseGeom : public std::enable_shared_from_this<BaseGeom>
         void sourceIndex(int si) { m_sourceIndex = si; }
         std::string getCosmeticTag() { return cosmeticTag; }
         void setCosmeticTag(std::string t) { cosmeticTag = t; }
+        Part::TopoShape asTopoShape(double scale);
 
 protected:
         void createNewTag();
@@ -376,6 +380,8 @@ class TechDrawExport Vertex
         void isCenter(bool state) { m_center = state; }
         bool isReference() { return m_reference; }
         void isReference(bool state) { m_reference = state; }
+
+        Part::TopoShape asTopoShape(double scale);
 
     protected:
         //Uniqueness

@@ -136,7 +136,9 @@ void PropertyPythonObject::fromString(const std::string& repr)
             state.apply(args);
         }
         else if (this->object.hasAttr("__dict__")) {
-            this->object.setAttr("__dict__", res);
+            if (!res.isNone()) {
+                this->object.setAttr("__dict__", res);
+            }
         }
         else {
             this->object = res;

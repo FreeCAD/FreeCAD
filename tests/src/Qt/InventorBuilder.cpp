@@ -1,10 +1,10 @@
-#include <QTest>
-#include <QDebug>
-#include <sstream>
 #include <Base/Builder3D.h>
 #include <Inventor/SoDB.h>
 #include <Inventor/SoInput.h>
 #include <Inventor/nodes/SoSeparator.h>
+#include <QDebug>
+#include <QTest>
+#include <sstream>
 
 Q_DECLARE_METATYPE(Base::Vector3f)
 Q_DECLARE_METATYPE(Base::ColorRGB)
@@ -15,23 +15,21 @@ Q_DECLARE_METATYPE(Base::DrawStyle::Style)
 Q_DECLARE_METATYPE(Base::PolygonOffset)
 Q_DECLARE_METATYPE(Base::PolygonOffset::Style)
 
-class testInventorBuilder : public QObject
+class testInventorBuilder: public QObject
 {
     Q_OBJECT
 
 public:
     testInventorBuilder()
         : builder(output)
-    {
-    }
+    {}
     ~testInventorBuilder()
-    {
-    }
+    {}
 
     SoNode* loadBuffer(const std::string& buffer)
     {
         SoInput in;
-        in.setBuffer((void *)buffer.c_str(), buffer.size());
+        in.setBuffer((void*)buffer.c_str(), buffer.size());
         return SoDB::readAll(&in);
     }
 
@@ -41,17 +39,14 @@ private Q_SLOTS:
         SoDB::init();
     }
     void initTestCase_data()
-    {
-
-    }
+    {}
     void cleanupTestCase()
     {
         SoDB::finish();
     }
 
     void init()
-    {
-    }
+    {}
 
     void cleanup()
     {
@@ -76,24 +71,24 @@ private Q_SLOTS:
     {
         QTest::addColumn<Base::BindingElement::Binding>("input");
         QTest::addColumn<QString>("result");
-        QTest::newRow("MaterialBinding") << Base::BindingElement::Binding::Overall
-                                         << "MaterialBinding { value OVERALL } \n";
-        QTest::newRow("MaterialBinding") << Base::BindingElement::Binding::PerPart
-                                         << "MaterialBinding { value PER_PART } \n";
+        QTest::newRow("MaterialBinding")
+            << Base::BindingElement::Binding::Overall << "MaterialBinding { value OVERALL } \n";
+        QTest::newRow("MaterialBinding")
+            << Base::BindingElement::Binding::PerPart << "MaterialBinding { value PER_PART } \n";
         QTest::newRow("MaterialBinding") << Base::BindingElement::Binding::PerPartIndexed
                                          << "MaterialBinding { value PER_PART_INDEXED } \n";
-        QTest::newRow("MaterialBinding") << Base::BindingElement::Binding::PerFace
-                                         << "MaterialBinding { value PER_FACE } \n";
+        QTest::newRow("MaterialBinding")
+            << Base::BindingElement::Binding::PerFace << "MaterialBinding { value PER_FACE } \n";
         QTest::newRow("MaterialBinding") << Base::BindingElement::Binding::PerFaceIndexed
                                          << "MaterialBinding { value PER_FACE_INDEXED } \n";
         QTest::newRow("MaterialBinding") << Base::BindingElement::Binding::PerVertex
                                          << "MaterialBinding { value PER_VERTEX } \n";
         QTest::newRow("MaterialBinding") << Base::BindingElement::Binding::PerVertexIndexed
                                          << "MaterialBinding { value PER_VERTEX_INDEXED } \n";
-        QTest::newRow("MaterialBinding") << Base::BindingElement::Binding::Default
-                                         << "MaterialBinding { value OVERALL } \n";
-        QTest::newRow("MaterialBinding") << Base::BindingElement::Binding::None
-                                         << "MaterialBinding { value OVERALL } \n";
+        QTest::newRow("MaterialBinding")
+            << Base::BindingElement::Binding::Default << "MaterialBinding { value OVERALL } \n";
+        QTest::newRow("MaterialBinding")
+            << Base::BindingElement::Binding::None << "MaterialBinding { value OVERALL } \n";
     }
 
     void test_MaterialBinding()
@@ -112,7 +107,7 @@ private Q_SLOTS:
     void test_Label_data()
     {
         auto result =
-R"(Label {
+            R"(Label {
   label "FreeCAD"
 }
 )";
@@ -126,7 +121,7 @@ R"(Label {
         QFETCH(QString, input);
         QFETCH(QString, result);
 
-        Base::LabelItem item{input.toStdString()};
+        Base::LabelItem item {input.toStdString()};
         builder.addNode(item);
 
         QString string = QString::fromStdString(output.str());
@@ -136,7 +131,7 @@ R"(Label {
     void test_Info_data()
     {
         auto result =
-R"(Info {
+            R"(Info {
   string "FreeCAD"
 }
 )";
@@ -150,7 +145,7 @@ R"(Info {
         QFETCH(QString, input);
         QFETCH(QString, result);
 
-        Base::InfoItem item{input.toStdString()};
+        Base::InfoItem item {input.toStdString()};
         builder.addNode(item);
 
         QString string = QString::fromStdString(output.str());
@@ -170,7 +165,7 @@ R"(Info {
         QFETCH(QString, input);
         QFETCH(QString, result);
 
-        Base::Text2Item item{input.toStdString()};
+        Base::Text2Item item {input.toStdString()};
         builder.addNode(item);
 
         QString string = QString::fromStdString(output.str());
@@ -180,13 +175,13 @@ R"(Info {
     void test_BaseColor_data()
     {
         auto result =
-R"(BaseColor {
+            R"(BaseColor {
   rgb 0.21 0.3 0.4
 }
 )";
         QTest::addColumn<Base::ColorRGB>("input");
         QTest::addColumn<QString>("result");
-        QTest::newRow("BaseColor") << Base::ColorRGB{0.21F, 0.3F, 0.4F} << result;
+        QTest::newRow("BaseColor") << Base::ColorRGB {0.21F, 0.3F, 0.4F} << result;
     }
 
     void test_BaseColor()
@@ -194,7 +189,7 @@ R"(BaseColor {
         QFETCH(Base::ColorRGB, input);
         QFETCH(QString, result);
 
-        Base::BaseColorItem item{input};
+        Base::BaseColorItem item {input};
         builder.addNode(item);
 
         QString string = QString::fromStdString(output.str());
@@ -204,13 +199,13 @@ R"(BaseColor {
     void test_Material_data()
     {
         auto result =
-R"(Material {
+            R"(Material {
   diffuseColor 1 0 0
 }
 )";
         QTest::addColumn<Base::ColorRGB>("input");
         QTest::addColumn<QString>("result");
-        QTest::newRow("Material") << Base::ColorRGB{1,0,0} << result;
+        QTest::newRow("Material") << Base::ColorRGB {1, 0, 0} << result;
     }
 
     void test_Material()
@@ -229,7 +224,7 @@ R"(Material {
     void test_Materials_data()
     {
         auto result =
-R"(Material {
+            R"(Material {
   diffuseColor [
     1 0 0
     0 1 0
@@ -241,7 +236,8 @@ R"(Material {
         QTest::addColumn<Base::ColorRGB>("input2");
         QTest::addColumn<Base::ColorRGB>("input3");
         QTest::addColumn<QString>("result");
-        QTest::newRow("Material") << Base::ColorRGB{1,0,0} << Base::ColorRGB{0,1,0} << Base::ColorRGB{0,0,1} << result;
+        QTest::newRow("Material") << Base::ColorRGB {1, 0, 0} << Base::ColorRGB {0, 1, 0}
+                                  << Base::ColorRGB {0, 0, 1} << result;
     }
 
     void test_Materials()
@@ -266,7 +262,7 @@ R"(Material {
     void test_DrawStyle_data()
     {
         auto result =
-R"(DrawStyle {
+            R"(DrawStyle {
   style FILLED
   pointSize 3
   lineWidth 3
@@ -278,7 +274,8 @@ R"(DrawStyle {
         QTest::addColumn<ushort>("lineWidth");
         QTest::addColumn<ushort>("linePattern");
         QTest::addColumn<QString>("result");
-        QTest::newRow("DrawStyle") << Base::DrawStyle::Style::Filled << ushort(3) << ushort(3) << ushort(0xf0f0) << result;
+        QTest::newRow("DrawStyle")
+            << Base::DrawStyle::Style::Filled << ushort(3) << ushort(3) << ushort(0xf0f0) << result;
     }
 
     void test_DrawStyle()
@@ -305,7 +302,7 @@ R"(DrawStyle {
     void test_ShapeHints_data()
     {
         auto result =
-R"(ShapeHints {
+            R"(ShapeHints {
   creaseAngle 0.5
 }
 )";
@@ -319,7 +316,7 @@ R"(ShapeHints {
         QFETCH(float, input);
         QFETCH(QString, result);
 
-        Base::ShapeHintsItem item{input};
+        Base::ShapeHintsItem item {input};
         builder.addNode(item);
 
         QString string = QString::fromStdString(output.str());
@@ -329,7 +326,7 @@ R"(ShapeHints {
     void test_PolygonOffset_data()
     {
         auto result =
-R"(PolygonOffset {
+            R"(PolygonOffset {
   factor 2
   units 1
   styles FILLED
@@ -341,7 +338,8 @@ R"(PolygonOffset {
         QTest::addColumn<float>("units");
         QTest::addColumn<bool>("on");
         QTest::addColumn<QString>("result");
-        QTest::newRow("PolygonOffset") << Base::PolygonOffset::Style::Filled << 2.0F << 1.0F << false << result;
+        QTest::newRow("PolygonOffset")
+            << Base::PolygonOffset::Style::Filled << 2.0F << 1.0F << false << result;
     }
 
     void test_PolygonOffset()
@@ -411,7 +409,7 @@ R"(PolygonOffset {
     {
         QFETCH(int, num);
 
-        Base::FaceSetItem item{{num}};
+        Base::FaceSetItem item {{num}};
         builder.addNode(item);
 
         SoNode* node = loadBuffer(output.str());
@@ -432,7 +430,7 @@ R"(PolygonOffset {
         QFETCH(int, c2);
         QFETCH(int, c3);
 
-        Base::IndexedLineSetItem item{{c1, c2, c3}};
+        Base::IndexedLineSetItem item {{c1, c2, c3}};
         builder.addNode(item);
 
         SoNode* node = loadBuffer(output.str());
@@ -455,7 +453,7 @@ R"(PolygonOffset {
         QFETCH(int, c3);
         QFETCH(int, c4);
 
-        Base::IndexedFaceSetItem item{{c1, c2, c3, c4}};
+        Base::IndexedFaceSetItem item {{c1, c2, c3, c4}};
         builder.addNode(item);
 
         SoNode* node = loadBuffer(output.str());
@@ -465,7 +463,7 @@ R"(PolygonOffset {
     void test_Transform()
     {
         Base::Placement plm;
-        Base::TransformItem item{plm};
+        Base::TransformItem item {plm};
         builder.addNode(item);
 
         SoNode* node = loadBuffer(output.str());
@@ -475,13 +473,13 @@ R"(PolygonOffset {
     void test_Normal_data()
     {
         auto result =
-R"(Normal {
+            R"(Normal {
   vector 1 0 0.5
 }
 )";
         QTest::addColumn<Base::Vector3f>("input");
         QTest::addColumn<QString>("result");
-        QTest::newRow("Normal") << Base::Vector3f{1,0,0.5} << result;
+        QTest::newRow("Normal") << Base::Vector3f {1, 0, 0.5} << result;
     }
 
     void test_Normal()
@@ -489,7 +487,7 @@ R"(Normal {
         QFETCH(Base::Vector3f, input);
         QFETCH(QString, result);
 
-        builder.addNode(Base::NormalItem{{input}});
+        builder.addNode(Base::NormalItem {{input}});
 
         QString string = QString::fromStdString(output.str());
         QCOMPARE(string, result);
@@ -499,14 +497,14 @@ R"(Normal {
     {
         QTest::addColumn<Base::Line3f>("line");
         QTest::addColumn<Base::DrawStyle>("style");
-        QTest::newRow("LineItem") << Base::Line3f{} << Base::DrawStyle{};
+        QTest::newRow("LineItem") << Base::Line3f {} << Base::DrawStyle {};
     }
 
     void test_LineItem()
     {
         QFETCH(Base::Line3f, line);
         QFETCH(Base::DrawStyle, style);
-        Base::LineItem item{line, style};
+        Base::LineItem item {line, style};
         builder.addNode(item);
 
         SoNode* node = loadBuffer(output.str());
@@ -519,7 +517,8 @@ R"(Normal {
         QTest::addColumn<Base::Vector3f>("p2");
         QTest::addColumn<Base::Vector3f>("p3");
         QTest::addColumn<Base::DrawStyle>("style");
-        QTest::newRow("MultiLineItem") << Base::Vector3f{0,0,0} << Base::Vector3f{1,0,0} << Base::Vector3f{1,1,0} << Base::DrawStyle{};
+        QTest::newRow("MultiLineItem") << Base::Vector3f {0, 0, 0} << Base::Vector3f {1, 0, 0}
+                                       << Base::Vector3f {1, 1, 0} << Base::DrawStyle {};
     }
 
     void test_MultiLineItem()
@@ -528,7 +527,7 @@ R"(Normal {
         QFETCH(Base::Vector3f, p2);
         QFETCH(Base::Vector3f, p3);
         QFETCH(Base::DrawStyle, style);
-        Base::MultiLineItem item{{p1, p2, p3}, style};
+        Base::MultiLineItem item {{p1, p2, p3}, style};
         builder.addNode(item);
 
         SoNode* node = loadBuffer(output.str());
@@ -539,14 +538,15 @@ R"(Normal {
     {
         QTest::addColumn<Base::Line3f>("line");
         QTest::addColumn<Base::DrawStyle>("style");
-        QTest::newRow("Arrow") << Base::Line3f{Base::Vector3f{0,0,10}, Base::Vector3f{}} << Base::DrawStyle{};
+        QTest::newRow("Arrow") << Base::Line3f {Base::Vector3f {0, 0, 10}, Base::Vector3f {}}
+                               << Base::DrawStyle {};
     }
 
     void test_ArrowItem()
     {
         QFETCH(Base::Line3f, line);
         QFETCH(Base::DrawStyle, style);
-        Base::ArrowItem item{line, style};
+        Base::ArrowItem item {line, style};
         builder.addNode(item);
 
         SoNode* node = loadBuffer(output.str());
@@ -558,7 +558,8 @@ R"(Normal {
         QTest::addColumn<Base::Vector3f>("p1");
         QTest::addColumn<Base::Vector3f>("p2");
         QTest::addColumn<Base::DrawStyle>("style");
-        QTest::newRow("BoundingBoxItem") << Base::Vector3f{0,0,0} << Base::Vector3f{1,1,1} << Base::DrawStyle{};
+        QTest::newRow("BoundingBoxItem")
+            << Base::Vector3f {0, 0, 0} << Base::Vector3f {1, 1, 1} << Base::DrawStyle {};
     }
 
     void test_BoundingBoxItem()
@@ -566,7 +567,7 @@ R"(Normal {
         QFETCH(Base::Vector3f, p1);
         QFETCH(Base::Vector3f, p2);
         QFETCH(Base::DrawStyle, style);
-        Base::BoundingBoxItem item{p1, p2, style};
+        Base::BoundingBoxItem item {p1, p2, style};
         builder.addNode(item);
 
         SoNode* node = loadBuffer(output.str());
@@ -578,7 +579,8 @@ R"(Normal {
         QTest::addColumn<Base::Vector3f>("p1");
         QTest::addColumn<Base::Vector3f>("p2");
         QTest::addColumn<Base::Vector3f>("p3");
-        QTest::newRow("Coordinate3Item") << Base::Vector3f{0,0,0} << Base::Vector3f{1,0,0} << Base::Vector3f{1,1,0};
+        QTest::newRow("Coordinate3Item")
+            << Base::Vector3f {0, 0, 0} << Base::Vector3f {1, 0, 0} << Base::Vector3f {1, 1, 0};
     }
 
     void test_Coordinate3Item()
@@ -586,7 +588,7 @@ R"(Normal {
         QFETCH(Base::Vector3f, p1);
         QFETCH(Base::Vector3f, p2);
         QFETCH(Base::Vector3f, p3);
-        Base::Coordinate3Item item{{p1, p2, p3}};
+        Base::Coordinate3Item item {{p1, p2, p3}};
         builder.addNode(item);
 
         SoNode* node = loadBuffer(output.str());
@@ -597,14 +599,14 @@ R"(Normal {
     {
         QTest::addColumn<Base::Vector3f>("point");
         QTest::addColumn<Base::DrawStyle>("style");
-        QTest::newRow("PointItem") << Base::Vector3f{} << Base::DrawStyle{};
+        QTest::newRow("PointItem") << Base::Vector3f {} << Base::DrawStyle {};
     }
 
     void test_PointItem()
     {
         QFETCH(Base::Vector3f, point);
         QFETCH(Base::DrawStyle, style);
-        Base::PointItem item{point, style};
+        Base::PointItem item {point, style};
         builder.addNode(item);
 
         SoNode* node = loadBuffer(output.str());
@@ -615,24 +617,24 @@ R"(Normal {
     {
         QTest::addColumn<Base::BindingElement::Binding>("input");
         QTest::addColumn<QString>("result");
-        QTest::newRow("NormalBinding") << Base::BindingElement::Binding::Overall
-                                       << "NormalBinding { value OVERALL }\n";
-        QTest::newRow("NormalBinding") << Base::BindingElement::Binding::PerPart
-                                       << "NormalBinding { value PER_PART }\n";
+        QTest::newRow("NormalBinding")
+            << Base::BindingElement::Binding::Overall << "NormalBinding { value OVERALL }\n";
+        QTest::newRow("NormalBinding")
+            << Base::BindingElement::Binding::PerPart << "NormalBinding { value PER_PART }\n";
         QTest::newRow("NormalBinding") << Base::BindingElement::Binding::PerPartIndexed
                                        << "NormalBinding { value PER_PART_INDEXED }\n";
-        QTest::newRow("NormalBinding") << Base::BindingElement::Binding::PerFace
-                                       << "NormalBinding { value PER_FACE }\n";
+        QTest::newRow("NormalBinding")
+            << Base::BindingElement::Binding::PerFace << "NormalBinding { value PER_FACE }\n";
         QTest::newRow("NormalBinding") << Base::BindingElement::Binding::PerFaceIndexed
                                        << "NormalBinding { value PER_FACE_INDEXED }\n";
-        QTest::newRow("NormalBinding") << Base::BindingElement::Binding::PerVertex
-                                       << "NormalBinding { value PER_VERTEX }\n";
+        QTest::newRow("NormalBinding")
+            << Base::BindingElement::Binding::PerVertex << "NormalBinding { value PER_VERTEX }\n";
         QTest::newRow("NormalBinding") << Base::BindingElement::Binding::PerVertexIndexed
                                        << "NormalBinding { value PER_VERTEX_INDEXED }\n";
-        QTest::newRow("NormalBinding") << Base::BindingElement::Binding::Default
-                                       << "NormalBinding { value OVERALL }\n";
-        QTest::newRow("NormalBinding") << Base::BindingElement::Binding::None
-                                       << "NormalBinding { value OVERALL }\n";
+        QTest::newRow("NormalBinding")
+            << Base::BindingElement::Binding::Default << "NormalBinding { value OVERALL }\n";
+        QTest::newRow("NormalBinding")
+            << Base::BindingElement::Binding::None << "NormalBinding { value OVERALL }\n";
     }
 
     void test_NormalBinding()
@@ -651,7 +653,7 @@ R"(Normal {
     void test_Cylinder_data()
     {
         auto result =
-R"(Cylinder {
+            R"(Cylinder {
   radius 3
   height 7
   parts (SIDES | TOP | BOTTOM)

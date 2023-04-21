@@ -170,7 +170,7 @@ This command only works with a 'mesh' object.</source>
       <translation>Συνδέστε τις άκρες εάν η απόσταση είναι μικρότερη από</translation>
     </message>
     <message>
-      <location filename="../../CrossSections.cpp" line="343"/>
+      <location filename="../../CrossSections.cpp" line="366"/>
       <source>Failure</source>
       <translation>Αποτυχία</translation>
     </message>
@@ -489,27 +489,27 @@ A value in the range of 0.2-10.</source>
       <translation>Gmsh</translation>
     </message>
     <message>
-      <location filename="../../Tessellation.cpp" line="212"/>
-      <location filename="../../Tessellation.cpp" line="218"/>
+      <location filename="../../Tessellation.cpp" line="225"/>
+      <location filename="../../Tessellation.cpp" line="231"/>
       <source>No active document</source>
       <translation>Κανένα ενεργό έγγραφο</translation>
     </message>
     <message>
-      <location filename="../../Tessellation.cpp" line="246"/>
+      <location filename="../../Tessellation.cpp" line="259"/>
       <source>You have selected a body without tip.
 Either set the tip of the body or select a different shape, please.</source>
       <translation>Έχετε επιλέξει σώμα χωρίς άκρη.
 Είτε ρυθμίστε την άκρη του σώματος είτε επιλέξτε ένα διαφορετικό σχήμα.</translation>
     </message>
     <message>
-      <location filename="../../Tessellation.cpp" line="250"/>
+      <location filename="../../Tessellation.cpp" line="263"/>
       <source>You have selected a shape without faces.
 Select a different shape, please.</source>
       <translation>Έχετε επιλέξει ένα σχήμα χωρίς πρόσωπα.
 Πρακαλώ επιλέξτε άλλο σχήμα.</translation>
     </message>
     <message>
-      <location filename="../../Tessellation.cpp" line="254"/>
+      <location filename="../../Tessellation.cpp" line="267"/>
       <source>Select a shape for meshing, first.</source>
       <translation>Επιλέξτε ένα σχήμα για πλεγματοποίηση, πρώτα.</translation>
     </message>

@@ -52,11 +52,12 @@ public:
                   Gui::SelectionSingleton::MessageType Reason) override;
 
 private Q_SLOTS:
-    void on_changeMode_activated(const QString&);
-    void on_changePlot_activated(const QString&);
-    void on_spinTransparency_valueChanged(int);
-    void on_spinPointSize_valueChanged(int);
-    void on_spinLineWidth_valueChanged(int);
+    void setupConnections();
+    void onChangeModeActivated(const QString&);
+    void onChangePlotActivated(const QString&);
+    void onTransparencyValueChanged(int);
+    void onPointSizeValueChanged(int);
+    void onLineWidthValueChanged(int);
 
 protected:
     void changeEvent(QEvent *e) override;

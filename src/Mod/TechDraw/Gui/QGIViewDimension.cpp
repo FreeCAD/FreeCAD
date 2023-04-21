@@ -52,6 +52,7 @@
 #include "QGIArrow.h"
 #include "QGIDimLines.h"
 #include "QGIVertex.h"
+#include "QGCustomSvg.h"
 #include "ViewProviderDimension.h"
 #include "ZVALUE.h"
 
@@ -399,33 +400,15 @@ void QGIDatumLabel::setUnitString(QString text)
 
 int QGIDatumLabel::getPrecision()
 {
-    int precision;
-    bool global = false;
-    global = Preferences::useGlobalDecimals();
-    if (global) {
-        precision = Base::UnitsApi::getDecimals();
+    if (Preferences::useGlobalDecimals()) {
+        return Base::UnitsApi::getDecimals();
     }
-    else {
-        Base::Reference<ParameterGrp> hGrp = App::GetApplication()
-                                                 .GetUserParameter()
-                                                 .GetGroup("BaseApp")
-                                                 ->GetGroup("Preferences")
-                                                 ->GetGroup("Mod/TechDraw/Dimensions");
-        precision = hGrp->GetInt("AltDecimals", 2);
-    }
-    return precision;
+    return Preferences::getPreferenceGroup("Dimensions")->GetInt("AltDecimals", 2);
 }
 
 double QGIDatumLabel::getTolAdjust()
 {
-    double adjust;
-    Base::Reference<ParameterGrp> hGrp = App::GetApplication()
-                                             .GetUserParameter()
-                                             .GetGroup("BaseApp")
-                                             ->GetGroup("Preferences")
-                                             ->GetGroup("Mod/TechDraw/Dimensions");
-    adjust = hGrp->GetFloat("TolSizeAdjust", 0.50);
-    return adjust;
+    return Preferences::getPreferenceGroup("Dimensions")->GetFloat("TolSizeAdjust", 0.50);
 }
 
 
@@ -512,6 +495,12 @@ QGIViewDimension::QGIViewDimension() : dvDimension(nullptr), hasHover(false), m_
     setZValue(ZVALUE::DIMENSION);//note: this won't paint dimensions over another View if it stacks
                                  //above this Dimension's parent view.   need Layers?
     hideFrame();
+
+    m_refFlag = new QGCustomSvg();
+    m_refFlag->setParentItem(this);
+    m_refFlag->load(QString::fromUtf8(":/icons/TechDraw_RefError.svg"));
+    m_refFlag->setZValue(ZVALUE::LOCK);
+    m_refFlag->hide();
 }
 
 QVariant QGIViewDimension::itemChange(GraphicsItemChange change, const QVariant& value)
@@ -637,6 +626,14 @@ void QGIViewDimension::updateView(bool update)
         updateDim();
     }
 
+    if (dim->goodReferenceGeometry()) {
+        m_refFlag->hide();
+    } else {
+//        m_refFlag->setPos(datumLabel->pos());
+        m_refFlag->centerAt(datumLabel->pos() + datumLabel->boundingRect().center());
+        m_refFlag->show();
+    }
+
     draw();
 }
 
@@ -699,18 +696,15 @@ void QGIViewDimension::datumLabelDragFinished()
 //this is for formatting and finding centers, not display
 QString QGIViewDimension::getLabelText()
 {
-    QString result;
     QString first = datumLabel->getDimText()->toPlainText();
     QString second = datumLabel->getTolTextOver()->toPlainText();
     QString third = datumLabel->getTolTextUnder()->toPlainText();
     if (second.length() > third.length()) {
-        result = first + second;
+        return first + second;
     }
     else {
-        result = first + third;
+        return first + third;
     }
-
-    return result;
 }
 
 void QGIViewDimension::draw()
@@ -855,7 +849,7 @@ Base::Vector2d QGIViewDimension::getIsoRefOutsetPoint(const Base::BoundBox2d& la
 {
     return Base::Vector2d(right ? labelRectangle.MinX - getDefaultIsoReferenceLineOverhang()
                                 : labelRectangle.MaxX + getDefaultIsoReferenceLineOverhang(),
-                          labelRectangle.MinY - getDefaultIsoDimensionLineSpacing());
+                          labelRectangle.MinY - getIsoDimensionLineSpacing());
 }
 
 Base::Vector2d QGIViewDimension::getIsoRefJointPoint(const Base::BoundBox2d& labelRectangle,
@@ -1152,10 +1146,10 @@ bool QGIViewDimension::constructDimensionArc(
         double borderRadius = (labelRectangle.GetCenter() - arcCenter).Length();
 
         if (borderRadius > arcRadius) {
-            borderRadius = arcRadius + getDefaultIsoDimensionLineSpacing();
+            borderRadius = arcRadius + getIsoDimensionLineSpacing();
         }
         else if (borderRadius < arcRadius) {
-            borderRadius = arcRadius - getDefaultIsoDimensionLineSpacing();
+            borderRadius = arcRadius - getIsoDimensionLineSpacing();
         }
 
         // ISO oriented labels are symmetrical along their center axis
@@ -1582,7 +1576,7 @@ void QGIViewDimension::drawDistanceExecutive(const Base::Vector2d& startPoint,
             labelCenter
             + Base::Vector2d::FromPolar(
                 placementFactor
-                    * (labelRectangle.Height() * 0.5 + getDefaultIsoDimensionLineSpacing()),
+                    * (labelRectangle.Height() * 0.5 + getIsoDimensionLineSpacing()),
                 lineAngle + M_PI_2));
 
         // Compute the dimensional line start and end crossings with (virtual) extension lines
@@ -1792,7 +1786,7 @@ void QGIViewDimension::drawDistanceOverride(const Base::Vector2d& startPoint,
             labelCenter
             + Base::Vector2d::FromPolar(
                 placementFactor
-                    * (labelRectangle.Height() * 0.5 + getDefaultIsoDimensionLineSpacing()),
+                    * (labelRectangle.Height() * 0.5 + getIsoDimensionLineSpacing()),
                 lineAngle + M_PI_2));
 
         // Compute the dimensional line start and end crossings with (virtual) extension lines
@@ -1996,7 +1990,7 @@ void QGIViewDimension::drawRadiusExecutive(const Base::Vector2d& centerPoint,
         double lineAngle;
         double devAngle = computeLineAndLabelAngles(centerPoint, labelCenter,
                                                     labelRectangle.Height() * 0.5
-                                                        + getDefaultIsoDimensionLineSpacing(),
+                                                        + getIsoDimensionLineSpacing(),
                                                     lineAngle, labelAngle);
 
         // Is there point on the arc, where line from center intersects it perpendicularly?
@@ -2020,7 +2014,7 @@ void QGIViewDimension::drawRadiusExecutive(const Base::Vector2d& centerPoint,
 
             devAngle = computeLineAndLabelAngles(arcPoint, labelCenter,
                                                  labelRectangle.Height() * 0.5
-                                                     + getDefaultIsoDimensionLineSpacing(),
+                                                     + getIsoDimensionLineSpacing(),
                                                  lineAngle, labelAngle);
             lineAngle = DrawUtil::angleComposition(lineAngle, M_PI);
 
@@ -2245,7 +2239,7 @@ void QGIViewDimension::drawDiameter(TechDraw::DrawViewDimension* dimension,
             double lineAngle;
             double devAngle = computeLineAndLabelAngles(curveCenter, labelCenter,
                                                         labelRectangle.Height() * 0.5
-                                                            + getDefaultIsoDimensionLineSpacing(),
+                                                            + getIsoDimensionLineSpacing(),
                                                         lineAngle, labelAngle);
 
             // Correct the label center distance projected on the leader line and subtract radius
@@ -2443,7 +2437,7 @@ void QGIViewDimension::drawAngle(TechDraw::DrawViewDimension* dimension,
 
         arcRadius = labelDirection.Length()
             - placementFactor
-                * (labelRectangle.Height() * 0.5 + getDefaultIsoDimensionLineSpacing());
+                * (labelRectangle.Height() * 0.5 + getIsoDimensionLineSpacing());
         if (arcRadius < 0.0) {
             arcRadius = labelDirection.Length();
         }
@@ -2548,7 +2542,6 @@ Base::Vector3d QGIViewDimension::findIsoDir(Base::Vector3d ortho) const
 //! find the iso extension direction corresponding to an iso dist direction
 Base::Vector3d QGIViewDimension::findIsoExt(Base::Vector3d dir) const
 {
-    Base::Vector3d dirExt(1, 0, 0);
     Base::Vector3d isoX(0.866, 0.5, 0.0);   //iso X
     Base::Vector3d isoXr(-0.866, -0.5, 0.0);//iso -X
     Base::Vector3d isoY(-0.866, 0.5, 0.0);  //iso -Y?
@@ -2556,29 +2549,28 @@ Base::Vector3d QGIViewDimension::findIsoExt(Base::Vector3d dir) const
     Base::Vector3d isoZ(0.0, 1.0, 0.0);     //iso Z
     Base::Vector3d isoZr(0.0, -1.0, 0.0);   //iso -Z
     if (dir.IsEqual(isoX, FLT_EPSILON)) {
-        dirExt = isoY;
+        return isoY;
     }
     else if (dir.IsEqual(-isoX, FLT_EPSILON)) {
-        dirExt = -isoY;
+        return -isoY;
     }
     else if (dir.IsEqual(isoY, FLT_EPSILON)) {
-        dirExt = isoZ;
+        return isoZ;
     }
     else if (dir.IsEqual(-isoY, FLT_EPSILON)) {
-        dirExt = -isoZ;
+        return -isoZ;
     }
     else if (dir.IsEqual(isoZ, FLT_EPSILON)) {
-        dirExt = isoX;
+        return isoX;
     }
     else if (dir.IsEqual(-isoZ, FLT_EPSILON)) {
-        dirExt = -isoX;
+        return -isoX;
     }
-    else {//tarfu
-        Base::Console().Message("QGIVD::findIsoExt - %s - input is not iso axis\n",
-                                getViewObject()->getNameInDocument());
-    }
-
-    return dirExt;
+    
+    //tarfu
+    Base::Console().Message("QGIVD::findIsoExt - %s - input is not iso axis\n",
+                            getViewObject()->getNameInDocument());
+    return Base::Vector3d(1, 0, 0);
 }
 
 void QGIViewDimension::onPrettyChanged(int state)
@@ -2639,6 +2631,13 @@ double QGIViewDimension::getDefaultIsoDimensionLineSpacing() const
 {
     // Not specified directly, but seems to be 2x Line Width according to ISO 129-1 Annex A
     return Rez::appX(m_lineWidth * 2.0);
+}
+
+// Returns the line spacing for ISO dimension based on the user inputted factor
+double QGIViewDimension::getIsoDimensionLineSpacing() const
+{
+    auto vp = static_cast<ViewProviderDimension*>(getViewProvider(getViewObject()));
+    return Rez::appX(m_lineWidth * vp->LineSpacingFactorISO.getValue());
 }
 
 double QGIViewDimension::getDefaultIsoReferenceLineOverhang() const

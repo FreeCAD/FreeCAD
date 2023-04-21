@@ -184,7 +184,6 @@ from draftguitools.gui_upgrade import Upgrade
 from draftguitools.gui_downgrade import Downgrade
 from draftguitools.gui_trimex import Trimex
 from draftguitools.gui_scale import Scale
-from draftguitools.gui_drawing import Drawing
 from draftguitools.gui_wire2spline import WireToBSpline
 from draftguitools.gui_shape2dview import Shape2DView
 from draftguitools.gui_draft2sketch import Draft2Sketch

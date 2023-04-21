@@ -25,6 +25,7 @@
 
 #include <string>
 
+#include <Base/Parameter.h>
 #include <Mod/TechDraw/TechDrawGlobal.h>
 
 
@@ -44,6 +45,8 @@ class TechDrawExport Preferences
 {
 
 public:
+    static Base::Reference<ParameterGrp> getPreferenceGroup(const char* Name);
+
     static std::string labelFont();
     static QString labelFontQString();
     static double labelFontSizeMM();
@@ -96,6 +99,7 @@ public:
     static App::Color getAccessibleColor(App::Color orig);
 
     static bool autoCorrectDimRefs();
+    static int scrubCount();
 };
 
 }//end namespace TechDraw

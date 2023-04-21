@@ -33,6 +33,7 @@
 # include <QMenu>
 # include <QMessageBox>
 # include <QPixmap>
+# include <QThread>
 # include <QTimer>
 # include <QToolTip>
 # include <QVBoxLayout>
@@ -408,10 +409,9 @@ TreeWidget::TreeWidget(const char* name, QWidget* parent)
     connect(this->showHiddenAction, &QAction::triggered,
             this, &TreeWidget::onShowHidden);
 
-    this->hideInTreeAction = new QAction(this);
-    this->hideInTreeAction->setCheckable(true);
-    connect(this->hideInTreeAction, &QAction::triggered,
-            this, &TreeWidget::onHideInTree);
+    this->toggleVisibilityInTreeAction = new QAction(this);
+    connect(this->toggleVisibilityInTreeAction, &QAction::triggered,
+            this, &TreeWidget::onToggleVisibilityInTree);
 
     this->createGroupAction = new QAction(this);
     connect(this->createGroupAction, &QAction::triggered,
@@ -757,6 +757,12 @@ void TreeWidget::updateStatus(bool delay) {
 }
 
 void TreeWidget::_updateStatus(bool delay) {
+    // When running from a different thread Qt will raise a warning
+    // when trying to start the QTimer
+    if (Q_UNLIKELY(thread() != QThread::currentThread())) {
+        return;
+    }
+
     if (!delay) {
         if (!ChangedObjects.empty() || !NewObjects.empty())
             onUpdateStatus();
@@ -836,9 +842,7 @@ void TreeWidget::contextMenuEvent(QContextMenuEvent* e)
 
         showHiddenAction->setChecked(doc->ShowHidden.getValue());
         contextMenu.addAction(this->showHiddenAction);
-
-        hideInTreeAction->setChecked(!objitem->object()->showInTree());
-        contextMenu.addAction(this->hideInTreeAction);
+        contextMenu.addAction(this->toggleVisibilityInTreeAction);
 
         if (!acrossDocuments) { // is only sensible for selections within one document
             if (objitem->object()->getObject()->isDerivedFrom(App::DocumentObjectGroup::getClassTypeId()))
@@ -2767,11 +2771,11 @@ void TreeWidget::setupText()
     this->headerItem()->setText(1, tr("Description"));
     this->rootItem->setText(0, tr("Application"));
 
-    this->showHiddenAction->setText(tr("Show hidden items"));
-    this->showHiddenAction->setStatusTip(tr("Show hidden tree view items"));
+    this->showHiddenAction->setText(tr("Show items hidden in tree view"));
+    this->showHiddenAction->setStatusTip(tr("Show items that are marked as 'hidden' in the tree view"));
 
-    this->hideInTreeAction->setText(tr("Hide item"));
-    this->hideInTreeAction->setStatusTip(tr("Hide the item in tree"));
+    this->toggleVisibilityInTreeAction->setText(tr("Toggle visibility in tree view"));
+    this->toggleVisibilityInTreeAction->setStatusTip(tr("Toggles the visibility of selected items in the tree view"));
 
     this->createGroupAction->setText(tr("Create group..."));
     this->createGroupAction->setStatusTip(tr("Create a group"));
@@ -2830,11 +2834,28 @@ void TreeWidget::onShowHidden()
         docItem->setShowHidden(showHiddenAction->isChecked());
 }
 
-void TreeWidget::onHideInTree()
+void TreeWidget::onToggleVisibilityInTree()
 {
-    if (this->contextItem && this->contextItem->type() == ObjectType) {
-        auto item = static_cast<DocumentObjectItem*>(contextItem);
-        item->object()->ShowInTree.setValue(!hideInTreeAction->isChecked());
+    const auto items = selectedItems();
+    for (auto item : items) {
+        if (item->type() == ObjectType) {
+            auto objectItem = static_cast<DocumentObjectItem*>(item);
+            auto object = objectItem->object();
+
+            // toggle value
+            bool showInTree = !object->showInTree();
+
+            // update object
+            object->ShowInTree.setValue(showInTree);
+
+            // update GUI
+            auto ownerDocument = objectItem->getOwnerDocument();
+            bool hidden = !ownerDocument->showHidden() && !showInTree;
+            objectItem->setHidden(hidden);
+            if (hidden) {
+                objectItem->setSelected(false);
+            }
+        }
     }
 }
 
@@ -2995,6 +3016,12 @@ void TreeWidget::onSelectTimer() {
 
 void TreeWidget::onSelectionChanged(const SelectionChanges& msg)
 {
+    // When running from a different thread Qt will raise a warning
+    // when trying to start the QTimer
+    if (Q_UNLIKELY(thread() != QThread::currentThread())) {
+        return;
+    }
+
     switch (msg.Type)
     {
     case SelectionChanges::AddSelection:

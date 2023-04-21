@@ -36,7 +36,7 @@
     <message>
       <location filename="TranslationTexts.py" line="48"/>
       <source>Adjust the number of recent files to be shown here in menu Edit -&gt; Preferences -&gt; General -&gt; Size of recent file list</source>
-      <translation>Pas het aantal recente bestanden dat hier getoond aan in het menu Bewerken-&gt; Voorkeuren-&gt; generaal-&gt; grootte van de lijst met recente bestanden aanpassen</translation>
+      <translation>Pas het aantal recente bestanden dat hier getoond wordt aan in het menu Bewerken&gt; Opties&gt; Algemeen&gt; Tabblad Algemeen&gt; Grootte van de recente-bestanden lijst</translation>
     </message>
     <message>
       <location filename="TranslationTexts.py" line="49"/>

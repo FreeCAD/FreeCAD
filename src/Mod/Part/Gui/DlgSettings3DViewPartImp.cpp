@@ -45,6 +45,8 @@ DlgSettings3DViewPart::DlgSettings3DViewPart(QWidget* parent)
   : PreferencePage(parent), ui(new Ui_DlgSettings3DViewPart), checkValue(false)
 {
     ui->setupUi(this);
+    connect(ui->maxDeviation, qOverload<double>(&QDoubleSpinBox::valueChanged),
+            this, &DlgSettings3DViewPart::onMaxDeviationValueChanged);
     ParameterGrp::handle hPart = App::GetApplication().GetParameterGroupByPath
         ("User parameter:BaseApp/Preferences/Mod/Part");
     double lowerLimit = hPart->GetFloat("MinimumDeviation", ui->maxDeviation->minimum());
@@ -59,7 +61,7 @@ DlgSettings3DViewPart::~DlgSettings3DViewPart()
     // no need to delete child widgets, Qt does it all for us
 }
 
-void DlgSettings3DViewPart::on_maxDeviation_valueChanged(double v)
+void DlgSettings3DViewPart::onMaxDeviationValueChanged(double v)
 {
     if (!this->isVisible())
         return;

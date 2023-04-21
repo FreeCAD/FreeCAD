@@ -48,17 +48,19 @@ using namespace Gui;
 
 /* TRANSLATOR FemGui::TaskFemConstraintTransform */
 
-TaskFemConstraintTransform::TaskFemConstraintTransform(ViewProviderFemConstraintTransform* ConstraintView, QWidget* parent)
-    : TaskFemConstraint(ConstraintView, parent, "FEM_ConstraintTransform")
+TaskFemConstraintTransform::TaskFemConstraintTransform(
+    ViewProviderFemConstraintTransform* ConstraintView, QWidget* parent)
+    : TaskFemConstraint(ConstraintView, parent, "FEM_ConstraintTransform"),
+      ui(new Ui_TaskFemConstraintTransform)
 {
     proxy = new QWidget(this);
-    ui = new Ui_TaskFemConstraintTransform();
     ui->setupUi(proxy);
     QMetaObject::connectSlotsByName(this);
 
     // create a context menu for the listview of the references
     createDeleteAction(ui->lw_Rect);
-    connect(deleteAction, &QAction::triggered, this, &TaskFemConstraintTransform::onReferenceDeleted);
+    connect(deleteAction, &QAction::triggered,
+        this, &TaskFemConstraintTransform::onReferenceDeleted);
 
     // highlight seletcted list items in the model
     connect(ui->lw_Rect, &QListWidget::currentItemChanged,
@@ -75,23 +77,24 @@ TaskFemConstraintTransform::TaskFemConstraintTransform(ViewProviderFemConstraint
     connect(ui->rb_rect, &QRadioButton::clicked, this, &TaskFemConstraintTransform::Rect);
     connect(ui->rb_cylin, &QRadioButton::clicked, this, &TaskFemConstraintTransform::Cyl);
 
-    connect(ui->sp_X, qOverload<int>(&QSpinBox::valueChanged),
+    connect(ui->sp_X, qOverload<double>(&QuantitySpinBox::valueChanged),
             this, &TaskFemConstraintTransform::x_Changed);
-    connect(ui->sp_Y, qOverload<int>(&QSpinBox::valueChanged),
+    connect(ui->sp_Y, qOverload<double>(&QuantitySpinBox::valueChanged),
             this, &TaskFemConstraintTransform::y_Changed);
-    connect(ui->sp_Z, qOverload<int>(&QSpinBox::valueChanged),
+    connect(ui->sp_Z, qOverload<double>(&QuantitySpinBox::valueChanged),
             this, &TaskFemConstraintTransform::z_Changed);
 
     // Get the feature data
-    Fem::ConstraintTransform* pcConstraint = static_cast<Fem::ConstraintTransform*>(ConstraintView->getObject());
+    Fem::ConstraintTransform* pcConstraint =
+        static_cast<Fem::ConstraintTransform*>(ConstraintView->getObject());
 
     std::vector<App::DocumentObject*> Objects = pcConstraint->References.getValues();
     std::vector<std::string> SubElements = pcConstraint->References.getSubValues();
 
     // Fill data into dialog elements
-    ui->sp_X->setValue(pcConstraint->X_rot.getValue());
-    ui->sp_Y->setValue(pcConstraint->Y_rot.getValue());
-    ui->sp_Z->setValue(pcConstraint->Z_rot.getValue());
+    ui->sp_X->setValue(pcConstraint->X_rot.getQuantityValue());
+    ui->sp_Y->setValue(pcConstraint->Y_rot.getQuantityValue());
+    ui->sp_Z->setValue(pcConstraint->Z_rot.getQuantityValue());
     std::string transform_type = pcConstraint->TransformType.getValueAsString();
     if (transform_type == "Rectangular") {
         ui->sw_transform->setCurrentIndex(0);
@@ -106,8 +109,12 @@ TaskFemConstraintTransform::TaskFemConstraintTransform(ViewProviderFemConstraint
 
     ui->lw_Rect->clear();
 
-    //Transformable surfaces
-    Gui::Command::doCommand(Gui::Command::Doc, TaskFemConstraintTransform::getSurfaceReferences((static_cast<Fem::Constraint*>(ConstraintView->getObject()))->getNameInDocument()).c_str());
+    // Transformable surfaces
+    Gui::Command::doCommand(
+        Gui::Command::Doc,
+        TaskFemConstraintTransform::getSurfaceReferences(
+            (static_cast<Fem::Constraint*>(ConstraintView->getObject()))->getNameInDocument())
+            .c_str());
     std::vector<App::DocumentObject*> ObjDispl = pcConstraint->RefDispl.getValues();
     std::vector<std::string> SubElemDispl = pcConstraint->RefDispl.getSubValues();
 
@@ -130,26 +137,37 @@ TaskFemConstraintTransform::TaskFemConstraintTransform(ViewProviderFemConstraint
     int p = 0;
     for (std::size_t i = 0; i < ObjDispl.size(); i++) {
         for (std::size_t j = 0; j < Objects.size(); j++) {
-            if ((makeRefText(ObjDispl[i], SubElemDispl[i])) == (makeRefText(Objects[j], SubElements[j]))) {
+            if ((makeRefText(ObjDispl[i], SubElemDispl[i]))
+                == (makeRefText(Objects[j], SubElements[j]))) {
                 p++;
             }
         }
     }
-    //Selection buttons
+    // Selection buttons
     connect(ui->btnAdd, &QToolButton::clicked, this, &TaskFemConstraintTransform::addToSelection);
-    connect(ui->btnRemove, &QToolButton::clicked, this, &TaskFemConstraintTransform::removeFromSelection);
+    connect(ui->btnRemove,
+            &QToolButton::clicked,
+            this,
+            &TaskFemConstraintTransform::removeFromSelection);
+
+    // Bind input fields to properties
+    ui->sp_X->bind(pcConstraint->X_rot);
+    ui->sp_Y->bind(pcConstraint->Y_rot);
+    ui->sp_Z->bind(pcConstraint->Z_rot);
 
     updateUI();
+
     if ((p == 0) && (!Objects.empty())) {
-        QMessageBox::warning(this, tr("Constraint update error"), tr("The transformable faces have changed. Please add only the transformable faces and remove non-transformable faces!"));
+        QMessageBox::warning(this,
+                             tr("Constraint update error"),
+                             tr("The transformable faces have changed. Please add only the "
+                                "transformable faces and remove non-transformable faces!"));
         return;
     }
 }
 
 TaskFemConstraintTransform::~TaskFemConstraintTransform()
-{
-    delete ui;
-}
+{}
 
 const QString TaskFemConstraintTransform::makeText(const App::DocumentObject* obj) const
 {
@@ -165,8 +183,10 @@ void TaskFemConstraintTransform::updateUI()
     }
 }
 
-void TaskFemConstraintTransform::x_Changed(int i) {
-    Fem::ConstraintTransform* pcConstraint = static_cast<Fem::ConstraintTransform*>(ConstraintView->getObject());
+void TaskFemConstraintTransform::x_Changed(int i)
+{
+    Fem::ConstraintTransform* pcConstraint =
+        static_cast<Fem::ConstraintTransform*>(ConstraintView->getObject());
     double x = i;
     pcConstraint->X_rot.setValue(x);
     std::string name = ConstraintView->getObject()->getNameInDocument();
@@ -176,8 +196,10 @@ void TaskFemConstraintTransform::x_Changed(int i) {
     pcConstraint->References.setValues(Objects, SubElements);
 }
 
-void TaskFemConstraintTransform::y_Changed(int i) {
-    Fem::ConstraintTransform* pcConstraint = static_cast<Fem::ConstraintTransform*>(ConstraintView->getObject());
+void TaskFemConstraintTransform::y_Changed(int i)
+{
+    Fem::ConstraintTransform* pcConstraint =
+        static_cast<Fem::ConstraintTransform*>(ConstraintView->getObject());
     double y = i;
     pcConstraint->Y_rot.setValue(y);
     std::string name = ConstraintView->getObject()->getNameInDocument();
@@ -187,8 +209,10 @@ void TaskFemConstraintTransform::y_Changed(int i) {
     pcConstraint->References.setValues(Objects, SubElements);
 }
 
-void TaskFemConstraintTransform::z_Changed(int i) {
-    Fem::ConstraintTransform* pcConstraint = static_cast<Fem::ConstraintTransform*>(ConstraintView->getObject());
+void TaskFemConstraintTransform::z_Changed(int i)
+{
+    Fem::ConstraintTransform* pcConstraint =
+        static_cast<Fem::ConstraintTransform*>(ConstraintView->getObject());
     double z = i;
     pcConstraint->Z_rot.setValue(z);
     std::string name = ConstraintView->getObject()->getNameInDocument();
@@ -198,11 +222,16 @@ void TaskFemConstraintTransform::z_Changed(int i) {
     pcConstraint->References.setValues(Objects, SubElements);
 }
 
-void TaskFemConstraintTransform::Rect() {
+void TaskFemConstraintTransform::Rect()
+{
     ui->sw_transform->setCurrentIndex(0);
     std::string name = ConstraintView->getObject()->getNameInDocument();
-    Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.%s.TransformType = %s", name.c_str(), get_transform_type().c_str());
-    Fem::ConstraintTransform* pcConstraint = static_cast<Fem::ConstraintTransform*>(ConstraintView->getObject());
+    Gui::Command::doCommand(Gui::Command::Doc,
+                            "App.ActiveDocument.%s.TransformType = %s",
+                            name.c_str(),
+                            get_transform_type().c_str());
+    Fem::ConstraintTransform* pcConstraint =
+        static_cast<Fem::ConstraintTransform*>(ConstraintView->getObject());
     std::vector<App::DocumentObject*> Objects = pcConstraint->References.getValues();
     if (!Objects.empty()) {
         setSelection(ui->lw_Rect->item(0));
@@ -210,14 +239,19 @@ void TaskFemConstraintTransform::Rect() {
     }
 }
 
-void TaskFemConstraintTransform::Cyl() {
+void TaskFemConstraintTransform::Cyl()
+{
     ui->sw_transform->setCurrentIndex(1);
     ui->sp_X->setValue(0);
     ui->sp_Y->setValue(0);
     ui->sp_Z->setValue(0);
     std::string name = ConstraintView->getObject()->getNameInDocument();
-    Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.%s.TransformType = %s", name.c_str(), get_transform_type().c_str());
-    Fem::ConstraintTransform* pcConstraint = static_cast<Fem::ConstraintTransform*>(ConstraintView->getObject());
+    Gui::Command::doCommand(Gui::Command::Doc,
+                            "App.ActiveDocument.%s.TransformType = %s",
+                            name.c_str(),
+                            get_transform_type().c_str());
+    Fem::ConstraintTransform* pcConstraint =
+        static_cast<Fem::ConstraintTransform*>(ConstraintView->getObject());
     std::vector<App::DocumentObject*> Objects = pcConstraint->References.getValues();
     if (!Objects.empty()) {
         setSelection(ui->lw_Rect->item(0));
@@ -225,35 +259,39 @@ void TaskFemConstraintTransform::Cyl() {
     }
 }
 
-
 void TaskFemConstraintTransform::addToSelection()
 {
     int rows = ui->lw_Rect->model()->rowCount();
-    std::vector<Gui::SelectionObject> selection = Gui::Selection().getSelectionEx(); //gets vector of selected objects of active document
+    std::vector<Gui::SelectionObject> selection =
+        Gui::Selection().getSelectionEx();// gets vector of selected objects of active document
     if (selection.empty()) {
         QMessageBox::warning(this, tr("Selection error"), tr("Nothing selected!"));
         return;
     }
 
     if (rows == 1) {
-        QMessageBox::warning(this, tr("Selection error"), tr("Only one face for rectangular transform constraint!"));
+        QMessageBox::warning(
+            this, tr("Selection error"), tr("Only one face for rectangular transform constraint!"));
         Gui::Selection().clearSelection();
         return;
     }
 
     if ((rows == 0) && (selection.size() >= 2)) {
-        QMessageBox::warning(this, tr("Selection error"), tr("Only one face for rectangular transform constraint!"));
+        QMessageBox::warning(
+            this, tr("Selection error"), tr("Only one face for rectangular transform constraint!"));
         Gui::Selection().clearSelection();
         return;
     }
 
-    Fem::ConstraintTransform* pcConstraint = static_cast<Fem::ConstraintTransform*>(ConstraintView->getObject());
+    Fem::ConstraintTransform* pcConstraint =
+        static_cast<Fem::ConstraintTransform*>(ConstraintView->getObject());
     std::vector<App::DocumentObject*> Objects = pcConstraint->References.getValues();
     std::vector<std::string> SubElements = pcConstraint->References.getSubValues();
 
     std::vector<App::DocumentObject*> ObjDispl = pcConstraint->RefDispl.getValues();
     std::vector<std::string> SubElemDispl = pcConstraint->RefDispl.getSubValues();
-    for (std::vector<Gui::SelectionObject>::iterator it = selection.begin(); it != selection.end(); ++it) {//for every selected object
+    for (std::vector<Gui::SelectionObject>::iterator it = selection.begin(); it != selection.end();
+         ++it) {// for every selected object
         if (!it->isObjectTypeOf(Part::Feature::getClassTypeId())) {
             QMessageBox::warning(this, tr("Selection error"), tr("Selected object is not a part!"));
             return;
@@ -261,11 +299,13 @@ void TaskFemConstraintTransform::addToSelection()
         const std::vector<std::string>& subNames = it->getSubNames();
         App::DocumentObject* obj = it->getObject();
         if (subNames.size() != 1) {
-            QMessageBox::warning(this, tr("Selection error"), tr("Only one face for transform constraint!"));
+            QMessageBox::warning(
+                this, tr("Selection error"), tr("Only one face for transform constraint!"));
             Gui::Selection().clearSelection();
             return;
         }
-        for (size_t subIt = 0; subIt < (subNames.size()); ++subIt) {// for every selected sub element
+        for (size_t subIt = 0; subIt < (subNames.size());
+             ++subIt) {// for every selected sub element
             bool addMe = true;
             if (subNames[subIt].substr(0, 4) != "Face") {
                 QMessageBox::warning(this, tr("Selection error"), tr("Only faces can be picked"));
@@ -277,40 +317,58 @@ void TaskFemConstraintTransform::addToSelection()
                     TopoDS_Shape ref = feat->Shape.getShape().getSubShape(subNames[subIt].c_str());
                     BRepAdaptor_Surface surface(TopoDS::Face(ref));
                     if (surface.GetType() != GeomAbs_Cylinder) {
-                        QMessageBox::warning(this, tr("Selection error"), tr("Only cylindrical faces can be picked"));
+                        QMessageBox::warning(this,
+                                             tr("Selection error"),
+                                             tr("Only cylindrical faces can be picked"));
                         return;
                     }
                 }
             }
-            for (std::vector<std::string>::iterator itr = std::find(SubElements.begin(), SubElements.end(), subNames[subIt]);
-                itr != SubElements.end();
-                itr = std::find(++itr, SubElements.end(), subNames[subIt]))
-            {// for every sub element in selection that matches one in old list
-                if (obj == Objects[std::distance(SubElements.begin(), itr)]) {//if selected sub element's object equals the one in old list then it was added before so don't add
+            for (std::vector<std::string>::iterator itr =
+                     std::find(SubElements.begin(), SubElements.end(), subNames[subIt]);
+                 itr != SubElements.end();
+                 itr = std::find(++itr,
+                                 SubElements.end(),
+                                 subNames[subIt])) {// for every sub element in selection that
+                                                    // matches one in old list
+                if (obj
+                    == Objects[std::distance(
+                        SubElements.begin(),
+                        itr)]) {// if selected sub element's object equals the one in old list then
+                                // it was added before so don't add
                     addMe = false;
                 }
             }
             if (addMe) {
-                disconnect(ui->lw_Rect, &QListWidget::currentItemChanged,
-                    this, &TaskFemConstraintTransform::setSelection);
+                disconnect(ui->lw_Rect,
+                           &QListWidget::currentItemChanged,
+                           this,
+                           &TaskFemConstraintTransform::setSelection);
                 for (std::size_t i = 0; i < ObjDispl.size(); i++) {
-                    if ((makeRefText(ObjDispl[i], SubElemDispl[i])) == (makeRefText(obj, subNames[subIt]))) {
+                    if ((makeRefText(ObjDispl[i], SubElemDispl[i]))
+                        == (makeRefText(obj, subNames[subIt]))) {
                         Objects.push_back(obj);
                         SubElements.push_back(subNames[subIt]);
                         ui->lw_Rect->addItem(makeRefText(obj, subNames[subIt]));
-                        connect(ui->lw_Rect, &QListWidget::currentItemChanged,
-                            this, &TaskFemConstraintTransform::setSelection);
+                        connect(ui->lw_Rect,
+                                &QListWidget::currentItemChanged,
+                                this,
+                                &TaskFemConstraintTransform::setSelection);
                     }
                 }
                 if (Objects.empty()) {
-                    QMessageBox::warning(this, tr("Selection error"), tr("Only transformable faces can be selected! Apply displacement constraint to surface first then apply constraint to surface"));
+                    QMessageBox::warning(
+                        this,
+                        tr("Selection error"),
+                        tr("Only transformable faces can be selected! Apply displacement "
+                           "constraint to surface first then apply constraint to surface"));
                     Gui::Selection().clearSelection();
                     return;
                 }
             }
         }
     }
-    //Update UI
+    // Update UI
     pcConstraint->References.setValues(Objects, SubElements);
     updateUI();
     if (ui->rb_rect->isChecked()) {
@@ -318,9 +376,9 @@ void TaskFemConstraintTransform::addToSelection()
         double n = normal.x;
         double m = normal.y;
         double l = normal.z;
-        //about Z-axis
+        // about Z-axis
         double about_z;
-        double mag_norm_z = sqrt(n * n + m * m);  //normal vector mapped onto XY plane
+        double mag_norm_z = sqrt(n * n + m * m);// normal vector mapped onto XY plane
         if (mag_norm_z == 0) {
             about_z = 0;
         }
@@ -330,17 +388,17 @@ void TaskFemConstraintTransform::addToSelection()
         if (n > 0) {
             about_z = about_z * (-1);
         }
-        //rotation to ZY plane
+        // rotation to ZY plane
         double m_p = n * sin(about_z * M_PI / 180) + m * cos(about_z * M_PI / 180);
         double l_p = l;
-        //about X-axis
+        // about X-axis
         double about_x;
         double mag_norm_x = sqrt(m_p * m_p + l_p * l_p);
         if (mag_norm_x == 0) {
             about_x = 0;
         }
         else {
-            about_x = -(acos(l_p / mag_norm_x) * 180 / M_PI); //rotation to the Z axis
+            about_x = -(acos(l_p / mag_norm_x) * 180 / M_PI);// rotation to the Z axis
         }
         ui->sp_X->setValue(round(about_x));
         ui->sp_Z->setValue(round(about_z));
@@ -349,16 +407,19 @@ void TaskFemConstraintTransform::addToSelection()
 
 void TaskFemConstraintTransform::removeFromSelection()
 {
-    std::vector<Gui::SelectionObject> selection = Gui::Selection().getSelectionEx(); //gets vector of selected objects of active document
+    std::vector<Gui::SelectionObject> selection =
+        Gui::Selection().getSelectionEx();// gets vector of selected objects of active document
     if (selection.empty()) {
         QMessageBox::warning(this, tr("Selection error"), tr("Nothing selected!"));
         return;
     }
-    Fem::ConstraintTransform* pcConstraint = static_cast<Fem::ConstraintTransform*>(ConstraintView->getObject());
+    Fem::ConstraintTransform* pcConstraint =
+        static_cast<Fem::ConstraintTransform*>(ConstraintView->getObject());
     std::vector<App::DocumentObject*> Objects = pcConstraint->References.getValues();
     std::vector<std::string> SubElements = pcConstraint->References.getSubValues();
     std::vector<size_t> itemsToDel;
-    for (std::vector<Gui::SelectionObject>::iterator it = selection.begin(); it != selection.end(); ++it) {//for every selected object
+    for (std::vector<Gui::SelectionObject>::iterator it = selection.begin(); it != selection.end();
+         ++it) {// for every selected object
         if (!it->isObjectTypeOf(Part::Feature::getClassTypeId())) {
             QMessageBox::warning(this, tr("Selection error"), tr("Selected object is not a part!"));
             return;
@@ -366,12 +427,20 @@ void TaskFemConstraintTransform::removeFromSelection()
         const std::vector<std::string>& subNames = it->getSubNames();
         App::DocumentObject* obj = it->getObject();
 
-        for (size_t subIt = 0; subIt < (subNames.size()); ++subIt) {// for every selected sub element
-            for (std::vector<std::string>::iterator itr = std::find(SubElements.begin(), SubElements.end(), subNames[subIt]);
-                itr != SubElements.end();
-                itr = std::find(++itr, SubElements.end(), subNames[subIt]))
-            {// for every sub element in selection that matches one in old list
-                if (obj == Objects[std::distance(SubElements.begin(), itr)]) {//if selected sub element's object equals the one in old list then it was added before so mark for deletion
+        for (size_t subIt = 0; subIt < (subNames.size());
+             ++subIt) {// for every selected sub element
+            for (std::vector<std::string>::iterator itr =
+                     std::find(SubElements.begin(), SubElements.end(), subNames[subIt]);
+                 itr != SubElements.end();
+                 itr = std::find(++itr,
+                                 SubElements.end(),
+                                 subNames[subIt])) {// for every sub element in selection that
+                                                    // matches one in old list
+                if (obj
+                    == Objects[std::distance(
+                        SubElements.begin(),
+                        itr)]) {// if selected sub element's object equals the one in old list then
+                                // it was added before so mark for deletion
                     itemsToDel.push_back(std::distance(SubElements.begin(), itr));
                 }
             }
@@ -383,7 +452,7 @@ void TaskFemConstraintTransform::removeFromSelection()
         SubElements.erase(SubElements.begin() + itemsToDel.back());
         itemsToDel.pop_back();
     }
-    //Update UI
+    // Update UI
     {
         QSignalBlocker block(ui->lw_Rect);
         ui->lw_Rect->clear();
@@ -444,10 +513,18 @@ else:\n\
         doc." + showConstr + ".NameDispl = []\n";
 }
 
-/* Note: */
-double TaskFemConstraintTransform::get_X_rot() const { return ui->sp_X->value(); }
-double TaskFemConstraintTransform::get_Y_rot() const { return ui->sp_Y->value(); }
-double TaskFemConstraintTransform::get_Z_rot() const { return ui->sp_Z->value(); }
+std::string TaskFemConstraintTransform::get_X_rot() const
+{
+    return ui->sp_X->value().getSafeUserString().toStdString();
+}
+std::string TaskFemConstraintTransform::get_Y_rot() const
+{
+    return ui->sp_Y->value().getSafeUserString().toStdString();
+}
+std::string TaskFemConstraintTransform::get_Z_rot() const
+{
+    return ui->sp_Z->value().getSafeUserString().toStdString();
+}
 
 std::string TaskFemConstraintTransform::get_transform_type() const {
     std::string transform;
@@ -472,7 +549,8 @@ void TaskFemConstraintTransform::changeEvent(QEvent*) {
 // TaskDialog
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-TaskDlgFemConstraintTransform::TaskDlgFemConstraintTransform(ViewProviderFemConstraintTransform* ConstraintView)
+TaskDlgFemConstraintTransform::TaskDlgFemConstraintTransform(
+    ViewProviderFemConstraintTransform* ConstraintView)
 {
     this->ConstraintView = ConstraintView;
     assert(ConstraintView);
@@ -490,7 +568,11 @@ void TaskDlgFemConstraintTransform::open()
         QString msg = QObject::tr("Constraint transform");
         Gui::Command::openCommand((const char*)msg.toUtf8());
         ConstraintView->setVisible(true);
-        Gui::Command::doCommand(Gui::Command::Doc, ViewProviderFemConstraint::gethideMeshShowPartStr((static_cast<Fem::Constraint*>(ConstraintView->getObject()))->getNameInDocument()).c_str()); //OvG: Hide meshes and show parts
+        Gui::Command::doCommand(
+            Gui::Command::Doc,
+            ViewProviderFemConstraint::gethideMeshShowPartStr(
+                (static_cast<Fem::Constraint*>(ConstraintView->getObject()))->getNameInDocument())
+                .c_str());// OvG: Hide meshes and show parts
     }
 }
 
@@ -498,20 +580,21 @@ bool TaskDlgFemConstraintTransform::accept()
 {
     /* Note: */
     std::string name = ConstraintView->getObject()->getNameInDocument();
-    const TaskFemConstraintTransform* parameters = static_cast<const TaskFemConstraintTransform*>(parameter);
+    const TaskFemConstraintTransform* parameters =
+        static_cast<const TaskFemConstraintTransform*>(parameter);
 
     try {
-        Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.%s.X_rot = %f",
-            name.c_str(), parameters->get_X_rot());
-        Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.%s.Y_rot = %f",
-            name.c_str(), parameters->get_Y_rot());
-        Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.%s.Z_rot = %f",
-            name.c_str(), parameters->get_Z_rot());
+        Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.%s.X_rot = \"%s\"",
+                                name.c_str(), parameters->get_X_rot().c_str());
+        Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.%s.Y_rot = \"%s\"",
+                                name.c_str(), parameters->get_Y_rot().c_str());
+        Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.%s.Z_rot = \"%s\"",
+                                name.c_str(), parameters->get_Z_rot().c_str());
         Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.%s.TransformType = %s",
-            name.c_str(), parameters->get_transform_type().c_str());
-        std::string scale = parameters->getScale();  //OvG: determine modified scale
-        Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.%s.Scale = %s", name.c_str(), scale.c_str()); //OvG: implement modified scale
-
+                                name.c_str(), parameters->get_transform_type().c_str());
+        std::string scale = parameters->getScale();// OvG: determine modified scale
+        Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.%s.Scale = %s",
+                                name.c_str(), scale.c_str());// OvG: implement modified scale
     }
     catch (const Base::Exception& e) {
         QMessageBox::warning(parameter, tr("Input error"), QString::fromLatin1(e.what()));

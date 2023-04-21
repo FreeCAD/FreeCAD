@@ -53,10 +53,16 @@ DlgUnitsCalculator::DlgUnitsCalculator( QWidget* parent, Qt::WindowFlags fl )
     ui->comboBoxScheme->addItem(QString::fromLatin1("Preference system"), static_cast<int>(-1));
     int num = static_cast<int>(Base::UnitSystem::NumUnitSystemTypes);
     for (int i=0; i<num; i++) {
-        QString item = qApp->translate("Gui::Dialog::DlgSettingsUnits", Base::UnitsApi::getDescription(static_cast<Base::UnitSystem>(i)));
+        QString item = qApp->translate("Gui::Dialog::DlgGeneralImp", Base::UnitsApi::getDescription(static_cast<Base::UnitSystem>(i)));
         ui->comboBoxScheme->addItem(item, i);
     }
 
+    connect(ui->unitsBox, qOverload<int>(&QComboBox::activated),
+            this, &DlgUnitsCalculator::onUnitsBoxActivated);
+    connect(ui->comboBoxScheme, qOverload<int>(&QComboBox::activated),
+            this, &DlgUnitsCalculator::onComboBoxSchemeActivated);
+    connect(ui->spinBoxDecimals, qOverload<int>(&QSpinBox::valueChanged),
+            this, &DlgUnitsCalculator::onSpinBoxDecimalsValueChanged);
     connect(ui->ValueInput, qOverload<const Base::Quantity&>(&InputField::valueChanged),
             this, &DlgUnitsCalculator::valueChanged);
     connect(ui->ValueInput, &InputField::returnPressed,
@@ -205,7 +211,7 @@ void DlgUnitsCalculator::returnPressed()
     }
 }
 
-void DlgUnitsCalculator::on_unitsBox_activated(int index)
+void DlgUnitsCalculator::onUnitsBoxActivated(int index)
 {
     // SI units use [m], not [mm] for lengths
     //
@@ -218,7 +224,7 @@ void DlgUnitsCalculator::on_unitsBox_activated(int index)
     ui->quantitySpinBox->setValue(Base::Quantity(value * std::pow(10.0, 3*(len-old)), unit));
 }
 
-void DlgUnitsCalculator::on_comboBoxScheme_activated(int index)
+void DlgUnitsCalculator::onComboBoxSchemeActivated(int index)
 {
     int item = ui->comboBoxScheme->itemData(index).toInt();
     if (item > 0)
@@ -227,7 +233,7 @@ void DlgUnitsCalculator::on_comboBoxScheme_activated(int index)
         ui->quantitySpinBox->clearSchema();
 }
 
-void DlgUnitsCalculator::on_spinBoxDecimals_valueChanged(int value)
+void DlgUnitsCalculator::onSpinBoxDecimalsValueChanged(int value)
 {
     ui->quantitySpinBox->setDecimals(value);
 }

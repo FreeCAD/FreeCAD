@@ -1899,7 +1899,7 @@ def getProfile(ifcfile,p):
         elif isinstance(p.Edges[0].Curve,Part.Ellipse):
             # extruded ellipse
             profile = ifcbin.createIfcEllipseProfileDef("AREA",None,pt,p.Edges[0].Curve.MajorRadius,p.Edges[0].Curve.MinorRadius)
-    elif (checkRectangle(p.Edges)):
+    elif checkRectangle(p.Edges):
         # arbitrarily use the first edge as the rectangle orientation
         d = vec(p.Edges[0])
         d.normalize()
@@ -2135,7 +2135,7 @@ def getRepresentation(
                 if obj.isDerivedFrom("Part::Feature"):
                     #if hasattr(obj,"Base") and hasattr(obj,"Additions")and hasattr(obj,"Subtractions"):
                     if False: # above is buggy. No way to duplicate shapes that way?
-                        if obj.Base and (not obj.Additions) and not(obj.Subtractions):
+                        if obj.Base and not obj.Additions and not obj.Subtractions:
                             if obj.Base.isDerivedFrom("Part::Feature"):
                                 if obj.Base.Shape:
                                     if obj.Base.Shape.Solids:
@@ -2162,12 +2162,15 @@ def getRepresentation(
                             sh = obj.Shape.copy()
                             sh.Placement = obj.getGlobalPlacement()
                             sh.scale(preferences['SCALE_FACTOR']) # to meters
+                            # clean shape and moves placement away from the outer element level
+                            # https://forum.freecad.org/viewtopic.php?p=675760#p675760
+                            brep_data = sh.removeSplitter().exportBrepToString()
                             try:
-                                p = geom.serialise(sh.exportBrepToString())
+                                p = geom.serialise(brep_data)
                             except TypeError:
                                 # IfcOpenShell v0.6.0
                                 # Serialization.cpp:IfcUtil::IfcBaseClass* IfcGeom::serialise(const std::string& schema_name, const TopoDS_Shape& shape, bool advanced)
-                                p = geom.serialise(preferences['SCHEMA'],sh.exportBrepToString())
+                                p = geom.serialise(preferences['SCHEMA'], brep_data)
                             if p:
                                 productdef = ifcfile.add(p)
                                 for rep in productdef.Representations:
@@ -2176,6 +2179,13 @@ def getRepresentation(
                                 shapetype = "advancedbrep"
                                 shapes = None
                                 serialized = True
+                            else:
+                                if preferences['DEBUG']:
+                                    print(
+                                        "Warning! IfcOS serializer did not return a ifc-geometry for object {}. "
+                                        "The shape will be exported with triangulation."
+                                        .format(obj.Label)
+                                    )
 
                     if not serialized:
 

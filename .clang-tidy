@@ -2,7 +2,7 @@
 Checks:          'clang-diagnostic-*,clang-analyzer-*,boost-*,bugprone-*,
 performance-*,readability-*,portability-*,modernize-*,cppcoreguidelines-*,
 concurrency-*,-modernize-use-trailing-return-type, -modernize-use-nodiscard,
--readability-redundant-access-specifiers'
+-readability-redundant-access-specifiers,-readability-qualified-auto'
 WarningsAsErrors: ''
 HeaderFilterRegex: ''
 AnalyzeTemporaryDtors: false

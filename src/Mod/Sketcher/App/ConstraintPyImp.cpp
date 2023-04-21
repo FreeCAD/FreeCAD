@@ -224,14 +224,6 @@ int ConstraintPy::PyInit(PyObject* args, PyObject* /*kwd*/)
         if (PyNumber_Check(index_or_value)) { // can be float or int
             SecondIndex = any_index;
             Value = PyFloat_AsDouble(index_or_value);
-            //if (strcmp("Distance",ConstraintType) == 0) {
-            //    this->getConstraintPtr()->Type   = Distance;
-            //    this->getConstraintPtr()->First  = FirstIndex;
-            //    this->getConstraintPtr()->Second = SecondIndex;
-            //    this->getConstraintPtr()->Value  = Value;
-            //    return 0;
-            //}
-            //else
             if (strcmp("Angle",ConstraintType) == 0) {
                 if (PyObject_TypeCheck(index_or_value, &(Base::QuantityPy::Type))) {
                     Base::Quantity q = *(static_cast<Base::QuantityPy*>(index_or_value)->getQuantityPtr());
@@ -240,6 +232,13 @@ int ConstraintPy::PyInit(PyObject* args, PyObject* /*kwd*/)
                 }
                 this->getConstraintPtr()->Type   = Angle;
                 this->getConstraintPtr()->First  = FirstIndex;
+                this->getConstraintPtr()->Second = SecondIndex;
+                this->getConstraintPtr()->setValue(Value);
+                return 0;
+            }
+            else if (strcmp("Distance",ConstraintType) == 0) {
+                this->getConstraintPtr()->Type = Distance;
+                this->getConstraintPtr()->First = FirstIndex;
                 this->getConstraintPtr()->Second = SecondIndex;
                 this->getConstraintPtr()->setValue(Value);
                 return 0;
@@ -318,10 +317,14 @@ int ConstraintPy::PyInit(PyObject* args, PyObject* /*kwd*/)
 
                 valid = true;
 
-                if(strstr(ConstraintType,"BSplineControlPoint")) {
+                if (strstr(ConstraintType,"BSplineControlPoint")) {
                     this->getConstraintPtr()->AlignmentType=BSplineControlPoint;
                 }
-                else {
+                else if (strstr(ConstraintType,"BSplineKnotPoint")) {
+                    this->getConstraintPtr()->AlignmentType=BSplineKnotPoint;
+                }
+                else
+                {
                     this->getConstraintPtr()->AlignmentType=Undef;
                     valid = false;
                 }
@@ -481,7 +484,7 @@ std::string ConstraintPy::representation() const
         case Coincident         : result << "'Coincident'>";break;
         case Horizontal         : result << "'Horizontal' (" << getConstraintPtr()->First << ")>";break;
         case Vertical           : result << "'Vertical' (" << getConstraintPtr()->First << ")>";break;
-        case Block            	: result << "'Block' (" << getConstraintPtr()->First << ")>";break;
+        case Block              : result << "'Block' (" << getConstraintPtr()->First << ")>";break;
         case Radius             : result << "'Radius'>";break;
         case Diameter           : result << "'Diameter'>";break;
         case Weight             : result << "'Weight'>";break;

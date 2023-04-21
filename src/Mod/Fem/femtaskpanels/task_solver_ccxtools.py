@@ -295,7 +295,7 @@ class _TaskPanel:
         CCX_mesh = self.fea.analysis.Document.getObject("ResultMesh")
         if CCX_mesh is not None:
             CCX_mesh.ViewObject.Visibility = self.CCX_mesh_visibility
-    
+
     def choose_working_dir(self):
         wd = QtGui.QFileDialog.getExistingDirectory(None, "Choose CalculiX working directory",
                                                     self.fea.working_dir)
@@ -356,7 +356,7 @@ class _TaskPanel:
     def runCalculix(self):
         if self.fea.ccx_binary_present is False:
             self.femConsoleMessage(
-                "CalculiX can not be started. No or wrong CalculiX binary: {}"
+                "CalculiX can not be started. Missing or incorrect CalculiX binary: {}"
                 .format(self.fea.ccx_binary)
             )
             # TODO deactivate the run button

@@ -47,8 +47,8 @@ protected:
     void loadSettings() override;
     void changeEvent(QEvent *e) override;
 
-private Q_SLOTS:
-    void on_maxDeviation_valueChanged(double);
+private:
+    void onMaxDeviationValueChanged(double);
 
 private:
     std::unique_ptr<Ui_DlgSettings3DViewPart> ui;

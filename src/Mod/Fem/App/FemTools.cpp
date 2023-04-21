@@ -23,6 +23,8 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
+# include <QFileInfo>
+
 # include <BRepAdaptor_Curve.hxx>
 # include <BRepAdaptor_Surface.hxx>
 # include <Geom_BezierCurve.hxx>
@@ -40,6 +42,8 @@
 # include <TopoDS_Edge.hxx>
 # include <TopoDS_Face.hxx>
 #endif
+
+#include <App/Application.h>
 
 #include "FemTools.h"
 
@@ -277,4 +281,42 @@ gp_XYZ Fem::Tools::getDirection(const TopoDS_Edge& edge)
     }
 
     return dir;
+}
+
+// function to determine 3rd-party binaries used by the FEM WB
+std::string Fem::Tools::checkIfBinaryExists(std::string prefSection,
+                                                   std::string prefBinaryName,
+                                                   std::string binaryName)
+{
+    // if "Search in known binary directories" is set in the preferences, we ignore custom path
+    auto paramPath = "User parameter:BaseApp/Preferences/Mod/Fem/" + prefSection;
+    auto knownDirectoriesString = "UseStandard" + prefSection + "Location";
+    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(paramPath.c_str());
+    bool knownDirectories = hGrp->GetBool(knownDirectoriesString.c_str(), true);
+
+    if (knownDirectories) {
+#if defined(FC_OS_WIN32)
+        binaryName = binaryName + ".exe";
+#endif
+        // first check the environment paths by QFileInfo
+        if (QFileInfo::exists(QString::fromLatin1(binaryName.c_str()))) {
+            return binaryName;
+        }
+        // check the folder of the FreeCAD binary
+        else {
+            auto homePathBinary = App::Application::getHomePath() + "bin/" + binaryName;
+            if (QFileInfo::exists(QString::fromLatin1(homePathBinary.c_str())))
+                return binaryName;
+        }
+    }
+    else {
+        auto binaryPathString = prefBinaryName + "BinaryPath";
+        ParameterGrp::handle hGrp =
+            App::GetApplication().GetParameterGroupByPath(paramPath.c_str());
+        auto binaryPath = hGrp->GetASCII(binaryPathString.c_str(), "");
+        QFileInfo::exists(QString::fromLatin1(binaryPath.c_str()));
+        if (QFileInfo::exists(QString::fromLatin1(binaryPath.c_str())))
+            return binaryPath;
+    }
+    return "";
 }

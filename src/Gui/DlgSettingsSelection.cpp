@@ -45,6 +45,7 @@ DlgSettingsSelection::~DlgSettingsSelection()
 
 void DlgSettingsSelection::saveSettings()
 {
+    ui->spinPickRadius->onSave();
     auto handle = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/TreeView");
     handle->SetBool("SyncView", ui->checkBoxAutoSwitch->isChecked());
     handle->SetBool("SyncSelection", ui->checkBoxAutoExpand->isChecked());
@@ -55,6 +56,7 @@ void DlgSettingsSelection::saveSettings()
 
 void DlgSettingsSelection::loadSettings()
 {
+    ui->spinPickRadius->onRestore();
     auto handle = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/TreeView");
     ui->checkBoxAutoSwitch->setChecked(handle->GetBool("SyncView", true));
     ui->checkBoxAutoExpand->setChecked(handle->GetBool("SyncSelection", true));

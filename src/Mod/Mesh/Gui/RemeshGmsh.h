@@ -65,12 +65,13 @@ protected:
     virtual bool writeProject(QString& inpFile, QString& outFile);
     virtual bool loadOutput();
 
-private Q_SLOTS:
+private:
+    void setupConnections();
     void started();
     void finished(int exitCode, QProcess::ExitStatus exitStatus);
     void errorOccurred(QProcess::ProcessError error);
-    void on_killButton_clicked();
-    void on_clearButton_clicked();
+    void onKillButtonClicked();
+    void onClearButtonClicked();
 
     void readyReadStandardError();
     void readyReadStandardOutput();

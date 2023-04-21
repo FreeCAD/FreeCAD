@@ -40,7 +40,8 @@ def makeWindowPreset(windowtype,width,height,h1,h2,h3,w1,w2,o1,o2,placement=None
 
     def makeSketch(windowtype,width,height,h1,h2,h3,w1,w2,o1,o2):
 
-        import Part,Sketcher
+        import Part
+        import Sketcher
         width = float(width)
         height = float(height)
         h1 = float(h1)

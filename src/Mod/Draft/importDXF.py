@@ -214,41 +214,10 @@ def prec():
     return Draft.getParam("precision", 6)
 
 
-def decodeName(name):
-    """Decode the encoded name into utf8 or latin1.
-
-    Parameters
-    ----------
-    name : str
-        The string to decode.
-
-    Returns
-    -------
-    str
-        The decoded string in utf8, latin1, or the original `name`
-        if the decoding was not needed, for example,
-        when using Python 3.
-    """
-    try:
-        decodedName = (name.decode("utf8"))
-    except UnicodeDecodeError:
-        try:
-            decodedName = (name.decode("latin1"))
-        except UnicodeDecodeError:
-            print("dxf: error: couldn't determine character encoding")
-            decodedName = name
-    except AttributeError:
-        # this is python3 (nothing to do)
-        decodedName = name
-    return decodedName
-
-
 def deformat(text):
     """Remove weird formats in texts and wipes UTF characters.
 
     It removes `{}`, html codes, \\(U...) characters,
-    and decodes the string as utf8 or latin1 if needed.
-    For Python 3 there is no decoding needed.
 
     Parameters
     ----------
@@ -267,19 +236,7 @@ def deformat(text):
     t = re.sub("\\\.*?;", "", t)
     # replace UTF codes by utf chars
     sts = re.split("\\\\(U\+....)", t)
-    ns = u""
-    for ss in sts:
-        try:
-            ns += ss.decode("utf8")
-        except UnicodeError:
-            try:
-                ns += ss.decode("latin1")
-            except UnicodeError:
-                print("unable to decode text: ", text)
-        except AttributeError:
-            # this is python3 (nothing to do)
-            ns += ss
-    t = ns
+    t = u"".join(sts)
     # replace degrees, diameters chars
     t = re.sub('%%d', u'°', t)
     t = re.sub('%%c', u'Ø', t)
@@ -333,17 +290,18 @@ def locateLayer(wantedLayer, color=None, drawstyle=None):
     """
     # layers is a global variable.
     # It should probably be passed as an argument.
-    wantedLayerName = decodeName(wantedLayer)
-    for l in layers:
-        if wantedLayerName == l.Label:
-            return l
+    if wantedLayer is None:
+        wantedLayer = '0'
+    for layer in layers:
+        if layer.Label == wantedLayer:
+            return layer
     if dxfUseDraftVisGroups:
         newLayer = Draft.make_layer(name=wantedLayer,
-                                    line_color=color,
-                                    draw_style=drawstyle)
+                                    line_color=(0.0,0.0,0.0) if not color else color,
+                                    draw_style="Solid" if not drawstyle else drawstyle)
     else:
         newLayer = doc.addObject("App::DocumentObjectGroup", wantedLayer)
-    newLayer.Label = wantedLayerName
+    newLayer.Label = wantedLayer
     layers.append(newLayer)
     return newLayer
 
@@ -2037,16 +1995,6 @@ def addText(text, attrib=False):
         else:
             name = "Text"
         val = deformat(val)
-        # the following stores text as Latin1 in annotations, which
-        # displays ok in coin texts, but causes errors later on.
-        # better store as utf8 always.
-        # try:
-        #    val = val.decode("utf8").encode("Latin1")
-        # except Exception:
-        #    try:
-        #        val = val.encode("latin1")
-        #    except Exception:
-        #        pass
         newob = Draft.make_text(val.split("\n"))
         if hasattr(lay, "addObject"):
             lay.addObject(newob)
@@ -2769,7 +2717,7 @@ def open(filename):
         if dxfReader:
             docname = os.path.splitext(os.path.basename(filename))[0]
             doc = FreeCAD.newDocument(docname)
-            doc.Label = decodeName(docname)
+            doc.Label = docname
             processdxf(doc, filename)
             return doc
         else:
@@ -2777,7 +2725,7 @@ def open(filename):
     else:
         docname = os.path.splitext(os.path.basename(filename))[0]
         doc = FreeCAD.newDocument(docname)
-        doc.Label = decodeName(docname)
+        doc.Label = docname
         FreeCAD.setActiveDocument(doc.Name)
         import Import
         Import.readDXF(filename)
@@ -2815,7 +2763,6 @@ def insert(filename, docname):
         if dxfReader:
             groupname = os.path.splitext(os.path.basename(filename))[0]
             importgroup = doc.addObject("App::DocumentObjectGroup", groupname)
-            importgroup.Label = decodeName(groupname)
             processdxf(doc, filename)
             for l in layers:
                 importgroup.addObject(l)

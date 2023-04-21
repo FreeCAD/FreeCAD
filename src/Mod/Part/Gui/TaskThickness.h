@@ -42,14 +42,15 @@ public:
     bool reject();
     Part::Thickness* getObject() const;
 
-private Q_SLOTS:
-    void on_spinOffset_valueChanged(double);
-    void on_modeType_activated(int);
-    void on_joinType_activated(int);
-    void on_intersection_toggled(bool);
-    void on_selfIntersection_toggled(bool);
-    void on_facesButton_toggled(bool);
-    void on_updateView_toggled(bool);
+private:
+    void setupConnections();
+    void onSpinOffsetValueChanged(double);
+    void onModeTypeActivated(int);
+    void onJoinTypeActivated(int);
+    void onIntersectionToggled(bool);
+    void onSelfIntersectionToggled(bool);
+    void onFacesButtonToggled(bool);
+    void onUpdateViewToggled(bool);
 
 private:
     void changeEvent(QEvent *e) override;

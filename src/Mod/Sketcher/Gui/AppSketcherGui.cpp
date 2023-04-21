@@ -32,7 +32,6 @@
 
 #include "PropertyConstraintListItem.h"
 #include "SketcherSettings.h"
-#include "SoDatumLabel.h"
 #include "SoZoomTranslation.h"
 #include "ViewProviderPython.h"
 #include "ViewProviderSketch.h"
@@ -125,7 +124,6 @@ PyMOD_INIT_FUNC(SketcherGui)
     SketcherGui::ViewProviderPython         		  ::init();
     SketcherGui::ViewProviderCustom         		  ::init();
     SketcherGui::ViewProviderCustomPython   		  ::init();
-    SketcherGui::SoDatumLabel               		  ::initClass();
     SketcherGui::SoZoomTranslation          		  ::initClass();
     SketcherGui::PropertyConstraintListItem 		  ::init();
     SketcherGui::ViewProviderSketchGeometryExtension      ::init();
