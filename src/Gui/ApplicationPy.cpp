@@ -1552,7 +1552,7 @@ PyObject* Application::sListUserEditModes(PyObject * /*self*/, PyObject *args)
         return nullptr;
 
     for (auto const &uem : Instance->listUserEditModes()) {
-        ret.append(Py::String(uem.second));
+        ret.append(Py::String(uem.second.first));
     }
 
     return Py::new_reference_to(ret);
@@ -1563,7 +1563,7 @@ PyObject* Application::sGetUserEditMode(PyObject * /*self*/, PyObject *args)
     if (!PyArg_ParseTuple(args, ""))
         return nullptr;
 
-    return Py::new_reference_to(Py::String(Instance->getUserEditModeName()));
+    return Py::new_reference_to(Py::String(Instance->getUserEditModeUIStrings().first));
 }
 
 PyObject* Application::sSetUserEditMode(PyObject * /*self*/, PyObject *args)

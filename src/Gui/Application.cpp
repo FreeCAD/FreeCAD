@@ -1312,14 +1312,14 @@ int Application::getUserEditMode(const std::string &mode) const
         return userEditMode;
     }
     for (auto const &uem : userEditModes) {
-        if (uem.second == mode) {
+        if (uem.second.first == mode) {
             return uem.first;
         }
     }
     return -1;
 }
 
-std::string Application::getUserEditModeName(int mode) const
+std::pair<std::string,std::string> Application::getUserEditModeUIStrings(int mode) const
 {
     if (mode == -1) {
         return userEditModes.at(userEditMode);
@@ -1327,7 +1327,7 @@ std::string Application::getUserEditModeName(int mode) const
     if (userEditModes.find(mode) != userEditModes.end()) {
         return userEditModes.at(mode);
     }
-    return "";
+    return std::make_pair(std::string(), std::string());
 }
 
 bool Application::setUserEditMode(int mode)
@@ -1343,7 +1343,7 @@ bool Application::setUserEditMode(int mode)
 bool Application::setUserEditMode(const std::string &mode)
 {
     for (auto const &uem : userEditModes) {
-        if (uem.second == mode) {
+        if (uem.second.first == mode) {
             return setUserEditMode(uem.first);
         }
     }
